@@ -1,0 +1,3 @@
+routeHost: 'esta-cloud-angular.apps.asterix.otc.sbb.ch'
+replicas: 2
+backendUrl: 'https://my-backend.app.sbb.ch'

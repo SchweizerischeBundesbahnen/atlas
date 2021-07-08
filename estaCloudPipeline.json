@@ -1,0 +1,82 @@
+{
+  "$schema": "https://esta-nginx-prod-release-code.app.obelix.otc.sbb.ch/code/projects/KD_ESTA/repos/esta-cloud-pipeline/raw/resources/estaCloudPipelineSchema.json?at=refs%2Ftags%2Frelease",
+  "mainBranch": "master",
+  "hotfixBranch": "hotfix",
+  "docker": {
+    "dockerFile": "docker/Dockerfile",
+    "artifactoryDockerRepo": "estasch.docker",
+    "openshiftAppName": "esta-cloud-angular",
+    "artifactorySupressProjectSubfolderCreation": true
+  },
+  "npm": {
+    "targetRepo": "kd_esta",
+    "additionalNpmScripts": "lint,build:ngssc,test"
+  },
+  "helm": {
+    "repository": "estasch.helm",
+    "chart": "esta-cloud-angular",
+    "release": "esta-cloud-angular"
+  },
+  "credentials": [
+    {
+      "id": "browserstack",
+      "type": "usernamePassword",
+      "usernameVariable": "BROWSERSTACK_USERNAME",
+      "passwordVariable": "BROWSERSTACK_ACCESS_KEY"
+    }
+  ],
+  "stages": [
+    {
+      "stageName": "dev",
+      "isOpenshiftDeploymentEnabled": true,
+      "openshiftCluster": "OTC_TEST_07",
+      "openshiftProject": "TODO",
+      "openshiftJenkinsCredentialsId": "TODO",
+      "preCiDeploymentJob": "",
+      "postCiDeploymentJob": ""
+    },
+    {
+      "stageName": "prod",
+      "isOpenshiftDeploymentEnabled": true,
+      "openshiftCluster": "OTC_ASTERIX",
+      "openshiftProject": "TODO",
+      "openshiftJenkinsCredentialsId": "TODO",
+      "preCiDeploymentJob": "",
+      "postCiDeploymentJob": ""
+    }
+  ],
+  "steps": [
+    {
+      "stepType": "continuous",
+      "isBuildEnabled": true,
+      "branchNamePrefixes": ["feature"],
+      "additionalBuildParams": "",
+      "triggerBuildOnCommitEnabled": true
+    },
+    {
+      "stepType": "integrationBuild",
+      "isBuildEnabled": true,
+      "xrayScanEnabled": true,
+      "failOnXrayScan": false,
+      "sonarScanEnabled": true,
+      "staging": {
+        "stages": ["dev"]
+      },
+      "additionalBuildParams": "",
+      "triggerBuildOnCommitEnabled": false
+    },
+    {
+      "stepType": "release",
+      "isBuildEnabled": true,
+      "xrayScanEnabled": true,
+      "failOnXrayScan": true,
+      "sonarScanEnabled": false,
+      "staging": {
+        "stages": ["prod"]
+      },
+      "additionalBuildParams": "",
+      "triggerBuildOnCommitEnabled": false,
+      "hotfixCreationEnabled": false
+    }
+  ]
+}
