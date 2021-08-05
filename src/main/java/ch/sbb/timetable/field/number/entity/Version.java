@@ -24,7 +24,7 @@ public class Version {
     @OneToMany(mappedBy = "version", fetch = FetchType.EAGER)
     private Set<LineRelation> lineRelations;
 
-    private String fpfnid;
+    private String ttfnid;
 
     private String name;
 

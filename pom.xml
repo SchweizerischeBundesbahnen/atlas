@@ -15,6 +15,8 @@
 	<description>TimetableFieldNumber Backend</description>
 	<properties>
 		<java.version>11</java.version>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+		<timestamp>${maven.build.timestamp}</timestamp>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -36,6 +38,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.5.10</version>
 		</dependency>
 
 		<dependency>

@@ -8,6 +8,7 @@
 |Frontend   | Angular9 + | [ESTA-Web](https://confluence.sbb.ch/display/CLEW/ESTA-Web) |
 |Backend    |Java Spring Boot 2.4 | [ESTA-Backend (Spring-Boot)](https://confluence.sbb.ch/pages/viewpage.action?pageId=1306395091) |
 |           |Lombok | https://projectlombok.org/ |
+|           |OpenAPI | https://swagger.io/specification/ |
 |Database	|PostGreSQL| [Service PostgreSQL](https://confluence.sbb.ch/display/PLA/Service+PostgreSQL)|
 |Messaging	|Apache Kafka| [KAFKA Home](https://confluence.sbb.ch/display/KAFKA/KAFKA+Home)|
 |Infrastructure|	Openshift AWS 4.0| [ESTA-Cloud](https://confluence.sbb.ch/display/CLEW/ESTA-Cloud)|
@@ -41,6 +42,11 @@ Stop PostgreSQL container and remove volume:
 * Jenkins:
 * Infrastruktur: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+7.1.+Infrastruktur+Ebene+1
 
+### OpenApi Links
+
+Swagger UI: http://localhost:8080/swagger-ui/index.html
+Api Docs as JSON: http://localhost:8080/v3/api-docs/
+Api Docs as YAML: http://localhost:8080/v3/api-docs.yaml
 
 ## Decision History
 07.2021: Spring-Boot Initializer used for template

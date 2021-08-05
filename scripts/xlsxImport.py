@@ -41,7 +41,7 @@ data = data[data['Liniennr'].notnull()]
 
 result_sql_file = open("../src/main/resources/db/migration/V0.0.2__initial_data.sql", mode="w", encoding="UTF-8")
 
-fpnfid = 0
+fpnfid = 100000
 for index, row in data.iterrows():
 	name = row[1] if isinstance(row[1], str) else row[2]
 	name = cleanhtml(name).replace("'", "''")
@@ -61,8 +61,8 @@ for index, row in data.iterrows():
 			).replace("'nan'", "null"))
 	result_sql_file.write("\n")
 	result_sql_file.write(
-			"INSERT INTO timetable_field_lines_relation (id, slnid, timetable_field_version_id) "
-			"VALUES (nextval('timetable_field_lines_relation_seq'), 'ch:1:slnid:{}', currval('timetable_field_number_version_seq'));".format(
+			"INSERT INTO timetable_field_line_relation (id, slnid, timetable_field_version_id) "
+			"VALUES (nextval('timetable_field_line_relation_seq'), 'ch:1:slnid:{}', currval('timetable_field_number_version_seq'));".format(
 					fpnfid))
 	result_sql_file.write("\n\n")
 
