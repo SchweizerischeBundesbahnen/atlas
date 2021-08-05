@@ -44,7 +44,7 @@ Stop PostgreSQL container and remove volume:
 
 ### OpenApi Links
 
-Swagger UI: http://localhost:8080/swagger-ui/index.html
+Swagger UI: http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 Api Docs as JSON: http://localhost:8080/v3/api-docs/
 Api Docs as YAML: http://localhost:8080/v3/api-docs.yaml
 
