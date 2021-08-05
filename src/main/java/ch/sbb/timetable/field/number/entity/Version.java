@@ -7,16 +7,22 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@ToString
 @Entity(name = "timetable_field_number_version")
-@Data
 public class Version {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "timetable_field_number_version_seq")
     private Long id;
+
+    @OneToMany(mappedBy = "version", fetch = FetchType.EAGER)
+    private Set<LineRelation> lineRelations;
 
     private String fpfnid;
 

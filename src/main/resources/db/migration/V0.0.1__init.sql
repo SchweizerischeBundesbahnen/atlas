@@ -20,7 +20,7 @@ CREATE TABLE timetable_field_number_version
 
 CREATE SEQUENCE timetable_field_number_version_seq START WITH 1000 INCREMENT BY 1;
 
-CREATE TABLE timetable_field_lines_relation
+CREATE TABLE timetable_field_line_relation
 (
     id                              BIGINT NOT NULL PRIMARY KEY,
     slnid                           VARCHAR(500),
@@ -30,4 +30,4 @@ CREATE TABLE timetable_field_lines_relation
             REFERENCES timetable_field_number_version(id)
 );
 
-CREATE SEQUENCE timetable_field_lines_relation_seq START WITH 1000 INCREMENT BY 1;
+CREATE SEQUENCE timetable_field_line_relation_seq START WITH 1000 INCREMENT BY 1;

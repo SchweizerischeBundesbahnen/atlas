@@ -39,8 +39,8 @@ public class VersionController {
 
     @RequestMapping(value="/read", method= RequestMethod.GET)
     public String read() {
-        List<Version> all = versionRepository.findAll();
-        all.forEach(version -> System.out.println(version));
+        Version version = versionRepository.findById(1000L).orElse(null);
+
 
         return "redirect:/";
     }
