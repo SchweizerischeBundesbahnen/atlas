@@ -14,11 +14,15 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@Builder
 @Entity(name = "timetable_field_number_version")
 public class Version {
 
+    private  static final String TIMETABLE_FIELD_NUMBER_VERSION_SEQ = "timetable_field_number_version_seq";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "timetable_field_number_version_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = TIMETABLE_FIELD_NUMBER_VERSION_SEQ)
+    @SequenceGenerator(name = TIMETABLE_FIELD_NUMBER_VERSION_SEQ, sequenceName = TIMETABLE_FIELD_NUMBER_VERSION_SEQ, allocationSize = 1, initialValue = 1000)
     private Long id;
 
     @OneToMany(mappedBy = "version", fetch = FetchType.EAGER)

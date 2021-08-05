@@ -12,8 +12,11 @@ import javax.persistence.*;
 @Entity(name = "timetable_field_line_relation")
 public class LineRelation {
 
+    private static final String TIMETABLE_FIELD_LINE_RELATION_SEQ = "timetable_field_line_relation_seq";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "timetable_field_line_relation_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = TIMETABLE_FIELD_LINE_RELATION_SEQ)
+    @SequenceGenerator(name = TIMETABLE_FIELD_LINE_RELATION_SEQ, sequenceName = TIMETABLE_FIELD_LINE_RELATION_SEQ, allocationSize = 1, initialValue = 1000)
     private Long id;
 
     private String slnid;
