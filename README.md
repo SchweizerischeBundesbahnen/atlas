@@ -1,24 +1,7 @@
 # ATLAS Backend
 
 ## Big Picture
-<pre>
-
-+--------------+                        +-------+
-| Lidi-Backend | ---------------------> | Kafka |
-+--------------+                        +-------+
-                                            ^
-                                            |
-                                    +---------------+          +------------------------+               +----------------+
-                                    | ATLAS-Backend |<---------| API-Management Gateway |<--------------| ATLAS-Frontend |
-                                    | └LiDi-Modul   |          | CloudWAF Container     |               +----------------+                  
-                                    +---------------+          +------------------------+               
-                                            |
-                                            |
-                                            v
-                                      +------------+
-                                      | PostgreSQL |
-                                      +------------+
-</pre>
+![ATLAS Big Picture](documentation/ATLAS_Infrastruktur.svg)
 ## Tech Stack 
 | Layer     |  Techno    |  Link     |
 |-----------|------------|-----------|
