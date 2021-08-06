@@ -9,14 +9,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@Builder
 @Entity(name = "timetable_field_line_relation")
 public class LineRelation {
 
-    private static final String TIMETABLE_FIELD_LINE_RELATION_SEQ = "timetable_field_line_relation_seq";
+    private static final String LINE_RELATION_SEQ = "timetable_field_line_relation_seq";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = TIMETABLE_FIELD_LINE_RELATION_SEQ)
-    @SequenceGenerator(name = TIMETABLE_FIELD_LINE_RELATION_SEQ, sequenceName = TIMETABLE_FIELD_LINE_RELATION_SEQ, allocationSize = 1, initialValue = 1000)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = LINE_RELATION_SEQ)
+    @SequenceGenerator(name = LINE_RELATION_SEQ, sequenceName = LINE_RELATION_SEQ, allocationSize = 1, initialValue = 1000)
     private Long id;
 
     private String slnid;
