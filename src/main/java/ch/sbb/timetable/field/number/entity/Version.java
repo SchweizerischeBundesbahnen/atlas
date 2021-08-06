@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -18,15 +19,16 @@ import java.util.Set;
 @Entity(name = "timetable_field_number_version")
 public class Version {
 
-    private  static final String TIMETABLE_FIELD_NUMBER_VERSION_SEQ = "timetable_field_number_version_seq";
+    private  static final String VERSION_SEQ = "timetable_field_number_version_seq";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = TIMETABLE_FIELD_NUMBER_VERSION_SEQ)
-    @SequenceGenerator(name = TIMETABLE_FIELD_NUMBER_VERSION_SEQ, sequenceName = TIMETABLE_FIELD_NUMBER_VERSION_SEQ, allocationSize = 1, initialValue = 1000)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
+    @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
     private Long id;
 
-    @OneToMany(mappedBy = "version", fetch = FetchType.EAGER)
-    private Set<LineRelation> lineRelations;
+    @Singular
+    @OneToMany(mappedBy = "version", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<LineRelation> lineRelations = new HashSet<>();
 
     private String ttfnid;
 
@@ -63,6 +65,5 @@ public class Version {
     private Type type;
 
     private String nameCompact;
-
 
 }
