@@ -22,5 +22,5 @@ info:
 
 logging:
   level:
-      root: INFO
-      org.hibernate: ERROR
+    root: INFO
+    org.hibernate: ERROR
