@@ -1,16 +1,18 @@
 package ch.sbb.timetable.field.number.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.sbb.timetable.field.number.entity.Version;
-import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.model.VersionModel;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -18,32 +20,20 @@ import lombok.extern.slf4j.Slf4j;
 public class VersionController {
 
     private final VersionRepository versionRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public VersionController(VersionRepository versionRepository) {
+    public VersionController(VersionRepository versionRepository, ModelMapper modelMapper) {
         this.versionRepository = versionRepository;
+        this.modelMapper = modelMapper;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create() {
-        Version version = new Version();
-        version.setNumber("asdsad");
-        version.setStatus(Status.ACTIVE);
-        version.setCreationDate(LocalDateTime.now());
-
-        Version save = versionRepository.save(version);
-        System.out.println(save);
-
-        return "redirect:/";
+    @GetMapping(value = "/listVersions")
+    @PageableAsQueryParam
+    public List<VersionModel> getAllVersions(@Parameter(hidden = true) Pageable pageable) {
+        log.info("Load Versions using pageable={}", pageable);
+        return versionRepository.findAll(pageable).stream().map(version -> modelMapper.map(version, VersionModel.class)).collect(Collectors.toList());
     }
 
-    @RequestMapping(value = "/read", method = RequestMethod.GET)
-    public String read() {
-        log.info("beste shit");
-        List<Version> all = versionRepository.findAll();
-        all.forEach(version -> System.out.println(version));
-
-        return "redirect:/";
-    }
 
 }

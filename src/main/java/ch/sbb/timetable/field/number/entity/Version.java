@@ -26,7 +26,7 @@ public class Version {
     @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
     private Long id;
 
-    @Singular
+    @Builder.Default
     @OneToMany(mappedBy = "version", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<LineRelation> lineRelations = new HashSet<>();
 
