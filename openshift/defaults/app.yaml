@@ -37,7 +37,7 @@ objects:
                     secretKeyRef:
                       name: db-secret
                       key: user
-                - name: DB_PASSWORD
+                - name: DB_PWD
                   valueFrom:
                     secretKeyRef:
                       name: db-secret
