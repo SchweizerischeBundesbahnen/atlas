@@ -42,7 +42,7 @@ Stop PostgreSQL container and remove volume:
 * Openshift Int:
 * Openshift Test:
 * Openshift Dev: 
-* Jenkins:
+* Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/
 * Infrastruktur: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+7.1.+Infrastruktur+Ebene+1
 
 ### OpenApi Links
