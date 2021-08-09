@@ -1,0 +1,204 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: ${PRODUCT}${SEPARATOR}${VARIANT}-app-template
+  labels:
+    app: ${PRODUCT}${SEPARATOR}${VARIANT}
+    createdBy: sbb-it
+objects:
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: ${PRODUCT}${SEPARATOR}${VARIANT}
+    spec:
+      replicas: ${{REPLICAS}}
+      test: false
+      selector:
+        app: ${PRODUCT}${SEPARATOR}${VARIANT}
+        deploymentconfig: ${PRODUCT}${SEPARATOR}${VARIANT}
+      strategy:
+        type: Rolling
+      template:
+        metadata:
+          labels:
+            app: ${PRODUCT}${SEPARATOR}${VARIANT}
+            deploymentconfig: ${PRODUCT}${SEPARATOR}${VARIANT}
+        spec:
+          containers:
+            - env:
+                - name: MaxRAMPercentage
+                  value: '60'
+                - name: ${SPLUNK_KEY}
+                  value: ${SPLUNK_INDEX}
+                - name: spring_profiles_active
+                  value: ${SPRING_PROFILES_ACTIVE}
+                - name: APIM_MONITORING_ID
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.name
+                - name: APIM_MONITORING_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.namespace
+                #Proxy
+                - name: CUSTOM_PRE_OPTS
+                  value: "-Dhttp.proxyHost=zscaler.sbb.ch -Dhttp.proxyPort=10465 -Dhttps.proxyHost=zscaler.sbb.ch -Dhttps.proxyPort=10465 -Dhttp.nonProxyHosts='localhost|*.otc-test.sbb.ch|*.otc.sbb.ch|*.io.sbb.ch|*.sbb-cloud.net|*.sbb-aws.net|ci.sbb.ch|sso.sbb.ch|sso-int.sbb.ch'"
+              image: ${DOCKER_REPO}.docker.bin.sbb.ch/${IMAGE_NAME}:${VERSIONTAG}
+              imagePullPolicy: ${IMAGE_PULL_POLICY}
+              name: ${PRODUCT}${SEPARATOR}${VARIANT}
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+              resources:
+                requests:
+                  cpu: ${CPU_MIN}
+                  memory: ${MEMORY_MIN}
+                limits:
+                  cpu: ${CPU_MAX}
+                  memory: ${MEMORY_MAX}
+              livenessProbe:
+                httpGet:
+                  path: ${LIVENESS_PROBE}
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 90
+                timeoutSeconds: 90
+                periodSeconds: 20
+                successThreshold: 1
+                failureThreshold: 10
+              readinessProbe:
+                httpGet:
+                  path: ${READYNESS_PROBE}
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 90
+                timeoutSeconds: 90
+                periodSeconds: 20
+                successThreshold: 1
+                failureThreshold: 10
+              terminationMessagePath: /dev/termination-log
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          triggers: {}
+
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      annotations:
+        openshift.io/host.generated: "true"
+      name: ${PRODUCT}${SEPARATOR}${VARIANT}-intern
+    spec:
+      host: ${routeDnsLabel}.app.${routeCluster}.${routeUrlPostfix}
+      port:
+        targetPort: 8080-tcp
+      to:
+        kind: Service
+        name: ${PRODUCT}${SEPARATOR}${VARIANT}
+        weight: 100
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Allow
+
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      annotations:
+        openshift.io/host.generated: "true"
+      name: ${PRODUCT}${SEPARATOR}${VARIANT}
+    spec:
+      host: ${routeDnsLabel}.api.sbb.ch
+      port:
+        targetPort: 8080-tcp
+      to:
+        kind: Service
+        name: ${PRODUCT}${SEPARATOR}${VARIANT}
+        weight: 100
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Allow
+
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: ${PRODUCT}${SEPARATOR}${VARIANT}
+    spec:
+      ports:
+        - name: 8080-tcp
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+      selector:
+        app: ${PRODUCT}${SEPARATOR}${VARIANT}
+        deploymentconfig: ${PRODUCT}${SEPARATOR}${VARIANT}
+      sessionAffinity: None
+      type: ClusterIP
+
+
+parameters:
+  - name: PRODUCT
+    description: PRODUCT is the name of the product / app name
+    required: true
+  - name: VARIANT
+    description: VARIANT is an option to put an variation to the deploymentconfig name.
+    required: false
+  - name: SEPARATOR
+    description: SEPARATOR is an option to put an variation to the deploymentconfig name.
+    required: false
+  - name: IMAGE_NAME
+    description: Name of the Dockerimge in bin.sbb.ch/dockerrepo
+    required: true
+  - name: IMAGE_PULL_POLICY
+    descrition: See https://docs.openshift.com/container-platform/3.6/dev_guide/managing_images.html#image-pull-policy
+  - name: REPLICAS
+    description: Pod Instances Count
+    required: true
+    value: "1"
+  - name: STAGE
+    description: Stagename which is used for NewRelic Logging
+    required: true
+  - name: SPLUNK_INDEX
+    description: splunk_index
+    required: true
+  - name: SPLUNK_KEY
+    description: SPLUNK_KEY met to switch of splunk_key splunk_index_OFF
+    required: true
+  - name: CPU_MIN
+    description: Minimal CPU ie. 1m for 1 Milicore
+    required: true
+  - name: CPU_MAX
+    description: Maximal CPU ie 1 for 1 Core
+    required: true
+  - name: MEMORY_MIN
+    description: Minimal Memory ie 1M for 1 Megabyte
+    required: true
+  - name: MEMORY_MAX
+    description: Maximal Memory ie 1G for 1 Gigabyte
+    required: true
+  - name: READYNESS_PROBE
+    description: READYNESS_PROBE
+    required: true
+  - name: LIVENESS_PROBE
+    description: LIVENESS_PROBE
+    required: true
+  - name: DOCKER_REPO
+    description: The name of the docker Repository in bin.sbb.ch
+    required: true
+  - name: VERSIONTAG
+    description: Selector-Tag for Artifactory
+    required: true
+  - name: routeDnsLabel
+    description: first dns label of the route (<routeDnsLabel>.api.sbb.ch)
+    required: true
+  - name: routeCluster
+    description: cluster for Route
+    required: true
+  - name: routeUrlPostfix
+    description: End of URL for Route
+    required: true
+  - name: SPRING_PROFILES_ACTIVE
+    description: spring profile for the environment
+    required: true
