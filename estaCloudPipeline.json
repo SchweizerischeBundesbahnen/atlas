@@ -19,7 +19,7 @@
       "isOpenshiftDeploymentEnabled": true,
       "openshiftProject": "atlas-dev",
       "openshiftCluster": "aws",
-      "openshiftJenkinsCredentialsId": "1c802c28-ae66-43a2-aa03-ee152af5b1fb",
+      "openshiftJenkinsCredentialsId": "zvs-aws-deploy",
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": ""
     }
