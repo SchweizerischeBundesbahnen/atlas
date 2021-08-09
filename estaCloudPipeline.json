@@ -29,8 +29,7 @@
       "stepType": "continuous",
       "isBuildEnabled": true,
       "branchNamePrefixes": [
-        "feature",
-        "master"
+        "feature"
       ],
       "additionalBuildParams": "-DskipITs"
     },

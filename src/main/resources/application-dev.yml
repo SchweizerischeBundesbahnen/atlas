@@ -1,26 +1,5 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/timetable-field-number
-    username: user
-    password: pwd
-    driver-class-name: org.postgresql.Driver
-  security:
-    user:
-      password: pwd
-  jpa:
-    open-in-view: false
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-info:
-  app:
-    name: timetable-field-number
-    version: @version@
-    buildtime: @timestamp@
-
-logging:
-  level:
-    root: INFO
-    org.hibernate: ERROR
+    url: jdbc:postgresql://timetable-field-number-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/timetable_field_number
+    username: ${DB_USER}
+    password: ${DB_PWD}

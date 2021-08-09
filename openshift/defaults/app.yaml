@@ -32,6 +32,16 @@ objects:
                   value: ${SPLUNK_INDEX}
                 - name: spring_profiles_active
                   value: ${SPRING_PROFILES_ACTIVE}
+                - name: DB_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-secret
+                      key: user
+                - name: DB_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: db-secret
+                        key: password
                 - name: APIM_MONITORING_ID
                   valueFrom:
                     fieldRef:
