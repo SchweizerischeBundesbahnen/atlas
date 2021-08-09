@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.model;
+package ch.sbb.timetable.field.number.api;
 
 import java.time.LocalDate;
 
