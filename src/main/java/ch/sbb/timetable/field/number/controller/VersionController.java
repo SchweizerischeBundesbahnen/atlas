@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -12,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import ch.sbb.timetable.field.number.api.VersionApi;
+import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.Version;
-import ch.sbb.timetable.field.number.model.VersionModel;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,18 +23,16 @@ public class VersionController implements VersionApi {
     private static final Supplier<ResponseStatusException> NOT_FOUND_EXCEPTION = () -> new ResponseStatusException(HttpStatus.NOT_FOUND);
 
     private final VersionRepository versionRepository;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public VersionController(VersionRepository versionRepository, ModelMapper modelMapper) {
+    public VersionController(VersionRepository versionRepository) {
         this.versionRepository = versionRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
     public List<VersionModel> getVersions(Pageable pageable) {
         log.info("Load Versions using pageable={}", pageable);
-        return versionRepository.findAll(pageable).stream().map(version -> modelMapper.map(version, VersionModel.class)).collect(Collectors.toList());
+        return versionRepository.findAll(pageable).stream().map(this::toModel).collect(Collectors.toList());
     }
 
     @Override
@@ -45,7 +42,7 @@ public class VersionController implements VersionApi {
 
     @Override
     public VersionModel createVersion(VersionModel newVersion) {
-        Version createdVersion = versionRepository.save(modelMapper.map(newVersion, Version.class));
+        Version createdVersion = versionRepository.save(toEntity(newVersion));
         return toModel(createdVersion);
     }
 
@@ -76,6 +73,36 @@ public class VersionController implements VersionApi {
     }
 
     private VersionModel toModel(Version version) {
-        return modelMapper.map(version, VersionModel.class);
+        return VersionModel.builder()
+            .id(version.getId())
+            .name(version.getName())
+            .number(version.getNumber())
+            .ttfnid(version.getTtfnid())
+            .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
+            .status(version.getStatus())
+            .validFrom(version.getValidFrom())
+            .validTo(version.getValidTo())
+            .businessOrganisation(version.getBusinessOrganisation())
+            .comment(version.getComment())
+            .type(version.getType())
+            .nameCompact(version.getNameCompact())
+            .build();
+    }
+
+    private Version toEntity(VersionModel versionModel) {
+        return Version.builder()
+            .id(versionModel.getId())
+            .name(versionModel.getName())
+            .number(versionModel.getNumber())
+            .ttfnid(versionModel.getTtfnid())
+            .swissTimetableFieldNumber(versionModel.getSwissTimetableFieldNumber())
+            .status(versionModel.getStatus())
+            .validFrom(versionModel.getValidFrom())
+            .validTo(versionModel.getValidTo())
+            .businessOrganisation(versionModel.getBusinessOrganisation())
+            .comment(versionModel.getComment())
+            .type(versionModel.getType())
+            .nameCompact(versionModel.getNameCompact())
+            .build();
     }
 }
