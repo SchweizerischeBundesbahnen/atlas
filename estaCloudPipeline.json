@@ -19,7 +19,7 @@
       "isOpenshiftDeploymentEnabled": true,
       "openshiftProject": "atlas-dev",
       "openshiftCluster": "aws",
-      "openshiftJenkinsCredentialsId": "zvs-aws-deploy",
+      "openshiftJenkinsCredentialsId": "e499fd92-711c-469b-9bc3-a67c748341d9",
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": ""
     }
@@ -29,7 +29,8 @@
       "stepType": "continuous",
       "isBuildEnabled": true,
       "branchNamePrefixes": [
-        "feature"
+        "feature",
+        "master"
       ],
       "additionalBuildParams": "-DskipITs"
     },
