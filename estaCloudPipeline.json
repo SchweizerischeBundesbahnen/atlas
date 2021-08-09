@@ -18,7 +18,7 @@
       "stageName": "dev",
       "isOpenshiftDeploymentEnabled": true,
       "openshiftProject": "atlas-dev",
-      "openshiftCluster": "aws",
+      "openshiftCluster": "aws_aws01t",
       "openshiftJenkinsCredentialsId": "e499fd92-711c-469b-9bc3-a67c748341d9",
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": ""
