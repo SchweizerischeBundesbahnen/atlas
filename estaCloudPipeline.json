@@ -1,0 +1,76 @@
+{
+  "$schema": "https://esta-nginx-prod-release-code.app.obelix.otc.sbb.ch/code/projects/KD_ESTA/repos/esta-cloud-pipeline/raw/resources/estaCloudPipelineSchema.json?at=refs%2Ftags%2Frelease",
+  "mainBranch": "master",
+  "hotfixBranch": "hotfix",
+  "docker": {
+    "artifactoryDockerRepo": "atlas.docker",
+    "openshiftAppName": "timetable-field-number-api",
+    "artifactorySupressProjectSubfolderCreation": true
+  },
+  "mvn": {
+    "parentPom": "pom.xml",
+    "deployableArtifactsPom": "pom.xml",
+    "artifactoryMavenRepo": "atlas.mvn"
+  },
+  "integrationBuildCron": "master:@midnight",
+  "stages": [
+    {
+      "stageName": "dev",
+      "isOpenshiftDeploymentEnabled": true,
+      "openshiftProject": "atlas-dev",
+      "openshiftCluster": "aws",
+      "openshiftJenkinsCredentialsId": "34b64477-3960-4fec-8791-cc859e2abcde",
+      "preCiDeploymentJob": "",
+      "postCiDeploymentJob": ""
+    }
+  ],
+  "steps": [
+    {
+      "stepType": "continuous",
+      "isBuildEnabled": true,
+      "branchNamePrefixes": [
+        "feature"
+      ],
+      "additionalBuildParams": "-DskipITs"
+    },
+    {
+      "stepType": "integrationBuild",
+      "isBuildEnabled": true,
+      "xrayScanEnabled": true,
+      "failOnXrayScan": true,
+      "sonarScanEnabled": true,
+      "junitTestReportPath": "**/surefire-reports/*.xml",
+      "staging": {
+        "stagingType": "simple",
+        "stages": [
+          "dev"
+        ]
+      },
+      "additionalBuildParams": "-DskipITs",
+      "triggerBuildOnCommitEnabled": false
+    },
+    {
+      "stepType": "release",
+      "isBuildEnabled": true,
+      "xrayScanEnabled": true,
+      "failOnXrayScan": true,
+      "sonarScanEnabled": true,
+      "staging": {
+        "stagingType": "simple",
+        "stages": [
+          "dev"
+        ]
+      },
+      "additionalBuildParams": "-DskipITs",
+      "triggerBuildOnCommitEnabled": false,
+      "hotfixCreationEnabled": true
+    },
+    {
+      "stepType": "hotfix",
+      "isBuildEnabled": false,
+      "xrayScanEnabled": true,
+      "failOnXrayScan": false,
+      "sonarScanEnabled": false
+    }
+  ]
+}
