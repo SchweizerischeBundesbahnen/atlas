@@ -33,6 +33,9 @@ Stop PostgreSQL container and remove volume:
 ~~~
 
 ## Links
+* Dev:
+  * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=timetable_field_number
+  * Openshift Namespace: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects
 * Developer Portal Prod:
 * Developer Portal Int:
 * Openshift Prod:
