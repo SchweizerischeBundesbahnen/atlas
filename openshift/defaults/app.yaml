@@ -100,9 +100,13 @@ objects:
     metadata:
       annotations:
         openshift.io/host.generated: "true"
+        # annotations to make the route public-facing (i.e. reachable from the public internet)
+        clew.sbb.ch/cluster-independent-dns: "true"
+        external-dns.alpha.kubernetes.io/alias: "true"
+        external-dns.alpha.kubernetes.io/target: sbb-aws-alb-public-aws01t-1869739791.eu-central-1.elb.amazonaws.com
       name: ${PRODUCT}${SEPARATOR}${VARIANT}-intern
     spec:
-      host: ${routeDnsLabel}.app.${routeCluster}.${routeUrlPostfix}
+      host: ${PRODUCT}-${STAGE}.app.sbb.ch
       port:
         targetPort: 8080-tcp
       to:
