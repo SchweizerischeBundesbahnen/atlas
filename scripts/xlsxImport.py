@@ -41,7 +41,7 @@ data = pandas.DataFrame(xlsData,
 # Falls Linienr Leer, nicht importieren
 data = data[data['Liniennr'].notnull()]
 
-result_sql_file = open("../src/main/resources/db/migration/V0.0.2__initial_data.sql", mode="w", encoding="UTF-8")
+result_sql_file = open("../src/main/resources/db/scripts/initial_data.sql", mode="w", encoding="UTF-8")
 
 fpnfid = 100000
 for index, row in data.iterrows():
