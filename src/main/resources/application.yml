@@ -24,5 +24,3 @@ logging:
   level:
     root: INFO
     org.hibernate: ERROR
-  pattern:
-    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=@artifactId@ traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n

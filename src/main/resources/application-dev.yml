@@ -3,3 +3,7 @@ spring:
     url: jdbc:postgresql://timetable-field-number-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/timetable_field_number
     username: ${DB_USER}
     password: ${DB_PWD}
+
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n
