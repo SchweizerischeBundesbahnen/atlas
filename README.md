@@ -62,9 +62,27 @@ docker-compose down -v
 
 ### OpenApi Links
 
-Swagger UI: http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-Api Docs as JSON: http://localhost:8080/v3/api-docs/
-Api Docs as YAML: http://localhost:8080/v3/api-docs.yaml
+* Swagger UI: http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Api Docs as JSON: http://localhost:8080/v3/api-docs/
+* Api Docs as YAML: http://localhost:8080/v3/api-docs.yaml
+
+# Splunk
+
+* Dashboard: https://search.splunk.sbb.ch/en-US/app/sbb_app_atlas
+* Search: https://search.splunk.sbb.ch/en-US/app/sbb_app_atlas/search
+
+| Index     |  Umgebung    |
+|-----------|------------|
+|index=sbb_applications_internal_dev_events | Index für Dev Umgebung |
+|index=sbb_applications_internal_test_events | Index für Test Umgebung |
+|index=sbb_applications_internal_int_events | Index für Integration Umgebung |
+|index=sbb_applications_internal_prod_events | Index für Produktion Umgebung |
+
+| Filter     |  Effekt    |
+|-----------|------------|
+|openshift_namespace=atlas-dev | Filtert nach Openshift Namespace |
+|appname=atlas | Filtert nach Atlas Applikationen |
+|openshift_container_name=timetable-field-number-backend | Filtert nach Container Name |
 
 ## Decision History
 07.2021: Spring-Boot Initializer used for template
