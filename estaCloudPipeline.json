@@ -5,6 +5,7 @@
   "keepReleaseBuildLogsOnJenkins": true,
   "jdkLabel": "OpenJDK 11 64-Bit",
   "semanticVersioning": true,
+  "versionIncrementPosition": "patch",
   "docker": {
     "artifactoryDockerRepo": "atlas.docker",
     "openshiftAppName": "timetable-field-number-api",
