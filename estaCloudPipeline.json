@@ -2,6 +2,8 @@
   "$schema": "https://esta-nginx-prod-release-code.app.obelix.otc.sbb.ch/code/projects/KD_ESTA/repos/esta-cloud-pipeline/raw/resources/estaCloudPipelineSchema.json?at=refs%2Ftags%2Frelease",
   "mainBranch": "master",
   "hotfixBranch": "hotfix",
+  "jdkLabel": "OpenJDK 11 64-Bit",
+  "keepReleaseBuildLogsOnJenkins": true,
   "docker": {
     "artifactoryDockerRepo": "atlas.docker",
     "openshiftAppName": "timetable-field-number-api",
@@ -25,6 +27,17 @@
       "postCiDeploymentJob": ""
     }
   ],
+  "teamsNotifications": {
+    "url": "https://sbb.webhook.office.com/webhookb2/e262e9dc-5836-4c36-b3e5-0e827f2a2787@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/JenkinsCI/1d957b31eb2c46aeac8003d5a70e1926/8231c64b-bcb4-497e-93bf-0213ebdac9e4",
+    "startNotification": true,
+    "notifySuccess": true,
+    "notifyAborted": true,
+    "notifyNotBuilt": true,
+    "notifyUnstable": true,
+    "notifyFailure": true,
+    "notifyBackToNormal": true,
+    "notifyRepeatedFailure": true
+  },
   "steps": [
     {
       "stepType": "continuous",
