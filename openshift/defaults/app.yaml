@@ -46,7 +46,7 @@ objects:
               imagePullPolicy: ${IMAGE_PULL_POLICY}
               name: ${PRODUCT}${SEPARATOR}${VARIANT}
               ports:
-                - containerPort: ${PORT}
+                - containerPort: ${{PORT}}
                   protocol: TCP
               resources:
                 requests:
@@ -58,7 +58,7 @@ objects:
               livenessProbe:
                 httpGet:
                   path: ${LIVENESS_PROBE}
-                  port: ${PORT}
+                  port: ${{PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 90
                 timeoutSeconds: 90
@@ -68,7 +68,7 @@ objects:
               readinessProbe:
                 httpGet:
                   path: ${READYNESS_PROBE}
-                  port: ${PORT}
+                  port: ${{PORT}}
                   scheme: HTTP
                 initialDelaySeconds: 90
                 timeoutSeconds: 90
@@ -107,9 +107,9 @@ objects:
     spec:
       ports:
         - name: ${PORT}-tcp
-          port: ${PORT}
+          port: ${{PORT}}
           protocol: TCP
-          targetPort: ${PORT}
+          targetPort: ${{PORT}}
       selector:
         app: ${PRODUCT}${SEPARATOR}${VARIANT}
         deploymentconfig: ${PRODUCT}${SEPARATOR}${VARIANT}
