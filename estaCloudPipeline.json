@@ -48,7 +48,7 @@
       },
       "junitTestReportPath": "**/surefire-reports/*.xml",
       "additionalBuildParams": "-DskipITs",
-      "triggerBuildOnCommitEnabled": true
+      "triggerBuildOnCommitEnabled": false
     },
     {
       "stepType": "release",
