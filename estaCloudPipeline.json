@@ -29,9 +29,10 @@
       "stepType": "continuous",
       "isBuildEnabled": true,
       "branchNamePrefixes": [
-        "feature"
+        "feature",
+        "bugfix"
       ],
-      "additionalBuildParams": "-DskipITs"
+      "additionalBuildParams": ""
     },
     {
       "stepType": "integrationBuild",
@@ -39,15 +40,15 @@
       "xrayScanEnabled": true,
       "failOnXrayScan": true,
       "sonarScanEnabled": true,
-      "junitTestReportPath": "**/surefire-reports/*.xml",
       "staging": {
         "stagingType": "simple",
         "stages": [
           "dev"
         ]
       },
+      "junitTestReportPath": "**/surefire-reports/*.xml",
       "additionalBuildParams": "-DskipITs",
-      "triggerBuildOnCommitEnabled": false
+      "triggerBuildOnCommitEnabled": true
     },
     {
       "stepType": "release",
@@ -62,15 +63,8 @@
         ]
       },
       "additionalBuildParams": "-DskipITs",
-      "triggerBuildOnCommitEnabled": false,
-      "hotfixCreationEnabled": true
-    },
-    {
-      "stepType": "hotfix",
-      "isBuildEnabled": false,
-      "xrayScanEnabled": true,
-      "failOnXrayScan": false,
-      "sonarScanEnabled": false
+      "triggerBuildOnCommitEnabled": true,
+      "hotfixCreationEnabled": false
     }
   ]
 }
