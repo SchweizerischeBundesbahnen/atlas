@@ -20,17 +20,17 @@ objects:
         type: Rolling
       template:
         metadata:
+          annotations:
+            collectord.io/logs-index: ${SPLUNK_INDEX}
+            collectord.io/logs-output: splunk::prod
+            collectord.io/logs-eventpattern: '^(timestamp=)'
           labels:
             app: ${PRODUCT}${SEPARATOR}${VARIANT}
             deploymentconfig: ${PRODUCT}${SEPARATOR}${VARIANT}
         spec:
           containers:
             - env:
-                - name: MaxRAMPercentage
-                  value: '60'
-                - name: ${SPLUNK_KEY}
-                  value: ${SPLUNK_INDEX}
-                - name: spring_profiles_active
+                - name: SPRING_PROFILES_ACTIVE
                   value: ${SPRING_PROFILES_ACTIVE}
                 - name: DB_USER
                   valueFrom:
@@ -42,24 +42,11 @@ objects:
                     secretKeyRef:
                       name: db-secret
                       key: password
-                - name: APIM_MONITORING_ID
-                  valueFrom:
-                    fieldRef:
-                      apiVersion: v1
-                      fieldPath: metadata.name
-                - name: APIM_MONITORING_NAMESPACE
-                  valueFrom:
-                    fieldRef:
-                      apiVersion: v1
-                      fieldPath: metadata.namespace
-                #Proxy
-                - name: CUSTOM_PRE_OPTS
-                  value: "-Dhttp.proxyHost=zscaler.sbb.ch -Dhttp.proxyPort=10465 -Dhttps.proxyHost=zscaler.sbb.ch -Dhttps.proxyPort=10465 -Dhttp.nonProxyHosts='localhost|*.otc-test.sbb.ch|*.otc.sbb.ch|*.io.sbb.ch|*.sbb-cloud.net|*.sbb-aws.net|ci.sbb.ch|sso.sbb.ch|sso-int.sbb.ch'"
-              image: ${DOCKER_REPO}.docker.bin.sbb.ch/${IMAGE_NAME}:${VERSIONTAG}
+              image: atlas.docker.bin.sbb.ch/${IMAGE_NAME}:${VERSIONTAG}
               imagePullPolicy: ${IMAGE_PULL_POLICY}
               name: ${PRODUCT}${SEPARATOR}${VARIANT}
               ports:
-                - containerPort: 8080
+                - containerPort: ${PORT}
                   protocol: TCP
               resources:
                 requests:
@@ -71,7 +58,7 @@ objects:
               livenessProbe:
                 httpGet:
                   path: ${LIVENESS_PROBE}
-                  port: 8080
+                  port: ${PORT}
                   scheme: HTTP
                 initialDelaySeconds: 90
                 timeoutSeconds: 90
@@ -81,7 +68,7 @@ objects:
               readinessProbe:
                 httpGet:
                   path: ${READYNESS_PROBE}
-                  port: 8080
+                  port: ${PORT}
                   scheme: HTTP
                 initialDelaySeconds: 90
                 timeoutSeconds: 90
@@ -100,33 +87,11 @@ objects:
     metadata:
       annotations:
         openshift.io/host.generated: "true"
-        # annotations to make the route public-facing (i.e. reachable from the public internet)
-        clew.sbb.ch/cluster-independent-dns: "true"
-        external-dns.alpha.kubernetes.io/alias: "true"
-        external-dns.alpha.kubernetes.io/target: sbb-aws-alb-public-aws01t-1869739791.eu-central-1.elb.amazonaws.com
-      name: ${PRODUCT}${SEPARATOR}${VARIANT}-intern
-    spec:
-      host: ${PRODUCT}-${STAGE}.apps.aws01t.sbb-aws-test.net
-      port:
-        targetPort: 8080-tcp
-      to:
-        kind: Service
-        name: ${PRODUCT}${SEPARATOR}${VARIANT}
-        weight: 100
-      tls:
-        termination: edge
-        insecureEdgeTerminationPolicy: Allow
-
-  - kind: Route
-    apiVersion: v1
-    metadata:
-      annotations:
-        openshift.io/host.generated: "true"
       name: ${PRODUCT}${SEPARATOR}${VARIANT}
     spec:
-      host: ${routeDnsLabel}.api.sbb.ch
+      host: ${PRODUCT}-${SPRING_PROFILES_ACTIVE}.${CLUSTER_APPLICATIONS_URL}
       port:
-        targetPort: 8080-tcp
+        targetPort: ${PORT}-tcp
       to:
         kind: Service
         name: ${PRODUCT}${SEPARATOR}${VARIANT}
@@ -141,10 +106,10 @@ objects:
       name: ${PRODUCT}${SEPARATOR}${VARIANT}
     spec:
       ports:
-        - name: 8080-tcp
-          port: 8080
+        - name: ${PORT}-tcp
+          port: ${PORT}
           protocol: TCP
-          targetPort: 8080
+          targetPort: ${PORT}
       selector:
         app: ${PRODUCT}${SEPARATOR}${VARIANT}
         deploymentconfig: ${PRODUCT}${SEPARATOR}${VARIANT}
@@ -171,14 +136,11 @@ parameters:
     description: Pod Instances Count
     required: true
     value: "1"
-  - name: STAGE
-    description: Stagename which is used for NewRelic Logging
-    required: true
   - name: SPLUNK_INDEX
-    description: splunk_index
+    description: Splunk index to write to
     required: true
-  - name: SPLUNK_KEY
-    description: SPLUNK_KEY met to switch of splunk_key splunk_index_OFF
+  - name: PORT
+    description: Application Port
     required: true
   - name: CPU_MIN
     description: Minimal CPU ie. 1m for 1 Milicore
@@ -198,20 +160,11 @@ parameters:
   - name: LIVENESS_PROBE
     description: LIVENESS_PROBE
     required: true
-  - name: DOCKER_REPO
-    description: The name of the docker Repository in bin.sbb.ch
-    required: true
   - name: VERSIONTAG
     description: Selector-Tag for Artifactory
     required: true
-  - name: routeDnsLabel
-    description: first dns label of the route (<routeDnsLabel>.api.sbb.ch)
-    required: true
-  - name: routeCluster
-    description: cluster for Route
-    required: true
-  - name: routeUrlPostfix
-    description: End of URL for Route
+  - name: CLUSTER_APPLICATIONS_URL
+    description: Cluster URL for applications from https://confluence.sbb.ch/display/CLEW/OpenShift+4+on+AWS+Cluster+Introduction#OpenShift4onAWSClusterIntroduction-Cluster-specificURLs
     required: true
   - name: SPRING_PROFILES_ACTIVE
     description: spring profile for the environment

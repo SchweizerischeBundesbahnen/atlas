@@ -1,1 +1,2 @@
 SPRING_PROFILES_ACTIVE=dev
+SPLUNK_INDEX=sbb_applications_internal_dev_events

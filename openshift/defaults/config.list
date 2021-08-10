@@ -1,14 +1,8 @@
-STAGE=dev
 PRODUCT=timetable-field-number-backend
-VARIANT=
-SEPARATOR=
-IMAGE_NAME=timetable-field-number
+IMAGE_NAME=timetable-field-number-backend
 IMAGE_PULL_POLICY=Always
 
-DOCKER_REPO=atlas
-
-SPLUNK_KEY=SPLUNK_INDEX_OFF_SPLUNK_INDEX
-SPLUNK_INDEX=sbb_applications_internal_dev_events
+PORT=8080
 
 CPU_MIN=100m
 CPU_MAX=1
@@ -20,8 +14,4 @@ REPLICAS=1
 READYNESS_PROBE=actuator/health
 LIVENESS_PROBE=actuator/health
 
-routeCluster=aws01t
-routeUrlPostfix=sbb-aws-test.net
-routeDnsLabel=servicepoints-dev
-
-SPRING_PROFILES_ACTIVE=
+CLUSTER_APPLICATIONS_URL=apps.aws01t.sbb-aws-test.net
