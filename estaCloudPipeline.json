@@ -77,6 +77,7 @@
           "dev"
         ]
       },
+      "junitTestReportPath": "**/target/surefire-reports/*.xml",
       "additionalBuildParams": "-DskipITs",
       "triggerBuildOnCommitEnabled": true,
       "hotfixCreationEnabled": false
