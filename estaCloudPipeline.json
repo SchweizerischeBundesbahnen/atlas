@@ -47,7 +47,7 @@
         "bugfix"
       ],
       "additionalBuildParams": "",
-      "junitTestReportPath": "**/surefire-reports/*.xml"
+      "junitTestReportPath": "**/target/surefire-reports/*.xml"
     },
     {
       "stepType": "integrationBuild",
@@ -61,7 +61,7 @@
           "dev"
         ]
       },
-      "junitTestReportPath": "**/surefire-reports/*.xml",
+      "junitTestReportPath": "**/target/surefire-reports/*.xml",
       "additionalBuildParams": "-DskipITs",
       "triggerBuildOnCommitEnabled": false
     },
