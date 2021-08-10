@@ -10,7 +10,8 @@
   "mvn": {
     "parentPom": "pom.xml",
     "deployableArtifactsPom": "pom.xml",
-    "artifactoryMavenRepo": "atlas.mvn"
+    "artifactoryMavenRepo": "atlas.mvn",
+    "mavenLabel": "Apache Maven 3.6"
   },
   "integrationBuildCron": "master:@midnight",
   "stages": [
@@ -32,7 +33,8 @@
         "feature",
         "bugfix"
       ],
-      "additionalBuildParams": ""
+      "additionalBuildParams": "",
+      "junitTestReportPath": "**/surefire-reports/*.xml"
     },
     {
       "stepType": "integrationBuild",
