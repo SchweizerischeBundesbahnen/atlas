@@ -25,7 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-class VersionControllerTest {
+public class VersionControllerTest {
 
   @Mock
   private VersionRepository versionRepository;
@@ -43,7 +43,7 @@ class VersionControllerTest {
   }
 
   @Test
-  void shouldSaveNewVersion() {
+  public void shouldSaveNewVersion() {
     // Given
     VersionModel versionModel = createModel();
 
