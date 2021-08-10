@@ -2,7 +2,6 @@
   "$schema": "https://esta-nginx-prod-release-code.app.obelix.otc.sbb.ch/code/projects/KD_ESTA/repos/esta-cloud-pipeline/raw/resources/estaCloudPipelineSchema.json?at=refs%2Ftags%2Frelease",
   "mainBranch": "master",
   "hotfixBranch": "hotfix",
-  "keepReleaseBuildLogsOnJenkins": true,
   "jdkLabel": "OpenJDK 11 64-Bit",
   "versionIncrementPosition": "patch",
   "docker": {
