@@ -106,7 +106,7 @@ objects:
         external-dns.alpha.kubernetes.io/target: sbb-aws-alb-public-aws01t-1869739791.eu-central-1.elb.amazonaws.com
       name: ${PRODUCT}${SEPARATOR}${VARIANT}-intern
     spec:
-      host: ${PRODUCT}-${STAGE}.app.sbb.ch
+      host: ${PRODUCT}-${STAGE}.apps.aws01t.sbb-aws-test.net
       port:
         targetPort: 8080-tcp
       to:
