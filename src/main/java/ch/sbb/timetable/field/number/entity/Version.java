@@ -2,13 +2,27 @@ package ch.sbb.timetable.field.number.entity;
 
 import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.enumaration.Type;
-import lombok.*;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,51 +33,51 @@ import java.util.Set;
 @Entity(name = "timetable_field_number_version")
 public class Version {
 
-    private  static final String VERSION_SEQ = "timetable_field_number_version_seq";
+  private static final String VERSION_SEQ = "timetable_field_number_version_seq";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
-    @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
+  @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
+  private Long id;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "version", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<LineRelation> lineRelations = new HashSet<>();
+  @Builder.Default
+  @OneToMany(mappedBy = "version", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private Set<LineRelation> lineRelations = new HashSet<>();
 
-    private String ttfnid;
+  private String ttfnid;
 
-    private String name;
+  private String name;
 
-    private String number;
+  private String number;
 
-    private String swissTimetableFieldNumber;
+  private String swissTimetableFieldNumber;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+  @Enumerated(EnumType.STRING)
+  private Status status;
 
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime creationDate;
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDateTime creationDate;
 
-    private String creator;
+  private String creator;
 
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime editionDate;
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDateTime editionDate;
 
-    private String editor;
+  private String editor;
 
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDate validFrom;
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDate validFrom;
 
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDate validTo;
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDate validTo;
 
-    private String businessOrganisation;
+  private String businessOrganisation;
 
-    private String comment;
+  private String comment;
 
-    @Enumerated(EnumType.STRING)
-    private Type type;
+  @Enumerated(EnumType.STRING)
+  private Type type;
 
-    private String nameCompact;
+  private String nameCompact;
 
 }
