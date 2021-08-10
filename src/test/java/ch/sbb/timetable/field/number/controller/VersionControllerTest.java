@@ -129,6 +129,40 @@ class VersionControllerTest {
         () -> versionController.deleteVersion(1L)).withMessage(HttpStatus.NOT_FOUND.toString());
   }
 
+  @Test
+  void shouldUpdateVersion() {
+    // Given
+    Version version = createEntity();
+    VersionModel versionModel = createModel();
+    versionModel.setName("New name");
+
+    when(versionRepository.findById(anyLong())).thenReturn(Optional.of(version));
+
+    // When
+    VersionModel result = versionController.updateVersion(1L, versionModel);
+
+    // Then
+    assertThat(result).usingRecursiveComparison()
+                      .ignoringFields("editor", "creator", "editionDate", "creationDate",
+                          "lineRelations")
+                      .isEqualTo(versionModel);
+  }
+
+  @Test
+  void shouldReturnNotFoundOnUnexistingUpdateVersion() {
+    // Given
+    when(versionRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    // When
+    VersionModel versionModel = createModel();
+
+    // Then
+    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+                                                                () -> versionController.updateVersion(1L, versionModel))
+                                                            .withMessage(
+                                                                HttpStatus.NOT_FOUND.toString());
+  }
+
   private static Version createEntity() {
     return Version.builder()
                   .ttfnid("ch:1:fpfnid:100000")
