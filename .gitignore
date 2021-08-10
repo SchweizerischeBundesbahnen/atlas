@@ -31,5 +31,6 @@ build/
 ### VS Code ###
 .vscode/
 .idea/*
-!.idea/**/
+!.idea/codeStyles/
+!.idea/fileTemplates/
 \!.idea/codeStyles/codeStyleConfig.xml
