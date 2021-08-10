@@ -16,7 +16,7 @@ management:
         include: "*"
 info:
   app:
-    name: timetable-field-number
+    name: timetable-field-number-backend
     version: @version@
     buildtime: @timestamp@
 
