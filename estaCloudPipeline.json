@@ -77,6 +77,8 @@
           "dev"
         ]
       },
+      "dependencyCheckEnabled": true,
+      "failOnQualityGateFailure": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml",
       "additionalBuildParams": "-DskipITs",
       "triggerBuildOnCommitEnabled": true,
