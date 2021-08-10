@@ -1,5 +1,12 @@
-# ATLAS Backend
-[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/)
+# ATLAS Backend [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/)
+
+- [Big Picture](#big-picture)
+- [Tech Stack](#tech-stack)
+- [Development](#development)
+  * [PostgreSQL Docker](#postgresql-docker)
+- [Links](#links)
+  * [OpenApi Links](#openapi-links)
+- [Decision History](#decision-history)
 
 ## Big Picture
 ![ATLAS Big Picture](documentation/ATLAS_Infrastruktur.svg)
@@ -38,6 +45,7 @@ docker-compose down -v
 * Dev:
   * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=timetable_field_number
   * Openshift Namespace: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects
+  * Project deploy: https://timetable-field-number-backend-dev.apps.aws01t.sbb-aws-test.net
 * Developer Portal Prod:
 * Developer Portal Int:
 * Openshift Prod:
@@ -46,6 +54,9 @@ docker-compose down -v
 * Openshift Dev: 
 * Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/
 * Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number
+* JFrog 
+  * Maven repository: https://bin.sbb.ch/ui/repos/tree/General/atlas.mvn
+  * Docker registry: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker
 * Infrastruktur: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+7.1.+Infrastruktur+Ebene+1
 
 ### OpenApi Links
