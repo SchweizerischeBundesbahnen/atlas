@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number;
+package ch.sbb.timetable.field.number.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
