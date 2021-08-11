@@ -15,7 +15,6 @@
     "artifactoryMavenRepo": "atlas.mvn",
     "mavenLabel": "Apache Maven 3.6"
   },
-  "integrationBuildCron": "master:@midnight",
   "stages": [
     {
       "stageName": "dev",
