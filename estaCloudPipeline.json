@@ -4,6 +4,7 @@
   "hotfixBranch": "hotfix",
   "jdkLabel": "OpenJDK 11 64-Bit",
   "keepReleaseBuildLogsOnJenkins": true,
+  "sendBuildStatusMail": false,
   "docker": {
     "artifactoryDockerRepo": "atlas.docker",
     "openshiftAppName": "timetable-field-number-api",
