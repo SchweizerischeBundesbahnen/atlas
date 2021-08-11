@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number;
+package ch.sbb.timetable.field.number.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
