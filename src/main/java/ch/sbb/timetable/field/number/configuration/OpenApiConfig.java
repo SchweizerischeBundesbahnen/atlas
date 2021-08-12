@@ -23,7 +23,7 @@ public class OpenApiConfig {
   public GroupedOpenApi defaultApi() {
     return GroupedOpenApi.builder()
                          .group("public")
-                         .packagesToScan(getClass().getPackageName())
+                         .packagesToScan("ch.sbb.timetable.field.number")
                          .build();
   }
 
@@ -37,7 +37,7 @@ public class OpenApiConfig {
             .contact(new Contact().name("ATLAS Team")
                                   .url(
                                       "https://confluence.sbb.ch/display/ATLAS/ATLAS+-+SKI+Business+Platform")
-                                  .email("thomas.schaefer@sbb.ch"))
+                                  .email("TechSupport-ATLAS@sbb.ch"))
             .version(version))
         .components(new Components()
             .addSecuritySchemes(oauthProvider, new SecurityScheme()
