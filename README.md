@@ -2,6 +2,7 @@
 
 - [ATLAS Backend](#atlas-backend)
   * [Big Picture](#big-picture)
+  * [Versioning](#versioning)
   * [Tech Stack](#tech-stack)
   * [Development](#development)
     + [PostgreSQL Docker](#postgresql-docker)
@@ -12,6 +13,9 @@
   
 ## Big Picture
 ![ATLAS Big Picture](documentation/ATLAS_Infrastruktur.svg)
+
+## Versioning
+This project uses the [Semantic Versioning](https://semver.org/) for the versioning. 
 
 ## Tech Stack 
 | Layer     |  Techno    |  Link     |
