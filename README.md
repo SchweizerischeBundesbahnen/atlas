@@ -1,13 +1,15 @@
 # ATLAS Backend [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/)
 
-* [Big Picture](#big-picture)
-* [Tech Stack](#tech-stack)
-* [Development](#development)
-  * [PostgreSQL Docker](#postgresql-docker)
-* [Links](#links)
-  * [OpenApi Links](#openapi-links)
-* [Decision History](#decision-history)
-
+- [ATLAS Backend](#atlas-backend)
+  * [Big Picture](#big-picture)
+  * [Tech Stack](#tech-stack)
+  * [Development](#development)
+    + [PostgreSQL Docker](#postgresql-docker)
+  * [Links](#links)
+    + [OpenApi Links](#openapi-links)
+  * [Splunk](#splunk)
+  * [Decision History](#decision-history)
+  
 ## Big Picture
 ![ATLAS Big Picture](documentation/ATLAS_Infrastruktur.svg)
 
@@ -66,7 +68,7 @@ docker-compose down -v
 * Api Docs as JSON: http://localhost:8080/v3/api-docs/
 * Api Docs as YAML: http://localhost:8080/v3/api-docs.yaml
 
-# Splunk
+## Splunk
 
 * Dashboard: https://search.splunk.sbb.ch/en-US/app/sbb_app_atlas
 * Search: https://search.splunk.sbb.ch/en-US/app/sbb_app_atlas/search
