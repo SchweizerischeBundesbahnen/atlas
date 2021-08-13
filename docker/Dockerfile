@@ -13,7 +13,7 @@ RUN chmod +x /usr/sbin/ngssc
 ADD ngssc.sh ./nginx-start/
 
 # Download sources from Repository
-ADD https://${ARTIFACTORY_USER}:${ARTIFACTORY_PW}@bin.sbb.ch/artifactory/api/npm/kd_esta.npm/esta-cloud-angular/-/esta-cloud-angular-${VERSION}.tgz app.tar.gz
+ADD https://${ARTIFACTORY_USER}:${ARTIFACTORY_PW}@bin.sbb.ch/artifactory/api/npm/atlas.npm/timetable-field-number-frontend/-/timetable-field-number-frontend-${VERSION}.tgz app.tar.gz
 RUN chmod +r app.tar.gz
 
 # Extract and move to nginx html folder
@@ -25,7 +25,7 @@ RUN tar -xzf app.tar.gz && \
     # If your html file is not index.html, change it accordingly
     find ./package -name "index.html" -exec chmod a+w {} \; && \
     find ./package -name "ngsw.json" -exec chmod a+w {} \; && \
-    mv ./package/dist/esta-cloud-angular/* . && \
+    mv ./package/dist/timetable-field-number-frontend/* . && \
     # Rename directories from de-CH, en-CH, fr-CH, it-CH to de, en, fr, it
     for dir in ./*-CH; do mv "$dir" "${dir%-*}"; done && \
     rm -f app.tar.gz && \

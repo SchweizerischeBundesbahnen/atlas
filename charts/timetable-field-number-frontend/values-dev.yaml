@@ -1,0 +1,3 @@
+routeHost: 'timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net'
+environmentLabel: 'dev'
+backendUrl: 'https://my-backend-dev.app.sbb.ch'

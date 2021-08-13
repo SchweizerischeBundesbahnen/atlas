@@ -9,10 +9,10 @@
     "lint": "ng lint",
     "prepare": "husky install",
     "format": "prettier --write .",
-    "build:ngssc": "ng run esta-cloud-angular:ngsscbuild:production",
-    "t9n": "ng run esta-cloud-angular:t9n"
+    "build:ngssc": "ng run timetable-field-number-frontend:ngsscbuild:production",
+    "t9n": "ng run timetable-field-number-frontend:t9n"
   },
-  "name": "esta-cloud-angular",
+  "name": "timetable-field-number-frontend",
   "version": "0.0.0",
   "files": [
     "dist/*"

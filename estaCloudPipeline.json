@@ -4,18 +4,13 @@
   "hotfixBranch": "hotfix",
   "docker": {
     "dockerFile": "docker/Dockerfile",
-    "artifactoryDockerRepo": "estasch.docker",
-    "openshiftAppName": "esta-cloud-angular",
+    "artifactoryDockerRepo": "atlas.docker",
+    "openshiftAppName": "timetable-field-number-frontend",
     "artifactorySupressProjectSubfolderCreation": true
   },
   "npm": {
-    "targetRepo": "kd_esta",
+    "targetRepo": "atlas.npm",
     "additionalNpmScripts": "lint,build:ngssc,test"
-  },
-  "helm": {
-    "repository": "estasch.helm",
-    "chart": "esta-cloud-angular",
-    "release": "esta-cloud-angular"
   },
   "credentials": [
     {
@@ -29,9 +24,9 @@
     {
       "stageName": "dev",
       "isOpenshiftDeploymentEnabled": true,
-      "openshiftCluster": "OTC_TEST_07",
-      "openshiftProject": "TODO",
-      "openshiftJenkinsCredentialsId": "TODO",
+      "openshiftCluster": "aws_aws01t",
+      "openshiftProject": "atlas-dev",
+      "openshiftJenkinsCredentialsId": "e499fd92-711c-469b-9bc3-a67c748341d9",
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": ""
     },
@@ -45,6 +40,17 @@
       "postCiDeploymentJob": ""
     }
   ],
+  "teamsNotifications": {
+    "url": "https://sbb.webhook.office.com/webhookb2/e262e9dc-5836-4c36-b3e5-0e827f2a2787@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/JenkinsCI/1d957b31eb2c46aeac8003d5a70e1926/8231c64b-bcb4-497e-93bf-0213ebdac9e4",
+    "startNotification": false,
+    "notifySuccess": true,
+    "notifyAborted": true,
+    "notifyNotBuilt": true,
+    "notifyUnstable": true,
+    "notifyFailure": true,
+    "notifyBackToNormal": true,
+    "notifyRepeatedFailure": true
+  },
   "steps": [
     {
       "stepType": "continuous",

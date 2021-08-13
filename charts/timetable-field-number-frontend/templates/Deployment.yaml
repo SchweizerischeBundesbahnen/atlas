@@ -20,7 +20,7 @@ spec:
         deploymentconfig: '{{ .Chart.Name }}'
     spec:
       containers:
-        - image: 'estasch.docker.bin.sbb.ch/esta-cloud-angular:{{ .Values.versionTag | default .Chart.AppVersion }}'
+        - image: 'atlas.docker.bin.sbb.ch/timetable-field-number-frontend:{{ .Values.versionTag | default .Chart.AppVersion }}'
           imagePullPolicy: Always
           name: {{ .Chart.Name }}
           env:

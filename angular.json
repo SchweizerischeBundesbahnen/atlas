@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "esta-cloud-angular": {
+    "timetable-field-number-frontend": {
       "i18n": {
         "locales": {
           "de-CH": {
@@ -52,7 +52,7 @@
             "localize": [
               "en-CH"
             ],
-            "outputPath": "dist/esta-cloud-angular",
+            "outputPath": "dist/timetable-field-number-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -106,10 +106,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "esta-cloud-angular:build:production"
+              "browserTarget": "timetable-field-number-frontend:build:production"
             },
             "development": {
-              "browserTarget": "esta-cloud-angular:build:development"
+              "browserTarget": "timetable-field-number-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -117,7 +117,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "esta-cloud-angular:build",
+            "browserTarget": "timetable-field-number-frontend:build",
             "outputPath": "src/locales",
             "format": "xlf2"
           }
@@ -167,12 +167,12 @@
           "builder": "angular-server-side-configuration:ngsscbuild",
           "options": {
             "additionalEnvironmentVariables": [],
-            "browserTarget": "esta-cloud-angular:build",
+            "browserTarget": "timetable-field-number-frontend:build",
             "ngsscEnvironmentFile": "src/environments/environment.prod.ts"
           },
           "configurations": {
             "production": {
-              "browserTarget": "esta-cloud-angular:build:production"
+              "browserTarget": "timetable-field-number-frontend:build:production"
             }
           }
         },
@@ -187,7 +187,7 @@
       }
     }
   },
-  "defaultProject": "esta-cloud-angular",
+  "defaultProject": "timetable-field-number-frontend",
   "cli": {
     "defaultCollection": "@angular-eslint/schematics"
   }

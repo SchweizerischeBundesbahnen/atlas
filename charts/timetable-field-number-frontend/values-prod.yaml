@@ -1,0 +1,3 @@
+routeHost: 'timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net'
+replicas: 2
+backendUrl: 'https://my-backend.app.sbb.ch'

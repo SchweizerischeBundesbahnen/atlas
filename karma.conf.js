@@ -35,11 +35,11 @@ module.exports = function (config) {
     },
     sonarqubeReporter: {
       basePath: require('path').join(__dirname, './src'),
-      outputFolder: require('path').join(__dirname, './coverage/esta-cloud-angular'),
+      outputFolder: require('path').join(__dirname, './coverage/timetable-field-number-frontend'),
       reportName: (_metadata) => 'sonarqube.xml',
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/esta-cloud-angular'),
+      dir: require('path').join(__dirname, './coverage/timetable-field-number-frontend'),
       subdir: '.',
       reporters: [
         { type: 'html' },
