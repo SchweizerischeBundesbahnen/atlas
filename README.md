@@ -73,8 +73,8 @@ docker-compose down -v
 * Api Docs as YAML: http://localhost:8080/v3/api-docs.yaml
 
 ## Monitoring and Logging
-* [Monitoring with Instana](/documentation/Monitoring.md)
-* [Logging to Splunk](/documentation/Logging.md)
+* [Monitoring with Instana](documentation/Monitoring.md)
+* [Logging to Splunk](documentation/Logging.md)
 
 ## Decision History
 07.2021: Spring-Boot Initializer used for template
