@@ -2,6 +2,8 @@
   "$schema": "https://esta-nginx-prod-release-code.app.obelix.otc.sbb.ch/code/projects/KD_ESTA/repos/esta-cloud-pipeline/raw/resources/estaCloudPipelineSchema.json?at=refs%2Ftags%2Frelease",
   "mainBranch": "master",
   "hotfixBranch": "hotfix",
+  "keepReleaseBuildLogsOnJenkins": true,
+  "sendBuildStatusMail": false,
   "docker": {
     "dockerFile": "docker/Dockerfile",
     "artifactoryDockerRepo": "atlas.docker",
@@ -55,7 +57,7 @@
     {
       "stepType": "continuous",
       "isBuildEnabled": true,
-      "branchNamePrefixes": ["feature"],
+      "branchNamePrefixes": ["feature", "bugfix"],
       "additionalBuildParams": ""
     },
     {
@@ -84,7 +86,7 @@
       "dependencyCheckEnabled": true,
       "failOnQualityGateFailure": true,
       "additionalBuildParams": "",
-      "triggerBuildOnCommitEnabled": false,
+      "triggerBuildOnCommitEnabled": true,
       "hotfixCreationEnabled": false
     }
   ]
