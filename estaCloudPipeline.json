@@ -62,7 +62,7 @@
       "stepType": "integrationBuild",
       "isBuildEnabled": true,
       "xrayScanEnabled": true,
-      "failOnXrayScan": false,
+      "failOnXrayScan": true,
       "sonarScanEnabled": true,
       "staging": {
         "stagingType": "simple",
@@ -81,6 +81,8 @@
         "stagingType": "simple",
         "stages": ["dev"]
       },
+      "dependencyCheckEnabled": true,
+      "failOnQualityGateFailure": true,
       "additionalBuildParams": "",
       "triggerBuildOnCommitEnabled": false,
       "hotfixCreationEnabled": false
