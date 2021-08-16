@@ -1,3 +1,8 @@
+# Timetable field number Frontend
+
+Set SBB Artifactory as npm registry:\
+https://confluence.sbb.ch/display/CLEW/Configuration+Artifactory+7.x+as+NPM+Registry
+
 # ESTA Cloud Angular Template
 
 See our changes in the [CHANGELOG.md](./CHANGELOG.md)
