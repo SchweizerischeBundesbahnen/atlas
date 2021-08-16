@@ -86,6 +86,7 @@
       "dependencyCheckEnabled": true,
       "failOnQualityGateFailure": true,
       "additionalBuildParams": "",
+      "junitTestReportPath": "**/coverage/cobertura-coverage.xml",
       "triggerBuildOnCommitEnabled": true,
       "hotfixCreationEnabled": false
     }
