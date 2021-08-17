@@ -10,6 +10,7 @@
     "prepare": "husky install",
     "format": "prettier --write .",
     "build:ngssc": "ng run timetable-field-number-frontend:ngsscbuild:production",
+    "generate-local-api": "openapi-generator-cli generate -g typescript-angular -i http://localhost:8080/v3/api-docs -o src/app/api --type-mappings=date=Date --skip-validate-spec",
     "t9n": "ng run timetable-field-number-frontend:t9n"
   },
   "name": "timetable-field-number-frontend",
@@ -55,6 +56,7 @@
     "@angular/cli": "^12.2.1",
     "@angular/compiler-cli": "~12.2.1",
     "@angular/localize": "^12.2.1",
+    "@openapitools/openapi-generator-cli": "^2.3.10",
     "@types/jasmine": "~3.8.2",
     "@types/node": "^16.6.1",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
