@@ -15,6 +15,9 @@ spec:
       maxUnavailable: 25%
   template:
     metadata:
+      annotations:
+        collectord.io/logs-index: '{{ .Values.splunkIndex }}'
+        collectord.io/logs-output: splunk::prod
       labels:
         app: '{{ .Chart.Name }}'
         deploymentconfig: '{{ .Chart.Name }}'
