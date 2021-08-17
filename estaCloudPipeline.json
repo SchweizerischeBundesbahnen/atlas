@@ -14,6 +14,11 @@
     "targetRepo": "atlas.npm",
     "additionalNpmScripts": "lint,build:ngssc,test"
   },
+  "helm": {
+    "repository": "atlas.helm",
+    "chart": "timetable-field-number-frontend",
+    "release": "timetable-field-number-frontend"
+  },
   "credentials": [
     {
       "id": "browserstack",
