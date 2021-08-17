@@ -14,7 +14,7 @@ export class AppComponent {
   version = packageJson.version;
   environmentLabel = environment.label;
 
-  title = $localize`ESTA Cloud Angular Blueprint`;
+  title = $localize`Timetable Field Number`;
 
   get userName() {
     return this.authService.claims?.name;
