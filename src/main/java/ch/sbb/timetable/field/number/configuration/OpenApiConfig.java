@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.OAuthFlow;
 import io.swagger.v3.oas.models.security.OAuthFlows;
+import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.GroupedOpenApi;
@@ -49,6 +50,7 @@ public class OpenApiConfig {
                             "https://sso.sbb.ch/auth/realms/SBB_Public/protocol/openid-connect/auth")
                         .tokenUrl(
                             "https://sso.sbb.ch/auth/realms/SBB_Public/protocol/openid-connect/token")
+                        .scopes(new Scopes())
                     ))))
         .addSecurityItem(new SecurityRequirement().addList(oauthProvider));
   }
