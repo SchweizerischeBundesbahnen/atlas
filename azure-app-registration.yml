@@ -2,11 +2,11 @@ apiVersion: azure-ad-api/v1
 # For a complete description of file-based app registrations see https://confluence.sbb.ch/x/TgjHY
 
 appRegistrations:
-  - displayName: Timetable Field Number Frontend
+  - displayName: SBB Timetable Field Number Frontend
     id: 1910a8a5-0c03-408a-ada3-06396e36bc32
     megaId: ADB3AE9A60E510ED
     owners:
-      - userPrincipalName: techsupport-atlas@sbb.ch
+      - userPrincipalName: frederic.barras@sbb.ch
     redirectUris:
       # type SPA stands for Single Page Applications (enables CORS).
       # type PUBLIC_CLIENT stands for mobile clients.
