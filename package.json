@@ -14,6 +14,10 @@
     "t9n": "ng run timetable-field-number-frontend:t9n"
   },
   "name": "timetable-field-number-frontend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://code.sbb.ch/scm/ki_atlas/timetable-field-number-frontend.git"
+  },
   "version": "0.13.0",
   "files": [
     "dist/*"
