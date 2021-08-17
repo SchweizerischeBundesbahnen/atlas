@@ -13,7 +13,7 @@
     "t9n": "ng run timetable-field-number-frontend:t9n"
   },
   "name": "timetable-field-number-frontend",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "files": [
     "dist/*"
   ],
