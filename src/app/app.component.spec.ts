@@ -44,7 +44,7 @@ describe('AppComponent', () => {
   it('should render title', () => {
     expect(
       fixture.nativeElement.querySelector('.sbb-header-titlebox > span').textContent
-    ).toContain('ESTA Cloud Angular Blueprint');
+    ).toContain('Timetable Field Number');
   });
 
   it('should render username', () => {
