@@ -75,6 +75,3 @@ docker-compose down -v
 ## Monitoring and Logging
 * [Monitoring with Instana](documentation/Monitoring.md)
 * [Logging to Splunk](documentation/Logging.md)
-
-## Decision History
-07.2021: Spring-Boot Initializer used for template
