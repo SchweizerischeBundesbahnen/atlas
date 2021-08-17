@@ -2,24 +2,18 @@ apiVersion: azure-ad-api/v1
 # For a complete description of file-based app registrations see https://confluence.sbb.ch/x/TgjHY
 
 appRegistrations:
-  - displayName: SBB ESTA Blueprint Angular
-    # TODO: Generate a new UUID for your service!
-    id: 0180d464-d4a5-40a0-b3d1-02657aefbd0a
-    # TODO: Add your Mega-ID
-    megaId: F74DF7DA603434F5
+  - displayName: Timetable Field Number Frontend
+    id: 1910a8a5-0c03-408a-ada3-06396e36bc32
+    megaId: ADB3AE9A60E510ED
     owners:
-      # TODO: Add the owners for your project
-      - userPrincipalName: lukas.spirig@sbb.ch
-      - userPrincipalName: jeremias.peier@sbb.ch
+      - userPrincipalName: techsupport-atlas@sbb.ch
     redirectUris:
       # type SPA stands for Single Page Applications (enables CORS).
       # type PUBLIC_CLIENT stands for mobile clients.
       # type WEB stands for a Web application with a backend where secrets may be stored confidentially.
       - uri: http://localhost:4200
         type: SPA
-      - uri: https://esta-cloud-angular-dev.apps.test07.otc-test.sbb.ch
-        type: SPA
-      - uri: https://esta-cloud-angular.apps.asterix.otc.sbb.ch
+      - uri: https://timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net
         type: SPA
     roles:
       # SBB requires at least one role to be present on a client. Only users having this role are allowed to use the client!
