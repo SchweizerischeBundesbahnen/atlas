@@ -3,6 +3,8 @@ import { AuthService } from '../core/auth.service';
 import { TimetableFieldNumbersService, Version } from '../api';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -10,6 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
   versions: Observable<Array<Version>> | undefined;
+  envUrl = environment.backendUrl;
 
   constructor(
     private authService: AuthService,
