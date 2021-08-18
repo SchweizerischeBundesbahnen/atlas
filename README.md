@@ -84,3 +84,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 If you have questions or suggestions in regard to this repository, feel free to open a [CLEW issue](http://confluence.sbb.ch/display/clew/)
 with the Component `ESTA Web`. We appreciate any kind of feedback.
+
+## Monitoring and Logging
+
+- [Logging to Splunk](documentation/Logging.md)
