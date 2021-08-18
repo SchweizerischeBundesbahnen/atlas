@@ -10,6 +10,14 @@ import { SbbAngularLibraryModule } from './shared/sbb-angular-library.module';
 import { AuthInsightsComponent } from './auth-insights/auth-insights.component';
 import { HomeComponent } from './home/home.component';
 import { environment } from '../environments/environment';
+import { ApiModule, Configuration, ConfigurationParameters } from './api';
+
+export function apiConfigFactory(): Configuration {
+  const params: ConfigurationParameters = {
+    basePath: environment.backendUrl,
+  };
+  return new Configuration(params);
+}
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, AuthInsightsComponent],
@@ -18,6 +26,7 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     HttpClientModule,
     SbbAngularLibraryModule,
+    ApiModule.forRoot(apiConfigFactory),
     OAuthModule.forRoot({
       resourceServer: {
         // When sendAccessToken is set to true and you send
