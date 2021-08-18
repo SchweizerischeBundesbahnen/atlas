@@ -18,7 +18,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/timetable-field-number-frontend.git"
   },
-  "version": "0.22.0",
+  "version": "0.23.0",
   "files": [
     "dist/*"
   ],
