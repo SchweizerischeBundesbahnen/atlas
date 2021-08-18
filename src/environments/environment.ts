@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 import { AuthConfig } from 'angular-oauth2-oidc';
+import 'angular-server-side-configuration/process';
 import { Environment } from './environment.model';
 
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
@@ -22,7 +23,7 @@ export const environment: Environment = {
   production: false,
   label: 'dev',
   // TODO: Replace url with your backend url
-  backendUrl: 'http://localhost:8080',
+  backendUrl: process.env.BACKEND_URL!,
   authConfig,
 };
 
