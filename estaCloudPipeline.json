@@ -89,7 +89,7 @@
         "stages": ["dev"]
       },
       "dependencyCheckEnabled": true,
-      "failOnQualityGateFailure": true,
+      "failOnQualityGateFailure": false,
       "additionalBuildParams": "",
       "junitTestReportPath": "**/coverage/cobertura-coverage.xml",
       "triggerBuildOnCommitEnabled": true,
