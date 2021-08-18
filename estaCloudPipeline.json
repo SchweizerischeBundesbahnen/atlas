@@ -83,7 +83,7 @@
       "isBuildEnabled": true,
       "xrayScanEnabled": true,
       "failOnXrayScan": true,
-      "sonarScanEnabled": true,
+      "sonarScanEnabled": false,
       "staging": {
         "stagingType": "simple",
         "stages": ["dev"]
