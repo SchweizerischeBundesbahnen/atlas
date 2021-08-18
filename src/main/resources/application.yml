@@ -22,7 +22,13 @@ info:
     name: timetable-field-number-backend
     version: @version@
     buildtime: @timestamp@
-
+endpoints:
+  web:
+    cors:
+      path-mappings: /**
+      allowed-origins: http://localhost:4200,https://developer-int.sbb.ch,https://developer.sbb.ch
+      allowed-methods: OPTIONS,GET
+      allowed-headers: "*"
 logging:
   level:
     root: INFO
