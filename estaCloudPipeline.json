@@ -12,7 +12,7 @@
   },
   "npm": {
     "targetRepo": "atlas.npm",
-    "additionalNpmScripts": "lint,build:ngssc,test"
+    "additionalNpmScripts": "lint,build:ngssc"
   },
   "helm": {
     "repository": "atlas.helm",
