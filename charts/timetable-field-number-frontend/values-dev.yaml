@@ -1,4 +1,4 @@
 routeHost: 'timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net'
 environmentLabel: 'dev'
-backendUrl: 'https://my-backend-dev.app.sbb.ch'
+backendUrl: 'https://timetable-field-number-backend:8080'
 splunkIndex: 'sbb_applications_internal_dev_events'
