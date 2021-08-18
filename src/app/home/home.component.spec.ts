@@ -4,6 +4,7 @@ import { SbbIconTestingModule } from '@sbb-esta/angular-core/icon/testing';
 import { SbbAngularLibraryModule } from '../shared/sbb-angular-library.module';
 import { HomeComponent } from './home.component';
 import { AuthService } from '../core/auth.service';
+import { TimetableFieldNumbersService } from '../api';
 
 const authServiceMock: Partial<AuthService> = {
   loggedIn: true,
@@ -17,7 +18,13 @@ describe('HomeComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SbbAngularLibraryModule, SbbIconTestingModule],
       declarations: [HomeComponent],
-      providers: [{ provide: AuthService, useValue: authServiceMock }],
+      providers: [
+        { provide: AuthService, useValue: authServiceMock },
+        {
+          provide: TimetableFieldNumbersService,
+          useValue: jasmine.createSpyObj('TimetableFieldNumbersService', ['getVersions']),
+        },
+      ],
     }).compileComponents();
   });
 
