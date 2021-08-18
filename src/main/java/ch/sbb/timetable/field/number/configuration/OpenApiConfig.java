@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,7 @@ public class OpenApiConfig {
   public OpenAPI openAPI() {
     final String oauthProvider = "RHSSO";
     return new OpenAPI()
+        .addServersItem(new Server().url("/"))
         .info(new Info()
             .title("Timetable Field Number API")
             .description("This is the API for all your Timetable Field Number needs")
