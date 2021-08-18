@@ -1,7 +1,7 @@
 apiVersion: v2
-appVersion: 0.18.0
+appVersion: 0.19.0
 description: A Helm chart for the timetable-field-number-frontend application
 name: timetable-field-number-frontend
-version: 0.18.0
+version: 0.19.0
 # This is only added to make `helm lint` happy - configure your own icon!
 icon: http://acme.org/replaceme.jpg
