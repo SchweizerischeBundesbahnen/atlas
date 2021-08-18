@@ -12,7 +12,7 @@
   },
   "npm": {
     "targetRepo": "atlas.npm",
-    "additionalNpmScripts": "lint,build:ngssc"
+    "additionalNpmScripts": "lint,build:ngssc,test"
   },
   "helm": {
     "repository": "atlas.helm",
@@ -83,13 +83,13 @@
       "isBuildEnabled": true,
       "xrayScanEnabled": true,
       "failOnXrayScan": true,
-      "sonarScanEnabled": false,
+      "sonarScanEnabled": true,
       "staging": {
         "stagingType": "simple",
         "stages": ["dev"]
       },
       "dependencyCheckEnabled": true,
-      "failOnQualityGateFailure": false,
+      "failOnQualityGateFailure": true,
       "additionalBuildParams": "",
       "junitTestReportPath": "**/coverage/cobertura-coverage.xml",
       "triggerBuildOnCommitEnabled": true,
