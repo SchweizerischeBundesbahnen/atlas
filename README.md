@@ -29,7 +29,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 - **Openshift**:
   - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/ns/atlas-dev/routes
 - **Deployment**:
-  - **Dev**: https://timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net/en/
+  - **Dev**: https://timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net
 
 ## Development
 

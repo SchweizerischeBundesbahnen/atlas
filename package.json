@@ -42,7 +42,7 @@
     "@sbb-esta/angular-business": "^12.3.0",
     "@sbb-esta/angular-core": "^12.3.0",
     "angular-oauth2-oidc": "^10.0.3",
-    "angular-server-side-configuration": "^12.0.0",
+    "angular-server-side-configuration": "^11.0.2",
     "rxjs": "~7.3.0",
     "tslib": "^2.3.1",
     "zone.js": "~0.11.4"
