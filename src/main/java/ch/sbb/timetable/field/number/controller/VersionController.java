@@ -84,7 +84,6 @@ public class VersionController implements VersionApi {
                        .validTo(version.getValidTo())
                        .businessOrganisation(version.getBusinessOrganisation())
                        .comment(version.getComment())
-                       .type(version.getType())
                        .nameCompact(version.getNameCompact())
                        .build();
   }
@@ -101,7 +100,6 @@ public class VersionController implements VersionApi {
                   .validTo(versionModel.getValidTo())
                   .businessOrganisation(versionModel.getBusinessOrganisation())
                   .comment(versionModel.getComment())
-                  .type(versionModel.getType())
                   .nameCompact(versionModel.getNameCompact())
                   .build();
   }
