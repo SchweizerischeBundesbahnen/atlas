@@ -40,6 +40,6 @@ const authConfig: AuthConfig = {
 export const environment: Environment = {
   production: process.env.PRODUCTION !== 'false',
   label: process.env.ENVIRONMENT_LABEL!,
-  backendUrl: 'https://timetable-field-number-backend-dev.apps.aws01t.sbb-aws-test.net',
+  backendUrl: process.env.BACKEND_URL!,
   authConfig,
 };
