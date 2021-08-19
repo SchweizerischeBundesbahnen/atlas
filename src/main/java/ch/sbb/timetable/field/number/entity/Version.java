@@ -1,7 +1,6 @@
 package ch.sbb.timetable.field.number.entity;
 
 import ch.sbb.timetable.field.number.enumaration.Status;
-import ch.sbb.timetable.field.number.enumaration.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -74,9 +73,6 @@ public class Version {
   private String businessOrganisation;
 
   private String comment;
-
-  @Enumerated(EnumType.STRING)
-  private Type type;
 
   private String nameCompact;
 

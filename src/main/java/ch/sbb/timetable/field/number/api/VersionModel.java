@@ -1,7 +1,6 @@
 package ch.sbb.timetable.field.number.api;
 
 import ch.sbb.timetable.field.number.enumaration.Status;
-import ch.sbb.timetable.field.number.enumaration.Type;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -45,9 +44,6 @@ public class VersionModel {
 
   @Schema(description = "Additional comment")
   private String comment;
-
-  @Schema(description = "Type")
-  private Type type;
 
   @Schema(description = "Compact name")
   private String nameCompact;
