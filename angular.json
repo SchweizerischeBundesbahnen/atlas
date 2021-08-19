@@ -169,7 +169,7 @@
             "additionalEnvironmentVariables": [],
             "browserTarget": "timetable-field-number-frontend:build",
             "ngsscEnvironmentFile": "src/environments/environment.prod.ts",
-            "filePattern": "**/index.htnl"
+            "filePattern": "**/index.html"
           },
           "configurations": {
             "production": {
