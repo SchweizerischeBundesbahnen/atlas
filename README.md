@@ -73,5 +73,5 @@ docker-compose down -v
 * Api Docs as YAML: http://localhost:8080/v3/api-docs.yaml
 
 ## Monitoring and Logging
-* [Monitoring with Instana](documentation/Monitoring.md)
+* [Monitoring (Instana and Actuator)](documentation/Monitoring.md)
 * [Logging to Splunk](documentation/Logging.md)
