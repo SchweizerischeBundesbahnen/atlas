@@ -7,21 +7,21 @@
 @include mat-core();
 
 // Define the default theme (same as the example above).
-$didok-app-primary: mat-palette($mat-indigo, 800);
-$didok-app-accent: mat-palette($mat-amber, A200, A100, A400);
-$didok-app-warn: mat-palette($mat-red, 700);
-$didok-app-theme: mat-light-theme(
+$app-primary: mat-palette($mat-indigo, 800);
+$app-accent: mat-palette($mat-amber, A200, A100, A400);
+$app-warn: mat-palette($mat-red, 700);
+$app-theme: mat-light-theme(
   (
     color: (
-      primary: $didok-app-primary,
-      accent: $didok-app-accent,
-      warn: $didok-app-warn,
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
     ),
   )
 );
 
 // Include the default theme styles (color and default density)
-@include angular-material-theme($didok-app-theme);
+@include angular-material-theme($app-theme);
 
 // Define an alternate dark theme.
 $dark-primary: mat-palette($mat-blue-grey, 900);

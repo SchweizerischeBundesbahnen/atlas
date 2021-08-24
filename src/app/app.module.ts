@@ -19,6 +19,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonModule } from '@angular/material/button';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => {
@@ -68,6 +70,8 @@ export function apiConfigFactory(): Configuration {
     MatIconModule,
     MatMenuModule,
     MatListModule,
+    MatButtonToggleModule,
+    MatButtonModule,
   ],
   bootstrap: [AppComponent],
 })
