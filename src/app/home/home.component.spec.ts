@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SbbIconTestingModule } from '@sbb-esta/angular-core/icon/testing';
 
-import { SbbAngularLibraryModule } from '../shared/sbb-angular-library.module';
 import { HomeComponent } from './home.component';
 import { AuthService } from '../core/auth.service';
 import { TimetableFieldNumbersService } from '../api';
@@ -16,7 +14,6 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SbbAngularLibraryModule, SbbIconTestingModule],
       declarations: [HomeComponent],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
