@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SbbUsermenuItem } from '@sbb-esta/angular-business/usermenu';
 import { SbbIconTestingModule } from '@sbb-esta/angular-core/icon/testing';
 
 import { AppComponent } from './app.component';
 import { AuthService } from './core/auth.service';
-import { SbbAngularLibraryModule } from './shared/sbb-angular-library.module';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HeaderComponent } from './core/components/header/header.component';
 import { MaterialModule } from './core/module/material.module';
@@ -27,7 +24,6 @@ describe('AppComponent', () => {
       imports: [
         NoopAnimationsModule,
         RouterTestingModule,
-        SbbAngularLibraryModule,
         SbbIconTestingModule,
         MaterialModule,
         TranslateModule.forRoot({

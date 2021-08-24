@@ -6,7 +6,6 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SbbAngularLibraryModule } from './shared/sbb-angular-library.module';
 import { AuthInsightsComponent } from './auth-insights/auth-insights.component';
 import { HomeComponent } from './home/home.component';
 import { environment } from '../environments/environment';
@@ -50,7 +49,6 @@ export function apiConfigFactory(): Configuration {
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
-    SbbAngularLibraryModule,
     ApiModule.forRoot(apiConfigFactory),
     OAuthModule.forRoot({
       resourceServer: {

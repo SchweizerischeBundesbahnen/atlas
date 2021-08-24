@@ -4,7 +4,6 @@ import { UserComponent } from './user.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../auth.service';
 import { By } from '@angular/platform-browser';
-import { SbbUsermenuItem } from '@sbb-esta/angular-business/usermenu';
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
