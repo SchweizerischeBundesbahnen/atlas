@@ -1,14 +1,16 @@
-<mat-toolbar class="home-header" color="primary">
-  <button mat-icon-button class="mr-3 button-menu-header" (click)="toggle()">
+<mat-toolbar color="primary">
+  <button mat-icon-button class="me-3 button-menu-header" (click)="toggle()">
     <mat-icon>menu</mat-icon>
   </button>
   <div class="d-flex align-items-center">
-    <img width="250px" src="assets/images/header-icons.svg" class="app-header-icon" />
-    <h1 class="white ml-3 app-header-title">{{ 'HOME.HEADER' | translate }}</h1>
+    <img
+      width="250px"
+      src="assets/images/header-icons.svg"
+      alt="{{ 'HOME.HEADER' | translate }} icons"
+    />
+    <h1 class="white ms-3 app-header-title">{{ 'HOME.HEADER' | translate }}</h1>
   </div>
   <span class="spacer"></span>
   <app-user></app-user>
-  <!--  <app-system-information></app-system-information>-->
-  <!--  <app-profile></app-profile>-->
   <app-language-switcher></app-language-switcher>
 </mat-toolbar>
