@@ -4,35 +4,6 @@
   "newProjectRoot": "projects",
   "projects": {
     "timetable-field-number-frontend": {
-      "i18n": {
-        "locales": {
-          "de-CH": {
-            "translation": [
-              "src/locales/messages.de-CH.xlf",
-              "node_modules/@sbb-esta/angular-core/i18n/xlf2/messages.de-CH.xlf"
-            ],
-            "baseHref": "/de/"
-          },
-          "fr-CH": {
-            "translation": [
-              "src/locales/messages.fr-CH.xlf",
-              "node_modules/@sbb-esta/angular-core/i18n/xlf2/messages.fr-CH.xlf"
-            ],
-            "baseHref": "/fr/"
-          },
-          "it-CH": {
-            "translation": [
-              "src/locales/messages.it-CH.xlf",
-              "node_modules/@sbb-esta/angular-core/i18n/xlf2/messages.it-CH.xlf"
-            ],
-            "baseHref": "/it/"
-          }
-        },
-        "sourceLocale": {
-          "code": "en-CH",
-          "baseHref": "/en/"
-        }
-      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -49,9 +20,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "localize": [
-              "en-CH"
-            ],
             "outputPath": "dist/timetable-field-number-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -175,14 +143,6 @@
             "production": {
               "browserTarget": "timetable-field-number-frontend:build:production"
             }
-          }
-        },
-        "t9n": {
-          "builder": "angular-t9n:t9n",
-          "options": {
-            "translationFile": "src/locales/messages.xlf",
-            "targetTranslationPath": "src/locales",
-            "includeContextInTarget": true
           }
         }
       }
