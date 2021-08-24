@@ -1,0 +1,10 @@
+<div>
+  <a
+    *ngFor="let language of languages"
+    class="m-1"
+    [routerLink]=""
+    (click)="setLanguage(language)"
+    [ngClass]="{ 'isSelected pb-1': currentLanguage === language }"
+    >{{ language | uppercase }}</a
+  >
+</div>
