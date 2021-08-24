@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './core/auth.service';
 
 import { environment } from '../environments/environment';
 
@@ -16,8 +15,9 @@ export class AppComponent implements OnInit {
   environmentLabel = environment.label;
 
   title = $localize`Timetable Field Number`;
-  constructor(private translate: TranslateService) // private keepalive: KeepaliveService,
-  // public loadingSpinnerService: LoadingSpinnerService
+  constructor(
+    private translate: TranslateService // private keepalive: KeepaliveService,
+  ) // public loadingSpinnerService: LoadingSpinnerService
   {
     //TODO: get lang from browser
     this.translate.use('de');
