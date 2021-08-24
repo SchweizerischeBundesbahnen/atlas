@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 
 import packageJson from '../../package.json';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +14,8 @@ export class AppComponent implements OnInit {
   environmentLabel = environment.label;
 
   title = $localize`Timetable Field Number`;
-  constructor(
-    private translate: TranslateService // private keepalive: KeepaliveService,
-  ) // public loadingSpinnerService: LoadingSpinnerService
+  constructor() // private keepalive: KeepaliveService, // public loadingSpinnerService: LoadingSpinnerService
   {
-    //TODO: get lang from browser
-    this.translate.use('de');
     // this.loadingSpinnerService.initLoadingSpinner();
   }
 

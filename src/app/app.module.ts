@@ -21,6 +21,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
+import { LanguageSwitcherComponent } from './core/components/language-switcher/language-switcher.component';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => {
@@ -40,6 +41,7 @@ export function apiConfigFactory(): Configuration {
     HomeComponent,
     AuthInsightsComponent,
     HeaderComponent,
+    LanguageSwitcherComponent,
     UserComponent,
   ],
   imports: [
