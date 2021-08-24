@@ -1,0 +1,22 @@
+<ng-container *ngIf="user$ | async; then isAuthenticated; else isAnonymous"></ng-container>
+<ng-template #isAuthenticated>
+  <button mat-button [matMenuTriggerFor]="profile">
+    {{ 'PROFILE.HELLO' | translate }} {{ (user$ | async)?.name }}
+  </button>
+  <mat-menu #profile="matMenu">
+    <div class="pr-3 pl-3 d-flex flex-column">
+      <div>
+        <h2 class="mb-0">{{ 'PROFILE.YOUR_ROLES' | translate }}</h2>
+        <mat-list>
+          <mat-list-item *ngFor="let role of (user$ | async)?.roles">
+            {{ role }}
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <button mat-button (click)="logout()">{{ 'PROFILE.LOGOUT' | translate }}</button>
+    </div>
+  </mat-menu>
+</ng-template>
+<ng-template #isAnonymous>
+  <button mat-button (click)="login()">{{ 'PROFILE.LOGIN' | translate }}</button>
+</ng-template>

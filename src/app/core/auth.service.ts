@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Location } from '@angular/common';
 
 import { environment } from '../../environments/environment';
+import { User } from '../model/user';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +16,7 @@ export class AuthService {
   private readonly initialized: Promise<unknown>;
 
   get claims() {
-    return this.oauthService.getIdentityClaims() as {
-      email: string;
-      name: string;
-      roles: string[];
-    };
+    return this.oauthService.getIdentityClaims() as User;
   }
 
   get scopes() {

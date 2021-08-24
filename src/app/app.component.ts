@@ -1,32 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './core/auth.service';
 
 import { environment } from '../environments/environment';
 
 import packageJson from '../../package.json';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   version = packageJson.version;
   environmentLabel = environment.label;
 
   title = $localize`Timetable Field Number`;
-
-  get userName() {
-    return this.authService.claims?.name;
+  constructor(private translate: TranslateService) // private keepalive: KeepaliveService,
+  // public loadingSpinnerService: LoadingSpinnerService
+  {
+    //TODO: get lang from browser
+    this.translate.use('de');
+    // this.loadingSpinnerService.initLoadingSpinner();
   }
 
-  constructor(private authService: AuthService) {}
-
-  login() {
-    this.authService.login();
-  }
-
-  logout() {
-    return this.authService.logout();
+  ngOnInit(): void {
+    // this.keepalive.initialize();
+    console.log('app-component');
   }
 }
