@@ -1,5 +1,5 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button class="me-3 button-menu-header" (click)="toggle()">
+<mat-toolbar class="home-header" color="primary">
+  <button mat-icon-button class="me-3" (click)="toggle()">
     <mat-icon>menu</mat-icon>
   </button>
   <div class="d-flex align-items-center">
@@ -8,7 +8,7 @@
       src="assets/images/header-icons.svg"
       alt="{{ 'HOME.HEADER' | translate }} icons"
     />
-    <h1 class="white ms-3 app-header-title">{{ 'HOME.HEADER' | translate }}</h1>
+    <h1 class="white ms-3">{{ 'HOME.HEADER' | translate }}</h1>
   </div>
   <span class="spacer"></span>
   <app-user></app-user>
