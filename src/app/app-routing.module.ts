@@ -8,8 +8,7 @@ import { AuthGuard } from './core/auth-guard';
 // Do NOT use it for the root route. If the user should always be logged in,
 // see comment in the AppComponent constructor.
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'auth-insights', component: AuthInsightsComponent, canActivate: [AuthGuard] },
 ];
 
