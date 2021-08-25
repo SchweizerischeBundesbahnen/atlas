@@ -5,6 +5,7 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { AuthService } from '../../auth.service';
 import { MaterialModule } from '../../module/material.module';
 import { UserComponent } from '../user/user.component';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 
 describe('HeaderComponent', () => {
   const authServiceMock: Partial<AuthService> = {
@@ -17,7 +18,7 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HeaderComponent, UserComponent],
+      declarations: [HeaderComponent, UserComponent, LanguageSwitcherComponent],
       imports: [
         MaterialModule,
         TranslateModule.forRoot({
@@ -39,7 +40,7 @@ describe('HeaderComponent', () => {
   });
 
   it('should render header', () => {
-    expect(fixture.nativeElement.querySelector('.app-header-title').textContent).toContain(
+    expect(fixture.nativeElement.querySelector('h1.white.ms-3').textContent).toContain(
       'HOME.HEADER'
     );
   });
