@@ -95,3 +95,8 @@ mat-slide-toggle {
     color: $black;
   }
 }
+
+.mat-list-base .mat-list-item {
+  font-size: unset;
+  font-family: unset;
+}
