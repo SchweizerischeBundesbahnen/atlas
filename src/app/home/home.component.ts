@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 import { TimetableFieldNumbersService, Version } from '../api';
-import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 
@@ -11,7 +10,18 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  versions: Observable<Array<Version>> | undefined;
+  tableColumns = [
+    'TABLE.TTFN.swissTimetableFieldNumber',
+    'TABLE.TTFN.name',
+    'TABLE.TTFN.status',
+    'TABLE.TTFN.ttfnid',
+    'TABLE.TTFN.validFrom',
+    'TABLE.TTFN.validTo',
+  ];
+
+  @Input() isLoading = false;
+
+  versions: Version[] = [];
   envUrl = environment.backendUrl;
 
   constructor(
@@ -28,6 +38,8 @@ export class HomeComponent implements OnInit {
   }
 
   getVersions(): void {
-    this.versions = this.timetableFieldNumbersService.getVersions(0, 20);
+    this.timetableFieldNumbersService
+      .getVersions()
+      .subscribe((versions) => (this.versions = versions));
   }
 }

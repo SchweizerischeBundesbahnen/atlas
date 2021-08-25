@@ -59,5 +59,15 @@
   "PAGES": {
     "HOME": "ATLAS Home",
     "AUTH_INSIGHT": "Auth-Insights"
+  },
+  "TABLE": {
+    "TTFN": {
+      "swissTimetableFieldNumber": "Fahrplannummer",
+      "name": "Bezeichnung",
+      "status": "Status",
+      "ttfnid": "Fahrplanfeldnummer",
+      "validFrom": "Gültig von",
+      "validTo": "Gültig bis"
+    }
   }
 }
