@@ -12,7 +12,10 @@ export class LanguageSwitcherComponent {
 
   constructor(private translateService: TranslateService) {
     const language =
-      localStorage.getItem(LanguageSwitcherComponent.STORED_LANGUAGE_KEY) ||
+      this.languages.find(
+        (language) =>
+          language === localStorage.getItem(LanguageSwitcherComponent.STORED_LANGUAGE_KEY)
+      ) ||
       this.languages.find((language) => language === translateService.getBrowserLang()) ||
       this.languages[0];
     this.setLanguage(language);
