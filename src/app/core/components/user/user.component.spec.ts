@@ -12,7 +12,7 @@ describe('UserComponent', () => {
   let fixture: ComponentFixture<UserComponent>;
 
   const authServiceMock: Partial<AuthService> = {
-    claims: { name: 'Test', email: 'test@test.ch', roles: [] },
+    claims: { name: 'Test', email: 'test@test.ch', roles: ['role1', 'role2', 'role3'] },
     logout: () => Promise.resolve(true),
   };
 
@@ -40,10 +40,33 @@ describe('UserComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render username', () => {
-    expect(fixture.nativeElement.querySelector('button > span').textContent).toContain(
+  it('should render username on the title', () => {
+    expect(fixture.nativeElement.querySelector('button').title).toContain(
       authServiceMock.claims!.name
     );
+  });
+
+  it('should show user menu', () => {
+    fixture.detectChanges();
+    const usermenuOpenButton = fixture.debugElement.query(By.css('button'));
+    usermenuOpenButton.nativeElement.click();
+    fixture.detectChanges();
+
+    const usernameModal = fixture.debugElement.query(By.css('.user-info-modal')).nativeElement;
+    expect(usernameModal.querySelector('.material-icons').textContent).toContain('perm_identity');
+    expect(usernameModal.querySelector('.user-name-modal').textContent).toContain(
+      authServiceMock.claims!.name
+    );
+
+    const userRolesModal = fixture.debugElement.query(By.css('#user-roles-modal')).nativeElement;
+    expect(userRolesModal.querySelector('.material-icons').textContent).toContain('accessibility');
+    expect(userRolesModal.querySelector('.user-info-modal').textContent).toContain(
+      'PROFILE.YOUR_ROLES'
+    );
+    const userRoles = userRolesModal.querySelectorAll('mat-list>mat-list-item.mat-list-item');
+    expect(userRoles[0].textContent).toContain(authServiceMock.claims!.roles[0]);
+    expect(userRoles[1].textContent).toContain(authServiceMock.claims!.roles[1]);
+    expect(userRoles[2].textContent).toContain(authServiceMock.claims!.roles[2]);
   });
 
   it('should logout', () => {

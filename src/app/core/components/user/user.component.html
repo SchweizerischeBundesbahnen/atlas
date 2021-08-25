@@ -9,11 +9,11 @@
         <div class="d-inline-block">
           <span class="material-icons pe-2">perm_identity</span>
         </div>
-        <div class="d-inline-block user-name-modal" title="{{ (user$ | async)?.name }}">
+        <div class="d-inline-block user-name-modal" id="asd" title="{{ (user$ | async)?.name }}">
           {{ (user$ | async)?.name }}
         </div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex" id="user-roles-modal">
         <div class="d-inline-block ps-2">
           <span class="material-icons">accessibility</span>
         </div>
