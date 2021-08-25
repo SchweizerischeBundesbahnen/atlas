@@ -1,22 +1,43 @@
 <ng-container *ngIf="user$ | async; then isAuthenticated; else isAnonymous"></ng-container>
 <ng-template #isAuthenticated>
-  <button mat-button [matMenuTriggerFor]="profile">
-    {{ 'PROFILE.HELLO' | translate }} {{ (user$ | async)?.name }}
+  <button mat-button [matMenuTriggerFor]="profile" title="{{ (user$ | async)?.name }}">
+    <span class="material-icons">perm_identity</span>
   </button>
   <mat-menu #profile="matMenu">
-    <div class="pr-3 pl-3 d-flex flex-column">
-      <div>
-        <h2 class="mb-0">{{ 'PROFILE.YOUR_ROLES' | translate }}</h2>
-        <mat-list>
-          <mat-list-item *ngFor="let role of (user$ | async)?.roles">
-            {{ role }}
-          </mat-list-item>
-        </mat-list>
+    <div class="ps-1 pe-1 d-flex flex-column">
+      <div class="user-info-modal d-flex">
+        <div class="d-inline-block">
+          <span class="material-icons pe-2">perm_identity</span>
+        </div>
+        <div class="d-inline-block user-name-modal" title="{{ (user$ | async)?.name }}">
+          {{ (user$ | async)?.name }}
+        </div>
       </div>
-      <button mat-button (click)="logout()" id="logout">{{ 'PROFILE.LOGOUT' | translate }}</button>
+      <div class="d-flex">
+        <div class="d-inline-block ps-2">
+          <span class="material-icons">accessibility</span>
+        </div>
+        <div class="d-inline-block">
+          <span class="mb-0 user-info-modal">{{ 'PROFILE.YOUR_ROLES' | translate }}</span>
+          <mat-list>
+            <mat-list-item class="mat-list-item" *ngFor="let role of (user$ | async)?.roles">
+              <span class="material-icons user-roles-list-item pe-1">fiber_manual_record</span>
+              {{ role }}
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+      <hr />
+      <button mat-button (click)="logout()" id="logout">
+        <span class="material-icons">logout</span>
+        {{ 'PROFILE.LOGOUT' | translate }}
+      </button>
     </div>
   </mat-menu>
 </ng-template>
 <ng-template #isAnonymous>
-  <button mat-button (click)="login()">{{ 'PROFILE.LOGIN' | translate }}</button>
+  <button mat-button (click)="login()">
+    <span class="material-icons">perm_identity</span>
+    {{ 'PROFILE.LOGIN' | translate }}
+  </button>
 </ng-template>

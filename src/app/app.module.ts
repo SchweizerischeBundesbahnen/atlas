@@ -22,6 +22,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MaterialModule } from './core/module/material.module';
 import { LanguageSwitcherComponent } from './core/components/language-switcher/language-switcher.component';
+import { SbbButtonModule } from '@sbb-esta/angular-business';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => {
@@ -74,6 +75,7 @@ export function apiConfigFactory(): Configuration {
     MatListModule,
     MatButtonToggleModule,
     MatButtonModule,
+    SbbButtonModule,
   ],
   bootstrap: [AppComponent],
 })
