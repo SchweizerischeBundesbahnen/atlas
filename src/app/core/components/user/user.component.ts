@@ -16,7 +16,6 @@ export class UserComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    console.log('user');
     this.authenticated = this.authService.loggedIn;
     this.user$ = of(this.authService.claims);
   }
