@@ -2,7 +2,13 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
     <mat-nav-list>
-      <a mat-list-item (click)="sidenav.toggle()" routerLink="" routerLinkActive="route-active">
+      <a
+        mat-list-item
+        (click)="sidenav.toggle()"
+        routerLink=""
+        routerLinkActive="route-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <mat-icon class="icon me-3">home</mat-icon>
         {{ 'PAGES.HOME' | translate }}
         <span class="spacer"></span>
