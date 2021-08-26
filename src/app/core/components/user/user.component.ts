@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { User } from '../../../model/user';
-import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -9,15 +8,19 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
-  user$: Observable<User | undefined> = of(undefined);
+  user: User | undefined;
 
   protected authenticated: boolean | undefined;
+  userName: string | undefined;
+  isAuthenticated = false;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authenticated = this.authService.loggedIn;
-    this.user$ = of(this.authService.claims);
+    this.user = this.authService.claims;
+    this.userName = this.user?.name.substr(0, this.user.name.indexOf('(')).trim();
+    this.isAuthenticated = this.user != null;
   }
 
   login(): void {
