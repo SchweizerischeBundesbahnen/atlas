@@ -62,12 +62,12 @@
   },
   "TABLE": {
     "TTFN": {
-      "swissTimetableFieldNumber": "Fahrplannummer",
-      "name": "Bezeichnung",
-      "status": "Status",
-      "ttfnid": "Fahrplanfeldnummer",
-      "validFrom": "Gültig von",
-      "validTo": "Gültig bis"
+      "SWISS_TIMETABLE_FIELD_NUMBER": "Fahrplannummer",
+      "NAME": "Bezeichnung",
+      "STATUS": "Status",
+      "TTFNID": "Fahrplanfeldnummer",
+      "VALID_FROM": "Gültig von",
+      "VALID_TO": "Gültig bis"
     }
   }
 }
