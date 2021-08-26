@@ -1,6 +1,5 @@
-<ng-container *ngIf="user$ | async; then isAuthenticated; else isAnonymous"></ng-container>
-<ng-template #isAuthenticated>
-  <button mat-button [matMenuTriggerFor]="profile" title="{{ (user$ | async)?.name }}">
+<ng-template [ngIf]="isAuthenticated">
+  <button mat-button [matMenuTriggerFor]="profile" title="{{ userName }}">
     <span class="material-icons">perm_identity</span>
   </button>
   <mat-menu #profile="matMenu">
@@ -9,8 +8,8 @@
         <div class="d-inline-block">
           <span class="material-icons pe-2">perm_identity</span>
         </div>
-        <div class="d-inline-block user-name-modal" id="asd" title="{{ (user$ | async)?.name }}">
-          {{ (user$ | async)?.name }}
+        <div class="d-inline-block user-name-modal" title="{{ userName }}">
+          {{ userName }}
         </div>
       </div>
       <div class="d-flex" id="user-roles-modal">
@@ -20,7 +19,7 @@
         <div class="d-inline-block">
           <span class="mb-0 user-info-modal">{{ 'PROFILE.YOUR_ROLES' | translate }}</span>
           <mat-list>
-            <mat-list-item class="mat-list-item" *ngFor="let role of (user$ | async)?.roles">
+            <mat-list-item class="mat-list-item" *ngFor="let role of user?.roles">
               <span class="material-icons user-roles-list-item pe-1">fiber_manual_record</span>
               {{ role }}
             </mat-list-item>
@@ -35,7 +34,7 @@
     </div>
   </mat-menu>
 </ng-template>
-<ng-template #isAnonymous>
+<ng-template [ngIf]="!isAuthenticated">
   <button mat-button (click)="login()">
     <span class="material-icons">perm_identity</span>
     {{ 'PROFILE.LOGIN' | translate }}
