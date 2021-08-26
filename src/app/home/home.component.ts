@@ -3,6 +3,7 @@ import { AuthService } from '../core/auth.service';
 import { TimetableFieldNumbersService, Version } from '../api';
 
 import { environment } from '../../environments/environment';
+import { TableColumn } from '../core/components/table/table-column';
 
 @Component({
   selector: 'app-home',
@@ -10,13 +11,13 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  tableColumns = [
-    'TABLE.TTFN.swissTimetableFieldNumber',
-    'TABLE.TTFN.name',
-    'TABLE.TTFN.status',
-    'TABLE.TTFN.ttfnid',
-    'TABLE.TTFN.validFrom',
-    'TABLE.TTFN.validTo',
+  tableColumns: TableColumn<Version>[] = [
+    { headerTitle: 'TABLE.TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
+    { headerTitle: 'TABLE.TTFN.NAME', value: 'name' },
+    { headerTitle: 'TABLE.TTFN.STATUS', value: 'status' },
+    { headerTitle: 'TABLE.TTFN.TTFNID', value: 'ttfnid' },
+    { headerTitle: 'TABLE.TTFN.VALID_FROM', value: 'validFrom' },
+    { headerTitle: 'TABLE.TTFN.VALID_TO', value: 'validTo' },
   ];
 
   @Input() isLoading = false;
