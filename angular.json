@@ -31,8 +31,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/@sbb-esta/angular-business/typography.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -103,7 +102,6 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/@sbb-esta/angular-business/typography.css",
               "src/styles.scss"
             ],
             "scripts": []

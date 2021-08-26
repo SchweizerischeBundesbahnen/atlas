@@ -42,8 +42,6 @@
     "@angular/router": "~12.2.2",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
-    "@sbb-esta/angular-business": "^12.3.0",
-    "@sbb-esta/angular-core": "^12.3.0",
     "angular-oauth2-oidc": "^10.0.3",
     "angular-server-side-configuration": "^11.0.2",
     "bootstrap": "^5.1.0",

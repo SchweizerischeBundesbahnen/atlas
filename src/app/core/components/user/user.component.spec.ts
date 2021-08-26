@@ -12,9 +12,12 @@ describe('UserComponent', () => {
   let fixture: ComponentFixture<UserComponent>;
 
   const authServiceMock: Partial<AuthService> = {
-    claims: { name: 'Test', email: 'test@test.ch', roles: ['role1', 'role2', 'role3'] },
+    claims: { name: 'Test (ITC)', email: 'test@test.ch', roles: ['role1', 'role2', 'role3'] },
     logout: () => Promise.resolve(true),
   };
+
+  const userName = authServiceMock.claims!.name;
+  const expectedUserName = userName.substr(0, userName.indexOf('(')).trim();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,9 +44,7 @@ describe('UserComponent', () => {
   });
 
   it('should render username on the title', () => {
-    expect(fixture.nativeElement.querySelector('button').title).toContain(
-      authServiceMock.claims!.name
-    );
+    expect(fixture.nativeElement.querySelector('button').title).toContain(expectedUserName);
   });
 
   it('should show user menu', () => {
@@ -54,9 +55,7 @@ describe('UserComponent', () => {
 
     const usernameModal = fixture.debugElement.query(By.css('.user-info-modal')).nativeElement;
     expect(usernameModal.querySelector('.material-icons').textContent).toContain('perm_identity');
-    expect(usernameModal.querySelector('.user-name-modal').textContent).toContain(
-      authServiceMock.claims!.name
-    );
+    expect(usernameModal.querySelector('.user-name-modal').textContent).toContain(expectedUserName);
 
     const userRolesModal = fixture.debugElement.query(By.css('#user-roles-modal')).nativeElement;
     expect(userRolesModal.querySelector('.material-icons').textContent).toContain('accessibility');
