@@ -1,0 +1,73 @@
+{
+  "ERROR": {
+    "NOTALLOWED": "Keine Berechtigung für diesen Inhalt",
+    "SERVER_REQUEST_FEHLER": "Momentan ist die Verbindung zur Datenbank nicht verfügbar. Bitte überprüfen Sie die Internetverbindung, schliessen den Browser und starten DiDok erneut."
+  },
+  "COMMON": {
+    "SAVE": "Speichern",
+    "CANCEL": "Abbrechen",
+    "NODATAFOUND": "Es wurden keine Daten gefunden",
+    "NEWFILTER": "Neuer Filter...",
+    "FILTER": "Filter",
+    "JA": "Ja",
+    "NEIN": "Nein",
+    "ACHTUNG": "Achtung!",
+    "REQUIRED": "Dies ist ein Pflichtfeld.",
+    "MAX_LENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
+    "DATE": {
+      "SELECT_DATERANGE": "Datumsbereich*"
+    },
+    "FROM": "von",
+    "TO": "bis",
+    "STATUS": "Status",
+    "OK": "Ok",
+    "EDIT_VERSION": "Version editieren",
+    "CREATE_VERSION": "Version hinzufügen"
+  },
+  "DIALOG": {
+    "OK": "Weiter",
+    "CANCEL": "Abbrechen",
+    "DISCARD_CHANGES_TITLE": "Änderungen verwerfen?",
+    "LEAVE_SITE": "Wenn du die Seite verlässt, werden deine Daten nicht gespeichert.",
+    "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlierst du alle editierten Daten."
+  },
+  "BREADCRUMB": {
+    "GESCHAEFTSORGANISATION": "Geschäftsorganisation",
+    "TRANSPORTUNTERNEHMEN": "Transportunternehmen",
+    "COMPANIES": "Companies",
+    "DETAIL": "Detail",
+    "BEHIG": "Bestandsaufnahme Behig"
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Items per Page",
+    "NEXT_PAGE": "Nächste Seite",
+    "PREVIOUS_PAGE": "Vorherige Seite",
+    "RANGE_LABEL1": "0 von {{length}}",
+    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} von {{length}}"
+  },
+  "PROFILE": {
+    "HELLO": "Hallo",
+    "YOUR_ROLES": "Deine Rollen:",
+    "LOGIN": "Login",
+    "LOGOUT": "Logout"
+  },
+  "HOME": {
+    "HEADER": "Fahrplanfeldnummer",
+    "TITLE": "Willkommen in ATLAS",
+    "DESCRIPTION": "DiDok ist das Mastersystem für die Verwaltung aller Dienststellen (insbesondere den Haltestellen) des öffentlichen Verkehrs in der Schweiz und ist somit eine Grundlage für die Fahrplanpublikation. Das System wird im Rahmen der Systemführerschaft Kundeninformation im Auftrag des Bundesamts für Verkehr (BAV) betrieben. DiDok nimmt die zentrale Datenverwaltung der Dienststellen, Geschäftsorganisationen und weiterer verwandten Datentypen vor. Es definiert die Dienststellen fachlich gleichwertig und technisch eindeutig und regelt die Nummern- und Namensvergabe nach den Vorschriften des BAV in Abstimmung mit den Kundenwünschen.\n\nSystemOwner ist SBB Infrastruktur. Kunden sind alle konzessionierten Transportunternehmen der Schweiz, der Verband öffentlicher Verkehr und das Bundesamt für Verkehr. Die Daten in DiDok stehen im Sinne von OpenData allen Interessierten offen."
+  },
+  "PAGES": {
+    "HOME": "ATLAS Home",
+    "AUTH_INSIGHT": "Auth-Insights"
+  },
+  "TABLE": {
+    "TTFN": {
+      "SWISS_TIMETABLE_FIELD_NUMBER": "Fahrplannummer",
+      "NAME": "Bezeichnung",
+      "STATUS": "Status",
+      "TTFNID": "Fahrplanfeldnummer",
+      "VALID_FROM": "Gültig von",
+      "VALID_TO": "Gültig bis"
+    }
+  }
+}

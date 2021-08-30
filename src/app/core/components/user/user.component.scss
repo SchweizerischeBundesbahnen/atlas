@@ -1,0 +1,27 @@
+.user-info-modal {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.user-name-modal {
+  text-overflow: ellipsis;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.material-icons {
+  font-size: 20px;
+}
+
+.user-roles-list-item {
+  font-size: 10px;
+}
+
+.mat-list-item {
+  height: unset;
+}
+
+.mat-list-base {
+  padding-top: unset;
+}
