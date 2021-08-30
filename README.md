@@ -87,4 +87,4 @@ with the Component `ESTA Web`. We appreciate any kind of feedback.
 
 ## Monitoring and Logging
 
-- [Logging to Splunk](documentation/Logging.md)
+- See [Logging to Splunk](documentation/Logging.md)
