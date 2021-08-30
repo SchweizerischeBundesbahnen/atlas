@@ -1,46 +1,39 @@
-<sbb-header
-  class="sbb-header-flexible"
-  [label]="title"
-  [subtitle]="'Version ' + version"
-  collapseBreakpoint="mobile"
->
-  <sbb-header-environment>{{ environmentLabel }}</sbb-header-environment>
-  <sbb-usermenu [userName]="userName" (loginRequest)="login()">
-    <sbb-icon svgIcon="kom:user-small" *sbbIcon></sbb-icon>
-    <button sbb-usermenu-item (click)="logout()">
-      <sbb-icon svgIcon="kom:exit-small" class="sbb-icon-fit"></sbb-icon>
-      <span i18n>Logout</span>
-    </button>
-  </sbb-usermenu>
-</sbb-header>
-<sbb-icon-sidebar-container class="sbb-icon-sidebar-after-header">
-  <sbb-icon-sidebar expanded>
-    <a
-      sbbIconSidebarItem
-      i18n-label
-      label="Home"
-      routerLink="/"
-      routerLinkActive="sbb-active"
-      [routerLinkActiveOptions]="{
-        paths: 'exact',
-        fragment: 'ignored',
-        queryParams: 'ignored',
-        matrixParams: 'ignored'
-      }"
-    >
-      <sbb-icon svgIcon="kom:house-small"></sbb-icon>
-    </a>
-    <a
-      sbbIconSidebarItem
-      i18n-label
-      label="Auth Insights"
-      routerLink="/auth-insights"
-      routerLinkActive="sbb-active"
-    >
-      <sbb-icon svgIcon="kom:user-key-small"></sbb-icon>
-    </a>
-  </sbb-icon-sidebar>
-  <sbb-icon-sidebar-content role="main" class="app-main-content">
-    <router-outlet></router-outlet>
-  </sbb-icon-sidebar-content>
-</sbb-icon-sidebar-container>
+<app-header (showSidebar)="sidenav.toggle()"></app-header>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+      <a
+        mat-list-item
+        (click)="sidenav.toggle()"
+        routerLink=""
+        routerLinkActive="route-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <mat-icon class="icon me-3">home</mat-icon>
+        {{ 'PAGES.HOME' | translate }}
+        <span class="spacer"></span>
+        <mat-icon class="icon ms-5">arrow_forward</mat-icon>
+      </a>
+      <a
+        mat-list-item
+        (click)="sidenav.toggle()"
+        routerLink="/auth-insights"
+        routerLinkActive="route-active"
+      >
+        <mat-icon class="icon me-3">home</mat-icon>
+        {{ 'PAGES.AUTH_INSIGHT' | translate }}
+        <span class="spacer"></span>
+        <mat-icon class="icon ms-5">arrow_forward</mat-icon>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="main-container container-fluid pt-3 pb-3">
+    <div class="full-height">
+      <!--      <app-loading-spinner-->
+      <!--        [isLoading]="loadingSpinnerService.isLoading"-->
+      <!--        [fullScreen]="true"-->
+      <!--      ></app-loading-spinner>-->
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

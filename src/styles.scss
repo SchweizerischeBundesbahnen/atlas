@@ -1,1 +1,87 @@
+@import './theme.scss';
+@import '~bootstrap/scss/bootstrap';
 /* You can add global styles to this file, and also import other style files */
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iY3VycmVudENvbG9yIi8+PC9zdmc+);
+}
+
+.breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.white {
+  color: white;
+}
+.gray-1 {
+  color: hsl(0, 0%, 40%);
+  font-size: 1.1rem;
+}
+
+.background-grey {
+  background-color: hsl(0, 0%, 93%);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.route-active {
+  font-weight: bold;
+}
+
+/* Notification styling*/
+.success {
+  background-color: hsl(120, 100%, 25%);
+}
+
+.info {
+  background-color: hsl(203, 100%, 75%);
+}
+
+.error {
+  background-color: hsl(0, 100%, 50%);
+  color: hsl(0, 0%, 100%);
+}
+
+a {
+  color: hsl(233, 57%, 37%);
+}
+
+a:hover {
+  color: hsl(235, 66%, 30%);
+}
+
+.has-overlay {
+  position: relative;
+}
+
+/* esri popup widget style for custom content */
+.dienststellen-info-dialog-popup {
+  section,
+  header,
+  .esri-popup__footer {
+    display: none;
+  }
+
+  article {
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .esri-popup__main-container {
+    max-width: 300px;
+  }
+}
+
+.esri-view-width-xsmall {
+  .esri-popup__main-container {
+    max-width: 100%;
+  }
+}
+
+/* end of esri popup widget style for custom content */
