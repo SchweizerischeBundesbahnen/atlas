@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AuthInsightsComponent } from './auth-insights.component';
 import { AuthService } from '../core/auth.service';
-import { SbbAngularLibraryModule } from '../shared/sbb-angular-library.module';
 
 const authServiceMock: Partial<AuthService> = {};
 
@@ -12,7 +11,6 @@ describe('AuthInsightsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SbbAngularLibraryModule],
       declarations: [AuthInsightsComponent],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();

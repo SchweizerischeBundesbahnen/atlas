@@ -33,6 +33,10 @@ module.exports = function (config) {
     jasmineHtmlReporter: {
       suppressAll: true, // removes the duplicated traces
     },
+    angularCLI: {
+      config: './angular.json',
+      environment: 'dev',
+    },
     sonarqubeReporter: {
       basePath: require('path').join(__dirname, './src'),
       outputFolder: require('path').join(__dirname, './coverage/timetable-field-number-frontend'),
