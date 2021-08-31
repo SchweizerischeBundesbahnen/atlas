@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { environment } from '../environments/environment';
 
@@ -9,16 +9,13 @@ import packageJson from '../../package.json';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   version = packageJson.version;
   environmentLabel = environment.label;
 
   title = $localize`Timetable Field Number`;
-  constructor() { // private keepalive: KeepaliveService, // public loadingSpinnerService: LoadingSpinnerService
+  constructor() {
+    // private keepalive: KeepaliveService, // public loadingSpinnerService: LoadingSpinnerService
     // this.loadingSpinnerService.initLoadingSpinner();
-  }
-
-  ngOnInit(): void {
-    // this.keepalive.initialize();
   }
 }
