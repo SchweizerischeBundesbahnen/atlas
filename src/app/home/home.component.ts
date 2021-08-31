@@ -3,6 +3,7 @@ import { AuthService } from '../core/auth.service';
 import { TimetableFieldNumbersService, Version } from '../api';
 
 import { TableColumn } from '../core/components/table/table-column';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,9 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private timetableFieldNumbersService: TimetableFieldNumbersService
+    private timetableFieldNumbersService: TimetableFieldNumbersService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -40,5 +43,21 @@ export class HomeComponent implements OnInit {
     this.timetableFieldNumbersService
       .getVersions()
       .subscribe((versions) => (this.versions = versions));
+  }
+
+  newVersion() {
+    this.router
+      .navigate(['add'], {
+        relativeTo: this.route,
+      })
+      .then();
+  }
+
+  editVersion($event: Version) {
+    this.router
+      .navigate([$event.id], {
+        relativeTo: this.route,
+      })
+      .then();
   }
 }

@@ -9,4 +9,7 @@
   [tableCaption]="'HOME.HEADER'"
   [tableData]="versions"
   [tableColumns]="tableColumns"
+  [canEdit]="true"
+  (newElementEvent)="newVersion()"
+  (editElementEvent)="editVersion($event)"
 ></app-table>
