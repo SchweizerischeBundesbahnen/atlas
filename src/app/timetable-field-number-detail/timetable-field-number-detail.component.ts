@@ -7,7 +7,7 @@ import { TimetableFieldNumbersService, Version } from '../api';
   templateUrl: './timetable-field-number-detail.component.html',
   styleUrls: ['./timetable-field-number-detail.component.scss'],
 })
-export class TimetableFieldNumberDetailComponent implements OnInit {
+export class TimetableFieldNumberDetailComponent {
   id: number;
   version!: Version;
 
@@ -18,8 +18,6 @@ export class TimetableFieldNumberDetailComponent implements OnInit {
     this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
     this.getVersion();
   }
-
-  ngOnInit(): void {}
 
   getVersion(): void {
     this.timetableFieldNumberService
