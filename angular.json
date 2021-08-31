@@ -37,7 +37,6 @@
           },
           "configurations": {
             "production": {
-              "localize": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -80,14 +79,6 @@
             }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "timetable-field-number-frontend:build",
-            "outputPath": "src/locales",
-            "format": "xlf2"
-          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -141,14 +132,6 @@
             "production": {
               "browserTarget": "timetable-field-number-frontend:build:production"
             }
-          }
-        },
-        "t9n": {
-          "builder": "angular-t9n:t9n",
-          "options": {
-            "translationFile": "src/locales/messages.xlf",
-            "targetTranslationPath": "src/locales",
-            "includeContextInTarget": true
           }
         }
       }
