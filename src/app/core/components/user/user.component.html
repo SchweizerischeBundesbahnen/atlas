@@ -35,7 +35,7 @@
   </mat-menu>
 </ng-template>
 <ng-template [ngIf]="!isAuthenticated">
-  <button mat-button (click)="login()">
+  <button mat-button id="login" (click)="login()">
     <i class="bi bi-person"></i>
     {{ 'PROFILE.LOGIN' | translate }}
   </button>
