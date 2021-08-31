@@ -61,14 +61,14 @@ describe('AuthService', () => {
 
   it('provides loggedIn false on no claim', () => {
     oauthService.getIdentityClaims.and.callThrough();
-    let loggedIn = authService.loggedIn;
+    const loggedIn = authService.loggedIn;
     expect(oauthService.getIdentityClaims).toHaveBeenCalled();
     expect(loggedIn).toBeFalse();
   });
 
   it('provides loggedIn true on user claimed', () => {
     oauthService.getIdentityClaims.and.returnValue({ name: 'me', email: 'me@sbb.ch', roles: [] });
-    let loggedIn = authService.loggedIn;
+    const loggedIn = authService.loggedIn;
     expect(loggedIn).toBeTrue();
   });
 
