@@ -14,13 +14,11 @@ export class AppComponent implements OnInit {
   environmentLabel = environment.label;
 
   title = $localize`Timetable Field Number`;
-  constructor() // private keepalive: KeepaliveService, // public loadingSpinnerService: LoadingSpinnerService
-  {
+  constructor() { // private keepalive: KeepaliveService, // public loadingSpinnerService: LoadingSpinnerService
     // this.loadingSpinnerService.initLoadingSpinner();
   }
 
   ngOnInit(): void {
     // this.keepalive.initialize();
-    console.log('app-component');
   }
 }

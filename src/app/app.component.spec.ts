@@ -8,6 +8,7 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { HeaderComponent } from './core/components/header/header.component';
 import { MaterialModule } from './core/module/material.module';
 import { UserComponent } from './core/components/user/user.component';
+import { LanguageSwitcherComponent } from './core/components/language-switcher/language-switcher.component';
 
 const authServiceMock: Partial<AuthService> = {
   claims: { name: 'Test', email: 'test@test.ch', roles: [] },
@@ -28,7 +29,7 @@ describe('AppComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
       ],
-      declarations: [AppComponent, HeaderComponent, UserComponent],
+      declarations: [AppComponent, HeaderComponent, UserComponent, LanguageSwitcherComponent],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
   });

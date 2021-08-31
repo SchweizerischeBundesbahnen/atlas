@@ -89,4 +89,6 @@ with the Component `ESTA Web`. We appreciate any kind of feedback.
 
 - [Logging to Splunk](documentation/Logging.md)
 
-beste build
+## Problems and their fixes
+
+- [Known problems and solutions](documentation/ProblemsAndFixes.md)

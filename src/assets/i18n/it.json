@@ -31,20 +31,6 @@
     "LEAVE_SITE": "__it__Wenn du die Seite verlässt, werden deine Daten nicht gespeichert.",
     "CANCEL_EDITMODE": "__it__Beim Verlassen des Editiermodus verlierst du alle editierten Daten."
   },
-  "BREADCRUMB": {
-    "GESCHAEFTSORGANISATION": "Unità organizzazione",
-    "TRANSPORTUNTERNEHMEN": "Impresa di trasport",
-    "COMPANIES": "Companies",
-    "DETAIL": "Dettagli",
-    "BEHIG": "Inventario LDis"
-  },
-  "PAGINATOR": {
-    "ITEMS_PER_PAGE": "Oggetti per pagina",
-    "NEXT_PAGE": "successiva",
-    "PREVIOUS_PAGE": "precedente",
-    "RANGE_LABEL1": "0 di {{length}}",
-    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} di {{length}}"
-  },
   "PROFILE": {
     "HELLO": "Ciao",
     "YOUR_ROLES": "I tuoi ruoli:",
@@ -53,7 +39,6 @@
   },
   "HOME": {
     "HEADER": "Documentazione dei servizi TP svizzeri (DiDok)",
-    "TITLE": "Benvenuto a DiDok",
-    "DESCRIPTION": "DiDok è il sistema principale di gestione di tutti i posti di servizio (in particolare delle fermate) dei trasporti pubblici in Svizzera e costituisce pertanto la base per la pubblicazione dell’orario. Il sistema è gestito su incarico dell’Ufficio federale dei trasporti (UFT) nell’ambito della leadership di sistema di informazione alla clientela. DiDok effettua la gestione centralizzata dei dati dei servizi, delle organizzazioni aziendali e di altri tipi di dati correlati. Definisce i servizi in modo univoco ed uniforme sotto il profilo specialistico e tecnico e regola l’assegnazione di numeri e nomi conformemente alle disposizioni dell’UFT e d’intesa con le esigenze dei clienti.\n\nIl proprietario del sistema è FFS Infrastruttura. I clienti sono tutte le imprese di trasporto concessionarie della Svizzera, l’Unione dei trasporti pubblici e l’Ufficio federale dei trasporti. I dati contenuti in DiDok sono liberamente accessibili a tutti gli interessati sotto forma di Open Data."
+    "TITLE": "Benvenuto a DiDok"
   }
 }
