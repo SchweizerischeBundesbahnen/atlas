@@ -9,17 +9,25 @@ import { User } from '../../../model/user';
 })
 export class UserComponent implements OnInit {
   user: User | undefined;
-
-  protected authenticated: boolean | undefined;
   userName: string | undefined;
   isAuthenticated = false;
+
+  protected authenticated: boolean | undefined;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authenticated = this.authService.loggedIn;
     this.user = this.authService.claims;
+    this.extractUserName();
+    this.authenticate();
+  }
+
+  extractUserName() {
     this.userName = this.user?.name.substr(0, this.user.name.indexOf('(')).trim();
+  }
+
+  authenticate() {
     this.isAuthenticated = this.user != null;
   }
 
