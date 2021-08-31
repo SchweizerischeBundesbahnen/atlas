@@ -1,4 +1,11 @@
 <div class="mat-elevation-z8">
+  <!--  <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>-->
+  <div class="space-between" *ngIf="canEdit">
+    <div>&nbsp;</div>
+    <button mat-icon-button class="me-3" (click)="new()">
+      <em class="bi bi-plus fs-2"></em>
+    </button>
+  </div>
   <table mat-table [dataSource]="tableData" matSort>
     <caption class="ps-3">
       {{
@@ -17,7 +24,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="getColumnValues()"></tr>
-    <tr mat-row *matRowDef="let row; columns: getColumnValues()"></tr>
+    <tr mat-row *matRowDef="let row; columns: getColumnValues()" (click)="edit(row)"></tr>
 
     <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
