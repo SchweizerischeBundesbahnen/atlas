@@ -58,30 +58,3 @@ a:hover {
 .has-overlay {
   position: relative;
 }
-
-/* esri popup widget style for custom content */
-.dienststellen-info-dialog-popup {
-  section,
-  header,
-  .esri-popup__footer {
-    display: none;
-  }
-
-  article {
-    font-family: Roboto, 'Helvetica Neue', sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-
-  .esri-popup__main-container {
-    max-width: 300px;
-  }
-}
-
-.esri-view-width-xsmall {
-  .esri-popup__main-container {
-    max-width: 100%;
-  }
-}
-
-/* end of esri popup widget style for custom content */

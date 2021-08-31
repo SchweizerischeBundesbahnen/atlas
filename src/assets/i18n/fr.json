@@ -31,20 +31,6 @@
     "LEAVE_SITE": "Si la page est quittée, les données ne seront pas sauvegardées.",
     "CANCEL_EDITMODE": "Sortir du mode d'édition annulera toutes les modifications."
   },
-  "BREADCRUMB": {
-    "GESCHAEFTSORGANISATION": "Organisations commerciales",
-    "TRANSPORTUNTERNEHMEN": "Entreprises de transport",
-    "COMPANIES": "Companies",
-    "DETAIL": "Détail",
-    "BEHIG": "Inventaire des actifs LHand"
-  },
-  "PAGINATOR": {
-    "ITEMS_PER_PAGE": "éléments par page",
-    "NEXT_PAGE": "page suivante",
-    "PREVIOUS_PAGE": "page précédente",
-    "RANGE_LABEL1": "0 sur {{length}}",
-    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} sur {{length}}"
-  },
   "PROFILE": {
     "HELLO": "Bonjour",
     "YOUR_ROLES": "Tes rôles:",
@@ -53,7 +39,6 @@
   },
   "HOME": {
     "HEADER": "Documentation des services TP suisses",
-    "TITLE": "Bienvenue sur DiDok",
-    "DESCRIPTION": "DiDok est le système de référence dédié à la gestion de tous les services (notamment des arrêts) des transports publics en Suisse. Il sert donc de base à la publication de l’horaire et est exploité dans le cadre de la maîtrise du système d’information à la clientèle pour le compte de l’Office fédéral des transports (OFT). DiDok assure la gestion centralisée des données des services, des organisations commerciales et de tous les autres types de données apparentés. Il définit les services de manière techniquement équivalente et univoque et régit l’attribution des numéros et des noms selon les directives de l’OFT, en accord avec les demandes des clients.\n\nCFF Infrastructure est propriétaire du système. Les entreprises de transport concessionnaires de Suisse, l’Union des transports publics ainsi que l’Office fédéral des transports en sont les utilisateurs. Faisant écho à une politique d’Open Data, les données disponibles dans DiDok sont accessibles à toutes les personnes intéressées."
+    "TITLE": "Bienvenue sur DiDok"
   }
 }

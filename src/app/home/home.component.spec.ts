@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TableComponent } from '../core/components/table/table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LanguageSwitcherComponent } from '../core/components/language-switcher/language-switcher.component';
 
 const authServiceMock: Partial<AuthService> = {
   loggedIn: true,
@@ -43,7 +44,7 @@ describe('HomeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HomeComponent, TableComponent],
+      declarations: [HomeComponent, TableComponent, LanguageSwitcherComponent],
       imports: [
         MaterialModule,
         HttpClientTestingModule,

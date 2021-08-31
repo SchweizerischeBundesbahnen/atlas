@@ -31,20 +31,6 @@
     "LEAVE_SITE": "Wenn du die Seite verlässt, werden deine Daten nicht gespeichert.",
     "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlierst du alle editierten Daten."
   },
-  "BREADCRUMB": {
-    "GESCHAEFTSORGANISATION": "Geschäftsorganisation",
-    "TRANSPORTUNTERNEHMEN": "Transportunternehmen",
-    "COMPANIES": "Companies",
-    "DETAIL": "Detail",
-    "BEHIG": "Bestandsaufnahme Behig"
-  },
-  "PAGINATOR": {
-    "ITEMS_PER_PAGE": "Items per Page",
-    "NEXT_PAGE": "Nächste Seite",
-    "PREVIOUS_PAGE": "Vorherige Seite",
-    "RANGE_LABEL1": "0 von {{length}}",
-    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} von {{length}}"
-  },
   "PROFILE": {
     "HELLO": "Hallo",
     "YOUR_ROLES": "Deine Rollen:",
@@ -53,8 +39,7 @@
   },
   "HOME": {
     "HEADER": "Fahrplanfeldnummer",
-    "TITLE": "Willkommen in ATLAS",
-    "DESCRIPTION": "DiDok ist das Mastersystem für die Verwaltung aller Dienststellen (insbesondere den Haltestellen) des öffentlichen Verkehrs in der Schweiz und ist somit eine Grundlage für die Fahrplanpublikation. Das System wird im Rahmen der Systemführerschaft Kundeninformation im Auftrag des Bundesamts für Verkehr (BAV) betrieben. DiDok nimmt die zentrale Datenverwaltung der Dienststellen, Geschäftsorganisationen und weiterer verwandten Datentypen vor. Es definiert die Dienststellen fachlich gleichwertig und technisch eindeutig und regelt die Nummern- und Namensvergabe nach den Vorschriften des BAV in Abstimmung mit den Kundenwünschen.\n\nSystemOwner ist SBB Infrastruktur. Kunden sind alle konzessionierten Transportunternehmen der Schweiz, der Verband öffentlicher Verkehr und das Bundesamt für Verkehr. Die Daten in DiDok stehen im Sinne von OpenData allen Interessierten offen."
+    "TITLE": "Willkommen in ATLAS"
   },
   "PAGES": {
     "HOME": "ATLAS Home",
