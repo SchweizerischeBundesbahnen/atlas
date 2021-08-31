@@ -1,12 +1,12 @@
 <ng-template [ngIf]="isAuthenticated">
   <button mat-button [matMenuTriggerFor]="profile" title="{{ userName }}">
-    <span class="material-icons">perm_identity</span>
+    <i class="bi bi-person-fill"></i>
   </button>
   <mat-menu #profile="matMenu">
     <div class="ps-1 pe-1 d-flex flex-column">
       <div class="user-info-modal d-flex">
         <div class="d-inline-block">
-          <span class="material-icons pe-2">perm_identity</span>
+          <i class="bi bi-person-fill pe-2"></i>
         </div>
         <div class="d-inline-block user-name-modal" title="{{ userName }}">
           {{ userName }}
@@ -14,7 +14,7 @@
       </div>
       <div class="d-flex" id="user-roles-modal">
         <div class="d-inline-block ps-2">
-          <span class="material-icons">accessibility</span>
+          <i class="bi bi-people-fill"></i>
         </div>
         <div class="d-inline-block">
           <span class="mb-0 user-info-modal">{{ 'PROFILE.YOUR_ROLES' | translate }}</span>
@@ -28,7 +28,7 @@
       </div>
       <hr />
       <button mat-button (click)="logout()" id="logout">
-        <span class="material-icons">logout</span>
+        <i class="bi bi-box-arrow-right"></i>
         {{ 'PROFILE.LOGOUT' | translate }}
       </button>
     </div>
@@ -36,7 +36,7 @@
 </ng-template>
 <ng-template [ngIf]="!isAuthenticated">
   <button mat-button (click)="login()">
-    <span class="material-icons">perm_identity</span>
+    <i class="bi bi-person"></i>
     {{ 'PROFILE.LOGIN' | translate }}
   </button>
 </ng-template>

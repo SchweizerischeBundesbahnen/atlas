@@ -54,11 +54,9 @@ describe('UserComponent', () => {
     fixture.detectChanges();
 
     const usernameModal = fixture.debugElement.query(By.css('.user-info-modal')).nativeElement;
-    expect(usernameModal.querySelector('.material-icons').textContent).toContain('perm_identity');
     expect(usernameModal.querySelector('.user-name-modal').textContent).toContain(expectedUserName);
 
     const userRolesModal = fixture.debugElement.query(By.css('#user-roles-modal')).nativeElement;
-    expect(userRolesModal.querySelector('.material-icons').textContent).toContain('accessibility');
     expect(userRolesModal.querySelector('.user-info-modal').textContent).toContain(
       'PROFILE.YOUR_ROLES'
     );
