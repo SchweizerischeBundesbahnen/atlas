@@ -34,7 +34,7 @@ RUN tar -xzf app.tar.gz && \
 
 # If you want to define your own location / rule, you have to enable this line to avoid a duplication of this rule.
 # Because this rule is already defined in the nginx.conf file of the base image, what would result in an error.
-# RUN sed -i '/^\s*location \/ {$/{N;d;}' /etc/opt/rh/rh-nginx116/nginx/nginx.conf
+RUN sed -i '/^\s*location \/ {$/{N;d;}' /etc/opt/rh/rh-nginx116/nginx/nginx.conf
 
 # Add nested nginx configuration
 ADD nginx-location.conf "${NGINX_DEFAULT_CONF_PATH}/"
