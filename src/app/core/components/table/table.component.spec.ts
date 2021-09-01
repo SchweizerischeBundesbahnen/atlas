@@ -5,8 +5,8 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { MaterialModule } from '../../module/material.module';
 
 describe('TableComponent', () => {
-  let component: TableComponent;
-  let fixture: ComponentFixture<TableComponent>;
+  let component: TableComponent<any>;
+  let fixture: ComponentFixture<TableComponent<any>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
