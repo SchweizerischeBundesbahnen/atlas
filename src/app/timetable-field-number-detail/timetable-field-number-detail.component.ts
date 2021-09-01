@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../api';
 
 @Component({
@@ -9,19 +9,54 @@ import { TimetableFieldNumbersService, Version } from '../api';
 })
 export class TimetableFieldNumberDetailComponent {
   id: number;
-  version!: Version;
+  version: Version = {};
+  editable = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private timetableFieldNumberService: TimetableFieldNumbersService
+    private timetableFieldNumberService: TimetableFieldNumbersService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
     this.getVersion();
+
+    if (!this.id) {
+      this.enableEdit();
+    }
   }
 
   getVersion(): void {
-    this.timetableFieldNumberService
-      .getVersion(this.id)
-      .subscribe((version) => (this.version = version));
+    if (this.id) {
+      this.timetableFieldNumberService
+        .getVersion(this.id)
+        .subscribe((version) => (this.version = version));
+    }
+  }
+
+  onSubmit() {
+    this.editable = false;
+    if (this.id) {
+      this.timetableFieldNumberService.updateVersion(this.id, this.version).subscribe();
+    } else {
+      this.timetableFieldNumberService.createVersion(this.version).subscribe();
+    }
+    this.router
+      .navigate([''], {
+        relativeTo: this.route,
+      })
+      .then();
+  }
+
+  enableEdit() {
+    this.editable = true;
+  }
+
+  cancel() {
+    this.router
+      .navigate([''], {
+        relativeTo: this.route,
+      })
+      .then();
   }
 }

@@ -12,12 +12,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   tableColumns: TableColumn<Version>[] = [
-    { headerTitle: 'TABLE.TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
-    { headerTitle: 'TABLE.TTFN.NAME', value: 'name' },
-    { headerTitle: 'TABLE.TTFN.STATUS', value: 'status' },
-    { headerTitle: 'TABLE.TTFN.TTFNID', value: 'ttfnid' },
-    { headerTitle: 'TABLE.TTFN.VALID_FROM', value: 'validFrom' },
-    { headerTitle: 'TABLE.TTFN.VALID_TO', value: 'validTo' },
+    { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
+    { headerTitle: 'TTFN.NAME', value: 'name' },
+    { headerTitle: 'TTFN.STATUS', value: 'status' },
+    { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
+    { headerTitle: 'TTFN.VALID_FROM', value: 'validFrom' },
+    { headerTitle: 'TTFN.VALID_TO', value: 'validTo' },
   ];
 
   @Input() isLoading = false;
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
 
   getVersions(): void {
     this.timetableFieldNumbersService
-      .getVersions()
+      .getVersions(0, 0, ['id,ASC'])
       .subscribe((versions) => (this.versions = versions));
   }
 

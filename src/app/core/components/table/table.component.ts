@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TableColumn } from './table-column';
 
 @Component({
-  selector: 'app-table',
+  selector: 'app-table [tableData][tableColumns][newElementEvent][editElementEvent]',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
@@ -13,7 +13,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() tableData!: DATATYPE[];
   @Input() tableCaption!: string;
-  @Input() canEdit!: boolean;
+  @Input() canEdit = true;
   @Input() isLoading = false;
 
   @Output() newElementEvent = new EventEmitter<DATATYPE>();
