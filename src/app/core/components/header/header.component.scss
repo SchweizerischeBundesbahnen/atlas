@@ -16,3 +16,13 @@ button.btn.btn-primary:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+
+.header-subheader {
+  font-size: 12px;
+}
+
+div.d-flex {
+  padding-top: 0.4rem;
+  flex-direction: column;
+  line-height: 1.2rem;
+}
