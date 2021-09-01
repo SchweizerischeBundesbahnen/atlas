@@ -9,6 +9,7 @@ import { HeaderComponent } from './core/components/header/header.component';
 import { MaterialModule } from './core/module/material.module';
 import { UserComponent } from './core/components/user/user.component';
 import { LanguageSwitcherComponent } from './core/components/language-switcher/language-switcher.component';
+import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 
 const authServiceMock: Partial<AuthService> = {
   claims: { name: 'Test', email: 'test@test.ch', roles: [] },
@@ -29,7 +30,13 @@ describe('AppComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
       ],
-      declarations: [AppComponent, HeaderComponent, UserComponent, LanguageSwitcherComponent],
+      declarations: [
+        AppComponent,
+        HeaderComponent,
+        UserComponent,
+        LanguageSwitcherComponent,
+        SideNavComponent,
+      ],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
   });
