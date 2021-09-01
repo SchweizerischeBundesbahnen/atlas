@@ -2,13 +2,21 @@
   <button type="button" class="btn btn-primary me-3" (click)="toggle()">
     <i class="bi bi-list"></i>
   </button>
-  <div class="d-flex align-items-center">
+  <div>
     <img
       width="250px"
       src="assets/images/header-icons.svg"
       alt="{{ 'HOME.HEADER' | translate }} icons"
     />
-    <h1 class="white ms-3">{{ 'HOME.HEADER' | translate }}</h1>
+  </div>
+  <div class="d-flex ms-3">
+    <span id="header">{{ 'HOME.HEADER' | translate }}</span>
+    <div class="header-subheader">
+      <span>Version {{ version }}</span>
+      <span *ngIf="showLabel()" [ngClass]="getEnvLabelClass()">
+        {{ environmentLabel }}
+      </span>
+    </div>
   </div>
   <span class="spacer"></span>
   <app-user></app-user>
