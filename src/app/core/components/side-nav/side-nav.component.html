@@ -1,0 +1,14 @@
+<div *ngFor="let page of pages" class="link-border">
+  <a
+    mat-list-item
+    (click)="toggle()"
+    routerLink="{{ page.link }}"
+    routerLinkActive="route-active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <i class="bi {{ page.icon }} me-3"></i>
+    {{ page.title | translate }}
+    <span class="spacer"></span>
+    <i class="bi bi-arrow-right ms-5"></i>
+  </a>
+</div>

@@ -2,29 +2,7 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
     <mat-nav-list>
-      <a
-        mat-list-item
-        (click)="sidenav.toggle()"
-        routerLink=""
-        routerLinkActive="route-active"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        <i class="bi bi-house-fill me-3"></i>
-        <span>{{ 'PAGES.HOME' | translate }}</span>
-        <span class="spacer"></span>
-        <i class="bi bi-arrow-right ms-5"></i>
-      </a>
-      <a
-        mat-list-item
-        (click)="sidenav.toggle()"
-        routerLink="/auth-insights"
-        routerLinkActive="route-active"
-      >
-        <i class="bi bi-key-fill me-3"></i>
-        {{ 'PAGES.AUTH_INSIGHT' | translate }}
-        <span class="spacer"></span>
-        <i class="bi bi-arrow-right ms-5"></i>
-      </a>
+      <app-side-nav (showSideNav)="sidenav.toggle()"></app-side-nav>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content class="main-container container-fluid pt-3 pb-3">

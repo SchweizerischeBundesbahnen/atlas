@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MaterialModule } from './core/module/material.module';
 import { LanguageSwitcherComponent } from './core/components/language-switcher/language-switcher.component';
 import { TableComponent } from './core/components/table/table.component';
+import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => {
@@ -45,6 +46,7 @@ export function apiConfigFactory(): Configuration {
     LanguageSwitcherComponent,
     UserComponent,
     TableComponent,
+    SideNavComponent,
   ],
   imports: [
     BrowserModule,
