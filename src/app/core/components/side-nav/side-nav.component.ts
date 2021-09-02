@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Page } from '../../../model/page';
+import { Pages } from '../../../model/pages';
 
 @Component({
   selector: 'app-side-nav',
@@ -9,18 +10,7 @@ import { Page } from '../../../model/page';
 export class SideNavComponent {
   @Output() showSideNav = new EventEmitter<void>();
 
-  pages: Page[] = [
-    {
-      title: 'PAGES.HOME',
-      link: '',
-      icon: 'bi-house-fill',
-    },
-    {
-      title: 'PAGES.AUTH_INSIGHT',
-      link: '/auth-insights',
-      icon: 'bi-key-fill',
-    },
-  ];
+  pages: Page[] = Pages.pages;
 
   toggle(): void {
     this.showSideNav.emit();

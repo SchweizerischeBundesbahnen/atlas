@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 import { TimetableFieldNumbersService, Version } from '../api';
 
-import { environment } from '../../environments/environment';
 import { TableColumn } from '../core/components/table/table-column';
 
 @Component({
@@ -23,7 +22,6 @@ export class HomeComponent implements OnInit {
   @Input() isLoading = false;
 
   versions: Version[] = [];
-  envUrl = environment.backendUrl;
 
   constructor(
     private authService: AuthService,

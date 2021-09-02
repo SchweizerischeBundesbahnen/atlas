@@ -1,5 +1,5 @@
 export interface Page {
   title: string;
-  link: string;
+  path: string;
   icon: string;
 }

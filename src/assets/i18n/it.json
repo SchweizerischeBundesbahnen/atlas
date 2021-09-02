@@ -40,5 +40,9 @@
   "HOME": {
     "HEADER": "Documentazione dei servizi TP svizzeri (DiDok)",
     "TITLE": "Benvenuto a DiDok"
+  },
+  "PAGES": {
+    "HOME": "Home",
+    "AUTH_INSIGHT": "Auth-Insights"
   }
 }
