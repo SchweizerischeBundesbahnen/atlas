@@ -10,6 +10,7 @@ import { MaterialModule } from './core/module/material.module';
 import { UserComponent } from './core/components/user/user.component';
 import { LanguageSwitcherComponent } from './core/components/language-switcher/language-switcher.component';
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
+import { BreadcrumbComponent } from './core/components/breadcrumb/breadcrumb.component';
 
 const authServiceMock: Partial<AuthService> = {
   claims: { name: 'Test', email: 'test@test.ch', roles: [] },
@@ -36,6 +37,7 @@ describe('AppComponent', () => {
         UserComponent,
         LanguageSwitcherComponent,
         SideNavComponent,
+        BreadcrumbComponent,
       ],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
