@@ -47,6 +47,7 @@
     "AUTH_INSIGHT": "Auth-Insights"
   },
   "TTFN": {
+    "NEW": "Neue Fahrplanfeldnummer",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Fahrplannummer",
     "NAME": "Bezeichnung",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
