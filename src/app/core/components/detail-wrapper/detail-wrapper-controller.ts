@@ -1,7 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Directive, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE> implements OnInit {
@@ -16,14 +15,12 @@ export abstract class DetailWrapperController<TYPE> implements OnInit {
 
   ngOnInit(): void {
     if (this.isExistingRecord()) {
-      this.readRecord().subscribe((record) => {
-        this.record = record;
+      this.record = this.readRecord();
 
-        this.form = this.getFormGroup(record);
-        this.form.disable();
+      this.form = this.getFormGroup(this.record);
+      this.form.disable();
 
-        this.heading = this.getTitle(record);
-      });
+      this.heading = this.getTitle(this.record);
     } else {
       this.form.enable();
     }
@@ -60,7 +57,7 @@ export abstract class DetailWrapperController<TYPE> implements OnInit {
 
   abstract getTitle(record: TYPE): string | undefined;
 
-  abstract readRecord(): Observable<TYPE>;
+  abstract readRecord(): TYPE;
 
   abstract getFormGroup(record: TYPE): FormGroup;
 
