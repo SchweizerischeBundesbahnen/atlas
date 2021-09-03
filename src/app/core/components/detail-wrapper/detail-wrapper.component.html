@@ -1,6 +1,6 @@
 <div class="title-section mt-3 mb-3">
   <h1>
-    <strong>{{ heading || (headingNew | translate) }}</strong>
+    <strong>{{ controller.heading || (headingNew | translate) }}</strong>
   </h1>
 </div>
 
@@ -9,8 +9,8 @@
     <button
       mat-mini-fab
       class="me-3"
-      (click)="controller.toggleEdit(detailForm)"
-      [color]="controller.editable ? 'primary' : 'white'"
+      (click)="controller.toggleEdit()"
+      [color]="controller.form.enabled ? 'primary' : 'white'"
     >
       <em class="bi bi-pencil-fill"></em>
     </button>
@@ -18,31 +18,30 @@
       mat-mini-fab
       color="white"
       (click)="controller.deleteRecord()"
-      [disabled]="controller.editable"
+      [disabled]="controller.form.enabled"
     >
       <em class="bi bi-trash-fill"></em>
     </button>
   </div>
 </div>
 
-<form (ngSubmit)="controller.onSubmit()" #detailForm="ngForm">
-  <ng-content></ng-content>
+<ng-content></ng-content>
 
-  <div
-    class="footer fixed-bottom d-flex align-items-center justify-content-end background-grey"
-    *ngIf="controller.editable"
+<div
+  class="footer fixed-bottom d-flex align-items-center justify-content-end background-grey"
+  *ngIf="controller.form.enabled"
+>
+  <button mat-raised-button class="me-3" (click)="controller.toggleEdit()">
+    {{ 'COMMON.CANCEL' | translate }}
+  </button>
+  <button
+    mat-raised-button
+    type="submit"
+    class="me-3"
+    color="primary"
+    (click)="controller.save()"
+    [disabled]="!controller.form.valid"
   >
-    <button mat-raised-button class="me-3" (click)="controller.toggleEdit(detailForm)">
-      {{ 'COMMON.CANCEL' | translate }}
-    </button>
-    <button
-      mat-raised-button
-      type="submit"
-      class="me-3"
-      color="primary"
-      [disabled]="!detailForm.valid"
-    >
-      {{ 'COMMON.SAVE' | translate }}
-    </button>
-  </div>
-</form>
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
+</div>
