@@ -1,23 +1,31 @@
 import { ActivatedRoute } from '@angular/router';
 import { Directive, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Directive()
-export abstract class DetailWrapperController implements OnInit {
+export abstract class DetailWrapperController<TYPE> implements OnInit {
   private readonly id: number;
-  editable = false;
+  record!: TYPE;
+  form = new FormGroup({});
+  heading!: string | undefined;
 
   protected constructor(private route: ActivatedRoute) {
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
-
-    if (this.isNewRecord()) {
-      this.editable = true;
-    }
   }
 
   ngOnInit(): void {
     if (this.isExistingRecord()) {
-      this.readRecord();
+      this.readRecord().subscribe((record) => {
+        this.record = record;
+
+        this.form = this.getFormGroup(record);
+        this.form.disable();
+
+        this.heading = this.getTitle(record);
+      });
+    } else {
+      this.form.enable();
     }
   }
 
@@ -33,15 +41,16 @@ export abstract class DetailWrapperController implements OnInit {
     return !this.isNewRecord();
   }
 
-  toggleEdit(detailForm: NgForm) {
-    this.editable = !this.editable;
-    if (!this.editable) {
-      detailForm.reset();
+  toggleEdit() {
+    if (this.form.enabled) {
+      this.form.disable();
+    } else {
+      this.form.enable();
     }
   }
 
-  onSubmit() {
-    this.editable = false;
+  save() {
+    this.form.disable();
     if (this.id) {
       this.updateRecord();
     } else {
@@ -49,7 +58,11 @@ export abstract class DetailWrapperController implements OnInit {
     }
   }
 
-  abstract readRecord(): void;
+  abstract getTitle(record: TYPE): string | undefined;
+
+  abstract readRecord(): Observable<TYPE>;
+
+  abstract getFormGroup(record: TYPE): FormGroup;
 
   abstract updateRecord(): void;
 
