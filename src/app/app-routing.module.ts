@@ -4,6 +4,7 @@ import { AuthInsightsComponent } from './auth-insights/auth-insights.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './core/auth-guard';
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail/timetable-field-number-detail.component';
+import { TimetableFieldNumberDetailResolver } from './timetable-field-number-detail/timetable-field-number-detail.resolver';
 import { Pages } from './model/pages';
 
 // Use the AuthGuard in routes that should require a logged in user.
@@ -26,7 +27,13 @@ const routes: Routes = [
     },
   },
   { path: 'add', component: TimetableFieldNumberDetailComponent },
-  { path: ':id', component: TimetableFieldNumberDetailComponent },
+  {
+    path: ':id',
+    component: TimetableFieldNumberDetailComponent,
+    resolve: {
+      timetableFieldNumberDetail: TimetableFieldNumberDetailResolver,
+    },
+  },
 ];
 
 @NgModule({

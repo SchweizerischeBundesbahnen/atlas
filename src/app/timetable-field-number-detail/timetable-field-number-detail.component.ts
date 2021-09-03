@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../api';
 import { DetailWrapperController } from '../core/components/detail-wrapper/detail-wrapper-controller';
@@ -11,7 +11,10 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './timetable-field-number-detail.component.html',
   styleUrls: ['./timetable-field-number-detail.component.scss'],
 })
-export class TimetableFieldNumberDetailComponent extends DetailWrapperController<Version> {
+export class TimetableFieldNumberDetailComponent
+  extends DetailWrapperController<Version>
+  implements OnInit
+{
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -21,8 +24,8 @@ export class TimetableFieldNumberDetailComponent extends DetailWrapperController
     super(activatedRoute);
   }
 
-  readRecord(): Observable<Version> {
-    return this.timetableFieldNumberService.getVersion(this.getId());
+  readRecord(): Version {
+    return this.activatedRoute.snapshot.data.timetableFieldNumberDetail;
   }
 
   getFormGroup(record: Version): FormGroup {
