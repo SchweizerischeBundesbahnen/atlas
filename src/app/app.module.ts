@@ -24,7 +24,7 @@ import { MaterialModule } from './core/module/material.module';
 import { LanguageSwitcherComponent } from './core/components/language-switcher/language-switcher.component';
 import { TableComponent } from './core/components/table/table.component';
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail/timetable-field-number-detail.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { DetailWrapperComponent } from './core/components/detail-wrapper/detail-wrapper.component';
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 import { BreadcrumbComponent } from './core/components/breadcrumb/breadcrumb.component';

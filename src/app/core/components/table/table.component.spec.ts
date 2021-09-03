@@ -5,8 +5,10 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { MaterialModule } from '../../module/material.module';
 
 describe('TableComponent', () => {
+  /*eslint-disable */
   let component: TableComponent<any>;
   let fixture: ComponentFixture<TableComponent<any>>;
+  /*eslint-enable */
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
