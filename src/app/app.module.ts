@@ -85,7 +85,6 @@ export function apiConfigFactory(): Configuration {
     MatListModule,
     MatButtonToggleModule,
     MatButtonModule,
-    FormsModule,
     ReactiveFormsModule,
   ],
   bootstrap: [AppComponent],
