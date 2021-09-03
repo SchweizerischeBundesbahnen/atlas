@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../api';
 import { DetailWrapperController } from '../core/components/detail-wrapper/detail-wrapper-controller';
 import { TimetableFieldNumberDetailFormService } from './timetable-field-number-detail-form.service';
-import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 
 @Component({
