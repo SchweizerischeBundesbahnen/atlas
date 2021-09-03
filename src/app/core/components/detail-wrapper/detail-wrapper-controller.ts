@@ -14,12 +14,11 @@ export abstract class DetailWrapperController<TYPE> implements OnInit {
   }
 
   ngOnInit(): void {
+    this.record = this.readRecord();
+    this.form = this.getFormGroup(this.record);
+
     if (this.isExistingRecord()) {
-      this.record = this.readRecord();
-
-      this.form = this.getFormGroup(this.record);
       this.form.disable();
-
       this.heading = this.getTitle(this.record);
     } else {
       this.form.enable();
