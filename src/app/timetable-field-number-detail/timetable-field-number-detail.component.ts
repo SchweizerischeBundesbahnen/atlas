@@ -24,6 +24,10 @@ export class TimetableFieldNumberDetailComponent
     super(activatedRoute);
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
   readRecord(): Version {
     return this.activatedRoute.snapshot.data.timetableFieldNumberDetail;
   }
