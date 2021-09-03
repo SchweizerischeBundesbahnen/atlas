@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { TimetableFieldNumbersService } from '../api';
+import { TimetableFieldNumbersService, Version } from '../api';
 
 @Injectable({ providedIn: 'root' })
-export class TimetableFieldNumberDetailResolver implements Resolve<any> {
-  newVersion = {
+export class TimetableFieldNumberDetailResolver implements Resolve<Version> {
+  newVersion: Version = {
     ttfnid: 'ttfnid',
     name: 'name',
     swissTimetableFieldNumber: 'asdf',
     status: 'ACTIVE',
-    validFrom: '2021-06-01',
-    validTo: '2029-06-01',
+    validFrom: new Date('2021-06-01'),
+    validTo: new Date('2029-06-01'),
   };
 
   constructor(private timetableFieldNumbersService: TimetableFieldNumbersService) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Version> {
     const id = route.paramMap.get('id') || '';
     return id === 'add'
       ? of(this.newVersion)
