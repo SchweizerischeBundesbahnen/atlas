@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 
 import { environment } from '../../environments/environment';
 import { User } from '../model/user';
+import { Pages } from '../model/pages';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +54,7 @@ export class AuthService {
   // Optional. Can be removed, if the user is forcefully logged in as defined above.
   login() {
     // Set the current url as the state. This will enable redirection after login.
-    this.oauthService.initLoginFlow(this.router.url);
+    this.oauthService.initLoginFlow(Pages.HOME.path);
   }
 
   // Optional. Can be removed, if the user is forcefully logged in as defined above.
@@ -62,7 +63,7 @@ export class AuthService {
     // be redirected to the Logout page of Azure AD, which is only useful
     // if a device is shared by multiple users.
     this.oauthService.logOut(true);
-    return this.router.navigate(['/']);
+    return this.router.navigate([Pages.HOME.path]);
   }
 
   async hasRole(role: string) {
