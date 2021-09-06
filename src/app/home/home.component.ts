@@ -16,8 +16,8 @@ export class HomeComponent implements OnInit {
     { headerTitle: 'TTFN.NAME', value: 'name' },
     { headerTitle: 'TTFN.STATUS', value: 'status' },
     { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
-    { headerTitle: 'TTFN.VALID_FROM', value: 'validFrom' },
-    { headerTitle: 'TTFN.VALID_TO', value: 'validTo' },
+    { headerTitle: 'TTFN.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'TTFN.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
   @Input() isLoading = false;
