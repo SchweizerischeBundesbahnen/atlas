@@ -17,13 +17,9 @@ const version: Version = {
   validTo: new Date('2029-06-01'),
 };
 
-const routeSnapshotParams = {
-  get: () => {},
-};
-
 const routeSnapshotMock = {
   snapshot: {
-    paramMap: routeSnapshotParams,
+    paramMap: {},
     data: {
       timetableFieldNumberDetail: version,
     },
