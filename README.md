@@ -16,6 +16,8 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
   - [i18n](#i18n)
   - [Further help](#further-help)
   - [Questions/Suggestions](#questionssuggestions)
+- [Monitoring and Logging](#monitoring-and-logging)
+- [Problems and their fixes](#problems-and-their-fixes)
 
 <!-- tocstop -->
 
