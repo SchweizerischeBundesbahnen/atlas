@@ -1,17 +1,12 @@
-import { ActivatedRoute } from '@angular/router';
 import { Directive, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Record } from './record';
 
 @Directive()
-export abstract class DetailWrapperController<TYPE> implements OnInit {
-  private readonly id: number;
+export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
   record!: TYPE;
   form = new FormGroup({});
   heading!: string | undefined;
-
-  protected constructor(public activatedRoute: ActivatedRoute) {
-    this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
-  }
 
   ngOnInit(): void {
     this.record = this.readRecord();
@@ -25,8 +20,8 @@ export abstract class DetailWrapperController<TYPE> implements OnInit {
     }
   }
 
-  getId() {
-    return this.id;
+  getId(): number {
+    return this.record.id!;
   }
 
   isNewRecord() {
@@ -47,7 +42,7 @@ export abstract class DetailWrapperController<TYPE> implements OnInit {
 
   save() {
     this.form.disable();
-    if (this.id) {
+    if (this.getId()) {
       this.updateRecord();
     } else {
       this.createRecord();
