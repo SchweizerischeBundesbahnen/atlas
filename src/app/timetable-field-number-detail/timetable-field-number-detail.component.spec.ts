@@ -6,6 +6,9 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TimetableFieldNumbersService, Version } from '../api';
+import { MaterialModule } from '../core/module/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DetailWrapperComponent } from '../core/components/detail-wrapper/detail-wrapper.component';
 
 const version: Version = {
   id: 1,
@@ -32,11 +35,13 @@ describe('TimetableFieldNumberDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimetableFieldNumberDetailComponent],
+      declarations: [TimetableFieldNumberDetailComponent, DetailWrapperComponent],
       imports: [
         RouterModule.forRoot([]),
         HttpClientTestingModule,
         ReactiveFormsModule,
+        MaterialModule,
+        BrowserAnimationsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
