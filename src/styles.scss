@@ -49,10 +49,12 @@
 
 a {
   color: hsl(233, 57%, 37%);
+  text-decoration: none;
 }
 
 a:hover {
   color: hsl(235, 66%, 30%);
+  text-decoration: underline;
 }
 
 .has-overlay {
@@ -61,11 +63,4 @@ a:hover {
 
 i.bi {
   font-size: 16px;
-}
-
-a {
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
 }
