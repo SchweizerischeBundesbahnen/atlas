@@ -27,7 +27,7 @@ endpoints:
     cors:
       path-mappings: /**
       allowed-origins: http://localhost:4200,https://developer-int.sbb.ch,https://developer.sbb.ch
-      allowed-methods: OPTIONS,GET
+      allowed-methods: GET,PUT,POST,DELETE
       allowed-headers: "*"
 logging:
   level:
