@@ -15,14 +15,14 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.VALID_FROM' | translate }}</mat-label>
-        <input matInput formControlName="validFrom" />
+        <input matInput formControlName="validFrom" [matDatepicker]="validFromPicker" />
         <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
         <mat-datepicker #validFromPicker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.VALID_TO' | translate }}</mat-label>
-        <input matInput formControlName="validTo" />
+        <input matInput formControlName="validTo" [matDatepicker]="validToPicker" />
         <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
         <mat-datepicker #validToPicker></mat-datepicker>
       </mat-form-field>
