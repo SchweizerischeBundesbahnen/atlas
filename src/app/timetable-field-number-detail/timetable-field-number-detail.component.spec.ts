@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
 
 describe('TimetableFieldNumberDetailComponent', () => {
   let component: TimetableFieldNumberDetailComponent;
@@ -9,6 +13,8 @@ describe('TimetableFieldNumberDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TimetableFieldNumberDetailComponent],
+      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule],
+      providers: [ActivatedRoute, FormBuilder],
     }).compileComponents();
   });
 

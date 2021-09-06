@@ -15,7 +15,7 @@ export class TimetableFieldNumberDetailComponent
   implements OnInit
 {
   constructor(
-    private activatedRoute: ActivatedRoute,
+    public activatedRoute: ActivatedRoute,
     private router: Router,
     private timetableFieldNumberService: TimetableFieldNumbersService,
     public timetableFieldNumberDetailFormService: TimetableFieldNumberDetailFormService
@@ -40,11 +40,11 @@ export class TimetableFieldNumberDetailComponent
   }
 
   updateRecord(): void {
-    this.timetableFieldNumberService.updateVersion(this.getId(), this.record).subscribe();
+    this.timetableFieldNumberService.updateVersion(this.getId(), this.form.value).subscribe();
   }
 
   createRecord(): void {
-    this.timetableFieldNumberService.createVersion(this.record).subscribe();
+    this.timetableFieldNumberService.createVersion(this.form.value).subscribe();
   }
 
   deleteRecord(): void {
