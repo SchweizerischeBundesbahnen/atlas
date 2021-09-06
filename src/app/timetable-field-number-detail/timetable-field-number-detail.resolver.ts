@@ -24,8 +24,8 @@ export class TimetableFieldNumberDetailResolver implements Resolve<Version> {
     return idParameter === 'add'
       ? of(this.newVersion)
       : this.timetableFieldNumbersService.getVersion(parseInt(idParameter)).pipe(
-          catchError((e) => {
-            this.router.navigate(['']);
+          catchError(() => {
+            this.router.navigate(['']).then();
             return EMPTY;
           })
         );
