@@ -48,4 +48,38 @@ describe('TableComponent', () => {
     const firstTableCell = fixture.debugElement.query(By.css('td'));
     expect(firstTableCell.nativeElement.innerText).toBe('31.12.2021');
   });
+
+  it('should not render add if user may not edit', () => {
+    component.canEdit = false;
+    fixture.detectChanges();
+
+    const addButton = fixture.debugElement.query(By.css('.bi-plus'));
+    expect(addButton).toBeFalsy();
+  });
+
+  it('should render add if user can edit', () => {
+    component.canEdit = true;
+    fixture.detectChanges();
+
+    const addButton = fixture.debugElement.query(By.css('.bi-plus'));
+    expect(addButton).toBeTruthy();
+  });
+
+  it('should output new event', () => {
+    spyOn(component.newElementEvent, 'emit');
+
+    const addButton = fixture.debugElement.query(By.css('.bi-plus'));
+    addButton.nativeElement.click();
+
+    expect(component.newElementEvent.emit).toHaveBeenCalled();
+  });
+
+  it('should output edit event', () => {
+    spyOn(component.editElementEvent, 'emit');
+
+    const firstTableCell = fixture.debugElement.query(By.css('td'));
+    firstTableCell.nativeElement.click();
+
+    expect(component.editElementEvent.emit).toHaveBeenCalled();
+  });
 });
