@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../api';
 import { DetailWrapperController } from '../core/components/detail-wrapper/detail-wrapper-controller';
-import { TimetableFieldNumberDetailFormService } from './timetable-field-number-detail-form.service';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -18,7 +17,7 @@ export class TimetableFieldNumberDetailComponent
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private timetableFieldNumberService: TimetableFieldNumbersService,
-    public timetableFieldNumberDetailFormService: TimetableFieldNumberDetailFormService
+    private formBuilder: FormBuilder
   ) {
     super();
   }
@@ -29,10 +28,6 @@ export class TimetableFieldNumberDetailComponent
 
   readRecord(): Version {
     return this.activatedRoute.snapshot.data.timetableFieldNumberDetail;
-  }
-
-  getFormGroup(record: Version): FormGroup {
-    return this.timetableFieldNumberDetailFormService.buildVersionForm(record);
   }
 
   getTitle(record: Version): string | undefined {
@@ -52,5 +47,24 @@ export class TimetableFieldNumberDetailComponent
   deleteRecord(): void {
     this.timetableFieldNumberService.deleteVersion(this.getId()).subscribe();
     this.router.navigate(['']).then();
+  }
+
+  getFormGroup(version: Version): FormGroup {
+    return this.formBuilder.group({
+      swissTimetableFieldNumber: [
+        version.swissTimetableFieldNumber,
+        [Validators.required, Validators.maxLength(255)],
+      ],
+      ttfnid: [version.ttfnid, [Validators.required, Validators.maxLength(255)]],
+      validFrom: [version.validFrom, [Validators.required, Validators.maxLength(255)]],
+      validTo: [version.validTo, [Validators.required, Validators.maxLength(255)]],
+      businessOrganisation: [
+        version.businessOrganisation,
+        [Validators.required, Validators.maxLength(255)],
+      ],
+      number: [version.number, [Validators.required, Validators.maxLength(255)]],
+      name: [version.name, [Validators.required, Validators.maxLength(255)]],
+      comment: [version.comment],
+    });
   }
 }

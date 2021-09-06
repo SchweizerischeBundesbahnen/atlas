@@ -26,7 +26,6 @@ const routes: Routes = [
       breadcrumb: Pages.AUTH_INSIGHT.title,
     },
   },
-  { path: 'add', component: TimetableFieldNumberDetailComponent },
   {
     path: ':id',
     component: TimetableFieldNumberDetailComponent,
