@@ -11,6 +11,7 @@ export class LanguageSwitcherComponent {
   static readonly STORED_LANGUAGE_KEY = 'language';
   languages = ['de', 'fr', 'it'];
 
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   constructor(private translateService: TranslateService, private dateAdapter: DateAdapter<any>) {
     const language =
       this.languages.find(
