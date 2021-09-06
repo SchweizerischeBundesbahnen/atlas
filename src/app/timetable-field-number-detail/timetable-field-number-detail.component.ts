@@ -15,12 +15,12 @@ export class TimetableFieldNumberDetailComponent
   implements OnInit
 {
   constructor(
-    public activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private router: Router,
     private timetableFieldNumberService: TimetableFieldNumbersService,
     public timetableFieldNumberDetailFormService: TimetableFieldNumberDetailFormService
   ) {
-    super(activatedRoute);
+    super();
   }
 
   ngOnInit() {
@@ -44,7 +44,9 @@ export class TimetableFieldNumberDetailComponent
   }
 
   createRecord(): void {
-    this.timetableFieldNumberService.createVersion(this.form.value).subscribe();
+    this.timetableFieldNumberService
+      .createVersion(this.form.value)
+      .subscribe((version) => this.router.navigate([version.id]).then(() => this.ngOnInit()));
   }
 
   deleteRecord(): void {
