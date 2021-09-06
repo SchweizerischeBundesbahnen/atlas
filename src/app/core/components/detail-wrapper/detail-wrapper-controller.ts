@@ -9,8 +9,8 @@ export abstract class DetailWrapperController<TYPE> implements OnInit {
   form = new FormGroup({});
   heading!: string | undefined;
 
-  protected constructor(private route: ActivatedRoute) {
-    this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
+  protected constructor(public activatedRoute: ActivatedRoute) {
+    this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
   }
 
   ngOnInit(): void {
