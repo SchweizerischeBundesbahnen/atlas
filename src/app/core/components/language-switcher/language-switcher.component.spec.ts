@@ -2,10 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LanguageSwitcherComponent } from './language-switcher.component';
 import { By } from '@angular/platform-browser';
+import { DateAdapter } from '@angular/material/core';
 
 describe('LanguageSwitcherComponent', () => {
   let component: LanguageSwitcherComponent;
   let fixture: ComponentFixture<LanguageSwitcherComponent>;
+
+  const dateAdapter = jasmine.createSpyObj('dateAdapter', ['setLocale']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -15,7 +18,7 @@ describe('LanguageSwitcherComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
       ],
-      providers: [],
+      providers: [{ provide: DateAdapter, useValue: dateAdapter }],
     }).compileComponents();
   });
 
@@ -33,6 +36,7 @@ describe('LanguageSwitcherComponent', () => {
     it('should switch to "de"', () => {
       component.setLanguage('de');
       expect(component.currentLanguage).toBe('de');
+      expect(dateAdapter.setLocale).toHaveBeenCalledWith('de');
     });
 
     it('should switch to "fr"', () => {

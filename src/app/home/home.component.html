@@ -1,12 +1,10 @@
 <h2>{{ 'HOME.HEADER' | translate }}</h2>
 
-<p i18n *ngIf="!loggedIn">Please login to see Auth Insights.</p>
-
-<p>This is a work in progress, plese be patient as we deal with some styling</p>
-<br />
-
 <app-table
   [tableCaption]="'HOME.HEADER'"
   [tableData]="versions"
   [tableColumns]="tableColumns"
+  [canEdit]="true"
+  (newElementEvent)="newVersion()"
+  (editElementEvent)="editVersion($event)"
 ></app-table>
