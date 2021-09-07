@@ -44,7 +44,8 @@
   },
   "PAGES": {
     "HOME": "Home",
-    "AUTH_INSIGHT": "Auth-Insights"
+    "AUTH_INSIGHT": "Auth-Insights",
+    "DETAILS": "Details"
   },
   "TTFN": {
     "NEW": "Neue Fahrplanfeldnummer",

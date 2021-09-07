@@ -43,6 +43,19 @@
   },
   "PAGES": {
     "HOME": "Home",
-    "AUTH_INSIGHT": "Auth-Insights"
+    "AUTH_INSIGHT": "Auth-Insights",
+    "DETAILS": "Dettagli"
+  },
+  "TTFN": {
+    "NEW": "Nuovo numero piano orario",
+    "SWISS_TIMETABLE_FIELD_NUMBER": "Numero piano",
+    "NAME": "Nome",
+    "BUSINESS_ORGANISATION": "Azienda",
+    "NUMBER": "Numero piano",
+    "STATUS": "Stato",
+    "TTFNID": "Numero piano orario",
+    "VALID_FROM": "Valido da",
+    "VALID_TO": "Valido a",
+    "COMMENT": "Commento"
   }
 }

@@ -43,6 +43,19 @@
   },
   "PAGES": {
     "HOME": "Home",
-    "AUTH_INSIGHT": "Auth-Insights"
+    "AUTH_INSIGHT": "Auth-Insights",
+    "DETAILS": "Detàjils"
+  },
+  "TTFN": {
+    "NEW": "Neue Fahrplanfeldnummer Omelette",
+    "SWISS_TIMETABLE_FIELD_NUMBER": "Fahrplannummer Baguette",
+    "NAME": "Bezeichnung",
+    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "NUMBER": "Feld-Nr.",
+    "STATUS": "Status",
+    "TTFNID": "Fahrplanfeldnummer",
+    "VALID_FROM": "Gültig von",
+    "VALID_TO": "Gültig bis",
+    "COMMENT": "Kommentar"
   }
 }
