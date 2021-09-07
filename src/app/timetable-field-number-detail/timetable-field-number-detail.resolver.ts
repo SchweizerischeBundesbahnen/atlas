@@ -10,8 +10,8 @@ export class TimetableFieldNumberDetailResolver implements Resolve<Version> {
     name: 'name',
     swissTimetableFieldNumber: 'asdf',
     status: 'ACTIVE',
-    validFrom: new Date('2021-06-01'),
-    validTo: new Date('2029-06-01'),
+    validFrom: new Date(),
+    validTo: new Date('2029-12-31'),
   };
 
   constructor(
