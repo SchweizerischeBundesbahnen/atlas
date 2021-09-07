@@ -5,6 +5,7 @@
   },
   "COMMON": {
     "SAVE": "Speichern",
+    "EDIT": "Editieren",
     "CANCEL": "Abbrechen",
     "NODATAFOUND": "Es wurden keine Daten gefunden",
     "NEWFILTER": "Neuer Filter...",
@@ -43,16 +44,19 @@
   },
   "PAGES": {
     "HOME": "Home",
-    "AUTH_INSIGHT": "Auth-Insights"
+    "AUTH_INSIGHT": "Auth-Insights",
+    "DETAILS": "Details"
   },
-  "TABLE": {
-    "TTFN": {
-      "SWISS_TIMETABLE_FIELD_NUMBER": "Fahrplannummer",
-      "NAME": "Bezeichnung",
-      "STATUS": "Status",
-      "TTFNID": "Fahrplanfeldnummer",
-      "VALID_FROM": "Gültig von",
-      "VALID_TO": "Gültig bis"
-    }
+  "TTFN": {
+    "NEW": "Neue Fahrplanfeldnummer",
+    "SWISS_TIMETABLE_FIELD_NUMBER": "Fahrplannummer",
+    "NAME": "Bezeichnung",
+    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "NUMBER": "Feld-Nr.",
+    "STATUS": "Status",
+    "TTFNID": "Fahrplanfeldnummer",
+    "VALID_FROM": "Gültig von",
+    "VALID_TO": "Gültig bis",
+    "COMMENT": "Kommentar"
   }
 }

@@ -63,7 +63,9 @@
       "stepType": "continuous",
       "isBuildEnabled": true,
       "branchNamePrefixes": ["feature", "bugfix"],
-      "additionalBuildParams": ""
+      "additionalBuildParams": "",
+      "sonarScanEnabled": true,
+      "failOnQualityGateFailure": true
     },
     {
       "stepType": "integrationBuild",
