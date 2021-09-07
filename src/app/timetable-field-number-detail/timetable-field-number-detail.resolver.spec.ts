@@ -41,7 +41,7 @@ describe('TimetableFieldNumberDetailResolver', () => {
   it('should create prefilled version on add', () => {
     const mockRoute = { paramMap: convertToParamMap({ id: 'add' }) } as ActivatedRouteSnapshot;
 
-    let resolvedVersion = resolver.resolve(mockRoute);
+    const resolvedVersion = resolver.resolve(mockRoute);
 
     resolvedVersion.subscribe((version) => {
       expect(version.id).toBeUndefined();
@@ -53,7 +53,7 @@ describe('TimetableFieldNumberDetailResolver', () => {
   it('should get version from service to display', () => {
     const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
 
-    let resolvedVersion = resolver.resolve(mockRoute);
+    const resolvedVersion = resolver.resolve(mockRoute);
 
     resolvedVersion.subscribe((version) => {
       expect(version.id).toBe(1234);
