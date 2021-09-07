@@ -1,0 +1,59 @@
+<app-detail-wrapper [controller]="this" headingNew="TTFN.NEW">
+  <form [formGroup]="form">
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}</mat-label>
+        <input matInput formControlName="swissTimetableFieldNumber" />
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'TTFN.TTFNID' | translate }}</mat-label>
+        <input matInput formControlName="ttfnid" />
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'TTFN.VALID_FROM' | translate }}</mat-label>
+        <input matInput formControlName="validFrom" [matDatepicker]="validFromPicker" />
+        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #validFromPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'TTFN.VALID_TO' | translate }}</mat-label>
+        <input matInput formControlName="validTo" [matDatepicker]="validToPicker" />
+        <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
+        <mat-datepicker #validToPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field>
+        <mat-label>{{ 'TTFN.BUSINESS_ORGANISATION' | translate }}</mat-label>
+        <input matInput formControlName="businessOrganisation" />
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field>
+        <mat-label>{{ 'TTFN.NUMBER' | translate }}</mat-label>
+        <input matInput formControlName="number" />
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field>
+        <mat-label>{{ 'TTFN.NAME' | translate }}</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field>
+        <mat-label>{{ 'TTFN.COMMENT' | translate }}</mat-label>
+        <input matInput formControlName="comment" />
+      </mat-form-field>
+    </div>
+  </form>
+</app-detail-wrapper>

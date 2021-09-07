@@ -13,5 +13,10 @@ export class Pages {
     icon: 'bi-key-fill',
   };
 
+  public static TTFN_DETAILS: Page = {
+    title: 'PAGES.DETAILS',
+    path: ':id',
+  };
+
   public static pages: Page[] = [Pages.HOME, Pages.AUTH_INSIGHT];
 }

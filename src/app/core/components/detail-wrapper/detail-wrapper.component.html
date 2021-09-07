@@ -1,0 +1,47 @@
+<div class="title-section mt-3 mb-3">
+  <h1>
+    <strong>{{ controller.heading || (headingNew | translate) }}</strong>
+  </h1>
+</div>
+
+<div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section">
+  <div class="edit-buttons">
+    <button
+      mat-mini-fab
+      class="me-3"
+      (click)="controller.toggleEdit()"
+      [color]="controller.form.enabled ? 'primary' : 'white'"
+    >
+      <em class="bi bi-pencil-fill"></em>
+    </button>
+    <button
+      mat-mini-fab
+      color="white"
+      (click)="controller.deleteRecord()"
+      [disabled]="controller.form.enabled"
+    >
+      <em class="bi bi-trash-fill"></em>
+    </button>
+  </div>
+</div>
+
+<ng-content></ng-content>
+
+<div
+  class="footer fixed-bottom d-flex align-items-center justify-content-end background-grey"
+  *ngIf="controller.form.enabled"
+>
+  <button mat-raised-button class="me-3" (click)="controller.toggleEdit()">
+    {{ 'COMMON.CANCEL' | translate }}
+  </button>
+  <button
+    mat-raised-button
+    type="submit"
+    class="me-3"
+    color="primary"
+    (click)="controller.save()"
+    [disabled]="!controller.form.valid || !controller.form.dirty"
+  >
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
+</div>
