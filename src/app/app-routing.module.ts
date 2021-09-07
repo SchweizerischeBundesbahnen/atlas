@@ -27,10 +27,13 @@ const routes: Routes = [
     },
   },
   {
-    path: ':id',
+    path: Pages.TTFN_DETAILS.path,
     component: TimetableFieldNumberDetailComponent,
     resolve: {
       timetableFieldNumberDetail: TimetableFieldNumberDetailResolver,
+    },
+    data: {
+      breadcrumb: Pages.TTFN_DETAILS.title,
     },
   },
 ];
