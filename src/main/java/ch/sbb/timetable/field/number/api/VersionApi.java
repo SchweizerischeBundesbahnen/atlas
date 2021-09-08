@@ -2,7 +2,6 @@ package ch.sbb.timetable.field.number.api;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,10 +18,7 @@ public interface VersionApi {
 
   @GetMapping
   @PageableAsQueryParam
-  List<VersionModel> getVersions(@Parameter(hidden = true) Pageable pageable);
-
-  @GetMapping("/count")
-  long getVersionsCount();
+  VersionsContainer getVersions(@Parameter(hidden = true) Pageable pageable);
 
   @GetMapping("/{id}")
   VersionModel getVersion(@PathVariable Long id);
