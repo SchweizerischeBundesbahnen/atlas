@@ -1,16 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 import { TimetableFieldNumbersService, Version } from '../api';
 
 import { TableColumn } from '../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Pagination } from '../model/pagination';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<Version>[] = [
     { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
     { headerTitle: 'TTFN.NAME', value: 'name' },
@@ -22,7 +24,9 @@ export class HomeComponent implements OnInit {
 
   @Input() isLoading = false;
 
-  versions: Version[] = [];
+  versions$: Version[] = [];
+  totalCount$ = 0;
+  private getVersionsSubscription!: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -32,17 +36,20 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getVersions();
+    this.getVersions({ page: 0, size: 10, sort: 'swissTimetableFieldNumber,ASC' });
   }
 
   get loggedIn() {
     return this.authService.loggedIn;
   }
 
-  getVersions(): void {
-    this.timetableFieldNumbersService
-      .getVersions(0, 0, ['id,ASC'])
-      .subscribe((versions) => (this.versions = versions));
+  getVersions($pagination: Pagination) {
+    this.getVersionsSubscription = this.timetableFieldNumbersService
+      .getVersions($pagination.page, $pagination.size, [$pagination.sort])
+      .subscribe((versionContainer) => {
+        this.versions$ = versionContainer.versions!;
+        this.totalCount$ = versionContainer.totalCount!;
+      });
   }
 
   newVersion() {
@@ -59,5 +66,9 @@ export class HomeComponent implements OnInit {
         relativeTo: this.route,
       })
       .then();
+  }
+
+  ngOnDestroy() {
+    this.getVersionsSubscription.unsubscribe();
   }
 }
