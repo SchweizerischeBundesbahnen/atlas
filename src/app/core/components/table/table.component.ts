@@ -51,10 +51,6 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
     this.loading = true;
     const pageIndex = pageEvent.pageIndex;
     const pageSize = pageEvent.pageSize;
-    this.getNextData(pageIndex, pageSize);
-  }
-
-  getNextData(pageIndex: number, pageSize: number) {
     this.getTableElementsEvent.emit({ page: pageIndex, size: pageSize });
   }
 
