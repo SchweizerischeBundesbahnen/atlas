@@ -78,6 +78,19 @@ public class VersionControllerTest {
   }
 
   @Test
+  void shouldGetCountVersions() {
+    // Given
+    createEntity();
+    when(versionRepository.count()).thenReturn(1l);
+
+    // When
+    long result = versionController.getVersionsCount();
+
+    // Then
+    assertThat(result).isEqualTo(1);
+  }
+
+  @Test
   void shouldGetVersion() {
     // Given
     Version version = createEntity();

@@ -36,6 +36,11 @@ public class VersionController implements VersionApi {
   }
 
   @Override
+  public long getVersionsCount() {
+    return versionRepository.count();
+  }
+
+  @Override
   public VersionModel getVersion(Long id) {
     return versionRepository.findById(id).map(this::toModel).orElseThrow(NOT_FOUND_EXCEPTION);
   }
