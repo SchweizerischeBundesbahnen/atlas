@@ -2,9 +2,11 @@
 
 <app-table
   [tableCaption]="'HOME.HEADER'"
-  [tableData]="versions"
+  [tableData]="versions$"
+  [totalCount]="totalCount$"
   [tableColumns]="tableColumns"
   [canEdit]="true"
   (newElementEvent)="newVersion()"
   (editElementEvent)="editVersion($event)"
+  (getTableElementsEvent)="getVersions($event)"
 ></app-table>
