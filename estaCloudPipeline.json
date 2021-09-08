@@ -47,6 +47,7 @@
         "bugfix"
       ],
       "additionalBuildParams": "",
+      "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
     },
     {
