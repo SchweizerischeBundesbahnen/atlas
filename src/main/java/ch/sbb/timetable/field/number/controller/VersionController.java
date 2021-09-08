@@ -2,6 +2,7 @@ package ch.sbb.timetable.field.number.controller;
 
 import ch.sbb.timetable.field.number.api.VersionApi;
 import ch.sbb.timetable.field.number.api.VersionModel;
+import ch.sbb.timetable.field.number.api.VersionsContainer;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import java.util.List;
@@ -29,15 +30,14 @@ public class VersionController implements VersionApi {
   }
 
   @Override
-  public List<VersionModel> getVersions(Pageable pageable) {
+  public VersionsContainer getVersions(Pageable pageable) {
     log.info("Load Versions using pageable={}", pageable);
-    return versionRepository.findAll(pageable).stream().map(this::toModel)
-                            .collect(Collectors.toList());
-  }
-
-  @Override
-  public long getVersionsCount() {
-    return versionRepository.count();
+    List<VersionModel> versions = versionRepository.findAll(pageable).stream().map(this::toModel)
+                                                  .collect(Collectors.toList());
+    long totalCount = versionRepository.count();
+    return VersionsContainer.builder()
+                            .versions(versions)
+                            .totalCount(totalCount).build();
   }
 
   @Override
