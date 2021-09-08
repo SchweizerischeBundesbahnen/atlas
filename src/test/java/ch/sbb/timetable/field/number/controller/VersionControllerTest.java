@@ -8,11 +8,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.timetable.field.number.api.VersionModel;
+import ch.sbb.timetable.field.number.api.VersionsContainer;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,17 +64,20 @@ public class VersionControllerTest {
     Version version = createEntity();
     when(versionRepository.findAll(any(Pageable.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(version)));
+    when(versionRepository.count()).thenReturn(1l);
 
     // When
-    List<VersionModel> versions = versionController.getVersions(Pageable.unpaged());
+    VersionsContainer versions = versionController.getVersions(Pageable.unpaged());
 
     // Then
-    assertThat(versions).hasSize(1)
+    assertThat(versions).isNotNull();
+    assertThat(versions.getVersions()).hasSize(1)
                         .first()
                         .usingRecursiveComparison()
                         .ignoringFields("editor", "creator", "editionDate", "creationDate",
                             "lineRelations")
                         .isEqualTo(version);
+    assertThat(versions.getTotalCount()).isEqualTo(1);
   }
 
   @Test
@@ -94,7 +97,7 @@ public class VersionControllerTest {
   }
 
   @Test
-  void shouldReturnNotFoundOnUnexistingVersion() {
+  void shouldReturnNotFoundOnUnexcitingVersion() {
     // Given
     when(versionRepository.findById(anyLong())).thenReturn(Optional.empty());
 
