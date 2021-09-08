@@ -54,6 +54,15 @@ public class VersionRepositoryTest {
   }
 
   @Test
+  void shouldGetCountVersions() {
+    //when
+    long result = versionRepository.count();
+
+    //then
+    assertThat(result).isEqualTo(1);
+  }
+
+  @Test
   void shouldGetVersionWithTwoLineRelations() {
     //given
 

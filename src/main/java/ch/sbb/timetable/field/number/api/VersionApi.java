@@ -21,6 +21,9 @@ public interface VersionApi {
   @PageableAsQueryParam
   List<VersionModel> getVersions(@Parameter(hidden = true) Pageable pageable);
 
+  @GetMapping("/count")
+  long getVersionsCount();
+
   @GetMapping("/{id}")
   VersionModel getVersion(@PathVariable Long id);
 
