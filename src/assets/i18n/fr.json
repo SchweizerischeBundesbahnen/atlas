@@ -57,5 +57,12 @@
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "COMMENT": "Kommentar"
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "éléments par page",
+    "NEXT_PAGE": "page suivante",
+    "PREVIOUS_PAGE": "page précédente",
+    "RANGE_LABEL1": "0 sur {{length}}",
+    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} sur {{length}}"
   }
 }

@@ -6,7 +6,14 @@
       <em class="bi bi-plus fs-2"></em>
     </button>
   </div>
-  <table mat-table [dataSource]="tableData" matSort>
+  <table
+    mat-table
+    [dataSource]="tableData"
+    matSort
+    (matSortChange)="sortData($event)"
+    matSortActive="TTFN.SWISS_TIMETABLE_FIELD_NUMBER"
+    matSortDirection="asc"
+  >
     <caption class="ps-3">
       {{
         tableCaption | translate
@@ -33,4 +40,12 @@
       <td class="mat-cell" colspan="4">{{ 'COMMON.NODATAFOUND' | translate }}</td>
     </tr>
   </table>
+
+  <mat-paginator
+    [length]="totalCount"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    (page)="pageChanged($event)"
+  >
+  </mat-paginator>
 </div>

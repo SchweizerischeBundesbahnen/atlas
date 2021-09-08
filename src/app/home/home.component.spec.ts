@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
 import { AuthService } from '../core/auth.service';
-import { TimetableFieldNumbersService, Version } from '../api';
+import { TimetableFieldNumbersService, VersionsContainer } from '../api';
 import { MaterialModule } from '../core/module/material.module';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -16,20 +16,25 @@ const authServiceMock: Partial<AuthService> = {
   loggedIn: true,
 };
 
-const version: Version = {
-  id: 1,
-  ttfnid: 'ttfnid',
-  name: 'name',
-  swissTimetableFieldNumber: 'asdf',
-  status: 'ACTIVE',
-  validFrom: new Date('2021-06-01'),
-  validTo: new Date('2029-06-01'),
+const versionContainer: VersionsContainer = {
+  versions: [
+    {
+      id: 1,
+      ttfnid: 'ttfnid',
+      name: 'name',
+      swissTimetableFieldNumber: 'asdf',
+      status: 'ACTIVE',
+      validFrom: new Date('2021-06-01'),
+      validTo: new Date('2029-06-01'),
+    },
+  ],
+  totalCount: 1,
 };
 
 // With Mock
 // const timetableFieldNumberMockService : Partial<TimetableFieldNumbersService> = {
 //   getVersions(): Observable<any> {
-//     return of([version]);
+//     return of([versionContainer]);
 //   }
 // }
 
@@ -41,8 +46,7 @@ describe('HomeComponent', () => {
   const timetableFieldNumberService = jasmine.createSpyObj('timetableFieldNumbersService', [
     'getVersions',
   ]);
-  timetableFieldNumberService.getVersions.and.returnValue(of([version]));
-
+  timetableFieldNumberService.getVersions.and.returnValue(of(versionContainer));
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [HomeComponent, TableComponent, LanguageSwitcherComponent],
@@ -71,6 +75,7 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
     expect(timetableFieldNumberService.getVersions).toHaveBeenCalled();
 
-    expect(component.versions.length).toBe(1);
+    expect(component.versions$.length).toBe(1);
+    expect(component.totalCount$).toBe(1);
   });
 });
