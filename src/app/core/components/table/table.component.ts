@@ -1,33 +1,38 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableColumn } from './table-column';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][newElementEvent][editElementEvent]',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent<DATATYPE> implements OnInit {
+export class TableComponent<DATATYPE> implements AfterViewInit {
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() tableData!: DATATYPE[];
   @Input() tableCaption!: string;
   @Input() canEdit = true;
   @Input() isLoading = false;
+  @Input() totalCount!: number;
 
   @Output() newElementEvent = new EventEmitter<DATATYPE>();
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
+  @Output() getTableElementsEvent = new EventEmitter();
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
   tableDataSrc!: MatTableDataSource<DATATYPE>;
+  loading = true;
 
-  ngOnInit() {
-    this.tableDataSrc = new MatTableDataSource(this.tableData);
-    this.tableDataSrc.sort = this.sort;
-    this.tableDataSrc.paginator = this.paginator;
+  ngAfterViewInit() {
+    if (this.tableDataSrc !== undefined) {
+      this.tableDataSrc.paginator = this.paginator;
+      this.tableDataSrc.sort = this.sort;
+    }
   }
 
   getColumnValues(): string[] {
@@ -40,5 +45,22 @@ export class TableComponent<DATATYPE> implements OnInit {
 
   edit(row: DATATYPE) {
     this.editElementEvent.emit(row);
+  }
+
+  pageChanged(pageEvent: PageEvent) {
+    this.loading = true;
+    const pageIndex = pageEvent.pageIndex;
+    const pageSize = pageEvent.pageSize;
+    this.getNextData(pageIndex, pageSize);
+  }
+
+  getNextData(pageIndex: number, pageSize: number) {
+    this.getTableElementsEvent.emit({ page: pageIndex, size: pageSize });
+  }
+
+  sortData(sort: Sort) {
+    this.paginator.firstPage();
+    const sortElement = sort.active + ',' + sort.direction.toUpperCase();
+    this.getTableElementsEvent.emit({ page: 0, size: 10, sort: sortElement });
   }
 }

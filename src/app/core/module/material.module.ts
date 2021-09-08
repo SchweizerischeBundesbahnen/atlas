@@ -42,6 +42,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslatedMatPaginatorIntl } from '../components/table/translated-paginator-intl';
 
 export const FORMAT = {
   parse: {
@@ -97,6 +98,7 @@ export const FORMAT = {
   providers: [
     {
       provide: MatPaginatorIntl,
+      useClass: TranslatedMatPaginatorIntl,
     },
 
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
