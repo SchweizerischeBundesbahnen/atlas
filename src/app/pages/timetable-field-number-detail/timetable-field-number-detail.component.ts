@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TimetableFieldNumbersService, Version } from '../api';
-import { DetailWrapperController } from '../core/components/detail-wrapper/detail-wrapper-controller';
+import { TimetableFieldNumbersService, Version } from '../../api';
+import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({

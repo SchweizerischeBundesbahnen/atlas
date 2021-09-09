@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AuthInsightsComponent } from './auth-insights.component';
-import { AuthService } from '../core/auth.service';
+import { AuthService } from '../../core/auth/auth.service';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const authServiceMock: Partial<AuthService> = {};

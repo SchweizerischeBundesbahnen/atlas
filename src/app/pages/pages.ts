@@ -1,4 +1,4 @@
-import { Page } from './page';
+import { Page } from '../core/model/page';
 
 export class Pages {
   public static HOME: Page = {

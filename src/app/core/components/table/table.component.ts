@@ -4,6 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableColumn } from './table-column';
 import { Sort } from '@angular/material/sort';
+import { TablePagination } from './table-pagination';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][newElementEvent][editElementEvent]',
@@ -20,7 +21,7 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
 
   @Output() newElementEvent = new EventEmitter<DATATYPE>();
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
-  @Output() getTableElementsEvent = new EventEmitter();
+  @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;

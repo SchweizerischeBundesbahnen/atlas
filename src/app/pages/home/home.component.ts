@@ -1,11 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../core/auth.service';
-import { TimetableFieldNumbersService, Version } from '../api';
+import { AuthService } from '../../core/auth/auth.service';
+import { TimetableFieldNumbersService, Version } from '../../api';
 
-import { TableColumn } from '../core/components/table/table-column';
+import { TableColumn } from '../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Pagination } from '../model/pagination';
+import { TablePagination } from '../../core/components/table/table-pagination';
 
 @Component({
   selector: 'app-home',
@@ -43,9 +43,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.authService.loggedIn;
   }
 
-  getVersions($pagination: Pagination) {
+  getVersions($pagination: TablePagination) {
     this.getVersionsSubscription = this.timetableFieldNumbersService
-      .getVersions($pagination.page, $pagination.size, [$pagination.sort])
+      .getVersions($pagination.page, $pagination.size, [$pagination.sort!])
       .subscribe((versionContainer) => {
         this.versions$ = versionContainer.versions!;
         this.totalCount$ = versionContainer.totalCount!;
