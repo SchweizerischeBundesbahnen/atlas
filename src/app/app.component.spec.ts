@@ -3,7 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
-import { AuthService } from './core/auth.service';
+import { AuthService } from './core/auth/auth.service';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HeaderComponent } from './core/components/header/header.component';
 import { MaterialModule } from './core/module/material.module';

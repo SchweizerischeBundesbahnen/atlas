@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthInsightsComponent } from './auth-insights/auth-insights.component';
-import { HomeComponent } from './home/home.component';
-import { AuthGuard } from './core/auth-guard';
-import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail/timetable-field-number-detail.component';
-import { TimetableFieldNumberDetailResolver } from './timetable-field-number-detail/timetable-field-number-detail.resolver';
-import { Pages } from './model/pages';
+import { AuthInsightsComponent } from './pages/auth-insights/auth-insights.component';
+import { HomeComponent } from './pages/home/home.component';
+import { AuthGuard } from './core/auth/auth-guard';
+import { TimetableFieldNumberDetailComponent } from './pages/timetable-field-number-detail/timetable-field-number-detail.component';
+import { TimetableFieldNumberDetailResolver } from './pages/timetable-field-number-detail/timetable-field-number-detail.resolver';
+import { Pages } from './pages/pages';
 
 // Use the AuthGuard in routes that should require a logged in user.
 // Do NOT use it for the root route. If the user should always be logged in,
