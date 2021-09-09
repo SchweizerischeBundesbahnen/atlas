@@ -4,9 +4,9 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { first } from 'rxjs/operators';
 import { Location } from '@angular/common';
 
-import { environment } from '../../environments/environment';
-import { User } from '../model/user';
-import { Pages } from '../model/pages';
+import { environment } from '../../../environments/environment';
+import { User } from '../components/user/user';
+import { Pages } from '../../pages/pages';
 
 @Injectable({
   providedIn: 'root',

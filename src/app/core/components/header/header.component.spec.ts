@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { MaterialModule } from '../../module/material.module';
 import { UserComponent } from '../user/user.component';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';

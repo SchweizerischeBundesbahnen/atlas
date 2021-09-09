@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../core/auth.service';
-import { Pages } from '../model/pages';
+import { AuthService } from '../../core/auth/auth.service';
+import { Pages } from '../pages';
 
 @Component({
   selector: 'app-auth-insights',

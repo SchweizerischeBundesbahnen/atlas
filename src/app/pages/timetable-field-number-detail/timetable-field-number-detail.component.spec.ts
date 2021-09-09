@@ -5,10 +5,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TimetableFieldNumbersService, Version } from '../api';
-import { MaterialModule } from '../core/module/material.module';
+import { TimetableFieldNumbersService, Version } from '../../api';
+import { MaterialModule } from '../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DetailWrapperComponent } from '../core/components/detail-wrapper/detail-wrapper.component';
+import { DetailWrapperComponent } from '../../core/components/detail-wrapper/detail-wrapper.component';
 
 const version: Version = {
   id: 1,

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Page } from '../../../model/page';
-import { Pages } from '../../../model/pages';
+import { Page } from '../../model/page';
+import { Pages } from '../../../pages/pages';
 
 @Component({
   selector: 'app-side-nav',
