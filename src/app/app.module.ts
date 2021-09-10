@@ -28,7 +28,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DetailWrapperComponent } from './core/components/detail-wrapper/detail-wrapper.component';
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 import { BreadcrumbComponent } from './core/components/breadcrumb/breadcrumb.component';
-import { LoadingSpinnerComponent } from './core/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from './core/components/loading-spinner/loading-spinner.component';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => {
