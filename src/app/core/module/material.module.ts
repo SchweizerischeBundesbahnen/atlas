@@ -13,10 +13,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import {
   DateAdapter,
-  MatNativeDateModule,
-  MatRippleModule,
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
+  MatNativeDateModule,
+  MatRippleModule,
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -43,6 +43,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatedMatPaginatorIntl } from '../components/table/translated-paginator-intl';
+import { ReactiveFormsModule } from '@angular/forms';
 
 export const FORMAT = {
   parse: {
@@ -55,45 +56,53 @@ export const FORMAT = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
+
 @NgModule({
   imports: [CommonModule],
   exports: [
     CdkStepperModule,
     CdkTreeModule,
+    MatAutocompleteModule,
     MatBadgeModule,
+    MatButtonModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatIconModule,
     MatIconModule,
     MatInputModule,
-    MatTabsModule,
     MatListModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatDialogModule,
+    MatListModule,
     MatMenuModule,
-    MatGridListModule,
-    MatCardModule,
-    MatChipsModule,
-    MatSnackBarModule,
-    MatSliderModule,
-    MatAutocompleteModule,
-    MatDatepickerModule,
-    MatSlideToggleModule,
-    MatSidenavModule,
-    MatCheckboxModule,
+    MatMenuModule,
     MatNativeDateModule,
+    MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatSelectModule,
-    MatRippleModule,
     MatRadioModule,
-    MatButtonToggleModule,
-    MatTableModule,
-    MatPaginatorModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
+    MatSliderModule,
+    MatSnackBarModule,
     MatSortModule,
     MatStepperModule,
-    MatExpansionModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatToolbarModule,
     MatTooltipModule,
     PortalModule,
-    MatFormFieldModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {

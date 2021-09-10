@@ -11,20 +11,13 @@ import { HomeComponent } from './pages/home/home.component';
 import { environment } from '../environments/environment';
 import { ApiModule, Configuration, ConfigurationParameters } from './api';
 import { HeaderComponent } from './core/components/header/header.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
 import { UserComponent } from './core/components/user/user.component';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatListModule } from '@angular/material/list';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatButtonModule } from '@angular/material/button';
 import { MaterialModule } from './core/module/material.module';
 import { LanguageSwitcherComponent } from './core/components/language-switcher/language-switcher.component';
 import { TableComponent } from './core/components/table/table.component';
 import { TimetableFieldNumberDetailComponent } from './pages/timetable-field-number-detail/timetable-field-number-detail.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { DetailWrapperComponent } from './core/components/detail-wrapper/detail-wrapper.component';
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 import { BreadcrumbComponent } from './core/components/breadcrumb/breadcrumb.component';
@@ -81,13 +74,6 @@ export function apiConfigFactory(): Configuration {
       },
     }),
     AppRoutingModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatMenuModule,
-    MatListModule,
-    MatButtonToggleModule,
-    MatButtonModule,
-    ReactiveFormsModule,
   ],
   bootstrap: [AppComponent],
 })
