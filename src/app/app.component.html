@@ -7,10 +7,8 @@
   </mat-sidenav>
   <mat-sidenav-content class="main-container container-fluid ms-3">
     <div class="full-height">
-      <!--      <app-loading-spinner-->
-      <!--        [isLoading]="loadingSpinnerService.isLoading"-->
-      <!--        [fullScreen]="true"-->
-      <!--      ></app-loading-spinner>-->
+      <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
+      </app-loading-spinner>
       <app-breadcrumb></app-breadcrumb>
       <router-outlet></router-outlet>
     </div>
