@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import packageJson from '../../package.json';
-import { LoadingSpinnerService } from './core/loading-spinner/loading-spinner.service';
+import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
 
 @Component({
   selector: 'app-root',
