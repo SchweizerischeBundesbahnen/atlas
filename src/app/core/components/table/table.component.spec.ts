@@ -5,6 +5,7 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -14,7 +15,7 @@ describe('TableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TableComponent],
+      declarations: [TableComponent, LoadingSpinnerComponent],
       imports: [
         MaterialModule,
         BrowserAnimationsModule,
