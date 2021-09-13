@@ -9,8 +9,7 @@
     + [PostgreSQL Docker](#postgresql-docker)
   * [Links](#links)
     + [OpenApi Links](#openapi-links)
-  * [Splunk](#splunk)
-  * [Decision History](#decision-history)
+
   
 ## Big Picture
 ![ATLAS Big Picture](documentation/ATLAS_Infrastruktur.svg)
