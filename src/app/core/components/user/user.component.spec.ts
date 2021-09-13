@@ -51,7 +51,7 @@ describe('UserComponent', () => {
 
     it('should show user menu', () => {
       fixture.detectChanges();
-      const usermenuOpenButton = fixture.debugElement.query(By.css('button'));
+      const usermenuOpenButton = fixture.debugElement.query(By.css('#user-menu-button'));
       usermenuOpenButton.nativeElement.click();
       fixture.detectChanges();
 
@@ -59,11 +59,14 @@ describe('UserComponent', () => {
       expect(usernameModal.querySelector('.user-name-modal').textContent).toContain(
         expectedUserName
       );
+      fixture.detectChanges();
 
       const userRolesModal = fixture.debugElement.query(By.css('#user-roles-modal')).nativeElement;
       expect(userRolesModal.querySelector('.user-info-modal').textContent).toContain(
         'PROFILE.YOUR_ROLES'
       );
+      fixture.detectChanges();
+
       const userRoles = userRolesModal.querySelectorAll('mat-list>mat-list-item.mat-list-item');
       expect(userRoles[0].textContent).toContain(authServiceMock.claims!.roles[0]);
       expect(userRoles[1].textContent).toContain(authServiceMock.claims!.roles[1]);

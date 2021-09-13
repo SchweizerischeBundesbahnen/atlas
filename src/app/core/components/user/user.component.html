@@ -1,5 +1,5 @@
 <ng-template [ngIf]="isAuthenticated">
-  <button mat-button [matMenuTriggerFor]="profile" title="{{ userName }}">
+  <button mat-button id="user-menu-button" [matMenuTriggerFor]="profile" title="{{ userName }}">
     <i class="bi bi-person-fill"></i>
   </button>
   <mat-menu #profile="matMenu">
