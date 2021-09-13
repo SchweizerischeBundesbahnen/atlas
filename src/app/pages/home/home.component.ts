@@ -1,10 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../../core/auth/auth.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TimetableFieldNumbersService, Version } from '../../api';
 
 import { TableColumn } from '../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../core/components/table/table-pagination';
 
 @Component({
@@ -22,14 +21,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     { headerTitle: 'TTFN.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  @Input() isLoading = false;
-
   versions$: Version[] = [];
   totalCount$ = 0;
+  isLoading = false;
   private getVersionsSubscription!: Subscription;
 
   constructor(
-    private authService: AuthService,
     private timetableFieldNumbersService: TimetableFieldNumbersService,
     private route: ActivatedRoute,
     private router: Router
@@ -39,16 +36,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getVersions({ page: 0, size: 10, sort: 'swissTimetableFieldNumber,ASC' });
   }
 
-  get loggedIn() {
-    return this.authService.loggedIn;
-  }
-
   getVersions($pagination: TablePagination) {
+    this.isLoading = true;
     this.getVersionsSubscription = this.timetableFieldNumbersService
       .getVersions($pagination.page, $pagination.size, [$pagination.sort!])
+      .pipe(
+        catchError((err) => {
+          // implement Notification Service and integrate me the snack-bar notification
+          // see ATLAS-116
+          this.isLoading = false;
+          throw err;
+        })
+      )
       .subscribe((versionContainer) => {
         this.versions$ = versionContainer.versions!;
         this.totalCount$ = versionContainer.totalCount!;
+        this.isLoading = false;
       });
   }
 
