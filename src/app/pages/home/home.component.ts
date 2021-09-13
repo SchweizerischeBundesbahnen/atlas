@@ -3,7 +3,7 @@ import { TimetableFieldNumbersService, Version } from '../../api';
 
 import { TableColumn } from '../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Subscription, throwError } from 'rxjs';
+import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../core/components/table/table-pagination';
 
 @Component({
@@ -42,11 +42,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getVersions($pagination.page, $pagination.size, [$pagination.sort!])
       .pipe(
         catchError((err) => {
-          //TODO: implement Notification Service and integrate me the snack-bar notification
+          // implement Notification Service and integrate me the snack-bar notification
           // see ATLAS-116
-          console.log('Handling error locally and rethrowing it...', err);
           this.isLoading = false;
-          return throwError(err);
+          throw err;
         })
       )
       .subscribe((versionContainer) => {
