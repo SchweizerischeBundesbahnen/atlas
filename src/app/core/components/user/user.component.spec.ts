@@ -135,5 +135,31 @@ describe('UserComponent', () => {
       //then
       expect(component.isAuthenticated).toBeFalse();
     });
+
+    it('should show roles', () => {
+      //given
+      component.user = {
+        name: 'Test (ITC)',
+        email: 'test@test.ch',
+        roles: ['role1', 'role2', 'role3'],
+      };
+      //when
+      const result = component.showRoles();
+
+      //then
+      expect(result).toBeTruthy();
+    });
+
+    it('should not show roles', () => {
+      //given
+      if (component.user) {
+        component.user.roles = [];
+      }
+      //when
+      const result = component.showRoles();
+
+      //then
+      expect(result).toBeFalsy();
+    });
   });
 });

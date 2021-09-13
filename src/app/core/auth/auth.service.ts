@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { first } from 'rxjs/operators';
@@ -7,14 +7,16 @@ import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { User } from '../components/user/user';
 import { Pages } from '../../pages/pages';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  public eventEmitter: EventEmitter<User> = new EventEmitter<User>();
   // Promise that resolves once the login process has been completed.
   // This only works for forceful logins.
-  private readonly initialized: Promise<unknown>;
+  private initialized: Promise<unknown>;
 
   get claims() {
     return this.oauthService.getIdentityClaims() as User;
@@ -30,7 +32,7 @@ export class AuthService {
 
   constructor(private oauthService: OAuthService, private router: Router, location: Location) {
     this.oauthService.configure(environment.authConfig);
-    this.oauthService.setupAutomaticSilentRefresh();
+    // this.oauthService.setupAutomaticSilentRefresh();
     // If the user should not be forcefully logged in (e.g. if you have pages, which can be
     // accessed anonymously), change loadDiscoveryDocumentAndLogin to
     // loadDiscoveryDocumentAndTryLogin and have a login functionality in the
@@ -45,8 +47,10 @@ export class AuthService {
     // Redirect the user to the url configured with state above or in a separate login call.
     this.oauthService.events.pipe(first((e) => e.type === 'token_received')).subscribe(() => {
       const state = decodeURIComponent(this.oauthService.state || '');
+      this.eventEmitter.emit(this.claims);
       if (state && state !== '/') {
-        this.router.navigate([state]);
+        console.log(state);
+        this.router.navigate([Pages.HOME.path]);
       }
     });
   }
