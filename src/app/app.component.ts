@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 
-import { environment } from '../environments/environment';
-
-import packageJson from '../../package.json';
+import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +8,8 @@ import packageJson from '../../package.json';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  version = packageJson.version;
-  environmentLabel = environment.label;
-
-  title = $localize`Timetable Field Number`;
-  constructor() {
-    // private keepalive: KeepaliveService, // public loadingSpinnerService: LoadingSpinnerService
-    // this.loadingSpinnerService.initLoadingSpinner();
+  constructor(public loadingSpinnerService: LoadingSpinnerService) {
+    // private keepalive: KeepaliveService
+    this.loadingSpinnerService.initLoadingSpinner();
   }
 }
