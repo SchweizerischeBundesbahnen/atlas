@@ -1,16 +1,20 @@
 # ATLAS Backend 
 [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/)
 [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Atimetable-field-number-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number-frontend)
-- [ATLAS Backend](#atlas-backend)
-  * [Big Picture](#big-picture)
-  * [Versioning](#versioning)
-  * [Tech Stack](#tech-stack)
-  * [Development](#development)
-    + [PostgreSQL Docker](#postgresql-docker)
-  * [Links](#links)
-    + [OpenApi Links](#openapi-links)
 
-  
+<!-- toc -->
+
+- [Big Picture](#big-picture)
+- [Versioning](#versioning)
+- [Tech Stack](#tech-stack)
+- [Development](#development)
+  * [PostgreSQL Docker](#postgresql-docker)
+- [Links](#links)
+  * [OpenApi Links](#openapi-links)
+- [Monitoring and Logging](#monitoring-and-logging)
+
+<!-- tocstop -->
+
 ## Big Picture
 ![ATLAS Big Picture](documentation/ATLAS_Infrastruktur.svg)
 
