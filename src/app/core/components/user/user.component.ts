@@ -17,6 +17,15 @@ export class UserComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.authService.eventEmitter?.subscribe((user) => {
+      if (user) {
+        this.init();
+      }
+    });
+    this.init();
+  }
+
+  init() {
     this.authenticated = this.authService.loggedIn;
     this.user = this.authService.claims;
     this.extractUserName();
@@ -35,7 +44,14 @@ export class UserComponent implements OnInit {
     this.authService.login();
   }
 
-  logout(): void {
-    this.authService.logout();
+  logout() {
+    return this.authService.logout()?.then(() => {
+      this.user = undefined;
+      this.authenticate();
+    });
+  }
+
+  showRoles() {
+    return this.user?.roles !== undefined && this.user?.roles.length > 0;
   }
 }
