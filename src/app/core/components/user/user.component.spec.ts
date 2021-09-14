@@ -6,15 +6,24 @@ import { AuthService } from '../../auth/auth.service';
 import { By } from '@angular/platform-browser';
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { User } from './user';
+import { EventEmitter } from '@angular/core';
 
 describe('UserComponent', () => {
   let component: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
+  const user: User = {
+    name: 'Test (ITC)',
+    email: 'test@test.ch',
+    roles: ['role1', 'role2', 'role3'],
+  };
+  const eventEmitterUser: EventEmitter<User> = new EventEmitter<User>();
 
   const authServiceMock: Partial<AuthService> = {
     claims: { name: 'Test (ITC)', email: 'test@test.ch', roles: ['role1', 'role2', 'role3'] },
     logout: () => Promise.resolve(true),
     login: () => Promise.resolve(true),
+    eventEmitter: eventEmitterUser,
   };
 
   const userName = authServiceMock.claims!.name;
@@ -35,6 +44,7 @@ describe('UserComponent', () => {
   });
 
   beforeEach(() => {
+    eventEmitterUser.emit(user);
     fixture = TestBed.createComponent(UserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -50,9 +60,14 @@ describe('UserComponent', () => {
     });
 
     it('should show user menu', () => {
+      authServiceMock.eventEmitter?.emit(user);
       fixture.detectChanges();
-      const usermenuOpenButton = fixture.debugElement.query(By.css('#user-menu-button'));
-      usermenuOpenButton.nativeElement.click();
+      fixture.componentInstance.user = user;
+      fixture.componentInstance.isAuthenticated = true;
+      fixture.componentInstance.authenticate();
+      fixture.detectChanges();
+      const userMenuOpenButton = fixture.debugElement.query(By.css('#user-menu-button'));
+      userMenuOpenButton.nativeElement.click();
       fixture.detectChanges();
 
       const usernameModal = fixture.debugElement.query(By.css('.user-info-modal')).nativeElement;
@@ -68,9 +83,9 @@ describe('UserComponent', () => {
       fixture.detectChanges();
 
       const userRoles = userRolesModal.querySelectorAll('mat-list>mat-list-item.mat-list-item');
-      expect(userRoles[0].textContent).toContain(authServiceMock.claims!.roles[0]);
-      expect(userRoles[1].textContent).toContain(authServiceMock.claims!.roles[1]);
-      expect(userRoles[2].textContent).toContain(authServiceMock.claims!.roles[2]);
+      expect(userRoles[0].textContent).toContain(user.roles[0]);
+      expect(userRoles[1].textContent).toContain(user.roles[1]);
+      expect(userRoles[2].textContent).toContain(user.roles[2]);
     });
 
     it('should logout', () => {
