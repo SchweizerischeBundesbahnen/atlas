@@ -66,4 +66,13 @@ describe('TimetableFieldNumberDetailComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should get valid from placeholder', () => {
+    const fixedDate = new Date(2020, 11, 31);
+    jasmine.clock().install();
+    jasmine.clock().mockDate(fixedDate);
+    const result = fixture.componentInstance.getValidFromPlaceHolder();
+
+    expect(result).toBe('31.12.2020');
+  });
 });
