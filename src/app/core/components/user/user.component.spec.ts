@@ -23,7 +23,7 @@ describe('UserComponent', () => {
     claims: { name: 'Test (ITC)', email: 'test@test.ch', roles: ['role1', 'role2', 'role3'] },
     logout: () => Promise.resolve(true),
     login: () => Promise.resolve(true),
-    eventEmitter: eventEmitterUser,
+    eventUserComponentNotification: eventEmitterUser,
   };
 
   const userName = authServiceMock.claims!.name;
@@ -60,7 +60,7 @@ describe('UserComponent', () => {
     });
 
     it('should show user menu', () => {
-      authServiceMock.eventEmitter?.emit(user);
+      authServiceMock.eventUserComponentNotification?.emit(user);
       fixture.detectChanges();
       fixture.componentInstance.user = user;
       fixture.componentInstance.isAuthenticated = true;

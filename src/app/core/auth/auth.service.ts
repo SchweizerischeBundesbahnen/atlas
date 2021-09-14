@@ -7,16 +7,15 @@ import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { User } from '../components/user/user';
 import { Pages } from '../../pages/pages';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  public eventEmitter: EventEmitter<User> = new EventEmitter<User>();
+  eventUserComponentNotification: EventEmitter<User> = new EventEmitter<User>();
   // Promise that resolves once the login process has been completed.
   // This only works for forceful logins.
-  private initialized: Promise<unknown>;
+  private readonly initialized: Promise<unknown>;
 
   get claims() {
     return this.oauthService.getIdentityClaims() as User;
@@ -47,7 +46,7 @@ export class AuthService {
     // Redirect the user to the url configured with state above or in a separate login call.
     this.oauthService.events.pipe(first((e) => e.type === 'token_received')).subscribe(() => {
       const state = decodeURIComponent(this.oauthService.state || '');
-      this.eventEmitter.emit(this.claims);
+      this.eventUserComponentNotification.emit(this.claims);
       if (state && state !== '/') {
         this.router.navigate([Pages.HOME.path]);
       }
