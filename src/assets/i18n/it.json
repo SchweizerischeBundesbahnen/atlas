@@ -5,6 +5,7 @@
   },
   "COMMON": {
     "SAVE": "Salvare",
+    "EDIT": "Modificare",
     "CANCEL": "Annullare",
     "NODATAFOUND": "Nessun dato trovato",
     "NEWFILTER": "nuovo filtro",
