@@ -1,10 +1,11 @@
 {
   "ERROR": {
-    "NOTALLOWED": "__it__Du bist nicht berechtigt diesen Inhalt zu sehen",
+    "NOTALLOWED": "Nessuna autorizzazione per visualizzare questo contenuto ",
     "SERVER_REQUEST_FEHLER": "Al momento la connessione alla banca dati non è disponibile. Verificare la connessione Internet, chiudere il browser e riavviare DiDok."
   },
   "COMMON": {
     "SAVE": "Salvare",
+    "EDIT": "Modificare",
     "CANCEL": "Annullare",
     "NODATAFOUND": "Nessun dato trovato",
     "NEWFILTER": "nuovo filtro",
@@ -15,11 +16,11 @@
     "REQUIRED": "Questo è un campo obbligatorio.",
     "MAX_LENGTH": "Sono consentiti al massimo {{length}} caratteri.",
     "DATE": {
-      "SELECT_DATERANGE": "__it__Datumsbereich*"
+      "SELECT_DATERANGE": "Intervallo date*"
     },
-    "FROM": "de",
+    "FROM": "da",
     "TO": "a",
-    "STATUS": "Status",
+    "STATUS": "Stat0",
     "OK": "Ok",
     "EDIT_VERSION": "Modificare versione",
     "CREATE_VERSION": "Aggiungere versione"
@@ -27,9 +28,9 @@
   "DIALOG": {
     "OK": "OK",
     "CANCEL": "Annullare",
-    "DISCARD_CHANGES_TITLE": "__it__Änderungen nicht speichern?",
-    "LEAVE_SITE": "__it__Wenn du die Seite verlässt, werden deine Daten nicht gespeichert.",
-    "CANCEL_EDITMODE": "__it__Beim Verlassen des Editiermodus verlierst du alle editierten Daten."
+    "DISCARD_CHANGES_TITLE": "Non salvare le modifiche?",
+    "LEAVE_SITE": "Lasciando la pagina i tuoi dati non verranno salvati.",
+    "CANCEL_EDITMODE": "Uscendo dalla modalità di modifica perderai tutti i tuoi dati."
   },
   "PROFILE": {
     "HELLO": "Ciao",
