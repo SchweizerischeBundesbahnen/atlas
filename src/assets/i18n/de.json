@@ -60,7 +60,7 @@
     "COMMENT": "Kommentar"
   },
   "PAGINATOR": {
-    "ITEMS_PER_PAGE": "Items per Page",
+    "ITEMS_PER_PAGE": "Objekte pro Seite",
     "NEXT_PAGE": "Nächste Seite",
     "PREVIOUS_PAGE": "Vorherige Seite",
     "RANGE_LABEL1": "0 von {{length}}",
