@@ -17,7 +17,7 @@ export class UserComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.eventEmitter?.subscribe((user) => {
+    this.authService.eventUserComponentNotification?.subscribe((user) => {
       if (user) {
         this.init();
       }
