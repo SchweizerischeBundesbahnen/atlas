@@ -49,7 +49,6 @@ export class AuthService {
       const state = decodeURIComponent(this.oauthService.state || '');
       this.eventEmitter.emit(this.claims);
       if (state && state !== '/') {
-        console.log(state);
         this.router.navigate([Pages.HOME.path]);
       }
     });
