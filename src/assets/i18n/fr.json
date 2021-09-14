@@ -1,10 +1,11 @@
 {
   "ERROR": {
     "NOTALLOWED": "Droits insuffisants pour voir ce contenu",
-    "SERVER_REQUEST_FEHLER": "La base de données n’est pas accessible actuellement. Veuillez vérifier la connexion Internet, fermer le navigateur et redémarrer DiDok."
+    "SERVER_REQUEST_FEHLER": "La base de données n’est pas accessible actuellement. Veuillez vérifier la connexion Internet, fermer le navigateur et réouvrir l'application."
   },
   "COMMON": {
     "SAVE": "Enregistrer",
+    "EDIT": "Éditer",
     "CANCEL": "Annuler",
     "NODATAFOUND": "Aucunes données trouvées",
     "NEWFILTER": "Nouveau filtre",
@@ -39,24 +40,24 @@
   },
   "HOME": {
     "HEADER": "Documentation des services TP suisses",
-    "TITLE": "Bienvenue sur DiDok"
+    "TITLE": "Bienvenue sur ATLAS"
   },
   "PAGES": {
     "HOME": "Home",
     "AUTH_INSIGHT": "Auth-Insights",
-    "DETAILS": "Detàjils"
+    "DETAILS": "Détails"
   },
   "TTFN": {
-    "NEW": "Neue Fahrplanfeldnummer Omelette",
-    "SWISS_TIMETABLE_FIELD_NUMBER": "Fahrplannummer Baguette",
-    "NAME": "Bezeichnung",
-    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
-    "NUMBER": "Feld-Nr.",
-    "STATUS": "Status",
-    "TTFNID": "Fahrplanfeldnummer",
-    "VALID_FROM": "Gültig von",
-    "VALID_TO": "Gültig bis",
-    "COMMENT": "Kommentar"
+    "NEW": "Nouveau numéro de tableau-horaire",
+    "SWISS_TIMETABLE_FIELD_NUMBER": "Numéro de tableau-horaire",
+    "NAME": "Description",
+    "BUSINESS_ORGANISATION": "Organisation commerciale",
+    "NUMBER": "Nr.",
+    "STATUS": "Statut",
+    "TTFNID": "Identifcateur numéro de tableau-horaire",
+    "VALID_FROM": "Valide du",
+    "VALID_TO": "Valide jusqu'au",
+    "COMMENT": "Commentaire"
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "éléments par page",
