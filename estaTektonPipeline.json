@@ -8,7 +8,7 @@
   },
   "docker": {
     "artifactoryDockerRepo": "atlas.docker",
-    "openshiftAppName": "timetable-field-number-backend"
+    "openshiftAppName": "timetable-field-number-backend-tekton"
   },
   "helm": {
     "chartName": "timetable-field-number-backend",
