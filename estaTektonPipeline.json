@@ -1,0 +1,95 @@
+{
+  "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
+  "productName": "esta-tekton-pipeline-controller",
+  "mvn": {
+    "parentPom": "pom.xml",
+    "deployableArtifactsPom": "pom.xml",
+    "artifactoryMavenRepo": "esta.mvn"
+  },
+  "docker": {
+    "artifactoryDockerRepo": "esta.docker",
+    "openshiftAppName": "esta-tekton-pipeline-controller",
+    "dockerFile": "docker/Dockerfile.jvm"
+  },
+  "helm": {
+    "chartName": "esta-tekton-pipeline-controller",
+    "chartRepository": "esta.helm.local",
+    "chartRootFolder": "./charts"
+  },
+  "stages": [
+    {
+      "stageName": "dev",
+      "argoCD": {
+        "autoSync": false
+      }
+    }
+  ],
+  "steps": [
+    {
+      "name": "continuous",
+      "enabled": true,
+      "buildDockerImage": false,
+      "additionalBuildParams": "-DskipITs",
+      "triggerType": [
+        "USER",
+        "GITEVENT"
+      ],
+      "branchNamePrefixes": [
+        "feature",
+        "hotfix"
+      ]
+    },
+    {
+      "name": "latest",
+      "enabled": true,
+      "buildDockerImage": true,
+      "additionalBuildParams": "-DskipITs",
+      "triggerType": [
+        "USER"
+      ],
+      "branchNamePrefixes": [
+        "master"
+      ]
+    },
+    {
+      "name": "release",
+      "enabled": true,
+      "buildDockerImage": true,
+      "packageAndDeployHelmChart": true,
+      "additionalBuildParams": "-DskipITs",
+      "triggerType": [
+        "GITEVENT"
+      ],
+      "versionTagEventPatterns": [
+        "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
+      ]
+    },
+    {
+      "name": "snapshot",
+      "enabled": true,
+      "buildDockerImage": true,
+      "packageAndDeployHelmChart": true,
+      "additionalBuildParams": "-DskipITs",
+      "triggerType": [
+        "GITEVENT",
+        "USER"
+      ],
+      "versionTagEventPatterns": [
+        "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)-rev\\.(.+)"
+      ]
+    }
+  ],
+  "notifications": [
+    {
+      "type": "EMAIL",
+      "sendingEnabled": true,
+      "recipients": ["$actor"]
+    },
+    {
+      "type": "TEAMS",
+      "sendingEnabled": true,
+      "webhookUrl": "https://sbb.webhook.office.com/webhookb2/c4e05c00-bd9f-4fd9-9bbd-8cd557c6d894@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/IncomingWebhook/fb69aa3779114adbb0c6c71098022f1e/46d5defd-3766-439b-b54f-af158e3c6d0d"
+    }
+  ]
+}
+
