@@ -1,19 +1,18 @@
 {
   "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
-  "productName": "esta-tekton-pipeline-controller",
+  "productName": "timetable-field-number-backend",
   "mvn": {
     "parentPom": "pom.xml",
     "deployableArtifactsPom": "pom.xml",
-    "artifactoryMavenRepo": "esta.mvn"
+    "artifactoryMavenRepo": "atlas.mvn"
   },
   "docker": {
-    "artifactoryDockerRepo": "esta.docker",
-    "openshiftAppName": "esta-tekton-pipeline-controller",
-    "dockerFile": "docker/Dockerfile.jvm"
+    "artifactoryDockerRepo": "atlas.docker",
+    "openshiftAppName": "timetable-field-number-backend"
   },
   "helm": {
-    "chartName": "esta-tekton-pipeline-controller",
-    "chartRepository": "esta.helm.local",
+    "chartName": "timetable-field-number-backend",
+    "chartRepository": "atlas.helm.local",
     "chartRootFolder": "./charts"
   },
   "stages": [
