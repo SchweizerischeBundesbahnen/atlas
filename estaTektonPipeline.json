@@ -7,7 +7,7 @@
     "artifactoryMavenRepo": "atlas.mvn"
   },
   "docker": {
-    "artifactoryDockerRepo": "atlas.docker",
+    "artifactoryDockerRepo": "esta.docker",
     "openshiftAppName": "timetable-field-number-backend-tekton"
   },
   "helm": {
