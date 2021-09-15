@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
+import { ValidationError } from './validation-error';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -30,6 +31,10 @@ export class TimetableFieldNumberDetailComponent
 
   ngOnInit() {
     super.ngOnInit();
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
   }
 
   readRecord(): Version {
@@ -76,5 +81,20 @@ export class TimetableFieldNumberDetailComponent
 
   getValidFromPlaceHolder() {
     return formatDate(new Date(), 'dd.MM.yyyy', 'en-US');
+  }
+
+  getValidation(inputForm: string) {
+    const result: ValidationError[] = [];
+    const inputFormValidated = this.f[inputForm];
+    const controlErrors = inputFormValidated.errors;
+    if (controlErrors) {
+      Object.keys(controlErrors).forEach((keyError) => {
+        result.push({
+          error: 'VALIDATION.' + keyError.toUpperCase(),
+          value: controlErrors[keyError],
+        });
+      });
+    }
+    return result;
   }
 }
