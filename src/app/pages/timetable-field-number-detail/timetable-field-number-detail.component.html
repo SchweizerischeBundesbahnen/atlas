@@ -33,12 +33,20 @@
           matInput
           formControlName="validFrom"
           [matDatepicker]="validFromPicker"
+          [min]="minDateValue"
+          [max]="maxDateValue"
           placeholder="{{ getValidFromPlaceHolder() }}"
         />
         <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
         <mat-datepicker #validFromPicker></mat-datepicker>
         <mat-error *ngFor="let validationError of this.getValidation('validFrom')">
-          {{ validationError.error | translate }}
+          {{
+            validationError.error
+              | translate
+                : {
+                    datum: displayDate(validationError)
+                  }
+          }}
         </mat-error>
       </mat-form-field>
 
@@ -48,12 +56,20 @@
           matInput
           formControlName="validTo"
           [matDatepicker]="validToPicker"
+          [min]="minDateValue"
+          [max]="maxDateValue"
           placeholder="{{ VALID_TO_PLACEHOLDER }}"
         />
         <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
         <mat-datepicker #validToPicker></mat-datepicker>
         <mat-error *ngFor="let validationError of this.getValidation('validTo')">
-          {{ validationError.error | translate }}
+          {{
+            validationError.error
+              | translate
+                : {
+                    datum: displayDate(validationError)
+                  }
+          }}
         </mat-error>
       </mat-form-field>
     </div>

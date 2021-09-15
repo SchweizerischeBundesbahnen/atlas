@@ -66,6 +66,9 @@
   },
   "VALIDATION": {
     "REQUIRED": "Questo è un campo obbligatorio.",
-    "MAX_LENGTH": "Sono consentiti al massimo {{length}} caratteri."
+    "MAX_LENGTH": "Sono consentiti al massimo {{length}} caratteri.",
+    "MATDATEPICKERMIN": "Datum muss grosser als {{datum}} ",
+    "MATDATEPICKERMAX": "Datum muss kleiner als {{datum}} ",
+    "MATDATEPICKERPARSE": "Ungültiges Datumformat (muss TT.MM.YYYY sein)"
   }
 }
