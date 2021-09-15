@@ -38,18 +38,6 @@ describe('TimetableFieldNumberDetailResolver', () => {
     expect(resolver).toBeTruthy();
   });
 
-  it('should create prefilled version on add', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: 'add' }) } as ActivatedRouteSnapshot;
-
-    const resolvedVersion = resolver.resolve(mockRoute);
-
-    resolvedVersion.subscribe((version) => {
-      expect(version.id).toBeUndefined();
-      expect(version.status).toBe(StatusEnum.Active);
-      expect(version.ttfnid).toBe('ttfnid');
-    });
-  });
-
   it('should get version from service to display', () => {
     const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
 
