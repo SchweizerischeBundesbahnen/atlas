@@ -5,6 +5,7 @@ import { DetailWrapperController } from '../../core/components/detail-wrapper/de
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { ValidationError } from './validation-error';
+import moment, { Moment } from 'moment/moment';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -35,6 +36,13 @@ export class TimetableFieldNumberDetailComponent
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
+  }
+  get minDateValue(): Date {
+    return new Date(moment().valueOf());
+  }
+
+  get maxDateValue(): Date {
+    return new Date(moment('2099-12-31 23:59:59').valueOf());
   }
 
   readRecord(): Version {
@@ -86,7 +94,7 @@ export class TimetableFieldNumberDetailComponent
   getValidation(inputForm: string) {
     const result: ValidationError[] = [];
     const inputFormValidated = this.f[inputForm];
-    const controlErrors = inputFormValidated.errors;
+    const controlErrors = inputFormValidated?.errors;
     if (controlErrors) {
       Object.keys(controlErrors).forEach((keyError) => {
         result.push({
@@ -96,5 +104,15 @@ export class TimetableFieldNumberDetailComponent
       });
     }
     return result;
+  }
+
+  displayDate(validationError: ValidationError) {
+    const pattern = 'DD.MM.yyyy';
+    if (validationError.value['min']) {
+      return validationError.value['min'].format(pattern);
+    }
+    if (validationError.value['max']) {
+      return validationError.value['max'].format(pattern);
+    }
   }
 }
