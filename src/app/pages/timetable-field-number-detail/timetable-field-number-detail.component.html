@@ -63,13 +63,7 @@
         <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
         <mat-datepicker #validToPicker></mat-datepicker>
         <mat-error *ngFor="let validationError of this.getValidation('validTo')">
-          {{
-            validationError.error
-              | translate
-                : {
-                    datum: displayDate(validationError)
-                  }
-          }}
+          {{ validationError.error | translate: { datum: displayDate(validationError) } }}
         </mat-error>
       </mat-form-field>
     </div>
