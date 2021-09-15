@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -13,6 +14,11 @@ export class TimetableFieldNumberDetailComponent
   extends DetailWrapperController<Version>
   implements OnInit
 {
+  SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
+  TTFNID_PLACEHOLDER = 'ch:1:fpfnid:100000';
+  VALID_TO_PLACEHOLDER = '31.12.2099';
+  NAME_PLACEHOLDER = 'Grenze - Bad, Bahnhof - Basel SBB - Zürich HB - Chur';
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -66,5 +72,9 @@ export class TimetableFieldNumberDetailComponent
       name: [version.name, [Validators.required, Validators.maxLength(255)]],
       comment: [version.comment],
     });
+  }
+
+  getValidFromPlaceHolder() {
+    return formatDate(new Date(), 'dd.MM.yyyy', 'en-US');
   }
 }

@@ -3,26 +3,40 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}</mat-label>
-        <input matInput formControlName="swissTimetableFieldNumber" />
+        <input
+          matInput
+          formControlName="swissTimetableFieldNumber"
+          placeholder="{{ SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER }}"
+        />
       </mat-form-field>
 
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.TTFNID' | translate }}</mat-label>
-        <input matInput formControlName="ttfnid" />
+        <input matInput formControlName="ttfnid" placeholder="{{ TTFNID_PLACEHOLDER }}" />
       </mat-form-field>
     </div>
 
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.VALID_FROM' | translate }}</mat-label>
-        <input matInput formControlName="validFrom" [matDatepicker]="validFromPicker" />
+        <input
+          matInput
+          formControlName="validFrom"
+          [matDatepicker]="validFromPicker"
+          placeholder="{{ getValidFromPlaceHolder() }}"
+        />
         <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
         <mat-datepicker #validFromPicker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.VALID_TO' | translate }}</mat-label>
-        <input matInput formControlName="validTo" [matDatepicker]="validToPicker" />
+        <input
+          matInput
+          formControlName="validTo"
+          [matDatepicker]="validToPicker"
+          placeholder="{{ VALID_TO_PLACEHOLDER }}"
+        />
         <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
         <mat-datepicker #validToPicker></mat-datepicker>
       </mat-form-field>
@@ -45,7 +59,7 @@
     <div class="row mb-3">
       <mat-form-field>
         <mat-label>{{ 'TTFN.NAME' | translate }}</mat-label>
-        <input matInput formControlName="name" />
+        <input matInput formControlName="name" placeholder="{{ NAME_PLACEHOLDER }}" />
       </mat-form-field>
     </div>
 
