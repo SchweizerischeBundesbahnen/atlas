@@ -13,8 +13,6 @@
     "JA": "oui",
     "NEIN": "non",
     "ACHTUNG": "Attention!",
-    "REQUIRED": "Ce champ est obligatoire.",
-    "MAX_LENGTH": "Maximum {{length}} caractères autorisés.",
     "DATE": {
       "SELECT_DATERANGE": "Plage de validité*"
     },
@@ -65,5 +63,9 @@
     "PREVIOUS_PAGE": "page précédente",
     "RANGE_LABEL1": "0 sur {{length}}",
     "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} sur {{length}}"
+  },
+  "VALIDATION": {
+    "REQUIRED": "Ce champ est obligatoire.",
+    "MAX_LENGTH": "Maximum {{length}} caractères autorisés."
   }
 }
