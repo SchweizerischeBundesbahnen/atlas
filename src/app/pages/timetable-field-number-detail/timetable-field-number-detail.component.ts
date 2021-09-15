@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { ValidationError } from './validation-error';
-import moment, { Moment } from 'moment/moment';
+import moment from 'moment/moment';
+import { DateValidators } from './date-validators';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -20,7 +21,6 @@ export class TimetableFieldNumberDetailComponent
   TTFNID_PLACEHOLDER = 'ch:1:fpfnid:100000';
   VALID_TO_PLACEHOLDER = '31.12.2099';
   NAME_PLACEHOLDER = 'Grenze - Bad, Bahnhof - Basel SBB - Zürich HB - Chur';
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -37,6 +37,7 @@ export class TimetableFieldNumberDetailComponent
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
+
   get minDateValue(): Date {
     return new Date(moment().valueOf());
   }
@@ -69,22 +70,27 @@ export class TimetableFieldNumberDetailComponent
   }
 
   getFormGroup(version: Version): FormGroup {
-    return this.formBuilder.group({
-      swissTimetableFieldNumber: [
-        version.swissTimetableFieldNumber,
-        [Validators.required, Validators.maxLength(255)],
-      ],
-      ttfnid: [version.ttfnid, [Validators.required, Validators.maxLength(255)]],
-      validFrom: [version.validFrom, [Validators.required, Validators.maxLength(255)]],
-      validTo: [version.validTo, [Validators.required, Validators.maxLength(255)]],
-      businessOrganisation: [
-        version.businessOrganisation,
-        [Validators.required, Validators.maxLength(255)],
-      ],
-      number: [version.number, [Validators.required, Validators.maxLength(255)]],
-      name: [version.name, [Validators.required, Validators.maxLength(255)]],
-      comment: [version.comment],
-    });
+    return this.formBuilder.group(
+      {
+        swissTimetableFieldNumber: [
+          version.swissTimetableFieldNumber,
+          [Validators.required, Validators.maxLength(255)],
+        ],
+        ttfnid: [version.ttfnid, [Validators.required, Validators.maxLength(255)]],
+        validFrom: [version.validFrom, [Validators.required, Validators.maxLength(255)]],
+        validTo: [version.validTo, [Validators.required, Validators.maxLength(255)]],
+        businessOrganisation: [
+          version.businessOrganisation,
+          [Validators.required, Validators.maxLength(255)],
+        ],
+        number: [version.number, [Validators.required, Validators.maxLength(255)]],
+        name: [version.name, [Validators.required, Validators.maxLength(255)]],
+        comment: [version.comment],
+      },
+      {
+        validators: [DateValidators.dateLessThan('validFrom', 'validTo')],
+      }
+    );
   }
 
   getValidFromPlaceHolder() {
@@ -108,11 +114,21 @@ export class TimetableFieldNumberDetailComponent
 
   displayDate(validationError: ValidationError) {
     const pattern = 'DD.MM.yyyy';
+    if (validationError.value['date']) {
+      return validationError.value['date'].format(pattern);
+    }
     if (validationError.value['min']) {
       return validationError.value['min'].format(pattern);
     }
     if (validationError.value['max']) {
       return validationError.value['max'].format(pattern);
     }
+  }
+
+  ageRangeValidator(validFrom: FormGroup): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      console.log(validFrom);
+      return null;
+    };
   }
 }
