@@ -104,7 +104,7 @@
               "sourceMap": false,
               "progress": false,
               "watch": false,
-              "codeCoverageExclude": ["src/app/api/**", "charts/**", "src/app/**/polyfills.ts"],
+              "codeCoverageExclude": ["src/app/api/**", "charts/**", "src/polyfills.ts"],
               "reporters": [
                 "dots",
                 "sonarqube"
