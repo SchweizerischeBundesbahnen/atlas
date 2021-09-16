@@ -114,21 +114,17 @@ export class TimetableFieldNumberDetailComponent
 
   displayDate(validationError: ValidationError) {
     const pattern = 'DD.MM.yyyy';
-    if (validationError.value['date']) {
-      return validationError.value['date'].format(pattern);
+    if (validationError?.value['date']) {
+      const validFrom = validationError.value['date'].validFrom;
+      const validTo = validationError.value['date'].validTo;
+      const selectedDates = validFrom.format(pattern) + ' - ' + validTo.format(pattern);
+      return selectedDates;
     }
-    if (validationError.value['min']) {
+    if (validationError?.value['min']) {
       return validationError.value['min'].format(pattern);
     }
-    if (validationError.value['max']) {
+    if (validationError?.value['max']) {
       return validationError.value['max'].format(pattern);
     }
-  }
-
-  ageRangeValidator(validFrom: FormGroup): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
-      console.log(validFrom);
-      return null;
-    };
   }
 }

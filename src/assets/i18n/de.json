@@ -67,9 +67,9 @@
   "VALIDATION": {
     "REQUIRED": "Dies ist ein Pflichtfeld.",
     "MAXLENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
-    "MATDATEPICKERMIN": "Datum muss grosser als {{datum}} ",
-    "MATDATEPICKERMAX": "Datum muss kleiner als {{datum}} ",
+    "MATDATEPICKERMIN": "Datum muss grösser als {{date}} sein",
+    "MATDATEPICKERMAX": "Datum muss kleiner als {{date}} sein",
     "MATDATEPICKERPARSE": "Ungültiges Datumformat (muss TT.MM.YYYY sein)",
-    "DATE_RANGE_ERROR": "Gültig von Datum darf nicht grösser als Gültig bis: [{{datum}}]"
+    "DATE_RANGE_ERROR": "Gültig von Datum darf nicht grösser als Gültig bis sein: {{date}}"
   }
 }
