@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { ValidationError } from './validation-error';
 import moment from 'moment/moment';
@@ -117,8 +117,7 @@ export class TimetableFieldNumberDetailComponent
     if (validationError?.value['date']) {
       const validFrom = validationError.value['date'].validFrom;
       const validTo = validationError.value['date'].validTo;
-      const selectedDates = validFrom.format(pattern) + ' - ' + validTo.format(pattern);
-      return selectedDates;
+      return validFrom.format(pattern) + ' - ' + validTo.format(pattern);
     }
     if (validationError?.value['min']) {
       return validationError.value['min'].format(pattern);
