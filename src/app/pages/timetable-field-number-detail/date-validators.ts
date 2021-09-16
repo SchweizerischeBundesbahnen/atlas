@@ -7,15 +7,37 @@ export class DateValidators {
       const validToForm = c.get(validTo);
       if (validFromForm?.value !== null && validToForm?.value !== null) {
         if (validFromForm?.value > validToForm?.value) {
-          validFromForm?.setErrors({
-            date_range_error: { date: validToForm?.value },
-          });
-          validToForm?.setErrors({
-            date_range_error: { date: validToForm?.value },
-          });
+          const error = {
+            date_range_error: {
+              date: {
+                validFrom: validFromForm?.value,
+                validTo: validToForm?.value,
+              },
+            },
+          };
+          if (!validFromForm?.errors) {
+            validFromForm?.setErrors(error);
+          } else {
+            Object.assign(validFromForm?.errors, error);
+          }
+          if (!validToForm?.errors) {
+            validToForm?.setErrors(error);
+          } else {
+            Object.assign(validToForm?.errors, error);
+          }
         } else {
-          validFromForm?.setErrors(null);
-          validToForm?.setErrors(null);
+          if (validFromForm?.errors?.date_range_error) {
+            delete validFromForm.errors['date_range_error'];
+            if (Object.keys(validFromForm.errors).length === 0) {
+              validFromForm.setErrors(null);
+            }
+          }
+          if (validToForm?.errors?.date_range_error) {
+            delete validToForm.errors['date_range_error'];
+            if (Object.keys(validToForm.errors).length === 0) {
+              validToForm.setErrors(null);
+            }
+          }
         }
       }
       return null;
