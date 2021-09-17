@@ -2,13 +2,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  ValidationErrors,
+} from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TimetableFieldNumbersService, Version } from '../../api';
 import { MaterialModule } from '../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DetailWrapperComponent } from '../../core/components/detail-wrapper/detail-wrapper.component';
+import moment from 'moment/moment';
 
 const version: Version = {
   id: 1,
@@ -20,7 +27,7 @@ const version: Version = {
   validTo: new Date('2029-06-01'),
 };
 
-const routeSnapshotMock = {
+const routeSnapshotVersionReadMock = {
   snapshot: {
     paramMap: {},
     data: {
@@ -29,10 +36,18 @@ const routeSnapshotMock = {
   },
 };
 
-describe('TimetableFieldNumberDetailComponent', () => {
-  let component: TimetableFieldNumberDetailComponent;
-  let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
+const routeSnapshotVersionAddMock = {
+  snapshot: {
+    paramMap: {},
+    data: {
+      timetableFieldNumberDetail: 'add',
+    },
+  },
+};
+let component: TimetableFieldNumberDetailComponent;
+let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
 
+describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TimetableFieldNumberDetailComponent, DetailWrapperComponent],
@@ -51,7 +66,7 @@ describe('TimetableFieldNumberDetailComponent', () => {
         { provide: TimetableFieldNumbersService },
         {
           provide: ActivatedRoute,
-          useValue: routeSnapshotMock,
+          useValue: routeSnapshotVersionReadMock,
         },
       ],
     }).compileComponents();
@@ -74,5 +89,58 @@ describe('TimetableFieldNumberDetailComponent', () => {
     const result = fixture.componentInstance.getValidFromPlaceHolder();
 
     expect(result).toBe('31.12.2020');
+  });
+});
+
+describe('TimetableFieldNumberDetailComponent Detail page add new version', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [TimetableFieldNumberDetailComponent, DetailWrapperComponent],
+      imports: [
+        RouterModule.forRoot([]),
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+      ],
+      providers: [
+        { provide: FormBuilder },
+        { provide: TimetableFieldNumbersService },
+        {
+          provide: ActivatedRoute,
+          useValue: routeSnapshotVersionAddMock,
+        },
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TimetableFieldNumberDetailComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should validate validFrom and validTrue', () => {
+    const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
+    const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
+    validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
+    validFrom.markAsTouched();
+    validTo.setValue(moment('31.10.1999', 'dd.MM.yyyy'));
+    validTo.markAsTouched();
+    fixture.detectChanges();
+
+    const validFromErrors = validFrom.errors;
+    expect(validFromErrors).toBeDefined();
+    expect(validFromErrors?.date_range_error).toBeDefined();
+    const validToErrors = validTo.errors;
+    expect(validToErrors).toBeDefined();
+    expect(validToErrors?.date_range_error).toBeDefined();
   });
 });
