@@ -1,16 +1,16 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-export class DateValidators {
-  static dateLessThan(validFrom: string, validTo: string): ValidatorFn {
+export class DateRangeValidator {
+  static fromGreaterThenTo(validFrom: string, validTo: string): ValidatorFn {
     return (c: AbstractControl): { [key: string]: boolean } | null => {
       const validFromForm = c.get(validFrom);
       const validToForm = c.get(validTo);
-      DateValidators.validateDates(validFromForm, validToForm);
+      DateRangeValidator.validate(validFromForm, validToForm);
       return null;
     };
   }
 
-  static validateDates(validFromForm: AbstractControl | null, validToForm: AbstractControl | null) {
+  static validate(validFromForm: AbstractControl | null, validToForm: AbstractControl | null) {
     const validFromValue = validFromForm?.value;
     const validToValue = validToForm?.value;
     if (validFromValue !== null && validToValue !== null && validFromValue > validToValue) {
@@ -19,11 +19,11 @@ export class DateValidators {
           date: { validFrom: validFromValue, validTo: validToValue },
         },
       };
-      DateValidators.populateWithValidationErrors(validFromForm, error);
-      DateValidators.populateWithValidationErrors(validToForm, error);
+      DateRangeValidator.populateWithValidationErrors(validFromForm, error);
+      DateRangeValidator.populateWithValidationErrors(validToForm, error);
     } else {
-      DateValidators.clearValidationError(validFromForm);
-      DateValidators.clearValidationError(validToForm);
+      DateRangeValidator.clearValidationError(validFromForm);
+      DateRangeValidator.clearValidationError(validToForm);
     }
   }
 
