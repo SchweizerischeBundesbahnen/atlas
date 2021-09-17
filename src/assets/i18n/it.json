@@ -67,8 +67,9 @@
   "VALIDATION": {
     "REQUIRED": "Questo è un campo obbligatorio.",
     "MAX_LENGTH": "Sono consentiti al massimo {{length}} caratteri.",
-    "MATDATEPICKERMIN": "Datum muss grosser als {{datum}} ",
-    "MATDATEPICKERMAX": "Datum muss kleiner als {{datum}} ",
-    "MATDATEPICKERPARSE": "Ungültiges Datumformat (muss TT.MM.YYYY sein)"
+    "MATDATEPICKERMIN": "La date deve essere maggiore di {{date}}.",
+    "MATDATEPICKERMAX": "La data deve essere minore di {{date}}.",
+    "MATDATEPICKERPARSE": "Formato della fate non valido (deve essere TT.MM.YYYY)",
+    "DATE_RANGE_ERROR": "Valido da non può essere maggiore die valido a: {{date}}"
   }
 }
