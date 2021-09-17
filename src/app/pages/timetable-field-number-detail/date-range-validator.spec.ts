@@ -1,4 +1,4 @@
-import { DateValidators } from './date-validators';
+import { DateRangeValidator } from './date-range-validator';
 import { FormControl } from '@angular/forms';
 describe('Date Validator', () => {
   it('should return validation error when validFrom greater then validTo ', () => {
@@ -8,7 +8,7 @@ describe('Date Validator', () => {
     const validFromForm = new FormControl(validFrom);
     const validToForm = new FormControl(validTo);
     //when
-    DateValidators.validateDates(validFromForm, validToForm);
+    DateRangeValidator.validate(validFromForm, validToForm);
     //then
     expect(validFromForm.errors).toBeDefined();
     const dateRangeErrorValidFrom = validFromForm.errors?.['date_range_error'];
@@ -48,7 +48,7 @@ describe('Date Validator', () => {
       },
     });
     //when
-    DateValidators.validateDates(validFromForm, validToForm);
+    DateRangeValidator.validate(validFromForm, validToForm);
     //then
     expect(validFromForm.errors).toBeNull();
     expect(validToForm.errors).toBeNull();
@@ -72,7 +72,7 @@ describe('Date Validator', () => {
       },
     });
     //when
-    DateValidators.validateDates(validFromForm, validToForm);
+    DateRangeValidator.validate(validFromForm, validToForm);
     //then
     expect(validFromForm.errors).toBeDefined();
     const dateRangeErrorValidFrom = validFromForm.errors?.['date_range_error'];
@@ -98,7 +98,7 @@ describe('Date Validator', () => {
     const validFromForm = new FormControl(new Date('12.12.2000'));
     const validToForm = new FormControl(new Date('12.12.2001'));
     //when
-    DateValidators.validateDates(validFromForm, validToForm);
+    DateRangeValidator.validate(validFromForm, validToForm);
     //then
     expect(validFromForm.errors).toBeNull();
     expect(validToForm.errors).toBeNull();

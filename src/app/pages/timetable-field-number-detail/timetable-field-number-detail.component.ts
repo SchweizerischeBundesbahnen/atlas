@@ -6,7 +6,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { formatDate } from '@angular/common';
 import { ValidationError } from './validation-error';
 import moment from 'moment/moment';
-import { DateValidators } from './date-validators';
+import { DateRangeValidator } from './date-range-validator';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -88,7 +88,7 @@ export class TimetableFieldNumberDetailComponent
         comment: [version.comment],
       },
       {
-        validators: [DateValidators.dateLessThan('validFrom', 'validTo')],
+        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
   }
