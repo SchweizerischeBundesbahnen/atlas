@@ -4,6 +4,7 @@ import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../core/notification/notification.service';
+import { catchError } from 'rxjs';
 import { ValidationError } from './validation-error';
 import moment from 'moment/moment';
 import { DateRangeValidator } from './date-range-validator';
@@ -56,25 +57,51 @@ export class TimetableFieldNumberDetailComponent
   }
 
   updateRecord(): void {
-    this.timetableFieldNumberService.updateVersion(this.getId(), this.form.value).subscribe(() => {
-      this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
-    });
+    this.timetableFieldNumberService
+      .updateVersion(this.getId(), this.form.value)
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          this.notificationService.error('TTFN.NOTIFICATION.EDIT_ERROR');
+          throw err;
+        })
+      )
+      .subscribe(() => {
+        this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
+        this.router.navigate([this.getId()]).then(() => this.ngOnInit());
+      });
   }
 
   createRecord(): void {
-    this.timetableFieldNumberService.createVersion(this.form.value).subscribe((version) => {
-      if (version.id) {
+    this.timetableFieldNumberService
+      .createVersion(this.form.value)
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          this.notificationService.error('TTFN.NOTIFICATION.ADD_ERROR');
+          throw err;
+        })
+      )
+      .subscribe((version) => {
         this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
         this.router.navigate([version.id]).then(() => this.ngOnInit());
-      }
-    });
+      });
   }
 
   deleteRecord(): void {
-    this.timetableFieldNumberService.deleteVersion(this.getId()).subscribe(() => {
-      this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
-    });
-    this.router.navigate(['']).then();
+    this.timetableFieldNumberService
+      .deleteVersion(this.getId())
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
+          throw err;
+        })
+      )
+      .subscribe(() => {
+        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+        this.router.navigate(['']).then();
+      });
   }
 
   getFormGroup(version: Version): FormGroup {
