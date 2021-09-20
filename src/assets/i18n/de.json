@@ -55,7 +55,13 @@
     "TTFNID": "Fahrplanfeldnummer",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
-    "COMMENT": "Kommentar"
+    "COMMENT": "Kommentar",
+    "NOTIFICATION": {
+      "ADD_SUCCESS": "Fahrplanfeldnummer erfolgreich hinzugefügt",
+      "ADD_ERROR": "Bie der Fahrplanfeldnummer ist ein Fehler aufgetreten",
+      "EDIT_SUCCESS": "Fahrplanfeldnummer erfolgreich gespeichert",
+      "DELETE_SUCCESS": "Fahrplanfeldnummer erfolgreich"
+    }
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "Objekte pro Seite",
