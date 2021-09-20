@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class NotificationService {
   SNACK_BAR_CONFIG: MatSnackBarConfig = {
-    duration: 600000,
+    duration: 3000,
     horizontalPosition: 'right',
     verticalPosition: 'top',
   };
