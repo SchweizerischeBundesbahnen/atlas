@@ -13,8 +13,6 @@
     "JA": "oui",
     "NEIN": "non",
     "ACHTUNG": "Attention!",
-    "REQUIRED": "Ce champ est obligatoire.",
-    "MAX_LENGTH": "Maximum {{length}} caractères autorisés.",
     "DATE": {
       "SELECT_DATERANGE": "Plage de validité*"
     },
@@ -65,5 +63,13 @@
     "PREVIOUS_PAGE": "page précédente",
     "RANGE_LABEL1": "0 sur {{length}}",
     "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} sur {{length}}"
+  },
+  "VALIDATION": {
+    "REQUIRED": "Ce champ est obligatoire.",
+    "MAX_LENGTH": "Maximum {{length}} caractères autorisés.",
+    "MATDATEPICKERMIN": "La date doit être plus récente que {{date}}",
+    "MATDATEPICKERMAX": "La date doit être plus anciente que {{date}}",
+    "MATDATEPICKERPARSE": "Format de date invalide (doit être JJ.MM.AAAA)",
+    "DATE_RANGE_ERROR": "La date de début de validité ne peut pas être plus récente que la date de fin de validité: {{date}}"
   }
 }
