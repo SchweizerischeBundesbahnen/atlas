@@ -1,5 +1,6 @@
 import { DateRangeValidator } from './date-range-validator';
 import { FormControl } from '@angular/forms';
+
 describe('Date Validator', () => {
   it('should return validation error when validFrom greater then validTo ', () => {
     //given
@@ -23,6 +24,19 @@ describe('Date Validator', () => {
     expect(dateRangeErrorValidTo.date).toBeDefined();
     expect(dateRangeErrorValidTo.date.validFrom).toBe(validFrom);
     expect(dateRangeErrorValidTo.date.validTo).toBe(validTo);
+  });
+
+  it('should return validation success when validFrom equal to validTo ', () => {
+    //given
+    const validFrom = new Date();
+    const validTo = new Date();
+    const validFromForm = new FormControl(validFrom);
+    const validToForm = new FormControl(validTo);
+    //when
+    DateRangeValidator.validate(validFromForm, validToForm);
+    //then
+    expect(validFromForm.errors).toBeNull();
+    expect(validToForm.errors).toBeNull();
   });
 
   it('should remove validation error when validTo is greater then validFrom ', () => {
