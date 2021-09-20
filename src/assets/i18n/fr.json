@@ -67,9 +67,9 @@
   "VALIDATION": {
     "REQUIRED": "Ce champ est obligatoire.",
     "MAX_LENGTH": "Maximum {{length}} caractères autorisés.",
-    "MATDATEPICKERMIN": "Datum muss grösser als {{date}} sein",
-    "MATDATEPICKERMAX": "Datum muss kleiner als {{date}} sein",
-    "MATDATEPICKERPARSE": "Ungültiges Datumformat (muss TT.MM.YYYY sein)",
-    "DATE_RANGE_ERROR": "Gültig von Datum darf nicht grösser als Gültig bis sein: {{date}}"
+    "MATDATEPICKERMIN": "La date doit être plus récente que {{date}}",
+    "MATDATEPICKERMAX": "La date doit être plus anciente que {{date}}",
+    "MATDATEPICKERPARSE": "Format de date invalide (doit être JJ.MM.AAAA)",
+    "DATE_RANGE_ERROR": "La date de début de validité ne peut pas être plus récente que la date de fin de validité: {{date}}"
   }
 }
