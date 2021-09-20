@@ -13,8 +13,6 @@
     "JA": "Ja",
     "NEIN": "Nein",
     "ACHTUNG": "Achtung!",
-    "REQUIRED": "Dies ist ein Pflichtfeld.",
-    "MAX_LENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
     "DATE": {
       "SELECT_DATERANGE": "Datumsbereich*"
     },
@@ -65,5 +63,13 @@
     "PREVIOUS_PAGE": "Vorherige Seite",
     "RANGE_LABEL1": "0 von {{length}}",
     "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} von {{length}}"
+  },
+  "VALIDATION": {
+    "REQUIRED": "Dies ist ein Pflichtfeld.",
+    "MAXLENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
+    "MATDATEPICKERMIN": "Datum muss grösser als {{date}} sein",
+    "MATDATEPICKERMAX": "Datum muss kleiner als {{date}} sein",
+    "MATDATEPICKERPARSE": "Ungültiges Datumformat (muss TT.MM.YYYY sein)",
+    "DATE_RANGE_ERROR": "Gültig von Datum darf nicht grösser als Gültig bis sein: {{date}}"
   }
 }

@@ -13,8 +13,6 @@
     "JA": "Sì",
     "NEIN": "No",
     "ACHTUNG": "Attenzione!",
-    "REQUIRED": "Questo è un campo obbligatorio.",
-    "MAX_LENGTH": "Sono consentiti al massimo {{length}} caratteri.",
     "DATE": {
       "SELECT_DATERANGE": "Intervallo date*"
     },
@@ -65,5 +63,13 @@
     "PREVIOUS_PAGE": "precedente",
     "RANGE_LABEL1": "0 di {{length}}",
     "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} di {{length}}"
+  },
+  "VALIDATION": {
+    "REQUIRED": "Questo è un campo obbligatorio.",
+    "MAX_LENGTH": "Sono consentiti al massimo {{length}} caratteri.",
+    "MATDATEPICKERMIN": "La date deve essere maggiore di {{date}}.",
+    "MATDATEPICKERMAX": "La data deve essere minore di {{date}}.",
+    "MATDATEPICKERPARSE": "Formato della fate non valido (deve essere TT.MM.YYYY)",
+    "DATE_RANGE_ERROR": "Valido da non può essere maggiore die valido a: {{date}}"
   }
 }
