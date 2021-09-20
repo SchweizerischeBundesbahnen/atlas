@@ -55,7 +55,16 @@
     "TTFNID": "Identifcateur numéro de tableau-horaire",
     "VALID_FROM": "Valide du",
     "VALID_TO": "Valide jusqu'au",
-    "COMMENT": "Commentaire"
+    "COMMENT": "Commentaire",
+    "NOTIFICATION": {
+      "ADD_SUCCESS": "Fahrplanfeldnummer erfolgreich hinzugefügt.",
+      "ADD_ERROR": "Bie erfassen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "EDIT_SUCCESS": "Fahrplanfeldnummer erfolgreich gespeichert.",
+      "EDIT_ERROR": "Bie editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "DELETE_SUCCESS": "Fahrplanfeldnummer erfolgreich gelöscht.",
+      "DELETE_ERROR": "Bie löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "FETCH_ERROR": "Beim Laden Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten."
+    }
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "éléments par page",
