@@ -61,7 +61,6 @@ export class TimetableFieldNumberDetailComponent
       .updateVersion(this.getId(), this.form.value)
       .pipe(
         catchError((err) => {
-          console.log(err);
           this.notificationService.error('TTFN.NOTIFICATION.EDIT_ERROR');
           throw err;
         })
@@ -77,7 +76,6 @@ export class TimetableFieldNumberDetailComponent
       .createVersion(this.form.value)
       .pipe(
         catchError((err) => {
-          console.log(err);
           this.notificationService.error('TTFN.NOTIFICATION.ADD_ERROR');
           throw err;
         })
@@ -93,7 +91,6 @@ export class TimetableFieldNumberDetailComponent
       .deleteVersion(this.getId())
       .pipe(
         catchError((err) => {
-          console.log(err);
           this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
           throw err;
         })
