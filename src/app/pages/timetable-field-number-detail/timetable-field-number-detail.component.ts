@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from '../../core/notification/notification.service';
 import { ValidationError } from './validation-error';
 import moment from 'moment/moment';
 import { DateRangeValidator } from './date-range-validator';
@@ -28,7 +29,8 @@ export class TimetableFieldNumberDetailComponent
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private timetableFieldNumberService: TimetableFieldNumbersService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private notificationService: NotificationService
   ) {
     super();
   }
@@ -54,17 +56,24 @@ export class TimetableFieldNumberDetailComponent
   }
 
   updateRecord(): void {
-    this.timetableFieldNumberService.updateVersion(this.getId(), this.form.value).subscribe();
+    this.timetableFieldNumberService.updateVersion(this.getId(), this.form.value).subscribe(() => {
+      this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
+    });
   }
 
   createRecord(): void {
-    this.timetableFieldNumberService
-      .createVersion(this.form.value)
-      .subscribe((version) => this.router.navigate([version.id]).then(() => this.ngOnInit()));
+    this.timetableFieldNumberService.createVersion(this.form.value).subscribe((version) => {
+      if (version.id) {
+        this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
+        this.router.navigate([version.id]).then(() => this.ngOnInit());
+      }
+    });
   }
 
   deleteRecord(): void {
-    this.timetableFieldNumberService.deleteVersion(this.getId()).subscribe();
+    this.timetableFieldNumberService.deleteVersion(this.getId()).subscribe(() => {
+      this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+    });
     this.router.navigate(['']).then();
   }
 
