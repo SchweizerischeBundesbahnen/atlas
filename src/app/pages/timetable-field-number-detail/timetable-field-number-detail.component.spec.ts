@@ -45,6 +45,11 @@ let component: TimetableFieldNumberDetailComponent;
 let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
 
 describe('TimetableFieldNumberDetailComponent detail page read version', () => {
+  let router: Router;
+  const mockTimetableFieldNumbersService = jasmine.createSpyObj('timetableFieldNumbersService', [
+    'updateVersion',
+    'deleteVersion',
+  ]);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TimetableFieldNumberDetailComponent, DetailWrapperComponent],
@@ -60,7 +65,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
       ],
       providers: [
         { provide: FormBuilder },
-        { provide: TimetableFieldNumbersService },
+        { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         {
           provide: ActivatedRoute,
           useValue: routeSnapshotVersionReadMock,
@@ -73,6 +78,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     fixture = TestBed.createComponent(TimetableFieldNumberDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
@@ -86,6 +92,62 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     const result = fixture.componentInstance.getValidFromPlaceHolder();
 
     expect(result).toBe('31.12.2020');
+  });
+
+  it('should update Version successfully', () => {
+    mockTimetableFieldNumbersService.updateVersion.and.returnValue(of(version));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    fixture.componentInstance.updateRecord();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.EDIT_SUCCESS');
+    expect(snackBarContainer.classList).toContain('success');
+    expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should not update Version', () => {
+    const error = new Error('401');
+    mockTimetableFieldNumbersService.updateVersion.and.returnValue(throwError(() => error));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    fixture.componentInstance.updateRecord();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.EDIT_ERROR');
+    expect(snackBarContainer.classList).toContain('error');
+  });
+
+  it('should delete Version successfully', () => {
+    mockTimetableFieldNumbersService.deleteVersion.and.returnValue(of({}));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    fixture.componentInstance.deleteRecord();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.DELETE_SUCCESS');
+    expect(snackBarContainer.classList).toContain('success');
+    expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should not delete Version', () => {
+    const error = new Error('401');
+    mockTimetableFieldNumbersService.deleteVersion.and.returnValue(throwError(() => error));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    fixture.componentInstance.deleteRecord();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.DELETE_ERROR');
+    expect(snackBarContainer.classList).toContain('error');
   });
 });
 
@@ -125,7 +187,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TimetableFieldNumberDetailComponent);
-    router = TestBed.get(Router);
+    router = TestBed.inject(Router);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
