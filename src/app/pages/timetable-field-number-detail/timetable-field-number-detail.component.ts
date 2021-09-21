@@ -4,11 +4,12 @@ import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../core/notification/notification.service';
-import { catchError, Subject } from 'rxjs';
-import { ValidationError } from './validation-error';
+import { catchError, EMPTY, Subject, throwError } from 'rxjs';
+import { ValidationError } from '../../core/validation/validation-error';
 import moment from 'moment/moment';
-import { DateRangeValidator } from './date-range-validator';
+import { DateRangeValidator } from '../../core/validation/date-range/date-range-validator';
 import { takeUntil } from 'rxjs/operators';
+import { ValidationService } from '../../core/validation/validation.service';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -34,7 +35,8 @@ export class TimetableFieldNumberDetailComponent
     private router: Router,
     private timetableFieldNumberService: TimetableFieldNumbersService,
     private formBuilder: FormBuilder,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private validationService: ValidationService
   ) {
     super();
   }
@@ -66,7 +68,8 @@ export class TimetableFieldNumberDetailComponent
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           this.notificationService.error('TTFN.NOTIFICATION.EDIT_ERROR');
-          throw err;
+          console.log(err);
+          return EMPTY;
         })
       )
       .subscribe(() => {
@@ -82,7 +85,8 @@ export class TimetableFieldNumberDetailComponent
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           this.notificationService.error('TTFN.NOTIFICATION.ADD_ERROR');
-          throw err;
+          console.log(err);
+          return EMPTY;
         })
       )
       .subscribe((version) => {
@@ -98,7 +102,8 @@ export class TimetableFieldNumberDetailComponent
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
-          throw err;
+          console.log(err);
+          return EMPTY;
         })
       )
       .subscribe(() => {
@@ -139,33 +144,11 @@ export class TimetableFieldNumberDetailComponent
   }
 
   getValidation(inputForm: string) {
-    const result: ValidationError[] = [];
-    const inputFormValidated = this.form.controls[inputForm];
-    const controlErrors = inputFormValidated?.errors;
-    if (controlErrors) {
-      Object.keys(controlErrors).forEach((keyError) => {
-        result.push({
-          error: 'VALIDATION.' + keyError.toUpperCase(),
-          value: controlErrors[keyError],
-        });
-      });
-    }
-    return result;
+    return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
   displayDate(validationError: ValidationError) {
-    const pattern = this.DATE_PATTERN;
-    if (validationError?.value.date) {
-      const validFrom = validationError.value.date.validFrom;
-      const validTo = validationError.value.date.validTo;
-      return validFrom.format(pattern) + ' - ' + validTo.format(pattern);
-    }
-    if (validationError?.value.min) {
-      return validationError.value.min.format(pattern);
-    }
-    if (validationError?.value.max) {
-      return validationError.value.max.format(pattern);
-    }
+    return this.validationService.displayDate(validationError);
   }
 
   ngOnDestroy() {
