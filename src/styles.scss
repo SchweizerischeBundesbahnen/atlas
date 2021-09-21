@@ -65,3 +65,19 @@ a:hover {
 i.bi {
   font-size: 16px;
 }
+
+.mat-snack-bar-container {
+  margin-top: 4.5rem !important;
+}
+
+snack-bar-container.success {
+  background-color: #008000c9;
+}
+
+snack-bar-container.error {
+  background-color: #d71414e0;
+}
+
+snack-bar-container.notification {
+  color: white;
+}
