@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { DialogComponent } from './dialog.component';
+import { By } from '@angular/platform-browser';
 
 describe('DialogComponent', () => {
   let component: DialogComponent;
@@ -12,7 +13,7 @@ describe('DialogComponent', () => {
       declarations: [DialogComponent],
       imports: [MatDialogModule, TranslateModule.forRoot()],
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: { title: 'Title', message: 'message' } },
         { provide: MatDialogRef, useValue: {} },
       ],
     }).compileComponents();
@@ -24,7 +25,13 @@ describe('DialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create with title and text', () => {
     expect(component).toBeTruthy();
+
+    const title = fixture.debugElement.query(By.css('h2'));
+    expect(title.nativeElement.innerText).toBe('Title');
+
+    const content = fixture.debugElement.query(By.css('mat-dialog-content'));
+    expect(content.nativeElement.innerText).toBe('message');
   });
 });
