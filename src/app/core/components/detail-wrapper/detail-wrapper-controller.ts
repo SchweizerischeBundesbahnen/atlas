@@ -44,6 +44,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
             this.backToOverview();
           } else {
             this.form.disable();
+            this.ngOnInit();
           }
         }
       });
@@ -62,6 +63,19 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
         this.createRecord();
       }
     }
+  }
+
+  delete() {
+    return this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.DELETE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.deleteRecord();
+        }
+      });
   }
 
   abstract getTitle(record: TYPE): string | undefined;
