@@ -37,7 +37,7 @@ export class TimetableFieldNumberDetailComponent
     private timetableFieldNumberService: TimetableFieldNumbersService,
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
-    private dialogService: DialogService,
+    protected dialogService: DialogService,
     private validationService: ValidationService
   ) {
     super(dialogService);
