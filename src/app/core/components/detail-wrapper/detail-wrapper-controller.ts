@@ -1,5 +1,5 @@
 import { Directive, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Record } from './record';
 
 @Directive()
@@ -41,11 +41,14 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   }
 
   save() {
-    this.form.disable();
-    if (this.getId()) {
-      this.updateRecord();
-    } else {
-      this.createRecord();
+    this.validateAllFormFields(this.form);
+    if (this.form.valid) {
+      this.form.disable();
+      if (this.getId()) {
+        this.updateRecord();
+      } else {
+        this.createRecord();
+      }
     }
   }
 
@@ -60,4 +63,15 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   abstract createRecord(): void;
 
   abstract deleteRecord(): void;
+
+  private validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach((field) => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
+  }
 }
