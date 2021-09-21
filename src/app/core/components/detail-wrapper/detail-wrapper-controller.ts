@@ -1,12 +1,16 @@
 import { Directive, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Record } from './record';
+import { DialogService } from '../dialog/dialog.service';
+import { Observable, of } from 'rxjs';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
   record!: TYPE;
   form = new FormGroup({});
   heading!: string | undefined;
+
+  protected constructor(public dialogService: DialogService) {}
 
   ngOnInit(): void {
     this.record = this.readRecord();
@@ -34,7 +38,15 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   toggleEdit() {
     if (this.form.enabled) {
-      this.form.disable();
+      this.confirmLeave().subscribe((confirmed) => {
+        if (confirmed) {
+          if (this.isNewRecord()) {
+            this.backToOverview();
+          } else {
+            this.form.disable();
+          }
+        }
+      });
     } else {
       this.form.enable();
     }
@@ -63,6 +75,18 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   abstract createRecord(): void;
 
   abstract deleteRecord(): void;
+
+  abstract backToOverview(): void;
+
+  private confirmLeave(): Observable<boolean> {
+    if (this.form.dirty) {
+      return this.dialogService.confirm({
+        title: 'DIALOG.DISCARD_CHANGES_TITLE',
+        message: 'DIALOG.LEAVE_SITE',
+      });
+    }
+    return of(true);
+  }
 
   private validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
