@@ -55,7 +55,16 @@
     "TTFNID": "Numero piano orario",
     "VALID_FROM": "Valido da",
     "VALID_TO": "Valido a",
-    "COMMENT": "Commento"
+    "COMMENT": "Commento",
+    "NOTIFICATION": {
+      "ADD_SUCCESS": "Numero piano orario aggiunto con successo.",
+      "ADD_ERROR": "Si è verificato un errore durante il salvataggio del numero piano orario.",
+      "EDIT_SUCCESS": "Numero piano orario salvato con successo.",
+      "EDIT_ERROR": "Si è verificato un errore durante il salvataggio del numero piano orario..",
+      "DELETE_SUCCESS": "Numero piano orario cancellato con successo..",
+      "DELETE_ERROR": "Si è verificato un errore durante la cancellazione del numero piano orario.",
+      "FETCH_ERROR": "Si è verificato un errore durante il caricamento dei dati."
+    }
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "Oggetti per pagina",

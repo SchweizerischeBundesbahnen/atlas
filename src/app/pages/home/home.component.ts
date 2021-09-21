@@ -5,6 +5,7 @@ import { TableColumn } from '../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../core/components/table/table-pagination';
+import { NotificationService } from '../../core/notification/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private timetableFieldNumbersService: TimetableFieldNumbersService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -42,8 +44,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getVersions($pagination.page, $pagination.size, [$pagination.sort!])
       .pipe(
         catchError((err) => {
-          // implement Notification Service and integrate me the snack-bar notification
-          // see ATLAS-116
+          this.notificationService.error('TTFN.NOTIFICATION.FETCH_ERROR');
           this.isLoading = false;
           throw err;
         })

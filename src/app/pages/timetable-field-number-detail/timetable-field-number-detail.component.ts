@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from '../../core/notification/notification.service';
+import { catchError, Subject } from 'rxjs';
 import { ValidationError } from './validation-error';
 import moment from 'moment/moment';
 import { DateRangeValidator } from './date-range-validator';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -14,7 +17,7 @@ import { DateRangeValidator } from './date-range-validator';
 })
 export class TimetableFieldNumberDetailComponent
   extends DetailWrapperController<Version>
-  implements OnInit
+  implements OnInit, OnDestroy
 {
   SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
   TTFNID_PLACEHOLDER = 'ch:1:fpfnid:100000';
@@ -24,11 +27,14 @@ export class TimetableFieldNumberDetailComponent
   DATE_PATTERN = 'DD.MM.yyyy';
   MAX_LENGTH = 255;
 
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private timetableFieldNumberService: TimetableFieldNumbersService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private notificationService: NotificationService
   ) {
     super();
   }
@@ -54,18 +60,51 @@ export class TimetableFieldNumberDetailComponent
   }
 
   updateRecord(): void {
-    this.timetableFieldNumberService.updateVersion(this.getId(), this.form.value).subscribe();
+    this.timetableFieldNumberService
+      .updateVersion(this.getId(), this.form.value)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((err) => {
+          this.notificationService.error('TTFN.NOTIFICATION.EDIT_ERROR');
+          throw err;
+        })
+      )
+      .subscribe(() => {
+        this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
+        this.router.navigate([this.getId()]).then(() => this.ngOnInit());
+      });
   }
 
   createRecord(): void {
     this.timetableFieldNumberService
       .createVersion(this.form.value)
-      .subscribe((version) => this.router.navigate([version.id]).then(() => this.ngOnInit()));
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((err) => {
+          this.notificationService.error('TTFN.NOTIFICATION.ADD_ERROR');
+          throw err;
+        })
+      )
+      .subscribe((version) => {
+        this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
+        this.router.navigate([version.id]).then(() => this.ngOnInit());
+      });
   }
 
   deleteRecord(): void {
-    this.timetableFieldNumberService.deleteVersion(this.getId()).subscribe();
-    this.router.navigate(['']).then();
+    this.timetableFieldNumberService
+      .deleteVersion(this.getId())
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((err) => {
+          this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
+          throw err;
+        })
+      )
+      .subscribe(() => {
+        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+        this.router.navigate(['']).then();
+      });
   }
 
   getFormGroup(version: Version): FormGroup {
@@ -127,5 +166,10 @@ export class TimetableFieldNumberDetailComponent
     if (validationError?.value.max) {
       return validationError.value.max.format(pattern);
     }
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
