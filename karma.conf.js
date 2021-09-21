@@ -52,10 +52,11 @@ module.exports = function (config) {
         { type: 'cobertura' },
       ],
     },
+    browserConsoleLogOptions: { level: 'error' },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_ERROR,
     autoWatch: true,
     browsers: ['Chrome'],
     customLaunchers: {
