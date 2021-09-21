@@ -3,13 +3,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TimetableFieldNumbersService, Version } from '../../api';
 import { MaterialModule } from '../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DetailWrapperComponent } from '../../core/components/detail-wrapper/detail-wrapper.component';
 import moment from 'moment/moment';
+import { of, throwError } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HomeComponent } from '../home/home.component';
 
 const version: Version = {
   id: 1,
@@ -42,6 +45,11 @@ let component: TimetableFieldNumberDetailComponent;
 let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
 
 describe('TimetableFieldNumberDetailComponent detail page read version', () => {
+  let router: Router;
+  const mockTimetableFieldNumbersService = jasmine.createSpyObj('timetableFieldNumbersService', [
+    'updateVersion',
+    'deleteVersion',
+  ]);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TimetableFieldNumberDetailComponent, DetailWrapperComponent],
@@ -57,7 +65,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
       ],
       providers: [
         { provide: FormBuilder },
-        { provide: TimetableFieldNumbersService },
+        { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         {
           provide: ActivatedRoute,
           useValue: routeSnapshotVersionReadMock,
@@ -70,6 +78,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     fixture = TestBed.createComponent(TimetableFieldNumberDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
@@ -84,17 +93,79 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 
     expect(result).toBe('31.12.2020');
   });
+
+  it('should update Version successfully', () => {
+    mockTimetableFieldNumbersService.updateVersion.and.returnValue(of(version));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    fixture.componentInstance.updateRecord();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.EDIT_SUCCESS');
+    expect(snackBarContainer.classList).toContain('success');
+    expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should not update Version', () => {
+    const error = new Error('401');
+    mockTimetableFieldNumbersService.updateVersion.and.returnValue(throwError(() => error));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    fixture.componentInstance.updateRecord();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.EDIT_ERROR');
+    expect(snackBarContainer.classList).toContain('error');
+  });
+
+  it('should delete Version successfully', () => {
+    mockTimetableFieldNumbersService.deleteVersion.and.returnValue(of({}));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    fixture.componentInstance.deleteRecord();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.DELETE_SUCCESS');
+    expect(snackBarContainer.classList).toContain('success');
+    expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should not delete Version', () => {
+    const error = new Error('401');
+    mockTimetableFieldNumbersService.deleteVersion.and.returnValue(throwError(() => error));
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    fixture.componentInstance.deleteRecord();
+    fixture.detectChanges();
+
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.DELETE_ERROR');
+    expect(snackBarContainer.classList).toContain('error');
+  });
 });
 
 describe('TimetableFieldNumberDetailComponent Detail page add new version', () => {
   const loremIpsum256Chars =
     'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,s';
 
+  const mockTimetableFieldNumbersService = jasmine.createSpyObj('timetableFieldNumbersService', [
+    'createVersion',
+  ]);
+  let router: Router;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TimetableFieldNumberDetailComponent, DetailWrapperComponent],
       imports: [
         RouterModule.forRoot([]),
+        RouterTestingModule.withRoutes([{ path: '', component: HomeComponent }]),
         HttpClientTestingModule,
         ReactiveFormsModule,
         MaterialModule,
@@ -105,7 +176,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       ],
       providers: [
         { provide: FormBuilder },
-        { provide: TimetableFieldNumbersService },
+        { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         {
           provide: ActivatedRoute,
           useValue: routeSnapshotVersionAddMock,
@@ -116,6 +187,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TimetableFieldNumberDetailComponent);
+    router = TestBed.inject(Router);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -303,6 +375,35 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
       expect(validationErrors).toBeDefined();
       expect(validationErrors?.matDatepickerMax).toBeDefined();
+    });
+  });
+
+  describe('Create new Version', () => {
+    it('should create successfully a new record', () => {
+      spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+      mockTimetableFieldNumbersService.createVersion.and.returnValue(of(version));
+      fixture.componentInstance.createRecord();
+      fixture.detectChanges();
+
+      const snackBarContainer =
+        fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      expect(snackBarContainer).toBeDefined();
+      expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.ADD_SUCCESS');
+      expect(snackBarContainer.classList).toContain('success');
+      expect(router.navigate).toHaveBeenCalled();
+    });
+
+    it('should not create a new record', () => {
+      const err = new Error('404');
+      mockTimetableFieldNumbersService.createVersion.and.returnValue(throwError(() => err));
+      fixture.componentInstance.createRecord();
+      fixture.detectChanges();
+
+      const snackBarContainer =
+        fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      expect(snackBarContainer).toBeDefined();
+      expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.ADD_ERROR');
+      expect(snackBarContainer.classList).toContain('error');
     });
   });
 });
