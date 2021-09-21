@@ -40,7 +40,7 @@
     class="me-3"
     color="primary"
     (click)="controller.save()"
-    [disabled]="!controller.form.valid || !controller.form.dirty"
+    [disabled]="!controller.form.dirty"
   >
     {{ 'COMMON.SAVE' | translate }}
   </button>
