@@ -1,7 +1,7 @@
 {
   "ERROR": {
     "NOTALLOWED": "Keine Berechtigung für diesen Inhalt",
-    "SERVER_REQUEST_FEHLER": "Momentan ist die Verbindung zur Datenbank nicht verfügbar. Bitte überprüfen Sie die Internetverbindung, schliessen den Browser und starten DiDok erneut."
+    "SERVER_REQUEST_FEHLER": "Momentan ist die Verbindung zur Datenbank nicht verfügbar. Bitte überprüfen Sie die Internetverbindung, schliessen den Browser und starten ATLAS erneut."
   },
   "COMMON": {
     "SAVE": "Speichern",
@@ -58,11 +58,11 @@
     "COMMENT": "Kommentar",
     "NOTIFICATION": {
       "ADD_SUCCESS": "Fahrplanfeldnummer erfolgreich hinzugefügt.",
-      "ADD_ERROR": "Bie erfassen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "ADD_ERROR": "Beim Erfassen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "EDIT_SUCCESS": "Fahrplanfeldnummer erfolgreich gespeichert.",
-      "EDIT_ERROR": "Bie editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "EDIT_ERROR": "Beim Editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "DELETE_SUCCESS": "Fahrplanfeldnummer erfolgreich gelöscht.",
-      "DELETE_ERROR": "Bie löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "DELETE_ERROR": "Beim Löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "FETCH_ERROR": "Beim Laden Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten."
     }
   },
