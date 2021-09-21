@@ -57,13 +57,13 @@
     "VALID_TO": "Valide jusqu'au",
     "COMMENT": "Commentaire",
     "NOTIFICATION": {
-      "ADD_SUCCESS": "Fahrplanfeldnummer erfolgreich hinzugefügt.",
-      "ADD_ERROR": "Bie erfassen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
-      "EDIT_SUCCESS": "Fahrplanfeldnummer erfolgreich gespeichert.",
-      "EDIT_ERROR": "Bie editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
-      "DELETE_SUCCESS": "Fahrplanfeldnummer erfolgreich gelöscht.",
-      "DELETE_ERROR": "Bie löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
-      "FETCH_ERROR": "Beim Laden Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten."
+      "ADD_SUCCESS": "Numéro de tableau-horaire ajouté avec succès.",
+      "ADD_ERROR": "Une erreur s'est prduite durant la création du numéro de tableau-horaire.",
+      "EDIT_SUCCESS": "Numéro de tableau-horaire sauvegardé avec succès.",
+      "EDIT_ERROR": "Une erreur s'est produite durant l'édition du numéro de tableau-horaire.",
+      "DELETE_SUCCESS": "Numéro de tableau-horaire supprimé avec succès.",
+      "DELETE_ERROR": "Une erreur s'est produite durant la suppression du numéro de tableau-horaire.",
+      "FETCH_ERROR": "Une erreur s'est produite durant le chargement du numéro de tableau-horaire."
     }
   },
   "PAGINATOR": {
