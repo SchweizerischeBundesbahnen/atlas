@@ -109,7 +109,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should not update Version', () => {
-    const error = new Error('401');
+    const error = new Error('404');
     mockTimetableFieldNumbersService.updateVersion.and.returnValue(throwError(() => error));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.updateRecord();
