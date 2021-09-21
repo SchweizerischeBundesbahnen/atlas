@@ -10,7 +10,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   form = new FormGroup({});
   heading!: string | undefined;
 
-  protected constructor(public dialogService: DialogService) {}
+  protected constructor(protected dialogService: DialogService) {}
 
   ngOnInit(): void {
     this.record = this.readRecord();

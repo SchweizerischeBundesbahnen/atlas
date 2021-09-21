@@ -5,6 +5,7 @@ import { MaterialModule } from '../../module/material.module';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { DetailWrapperController } from './detail-wrapper-controller';
+import { of } from 'rxjs';
 
 describe('DetailWrapperComponent', () => {
   /*eslint-disable */
@@ -19,7 +20,16 @@ describe('DetailWrapperComponent', () => {
   });
   const dummyController = jasmine.createSpyObj(
     'dummyController',
-    ['isExistingRecord', 'save', 'toggleEdit', 'isNewRecord', 'getId', 'updateRecord'],
+    [
+      'isExistingRecord',
+      'save',
+      'toggleEdit',
+      'isNewRecord',
+      'getId',
+      'updateRecord',
+      'confirmLeave',
+      'validateAllFormFields',
+    ],
     {
       heading: undefined,
       form: form,
@@ -31,6 +41,7 @@ describe('DetailWrapperComponent', () => {
   dummyController.isExistingRecord.and.callFake(DetailWrapperController.prototype.isExistingRecord);
   dummyController.save.and.callFake(DetailWrapperController.prototype.save);
   dummyController.toggleEdit.and.callFake(DetailWrapperController.prototype.toggleEdit);
+  dummyController.confirmLeave.and.returnValue(of(true));
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
