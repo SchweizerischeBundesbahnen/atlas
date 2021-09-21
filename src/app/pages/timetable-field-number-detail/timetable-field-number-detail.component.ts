@@ -4,7 +4,7 @@ import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../core/notification/notification.service';
-import { catchError, Subject } from 'rxjs';
+import { catchError, EMPTY, Subject, throwError } from 'rxjs';
 import { ValidationError } from '../../core/validation/validation-error';
 import moment from 'moment/moment';
 import { DateRangeValidator } from '../../core/validation/date-range/date-range-validator';
@@ -68,7 +68,8 @@ export class TimetableFieldNumberDetailComponent
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           this.notificationService.error('TTFN.NOTIFICATION.EDIT_ERROR');
-          throw err;
+          console.log(err);
+          return EMPTY;
         })
       )
       .subscribe(() => {
@@ -84,7 +85,8 @@ export class TimetableFieldNumberDetailComponent
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           this.notificationService.error('TTFN.NOTIFICATION.ADD_ERROR');
-          throw err;
+          console.log(err);
+          return EMPTY;
         })
       )
       .subscribe((version) => {
@@ -100,7 +102,8 @@ export class TimetableFieldNumberDetailComponent
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
-          throw err;
+          console.log(err);
+          return EMPTY;
         })
       )
       .subscribe(() => {
