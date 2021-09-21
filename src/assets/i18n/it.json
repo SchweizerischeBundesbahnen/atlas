@@ -26,6 +26,8 @@
   "DIALOG": {
     "OK": "OK",
     "CANCEL": "Annullare",
+    "WARNING": "Attenzione!",
+    "DELETE": "Vuole eliminare questo record di dati irrevocabilmente?",
     "DISCARD_CHANGES_TITLE": "Non salvare le modifiche?",
     "LEAVE_SITE": "Lasciando la pagina i tuoi dati non verranno salvati.",
     "CANCEL_EDITMODE": "Uscendo dalla modalità di modifica perderai tutti i tuoi dati."

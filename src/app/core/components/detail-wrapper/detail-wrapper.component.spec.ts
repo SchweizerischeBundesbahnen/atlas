@@ -29,6 +29,7 @@ describe('DetailWrapperComponent', () => {
       'updateRecord',
       'confirmLeave',
       'validateAllFormFields',
+      'ngOnInit',
     ],
     {
       heading: undefined,
