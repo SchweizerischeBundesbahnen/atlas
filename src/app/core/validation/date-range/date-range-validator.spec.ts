@@ -1,11 +1,12 @@
 import { DateRangeValidator } from './date-range-validator';
 import { FormControl } from '@angular/forms';
+import moment from 'moment';
 
 describe('Date Validator', () => {
   it('should return validation error when validFrom greater then validTo ', () => {
     //given
-    const validFrom = new Date('12.12.2000');
-    const validTo = new Date('12.12.1999');
+    const validFrom = moment('12.12.2000', 'DD.MM.YYYY');
+    const validTo = moment('12.12.1999', 'DD.MM.YYYY');
     const validFromForm = new FormControl(validFrom);
     const validToForm = new FormControl(validTo);
     //when
@@ -69,8 +70,8 @@ describe('Date Validator', () => {
   });
   it('should return validation error when validFrom greater then validTo and dates have in the past validation error', () => {
     //given
-    const validFrom = new Date('2010-12-31');
-    const validTo = new Date('2009-12-31 23:59:59');
+    const validFrom = moment('2010-12-31');
+    const validTo = moment('2009-12-31 23:59:59');
     const validFromForm = new FormControl(validFrom);
     const validToForm = new FormControl(validTo);
     validFromForm.setErrors({
