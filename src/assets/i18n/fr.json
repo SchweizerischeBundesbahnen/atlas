@@ -26,6 +26,8 @@
   "DIALOG": {
     "OK": "Continuer",
     "CANCEL": "Annuler",
+    "WARNING": "Attention!",
+    "DELETE": "Voulez-vous supprimer définitivement cet enregistrement de données ?",
     "DISCARD_CHANGES_TITLE": "Annuler les modifications?",
     "LEAVE_SITE": "Si la page est quittée, les données ne seront pas sauvegardées.",
     "CANCEL_EDITMODE": "Sortir du mode d'édition annulera toutes les modifications."

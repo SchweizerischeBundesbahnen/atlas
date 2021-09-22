@@ -22,6 +22,7 @@ import { DetailWrapperComponent } from './core/components/detail-wrapper/detail-
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 import { BreadcrumbComponent } from './core/components/breadcrumb/breadcrumb.component';
 import { LoadingSpinnerComponent } from './core/components/loading-spinner/loading-spinner.component';
+import { DialogComponent } from './core/components/dialog/dialog.component';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => {
@@ -39,6 +40,7 @@ export function apiConfigFactory(): Configuration {
   declarations: [
     AppComponent,
     HomeComponent,
+    DialogComponent,
     AuthInsightsComponent,
     HeaderComponent,
     LoadingSpinnerComponent,

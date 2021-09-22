@@ -4,11 +4,12 @@ import { TimetableFieldNumbersService, Version } from '../../api';
 import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../core/notification/notification.service';
-import { catchError, EMPTY, Subject, throwError } from 'rxjs';
+import { catchError, EMPTY, Subject } from 'rxjs';
 import { ValidationError } from '../../core/validation/validation-error';
 import moment from 'moment/moment';
 import { DateRangeValidator } from '../../core/validation/date-range/date-range-validator';
 import { takeUntil } from 'rxjs/operators';
+import { DialogService } from '../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../core/validation/validation.service';
 
 @Component({
@@ -36,12 +37,14 @@ export class TimetableFieldNumberDetailComponent
     private timetableFieldNumberService: TimetableFieldNumbersService,
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
+    protected dialogService: DialogService,
     private validationService: ValidationService
   ) {
-    super();
+    super(dialogService);
   }
 
   ngOnInit() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     super.ngOnInit();
   }
 
@@ -108,8 +111,12 @@ export class TimetableFieldNumberDetailComponent
       )
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
-        this.router.navigate(['']).then();
+        this.backToOverview();
       });
+  }
+
+  backToOverview(): void {
+    this.router.navigate(['']).then();
   }
 
   getFormGroup(version: Version): FormGroup {
@@ -121,10 +128,13 @@ export class TimetableFieldNumberDetailComponent
         ],
         ttfnid: [version.ttfnid, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
         validFrom: [
-          version.validFrom,
+          version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
         ],
-        validTo: [version.validTo, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
+        validTo: [
+          version.validTo ? moment(version.validTo) : version.validTo,
+          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+        ],
         businessOrganisation: [
           version.businessOrganisation,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
