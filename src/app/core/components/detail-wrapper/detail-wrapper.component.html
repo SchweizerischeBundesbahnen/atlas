@@ -17,7 +17,7 @@
     <button
       mat-mini-fab
       color="white"
-      (click)="controller.deleteRecord()"
+      (click)="controller.delete()"
       [disabled]="controller.form.enabled"
     >
       <em class="bi bi-trash-fill"></em>
@@ -40,7 +40,7 @@
     class="me-3"
     color="primary"
     (click)="controller.save()"
-    [disabled]="!controller.form.valid || !controller.form.dirty"
+    [disabled]="!controller.form.dirty"
   >
     {{ 'COMMON.SAVE' | translate }}
   </button>
