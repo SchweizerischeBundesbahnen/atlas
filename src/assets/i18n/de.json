@@ -26,6 +26,8 @@
   "DIALOG": {
     "OK": "Weiter",
     "CANCEL": "Abbrechen",
+    "WARNING": "Warnung!",
+    "DELETE": "Wollen Sie diesen Datensatz unwiderruflich löschen?",
     "DISCARD_CHANGES_TITLE": "Änderungen verwerfen?",
     "LEAVE_SITE": "Wenn du die Seite verlässt, werden deine Daten nicht gespeichert.",
     "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlierst du alle editierten Daten."

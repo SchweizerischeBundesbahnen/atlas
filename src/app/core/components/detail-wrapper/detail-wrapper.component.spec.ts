@@ -5,32 +5,12 @@ import { MaterialModule } from '../../module/material.module';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { DetailWrapperController } from './detail-wrapper-controller';
+import { of } from 'rxjs';
 
 describe('DetailWrapperComponent', () => {
   /*eslint-disable */
   let component: DetailWrapperComponent<any>;
   let fixture: ComponentFixture<DetailWrapperComponent<any>>;
-  /*eslint-enable */
-
-  const form = jasmine.createSpyObj('form', ['enable', 'disable'], {
-    enabled: true,
-    dirty: true,
-    valid: true,
-  });
-  const dummyController = jasmine.createSpyObj(
-    'dummyController',
-    ['isExistingRecord', 'save', 'toggleEdit', 'isNewRecord', 'getId', 'updateRecord'],
-    {
-      heading: undefined,
-      form: form,
-      record: { id: 1 },
-    }
-  );
-  dummyController.getId.and.callFake(DetailWrapperController.prototype.getId);
-  dummyController.isNewRecord.and.callFake(DetailWrapperController.prototype.isNewRecord);
-  dummyController.isExistingRecord.and.callFake(DetailWrapperController.prototype.isExistingRecord);
-  dummyController.save.and.callFake(DetailWrapperController.prototype.save);
-  dummyController.toggleEdit.and.callFake(DetailWrapperController.prototype.toggleEdit);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -44,29 +24,81 @@ describe('DetailWrapperComponent', () => {
     }).compileComponents();
   });
 
-  beforeEach(() => {
+  function init(controller: DetailWrapperController<any>) {
     fixture = TestBed.createComponent(DetailWrapperComponent);
     component = fixture.componentInstance;
-    component.controller = dummyController;
+    component.controller = controller;
     component.canEdit = true;
     fixture.detectChanges();
+  }
+  /*eslint-enable */
+
+  describe('disabled', (dummyController = createDummyForm(false)) => {
+    beforeEach(() => init(dummyController));
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('should switch from disabled to enabled', () => {
+      const editButton = fixture.debugElement.query(By.css('.bi-pencil-fill'));
+      editButton.nativeElement.click();
+
+      expect(dummyController.toggleEdit).toHaveBeenCalled();
+    });
+
+    it('should delete record', () => {
+      const editButton = fixture.debugElement.query(By.css('.bi-trash-fill'));
+      editButton.nativeElement.click();
+
+      expect(dummyController.delete).toHaveBeenCalled();
+    });
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  describe('enabled', (dummyController = createDummyForm(true)) => {
+    beforeEach(() => init(dummyController));
 
-  it('should switch from disabled to enabled', () => {
-    const editButton = fixture.debugElement.query(By.css('.bi-pencil-fill'));
-    editButton.nativeElement.click();
+    it('should save and disable form', () => {
+      const submitButton = fixture.debugElement.query(By.css('[type=submit]'));
+      submitButton.nativeElement.click();
 
-    expect(dummyController.toggleEdit).toHaveBeenCalled();
-  });
-
-  it('should save and disable form', () => {
-    const submitButton = fixture.debugElement.query(By.css('[type=submit]'));
-    submitButton.nativeElement.click();
-
-    expect(dummyController.save).toHaveBeenCalled();
+      expect(dummyController.save).toHaveBeenCalled();
+    });
   });
 });
+
+function createDummyForm(enabledForm: boolean) {
+  const form = jasmine.createSpyObj('form', ['enable', 'disable'], {
+    enabled: enabledForm,
+    dirty: true,
+    valid: true,
+  });
+  const dummyController = jasmine.createSpyObj(
+    'dummyController',
+    [
+      'isExistingRecord',
+      'save',
+      'toggleEdit',
+      'isNewRecord',
+      'getId',
+      'updateRecord',
+      'confirmLeave',
+      'validateAllFormFields',
+      'ngOnInit',
+      'delete',
+    ],
+    {
+      heading: undefined,
+      form: form,
+      record: { id: 1 },
+    }
+  );
+  dummyController.getId.and.callFake(DetailWrapperController.prototype.getId);
+  dummyController.isNewRecord.and.callFake(DetailWrapperController.prototype.isNewRecord);
+  dummyController.isExistingRecord.and.callFake(DetailWrapperController.prototype.isExistingRecord);
+  dummyController.save.and.callFake(DetailWrapperController.prototype.save);
+  dummyController.toggleEdit.and.callFake(DetailWrapperController.prototype.toggleEdit);
+  dummyController.confirmLeave.and.returnValue(of(true));
+
+  return dummyController;
+}

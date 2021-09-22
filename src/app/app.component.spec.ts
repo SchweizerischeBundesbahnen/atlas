@@ -54,4 +54,9 @@ describe('AppComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should serialize date correctly', () => {
+    const result = new Date('2029-06-01').toISOString();
+    expect(result).toBe('2029-06-01');
+  });
 });
