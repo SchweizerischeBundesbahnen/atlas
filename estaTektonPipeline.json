@@ -10,11 +10,6 @@
     "artifactoryDockerRepo": "atlas.docker",
     "openshiftAppName": "timetable-field-number-backend-tekton"
   },
-  "helm": {
-    "chartName": "timetable-field-number-backend",
-    "chartRepository": "atlas.helm.local",
-    "chartRootFolder": "./charts"
-  },
   "stages": [
     {
       "stageName": "dev",
