@@ -66,7 +66,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   }
 
   delete() {
-    return this.dialogService
+    this.dialogService
       .confirm({
         title: 'DIALOG.WARNING',
         message: 'DIALOG.DELETE',
