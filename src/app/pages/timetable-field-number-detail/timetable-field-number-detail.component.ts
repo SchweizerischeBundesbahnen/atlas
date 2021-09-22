@@ -44,6 +44,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   ngOnInit() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     super.ngOnInit();
   }
 
