@@ -119,13 +119,6 @@ describe('DetailWrapperController', () => {
 
       expect(dummyController.deleteRecord).toHaveBeenCalled();
     });
-
-    it('should not delete on cancel', () => {
-      dialogServiceSpy.confirm.and.returnValue(of(false));
-      controller.delete();
-
-      expect(dummyController.deleteRecord).not.toHaveBeenCalled();
-    });
   });
 
   describe('new record', () => {
