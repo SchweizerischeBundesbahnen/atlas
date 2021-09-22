@@ -44,6 +44,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   ngOnInit() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     super.ngOnInit();
   }
 
@@ -127,10 +128,13 @@ export class TimetableFieldNumberDetailComponent
         ],
         ttfnid: [version.ttfnid, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
         validFrom: [
-          version.validFrom,
+          version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
         ],
-        validTo: [version.validTo, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
+        validTo: [
+          version.validTo ? moment(version.validTo) : version.validTo,
+          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+        ],
         businessOrganisation: [
           version.businessOrganisation,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
