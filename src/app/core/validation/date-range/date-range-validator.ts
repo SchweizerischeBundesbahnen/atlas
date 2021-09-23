@@ -1,4 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import moment, { Moment } from 'moment';
 
 export class DateRangeValidator {
   static fromGreaterThenTo(validFrom: string, validTo: string): ValidatorFn {
@@ -13,7 +14,7 @@ export class DateRangeValidator {
   static validate(validFromForm: AbstractControl | null, validToForm: AbstractControl | null) {
     const validFromValue = validFromForm?.value;
     const validToValue = validToForm?.value;
-    if (validFromValue !== null && validToValue !== null && validFromValue > validToValue) {
+    if (validFromValue !== null && validToValue !== null && validFromValue.isAfter(validToValue)) {
       const error: ValidationErrors = {
         date_range_error: {
           date: { validFrom: validFromValue, validTo: validToValue },
