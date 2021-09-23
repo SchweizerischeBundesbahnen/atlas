@@ -1,5 +1,4 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import moment, { Moment } from 'moment';
 
 export class DateRangeValidator {
   static fromGreaterThenTo(validFrom: string, validTo: string): ValidatorFn {
