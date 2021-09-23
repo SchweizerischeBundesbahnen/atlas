@@ -29,8 +29,8 @@ describe('Date Validator', () => {
 
   it('should return validation success when validFrom equal to validTo ', () => {
     //given
-    const validFrom = new Date();
-    const validTo = new Date();
+    const validFrom = moment();
+    const validTo = moment();
     const validFromForm = new FormControl(validFrom);
     const validToForm = new FormControl(validTo);
     //when
@@ -42,8 +42,8 @@ describe('Date Validator', () => {
 
   it('should remove validation error when validTo is greater then validFrom ', () => {
     //given
-    const validFrom = new Date('2010-12-31');
-    const validTo = new Date('2011-12-31');
+    const validFrom = moment('2010-12-31');
+    const validTo = moment('2011-12-31');
     const validFromForm = new FormControl(validFrom);
     const validToForm = new FormControl(validTo);
     validFromForm.setErrors({
@@ -110,8 +110,8 @@ describe('Date Validator', () => {
 
   it('should successfully validate dates', () => {
     //given
-    const validFromForm = new FormControl(new Date('12.12.2000'));
-    const validToForm = new FormControl(new Date('12.12.2001'));
+    const validFromForm = new FormControl(moment('12.12.2000'));
+    const validToForm = new FormControl(moment('12.12.2001'));
     //when
     DateRangeValidator.validate(validFromForm, validToForm);
     //then
