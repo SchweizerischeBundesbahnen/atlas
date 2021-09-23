@@ -8,7 +8,7 @@ const PREV_PAGE = 'PAGINATOR.PREVIOUS_PAGE';
 const RANGE_LABEL1 = 'PAGINATOR.RANGE_LABEL1';
 const RANGE_LABEL2 = 'PAGINATOR.RANGE_LABEL2';
 @Injectable()
-export class TranslatedMatPaginatorIntl extends MatPaginatorIntl {
+export class TranslatedPaginator extends MatPaginatorIntl {
   constructor(private translate: TranslateService) {
     super();
     this.translateLabels();
