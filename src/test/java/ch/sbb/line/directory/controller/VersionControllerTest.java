@@ -10,7 +10,11 @@ import static org.mockito.Mockito.when;
 import ch.sbb.line.directory.api.VersionModel;
 import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.entity.Version;
+import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.enumaration.PaymentType;
+import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.repository.VersionRepository;
+import java.awt.Color;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
@@ -54,7 +58,7 @@ public class VersionControllerTest {
     verify(versionRepository).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate", "lineRelations")
+                                                    "creationDate", "sublineVersions")
                                                 .isEqualTo(versionModel);
   }
 
@@ -64,7 +68,7 @@ public class VersionControllerTest {
     Version version = createEntity();
     when(versionRepository.findAll(any(Pageable.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(version)));
-    when(versionRepository.count()).thenReturn(1l);
+    when(versionRepository.count()).thenReturn(1L);
 
     // When
     VersionsContainer versions = versionController.getVersions(Pageable.unpaged());
@@ -75,7 +79,7 @@ public class VersionControllerTest {
                         .first()
                         .usingRecursiveComparison()
                         .ignoringFields("editor", "creator", "editionDate", "creationDate",
-                            "lineRelations")
+                            "sublineVersions")
                         .isEqualTo(version);
     assertThat(versions.getTotalCount()).isEqualTo(1);
   }
@@ -92,7 +96,7 @@ public class VersionControllerTest {
     // Then
     assertThat(versionModel).usingRecursiveComparison()
                             .ignoringFields("editor", "creator", "editionDate", "creationDate",
-                                "lineRelations")
+                                "sublineVersions")
                             .isEqualTo(versionModel);
   }
 
@@ -137,7 +141,7 @@ public class VersionControllerTest {
     // Given
     Version version = createEntity();
     VersionModel versionModel = createModel();
-    versionModel.setName("New name");
+    versionModel.setShortName("New name");
 
     when(versionRepository.findById(anyLong())).thenReturn(Optional.of(version));
 
@@ -147,7 +151,7 @@ public class VersionControllerTest {
     // Then
     assertThat(result).usingRecursiveComparison()
                       .ignoringFields("editor", "creator", "editionDate", "creationDate",
-                          "lineRelations")
+                          "sublineVersions")
                       .isEqualTo(versionModel);
   }
 
@@ -168,23 +172,49 @@ public class VersionControllerTest {
 
   private static Version createEntity() {
     return Version.builder()
-                  .ttfnid("ch:1:fpfnid:100000")
-                  .name("FPFN Name")
-                  .number("BEX")
-                  .swissTimetableFieldNumber("b0.BEX")
+                  .sublineVersions(Collections.emptySet())
+                  .status(Status.ACTIVE)
+                  .type(LineType.ORDERLY)
+                  .slnid("slnid")
+                  .paymentType(PaymentType.INTERNATIONAL)
+                  .shortName("shortName")
+                  .alternativeName("alternativeName")
+                  .combinationName("combinationName")
+                  .longName("longName")
+                  .colorFontRgb(Color.black)
+                  .colorBackRgb(Color.black)
+                  .colorFontCmyk(Color.black)
+                  .colorBackCmyk(Color.black)
+                  .description("description")
                   .validFrom(LocalDate.of(2020, 12, 12))
                   .validTo(LocalDate.of(2099, 12, 12))
+                  .businessOrganisation("businessOrganisation")
+                  .comment("comment")
+                  .swissLineNumber("swissLineNumber")
                   .build();
   }
 
   private static VersionModel createModel() {
     return VersionModel.builder()
-                       .ttfnid("ch:1:fpfnid:100000")
-                       .name("FPFN Name")
-                       .number("BEX")
-                       .swissTimetableFieldNumber("b0.BEX")
+                       .sublineVersions(Collections.emptySet())
+                       .status(Status.ACTIVE)
+                       .type(LineType.ORDERLY)
+                       .slnid("slnid")
+                       .paymentType(PaymentType.INTERNATIONAL)
+                       .shortName("shortName")
+                       .alternativeName("alternativeName")
+                       .combinationName("combinationName")
+                       .longName("longName")
+                       .colorFontRgb("#FFFFFF")
+                       .colorBackRgb("#FFFFFF")
+                       .colorFontCmyk("#FFFFFF")
+                       .colorBackCmyk("#FFFFFF")
+                       .description("description")
                        .validFrom(LocalDate.of(2020, 12, 12))
                        .validTo(LocalDate.of(2099, 12, 12))
+                       .businessOrganisation("businessOrganisation")
+                       .comment("comment")
+                       .swissLineNumber("swissLineNumber")
                        .build();
   }
 }

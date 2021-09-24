@@ -1,9 +1,12 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.line.directory.entity.Version;
+import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.api.VersionApi;
 import ch.sbb.line.directory.api.VersionModel;
 import ch.sbb.line.directory.api.VersionsContainer;
+import ch.sbb.line.directory.converter.ColorConverter;
+import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.entity.Version;
 import ch.sbb.line.directory.repository.VersionRepository;
 import java.util.List;
 import java.util.function.Supplier;
@@ -33,7 +36,7 @@ public class VersionController implements VersionApi {
   public VersionsContainer getVersions(Pageable pageable) {
     log.info("Load Versions using pageable={}", pageable);
     List<VersionModel> versions = versionRepository.findAll(pageable).stream().map(this::toModel)
-                                                  .collect(Collectors.toList());
+                                                   .collect(Collectors.toList());
     long totalCount = versionRepository.count();
     return VersionsContainer.builder()
                             .versions(versions)
@@ -55,15 +58,27 @@ public class VersionController implements VersionApi {
   public VersionModel updateVersion(Long id, VersionModel newVersion) {
     Version versionToUpdate = versionRepository.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
 
-    versionToUpdate.setTtfnid(newVersion.getTtfnid());
-    versionToUpdate.setName(newVersion.getName());
-    versionToUpdate.setNumber(newVersion.getNumber());
-    versionToUpdate.setSwissTimetableFieldNumber(newVersion.getSwissTimetableFieldNumber());
+    versionToUpdate.setSublineVersions(
+        newVersion.getSublineVersions().stream().map(this::toEntity).collect(
+            Collectors.toSet()));
+    versionToUpdate.setStatus(newVersion.getStatus());
+    versionToUpdate.setType(newVersion.getType());
+    versionToUpdate.setSlnid(newVersion.getSlnid());
+    versionToUpdate.setPaymentType(newVersion.getPaymentType());
+    versionToUpdate.setShortName(newVersion.getShortName());
+    versionToUpdate.setAlternativeName(newVersion.getAlternativeName());
+    versionToUpdate.setCombinationName(newVersion.getCombinationName());
+    versionToUpdate.setLongName(newVersion.getLongName());
+    versionToUpdate.setColorFontRgb(ColorConverter.fromHexString(newVersion.getColorFontRgb()));
+    versionToUpdate.setColorBackRgb(ColorConverter.fromHexString(newVersion.getColorBackRgb()));
+    versionToUpdate.setColorFontCmyk(ColorConverter.fromHexString(newVersion.getColorFontCmyk()));
+    versionToUpdate.setColorBackCmyk(ColorConverter.fromHexString(newVersion.getColorBackCmyk()));
+    versionToUpdate.setDescription(newVersion.getDescription());
     versionToUpdate.setValidFrom(newVersion.getValidFrom());
     versionToUpdate.setValidTo(newVersion.getValidTo());
-    versionToUpdate.setComment(newVersion.getComment());
     versionToUpdate.setBusinessOrganisation(newVersion.getBusinessOrganisation());
-    versionToUpdate.setNameCompact(newVersion.getNameCompact());
+    versionToUpdate.setComment(newVersion.getComment());
+    versionToUpdate.setSwissLineNumber(newVersion.getSwissLineNumber());
     versionRepository.save(versionToUpdate);
 
     return toModel(versionToUpdate);
@@ -80,32 +95,86 @@ public class VersionController implements VersionApi {
   private VersionModel toModel(Version version) {
     return VersionModel.builder()
                        .id(version.getId())
-                       .name(version.getName())
-                       .number(version.getNumber())
-                       .ttfnid(version.getTtfnid())
-                       .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
+                       .sublineVersions(version.getSublineVersions()
+                                               .stream()
+                                               .map(this::toModel)
+                                               .collect(Collectors.toSet()))
                        .status(version.getStatus())
+                       .type(version.getType())
+                       .slnid(version.getSlnid())
+                       .paymentType(version.getPaymentType())
+                       .shortName(version.getShortName())
+                       .alternativeName(version.getAlternativeName())
+                       .combinationName(version.getCombinationName())
+                       .longName(version.getLongName())
+                       .colorFontRgb(ColorConverter.toHexString(version.getColorFontRgb()))
+                       .colorBackRgb(ColorConverter.toHexString(version.getColorBackRgb()))
+                       .colorFontCmyk(ColorConverter.toHexString(version.getColorFontCmyk()))
+                       .colorBackCmyk(ColorConverter.toHexString(version.getColorBackCmyk()))
+                       .description(version.getDescription())
                        .validFrom(version.getValidFrom())
                        .validTo(version.getValidTo())
                        .businessOrganisation(version.getBusinessOrganisation())
                        .comment(version.getComment())
-                       .nameCompact(version.getNameCompact())
+                       .swissLineNumber(version.getSwissLineNumber())
                        .build();
+  }
+
+  private SublineVersionModel toModel(SublineVersion sublineVersion) {
+    return SublineVersionModel.builder()
+                              .id(sublineVersion.getId())
+                              .type(sublineVersion.getType())
+                              .slnid(sublineVersion.getSlnid())
+                              .description(sublineVersion.getDescription())
+                              .shortName(sublineVersion.getShortName())
+                              .longName(sublineVersion.getLongName())
+                              .paymentType(sublineVersion.getPaymentType())
+                              .validFrom(sublineVersion.getValidFrom())
+                              .validTo(sublineVersion.getValidTo())
+                              .businessOrganisation(sublineVersion.getBusinessOrganisation())
+                              .build();
   }
 
   private Version toEntity(VersionModel versionModel) {
     return Version.builder()
                   .id(versionModel.getId())
-                  .name(versionModel.getName())
-                  .number(versionModel.getNumber())
-                  .ttfnid(versionModel.getTtfnid())
-                  .swissTimetableFieldNumber(versionModel.getSwissTimetableFieldNumber())
+                  .sublineVersions(versionModel.getSublineVersions()
+                                               .stream()
+                                               .map(this::toEntity)
+                                               .collect(Collectors.toSet()))
                   .status(versionModel.getStatus())
+                  .type(versionModel.getType())
+                  .slnid(versionModel.getSlnid())
+                  .paymentType(versionModel.getPaymentType())
+                  .shortName(versionModel.getShortName())
+                  .alternativeName(versionModel.getAlternativeName())
+                  .combinationName(versionModel.getCombinationName())
+                  .longName(versionModel.getLongName())
+                  .colorFontRgb(ColorConverter.fromHexString(versionModel.getColorFontRgb()))
+                  .colorBackRgb(ColorConverter.fromHexString(versionModel.getColorBackRgb()))
+                  .colorFontCmyk(ColorConverter.fromHexString(versionModel.getColorFontCmyk()))
+                  .colorBackCmyk(ColorConverter.fromHexString(versionModel.getColorBackCmyk()))
+                  .description(versionModel.getDescription())
                   .validFrom(versionModel.getValidFrom())
                   .validTo(versionModel.getValidTo())
                   .businessOrganisation(versionModel.getBusinessOrganisation())
                   .comment(versionModel.getComment())
-                  .nameCompact(versionModel.getNameCompact())
+                  .swissLineNumber(versionModel.getSwissLineNumber())
                   .build();
+  }
+
+  private SublineVersion toEntity(SublineVersionModel sublineVersionModel) {
+    return SublineVersion.builder()
+                         .id(sublineVersionModel.getId())
+                         .type(sublineVersionModel.getType())
+                         .slnid(sublineVersionModel.getSlnid())
+                         .description(sublineVersionModel.getDescription())
+                         .shortName(sublineVersionModel.getShortName())
+                         .longName(sublineVersionModel.getLongName())
+                         .paymentType(sublineVersionModel.getPaymentType())
+                         .validFrom(sublineVersionModel.getValidFrom())
+                         .validTo(sublineVersionModel.getValidTo())
+                         .businessOrganisation(sublineVersionModel.getBusinessOrganisation())
+                         .build();
   }
 }

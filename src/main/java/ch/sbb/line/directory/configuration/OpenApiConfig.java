@@ -25,7 +25,7 @@ public class OpenApiConfig {
   public GroupedOpenApi defaultApi() {
     return GroupedOpenApi.builder()
                          .group("public")
-                         .packagesToScan("ch.sbb.timetable.field.number")
+                         .packagesToScan("ch.sbb.line.directory")
                          .build();
   }
 
@@ -35,8 +35,8 @@ public class OpenApiConfig {
     return new OpenAPI()
         .addServersItem(new Server().url("/"))
         .info(new Info()
-            .title("Timetable Field Number API")
-            .description("This is the API for all your Timetable Field Number needs")
+            .title("Line Directory API")
+            .description("This is the API for all your needs on lines")
             .contact(new Contact().name("ATLAS Team")
                                   .url(
                                       "https://confluence.sbb.ch/display/ATLAS/ATLAS+-+SKI+Business+Platform")

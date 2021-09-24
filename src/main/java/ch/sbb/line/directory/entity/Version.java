@@ -1,12 +1,17 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.line.directory.converter.ColorConverter;
+import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
+import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,10 +34,10 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-@Entity(name = "timetable_field_number_version")
+@Entity(name = "line_version")
 public class Version {
 
-  private static final String VERSION_SEQ = "timetable_field_number_version_seq";
+  private static final String VERSION_SEQ = "line_version_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -41,28 +46,40 @@ public class Version {
 
   @Builder.Default
   @OneToMany(mappedBy = "version", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<LineRelation> lineRelations = new HashSet<>();
-
-  private String ttfnid;
-
-  private String name;
-
-  private String number;
-
-  private String swissTimetableFieldNumber;
+  private Set<SublineVersion> sublineVersions = new HashSet<>();
 
   @Enumerated(EnumType.STRING)
   private Status status;
 
-  @Column(columnDefinition = "TIMESTAMP")
-  private LocalDateTime creationDate;
+  @Enumerated(EnumType.STRING)
+  private LineType type;
 
-  private String creator;
+  private String slnid;
 
-  @Column(columnDefinition = "TIMESTAMP")
-  private LocalDateTime editionDate;
+  @Enumerated(EnumType.STRING)
+  private PaymentType paymentType;
 
-  private String editor;
+  private String shortName;
+
+  private String alternativeName;
+
+  private String combinationName;
+
+  private String longName;
+
+  @Convert(converter = ColorConverter.class)
+  private Color colorFontRgb;
+
+  @Convert(converter = ColorConverter.class)
+  private Color colorBackRgb;
+
+  @Convert(converter = ColorConverter.class)
+  private Color colorFontCmyk;
+
+  @Convert(converter = ColorConverter.class)
+  private Color colorBackCmyk;
+
+  private String description;
 
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDate validFrom;
@@ -74,6 +91,16 @@ public class Version {
 
   private String comment;
 
-  private String nameCompact;
+  private String swissLineNumber;
+
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDateTime creationDate;
+
+  private String creator;
+
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDateTime editionDate;
+
+  private String editor;
 
 }
