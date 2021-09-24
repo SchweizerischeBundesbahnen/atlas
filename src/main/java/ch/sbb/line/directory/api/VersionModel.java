@@ -1,6 +1,6 @@
-package ch.sbb.timetable.field.number.api;
+package ch.sbb.line.directory.api;
 
-import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.line.directory.enumaration.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
