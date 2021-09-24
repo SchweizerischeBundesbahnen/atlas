@@ -1,8 +1,8 @@
-PRODUCT=timetable-field-number-backend
-IMAGE_NAME=timetable-field-number-backend
+PRODUCT=line-directory-backend
+IMAGE_NAME=line-directory-backend
 IMAGE_PULL_POLICY=Always
 
-PORT=8080
+PORT=8081
 
 CPU_MIN=100m
 CPU_MAX=1

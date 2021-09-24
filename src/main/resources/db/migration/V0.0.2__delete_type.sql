@@ -1,1 +1,0 @@
-alter table timetable_field_number_version drop column type;
