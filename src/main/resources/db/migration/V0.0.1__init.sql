@@ -18,7 +18,7 @@ CREATE TABLE line_version
     valid_from            DATE,
     valid_to              DATE,
     business_organisation VARCHAR(50),
-    comment               VARCHAR(250),
+    comment               VARCHAR(1500),
     swiss_line_number     VARCHAR(50),
     creation_date         TIMESTAMP,
     creator               VARCHAR(50),
