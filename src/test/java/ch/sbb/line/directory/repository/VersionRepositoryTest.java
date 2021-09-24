@@ -3,9 +3,14 @@ package ch.sbb.line.directory.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.line.directory.IntegrationTest;
-import ch.sbb.line.directory.entity.LineRelation;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.Version;
+import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.enumaration.PaymentType;
+import ch.sbb.line.directory.enumaration.Status;
+import java.awt.Color;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,23 +33,37 @@ public class VersionRepositoryTest {
 
   @BeforeEach
   void setUpVersionWithTwoLineRelations() {
-    version = Version.builder().ttfnid("ch:1:fpfnid:100000")
-                     .name("FPFN Name")
-                     .number("BEX")
-                     .swissTimetableFieldNumber("b0.BEX")
+    version = Version.builder()
+                     .sublineVersions(Collections.emptySet())
+                     .status(Status.ACTIVE)
+                     .type(LineType.ORDERLY)
+                     .slnid("slnid")
+                     .paymentType(PaymentType.INTERNATIONAL)
+                     .shortName("shortName")
+                     .alternativeName("alternativeName")
+                     .combinationName("combinationName")
+                     .longName("longName")
+                     .colorFontRgb(Color.black)
+                     .colorBackRgb(Color.black)
+                     .colorFontCmyk(Color.black)
+                     .colorBackCmyk(Color.black)
+                     .description("description")
                      .validFrom(LocalDate.of(2020, 12, 12))
                      .validTo(LocalDate.of(2099, 12, 12))
+                     .businessOrganisation("businessOrganisation")
+                     .comment("comment")
+                     .swissLineNumber("swissLineNumber")
                      .build();
-    version.setLineRelations(new HashSet<>(
-        Set.of(LineRelation.builder().slnid("ch:1:slnid:100000").version(version).build(),
-            LineRelation.builder().slnid("ch:1:slnid:100001").version(version).build())));
+    version.setSublineVersions(new HashSet<>(
+        Set.of(SublineVersion.builder().slnid("ch:1:slnid:100000").version(version).build(),
+            SublineVersion.builder().slnid("ch:1:slnid:100001").version(version).build())));
     version = versionRepository.save(version);
   }
 
   @Test
   void shouldGetSimpleVersion() {
     //given
-    version.getLineRelations().clear();
+    version.getSublineVersions().clear();
 
     //when
     Version result = versionRepository.findAll().get(0);
@@ -76,28 +95,28 @@ public class VersionRepositoryTest {
   @Test
   void shouldUpdateVersionWithAdditionalLineRelation() {
     //given
-    version.getLineRelations()
-           .add(LineRelation.builder().slnid("ch:1:slnid:100002").version(version).build());
+    version.getSublineVersions()
+           .add(SublineVersion.builder().slnid("ch:1:slnid:100002").version(version).build());
     versionRepository.save(version);
 
     //when
     Version result = versionRepository.findAll().get(0);
 
     //then
-    assertThat(result.getLineRelations()).hasSize(3).extracting("id").isNotNull();
+    assertThat(result.getSublineVersions()).hasSize(3).extracting("id").isNotNull();
   }
 
   @Test
   void shouldUpdateVersionDeletingLineRelation() {
     //given
-    version.getLineRelations().remove(version.getLineRelations().iterator().next());
+    version.getSublineVersions().remove(version.getSublineVersions().iterator().next());
     versionRepository.save(version);
 
     //when
     Version result = versionRepository.findAll().get(0);
 
     //then
-    assertThat(result.getLineRelations()).hasSize(1).extracting("id").isNotNull();
+    assertThat(result.getSublineVersions()).hasSize(1).extracting("id").isNotNull();
   }
 
   @Test

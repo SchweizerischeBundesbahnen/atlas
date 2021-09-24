@@ -1,8 +1,12 @@
 package ch.sbb.line.directory.api;
 
+import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,33 +22,62 @@ public class VersionModel {
   @Schema(description = "Technical identifier")
   private Long id;
 
-  @Schema(description = "Timetable field number identifier", example = "ch:1:fpfnid:100000")
-  private String ttfnid;
-
-  @Schema(description = "Name")
-  private String name;
-
-  @Schema(description = "Number")
-  private String number;
-
-  @Schema(description = "Timetable field number")
-  private String swissTimetableFieldNumber;
+  @Builder.Default
+  @Schema(description = "Subline Versions")
+  private Set<SublineVersionModel> sublineVersions = new HashSet<>();
 
   @Schema(description = "Status")
   private Status status;
 
-  @Schema(description = "Date - valid from")
+  @Schema(description = "LineType")
+  private LineType type;
+
+  @Schema(description = "SLNID")
+  private String slnid;
+
+  @Schema(description = "PaymentType")
+  private PaymentType paymentType;
+
+  @Schema(description = "ShortName")
+  private String shortName;
+
+  @Schema(description = "AlternativeName")
+  private String alternativeName;
+
+  @Schema(description = "CombinationName")
+  private String combinationName;
+
+  @Schema(description = "LongName")
+  private String longName;
+
+  @Schema(description = "Color of the font in RGB")
+  private String colorFontRgb;
+
+  @Schema(description = "Color of the background in RGB")
+  private String colorBackRgb;
+
+  @Schema(description = "Color of the font in CMYK")
+  private String colorFontCmyk;
+
+  @Schema(description = "Color of the background in CMYK")
+  private String colorBackCmyk;
+
+  @Schema(description = "Description")
+  private String description;
+
+  @Schema(description = "Valid from")
   private LocalDate validFrom;
 
-  @Schema(description = "Date - valid to")
+  @Schema(description = "Valid to")
   private LocalDate validTo;
 
-  @Schema(description = "Business organisation", example = "SBB")
+  @Schema(description = "BusinessOrganisation")
   private String businessOrganisation;
 
-  @Schema(description = "Additional comment")
+  @Schema(description = "Comment")
   private String comment;
 
-  @Schema(description = "Compact name")
-  private String nameCompact;
+  @Schema(description = "SwissLineNumber")
+  private String swissLineNumber;
+
 }
