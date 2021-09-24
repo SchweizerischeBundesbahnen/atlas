@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.entity;
+package ch.sbb.line.directory.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

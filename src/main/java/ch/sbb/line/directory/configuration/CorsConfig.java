@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.configuration;
+package ch.sbb.line.directory.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
