@@ -72,9 +72,9 @@ docker-compose down -v
 
 ### OpenApi Links
 
-* Swagger UI: http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-* Api Docs as JSON: http://localhost:8080/v3/api-docs/
-* Api Docs as YAML: http://localhost:8080/v3/api-docs.yaml
+* Swagger UI: http://localhost:8081/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Api Docs as JSON: http://localhost:8081/v3/api-docs/
+* Api Docs as YAML: http://localhost:8081/v3/api-docs.yaml
 
 ## Monitoring and Logging
 * [Monitoring (Instana and Actuator)](documentation/Monitoring.md)
