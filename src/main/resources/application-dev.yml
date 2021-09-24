@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://timetable-field-number-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/timetable_field_number
+    url: jdbc:postgresql://line-directory-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/line_directory
     username: ${DB_USER}
     password: ${DB_PWD}
 endpoints:
   web:
     cors:
-      allowed-origins: https://timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net,https://timetable-field-number-backend-dev.apps.aws01t.sbb-aws-test.net,https://developer-int.sbb.ch,https://developer.sbb.ch
+      allowed-origins: https://timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net,https://line-directory-backend-dev.apps.aws01t.sbb-aws-test.net,https://developer-int.sbb.ch,https://developer.sbb.ch
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n

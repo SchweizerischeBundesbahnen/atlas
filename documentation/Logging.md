@@ -21,7 +21,7 @@ https://confluence.sbb.ch/display/MON/Splunk
 |-----------|------------|
 |openshift_namespace=atlas-dev | Filtert nach Openshift Namespace |
 |appname=atlas | Filtert nach Atlas Applikationen |
-|openshift_container_name=timetable-field-number-backend | Filtert nach Container Name |
+|openshift_container_name=line-directory-backend | Filtert nach Container Name |
 
 ## Implementation
 

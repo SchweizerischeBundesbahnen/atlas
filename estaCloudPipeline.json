@@ -7,7 +7,7 @@
   "sendBuildStatusMail": false,
   "docker": {
     "artifactoryDockerRepo": "atlas.docker",
-    "openshiftAppName": "timetable-field-number-api",
+    "openshiftAppName": "line-directory-api",
     "artifactorySupressProjectSubfolderCreation": true
   },
   "mvn": {

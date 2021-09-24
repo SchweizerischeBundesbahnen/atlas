@@ -1,6 +1,6 @@
 # ATLAS Backend 
-[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/job/master/)
-[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Atimetable-field-number-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number-frontend)
+[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/job/master/)
+[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Aline-directory-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aline-directory-frontend)
 
 <!-- toc -->
 
@@ -53,18 +53,18 @@ docker-compose down -v
 
 ## Links
 * Dev:
-  * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=timetable-field-number-dev
+  * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-dev
   * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-  * Project deploy: https://timetable-field-number-backend-dev.apps.aws01t.sbb-aws-test.net
-  * Swagger UI: https://timetable-field-number-backend-dev.apps.aws01t.sbb-aws-test.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+  * Project deploy: https://line-directory-backend-dev.apps.aws01t.sbb-aws-test.net
+  * Swagger UI: https://line-directory-backend-dev.apps.aws01t.sbb-aws-test.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 * Developer Portal Prod:
 * Developer Portal Int:
 * Openshift Prod:
 * Openshift Int:
 * Openshift Test:
 * Openshift Dev: 
-* Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/
-* Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number
+* Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/
+* Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aline-directory
 * JFrog 
   * Maven repository: https://bin.sbb.ch/ui/repos/tree/General/atlas.mvn
   * Docker registry: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker
