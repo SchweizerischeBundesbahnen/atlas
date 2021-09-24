@@ -1,6 +1,6 @@
-package ch.sbb.timetable.field.number.entity;
+package ch.sbb.line.directory.entity;
 
-import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.line.directory.enumaration.Status;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
