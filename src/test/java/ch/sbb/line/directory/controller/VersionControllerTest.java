@@ -59,6 +59,7 @@ public class VersionControllerTest {
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
                                                     "creationDate", "sublineVersions")
+                                                .ignoringFieldsMatchingRegexes("color.*")
                                                 .isEqualTo(versionModel);
   }
 
@@ -76,11 +77,13 @@ public class VersionControllerTest {
     // Then
     assertThat(versions).isNotNull();
     assertThat(versions.getVersions()).hasSize(1)
-                        .first()
-                        .usingRecursiveComparison()
-                        .ignoringFields("editor", "creator", "editionDate", "creationDate",
-                            "sublineVersions")
-                        .isEqualTo(version);
+                                      .first()
+                                      .usingRecursiveComparison()
+                                      .ignoringFields("editor", "creator", "editionDate",
+                                          "creationDate",
+                                          "sublineVersions")
+                                      .ignoringFieldsMatchingRegexes("color.*")
+                                      .isEqualTo(version);
     assertThat(versions.getTotalCount()).isEqualTo(1);
   }
 
@@ -205,10 +208,10 @@ public class VersionControllerTest {
                        .alternativeName("alternativeName")
                        .combinationName("combinationName")
                        .longName("longName")
-                       .colorFontRgb("#FFFFFF")
-                       .colorBackRgb("#FFFFFF")
-                       .colorFontCmyk("#FFFFFF")
-                       .colorBackCmyk("#FFFFFF")
+                       .colorFontRgb("#ffffff")
+                       .colorBackRgb("#ffffff")
+                       .colorFontCmyk("#ffffff")
+                       .colorBackCmyk("#ffffff")
                        .description("description")
                        .validFrom(LocalDate.of(2020, 12, 12))
                        .validTo(LocalDate.of(2099, 12, 12))
