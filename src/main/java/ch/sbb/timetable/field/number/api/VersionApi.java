@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "timetable-field-numbers")
+@Tag(name = "line-directorys")
 public interface VersionApi {
 
   @GetMapping
