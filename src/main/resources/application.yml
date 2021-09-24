@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/timetable-field-number
+    url: jdbc:postgresql://localhost:5433/line-directory
     username: user
     password: pwd
     driver-class-name: org.postgresql.Driver
@@ -9,6 +9,8 @@ spring:
       password: pwd
   jpa:
     open-in-view: false
+server:
+  port: 8081
 management:
   endpoint:
     health:
@@ -19,7 +21,7 @@ management:
         include: "*"
 info:
   app:
-    name: timetable-field-number-backend
+    name: line-directory-backend
     version: @version@
     buildtime: @timestamp@
 endpoints:

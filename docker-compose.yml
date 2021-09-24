@@ -5,11 +5,11 @@ services:
     image: postgres:13.3
     restart: always
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pwd
-      POSTGRES_DB: timetable-field-number
+      POSTGRES_DB: line-directory
     volumes:
       - "/var/lib/postgresql/data"
     command:
