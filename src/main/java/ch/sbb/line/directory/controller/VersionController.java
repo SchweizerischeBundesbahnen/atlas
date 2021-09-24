@@ -1,10 +1,10 @@
-package ch.sbb.timetable.field.number.controller;
+package ch.sbb.line.directory.controller;
 
-import ch.sbb.timetable.field.number.api.VersionApi;
-import ch.sbb.timetable.field.number.api.VersionModel;
-import ch.sbb.timetable.field.number.api.VersionsContainer;
-import ch.sbb.timetable.field.number.entity.Version;
-import ch.sbb.timetable.field.number.repository.VersionRepository;
+import ch.sbb.line.directory.entity.Version;
+import ch.sbb.line.directory.api.VersionApi;
+import ch.sbb.line.directory.api.VersionModel;
+import ch.sbb.line.directory.api.VersionsContainer;
+import ch.sbb.line.directory.repository.VersionRepository;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;

@@ -1,10 +1,10 @@
-package ch.sbb.timetable.field.number.repository;
+package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.timetable.field.number.IntegrationTest;
-import ch.sbb.timetable.field.number.entity.LineRelation;
-import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.line.directory.IntegrationTest;
+import ch.sbb.line.directory.entity.LineRelation;
+import ch.sbb.line.directory.entity.Version;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;

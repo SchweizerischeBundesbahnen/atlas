@@ -1,6 +1,6 @@
-package ch.sbb.timetable.field.number.repository;
+package ch.sbb.line.directory.repository;
 
-import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.line.directory.entity.Version;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

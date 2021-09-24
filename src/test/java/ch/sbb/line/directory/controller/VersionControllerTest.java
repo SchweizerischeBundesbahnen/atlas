@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.controller;
+package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -7,10 +7,10 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.timetable.field.number.api.VersionModel;
-import ch.sbb.timetable.field.number.api.VersionsContainer;
-import ch.sbb.timetable.field.number.entity.Version;
-import ch.sbb.timetable.field.number.repository.VersionRepository;
+import ch.sbb.line.directory.api.VersionModel;
+import ch.sbb.line.directory.api.VersionsContainer;
+import ch.sbb.line.directory.entity.Version;
+import ch.sbb.line.directory.repository.VersionRepository;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;

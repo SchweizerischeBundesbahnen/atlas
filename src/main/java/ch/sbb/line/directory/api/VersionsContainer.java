@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.api;
+package ch.sbb.line.directory.api;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

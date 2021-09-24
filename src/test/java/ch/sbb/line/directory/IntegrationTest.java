@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number;
+package ch.sbb.line.directory;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
