@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.api;
 
 import ch.sbb.line.directory.enumaration.PaymentType;
+import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
@@ -18,6 +19,15 @@ public class SublineVersionModel {
 
   @Schema(description = "Technical identifier")
   private Long id;
+
+  @Schema(description = "SwissSublineNumber")
+  private String swissSublineNumber;
+
+  @Schema(description = "SwissLineNumber")
+  private String swissLineNumber;
+
+  @Schema(description = "Status")
+  private Status status;
 
   @Schema(description = "Subline Type")
   private SublineType type;
