@@ -10,7 +10,8 @@ public class RgbColorConverter implements AttributeConverter<RgbColor, String> {
 
   @Override
   public String convertToDatabaseColumn(RgbColor color) {
-    return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+    return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue())
+                 .toUpperCase();
   }
 
   @Override

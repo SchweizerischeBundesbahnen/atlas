@@ -66,7 +66,7 @@ public class LineVersionControllerTest {
     verify(lineVersionRepository).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate", "sublineVersions")
+                                                    "creationDate")
                                                 .ignoringFieldsMatchingRegexes("color.*")
                                                 .isEqualTo(lineVersionModel);
   }
@@ -88,9 +88,7 @@ public class LineVersionControllerTest {
                                       .first()
                                       .usingRecursiveComparison()
                                       .ignoringFields("editor", "creator", "editionDate",
-                                          "creationDate",
-                                          "sublineVersions")
-                                      .ignoringFieldsMatchingRegexes("color.*")
+                                          "creationDate", "sublineVersions")
                                       .isEqualTo(lineVersion);
     assertThat(versions.getTotalCount()).isEqualTo(1);
   }
@@ -106,8 +104,7 @@ public class LineVersionControllerTest {
 
     // Then
     assertThat(lineVersionModel).usingRecursiveComparison()
-                                .ignoringFields("editor", "creator", "editionDate", "creationDate",
-                                    "sublineVersions")
+                                .ignoringFields("editor", "creator", "editionDate", "creationDate")
                                 .isEqualTo(lineVersionModel);
   }
 
@@ -165,8 +162,7 @@ public class LineVersionControllerTest {
 
     // Then
     assertThat(result).usingRecursiveComparison()
-                      .ignoringFields("editor", "creator", "editionDate", "creationDate",
-                          "sublineVersions")
+                      .ignoringFields("editor", "creator", "editionDate", "creationDate")
                       .isEqualTo(lineVersionModel);
   }
 
