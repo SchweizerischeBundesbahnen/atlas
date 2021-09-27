@@ -13,23 +13,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "line-directorys")
-public interface VersionApi {
+@Tag(name = "lines")
+public interface LineVersionApi {
 
   @GetMapping
   @PageableAsQueryParam
-  VersionsContainer getVersions(@Parameter(hidden = true) Pageable pageable);
+  LineVersionsContainer getLineVersions(@Parameter(hidden = true) Pageable pageable);
 
   @GetMapping("/{id}")
-  VersionModel getVersion(@PathVariable Long id);
+  LineVersionModel getLineVersion(@PathVariable Long id);
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  VersionModel createVersion(@RequestBody VersionModel newVersion);
+  LineVersionModel createLineVersion(@RequestBody LineVersionModel newVersion);
 
   @PutMapping({"/{id}"})
-  VersionModel updateVersion(@PathVariable Long id, @RequestBody VersionModel newVersion);
+  LineVersionModel updateLineVersion(@PathVariable Long id,
+      @RequestBody LineVersionModel newVersion);
 
   @DeleteMapping({"/{id}"})
-  void deleteVersion(@PathVariable Long id);
+  void deleteLineVersion(@PathVariable Long id);
 }
