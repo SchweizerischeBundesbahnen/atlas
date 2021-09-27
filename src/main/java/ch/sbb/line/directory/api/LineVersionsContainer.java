@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class VersionsContainer {
+public class LineVersionsContainer {
 
-  private List<VersionModel> versions;
+  private List<LineVersionModel> versions;
   private long totalCount;
 
 }

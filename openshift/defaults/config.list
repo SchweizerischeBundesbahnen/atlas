@@ -2,7 +2,7 @@ PRODUCT=line-directory-backend
 IMAGE_NAME=line-directory-backend
 IMAGE_PULL_POLICY=Always
 
-PORT=8081
+PORT=8082
 
 CPU_MIN=100m
 CPU_MAX=1

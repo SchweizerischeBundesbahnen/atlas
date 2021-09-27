@@ -29,9 +29,13 @@ def reformat_date(date):
     return '2099-12-31'
 
 
-def random_hex_color():
+def random_rgb_color():
   r = lambda: random.randint(0, 255)
   return '#%02X%02X%02X' % (r(), r(), r())
+
+def random_cymk_color():
+  r = lambda: random.randint(0, 100)
+  return '%d,%d,%d,%d' % (r(), r(), r(), r())
 
 
 # Read XLS File with Columns -> Linennr. renamed
@@ -70,10 +74,12 @@ for index, row in data.iterrows():
   if ':' in str(row[2]):
     result_sql_file.write(
         "INSERT INTO subline_version "
-        "(id, line_version_id, type, slnid, description, short_name, long_name, payment_type, valid_from, valid_to, business_organisation, creation_date, creator, edition_date, editor) "
+        "(id, swiss_subline_number, swiss_line_number, type, status, slnid, description, short_name, long_name, payment_type, valid_from, valid_to, business_organisation, creation_date, creator, edition_date, editor) "
         "VALUES "
-        "(nextval('subline_version_seq'), null, '{}', 'ch:1:slnid:{}', 'lorem ipsum Teillinie', '{}', '{}', '{}', '2020-12-12', '{}', 'ATLAS Transportation surrogate', current_timestamp, 'xlsx', current_timestamp, 'xlsx');"
+        "(nextval('subline_version_seq'), '{}', '{}', '{}', 'ACTIVE', 'ch:1:slnid:{}', 'lorem ipsum Teillinie', '{}', '{}', '{}', '2020-12-12', '{}', 'ATLAS Transportation surrogate', current_timestamp, 'xlsx', current_timestamp, 'xlsx');"
           .format(
+            row[2],
+            str(row[2]).split(':', 1)[0],
             random.choice(subline_types),
             slnid,
             row[3],  # short_name
@@ -83,6 +89,7 @@ for index, row in data.iterrows():
         ).replace("'nan'", "null"))
     result_sql_file.write("\n")
   else:
+    spalte_d = str(row[3])
     result_sql_file.write(
         "INSERT INTO line_version "
         "(id, status, type, slnid, payment_type, short_name, alternative_name, combination_name, long_name, color_font_rgb, color_back_rgb, color_font_cmyk, color_back_cmyk, "
@@ -93,17 +100,17 @@ for index, row in data.iterrows():
           .format(
             slnid,
             random.choice(payment_types),
-            row[2],  # SLNID
-            row[2] + ' alt',  # SLNID
-            row[2] + ' comb',  # SLNID
+            spalte_d,  # SLNID
+            spalte_d + ' alt',  # SLNID
+            spalte_d + ' comb',  # SLNID
             description,  # Element Beschreibung
-            random_hex_color(),
-            random_hex_color(),
-            random_hex_color(),
-            random_hex_color(),
+            random_rgb_color(),
+            random_rgb_color(),
+            random_cymk_color(),
+            random_cymk_color(),
             reformat_date(row[6]),  # Element gültig bis
             str(row[5]).replace("'", "''"),  # Element Kommentar
-            row[3]  # Liniennr
+            row[2]  # Liniennr
         ).replace("'nan'", "null"))
     result_sql_file.write("\n")
 
