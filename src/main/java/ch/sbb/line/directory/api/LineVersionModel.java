@@ -3,6 +3,8 @@ package ch.sbb.line.directory.api;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.model.CymkColor;
+import ch.sbb.line.directory.model.RgbColor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -16,11 +18,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Schema(name = "Version")
-public class VersionModel {
+@Schema(name = "LineVersion")
+public class LineVersionModel {
 
   @Schema(description = "Technical identifier")
   private Long id;
+
+  @Schema(description = "SwissLineNumber")
+  private String swissLineNumber;
 
   @Builder.Default
   @Schema(description = "Subline Versions")
@@ -51,16 +56,16 @@ public class VersionModel {
   private String longName;
 
   @Schema(description = "Color of the font in RGB")
-  private String colorFontRgb;
+  private RgbColor colorFontRgb;
 
   @Schema(description = "Color of the background in RGB")
-  private String colorBackRgb;
+  private RgbColor colorBackRgb;
 
   @Schema(description = "Color of the font in CMYK")
-  private String colorFontCmyk;
+  private CymkColor colorFontCmyk;
 
   @Schema(description = "Color of the background in CMYK")
-  private String colorBackCmyk;
+  private CymkColor colorBackCmyk;
 
   @Schema(description = "Description")
   private String description;
@@ -76,8 +81,5 @@ public class VersionModel {
 
   @Schema(description = "Comment")
   private String comment;
-
-  @Schema(description = "SwissLineNumber")
-  private String swissLineNumber;
 
 }

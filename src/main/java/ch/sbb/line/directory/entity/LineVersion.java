@@ -1,25 +1,22 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.converter.ColorConverter;
+import ch.sbb.line.directory.converter.CymkColorConverter;
+import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
-import java.awt.Color;
+import ch.sbb.line.directory.model.CymkColor;
+import ch.sbb.line.directory.model.RgbColor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +32,7 @@ import lombok.ToString;
 @ToString
 @Builder
 @Entity(name = "line_version")
-public class Version {
+public class LineVersion {
 
   private static final String VERSION_SEQ = "line_version_seq";
 
@@ -44,17 +41,15 @@ public class Version {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @Builder.Default
-  @OneToMany(mappedBy = "version", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<SublineVersion> sublineVersions = new HashSet<>();
+  private String swissLineNumber;
+
+  private String slnid;
 
   @Enumerated(EnumType.STRING)
   private Status status;
 
   @Enumerated(EnumType.STRING)
   private LineType type;
-
-  private String slnid;
 
   @Enumerated(EnumType.STRING)
   private PaymentType paymentType;
@@ -67,17 +62,17 @@ public class Version {
 
   private String longName;
 
-  @Convert(converter = ColorConverter.class)
-  private Color colorFontRgb;
+  @Convert(converter = RgbColorConverter.class)
+  private RgbColor colorFontRgb;
 
-  @Convert(converter = ColorConverter.class)
-  private Color colorBackRgb;
+  @Convert(converter = RgbColorConverter.class)
+  private RgbColor colorBackRgb;
 
-  @Convert(converter = ColorConverter.class)
-  private Color colorFontCmyk;
+  @Convert(converter = CymkColorConverter.class)
+  private CymkColor colorFontCmyk;
 
-  @Convert(converter = ColorConverter.class)
-  private Color colorBackCmyk;
+  @Convert(converter = CymkColorConverter.class)
+  private CymkColor colorBackCmyk;
 
   private String description;
 
@@ -90,8 +85,6 @@ public class Version {
   private String businessOrganisation;
 
   private String comment;
-
-  private String swissLineNumber;
 
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime creationDate;
