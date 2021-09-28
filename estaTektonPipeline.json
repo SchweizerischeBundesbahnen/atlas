@@ -25,8 +25,7 @@
       "buildDockerImage": false,
       "additionalBuildParams": "-DskipITs",
       "triggerType": [
-        "USER",
-        "GITEVENT"
+        "USER"
       ],
       "branchNamePrefixes": [
         "feature",
@@ -34,9 +33,9 @@
       ]
     },
     {
-      "name": "latest",
+      "name": "integrationBuild",
       "enabled": true,
-      "buildDockerImage": true,
+      "buildDockerImage": false,
       "additionalBuildParams": "-DskipITs",
       "triggerType": [
         "USER"
@@ -47,33 +46,6 @@
       "sonarScan": {
         "enabled": true
       }
-    },
-    {
-      "name": "release",
-      "enabled": true,
-      "buildDockerImage": true,
-      "packageAndDeployHelmChart": true,
-      "additionalBuildParams": "-DskipITs",
-      "triggerType": [
-        "GITEVENT"
-      ],
-      "versionTagEventPatterns": [
-        "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
-      ]
-    },
-    {
-      "name": "snapshot",
-      "enabled": true,
-      "buildDockerImage": true,
-      "packageAndDeployHelmChart": true,
-      "additionalBuildParams": "-DskipITs",
-      "triggerType": [
-        "GITEVENT",
-        "USER"
-      ],
-      "versionTagEventPatterns": [
-        "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)-rev\\.(.+)"
-      ]
     }
   ],
   "notifications": [
