@@ -27,9 +27,11 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
   - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Ftimetable-field-number-frontend
   - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker%2Ftimetable-field-number-frontend
 - **Openshift**:
-  - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/ns/atlas-dev/routes
+  - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
+  - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
 - **Deployment**:
-  - **Dev**: https://timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net
+  - **Dev**: https://timetable-field-number-frontend-dev.apps.aws01t.sbb-aws-test.net
+  - **Test**: https://timetable-field-number-frontend-test.apps.aws01t.sbb-aws-test.net
 
 ## Development
 
