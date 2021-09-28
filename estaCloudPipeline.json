@@ -38,11 +38,11 @@
       "postCiDeploymentJob": ""
     },
     {
-      "stageName": "prod",
+      "stageName": "test",
       "isOpenshiftDeploymentEnabled": true,
-      "openshiftCluster": "OTC_ASTERIX",
-      "openshiftProject": "TODO",
-      "openshiftJenkinsCredentialsId": "TODO",
+      "openshiftProject": "atlas-test",
+      "openshiftCluster": "aws_aws01t",
+      "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": ""
     }
@@ -88,7 +88,7 @@
       "sonarScanEnabled": true,
       "staging": {
         "stagingType": "simple",
-        "stages": ["dev"]
+        "stages": ["dev", "test"]
       },
       "dependencyCheckEnabled": true,
       "failOnQualityGateFailure": true,

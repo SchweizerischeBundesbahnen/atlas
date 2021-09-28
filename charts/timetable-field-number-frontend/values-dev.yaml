@@ -1,4 +1,4 @@
-routeHost: 'timetable-field-number-frontend.apps.aws01t.sbb-aws-test.net'
+routeHost: 'timetable-field-number-frontend-dev.apps.aws01t.sbb-aws-test.net'
 environmentLabel: 'dev'
 backendUrl: 'https://timetable-field-number-backend-dev.apps.aws01t.sbb-aws-test.net'
 splunkIndex: 'sbb_applications_internal_dev_events'
