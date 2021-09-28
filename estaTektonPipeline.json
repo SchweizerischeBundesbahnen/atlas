@@ -82,7 +82,7 @@
     {
       "type": "TEAMS",
       "sendingEnabled": true,
-      "webhookUrl": "https://sbb.webhook.office.com/webhookb2/c4e05c00-bd9f-4fd9-9bbd-8cd557c6d894@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/IncomingWebhook/fb69aa3779114adbb0c6c71098022f1e/46d5defd-3766-439b-b54f-af158e3c6d0d"
+      "webhookUrl": "https://sbb.webhook.office.com/webhookb2/e262e9dc-5836-4c36-b3e5-0e827f2a2787@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/JenkinsCI/1d957b31eb2c46aeac8003d5a70e1926/8231c64b-bcb4-497e-93bf-0213ebdac9e4"
     }
   ]
 }
