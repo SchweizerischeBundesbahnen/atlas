@@ -57,6 +57,11 @@ docker-compose down -v
   * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
   * Project deploy: https://timetable-field-number-backend-dev.apps.aws01t.sbb-aws-test.net
   * Swagger UI: https://timetable-field-number-backend-dev.apps.aws01t.sbb-aws-test.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Test:
+  * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=timetable-field-number-test
+  * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
+  * Project deploy: https://timetable-field-number-backend-test.apps.aws01t.sbb-aws-test.net
+  * Swagger UI: https://timetable-field-number-backend-test.apps.aws01t.sbb-aws-test.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 * Developer Portal Prod:
 * Developer Portal Int:
 * Openshift Prod:
