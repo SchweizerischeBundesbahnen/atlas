@@ -35,12 +35,12 @@ objects:
                 - name: DB_USER
                   valueFrom:
                     secretKeyRef:
-                      name: db-secret
+                      name: db-secret-${PRODUCT}
                       key: user
                 - name: DB_PWD
                   valueFrom:
                     secretKeyRef:
-                      name: db-secret
+                      name: db-secret-${PRODUCT}
                       key: password
               image: atlas.docker.bin.sbb.ch/${IMAGE_NAME}:${VERSIONTAG}
               imagePullPolicy: ${IMAGE_PULL_POLICY}
