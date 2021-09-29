@@ -2,8 +2,8 @@ package ch.sbb.line.directory.controller;
 
 import ch.sbb.line.directory.api.LineVersionApi;
 import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.api.LineVersionsContainer;
+import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.util.List;
@@ -73,6 +73,7 @@ public class LineVersionController implements LineVersionApi {
     versionToUpdate.setColorFontCmyk(newVersion.getColorFontCmyk());
     versionToUpdate.setColorBackCmyk(newVersion.getColorBackCmyk());
     versionToUpdate.setDescription(newVersion.getDescription());
+    versionToUpdate.setIcon(newVersion.getIcon());
     versionToUpdate.setValidFrom(newVersion.getValidFrom());
     versionToUpdate.setValidTo(newVersion.getValidTo());
     versionToUpdate.setBusinessOrganisation(newVersion.getBusinessOrganisation());
@@ -111,6 +112,7 @@ public class LineVersionController implements LineVersionApi {
                                lineVersion.getColorFontCmyk())
                            .colorBackCmyk(lineVersion.getColorBackCmyk())
                            .description(lineVersion.getDescription())
+                           .icon(lineVersion.getIcon())
                            .validFrom(lineVersion.getValidFrom())
                            .validTo(lineVersion.getValidTo())
                            .businessOrganisation(lineVersion.getBusinessOrganisation())
@@ -135,6 +137,7 @@ public class LineVersionController implements LineVersionApi {
                       .colorFontCmyk(lineVersionModel.getColorFontCmyk())
                       .colorBackCmyk(lineVersionModel.getColorBackCmyk())
                       .description(lineVersionModel.getDescription())
+                      .icon(lineVersionModel.getIcon())
                       .validFrom(lineVersionModel.getValidFrom())
                       .validTo(lineVersionModel.getValidTo())
                       .businessOrganisation(lineVersionModel.getBusinessOrganisation())
