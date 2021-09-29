@@ -60,7 +60,7 @@ objects:
                   path: ${LIVENESS_PROBE}
                   port: ${{PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 90
+                initialDelaySeconds: 40
                 timeoutSeconds: 90
                 periodSeconds: 20
                 successThreshold: 1
@@ -70,7 +70,7 @@ objects:
                   path: ${READYNESS_PROBE}
                   port: ${{PORT}}
                   scheme: HTTP
-                initialDelaySeconds: 90
+                initialDelaySeconds: 30
                 timeoutSeconds: 90
                 periodSeconds: 20
                 successThreshold: 1
