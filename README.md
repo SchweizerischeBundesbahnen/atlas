@@ -69,7 +69,7 @@ docker-compose down -v
 * Openshift Test:
 * Openshift Dev: 
 * Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/
-* Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aline-directory
+* Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aline-directory-backend
 * JFrog 
   * Maven repository: https://bin.sbb.ch/ui/repos/tree/General/atlas.mvn
   * Docker registry: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker
