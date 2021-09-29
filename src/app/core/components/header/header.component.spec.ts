@@ -64,7 +64,7 @@ describe('HeaderComponent', () => {
       expect(result).toBeTruthy();
     });
 
-    it('should not show label different from dev or int', () => {
+    it('should not show label different from dev, test or int', () => {
       //given
       component.environmentLabel = 'pro';
       //when
@@ -80,6 +80,18 @@ describe('HeaderComponent', () => {
       const result = component.getEnvLabelClass();
       //then
       expect(result['bg-primary']).toBeTruthy();
+      expect(result['bg-secondary']).toBeFalsy();
+      expect(result['bg-warning']).toBeFalsy();
+    });
+
+    it('should return test class', () => {
+      //given
+      component.environmentLabel = 'test';
+      //when
+      const result = component.getEnvLabelClass();
+      //then
+      expect(result['bg-secondary']).toBeTruthy();
+      expect(result['bg-primary']).toBeFalsy();
       expect(result['bg-warning']).toBeFalsy();
     });
 
@@ -91,6 +103,7 @@ describe('HeaderComponent', () => {
       //then
       expect(result['bg-warning']).toBeTruthy();
       expect(result['bg-primary']).toBeFalsy();
+      expect(result['bg-secondary']).toBeFalsy();
     });
 
     it('should return class without color', () => {

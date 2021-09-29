@@ -9,7 +9,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class HeaderComponent {
   private readonly DEV: string = 'dev';
+  private readonly TEST: string = 'test';
   private readonly INT: string = 'int';
+  private readonly STAGES_WITH_LABEL = [this.DEV, this.TEST, this.INT];
 
   version: string = packageJson.version;
   environmentLabel: string = environment.label;
@@ -21,25 +23,17 @@ export class HeaderComponent {
   }
 
   showLabel() {
-    return this.environmentLabel === this.DEV || this.environmentLabel === this.INT;
+    return this.STAGES_WITH_LABEL.includes(this.environmentLabel);
   }
 
   getEnvLabelClass() {
-    const envClass = {
+    return {
       badge: true,
       'text-wrap': true,
       'ms-2': true,
-      'bg-primary': false,
-      'bg-warning': false,
+      'bg-primary': this.environmentLabel === this.DEV,
+      'bg-secondary': this.environmentLabel === this.TEST,
+      'bg-warning': this.environmentLabel === this.INT,
     };
-    if (this.environmentLabel === this.DEV) {
-      envClass['bg-primary'] = true;
-      return envClass;
-    }
-    if (this.environmentLabel === this.INT) {
-      envClass['bg-warning'] = true;
-      return envClass;
-    }
-    return envClass;
   }
 }
