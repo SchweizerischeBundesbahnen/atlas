@@ -1,0 +1,2 @@
+SPRING_PROFILES_ACTIVE=test
+SPLUNK_INDEX=sbb_applications_internal_test_events
