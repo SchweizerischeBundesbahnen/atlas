@@ -74,6 +74,8 @@ public class LineVersion {
   @Convert(converter = CymkColorConverter.class)
   private CymkColor colorBackCmyk;
 
+  private String icon;
+
   private String description;
 
   @Column(columnDefinition = "TIMESTAMP")

@@ -67,6 +67,9 @@ public class LineVersionModel {
   @Schema(description = "Color of the background in CMYK")
   private CymkColor colorBackCmyk;
 
+  @Schema(description = "Icon")
+  private String icon;
+
   @Schema(description = "Description")
   private String description;
 
