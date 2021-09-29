@@ -25,6 +25,15 @@
       "openshiftJenkinsCredentialsId": "e499fd92-711c-469b-9bc3-a67c748341d9",
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": ""
+    },
+    {
+      "stageName": "test",
+      "isOpenshiftDeploymentEnabled": true,
+      "openshiftProject": "atlas-test",
+      "openshiftCluster": "aws_aws01t",
+      "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
+      "preCiDeploymentJob": "",
+      "postCiDeploymentJob": ""
     }
   ],
   "teamsNotifications": {
@@ -75,7 +84,7 @@
       "staging": {
         "stagingType": "simple",
         "stages": [
-          "dev"
+          "dev", "test"
         ]
       },
       "dependencyCheckEnabled": true,
