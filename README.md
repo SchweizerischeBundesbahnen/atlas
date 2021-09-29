@@ -10,11 +10,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 - [Links](#links)
 - [Development](#development)
   - [Set SBB Artifactory as npm registry](#set-sbb-artifactory-as-npm-registry)
-  - [Development server](#development-server)
-  - [Code scaffolding](#code-scaffolding)
-  - [Running unit tests](#running-unit-tests)
-  - [Linting](#linting)
-  - [Prettier](#prettier)
+  - [Azure AD App Registration](#azure-ad-app-registration)
 - [Monitoring and Logging](#monitoring-and-logging)
 
 <!-- tocstop -->
@@ -39,29 +35,15 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 See [set SBB Artifactory as npm registry](https://confluence.sbb.ch/display/CLEW/Configuration+Artifactory+7.x+as+NPM+Registry)
 
-### Development server
+### Azure AD App Registration
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+So you want to use AzureAD to login your users?
 
-### Code scaffolding
+1. Create azure-app-registration.yml ([Dokumentation](https://confluence.sbb.ch/display/IAM/Azure+AD+API%3A+Self-Service+API+for+App+Registrations+with+Azure+AD#AzureADAPI:SelfServiceAPIforAppRegistrationswithAzureAD-1.1.Createapp-registrationsusingthefile-basedAPIendpoint))
+2. Use the [REST-API](https://azure-ad.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#) to POST/create your application
+3. The configured owner may edit it with the same REST-API using PUT
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-### Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-### Linting
-
-This project uses [angular-eslint](https://github.com/angular-eslint/angular-eslint) for linting purposes,
-which is the recommended replacement for tslint and codelyzer. Use the eslint plugin for
-[VS Code](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) or for
-[IntelliJ](https://www.jetbrains.com/help/idea/eslint.html).
-
-### Prettier
-
-This project is configured with [prettier](https://prettier.io/), which is an opinionated code formatter.
-Run it with `npm run format`. It is also configured as a pre-commit git hook, which will be applied to changed files.
+Finding an application within the registry is best performed by using the GET /v1/applications and look for a name.
 
 ## Monitoring and Logging
 
