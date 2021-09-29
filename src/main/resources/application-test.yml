@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://line-directory-test.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/line_directory
+    username: ${DB_USER}
+    password: ${DB_PWD}
+endpoints:
+  web:
+    cors:
+      allowed-origins: https://timetable-field-number-frontend-test.apps.aws01t.sbb-aws-test.net,https://line-directory-backend-test.apps.aws01t.sbb-aws-test.net,https://developer-int.sbb.ch,https://developer.sbb.ch
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n
