@@ -51,6 +51,9 @@
     "tslib": "^2.3.1",
     "zone.js": "~0.11.4"
   },
+  "optionalDependencies": {
+    "puppeteer": "^10.4.0"
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.2.7",
     "@angular-eslint/builder": "12.3.1",
