@@ -49,7 +49,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   get minDateValue(): Date {
-    return new Date(moment().valueOf());
+    return new Date(moment('1900-01-01 00:00:00').valueOf());
   }
 
   get maxDateValue(): Date {
@@ -129,11 +129,11 @@ export class TimetableFieldNumberDetailComponent
         ttfnid: [version.ttfnid, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required],
         ],
         validTo: [
           version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required],
         ],
         businessOrganisation: [
           version.businessOrganisation,
