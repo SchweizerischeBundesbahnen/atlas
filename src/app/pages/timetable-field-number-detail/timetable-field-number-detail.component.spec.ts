@@ -341,9 +341,9 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       expect(validationErrors?.required).toBeDefined();
     });
 
-    it('should not be less then today', () => {
+    it('should not be less then 01.01.1900', () => {
       const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
-      validFrom.setValue(moment().subtract(1, 'days'));
+      validFrom.setValue(moment('1899-12-01 00:00:00'));
       validFrom.markAsTouched();
 
       const validationErrors = validFrom.errors;
