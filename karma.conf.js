@@ -1,6 +1,13 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+// Jenkins has a BUILD_NUMBER environment variable. So when
+// this variable is set, we use the chromium browser downloaded
+// by puppeteer.
+if (process.env.BUILD_NUMBER) {
+  process.env.CHROME_BIN = require('puppeteer').executablePath();
+}
+
 module.exports = function (config) {
   config.set({
     basePath: '',
