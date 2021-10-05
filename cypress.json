@@ -5,5 +5,17 @@
   "screenshotsFolder": "cypress/screenshots",
   "pluginsFile": "cypress/plugins/index.ts",
   "fixturesFolder": "cypress/fixtures",
-  "baseUrl": "http://localhost:4200"
+  "baseUrl": "http://localhost:4200",
+  "viewportWidth": 1920,
+  "viewportHeight": 1080,
+  "chromeWebSecurity": false,
+  "env": {
+    "authority": "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a",
+    "tenantId": "2cda5d11-f0ac-46b3-967d-af1b2e1bd01a",
+    "clientId": "8184c96f-07a5-4ae1-b4a9-04a0e83cb578",
+    "clientSecret": "DSR7Q~6rznuT1VDp4kowsadK_u1ynzfYMKgQ5",
+    "scope": "openid profile email offline_access 8184c96f-07a5-4ae1-b4a9-04a0e83cb578/.default",
+    "Host": "http://localhost:4200",
+    "apiScopes": ["8184c96f-07a5-4ae1-b4a9-04a0e83cb578/.default"]
+  }
 }
