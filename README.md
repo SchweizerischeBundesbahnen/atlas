@@ -13,7 +13,7 @@
 <!-- tocstop -->
 
 ## ATLAS
-This application is part of ATLAS. General documentation is available [here](../atlas-backend/README.md#big-picture).
+This application is part of ATLAS. General documentation is available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture).
 
 ## Versioning
 This project uses [Semantic Versioning](https://semver.org/).
