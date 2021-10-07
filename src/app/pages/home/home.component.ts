@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TimetableFieldNumbersService, Version } from '../../api';
+import { TimetableFieldNumbersService, Version } from '../../api/ttfn';
 
 import { TableColumn } from '../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';

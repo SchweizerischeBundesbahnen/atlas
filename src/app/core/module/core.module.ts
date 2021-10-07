@@ -15,20 +15,16 @@ import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.compone
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ApiModule, Configuration, ConfigurationParameters } from '../../api';
+import { Configuration, LiDiApiModule } from '../../api/lidi';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
+import { TtfnApiModule } from '../../api/ttfn';
 
 // AoT requires an exported function for factories
-const httpLoaderFactory = (http: HttpClient) => {
-  return new TranslateHttpLoader(http);
-};
+const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
 
-function apiConfigFactory(): Configuration {
-  const params: ConfigurationParameters = {
-    basePath: environment.backendUrl,
-  };
-  return new Configuration(params);
+function withBasePath(basePath: string) {
+  return () => new Configuration({ basePath: basePath });
 }
 
 @NgModule({
@@ -56,14 +52,15 @@ function apiConfigFactory(): Configuration {
     RouterModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    ApiModule.forRoot(apiConfigFactory),
+    LiDiApiModule.forRoot(withBasePath(environment.lidiBackendUrl)),
+    TtfnApiModule.forRoot(withBasePath(environment.ttfnBackendUrl)),
     OAuthModule.forRoot({
       resourceServer: {
         // When sendAccessToken is set to true and you send
         // a request to these, the access token is appended.
         // Documentation:
         // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/working-with-httpinterceptors.html
-        allowedUrls: [environment.backendUrl],
+        allowedUrls: [environment.ttfnBackendUrl, environment.lidiBackendUrl],
         sendAccessToken: true,
       },
     }),

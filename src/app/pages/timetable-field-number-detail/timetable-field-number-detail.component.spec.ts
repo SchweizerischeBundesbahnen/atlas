@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TimetableFieldNumbersService, Version } from '../../api';
+import { TimetableFieldNumbersService, Version } from '../../api/ttfn';
 import { MaterialModule } from '../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DetailWrapperComponent } from '../../core/components/detail-wrapper/detail-wrapper.component';

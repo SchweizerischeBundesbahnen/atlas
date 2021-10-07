@@ -2,7 +2,8 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
+import { LinesService } from './api/lines.service';
+import { SublinesService } from './api/sublines.service';
 
 @NgModule({
   imports: [],
@@ -10,17 +11,19 @@ import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.servic
   exports: [],
   providers: [],
 })
-export class ApiModule {
-  public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {
+export class LiDiApiModule {
+  public static forRoot(
+    configurationFactory: () => Configuration
+  ): ModuleWithProviders<LiDiApiModule> {
     return {
-      ngModule: ApiModule,
+      ngModule: LiDiApiModule,
       providers: [{ provide: Configuration, useFactory: configurationFactory }],
     };
   }
 
-  constructor(@Optional() @SkipSelf() parentModule: ApiModule, @Optional() http: HttpClient) {
+  constructor(@Optional() @SkipSelf() parentModule: LiDiApiModule, @Optional() http: HttpClient) {
     if (parentModule) {
-      throw new Error('ApiModule is already loaded. Import in your base AppModule only.');
+      throw new Error('LiDiApiModule is already loaded. Import in your base AppModule only.');
     }
     if (!http) {
       throw new Error(
