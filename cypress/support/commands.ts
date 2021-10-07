@@ -87,6 +87,8 @@ Cypress.Commands.add('loginWithCredentials', () => {
 });
 
 Cypress.Commands.add('login', () => {
+  console.log('logging in');
+
   return cy
     .visit(`${Cypress.env('Host')}`)
     .request({
@@ -95,17 +97,50 @@ Cypress.Commands.add('login', () => {
       form: true,
       body: {
         grant_type: 'client_credentials',
-        client_id: Cypress.env('clientId'),
-        client_secret: Cypress.env('clientSecret'),
+      },
+      auth: {
+        user: Cypress.env('clientId'),
+        pass: Cypress.env('clientSecret'),
+        sendImmediately: true,
       },
     })
     .then((response) => {
-      console.log(response);
-      const accessToken = response.body.access_token;
-      const expiresOn = response.body.expires_on;
-      sessionStorage.setItem('access_token', accessToken);
-      sessionStorage.setItem('auth_token', accessToken);
-      sessionStorage.setItem('expires_at', expiresOn);
-      sessionStorage.setItem('access_token_stored_at', expiresOn);
+      expect(response).property('status').to.equal(200);
+      expect(response.body).property('access_token').to.not.be.oneOf([null, '']);
+      const body = response.body;
+      const now = new Date().getTime();
+
+      const expiresAt = JSON.stringify(body.expires_in * 1000 + now);
+
+      window.sessionStorage.removeItem('refresh_token');
+      window.sessionStorage.removeItem('none');
+      window.sessionStorage.setItem('id_token_expires_at', expiresAt);
+      window.sessionStorage.setItem('expires_at', expiresAt);
+      window.sessionStorage.setItem('id_token', body.access_token);
+      window.sessionStorage.setItem('access_token', body.access_token);
+      window.sessionStorage.setItem(
+        'id_token_claims_obj',
+        JSON.stringify({
+          exp: expiresAt,
+          iat: now,
+          auth_time: now,
+          jti: '48a3f9da-67d6-456f-8427-a041eac454a7',
+          iss: 'https://sso.sbb.ch/auth/realms/SBB_Public',
+          aud: 'client-tms-ssp-prod',
+          sub: '13e2b9c1-8521-4561-8ce7-4b7e54333d62',
+          typ: 'ID',
+          azp: 'client-tms-ssp-prod',
+          acr: '1',
+          upn: Cypress.env('clientId') + '@sbb.ch',
+          email_verified: true,
+          sbbuid_ad: 'ue0000000',
+          name: 'Test User ',
+          preferred_username: 'nt-sbb1\\ue85540',
+          given_name: 'Test',
+          sbbuid: 'ue0000000',
+          family_name: Cypress.env('clientId'),
+          email: Cypress.env('clientId') + '@sbb.ch',
+        })
+      );
     });
 });
