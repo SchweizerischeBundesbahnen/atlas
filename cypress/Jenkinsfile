@@ -1,40 +1,44 @@
 #!groovy
-
 pipeline {
-    agent {
-        label 'java-small'
+  agent {
+    label 'java-small'
+  }
+
+  options {
+    disableConcurrentBuilds()
+    buildDiscarder(logRotator(numToKeepStr:'5'))
+    timeout(time: 10, unit: 'MINUTES')
+    timestamps()
+  }
+
+  parameters {
+     string( name: 'app_environment', defaultValue: 'test', description: 'Deployed application environment')
+  }
+
+  stages {
+    stage('Build npm dependencies') {
+      steps {
+        sh 'npm ci'
+      }
+    }
+    stage('Build npm dependencies') {
+      steps {
+        sh 'npm run cypress:run'
+      }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()
     }
 
-    options {
-        disableConcurrentBuilds()
-        buildDiscarder(logRotator(numToKeepStr:'5'))
-        timeout(time: 10, unit: 'MINUTES')
-        timestamps()
+    success {
+      echo 'Success...'
+      echo 'Archive cypress videos'
+      archiveArtifacts 'cypress/videos/*.mp4'
+      echo 'Archive cypress screenshots'
+      archiveArtifacts 'cypress/screenshots/**/*'
     }
-
-    environment {
-        STAGE = 'test'
-    }
-
-    stages {
-        stage('Build npm dependencies') {
-            steps {
-              sh 'npm ci'
-            }
-        }
-    }
-
-    stages {
-        stage('Build npm dependencies') {
-            steps {
-              sh 'npm run cypress:run'
-            }
-        }
-    }
-
-    post {
-        always {
-          cleanWs()
-        }
-    }
+  }
 }
