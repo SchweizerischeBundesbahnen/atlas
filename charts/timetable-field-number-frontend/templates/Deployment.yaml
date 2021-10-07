@@ -31,8 +31,10 @@ spec:
               value: '{{ .Values.production }}'
             - name: ENVIRONMENT_LABEL
               value: '{{ .Values.environmentLabel }}'
-            - name: BACKEND_URL
-              value: '{{ .Values.backendUrl }}'
+            - name: TTFN_BACKEND_URL
+              value: '{{ .Values.ttfnBackendUrl }}'
+            - name: LIDI_BACKEND_URL
+              value: '{{ .Values.lidiBackendUrl }}'
           ports:
             - containerPort: 8080
           livenessProbe:
