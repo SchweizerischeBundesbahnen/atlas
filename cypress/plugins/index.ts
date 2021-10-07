@@ -2,6 +2,7 @@
 // For more info, visit https://on.cypress.io/plugins-api
 module.exports = (on, config) => {};
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
   interface Chainable<Subject> {
     /**
