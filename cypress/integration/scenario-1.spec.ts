@@ -1,14 +1,4 @@
 describe('Fahrplanfeldnummer Table is available', () => {
-  // beforeEach(() => {
-  //   cy.clearCookies();
-  //   cy.clearLocalStorage();
-  //   // cy.loginClientCredentials();
-  //   // cy.loginWithCredentials();
-  //   cy.login();
-  //   // cy.visit('/');
-  //   cy.wait(2000);
-  // });
-
   it('Login on ATLAS', () => {
     cy.clearCookies();
     cy.clearLocalStorage();

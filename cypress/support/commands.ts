@@ -42,58 +42,14 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('loginClientCredentials', () => {
-  console.log('alternative login');
-  return cy
-    .visit(`${Cypress.env('Host')}/`)
-    .request({
-      url: Cypress.env('authority') + '/oauth2/v2.0/token',
-      method: 'POST',
-      body: {
-        grant_type: 'password',
-        client_id: Cypress.env('clientId'),
-        client_secret: Cypress.env('clientSecret'),
-        scope: Cypress.env('apiScopes')[0],
-        username: Cypress.env('username'),
-        password: Cypress.env('password'),
-      },
-      form: true,
-    })
-    .then((response) => {
-      console.log(response);
-    });
-});
-
-Cypress.Commands.add('loginWithCredentials', () => {
-  Cypress.log({
-    name: 'loginViaAuth0',
-  });
-
-  const options = {
-    method: 'POST',
-    url: `https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/token`,
-    body: {
-      grant_type: 'password',
-      username: 'fxatl_r@sbb.ch',
-      password: 'ATLAS%r3ader',
-      resource: 'http://localhost:4200',
-      scope: Cypress.env('apiScopes')[0],
-      client_id: Cypress.env('clientId'),
-      client_secret: Cypress.env('clientSecret'),
-    },
-    form: true,
-  };
-  cy.request(options);
-});
-
 Cypress.Commands.add('login', () => {
   console.log('logging in');
 
   return cy
-    .visit(`${Cypress.env('Host')}`)
+    .visit(`${Cypress.env('host')}`)
     .request({
       method: 'POST',
-      url: `https://login.microsoftonline.com/${Cypress.env('tenantId')}/oauth2/token`,
+      url: `${Cypress.env('authority')}/oauth2/token`,
       form: true,
       body: {
         grant_type: 'client_credentials',
@@ -125,7 +81,7 @@ Cypress.Commands.add('login', () => {
           iat: now,
           auth_time: now,
           jti: '48a3f9da-67d6-456f-8427-a041eac454a7',
-          iss: 'https://sso.sbb.ch/auth/realms/SBB_Public',
+          iss: 'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
           aud: 'client-tms-ssp-prod',
           sub: '13e2b9c1-8521-4561-8ce7-4b7e54333d62',
           typ: 'ID',
@@ -134,8 +90,8 @@ Cypress.Commands.add('login', () => {
           upn: Cypress.env('clientId') + '@sbb.ch',
           email_verified: true,
           sbbuid_ad: 'ue0000000',
-          name: 'Test User ',
-          preferred_username: 'nt-sbb1\\ue85540',
+          name: 'Atlas User',
+          preferred_username: 'nt-sbb1\\ue01234',
           given_name: 'Test',
           sbbuid: 'ue0000000',
           family_name: Cypress.env('clientId'),
