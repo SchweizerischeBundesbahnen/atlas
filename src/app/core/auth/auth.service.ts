@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { User } from '../components/user/user';
 import { Pages } from '../../pages/pages';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,14 @@ export class AuthService {
   eventUserComponentNotification: EventEmitter<User> = new EventEmitter<User>();
   // Promise that resolves once the login process has been completed.
   // This only works for forceful logins.
-  private readonly initialized: Promise<unknown>;
+  private readonly initialized: Promise<unknown> | undefined;
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  private accessTokenSubject = new BehaviorSubject<string>(null);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  private userSubject = new BehaviorSubject<User>(null);
 
   get claims() {
     return this.oauthService.getIdentityClaims() as User;
@@ -31,24 +39,29 @@ export class AuthService {
 
   constructor(private oauthService: OAuthService, private router: Router, location: Location) {
     this.oauthService.configure(environment.authConfig);
-    // this.oauthService.setupAutomaticSilentRefresh();
-    // If the user should not be forcefully logged in (e.g. if you have pages, which can be
-    // accessed anonymously), change loadDiscoveryDocumentAndLogin to
-    // loadDiscoveryDocumentAndTryLogin and have a login functionality in the
-    // template of the component injecting the AuthService which calls the login() method.
-    this.initialized = this.oauthService
-      .loadDiscoveryDocumentAndLogin({ state: location.path() })
-      // If the user is not logged in, he will be forwarded to the identity provider
-      // and this promise will not resolve. After being redirected from the identity
-      // provider, the login promise will return true.
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .then((v) => (v ? true : new Promise(() => {})));
+    this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService
+      .loadDiscoveryDocumentAndTryLogin()
+      // If the user should not be forcefully logged in (e.g. if you have pages, which can be
+      // accessed anonymously), remove the .then and have a login functionality in the
+      // template of the component injecting the AuthService which calls the login() method.
+      .then(() => {
+        if (!this.oauthService.hasValidIdToken() || !this.oauthService.hasValidAccessToken()) {
+          this.oauthService.initLoginFlow(this.router.url);
+        } else {
+          console.log('user has valid token');
+          this.accessTokenSubject.next(this.oauthService.getAccessToken());
+          this.userSubject.next(this.claims);
+        }
+      });
     // Redirect the user to the url configured with state above or in a separate login call.
     this.oauthService.events.pipe(first((e) => e.type === 'token_received')).subscribe(() => {
+      // This is required for RedHat SSO, since they encode the state.
       const state = decodeURIComponent(this.oauthService.state || '');
-      this.eventUserComponentNotification.emit(this.claims);
       if (state && state !== '/') {
-        this.router.navigate([Pages.HOME.path]);
+        this.router.navigate([state]);
+      } else {
+        this.accessTokenSubject.next(this.oauthService.getAccessToken());
       }
     });
   }
