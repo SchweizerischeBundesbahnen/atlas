@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeComponent } from './home.component';
 import { AuthService } from '../../core/auth/auth.service';
-import { TimetableFieldNumbersService, VersionsContainer } from '../../api';
+import { TimetableFieldNumbersService, VersionsContainer } from '../../api/ttfn';
 import { MaterialModule } from '../../core/module/material.module';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
