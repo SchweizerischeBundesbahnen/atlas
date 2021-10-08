@@ -23,7 +23,7 @@ import { TtfnApiModule } from '../../api/ttfn';
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
 
-function withBasePath(basePath: string) {
+export function withBasePath(basePath: string) {
   return () => new Configuration({ basePath: basePath });
 }
 
@@ -50,10 +50,7 @@ function withBasePath(basePath: string) {
       },
     }),
     RouterModule,
-    BrowserAnimationsModule,
     HttpClientModule,
-    LiDiApiModule.forRoot(withBasePath(environment.lidiBackendUrl)),
-    TtfnApiModule.forRoot(withBasePath(environment.ttfnBackendUrl)),
     OAuthModule.forRoot({
       resourceServer: {
         // When sendAccessToken is set to true and you send

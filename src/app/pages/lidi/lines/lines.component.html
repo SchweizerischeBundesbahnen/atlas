@@ -1,9 +1,7 @@
-<h2>{{ 'HOME.HEADER' | translate }}</h2>
-
 <app-table
-  [tableData]="versions$"
+  [tableData]="lineVersions"
   [totalCount]="totalCount$"
-  [tableColumns]="tableColumns"
+  [tableColumns]="linesTableColumns"
   [canEdit]="true"
   [isLoading]="isLoading"
   (newElementEvent)="newVersion()"
