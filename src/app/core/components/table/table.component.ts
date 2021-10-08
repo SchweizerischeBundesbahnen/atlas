@@ -13,7 +13,6 @@ import { TablePagination } from './table-pagination';
 export class TableComponent<DATATYPE> implements AfterViewInit {
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() tableData!: DATATYPE[];
-  @Input() tableCaption!: string;
   @Input() canEdit = true;
   @Input() isLoading = false;
   @Input() totalCount!: number;
