@@ -44,6 +44,7 @@
   },
   "PAGES": {
     "HOME": "Home",
+    "LIDI": "Linienverzeichnis",
     "AUTH_INSIGHT": "Auth-Insights",
     "DETAILS": "Details"
   },
@@ -82,5 +83,20 @@
     "MATDATEPICKERMAX": "Datum muss kleiner oder gleich als {{date}} sein",
     "MATDATEPICKERPARSE": "Ungültiges Datumformat (muss TT.MM.YYYY sein)",
     "DATE_RANGE_ERROR": "Gültig von Datum darf nicht grösser als Gültig bis sein: {{date}}"
+  },
+  "LIDI": {
+    "LINES": "Linienverzeichnis",
+    "SUBLINES": "Teillinien",
+    "SWISS_LINE_NUMBER": "CH-Liniennummer",
+    "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
+    "SHORT_NAME": "Linienkurzbeschr.",
+    "DESCRIPTION": "Beschreibung",
+    "STATUS": "Status",
+    "TYPE": "Linientyp",
+    "SUBLINE_TYPE": "Teillinientyp",
+    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "SLNID": "SLNID",
+    "VALID_FROM": "von",
+    "VALID_TO": "bis"
   }
 }

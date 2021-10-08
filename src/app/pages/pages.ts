@@ -7,6 +7,12 @@ export class Pages {
     icon: 'bi-house-fill',
   };
 
+  public static LIDI: Page = {
+    title: 'PAGES.LIDI',
+    path: 'line-directory',
+    icon: 'bi-signpost-split',
+  };
+
   public static AUTH_INSIGHT: Page = {
     title: 'PAGES.AUTH_INSIGHT',
     path: 'auth-insights',
@@ -18,5 +24,5 @@ export class Pages {
     path: ':id',
   };
 
-  public static pages: Page[] = [Pages.HOME, Pages.AUTH_INSIGHT];
+  public static pages: Page[] = [Pages.HOME, Pages.LIDI, Pages.AUTH_INSIGHT];
 }
