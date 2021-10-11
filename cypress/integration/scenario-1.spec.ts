@@ -14,6 +14,7 @@ describe('Fahrplanfeldnummer', () => {
     cy.clearCookies();
     cy.clearLocalStorage();
     cy.login();
+    cy.visit('/');
   });
 
   it('Step-2: Check the Fahrplanfeldnummer Table is visible', () => {
