@@ -2,24 +2,24 @@ package ch.sbb.line.directory.controller;
 
 import ch.sbb.line.directory.api.SublineVersionApi;
 import ch.sbb.line.directory.api.SublineVersionModel;
+import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class SublineVersionController implements SublineVersionApi {
 
   private final SublineVersionRepository sublineVersionRepository;
-
-  @Autowired
-  public SublineVersionController(SublineVersionRepository sublineVersionRepository) {
-    this.sublineVersionRepository = sublineVersionRepository;
-  }
 
   @Override
   public SublineVersionModel getSublineVersion(Long id) {
@@ -28,13 +28,24 @@ public class SublineVersionController implements SublineVersionApi {
                                    .orElseThrow(NotFoundExcpetion.getInstance());
   }
 
-  @Override
-  public Set<SublineVersionModel> getSublineVersionsBySwissLineNumber(String swissLineNumber) {
-    return sublineVersionRepository.findAllBySwissLineNumber(swissLineNumber)
-                                   .stream()
-                                   .map(SublineVersionController::toModel)
-                                   .collect(
-                                       Collectors.toSet());
+  public VersionsContainer<SublineVersionModel> getSublineVersions(Pageable pageable, Optional<String> swissLineNumber) {
+    Long totalCount = swissLineNumber.map(sublineVersionRepository::countAllBySwissLineNumber)
+                                     .orElse(
+                                         sublineVersionRepository.count());
+    List<SublineVersionModel> sublineVersions = swissLineNumber.map(
+                                                                   this::getSublineVersionsBySwissLineNumber)
+                                                               .orElse(toModel(
+                                                                   sublineVersionRepository.findAll(
+                                                                       pageable)));
+    return VersionsContainer.<SublineVersionModel>builder()
+                            .versions(sublineVersions)
+                            .totalCount(totalCount)
+                            .build();
+  }
+
+  List<SublineVersionModel> getSublineVersionsBySwissLineNumber(String swissLineNumber) {
+    return toModel(sublineVersionRepository.findAllBySwissLineNumber(swissLineNumber));
+
   }
 
   @Override
@@ -71,6 +82,12 @@ public class SublineVersionController implements SublineVersionApi {
       throw NotFoundExcpetion.getInstance().get();
     }
     sublineVersionRepository.deleteById(id);
+  }
+
+  private static List<SublineVersionModel> toModel(Iterable<SublineVersion> versions) {
+    return StreamSupport.stream(versions.spliterator(), false)
+                        .map(SublineVersionController::toModel)
+                        .collect(Collectors.toList());
   }
 
   static SublineVersionModel toModel(SublineVersion sublineVersion) {
