@@ -66,7 +66,7 @@
       "EDIT_ERROR": "Beim Editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "DELETE_SUCCESS": "Fahrplanfeldnummer erfolgreich gelöscht.",
       "DELETE_ERROR": "Beim Löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
-      "FETCH_ERROR": "Beim Laden Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten."
+      "FETCH_ERROR": "Beim Laden der Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten."
     }
   },
   "PAGINATOR": {
@@ -102,6 +102,17 @@
     "SLNID": "SLNID",
     "VALID_FROM": "von",
     "VALID_TO": "bis",
-    "COMMENT": "Kommentar"
+    "COMMENT": "Kommentar",
+    "LINE": {
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Linie erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Linie erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Linie erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Linie ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Linie ist ein unbekannter Fehler aufgetreten."
+      }
+    }
   }
 }
