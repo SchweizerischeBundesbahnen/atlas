@@ -18,7 +18,7 @@ public interface LineVersionApi {
 
   @GetMapping
   @PageableAsQueryParam
-  LineVersionsContainer getLineVersions(@Parameter(hidden = true) Pageable pageable);
+  VersionsContainer<LineVersionModel> getLineVersions(@Parameter(hidden = true) Pageable pageable);
 
   @GetMapping("/{id}")
   LineVersionModel getLineVersion(@PathVariable Long id);

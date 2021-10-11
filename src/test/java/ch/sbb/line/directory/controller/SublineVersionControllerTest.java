@@ -15,8 +15,8 @@ import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -63,12 +63,11 @@ public class SublineVersionControllerTest {
   void shouldGetVersions() {
     // Given
     SublineVersion sublineVersion = createEntity();
-    when(sublineVersionRepository.findAllBySwissLineNumber(any())).thenReturn(
-        Collections.singleton(sublineVersion));
+    when(sublineVersionRepository.findAllBySwissLineNumber(any())).thenReturn(        Collections.singletonList(sublineVersion));
     when(sublineVersionRepository.count()).thenReturn(1L);
 
     // When
-    Set<SublineVersionModel> versions = sublineVersionController.getSublineVersionsBySwissLineNumber(sublineVersion.getSwissLineNumber());
+    List<SublineVersionModel> versions = sublineVersionController.getSublineVersionsBySwissLineNumber(sublineVersion.getSwissLineNumber());
 
     // Then
     assertThat(versions).isNotNull();

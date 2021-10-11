@@ -7,8 +7,6 @@ import ch.sbb.line.directory.model.CymkColor;
 import ch.sbb.line.directory.model.RgbColor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,10 +24,6 @@ public class LineVersionModel {
 
   @Schema(description = "SwissLineNumber")
   private String swissLineNumber;
-
-  @Builder.Default
-  @Schema(description = "Subline Versions")
-  private Set<SublineVersionModel> sublineVersions = new HashSet<>();
 
   @Schema(description = "Status")
   private Status status;

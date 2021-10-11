@@ -22,6 +22,16 @@ class CymkColorConverterTest {
   }
 
   @Test
+  public void shouldConvertNullToDbRepresentation() {
+    // given
+
+    // when
+    String databaseValue = CYMK_COLOR_CONVERTER.convertToDatabaseColumn(null);
+    // then
+    assertThat(databaseValue).isNull();
+  }
+
+  @Test
   public void shouldConvertFromDbRepresentation() {
     // given
 
@@ -29,6 +39,16 @@ class CymkColorConverterTest {
     CymkColor cymkColor = CYMK_COLOR_CONVERTER.convertToEntityAttribute(COLOR_DB_REPRESENTATION);
     // then
     assertThat(cymkColor).usingRecursiveComparison().isEqualTo(COLOR);
+  }
+
+  @Test
+  public void shouldConvertNullFromDbRepresentation() {
+    // given
+
+    // when
+    CymkColor cymkColor = CYMK_COLOR_CONVERTER.convertToEntityAttribute(null);
+    // then
+    assertThat(cymkColor).isNull();
   }
 
 }

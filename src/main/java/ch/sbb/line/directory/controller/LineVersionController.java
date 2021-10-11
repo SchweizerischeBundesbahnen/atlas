@@ -2,43 +2,34 @@ package ch.sbb.line.directory.controller;
 
 import ch.sbb.line.directory.api.LineVersionApi;
 import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.LineVersionsContainer;
-import ch.sbb.line.directory.api.SublineVersionModel;
+import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class LineVersionController implements LineVersionApi {
 
   private final LineVersionRepository lineVersionRepository;
-  private final SublineVersionController sublineVersionController;
-
-  @Autowired
-  public LineVersionController(LineVersionRepository lineVersionRepository,
-      SublineVersionController sublineVersionController) {
-    this.lineVersionRepository = lineVersionRepository;
-    this.sublineVersionController = sublineVersionController;
-  }
 
   @Override
-  public LineVersionsContainer getLineVersions(Pageable pageable) {
+  public VersionsContainer<LineVersionModel> getLineVersions(Pageable pageable) {
     log.info("Load Versions using pageable={}", pageable);
     List<LineVersionModel> versions = lineVersionRepository.findAll(pageable)
                                                            .stream()
                                                            .map(this::toModel)
                                                            .collect(Collectors.toList());
     long totalCount = lineVersionRepository.count();
-    return LineVersionsContainer.builder()
-                                .versions(versions)
-                                .totalCount(totalCount).build();
+    return VersionsContainer.<LineVersionModel>builder()
+                            .versions(versions)
+                            .totalCount(totalCount).build();
   }
 
   @Override
@@ -93,11 +84,8 @@ public class LineVersionController implements LineVersionApi {
   }
 
   private LineVersionModel toModel(LineVersion lineVersion) {
-    Set<SublineVersionModel> sublineVersions = sublineVersionController.getSublineVersionsBySwissLineNumber(
-        lineVersion.getSwissLineNumber());
     return LineVersionModel.builder()
                            .id(lineVersion.getId())
-                           .sublineVersions(sublineVersions)
                            .status(lineVersion.getStatus())
                            .type(lineVersion.getType())
                            .slnid(lineVersion.getSlnid())
