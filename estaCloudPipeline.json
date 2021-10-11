@@ -44,7 +44,7 @@
       "openshiftCluster": "aws_aws01t",
       "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
       "preCiDeploymentJob": "",
-      "postCiDeploymentJob": ""
+      "postCiDeploymentJob": "KI_ATLAS_E2E/timetable-field-number-frontend/master"
     }
   ],
   "teamsNotifications": {
@@ -95,8 +95,7 @@
       "additionalBuildParams": "",
       "junitTestReportPath": "**/coverage/cobertura-coverage.xml",
       "triggerBuildOnCommitEnabled": true,
-      "hotfixCreationEnabled": false,
-      "postCiDeploymentJob": "KI_ATLAS_E2E/timetable-field-number-frontend/master"
+      "hotfixCreationEnabled": false
     }
   ]
 }
