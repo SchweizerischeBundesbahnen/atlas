@@ -19,10 +19,6 @@ pipeline {
     timestamps()
   }
 
-  parameters {
-    string( name: 'app_environment', defaultValue: 'test', description: 'Deployed application environment')
-  }
-
   stages {
     stage('Build npm dependencies') {
       when {
