@@ -7,6 +7,8 @@ pipeline {
 
   environment {
     CYPRESS_BASE_URL = 'https://timetable-field-number-frontend-test.apps.aws01t.sbb-aws-test.net'
+    CYPRESS_CLIENT_ID = credentials('fd7bc89e-c678-4c86-9155-5c4b0668bbc4')
+    CYPRESS_CLIENT_SECRET = credentials('67ec5714-a585-4b53-9dca-9c0a9527ea66')
     NO_COLOR = 1
   }
 
