@@ -40,11 +40,11 @@ pipeline {
 
   post {
     always {
-      cleanWs()
       echo 'Archive cypress videos'
-      archiveArtifacts 'videos/*.mp4'
+      archiveArtifacts 'cypress/videos/*.mp4'
       echo 'Archive cypress screenshots'
-      archiveArtifacts 'screenshots/**/*'
+      archiveArtifacts 'cypress/screenshots/**/*'
+      cleanWs()
     }
   }
 }
