@@ -1,7 +1,10 @@
 package ch.sbb.line.directory.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.Set;
+import java.util.Optional;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +24,8 @@ public interface SublineVersionApi {
   SublineVersionModel getSublineVersion(@PathVariable Long id);
 
   @GetMapping
-  Set<SublineVersionModel> getSublineVersionsBySwissLineNumber(@RequestParam String swissLineNumber);
+  @PageableAsQueryParam
+  VersionsContainer<SublineVersionModel> getSublineVersions(@Parameter(hidden = true) Pageable pageable, @RequestParam Optional<String> swissLineNumber);
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)

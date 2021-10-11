@@ -22,6 +22,16 @@ class RgbColorConverterTest {
   }
 
   @Test
+  public void shouldConvertNullToDbRepresentation() {
+    // given
+
+    // when
+    String databaseValue = RGB_COLOR_CONVERTER.convertToDatabaseColumn(null);
+    // then
+    assertThat(databaseValue).isNull();
+  }
+
+  @Test
   public void shouldConvertFromDbRepresentation() {
     // given
 
@@ -29,6 +39,16 @@ class RgbColorConverterTest {
     RgbColor rgbColor = RGB_COLOR_CONVERTER.convertToEntityAttribute(COLOR_DB_REPRESENTATION);
     // then
     assertThat(rgbColor).usingRecursiveComparison().isEqualTo(COLOR);
+  }
+
+  @Test
+  public void shouldConvertNullFromDbRepresentation() {
+    // given
+
+    // when
+    RgbColor rgbColor = RGB_COLOR_CONVERTER.convertToEntityAttribute(null);
+    // then
+    assertThat(rgbColor).isNull();
   }
 
 }
