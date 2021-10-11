@@ -25,11 +25,17 @@ pipeline {
 
   stages {
     stage('Build npm dependencies') {
+      when {
+        branch 'master'
+      }
       steps {
         sh 'npm ci'
       }
     }
     stage('Run Cypress E2E Tests') {
+      when {
+        branch 'master'
+      }
       steps {
         sh 'npm run cypress:run'
       }
