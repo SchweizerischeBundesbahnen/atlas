@@ -7,6 +7,7 @@
 <div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section">
   <div class="edit-buttons">
     <button
+      data-cy="edit-item"
       mat-mini-fab
       class="me-3"
       (click)="controller.toggleEdit()"
@@ -15,6 +16,7 @@
       <em class="bi bi-pencil-fill"></em>
     </button>
     <button
+      data-cy="delete-item"
       mat-mini-fab
       color="white"
       (click)="controller.delete()"
@@ -35,6 +37,7 @@
     {{ 'COMMON.CANCEL' | translate }}
   </button>
   <button
+    data-cy="save-item"
     mat-raised-button
     type="submit"
     class="me-3"

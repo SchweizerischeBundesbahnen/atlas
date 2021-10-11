@@ -10,11 +10,12 @@ function createOauthServiceSpy() {
     'getGrantedScopes',
     'configure',
     'setupAutomaticSilentRefresh',
-    'loadDiscoveryDocumentAndLogin',
+    'loadDiscoveryDocumentAndTryLogin',
     'initLoginFlow',
+    'hasValidIdToken',
     'logOut',
   ]);
-  oauthServiceSpy.loadDiscoveryDocumentAndLogin.and.returnValue(
+  oauthServiceSpy.loadDiscoveryDocumentAndTryLogin.and.returnValue(
     new Promise((resolve: (v: boolean) => void): void => {
       oauthServiceSpy.state = undefined;
       resolve(true);

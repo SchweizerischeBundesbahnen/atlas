@@ -4,6 +4,7 @@
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}</mat-label>
         <input
+          data-cy="swissTimetableFieldNumber"
           required
           matInput
           formControlName="swissTimetableFieldNumber"
@@ -18,7 +19,13 @@
 
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.TTFNID' | translate }}</mat-label>
-        <input required matInput formControlName="ttfnid" placeholder="{{ TTFNID_PLACEHOLDER }}" />
+        <input
+          data-cy="ttfnid"
+          required
+          matInput
+          formControlName="ttfnid"
+          placeholder="{{ TTFNID_PLACEHOLDER }}"
+        />
         <mat-error *ngFor="let validationError of this.getValidation('ttfnid')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -31,6 +38,7 @@
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.VALID_FROM' | translate }}</mat-label>
         <input
+          data-cy="validFrom"
           required
           matInput
           formControlName="validFrom"
@@ -49,6 +57,7 @@
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.VALID_TO' | translate }}</mat-label>
         <input
+          data-cy="validTo"
           required
           matInput
           formControlName="validTo"
@@ -68,7 +77,12 @@
     <div class="row mb-3">
       <mat-form-field>
         <mat-label>{{ 'TTFN.BUSINESS_ORGANISATION' | translate }}</mat-label>
-        <input required matInput formControlName="businessOrganisation" />
+        <input
+          data-cy="businessOrganisation"
+          required
+          matInput
+          formControlName="businessOrganisation"
+        />
         <mat-error *ngFor="let validationError of this.getValidation('businessOrganisation')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -80,7 +94,7 @@
     <div class="row mb-3">
       <mat-form-field>
         <mat-label>{{ 'TTFN.NUMBER' | translate }}</mat-label>
-        <input required matInput formControlName="number" />
+        <input data-cy="number" required matInput formControlName="number" />
         <mat-error *ngFor="let validationError of this.getValidation('number')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -92,7 +106,13 @@
     <div class="row mb-3">
       <mat-form-field>
         <mat-label>{{ 'TTFN.NAME' | translate }}</mat-label>
-        <input required matInput formControlName="name" placeholder="{{ NAME_PLACEHOLDER }}" />
+        <input
+          data-cy="name"
+          required
+          matInput
+          formControlName="name"
+          placeholder="{{ NAME_PLACEHOLDER }}"
+        />
         <mat-error *ngFor="let validationError of this.getValidation('name')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -104,7 +124,7 @@
     <div class="row mb-3">
       <mat-form-field>
         <mat-label>{{ 'TTFN.COMMENT' | translate }}</mat-label>
-        <input matInput formControlName="comment" />
+        <input data-cy="comment" matInput formControlName="comment" />
       </mat-form-field>
     </div>
   </form>
