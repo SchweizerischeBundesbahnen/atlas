@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.LineVersionsContainer;
+import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
@@ -49,8 +49,7 @@ public class LineVersionControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineVersionController = new LineVersionController(lineVersionRepository,
-        sublineVersionController);
+    lineVersionController = new LineVersionController(lineVersionRepository);
     when(lineVersionRepository.save(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
 
@@ -80,17 +79,17 @@ public class LineVersionControllerTest {
     when(lineVersionRepository.count()).thenReturn(1L);
 
     // When
-    LineVersionsContainer versions = lineVersionController.getLineVersions(Pageable.unpaged());
+    VersionsContainer<LineVersionModel> lineVersionContainer = lineVersionController.getLineVersions(Pageable.unpaged());
 
     // Then
-    assertThat(versions).isNotNull();
-    assertThat(versions.getVersions()).hasSize(1)
+    assertThat(lineVersionContainer).isNotNull();
+    assertThat(lineVersionContainer.getVersions()).hasSize(1)
                                       .first()
                                       .usingRecursiveComparison()
                                       .ignoringFields("editor", "creator", "editionDate",
                                           "creationDate", "sublineVersions")
                                       .isEqualTo(lineVersion);
-    assertThat(versions.getTotalCount()).isEqualTo(1);
+    assertThat(lineVersionContainer.getTotalCount()).isEqualTo(1);
   }
 
   @Test
@@ -207,7 +206,6 @@ public class LineVersionControllerTest {
 
   private static LineVersionModel createModel() {
     return LineVersionModel.builder()
-                           .sublineVersions(Collections.emptySet())
                            .status(Status.ACTIVE)
                            .type(LineType.ORDERLY)
                            .slnid("slnid")

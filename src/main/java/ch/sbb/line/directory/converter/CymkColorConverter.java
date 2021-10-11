@@ -16,6 +16,9 @@ public class CymkColorConverter implements AttributeConverter<CymkColor, String>
 
   @Override
   public String convertToDatabaseColumn(CymkColor color) {
+    if (color == null) {
+      return null;
+    }
     return color.getCyan() + SEPARATOR
         + color.getMagenta() + SEPARATOR
         + color.getYellow() + SEPARATOR
@@ -24,6 +27,9 @@ public class CymkColorConverter implements AttributeConverter<CymkColor, String>
 
   @Override
   public CymkColor convertToEntityAttribute(String colorString) {
+    if (colorString == null) {
+      return null;
+    }
     String[] cymkColors = colorString.split(SEPARATOR);
     return new CymkColor(Integer.parseInt(cymkColors[CYAN_INDEX]),
         Integer.parseInt(cymkColors[MAGENTA_INDEX]),
