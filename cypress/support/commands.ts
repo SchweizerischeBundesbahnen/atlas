@@ -42,6 +42,18 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
+declare namespace Cypress {
+  interface Chainable<Subject> {
+    /**
+     * Login with test user
+     * @example
+     * cy.login()
+     */
+    login(): Chainable<any>;
+  }
+}
+
 Cypress.Commands.add('login', () => {
   return cy
     .request({
