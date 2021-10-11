@@ -38,14 +38,15 @@ pipeline {
 
     always {
       cleanWs()
-    }
-
-    success {
-      echo 'Success...'
       echo 'Archive cypress videos'
       archiveArtifacts 'cypress/videos/*.mp4'
       echo 'Archive cypress screenshots'
       archiveArtifacts 'cypress/screenshots/**/*'
     }
+
+    success {
+      echo 'Success...'
+    }
+
   }
 }
