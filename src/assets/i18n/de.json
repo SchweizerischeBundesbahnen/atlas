@@ -90,6 +90,10 @@
     "SWISS_LINE_NUMBER": "CH-Liniennummer",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
     "SHORT_NAME": "Linienkurzbeschr.",
+    "ALTERNATIVE_NAME": "Alternativbezeichnung",
+    "COMBINATION_NAME": "Kombinationsbezeichnung",
+    "LONG_NAME": "Langbezeichnung",
+    "ICON": "Grafik",
     "DESCRIPTION": "Beschreibung",
     "STATUS": "Status",
     "TYPE": "Linientyp",
@@ -97,6 +101,7 @@
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "SLNID": "SLNID",
     "VALID_FROM": "von",
-    "VALID_TO": "bis"
+    "VALID_TO": "bis",
+    "COMMENT": "Kommentar"
   }
 }

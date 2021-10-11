@@ -6,9 +6,10 @@ import { LiDiApiModule } from '../../api/lidi';
 import { environment } from '../../../environments/environment';
 import { SublinesComponent } from './sublines/sublines.component';
 import { LidiOverviewComponent } from './overview/lidi-overview.component';
+import { LineDetailComponent } from './lines/detail/line-detail.component';
 
 @NgModule({
-  declarations: [LidiOverviewComponent, LinesComponent, SublinesComponent],
+  declarations: [LidiOverviewComponent, LinesComponent, LineDetailComponent, SublinesComponent],
   imports: [
     CoreModule,
     LidiRoutingModule,

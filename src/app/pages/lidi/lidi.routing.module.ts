@@ -2,6 +2,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { Pages } from '../pages';
 import { LidiOverviewComponent } from './overview/lidi-overview.component';
+import { LineDetailComponent } from './lines/detail/line-detail.component';
+import { LineDetailResolver } from './lines/detail/line-detail.resolver';
 
 const routes: Routes = [
   {
@@ -10,15 +12,15 @@ const routes: Routes = [
     data: {
       breadcrumb: Pages.LIDI.title,
     },
-    // children: [
-    // {
-    //   path: ':id',
-    //   component: BehigDetailComponent,
-    //   data: { breadcrumb: 'BREADCRUMB.DETAIL' },
-    //   resolve: { behigData: BehigDetailResolver },
-    //   runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-    // },
-    // ],
+  },
+  {
+    path: Pages.LIDI.path + '/lines/:id',
+    component: LineDetailComponent,
+    data: { breadcrumb: 'PAGES.DETAILS' },
+    resolve: {
+      lineDetail: LineDetailResolver,
+    },
+    runGuardsAndResolvers: 'always',
   },
 ];
 
