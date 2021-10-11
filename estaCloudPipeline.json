@@ -96,7 +96,7 @@
       "junitTestReportPath": "**/coverage/cobertura-coverage.xml",
       "triggerBuildOnCommitEnabled": true,
       "hotfixCreationEnabled": false,
-      "postCiStepJob": "KI_ATLAS_E2E/timetable-field-number-frontend"
+      "postCiStepJob": "KI_ATLAS_E2E/timetable-field-number-frontend/master"
     }
   ]
 }
