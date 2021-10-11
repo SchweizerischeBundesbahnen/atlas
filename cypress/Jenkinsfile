@@ -42,8 +42,6 @@ pipeline {
     always {
       echo 'Archive cypress videos'
       archiveArtifacts 'cypress/videos/*.mp4'
-      echo 'Archive cypress screenshots'
-      archiveArtifacts 'cypress/screenshots/**/*'
       cleanWs()
     }
   }
