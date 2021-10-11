@@ -43,10 +43,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('login', () => {
-  console.log('logging in');
-
   return cy
-    .visit(`${Cypress.env('host')}`)
     .request({
       method: 'POST',
       url: `${Cypress.env('authority')}/oauth2/token`,
