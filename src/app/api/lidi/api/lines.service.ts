@@ -24,7 +24,7 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 import { LineVersion } from '../model/models';
-import { LineVersionsContainer } from '../model/models';
+import { VersionsContainerLineVersion } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -328,7 +328,7 @@ export class LinesService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<LineVersionsContainer>;
+  ): Observable<VersionsContainerLineVersion>;
   public getLineVersions(
     page?: number,
     size?: number,
@@ -336,7 +336,7 @@ export class LinesService {
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<LineVersionsContainer>>;
+  ): Observable<HttpResponse<VersionsContainerLineVersion>>;
   public getLineVersions(
     page?: number,
     size?: number,
@@ -344,7 +344,7 @@ export class LinesService {
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<LineVersionsContainer>>;
+  ): Observable<HttpEvent<VersionsContainerLineVersion>>;
   public getLineVersions(
     page?: number,
     size?: number,
@@ -390,7 +390,7 @@ export class LinesService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.get<LineVersionsContainer>(`${this.configuration.basePath}/`, {
+    return this.httpClient.get<VersionsContainerLineVersion>(`${this.configuration.basePath}/`, {
       params: queryParameters,
       responseType: <any>responseType_,
       withCredentials: this.configuration.withCredentials,

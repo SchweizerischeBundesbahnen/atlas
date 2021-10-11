@@ -10,9 +10,6 @@
  * Do not edit the class manually.
  */
 
-/**
- * Subline Versions
- */
 export interface SublineVersion {
   /**
    * Technical identifier

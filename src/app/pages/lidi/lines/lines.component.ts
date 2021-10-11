@@ -61,7 +61,7 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   newVersion() {
     this.router
-      .navigate(['add'], {
+      .navigate(['lines', 'add'], {
         relativeTo: this.route,
       })
       .then();
@@ -69,7 +69,7 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   editVersion($event: LineVersion) {
     this.router
-      .navigate([$event.id], {
+      .navigate(['lines', $event.id], {
         relativeTo: this.route,
       })
       .then();
