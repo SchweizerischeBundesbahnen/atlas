@@ -1,5 +1,6 @@
 export * from './cymkColor';
 export * from './lineVersion';
-export * from './lineVersionsContainer';
 export * from './rgbColor';
 export * from './sublineVersion';
+export * from './versionsContainerLineVersion';
+export * from './versionsContainerSublineVersion';

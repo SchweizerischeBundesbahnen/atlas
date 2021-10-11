@@ -24,6 +24,7 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 import { SublineVersion } from '../model/models';
+import { VersionsContainerSublineVersion } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -321,39 +322,48 @@ export class SublinesService {
 
   /**
    * @param swissLineNumber
+   * @param page Zero-based page index (0..N)
+   * @param size The size of the page to be returned
+   * @param sort Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public getSublineVersionsBySwissLineNumber(
-    swissLineNumber: string,
+  public getSublineVersions(
+    swissLineNumber?: string,
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<Set<SublineVersion>>;
-  public getSublineVersionsBySwissLineNumber(
-    swissLineNumber: string,
+  ): Observable<VersionsContainerSublineVersion>;
+  public getSublineVersions(
+    swissLineNumber?: string,
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<Set<SublineVersion>>>;
-  public getSublineVersionsBySwissLineNumber(
-    swissLineNumber: string,
+  ): Observable<HttpResponse<VersionsContainerSublineVersion>>;
+  public getSublineVersions(
+    swissLineNumber?: string,
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<Set<SublineVersion>>>;
-  public getSublineVersionsBySwissLineNumber(
-    swissLineNumber: string,
+  ): Observable<HttpEvent<VersionsContainerSublineVersion>>;
+  public getSublineVersions(
+    swissLineNumber?: string,
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<any> {
-    if (swissLineNumber === null || swissLineNumber === undefined) {
-      throw new Error(
-        'Required parameter swissLineNumber was null or undefined when calling getSublineVersionsBySwissLineNumber.'
-      );
-    }
-
     let queryParameters = new HttpParams({ encoder: this.encoder });
     if (swissLineNumber !== undefined && swissLineNumber !== null) {
       queryParameters = this.addToHttpParams(
@@ -361,6 +371,17 @@ export class SublinesService {
         <any>swissLineNumber,
         'swissLineNumber'
       );
+    }
+    if (page !== undefined && page !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
+    }
+    if (size !== undefined && size !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>size, 'size');
+    }
+    if (sort) {
+      sort.forEach((element) => {
+        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'sort');
+      });
     }
 
     let headers = this.defaultHeaders;
@@ -387,14 +408,17 @@ export class SublinesService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.get<Set<SublineVersion>>(`${this.configuration.basePath}/sublines`, {
-      params: queryParameters,
-      responseType: <any>responseType_,
-      withCredentials: this.configuration.withCredentials,
-      headers: headers,
-      observe: observe,
-      reportProgress: reportProgress,
-    });
+    return this.httpClient.get<VersionsContainerSublineVersion>(
+      `${this.configuration.basePath}/sublines`,
+      {
+        params: queryParameters,
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      }
+    );
   }
 
   /**

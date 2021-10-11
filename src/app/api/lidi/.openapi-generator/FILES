@@ -10,8 +10,9 @@ git_push.sh
 index.ts
 model/cymkColor.ts
 model/lineVersion.ts
-model/lineVersionsContainer.ts
 model/models.ts
 model/rgbColor.ts
 model/sublineVersion.ts
+model/versionsContainerLineVersion.ts
+model/versionsContainerSublineVersion.ts
 variables.ts

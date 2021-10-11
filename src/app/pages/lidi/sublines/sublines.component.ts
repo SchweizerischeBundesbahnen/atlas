@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { LinesService, LineVersion, SublinesService, SublineVersion } from '../../../api/lidi';
+import { SublinesService, SublineVersion } from '../../../api/lidi';
 
 @Component({
   selector: 'app-lidi-sublines',
@@ -38,13 +38,13 @@ export class SublinesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getVersions({ page: 0, size: 10, sort: 'swissLineNumber,ASC' });
+    this.getVersions({ page: 0, size: 10, sort: 'swissSublineNumber,ASC' });
   }
 
   getVersions($pagination: TablePagination) {
     this.isLoading = true;
     this.sublineVersionsSubscription = this.sublinesService
-      .getSublineVersionsBySwissLineNumber('b0.GEX')
+      .getSublineVersions(undefined, $pagination.page, $pagination.size, [$pagination.sort!])
       .pipe(
         catchError((err) => {
           this.notificationService.error('TTFN.NOTIFICATION.FETCH_ERROR');
@@ -52,9 +52,9 @@ export class SublinesComponent implements OnInit, OnDestroy {
           throw err;
         })
       )
-      .subscribe((lineVersionContainer) => {
-        this.sublineVersions = Array.from(lineVersionContainer);
-        this.totalCount$ = 20;
+      .subscribe((sublineVersionContainer) => {
+        this.sublineVersions = sublineVersionContainer.versions!;
+        this.totalCount$ = sublineVersionContainer.totalCount!;
         this.isLoading = false;
       });
   }

@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { CymkColor } from './cymkColor';
-import { SublineVersion } from './sublineVersion';
 import { RgbColor } from './rgbColor';
 
 export interface LineVersion {
@@ -22,10 +21,6 @@ export interface LineVersion {
    * SwissLineNumber
    */
   swissLineNumber?: string;
-  /**
-   * Subline Versions
-   */
-  sublineVersions?: Set<SublineVersion>;
   /**
    * Status
    */
