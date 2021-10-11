@@ -1,6 +1,7 @@
 # Timetable field number Frontend
 
 [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/job/master/)
+[![Build Status](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/feature%252FE2E_testing_with_cypress/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/master)
 [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Atimetable-field-number-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number-frontend)
 This project was generated from [esta-cloud-angular](https://code.sbb.ch/projects/KD_ESTA_BLUEPRINTS/repos/esta-cloud-angular/browse).
 See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
@@ -31,6 +32,11 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 ## Development
 
+### Cypress E2E
+
+To run the cypress tests on your machine you have to replace the **CLIENT_ID** and the **CLIENT_SECRET_ID** properties
+in the [cypress.json](cypress.json). The credentials are stored [here](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050)
+
 ### Set SBB Artifactory as npm registry
 
 See [set SBB Artifactory as npm registry](https://confluence.sbb.ch/display/CLEW/Configuration+Artifactory+7.x+as+NPM+Registry)
@@ -48,3 +54,13 @@ Finding an application within the registry is best performed by using the GET /v
 ## Monitoring and Logging
 
 - [Logging to Splunk](documentation/Logging.md)
+
+## E2E CI-Jenkins
+
+In [Jenkins](https://ci.sbb.ch/) under the organization Folder [ATLAS_Cypress_E2E](https://ci.sbb.ch/job/KI_ATLAS_E2E/)
+the Cypress E2E tests are defined in the job [timetable-field-number-frontend](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/).
+
+This job is executed only when is triggered by **postCiStepJob** defined in the main [Jenkins pipeline](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/),
+see the [Jenkinsfile](Jenkinsfile). On this job the push notification is disabled.
+
+The Jenkinsfile is stored in [cypress/Jenkinsfile](cypress/Jenkinsfile)

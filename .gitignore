@@ -46,3 +46,5 @@ testem.log
 Thumbs.db
 /src/app/api/git_push.sh
 /src/app/api/README.md
+/cypress/videos/
+/cypress/screenshots/
