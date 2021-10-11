@@ -12,6 +12,7 @@ import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
 import { ValidationError } from '../../../../core/validation/validation-error';
+import { LINE_DETAILS_PATH } from '../../lidi.routing.module';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -57,14 +58,14 @@ export class LineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('TTFN.NOTIFICATION.EDIT_ERROR');
+          this.notificationService.error('LIDI.LINE.NOTIFICATION.EDIT_ERROR');
           console.log(err);
           return EMPTY;
         })
       )
       .subscribe(() => {
-        this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
-        this.router.navigate([this.getId()]).then(() => this.ngOnInit());
+        this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
+        this.router.navigate([LINE_DETAILS_PATH, this.getId()]).then(() => this.ngOnInit());
       });
   }
 
@@ -74,14 +75,14 @@ export class LineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('TTFN.NOTIFICATION.ADD_ERROR');
+          this.notificationService.error('LIDI.LINE.NOTIFICATION.ADD_ERROR');
           console.log(err);
           return EMPTY;
         })
       )
       .subscribe((version) => {
-        this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
-        this.router.navigate([version.id]).then(() => this.ngOnInit());
+        this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
+        this.router.navigate([LINE_DETAILS_PATH, version.id]).then(() => this.ngOnInit());
       });
   }
 
@@ -91,13 +92,13 @@ export class LineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
+          this.notificationService.error('LIDI.LINE.NOTIFICATION.DELETE_ERROR');
           console.log(err);
           return EMPTY;
         })
       )
       .subscribe(() => {
-        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+        this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
         this.backToOverview();
       });
   }
