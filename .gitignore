@@ -48,3 +48,4 @@ Thumbs.db
 /src/app/api/README.md
 /cypress/videos/
 /cypress/screenshots/
+/cypress/logs/

@@ -44,5 +44,13 @@ pipeline {
       archiveArtifacts 'cypress/videos/*.mp4'
       cleanWs()
     }
+    failure {
+      echo 'Failure...'
+      echo 'Archive logs videos'
+      archiveArtifacts 'cypress/logs/*.json'
+      echo 'Archive screenshots'
+      archiveArtifacts 'cypress/screenshots/**.*'
+    }
+
   }
 }
