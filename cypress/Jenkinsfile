@@ -1,7 +1,13 @@
 #!groovy
 pipeline {
+
   agent {
-    label 'java-small'
+    label 'java'
+  }
+
+  environment {
+    CYPRESS_BASE_URL = 'https://timetable-field-number-frontend-test.apps.aws01t.sbb-aws-test.net'
+    NO_COLOR = 1
   }
 
   options {
@@ -12,7 +18,7 @@ pipeline {
   }
 
   parameters {
-     string( name: 'app_environment', defaultValue: 'test', description: 'Deployed application environment')
+    string( name: 'app_environment', defaultValue: 'test', description: 'Deployed application environment')
   }
 
   stages {
@@ -21,7 +27,7 @@ pipeline {
         sh 'npm ci'
       }
     }
-    stage('Build npm dependencies') {
+    stage('Run Cypress E2E Tests') {
       steps {
         sh 'npm run cypress:run'
       }
@@ -29,6 +35,7 @@ pipeline {
   }
 
   post {
+
     always {
       cleanWs()
     }

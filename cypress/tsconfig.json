@@ -3,7 +3,7 @@
   "include": ["**/*.ts"],
   "compilerOptions": {
     "sourceMap": false,
-    "types": ["cypress"],
-    "typeRoots": ["./support"]
+    "typeRoots": ["./support"],
+    "types": ["cypress", "@testing-library/cypress"]
   }
 }
