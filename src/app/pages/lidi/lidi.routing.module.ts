@@ -5,6 +5,8 @@ import { LidiOverviewComponent } from './overview/lidi-overview.component';
 import { LineDetailComponent } from './lines/detail/line-detail.component';
 import { LineDetailResolver } from './lines/detail/line-detail.resolver';
 
+export const LINE_DETAILS_PATH = Pages.LIDI.path + '/lines';
+
 const routes: Routes = [
   {
     path: Pages.LIDI.path,
@@ -14,7 +16,7 @@ const routes: Routes = [
     },
   },
   {
-    path: Pages.LIDI.path + '/lines/:id',
+    path: LINE_DETAILS_PATH + '/:id',
     component: LineDetailComponent,
     data: { breadcrumb: 'PAGES.DETAILS' },
     resolve: {
