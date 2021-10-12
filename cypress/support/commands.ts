@@ -95,15 +95,15 @@ Cypress.Commands.add('login', () => {
           typ: 'ID',
           azp: 'client-tms-ssp-prod',
           acr: '1',
-          upn: Cypress.env('clientId') + '@sbb.ch',
+          upn: Cypress.env('CLIENT_ID') + '@sbb.ch',
           email_verified: true,
           sbbuid_ad: 'ue0000000',
           name: 'Atlas User',
           preferred_username: 'nt-sbb1\\ue01234',
           given_name: 'Test',
           sbbuid: 'ue0000000',
-          family_name: Cypress.env('clientId'),
-          email: Cypress.env('clientId') + '@sbb.ch',
+          family_name: Cypress.env('CLIENT_ID'),
+          email: Cypress.env('CLIENT_ID') + '@sbb.ch',
         })
       );
     });
