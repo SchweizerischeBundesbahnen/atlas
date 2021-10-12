@@ -14,11 +14,9 @@ import { SideNavComponent } from '../components/side-nav/side-nav.component';
 import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Configuration, LiDiApiModule } from '../../api/lidi';
+import { Configuration } from '../../api/lidi';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
-import { TtfnApiModule } from '../../api/ttfn';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);

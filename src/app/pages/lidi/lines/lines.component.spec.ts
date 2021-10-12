@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MaterialModule } from '../../../core/module/material.module';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -9,7 +8,6 @@ import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { LinesComponent } from './lines.component';
 import { LinesService, VersionsContainerLineVersion } from '../../../api/lidi';
-import { LidiModule } from '../lidi.module';
 import { CoreModule } from '../../../core/module/core.module';
 
 const versionContainer: VersionsContainerLineVersion = {
