@@ -64,8 +64,8 @@ Cypress.Commands.add('login', () => {
         grant_type: Cypress.env('grantType'),
       },
       auth: {
-        user: Cypress.env('clientId'),
-        pass: Cypress.env('clientSecretId'),
+        user: Cypress.env('CLIENT_ID'),
+        pass: Cypress.env('CLIENT_SECRET'),
         sendImmediately: true,
       },
     })
