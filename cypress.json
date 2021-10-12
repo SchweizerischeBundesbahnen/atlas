@@ -10,8 +10,8 @@
   "viewportHeight": 1080,
   "env": {
     "authority": "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a",
-    "clientId": "REPLACE_ME_WITH_MY_CLIENT_ID",
-    "clientSecretId": "REPLACE_ME_WITH_MY_CLIENT_SECRET_ID",
+    "CLIENT_ID": "my_client_id",
+    "CLIENT_SECRET": "my_client_secret",
     "grantType": "client_credentials"
   }
 }
