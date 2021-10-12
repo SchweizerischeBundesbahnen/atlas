@@ -1,8 +1,11 @@
 # Timetable field number Frontend
 
 [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/job/master/)
-[![Build Status](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/feature%252FE2E_testing_with_cypress/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/master)
+
+[![E2E Tests](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/feature%252FE2E_testing_with_cypress/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/master)
+
 [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Atimetable-field-number-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number-frontend)
+
 This project was generated from [esta-cloud-angular](https://code.sbb.ch/projects/KD_ESTA_BLUEPRINTS/repos/esta-cloud-angular/browse).
 See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
@@ -23,6 +26,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 ## Links
 
 - **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/
+- **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/
 - **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number-frontend
 - **JFrog Artifactory**:
   - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Ftimetable-field-number-frontend
@@ -38,13 +42,13 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 ### Cypress E2E
 
-To run the cypress tests on your machine you have to replace the **CLIENT_ID** and the **CLIENT_SECRET_ID** properties
+To run the cypress tests on your machine you have to replace the **clientId** and the **clientSecretId** properties
 in the [cypress.json](cypress.json). The credentials are stored [here](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050)
 
 #### Run cypress test
 
-1. replace **CLIENT_ID** and the **CLIENT_SECRET_ID** in [cypress.json](cypress.json) (see above)
-2. replace **baseUrl** with your localhost running app (e.g. http//localhost/4200) or your deployed app url
+1. replace **clientId** and the **clientSecretId** in [cypress.json](cypress.json) (see above)
+2. replace **baseUrl** with your localhost running app (e.g. http://localhost:4200) or your deployed app url
 3. run cypress:
    1. with the console for debugging: `npm run cypress:open` or `cypress open`
    2. as headless test: `npm run cypress:run` or `cypress run`
