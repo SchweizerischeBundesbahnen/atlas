@@ -113,6 +113,17 @@
         "DELETE_ERROR": "Beim Löschen der Linie ist ein Fehler aufgetreten.",
         "FETCH_ERROR": "Beim Laden der Linie ist ein unbekannter Fehler aufgetreten."
       }
+    },
+    "SUBLINE": {
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Teillinie erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Teillinie erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Teillinie ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Teillinie erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Teillinie ist ein unbekannter Fehler aufgetreten."
+      }
     }
   }
 }
