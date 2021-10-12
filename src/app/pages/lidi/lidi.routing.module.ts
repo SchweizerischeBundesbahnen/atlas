@@ -4,8 +4,7 @@ import { Pages } from '../pages';
 import { LidiOverviewComponent } from './overview/lidi-overview.component';
 import { LineDetailComponent } from './lines/detail/line-detail.component';
 import { LineDetailResolver } from './lines/detail/line-detail.resolver';
-
-export const LINE_DETAILS_PATH = Pages.LIDI.path + '/lines';
+import { LINE_DETAILS_PATH } from './lidi.constants';
 
 const routes: Routes = [
   {
