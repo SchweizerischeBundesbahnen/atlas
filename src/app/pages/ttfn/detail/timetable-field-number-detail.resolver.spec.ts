@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
-import { TimetableFieldNumbersService, Version } from '../../api/ttfn';
+import { TimetableFieldNumbersService, Version } from '../../../api/ttfn';
 import { TimetableFieldNumberDetailResolver } from './timetable-field-number-detail.resolver';
 import { of } from 'rxjs';
 import StatusEnum = Version.StatusEnum;

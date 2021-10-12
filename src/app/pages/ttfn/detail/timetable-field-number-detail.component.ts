@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TimetableFieldNumbersService, Version } from '../../api/ttfn';
-import { DetailWrapperController } from '../../core/components/detail-wrapper/detail-wrapper-controller';
+import { TimetableFieldNumbersService, Version } from '../../../api/ttfn';
+import { DetailWrapperController } from '../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../../core/notification/notification.service';
+import { NotificationService } from '../../../core/notification/notification.service';
 import { catchError, EMPTY, Subject } from 'rxjs';
-import { ValidationError } from '../../core/validation/validation-error';
+import { ValidationError } from '../../../core/validation/validation-error';
 import moment from 'moment/moment';
-import { DateRangeValidator } from '../../core/validation/date-range/date-range-validator';
+import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import { takeUntil } from 'rxjs/operators';
-import { DialogService } from '../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../core/validation/validation.service';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { ValidationService } from '../../../core/validation/validation.service';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
