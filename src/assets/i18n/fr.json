@@ -40,11 +40,19 @@
   },
   "HOME": {
     "HEADER": "Documentation des services TP suisses",
-    "TITLE": "Bienvenue sur ATLAS"
+    "TITLE": "Bienvenue sur ATLAS",
+    "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas. Eget mauris pharetra et ultrices. Mi eget mauris pharetra et ultrices neque. Adipiscing commodo elit at imperdiet dui. Arcu dictum varius duis at consectetur lorem donec massa. Est ullamcorper eget nulla facilisi. Sed adipiscing diam donec adipiscing tristique risus nec. Ullamcorper dignissim cras tincidunt lobortis feugiat. Massa enim nec dui nunc mattis enim. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Tellus at urna condimentum mattis pellentesque id nibh tortor id. Ultricies leo integer malesuada nunc."
   },
   "PAGES": {
     "HOME": "Home",
-    "AUTH_INSIGHT": "Auth-Insights",
+    "TTFN": {
+      "TITLE": "Fahrplanfeldnummer",
+      "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas."
+    },
+    "LIDI": {
+      "TITLE": "Linienverzeichnis",
+      "DESCRIPTION": "Vitae et leo duis ut diam quam nulla porttitor. Dui faucibus in ornare quam viverra orci. Luctus venenatis lectus magna fringilla urna porttitor rhoncus. Dictum sit amet justo donec enim diam vulputate."
+    },
     "DETAILS": "Détails"
   },
   "TTFN": {

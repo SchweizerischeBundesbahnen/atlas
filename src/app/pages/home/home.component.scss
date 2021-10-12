@@ -1,0 +1,27 @@
+.card {
+  border: none;
+  a {
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    color: black;
+    height: 240px;
+  }
+
+  :hover {
+    text-decoration: none;
+    background-color: #e5e5e5;
+  }
+
+  .card-body:hover {
+    background-color: transparent;
+  }
+}
+i {
+  text-align: center;
+}
+
+h3 {
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
