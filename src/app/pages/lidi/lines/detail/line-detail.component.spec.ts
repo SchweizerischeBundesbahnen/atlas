@@ -5,7 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EMPTY, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { LinesService, LineVersion } from '../../../../api/lidi';
 import { LineDetailComponent } from './line-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
