@@ -2,7 +2,7 @@
 
 [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/job/master/)
 
-[![E2E Tests](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/feature%252FE2E_testing_with_cypress/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/master)
+[![E2E Tests](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/master/)
 
 [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Atimetable-field-number-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number-frontend)
 
@@ -43,12 +43,12 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 ### Cypress E2E
 
 To run the cypress tests on your machine you have to replace the **clientId** and the **clientSecretId** properties
-in the [cypress.json](cypress.json). The credentials are stored [here](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050)
+in the [cypress.json](cypress.json). The credentials are stored [here](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050).
 
 #### Run cypress test
 
 1. replace **clientId** and the **clientSecretId** in [cypress.json](cypress.json) (see above)
-2. replace **baseUrl** with your localhost running app (e.g. http://localhost:4200) or your deployed app url
+2. replace **baseUrl** with your localhost running app (e.g. http://localhost:4200) or your deployed app url in [cypress.json](cypress.json)
 3. run cypress:
    1. with the console for debugging: `npm run cypress:open` or `cypress open`
    2. as headless test: `npm run cypress:run` or `cypress run`
