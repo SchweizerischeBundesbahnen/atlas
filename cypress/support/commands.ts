@@ -42,6 +42,18 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
+declare namespace Cypress {
+  interface Chainable<Subject> {
+    /**
+     * Login with test user
+     * @example
+     * cy.login()
+     */
+    login(): Chainable<any>;
+  }
+}
+
 Cypress.Commands.add('login', () => {
   return cy
     .request({
@@ -49,11 +61,11 @@ Cypress.Commands.add('login', () => {
       url: `${Cypress.env('authority')}/oauth2/token`,
       form: true,
       body: {
-        grant_type: 'client_credentials',
+        grant_type: Cypress.env('grantType'),
       },
       auth: {
-        user: Cypress.env('CLIENT_ID'),
-        pass: Cypress.env('CLIENT_SECRET'),
+        user: Cypress.env('clientId'),
+        pass: Cypress.env('clientSecretId'),
         sendImmediately: true,
       },
     })
@@ -62,7 +74,6 @@ Cypress.Commands.add('login', () => {
       expect(response.body).property('access_token').to.not.be.oneOf([null, '']);
       const body = response.body;
       const now = new Date().getTime();
-
       const expiresAt = JSON.stringify(body.expires_in * 1000 + now);
 
       window.sessionStorage.removeItem('refresh_token');
