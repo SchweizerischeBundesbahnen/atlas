@@ -12,7 +12,7 @@ import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
 import { ValidationError } from '../../../../core/validation/validation-error';
-import { LINE_DETAILS_PATH } from '../../lidi.routing.module';
+import { LINE_DETAILS_PATH } from '../../lidi.constants';
 
 @Component({
   templateUrl: './line-detail.component.html',

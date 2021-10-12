@@ -104,6 +104,7 @@
     "VALID_TO": "bis",
     "COMMENT": "Kommentar",
     "LINE": {
+      "NEW": "Neue Linie",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Linie erfolgreich hinzugefügt.",
         "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
@@ -115,6 +116,7 @@
       }
     },
     "SUBLINE": {
+      "NEW": "Neue Teillinie",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Teillinie erfolgreich hinzugefügt.",
         "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",
