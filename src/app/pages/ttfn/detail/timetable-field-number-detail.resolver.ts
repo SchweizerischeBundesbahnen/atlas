@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { catchError, EMPTY, Observable } from 'rxjs';
-import { TimetableFieldNumbersService, Version } from '../../api/ttfn';
+import { TimetableFieldNumbersService, Version } from '../../../api/ttfn';
 
 @Injectable({ providedIn: 'root' })
 export class TimetableFieldNumberDetailResolver implements Resolve<Version> {

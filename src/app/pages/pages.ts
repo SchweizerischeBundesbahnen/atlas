@@ -7,22 +7,17 @@ export class Pages {
     icon: 'bi-house-fill',
   };
 
+  public static TTFN: Page = {
+    title: 'PAGES.TTFN',
+    path: 'timetable-field-number',
+    icon: 'bi-book-half',
+  };
+
   public static LIDI: Page = {
     title: 'PAGES.LIDI',
     path: 'line-directory',
     icon: 'bi-signpost-split',
   };
 
-  public static AUTH_INSIGHT: Page = {
-    title: 'PAGES.AUTH_INSIGHT',
-    path: 'auth-insights',
-    icon: 'bi-key-fill',
-  };
-
-  public static TTFN_DETAILS: Page = {
-    title: 'PAGES.DETAILS',
-    path: ':id',
-  };
-
-  public static pages: Page[] = [Pages.HOME, Pages.LIDI, Pages.AUTH_INSIGHT];
+  public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI];
 }
