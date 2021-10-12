@@ -47,7 +47,7 @@ export class LinesComponent implements OnInit, OnDestroy {
       .getLineVersions($pagination.page, $pagination.size, [$pagination.sort!])
       .pipe(
         catchError((err) => {
-          this.notificationService.error('TTFN.NOTIFICATION.FETCH_ERROR');
+          this.notificationService.error('LIDI.LINE.NOTIFICATION.FETCH_ERROR');
           this.isLoading = false;
           throw err;
         })
