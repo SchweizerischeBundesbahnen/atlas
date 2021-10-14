@@ -17,7 +17,12 @@ describe('Fahrplanfeldnummer', () => {
     cy.visit('/');
   });
 
-  it('Step-2: Check the Fahrplanfeldnummer Table is visible', () => {
+  it('Step-2: Navigate to Fahrplanfeldnummer', () => {
+    cy.get('#timetable-field-number').click();
+    cy.url().should('contain', '/timetable-field-number');
+  });
+
+  it('Step-3: Check the Fahrplanfeldnummer Table is visible', () => {
     cy.contains(headerTitle);
     cy.get('table').get('thead tr th').eq(1).get('div').contains('CH-Fahrplanfeld');
     cy.get('table').get('thead tr th').eq(2).get('div').contains('Bezeichnung');
@@ -27,7 +32,7 @@ describe('Fahrplanfeldnummer', () => {
     cy.get('table').get('thead tr th').eq(4).get('div').contains('Gültig bis');
   });
 
-  it('Step-3: Go to page Add new Version', () => {
+  it('Step-4: Go to page Add new Version', () => {
     cy.get('[data-cy=new-item]').click();
     cy.get('[data-cy=save-item]').should('be.disabled');
     cy.get('[data-cy=edit-item]').should('not.exist');
@@ -53,12 +58,12 @@ describe('Fahrplanfeldnummer', () => {
     cy.get('[data-cy=delete-item]').should('be.visible');
   });
 
-  it('Step-4: Navigate to the home', () => {
-    cy.get('#home').click();
+  it('Step-5: Navigate to the Fahrplanfeldnummer', () => {
+    cy.get('#\\/timetable-field-number').click();
     cy.contains(headerTitle);
   });
 
-  it('Step-5: Check the item aa.AAA is present on the table result and navigate to it ', () => {
+  it('Step-6: Check the item aa.AAA is present on the table result and navigate to it ', () => {
     cy.contains(swissTimetableFieldNumber).parents('tr').click();
     cy.contains(swissTimetableFieldNumber);
     cy.get('[data-cy=swissTimetableFieldNumber]')
@@ -73,7 +78,7 @@ describe('Fahrplanfeldnummer', () => {
     cy.get('[data-cy=comment]').invoke('val').should('eq', comment);
   });
 
-  it('Step-6: Delete the item aa.AAA ', () => {
+  it('Step-7: Delete the item aa.AAA ', () => {
     cy.get('[data-cy=delete-item]').click();
     cy.get('#mat-dialog-0').contains('Warnung!');
     cy.get('[data-cy=dialog-confirm-button]').should('exist');
