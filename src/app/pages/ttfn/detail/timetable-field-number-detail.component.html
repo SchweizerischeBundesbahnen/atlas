@@ -43,8 +43,8 @@
           matInput
           formControlName="validFrom"
           [matDatepicker]="validFromPicker"
-          [min]="minDateValue"
-          [max]="maxDateValue"
+          [min]="MIN_DATE"
+          [max]="MAX_DATE"
           placeholder="{{ getValidFromPlaceHolder() }}"
         />
         <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
@@ -62,8 +62,8 @@
           matInput
           formControlName="validTo"
           [matDatepicker]="validToPicker"
-          [min]="minDateValue"
-          [max]="maxDateValue"
+          [min]="MIN_DATE"
+          [max]="MAX_DATE"
           placeholder="{{ VALID_TO_PLACEHOLDER }}"
         />
         <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>

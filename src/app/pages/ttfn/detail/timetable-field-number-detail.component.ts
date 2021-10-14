@@ -12,6 +12,12 @@ import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 import { Pages } from '../../pages';
+import {
+  DateService,
+  MAX_DATE,
+  MAX_DATE_FORMATTED,
+  MIN_DATE,
+} from '../../../core/date/date.service';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -24,10 +30,11 @@ export class TimetableFieldNumberDetailComponent
 {
   SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
   TTFNID_PLACEHOLDER = 'ch:1:fpfnid:100000';
-  VALID_TO_PLACEHOLDER = '31.12.2099';
+  VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
   NAME_PLACEHOLDER = 'Grenze - Bad, Bahnhof - Basel SBB - Zürich HB - Chur';
 
-  DATE_PATTERN = 'DD.MM.yyyy';
+  MIN_DATE = MIN_DATE;
+  MAX_DATE = MAX_DATE;
   MAX_LENGTH = 255;
 
   private ngUnsubscribe = new Subject<void>();
@@ -39,21 +46,14 @@ export class TimetableFieldNumberDetailComponent
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     protected dialogService: DialogService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private dateService: DateService
   ) {
     super(dialogService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-  }
-
-  get minDateValue(): Date {
-    return new Date(moment('1900-01-01 00:00:00').valueOf());
-  }
-
-  get maxDateValue(): Date {
-    return new Date(moment('2099-12-31 23:59:59').valueOf());
   }
 
   readRecord(): Version {
@@ -150,7 +150,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   getValidFromPlaceHolder() {
-    return moment().format(this.DATE_PATTERN);
+    return this.dateService.getCurrentDateFormatted();
   }
 
   getValidation(inputForm: string) {
