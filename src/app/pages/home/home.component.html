@@ -1,13 +1,26 @@
-<h2>{{ 'HOME.HEADER' | translate }}</h2>
-
-<app-table
-  [tableCaption]="'HOME.HEADER'"
-  [tableData]="versions$"
-  [totalCount]="totalCount$"
-  [tableColumns]="tableColumns"
-  [canEdit]="true"
-  [isLoading]="isLoading"
-  (newElementEvent)="newVersion()"
-  (editElementEvent)="editVersion($event)"
-  (getTableElementsEvent)="getVersions($event)"
-></app-table>
+<div>
+  <div class="mt-5 container">
+    <h1>{{ 'HOME.TITLE' | translate }}</h1>
+    <p>{{ 'HOME.DESCRIPTION' | translate }}</p>
+    <div class="row mt-5 d-flex justify-content-center">
+      <div *ngFor="let page of pages" class="col-12 col-md-6 col-lg-6 pb-6">
+        <div class="card background-grey" id="{{ page.path }}">
+          <a [routerLink]="page.path">
+            <ng-container *ngTemplateOutlet="cardContent"></ng-container>
+          </a>
+          <ng-template #cardContent>
+            <div class="d-flex flex-column">
+              <em class="bi {{ page.icon }} mt-3 mb-3 fs-2 mb-3"></em>
+              <div class="card-body">
+                <div class="text-center">
+                  <h3>{{ page.title | translate }}</h3>
+                </div>
+                <p>{{ page.description | translate }}</p>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

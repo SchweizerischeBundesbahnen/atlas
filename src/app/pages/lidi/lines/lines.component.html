@@ -1,0 +1,10 @@
+<app-table
+  [tableData]="lineVersions"
+  [totalCount]="totalCount$"
+  [tableColumns]="linesTableColumns"
+  [canEdit]="true"
+  [isLoading]="isLoading"
+  (newElementEvent)="newVersion()"
+  (editElementEvent)="editVersion($event)"
+  (getTableElementsEvent)="getVersions($event)"
+></app-table>
