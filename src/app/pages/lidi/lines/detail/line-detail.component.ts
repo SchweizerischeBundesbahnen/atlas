@@ -12,6 +12,12 @@ import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
 import { ValidationError } from '../../../../core/validation/validation-error';
+import {
+  DateService,
+  MAX_DATE,
+  MAX_DATE_FORMATTED,
+  MIN_DATE,
+} from 'src/app/core/date/date.service';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -22,7 +28,9 @@ export class LineDetailComponent
   implements OnInit, OnDestroy
 {
   MAX_LENGTH = 255;
-  DATE_PATTERN = 'DD.MM.yyyy';
+  MIN_DATE = MIN_DATE;
+  MAX_DATE = MAX_DATE;
+  VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -33,7 +41,8 @@ export class LineDetailComponent
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     protected dialogService: DialogService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private dateService: DateService
   ) {
     super(dialogService);
   }
@@ -152,15 +161,7 @@ export class LineDetailComponent
   }
 
   getValidFromPlaceHolder() {
-    return moment().format(this.DATE_PATTERN);
-  }
-
-  get minDateValue(): Date {
-    return new Date(moment('1900-01-01 00:00:00').valueOf());
-  }
-
-  get maxDateValue(): Date {
-    return new Date(moment('2099-12-31 23:59:59').valueOf());
+    return this.dateService.getCurrentDateFormatted();
   }
 
   ngOnDestroy() {
