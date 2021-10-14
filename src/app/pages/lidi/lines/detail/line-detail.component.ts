@@ -72,7 +72,9 @@ export class LineDetailComponent
       )
       .subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
-        this.router.navigate([Pages.LIDI.path, 'lines', this.getId()]).then(() => this.ngOnInit());
+        this.router
+          .navigate([Pages.LIDI.path, Pages.LINES.path, this.getId()])
+          .then(() => this.ngOnInit());
       });
   }
 
@@ -89,7 +91,9 @@ export class LineDetailComponent
       )
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
-        this.router.navigate([Pages.LIDI.path, 'lines', version.id]).then(() => this.ngOnInit());
+        this.router
+          .navigate([Pages.LIDI.path, Pages.LINES.path, version.id])
+          .then(() => this.ngOnInit());
       });
   }
 

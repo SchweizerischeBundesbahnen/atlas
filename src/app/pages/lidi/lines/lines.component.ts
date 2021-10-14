@@ -6,6 +6,7 @@ import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { LinesService, LineVersion } from '../../../api/lidi';
+import { Pages } from '../../pages';
 
 @Component({
   selector: 'app-lidi-lines',
@@ -61,7 +62,7 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   newVersion() {
     this.router
-      .navigate(['lines', 'add'], {
+      .navigate([Pages.LINES.path, 'add'], {
         relativeTo: this.route,
       })
       .then();
@@ -69,7 +70,7 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   editVersion($event: LineVersion) {
     this.router
-      .navigate(['lines', $event.id], {
+      .navigate([Pages.LINES.path, $event.id], {
         relativeTo: this.route,
       })
       .then();

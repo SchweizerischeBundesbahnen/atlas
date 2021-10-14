@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { LidiOverviewComponent } from './overview/lidi-overview.component';
 import { LineDetailComponent } from './lines/detail/line-detail.component';
 import { LineDetailResolver } from './lines/detail/line-detail.resolver';
+import { Pages } from '../pages';
 
 const routes: Routes = [
   {
@@ -10,9 +11,9 @@ const routes: Routes = [
     component: LidiOverviewComponent,
   },
   {
-    path: 'lines/:id',
+    path: Pages.LINES.path + '/:id',
     component: LineDetailComponent,
-    data: { breadcrumb: 'PAGES.DETAILS' },
+    data: { breadcrumb: Pages.LINES.title },
     resolve: {
       lineDetail: LineDetailResolver,
     },
