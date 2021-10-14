@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { LinesService, LineVersion } from '../../../../api/lidi';
 import { Pages } from '../../../pages';
 
@@ -11,7 +11,7 @@ export class LineDetailResolver implements Resolve<LineVersion> {
   resolve(route: ActivatedRouteSnapshot): Observable<LineVersion> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
-      ? EMPTY
+      ? of({})
       : this.linesService.getLineVersion(parseInt(idParameter)).pipe(
           catchError(() => {
             this.router.navigate([Pages.LIDI.path]).then();
