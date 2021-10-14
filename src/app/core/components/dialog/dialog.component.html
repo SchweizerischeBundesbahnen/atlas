@@ -1,10 +1,16 @@
 <h2 mat-dialog-title>{{ data.title | translate }}</h2>
 <mat-dialog-content>{{ data.message | translate }}</mat-dialog-content>
-<mat-dialog-actions>
-  <button data-cy="dialog-confirm-button" mat-button [mat-dialog-close]="true">
+<mat-dialog-actions class="justify-content-end">
+  <button
+    class="order-5 ms-2"
+    data-cy="dialog-confirm-button"
+    mat-raised-button
+    [mat-dialog-close]="true"
+    color="primary"
+  >
     {{ 'DIALOG.OK' | translate }}
   </button>
-  <button data-cy="dialog-cancel-button" mat-button [mat-dialog-close]="false">
+  <button data-cy="dialog-cancel-button" mat-raised-button [mat-dialog-close]="false">
     {{ 'DIALOG.CANCEL' | translate }}
   </button>
 </mat-dialog-actions>
