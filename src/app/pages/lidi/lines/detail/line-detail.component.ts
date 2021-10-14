@@ -12,7 +12,6 @@ import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
 import { ValidationError } from '../../../../core/validation/validation-error';
-import { LINE_DETAILS_PATH } from '../../lidi.constants';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -40,7 +39,6 @@ export class LineDetailComponent
   }
 
   ngOnInit() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     super.ngOnInit();
   }
 
@@ -65,7 +63,7 @@ export class LineDetailComponent
       )
       .subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
-        this.router.navigate([LINE_DETAILS_PATH, this.getId()]).then(() => this.ngOnInit());
+        this.router.navigate([Pages.LIDI.path, 'lines', this.getId()]).then(() => this.ngOnInit());
       });
   }
 
@@ -82,7 +80,7 @@ export class LineDetailComponent
       )
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
-        this.router.navigate([LINE_DETAILS_PATH, version.id]).then(() => this.ngOnInit());
+        this.router.navigate([Pages.LIDI.path, 'lines', version.id]).then(() => this.ngOnInit());
       });
   }
 

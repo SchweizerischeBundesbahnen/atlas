@@ -11,6 +11,7 @@ import { DateRangeValidator } from '../../../core/validation/date-range/date-ran
 import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
+import { Pages } from '../../pages';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -44,7 +45,6 @@ export class TimetableFieldNumberDetailComponent
   }
 
   ngOnInit() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     super.ngOnInit();
   }
 
@@ -77,7 +77,7 @@ export class TimetableFieldNumberDetailComponent
       )
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
-        this.router.navigate([this.getId()]).then(() => this.ngOnInit());
+        this.router.navigate([Pages.TTFN.path, this.getId()]).then(() => this.ngOnInit());
       });
   }
 
@@ -94,7 +94,7 @@ export class TimetableFieldNumberDetailComponent
       )
       .subscribe((version) => {
         this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
-        this.router.navigate([version.id]).then(() => this.ngOnInit());
+        this.router.navigate([Pages.TTFN.path, version.id]).then(() => this.ngOnInit());
       });
   }
 
@@ -116,7 +116,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   backToOverview(): void {
-    this.router.navigate(['']).then();
+    this.router.navigate([Pages.TTFN.path]).then();
   }
 
   getFormGroup(version: Version): FormGroup {

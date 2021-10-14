@@ -1,21 +1,16 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { Pages } from '../pages';
 import { LidiOverviewComponent } from './overview/lidi-overview.component';
 import { LineDetailComponent } from './lines/detail/line-detail.component';
 import { LineDetailResolver } from './lines/detail/line-detail.resolver';
-import { LINE_DETAILS_PATH } from './lidi.constants';
 
 const routes: Routes = [
   {
-    path: Pages.LIDI.path,
+    path: '',
     component: LidiOverviewComponent,
-    data: {
-      breadcrumb: Pages.LIDI.title,
-    },
   },
   {
-    path: LINE_DETAILS_PATH + '/:id',
+    path: 'lines/:id',
     component: LineDetailComponent,
     data: { breadcrumb: 'PAGES.DETAILS' },
     resolve: {
@@ -23,6 +18,7 @@ const routes: Routes = [
     },
     runGuardsAndResolvers: 'always',
   },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

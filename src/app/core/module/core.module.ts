@@ -18,9 +18,6 @@ import { Configuration } from '../../api/lidi';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 
-// AoT requires an exported function for factories
-const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
-
 export function withBasePath(basePath: string) {
   return () => new Configuration({ basePath: basePath });
 }
@@ -40,13 +37,7 @@ export function withBasePath(basePath: string) {
   imports: [
     CommonModule,
     MaterialModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
+    TranslateModule,
     RouterModule,
     HttpClientModule,
     OAuthModule.forRoot({
