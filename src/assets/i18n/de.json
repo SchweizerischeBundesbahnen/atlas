@@ -39,12 +39,20 @@
     "LOGOUT": "Logout"
   },
   "HOME": {
-    "HEADER": "Fahrplanfeldnummer",
-    "TITLE": "Willkommen in ATLAS"
+    "HEADER": "ATLAS - die SKI Business Plattform",
+    "TITLE": "Willkommen! Ich bin ATLAS, was darf ich heute für Dich tun?",
+    "DESCRIPTION": "Wähle eine der unzähligen (momentan 2) Möglichkeiten aus und verwalten Ihre businessrelevanten Daten mit Leichtigkeit."
   },
   "PAGES": {
     "HOME": "Home",
-    "AUTH_INSIGHT": "Auth-Insights",
+    "TTFN": {
+      "TITLE": "Fahrplanfeldnummer",
+      "DESCRIPTION": "CH-Fahrplanfeld, Fahrplanfeldnummer-ID, Feld-Nr. usw. sind keine Fremdwörter für dich? Dann trage doch hier alle Fahrplanfeldnummern ein und gestalte ein neues öV-Erlebnis."
+    },
+    "LIDI": {
+      "TITLE": "Linienverzeichnis",
+      "DESCRIPTION": "Wenn Linien und Teillinien gestaltet werden sollen, so komme doch ins Linienverzeichnis und lass uns etwas Spass haben."
+    },
     "DETAILS": "Details"
   },
   "TTFN": {
@@ -65,7 +73,7 @@
       "EDIT_ERROR": "Beim Editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "DELETE_SUCCESS": "Fahrplanfeldnummer erfolgreich gelöscht.",
       "DELETE_ERROR": "Beim Löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
-      "FETCH_ERROR": "Beim Laden Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten."
+      "FETCH_ERROR": "Beim Laden der Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten."
     }
   },
   "PAGINATOR": {
@@ -82,5 +90,49 @@
     "MATDATEPICKERMAX": "Datum muss kleiner oder gleich als {{date}} sein",
     "MATDATEPICKERPARSE": "Ungültiges Datumformat (muss TT.MM.YYYY sein)",
     "DATE_RANGE_ERROR": "Gültig von Datum darf nicht grösser als Gültig bis sein: {{date}}"
+  },
+  "LIDI": {
+    "LINES": "Linienverzeichnis",
+    "SUBLINES": "Teillinien",
+    "SWISS_LINE_NUMBER": "CH-Liniennummer",
+    "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
+    "SHORT_NAME": "Linienkurzbeschr.",
+    "ALTERNATIVE_NAME": "Alternativbezeichnung",
+    "COMBINATION_NAME": "Kombinationsbezeichnung",
+    "LONG_NAME": "Langbezeichnung",
+    "ICON": "Grafik",
+    "DESCRIPTION": "Beschreibung",
+    "STATUS": "Status",
+    "TYPE": "Linientyp",
+    "SUBLINE_TYPE": "Teillinientyp",
+    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "SLNID": "SLNID",
+    "VALID_FROM": "von",
+    "VALID_TO": "bis",
+    "COMMENT": "Kommentar",
+    "LINE": {
+      "NEW": "Neue Linie",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Linie erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Linie erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Linie erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Linie ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Linie ist ein unbekannter Fehler aufgetreten."
+      }
+    },
+    "SUBLINE": {
+      "NEW": "Neue Teillinie",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Teillinie erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Teillinie erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Teillinie ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Teillinie erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Teillinie ist ein unbekannter Fehler aufgetreten."
+      }
+    }
   }
 }

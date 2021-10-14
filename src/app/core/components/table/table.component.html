@@ -14,11 +14,6 @@
     matSortActive="TTFN.SWISS_TIMETABLE_FIELD_NUMBER"
     matSortDirection="asc"
   >
-    <caption class="ps-3">
-      {{
-        tableCaption | translate
-      }}
-    </caption>
     <ng-container *ngFor="let column of tableColumns">
       <ng-container matColumnDef="{{ column.value }}">
         <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header>

@@ -8,6 +8,7 @@ import {
 } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Pages } from '../../../pages/pages';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -15,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './breadcrumb.component.html',
 })
 export class BreadcrumbComponent implements OnDestroy {
+  public isHome = false;
   public breadcrumbs: { name: string; url: string }[] = [];
   private ngUnsubscribe = new Subject();
 
@@ -47,6 +49,7 @@ export class BreadcrumbComponent implements OnDestroy {
       }
     }
     if (node.firstChild) {
+      this.isHome = Pages.HOME.title === node.firstChild.data.breadcrumb;
       this.parseRoute(node.firstChild);
     }
   }

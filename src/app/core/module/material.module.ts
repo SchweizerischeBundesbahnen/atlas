@@ -23,13 +23,14 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TranslatedPaginator } from '../components/table/translated-paginator';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DATE_PATTERN } from '../date/date.service';
 
 export const FORMAT = {
   parse: {
-    dateInput: 'DD.MM.YYYY',
+    dateInput: DATE_PATTERN,
   },
   display: {
-    dateInput: 'DD.MM.YYYY',
+    dateInput: DATE_PATTERN,
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY',

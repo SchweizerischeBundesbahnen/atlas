@@ -40,11 +40,19 @@
   },
   "HOME": {
     "HEADER": "Documentation des services TP suisses",
-    "TITLE": "Bienvenue sur ATLAS"
+    "TITLE": "Bienvenue sur ATLAS",
+    "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas. Eget mauris pharetra et ultrices. Mi eget mauris pharetra et ultrices neque. Adipiscing commodo elit at imperdiet dui. Arcu dictum varius duis at consectetur lorem donec massa. Est ullamcorper eget nulla facilisi. Sed adipiscing diam donec adipiscing tristique risus nec. Ullamcorper dignissim cras tincidunt lobortis feugiat. Massa enim nec dui nunc mattis enim. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Tellus at urna condimentum mattis pellentesque id nibh tortor id. Ultricies leo integer malesuada nunc."
   },
   "PAGES": {
     "HOME": "Home",
-    "AUTH_INSIGHT": "Auth-Insights",
+    "TTFN": {
+      "TITLE": "Fahrplanfeldnummer",
+      "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas."
+    },
+    "LIDI": {
+      "TITLE": "Linienverzeichnis",
+      "DESCRIPTION": "Vitae et leo duis ut diam quam nulla porttitor. Dui faucibus in ornare quam viverra orci. Luctus venenatis lectus magna fringilla urna porttitor rhoncus. Dictum sit amet justo donec enim diam vulputate."
+    },
     "DETAILS": "Détails"
   },
   "TTFN": {
@@ -82,5 +90,49 @@
     "MATDATEPICKERMAX": "La date doit être plus anciente ou égale à {{date}}",
     "MATDATEPICKERPARSE": "Format de date invalide (doit être JJ.MM.AAAA)",
     "DATE_RANGE_ERROR": "La date de début de validité ne peut pas être plus récente que la date de fin de validité: {{date}}"
+  },
+  "LIDI": {
+    "LINES": "Linienverzeichnis",
+    "SUBLINES": "Teillinien",
+    "SWISS_LINE_NUMBER": "CH-Liniennummer",
+    "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
+    "SHORT_NAME": "Linienkurzbeschr.",
+    "ALTERNATIVE_NAME": "Alternativbezeichnung",
+    "COMBINATION_NAME": "Kombinationsbezeichnung",
+    "LONG_NAME": "Langbezeichnung",
+    "ICON": "Grafik",
+    "DESCRIPTION": "Beschreibung",
+    "STATUS": "Status",
+    "TYPE": "Linientyp",
+    "SUBLINE_TYPE": "Teillinientyp",
+    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "SLNID": "SLNID",
+    "VALID_FROM": "von",
+    "VALID_TO": "bis",
+    "COMMENT": "Kommentar",
+    "LINE": {
+      "NEW": "Neue Linie",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Linie erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Linie erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Linie erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Linie ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Linie ist ein unbekannter Fehler aufgetreten."
+      }
+    },
+    "SUBLINE": {
+      "NEW": "Neue Teillinie",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Teillinie erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Teillinie erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Teillinie ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Teillinie erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Teillinie ist ein unbekannter Fehler aufgetreten."
+      }
+    }
   }
 }
