@@ -3,7 +3,7 @@
     <h1>{{ 'HOME.TITLE' | translate }}</h1>
     <p>{{ 'HOME.DESCRIPTION' | translate }}</p>
     <div class="row mt-5 d-flex justify-content-center">
-      <div *ngFor="let page of pages" class="col-12 col-md-6 col-lg-5 pb-5">
+      <div *ngFor="let page of pages" class="col-12 col-md-6 col-lg-6 pb-6">
         <div class="card background-grey">
           <a [routerLink]="page.path">
             <ng-container *ngTemplateOutlet="cardContent"></ng-container>
@@ -12,7 +12,9 @@
             <div class="d-flex flex-column">
               <em class="bi {{ page.icon }} mt-3 mb-3 fs-2 mb-3"></em>
               <div class="card-body">
-                <h3>{{ page.title | translate }}</h3>
+                <div class="text-center">
+                  <h3>{{ page.title | translate }}</h3>
+                </div>
                 <p>{{ page.description | translate }}</p>
               </div>
             </div>

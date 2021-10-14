@@ -3,7 +3,7 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}</mat-label>
-        <input required matInput formControlName="swissLineNumber" placeholder="b0.BEX" />
+        <input required matInput formControlName="swissLineNumber" placeholder="b0.IC2" />
         <mat-error *ngFor="let validationError of this.getValidation('swissLineNumber')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -25,7 +25,7 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}</mat-label>
-        <input required matInput formControlName="businessOrganisation" placeholder="b0.BEX" />
+        <input required matInput formControlName="businessOrganisation" placeholder="SBB" />
         <mat-error *ngFor="let validationError of this.getValidation('businessOrganisation')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -35,7 +35,7 @@
 
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.TYPE' | translate }}</mat-label>
-        <input required matInput formControlName="type" placeholder="ch:1:slnid:45461" />
+        <input required matInput formControlName="type" placeholder="ORDERLY" />
         <mat-error *ngFor="let validationError of this.getValidation('type')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -47,7 +47,7 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.SHORT_NAME' | translate }}</mat-label>
-        <input required matInput formControlName="shortName" placeholder="b0.BEX" />
+        <input required matInput formControlName="shortName" placeholder="IC2" />
         <mat-error *ngFor="let validationError of this.getValidation('shortName')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -57,7 +57,7 @@
 
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.ALTERNATIVE_NAME' | translate }}</mat-label>
-        <input required matInput formControlName="alternativeName" placeholder="ch:1:slnid:45461" />
+        <input required matInput formControlName="alternativeName" placeholder="IC2 alt" />
         <mat-error *ngFor="let validationError of this.getValidation('alternativeName')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -67,7 +67,7 @@
 
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.COMBINATION_NAME' | translate }}</mat-label>
-        <input required matInput formControlName="combinationName" placeholder="ch:1:slnid:45461" />
+        <input required matInput formControlName="combinationName" placeholder="IC2 comb" />
         <mat-error *ngFor="let validationError of this.getValidation('combinationName')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -79,7 +79,12 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.LONG_NAME' | translate }}</mat-label>
-        <input required matInput formControlName="longName" placeholder="b0.BEX" />
+        <input
+          required
+          matInput
+          formControlName="longName"
+          placeholder="Zürich HB - Arth-Goldau - Lugano -  Chiasso - Grenze"
+        />
         <mat-error *ngFor="let validationError of this.getValidation('longName')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -91,7 +96,12 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.ICON' | translate }}</mat-label>
-        <input required matInput formControlName="icon" placeholder="b0.BEX" />
+        <input
+          required
+          matInput
+          formControlName="icon"
+          placeholder="https://en.wikipedia.org/wiki/File:Icon_train.svg"
+        />
         <mat-error *ngFor="let validationError of this.getValidation('icon')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -103,7 +113,7 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.DESCRIPTION' | translate }}</mat-label>
-        <input required matInput formControlName="description" placeholder="b0.BEX" />
+        <input required matInput formControlName="description" placeholder="Lorem Ipsum Linie" />
         <mat-error *ngFor="let validationError of this.getValidation('description')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -153,7 +163,7 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.COMMENT' | translate }}</mat-label>
-        <input matInput formControlName="comment" placeholder="b0.BEX" />
+        <input matInput formControlName="comment" placeholder="Kommentar" />
         <mat-error *ngFor="let validationError of this.getValidation('comment')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }

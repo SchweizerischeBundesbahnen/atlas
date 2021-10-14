@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientModule } from '@angular/common/http';
 import { DialogComponent } from '../components/dialog/dialog.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner.component';
