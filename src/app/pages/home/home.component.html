@@ -4,7 +4,7 @@
     <p>{{ 'HOME.DESCRIPTION' | translate }}</p>
     <div class="row mt-5 d-flex justify-content-center">
       <div *ngFor="let page of pages" class="col-12 col-md-6 col-lg-6 pb-6">
-        <div class="card background-grey">
+        <div class="card background-grey" id="{{ page.path }}">
           <a [routerLink]="page.path">
             <ng-container *ngTemplateOutlet="cardContent"></ng-container>
           </a>

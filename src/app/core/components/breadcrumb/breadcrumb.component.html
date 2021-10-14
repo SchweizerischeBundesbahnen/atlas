@@ -5,7 +5,9 @@
       <a class="ms-1" id="home" routerLink="">{{ 'PAGES.HOME' | translate }} </a>
     </li>
     <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumb-item">
-      <a [routerLink]="breadcrumb.url">{{ breadcrumb.name | translate }} </a>
+      <a [routerLink]="breadcrumb.url" id="{{ breadcrumb.url }}">{{
+        breadcrumb.name | translate
+      }}</a>
     </li>
   </ol>
 </nav>
