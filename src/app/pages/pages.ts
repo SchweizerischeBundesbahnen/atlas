@@ -15,11 +15,23 @@ export class Pages {
     description: 'PAGES.TTFN.DESCRIPTION',
   };
 
+  public static TTFN_DETAIL: Page = {
+    title: 'PAGES.DETAILS',
+    path: ':id',
+    description: '',
+  };
+
   public static LIDI: Page = {
     title: 'PAGES.LIDI.TITLE',
     path: 'line-directory',
     icon: 'bi-signpost-split',
     description: 'PAGES.LIDI.DESCRIPTION',
+  };
+
+  public static LINES: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'lines',
+    description: '',
   };
 
   public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI];
