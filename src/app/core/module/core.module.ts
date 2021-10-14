@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientModule } from '@angular/common/http';
 import { DialogComponent } from '../components/dialog/dialog.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner.component';
@@ -14,21 +13,12 @@ import { SideNavComponent } from '../components/side-nav/side-nav.component';
 import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ApiModule, Configuration, ConfigurationParameters } from '../../api';
+import { Configuration } from '../../api/lidi';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 
-// AoT requires an exported function for factories
-const httpLoaderFactory = (http: HttpClient) => {
-  return new TranslateHttpLoader(http);
-};
-
-function apiConfigFactory(): Configuration {
-  const params: ConfigurationParameters = {
-    basePath: environment.backendUrl,
-  };
-  return new Configuration(params);
+export function withBasePath(basePath: string) {
+  return () => new Configuration({ basePath: basePath });
 }
 
 @NgModule({
@@ -46,24 +36,16 @@ function apiConfigFactory(): Configuration {
   imports: [
     CommonModule,
     MaterialModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
+    TranslateModule,
     RouterModule,
-    BrowserAnimationsModule,
     HttpClientModule,
-    ApiModule.forRoot(apiConfigFactory),
     OAuthModule.forRoot({
       resourceServer: {
         // When sendAccessToken is set to true and you send
         // a request to these, the access token is appended.
         // Documentation:
         // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/working-with-httpinterceptors.html
-        allowedUrls: [environment.backendUrl],
+        allowedUrls: [environment.ttfnBackendUrl, environment.lidiBackendUrl],
         sendAccessToken: true,
       },
     }),

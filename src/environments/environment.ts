@@ -22,7 +22,8 @@ export const environment: Environment = {
   production: false,
   label: 'dev',
   // TODO: Replace url with your backend url
-  backendUrl: 'http://localhost:8080',
+  ttfnBackendUrl: 'http://localhost:8080',
+  lidiBackendUrl: 'http://localhost:8082',
   authConfig,
 };
 

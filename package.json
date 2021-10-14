@@ -10,10 +10,12 @@
     "prepare": "husky install",
     "format": "prettier --write .",
     "build:ngssc": "ng run timetable-field-number-frontend:ngsscbuild:production",
-    "generate-local-api": "openapi-generator-cli generate -g typescript-angular -i http://localhost:8080/v3/api-docs -o src/app/api --type-mappings=date=Date",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "generate-apis": "npm run generate-ttfn-api && npm run generate-lidi-api",
+    "generate-ttfn-api": "openapi-generator-cli generate -g typescript-angular -i http://localhost:8080/v3/api-docs -o src/app/api/ttfn --type-mappings=date=Date --additional-properties apiModulePrefix=Ttfn",
+    "generate-lidi-api": "openapi-generator-cli generate -g typescript-angular -i http://localhost:8082/v3/api-docs -o src/app/api/lidi --type-mappings=date=Date --additional-properties apiModulePrefix=LiDi"
   },
   "name": "timetable-field-number-frontend",
   "repository": {

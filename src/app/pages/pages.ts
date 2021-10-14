@@ -5,18 +5,34 @@ export class Pages {
     title: 'PAGES.HOME',
     path: '',
     icon: 'bi-house-fill',
+    description: '',
   };
 
-  public static AUTH_INSIGHT: Page = {
-    title: 'PAGES.AUTH_INSIGHT',
-    path: 'auth-insights',
-    icon: 'bi-key-fill',
+  public static TTFN: Page = {
+    title: 'PAGES.TTFN.TITLE',
+    path: 'timetable-field-number',
+    icon: 'bi-book-half',
+    description: 'PAGES.TTFN.DESCRIPTION',
   };
 
-  public static TTFN_DETAILS: Page = {
+  public static TTFN_DETAIL: Page = {
     title: 'PAGES.DETAILS',
     path: ':id',
+    description: '',
   };
 
-  public static pages: Page[] = [Pages.HOME, Pages.AUTH_INSIGHT];
+  public static LIDI: Page = {
+    title: 'PAGES.LIDI.TITLE',
+    path: 'line-directory',
+    icon: 'bi-signpost-split',
+    description: 'PAGES.LIDI.DESCRIPTION',
+  };
+
+  public static LINES: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'lines',
+    description: '',
+  };
+
+  public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI];
 }
