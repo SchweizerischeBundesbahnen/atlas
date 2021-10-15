@@ -4,6 +4,8 @@ import { LidiOverviewComponent } from './overview/lidi-overview.component';
 import { LineDetailComponent } from './lines/detail/line-detail.component';
 import { LineDetailResolver } from './lines/detail/line-detail.resolver';
 import { Pages } from '../pages';
+import { SublineDetailResolver } from './sublines/detail/subline-detail-resolver.service';
+import { SublineDetailComponent } from './sublines/detail/subline-detail.component';
 
 const routes: Routes = [
   {
@@ -16,6 +18,15 @@ const routes: Routes = [
     data: { breadcrumb: Pages.LINES.title },
     resolve: {
       lineDetail: LineDetailResolver,
+    },
+    runGuardsAndResolvers: 'always',
+  },
+  {
+    path: Pages.SUBLINES.path + '/:id',
+    component: SublineDetailComponent,
+    data: { breadcrumb: Pages.SUBLINES.title },
+    resolve: {
+      sublineDetail: SublineDetailResolver,
     },
     runGuardsAndResolvers: 'always',
   },

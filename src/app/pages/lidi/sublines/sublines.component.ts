@@ -6,6 +6,7 @@ import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { SublinesService, SublineVersion } from '../../../api/lidi';
+import { Pages } from '../../pages';
 
 @Component({
   selector: 'app-lidi-sublines',
@@ -61,7 +62,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
 
   newVersion() {
     this.router
-      .navigate(['add'], {
+      .navigate([Pages.SUBLINES.path, 'add'], {
         relativeTo: this.route,
       })
       .then();
@@ -69,7 +70,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
 
   editVersion($event: SublineVersion) {
     this.router
-      .navigate([$event.id], {
+      .navigate([Pages.SUBLINES.path, $event.id], {
         relativeTo: this.route,
       })
       .then();
