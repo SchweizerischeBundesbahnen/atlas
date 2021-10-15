@@ -34,5 +34,11 @@ export class Pages {
     description: '',
   };
 
+  public static SUBLINES: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'sublines',
+    description: '',
+  };
+
   public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI];
 }
