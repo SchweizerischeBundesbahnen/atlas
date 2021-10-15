@@ -24,6 +24,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TranslatedPaginator } from '../components/table/translated-paginator';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
+import { MatSelectModule } from '@angular/material/select';
 
 export const FORMAT = {
   parse: {
@@ -50,6 +51,7 @@ export const FORMAT = {
     MatNativeDateModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
     MatSidenavModule,
     MatSnackBarModule,
     MatSortModule,

@@ -15,4 +15,8 @@ export class DateService {
   getCurrentDateFormatted(): string {
     return moment().format(DATE_PATTERN);
   }
+
+  getDateFormatted(date: Date) {
+    return moment(date).format(DATE_PATTERN);
+  }
 }
