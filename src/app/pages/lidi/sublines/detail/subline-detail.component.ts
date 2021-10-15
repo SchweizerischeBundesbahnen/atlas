@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LinesService, LineVersion } from '../../../../api/lidi';
+import { SublinesService, SublineVersion } from '../../../../api/lidi';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -20,14 +20,14 @@ import {
 } from 'src/app/core/date/date.service';
 
 @Component({
-  templateUrl: './line-detail.component.html',
-  styleUrls: ['./line-detail.component.scss'],
+  templateUrl: './subline-detail.component.html',
+  styleUrls: ['./subline-detail.component.scss'],
 })
-export class LineDetailComponent
-  extends DetailWrapperController<LineVersion>
+export class SublineDetailComponent
+  extends DetailWrapperController<SublineVersion>
   implements OnInit, OnDestroy
 {
-  TYPE_OPTIONS = Object.values(LineVersion.TypeEnum);
+  TYPE_OPTIONS = Object.values(SublineVersion.TypeEnum);
   MAX_LENGTH = 255;
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
@@ -38,7 +38,7 @@ export class LineDetailComponent
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private linesService: LinesService,
+    private sublinesService: SublinesService,
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     protected dialogService: DialogService,
@@ -52,65 +52,65 @@ export class LineDetailComponent
     super.ngOnInit();
   }
 
-  readRecord(): LineVersion {
-    return this.activatedRoute.snapshot.data.lineDetail;
+  readRecord(): SublineVersion {
+    return this.activatedRoute.snapshot.data.sublineDetail;
   }
 
-  getTitle(record: LineVersion): string | undefined {
-    return record.swissLineNumber;
+  getTitle(record: SublineVersion): string | undefined {
+    return record.swissSublineNumber;
   }
 
   updateRecord(): void {
-    this.linesService
-      .updateLineVersion(this.getId(), this.form.value)
+    this.sublinesService
+      .updateSublineVersion(this.getId(), this.form.value)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('LIDI.LINE.NOTIFICATION.EDIT_ERROR');
+          this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.EDIT_ERROR');
           console.log(err);
           return EMPTY;
         })
       )
       .subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
+        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, this.getId()])
+          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, this.getId()])
           .then(() => this.ngOnInit());
       });
   }
 
   createRecord(): void {
-    this.linesService
-      .createLineVersion(this.form.value)
+    this.sublinesService
+      .createSublineVersion(this.form.value)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('LIDI.LINE.NOTIFICATION.ADD_ERROR');
+          this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.ADD_ERROR');
           console.log(err);
           return EMPTY;
         })
       )
       .subscribe((version) => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
+        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, version.id])
+          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, version.id])
           .then(() => this.ngOnInit());
       });
   }
 
   deleteRecord(): void {
-    this.linesService
-      .deleteLineVersion(this.getId())
+    this.sublinesService
+      .deleteSublineVersion(this.getId())
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('LIDI.LINE.NOTIFICATION.DELETE_ERROR');
+          this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
           console.log(err);
           return EMPTY;
         })
       )
       .subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
+        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
         this.backToOverview();
       });
   }
@@ -119,9 +119,13 @@ export class LineDetailComponent
     this.router.navigate([Pages.LIDI.path]).then();
   }
 
-  getFormGroup(version: LineVersion): FormGroup {
+  getFormGroup(version: SublineVersion): FormGroup {
     return this.formBuilder.group(
       {
+        swissSublineNumber: [
+          version.swissSublineNumber,
+          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+        ],
         swissLineNumber: [
           version.swissLineNumber,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
@@ -136,10 +140,7 @@ export class LineDetailComponent
           version.shortName,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
         ],
-        alternativeName: [version.alternativeName, [Validators.maxLength(this.MAX_LENGTH)]],
-        combinationName: [version.combinationName, [Validators.maxLength(this.MAX_LENGTH)]],
         longName: [version.longName, [Validators.maxLength(this.MAX_LENGTH)]],
-        icon: [version.icon, [Validators.maxLength(this.MAX_LENGTH)]],
         description: [version.description, [Validators.maxLength(this.MAX_LENGTH)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
@@ -149,7 +150,6 @@ export class LineDetailComponent
           version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required],
         ],
-        comment: [version.comment],
       },
       {
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],

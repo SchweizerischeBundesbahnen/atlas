@@ -1,4 +1,4 @@
-<app-detail-wrapper [controller]="this" headingNew="LIDI.LINE.NEW">
+<app-detail-wrapper [controller]="this" headingNew="LIDI.SUBLINE.NEW">
   <form [formGroup]="form">
     <div class="row mb-3">
       <mat-form-field class="col">
@@ -40,6 +40,16 @@
 
     <div class="row mb-3">
       <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.SWISS_SUBLINE_NUMBER' | translate }}</mat-label>
+        <input required matInput formControlName="swissSublineNumber" placeholder="b0.IC2" />
+        <mat-error *ngFor="let validationError of this.getValidation('swissSublineNumber')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
         <mat-label>{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}</mat-label>
         <input required matInput formControlName="swissLineNumber" placeholder="b0.IC2" />
         <mat-error *ngFor="let validationError of this.getValidation('swissLineNumber')">
@@ -75,7 +85,7 @@
         <mat-label>{{ 'LIDI.TYPE' | translate }}</mat-label>
         <mat-select required formControlName="type">
           <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
-            {{ 'LIDI.LINE.TYPES.' + type | translate }}
+            {{ 'LIDI.SUBLINE.TYPES.' + type | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -103,26 +113,6 @@
           }}
         </mat-error>
       </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.ALTERNATIVE_NAME' | translate }}</mat-label>
-        <input required matInput formControlName="alternativeName" placeholder="IC2 alt" />
-        <mat-error *ngFor="let validationError of this.getValidation('alternativeName')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.COMBINATION_NAME' | translate }}</mat-label>
-        <input required matInput formControlName="combinationName" placeholder="IC2 comb" />
-        <mat-error *ngFor="let validationError of this.getValidation('combinationName')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
-      </mat-form-field>
     </div>
 
     <div class="row mb-3">
@@ -135,35 +125,6 @@
           placeholder="Zürich HB - Arth-Goldau - Lugano -  Chiasso - Grenze"
         />
         <mat-error *ngFor="let validationError of this.getValidation('longName')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.ICON' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          formControlName="icon"
-          placeholder="https://en.wikipedia.org/wiki/File:Icon_train.svg"
-        />
-        <mat-error *ngFor="let validationError of this.getValidation('icon')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.COMMENT' | translate }}</mat-label>
-        <input matInput formControlName="comment" placeholder="Kommentar" />
-        <mat-error *ngFor="let validationError of this.getValidation('comment')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
           }}

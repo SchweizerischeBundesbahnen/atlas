@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogComponent } from '../components/dialog/dialog.component';
 import { HeaderComponent } from '../components/header/header.component';
@@ -59,5 +59,6 @@ import { environment } from '../../../environments/environment';
     MaterialModule,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class CoreModule {}

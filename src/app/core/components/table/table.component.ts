@@ -4,6 +4,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableColumn } from './table-column';
 import { TablePagination } from './table-pagination';
+import { DateService } from '../../date/date.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][newElementEvent][editElementEvent]',
@@ -26,6 +28,8 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
 
   tableDataSrc!: MatTableDataSource<DATATYPE>;
   loading = true;
+
+  constructor(private dateService: DateService, private translatePipe: TranslatePipe) {}
 
   ngAfterViewInit() {
     if (this.tableDataSrc !== undefined) {
@@ -57,5 +61,15 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
     this.paginator.firstPage();
     const sortElement = sort.active + ',' + sort.direction.toUpperCase();
     this.getTableElementsEvent.emit({ page: 0, size: 10, sort: sortElement });
+  }
+
+  format(column: TableColumn<DATATYPE>, value: string | Date): string | null {
+    if (column.formatAsDate) {
+      return this.dateService.getDateFormatted(value as Date);
+    }
+    if (column.translate) {
+      return value ? this.translatePipe.transform(column.translate.withPrefix + value) : null;
+    }
+    return value as string;
   }
 }
