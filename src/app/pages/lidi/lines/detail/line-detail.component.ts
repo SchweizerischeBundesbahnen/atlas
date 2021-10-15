@@ -27,6 +27,7 @@ export class LineDetailComponent
   extends DetailWrapperController<LineVersion>
   implements OnInit, OnDestroy
 {
+  TYPE_OPTIONS = Object.values(LineVersion.TypeEnum);
   MAX_LENGTH = 255;
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
