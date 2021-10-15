@@ -16,7 +16,11 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
   tableColumns: TableColumn<Version>[] = [
     { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
     { headerTitle: 'TTFN.NAME', value: 'name' },
-    { headerTitle: 'TTFN.STATUS', value: 'status' },
+    {
+      headerTitle: 'COMMON.STATUS',
+      value: 'status',
+      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+    },
     { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
     { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
