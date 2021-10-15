@@ -1,0 +1,136 @@
+<app-detail-wrapper [controller]="this" headingNew="LIDI.SUBLINE.NEW">
+  <form [formGroup]="form">
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'COMMON.VALID_FROM' | translate }}</mat-label>
+        <input
+          required
+          matInput
+          formControlName="validFrom"
+          [matDatepicker]="validFromPicker"
+          [min]="MIN_DATE"
+          [max]="MAX_DATE"
+          placeholder="{{ getValidFromPlaceHolder() }}"
+        />
+        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #validFromPicker></mat-datepicker>
+        <mat-error *ngFor="let validationError of this.getValidation('validFrom')">
+          {{ validationError.error | translate: { date: displayDate(validationError) } }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'COMMON.VALID_TO' | translate }}</mat-label>
+        <input
+          required
+          matInput
+          formControlName="validTo"
+          [matDatepicker]="validToPicker"
+          [min]="MIN_DATE"
+          [max]="MAX_DATE"
+          placeholder="{{ VALID_TO_PLACEHOLDER }}"
+        />
+        <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
+        <mat-datepicker #validToPicker></mat-datepicker>
+        <mat-error *ngFor="let validationError of this.getValidation('validTo')">
+          {{ validationError.error | translate: { date: displayDate(validationError) } }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.SWISS_SUBLINE_NUMBER' | translate }}</mat-label>
+        <input required matInput formControlName="swissSublineNumber" placeholder="b0.IC2" />
+        <mat-error *ngFor="let validationError of this.getValidation('swissSublineNumber')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}</mat-label>
+        <input required matInput formControlName="swissLineNumber" placeholder="b0.IC2" />
+        <mat-error *ngFor="let validationError of this.getValidation('swissLineNumber')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.SLNID' | translate }}</mat-label>
+        <input required matInput formControlName="slnid" placeholder="ch:1:slnid:45461" />
+        <mat-error *ngFor="let validationError of this.getValidation('slnid')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}</mat-label>
+        <input required matInput formControlName="businessOrganisation" placeholder="SBB" />
+        <mat-error *ngFor="let validationError of this.getValidation('businessOrganisation')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.TYPE' | translate }}</mat-label>
+        <input required matInput formControlName="type" placeholder="ORDERLY" />
+        <mat-error *ngFor="let validationError of this.getValidation('type')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.DESCRIPTION' | translate }}</mat-label>
+        <input required matInput formControlName="description" placeholder="Lorem Ipsum Linie" />
+        <mat-error *ngFor="let validationError of this.getValidation('description')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.SHORT_NAME' | translate }}</mat-label>
+        <input required matInput formControlName="shortName" placeholder="IC2" />
+        <mat-error *ngFor="let validationError of this.getValidation('shortName')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.LONG_NAME' | translate }}</mat-label>
+        <input
+          required
+          matInput
+          formControlName="longName"
+          placeholder="Zürich HB - Arth-Goldau - Lugano -  Chiasso - Grenze"
+        />
+        <mat-error *ngFor="let validationError of this.getValidation('longName')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</app-detail-wrapper>
