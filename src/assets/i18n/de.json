@@ -108,6 +108,11 @@
     "COMMENT": "Kommentar",
     "LINE": {
       "NEW": "Neue Linie",
+      "TYPES": {
+        "ORDERLY": "Ordentlich",
+        "TEMPORARY": "Temporär",
+        "OPERATIONAL": "Betrieblich"
+      },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Linie erfolgreich hinzugefügt.",
         "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
@@ -120,6 +125,10 @@
     },
     "SUBLINE": {
       "NEW": "Neue Teillinie",
+      "TYPES": {
+        "COMPENSATION": "Kompensation",
+        "TECHNICAL": "Technisch"
+      },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Teillinie erfolgreich hinzugefügt.",
         "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",

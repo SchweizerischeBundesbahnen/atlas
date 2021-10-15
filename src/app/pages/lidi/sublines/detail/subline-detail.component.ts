@@ -27,6 +27,7 @@ export class SublineDetailComponent
   extends DetailWrapperController<SublineVersion>
   implements OnInit, OnDestroy
 {
+  TYPE_OPTIONS = Object.values(SublineVersion.TypeEnum);
   MAX_LENGTH = 255;
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;

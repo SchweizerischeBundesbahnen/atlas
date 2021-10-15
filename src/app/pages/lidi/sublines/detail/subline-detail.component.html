@@ -83,12 +83,11 @@
 
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.TYPE' | translate }}</mat-label>
-        <input required matInput formControlName="type" placeholder="ORDERLY" />
-        <mat-error *ngFor="let validationError of this.getValidation('type')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-select required formControlName="type">
+          <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
+            {{ 'LIDI.SUBLINE.TYPES.' + type | translate }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 
