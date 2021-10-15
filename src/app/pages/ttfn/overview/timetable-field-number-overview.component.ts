@@ -18,8 +18,8 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     { headerTitle: 'TTFN.NAME', value: 'name' },
     { headerTitle: 'TTFN.STATUS', value: 'status' },
     { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
-    { headerTitle: 'TTFN.VALID_FROM', value: 'validFrom', formatAsDate: true },
-    { headerTitle: 'TTFN.VALID_TO', value: 'validTo', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
   versions$: Version[] = [];

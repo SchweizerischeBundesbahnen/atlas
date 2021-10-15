@@ -24,10 +24,14 @@ describe('Fahrplanfeldnummer', () => {
 
   it('Step-3: Check the Fahrplanfeldnummer Table is visible', () => {
     cy.contains(headerTitle);
-    cy.get('table').get('thead tr th').eq(1).get('div').contains('CH-Fahrplanfeld');
-    cy.get('table').get('thead tr th').eq(2).get('div').contains('Bezeichnung');
+    cy.get('table').get('thead tr th').eq(1).get('div').contains('CH-Fahrplanfeldnummer');
+    cy.get('table')
+      .get('thead tr th')
+      .eq(2)
+      .get('div')
+      .contains('CH-Fahrplanfeldnummer Bezeichnung');
     cy.get('table').get('thead tr th').eq(3).get('div').contains('Status');
-    cy.get('table').get('thead tr th').eq(4).get('div').contains('Fahrplanfeldnummer');
+    cy.get('table').get('thead tr th').eq(4).get('div').contains('Fahrplanfeldnummer-ID');
     cy.get('table').get('thead tr th').eq(4).get('div').contains('Gültig von');
     cy.get('table').get('thead tr th').eq(4).get('div').contains('Gültig bis');
   });

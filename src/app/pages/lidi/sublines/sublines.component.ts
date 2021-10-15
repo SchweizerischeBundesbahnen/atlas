@@ -21,8 +21,8 @@ export class SublinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'LIDI.SUBLINE_TYPE', value: 'type' },
     { headerTitle: 'LIDI.BUSINESS_ORGANISATION', value: 'businessOrganisation' },
     { headerTitle: 'LIDI.SLNID', value: 'slnid' },
-    { headerTitle: 'LIDI.VALID_FROM', value: 'validFrom', formatAsDate: true },
-    { headerTitle: 'LIDI.VALID_TO', value: 'validTo', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
   sublineVersions: SublineVersion[] = [];
