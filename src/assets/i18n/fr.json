@@ -18,7 +18,14 @@
     },
     "FROM": "de",
     "TO": "à",
-    "STATUS": "Status",
+    "STATUS": "Statut",
+    "STATUS_TYPES": {
+      "ACTIVE": "Actif",
+      "INACTIVE": "Inactif",
+      "NEEDS_REVIEW": "Nécessite un examen",
+      "IN_REVIEW": "En cours d'examen",
+      "REVIEWED": "Examen terminé"
+    },
     "OK": "OK",
     "EDIT_VERSION": "Éditer la version",
     "CREATE_VERSION": "Ajouter la version"
@@ -61,7 +68,6 @@
     "NAME": "Description",
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "NUMBER": "Nr.",
-    "STATUS": "Statut",
     "TTFNID": "Identifcateur numéro de tableau-horaire",
     "VALID_FROM": "Valide du",
     "VALID_TO": "Valide jusqu'au",
@@ -102,7 +108,6 @@
     "LONG_NAME": "Langbezeichnung",
     "ICON": "Grafik",
     "DESCRIPTION": "Beschreibung",
-    "STATUS": "Status",
     "TYPE": "Linientyp",
     "SUBLINE_TYPE": "Teillinientyp",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",

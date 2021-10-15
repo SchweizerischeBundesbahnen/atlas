@@ -1,7 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableComponent } from './table.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslatePipe,
+} from '@ngx-translate/core';
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
@@ -23,6 +28,7 @@ describe('TableComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
       ],
+      providers: [TranslatePipe],
     }).compileComponents();
   });
 
