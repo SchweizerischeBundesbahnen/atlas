@@ -8,9 +8,16 @@ import { HomeComponent } from './pages/home/home.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TtfnApiModule } from './api/ttfn';
+import { environment } from '../environments/environment';
+import { Configuration, LiDiApiModule } from './api/lidi';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
+
+function withBasePath(basePath: string) {
+  return () => new Configuration({ basePath: basePath });
+}
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -25,6 +32,8 @@ const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
     }),
     BrowserAnimationsModule,
     AppRoutingModule,
+    TtfnApiModule.forRoot(withBasePath(environment.ttfnBackendUrl)),
+    LiDiApiModule.forRoot(withBasePath(environment.lidiBackendUrl)),
   ],
   bootstrap: [AppComponent],
 })
