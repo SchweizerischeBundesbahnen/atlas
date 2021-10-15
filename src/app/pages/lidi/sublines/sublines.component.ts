@@ -18,8 +18,16 @@ export class SublinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'LIDI.SWISS_SUBLINE_NUMBER', value: 'swissSublineNumber' },
     { headerTitle: 'LIDI.DESCRIPTION', value: 'description' },
     { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
-    { headerTitle: 'LIDI.STATUS', value: 'status' },
-    { headerTitle: 'LIDI.SUBLINE_TYPE', value: 'type' },
+    {
+      headerTitle: 'COMMON.STATUS',
+      value: 'status',
+      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+    },
+    {
+      headerTitle: 'LIDI.SUBLINE_TYPE',
+      value: 'type',
+      translate: { withPrefix: 'LIDI.SUBLINE.TYPES.' },
+    },
     { headerTitle: 'LIDI.BUSINESS_ORGANISATION', value: 'businessOrganisation' },
     { headerTitle: 'LIDI.SLNID', value: 'slnid' },
     { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
