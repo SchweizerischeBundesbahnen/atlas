@@ -13,13 +13,8 @@ import { SideNavComponent } from '../components/side-nav/side-nav.component';
 import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
-import { Configuration } from '../../api/lidi';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
-
-export function withBasePath(basePath: string) {
-  return () => new Configuration({ basePath: basePath });
-}
 
 @NgModule({
   declarations: [
