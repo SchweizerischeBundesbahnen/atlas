@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+spec:
+  ports:
+  - name: '{{ .Values.port }}-tcp'
+    port: '{{ .Values.port }}'
+    protocol: TCP
+    targetPort: '{{ .Values.port }}'
+  selector:
+    app: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+    deploymentconfig: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+  sessionAffinity: None
+  type: ClusterIP
