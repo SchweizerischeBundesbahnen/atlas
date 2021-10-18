@@ -1,0 +1,76 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+spec:
+  replicas: '{{ .Values.replicas }}'
+  selector:
+    matchLabels:
+      app: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+      deploymentconfig: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      annotations:
+        collectord.io/logs-index: '{{ .Values.splunkIndex }}'
+        collectord.io/logs-output: splunk::prod
+        collectord.io/logs-eventpattern: ^(timestamp=)
+      labels:
+        app: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+        deploymentconfig: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: '{{ .Values.springProfilesActive }}'
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: user
+        - name: DB_PWD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: password
+        image: "atlas.docker.bin.sbb.ch/{{ .Values.imageName }}:{{ .Values.versiontag }}"
+        imagePullPolicy: '{{ .Values.imagePullPolicy }}'
+        name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+        ports:
+        - containerPort: '{{ .Values.port }}'
+          protocol: TCP
+        resources:
+          requests:
+            cpu: '{{ .Values.cpuMin }}'
+            memory: '{{ .Values.memoryMin }}'
+          limits:
+            cpu: '{{ .Values.cpuMax }}'
+            memory: '{{ .Values.memoryMax }}'
+        livenessProbe:
+          httpGet:
+            path: '{{ .Values.livenessProbe }}'
+            port: '{{ .Values.port }}'
+            scheme: HTTP
+          initialDelaySeconds: 90
+          timeoutSeconds: 90
+          periodSeconds: 20
+          successThreshold: 1
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: '{{ .Values.readynessProbe }}'
+            port: '{{ .Values.port }}'
+            scheme: HTTP
+          initialDelaySeconds: 90
+          timeoutSeconds: 90
+          periodSeconds: 20
+          successThreshold: 1
+          failureThreshold: 10
+        terminationMessagePath: /dev/termination-log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
