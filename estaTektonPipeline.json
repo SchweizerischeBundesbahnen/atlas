@@ -55,8 +55,7 @@
       "name": "release",
       "enabled": true,
       "triggerType": [
-        "USER",
-        "GITEVENT"
+        "USER"
       ],
       "branchNamePrefixes": [
         "master"
@@ -79,7 +78,6 @@
       "name": "taggingPatch",
       "enabled": true,
       "branchNamePrefixes": ["master"],
-      "triggerType": ["GITEVENT"],
       "tagging": {
         "updateHelmChart": true,
         "versionIncrementPosition": "patch",
