@@ -1,0 +1,23 @@
+# Cluster URL for applications from https://confluence.sbb.ch/display/CLEW/OpenShift+4+on+AWS+Cluster+Introduction#OpenShift4onAWSClusterIntroduction-Cluster-specificURLs
+clusterApplicationsUrl: "apps.aws01t.sbb-aws-test.net"
+# Maximal CPU ie 1 for 1 Core
+cpuMax: "1"
+# Minimal CPU ie. 1m for 1 Milicore
+cpuMin: "100m"
+# Name of the Dockerimge in bin.sbb.ch/dockerrepo
+imageName: "timetable-field-number-backend"
+imagePullPolicy: "Always"
+# LIVENESS_PROBE
+livenessProbe: "actuator/health"
+# Maximal Memory ie 1G for 1 Gigabyte
+memoryMax: "1G"
+# Minimal Memory ie 1M for 1 Megabyte
+memoryMin: "256M"
+# Application Port
+port: "8080"
+# PRODUCT is the name of the product / app name
+product: "timetable-field-number-backend"
+# READYNESS_PROBE
+readynessProbe: "actuator/health"
+# Pod Instances Count
+replicas: "1"
