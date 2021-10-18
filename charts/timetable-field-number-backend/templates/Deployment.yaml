@@ -30,14 +30,14 @@ spec:
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: db-secret
+              name: db-secret-{{ .Values.product }}
               key: user
         - name: DB_PWD
           valueFrom:
             secretKeyRef:
-              name: db-secret
+              name: db-secret-{{ .Values.product }}
               key: password
-        image: "atlas.docker.bin.sbb.ch/{{ .Values.imageName }}:{{ .Values.versiontag }}"
+        image: "atlas.docker.bin.sbb.ch/{{ .Values.imageName }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.imagePullPolicy }}'
         name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
         ports:
@@ -55,7 +55,7 @@ spec:
             path: '{{ .Values.livenessProbe }}'
             port: '{{ .Values.port }}'
             scheme: HTTP
-          initialDelaySeconds: 90
+          initialDelaySeconds: 40
           timeoutSeconds: 90
           periodSeconds: 20
           successThreshold: 1
@@ -65,7 +65,7 @@ spec:
             path: '{{ .Values.readynessProbe }}'
             port: '{{ .Values.port }}'
             scheme: HTTP
-          initialDelaySeconds: 90
+          initialDelaySeconds: 30
           timeoutSeconds: 90
           periodSeconds: 20
           successThreshold: 1

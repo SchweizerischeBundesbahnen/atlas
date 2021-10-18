@@ -6,6 +6,7 @@ cpuMax: "1"
 cpuMin: "100m"
 # Name of the Dockerimge in bin.sbb.ch/dockerrepo
 imageName: "timetable-field-number-backend"
+# null
 imagePullPolicy: "Always"
 # LIVENESS_PROBE
 livenessProbe: "actuator/health"
@@ -21,3 +22,13 @@ product: "timetable-field-number-backend"
 readynessProbe: "actuator/health"
 # Pod Instances Count
 replicas: "1"
+# SEPARATOR is an option to put an variation to the deploymentconfig name.
+separator: ""
+# Splunk index to write to
+splunkIndex: ""
+# spring profile for the environment
+springProfilesActive: ""
+# VARIANT is an option to put an variation to the deploymentconfig name.
+variant: ""
+# Selector-Tag for Artifactory
+versiontag: ""
