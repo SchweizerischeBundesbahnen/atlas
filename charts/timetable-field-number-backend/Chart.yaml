@@ -1,10 +1,10 @@
 # This file is generated automatically - edit with care!
-# Generation date Wed Sep 29 14:37:25 CEST 2021
+# Generation date Mon Oct 18 10:00:18 CEST 2021
 # Cf. https://code.sbb.ch/scm/kd_esta/esta-openshift-to-helm.git for generator details
 apiVersion: v2
 appVersion: 1.0
-description: A Helm chart for the time-table-field-number-backend application
-name: time-table-field-number-backend
+description: A Helm chart for the atlas application
+name: atlas
 # The effective version will be computed during Helm generation
 version: 0.0.1
 # This is only added to make `helm lint` happy - configure your own icon!
