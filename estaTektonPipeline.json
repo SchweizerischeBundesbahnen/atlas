@@ -20,6 +20,8 @@
     {
       "stageName": "dev",
       "argoCD": {
+        "argoCdAppName": "atlas-dev",
+        "argoCdSecret": "argocd-env-secret-aws01t",
         "autoSync": false
       }
     }
