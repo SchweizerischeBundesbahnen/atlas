@@ -1,10 +1,10 @@
 package ch.sbb.timetable.field.number.service;
 
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.entity.Version.Fields;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import ch.sbb.timetable.field.number.versioning.model.AttributeObject;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
-import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import ch.sbb.timetable.field.number.versioning.service.VersionableService;
@@ -57,7 +57,7 @@ public class VersionService {
         //update existing Version
         Version version = convertVersionedObjectToVersion(versionedObject);
         System.out.println(version);
-        versionRepository.save(actualVersion);
+        versionRepository.save(version);
       }
       if(VersioningAction.NEW.equals(versionedObject.getAction())){
         log.info("A new Version was added. VersionedObject={}", versionedObject);
@@ -83,13 +83,12 @@ public class VersionService {
   }
 
   private Version convertVersionedObjectToVersion(VersionedObject versionedObject){
-    Versionable versionableObject = versionedObject.getVersionableObject();
     List<AttributeObject> attributeObjects = versionedObject.getAttributeObjects();
     Long objectId = versionedObject.getObjectId();
     Version version = new Version();
     version.setId(objectId);
-    version.setValidFrom(versionableObject.getValidFrom());
-    version.setValidTo(versionableObject.getValidTo());
+    version.setValidFrom(versionedObject.getValidFrom());
+    version.setValidTo(versionedObject.getValidTo());
     for (AttributeObject attributeObject: attributeObjects){
       ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
           version);
@@ -99,15 +98,16 @@ public class VersionService {
   }
 
   private List<AttributeObject> getAttributeObjects(Version version) {
+
     List<AttributeObject> editedAttributeObjects = new ArrayList<>();
     editedAttributeObjects.add(versionableService.getAttributeObject(
-        version.getId(), "name", version.getName()));
+        version.getId(), Fields.name, version.getName()));
     editedAttributeObjects.add(versionableService.getAttributeObject(
-        version.getId(), "number", version.getNumber()));
+        version.getId(), Fields.number, version.getNumber()));
     editedAttributeObjects.add(versionableService.getAttributeObject(
-        version.getId(), "swissTimetableFieldNumber", version.getSwissTimetableFieldNumber()));
+        version.getId(), Fields.swissTimetableFieldNumber, version.getSwissTimetableFieldNumber()));
     editedAttributeObjects.add(versionableService.getAttributeObject(
-        version.getId(), "ttfnid", version.getTtfnid()));
+        version.getId(), Fields.ttfnid, version.getTtfnid()));
     return editedAttributeObjects;
   }
 
@@ -117,15 +117,15 @@ public class VersionService {
     List<AttributeObject> editedAttributeObjects = new ArrayList<>();
     if (editedVersion.getName() != null) {
       editedAttributeObjects.add(versionableService.getAttributeObject(
-          actualVersion.getId(), "name", editedVersion.getName()));
+          actualVersion.getId(), Fields.name, editedVersion.getName()));
     }
     if (editedVersion.getNumber() != null) {
       editedAttributeObjects.add(versionableService.getAttributeObject(
-          actualVersion.getId(), "number", editedVersion.getNumber()));
+          actualVersion.getId(),  Fields.number, editedVersion.getNumber()));
     }
     if (editedVersion.getSwissTimetableFieldNumber() != null) {
       editedAttributeObjects.add(versionableService.getAttributeObject(
-          actualVersion.getId(), "swissTimetableFieldNumber",
+          actualVersion.getId(), Fields.swissTimetableFieldNumber,
           editedVersion.getSwissTimetableFieldNumber()));
     }
     return editedAttributeObjects;
