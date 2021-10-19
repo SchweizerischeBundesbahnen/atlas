@@ -21,7 +21,7 @@ product: "timetable-field-number-backend"
 # READYNESS_PROBE
 readynessProbe: "actuator/health"
 # Pod Instances Count
-replicas: "1"
+replicas: 1
 # SEPARATOR is an option to put an variation to the deploymentconfig name.
 separator: ""
 # Splunk index to write to
