@@ -23,7 +23,7 @@
       "name": "continuous",
       "enabled": true,
       "triggerType": [
-        "USER"
+        "USER", "GITEVENT"
       ],
       "branchNamePrefixes": [
         "feature",
