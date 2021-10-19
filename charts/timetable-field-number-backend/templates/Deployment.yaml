@@ -3,7 +3,7 @@ apiVersion: apps/v1
 metadata:
   name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
 spec:
-  replicas: '{{ .Values.replicas }}'
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
