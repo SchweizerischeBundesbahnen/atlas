@@ -49,27 +49,27 @@ public class VersionService {
 
     for (VersionedObject versionedObject : versionedObjects){
       if(VersioningAction.NOT_TOUCHED.equals(versionedObject.getAction())){
-        log(versionedObject);
         //nothing to do
+        log(versionedObject);
       }
       if(VersioningAction.UPDATE.equals(versionedObject.getAction())){
-        log(versionedObject);
         //update existing Version
+        log(versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
         System.out.println(version);
         versionRepository.save(version);
       }
       if(VersioningAction.NEW.equals(versionedObject.getAction())){
-        log.info("A new Version was added. VersionedObject={}", versionedObject);
         //create new version
+        log.info("A new Version was added. VersionedObject={}", versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
         System.out.println(version);
         versionRepository.save(version);
       }
       if(VersioningAction.DELETE.equals(versionedObject.getAction())){
-        log(versionedObject);
         //delete existing version
-//        versionRepository.deleteById(versionedObject.getObjectId());
+        log(versionedObject);
+        versionRepository.deleteById(versionedObject.getObjectId());
       }
     }
     return versionedObjects;
