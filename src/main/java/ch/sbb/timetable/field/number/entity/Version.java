@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.entity;
 
 import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -22,6 +23,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
+import org.apache.commons.lang3.builder.DiffBuilder;
+import org.apache.commons.lang3.builder.DiffResult;
+import org.apache.commons.lang3.builder.Diffable;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,7 +36,8 @@ import lombok.ToString;
 @ToString
 @Builder
 @Entity(name = "timetable_field_number_version")
-public class Version {
+@FieldNameConstants
+public class Version implements Versionable {
 
   private static final String VERSION_SEQ = "timetable_field_number_version_seq";
 
@@ -75,5 +82,15 @@ public class Version {
   private String comment;
 
   private String nameCompact;
+
+  @Override
+  public void setValidFrom(LocalDate validFrom){
+    this.validFrom = validFrom;
+  }
+
+  @Override
+  public void setValidTo(LocalDate validTo){
+    this.validTo = validTo;
+  }
 
 }
