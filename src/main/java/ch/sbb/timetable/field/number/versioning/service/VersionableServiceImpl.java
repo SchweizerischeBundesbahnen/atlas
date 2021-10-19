@@ -5,10 +5,7 @@ import ch.sbb.timetable.field.number.versioning.model.AttributeObject;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
-import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class VersionableServiceImpl implements VersionableService {
 
@@ -22,27 +19,9 @@ public class VersionableServiceImpl implements VersionableService {
   public List<VersionedObject> versioningObjects(Versionable actual, Versionable edited,
       List<AttributeObject> editedAttributeObjects,
       List<ToVersioning> objectsToVersioning) {
-    List<VersionedObject> versionedObjects = new ArrayList<>();
-    //compare if Versionable date from and/or to are changed
-    if (edited.getValidTo() == null && edited.getValidFrom() == null) {
-      //update actual version
-      List<AttributeObject> collectedActualAttributesObject =
-          editedAttributeObjects
-              .stream()
-              .filter(attributeObject -> attributeObject.getObjectId() == actual.getId())
-              .collect(Collectors.toList());
-      versionedObjects.add(
-          VersionedObject.builder()
-                         .objectId(actual.getId())
-                         .versionableObject(actual)
-                         .attributeObjects(collectedActualAttributesObject)
-                         .action(VersioningAction.UPDATE)
-                         .build()
-      );
-    } else {
-      versionedObjects = versioningEngine.objectsVersioned(actual, edited,
-          editedAttributeObjects, objectsToVersioning);
-    }
+
+    List<VersionedObject> versionedObjects = versioningEngine.objectsVersioned(actual, edited,
+        editedAttributeObjects, objectsToVersioning);
     return versionedObjects;
   }
 
