@@ -1,7 +1,7 @@
 # Cluster URL for applications from https://confluence.sbb.ch/display/CLEW/OpenShift+4+on+AWS+Cluster+Introduction#OpenShift4onAWSClusterIntroduction-Cluster-specificURLs
 clusterApplicationsUrl: "apps.aws01t.sbb-aws-test.net"
 # Maximal CPU ie 1 for 1 Core
-cpuMax: "1"
+cpuMax: "2"
 # Minimal CPU ie. 1m for 1 Milicore
 cpuMin: "100m"
 # Name of the Dockerimge in bin.sbb.ch/dockerrepo
