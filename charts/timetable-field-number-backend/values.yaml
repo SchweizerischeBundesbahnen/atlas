@@ -10,6 +10,8 @@ imageName: "timetable-field-number-backend"
 imagePullPolicy: "Always"
 # LIVENESS_PROBE
 livenessProbe: "actuator/health"
+# READYNESS_PROBE
+readynessProbe: "actuator/health"
 # Maximal Memory ie 1G for 1 Gigabyte
 memoryMax: "1G"
 # Minimal Memory ie 1M for 1 Megabyte
@@ -18,8 +20,6 @@ memoryMin: "256M"
 port: 8080
 # PRODUCT is the name of the product / app name
 product: "timetable-field-number-backend"
-# READYNESS_PROBE
-readynessProbe: "actuator/health"
 # Pod Instances Count
 replicas: 1
 # SEPARATOR is an option to put an variation to the deploymentconfig name.
