@@ -18,7 +18,7 @@
   },
   "stages": [
     {
-      "stageName": "dev",
+      "stageName": "atlas-dev",
       "argoCD": {
         "argoCdAppName": "atlas-dev",
         "argoCdSecret": "argocd-env-secret-aws01t",
