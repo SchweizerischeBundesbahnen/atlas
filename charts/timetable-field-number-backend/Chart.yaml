@@ -1,8 +1,8 @@
 apiVersion: v2
-appVersion: 0.27.3
+appVersion: 0.27.5
 description: A Helm chart for the atlas application
 name: atlas
 # The effective version will be computed during Helm generation
-version: 0.27.3
+version: 0.27.5
 # This is only added to make `helm lint` happy - configure your own icon!
 icon: http://acme.org/replaceme.jpg
