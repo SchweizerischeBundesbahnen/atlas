@@ -22,7 +22,7 @@
       "argoCD": {
         "argoCdAppName": "timetable-field-number-backend-dev",
         "argoCdSecret": "argocd-env-secret-aws01t",
-        "autoSync": false
+        "autoSync": true
       }
     }
   ],
