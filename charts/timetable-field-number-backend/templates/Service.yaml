@@ -7,7 +7,7 @@ spec:
   - name: '{{ .Values.port }}-tcp'
     port: '{{ .Values.port }}'
     protocol: TCP
-    targetPort: '{{ .Values.port }}'
+    targetPort: {{ .Values.port }}
   selector:
     app: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
     deploymentconfig: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
