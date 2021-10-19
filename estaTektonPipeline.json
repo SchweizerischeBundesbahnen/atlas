@@ -84,7 +84,7 @@
     },
     {
       "name": "taggingPatch",
-      "enabled": false,
+      "enabled": true,
       "branchNamePrefixes": ["master"],
       "triggerType": ["GITEVENT"],
       "tagging": {
