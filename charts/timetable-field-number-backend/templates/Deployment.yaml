@@ -41,7 +41,7 @@ spec:
         imagePullPolicy: '{{ .Values.imagePullPolicy }}'
         name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
         ports:
-        - containerPort: '{{ .Values.port }}'
+        - containerPort: {{ .Values.port }}
           protocol: TCP
         resources:
           requests:
