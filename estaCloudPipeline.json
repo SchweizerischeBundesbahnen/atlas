@@ -12,7 +12,8 @@
   },
   "helm" : {
     "chart": "timetable-field-number-backend",
-    "chartRootFolder": "./charts"
+    "repository": "atlas.helm",
+  	"release": "timetable-field-number-backend"
   },
   "mvn": {
     "parentPom": "pom.xml",
