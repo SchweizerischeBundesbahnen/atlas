@@ -3,16 +3,12 @@ package ch.sbb.timetable.field.number.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.timetable.field.number.IntegrationTest;
-import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
-import ch.sbb.timetable.field.number.versioning.service.VersionableService;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -93,7 +89,7 @@ public class VersionServiceTest {
     List<Version> allVersionsVersioned = versionRepository.getAllVersionsVersioned(
         version1.getTtfnid());
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result.size()).isEqualTo(3);
     assertThat(result.get(0)).isNotNull();
     VersionedObject versionedObject = result.get(0);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
