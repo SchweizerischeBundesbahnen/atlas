@@ -66,20 +66,9 @@
       }
     },
     {
-      "name": "taggingMinor",
-      "enabled": false,
+      "name": "taggingPatch",
+      "enabled": true,
       "branchNamePrefixes": ["master"],
-      "triggerType": ["GITEVENT"],
-      "tagging": {
-        "updateHelmChart": true,
-        "versionIncrementPosition": "minor",
-        "preReleaseVersionIncrement": "minor"
-      }
-    },
-    {
-      "name": "taggingHotfix",
-      "enabled": false,
-      "branchNamePrefixes": ["hotfix"],
       "triggerType": ["GITEVENT"],
       "tagging": {
         "updateHelmChart": true,
