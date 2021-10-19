@@ -15,7 +15,7 @@ memoryMax: "1G"
 # Minimal Memory ie 1M for 1 Megabyte
 memoryMin: "256M"
 # Application Port
-port: "8080"
+port: 8080
 # PRODUCT is the name of the product / app name
 product: "timetable-field-number-backend"
 # READYNESS_PROBE
