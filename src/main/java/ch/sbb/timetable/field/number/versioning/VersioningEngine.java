@@ -20,55 +20,127 @@ public class VersioningEngine {
       List<ToVersioning> objectsToVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
+    //Temporal sort objects versioning
     objectsToVersioning.sort(Comparator.comparing(o -> o.getVersionable().getValidFrom()));
 
-    if (editedVersion.getValidFrom() != null && editedVersion.getValidTo() != null) {
-      //get all versions between editedVersion.getValidFrom() and editedVersion.getValidTo()
-    } else if (editedVersion.getValidFrom() != null && editedVersion.getValidTo() == null) {
+    //validFrom and validTo are not modified
+    if (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) {
+      //update actual version
+      VersionedObject versionedObjectToUpdate = getVersionedObjectWhenValidFromAndValidToAreNotModified(
+          actualVersion, changedAttributes, objectsToVersioning);
+      versionedObjects.add(versionedObjectToUpdate);
+      return versionedObjects;
+    }
+
+    //only validFrom is modified
+    if (editedVersion.getValidFrom() != null && editedVersion.getValidTo() == null) {
       //Only validFrom is edited
       //get all versions between editedVersion.getValidFrom() and actual.getValidTo()
+      versionedObjects = getVersionedObjectWhenOnlyValidFromIsEdited(
+          editedVersion, actualVersion, objectsToVersioning, changedAttributes);
+      return versionedObjects;
+    }
 
-      versionedObjects = getVersionsBetweenValidFromAndValidToWhenOnlyValidFromIsEdited(
-          editedVersion, objectsToVersioning, changedAttributes);
-
-    } else if (editedVersion.getValidFrom() == null && editedVersion.getValidTo() != null) {
+    //only validTo is modified
+    if (editedVersion.getValidFrom() == null && editedVersion.getValidTo() != null) {
       //get all versions between actual.getValidFrom() and edited.getValidTo()
+      versionedObjects = getVersionedObjectWhenOnlyValidToIsEdited(
+          editedVersion, objectsToVersioning, changedAttributes);
+      return versionedObjects;
+    }
+
+    //validFrom and validTo are modified
+    if (editedVersion.getValidFrom() != null && editedVersion.getValidTo() != null) {
+      //get all versions between editedVersion.getValidFrom() and editedVersion.getValidTo()
+      versionedObjects = getVersionedObjectWhenValidFromAndValidToAreModified(
+          editedVersion, objectsToVersioning, changedAttributes);
+      return versionedObjects;
     }
 
     return versionedObjects;
   }
 
-  private  List<VersionedObject> getVersionsBetweenValidFromAndValidToWhenOnlyValidFromIsEdited(
+  private List<VersionedObject> getVersionedObjectWhenValidFromAndValidToAreModified(
+      Versionable editedVersion, List<ToVersioning> objectsToVersioning,
+      List<AttributeObject> changedAttributes) {
+    return null;
+  }
+
+  private List<VersionedObject> getVersionedObjectWhenOnlyValidToIsEdited(Versionable editedVersion,
+      List<ToVersioning> objectsToVersioning, List<AttributeObject> changedAttributes) {
+    return null;
+  }
+
+  private VersionedObject getVersionedObjectWhenValidFromAndValidToAreNotModified(
+      Versionable actualVersion,
+      List<AttributeObject> changedAttributes, List<ToVersioning> objectsToVersioning) {
+
+    //duplicate
+    ToVersioning toVersioning = objectsToVersioning
+        .stream()
+        .filter(versioning -> versioning.getObjectId().equals(actualVersion.getId()))
+        .findFirst()
+        .orElse(null);
+
+    VersionedObject versionedObjectToUpdate =
+        VersionedObject.builder()
+                       .objectId(actualVersion.getId())
+                       .validFrom(actualVersion.getValidFrom())
+                       .validTo(actualVersion.getValidTo())
+                       .attributeObjects(
+                           replaceChangedAttributeWithActualAttribute(changedAttributes,
+                               toVersioning.getAttributeObjects())
+                       )
+                       .versionableObject(actualVersion)
+                       .action(VersioningAction.UPDATE)
+                       .build();
+    return versionedObjectToUpdate;
+  }
+
+  private List<VersionedObject> getVersionedObjectWhenOnlyValidFromIsEdited(
       Versionable editedVersion,
+      Versionable actualVersion,
       List<ToVersioning> objectsToVersioning,
       List<AttributeObject> changedAttributes) {
 
     LocalDate validFrom = editedVersion.getValidFrom();
     //sort objectsToVersioning
-    objectsToVersioning.sort(Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
+    objectsToVersioning.sort(
+        Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
     List<VersionedObject> versionedObjects = new ArrayList<>();
     //check if ValidFrom is Before the actualVersion. The versionedObjects is sorted, this means that
     //we have to check this condition on the first item
     ToVersioning firstItemObjectToVersioning = objectsToVersioning.get(0);
-    if(validFrom.isBefore(firstItemObjectToVersioning.getVersionable().getValidFrom())){
+    if (validFrom.isBefore(firstItemObjectToVersioning.getVersionable().getValidFrom())) {
+      //duplicate
+      ToVersioning toVersioning = objectsToVersioning
+          .stream()
+          .filter(versioning -> versioning.getObjectId().equals(actualVersion.getId()))
+          .findFirst()
+          .orElse(null);
+
       VersionedObject versionedObjectToUpdate =
           VersionedObject.builder()
                          .objectId(firstItemObjectToVersioning.getObjectId())
                          .validFrom(validFrom)
-                         .validTo(editedVersion.getValidTo())
+                         .validTo(firstItemObjectToVersioning.getVersionable().getValidTo())
                          .attributeObjects(firstItemObjectToVersioning.getAttributeObjects())
+                         .attributeObjects(
+                             replaceChangedAttributeWithActualAttribute(changedAttributes,
+                                 toVersioning.getAttributeObjects())
+                         )
                          .versionableObject(firstItemObjectToVersioning.getVersionable())
                          .action(VersioningAction.UPDATE)
                          .build();
       versionedObjects.add(versionedObjectToUpdate);
       return versionedObjects;
-    }else{
-      for(ToVersioning toVersioning : objectsToVersioning){
-        log.info("ValidFrom: {} - ValidTo {}", toVersioning.getVersionable().getValidFrom(), toVersioning.getVersionable().getValidTo());
-        if(validFrom.isEqual(toVersioning.getVersionable().getValidFrom())){
+    } else {
+      for (ToVersioning toVersioning : objectsToVersioning) {
+        log.info("ValidFrom: {} - ValidTo {}", toVersioning.getVersionable().getValidFrom(),
+            toVersioning.getVersionable().getValidTo());
+        if (validFrom.isEqual(toVersioning.getVersionable().getValidFrom())) {
           //Should not here come because this means ValidFrom is not edited
-        }
-        else if(validFrom.isAfter(toVersioning.getVersionable().getValidFrom())){
+        } else if (validFrom.isAfter(toVersioning.getVersionable().getValidFrom())) {
           //1. we need to
           //   a. add a new Version after the actual Version
           //   b. update the actual Version validTo = validFrom.minusDays(1)
@@ -100,8 +172,6 @@ public class VersioningEngine {
         }
       }
     }
-
-
 
     return versionedObjects;
   }
