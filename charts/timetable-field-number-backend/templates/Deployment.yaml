@@ -53,7 +53,7 @@ spec:
         livenessProbe:
           httpGet:
             path: '{{ .Values.livenessProbe }}'
-            port: '{{ .Values.port }}'
+            port: {{ .Values.port }}
             scheme: HTTP
           initialDelaySeconds: 40
           timeoutSeconds: 90
