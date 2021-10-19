@@ -10,6 +10,10 @@
     "openshiftAppName": "timetable-field-number-api",
     "artifactorySupressProjectSubfolderCreation": true
   },
+  "helm" : {
+    "chart": "timetable-field-number-backend",
+    "chartRootFolder": "./charts"
+  },
   "mvn": {
     "parentPom": "pom.xml",
     "deployableArtifactsPom": "pom.xml",
@@ -58,22 +62,6 @@
       "additionalBuildParams": "",
       "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
-    },
-    {
-      "stepType": "integrationBuild",
-      "isBuildEnabled": true,
-      "xrayScanEnabled": true,
-      "failOnXrayScan": true,
-      "sonarScanEnabled": true,
-      "staging": {
-        "stagingType": "simple",
-        "stages": [
-          "dev"
-        ]
-      },
-      "junitTestReportPath": "**/target/surefire-reports/*.xml",
-      "additionalBuildParams": "-DskipITs",
-      "triggerBuildOnCommitEnabled": false
     },
     {
       "stepType": "release",

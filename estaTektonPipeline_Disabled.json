@@ -35,24 +35,7 @@
       ],
       "branchNamePrefixes": [
         "feature",
-        "hotfix"
-      ],
-      "build": {
-        "buildDockerImage": false,
-        "additionalBuildParams": "-DskipITs",
-        "sonarScan": {
-          "enabled": true
-        }
-      }
-    },
-    {
-      "name": "integrationBuild",
-      "enabled": true,
-      "triggerType": [
-        "USER"
-      ],
-      "branchNamePrefixes": [
-        "master"
+        "bugfix"
       ],
       "build": {
         "buildDockerImage": false,
@@ -83,9 +66,20 @@
       }
     },
     {
-      "name": "taggingPatch",
+      "name": "taggingMinor",
       "enabled": false,
       "branchNamePrefixes": ["master"],
+      "triggerType": ["GITEVENT"],
+      "tagging": {
+        "updateHelmChart": true,
+        "versionIncrementPosition": "minor",
+        "preReleaseVersionIncrement": "minor"
+      }
+    },
+    {
+      "name": "taggingHotfix",
+      "enabled": false,
+      "branchNamePrefixes": ["hotfix"],
       "triggerType": ["GITEVENT"],
       "tagging": {
         "updateHelmChart": true,
