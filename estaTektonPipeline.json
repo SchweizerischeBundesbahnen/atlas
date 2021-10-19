@@ -31,7 +31,10 @@
       ],
       "build": {
         "buildDockerImage": false,
-        "additionalBuildParams": "-DskipITs"
+        "additionalBuildParams": "-DskipITs",
+        "sonarScan": {
+          "enabled": true
+        }
       }
     },
     {
@@ -67,9 +70,6 @@
       "stages": ["atlas-dev"],
       "build": {
         "buildDockerImage": true,
-        "sonarScan": {
-          "enabled": true
-        },
         "packageAndDeployHelmChart": true,
         "additionalBuildParams": "-DskipITs"
       }
