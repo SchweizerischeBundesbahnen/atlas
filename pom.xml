@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>ch.sbb</groupId>
 	<artifactId>timetable-field-number-backend</artifactId>
-	<version>0.27.0</version>
+	<version>0.27.1-SNAPSHOT</version>
 	<name>TimetableFieldNumber Backend</name>
 	<description>TimetableFieldNumber Backend</description>
 	<properties>
