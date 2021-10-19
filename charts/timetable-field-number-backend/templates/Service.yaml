@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
   - name: '{{ .Values.port }}-tcp'
-    port: '{{ .Values.port }}'
+    port: {{ .Values.port }}
     protocol: TCP
     targetPort: {{ .Values.port }}
   selector:
