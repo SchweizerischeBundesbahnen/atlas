@@ -1,0 +1,104 @@
+{
+  "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
+  "productName": "timetable-field-number-backend",
+  "mvn": {
+    "parentPom": "pom.xml",
+    "deployableArtifactsPom": "pom.xml",
+    "artifactoryMavenRepo": "atlas.mvn"
+  },
+  "docker": {
+    "artifactoryDockerRepo": "atlas.docker",
+    "openshiftAppName": "timetable-field-number-backend"
+  },
+  "helm": {
+    "chartName": "timetable-field-number-backend",
+    "chartRepository": "atlas.helm.local",
+    "chartRootFolder": "./charts",
+    "versionProperties": [".appVersion", ".version"]
+  },
+  "stages": [
+    {
+      "stageName": "atlas-dev",
+      "argoCD": {
+        "argoCdAppName": "timetable-field-number-backend-dev",
+        "argoCdSecret": "argocd-env-secret-aws01t",
+        "autoSync": true
+      }
+    }
+  ],
+  "pipelines": [
+    {
+      "name": "continuous",
+      "enabled": true,
+      "triggerType": [
+        "USER", "GITEVENT"
+      ],
+      "branchNamePrefixes": [
+        "feature",
+        "bugfix"
+      ],
+      "build": {
+        "buildDockerImage": false,
+        "additionalBuildParams": "-DskipITs",
+        "sonarScan": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "name": "release",
+      "enabled": true,
+      "triggerType": [
+        "GITEVENT", "USER"
+      ],
+      "branchNamePrefixes": [
+        "master"
+      ],
+      "versionTagEventPatterns": [
+        "^(\\d+\\.)(\\d+\\.)(\\*|\\d+)$",
+        "^(\\d+\\.)(\\d+\\.)(\\*|\\d+)-(rev\\.|SNAPSHOT)"
+      ],
+      "stages": ["atlas-dev"],
+      "build": {
+        "buildDockerImage": true,
+        "packageAndDeployHelmChart": true,
+        "additionalBuildParams": "-DskipITs"
+      }
+    },
+    {
+      "name": "taggingMinor",
+      "enabled": false,
+      "branchNamePrefixes": ["master"],
+      "triggerType": ["GITEVENT"],
+      "tagging": {
+        "updateHelmChart": true,
+        "versionIncrementPosition": "minor",
+        "preReleaseVersionIncrement": "minor"
+      }
+    },
+    {
+      "name": "taggingHotfix",
+      "enabled": false,
+      "branchNamePrefixes": ["hotfix"],
+      "triggerType": ["GITEVENT"],
+      "tagging": {
+        "updateHelmChart": true,
+        "versionIncrementPosition": "patch",
+        "preReleaseVersionIncrement": "patch"
+      }
+    }
+  ],
+  "notifications": [
+    {
+      "type": "EMAIL",
+      "sendingEnabled": true,
+      "recipients": ["$actor"]
+    },
+    {
+      "type": "TEAMS",
+      "sendingEnabled": true,
+      "webhookUrl": "https://sbb.webhook.office.com/webhookb2/e262e9dc-5836-4c36-b3e5-0e827f2a2787@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/JenkinsCI/1d957b31eb2c46aeac8003d5a70e1926/8231c64b-bcb4-497e-93bf-0213ebdac9e4"
+    }
+  ]
+}
+
