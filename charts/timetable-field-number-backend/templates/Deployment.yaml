@@ -63,7 +63,7 @@ spec:
         readinessProbe:
           httpGet:
             path: '{{ .Values.readynessProbe }}'
-            port: '{{ .Values.port }}'
+            port: {{ .Values.port }}
             scheme: HTTP
           initialDelaySeconds: 30
           timeoutSeconds: 90
