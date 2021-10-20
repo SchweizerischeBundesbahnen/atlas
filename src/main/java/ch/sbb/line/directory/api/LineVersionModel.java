@@ -3,10 +3,9 @@ package ch.sbb.line.directory.api;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.model.CymkColor;
-import ch.sbb.line.directory.model.RgbColor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
+import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +17,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @Schema(name = "LineVersion")
 public class LineVersionModel {
+
+  private static final String HEX_COLOR_PATTERN = "^#([a-fA-F0-9]{6})$";
+  private static final String CMYK_COLOR_PATTERN = "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$";
 
   @Schema(description = "Technical identifier")
   private Long id;
@@ -49,17 +51,21 @@ public class LineVersionModel {
   @Schema(description = "LongName")
   private String longName;
 
+  @Pattern(regexp = HEX_COLOR_PATTERN)
   @Schema(description = "Color of the font in RGB")
-  private RgbColor colorFontRgb;
+  private String colorFontRgb;
 
+  @Pattern(regexp = HEX_COLOR_PATTERN)
   @Schema(description = "Color of the background in RGB")
-  private RgbColor colorBackRgb;
+  private String colorBackRgb;
 
+  @Pattern(regexp = CMYK_COLOR_PATTERN)
   @Schema(description = "Color of the font in CMYK")
-  private CymkColor colorFontCmyk;
+  private String colorFontCmyk;
 
+  @Pattern(regexp = CMYK_COLOR_PATTERN)
   @Schema(description = "Color of the background in CMYK")
-  private CymkColor colorBackCmyk;
+  private String colorBackCmyk;
 
   @Schema(description = "Icon")
   private String icon;
