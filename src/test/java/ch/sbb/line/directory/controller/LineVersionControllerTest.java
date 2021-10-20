@@ -13,7 +13,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.model.CymkColor;
+import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
@@ -33,7 +33,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class LineVersionControllerTest {
 
   private static final RgbColor RGB_COLOR = new RgbColor(0, 0, 0);
-  private static final CymkColor CYMK_COLOR = new CymkColor(0, 0, 0, 0);
+  private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
 
   @Mock
   private LineVersionRepository lineVersionRepository;
@@ -79,16 +79,19 @@ public class LineVersionControllerTest {
     when(lineVersionRepository.count()).thenReturn(1L);
 
     // When
-    VersionsContainer<LineVersionModel> lineVersionContainer = lineVersionController.getLineVersions(Pageable.unpaged());
+    VersionsContainer<LineVersionModel> lineVersionContainer = lineVersionController.getLineVersions(
+        Pageable.unpaged());
 
     // Then
     assertThat(lineVersionContainer).isNotNull();
     assertThat(lineVersionContainer.getVersions()).hasSize(1)
-                                      .first()
-                                      .usingRecursiveComparison()
-                                      .ignoringFields("editor", "creator", "editionDate",
-                                          "creationDate", "sublineVersions")
-                                      .isEqualTo(lineVersion);
+                                                  .first()
+                                                  .usingRecursiveComparison()
+                                                  .ignoringFields("editor", "creator",
+                                                      "editionDate",
+                                                      "creationDate")
+                                                  .ignoringFieldsMatchingRegexes("color.*")
+                                                  .isEqualTo(lineVersion);
     assertThat(lineVersionContainer.getTotalCount()).isEqualTo(1);
   }
 
@@ -214,10 +217,10 @@ public class LineVersionControllerTest {
                            .alternativeName("alternativeName")
                            .combinationName("combinationName")
                            .longName("longName")
-                           .colorFontRgb(RGB_COLOR)
-                           .colorBackRgb(RGB_COLOR)
-                           .colorFontCmyk(CYMK_COLOR)
-                           .colorBackCmyk(CYMK_COLOR)
+                           .colorFontRgb("#FFFFFF")
+                           .colorBackRgb("#FFFFFF")
+                           .colorFontCmyk("10,0,100,7")
+                           .colorBackCmyk("10,0,100,7")
                            .description("description")
                            .validFrom(LocalDate.of(2020, 12, 12))
                            .validTo(LocalDate.of(2099, 12, 12))
