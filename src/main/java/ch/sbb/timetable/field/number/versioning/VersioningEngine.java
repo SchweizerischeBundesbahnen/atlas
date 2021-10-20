@@ -9,15 +9,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class VersioningEngine {
 
-  public List<VersionedObject> objectsVersioned(Versionable actualVersion,
+  public List<VersionedObject> applyVersioning(Versionable actualVersion,
       Versionable editedVersion,
       List<AttributeObject> editedAttributes,
       List<ToVersioning> objectsToVersioning) {
+
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
     //Temporal sort objects versioning
@@ -178,22 +180,23 @@ public class VersioningEngine {
 
   public List<AttributeObject> replaceChangedAttributeWithActualAttribute(
       List<AttributeObject> changedAttributes, List<AttributeObject> actualAttributes) {
-    List<AttributeObject> attributeObjects = new ArrayList<>();
 
-    for (AttributeObject changedAttributeObject : changedAttributes) {
-      for (AttributeObject actualAttributeObject : actualAttributes) {
-        if (changedAttributeObject.getKey().equals(actualAttributeObject.getKey())) {
-          AttributeObject modifiedAttributeObject = buildModifiedAttributeObject(
-              changedAttributeObject,
-              actualAttributeObject);
-          attributeObjects.add(modifiedAttributeObject);
-        } else {
-          attributeObjects.add(actualAttributeObject);
-        }
+    List<AttributeObject> attributeObjects = new ArrayList<>(actualAttributes);
+
+    for (AttributeObject editedAttribute : changedAttributes) {
+      //find the index of the edited attribute end replace it with the new value
+      int index = IntStream.range(0, attributeObjects.size())
+                           .filter(i -> actualAttributes.get(i)
+                                                        .getKey()
+                                                        .equals(editedAttribute.getKey()))
+                           .findFirst().orElse(-1);
+      if (index >= 0) {
+        AttributeObject attributeObjectReplaced = buildModifiedAttributeObject(editedAttribute,
+            attributeObjects.get(index));
+        attributeObjects.set(index, attributeObjectReplaced);
       }
     }
     return attributeObjects;
-
   }
 
   private AttributeObject buildModifiedAttributeObject(AttributeObject changedAttributeObject,
@@ -203,7 +206,6 @@ public class VersioningEngine {
         .objectId(actualAttributeObject.getObjectId())
         .key(actualAttributeObject.getKey())
         .value(changedAttributeObject.getValue())
-        .type(actualAttributeObject.getType())
         .build();
   }
 

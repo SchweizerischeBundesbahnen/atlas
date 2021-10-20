@@ -1,8 +1,9 @@
 package ch.sbb.timetable.field.number.service;
 
 
+import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE_ATTRIBUTES;
+
 import ch.sbb.timetable.field.number.entity.Version;
-import ch.sbb.timetable.field.number.entity.Version.Fields;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import ch.sbb.timetable.field.number.versioning.model.AttributeObject;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
@@ -34,31 +35,31 @@ public class VersionService {
     this.versionableService = versionableService;
   }
 
-  public List<Version> getAllVersionsVersioned(String ttfnId){
+  public List<Version> getAllVersionsVersioned(String ttfnId) {
     return versionRepository.getAllVersionsVersioned(ttfnId);
   }
 
   public Optional<Version> findById(Long id) {
-   return versionRepository.findById(id);
+    return versionRepository.findById(id);
   }
 
-  public Version save(Version newVersion){
+  public Version save(Version newVersion) {
     return versionRepository.save(newVersion);
   }
 
-  public boolean existsById(Long id){
+  public boolean existsById(Long id) {
     return versionRepository.existsById(id);
   }
 
-  public void deleteById(Long id){
-      versionRepository.deleteById(id);
+  public void deleteById(Long id) {
+    versionRepository.deleteById(id);
   }
 
-  public Page<Version> findAll(Pageable pageable){
+  public Page<Version> findAll(Pageable pageable) {
     return versionRepository.findAll(pageable);
   }
 
-  public long count(){
+  public long count() {
     return versionRepository.count();
   }
 
@@ -68,9 +69,10 @@ public class VersionService {
         actualVersion.getTtfnid());
 
     //2. get edited properties from editedVersion
-    List<AttributeObject> editedAttributeObjects = getEditedAttributeObjects(actualVersion,
+    List<AttributeObject> editedAttributeObjects = getEditedAttributeObjects(actualVersion.getId(),
         editedVersion);
 
+    //3. collect all versions to versioning in ToVersioning object
     List<ToVersioning> toVersions = new ArrayList<>();
     for (Version version : versionsVersioned) {
       toVersions.add(new ToVersioning(version.getId(), version, getAttributeObjects(version)));
@@ -79,26 +81,26 @@ public class VersionService {
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(actualVersion,
         editedVersion, editedAttributeObjects, toVersions);
 
-    for (VersionedObject versionedObject : versionedObjects){
-      if(VersioningAction.NOT_TOUCHED.equals(versionedObject.getAction())){
+    for (VersionedObject versionedObject : versionedObjects) {
+      if (VersioningAction.NOT_TOUCHED.equals(versionedObject.getAction())) {
         //nothing to do
         log(versionedObject);
       }
-      if(VersioningAction.UPDATE.equals(versionedObject.getAction())){
+      if (VersioningAction.UPDATE.equals(versionedObject.getAction())) {
         //update existing Version
         log(versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
         System.out.println(version);
         versionRepository.save(version);
       }
-      if(VersioningAction.NEW.equals(versionedObject.getAction())){
+      if (VersioningAction.NEW.equals(versionedObject.getAction())) {
         //create new version
         log.info("A new Version was added. VersionedObject={}", versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
         System.out.println(version);
         versionRepository.save(version);
       }
-      if(VersioningAction.DELETE.equals(versionedObject.getAction())){
+      if (VersioningAction.DELETE.equals(versionedObject.getAction())) {
         //delete existing version
         log(versionedObject);
         versionRepository.deleteById(versionedObject.getObjectId());
@@ -108,51 +110,49 @@ public class VersionService {
   }
 
 
-  private Version convertVersionedObjectToVersion(VersionedObject versionedObject){
+  private Version convertVersionedObjectToVersion(VersionedObject versionedObject) {
     List<AttributeObject> attributeObjects = versionedObject.getAttributeObjects();
     Long objectId = versionedObject.getObjectId();
     Version version = new Version();
     version.setId(objectId);
     version.setValidFrom(versionedObject.getValidFrom());
     version.setValidTo(versionedObject.getValidTo());
-    for (AttributeObject attributeObject: attributeObjects){
-      ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
-          version);
-      propertyAccessor.setPropertyValue(attributeObject.getKey(),attributeObject.getValue());
+    ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
+        version);
+    for (AttributeObject attributeObject : attributeObjects) {
+      propertyAccessor.setPropertyValue(attributeObject.getKey(), attributeObject.getValue());
     }
     return version;
   }
 
   private List<AttributeObject> getAttributeObjects(Version version) {
+    ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
+        version);
+    List<AttributeObject> attributeObjects = new ArrayList<>();
 
-    List<AttributeObject> editedAttributeObjects = new ArrayList<>();
-    editedAttributeObjects.add(versionableService.getAttributeObject(
-        version.getId(), Fields.name, version.getName()));
-    editedAttributeObjects.add(versionableService.getAttributeObject(
-        version.getId(), Fields.number, version.getNumber()));
-    editedAttributeObjects.add(versionableService.getAttributeObject(
-        version.getId(), Fields.swissTimetableFieldNumber, version.getSwissTimetableFieldNumber()));
-    editedAttributeObjects.add(versionableService.getAttributeObject(
-        version.getId(), Fields.ttfnid, version.getTtfnid()));
-    return editedAttributeObjects;
+    for (String fieldName : VERSIONABLE_ATTRIBUTES) {
+      attributeObjects.add(
+          versionableService.getAttributeObject(version.getId(), fieldName,
+              String.valueOf(propertyAccessor.getPropertyValue(fieldName)))
+      );
+    }
+    return attributeObjects;
   }
 
-
-  private List<AttributeObject> getEditedAttributeObjects(Version actualVersion,
+  private List<AttributeObject> getEditedAttributeObjects(Long actualVersionId,
       Version editedVersion) {
+    ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
+        editedVersion);
+
     List<AttributeObject> editedAttributeObjects = new ArrayList<>();
-    if (editedVersion.getName() != null) {
-      editedAttributeObjects.add(versionableService.getAttributeObject(
-          actualVersion.getId(), Fields.name, editedVersion.getName()));
-    }
-    if (editedVersion.getNumber() != null) {
-      editedAttributeObjects.add(versionableService.getAttributeObject(
-          actualVersion.getId(),  Fields.number, editedVersion.getNumber()));
-    }
-    if (editedVersion.getSwissTimetableFieldNumber() != null) {
-      editedAttributeObjects.add(versionableService.getAttributeObject(
-          actualVersion.getId(), Fields.swissTimetableFieldNumber,
-          editedVersion.getSwissTimetableFieldNumber()));
+    for (String fieldName : VERSIONABLE_ATTRIBUTES) {
+      Object propertyValue = propertyAccessor.getPropertyValue(fieldName);
+      if (propertyValue != null) {
+        editedAttributeObjects.add(
+            versionableService.getAttributeObject(actualVersionId, fieldName,
+                String.valueOf(propertyValue))
+        );
+      }
     }
     return editedAttributeObjects;
   }

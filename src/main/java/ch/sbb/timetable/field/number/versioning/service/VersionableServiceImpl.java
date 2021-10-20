@@ -17,18 +17,18 @@ public class VersionableServiceImpl implements VersionableService {
 
   @Override
   public List<VersionedObject> versioningObjects(Versionable actual, Versionable edited,
-      List<AttributeObject> editedAttributeObjects,
+      List<AttributeObject> editedProperties,
       List<ToVersioning> objectsToVersioning) {
 
-    List<VersionedObject> versionedObjects = versioningEngine.objectsVersioned(actual, edited,
-        editedAttributeObjects, objectsToVersioning);
+    List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(actual, edited,
+        editedProperties, objectsToVersioning);
     return versionedObjects;
   }
 
   @Override
   public AttributeObject getAttributeObject(Long objectId, String fieldName, String value) {
     AttributeObject changedAttributeName;
-    changedAttributeName = new AttributeObject(objectId, fieldName, value, "string");
+    changedAttributeName = new AttributeObject(objectId, fieldName, value);
     return changedAttributeName;
   }
 }
