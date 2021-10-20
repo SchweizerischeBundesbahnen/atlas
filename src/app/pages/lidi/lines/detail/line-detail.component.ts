@@ -18,7 +18,6 @@ import {
   MAX_DATE_FORMATTED,
   MIN_DATE,
 } from 'src/app/core/date/date.service';
-import { Cmyk } from 'ngx-color-picker';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -35,8 +34,6 @@ export class LineDetailComponent
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
 
   private ngUnsubscribe = new Subject<void>();
-  color = '#2889e9';
-  color2: Cmyk = new Cmyk(0, 0, 0, 0);
 
   constructor(
     private activatedRoute: ActivatedRoute,
