@@ -26,6 +26,13 @@ public class VersionServiceTest {
   private Version version2;
   private Version version3;
 
+  @Autowired
+  public VersionServiceTest(VersionRepository versionRepository,
+      VersionService versionService) {
+    this.versionRepository = versionRepository;
+    this.versionService = versionService;
+  }
+
   @BeforeEach
   void init() {
     version1 = Version.builder().ttfnid(TTFNID)
@@ -55,88 +62,6 @@ public class VersionServiceTest {
   void cleanUp() {
     List<Version> versionsVersioned = versionRepository.getAllVersionsVersioned(TTFNID);
     versionRepository.deleteAll(versionsVersioned);
-  }
-
-  @Autowired
-  public VersionServiceTest(VersionRepository versionRepository,
-      VersionService versionService) {
-    this.versionRepository = versionRepository;
-    this.versionService = versionService;
-  }
-
-  //Delete me?
-  @Test
-  public void shouldUpdateVersionWhenValidFromAndValidToAreNotModified() {
-    //given
-    version1 = versionRepository.save(version1);
-    version2 = versionRepository.save(version2);
-    Version editedVersion = new Version();
-    editedVersion.setName("FPFN Name <changed>");
-
-    //when
-    versionService.updateVersion(version1, editedVersion);
-    List<Version> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(2);
-    result.sort(Comparator.comparing(Version::getValidFrom));
-    assertThat(result.get(0)).isNotNull();
-
-    Version firstTemporalVersion = result.get(0);
-    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
-    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
-
-    Version secondTemporalVersion = result.get(1);
-    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
-    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
-    assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
-
-  }
-
-  /** Which scenario?
-   * Input:
-   * |------------------------|------------------------|
-   *            1                         2
-   * Output:
-   * |--------------|---------|------------------------|
-   *        1           3                2
-   */
-  @Test
-  public void shouldAddNewVersionWhenValidFromIsModified() {
-    //given
-
-    version1 = versionRepository.save(version1);
-    version2 = versionRepository.save(version2);
-    Version editedVersion = new Version();
-    editedVersion.setName("FPFN Name <changed>");
-    editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
-
-    //when
-    versionService.updateVersion(version1, editedVersion);
-    List<Version> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(3);
-    result.sort(Comparator.comparing(Version::getValidFrom));
-    assertThat(result.get(0)).isNotNull();
-
-    Version firstTemporalVersion = result.get(0);
-    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
-    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name");
-
-    Version secondTemporalVersion = result.get(1);
-    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 6, 1));
-    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
-    assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
-
-    Version thirdTemporalVersion = result.get(2);
-    assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
-    assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
-    assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
-
   }
 
   /**
@@ -176,8 +101,53 @@ public class VersionServiceTest {
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name <CHANGED>");
-
   }
+
+  /**
+   * Szenario 1b: Update einer bestehenden Version in der Mitte
+   * NEU:                  |______________________|
+   * IST:      |-----------|----------------------|--------------------
+   * Version:        1                 2                  3
+   *
+   * RESULTAT: |-----------|______________________|--------------------
+   * Version:        1                 2                  3
+   */
+  @Test
+  public void scenario1b() {
+    //given
+    version1 = versionRepository.save(version1);
+    version2 = versionRepository.save(version2);
+    version3 = versionRepository.save(version3);
+
+    Version editedVersion = new Version();
+    editedVersion.setName("FPFN Name <changed>");
+
+    //when
+    versionService.updateVersion(version2, editedVersion);
+    List<Version> result = versionRepository.getAllVersionsVersioned(version2.getTtfnid());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(3);
+    result.sort(Comparator.comparing(Version::getValidFrom));
+    assertThat(result.get(0)).isNotNull();
+
+    Version firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
+    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name");
+
+    Version secondTemporalVersion = result.get(1);
+    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
+    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
+    assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
+
+    Version thirdTemporalVersion = result.get(2);
+    assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2023, 1, 1));
+    assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
+    assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
+  }
+
   /**
    * Szenario 1c: Update einer bestehenden Version am Anfang
    *
@@ -189,7 +159,7 @@ public class VersionServiceTest {
    * Version:        1                 2                  3
    */
   @Test
-  public void shouldUpdateFirstTemporalVersionWhenValidFromIsModifiedAndBeforeFirstTemporalVersion() {
+  public void scenario1c() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -222,8 +192,6 @@ public class VersionServiceTest {
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2023, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
-
-
   }
 
   @Test
@@ -251,6 +219,50 @@ public class VersionServiceTest {
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
 
     Version thirdTemporalVersion = result.get(1);
+    assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
+    assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
+    assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
+  }
+
+  /** Which scenario?
+   * NEU:                |__________|
+   * IST:       |-------------------|----------------------|
+   * Version:         1                 2
+   *
+   * RESULTAT: |---------|__________|---------------------|
+   * Version:        1        3         2
+   */
+  @Test
+  public void shouldAddNewVersionWhenValidFromIsModified() {
+    //given
+
+    version1 = versionRepository.save(version1);
+    version2 = versionRepository.save(version2);
+    Version editedVersion = new Version();
+    editedVersion.setName("FPFN Name <changed>");
+    editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
+
+    //when
+    versionService.updateVersion(version1, editedVersion);
+    List<Version> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(3);
+    result.sort(Comparator.comparing(Version::getValidFrom));
+    assertThat(result.get(0)).isNotNull();
+
+    Version firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
+    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name");
+
+    Version secondTemporalVersion = result.get(1);
+    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 6, 1));
+    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
+    assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
+
+    Version thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
