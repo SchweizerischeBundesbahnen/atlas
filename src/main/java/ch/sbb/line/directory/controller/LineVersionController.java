@@ -3,6 +3,8 @@ package ch.sbb.line.directory.controller;
 import ch.sbb.line.directory.api.LineVersionApi;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.VersionsContainer;
+import ch.sbb.line.directory.converter.CmykColorConverter;
+import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.util.List;
@@ -59,10 +61,14 @@ public class LineVersionController implements LineVersionApi {
     versionToUpdate.setAlternativeName(newVersion.getAlternativeName());
     versionToUpdate.setCombinationName(newVersion.getCombinationName());
     versionToUpdate.setLongName(newVersion.getLongName());
-    versionToUpdate.setColorFontRgb(newVersion.getColorFontRgb());
-    versionToUpdate.setColorBackRgb(newVersion.getColorBackRgb());
-    versionToUpdate.setColorFontCmyk(newVersion.getColorFontCmyk());
-    versionToUpdate.setColorBackCmyk(newVersion.getColorBackCmyk());
+    versionToUpdate.setColorFontRgb(
+        RgbColorConverter.fromHex(newVersion.getColorFontRgb()));
+    versionToUpdate.setColorBackRgb(
+        RgbColorConverter.fromHex(newVersion.getColorBackRgb()));
+    versionToUpdate.setColorFontCmyk(
+        CmykColorConverter.fromCmykString(newVersion.getColorFontCmyk()));
+    versionToUpdate.setColorBackCmyk(
+        CmykColorConverter.fromCmykString(newVersion.getColorBackCmyk()));
     versionToUpdate.setDescription(newVersion.getDescription());
     versionToUpdate.setIcon(newVersion.getIcon());
     versionToUpdate.setValidFrom(newVersion.getValidFrom());
@@ -94,11 +100,12 @@ public class LineVersionController implements LineVersionApi {
                            .alternativeName(lineVersion.getAlternativeName())
                            .combinationName(lineVersion.getCombinationName())
                            .longName(lineVersion.getLongName())
-                           .colorFontRgb(lineVersion.getColorFontRgb())
-                           .colorBackRgb(lineVersion.getColorBackRgb())
-                           .colorFontCmyk(
-                               lineVersion.getColorFontCmyk())
-                           .colorBackCmyk(lineVersion.getColorBackCmyk())
+                           .colorFontRgb(RgbColorConverter.toHex(lineVersion.getColorFontRgb()))
+                           .colorBackRgb(RgbColorConverter.toHex(lineVersion.getColorBackRgb()))
+                           .colorFontCmyk(CmykColorConverter.toCmykString(
+                               lineVersion.getColorFontCmyk()))
+                           .colorBackCmyk(
+                               CmykColorConverter.toCmykString(lineVersion.getColorBackCmyk()))
                            .description(lineVersion.getDescription())
                            .icon(lineVersion.getIcon())
                            .validFrom(lineVersion.getValidFrom())
@@ -120,10 +127,12 @@ public class LineVersionController implements LineVersionApi {
                       .alternativeName(lineVersionModel.getAlternativeName())
                       .combinationName(lineVersionModel.getCombinationName())
                       .longName(lineVersionModel.getLongName())
-                      .colorFontRgb(lineVersionModel.getColorFontRgb())
-                      .colorBackRgb(lineVersionModel.getColorBackRgb())
-                      .colorFontCmyk(lineVersionModel.getColorFontCmyk())
-                      .colorBackCmyk(lineVersionModel.getColorBackCmyk())
+                      .colorFontRgb(RgbColorConverter.fromHex(lineVersionModel.getColorFontRgb()))
+                      .colorBackRgb(RgbColorConverter.fromHex(lineVersionModel.getColorBackRgb()))
+                      .colorFontCmyk(
+                          CmykColorConverter.fromCmykString(lineVersionModel.getColorFontCmyk()))
+                      .colorBackCmyk(
+                          CmykColorConverter.fromCmykString(lineVersionModel.getColorBackCmyk()))
                       .description(lineVersionModel.getDescription())
                       .icon(lineVersionModel.getIcon())
                       .validFrom(lineVersionModel.getValidFrom())

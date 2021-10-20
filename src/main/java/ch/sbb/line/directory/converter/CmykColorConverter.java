@@ -1,11 +1,11 @@
 package ch.sbb.line.directory.converter;
 
-import ch.sbb.line.directory.model.CymkColor;
+import ch.sbb.line.directory.model.CmykColor;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter
-public class CymkColorConverter implements AttributeConverter<CymkColor, String> {
+public class CmykColorConverter implements AttributeConverter<CmykColor, String> {
 
   private static final String SEPARATOR = ",";
 
@@ -15,7 +15,11 @@ public class CymkColorConverter implements AttributeConverter<CymkColor, String>
   private static final int BLACK_INDEX = 3;
 
   @Override
-  public String convertToDatabaseColumn(CymkColor color) {
+  public String convertToDatabaseColumn(CmykColor color) {
+    return toCmykString(color);
+  }
+
+  public static String toCmykString(CmykColor color) {
     if (color == null) {
       return null;
     }
@@ -26,12 +30,16 @@ public class CymkColorConverter implements AttributeConverter<CymkColor, String>
   }
 
   @Override
-  public CymkColor convertToEntityAttribute(String colorString) {
+  public CmykColor convertToEntityAttribute(String colorString) {
+    return fromCmykString(colorString);
+  }
+
+  public static CmykColor fromCmykString(String colorString) {
     if (colorString == null) {
       return null;
     }
     String[] cymkColors = colorString.split(SEPARATOR);
-    return new CymkColor(Integer.parseInt(cymkColors[CYAN_INDEX]),
+    return new CmykColor(Integer.parseInt(cymkColors[CYAN_INDEX]),
         Integer.parseInt(cymkColors[MAGENTA_INDEX]),
         Integer.parseInt(cymkColors[YELLOW_INDEX]), Integer.parseInt(cymkColors[BLACK_INDEX]));
   }
