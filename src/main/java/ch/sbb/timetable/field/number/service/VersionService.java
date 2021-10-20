@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.service;
 
+
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.entity.Version.Fields;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
@@ -10,10 +11,13 @@ import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import ch.sbb.timetable.field.number.versioning.service.VersionableService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.ConfigurablePropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +32,34 @@ public class VersionService {
       VersionableService versionableService) {
     this.versionRepository = versionRepository;
     this.versionableService = versionableService;
+  }
+
+  public List<Version> getAllVersionsVersioned(String ttfnId){
+    return versionRepository.getAllVersionsVersioned(ttfnId);
+  }
+
+  public Optional<Version> findById(Long id) {
+   return versionRepository.findById(id);
+  }
+
+  public Version save(Version newVersion){
+    return versionRepository.save(newVersion);
+  }
+
+  public boolean existsById(Long id){
+    return versionRepository.existsById(id);
+  }
+
+  public void deleteById(Long id){
+      versionRepository.deleteById(id);
+  }
+
+  public Page<Version> findAll(Pageable pageable){
+    return versionRepository.findAll(pageable);
+  }
+
+  public long count(){
+    return versionRepository.count();
   }
 
   public List<VersionedObject> updateVersion(Version actualVersion, Version editedVersion) {
@@ -75,12 +107,6 @@ public class VersionService {
     return versionedObjects;
   }
 
-  private void log(VersionedObject versionedObject) {
-    log.info("Version with id={} was {}D. VersionedObject={}",
-        versionedObject.getObjectId(),
-        versionedObject.getAction(),
-        versionedObject);
-  }
 
   private Version convertVersionedObjectToVersion(VersionedObject versionedObject){
     List<AttributeObject> attributeObjects = versionedObject.getAttributeObjects();
@@ -131,5 +157,11 @@ public class VersionService {
     return editedAttributeObjects;
   }
 
+  private void log(VersionedObject versionedObject) {
+    log.info("Version with id={} was {}D. VersionedObject={}",
+        versionedObject.getObjectId(),
+        versionedObject.getAction(),
+        versionedObject);
+  }
 
 }
