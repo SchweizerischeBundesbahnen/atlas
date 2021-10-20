@@ -140,6 +140,10 @@ export class LineDetailComponent
         combinationName: [version.combinationName, [Validators.maxLength(this.MAX_LENGTH)]],
         longName: [version.longName, [Validators.maxLength(this.MAX_LENGTH)]],
         icon: [version.icon, [Validators.maxLength(this.MAX_LENGTH)]],
+        colorFontRgb: [version.colorFontRgb],
+        colorBackRgb: [version.colorBackRgb],
+        colorFontCmyk: [version.colorFontCmyk],
+        colorBackCmyk: [version.colorBackCmyk],
         description: [version.description, [Validators.maxLength(this.MAX_LENGTH)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
