@@ -48,13 +48,8 @@ public class VersionController implements VersionApi {
 
   @Override
   public List<VersionModel> getAllVersionsVersioned(String ttfnId) {
-    List<VersionModel> versionModels = new ArrayList<>();
-    List<Version> allVersionsVersioned = versionService.getAllVersionsVersioned(ttfnId);
-    for (Version version: allVersionsVersioned){
-      VersionModel versionModel = toModel(version);
-      versionModels.add(versionModel);
-    }
-    return versionModels;
+    return versionService.getAllVersionsVersioned(ttfnId).stream().map(this::toModel)
+                         .collect(Collectors.toList());
   }
 
   @Override

@@ -91,7 +91,7 @@ public class VersioningEngineTest {
     ToVersioning toVersioning2 = getToVersioning(toVersioning2AttributeObject, versionableObject2);
 
     //when
-    List<VersionedObject> result = versioningEngine.objectsVersioned(versionableObject2,
+    List<VersionedObject> result = versioningEngine.applyVersioning(versionableObject2,
         editedVersion, editedAttributes, Arrays.asList(toVersioning1, toVersioning2));
 
     //then
@@ -141,7 +141,7 @@ public class VersioningEngineTest {
     ToVersioning toVersioning3 = getToVersioning(toVersioning3AttributeObject, versionableObject3);
 
     //when
-    List<VersionedObject> result = versioningEngine.objectsVersioned(versionableObject2,
+    List<VersionedObject> result = versioningEngine.applyVersioning(versionableObject2,
         editedVersion, editedAttributes, Arrays.asList(toVersioning1, toVersioning2,toVersioning3));
 
     //then
@@ -193,7 +193,7 @@ public class VersioningEngineTest {
     ToVersioning toVersioning3 = getToVersioning(toVersioning3AttributeObject, versionableObject3);
 
     //when
-    List<VersionedObject> result = versioningEngine.objectsVersioned(versionableObject1,
+    List<VersionedObject> result = versioningEngine.applyVersioning(versionableObject1,
         editedVersion, editedAttributes, Arrays.asList(toVersioning1, toVersioning2,toVersioning3));
 
     //then
