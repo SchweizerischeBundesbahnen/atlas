@@ -4,7 +4,8 @@ import ch.sbb.timetable.field.number.api.VersionApi;
 import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.api.VersionsContainer;
 import ch.sbb.timetable.field.number.entity.Version;
-import ch.sbb.timetable.field.number.repository.VersionRepository;
+import ch.sbb.timetable.field.number.service.VersionService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -22,19 +23,19 @@ public class VersionController implements VersionApi {
   private static final Supplier<ResponseStatusException> NOT_FOUND_EXCEPTION = () -> new ResponseStatusException(
       HttpStatus.NOT_FOUND);
 
-  private final VersionRepository versionRepository;
+  private final VersionService versionService;
 
   @Autowired
-  public VersionController(VersionRepository versionRepository) {
-    this.versionRepository = versionRepository;
+  public VersionController(VersionService versionService) {
+    this.versionService = versionService;
   }
 
   @Override
   public VersionsContainer getVersions(Pageable pageable) {
     log.info("Load Versions using pageable={}", pageable);
-    List<VersionModel> versions = versionRepository.findAll(pageable).stream().map(this::toModel)
+    List<VersionModel> versions = versionService.findAll(pageable).stream().map(this::toModel)
                                                   .collect(Collectors.toList());
-    long totalCount = versionRepository.count();
+    long totalCount = versionService.count();
     return VersionsContainer.builder()
                             .versions(versions)
                             .totalCount(totalCount).build();
@@ -42,18 +43,29 @@ public class VersionController implements VersionApi {
 
   @Override
   public VersionModel getVersion(Long id) {
-    return versionRepository.findById(id).map(this::toModel).orElseThrow(NOT_FOUND_EXCEPTION);
+    return versionService.findById(id).map(this::toModel).orElseThrow(NOT_FOUND_EXCEPTION);
+  }
+
+  @Override
+  public List<VersionModel> getAllVersionsVersioned(String ttfnId) {
+    List<VersionModel> versionModels = new ArrayList<>();
+    List<Version> allVersionsVersioned = versionService.getAllVersionsVersioned(ttfnId);
+    for (Version version: allVersionsVersioned){
+      VersionModel versionModel = toModel(version);
+      versionModels.add(versionModel);
+    }
+    return versionModels;
   }
 
   @Override
   public VersionModel createVersion(VersionModel newVersion) {
-    Version createdVersion = versionRepository.save(toEntity(newVersion));
+    Version createdVersion = versionService.save(toEntity(newVersion));
     return toModel(createdVersion);
   }
 
   @Override
   public VersionModel updateVersion(Long id, VersionModel newVersion) {
-    Version versionToUpdate = versionRepository.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
+    Version versionToUpdate = versionService.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
 
     versionToUpdate.setTtfnid(newVersion.getTtfnid());
     versionToUpdate.setName(newVersion.getName());
@@ -64,17 +76,24 @@ public class VersionController implements VersionApi {
     versionToUpdate.setComment(newVersion.getComment());
     versionToUpdate.setBusinessOrganisation(newVersion.getBusinessOrganisation());
     versionToUpdate.setNameCompact(newVersion.getNameCompact());
-    versionRepository.save(versionToUpdate);
+    versionService.save(versionToUpdate);
 
     return toModel(versionToUpdate);
   }
 
   @Override
+  public List<VersionModel> updateVersionWithVersioning(Long id, VersionModel newVersion) {
+    Version versionToUpdate = versionService.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
+    versionService.updateVersion(versionToUpdate,toEntity(newVersion));
+    return getAllVersionsVersioned(versionToUpdate.getTtfnid());
+  }
+
+  @Override
   public void deleteVersion(Long id) {
-    if (!versionRepository.existsById(id)) {
+    if (!versionService.existsById(id)) {
       throw NOT_FOUND_EXCEPTION.get();
     }
-    versionRepository.deleteById(id);
+    versionService.deleteById(id);
   }
 
   private VersionModel toModel(Version version) {
