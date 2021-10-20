@@ -82,6 +82,36 @@
     </div>
 
     <div class="row mb-3">
+      <app-rgb-picker
+        [formGroup]="form"
+        label="LIDI.LINE.FONT_RGB"
+        attributeName="colorFontRgb"
+        class="col"
+      ></app-rgb-picker>
+      <app-rgb-picker
+        [formGroup]="form"
+        label="LIDI.LINE.BACKGROUND_RGB"
+        attributeName="colorBackRgb"
+        class="col"
+      ></app-rgb-picker>
+    </div>
+
+    <div class="row mb-3">
+      <app-cmyk-picker
+        [formGroup]="form"
+        label="LIDI.LINE.FONT_CMYK"
+        attributeName="colorFontCmyk"
+        class="col"
+      ></app-cmyk-picker>
+      <app-cmyk-picker
+        [formGroup]="form"
+        label="LIDI.LINE.BACKGROUND_CMYK"
+        attributeName="colorBackCmyk"
+        class="col"
+      ></app-cmyk-picker>
+    </div>
+
+    <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.DESCRIPTION' | translate }}</mat-label>
         <input required matInput formControlName="description" placeholder="Lorem Ipsum Linie" />

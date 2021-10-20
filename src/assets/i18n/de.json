@@ -28,7 +28,9 @@
     },
     "OK": "Ok",
     "EDIT_VERSION": "Version editieren",
-    "CREATE_VERSION": "Version hinzufügen"
+    "CREATE_VERSION": "Version hinzufügen",
+    "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
+    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100"
   },
   "DIALOG": {
     "OK": "Weiter",
@@ -112,6 +114,10 @@
     "SLNID": "SLNID",
     "COMMENT": "Kommentar",
     "LINE": {
+      "FONT_RGB": "Schriftfarbe RGB",
+      "BACKGROUND_RGB": "Schrifthintergrundfarbe RGB",
+      "FONT_CMYK": "Schriftfarbe CMYK",
+      "BACKGROUND_CMYK": "Schrifthintergrundfarbe CMYK",
       "NEW": "Neue Linie",
       "TYPES": {
         "ORDERLY": "Ordentlich",
