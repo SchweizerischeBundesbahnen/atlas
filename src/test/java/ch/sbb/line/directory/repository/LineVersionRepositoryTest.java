@@ -7,7 +7,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.model.CymkColor;
+import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LineVersionRepositoryTest {
 
   private static final RgbColor RGB_COLOR = new RgbColor(0, 0, 0);
-  private static final CymkColor CYMK_COLOR = new CymkColor(0, 0, 0, 0);
+  private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
 
   private final LineVersionRepository lineVersionRepository;
   private LineVersion lineVersion;

@@ -1,11 +1,11 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.converter.CymkColorConverter;
+import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.model.CymkColor;
+import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -68,11 +68,11 @@ public class LineVersion {
   @Convert(converter = RgbColorConverter.class)
   private RgbColor colorBackRgb;
 
-  @Convert(converter = CymkColorConverter.class)
-  private CymkColor colorFontCmyk;
+  @Convert(converter = CmykColorConverter.class)
+  private CmykColor colorFontCmyk;
 
-  @Convert(converter = CymkColorConverter.class)
-  private CymkColor colorBackCmyk;
+  @Convert(converter = CmykColorConverter.class)
+  private CmykColor colorBackCmyk;
 
   private String icon;
 
