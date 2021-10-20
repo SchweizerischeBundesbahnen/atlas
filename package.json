@@ -22,7 +22,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/timetable-field-number-frontend.git"
   },
-  "version": "0.83.0",
+  "version": "0.82.0",
   "files": [
     "dist/*"
   ],
@@ -52,6 +52,7 @@
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.5.0",
     "moment": "^2.29.1",
+    "ngx-color-picker": "^11.0.0",
     "rxjs": "~7.3.1",
     "tslib": "^2.3.1",
     "zone.js": "~0.11.4"
