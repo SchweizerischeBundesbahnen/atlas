@@ -16,7 +16,7 @@ public class VersioningEngine {
 
   public List<VersionedObject> objectsVersioned(Versionable actualVersion,
       Versionable editedVersion,
-      List<AttributeObject> changedAttributes,
+      List<AttributeObject> editedAttributes,
       List<ToVersioning> objectsToVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
@@ -27,7 +27,7 @@ public class VersioningEngine {
     if (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) {
       //update actual version
       VersionedObject versionedObjectToUpdate = getVersionedObjectWhenValidFromAndValidToAreNotModified(
-          actualVersion, changedAttributes, objectsToVersioning);
+          actualVersion, editedAttributes, objectsToVersioning);
       versionedObjects.add(versionedObjectToUpdate);
       return versionedObjects;
     }
@@ -37,7 +37,7 @@ public class VersioningEngine {
       //Only validFrom is edited
       //get all versions between editedVersion.getValidFrom() and actual.getValidTo()
       versionedObjects = getVersionedObjectWhenOnlyValidFromIsEdited(
-          editedVersion, actualVersion, objectsToVersioning, changedAttributes);
+          editedVersion, actualVersion, objectsToVersioning, editedAttributes);
       return versionedObjects;
     }
 
@@ -45,7 +45,7 @@ public class VersioningEngine {
     if (editedVersion.getValidFrom() == null && editedVersion.getValidTo() != null) {
       //get all versions between actual.getValidFrom() and edited.getValidTo()
       versionedObjects = getVersionedObjectWhenOnlyValidToIsEdited(
-          editedVersion, objectsToVersioning, changedAttributes);
+          editedVersion, objectsToVersioning, editedAttributes);
       return versionedObjects;
     }
 
@@ -53,7 +53,7 @@ public class VersioningEngine {
     if (editedVersion.getValidFrom() != null && editedVersion.getValidTo() != null) {
       //get all versions between editedVersion.getValidFrom() and editedVersion.getValidTo()
       versionedObjects = getVersionedObjectWhenValidFromAndValidToAreModified(
-          editedVersion, objectsToVersioning, changedAttributes);
+          editedVersion, objectsToVersioning, editedAttributes);
       return versionedObjects;
     }
 
