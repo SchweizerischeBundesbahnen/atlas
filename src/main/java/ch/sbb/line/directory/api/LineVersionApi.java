@@ -2,6 +2,7 @@ package ch.sbb.line.directory.api;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,11 @@ public interface LineVersionApi {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  LineVersionModel createLineVersion(@RequestBody LineVersionModel newVersion);
+  LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
   @PutMapping({"/{id}"})
   LineVersionModel updateLineVersion(@PathVariable Long id,
-      @RequestBody LineVersionModel newVersion);
+      @RequestBody @Valid LineVersionModel newVersion);
 
   @DeleteMapping({"/{id}"})
   void deleteLineVersion(@PathVariable Long id);

@@ -8,8 +8,7 @@ import javax.persistence.Converter;
 @Converter
 public class RgbColorConverter implements AttributeConverter<RgbColor, String> {
 
-  @Override
-  public String convertToDatabaseColumn(RgbColor color) {
+  public static String toHex(RgbColor color) {
     if (color == null) {
       return null;
     }
@@ -17,13 +16,22 @@ public class RgbColorConverter implements AttributeConverter<RgbColor, String> {
                  .toUpperCase();
   }
 
-  @Override
-  public RgbColor convertToEntityAttribute(String colorString) {
-    if (colorString == null) {
+  public static RgbColor fromHex(String hexString) {
+    if (hexString == null) {
       return null;
     }
-    Color color = Color.decode(colorString);
+    Color color = Color.decode(hexString);
     return new RgbColor(color.getRed(), color.getGreen(), color.getBlue());
+  }
+
+  @Override
+  public String convertToDatabaseColumn(RgbColor color) {
+    return toHex(color);
+  }
+
+  @Override
+  public RgbColor convertToEntityAttribute(String colorString) {
+    return fromHex(colorString);
   }
 
 }
