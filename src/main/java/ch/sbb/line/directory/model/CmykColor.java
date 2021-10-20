@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class CymkColor {
+public class CmykColor {
 
   @Min(0)
   @Max(100)
