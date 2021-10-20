@@ -6,11 +6,7 @@ public interface Versionable {
 
   LocalDate getValidFrom();
 
-  void setValidFrom(LocalDate validFrom);
-
   LocalDate getValidTo();
-
-  void setValidTo(LocalDate validTo);
 
   Long getId();
 

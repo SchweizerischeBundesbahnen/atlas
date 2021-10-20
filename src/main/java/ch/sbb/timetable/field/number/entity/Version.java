@@ -5,6 +5,7 @@ import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,10 +25,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
-import org.apache.commons.lang3.builder.DiffBuilder;
-import org.apache.commons.lang3.builder.DiffResult;
-import org.apache.commons.lang3.builder.Diffable;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,6 +35,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Entity(name = "timetable_field_number_version")
 @FieldNameConstants
 public class Version implements Versionable {
+
+  public static List<String> VERSIONABLE_ATTRIBUTES = List.of(Fields.name, Fields.number,
+      Fields.swissTimetableFieldNumber, Fields.ttfnid, Fields.businessOrganisation, Fields.comment, Fields.nameCompact);
 
   private static final String VERSION_SEQ = "timetable_field_number_version_seq";
 
@@ -82,15 +82,5 @@ public class Version implements Versionable {
   private String comment;
 
   private String nameCompact;
-
-  @Override
-  public void setValidFrom(LocalDate validFrom){
-    this.validFrom = validFrom;
-  }
-
-  @Override
-  public void setValidTo(LocalDate validTo){
-    this.validTo = validTo;
-  }
 
 }
