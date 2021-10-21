@@ -15,6 +15,8 @@ import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
+import { EmptyToNullDirective } from '../text-input/empty-to-null';
+import { TrimInputDirective } from '../text-input/trim-input';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { environment } from '../../../environments/environment';
     SideNavComponent,
     TableComponent,
     UserComponent,
+    EmptyToNullDirective,
+    TrimInputDirective,
   ],
   imports: [
     CommonModule,
@@ -58,6 +62,8 @@ import { environment } from '../../../environments/environment';
     CommonModule,
     MaterialModule,
     TranslateModule,
+    EmptyToNullDirective,
+    TrimInputDirective,
   ],
   providers: [TranslatePipe],
 })
