@@ -5,7 +5,7 @@ import { NgControl } from '@angular/forms';
 export class EmptyToNullDirective {
   constructor(@Self() private ngControl: NgControl) {}
 
-  @HostListener('keyup') onKeyDowns() {
+  @HostListener('keyup') onKeyUp() {
     if (this.ngControl.value?.trim() === '') {
       this.ngControl.reset(null);
       this.ngControl.control?.markAsDirty();
