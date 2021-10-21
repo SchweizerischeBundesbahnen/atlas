@@ -6,7 +6,7 @@
       [style.color]="toRbg(formControl.value) || 'transparent'"
     ></em
   ></span>
-  <input matInput formControlName="{{ attributeName }}" emptyToNull />
+  <input matInput formControlName="{{ attributeName }}" trim emptyToNull />
   <mat-error *ngIf="formControl.hasError('pattern')">{{
     'COMMON.CMYK_INVALID' | translate
   }}</mat-error>

@@ -10,7 +10,9 @@
     [cpAlphaChannel]="'disabled'"
     (colorPickerChange)="onChangeColor($event)"
     [cpOutputFormat]="'hex'"
+    [cpDisableInput]="true"
     (change)="onChangeColor(input.value)"
+    trim
   />
   <mat-error *ngIf="formControl.hasError('pattern')">{{
     'COMMON.COLOR_INVALID' | translate
