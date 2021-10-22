@@ -53,8 +53,8 @@ describe('RgbPickerComponent', () => {
     component.onChangeColor('#FF0000');
     fixture.detectChanges();
 
-    const squareColor = fixture.debugElement.query(By.css('.bi-square-fill')).nativeElement.style
-      .color;
+    const squareColor = fixture.debugElement.query(By.css('.color-indicator')).nativeElement.style
+      .backgroundColor;
     expect(squareColor).toBe('rgb(255, 0, 0)');
   });
 
