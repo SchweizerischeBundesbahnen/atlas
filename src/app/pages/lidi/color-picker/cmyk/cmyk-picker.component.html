@@ -1,11 +1,9 @@
 <mat-form-field [formGroup]="formGroup">
   <mat-label>{{ label | translate }}</mat-label>
-  <span
-    ><em
-      class="bi bi-square-fill me-2"
-      [style.color]="toRbg(formControl.value) || 'transparent'"
-    ></em
-  ></span>
+  <div
+    class="color-indicator me-2 {{ formControl.value ? 'border border-dark rounded-1' : '' }}"
+    [style.background-color]="toRbg(formControl.value) || 'transparent'"
+  ></div>
   <input matInput formControlName="{{ attributeName }}" trim emptyToNull />
   <mat-error *ngIf="formControl.hasError('pattern')">{{
     'COMMON.CMYK_INVALID' | translate
