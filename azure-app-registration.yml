@@ -13,9 +13,9 @@ appRegistrations:
       # type WEB stands for a Web application with a backend where secrets may be stored confidentially.
       - uri: http://localhost:4200
         type: SPA
-      - uri: https://timetable-field-number-frontend-dev.apps.aws01t.sbb-aws-test.net
+      - uri: https://atlas-frontend-dev.apps.aws01t.sbb-aws-test.net
         type: SPA
-      - uri: https://timetable-field-number-frontend-test.apps.aws01t.sbb-aws-test.net
+      - uri: https://atlas-frontend-test.apps.aws01t.sbb-aws-test.net
         type: SPA
     roles:
       # SBB requires at least one role to be present on a client. Only users having this role are allowed to use the client!
