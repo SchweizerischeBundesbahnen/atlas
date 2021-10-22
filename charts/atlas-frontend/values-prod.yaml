@@ -1,0 +1,2 @@
+routeHost: 'atlas-frontend.apps.aws01t.sbb-aws-test.net'
+replicas: 2

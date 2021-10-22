@@ -7,7 +7,7 @@
   "docker": {
     "dockerFile": "docker/Dockerfile",
     "artifactoryDockerRepo": "atlas.docker",
-    "openshiftAppName": "timetable-field-number-frontend",
+    "openshiftAppName": "atlas-frontend",
     "artifactorySupressProjectSubfolderCreation": true
   },
   "npm": {
@@ -16,8 +16,8 @@
   },
   "helm": {
     "repository": "atlas.helm",
-    "chart": "timetable-field-number-frontend",
-    "release": "timetable-field-number-frontend"
+    "chart": "atlas-frontend",
+    "release": "atlas-frontend"
   },
   "credentials": [
     {
@@ -44,7 +44,7 @@
       "openshiftCluster": "aws_aws01t",
       "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
       "preCiDeploymentJob": "",
-      "postCiDeploymentJob": "KI_ATLAS_E2E/timetable-field-number-frontend/master"
+      "postCiDeploymentJob": "KI_ATLAS_E2E/atlas-frontend/master"
     }
   ],
   "teamsNotifications": {

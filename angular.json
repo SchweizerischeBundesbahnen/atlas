@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "timetable-field-number-frontend": {
+    "atlas-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/timetable-field-number-frontend",
+            "outputPath": "dist/atlas-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "timetable-field-number-frontend:build:production"
+              "browserTarget": "atlas-frontend:build:production"
             },
             "development": {
-              "browserTarget": "timetable-field-number-frontend:build:development"
+              "browserTarget": "atlas-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -125,24 +125,24 @@
           "builder": "angular-server-side-configuration:ngsscbuild",
           "options": {
             "additionalEnvironmentVariables": [],
-            "browserTarget": "timetable-field-number-frontend:build",
+            "browserTarget": "atlas-frontend:build",
             "ngsscEnvironmentFile": "src/environments/environment.prod.ts",
             "filePattern": "**/index.html"
           },
           "configurations": {
             "production": {
-              "browserTarget": "timetable-field-number-frontend:build:production"
+              "browserTarget": "atlas-frontend:build:production"
             }
           }
         },
         "cypress-run": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "timetable-field-number-frontend:serve"
+            "devServerTarget": "atlas-frontend:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "timetable-field-number-frontend:serve:production"
+              "devServerTarget": "atlas-frontend:serve:production"
             }
           }
         },
@@ -156,20 +156,20 @@
         "e2e": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "timetable-field-number-frontend:serve",
+            "devServerTarget": "atlas-frontend:serve",
             "watch": true,
             "headless": false
           },
           "configurations": {
             "production": {
-              "devServerTarget": "timetable-field-number-frontend:serve:production"
+              "devServerTarget": "atlas-frontend:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "timetable-field-number-frontend",
+  "defaultProject": "atlas-frontend",
   "cli": {
     "defaultCollection": "@angular-eslint/schematics"
   }
