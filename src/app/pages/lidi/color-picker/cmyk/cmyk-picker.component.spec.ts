@@ -51,8 +51,8 @@ describe('CmykPickerComponent', () => {
     component.formControl.patchValue('10,100,0,50');
     fixture.detectChanges();
 
-    const squareColor = fixture.debugElement.query(By.css('.bi-square-fill')).nativeElement.style
-      .color;
+    const squareColor = fixture.debugElement.query(By.css('.color-indicator')).nativeElement.style
+      .backgroundColor;
     expect(squareColor).toBe('rgb(115, 0, 128)');
   });
 
@@ -62,8 +62,8 @@ describe('CmykPickerComponent', () => {
     colorCmyk.markAsTouched();
     fixture.detectChanges();
 
-    const squareColor = fixture.debugElement.query(By.css('.bi-square-fill')).nativeElement.style
-      .color;
+    const squareColor = fixture.debugElement.query(By.css('.color-indicator')).nativeElement.style
+      .backgroundColor;
     expect(squareColor).toBe('transparent');
 
     const errorMessage = fixture.debugElement.query(By.css('mat-error')).nativeElement.innerText;
