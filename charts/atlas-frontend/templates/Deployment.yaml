@@ -23,7 +23,7 @@ spec:
         deploymentconfig: '{{ .Chart.Name }}'
     spec:
       containers:
-        - image: 'atlas.docker.bin.sbb.ch/timetable-field-number-frontend:{{ .Values.versionTag | default .Chart.AppVersion }}'
+        - image: 'atlas.docker.bin.sbb.ch/atlas-frontend:{{ .Values.versionTag | default .Chart.AppVersion }}'
           imagePullPolicy: Always
           name: {{ .Chart.Name }}
           env:

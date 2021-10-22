@@ -1,4 +1,4 @@
-routeHost: 'timetable-field-number-frontend-test.apps.aws01t.sbb-aws-test.net'
+routeHost: 'atlas-frontend-test.apps.aws01t.sbb-aws-test.net'
 environmentLabel: 'test'
 ttfnBackendUrl: 'https://timetable-field-number-backend-test.apps.aws01t.sbb-aws-test.net'
 lidiBackendUrl: 'https://line-directory-backend-test.apps.aws01t.sbb-aws-test.net'
