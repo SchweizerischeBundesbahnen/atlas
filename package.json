@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "prepare": "husky install",
     "format": "prettier --write .",
-    "build:ngssc": "ng run timetable-field-number-frontend:ngsscbuild:production",
+    "build:ngssc": "ng run atlas-frontend:ngsscbuild:production",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
@@ -17,10 +17,10 @@
     "generate-ttfn-api": "openapi-generator-cli generate -g typescript-angular -i http://localhost:8080/v3/api-docs -o src/app/api/ttfn --type-mappings=date=Date --additional-properties apiModulePrefix=Ttfn",
     "generate-lidi-api": "openapi-generator-cli generate -g typescript-angular -i http://localhost:8082/v3/api-docs -o src/app/api/lidi --type-mappings=date=Date --additional-properties apiModulePrefix=LiDi"
   },
-  "name": "timetable-field-number-frontend",
+  "name": "atlas-frontend",
   "repository": {
     "type": "git",
-    "url": "git+https://code.sbb.ch/scm/ki_atlas/timetable-field-number-frontend.git"
+    "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas-frontend.git"
   },
   "version": "0.85.0",
   "files": [

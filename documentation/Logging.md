@@ -17,10 +17,10 @@ https://confluence.sbb.ch/display/MON/Splunk
 
 ## More filter possibilities
 
-| Filter                                                   | Effekt                           |
-| -------------------------------------------------------- | -------------------------------- |
-| openshift_namespace=atlas-dev                            | Filtert nach Openshift Namespace |
-| openshift_container_name=timetable-field-number-frontend | Filtert nach Container Name      |
+| Filter                                  | Effekt                           |
+| --------------------------------------- | -------------------------------- |
+| openshift_namespace=atlas-dev           | Filtert nach Openshift Namespace |
+| openshift_container_name=atlas-frontend | Filtert nach Container Name      |
 
 ## Implementation
 
