@@ -1,10 +1,10 @@
 # Timetable field number Frontend
 
-[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/job/master/)
+[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/job/master/)
 
-[![E2E Tests](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/job/master/)
+[![E2E Tests](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/job/master/)
 
-[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Atimetable-field-number-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number-frontend)
+[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Aatlas-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aatlas-frontend)
 
 This project was generated from [esta-cloud-angular](https://code.sbb.ch/projects/KD_ESTA_BLUEPRINTS/repos/esta-cloud-angular/browse).
 See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
@@ -25,18 +25,18 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 ## Links
 
-- **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/
-- **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/
-- **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number-frontend
+- **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/
+- **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/
+- **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aatlas-frontend
 - **JFrog Artifactory**:
-  - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Ftimetable-field-number-frontend
-  - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker%2Ftimetable-field-number-frontend
+  - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Fatlas-frontend
+  - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker%2Fatlas-frontend
 - **Openshift**:
   - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
   - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
 - **Deployment**:
-  - **Dev**: https://timetable-field-number-frontend-dev.apps.aws01t.sbb-aws-test.net
-  - **Test**: https://timetable-field-number-frontend-test.apps.aws01t.sbb-aws-test.net
+  - **Dev**: https://atlas-frontend-dev.apps.aws01t.sbb-aws-test.net
+  - **Test**: https://atlas-frontend-test.apps.aws01t.sbb-aws-test.net
 
 ## Development
 
@@ -56,9 +56,9 @@ in the [cypress.json](cypress.json). The credentials are stored [here](https://c
 #### Cypress E2E CI-Jenkins
 
 In [Jenkins](https://ci.sbb.ch/) under the organization Folder [ATLAS_Cypress_E2E](https://ci.sbb.ch/job/KI_ATLAS_E2E/)
-the Cypress E2E tests are defined in the job [timetable-field-number-frontend](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/timetable-field-number-frontend/).
+the Cypress E2E tests are defined in the job [atlas-frontend](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/).
 
-This job is executed only when is triggered by **postCiDeploymentJob** defined in the main [Jenkins pipeline](https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-frontend/),
+This job is executed only when is triggered by **postCiDeploymentJob** defined in the main [Jenkins pipeline](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/),
 see the [Jenkinsfile](Jenkinsfile). On this job the commit push notification is disabled.
 
 The Jenkinsfile is stored in [cypress/Jenkinsfile](cypress/Jenkinsfile)
