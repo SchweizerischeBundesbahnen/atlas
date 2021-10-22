@@ -2,7 +2,7 @@ apiVersion: azure-ad-api/v1
 # For a complete description of file-based app registrations see https://confluence.sbb.ch/x/TgjHY
 
 appRegistrations:
-  - displayName: SBB Timetable Field Number Frontend
+  - displayName: SBB Atlas Frontend
     id: 1910a8a5-0c03-408a-ada3-06396e36bc32
     megaId: ADB3AE9A60E510ED
     owners:

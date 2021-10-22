@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    // TODO: It's recommended to check for specific role instead of only loggedIn state
+    // It's recommended to check for specific role instead of only loggedIn state
     return this.authService.loggedIn ? true : this.router.parseUrl('/');
   }
 }
