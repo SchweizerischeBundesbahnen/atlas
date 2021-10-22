@@ -5,7 +5,7 @@ import { RGB_HEX_COLOR_REGEX } from '../color.service';
 @Component({
   selector: 'app-rgb-picker [attributeName]',
   templateUrl: './rgb-picker.component.html',
-  styleUrls: ['./rgb-picker.component.scss'],
+  styleUrls: ['./rgb-picker.component.scss', '../color-indicator.scss'],
 })
 export class RgbPickerComponent implements OnInit {
   @Input() attributeName!: string;

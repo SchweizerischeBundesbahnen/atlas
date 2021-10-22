@@ -5,7 +5,7 @@ import { CMYK_COLOR_REGEX, ColorService } from '../color.service';
 @Component({
   selector: 'app-cmyk-picker [attributeName]',
   templateUrl: './cmyk-picker.component.html',
-  styleUrls: ['./cmyk-picker.component.scss'],
+  styleUrls: ['./cmyk-picker.component.scss', '../color-indicator.scss'],
 })
 export class CmykPickerComponent {
   @Input() attributeName!: string;
