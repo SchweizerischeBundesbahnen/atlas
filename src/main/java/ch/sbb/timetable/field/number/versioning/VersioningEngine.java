@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.versioning;
 
 import ch.sbb.timetable.field.number.versioning.model.ObjectProperty;
+import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
@@ -17,7 +18,7 @@ public class VersioningEngine {
 
   public List<VersionedObject> applyVersioning(Versionable currentVersion,
       Versionable editedVersion,
-      List<ObjectProperty> editedAttributes,
+      ObjectProperty editedObjectProperties,
       List<ToVersioning> objectsToVersioning) {
 
     List<VersionedObject> versionedObjects = new ArrayList<>();
@@ -29,7 +30,7 @@ public class VersioningEngine {
     if (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) {
       //update actual version
       VersionedObject versionedObjectToUpdate = getVersionedObjectWhenValidFromAndValidToAreNotModified(
-          currentVersion, editedAttributes, objectsToVersioning);
+          currentVersion, editedObjectProperties, objectsToVersioning);
       versionedObjects.add(versionedObjectToUpdate);
       return versionedObjects;
     }
@@ -39,7 +40,7 @@ public class VersioningEngine {
       //Only validFrom is edited
       //get all versions between editedVersion.getValidFrom() and actual.getValidTo()
       versionedObjects = getVersionedObjectWhenOnlyValidFromIsEdited(
-          editedVersion, currentVersion, objectsToVersioning, editedAttributes);
+          editedVersion, currentVersion, objectsToVersioning, editedObjectProperties);
       return versionedObjects;
     }
 
@@ -47,7 +48,7 @@ public class VersioningEngine {
     if (editedVersion.getValidFrom() == null && editedVersion.getValidTo() != null) {
       //get all versions between actual.getValidFrom() and edited.getValidTo()
       versionedObjects = getVersionedObjectWhenOnlyValidToIsEdited(
-          editedVersion, objectsToVersioning, editedAttributes);
+          editedVersion, objectsToVersioning, editedObjectProperties);
       return versionedObjects;
     }
 
@@ -55,7 +56,7 @@ public class VersioningEngine {
     if (editedVersion.getValidFrom() != null && editedVersion.getValidTo() != null) {
       //get all versions between editedVersion.getValidFrom() and editedVersion.getValidTo()
       versionedObjects = getVersionedObjectWhenValidFromAndValidToAreModified(
-          editedVersion, objectsToVersioning, editedAttributes);
+          editedVersion, objectsToVersioning, editedObjectProperties);
       return versionedObjects;
     }
 
@@ -64,33 +65,33 @@ public class VersioningEngine {
 
   private List<VersionedObject> getVersionedObjectWhenValidFromAndValidToAreModified(
       Versionable editedVersion, List<ToVersioning> objectsToVersioning,
-      List<ObjectProperty> changedAttributes) {
+      ObjectProperty changedAttributes) {
     return null;
   }
 
   private List<VersionedObject> getVersionedObjectWhenOnlyValidToIsEdited(Versionable editedVersion,
-      List<ToVersioning> objectsToVersioning, List<ObjectProperty> changedAttributes) {
+      List<ToVersioning> objectsToVersioning, ObjectProperty changedAttributes) {
     return null;
   }
 
   private VersionedObject getVersionedObjectWhenValidFromAndValidToAreNotModified(
-      Versionable actualVersion,
-      List<ObjectProperty> changedAttributes, List<ToVersioning> objectsToVersioning) {
+      Versionable current,
+      ObjectProperty editedObjectProperties, List<ToVersioning> objectsToVersioning) {
 
     //duplicate
     ToVersioning toVersioning = objectsToVersioning
         .stream()
-        .filter(versioning -> versioning.getObjectId().equals(actualVersion.getId()))
+        .filter(versioning -> versioning.getObjectId().equals(current.getId()))
         .findFirst()
         .orElse(null);
 
     VersionedObject versionedObjectToUpdate =
         VersionedObject.builder()
-                       .objectId(actualVersion.getId())
-                       .validFrom(actualVersion.getValidFrom())
-                       .validTo(actualVersion.getValidTo())
+                       .objectId(current.getId())
+                       .validFrom(current.getValidFrom())
+                       .validTo(current.getValidTo())
                        .objectProperties(
-                           replaceChangedAttributeWithActualAttribute(changedAttributes,
+                           replaceChangedAttributeWithActualAttribute(current.getId(),editedObjectProperties,
                                toVersioning.getObjectProperties())
                        )
                        .action(VersioningAction.UPDATE)
@@ -102,7 +103,7 @@ public class VersioningEngine {
       Versionable editedVersion,
       Versionable actualVersion,
       List<ToVersioning> objectsToVersioning,
-      List<ObjectProperty> changedAttributes) {
+      ObjectProperty changedAttributes) {
 
     LocalDate validFrom = editedVersion.getValidFrom();
     //sort objectsToVersioning
@@ -127,7 +128,7 @@ public class VersioningEngine {
                          .validTo(firstItemObjectToVersioning.getVersionable().getValidTo())
                          .objectProperties(firstItemObjectToVersioning.getObjectProperties())
                          .objectProperties(
-                             replaceChangedAttributeWithActualAttribute(changedAttributes,
+                             replaceChangedAttributeWithActualAttribute(null, changedAttributes,
                                  toVersioning.getObjectProperties())
                          )
                          .action(VersioningAction.UPDATE)
@@ -160,7 +161,7 @@ public class VersioningEngine {
                              .validFrom(editedVersion.getValidFrom())
                              .validTo(toVersioning.getVersionable().getValidTo())
                              .objectProperties(
-                                 replaceChangedAttributeWithActualAttribute(changedAttributes,
+                                 replaceChangedAttributeWithActualAttribute(null,changedAttributes,
                                      toVersioning.getObjectProperties())
                              )
                              .action(VersioningAction.NEW)
@@ -174,35 +175,39 @@ public class VersioningEngine {
     return versionedObjects;
   }
 
-  public List<ObjectProperty> replaceChangedAttributeWithActualAttribute(
-      List<ObjectProperty> editedObjectProperties, List<ObjectProperty> currentObjectProperties) {
+  public ObjectProperty replaceChangedAttributeWithActualAttribute(Long objectId,
+      ObjectProperty editedObjectProperties, ObjectProperty currentObjectProperties) {
 
     //Copy currentObjectProperties
-    List<ObjectProperty> objectProperties = new ArrayList<>(currentObjectProperties);
+    List<Property> properties = new ArrayList<>(currentObjectProperties.getProperties());
 
-    for (ObjectProperty editedObjectProperty : editedObjectProperties) {
+    for (Property editedProperty : editedObjectProperties.getProperties()) {
       //find the index of the edited attribute end replace it with the new value
-      int index = IntStream.range(0, objectProperties.size())
-                           .filter(i -> currentObjectProperties.get(i)
+      int index = IntStream.range(0, properties.size())
+                           .filter(i -> currentObjectProperties.getProperties().get(i)
                                                         .getKey()
-                                                        .equals(editedObjectProperty.getKey()))
+                                                        .equals(editedProperty.getKey()))
                            .findFirst().orElse(-1);
       if (index >= 0) {
-        ObjectProperty objectPropertyReplaced = buildModifiedAttributeObject(editedObjectProperty,
-            objectProperties.get(index));
-        objectProperties.set(index, objectPropertyReplaced);
+        Property replacedProperty = replaceProperty(editedProperty,
+            properties.get(index));
+        properties.set(index, replacedProperty);
       }
+
     }
-    return objectProperties;
+    ObjectProperty objectProperty = ObjectProperty.builder()
+                                                  .objectId(objectId)
+                                                  .properties(properties)
+                                                  .build();
+    return objectProperty;
   }
 
-  private ObjectProperty buildModifiedAttributeObject(ObjectProperty editedObjectProperty,
-      ObjectProperty currentObjectProperty) {
-    return ObjectProperty
+  private Property replaceProperty(Property editedProperty,
+      Property currentProperty) {
+    return Property
         .builder()
-        .objectId(currentObjectProperty.getObjectId())
-        .key(currentObjectProperty.getKey())
-        .value(editedObjectProperty.getValue())
+        .key(currentProperty.getKey())
+        .value(editedProperty.getValue())
         .build();
   }
 
