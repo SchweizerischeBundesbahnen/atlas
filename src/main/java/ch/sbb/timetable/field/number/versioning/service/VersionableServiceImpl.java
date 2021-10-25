@@ -2,6 +2,8 @@ package ch.sbb.timetable.field.number.versioning.service;
 
 import ch.sbb.timetable.field.number.versioning.VersioningEngine;
 import ch.sbb.timetable.field.number.versioning.model.ObjectProperty;
+import ch.sbb.timetable.field.number.versioning.model.ObjectProperty.ObjectPropertyBuilder;
+import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
@@ -24,7 +26,7 @@ public class VersionableServiceImpl implements VersionableService {
       Versionable edited,
       List<T> currentVersions) {
     //2. get edited properties from editedVersion
-    List<ObjectProperty> editedObjectProperties = getEditedObjectProperties(versionableProperties,
+    ObjectProperty editedObjectProperties = getEditedObjectProperties(versionableProperties,
         current.getId(),
         edited);
 
@@ -42,45 +44,49 @@ public class VersionableServiceImpl implements VersionableService {
   }
 
 
-  <T extends Versionable> List<ObjectProperty> getObjectProperties(
+  <T extends Versionable> ObjectProperty getObjectProperties(
       List<String> versionableProperties, T version) {
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         version);
-    List<ObjectProperty> objectProperties = new ArrayList<>();
 
+    List<Property> properties = new ArrayList<>();
     for (String fieldName : versionableProperties) {
-      objectProperties.add(
-          createObjectProperty(version.getId(), fieldName,
-              String.valueOf(propertyAccessor.getPropertyValue(fieldName)))
-      );
+      Property property = Property.builder()
+                               .key(fieldName)
+                               .value(String.valueOf(propertyAccessor.getPropertyValue(fieldName)))
+                               .build();
+      properties.add(property);
     }
-    return objectProperties;
+    ObjectProperty objectProperty = ObjectProperty.builder()
+                                         .objectId(version.getId())
+                                         .properties(properties)
+                                         .build();
+    return objectProperty;
   }
 
-  <T extends Versionable> List<ObjectProperty> getEditedObjectProperties(
+  <T extends Versionable> ObjectProperty getEditedObjectProperties(
       List<String> versionableProperties,
       Long actualVersionId,
       T editedVersion) {
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         editedVersion);
 
-    List<ObjectProperty> editedObjectProperties = new ArrayList<>();
+    List<Property> properties = new ArrayList<>();
     for (String fieldName : versionableProperties) {
       Object propertyValue = propertyAccessor.getPropertyValue(fieldName);
       if (propertyValue != null) {
-        editedObjectProperties.add(
-            createObjectProperty(actualVersionId, fieldName,
-                String.valueOf(propertyValue))
-        );
+        Property property = Property.builder()
+                                    .key(fieldName)
+                                    .value(String.valueOf(propertyValue))
+                                    .build();
+        properties.add(property);
       }
     }
-    return editedObjectProperties;
-  }
-
-  private ObjectProperty createObjectProperty(Long objectId, String fieldName, String value) {
-    ObjectProperty changedAttributeName;
-    changedAttributeName = new ObjectProperty(objectId, fieldName, value);
-    return changedAttributeName;
+    ObjectProperty objectProperty = ObjectProperty.builder()
+                                                  .objectId(actualVersionId)
+                                                  .properties(properties)
+                                                  .build();
+    return objectProperty;
   }
 
 }

@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.versioning.model;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +12,6 @@ public class ObjectProperty {
 
   private Long objectId;
 
-  private String key;
-
-  private String value;
+  private List<Property> properties;
 
 }
