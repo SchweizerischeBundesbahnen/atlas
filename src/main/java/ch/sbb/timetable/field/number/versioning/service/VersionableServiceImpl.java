@@ -1,8 +1,7 @@
 package ch.sbb.timetable.field.number.versioning.service;
 
 import ch.sbb.timetable.field.number.versioning.VersioningEngine;
-import ch.sbb.timetable.field.number.versioning.model.ObjectProperty;
-import ch.sbb.timetable.field.number.versioning.model.ObjectProperty.ObjectPropertyBuilder;
+import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
@@ -26,25 +25,25 @@ public class VersionableServiceImpl implements VersionableService {
       Versionable edited,
       List<T> currentVersions) {
     //2. get edited properties from editedVersion
-    ObjectProperty editedObjectProperties = getEditedObjectProperties(versionableProperties,
+    Entity editedEntity = getEditedEntity(versionableProperties,
         current.getId(),
         edited);
 
     //3. collect all versions to versioning in ToVersioning object
     List<ToVersioning> objectsToVersioning = new ArrayList<>();
-    for (Versionable version : currentVersions) {
+    for (Versionable currentVersion : currentVersions) {
       objectsToVersioning.add(
-          new ToVersioning(version.getId(), version,
-              getObjectProperties(versionableProperties, version)));
+          new ToVersioning(currentVersion.getId(), currentVersion,
+              buildEntity(versionableProperties, currentVersion)));
     }
 
     List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(current, edited,
-        editedObjectProperties, objectsToVersioning);
+        editedEntity, objectsToVersioning);
     return versionedObjects;
   }
 
 
-  <T extends Versionable> ObjectProperty getObjectProperties(
+  <T extends Versionable> Entity buildEntity(
       List<String> versionableProperties, T version) {
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         version);
@@ -57,14 +56,14 @@ public class VersionableServiceImpl implements VersionableService {
                                .build();
       properties.add(property);
     }
-    ObjectProperty objectProperty = ObjectProperty.builder()
-                                         .objectId(version.getId())
-                                         .properties(properties)
-                                         .build();
-    return objectProperty;
+    Entity entity = Entity.builder()
+                          .id(version.getId())
+                          .properties(properties)
+                          .build();
+    return entity;
   }
 
-  <T extends Versionable> ObjectProperty getEditedObjectProperties(
+  <T extends Versionable> Entity getEditedEntity(
       List<String> versionableProperties,
       Long actualVersionId,
       T editedVersion) {
@@ -82,11 +81,11 @@ public class VersionableServiceImpl implements VersionableService {
         properties.add(property);
       }
     }
-    ObjectProperty objectProperty = ObjectProperty.builder()
-                                                  .objectId(actualVersionId)
-                                                  .properties(properties)
-                                                  .build();
-    return objectProperty;
+    Entity entity = Entity.builder()
+                          .id(actualVersionId)
+                          .properties(properties)
+                          .build();
+    return entity;
   }
 
 }

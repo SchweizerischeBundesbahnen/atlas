@@ -1,6 +1,5 @@
 package ch.sbb.timetable.field.number.versioning.model;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +13,5 @@ public class ToVersioning {
 
   private Versionable versionable;
 
-  private ObjectProperty objectProperties;
+  private Entity entity;
 }
