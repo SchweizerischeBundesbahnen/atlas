@@ -227,10 +227,9 @@ public class VersioningEngineTest {
   }
 
   private ToVersioning getToVersioning(Entity toVersioningEntity,
-      VersionableObject versionableObject3) {
+      VersionableObject versionableObject) {
     return ToVersioning.builder()
-                       .objectId(versionableObject3.getId())
-                       .versionable(versionableObject3)
+                       .versionable(versionableObject)
                        .entity(
                            toVersioningEntity)
                        .build();
