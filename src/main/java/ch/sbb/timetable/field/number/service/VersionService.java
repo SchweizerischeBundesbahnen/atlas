@@ -1,16 +1,14 @@
 package ch.sbb.timetable.field.number.service;
 
 
-import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE_ATTRIBUTES;
+import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE_PROPERTIES;
 
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import ch.sbb.timetable.field.number.versioning.model.AttributeObject;
-import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import ch.sbb.timetable.field.number.versioning.service.VersionableService;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -63,23 +61,14 @@ public class VersionService {
     return versionRepository.count();
   }
 
-  public List<VersionedObject> updateVersion(Version actualVersion, Version editedVersion) {
-    //1. get all versions from actualVersion.getTtfnid(); and sort it by from asc
-    List<Version> versionsVersioned = versionRepository.getAllVersionsVersioned(
-        actualVersion.getTtfnid());
+  public List<VersionedObject> updateVersion(Version currentVersion, Version editedVersion) {
+    //1. get all versions from currentVersion.getTtfnid(); and sort it by from asc
+    List<Version> currentVersions = versionRepository.getAllVersionsVersioned(
+        currentVersion.getTtfnid());
 
-    //2. get edited properties from editedVersion
-    List<AttributeObject> editedAttributeObjects = getEditedAttributeObjects(actualVersion.getId(),
-        editedVersion);
-
-    //3. collect all versions to versioning in ToVersioning object
-    List<ToVersioning> toVersions = new ArrayList<>();
-    for (Version version : versionsVersioned) {
-      toVersions.add(new ToVersioning(version.getId(), version, getAttributeObjects(version)));
-    }
-
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(actualVersion,
-        editedVersion, editedAttributeObjects, toVersions);
+    List<VersionedObject> versionedObjects = versionableService.versioningObjects(
+        VERSIONABLE_PROPERTIES,currentVersion,
+        editedVersion, currentVersions);
 
     for (VersionedObject versionedObject : versionedObjects) {
       if (VersioningAction.NOT_TOUCHED.equals(versionedObject.getAction())) {
@@ -109,7 +98,6 @@ public class VersionService {
     return versionedObjects;
   }
 
-
   private Version convertVersionedObjectToVersion(VersionedObject versionedObject) {
     List<AttributeObject> attributeObjects = versionedObject.getAttributeObjects();
     Long objectId = versionedObject.getObjectId();
@@ -123,38 +111,6 @@ public class VersionService {
       propertyAccessor.setPropertyValue(attributeObject.getKey(), attributeObject.getValue());
     }
     return version;
-  }
-
-  private List<AttributeObject> getAttributeObjects(Version version) {
-    ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
-        version);
-    List<AttributeObject> attributeObjects = new ArrayList<>();
-
-    for (String fieldName : VERSIONABLE_ATTRIBUTES) {
-      attributeObjects.add(
-          versionableService.getAttributeObject(version.getId(), fieldName,
-              String.valueOf(propertyAccessor.getPropertyValue(fieldName)))
-      );
-    }
-    return attributeObjects;
-  }
-
-  private List<AttributeObject> getEditedAttributeObjects(Long actualVersionId,
-      Version editedVersion) {
-    ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
-        editedVersion);
-
-    List<AttributeObject> editedAttributeObjects = new ArrayList<>();
-    for (String fieldName : VERSIONABLE_ATTRIBUTES) {
-      Object propertyValue = propertyAccessor.getPropertyValue(fieldName);
-      if (propertyValue != null) {
-        editedAttributeObjects.add(
-            versionableService.getAttributeObject(actualVersionId, fieldName,
-                String.valueOf(propertyValue))
-        );
-      }
-    }
-    return editedAttributeObjects;
   }
 
   private void log(VersionedObject versionedObject) {
