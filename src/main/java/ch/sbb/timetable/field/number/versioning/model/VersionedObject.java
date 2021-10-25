@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class VersionedObject { //extend VersionCore
+public class VersionedObject {
 
   private final Long objectId;
 
@@ -18,8 +18,6 @@ public class VersionedObject { //extend VersionCore
   private LocalDate validTo;
 
   private final List<ObjectProperty> objectProperties;
-
-  private final Versionable versionableObject;
 
   private final VersioningAction action;
 
