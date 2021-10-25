@@ -5,6 +5,8 @@ import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
+import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -18,8 +20,8 @@ public abstract class Versioning {
     throw new RuntimeException("You have to implement me!!");
   }
 
-  public List<VersionedObject> applyVersioning(Versionable edited,Versionable current,
-       List<ToVersioning> objectsToVersioning, Entity editedEntity) {
+  public List<VersionedObject> applyVersioning(Versionable edited, Versionable current,
+      List<ToVersioning> objectsToVersioning, Entity editedEntity) {
     throw new RuntimeException("You have to implement me!!");
   }
 
@@ -48,6 +50,36 @@ public abstract class Versioning {
                           .properties(properties)
                           .build();
     return entity;
+  }
+
+  protected ToVersioning findObjectToVersioning(Versionable currentVersion,
+      List<ToVersioning> objectsToVersioning) {
+    return objectsToVersioning
+        .stream()
+        .filter(versioning -> versioning.getEntity().getId().equals(currentVersion.getId()))
+        .findFirst()
+        .orElse(null);
+  }
+
+  protected VersionedObject buildVersionedObjectToUpdate(LocalDate validFrom, LocalDate validTo,
+      Entity entity) {
+    return buildVersionedObject(validFrom, validTo, entity, VersioningAction.UPDATE);
+  }
+
+  protected VersionedObject buildVersionedObjectToCreate(LocalDate validFrom, LocalDate validTo,
+      Entity entity) {
+    return buildVersionedObject(validFrom, validTo, entity, VersioningAction.NEW);
+  }
+
+  protected VersionedObject buildVersionedObject(LocalDate validFrom, LocalDate validTo,
+      Entity entity,
+      VersioningAction action) {
+    return VersionedObject.builder()
+                          .validFrom(validFrom)
+                          .validTo(validTo)
+                          .entity(entity)
+                          .action(action)
+                          .build();
   }
 
   private Property replaceProperty(Property editedProperty,
