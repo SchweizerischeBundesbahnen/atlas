@@ -1,9 +1,11 @@
 package ch.sbb.timetable.field.number.entity;
 
 import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,6 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,7 +33,12 @@ import lombok.ToString;
 @ToString
 @Builder
 @Entity(name = "timetable_field_number_version")
-public class Version {
+@FieldNameConstants
+public class Version implements Versionable {
+
+  public static List<String> VERSIONABLE_PROPERTIES = List.of(Fields.name, Fields.number,
+      Fields.swissTimetableFieldNumber, Fields.ttfnid, Fields.businessOrganisation, Fields.comment,
+      Fields.nameCompact);
 
   private static final String VERSION_SEQ = "timetable_field_number_version_seq";
 
