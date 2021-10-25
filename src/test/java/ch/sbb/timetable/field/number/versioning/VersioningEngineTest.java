@@ -100,7 +100,7 @@ public class VersioningEngineTest {
     assertThat(result.get(0)).isNotNull();
     VersionedObject versionedObject = result.get(0);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
-    assertThat(versionedObject.getVersionableObject()).isEqualTo(versionableObject2);
+    //TODO replace me with assert on validFrom and ValidTo
     assertThat(versionedObject.getObjectProperties()).isNotEmpty();
     assertThat(versionedObject.getObjectProperties().size()).isEqualTo(1);
     ObjectProperty objectPropertyToChange = versionedObject.getObjectProperties().get(0);
@@ -150,7 +150,7 @@ public class VersioningEngineTest {
     assertThat(result.get(0)).isNotNull();
     VersionedObject versionedObject = result.get(0);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
-    assertThat(versionedObject.getVersionableObject()).isEqualTo(versionableObject2);
+    //TODO replace me with assert on validFrom and ValidTo
     assertThat(versionedObject.getObjectProperties()).isNotEmpty();
     assertThat(versionedObject.getObjectProperties().size()).isEqualTo(1);
     ObjectProperty objectPropertyToChange = versionedObject.getObjectProperties().get(0);
@@ -202,7 +202,7 @@ public class VersioningEngineTest {
     assertThat(result.get(0)).isNotNull();
     VersionedObject versionedObject = result.get(0);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
-    assertThat(versionedObject.getVersionableObject()).isEqualTo(versionableObject1);
+    //TODO replace me with assert on validFrom and ValidTo
     assertThat(versionedObject.getObjectProperties()).isNotEmpty();
     assertThat(versionedObject.getObjectProperties().size()).isEqualTo(1);
     ObjectProperty objectPropertyToChange = versionedObject.getObjectProperties().get(0);

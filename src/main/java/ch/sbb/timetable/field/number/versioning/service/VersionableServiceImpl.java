@@ -19,28 +19,31 @@ public class VersionableServiceImpl implements VersionableService {
   }
 
   @Override
-  public <T extends Versionable> List<VersionedObject> versioningObjects(List<String> versionableProperties,Versionable current,
+  public <T extends Versionable> List<VersionedObject> versioningObjects(
+      List<String> versionableProperties, Versionable current,
       Versionable edited,
       List<T> currentVersions) {
     //2. get edited properties from editedVersion
-    List<ObjectProperty> editedProperties = getEditedObjectProperties(versionableProperties,current.getId(),
+    List<ObjectProperty> editedObjectProperties = getEditedObjectProperties(versionableProperties,
+        current.getId(),
         edited);
 
     //3. collect all versions to versioning in ToVersioning object
     List<ToVersioning> objectsToVersioning = new ArrayList<>();
     for (Versionable version : currentVersions) {
       objectsToVersioning.add(
-          new ToVersioning(version.getId(), version, getObjectProperties(versionableProperties ,version)));
+          new ToVersioning(version.getId(), version,
+              getObjectProperties(versionableProperties, version)));
     }
 
     List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(current, edited,
-        editedProperties, objectsToVersioning);
+        editedObjectProperties, objectsToVersioning);
     return versionedObjects;
   }
 
 
   <T extends Versionable> List<ObjectProperty> getObjectProperties(
-      List<String> versionableProperties,T version) {
+      List<String> versionableProperties, T version) {
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         version);
     List<ObjectProperty> objectProperties = new ArrayList<>();
