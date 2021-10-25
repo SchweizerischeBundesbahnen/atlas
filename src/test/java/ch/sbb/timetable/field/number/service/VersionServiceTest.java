@@ -198,8 +198,17 @@ public class VersionServiceTest {
     assertThat(thirdTemporalVersion.getComment()).isNull();
   }
 
+
+  /** Which scenario?
+   * NEU:                |__________|
+   * IST:       |-------------------|----------------------|
+   * Version:         1                 2
+   *
+   * RESULTAT:           |---------|---------------------|
+   * Version:                1         2
+   */
   @Test
-  public void shouldUpdateLastTemporalVersionWhenValidToIsModifiedAndAfterLastTemporalVersion() {
+  public void shouldUpdateLastTemporalVersionWhenValidToIsModifiedAndItIsAfterLastTemporalVersion() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
