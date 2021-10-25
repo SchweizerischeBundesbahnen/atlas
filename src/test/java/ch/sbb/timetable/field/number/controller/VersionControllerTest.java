@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.api.VersionsContainer;
 import ch.sbb.timetable.field.number.entity.Version;
-import ch.sbb.timetable.field.number.repository.VersionRepository;
+import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
@@ -28,8 +29,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class VersionControllerTest {
 
   @Mock
-  private VersionRepository versionRepository;
+  private VersionService versionService;
 
+  @InjectMocks
   private VersionController versionController;
 
   @Captor
@@ -38,8 +40,7 @@ public class VersionControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    versionController = new VersionController(versionRepository);
-    when(versionRepository.save(any())).then(i -> i.getArgument(0, Version.class));
+    when(versionService.save(any())).then(i -> i.getArgument(0, Version.class));
   }
 
   @Test
@@ -51,7 +52,7 @@ public class VersionControllerTest {
     versionController.createVersion(versionModel);
 
     // Then
-    verify(versionRepository).save(versionArgumentCaptor.capture());
+    verify(versionService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
                                                     "creationDate", "lineRelations")
@@ -62,9 +63,9 @@ public class VersionControllerTest {
   void shouldGetVersions() {
     // Given
     Version version = createEntity();
-    when(versionRepository.findAll(any(Pageable.class))).thenReturn(
+    when(versionService.findAll(any(Pageable.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(version)));
-    when(versionRepository.count()).thenReturn(1l);
+    when(versionService.count()).thenReturn(1l);
 
     // When
     VersionsContainer versions = versionController.getVersions(Pageable.unpaged());
@@ -72,11 +73,12 @@ public class VersionControllerTest {
     // Then
     assertThat(versions).isNotNull();
     assertThat(versions.getVersions()).hasSize(1)
-                        .first()
-                        .usingRecursiveComparison()
-                        .ignoringFields("editor", "creator", "editionDate", "creationDate",
-                            "lineRelations")
-                        .isEqualTo(version);
+                                      .first()
+                                      .usingRecursiveComparison()
+                                      .ignoringFields("editor", "creator", "editionDate",
+                                          "creationDate",
+                                          "lineRelations")
+                                      .isEqualTo(version);
     assertThat(versions.getTotalCount()).isEqualTo(1);
   }
 
@@ -84,7 +86,7 @@ public class VersionControllerTest {
   void shouldGetVersion() {
     // Given
     Version version = createEntity();
-    when(versionRepository.findById(anyLong())).thenReturn(Optional.of(version));
+    when(versionService.findById(anyLong())).thenReturn(Optional.of(version));
 
     // When
     VersionModel versionModel = versionController.getVersion(1L);
@@ -99,7 +101,7 @@ public class VersionControllerTest {
   @Test
   void shouldReturnNotFoundOnUnexcitingVersion() {
     // Given
-    when(versionRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(versionService.findById(anyLong())).thenReturn(Optional.empty());
 
     // When
 
@@ -111,19 +113,19 @@ public class VersionControllerTest {
   @Test
   void shouldDeleteVersion() {
     // Given
-    when(versionRepository.existsById(anyLong())).thenReturn(true);
+    when(versionService.existsById(anyLong())).thenReturn(true);
 
     // When
     versionController.deleteVersion(1L);
 
     // Then
-    verify(versionRepository).deleteById(1L);
+    verify(versionService).deleteById(1L);
   }
 
   @Test
   void shouldReturnNotFoundOnDeletingUnexistingVersion() {
     // Given
-    when(versionRepository.existsById(anyLong())).thenReturn(false);
+    when(versionService.existsById(anyLong())).thenReturn(false);
 
     // When
 
@@ -139,7 +141,7 @@ public class VersionControllerTest {
     VersionModel versionModel = createModel();
     versionModel.setName("New name");
 
-    when(versionRepository.findById(anyLong())).thenReturn(Optional.of(version));
+    when(versionService.findById(anyLong())).thenReturn(Optional.of(version));
 
     // When
     VersionModel result = versionController.updateVersion(1L, versionModel);
@@ -154,7 +156,7 @@ public class VersionControllerTest {
   @Test
   void shouldReturnNotFoundOnUnexistingUpdateVersion() {
     // Given
-    when(versionRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(versionService.findById(anyLong())).thenReturn(Optional.empty());
 
     // When
     VersionModel versionModel = createModel();
