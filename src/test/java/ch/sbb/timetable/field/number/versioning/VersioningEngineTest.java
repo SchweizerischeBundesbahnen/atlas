@@ -3,6 +3,7 @@ package ch.sbb.timetable.field.number.versioning;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.timetable.field.number.versioning.model.ObjectProperty;
+import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
@@ -38,7 +39,7 @@ public class VersioningEngineTest {
   private VersionableObject versionableObject3;
 
   @BeforeEach
-  public void init(){
+  public void init() {
     versionableObject1 = VersionableObject
         .builder()
         .id(1L)
@@ -62,6 +63,7 @@ public class VersioningEngineTest {
         .build();
 
   }
+
   /**
    * Szenario 1a: Update einer bestehenden Version am Ende
    * NEU:                             |________________________________
@@ -72,18 +74,17 @@ public class VersioningEngineTest {
    * Version:        1                                2
    */
   @Test
-  public void shouldJustUpdateAnObjectWhenAttributeNameIsChangedScenario1a(){
+  public void shouldJustUpdateAnObjectWhenAttributeNameIsChangedScenario1a() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
-    List<ObjectProperty> editedObjectProperties = new ArrayList<>();
+    List<Property> properties = new ArrayList<>();
+    Property property = Property.builder().key(VersionableObject.Fields.property)
+                                .value("Ciao-Ciao").build();
+    properties.add(property);
     ObjectProperty editedObjectProperty =
         ObjectProperty.builder()
-                      .objectId(null)
-                      .key(VersionableObject.Fields.property)
-                      .value("Ciao-Ciao")
+                      .objectId(null).properties(properties)
                       .build();
-    editedObjectProperties.add(editedObjectProperty);
-
     ObjectProperty toVersioning1_ObjectProperty = buildObjectProperty(versionableObject1);
     ObjectProperty toVersioning2_ObjectProperty = buildObjectProperty(versionableObject2);
 
@@ -92,7 +93,7 @@ public class VersioningEngineTest {
 
     //when
     List<VersionedObject> result = versioningEngine.applyVersioning(versionableObject2,
-        editedVersion, editedObjectProperties, Arrays.asList(toVersioning1, toVersioning2));
+        editedVersion, editedObjectProperty, Arrays.asList(toVersioning1, toVersioning2));
 
     //then
     assertThat(result).isNotNull();
@@ -100,13 +101,16 @@ public class VersioningEngineTest {
     assertThat(result.get(0)).isNotNull();
     VersionedObject versionedObject = result.get(0);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
-    //TODO replace me with assert on validFrom and ValidTo
-    assertThat(versionedObject.getObjectProperties()).isNotEmpty();
-    assertThat(versionedObject.getObjectProperties().size()).isEqualTo(1);
-    ObjectProperty objectPropertyToChange = versionedObject.getObjectProperties().get(0);
+    assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject2.getValidFrom());
+    assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject2.getValidTo());
+    assertThat(versionedObject.getObjectProperties().getProperties()).isNotEmpty();
+    assertThat(versionedObject.getObjectProperties().getProperties().size()).isEqualTo(1);
+    ObjectProperty objectPropertyToChange = versionedObject.getObjectProperties();
     assertThat(objectPropertyToChange.getObjectId()).isEqualTo(versionableObject2.getId());
-    assertThat(objectPropertyToChange.getKey()).isEqualTo(VersionableObject.Fields.property);
-    assertThat(objectPropertyToChange.getValue()).isEqualTo("Ciao-Ciao");
+    List<Property> propertiesResult = objectPropertyToChange.getProperties();
+    assertThat(propertiesResult.size()).isEqualTo(1);
+    assertThat(propertiesResult.get(0).getKey()).isEqualTo(VersionableObject.Fields.property);
+    assertThat(propertiesResult.get(0).getValue()).isEqualTo("Ciao-Ciao");
   }
 
   /**
@@ -119,17 +123,17 @@ public class VersioningEngineTest {
    * Version:        1                 2                  3
    */
   @Test
-  public void shouldJustUpdateAnObjectWhenAttributeNameIsChangedScenario1b(){
+  public void shouldJustUpdateAnObjectWhenAttributeNameIsChangedScenario1b() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
-    List<ObjectProperty> editedAttributes = new ArrayList<>();
+    List<Property> properties = new ArrayList<>();
+    Property property = Property.builder().key(VersionableObject.Fields.property)
+                                .value("Ciao-Ciao").build();
+    properties.add(property);
     ObjectProperty editedObjectProperty =
         ObjectProperty.builder()
-                      .objectId(null)
-                      .key(VersionableObject.Fields.property)
-                      .value("Ciao-Ciao")
+                      .objectId(null).properties(properties)
                       .build();
-    editedAttributes.add(editedObjectProperty);
 
     ObjectProperty toVersioning1_ObjectProperty = buildObjectProperty
         (versionableObject1);
@@ -142,7 +146,8 @@ public class VersioningEngineTest {
 
     //when
     List<VersionedObject> result = versioningEngine.applyVersioning(versionableObject2,
-        editedVersion, editedAttributes, Arrays.asList(toVersioning1, toVersioning2,toVersioning3));
+        editedVersion, editedObjectProperty,
+        Arrays.asList(toVersioning1, toVersioning2, toVersioning3));
 
     //then
     assertThat(result).isNotNull();
@@ -150,13 +155,18 @@ public class VersioningEngineTest {
     assertThat(result.get(0)).isNotNull();
     VersionedObject versionedObject = result.get(0);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
-    //TODO replace me with assert on validFrom and ValidTo
-    assertThat(versionedObject.getObjectProperties()).isNotEmpty();
-    assertThat(versionedObject.getObjectProperties().size()).isEqualTo(1);
-    ObjectProperty objectPropertyToChange = versionedObject.getObjectProperties().get(0);
+    assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject2.getValidFrom());
+    assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject2.getValidTo());
+    assertThat(versionedObject.getObjectProperties().getProperties()).isNotEmpty();
+    assertThat(versionedObject.getObjectProperties().getProperties().size()).isEqualTo(1);
+    ObjectProperty objectPropertyToChange = versionedObject.getObjectProperties();
+    assertThat(objectPropertyToChange).isNotNull();
     assertThat(objectPropertyToChange.getObjectId()).isEqualTo(versionableObject2.getId());
-    assertThat(objectPropertyToChange.getKey()).isEqualTo(VersionableObject.Fields.property);
-    assertThat(objectPropertyToChange.getValue()).isEqualTo("Ciao-Ciao");
+    assertThat(objectPropertyToChange.getProperties().size()).isEqualTo(1);
+    List<Property> propertiesResult = objectPropertyToChange.getProperties();
+    assertThat(propertiesResult.size()).isEqualTo(1);
+    assertThat(propertiesResult.get(0).getKey()).isEqualTo(VersionableObject.Fields.property);
+    assertThat(propertiesResult.get(0).getValue()).isEqualTo("Ciao-Ciao");
   }
 
 
@@ -171,18 +181,17 @@ public class VersioningEngineTest {
    * Version:        1                 2                  3
    */
   @Test
-  public void shouldJustUpdateAnObjectWhenAttributeNameIsChangedScenario1c(){
+  public void shouldJustUpdateAnObjectWhenAttributeNameIsChangedScenario1c() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
-
-    List<ObjectProperty> editedAttributes = new ArrayList<>();
+    List<Property> properties = new ArrayList<>();
+    Property property = Property.builder().key(VersionableObject.Fields.property)
+                                .value("Ciao-Ciao").build();
+    properties.add(property);
     ObjectProperty editedObjectProperty =
         ObjectProperty.builder()
-                      .objectId(null)
-                      .key(VersionableObject.Fields.property)
-                      .value("Ciao-Ciao")
+                      .objectId(null).properties(properties)
                       .build();
-    editedAttributes.add(editedObjectProperty);
 
     ObjectProperty toVersioning1_ObjectProperty = buildObjectProperty(versionableObject1);
     ObjectProperty toVersioning2_ObjectProperty = buildObjectProperty(versionableObject2);
@@ -194,7 +203,8 @@ public class VersioningEngineTest {
 
     //when
     List<VersionedObject> result = versioningEngine.applyVersioning(versionableObject1,
-        editedVersion, editedAttributes, Arrays.asList(toVersioning1, toVersioning2,toVersioning3));
+        editedVersion, editedObjectProperty,
+        Arrays.asList(toVersioning1, toVersioning2, toVersioning3));
 
     //then
     assertThat(result).isNotNull();
@@ -202,13 +212,18 @@ public class VersioningEngineTest {
     assertThat(result.get(0)).isNotNull();
     VersionedObject versionedObject = result.get(0);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
-    //TODO replace me with assert on validFrom and ValidTo
-    assertThat(versionedObject.getObjectProperties()).isNotEmpty();
-    assertThat(versionedObject.getObjectProperties().size()).isEqualTo(1);
-    ObjectProperty objectPropertyToChange = versionedObject.getObjectProperties().get(0);
+    assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject1.getValidFrom());
+    assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject1.getValidTo());
+    assertThat(versionedObject.getObjectProperties().getProperties()).isNotEmpty();
+    assertThat(versionedObject.getObjectProperties().getProperties().size()).isEqualTo(1);
+    ObjectProperty objectPropertyToChange = versionedObject.getObjectProperties();
+    assertThat(objectPropertyToChange).isNotNull();
     assertThat(objectPropertyToChange.getObjectId()).isEqualTo(versionableObject1.getId());
-    assertThat(objectPropertyToChange.getKey()).isEqualTo(VersionableObject.Fields.property);
-    assertThat(objectPropertyToChange.getValue()).isEqualTo("Ciao-Ciao");
+    List<Property> propertiesResult = objectPropertyToChange.getProperties();
+    assertThat(propertiesResult).isNotEmpty();
+    assertThat(propertiesResult.size()).isEqualTo(1);
+    assertThat(propertiesResult.get(0).getKey()).isEqualTo(VersionableObject.Fields.property);
+    assertThat(propertiesResult.get(0).getValue()).isEqualTo("Ciao-Ciao");
   }
 
   private ToVersioning getToVersioning(ObjectProperty toVersioningObjectProperty,
@@ -217,15 +232,20 @@ public class VersioningEngineTest {
                        .objectId(versionableObject3.getId())
                        .versionable(versionableObject3)
                        .objectProperties(
-                           Arrays.asList(toVersioningObjectProperty))
+                           toVersioningObjectProperty)
                        .build();
   }
 
   private ObjectProperty buildObjectProperty(VersionableObject versionableObject1) {
+    List<Property> properties = new ArrayList<>();
+    Property property = Property.builder()
+                                .key(VersionableObject.Fields.property)
+                                .value(versionableObject1.getProperty())
+                                .build();
+    properties.add(property);
     return ObjectProperty.builder()
                          .objectId(versionableObject1.getId())
-                         .key(VersionableObject.Fields.property)
-                         .value(versionableObject1.getProperty())
+                         .properties(properties)
                          .build();
   }
 }
