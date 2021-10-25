@@ -93,7 +93,6 @@ public class VersioningEngine {
                            replaceChangedAttributeWithActualAttribute(changedAttributes,
                                toVersioning.getObjectProperties())
                        )
-                       .versionableObject(actualVersion)
                        .action(VersioningAction.UPDATE)
                        .build();
     return versionedObjectToUpdate;
@@ -131,7 +130,6 @@ public class VersioningEngine {
                              replaceChangedAttributeWithActualAttribute(changedAttributes,
                                  toVersioning.getObjectProperties())
                          )
-                         .versionableObject(firstItemObjectToVersioning.getVersionable())
                          .action(VersioningAction.UPDATE)
                          .build();
       versionedObjects.add(versionedObjectToUpdate);
@@ -152,7 +150,6 @@ public class VersioningEngine {
                              .validFrom(toVersioning.getVersionable().getValidFrom())
                              .validTo(validFrom.minusDays(1))
                              .objectProperties(toVersioning.getObjectProperties())
-                             .versionableObject(toVersioning.getVersionable())
                              .action(VersioningAction.UPDATE)
                              .build();
           versionedObjects.add(updatedVersion);
@@ -160,7 +157,6 @@ public class VersioningEngine {
           VersionedObject newVersion =
               VersionedObject.builder()
                              .objectId(null)
-                             .versionableObject(toVersioning.getVersionable())
                              .validFrom(editedVersion.getValidFrom())
                              .validTo(toVersioning.getVersionable().getValidTo())
                              .objectProperties(
