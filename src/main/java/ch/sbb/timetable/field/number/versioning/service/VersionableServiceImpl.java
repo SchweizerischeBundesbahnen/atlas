@@ -26,9 +26,7 @@ public class VersionableServiceImpl implements VersionableService {
       List<T> currentVersions) {
 
     //2. get edited properties from editedVersion
-    Entity editedEntity = convertToEditedEntity(versionableProperties,
-        current.getId(),
-        edited);
+    Entity editedEntity = convertToEditedEntity(versionableProperties, current.getId(), edited);
 
     //3. collect all versions to versioning in ToVersioning object
     List<ToVersioning> objectsToVersioning = getAllObjectsToVersioning(
@@ -39,19 +37,7 @@ public class VersionableServiceImpl implements VersionableService {
     return versionedObjects;
   }
 
-  <T extends Versionable> Entity buildEntity(
-      List<String> versionableProperties, T version) {
-    ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
-        version);
-
-    List<Property> properties = new ArrayList<>();
-    for (String fieldName : versionableProperties) {
-      properties.add(buildProperty(fieldName, propertyAccessor.getPropertyValue(fieldName)));
-    }
-    return buildEntity(version.getId(), properties);
-  }
-
-  <T extends Versionable> Entity convertToEditedEntity(
+  private <T extends Versionable> Entity convertToEditedEntity(
       List<String> versionableProperties,
       Long actualVersionId,
       T editedVersion) {
@@ -82,6 +68,19 @@ public class VersionableServiceImpl implements VersionableService {
     }
     return objectsToVersioning;
   }
+
+  private <T extends Versionable> Entity buildEntity(
+      List<String> versionableProperties, T version) {
+    ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
+        version);
+
+    List<Property> properties = new ArrayList<>();
+    for (String fieldName : versionableProperties) {
+      properties.add(buildProperty(fieldName, propertyAccessor.getPropertyValue(fieldName)));
+    }
+    return buildEntity(version.getId(), properties);
+  }
+
 
   private Entity buildEntity(Long actualVersionId, List<Property> properties) {
     return Entity.builder()
