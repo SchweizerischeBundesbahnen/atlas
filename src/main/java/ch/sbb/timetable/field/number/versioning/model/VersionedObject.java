@@ -17,7 +17,7 @@ public class VersionedObject { //extend VersionCore
 
   private LocalDate validTo;
 
-  private final List<AttributeObject> attributeObjects;
+  private final List<ObjectProperty> objectProperties;
 
   private final Versionable versionableObject;
 
