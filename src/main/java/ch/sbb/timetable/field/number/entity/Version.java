@@ -36,7 +36,7 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 public class Version implements Versionable {
 
-  public static List<String> VERSIONABLE_ATTRIBUTES = List.of(Fields.name, Fields.number,
+  public static List<String> VERSIONABLE_PROPERTIES = List.of(Fields.name, Fields.number,
       Fields.swissTimetableFieldNumber, Fields.ttfnid, Fields.businessOrganisation, Fields.comment, Fields.nameCompact);
 
   private static final String VERSION_SEQ = "timetable_field_number_version_seq";
