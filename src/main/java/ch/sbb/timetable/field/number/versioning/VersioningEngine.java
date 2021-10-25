@@ -10,7 +10,6 @@ import ch.sbb.timetable.field.number.versioning.service.VersioningWhenOnlyValidF
 import ch.sbb.timetable.field.number.versioning.service.VersioningWhenOnlyValidToIsEdited;
 import ch.sbb.timetable.field.number.versioning.service.VersioningWhenValidFromAndValidToAreNotEdited;
 import ch.sbb.timetable.field.number.versioning.service.VersioningWhenValidToAndValidFromAreEdited;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

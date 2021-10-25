@@ -25,8 +25,7 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
     objectsToVersioning.sort(
         Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
 
-    List<VersionedObject> versionedObjects = new ArrayList<>()
-        ;
+    List<VersionedObject> versionedObjects = new ArrayList<>();
     //check if ValidFrom is Before the currentVersion. The versionedObjects is sorted, this means that
     //we have to check this condition on the first item
     ToVersioning firstItemObjectToVersioning = objectsToVersioning.get(0);
@@ -46,7 +45,7 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
         log.info("ValidFrom: {} - ValidTo {}", toVersioning.getVersionable().getValidFrom(),
             toVersioning.getVersionable().getValidTo());
         if (validFrom.isEqual(toVersioning.getVersionable().getValidFrom())) {
-          //Should not here come because this means ValidFrom is not edited
+          throw new IllegalStateException("Should not here come because this means ValidFrom is not edited");
         } else if (validFrom.isAfter(toVersioning.getVersionable().getValidFrom())) {
           //1. we need to
           //   a. add a new Version after the actual Version
