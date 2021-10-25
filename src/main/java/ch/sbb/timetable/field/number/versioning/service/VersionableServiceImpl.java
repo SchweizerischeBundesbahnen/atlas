@@ -33,7 +33,7 @@ public class VersionableServiceImpl implements VersionableService {
     List<ToVersioning> objectsToVersioning = new ArrayList<>();
     for (Versionable currentVersion : currentVersions) {
       objectsToVersioning.add(
-          new ToVersioning(currentVersion.getId(), currentVersion,
+          new ToVersioning(currentVersion,
               buildEntity(versionableProperties, currentVersion)));
     }
 

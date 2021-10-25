@@ -81,7 +81,7 @@ public class VersioningEngine {
     //duplicate
     ToVersioning toVersioning = objectsToVersioning
         .stream()
-        .filter(versioning -> versioning.getObjectId().equals(current.getId()))
+        .filter(versioning -> versioning.getEntity().getId().equals(current.getId()))
         .findFirst()
         .orElse(null);
 
@@ -116,7 +116,7 @@ public class VersioningEngine {
       //duplicate
       ToVersioning toVersioning = objectsToVersioning
           .stream()
-          .filter(versioning -> versioning.getObjectId().equals(currentVersion.getId()))
+          .filter(versioning -> versioning.getEntity().getId().equals(currentVersion.getId()))
           .findFirst()
           .orElse(null);
 
