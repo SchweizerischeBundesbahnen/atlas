@@ -14,5 +14,5 @@ public class ToVersioning {
 
   private Versionable versionable;
 
-  private List<AttributeObject> attributeObjects;
+  private List<ObjectProperty> objectProperties;
 }

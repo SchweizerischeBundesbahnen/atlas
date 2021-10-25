@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class AttributeObject {
+public class ObjectProperty {
 
   private Long objectId;
 
