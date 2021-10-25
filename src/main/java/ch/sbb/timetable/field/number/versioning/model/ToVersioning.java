@@ -9,8 +9,6 @@ import lombok.Data;
 @Builder
 public class ToVersioning {
 
-  private Long objectId;
-
   private Versionable versionable;
 
   private Entity entity;
