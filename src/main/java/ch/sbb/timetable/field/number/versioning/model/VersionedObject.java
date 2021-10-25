@@ -10,8 +10,6 @@ import lombok.Data;
 @Builder
 public class VersionedObject {
 
-  private final Long objectId;
-
   private LocalDate validFrom;
 
   private LocalDate validTo;
