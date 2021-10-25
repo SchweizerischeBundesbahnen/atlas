@@ -93,7 +93,7 @@ public class VersionService {
       if (VersioningAction.DELETE.equals(versionedObject.getAction())) {
         //delete existing version
         log(versionedObject);
-        versionRepository.deleteById(versionedObject.getObjectId());
+        versionRepository.deleteById(versionedObject.getEntity().getId());
       }
     }
     return versionedObjects;
@@ -101,9 +101,8 @@ public class VersionService {
 
   private Version convertVersionedObjectToVersion(VersionedObject versionedObject) {
     Entity entity = versionedObject.getEntity();
-    Long objectId = versionedObject.getObjectId();
     Version version = new Version();
-    version.setId(objectId);
+    version.setId(entity.getId());
     version.setValidFrom(versionedObject.getValidFrom());
     version.setValidTo(versionedObject.getValidTo());
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
@@ -116,7 +115,7 @@ public class VersionService {
 
   private void log(VersionedObject versionedObject) {
     log.info("Version with id={} was {}D. VersionedObject={}",
-        versionedObject.getObjectId(),
+        versionedObject.getEntity().getId(),
         versionedObject.getAction(),
         versionedObject);
   }
