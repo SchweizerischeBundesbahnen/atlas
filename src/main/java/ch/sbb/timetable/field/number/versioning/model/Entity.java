@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class ObjectProperty {
+public class Entity {
 
-  private Long objectId;
+  private Long id;
 
   private List<Property> properties;
 

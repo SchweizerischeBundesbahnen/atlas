@@ -16,7 +16,7 @@ public class VersionedObject {
 
   private LocalDate validTo;
 
-  private final ObjectProperty objectProperties;
+  private final Entity entity;
 
   private final VersioningAction action;
 

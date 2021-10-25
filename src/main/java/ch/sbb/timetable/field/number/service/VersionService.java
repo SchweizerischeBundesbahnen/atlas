@@ -5,7 +5,7 @@ import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE_PROPERTIE
 
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
-import ch.sbb.timetable.field.number.versioning.model.ObjectProperty;
+import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
@@ -100,7 +100,7 @@ public class VersionService {
   }
 
   private Version convertVersionedObjectToVersion(VersionedObject versionedObject) {
-    ObjectProperty  objectProperties = versionedObject.getObjectProperties();
+    Entity entity = versionedObject.getEntity();
     Long objectId = versionedObject.getObjectId();
     Version version = new Version();
     version.setId(objectId);
@@ -108,7 +108,7 @@ public class VersionService {
     version.setValidTo(versionedObject.getValidTo());
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         version);
-    for (Property property : objectProperties.getProperties()) {
+    for (Property property : entity.getProperties()) {
       propertyAccessor.setPropertyValue(property.getKey(), property.getValue());
     }
     return version;
