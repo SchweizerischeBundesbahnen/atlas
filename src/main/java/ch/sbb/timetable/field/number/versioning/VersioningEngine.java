@@ -87,7 +87,6 @@ public class VersioningEngine {
 
     VersionedObject versionedObjectToUpdate =
         VersionedObject.builder()
-                       .objectId(current.getId())
                        .validFrom(current.getValidFrom())
                        .validTo(current.getValidTo())
                        .entity(
@@ -101,7 +100,7 @@ public class VersioningEngine {
 
   private List<VersionedObject> getVersionedObjectWhenOnlyValidFromIsEdited(
       Versionable editedVersion,
-      Versionable actualVersion,
+      Versionable currentVersion,
       List<ToVersioning> objectsToVersioning,
       Entity editedEntity) {
 
@@ -110,25 +109,24 @@ public class VersioningEngine {
     objectsToVersioning.sort(
         Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    //check if ValidFrom is Before the actualVersion. The versionedObjects is sorted, this means that
+    //check if ValidFrom is Before the currentVersion. The versionedObjects is sorted, this means that
     //we have to check this condition on the first item
     ToVersioning firstItemObjectToVersioning = objectsToVersioning.get(0);
     if (validFrom.isBefore(firstItemObjectToVersioning.getVersionable().getValidFrom())) {
       //duplicate
       ToVersioning toVersioning = objectsToVersioning
           .stream()
-          .filter(versioning -> versioning.getObjectId().equals(actualVersion.getId()))
+          .filter(versioning -> versioning.getObjectId().equals(currentVersion.getId()))
           .findFirst()
           .orElse(null);
 
       VersionedObject versionedObjectToUpdate =
           VersionedObject.builder()
-                         .objectId(firstItemObjectToVersioning.getObjectId())
                          .validFrom(validFrom)
                          .validTo(firstItemObjectToVersioning.getVersionable().getValidTo())
                          .entity(firstItemObjectToVersioning.getEntity())
                          .entity(
-                             replaceChangedAttributeWithActualAttribute(null, editedEntity,
+                             replaceChangedAttributeWithActualAttribute(currentVersion.getId(), editedEntity,
                                  toVersioning.getEntity())
                          )
                          .action(VersioningAction.UPDATE)
@@ -147,7 +145,6 @@ public class VersioningEngine {
           //   b. update the actual Version validTo = validFrom.minusDays(1)
           VersionedObject updatedVersion =
               VersionedObject.builder()
-                             .objectId(toVersioning.getObjectId())
                              .validFrom(toVersioning.getVersionable().getValidFrom())
                              .validTo(validFrom.minusDays(1))
                              .entity(toVersioning.getEntity())
@@ -157,7 +154,6 @@ public class VersioningEngine {
           //Create VersionObject NEW
           VersionedObject newVersion =
               VersionedObject.builder()
-                             .objectId(null)
                              .validFrom(editedVersion.getValidFrom())
                              .validTo(toVersioning.getVersionable().getValidTo())
                              .entity(
