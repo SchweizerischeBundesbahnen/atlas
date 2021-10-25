@@ -24,24 +24,20 @@ public class VersionableServiceImpl implements VersionableService {
       List<String> versionableProperties, Versionable current,
       Versionable edited,
       List<T> currentVersions) {
+
     //2. get edited properties from editedVersion
-    Entity editedEntity = getEditedEntity(versionableProperties,
+    Entity editedEntity = convertToEditedEntity(versionableProperties,
         current.getId(),
         edited);
 
     //3. collect all versions to versioning in ToVersioning object
-    List<ToVersioning> objectsToVersioning = new ArrayList<>();
-    for (Versionable currentVersion : currentVersions) {
-      objectsToVersioning.add(
-          new ToVersioning(currentVersion,
-              buildEntity(versionableProperties, currentVersion)));
-    }
+    List<ToVersioning> objectsToVersioning = getAllObjectsToVersioning(
+        versionableProperties, currentVersions);
 
     List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(current, edited,
         editedEntity, objectsToVersioning);
     return versionedObjects;
   }
-
 
   <T extends Versionable> Entity buildEntity(
       List<String> versionableProperties, T version) {
@@ -50,23 +46,16 @@ public class VersionableServiceImpl implements VersionableService {
 
     List<Property> properties = new ArrayList<>();
     for (String fieldName : versionableProperties) {
-      Property property = Property.builder()
-                               .key(fieldName)
-                               .value(String.valueOf(propertyAccessor.getPropertyValue(fieldName)))
-                               .build();
-      properties.add(property);
+      properties.add(buildProperty(fieldName, propertyAccessor.getPropertyValue(fieldName)));
     }
-    Entity entity = Entity.builder()
-                          .id(version.getId())
-                          .properties(properties)
-                          .build();
-    return entity;
+    return buildEntity(version.getId(), properties);
   }
 
-  <T extends Versionable> Entity getEditedEntity(
+  <T extends Versionable> Entity convertToEditedEntity(
       List<String> versionableProperties,
       Long actualVersionId,
       T editedVersion) {
+
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         editedVersion);
 
@@ -74,18 +63,38 @@ public class VersionableServiceImpl implements VersionableService {
     for (String fieldName : versionableProperties) {
       Object propertyValue = propertyAccessor.getPropertyValue(fieldName);
       if (propertyValue != null) {
-        Property property = Property.builder()
-                                    .key(fieldName)
-                                    .value(String.valueOf(propertyValue))
-                                    .build();
-        properties.add(property);
+        properties.add(buildProperty(fieldName, propertyValue));
       }
     }
-    Entity entity = Entity.builder()
-                          .id(actualVersionId)
-                          .properties(properties)
-                          .build();
-    return entity;
+    return buildEntity(actualVersionId, properties);
+  }
+
+  private <T extends Versionable> List<ToVersioning> getAllObjectsToVersioning(
+      List<String> versionableProperties, List<T> currentVersions) {
+    List<ToVersioning> objectsToVersioning = new ArrayList<>();
+    for (Versionable currentVersion : currentVersions) {
+      objectsToVersioning.add(
+          ToVersioning.builder()
+                      .versionable(currentVersion)
+                      .entity(buildEntity(versionableProperties, currentVersion))
+                      .build()
+      );
+    }
+    return objectsToVersioning;
+  }
+
+  private Entity buildEntity(Long actualVersionId, List<Property> properties) {
+    return Entity.builder()
+                 .id(actualVersionId)
+                 .properties(properties)
+                 .build();
+  }
+
+  private Property buildProperty(String fieldName, Object propertyValue) {
+    return Property.builder()
+                   .key(fieldName)
+                   .value(String.valueOf(propertyValue))
+                   .build();
   }
 
 }
