@@ -6,6 +6,7 @@ import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.enumaration.SublineType;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,7 @@ public class SublineVersionRepositoryTest {
   void setUpLineVersion() {
     sublineVersion = sublineVersionRepository.save(SublineVersion.builder()
                                                                  .status(Status.ACTIVE)
+                                                                 .type(SublineType.TECHNICAL)
                                                                  .paymentType(
                                                                      PaymentType.INTERNATIONAL)
                                                                  .shortName("shortName")
@@ -41,6 +43,8 @@ public class SublineVersionRepositoryTest {
                                                                  .businessOrganisation(
                                                                      "businessOrganisation")
                                                                  .swissLineNumber("swissLineNumber")
+                                                                 .swissSublineNumber(
+                                                                     "swissSublineNumber")
                                                                  .build());
   }
 
