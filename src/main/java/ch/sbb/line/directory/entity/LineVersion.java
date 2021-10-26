@@ -95,7 +95,7 @@ public class LineVersion {
   @Size(max = 255)
   private String icon;
 
-  @Size(max = 500)
+  @Size(max = 255)
   private String description;
 
   @NotNull
