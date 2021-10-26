@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.line.directory.api.SequenctialValidRange;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -39,7 +40,7 @@ import org.hibernate.annotations.GeneratorType;
 @ToString
 @Builder
 @Entity(name = "line_version")
-public class LineVersion {
+public class LineVersion implements SequenctialValidRange {
 
   private static final String VERSION_SEQ = "line_version_seq";
 
