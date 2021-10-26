@@ -200,15 +200,15 @@ public class VersionServiceTest {
 
 
   /** Which scenario?
-   * NEU:                |__________|
-   * IST:       |-------------------|----------------------|
-   * Version:         1                 2
+   * NEU:       |______________________|
+   * IST:          |-------------------|----------------------|
+   * Version:               1                   2
    *
-   * RESULTAT:           |---------|---------------------|
-   * Version:                1         2
+   * RESULTAT:  |----------------------|---------------------|
+   * Version:               1                   2
    */
   @Test
-  public void shouldUpdateLastTemporalVersionWhenValidToIsModifiedAndItIsAfterLastTemporalVersion() {
+  public void validFromEditedIsBeforeTheCurrentValidFrom() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
