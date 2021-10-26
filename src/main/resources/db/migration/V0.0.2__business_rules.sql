@@ -9,6 +9,9 @@ ALTER TABLE subline_version
 ALTER TABLE line_version
     ALTER COLUMN description TYPE VARCHAR(255);
 
+ALTER TABLE subline_version
+    ALTER COLUMN description TYPE VARCHAR(255);
+
 
 -- Mandatory for Line
 ALTER TABLE line_version
