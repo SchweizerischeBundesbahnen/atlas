@@ -1,13 +1,10 @@
-package ch.sbb.timetable.field.number.versioning.service;
+package ch.sbb.timetable.field.number.versioning.version;
 
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
-import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
