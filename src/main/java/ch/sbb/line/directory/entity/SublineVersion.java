@@ -62,7 +62,7 @@ public class SublineVersion {
   @Enumerated(EnumType.STRING)
   private SublineType type;
 
-  @Size(max = 500)
+  @Size(max = 255)
   private String description;
 
   @Size(max = 50)
