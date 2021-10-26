@@ -19,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,7 @@ public class LineVersion {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
+  @NotBlank
   @Size(max = 50)
   private String swissLineNumber;
 
@@ -104,7 +106,7 @@ public class LineVersion {
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDate validTo;
 
-  @NotNull
+  @NotBlank
   @Size(max = 50)
   private String businessOrganisation;
 
