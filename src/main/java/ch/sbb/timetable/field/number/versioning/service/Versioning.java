@@ -87,6 +87,8 @@ public abstract class Versioning {
     return Property
         .builder()
         .key(currentProperty.getKey())
+        .oneToMany(editedProperty.getOneToMany())
+        .oneToOne(editedProperty.getOneToOne())
         .value(editedProperty.getValue())
         .build();
   }
