@@ -87,7 +87,7 @@ class SublineVersionModelTest {
     // Then
     assertThat(constraintViolations).hasSize(1);
     assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(
-        "validToAtLeastValidFrom");
+        "validToEqualOrGreaterThenValidFrom");
   }
 
   private static SublineVersionModelBuilder sublineVersionModel() {
