@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Schema(name = "SublineVersion")
-public class SublineVersionModel {
+public class SublineVersionModel implements SequenctialValidRange {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY)
   private Long id;
