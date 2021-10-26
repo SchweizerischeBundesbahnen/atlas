@@ -6,6 +6,7 @@ import ch.sbb.line.directory.enumaration.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Schema(name = "LineVersion")
-public class LineVersionModel {
+public class LineVersionModel implements SequenctialValidRange {
 
   private static final String HEX_COLOR_PATTERN = "^#([a-fA-F0-9]{6})$";
   private static final String CMYK_COLOR_PATTERN = "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$";
@@ -102,6 +103,7 @@ public class LineVersionModel {
   private String businessOrganisation;
 
   @Schema(description = "Comment", example = "Comment regarding the line")
+  @Size(max = 1500)
   private String comment;
 
 }

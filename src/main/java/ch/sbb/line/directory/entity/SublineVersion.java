@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.line.directory.api.SequenctialValidRange;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
@@ -34,7 +35,7 @@ import org.hibernate.annotations.GeneratorType;
 @ToString
 @Builder
 @Entity(name = "subline_version")
-public class SublineVersion {
+public class SublineVersion implements SequenctialValidRange {
 
   private static final String SUBLINE_VERSION_SEQ = "subline_version_seq";
 
