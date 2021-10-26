@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +22,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
+@FieldNameConstants
 @Entity(name = "timetable_field_line_relation")
 public class LineRelation {
 

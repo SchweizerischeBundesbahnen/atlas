@@ -3,11 +3,14 @@ package ch.sbb.timetable.field.number.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.timetable.field.number.IntegrationTest;
+import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,12 +79,15 @@ public class VersionServiceTest {
   @Test
   public void scenario1a() {
     //given
+    version2.setLineRelations(new HashSet<>(
+        Set.of(LineRelation.builder().slnid(TTFNID).version(version2).build(),
+            LineRelation.builder().slnid(TTFNID).version(version2).build())));
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
 
     Version editedVersion = new Version();
     editedVersion.setName("FPFN Name <CHANGED>");
-
+    editedVersion.getLineRelations().add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version2).build());
     //when
     versionService.updateVersion(version2, editedVersion);
     List<Version> result = versionRepository.getAllVersionsVersioned(version2.getTtfnid());
@@ -101,6 +107,12 @@ public class VersionServiceTest {
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name <CHANGED>");
+    assertThat(secondTemporalVersion.getLineRelations()).isNotEmpty();
+    assertThat(secondTemporalVersion.getLineRelations().size()).isEqualTo(1);
+    Set<LineRelation> lineRelations = secondTemporalVersion.getLineRelations();
+    LineRelation lineRelation = lineRelations.stream().iterator().next();
+    assertThat(lineRelation).isNotNull();
+    assertThat(lineRelation.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
   }
 
   /**

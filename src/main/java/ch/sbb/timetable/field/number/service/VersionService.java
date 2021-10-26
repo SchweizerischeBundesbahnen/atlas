@@ -1,8 +1,10 @@
 package ch.sbb.timetable.field.number.service;
 
 
+import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE;
 import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE_PROPERTIES;
 
+import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
@@ -10,8 +12,11 @@ import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import ch.sbb.timetable.field.number.versioning.service.VersionableService;
+import com.fasterxml.jackson.databind.annotation.JsonAppend.Prop;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.ConfigurablePropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
@@ -68,7 +73,7 @@ public class VersionService {
         currentVersion.getTtfnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(
-        VERSIONABLE_PROPERTIES,currentVersion,
+        VERSIONABLE,currentVersion,
         editedVersion, currentVersions);
 
     for (VersionedObject versionedObject : versionedObjects) {
@@ -108,7 +113,25 @@ public class VersionService {
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         version);
     for (Property property : entity.getProperties()) {
-      propertyAccessor.setPropertyValue(property.getKey(), property.getValue());
+      if(property.hasOneToOneRelation()){
+        //parse and build one to one relation
+      }else if(property.hasOneToManyRelation()){
+        Set<LineRelation> lineRelations = new HashSet<>();
+        List<Entity> oneToManyEntities = property.getOneToMany();
+        for (Entity entityRelation: oneToManyEntities){
+          LineRelation lineRelation = new LineRelation();
+          ConfigurablePropertyAccessor lineRelationPropertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
+              lineRelation);
+          for(Property propertyRelation: entityRelation.getProperties()){
+            lineRelationPropertyAccessor.setPropertyValue(propertyRelation.getKey(),propertyRelation.getValue());
+          }
+          lineRelations.add(lineRelation);
+        }
+        version.setLineRelations(lineRelations);
+
+      }else{
+        propertyAccessor.setPropertyValue(property.getKey(), property.getValue());
+      }
     }
     return version;
   }
