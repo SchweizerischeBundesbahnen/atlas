@@ -37,7 +37,9 @@ public class ConverterHelper {
         Property extractOneToManyRelationProperty = extractOneToManyRelationProperty(
             propertyAccessor,
             property);
-        properties.add(extractOneToManyRelationProperty);
+        if(extractOneToManyRelationProperty.hasOneToManyRelation()){
+          properties.add(extractOneToManyRelationProperty);
+        }
       }
     }
     return buildEntity(actualVersionId, properties);
@@ -73,7 +75,9 @@ public class ConverterHelper {
         Property extractOneToManyRelationProperty = extractOneToManyRelationProperty(
             propertyAccessor,
             property);
-        properties.add(extractOneToManyRelationProperty);
+        if(extractOneToManyRelationProperty.hasOneToManyRelation()){
+          properties.add(extractOneToManyRelationProperty);
+        }
       }
     }
     return buildEntity(version.getId(), properties);
