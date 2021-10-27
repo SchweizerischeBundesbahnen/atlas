@@ -4,6 +4,8 @@ import ch.sbb.line.directory.api.SequenctialValidRange;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.line.directory.swiss.number.SwissNumber;
+import ch.sbb.line.directory.swiss.number.SwissNumberDescriptor;
 import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
@@ -24,6 +26,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GeneratorType;
@@ -34,8 +37,9 @@ import org.hibernate.annotations.GeneratorType;
 @Setter
 @ToString
 @Builder
+@FieldNameConstants
 @Entity(name = "subline_version")
-public class SublineVersion implements SequenctialValidRange {
+public class SublineVersion implements SequenctialValidRange, SwissNumber {
 
   private static final String SUBLINE_VERSION_SEQ = "subline_version_seq";
 
@@ -101,4 +105,9 @@ public class SublineVersion implements SequenctialValidRange {
   private Date editionDate;
 
   private String editor;
+
+  @Override
+  public SwissNumberDescriptor getSwissNumber() {
+    return new SwissNumberDescriptor(Fields.swissSublineNumber, this::getSwissSublineNumber);
+  }
 }
