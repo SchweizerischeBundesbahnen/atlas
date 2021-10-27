@@ -54,7 +54,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
         // newVersion.setValidFrom(edited.validFrom())
         // newVersion.setValidTo(edited.validTo())
         // copy all properties from currentVersion and replace them with the edited properties
-        Entity entityToAddAtEnd = replaceChangedAttributeWithActualAttribute(editedEntity,
+        Entity entityToAddAtEnd = replaceEditedPropertiesWithCurrentProperties(editedEntity,
             toVersioning.getEntity());
         VersionedObject toCreateVersionedObject = buildVersionedObjectToCreate(editedValidFrom,
             editedValidTo, entityToAddAtEnd);

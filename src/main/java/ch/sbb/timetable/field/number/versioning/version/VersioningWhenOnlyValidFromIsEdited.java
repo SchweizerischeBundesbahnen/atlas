@@ -31,7 +31,7 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
     ToVersioning firstItemObjectToVersioning = objectsToVersioning.get(0);
     if (validFrom.isBefore(firstItemObjectToVersioning.getVersionable().getValidFrom())) {
       ToVersioning toVersioning = findObjectToVersioning(currentVersion, objectsToVersioning);
-      Entity entity = replaceChangedAttributeWithActualAttribute(editedEntity,
+      Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
           toVersioning.getEntity());
       VersionedObject versionedObjectToUpdate = buildVersionedObjectToUpdate(validFrom,
           firstItemObjectToVersioning.getVersionable().getValidTo(), entity);
@@ -67,7 +67,7 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
   //TODO: remove duplication
   private VersionedObject createNewVersion(Versionable editedVersion, Entity editedEntity,
       ToVersioning toVersioning) {
-    Entity entity = replaceChangedAttributeWithActualAttribute(editedEntity,
+    Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
         toVersioning.getEntity());
 
     VersionedObject newVersion = buildVersionedObjectToCreate(editedVersion.getValidFrom(),

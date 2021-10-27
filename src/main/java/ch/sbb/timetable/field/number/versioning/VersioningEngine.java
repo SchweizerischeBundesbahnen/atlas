@@ -31,11 +31,10 @@ public class VersioningEngine {
     //3. collect all versions to versioning in ToVersioning object
     List<ToVersioning> objectsToVersioning = ConverterHelper.convertAllObjectsToVersioning(
         versionableProperties, currentVersions);
-
-    List<VersionedObject> versionedObjects = new ArrayList<>();
-
     //Temporal sort objects versioning
     objectsToVersioning.sort(Comparator.comparing(o -> o.getVersionable().getValidFrom()));
+
+    List<VersionedObject> versionedObjects = new ArrayList<>();
 
     Versioning versioning;
     //validFrom and validTo are not modified
