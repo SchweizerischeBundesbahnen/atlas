@@ -25,8 +25,8 @@ public abstract class Versioning {
     throw new RuntimeException("You have to implement me!!");
   }
 
-  protected Entity replaceChangedAttributeWithActualAttribute(Long objectId,
-      Entity editedEntity, Entity currentEntity) {
+  protected Entity replaceChangedAttributeWithActualAttribute(Entity editedEntity,
+      Entity currentEntity) {
 
     //Copy currentEntity
     List<Property> properties = new ArrayList<>(currentEntity.getProperties());
@@ -46,7 +46,7 @@ public abstract class Versioning {
 
     }
     Entity entity = Entity.builder()
-                          .id(objectId)
+                          .id(currentEntity.getId())
                           .properties(properties)
                           .build();
     return entity;
