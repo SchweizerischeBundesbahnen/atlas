@@ -34,8 +34,6 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
       Entity entity = replaceChangedAttributeWithActualAttribute(currentVersion.getId(),
           editedEntity,
           toVersioning.getEntity());
-      buildVersionedObjectToUpdate(validFrom,
-          firstItemObjectToVersioning.getVersionable().getValidTo(), entity);
       VersionedObject versionedObjectToUpdate = buildVersionedObjectToUpdate(validFrom,
           firstItemObjectToVersioning.getVersionable().getValidTo(), entity);
       versionedObjects.add(versionedObjectToUpdate);
