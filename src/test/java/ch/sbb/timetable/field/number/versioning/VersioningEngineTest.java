@@ -2,10 +2,13 @@ package ch.sbb.timetable.field.number.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.timetable.field.number.versioning.VersioningEngineTest.VersionableObject.Fields;
+import ch.sbb.timetable.field.number.versioning.VersioningEngineTest.VersionableObject.Relation;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
-import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
+import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
+import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import java.time.LocalDate;
@@ -25,11 +28,35 @@ public class VersioningEngineTest {
   @AllArgsConstructor
   @Builder
   @FieldNameConstants
-  private static class VersionableObject implements Versionable {
+  public static class VersionableObject implements Versionable {
+
+    public static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+
+    static {
+      VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.property).relationType(
+          RelationType.NONE).build());
+      VERSIONABLE.add(
+          VersionableProperty.builder().fieldName(Fields.oneToManyRelation).relationType(
+              RelationType.ONE_TO_MANY).relationsFields(
+              List.of(Relation.Fields.id, Relation.Fields.value)
+          ).build());
+    }
+
     private LocalDate validFrom;
     private LocalDate validTo;
     private Long id;
     private String property;
+    private List<Relation> oneToManyRelation;
+
+    @Data
+    @AllArgsConstructor
+    @Builder
+    @FieldNameConstants
+    public static class Relation {
+
+      private Long id;
+      private String value;
+    }
   }
 
   private final VersioningEngine versioningEngine = new VersioningEngine();
@@ -37,6 +64,8 @@ public class VersioningEngineTest {
   private VersionableObject versionableObject1;
   private VersionableObject versionableObject2;
   private VersionableObject versionableObject3;
+  private Relation relation1;
+  private Relation relation2;
 
   @BeforeEach
   public void init() {
@@ -47,6 +76,7 @@ public class VersioningEngineTest {
         .validTo(LocalDate.of(2021, 12, 31))
         .property("Ciao1")
         .build();
+
     versionableObject2 = VersionableObject
         .builder()
         .id(2L)
@@ -76,24 +106,26 @@ public class VersioningEngineTest {
   @Test
   public void shouldJustUpdateAnObjectWhenAttributeNameIsChangedScenario1a() {
     //given
-    VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
-    List<Property> properties = new ArrayList<>();
-    Property property = Property.builder().key(VersionableObject.Fields.property)
-                                .value("Ciao-Ciao").build();
-    properties.add(property);
-    Entity editedEntity =
-        Entity.builder()
-              .id(null).properties(properties)
-              .build();
-    Entity toVersioning1_Entity = buildObjectProperty(versionableObject1);
-    Entity toVersioning2_Entity = buildObjectProperty(versionableObject2);
+    relation1 = Relation.builder().id(1L).value("value1").build();
+    relation2 = Relation.builder().id(2L).value("value2").build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(2L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .property("Ciao1")
+        .oneToManyRelation(List.of(relation1, relation2))
+        .build();
 
-    ToVersioning toVersioning1 = getToVersioning(toVersioning1_Entity, versionableObject1);
-    ToVersioning toVersioning2 = getToVersioning(toVersioning2_Entity, versionableObject2);
+    VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
+    Relation editedRelation = Relation.builder().id(3L).value("value-3-changed").build();
+    editedVersion.setOneToManyRelation(List.of(editedRelation));
 
     //when
-    List<VersionedObject> result = versioningEngine.applyVersioning(versionableObject2,
-        editedVersion, editedEntity, Arrays.asList(toVersioning1, toVersioning2));
+    List<VersionedObject> result = versioningEngine.applyVersioning(
+        VersionableObject.VERSIONABLE,
+        versionableObject2,
+        editedVersion, Arrays.asList(versionableObject1, versionableObject2));
 
     //then
     assertThat(result).isNotNull();
@@ -103,14 +135,41 @@ public class VersioningEngineTest {
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
     assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject2.getValidFrom());
     assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject2.getValidTo());
-    assertThat(versionedObject.getEntity().getProperties()).isNotEmpty();
-    assertThat(versionedObject.getEntity().getProperties().size()).isEqualTo(1);
     Entity entityToChange = versionedObject.getEntity();
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
+    assertThat(entityToChange .getProperties()).isNotEmpty();
     List<Property> propertiesResult = entityToChange.getProperties();
-    assertThat(propertiesResult.size()).isEqualTo(1);
-    assertThat(propertiesResult.get(0).getKey()).isEqualTo(VersionableObject.Fields.property);
-    assertThat(propertiesResult.get(0).getValue()).isEqualTo("Ciao-Ciao");
+    assertThat(propertiesResult.size()).isEqualTo(2);
+    Property property1Result = propertiesResult.stream()
+                                         .filter(
+                                             property -> Fields.property.equals(property.getKey()))
+                                         .findFirst()
+                                         .orElse(null);
+    assertThat(property1Result).isNotNull();
+    assertThat(property1Result.getKey()).isEqualTo(VersionableObject.Fields.property);
+    assertThat(property1Result.getValue()).isEqualTo("Ciao-Ciao");
+
+    Property property2Result = propertiesResult.stream()
+                                         .filter(
+                                             property -> Fields.oneToManyRelation.equals(property.getKey()))
+                                         .findFirst()
+                                         .orElse(null);
+    assertThat(property2Result).isNotNull();
+    assertThat(property2Result.getKey()).isEqualTo(VersionableObject.Fields.oneToManyRelation);
+    assertThat(property2Result.hasOneToManyRelation()).isTrue();
+    List<Entity> oneToManyRelation = property2Result.getOneToMany();
+    assertThat(oneToManyRelation).isNotEmpty();
+    assertThat(oneToManyRelation.size()).isEqualTo(1);
+    Entity entityRelation = oneToManyRelation.get(0);
+    assertThat(entityRelation).isNotNull();
+    assertThat(entityRelation.getId()).isEqualTo(3L);
+    List<Property> entityRelationProperties = entityRelation.getProperties();
+    assertThat(entityRelationProperties).isNotEmpty();
+    assertThat(entityRelationProperties.size()).isEqualTo(1);
+    Property entityRelationProperty = entityRelationProperties.get(0);
+    assertThat(entityRelationProperty).isNotNull();
+    assertThat(entityRelationProperty.getKey()).isEqualTo(Relation.Fields.value);
+    assertThat(entityRelationProperty.getValue()).isEqualTo("value-3-changed");
   }
 
   /**
@@ -126,28 +185,12 @@ public class VersioningEngineTest {
   public void shouldJustUpdateAnObjectWhenAttributeNameIsChangedScenario1b() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
-    List<Property> properties = new ArrayList<>();
-    Property property = Property.builder().key(VersionableObject.Fields.property)
-                                .value("Ciao-Ciao").build();
-    properties.add(property);
-    Entity editedEntity =
-        Entity.builder()
-              .id(null).properties(properties)
-              .build();
-
-    Entity toVersioning1_Entity = buildObjectProperty
-        (versionableObject1);
-    Entity toVersioning2_Entity = buildObjectProperty(versionableObject2);
-    Entity toVersioning3_Entity = buildObjectProperty(versionableObject3);
-
-    ToVersioning toVersioning1 = getToVersioning(toVersioning1_Entity, versionableObject1);
-    ToVersioning toVersioning2 = getToVersioning(toVersioning2_Entity, versionableObject2);
-    ToVersioning toVersioning3 = getToVersioning(toVersioning3_Entity, versionableObject3);
 
     //when
-    List<VersionedObject> result = versioningEngine.applyVersioning(versionableObject2,
-        editedVersion, editedEntity,
-        Arrays.asList(toVersioning1, toVersioning2, toVersioning3));
+    List<VersionedObject> result = versioningEngine.applyVersioning(
+        VersionableObject.VERSIONABLE, versionableObject2,
+        editedVersion,
+        Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
     assertThat(result).isNotNull();
@@ -184,27 +227,13 @@ public class VersioningEngineTest {
   public void shouldJustUpdateAnObjectWhenAttributeNameIsChangedScenario1c() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
-    List<Property> properties = new ArrayList<>();
-    Property property = Property.builder().key(VersionableObject.Fields.property)
-                                .value("Ciao-Ciao").build();
-    properties.add(property);
-    Entity editedEntity =
-        Entity.builder()
-              .id(null).properties(properties)
-              .build();
-
-    Entity toVersioning1_Entity = buildObjectProperty(versionableObject1);
-    Entity toVersioning2_Entity = buildObjectProperty(versionableObject2);
-    Entity toVersioning3_Entity = buildObjectProperty(versionableObject3);
-
-    ToVersioning toVersioning1 = getToVersioning(toVersioning1_Entity, versionableObject1);
-    ToVersioning toVersioning2 = getToVersioning(toVersioning2_Entity, versionableObject2);
-    ToVersioning toVersioning3 = getToVersioning(toVersioning3_Entity, versionableObject3);
 
     //when
-    List<VersionedObject> result = versioningEngine.applyVersioning(versionableObject1,
-        editedVersion, editedEntity,
-        Arrays.asList(toVersioning1, toVersioning2, toVersioning3));
+    List<VersionedObject> result = versioningEngine.applyVersioning(
+        VersionableObject.VERSIONABLE,
+        versionableObject1,
+        editedVersion,
+        Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
     assertThat(result).isNotNull();
@@ -226,25 +255,4 @@ public class VersioningEngineTest {
     assertThat(propertiesResult.get(0).getValue()).isEqualTo("Ciao-Ciao");
   }
 
-  private ToVersioning getToVersioning(Entity toVersioningEntity,
-      VersionableObject versionableObject) {
-    return ToVersioning.builder()
-                       .versionable(versionableObject)
-                       .entity(
-                           toVersioningEntity)
-                       .build();
-  }
-
-  private Entity buildObjectProperty(VersionableObject versionableObject1) {
-    List<Property> properties = new ArrayList<>();
-    Property property = Property.builder()
-                                .key(VersionableObject.Fields.property)
-                                .value(versionableObject1.getProperty())
-                                .build();
-    properties.add(property);
-    return Entity.builder()
-                 .id(versionableObject1.getId())
-                 .properties(properties)
-                 .build();
-  }
 }
