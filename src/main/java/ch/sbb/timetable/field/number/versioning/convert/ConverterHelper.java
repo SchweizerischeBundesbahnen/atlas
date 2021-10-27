@@ -11,38 +11,22 @@ import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.Relati
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.ConfigurablePropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
 
 public class ConverterHelper {
 
-  //TODO: remove duplication
   public static <T extends Versionable> Entity convertToEditedEntity(
       List<VersionableProperty> versionableProperties,
       Long actualVersionId,
       T editedVersion) {
 
-    ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
-        editedVersion);
-
-    List<Property> properties = new ArrayList<>();
-    for (VersionableProperty property : versionableProperties) {
-      if (RelationType.NONE == property.getRelationType()) {
-        Object propertyValue = propertyAccessor.getPropertyValue(property.getFieldName());
-        if (propertyValue != null) {
-          properties.add(buildProperty(property.getFieldName(), propertyValue));
-        }
-      }
-      if (RelationType.ONE_TO_MANY == property.getRelationType()) {
-        Property extractOneToManyRelationProperty = extractOneToManyRelationProperty(
-            propertyAccessor,
-            property);
-        if (extractOneToManyRelationProperty.hasOneToManyRelation()) {
-          properties.add(extractOneToManyRelationProperty);
-        }
-      }
-    }
-    return buildEntity(actualVersionId, properties);
+    List<Property> properties = extractProperties(versionableProperties, editedVersion);
+    List<Property> propertiesNotEmpty = properties.stream()
+                                                  .filter(Property::isNotEmpty)
+                                                  .collect(Collectors.toList());
+    return buildEntity(actualVersionId, propertiesNotEmpty);
   }
 
   public static <T extends Versionable> List<ToVersioning> convertAllObjectsToVersioning(
@@ -59,12 +43,18 @@ public class ConverterHelper {
     return objectsToVersioning;
   }
 
-  //TODO: remove duplication
   private static <T extends Versionable> Entity convertToEntity(
       List<VersionableProperty> versionableProperties, T version) {
+
+    List<Property> properties = extractProperties(
+        versionableProperties, version);
+    return buildEntity(version.getId(), properties);
+  }
+
+  private static List<Property> extractProperties(List<VersionableProperty> versionableProperties,
+      Versionable version) {
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         version);
-
     List<Property> properties = new ArrayList<>();
     for (VersionableProperty property : versionableProperties) {
       if (RelationType.NONE == property.getRelationType()) {
@@ -78,7 +68,7 @@ public class ConverterHelper {
         properties.add(extractOneToManyRelationProperty);
       }
     }
-    return buildEntity(version.getId(), properties);
+    return properties;
   }
 
   private static Property extractOneToManyRelationProperty(
@@ -87,6 +77,7 @@ public class ConverterHelper {
     PropertyBuilder propertyBuilder = Property.builder().key(property.getFieldName());
     List<Entity> entityRelations = new ArrayList<>();
     Object relationFields = propertyAccessor.getPropertyValue(property.getFieldName());
+    //OneToMany relation
     if (relationFields instanceof Collection) {
       for (Object relationField : ((Collection<Object>) relationFields)) {
         ConfigurablePropertyAccessor relationFieldAccess = PropertyAccessorFactory.forDirectFieldAccess(
