@@ -6,6 +6,9 @@ import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import java.util.List;
 
+/**
+ * Scenario 1q,1b,1c
+ */
 public class VersioningWhenValidFromAndValidToAreNotEdited extends Versioning {
 
   @Override
@@ -13,7 +16,7 @@ public class VersioningWhenValidFromAndValidToAreNotEdited extends Versioning {
       List<ToVersioning> objectsToVersioning) {
     ToVersioning toVersioning = findObjectToVersioning(currentVersion, objectsToVersioning);
 
-    Entity entity = replaceChangedAttributeWithActualAttribute(currentVersion.getId(), editedEntity,
+    Entity entity = replaceChangedAttributeWithActualAttribute(editedEntity,
         toVersioning.getEntity());
 
     VersionedObject versionedObjectToUpdate = buildVersionedObjectToUpdate(currentVersion.getValidFrom(),
