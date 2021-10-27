@@ -6,7 +6,7 @@ import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.service.LineService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LineVersionController implements LineVersionApi {
 
-  private final LineVersionRepository lineVersionRepository;
+  private final LineService lineService;
 
   @Override
   public VersionsContainer<LineVersionModel> getLineVersions(Pageable pageable) {
     log.info("Load Versions using pageable={}", pageable);
-    List<LineVersionModel> versions = lineVersionRepository.findAll(pageable)
-                                                           .stream()
-                                                           .map(this::toModel)
-                                                           .collect(Collectors.toList());
-    long totalCount = lineVersionRepository.count();
+    List<LineVersionModel> versions = lineService.findAll(pageable)
+                                                 .stream()
+                                                 .map(this::toModel)
+                                                 .collect(Collectors.toList());
+    long totalCount = lineService.totalCount();
     return VersionsContainer.<LineVersionModel>builder()
                             .versions(versions)
                             .totalCount(totalCount).build();
@@ -36,22 +36,23 @@ public class LineVersionController implements LineVersionApi {
 
   @Override
   public LineVersionModel getLineVersion(Long id) {
-    return lineVersionRepository.findById(id)
-                                .map(this::toModel)
-                                .orElseThrow(NotFoundExcpetion.getInstance());
+    return lineService.findLineById(id)
+                      .map(this::toModel)
+                      .orElseThrow(NotFoundExcpetion.getInstance());
   }
 
   @Override
   public LineVersionModel createLineVersion(LineVersionModel newVersion) {
-    LineVersion createdVersion = lineVersionRepository.save(toEntity(newVersion));
+    LineVersion newLineVersion = toEntity(newVersion);
+    LineVersion createdVersion = lineService.save(newLineVersion);
     return toModel(createdVersion);
   }
 
   @Override
   public LineVersionModel updateLineVersion(Long id, LineVersionModel newVersion) {
-    LineVersion versionToUpdate = lineVersionRepository.findById(id)
-                                                       .orElseThrow(
-                                                           NotFoundExcpetion.getInstance());
+    LineVersion versionToUpdate = lineService.findLineById(id)
+                                             .orElseThrow(
+                                                 NotFoundExcpetion.getInstance());
 
     versionToUpdate.setStatus(newVersion.getStatus());
     versionToUpdate.setType(newVersion.getType());
@@ -76,17 +77,14 @@ public class LineVersionController implements LineVersionApi {
     versionToUpdate.setBusinessOrganisation(newVersion.getBusinessOrganisation());
     versionToUpdate.setComment(newVersion.getComment());
     versionToUpdate.setSwissLineNumber(newVersion.getSwissLineNumber());
-    lineVersionRepository.save(versionToUpdate);
+    lineService.save(versionToUpdate);
 
     return toModel(versionToUpdate);
   }
 
   @Override
   public void deleteLineVersion(Long id) {
-    if (!lineVersionRepository.existsById(id)) {
-      throw NotFoundExcpetion.getInstance().get();
-    }
-    lineVersionRepository.deleteById(id);
+    lineService.deleteLineById(id);
   }
 
   private LineVersionModel toModel(LineVersion lineVersion) {

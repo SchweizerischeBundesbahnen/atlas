@@ -15,7 +15,8 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
-import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.service.LineService;
+import ch.sbb.line.directory.swiss.number.SwissNumberUniqueValidator;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
@@ -36,10 +37,13 @@ public class LineVersionControllerTest {
   private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
 
   @Mock
-  private LineVersionRepository lineVersionRepository;
+  private LineService lineService;
 
   @Mock
   private SublineVersionController sublineVersionController;
+
+  @Mock
+  private SwissNumberUniqueValidator swissNumberUniqueValidator;
 
   private LineVersionController lineVersionController;
 
@@ -49,8 +53,8 @@ public class LineVersionControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineVersionController = new LineVersionController(lineVersionRepository);
-    when(lineVersionRepository.save(any())).then(i -> i.getArgument(0, LineVersion.class));
+    lineVersionController = new LineVersionController(lineService);
+    when(lineService.save(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
 
   @Test
@@ -62,7 +66,7 @@ public class LineVersionControllerTest {
     lineVersionController.createLineVersion(lineVersionModel);
 
     // Then
-    verify(lineVersionRepository).save(versionArgumentCaptor.capture());
+    verify(lineService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
                                                     "creationDate")
@@ -74,9 +78,9 @@ public class LineVersionControllerTest {
   void shouldGetVersions() {
     // Given
     LineVersion lineVersion = createEntity();
-    when(lineVersionRepository.findAll(any(Pageable.class))).thenReturn(
+    when(lineService.findAll(any(Pageable.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(lineVersion)));
-    when(lineVersionRepository.count()).thenReturn(1L);
+    when(lineService.totalCount()).thenReturn(1L);
 
     // When
     VersionsContainer<LineVersionModel> lineVersionContainer = lineVersionController.getLineVersions(
@@ -99,7 +103,7 @@ public class LineVersionControllerTest {
   void shouldGetVersion() {
     // Given
     LineVersion lineVersion = createEntity();
-    when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.of(lineVersion));
+    when(lineService.findLineById(anyLong())).thenReturn(Optional.of(lineVersion));
 
     // When
     LineVersionModel lineVersionModel = lineVersionController.getLineVersion(1L);
@@ -113,7 +117,7 @@ public class LineVersionControllerTest {
   @Test
   void shouldReturnNotFoundOnUnexcitingVersion() {
     // Given
-    when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(lineService.findLineById(anyLong())).thenReturn(Optional.empty());
 
     // When
 
@@ -127,28 +131,14 @@ public class LineVersionControllerTest {
   @Test
   void shouldDeleteVersion() {
     // Given
-    when(lineVersionRepository.existsById(anyLong())).thenReturn(true);
 
     // When
     lineVersionController.deleteLineVersion(1L);
 
     // Then
-    verify(lineVersionRepository).deleteById(1L);
+    verify(lineService).deleteLineById(1L);
   }
 
-  @Test
-  void shouldReturnNotFoundOnDeletingUnexistingVersion() {
-    // Given
-    when(lineVersionRepository.existsById(anyLong())).thenReturn(false);
-
-    // When
-
-    // Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> lineVersionController.deleteLineVersion(1L))
-                                                            .withMessage(
-                                                                HttpStatus.NOT_FOUND.toString());
-  }
 
   @Test
   void shouldUpdateVersion() {
@@ -157,7 +147,7 @@ public class LineVersionControllerTest {
     LineVersionModel lineVersionModel = createModel();
     lineVersionModel.setShortName("New name");
 
-    when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.of(lineVersion));
+    when(lineService.findLineById(anyLong())).thenReturn(Optional.of(lineVersion));
 
     // When
     LineVersionModel result = lineVersionController.updateLineVersion(1L, lineVersionModel);
@@ -171,7 +161,7 @@ public class LineVersionControllerTest {
   @Test
   void shouldReturnNotFoundOnUnexistingUpdateVersion() {
     // Given
-    when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(lineService.findLineById(anyLong())).thenReturn(Optional.empty());
 
     // When
     LineVersionModel lineVersionModel = createModel();
