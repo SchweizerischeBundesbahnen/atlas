@@ -20,9 +20,8 @@ public class VersionableServiceImpl implements VersionableService {
       Versionable edited,
       List<T> currentVersions) {
 
-    List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(versionableProperties,
-        current, edited, currentVersions);
-    return versionedObjects;
+    return versioningEngine.applyVersioning(versionableProperties, current, edited,
+        currentVersions);
   }
 
 }

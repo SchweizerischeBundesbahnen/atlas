@@ -76,6 +76,7 @@ public class ConverterHelper {
       VersionableProperty property) {
     PropertyBuilder propertyBuilder = Property.builder().key(property.getFieldName());
     List<Entity> entityRelations = new ArrayList<>();
+
     Object relationFields = propertyAccessor.getPropertyValue(property.getFieldName());
     //OneToMany relation
     if (relationFields instanceof Collection) {
@@ -85,7 +86,7 @@ public class ConverterHelper {
         List<Property> relationProperties = new ArrayList<>();
         EntityBuilder entityRelationBuilder = Entity.builder();
         for (String relation : property.getRelationsFields()) {
-          //TODO: try to find a better solution
+          //TODO: try to find a better solution. Maybe remove it
           if ("id".equals(relation)) {
             entityRelationBuilder.id((Long) relationFieldAccess.getPropertyValue(relation));
           } else {

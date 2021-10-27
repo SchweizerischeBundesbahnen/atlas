@@ -25,10 +25,10 @@ public abstract class Versioning {
     throw new RuntimeException("You have to implement me!!");
   }
 
-  protected Entity replaceChangedAttributeWithActualAttribute(Entity editedEntity,
+  protected Entity replaceEditedPropertiesWithCurrentProperties(Entity editedEntity,
       Entity currentEntity) {
 
-    //Copy currentEntity
+    //Copy currentProperties
     List<Property> properties = new ArrayList<>(currentEntity.getProperties());
 
     for (Property editedProperty : editedEntity.getProperties()) {
@@ -39,17 +39,10 @@ public abstract class Versioning {
                                                      .equals(editedProperty.getKey()))
                            .findFirst().orElse(-1);
       if (index >= 0) {
-        Property replacedProperty = replaceProperty(editedProperty,
-            properties.get(index));
-        properties.set(index, replacedProperty);
+        properties.set(index, editedProperty);
       }
-
     }
-    Entity entity = Entity.builder()
-                          .id(currentEntity.getId())
-                          .properties(properties)
-                          .build();
-    return entity;
+    return Entity.builder().id(currentEntity.getId()).properties(properties).build();
   }
 
   protected ToVersioning findObjectToVersioning(Versionable currentVersion,
@@ -82,14 +75,4 @@ public abstract class Versioning {
                           .build();
   }
 
-  private Property replaceProperty(Property editedProperty,
-      Property currentProperty) {
-    return Property
-        .builder()
-        .key(currentProperty.getKey())
-        .oneToMany(editedProperty.getOneToMany())
-        .oneToOne(editedProperty.getOneToOne())
-        .value(editedProperty.getValue())
-        .build();
-  }
 }

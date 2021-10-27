@@ -16,7 +16,7 @@ public class VersioningWhenValidFromAndValidToAreNotEdited extends Versioning {
       List<ToVersioning> objectsToVersioning) {
     ToVersioning toVersioning = findObjectToVersioning(currentVersion, objectsToVersioning);
 
-    Entity entity = replaceChangedAttributeWithActualAttribute(editedEntity,
+    Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
         toVersioning.getEntity());
 
     VersionedObject versionedObjectToUpdate = buildVersionedObjectToUpdate(currentVersion.getValidFrom(),
