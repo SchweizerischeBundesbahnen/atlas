@@ -31,8 +31,7 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
     ToVersioning firstItemObjectToVersioning = objectsToVersioning.get(0);
     if (validFrom.isBefore(firstItemObjectToVersioning.getVersionable().getValidFrom())) {
       ToVersioning toVersioning = findObjectToVersioning(currentVersion, objectsToVersioning);
-      Entity entity = replaceChangedAttributeWithActualAttribute(currentVersion.getId(),
-          editedEntity,
+      Entity entity = replaceChangedAttributeWithActualAttribute(editedEntity,
           toVersioning.getEntity());
       VersionedObject versionedObjectToUpdate = buildVersionedObjectToUpdate(validFrom,
           firstItemObjectToVersioning.getVersionable().getValidTo(), entity);
@@ -43,7 +42,8 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
         log.info("ValidFrom: {} - ValidTo {}", toVersioning.getVersionable().getValidFrom(),
             toVersioning.getVersionable().getValidTo());
         if (validFrom.isEqual(toVersioning.getVersionable().getValidFrom())) {
-          throw new IllegalStateException("Should not here come because this means ValidFrom is not edited");
+          throw new IllegalStateException(
+              "Should not come here because this means ValidFrom is not edited");
         } else if (validFrom.isAfter(toVersioning.getVersionable().getValidFrom())) {
           //1. we need to
           //   a. add a new Version after the actual Version
@@ -64,9 +64,10 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
     return versionedObjects;
   }
 
+  //TODO: remove duplication
   private VersionedObject createNewVersion(Versionable editedVersion, Entity editedEntity,
       ToVersioning toVersioning) {
-    Entity entity = replaceChangedAttributeWithActualAttribute(null, editedEntity,
+    Entity entity = replaceChangedAttributeWithActualAttribute(editedEntity,
         toVersioning.getEntity());
 
     VersionedObject newVersion = buildVersionedObjectToCreate(editedVersion.getValidFrom(),
