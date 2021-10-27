@@ -92,6 +92,8 @@ public class VersionService {
         //create new version
         log.info("A new Version was added. VersionedObject={}", versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
+        //ensure version.getId() == null to avoid to update a Version
+        version.setId(null);
         System.out.println(version);
         versionRepository.save(version);
       }

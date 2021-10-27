@@ -1,6 +1,5 @@
 package ch.sbb.timetable.field.number.entity;
 
-import ch.sbb.timetable.field.number.entity.LineRelation.Fields;
 import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
@@ -8,11 +7,8 @@ import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.Relati
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,6 +44,7 @@ public class Version implements Versionable {
       Fields.nameCompact);
 
   public static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+
   static {
     VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.name).relationType(RelationType.NONE).build());
     VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.number).relationType(RelationType.NONE).build());

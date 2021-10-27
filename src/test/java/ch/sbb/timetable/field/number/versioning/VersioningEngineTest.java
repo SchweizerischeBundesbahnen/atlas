@@ -200,16 +200,26 @@ public class VersioningEngineTest {
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
     assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject2.getValidFrom());
     assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject2.getValidTo());
-    assertThat(versionedObject.getEntity().getProperties()).isNotEmpty();
-    assertThat(versionedObject.getEntity().getProperties().size()).isEqualTo(1);
     Entity entityToChange = versionedObject.getEntity();
     assertThat(entityToChange).isNotNull();
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
-    assertThat(entityToChange.getProperties().size()).isEqualTo(1);
-    List<Property> propertiesResult = entityToChange.getProperties();
-    assertThat(propertiesResult.size()).isEqualTo(1);
-    assertThat(propertiesResult.get(0).getKey()).isEqualTo(VersionableObject.Fields.property);
-    assertThat(propertiesResult.get(0).getValue()).isEqualTo("Ciao-Ciao");
+    assertThat(entityToChange.getProperties().size()).isEqualTo(2);
+    Property propertyOneToManyRelation = entityToChange.getProperties()
+                                      .stream()
+                                      .filter(property -> Fields.oneToManyRelation.equals(property.getKey()))
+                                      .findFirst()
+                                      .orElse(null);
+    assertThat(propertyOneToManyRelation).isNotNull();
+    assertThat(propertyOneToManyRelation.getValue()).isNull();
+    assertThat(propertyOneToManyRelation.getOneToMany()).isEmpty();
+    Property propertyProperty = entityToChange.getProperties()
+                                                       .stream()
+                                                       .filter(property -> Fields.property.equals(property.getKey()))
+                                                       .findFirst()
+                                                       .orElse(null);
+    assertThat(propertyProperty.getValue()).isEqualTo("Ciao-Ciao");
+    assertThat(propertyProperty.getOneToMany()).isNull();
+    assertThat(propertyProperty.getOneToOne()).isNull();
   }
 
 
@@ -243,16 +253,24 @@ public class VersioningEngineTest {
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
     assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject1.getValidFrom());
     assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject1.getValidTo());
-    assertThat(versionedObject.getEntity().getProperties()).isNotEmpty();
-    assertThat(versionedObject.getEntity().getProperties().size()).isEqualTo(1);
     Entity entityToChange = versionedObject.getEntity();
-    assertThat(entityToChange).isNotNull();
-    assertThat(entityToChange.getId()).isEqualTo(versionableObject1.getId());
-    List<Property> propertiesResult = entityToChange.getProperties();
-    assertThat(propertiesResult).isNotEmpty();
-    assertThat(propertiesResult.size()).isEqualTo(1);
-    assertThat(propertiesResult.get(0).getKey()).isEqualTo(VersionableObject.Fields.property);
-    assertThat(propertiesResult.get(0).getValue()).isEqualTo("Ciao-Ciao");
+    assertThat(entityToChange.getProperties().size()).isEqualTo(2);
+    Property propertyOneToManyRelation = entityToChange.getProperties()
+                                                       .stream()
+                                                       .filter(property -> Fields.oneToManyRelation.equals(property.getKey()))
+                                                       .findFirst()
+                                                       .orElse(null);
+    assertThat(propertyOneToManyRelation).isNotNull();
+    assertThat(propertyOneToManyRelation.getValue()).isNull();
+    assertThat(propertyOneToManyRelation.getOneToMany()).isEmpty();
+    Property propertyProperty = entityToChange.getProperties()
+                                              .stream()
+                                              .filter(property -> Fields.property.equals(property.getKey()))
+                                              .findFirst()
+                                              .orElse(null);
+    assertThat(propertyProperty.getValue()).isEqualTo("Ciao-Ciao");
+    assertThat(propertyProperty.getOneToMany()).isNull();
+    assertThat(propertyProperty.getOneToOne()).isNull();
   }
 
 }
