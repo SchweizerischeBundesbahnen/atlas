@@ -37,7 +37,7 @@ public class ConverterHelper {
         Property extractOneToManyRelationProperty = extractOneToManyRelationProperty(
             propertyAccessor,
             property);
-        if(extractOneToManyRelationProperty.hasOneToManyRelation()){
+        if (extractOneToManyRelationProperty.hasOneToManyRelation()) {
           properties.add(extractOneToManyRelationProperty);
         }
       }
@@ -45,7 +45,7 @@ public class ConverterHelper {
     return buildEntity(actualVersionId, properties);
   }
 
-  public static  <T extends Versionable> List<ToVersioning> convertAllObjectsToVersioning(
+  public static <T extends Versionable> List<ToVersioning> convertAllObjectsToVersioning(
       List<VersionableProperty> versionableProperties, List<T> currentVersions) {
     List<ToVersioning> objectsToVersioning = new ArrayList<>();
     for (Versionable currentVersion : currentVersions) {
@@ -75,9 +75,7 @@ public class ConverterHelper {
         Property extractOneToManyRelationProperty = extractOneToManyRelationProperty(
             propertyAccessor,
             property);
-        if(extractOneToManyRelationProperty.hasOneToManyRelation()){
-          properties.add(extractOneToManyRelationProperty);
-        }
+        properties.add(extractOneToManyRelationProperty);
       }
     }
     return buildEntity(version.getId(), properties);
@@ -120,7 +118,7 @@ public class ConverterHelper {
   private static Property buildProperty(String fieldName, Object propertyValue) {
     return Property.builder()
                    .key(fieldName)
-                   .value(String.valueOf(propertyValue))
+                   .value(propertyValue != null ? String.valueOf(propertyValue) : null)
                    .build();
   }
 
