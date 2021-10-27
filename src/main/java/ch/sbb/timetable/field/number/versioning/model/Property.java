@@ -25,4 +25,17 @@ public class Property {
   public boolean hasOneToOneRelation(){
     return this.oneToOne != null;
   }
+
+  public boolean isNotEmpty(){
+    if(this.key != null){
+      if(this.value != null){
+        return true;
+      }
+      if(this.oneToOne != null){
+        return true;
+      }
+      return this.oneToMany != null && !this.oneToMany.isEmpty();
+    }
+    return false;
+  }
 }
