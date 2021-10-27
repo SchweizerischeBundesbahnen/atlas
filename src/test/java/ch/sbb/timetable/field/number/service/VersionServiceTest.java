@@ -56,7 +56,7 @@ public class VersionServiceTest {
                       .name("FPFN Name")
                       .number("BEX")
                       .swissTimetableFieldNumber("b0.BEX")
-                      .validFrom(LocalDate.of(2023, 1, 1))
+                      .validFrom(LocalDate.of(2024, 1, 1))
                       .validTo(LocalDate.of(2024, 12, 31))
                       .build();
   }
@@ -155,7 +155,7 @@ public class VersionServiceTest {
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
 
     Version thirdTemporalVersion = result.get(2);
-    assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2023, 1, 1));
+    assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
   }
@@ -204,12 +204,11 @@ public class VersionServiceTest {
     assertThat(secondTemporalVersion.getComment()).isNull();
 
     Version thirdTemporalVersion = result.get(2);
-    assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2023, 1, 1));
+    assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
     assertThat(thirdTemporalVersion.getComment()).isNull();
   }
-
 
   /** Which scenario?
    * NEU:       |______________________|
@@ -293,5 +292,8 @@ public class VersionServiceTest {
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
 
   }
+
+
+
 
 }

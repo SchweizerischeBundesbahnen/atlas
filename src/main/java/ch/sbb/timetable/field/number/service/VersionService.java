@@ -128,7 +128,6 @@ public class VersionService {
           lineRelations.add(lineRelation);
         }
         version.setLineRelations(lineRelations);
-
       }else{
         propertyAccessor.setPropertyValue(property.getKey(), property.getValue());
       }
