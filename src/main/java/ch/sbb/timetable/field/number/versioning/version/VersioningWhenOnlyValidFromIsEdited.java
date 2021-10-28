@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.versioning.service;
+package ch.sbb.timetable.field.number.versioning.version;
 
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
@@ -30,22 +30,22 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
     //we have to check this condition on the first item
     ToVersioning firstItemObjectToVersioning = objectsToVersioning.get(0);
     if (validFrom.isBefore(firstItemObjectToVersioning.getVersionable().getValidFrom())) {
+
       ToVersioning toVersioning = findObjectToVersioning(currentVersion, objectsToVersioning);
-      Entity entity = replaceChangedAttributeWithActualAttribute(currentVersion.getId(),
-          editedEntity,
+      Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
           toVersioning.getEntity());
-      buildVersionedObjectToUpdate(validFrom,
-          firstItemObjectToVersioning.getVersionable().getValidTo(), entity);
       VersionedObject versionedObjectToUpdate = buildVersionedObjectToUpdate(validFrom,
           firstItemObjectToVersioning.getVersionable().getValidTo(), entity);
       versionedObjects.add(versionedObjectToUpdate);
+
       return versionedObjects;
     } else {
       for (ToVersioning toVersioning : objectsToVersioning) {
         log.info("ValidFrom: {} - ValidTo {}", toVersioning.getVersionable().getValidFrom(),
             toVersioning.getVersionable().getValidTo());
         if (validFrom.isEqual(toVersioning.getVersionable().getValidFrom())) {
-          throw new IllegalStateException("Should not here come because this means ValidFrom is not edited");
+          throw new IllegalStateException(
+              "Should not come here because this means ValidFrom is not edited");
         } else if (validFrom.isAfter(toVersioning.getVersionable().getValidFrom())) {
           //1. we need to
           //   a. add a new Version after the actual Version
@@ -55,8 +55,7 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
               toVersioning.getEntity());
           versionedObjects.add(updatedVersion);
           //Create VersionObject NEW
-          VersionedObject newVersion = createNewVersion(
-              editedVersion, editedEntity, toVersioning);
+          VersionedObject newVersion = createNewVersion(editedVersion, editedEntity, toVersioning);
           versionedObjects.add(newVersion);
           return versionedObjects;
         }
@@ -66,9 +65,10 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
     return versionedObjects;
   }
 
+  //TODO: remove duplication
   private VersionedObject createNewVersion(Versionable editedVersion, Entity editedEntity,
       ToVersioning toVersioning) {
-    Entity entity = replaceChangedAttributeWithActualAttribute(null, editedEntity,
+    Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
         toVersioning.getEntity());
 
     VersionedObject newVersion = buildVersionedObjectToCreate(editedVersion.getValidFrom(),
