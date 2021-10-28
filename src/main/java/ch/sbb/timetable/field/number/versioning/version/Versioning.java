@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class Versioning {
 
-  public List<VersionedObject> applyVersioning(Versionable current,
+  public List<VersionedObject> applyVersioning(Versionable currentVersion,
       Entity editedEntity, List<ToVersioning> objectsToVersioning) {
     throw new RuntimeException("You have to implement me!!");
   }
