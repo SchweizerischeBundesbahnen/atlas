@@ -107,7 +107,7 @@ public class SublineVersion implements SequenctialValidRange, SwissNumber {
   private String editor;
 
   @Override
-  public SwissNumberDescriptor getSwissNumber() {
+  public SwissNumberDescriptor getSwissNumberDescriptor() {
     return new SwissNumberDescriptor(Fields.swissSublineNumber, this::getSwissSublineNumber);
   }
 }
