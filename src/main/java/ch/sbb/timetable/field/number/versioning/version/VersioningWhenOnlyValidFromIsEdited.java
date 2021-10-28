@@ -30,12 +30,14 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
     //we have to check this condition on the first item
     ToVersioning firstItemObjectToVersioning = objectsToVersioning.get(0);
     if (validFrom.isBefore(firstItemObjectToVersioning.getVersionable().getValidFrom())) {
+
       ToVersioning toVersioning = findObjectToVersioning(currentVersion, objectsToVersioning);
       Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
           toVersioning.getEntity());
       VersionedObject versionedObjectToUpdate = buildVersionedObjectToUpdate(validFrom,
           firstItemObjectToVersioning.getVersionable().getValidTo(), entity);
       versionedObjects.add(versionedObjectToUpdate);
+
       return versionedObjects;
     } else {
       for (ToVersioning toVersioning : objectsToVersioning) {
@@ -53,8 +55,7 @@ public class VersioningWhenOnlyValidFromIsEdited extends Versioning {
               toVersioning.getEntity());
           versionedObjects.add(updatedVersion);
           //Create VersionObject NEW
-          VersionedObject newVersion = createNewVersion(
-              editedVersion, editedEntity, toVersioning);
+          VersionedObject newVersion = createNewVersion(editedVersion, editedEntity, toVersioning);
           versionedObjects.add(newVersion);
           return versionedObjects;
         }
