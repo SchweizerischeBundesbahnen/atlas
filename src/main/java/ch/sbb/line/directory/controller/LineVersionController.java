@@ -36,7 +36,7 @@ public class LineVersionController implements LineVersionApi {
 
   @Override
   public LineVersionModel getLineVersion(Long id) {
-    return lineService.findLineById(id)
+    return lineService.findById(id)
                       .map(this::toModel)
                       .orElseThrow(NotFoundExcpetion.getInstance());
   }
@@ -50,7 +50,7 @@ public class LineVersionController implements LineVersionApi {
 
   @Override
   public LineVersionModel updateLineVersion(Long id, LineVersionModel newVersion) {
-    LineVersion versionToUpdate = lineService.findLineById(id)
+    LineVersion versionToUpdate = lineService.findById(id)
                                              .orElseThrow(
                                                  NotFoundExcpetion.getInstance());
 
@@ -84,7 +84,7 @@ public class LineVersionController implements LineVersionApi {
 
   @Override
   public void deleteLineVersion(Long id) {
-    lineService.deleteLineById(id);
+    lineService.deleteById(id);
   }
 
   private LineVersionModel toModel(LineVersion lineVersion) {

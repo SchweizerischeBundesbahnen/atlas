@@ -67,7 +67,7 @@ class LineServiceTest {
     // Given
     when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.empty());
     // When
-    Optional<LineVersion> result = lineService.findLineById(ID);
+    Optional<LineVersion> result = lineService.findById(ID);
 
     // Then
     verify(lineVersionRepository).findById(ID);
@@ -94,7 +94,7 @@ class LineServiceTest {
     when(lineVersionRepository.existsById(ID)).thenReturn(true);
 
     // When
-    lineService.deleteLineById(ID);
+    lineService.deleteById(ID);
 
     // Then
     verify(lineVersionRepository).existsById(ID);
@@ -107,7 +107,7 @@ class LineServiceTest {
     when(lineVersionRepository.existsById(ID)).thenReturn(false);
 
     // When
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(()->lineService.deleteLineById(ID));
+    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(()->lineService.deleteById(ID));
 
     // Then
     verify(lineVersionRepository).existsById(ID);

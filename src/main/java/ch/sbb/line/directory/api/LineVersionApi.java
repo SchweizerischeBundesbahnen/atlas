@@ -1,6 +1,9 @@
 package ch.sbb.line.directory.api;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -26,9 +29,17 @@ public interface LineVersionApi {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201"),
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
+  })
   LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
   @PutMapping({"/{id}"})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
+  })
   LineVersionModel updateLineVersion(@PathVariable Long id,
       @RequestBody @Valid LineVersionModel newVersion);
 
