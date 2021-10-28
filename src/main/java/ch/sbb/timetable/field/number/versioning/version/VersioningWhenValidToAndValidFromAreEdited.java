@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,10 +29,15 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     objectsToVersioning.sort(
         Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
 
-    for (ToVersioning toVersioning : objectsToVersioning) {
+    List<ToVersioning> objectToVersioningInValidFromValidToRange = findObjectToVersioningInValidFromValidToRange(
+        objectsToVersioning, editedValidFrom, editedValidTo);
+
+    if (objectToVersioningInValidFromValidToRange.size() == 1) {
+      ToVersioning toVersioning = objectToVersioningInValidFromValidToRange.get(0);
       // Scenario2:
       // The edited version is in the middle of an existing Version
-      if (editedValidFrom.isAfter(toVersioning.getVersionable().getValidFrom()) && editedValidTo.isBefore(toVersioning.getVersionable().getValidTo())){
+      if (editedValidFrom.isAfter(toVersioning.getVersionable().getValidFrom())
+          && editedValidTo.isBefore(toVersioning.getVersionable().getValidTo())) {
         System.out.println("Found in the middle of an exiting Version -> Scenario 2");
 
         //1. Update the existing version:
@@ -39,7 +45,8 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
         // do not change properties
         LocalDate toUpdateValidTo = editedValidFrom.minusDays(1);
         VersionedObject toUpdateVersionedObject = buildVersionedObjectToUpdate(
-            toVersioning.getVersionable().getValidFrom(), toUpdateValidTo, toVersioning.getEntity());
+            toVersioning.getVersionable().getValidFrom(), toUpdateValidTo,
+            toVersioning.getEntity());
         versionedObjects.add(toUpdateVersionedObject);
         //2. Copy the currentVersion splittedCurrentVersion.copy(currentVersion)
         //  splittedCurrentVersion.setValidFrom(editedValidTo.plusDay(1))
@@ -47,7 +54,8 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
         // do not change properties
         LocalDate toAddAtEndValidFrom = editedValidTo.plusDays(1);
         LocalDate toAddAtEndValidTo = currentVersion.getValidTo();
-        VersionedObject toAddAtEndVersionedObject = buildVersionedObjectToCreate(toAddAtEndValidFrom,
+        VersionedObject toAddAtEndVersionedObject = buildVersionedObjectToCreate(
+            toAddAtEndValidFrom,
             toAddAtEndValidTo, toVersioning.getEntity());
         versionedObjects.add(toAddAtEndVersionedObject);
         //3. Create a new Version
@@ -60,8 +68,38 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
             editedValidTo, entityToAddAtEnd);
         versionedObjects.add(toCreateVersionedObject);
       }
+    } else {
+      //Found more than one versions
+      // 1. versions.get(0)
+      //    validTo = editedValidFrom.minusDay(1)
+      //    do not update properties
+      //    VersioningAction = UPDATE
+      // 2. versions.get(versions.size()-1)
+      //    validFrom = editedValidTo.plusDay(1)
+      //    do not update properties
+      //    VersioningAction = UPDATE
+      // 3. versions.get(n+1)
+      //    TODO
     }
 
     return versionedObjects;
+  }
+
+  private List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
+      List<ToVersioning> objectsToVersioning,
+      LocalDate editedValidFrom, LocalDate editedValidTo) {
+    return objectsToVersioning.stream()
+                              .filter(
+                                  toVersioning -> !toVersioning.getVersionable()
+                                                               .getValidFrom()
+                                                               .isAfter(
+                                                                   editedValidTo))
+                              .filter(
+                                  toVersioning -> !toVersioning.getVersionable()
+                                                               .getValidTo()
+                                                               .isBefore(
+                                                                   editedValidFrom))
+                              .collect(
+                                  Collectors.toList());
   }
 }
