@@ -25,7 +25,7 @@ public class LineService {
     return lineVersionRepository.count();
   }
 
-  public Optional<LineVersion> findLineById(Long id) {
+  public Optional<LineVersion> findById(Long id) {
     return lineVersionRepository.findById(id);
   }
 
@@ -34,7 +34,7 @@ public class LineService {
     return lineVersionRepository.save(lineVersion);
   }
 
-  public void deleteLineById(Long id) {
+  public void deleteById(Long id) {
     if (!lineVersionRepository.existsById(id)) {
       throw NotFoundExcpetion.getInstance().get();
     }

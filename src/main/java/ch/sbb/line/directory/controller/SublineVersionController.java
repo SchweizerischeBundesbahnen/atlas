@@ -4,9 +4,8 @@ import ch.sbb.line.directory.api.SublineVersionApi;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.service.SublineService;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
@@ -19,46 +18,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SublineVersionController implements SublineVersionApi {
 
-  private final SublineVersionRepository sublineVersionRepository;
+  private final SublineService sublineService;
 
   @Override
   public SublineVersionModel getSublineVersion(Long id) {
-    return sublineVersionRepository.findById(id)
-                                   .map(SublineVersionController::toModel)
-                                   .orElseThrow(NotFoundExcpetion.getInstance());
+    return sublineService.findById(id)
+                         .map(SublineVersionController::toModel)
+                         .orElseThrow(NotFoundExcpetion.getInstance());
   }
 
-  public VersionsContainer<SublineVersionModel> getSublineVersions(Pageable pageable, Optional<String> swissLineNumber) {
-    Long totalCount = swissLineNumber.map(sublineVersionRepository::countAllBySwissLineNumber)
-                                     .orElse(
-                                         sublineVersionRepository.count());
-    List<SublineVersionModel> sublineVersions = swissLineNumber.map(
-                                                                   this::getSublineVersionsBySwissLineNumber)
-                                                               .orElse(toModel(
-                                                                   sublineVersionRepository.findAll(
-                                                                       pageable)));
+  public VersionsContainer<SublineVersionModel> getSublineVersions(Pageable pageable) {
+    List<SublineVersionModel> sublineVersions = toModel(sublineService.findAll(
+        pageable));
     return VersionsContainer.<SublineVersionModel>builder()
                             .versions(sublineVersions)
-                            .totalCount(totalCount)
+                            .totalCount(sublineService.totalCount())
                             .build();
-  }
-
-  List<SublineVersionModel> getSublineVersionsBySwissLineNumber(String swissLineNumber) {
-    return toModel(sublineVersionRepository.findAllBySwissLineNumber(swissLineNumber));
-
   }
 
   @Override
   public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {
-    SublineVersion createdVersion = sublineVersionRepository.save(toEntity(newSublineVersion));
+    SublineVersion createdVersion = sublineService.save(toEntity(newSublineVersion));
     return toModel(createdVersion);
   }
 
   @Override
   public SublineVersionModel updateSublineVersion(Long id, SublineVersionModel newVersion) {
-    SublineVersion versionToUpdate = sublineVersionRepository.findById(id)
-                                                             .orElseThrow(
-                                                                 NotFoundExcpetion.getInstance());
+    SublineVersion versionToUpdate = sublineService.findById(id)
+                                                   .orElseThrow(
+                                                       NotFoundExcpetion.getInstance());
     versionToUpdate.setSwissSublineNumber(newVersion.getSwissSublineNumber());
     versionToUpdate.setSwissLineNumber(newVersion.getSwissLineNumber());
     versionToUpdate.setStatus(newVersion.getStatus());
@@ -71,17 +59,14 @@ public class SublineVersionController implements SublineVersionApi {
     versionToUpdate.setValidFrom(newVersion.getValidFrom());
     versionToUpdate.setValidTo(newVersion.getValidTo());
     versionToUpdate.setBusinessOrganisation(newVersion.getBusinessOrganisation());
-    sublineVersionRepository.save(versionToUpdate);
+    sublineService.save(versionToUpdate);
 
     return toModel(versionToUpdate);
   }
 
   @Override
   public void deleteSublineVersion(Long id) {
-    if (!sublineVersionRepository.existsById(id)) {
-      throw NotFoundExcpetion.getInstance().get();
-    }
-    sublineVersionRepository.deleteById(id);
+    sublineService.deleteById(id);
   }
 
   private static List<SublineVersionModel> toModel(Iterable<SublineVersion> versions) {
