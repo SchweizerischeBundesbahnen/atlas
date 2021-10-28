@@ -3,6 +3,7 @@ package ch.sbb.line.directory.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.line.directory.IntegrationTest;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
@@ -28,24 +29,7 @@ public class SublineVersionRepositoryTest {
 
   @BeforeEach
   void setUpLineVersion() {
-    sublineVersion = sublineVersionRepository.save(SublineVersion.builder()
-                                                                 .status(Status.ACTIVE)
-                                                                 .type(SublineType.TECHNICAL)
-                                                                 .paymentType(
-                                                                     PaymentType.INTERNATIONAL)
-                                                                 .shortName("shortName")
-                                                                 .longName("longName")
-                                                                 .description("description")
-                                                                 .validFrom(
-                                                                     LocalDate.of(2020, 12, 12))
-                                                                 .validTo(
-                                                                     LocalDate.of(2099, 12, 12))
-                                                                 .businessOrganisation(
-                                                                     "businessOrganisation")
-                                                                 .swissLineNumber("swissLineNumber")
-                                                                 .swissSublineNumber(
-                                                                     "swissSublineNumber")
-                                                                 .build());
+    sublineVersion = sublineVersionRepository.save(SublineTestData.sublineVersion());
   }
 
   @Test

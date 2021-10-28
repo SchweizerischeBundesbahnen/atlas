@@ -104,7 +104,7 @@ public class LineVersionControllerTest {
   void shouldGetVersion() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
-    when(lineService.findLineById(anyLong())).thenReturn(Optional.of(lineVersion));
+    when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
 
     // When
     LineVersionModel lineVersionModel = lineVersionController.getLineVersion(1L);
@@ -118,7 +118,7 @@ public class LineVersionControllerTest {
   @Test
   void shouldReturnNotFoundOnUnexcitingVersion() {
     // Given
-    when(lineService.findLineById(anyLong())).thenReturn(Optional.empty());
+    when(lineService.findById(anyLong())).thenReturn(Optional.empty());
 
     // When
 
@@ -137,7 +137,7 @@ public class LineVersionControllerTest {
     lineVersionController.deleteLineVersion(1L);
 
     // Then
-    verify(lineService).deleteLineById(1L);
+    verify(lineService).deleteById(1L);
   }
 
 
@@ -148,7 +148,7 @@ public class LineVersionControllerTest {
     LineVersionModel lineVersionModel = createModel();
     lineVersionModel.setShortName("New name");
 
-    when(lineService.findLineById(anyLong())).thenReturn(Optional.of(lineVersion));
+    when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
 
     // When
     LineVersionModel result = lineVersionController.updateLineVersion(1L, lineVersionModel);
@@ -162,7 +162,7 @@ public class LineVersionControllerTest {
   @Test
   void shouldReturnNotFoundOnUnexistingUpdateVersion() {
     // Given
-    when(lineService.findLineById(anyLong())).thenReturn(Optional.empty());
+    when(lineService.findById(anyLong())).thenReturn(Optional.empty());
 
     // When
     LineVersionModel lineVersionModel = createModel();
