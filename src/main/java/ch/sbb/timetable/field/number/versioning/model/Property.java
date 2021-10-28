@@ -19,7 +19,7 @@ public class Property {
   private List<Entity> oneToMany;
 
   public boolean hasOneToManyRelation(){
-    return this.oneToMany != null && !this.oneToMany.isEmpty();
+    return this.oneToMany != null;
   }
 
   public boolean hasOneToOneRelation(){
