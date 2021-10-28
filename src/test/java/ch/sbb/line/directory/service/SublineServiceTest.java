@@ -79,12 +79,13 @@ class SublineServiceTest {
   void shouldSaveSublineWithValidation() {
     // Given
     when(sublineVersionRepository.save(any())).thenAnswer(i -> i.getArgument(0, SublineVersion.class));
+    when(swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(any())).thenReturn(true);
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
     // When
     SublineVersion result = sublineService.save(sublineVersion);
 
     // Then
-    verify(swissNumberUniqueValidator).validate(sublineVersion);
+    verify(swissNumberUniqueValidator).hasUniqueBusinessIdOverTime(sublineVersion);
     verify(sublineVersionRepository).save(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
   }

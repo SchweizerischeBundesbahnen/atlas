@@ -30,7 +30,9 @@ public class SublineService {
   }
 
   public SublineVersion save(SublineVersion lineVersion) {
-    swissNumberUniqueValidator.validate(lineVersion);
+    if (!swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(lineVersion)) {
+      throw new ConflictExcpetion();
+    }
     return sublineVersionRepository.save(lineVersion);
   }
 
