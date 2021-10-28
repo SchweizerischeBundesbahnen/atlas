@@ -248,6 +248,7 @@ public class VersionServiceTest {
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name");
     assertThat(firstTemporalVersion.getComment()).isNull();
+    assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
 
     //updated
     Version secondTemporalVersion = result.get(1);
@@ -255,6 +256,7 @@ public class VersionServiceTest {
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2022, 5, 31));
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
     assertThat(secondTemporalVersion.getComment()).isNull();
+    assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
 
     //new
     Version thirdTemporalVersion = result.get(2);
@@ -275,13 +277,15 @@ public class VersionServiceTest {
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(fourthTemporalVersion.getName()).isEqualTo("FPFN Name");
     assertThat(fourthTemporalVersion.getComment()).isNull();
+    assertThat(fourthTemporalVersion.getLineRelations()).isEmpty();
 
-    //new
+    //current
     Version fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(fifthTemporalVersion.getName()).isEqualTo("FPFN Name");
     assertThat(fifthTemporalVersion.getComment()).isNull();
+    assertThat(fifthTemporalVersion.getLineRelations()).isEmpty();
 
   }
 
@@ -367,8 +371,5 @@ public class VersionServiceTest {
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
 
   }
-
-
-
 
 }
