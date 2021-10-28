@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.versioning.service;
+package ch.sbb.timetable.field.number.versioning.version;
 
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class Versioning {
 
-  public List<VersionedObject> applyVersioning(Versionable current,
+  public List<VersionedObject> applyVersioning(Versionable currentVersion,
       Entity editedEntity, List<ToVersioning> objectsToVersioning) {
     throw new RuntimeException("You have to implement me!!");
   }
@@ -25,10 +25,10 @@ public abstract class Versioning {
     throw new RuntimeException("You have to implement me!!");
   }
 
-  protected Entity replaceChangedAttributeWithActualAttribute(Long objectId,
-      Entity editedEntity, Entity currentEntity) {
+  protected Entity replaceEditedPropertiesWithCurrentProperties(Entity editedEntity,
+      Entity currentEntity) {
 
-    //Copy currentEntity
+    //Copy currentProperties
     List<Property> properties = new ArrayList<>(currentEntity.getProperties());
 
     for (Property editedProperty : editedEntity.getProperties()) {
@@ -39,17 +39,10 @@ public abstract class Versioning {
                                                      .equals(editedProperty.getKey()))
                            .findFirst().orElse(-1);
       if (index >= 0) {
-        Property replacedProperty = replaceProperty(editedProperty,
-            properties.get(index));
-        properties.set(index, replacedProperty);
+        properties.set(index, editedProperty);
       }
-
     }
-    Entity entity = Entity.builder()
-                          .id(objectId)
-                          .properties(properties)
-                          .build();
-    return entity;
+    return Entity.builder().id(currentEntity.getId()).properties(properties).build();
   }
 
   protected ToVersioning findObjectToVersioning(Versionable currentVersion,
@@ -82,12 +75,4 @@ public abstract class Versioning {
                           .build();
   }
 
-  private Property replaceProperty(Property editedProperty,
-      Property currentProperty) {
-    return Property
-        .builder()
-        .key(currentProperty.getKey())
-        .value(editedProperty.getValue())
-        .build();
-  }
 }
