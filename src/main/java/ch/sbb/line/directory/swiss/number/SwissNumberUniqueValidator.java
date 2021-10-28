@@ -23,13 +23,13 @@ public class SwissNumberUniqueValidator {
     }
   }
 
-  private boolean hasUniqueBusinessIdOverTime(SwissNumber swissNumber) {
+  boolean hasUniqueBusinessIdOverTime(SwissNumber swissNumber) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<?> query = cb.createQuery(swissNumber.getClass());
     Root<?> root = query.from(swissNumber.getClass());
 
     query.where(
-        cb.equal(root.get(swissNumber.getSwissNumber().getName()), swissNumber.getSwissNumber().getValue()),
+        cb.equal(root.get(swissNumber.getSwissNumberDescriptor().getName()), swissNumber.getSwissNumberDescriptor().getValue()),
         cb.and(
             cb.greaterThanOrEqualTo(root.get("validTo"), swissNumber.getValidFrom()),
             cb.lessThanOrEqualTo(root.get("validFrom"), swissNumber.getValidTo())

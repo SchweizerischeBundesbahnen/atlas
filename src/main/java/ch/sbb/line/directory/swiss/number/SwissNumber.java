@@ -8,6 +8,6 @@ public interface SwissNumber {
 
   LocalDate getValidTo();
 
-  SwissNumberDescriptor getSwissNumber();
+  SwissNumberDescriptor getSwissNumberDescriptor();
 
 }
