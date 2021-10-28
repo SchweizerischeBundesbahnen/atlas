@@ -6,9 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 @Component
 @RequiredArgsConstructor
@@ -16,14 +14,7 @@ public class SwissNumberUniqueValidator {
 
   private final EntityManager entityManager;
 
-  public void validate(SwissNumber swissNumber) {
-    boolean hasUniqueBusinessIdOverTime = hasUniqueBusinessIdOverTime(swissNumber);
-    if (!hasUniqueBusinessIdOverTime) {
-      throw new ConflictExcpetion();
-    }
-  }
-
-  boolean hasUniqueBusinessIdOverTime(SwissNumber swissNumber) {
+  public boolean hasUniqueBusinessIdOverTime(SwissNumber swissNumber) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<?> query = cb.createQuery(swissNumber.getClass());
     Root<?> root = query.from(swissNumber.getClass());
@@ -38,14 +29,6 @@ public class SwissNumberUniqueValidator {
 
     List<?> conflicts = entityManager.createQuery(query).getResultList();
     return conflicts.isEmpty();
-  }
-
-  private static final class ConflictExcpetion extends ResponseStatusException {
-
-    public ConflictExcpetion() {
-      super(HttpStatus.CONFLICT, "SwissNumber already taken in specified period");
-    }
-
   }
 
 }

@@ -78,12 +78,13 @@ class LineServiceTest {
   void shouldSaveLineWithValidation() {
     // Given
     when(lineVersionRepository.save(any())).thenAnswer(i -> i.getArgument(0, LineVersion.class));
+    when(swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(any())).thenReturn(true);
     LineVersion lineVersion = LineTestData.lineVersion();
     // When
     LineVersion result = lineService.save(lineVersion);
 
     // Then
-    verify(swissNumberUniqueValidator).validate(lineVersion);
+    verify(swissNumberUniqueValidator).hasUniqueBusinessIdOverTime(lineVersion);
     verify(lineVersionRepository).save(lineVersion);
     assertThat(result).isEqualTo(lineVersion);
   }

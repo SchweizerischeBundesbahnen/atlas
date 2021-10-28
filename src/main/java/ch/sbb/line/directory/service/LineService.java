@@ -30,7 +30,9 @@ public class LineService {
   }
 
   public LineVersion save(LineVersion lineVersion) {
-    swissNumberUniqueValidator.validate(lineVersion);
+    if (!swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(lineVersion)) {
+      throw new ConflictExcpetion();
+    }
     return lineVersionRepository.save(lineVersion);
   }
 
