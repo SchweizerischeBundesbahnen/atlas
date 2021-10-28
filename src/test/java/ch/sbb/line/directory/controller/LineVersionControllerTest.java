@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -77,7 +78,7 @@ public class LineVersionControllerTest {
   @Test
   void shouldGetVersions() {
     // Given
-    LineVersion lineVersion = createEntity();
+    LineVersion lineVersion = LineTestData.lineVersion();
     when(lineService.findAll(any(Pageable.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(lineVersion)));
     when(lineService.totalCount()).thenReturn(1L);
@@ -102,7 +103,7 @@ public class LineVersionControllerTest {
   @Test
   void shouldGetVersion() {
     // Given
-    LineVersion lineVersion = createEntity();
+    LineVersion lineVersion = LineTestData.lineVersion();
     when(lineService.findLineById(anyLong())).thenReturn(Optional.of(lineVersion));
 
     // When
@@ -143,7 +144,7 @@ public class LineVersionControllerTest {
   @Test
   void shouldUpdateVersion() {
     // Given
-    LineVersion lineVersion = createEntity();
+    LineVersion lineVersion = LineTestData.lineVersion();
     LineVersionModel lineVersionModel = createModel();
     lineVersionModel.setShortName("New name");
 
@@ -172,29 +173,6 @@ public class LineVersionControllerTest {
                                                                     lineVersionModel))
                                                             .withMessage(
                                                                 HttpStatus.NOT_FOUND.toString());
-  }
-
-  private static LineVersion createEntity() {
-    return LineVersion.builder()
-                      .status(Status.ACTIVE)
-                      .type(LineType.ORDERLY)
-                      .slnid("slnid")
-                      .paymentType(PaymentType.INTERNATIONAL)
-                      .shortName("shortName")
-                      .alternativeName("alternativeName")
-                      .combinationName("combinationName")
-                      .longName("longName")
-                      .colorFontRgb(RGB_COLOR)
-                      .colorBackRgb(RGB_COLOR)
-                      .colorFontCmyk(CYMK_COLOR)
-                      .colorBackCmyk(CYMK_COLOR)
-                      .description("description")
-                      .validFrom(LocalDate.of(2020, 12, 12))
-                      .validTo(LocalDate.of(2099, 12, 12))
-                      .businessOrganisation("businessOrganisation")
-                      .comment("comment")
-                      .swissLineNumber("swissLineNumber")
-                      .build();
   }
 
   private static LineVersionModel createModel() {
