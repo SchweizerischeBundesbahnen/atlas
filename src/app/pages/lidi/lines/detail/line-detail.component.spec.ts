@@ -13,7 +13,7 @@ import { CoreModule } from '../../../../core/module/core.module';
 const lineVersion: LineVersion = {
   id: 1234,
   slnid: 'slnid',
-  shortName: 'name',
+  number: 'name',
   description: 'asdf',
   status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),

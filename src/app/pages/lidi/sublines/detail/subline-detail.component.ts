@@ -136,10 +136,7 @@ export class SublineDetailComponent
           version.businessOrganisation,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
         ],
-        shortName: [
-          version.shortName,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
-        ],
+        number: [version.number, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
         longName: [version.longName, [Validators.maxLength(this.MAX_LENGTH)]],
         description: [version.description, [Validators.maxLength(this.MAX_LENGTH)]],
         validFrom: [
