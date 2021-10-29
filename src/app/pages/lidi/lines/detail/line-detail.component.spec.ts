@@ -9,6 +9,8 @@ import { of, throwError } from 'rxjs';
 import { LinesService, LineVersion } from '../../../../api/lidi';
 import { LineDetailComponent } from './line-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
+import PaymentTypeEnum = LineVersion.PaymentTypeEnum;
+import TypeEnum = LineVersion.TypeEnum;
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -18,6 +20,10 @@ const lineVersion: LineVersion = {
   status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
+  businessOrganisation: 'SBB',
+  paymentType: PaymentTypeEnum.None,
+  swissLineNumber: 'L1',
+  type: TypeEnum.Orderly,
 };
 
 let component: LineDetailComponent;

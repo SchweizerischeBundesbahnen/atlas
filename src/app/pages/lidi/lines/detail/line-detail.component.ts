@@ -30,7 +30,6 @@ export class LineDetailComponent
   TYPE_OPTIONS = Object.values(LineVersion.TypeEnum);
   PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
   STATUS_OPTIONS = Object.values(LineVersion.StatusEnum);
-  MAX_LENGTH = 255;
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
@@ -124,28 +123,25 @@ export class LineDetailComponent
   getFormGroup(version: LineVersion): FormGroup {
     return this.formBuilder.group(
       {
-        swissLineNumber: [
-          version.swissLineNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
-        ],
+        swissLineNumber: [version.swissLineNumber, [Validators.required, Validators.maxLength(50)]],
         slnid: [version.slnid],
         type: [version.type, [Validators.required]],
         status: [version.status],
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(50)],
         ],
-        number: [version.number, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        alternativeName: [version.alternativeName, [Validators.maxLength(this.MAX_LENGTH)]],
-        combinationName: [version.combinationName, [Validators.maxLength(this.MAX_LENGTH)]],
-        longName: [version.longName, [Validators.maxLength(this.MAX_LENGTH)]],
-        icon: [version.icon, [Validators.maxLength(this.MAX_LENGTH)]],
+        number: [version.number, [Validators.maxLength(50)]],
+        alternativeName: [version.alternativeName, [Validators.maxLength(50)]],
+        combinationName: [version.combinationName, [Validators.maxLength(500)]],
+        longName: [version.longName, [Validators.maxLength(1000)]],
+        icon: [version.icon, [Validators.maxLength(255)]],
         colorFontRgb: [version.colorFontRgb],
         colorBackRgb: [version.colorBackRgb],
         colorFontCmyk: [version.colorFontCmyk],
         colorBackCmyk: [version.colorBackCmyk],
-        description: [version.description, [Validators.maxLength(this.MAX_LENGTH)]],
+        description: [version.description, [Validators.maxLength(255)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -154,7 +150,7 @@ export class LineDetailComponent
           version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required],
         ],
-        comment: [version.comment],
+        comment: [version.comment, [Validators.maxLength(1500)]],
       },
       {
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
