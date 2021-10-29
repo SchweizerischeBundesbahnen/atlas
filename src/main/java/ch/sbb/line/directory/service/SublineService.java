@@ -29,11 +29,11 @@ public class SublineService {
     return sublineVersionRepository.findById(id);
   }
 
-  public SublineVersion save(SublineVersion lineVersion) {
-    if (!swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(lineVersion)) {
+  public SublineVersion save(SublineVersion sublineVersion) {
+    if (!swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(sublineVersion)) {
       throw new ConflictExcpetion();
     }
-    return sublineVersionRepository.save(lineVersion);
+    return sublineVersionRepository.save(sublineVersion);
   }
 
   public void deleteById(Long id) {

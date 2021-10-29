@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 public interface SwissNumber {
 
+  Long getId();
+
   LocalDate getValidFrom();
 
   LocalDate getValidTo();
