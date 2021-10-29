@@ -17,6 +17,7 @@
       "SELECT_DATERANGE": "Datumsbereich*"
     },
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
+    "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Nummer ist zu diesem Zeitraum bereits vergeben.",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "STATUS": "Status",
