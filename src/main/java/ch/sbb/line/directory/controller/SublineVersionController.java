@@ -4,6 +4,7 @@ import ch.sbb.line.directory.api.SublineVersionApi;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.service.SublineService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +39,9 @@ public class SublineVersionController implements SublineVersionApi {
 
   @Override
   public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {
-    SublineVersion createdVersion = sublineService.save(toEntity(newSublineVersion));
+    SublineVersion sublineVersion = toEntity(newSublineVersion);
+    sublineVersion.setStatus(Status.ACTIVE);
+    SublineVersion createdVersion = sublineService.save(sublineVersion);
     return toModel(createdVersion);
   }
 
@@ -49,7 +52,6 @@ public class SublineVersionController implements SublineVersionApi {
                                                        NotFoundExcpetion.getInstance());
     versionToUpdate.setSwissSublineNumber(newVersion.getSwissSublineNumber());
     versionToUpdate.setSwissLineNumber(newVersion.getSwissLineNumber());
-    versionToUpdate.setStatus(newVersion.getStatus());
     versionToUpdate.setType(newVersion.getType());
     versionToUpdate.setSlnid(newVersion.getSlnid());
     versionToUpdate.setPaymentType(newVersion.getPaymentType());
@@ -98,7 +100,6 @@ public class SublineVersionController implements SublineVersionApi {
                          .id(sublineVersionModel.getId())
                          .swissSublineNumber(sublineVersionModel.getSwissSublineNumber())
                          .swissLineNumber(sublineVersionModel.getSwissLineNumber())
-                         .status(sublineVersionModel.getStatus())
                          .type(sublineVersionModel.getType())
                          .slnid(sublineVersionModel.getSlnid())
                          .description(sublineVersionModel.getDescription())
