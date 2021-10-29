@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SublinesService, SublineVersion } from '../../../../api/lidi';
+import { LineVersion, SublinesService, SublineVersion } from '../../../../api/lidi';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -28,6 +28,8 @@ export class SublineDetailComponent
   implements OnInit, OnDestroy
 {
   TYPE_OPTIONS = Object.values(SublineVersion.TypeEnum);
+  PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
+  STATUS_OPTIONS = Object.values(LineVersion.StatusEnum);
   MAX_LENGTH = 255;
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
@@ -130,8 +132,10 @@ export class SublineDetailComponent
           version.swissLineNumber,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
         ],
-        slnid: [version.slnid, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        type: [version.type, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
+        slnid: [version.slnid],
+        status: [version.status],
+        type: [version.type, [Validators.required]],
+        paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
