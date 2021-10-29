@@ -103,12 +103,10 @@
     "SUBLINES": "Teillinien",
     "SWISS_LINE_NUMBER": "CH-Liniennummer (CHLNR)",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
-    "SHORT_NAME": "Liniennummer",
     "ALTERNATIVE_NAME": "Alternativbezeichnung",
     "COMBINATION_NAME": "Kombinationsbezeichnung",
     "LONG_NAME": "Langbezeichnung",
-    "ICON": "Grafik",
-    "DESCRIPTION": "CH-Linienbezeichnung",
+    "ICON": "URL für Linien-Logo",
     "TYPE": "Linientyp",
     "SUBLINE_TYPE": "Teillinientyp",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation Konzessionär",
@@ -124,6 +122,8 @@
       "NONE": "Keine"
     },
     "LINE": {
+      "NUMBER": "Liniennummer",
+      "DESCRIPTION": "Linienbezeichnung",
       "FONT_RGB": "Schriftfarbe RGB",
       "BACKGROUND_RGB": "Schrifthintergrundfarbe RGB",
       "FONT_CMYK": "Schriftfarbe CMYK",
@@ -145,6 +145,8 @@
       }
     },
     "SUBLINE": {
+      "NUMBER": "Teilliniennummer",
+      "DESCRIPTION": "Teillinienbezeichnung",
       "NEW": "Neue Teillinie",
       "TYPES": {
         "COMPENSATION": "Kompensation",
