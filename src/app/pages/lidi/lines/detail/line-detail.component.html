@@ -132,7 +132,7 @@
 
     <div class="row mb-3">
       <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.DESCRIPTION' | translate }}</mat-label>
+        <mat-label>{{ 'LIDI.LINE.DESCRIPTION' | translate }}</mat-label>
         <input required matInput formControlName="description" placeholder="Lorem Ipsum Linie" />
         <mat-error *ngFor="let validationError of this.getValidation('description')">
           {{
@@ -144,7 +144,7 @@
 
     <div class="row mb-3">
       <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.SHORT_NAME' | translate }}</mat-label>
+        <mat-label>{{ 'LIDI.LINE.NUMBER' | translate }}</mat-label>
         <input required matInput formControlName="number" placeholder="IC2" />
         <mat-error *ngFor="let validationError of this.getValidation('number')">
           {{
