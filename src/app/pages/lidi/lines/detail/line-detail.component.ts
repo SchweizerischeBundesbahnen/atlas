@@ -67,7 +67,11 @@ export class LineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('LIDI.LINE.NOTIFICATION.EDIT_ERROR');
+          const errorMessage =
+            err.status == 409
+              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
+              : 'LIDI.LINE.NOTIFICATION.EDIT_ERROR';
+          this.notificationService.error(errorMessage);
           console.log(err);
           return EMPTY;
         })
@@ -86,7 +90,11 @@ export class LineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('LIDI.LINE.NOTIFICATION.ADD_ERROR');
+          const errorMessage =
+            err.status == 409
+              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
+              : 'LIDI.LINE.NOTIFICATION.ADD_ERROR';
+          this.notificationService.error(errorMessage);
           console.log(err);
           return EMPTY;
         })
