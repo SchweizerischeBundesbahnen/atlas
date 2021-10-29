@@ -30,7 +30,6 @@ export class SublineDetailComponent
   TYPE_OPTIONS = Object.values(SublineVersion.TypeEnum);
   PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
   STATUS_OPTIONS = Object.values(LineVersion.StatusEnum);
-  MAX_LENGTH = 255;
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
@@ -126,23 +125,20 @@ export class SublineDetailComponent
       {
         swissSublineNumber: [
           version.swissSublineNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(50)],
         ],
-        swissLineNumber: [
-          version.swissLineNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
-        ],
+        swissLineNumber: [version.swissLineNumber, [Validators.required, Validators.maxLength(50)]],
         slnid: [version.slnid],
         status: [version.status],
         type: [version.type, [Validators.required]],
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(50)],
         ],
-        number: [version.number, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        longName: [version.longName, [Validators.maxLength(this.MAX_LENGTH)]],
-        description: [version.description, [Validators.maxLength(this.MAX_LENGTH)]],
+        number: [version.number, [Validators.maxLength(50)]],
+        longName: [version.longName, [Validators.maxLength(1000)]],
+        description: [version.description, [Validators.maxLength(255)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],

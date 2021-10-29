@@ -15,9 +15,9 @@ const version: LineVersion = {
   status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
-  businessOrganisation: '',
+  businessOrganisation: 'SBB',
   paymentType: PaymentTypeEnum.None,
-  swissLineNumber: '',
+  swissLineNumber: 'L1',
   type: TypeEnum.Orderly,
 };
 
