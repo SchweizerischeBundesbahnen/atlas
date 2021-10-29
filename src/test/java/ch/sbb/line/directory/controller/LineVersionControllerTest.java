@@ -146,7 +146,7 @@ public class LineVersionControllerTest {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
     LineVersionModel lineVersionModel = createModel();
-    lineVersionModel.setShortName("New name");
+    lineVersionModel.setNumber("New name");
 
     when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
 
@@ -181,7 +181,7 @@ public class LineVersionControllerTest {
                            .type(LineType.ORDERLY)
                            .slnid("slnid")
                            .paymentType(PaymentType.INTERNATIONAL)
-                           .shortName("shortName")
+                           .number("number")
                            .alternativeName("alternativeName")
                            .combinationName("combinationName")
                            .longName("longName")

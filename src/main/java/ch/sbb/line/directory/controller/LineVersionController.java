@@ -58,7 +58,7 @@ public class LineVersionController implements LineVersionApi {
     versionToUpdate.setType(newVersion.getType());
     versionToUpdate.setSlnid(newVersion.getSlnid());
     versionToUpdate.setPaymentType(newVersion.getPaymentType());
-    versionToUpdate.setShortName(newVersion.getShortName());
+    versionToUpdate.setNumber(newVersion.getNumber());
     versionToUpdate.setAlternativeName(newVersion.getAlternativeName());
     versionToUpdate.setCombinationName(newVersion.getCombinationName());
     versionToUpdate.setLongName(newVersion.getLongName());
@@ -94,7 +94,7 @@ public class LineVersionController implements LineVersionApi {
                            .type(lineVersion.getType())
                            .slnid(lineVersion.getSlnid())
                            .paymentType(lineVersion.getPaymentType())
-                           .shortName(lineVersion.getShortName())
+                           .number(lineVersion.getNumber())
                            .alternativeName(lineVersion.getAlternativeName())
                            .combinationName(lineVersion.getCombinationName())
                            .longName(lineVersion.getLongName())
@@ -121,7 +121,7 @@ public class LineVersionController implements LineVersionApi {
                       .type(lineVersionModel.getType())
                       .slnid(lineVersionModel.getSlnid())
                       .paymentType(lineVersionModel.getPaymentType())
-                      .shortName(lineVersionModel.getShortName())
+                      .number(lineVersionModel.getNumber())
                       .alternativeName(lineVersionModel.getAlternativeName())
                       .combinationName(lineVersionModel.getCombinationName())
                       .longName(lineVersionModel.getLongName())

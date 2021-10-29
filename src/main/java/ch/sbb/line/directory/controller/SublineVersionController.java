@@ -53,7 +53,7 @@ public class SublineVersionController implements SublineVersionApi {
     versionToUpdate.setType(newVersion.getType());
     versionToUpdate.setSlnid(newVersion.getSlnid());
     versionToUpdate.setPaymentType(newVersion.getPaymentType());
-    versionToUpdate.setShortName(newVersion.getShortName());
+    versionToUpdate.setNumber(newVersion.getNumber());
     versionToUpdate.setLongName(newVersion.getLongName());
     versionToUpdate.setDescription(newVersion.getDescription());
     versionToUpdate.setValidFrom(newVersion.getValidFrom());
@@ -84,7 +84,7 @@ public class SublineVersionController implements SublineVersionApi {
                               .type(sublineVersion.getType())
                               .slnid(sublineVersion.getSlnid())
                               .description(sublineVersion.getDescription())
-                              .shortName(sublineVersion.getShortName())
+                              .number(sublineVersion.getNumber())
                               .longName(sublineVersion.getLongName())
                               .paymentType(sublineVersion.getPaymentType())
                               .validFrom(sublineVersion.getValidFrom())
@@ -102,7 +102,7 @@ public class SublineVersionController implements SublineVersionApi {
                          .type(sublineVersionModel.getType())
                          .slnid(sublineVersionModel.getSlnid())
                          .description(sublineVersionModel.getDescription())
-                         .shortName(sublineVersionModel.getShortName())
+                         .number(sublineVersionModel.getNumber())
                          .longName(sublineVersionModel.getLongName())
                          .paymentType(sublineVersionModel.getPaymentType())
                          .validFrom(sublineVersionModel.getValidFrom())

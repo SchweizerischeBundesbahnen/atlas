@@ -6,7 +6,6 @@ import ch.sbb.line.directory.enumaration.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
-import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -49,9 +48,9 @@ public class LineVersionModel implements SequenctialValidRange {
   @NotNull
   private PaymentType paymentType;
 
-  @Schema(description = "ShortName", example = "L1")
+  @Schema(description = "Number", example = "L1")
   @Size(max = 50)
-  private String shortName;
+  private String number;
 
   @Schema(description = "AlternativeName", example = "L1")
   @Size(max = 50)
