@@ -28,6 +28,8 @@ export class LineDetailComponent
   implements OnInit, OnDestroy
 {
   TYPE_OPTIONS = Object.values(LineVersion.TypeEnum);
+  PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
+  STATUS_OPTIONS = Object.values(LineVersion.StatusEnum);
   MAX_LENGTH = 255;
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
@@ -126,8 +128,10 @@ export class LineDetailComponent
           version.swissLineNumber,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
         ],
-        slnid: [version.slnid, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        type: [version.type, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
+        slnid: [version.slnid],
+        type: [version.type, [Validators.required]],
+        status: [version.status],
+        paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],

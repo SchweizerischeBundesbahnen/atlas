@@ -61,12 +61,22 @@
 
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.SLNID' | translate }}</mat-label>
-        <input required matInput formControlName="slnid" placeholder="ch:1:slnid:45461" />
-        <mat-error *ngFor="let validationError of this.getValidation('slnid')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <input
+          required
+          matInput
+          [value]="form.value.slnid || ''"
+          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
+          [disabled]="true"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
+        <mat-select [value]="form.value.status" [disabled]="true">
+          <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
+            {{ 'COMMON.STATUS_TYPES.' + status | translate }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 
@@ -86,6 +96,15 @@
         <mat-select required formControlName="type">
           <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
             {{ 'LIDI.SUBLINE.TYPES.' + type | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.PAYMENT.TYPE' | translate }}</mat-label>
+        <mat-select required formControlName="paymentType">
+          <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
+            {{ 'LIDI.PAYMENT.' + type | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>

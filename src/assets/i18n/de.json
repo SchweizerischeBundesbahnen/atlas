@@ -16,6 +16,7 @@
     "DATE": {
       "SELECT_DATERANGE": "Datumsbereich*"
     },
+    "FILLED_AUTOMATICALLY": "Automatisch befüllt",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "STATUS": "Status",
@@ -102,7 +103,7 @@
     "SUBLINES": "Teillinien",
     "SWISS_LINE_NUMBER": "CH-Liniennummer (CHLNR)",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
-    "SHORT_NAME": "Kurzbezeichnung (Liniennummer)",
+    "SHORT_NAME": "Liniennummer",
     "ALTERNATIVE_NAME": "Alternativbezeichnung",
     "COMBINATION_NAME": "Kombinationsbezeichnung",
     "LONG_NAME": "Langbezeichnung",
@@ -113,6 +114,15 @@
     "BUSINESS_ORGANISATION": "Geschäftsorganisation Konzessionär",
     "SLNID": "SLNID",
     "COMMENT": "Kommentar",
+    "PAYMENT": {
+      "TYPE": "Bezahlungsart",
+      "INTERNATIONAL": "International",
+      "REGIONAL": "Regional",
+      "REGIONALWITHOUT": "Nicht Regional",
+      "LOCAL": "Lokal",
+      "OTHER": "Andere",
+      "NONE": "Keine"
+    },
     "LINE": {
       "FONT_RGB": "Schriftfarbe RGB",
       "BACKGROUND_RGB": "Schrifthintergrundfarbe RGB",
