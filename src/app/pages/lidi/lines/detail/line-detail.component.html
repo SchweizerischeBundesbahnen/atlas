@@ -200,6 +200,9 @@
           formControlName="icon"
           placeholder="https://en.wikipedia.org/wiki/File:Icon_train.svg"
         />
+        <a matSuffix target="_blank" [attr.href]="form.value.icon"
+          ><em class="bi bi-box-arrow-in-up-right"></em
+        ></a>
         <mat-error *ngFor="let validationError of this.getValidation('icon')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
