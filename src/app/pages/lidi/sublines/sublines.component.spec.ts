@@ -15,7 +15,7 @@ const versionContainer: VersionsContainerSublineVersion = {
     {
       id: 1,
       slnid: 'slnid',
-      shortName: 'name',
+      number: 'name',
       description: 'asdf',
       status: 'ACTIVE',
       validFrom: new Date('2021-06-01'),

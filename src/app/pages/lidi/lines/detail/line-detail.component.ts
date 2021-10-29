@@ -132,10 +132,7 @@ export class LineDetailComponent
           version.businessOrganisation,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
         ],
-        shortName: [
-          version.shortName,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
-        ],
+        number: [version.number, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
         alternativeName: [version.alternativeName, [Validators.maxLength(this.MAX_LENGTH)]],
         combinationName: [version.combinationName, [Validators.maxLength(this.MAX_LENGTH)]],
         longName: [version.longName, [Validators.maxLength(this.MAX_LENGTH)]],
