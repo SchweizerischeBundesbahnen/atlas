@@ -18,7 +18,7 @@ public class LineTestData {
                       .status(Status.ACTIVE)
                       .type(LineType.ORDERLY)
                       .paymentType(PaymentType.INTERNATIONAL)
-                      .shortName("shortName")
+                      .number("number")
                       .alternativeName("alternativeName")
                       .combinationName("combinationName")
                       .longName("longName")

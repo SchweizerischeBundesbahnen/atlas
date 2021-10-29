@@ -95,7 +95,7 @@ class SublineVersionModelTest {
                               .status(Status.ACTIVE)
                               .type(SublineType.TECHNICAL)
                               .paymentType(PaymentType.INTERNATIONAL)
-                              .shortName("shortName")
+                              .number("number")
                               .longName("longName")
                               .description("description")
                               .validFrom(VALID_FROM)

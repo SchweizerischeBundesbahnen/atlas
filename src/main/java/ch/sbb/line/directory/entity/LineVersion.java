@@ -74,7 +74,7 @@ public class LineVersion implements SequenctialValidRange, SwissNumber {
   private PaymentType paymentType;
 
   @Size(max = 50)
-  private String shortName;
+  private String number;
 
   @Size(max = 50)
   private String alternativeName;

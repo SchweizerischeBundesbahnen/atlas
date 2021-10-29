@@ -14,7 +14,7 @@ public class SublineTestData {
                          .type(SublineType.TECHNICAL)
                          .paymentType(
                              PaymentType.INTERNATIONAL)
-                         .shortName("shortName")
+                         .number("number")
                          .longName("longName")
                          .description("description")
                          .validFrom(
