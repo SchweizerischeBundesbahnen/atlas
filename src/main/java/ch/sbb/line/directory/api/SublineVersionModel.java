@@ -48,9 +48,9 @@ public class SublineVersionModel implements SequenctialValidRange {
   @Size(max = 255)
   private String description;
 
-  @Schema(description = "ShortName", example = "L1")
+  @Schema(description = "Number", example = "L1")
   @Size(max = 50)
-  private String shortName;
+  private String number;
 
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus")
   @Size(max = 1000)

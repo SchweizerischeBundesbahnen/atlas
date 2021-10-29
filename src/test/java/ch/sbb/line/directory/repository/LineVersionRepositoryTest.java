@@ -5,12 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.model.CmykColor;
-import ch.sbb.line.directory.model.RgbColor;
-import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +49,11 @@ public class LineVersionRepositoryTest {
 
 
     //when
-    result.setShortName("other shortname");
+    result.setNumber("other number");
     result = lineVersionRepository.save(result);
 
     //then
-    assertThat(result.getShortName()).isEqualTo("other shortname");
+    assertThat(result.getNumber()).isEqualTo("other number");
   }
 
   @Test

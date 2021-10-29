@@ -140,7 +140,7 @@ class LineVersionModelTest {
                            .type(LineType.ORDERLY)
                            .slnid("slnid")
                            .paymentType(PaymentType.INTERNATIONAL)
-                           .shortName("shortName")
+                           .number("number")
                            .alternativeName("alternativeName")
                            .combinationName("combinationName")
                            .longName("longName")

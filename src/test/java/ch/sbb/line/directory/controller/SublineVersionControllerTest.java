@@ -105,7 +105,7 @@ public class SublineVersionControllerTest {
     // Given
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
     SublineVersionModel sublineVersionModel = createModel();
-    sublineVersionModel.setShortName("New name");
+    sublineVersionModel.setNumber("New name");
 
     when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
 
@@ -142,7 +142,7 @@ public class SublineVersionControllerTest {
                          .type(SublineType.TECHNICAL)
                          .slnid("slnid")
                          .description("description")
-                         .shortName("shortName")
+                         .number("number")
                          .longName("longName")
                          .paymentType(PaymentType.INTERNATIONAL)
                          .validFrom(LocalDate.of(2020,12,12))
