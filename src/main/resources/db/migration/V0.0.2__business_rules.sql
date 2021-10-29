@@ -6,12 +6,19 @@ ALTER TABLE line_version
 ALTER TABLE subline_version
     ADD CONSTRAINT subline_slnid_unique UNIQUE (slnid);
 
+-- Length requirement by QuoVadis
 ALTER TABLE line_version
     ALTER COLUMN description TYPE VARCHAR(255);
 
 ALTER TABLE subline_version
     ALTER COLUMN description TYPE VARCHAR(255);
 
+-- Renaming ShortName -> Number
+ALTER TABLE line_version
+    RENAME COLUMN short_name TO number;
+
+ALTER TABLE subline_version
+    RENAME COLUMN short_name TO number;
 
 -- Mandatory for Line
 ALTER TABLE line_version

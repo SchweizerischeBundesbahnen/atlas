@@ -71,7 +71,7 @@ public class SublineVersion implements SequenctialValidRange, SwissNumber {
   private String description;
 
   @Size(max = 50)
-  private String shortName;
+  private String number;
 
   @Size(max = 1000)
   private String longName;
