@@ -126,8 +126,8 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.SHORT_NAME' | translate }}</mat-label>
-        <input required matInput formControlName="shortName" placeholder="IC2" />
-        <mat-error *ngFor="let validationError of this.getValidation('shortName')">
+        <input required matInput formControlName="number" placeholder="IC2" />
+        <mat-error *ngFor="let validationError of this.getValidation('number')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
           }}

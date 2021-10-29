@@ -16,7 +16,7 @@ import { Pages } from '../../pages';
 export class LinesComponent implements OnInit, OnDestroy {
   linesTableColumns: TableColumn<LineVersion>[] = [
     { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
-    { headerTitle: 'LIDI.SHORT_NAME', value: 'shortName' },
+    { headerTitle: 'LIDI.SHORT_NAME', value: 'number' },
     { headerTitle: 'LIDI.DESCRIPTION', value: 'description' },
     {
       headerTitle: 'COMMON.STATUS',
