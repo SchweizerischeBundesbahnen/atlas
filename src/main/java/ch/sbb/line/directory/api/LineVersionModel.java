@@ -33,8 +33,7 @@ public class LineVersionModel implements SequenctialValidRange {
   @Size(max = 50)
   private String swissLineNumber;
 
-  @Schema(description = "Status")
-  @NotNull
+  @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
   private Status status;
 
   @Schema(description = "LineType")

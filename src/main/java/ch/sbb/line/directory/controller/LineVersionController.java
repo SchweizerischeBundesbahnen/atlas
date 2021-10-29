@@ -6,6 +6,7 @@ import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.service.LineService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +45,7 @@ public class LineVersionController implements LineVersionApi {
   @Override
   public LineVersionModel createLineVersion(LineVersionModel newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
+    newLineVersion.setStatus(Status.ACTIVE);
     LineVersion createdVersion = lineService.save(newLineVersion);
     return toModel(createdVersion);
   }
@@ -54,7 +56,6 @@ public class LineVersionController implements LineVersionApi {
                                              .orElseThrow(
                                                  NotFoundExcpetion.getInstance());
 
-    versionToUpdate.setStatus(newVersion.getStatus());
     versionToUpdate.setType(newVersion.getType());
     versionToUpdate.setSlnid(newVersion.getSlnid());
     versionToUpdate.setPaymentType(newVersion.getPaymentType());
@@ -117,7 +118,6 @@ public class LineVersionController implements LineVersionApi {
   private LineVersion toEntity(LineVersionModel lineVersionModel) {
     return LineVersion.builder()
                       .id(lineVersionModel.getId())
-                      .status(lineVersionModel.getStatus())
                       .type(lineVersionModel.getType())
                       .slnid(lineVersionModel.getSlnid())
                       .paymentType(lineVersionModel.getPaymentType())

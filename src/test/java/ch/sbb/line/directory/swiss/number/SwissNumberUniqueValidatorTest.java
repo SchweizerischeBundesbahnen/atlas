@@ -90,6 +90,20 @@ public class SwissNumberUniqueValidatorTest {
     // Then
   }
 
+  /**
+   * New:     |____1____|
+   * Current: |----1----|
+   */
+  @Test
+  void shouldAllowUpdateOnSameEntity() {
+    // Given
+    SwissNumberTestEntity entity = repository.save(entity());
+    // When
+    assertThat(swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(entity)).isTrue();
+
+    // Then
+  }
+
   private SwissNumberTestEntity entity() {
     return entityBuilder().build();
   }
