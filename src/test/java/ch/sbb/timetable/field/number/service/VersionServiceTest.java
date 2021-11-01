@@ -116,6 +116,56 @@ public class VersionServiceTest {
   }
 
   /**
+   * Szenario 1a: Update einer bestehenden Version am Ende
+   * NEU:                             |________________________________
+   * IST:      |----------------------|--------------------------------
+   * Version:        1                                2
+   *
+   * RESULTAT: |----------------------|________________________________
+   * Version:        1                                2
+   */
+  @Test
+  public void scenario1aEditedValidFromAndEditedValidToAreEqualsToCurrentValidFromAndCurrentValidTo() {
+    //given
+    version2.setLineRelations(new HashSet<>(
+        Set.of(LineRelation.builder().slnid(TTFNID).version(version2).build(),
+            LineRelation.builder().slnid(TTFNID).version(version2).build())));
+    version1 = versionRepository.save(version1);
+    version2 = versionRepository.save(version2);
+
+    Version editedVersion = new Version();
+    editedVersion.setName("FPFN Name <CHANGED>");
+    editedVersion.setValidFrom(version2.getValidFrom());
+    editedVersion.setValidTo(version2.getValidTo());
+    editedVersion.getLineRelations().add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version2).build());
+    //when
+    versionService.updateVersion(version2, editedVersion);
+    List<Version> result = versionRepository.getAllVersionsVersioned(version2.getTtfnid());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(2);
+    result.sort(Comparator.comparing(Version::getValidFrom));
+    assertThat(result.get(0)).isNotNull();
+
+    Version firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
+    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name");
+
+    Version secondTemporalVersion = result.get(1);
+    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
+    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
+    assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name <CHANGED>");
+    assertThat(secondTemporalVersion.getLineRelations()).isNotEmpty();
+    assertThat(secondTemporalVersion.getLineRelations().size()).isEqualTo(1);
+    Set<LineRelation> lineRelations = secondTemporalVersion.getLineRelations();
+    LineRelation lineRelation = lineRelations.stream().iterator().next();
+    assertThat(lineRelation).isNotNull();
+    assertThat(lineRelation.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+  }
+
+  /**
    * Szenario 1b: Update einer bestehenden Version in der Mitte
    * NEU:                  |______________________|
    * IST:      |-----------|----------------------|--------------------
