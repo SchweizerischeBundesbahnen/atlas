@@ -3,7 +3,6 @@ package ch.sbb.line.directory.service;
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.swiss.number.SwissNumberUniqueValidator;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class LineService {
 
   private final LineVersionRepository lineVersionRepository;
-  private final SwissNumberUniqueValidator swissNumberUniqueValidator;
 
   public Page<LineVersion> findAll(Pageable pageable) {
     return lineVersionRepository.findAll(pageable);
@@ -30,7 +28,7 @@ public class LineService {
   }
 
   public LineVersion save(LineVersion lineVersion) {
-    if (!swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(lineVersion)) {
+    if (!lineVersionRepository.hasUniqueSwissLineNumber(lineVersion)) {
       throw new ConflictExcpetion();
     }
     return lineVersionRepository.save(lineVersion);
