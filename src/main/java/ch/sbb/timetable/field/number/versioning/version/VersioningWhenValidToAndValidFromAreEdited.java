@@ -116,12 +116,21 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
                                .getValidFrom(),
           editedValidTo, entityToAddBeforeLastIndex);
       versionedObjects.add(versionedObjectBeforeLastIndex);
-      
-      // 3. remove first and last index from versions and update properties for each version
+
+      // 3. update properties for each version between index = 1 and index = version.size()-1
       //    forEach Versions
       //      update properties
       //      VersioningAction = UPDATE
-
+      for (int i = 1; i < objectToVersioningInValidFromValidToRange.size() - 1; i++) {
+        ToVersioning toVersioning = objectToVersioningInValidFromValidToRange.get(i);
+        Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+            toVersioning.getEntity());
+        VersionedObject versionedObject = buildVersionedObjectToUpdate(
+            toVersioning.getVersionable().getValidFrom(),
+            toVersioning.getVersionable().getValidFrom(),
+            entity);
+        versionedObjects.add(versionedObject);
+      }
     }
 
     return versionedObjects;
