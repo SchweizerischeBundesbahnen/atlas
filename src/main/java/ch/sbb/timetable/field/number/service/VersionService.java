@@ -107,7 +107,9 @@ public class VersionService {
   private Version convertVersionedObjectToVersion(VersionedObject versionedObject) {
     Entity entity = versionedObject.getEntity();
     Version version = new Version();
-    version.setId(entity.getId());
+    if(entity.getId() != null){
+      version.setId(entity.getId());
+    }
     version.setValidFrom(versionedObject.getValidFrom());
     version.setValidTo(versionedObject.getValidTo());
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
