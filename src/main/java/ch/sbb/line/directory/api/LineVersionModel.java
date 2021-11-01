@@ -30,7 +30,7 @@ public class LineVersionModel implements SequenctialValidRange {
 
   @Schema(description = "SwissLineNumber", example = "b1.L1")
   @NotBlank
-  @Size(max = 50)
+  @Size(min = 1, max = 50)
   private String swissLineNumber;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
@@ -97,7 +97,7 @@ public class LineVersionModel implements SequenctialValidRange {
 
   @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
   @NotBlank
-  @Size(max = 50)
+  @Size(min = 1, max = 50)
   private String businessOrganisation;
 
   @Schema(description = "Comment", example = "Comment regarding the line")

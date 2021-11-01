@@ -1,10 +1,10 @@
 CREATE SEQUENCE slnid_seq START WITH 1000000 INCREMENT BY 1;
 
--- SLNID has to be unique
+-- SLNID has to be unique with valid from, forming version
 ALTER TABLE line_version
-    ADD CONSTRAINT line_slnid_unique UNIQUE (slnid);
+    ADD CONSTRAINT line_slnid_unique UNIQUE (slnid, valid_from);
 ALTER TABLE subline_version
-    ADD CONSTRAINT subline_slnid_unique UNIQUE (slnid);
+    ADD CONSTRAINT subline_slnid_unique UNIQUE (slnid, valid_from);
 
 -- Length requirement by QuoVadis
 ALTER TABLE line_version
