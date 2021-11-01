@@ -46,7 +46,7 @@ class LineVersionModelTest {
         LineVersion);
 
     // Then
-    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations).hasSize(2);
     assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(
         "swissLineNumber");
   }
