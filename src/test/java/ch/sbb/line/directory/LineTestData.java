@@ -1,6 +1,7 @@
 package ch.sbb.line.directory;
 
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.LineVersion.LineVersionBuilder;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
@@ -13,7 +14,7 @@ public class LineTestData {
   private static final RgbColor RGB_COLOR = new RgbColor(0, 0, 0);
   private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
 
-  public static LineVersion lineVersion() {
+  public static LineVersionBuilder lineVersionBuilder() {
     return LineVersion.builder()
                       .status(Status.ACTIVE)
                       .type(LineType.ORDERLY)
@@ -27,12 +28,15 @@ public class LineTestData {
                       .colorFontCmyk(CYMK_COLOR)
                       .colorBackCmyk(CYMK_COLOR)
                       .description("description")
-                      .validFrom(LocalDate.of(2020, 12, 12))
-                      .validTo(LocalDate.of(2099, 12, 12))
+                      .validFrom(LocalDate.of(2020, 1, 1))
+                      .validTo(LocalDate.of(2020, 12, 31))
                       .businessOrganisation(
                           "businessOrganisation")
                       .comment("comment")
-                      .swissLineNumber("swissLineNumber")
-                      .build();
+                      .swissLineNumber("swissLineNumber");
+  }
+
+  public static LineVersion lineVersion() {
+    return lineVersionBuilder().build();
   }
 }

@@ -8,8 +8,6 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
-import ch.sbb.line.directory.swiss.number.SwissNumber;
-import ch.sbb.line.directory.swiss.number.SwissNumberDescriptor;
 import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
@@ -44,7 +42,7 @@ import org.hibernate.annotations.GeneratorType;
 @Builder
 @FieldNameConstants
 @Entity(name = "line_version")
-public class LineVersion implements SequenctialValidRange, SwissNumber {
+public class LineVersion implements SequenctialValidRange {
 
   private static final String VERSION_SEQ = "line_version_seq";
 
@@ -132,8 +130,4 @@ public class LineVersion implements SequenctialValidRange, SwissNumber {
 
   private String editor;
 
-  @Override
-  public SwissNumberDescriptor getSwissNumberDescriptor() {
-    return new SwissNumberDescriptor(Fields.swissLineNumber, this::getSwissLineNumber);
-  }
 }

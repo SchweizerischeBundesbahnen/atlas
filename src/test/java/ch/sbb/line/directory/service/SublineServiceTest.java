@@ -8,10 +8,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.swiss.number.SwissNumberUniqueValidator;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,15 +25,12 @@ class SublineServiceTest {
   @Mock
   private SublineVersionRepository sublineVersionRepository;
 
-  @Mock
-  private SwissNumberUniqueValidator swissNumberUniqueValidator;
-
   private SublineService sublineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sublineService = new SublineService(sublineVersionRepository, swissNumberUniqueValidator);
+    sublineService = new SublineService(sublineVersionRepository);
   }
 
   @Test
@@ -79,13 +74,13 @@ class SublineServiceTest {
   void shouldSaveSublineWithValidation() {
     // Given
     when(sublineVersionRepository.save(any())).thenAnswer(i -> i.getArgument(0, SublineVersion.class));
-    when(swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(any())).thenReturn(true);
+    when(sublineVersionRepository.hasUniqueSwissSublineNumber(any())).thenReturn(true);
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
     // When
     SublineVersion result = sublineService.save(sublineVersion);
 
     // Then
-    verify(swissNumberUniqueValidator).hasUniqueBusinessIdOverTime(sublineVersion);
+    verify(sublineVersionRepository).hasUniqueSwissSublineNumber(sublineVersion);
     verify(sublineVersionRepository).save(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
   }
