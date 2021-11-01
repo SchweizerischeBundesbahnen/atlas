@@ -61,6 +61,7 @@ public abstract class Versioning {
 
   protected VersionedObject buildVersionedObjectToCreate(LocalDate validFrom, LocalDate validTo,
       Entity entity) {
+    //TODO: ensure entity.id = null
     return buildVersionedObject(validFrom, validTo, entity, VersioningAction.NEW);
   }
 

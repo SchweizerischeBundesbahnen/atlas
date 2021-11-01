@@ -2,7 +2,6 @@ package ch.sbb.timetable.field.number.service;
 
 
 import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE;
-import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE_PROPERTIES;
 
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
@@ -12,7 +11,6 @@ import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import ch.sbb.timetable.field.number.versioning.service.VersionableService;
-import com.fasterxml.jackson.databind.annotation.JsonAppend.Prop;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
