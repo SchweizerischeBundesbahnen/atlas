@@ -16,7 +16,7 @@ import { Pages } from '../../pages';
 export class SublinesComponent implements OnInit, OnDestroy {
   sublinesTableColumns: TableColumn<SublineVersion>[] = [
     { headerTitle: 'LIDI.SWISS_SUBLINE_NUMBER', value: 'swissSublineNumber' },
-    { headerTitle: 'LIDI.DESCRIPTION', value: 'description' },
+    { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },
     { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
     {
       headerTitle: 'COMMON.STATUS',
