@@ -3,15 +3,10 @@ package ch.sbb.line.directory.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.line.directory.IntegrationTest;
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.model.CmykColor;
-import ch.sbb.line.directory.model.RgbColor;
 import java.time.LocalDate;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,54 +15,50 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LineVersionRepositoryTest {
 
-  private static final RgbColor RGB_COLOR = new RgbColor(0, 0, 0);
-  private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
+  private static final LineVersion LINE_VERSION = LineTestData.lineVersion();
 
   private final LineVersionRepository lineVersionRepository;
-  private LineVersion lineVersion;
 
   @Autowired
   public LineVersionRepositoryTest(LineVersionRepository lineVersionRepository) {
     this.lineVersionRepository = lineVersionRepository;
   }
 
-  @BeforeEach
-  void setUpLineVersion() {
-    lineVersion = lineVersionRepository.save(LineVersion.builder()
-                                                        .status(Status.ACTIVE)
-                                                        .type(LineType.ORDERLY)
-                                                        .slnid("slnid")
-                                                        .paymentType(PaymentType.INTERNATIONAL)
-                                                        .shortName("shortName")
-                                                        .alternativeName("alternativeName")
-                                                        .combinationName("combinationName")
-                                                        .longName("longName")
-                                                        .colorFontRgb(RGB_COLOR)
-                                                        .colorBackRgb(RGB_COLOR)
-                                                        .colorFontCmyk(CYMK_COLOR)
-                                                        .colorBackCmyk(CYMK_COLOR)
-                                                        .description("description")
-                                                        .validFrom(LocalDate.of(2020, 12, 12))
-                                                        .validTo(LocalDate.of(2099, 12, 12))
-                                                        .businessOrganisation("businessOrganisation")
-                                                        .comment("comment")
-                                                        .swissLineNumber("swissLineNumber")
-                                                        .build());
-  }
-
   @Test
   void shouldGetSimpleVersion() {
     //given
+    lineVersionRepository.save(LINE_VERSION);
 
     //when
     LineVersion result = lineVersionRepository.findAll().get(0);
 
     //then
-    assertThat(result).usingRecursiveComparison().ignoringActualNullFields().isEqualTo(lineVersion);
+    assertThat(result).usingRecursiveComparison()
+                      .ignoringActualNullFields()
+                      .isEqualTo(LINE_VERSION);
+    assertThat(result.getSlnid()).startsWith("ch:1:slnid:");
+    assertThat(result.getCreationDate()).isNotNull();
+    assertThat(result.getEditionDate()).isNotNull();
+  }
+
+  @Test
+  void shouldUpdateSimpleLineVersion() {
+    //given
+    LineVersion result = lineVersionRepository.save(LINE_VERSION);
+
+    //when
+    result.setNumber("other number");
+    result = lineVersionRepository.save(result);
+
+    //then
+    assertThat(result.getNumber()).isEqualTo("other number");
   }
 
   @Test
   void shouldGetCountVersions() {
+    //given
+    lineVersionRepository.save(LINE_VERSION);
+
     //when
     long result = lineVersionRepository.count();
 
@@ -78,6 +69,7 @@ public class LineVersionRepositoryTest {
   @Test
   void shouldDeleteVersion() {
     //given
+    LineVersion lineVersion = lineVersionRepository.save(LINE_VERSION);
     lineVersionRepository.delete(lineVersion);
 
     //when
@@ -86,4 +78,87 @@ public class LineVersionRepositoryTest {
     //then
     assertThat(result).isEmpty();
   }
+
+  /**
+   * New:                  |_________1___________|
+   * Current: |-----1-----|                       |-----------1---------|
+   */
+  @Test
+  void shouldAllowSwissNumberOnDifferentSwissIds() {
+    // Given
+    lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
+                                           .validTo(LocalDate.of(2019, 12, 31))
+                                           .build());
+    lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2021, 1, 1))
+                                           .validTo(LocalDate.of(2021, 12, 31))
+                                           .build());
+    // When
+    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isTrue();
+
+    // Then
+  }
+
+  /**
+   * New:           |____1____|
+   * Current:   |--------1--------|
+   */
+  @Test
+  void shouldNotAllowSwissNumberOnOverlapBetween() {
+    // Given
+    lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
+                                           .validTo(LocalDate.of(2099, 12, 31))
+                                           .build());
+    // When
+    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
+
+    // Then
+  }
+
+  /**
+   * New:         |____1____|
+   * Current:         |--------1--------|
+   */
+  @Test
+  void shouldNotAllowSwissNumberOnOverlapBeginning() {
+    // Given
+    lineVersionRepository.save(
+        LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2020, 10, 1))
+                    .validTo(LocalDate.of(2099, 12, 31))
+                    .build());
+    // When
+    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
+
+    // Then
+  }
+
+  /**
+   * New:                   |____1____|
+   * Current: |--------1--------|
+   */
+  @Test
+  void shouldNotAllowSwissNumberOnOverlapEnd() {
+    // Given
+    lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2000, 1, 1))
+                                           .validTo(LocalDate.of(2020, 10, 31))
+                                           .build());
+    // When
+    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
+
+    // Then
+  }
+
+  /**
+   * New:     |____1____|
+   * Current: |----1----|
+   */
+  @Test
+  void shouldAllowUpdateOnSameLineVersion() {
+    // Given
+    LineVersion entity = lineVersionRepository.save(LINE_VERSION);
+    // When
+    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(entity)).isTrue();
+
+    // Then
+  }
+
 }
