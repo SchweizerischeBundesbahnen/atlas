@@ -61,7 +61,7 @@ public abstract class Versioning {
 
   protected VersionedObject buildVersionedObjectToCreate(LocalDate validFrom, LocalDate validTo,
       Entity entity) {
-    //Copy entity and setId = null to ensure that we do not override and existing entity
+    //Copy entity and setId=null to ensure that we do not override an existing entity
     Entity entityToCreate = Entity.builder().id(null).properties(entity.getProperties()).build();
     return buildVersionedObject(validFrom, validTo, entityToCreate, VersioningAction.NEW);
   }
