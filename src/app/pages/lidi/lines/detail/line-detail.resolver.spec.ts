@@ -4,15 +4,21 @@ import { of } from 'rxjs';
 import { LinesService, LineVersion } from '../../../../api/lidi';
 import { LineDetailResolver } from './line-detail.resolver';
 import StatusEnum = LineVersion.StatusEnum;
+import PaymentTypeEnum = LineVersion.PaymentTypeEnum;
+import TypeEnum = LineVersion.TypeEnum;
 
 const version: LineVersion = {
   id: 1234,
   slnid: 'slnid',
-  shortName: 'name',
+  number: 'name',
   description: 'asdf',
   status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
+  businessOrganisation: 'SBB',
+  paymentType: PaymentTypeEnum.None,
+  swissLineNumber: 'L1',
+  type: TypeEnum.Orderly,
 };
 
 describe('LineDetailResolver', () => {

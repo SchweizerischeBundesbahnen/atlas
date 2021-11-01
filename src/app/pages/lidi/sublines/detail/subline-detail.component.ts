@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SublinesService, SublineVersion } from '../../../../api/lidi';
+import { LineVersion, SublinesService, SublineVersion } from '../../../../api/lidi';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -28,7 +28,8 @@ export class SublineDetailComponent
   implements OnInit, OnDestroy
 {
   TYPE_OPTIONS = Object.values(SublineVersion.TypeEnum);
-  MAX_LENGTH = 255;
+  PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
+  STATUS_OPTIONS = Object.values(LineVersion.StatusEnum);
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
@@ -66,7 +67,11 @@ export class SublineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.EDIT_ERROR');
+          const errorMessage =
+            err.status == 409
+              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
+              : 'LIDI.SUBLINE.NOTIFICATION.EDIT_ERROR';
+          this.notificationService.error(errorMessage);
           console.log(err);
           return EMPTY;
         })
@@ -85,7 +90,11 @@ export class SublineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.ADD_ERROR');
+          const errorMessage =
+            err.status == 409
+              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
+              : 'LIDI.SUBLINE.NOTIFICATION.ADD_ERROR';
+          this.notificationService.error(errorMessage);
           console.log(err);
           return EMPTY;
         })
@@ -124,24 +133,20 @@ export class SublineDetailComponent
       {
         swissSublineNumber: [
           version.swissSublineNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(50)],
         ],
-        swissLineNumber: [
-          version.swissLineNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
-        ],
-        slnid: [version.slnid, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        type: [version.type, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
+        swissLineNumber: [version.swissLineNumber, [Validators.required, Validators.maxLength(50)]],
+        slnid: [version.slnid],
+        status: [version.status],
+        type: [version.type, [Validators.required]],
+        paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(50)],
         ],
-        shortName: [
-          version.shortName,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
-        ],
-        longName: [version.longName, [Validators.maxLength(this.MAX_LENGTH)]],
-        description: [version.description, [Validators.maxLength(this.MAX_LENGTH)]],
+        number: [version.number, [Validators.maxLength(50)]],
+        longName: [version.longName, [Validators.maxLength(1000)]],
+        description: [version.description, [Validators.maxLength(255)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],

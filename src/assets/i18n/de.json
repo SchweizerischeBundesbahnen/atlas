@@ -16,6 +16,8 @@
     "DATE": {
       "SELECT_DATERANGE": "Datumsbereich*"
     },
+    "FILLED_AUTOMATICALLY": "Automatisch befüllt",
+    "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Nummer ist zu diesem Zeitraum bereits vergeben.",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "STATUS": "Status",
@@ -102,18 +104,27 @@
     "SUBLINES": "Teillinien",
     "SWISS_LINE_NUMBER": "CH-Liniennummer (CHLNR)",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
-    "SHORT_NAME": "Kurzbezeichnung (Liniennummer)",
     "ALTERNATIVE_NAME": "Alternativbezeichnung",
     "COMBINATION_NAME": "Kombinationsbezeichnung",
     "LONG_NAME": "Langbezeichnung",
-    "ICON": "Grafik",
-    "DESCRIPTION": "CH-Linienbezeichnung",
+    "ICON": "URL für Linien-Logo",
     "TYPE": "Linientyp",
     "SUBLINE_TYPE": "Teillinientyp",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation Konzessionär",
     "SLNID": "SLNID",
     "COMMENT": "Kommentar",
+    "PAYMENT": {
+      "TYPE": "Bezahlungsart",
+      "INTERNATIONAL": "International",
+      "REGIONAL": "Regional",
+      "REGIONALWITHOUT": "Nicht Regional",
+      "LOCAL": "Lokal",
+      "OTHER": "Andere",
+      "NONE": "Keine"
+    },
     "LINE": {
+      "NUMBER": "Liniennummer",
+      "DESCRIPTION": "Linienbezeichnung",
       "FONT_RGB": "Schriftfarbe RGB",
       "BACKGROUND_RGB": "Schrifthintergrundfarbe RGB",
       "FONT_CMYK": "Schriftfarbe CMYK",
@@ -135,6 +146,8 @@
       }
     },
     "SUBLINE": {
+      "NUMBER": "Teilliniennummer",
+      "DESCRIPTION": "Teillinienbezeichnung",
       "NEW": "Neue Teillinie",
       "TYPES": {
         "COMPENSATION": "Kompensation",
