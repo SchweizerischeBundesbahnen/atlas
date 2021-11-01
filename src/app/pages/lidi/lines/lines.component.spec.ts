@@ -7,19 +7,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { LinesComponent } from './lines.component';
-import { LinesService, VersionsContainerLineVersion } from '../../../api/lidi';
+import { LinesService, LineVersion, VersionsContainerLineVersion } from '../../../api/lidi';
 import { CoreModule } from '../../../core/module/core.module';
+import PaymentTypeEnum = LineVersion.PaymentTypeEnum;
+import TypeEnum = LineVersion.TypeEnum;
 
 const versionContainer: VersionsContainerLineVersion = {
   versions: [
     {
       id: 1,
       slnid: 'slnid',
-      shortName: 'name',
+      number: 'name',
       description: 'asdf',
       status: 'ACTIVE',
       validFrom: new Date('2021-06-01'),
       validTo: new Date('2029-06-01'),
+      businessOrganisation: 'SBB',
+      paymentType: PaymentTypeEnum.None,
+      swissLineNumber: 'L1',
+      type: TypeEnum.Orderly,
     },
   ],
   totalCount: 1,

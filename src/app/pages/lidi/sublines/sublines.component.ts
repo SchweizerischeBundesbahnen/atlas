@@ -53,7 +53,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
   getVersions($pagination: TablePagination) {
     this.isLoading = true;
     this.sublineVersionsSubscription = this.sublinesService
-      .getSublineVersions(undefined, $pagination.page, $pagination.size, [$pagination.sort!])
+      .getSublineVersions($pagination.page, $pagination.size, [$pagination.sort!])
       .pipe(
         catchError((err) => {
           this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.FETCH_ERROR');

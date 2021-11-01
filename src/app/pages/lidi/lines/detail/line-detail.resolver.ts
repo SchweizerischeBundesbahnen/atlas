@@ -5,10 +5,10 @@ import { LinesService, LineVersion } from '../../../../api/lidi';
 import { Pages } from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
-export class LineDetailResolver implements Resolve<LineVersion> {
+export class LineDetailResolver implements Resolve<Partial<LineVersion>> {
   constructor(private linesService: LinesService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<LineVersion> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Partial<LineVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of({})

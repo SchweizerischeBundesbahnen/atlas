@@ -28,7 +28,8 @@ export class LineDetailComponent
   implements OnInit, OnDestroy
 {
   TYPE_OPTIONS = Object.values(LineVersion.TypeEnum);
-  MAX_LENGTH = 255;
+  PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
+  STATUS_OPTIONS = Object.values(LineVersion.StatusEnum);
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
@@ -66,7 +67,11 @@ export class LineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('LIDI.LINE.NOTIFICATION.EDIT_ERROR');
+          const errorMessage =
+            err.status == 409
+              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
+              : 'LIDI.LINE.NOTIFICATION.EDIT_ERROR';
+          this.notificationService.error(errorMessage);
           console.log(err);
           return EMPTY;
         })
@@ -85,7 +90,11 @@ export class LineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('LIDI.LINE.NOTIFICATION.ADD_ERROR');
+          const errorMessage =
+            err.status == 409
+              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
+              : 'LIDI.LINE.NOTIFICATION.ADD_ERROR';
+          this.notificationService.error(errorMessage);
           console.log(err);
           return EMPTY;
         })
@@ -122,29 +131,25 @@ export class LineDetailComponent
   getFormGroup(version: LineVersion): FormGroup {
     return this.formBuilder.group(
       {
-        swissLineNumber: [
-          version.swissLineNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
-        ],
-        slnid: [version.slnid, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        type: [version.type, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
+        swissLineNumber: [version.swissLineNumber, [Validators.required, Validators.maxLength(50)]],
+        slnid: [version.slnid],
+        type: [version.type, [Validators.required]],
+        status: [version.status],
+        paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(50)],
         ],
-        shortName: [
-          version.shortName,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
-        ],
-        alternativeName: [version.alternativeName, [Validators.maxLength(this.MAX_LENGTH)]],
-        combinationName: [version.combinationName, [Validators.maxLength(this.MAX_LENGTH)]],
-        longName: [version.longName, [Validators.maxLength(this.MAX_LENGTH)]],
-        icon: [version.icon, [Validators.maxLength(this.MAX_LENGTH)]],
+        number: [version.number, [Validators.maxLength(50)]],
+        alternativeName: [version.alternativeName, [Validators.maxLength(50)]],
+        combinationName: [version.combinationName, [Validators.maxLength(500)]],
+        longName: [version.longName, [Validators.maxLength(1000)]],
+        icon: [version.icon, [Validators.maxLength(255)]],
         colorFontRgb: [version.colorFontRgb],
         colorBackRgb: [version.colorBackRgb],
         colorFontCmyk: [version.colorFontCmyk],
         colorBackCmyk: [version.colorBackCmyk],
-        description: [version.description, [Validators.maxLength(this.MAX_LENGTH)]],
+        description: [version.description, [Validators.maxLength(255)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -153,7 +158,7 @@ export class LineDetailComponent
           version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required],
         ],
-        comment: [version.comment],
+        comment: [version.comment, [Validators.maxLength(1500)]],
       },
       {
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
