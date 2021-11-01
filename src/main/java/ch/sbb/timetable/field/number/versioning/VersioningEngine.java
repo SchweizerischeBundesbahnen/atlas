@@ -38,7 +38,9 @@ public class VersioningEngine {
 
     Versioning versioning;
     //validFrom and validTo are not modified
-    if (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) {
+    if ((editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) || (
+        currentVersion.getValidFrom().equals(editedVersion.getValidFrom())
+            || currentVersion.getValidTo().equals(editedVersion.getValidTo()))) {
       //update actual version
       versioning = new VersioningWhenValidFromAndValidToAreNotEdited();
       return versioning.applyVersioning(currentVersion, editedEntity, objectsToVersioning);
