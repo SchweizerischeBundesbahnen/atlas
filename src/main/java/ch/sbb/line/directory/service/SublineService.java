@@ -3,7 +3,6 @@ package ch.sbb.line.directory.service;
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.swiss.number.SwissNumberUniqueValidator;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class SublineService {
 
   private final SublineVersionRepository sublineVersionRepository;
-  private final SwissNumberUniqueValidator swissNumberUniqueValidator;
 
   public Page<SublineVersion> findAll(Pageable pageable) {
     return sublineVersionRepository.findAll(pageable);
@@ -30,7 +28,7 @@ public class SublineService {
   }
 
   public SublineVersion save(SublineVersion sublineVersion) {
-    if (!swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(sublineVersion)) {
+    if (!sublineVersionRepository.hasUniqueSwissSublineNumber(sublineVersion)) {
       throw new ConflictExcpetion();
     }
     return sublineVersionRepository.save(sublineVersion);

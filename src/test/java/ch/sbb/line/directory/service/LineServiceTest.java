@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.swiss.number.SwissNumberUniqueValidator;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,15 +25,12 @@ class LineServiceTest {
   @Mock
   private LineVersionRepository lineVersionRepository;
 
-  @Mock
-  private SwissNumberUniqueValidator swissNumberUniqueValidator;
-
   private LineService lineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineService = new LineService(lineVersionRepository, swissNumberUniqueValidator);
+    lineService = new LineService(lineVersionRepository);
   }
 
   @Test
@@ -78,13 +74,13 @@ class LineServiceTest {
   void shouldSaveLineWithValidation() {
     // Given
     when(lineVersionRepository.save(any())).thenAnswer(i -> i.getArgument(0, LineVersion.class));
-    when(swissNumberUniqueValidator.hasUniqueBusinessIdOverTime(any())).thenReturn(true);
+    when(lineVersionRepository.hasUniqueSwissLineNumber(any())).thenReturn(true);
     LineVersion lineVersion = LineTestData.lineVersion();
     // When
     LineVersion result = lineService.save(lineVersion);
 
     // Then
-    verify(swissNumberUniqueValidator).hasUniqueBusinessIdOverTime(lineVersion);
+    verify(lineVersionRepository).hasUniqueSwissLineNumber(lineVersion);
     verify(lineVersionRepository).save(lineVersion);
     assertThat(result).isEqualTo(lineVersion);
   }

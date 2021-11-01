@@ -17,7 +17,6 @@ import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import ch.sbb.line.directory.service.LineService;
-import ch.sbb.line.directory.swiss.number.SwissNumberUniqueValidator;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
@@ -42,9 +41,6 @@ public class LineVersionControllerTest {
 
   @Mock
   private SublineVersionController sublineVersionController;
-
-  @Mock
-  private SwissNumberUniqueValidator swissNumberUniqueValidator;
 
   private LineVersionController lineVersionController;
 
