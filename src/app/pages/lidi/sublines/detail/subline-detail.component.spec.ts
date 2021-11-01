@@ -9,15 +9,21 @@ import { of, throwError } from 'rxjs';
 import { SublinesService, SublineVersion } from '../../../../api/lidi';
 import { SublineDetailComponent } from './subline-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
+import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;
+import TypeEnum = SublineVersion.TypeEnum;
 
 const sublineVersion: SublineVersion = {
   id: 1234,
   slnid: 'slnid',
-  shortName: 'name',
+  number: 'name',
   description: 'asdf',
   status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
+  businessOrganisation: 'SBB',
+  paymentType: PaymentTypeEnum.None,
+  swissSublineNumber: 'L1:2',
+  type: TypeEnum.Technical,
 };
 
 let component: SublineDetailComponent;

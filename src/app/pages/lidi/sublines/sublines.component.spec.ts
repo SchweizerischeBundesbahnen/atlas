@@ -6,20 +6,31 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
-import { SublinesService, VersionsContainerSublineVersion } from '../../../api/lidi';
+import {
+  SublinesService,
+  SublineVersion,
+  VersionsContainerSublineVersion,
+} from '../../../api/lidi';
 import { SublinesComponent } from './sublines.component';
 import { CoreModule } from '../../../core/module/core.module';
+import StatusEnum = SublineVersion.StatusEnum;
+import TypeEnum = SublineVersion.TypeEnum;
+import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;
 
 const versionContainer: VersionsContainerSublineVersion = {
   versions: [
     {
       id: 1,
       slnid: 'slnid',
-      shortName: 'name',
+      number: 'name',
       description: 'asdf',
-      status: 'ACTIVE',
       validFrom: new Date('2021-06-01'),
       validTo: new Date('2029-06-01'),
+      status: StatusEnum.Active,
+      businessOrganisation: 'SBB',
+      paymentType: PaymentTypeEnum.None,
+      swissSublineNumber: 'L1:2',
+      type: TypeEnum.Technical,
     },
   ],
   totalCount: 1,

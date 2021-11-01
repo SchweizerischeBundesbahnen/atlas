@@ -5,10 +5,10 @@ import { SublinesService, SublineVersion } from '../../../../api/lidi';
 import { Pages } from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
-export class SublineDetailResolver implements Resolve<SublineVersion> {
+export class SublineDetailResolver implements Resolve<Partial<SublineVersion>> {
   constructor(private sublinesService: SublinesService, private router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<SublineVersion> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Partial<SublineVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of({})
