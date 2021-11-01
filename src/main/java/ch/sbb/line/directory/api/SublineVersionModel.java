@@ -26,7 +26,7 @@ public class SublineVersionModel implements SequenctialValidRange {
 
   @Schema(description = "SwissSublineNumber", example = "b1.L1.X")
   @NotBlank
-  @Size(max = 50)
+  @Size(min = 1, max = 50)
   private String swissSublineNumber;
 
   @Schema(description = "SwissLineNumber", example = "b1.L1")
@@ -69,7 +69,7 @@ public class SublineVersionModel implements SequenctialValidRange {
 
   @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
   @NotBlank
-  @Size(max = 50)
+  @Size(min = 1, max = 50)
   private String businessOrganisation;
 
 }
