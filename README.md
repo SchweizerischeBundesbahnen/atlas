@@ -1,7 +1,6 @@
 # Timetable field number Frontend
 
 [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/job/master/)
-
 [![E2E Tests](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/job/master/)
 
 [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Aatlas-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aatlas-frontend)
