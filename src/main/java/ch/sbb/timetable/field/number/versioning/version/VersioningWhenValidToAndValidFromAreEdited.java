@@ -74,12 +74,54 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       //    validTo = editedValidFrom.minusDay(1)
       //    do not update properties
       //    VersioningAction = UPDATE
-      // 2. versions.get(versions.size()-1)
+      ToVersioning index0toVersioning = objectToVersioningInValidFromValidToRange.get(0);
+      LocalDate index0toVersioningValidTo = editedValidFrom.minusDays(1);
+      VersionedObject versionedObjectIndex0 = buildVersionedObjectToUpdate(
+          index0toVersioning.getVersionable().getValidFrom(), index0toVersioningValidTo,
+          index0toVersioning.getEntity());
+      versionedObjects.add(versionedObjectIndex0);
+      // 2. Create new version:
+      //    versions.get(0)
+      //    validFrom = editedValidFrom
+      //    validTo = versions.get(0).getValidTo()
+      //    update properties with edited properties
+      //    VersioningAction = NEW
+      Entity entityToAddAfterIndex0 = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+          index0toVersioning.getEntity());
+      VersionedObject versionedObjectAfterIndex0 = buildVersionedObjectToCreate(editedValidFrom,
+          index0toVersioning.getVersionable().getValidTo(), entityToAddAfterIndex0);
+      versionedObjects.add(versionedObjectAfterIndex0);
+
+      // 3. versions.get(versions.size()-1)
       //    validFrom = editedValidTo.plusDay(1)
       //    do not update properties
       //    VersioningAction = UPDATE
-      // 3. versions.get(n+1)
-      //    TODO
+      ToVersioning lastIndexToVersioning = objectToVersioningInValidFromValidToRange.get(
+          objectToVersioningInValidFromValidToRange.size() - 1);
+      LocalDate lastIndexToVersioningValidFrom = editedValidTo.plusDays(1);
+      VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
+          lastIndexToVersioningValidFrom, lastIndexToVersioning.getVersionable().getValidTo(),
+          lastIndexToVersioning.getEntity());
+      versionedObjects.add(versionedObjectLastIndex);
+      // 4. Create new version:
+      //    versions.get(versions.size()-1)
+      //    validFrom =  versions.get(versions.size()-1).getValidFrom()
+      //    validTo = editedValidTo
+      //    update properties with edited properties
+      //    VersioningAction = NEW
+      Entity entityToAddBeforeLastIndex = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+          index0toVersioning.getEntity());
+      VersionedObject versionedObjectBeforeLastIndex = buildVersionedObjectToCreate(
+          lastIndexToVersioning.getVersionable()
+                               .getValidFrom(),
+          editedValidTo, entityToAddBeforeLastIndex);
+      versionedObjects.add(versionedObjectBeforeLastIndex);
+      
+      // 3. remove first and last index from versions and update properties for each version
+      //    forEach Versions
+      //      update properties
+      //      VersioningAction = UPDATE
+
     }
 
     return versionedObjects;
