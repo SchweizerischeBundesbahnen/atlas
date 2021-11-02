@@ -20,6 +20,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       Versionable currentVersion,
       List<ToVersioning> objectsToVersioning,
       Entity editedEntity) {
+
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
     LocalDate editedValidFrom = editedVersion.getValidFrom();
@@ -128,7 +129,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     // The edited version is in the middle of an existing Version
     if (editedValidFrom.isAfter(toVersioning.getVersionable().getValidFrom())
         && editedValidTo.isBefore(toVersioning.getVersionable().getValidTo())) {
-      System.out.println("Found in the middle of an exiting Version -> Scenario 2");
+      log.info("Found in the middle of an exiting Version -> Scenario 2");
 
       //1. Update the existing version:
       // currentVersion.setValidTo(editedValidFrom.minusDay(1))

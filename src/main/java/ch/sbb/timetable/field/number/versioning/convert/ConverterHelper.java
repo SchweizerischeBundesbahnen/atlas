@@ -47,8 +47,7 @@ public class ConverterHelper {
   private static <T extends Versionable> Entity convertToEntity(
       List<VersionableProperty> versionableProperties, T version) {
 
-    List<Property> properties = extractProperties(
-        versionableProperties, version);
+    List<Property> properties = extractProperties(versionableProperties, version);
     return buildEntity(version.getId(), properties);
   }
 
@@ -101,8 +100,8 @@ public class ConverterHelper {
     try {
       Field oneToManyRelationField = versionClass.getDeclaredField(property.getFieldName());
       oneToManyRelationField.setAccessible(true);
-      Collection<Object> oneToManyRelationCollection = (Collection<Object>) oneToManyRelationField.get(
-          version);
+      Collection<Object> oneToManyRelationCollection =
+          (Collection<Object>) oneToManyRelationField.get(version);
       if (oneToManyRelationCollection != null) {
         for (Object oneToManyRelation : oneToManyRelationCollection) {
           for (String relation : property.getRelationsFields()) {

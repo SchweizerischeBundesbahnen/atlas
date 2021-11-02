@@ -17,12 +17,12 @@ public abstract class Versioning {
 
   public List<VersionedObject> applyVersioning(Versionable currentVersion,
       Entity editedEntity, List<ToVersioning> objectsToVersioning) {
-    throw new RuntimeException("You have to implement me!!");
+    throw new IllegalStateException("You have to implement me!!");
   }
 
   public List<VersionedObject> applyVersioning(Versionable edited, Versionable current,
       List<ToVersioning> objectsToVersioning, Entity editedEntity) {
-    throw new RuntimeException("You have to implement me!!");
+    throw new IllegalStateException("You have to implement me!!");
   }
 
   protected Entity replaceEditedPropertiesWithCurrentProperties(Entity editedEntity,
