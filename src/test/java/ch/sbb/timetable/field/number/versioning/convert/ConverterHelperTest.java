@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.timetable.field.number.BaseTest;
 import ch.sbb.timetable.field.number.BaseTest.VersionableObject.Relation;
-import ch.sbb.timetable.field.number.versioning.VersioningEngineTest;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
@@ -62,7 +61,7 @@ public class ConverterHelperTest extends BaseTest {
                                        .orElse(null);
     assertThat(propertyField).isNotNull();
     assertThat(propertyField.getKey()).isEqualTo(
-        VersioningEngineTest.VersionableObject.Fields.property);
+        VersionableObject.Fields.property);
     assertThat(propertyField.getValue()).isEqualTo("Ciao");
 
     Property oneToManyRelationField = properties.stream()
