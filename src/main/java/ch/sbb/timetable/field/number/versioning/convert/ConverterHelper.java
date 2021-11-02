@@ -16,7 +16,11 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ConverterHelper {
+public final class ConverterHelper {
+
+  private ConverterHelper(){
+    throw new IllegalStateException("Utility class");
+  }
 
   public static <T extends Versionable> Entity convertToEditedEntity(
       List<VersionableProperty> versionableProperties,
@@ -83,8 +87,8 @@ public class ConverterHelper {
       return buildProperty(property.getFieldName(), propertyValue);
     } catch (NoSuchFieldException | IllegalAccessException e) {
       log.error(e.getMessage());
+      throw new RuntimeException(e);
     }
-    return null;
   }
 
   private static <T extends Versionable> Property extractOneToManyRelationProperty(
@@ -115,6 +119,7 @@ public class ConverterHelper {
       }
     } catch (NoSuchFieldException | IllegalAccessException e) {
       log.error(e.getMessage());
+      throw new RuntimeException(e);
     }
     return propertyBuilder.oneToMany(entityRelations).build();
   }

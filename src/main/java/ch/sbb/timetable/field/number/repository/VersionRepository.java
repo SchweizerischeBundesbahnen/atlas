@@ -1,7 +1,6 @@
 package ch.sbb.timetable.field.number.repository;
 
 import ch.sbb.timetable.field.number.entity.Version;
-import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
