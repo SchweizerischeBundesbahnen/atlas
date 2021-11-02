@@ -83,7 +83,6 @@ public class VersionService {
         //update existing Version
         log(versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
-        System.out.println(version);
         versionRepository.save(version);
       }
       if (VersioningAction.NEW.equals(versionedObject.getAction())) {
@@ -92,7 +91,6 @@ public class VersionService {
         Version version = convertVersionedObjectToVersion(versionedObject);
         //ensure version.getId() == null to avoid to update a Version
         version.setId(null);
-        System.out.println(version);
         versionRepository.save(version);
       }
       if (VersioningAction.DELETE.equals(versionedObject.getAction())) {
