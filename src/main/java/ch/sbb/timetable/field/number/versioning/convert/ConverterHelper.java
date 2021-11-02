@@ -67,7 +67,7 @@ public class ConverterHelper {
             version, versionableProperty);
         properties.add(extractOneToManyRelationProperty);
       }
-      if(RelationType.ONE_TO_ONE == versionableProperty.getRelationType()){
+      if (RelationType.ONE_TO_ONE == versionableProperty.getRelationType()) {
         throw new IllegalStateException("OneToOne Relation not implemented");
       }
     }
@@ -109,12 +109,7 @@ public class ConverterHelper {
             Field relationDeclaredField = oneToManyRelation.getClass().getDeclaredField(relation);
             relationDeclaredField.setAccessible(true);
             Object relationField = relationDeclaredField.get(oneToManyRelation);
-            //TODO: try to find a better solution. Make Entity.id type String
-            if ("id".equals(relation)) {
-              entityRelationBuilder.id((Long) relationField);
-            } else {
-              relationProperties.add(buildProperty(relation, relationField));
-            }
+            relationProperties.add(buildProperty(relation, relationField));
           }
           entityRelations.add(entityRelationBuilder.properties(relationProperties).build());
         }

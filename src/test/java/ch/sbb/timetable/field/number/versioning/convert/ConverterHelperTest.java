@@ -88,7 +88,6 @@ class ConverterHelperTest {
     assertThat(oneToManyRelation.size()).isEqualTo(1);
     Entity entityRelation = oneToManyRelation.get(0);
     assertThat(entityRelation).isNotNull();
-    assertThat(entityRelation.getId()).isEqualTo(1L);
     List<Property> entityRelationProperties = entityRelation.getProperties();
     assertThat(entityRelationProperties).isNotEmpty();
     assertThat(entityRelationProperties.size()).isEqualTo(1);
@@ -143,7 +142,6 @@ class ConverterHelperTest {
     assertThat(oneToManyRelation.size()).isEqualTo(1);
     Entity entityOneToManyRelation = oneToManyRelation.get(0);
     assertThat(entityOneToManyRelation).isNotNull();
-    assertThat(entityOneToManyRelation.getId()).isEqualTo(relation.getId());
     List<Property> entityOneToManyRelationProperties = entityOneToManyRelation.getProperties();
     assertThat(entityOneToManyRelationProperties).isNotEmpty();
     assertThat(entityOneToManyRelationProperties.size()).isEqualTo(1);
@@ -199,8 +197,7 @@ class ConverterHelperTest {
       VERSIONABLE.add(
           VersionableProperty.builder().fieldName(Fields.oneToManyRelation).relationType(
               RelationType.ONE_TO_MANY).relationsFields(
-              List.of(VersioningEngineTest.VersionableObject.Relation.Fields.id,
-                  VersioningEngineTest.VersionableObject.Relation.Fields.value)
+              List.of(VersioningEngineTest.VersionableObject.Relation.Fields.value)
           ).build());
     }
 
