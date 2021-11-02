@@ -23,7 +23,6 @@ public abstract class VersionEngineBaseTest extends BaseTest {
         .validTo(LocalDate.of(2021, 12, 31))
         .property("Ciao1")
         .build();
-
     versionableObject2 = VersionableObject
         .builder()
         .id(2L)
