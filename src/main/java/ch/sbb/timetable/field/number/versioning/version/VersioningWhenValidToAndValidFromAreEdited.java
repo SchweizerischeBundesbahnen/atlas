@@ -110,7 +110,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
           toVersioning.getEntity());
       VersionedObject versionedObject = buildVersionedObjectToUpdate(
           toVersioning.getVersionable().getValidFrom(),
-          toVersioning.getVersionable().getValidFrom(),
+          toVersioning.getVersionable().getValidTo(),
           entity);
       versionedObjects.add(versionedObject);
     }
