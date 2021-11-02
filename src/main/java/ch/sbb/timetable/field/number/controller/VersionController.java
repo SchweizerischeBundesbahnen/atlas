@@ -5,7 +5,6 @@ import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.api.VersionsContainer;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.service.VersionService;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -34,7 +33,7 @@ public class VersionController implements VersionApi {
   public VersionsContainer getVersions(Pageable pageable) {
     log.info("Load Versions using pageable={}", pageable);
     List<VersionModel> versions = versionService.findAll(pageable).stream().map(this::toModel)
-                                                  .collect(Collectors.toList());
+                                                .collect(Collectors.toList());
     long totalCount = versionService.count();
     return VersionsContainer.builder()
                             .versions(versions)
@@ -79,7 +78,7 @@ public class VersionController implements VersionApi {
   @Override
   public List<VersionModel> updateVersionWithVersioning(Long id, VersionModel newVersion) {
     Version versionToUpdate = versionService.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
-    versionService.updateVersion(versionToUpdate,toEntity(newVersion));
+    versionService.updateVersion(versionToUpdate, toEntity(newVersion));
     return getAllVersionsVersioned(versionToUpdate.getTtfnid());
   }
 

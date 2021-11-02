@@ -39,7 +39,7 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 public class Version implements Versionable {
 
-  public static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+  public static final List<VersionableProperty> VERSIONABLE = new ArrayList<>();
 
   static {
     VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.name).relationType(RelationType.NONE).build());
