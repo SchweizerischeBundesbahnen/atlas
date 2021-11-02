@@ -39,10 +39,6 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 public class Version implements Versionable {
 
-  public static List<String> VERSIONABLE_PROPERTIES = List.of(Fields.name, Fields.number,
-      Fields.swissTimetableFieldNumber, Fields.ttfnid, Fields.businessOrganisation, Fields.comment,
-      Fields.nameCompact);
-
   public static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
 
   static {
@@ -54,7 +50,7 @@ public class Version implements Versionable {
     VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.comment).relationType(RelationType.NONE).build());
     VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.nameCompact).relationType(RelationType.NONE).build());
     VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.lineRelations).relationType(RelationType.ONE_TO_MANY).relationsFields(
-        List.of(LineRelation.Fields.id,LineRelation.Fields.slnid)).build());
+        List.of(LineRelation.Fields.slnid)).build());
   }
 
   private static final String VERSION_SEQ = "timetable_field_number_version_seq";
