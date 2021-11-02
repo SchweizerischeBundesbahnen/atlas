@@ -2,27 +2,19 @@ package ch.sbb.timetable.field.number.versioning.convert;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.timetable.field.number.BaseTest;
+import ch.sbb.timetable.field.number.BaseTest.VersionableObject.Relation;
 import ch.sbb.timetable.field.number.versioning.VersioningEngineTest;
-import ch.sbb.timetable.field.number.versioning.VersioningEngineTest.VersionableObject.Relation;
-import ch.sbb.timetable.field.number.versioning.convert.ConverterHelperTest.VersionableObject.Fields;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
-import ch.sbb.timetable.field.number.versioning.model.Versionable;
-import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
-import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.experimental.FieldNameConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ConverterHelperTest {
+public class ConverterHelperTest extends BaseTest {
 
   private VersionableObject versionableObject1;
   private VersionableObject versionableObject2;
@@ -81,7 +73,7 @@ class ConverterHelperTest {
                                                 .orElse(null);
     assertThat(oneToManyRelationField).isNotNull();
     assertThat(oneToManyRelationField.getKey()).isEqualTo(
-        VersioningEngineTest.VersionableObject.Fields.oneToManyRelation);
+        VersionableObject.Fields.oneToManyRelation);
     assertThat(oneToManyRelationField.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelation = oneToManyRelationField.getOneToMany();
     assertThat(oneToManyRelation).isNotEmpty();
@@ -127,14 +119,14 @@ class ConverterHelperTest {
 
     Property firstPropertyFirstItem = entityFirstItemProperties.get(0);
     assertThat(firstPropertyFirstItem).isNotNull();
-    assertThat(firstPropertyFirstItem.getKey()).isEqualTo(Fields.property);
+    assertThat(firstPropertyFirstItem.getKey()).isEqualTo(VersionableObject.Fields.property);
     assertThat(firstPropertyFirstItem.getValue()).isEqualTo("Ciao");
     assertThat(firstPropertyFirstItem.getOneToOne()).isNull();
     assertThat(firstPropertyFirstItem.getOneToMany()).isNull();
 
     Property secondPropertyFirstItem = entityFirstItemProperties.get(1);
     assertThat(secondPropertyFirstItem).isNotNull();
-    assertThat(secondPropertyFirstItem.getKey()).isEqualTo(Fields.oneToManyRelation);
+    assertThat(secondPropertyFirstItem.getKey()).isEqualTo(VersionableObject.Fields.oneToManyRelation);
     assertThat(secondPropertyFirstItem.getValue()).isNull();
     assertThat(secondPropertyFirstItem.getOneToOne()).isNull();
     List<Entity> oneToManyRelation = secondPropertyFirstItem.getOneToMany();
@@ -181,42 +173,5 @@ class ConverterHelperTest {
     List<Entity> oneToManyRelationSecondItem = secondPropertySecondItem.getOneToMany();
     assertThat(oneToManyRelationSecondItem).isEmpty();
   }
-
-  //Move to base test class
-  @Data
-  @AllArgsConstructor
-  @Builder
-  @FieldNameConstants
-  public static class VersionableObject implements Versionable {
-
-    public static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
-
-    static {
-      VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.property).relationType(
-          RelationType.NONE).build());
-      VERSIONABLE.add(
-          VersionableProperty.builder().fieldName(Fields.oneToManyRelation).relationType(
-              RelationType.ONE_TO_MANY).relationsFields(
-              List.of(VersioningEngineTest.VersionableObject.Relation.Fields.value)
-          ).build());
-    }
-
-    private LocalDate validFrom;
-    private LocalDate validTo;
-    private Long id;
-    private String property;
-    private List<VersioningEngineTest.VersionableObject.Relation> oneToManyRelation;
-
-    @Data
-    @AllArgsConstructor
-    @Builder
-    @FieldNameConstants
-    public static class Relation {
-
-      private Long id;
-      private String value;
-    }
-  }
-
 
 }
