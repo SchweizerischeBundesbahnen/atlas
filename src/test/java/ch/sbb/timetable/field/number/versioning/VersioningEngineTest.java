@@ -40,7 +40,7 @@ public class VersioningEngineTest {
       VERSIONABLE.add(
           VersionableProperty.builder().fieldName(Fields.oneToManyRelation).relationType(
               RelationType.ONE_TO_MANY).relationsFields(
-              List.of(Relation.Fields.id, Relation.Fields.value)
+              List.of( Relation.Fields.value)
           ).build());
     }
 
@@ -164,7 +164,6 @@ public class VersioningEngineTest {
     assertThat(oneToManyRelation.size()).isEqualTo(1);
     Entity entityRelation = oneToManyRelation.get(0);
     assertThat(entityRelation).isNotNull();
-    assertThat(entityRelation.getId()).isEqualTo(3L);
     List<Property> entityRelationProperties = entityRelation.getProperties();
     assertThat(entityRelationProperties).isNotEmpty();
     assertThat(entityRelationProperties.size()).isEqualTo(1);
@@ -248,7 +247,6 @@ public class VersioningEngineTest {
     assertThat(oneToManyRelation.size()).isEqualTo(1);
     Entity entityRelation = oneToManyRelation.get(0);
     assertThat(entityRelation).isNotNull();
-    assertThat(entityRelation.getId()).isEqualTo(3L);
     List<Property> entityRelationProperties = entityRelation.getProperties();
     assertThat(entityRelationProperties).isNotEmpty();
     assertThat(entityRelationProperties.size()).isEqualTo(1);
