@@ -117,6 +117,7 @@ public class VersionService {
     for (Property property : entity.getProperties()) {
       if(property.hasOneToOneRelation()){
         //parse and build one to one relation
+        throw new IllegalStateException("OneToOneRelation not implemented!");
       }else if(property.hasOneToManyRelation()){
         Set<LineRelation> lineRelations = new HashSet<>();
         List<Entity> oneToManyEntities = property.getOneToMany();
