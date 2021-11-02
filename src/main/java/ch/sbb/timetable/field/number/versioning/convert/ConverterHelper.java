@@ -51,8 +51,8 @@ public class ConverterHelper {
     return buildEntity(version.getId(), properties);
   }
 
-  private static List<Property> extractProperties(List<VersionableProperty> versionableProperties,
-      Versionable version) {
+  private static  <T extends Versionable> List<Property> extractProperties(List<VersionableProperty> versionableProperties,
+      T version) {
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         version);
     List<Property> properties = new ArrayList<>();
