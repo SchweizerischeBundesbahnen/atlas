@@ -13,6 +13,7 @@ public abstract class VersionableServiceBaseTest extends BaseTest {
   protected VersionableObject versionableObject1;
   protected VersionableObject versionableObject2;
   protected VersionableObject versionableObject3;
+  protected VersionableObject versionableObject4;
 
   @BeforeEach
   public void init() {
@@ -35,6 +36,13 @@ public abstract class VersionableServiceBaseTest extends BaseTest {
         .id(2L)
         .validFrom(LocalDate.of(2024, 1, 1))
         .validTo(LocalDate.of(2024, 12, 31))
+        .property("Ciao1")
+        .build();
+    versionableObject4 = VersionableObject
+        .builder()
+        .id(2L)
+        .validFrom(LocalDate.of(2025, 1, 1))
+        .validTo(LocalDate.of(2025, 12, 31))
         .property("Ciao1")
         .build();
 
