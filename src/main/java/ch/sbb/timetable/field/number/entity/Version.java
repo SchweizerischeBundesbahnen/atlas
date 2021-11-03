@@ -1,14 +1,13 @@
 package ch.sbb.timetable.field.number.entity;
 
 import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.versioning.annotation.AtlasVersionable;
+import ch.sbb.timetable.field.number.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
-import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,21 +36,8 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @Entity(name = "timetable_field_number_version")
 @FieldNameConstants
+@AtlasVersionable
 public class Version implements Versionable {
-
-  public static final List<VersionableProperty> VERSIONABLE = new ArrayList<>();
-
-  static {
-    VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.name).relationType(RelationType.NONE).build());
-    VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.number).relationType(RelationType.NONE).build());
-    VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.swissTimetableFieldNumber).relationType(RelationType.NONE).build());
-    VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.ttfnid).relationType(RelationType.NONE).build());
-    VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.businessOrganisation).relationType(RelationType.NONE).build());
-    VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.comment).relationType(RelationType.NONE).build());
-    VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.nameCompact).relationType(RelationType.NONE).build());
-    VERSIONABLE.add(VersionableProperty.builder().fieldName(Fields.lineRelations).relationType(RelationType.ONE_TO_MANY).relationsFields(
-        List.of(LineRelation.Fields.slnid)).build());
-  }
 
   private static final String VERSION_SEQ = "timetable_field_number_version_seq";
 
@@ -62,14 +48,21 @@ public class Version implements Versionable {
 
   @Builder.Default
   @OneToMany(mappedBy = "version", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @AtlasVersionableProperty(relationType = RelationType.ONE_TO_MANY,
+      relationsFields = {LineRelation.Fields.slnid}
+  )
   private Set<LineRelation> lineRelations = new HashSet<>();
 
+  @AtlasVersionableProperty
   private String ttfnid;
 
+  @AtlasVersionableProperty
   private String name;
 
+  @AtlasVersionableProperty
   private String number;
 
+  @AtlasVersionableProperty
   private String swissTimetableFieldNumber;
 
   @Enumerated(EnumType.STRING)
@@ -91,10 +84,13 @@ public class Version implements Versionable {
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDate validTo;
 
+  @AtlasVersionableProperty
   private String businessOrganisation;
 
+  @AtlasVersionableProperty
   private String comment;
 
+  @AtlasVersionableProperty
   private String nameCompact;
 
 }
