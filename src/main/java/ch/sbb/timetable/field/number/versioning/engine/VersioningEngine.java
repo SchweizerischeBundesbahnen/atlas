@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.versioning;
+package ch.sbb.timetable.field.number.versioning.engine;
 
 import ch.sbb.timetable.field.number.versioning.convert.ConverterHelper;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
