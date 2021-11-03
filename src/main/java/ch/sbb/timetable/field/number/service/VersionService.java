@@ -2,7 +2,6 @@ package ch.sbb.timetable.field.number.service;
 
 
 import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE;
-import static ch.sbb.timetable.field.number.entity.Version.VERSIONABLE_PROPERTIES;
 
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
@@ -12,7 +11,6 @@ import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import ch.sbb.timetable.field.number.versioning.service.VersionableService;
-import com.fasterxml.jackson.databind.annotation.JsonAppend.Prop;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -85,7 +83,6 @@ public class VersionService {
         //update existing Version
         log(versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
-        System.out.println(version);
         versionRepository.save(version);
       }
       if (VersioningAction.NEW.equals(versionedObject.getAction())) {
@@ -94,7 +91,6 @@ public class VersionService {
         Version version = convertVersionedObjectToVersion(versionedObject);
         //ensure version.getId() == null to avoid to update a Version
         version.setId(null);
-        System.out.println(version);
         versionRepository.save(version);
       }
       if (VersioningAction.DELETE.equals(versionedObject.getAction())) {
@@ -109,7 +105,9 @@ public class VersionService {
   private Version convertVersionedObjectToVersion(VersionedObject versionedObject) {
     Entity entity = versionedObject.getEntity();
     Version version = new Version();
-    version.setId(entity.getId());
+    if(entity.getId() != null){
+      version.setId(entity.getId());
+    }
     version.setValidFrom(versionedObject.getValidFrom());
     version.setValidTo(versionedObject.getValidTo());
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
@@ -117,6 +115,7 @@ public class VersionService {
     for (Property property : entity.getProperties()) {
       if(property.hasOneToOneRelation()){
         //parse and build one to one relation
+        throw new IllegalStateException("OneToOneRelation not implemented!");
       }else if(property.hasOneToManyRelation()){
         Set<LineRelation> lineRelations = new HashSet<>();
         List<Entity> oneToManyEntities = property.getOneToMany();
