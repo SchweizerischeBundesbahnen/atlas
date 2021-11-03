@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.versioning.service;
 
+import ch.sbb.timetable.field.number.versioning.annotation.AtlasAnnotationProcessor;
 import ch.sbb.timetable.field.number.versioning.engine.VersioningEngine;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
@@ -11,16 +12,20 @@ import lombok.extern.slf4j.Slf4j;
 public class VersionableServiceImpl implements VersionableService {
 
   private final VersioningEngine versioningEngine;
+  private final AtlasAnnotationProcessor atlasAnnotationProcessor;
 
   public VersionableServiceImpl() {
     this.versioningEngine = new VersioningEngine();
+    this.atlasAnnotationProcessor = new AtlasAnnotationProcessor();
   }
 
   @Override
-  public <T extends Versionable> List<VersionedObject> versioningObjects(
-      List<VersionableProperty> versionableProperties, Versionable current,
+  public <T extends Versionable> List<VersionedObject> versioningObjects( Versionable current,
       Versionable editedVersion,
       List<T> currentVersions) {
+    
+    List<VersionableProperty> versionableProperties = atlasAnnotationProcessor.getVersionableProperties(
+        current);
 
     logStarting(current, editedVersion, currentVersions);
     List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(versionableProperties,
@@ -44,5 +49,7 @@ public class VersionableServiceImpl implements VersionableService {
     log.info("Got {} Versioned objects: {}", versionedObjects.size(), versionedObjects);
     log.info("Versioning done.");
   }
+
+
 
 }

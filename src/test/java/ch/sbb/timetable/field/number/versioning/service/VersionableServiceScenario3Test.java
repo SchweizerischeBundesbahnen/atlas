@@ -42,7 +42,6 @@ public class VersionableServiceScenario3Test extends VersionableServiceBaseTest 
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
-        VersionableObject.VERSIONABLE,
         versionableObject2,
         editedVersion,
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
@@ -157,7 +156,6 @@ public class VersionableServiceScenario3Test extends VersionableServiceBaseTest 
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
-        VersionableObject.VERSIONABLE,
         versionableObject3,
         editedVersion,
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
