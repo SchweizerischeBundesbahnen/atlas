@@ -17,12 +17,12 @@ public abstract class Versioning {
 
   public List<VersionedObject> applyVersioning(Versionable currentVersion,
       Entity editedEntity, List<ToVersioning> objectsToVersioning) {
-    throw new RuntimeException("You have to implement me!!");
+    throw new IllegalStateException("You have to implement me!!");
   }
 
   public List<VersionedObject> applyVersioning(Versionable edited, Versionable current,
       List<ToVersioning> objectsToVersioning, Entity editedEntity) {
-    throw new RuntimeException("You have to implement me!!");
+    throw new IllegalStateException("You have to implement me!!");
   }
 
   protected Entity replaceEditedPropertiesWithCurrentProperties(Entity editedEntity,
@@ -61,7 +61,9 @@ public abstract class Versioning {
 
   protected VersionedObject buildVersionedObjectToCreate(LocalDate validFrom, LocalDate validTo,
       Entity entity) {
-    return buildVersionedObject(validFrom, validTo, entity, VersioningAction.NEW);
+    //Copy entity and setId=null to ensure that we do not override an existing entity
+    Entity entityToCreate = Entity.builder().id(null).properties(entity.getProperties()).build();
+    return buildVersionedObject(validFrom, validTo, entityToCreate, VersioningAction.NEW);
   }
 
   protected VersionedObject buildVersionedObject(LocalDate validFrom, LocalDate validTo,
