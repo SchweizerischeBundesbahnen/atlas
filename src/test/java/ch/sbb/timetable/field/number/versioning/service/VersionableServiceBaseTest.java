@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.versioning;
+package ch.sbb.timetable.field.number.versioning.service;
 
 import ch.sbb.timetable.field.number.BaseTest;
 import ch.sbb.timetable.field.number.versioning.model.Property;
@@ -6,9 +6,9 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 
-public abstract class VersionEngineBaseTest extends BaseTest {
+public abstract class VersionableServiceBaseTest extends BaseTest {
 
-  protected final VersioningEngine versioningEngine = new VersioningEngine();
+  protected final VersionableService versionableService = new VersionableServiceImpl();
 
   protected VersionableObject versionableObject1;
   protected VersionableObject versionableObject2;
