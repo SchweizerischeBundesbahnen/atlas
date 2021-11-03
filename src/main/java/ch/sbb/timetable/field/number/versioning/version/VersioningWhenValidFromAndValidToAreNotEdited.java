@@ -23,5 +23,4 @@ public class VersioningWhenValidFromAndValidToAreNotEdited extends Versioning {
         currentVersion.getValidTo(), entity);
     return List.of(versionedObjectToUpdate);
   }
-
 }
