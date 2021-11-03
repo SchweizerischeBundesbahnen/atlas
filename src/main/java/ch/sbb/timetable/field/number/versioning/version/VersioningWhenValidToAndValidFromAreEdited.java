@@ -94,7 +94,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     //    update properties with edited properties
     //    VersioningAction = NEW
     Entity entityToAddBeforeLastIndex = replaceEditedPropertiesWithCurrentProperties(editedEntity,
-        index0toVersioning.getEntity());
+        lastIndexToVersioning.getEntity());
     VersionedObject versionedObjectBeforeLastIndex = buildVersionedObjectToCreate(
         lastIndexToVersioning.getVersionable()
                              .getValidFrom(),
