@@ -8,7 +8,7 @@ import java.util.List;
 public interface VersionableService {
 
   <T extends Versionable> List<VersionedObject> versioningObjects(
-      List<VersionableProperty> versionableProperties, Versionable actual,
+      List<VersionableProperty> versionableProperties, Versionable current,
       Versionable edited,
       List<T> currentVersions);
 

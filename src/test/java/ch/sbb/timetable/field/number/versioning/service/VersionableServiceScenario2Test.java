@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.versioning;
+package ch.sbb.timetable.field.number.versioning.service;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersioningEngineScenario2Test extends VersionEngineBaseTest {
+public class VersionableServiceScenario2Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 2: Update innerhalb existierender Version
@@ -40,7 +40,7 @@ public class VersioningEngineScenario2Test extends VersionEngineBaseTest {
                                                        .build();
 
     //when
-    List<VersionedObject> result = versioningEngine.applyVersioning(
+    List<VersionedObject> result = versionableService.versioningObjects(
         VersionableObject.VERSIONABLE,
         versionableObject2,
         editedVersion,
