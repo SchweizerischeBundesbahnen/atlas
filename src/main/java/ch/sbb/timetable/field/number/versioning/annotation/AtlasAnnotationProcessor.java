@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.versioning.annotation;
 
+import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType;
 import java.lang.reflect.Field;
@@ -23,13 +24,19 @@ public class AtlasAnnotationProcessor {
 
   private void checkIfIsAtlasVersionable(Object object) {
     if (Objects.isNull(object)) {
-      throw new AtlasVersionableException("Can't version a null object");
+      throw new AtlasVersionableException("Can't versioning a null object.");
     }
 
     Class<?> clazz = object.getClass();
     if (!clazz.isAnnotationPresent(AtlasVersionable.class)) {
       throw new AtlasVersionableException(
-          "The class " + clazz.getSimpleName() + " is not annotated with @AtlasVersionable");
+          "The class " + clazz.getSimpleName()
+              + " is not annotated with @AtlasVersionable.  Please check the documentation.");
+    }
+    if (!Versionable.class.isAssignableFrom(clazz)) {
+      throw new AtlasVersionableException(
+          "The class " + clazz.getSimpleName()
+              + " must implement the interface Versionable. Please check the documentation.");
     }
   }
 
@@ -49,7 +56,10 @@ public class AtlasAnnotationProcessor {
         versionableProperties.add(versionableProperty);
       }
     }
-
+    if (versionableProperties.isEmpty()) {
+      throw new AtlasVersionableException(
+          "To versioning an Object you have to mark some properties with @AtlasVersionableProperty. Please check the documentation.");
+    }
     return versionableProperties;
   }
 
