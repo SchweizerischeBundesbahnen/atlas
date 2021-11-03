@@ -1,11 +1,14 @@
-package ch.sbb.timetable.field.number.versioning;
+package ch.sbb.timetable.field.number.versioning.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.timetable.field.number.BaseTest.VersionableObject;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
-public class VersionEngineTest extends VersionEngineBaseTest {
+public class VersionEngineTest  {
+
+  private final VersioningEngine versioningEngine = new VersioningEngine();
 
   @Test
   public void shouldReturnTrueWhenValidFromAndValidToAreNotEdited() {
