@@ -1,4 +1,4 @@
-package ch.sbb.timetable.field.number.versioning;
+package ch.sbb.timetable.field.number.versioning.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersioningEngineScenario1Test extends VersionEngineBaseTest {
+public class VersionableServiceScenario1Test extends VersionableServiceBaseTest {
 
   /**
    * Szenario 1a: Update einer bestehenden Version am Ende
@@ -42,7 +42,7 @@ public class VersioningEngineScenario1Test extends VersionEngineBaseTest {
     editedVersion.setOneToManyRelation(List.of(editedRelation));
 
     //when
-    List<VersionedObject> result = versioningEngine.applyVersioning(
+    List<VersionedObject> result = versionableService.versioningObjects(
         VersionableObject.VERSIONABLE,
         versionableObject2,
         editedVersion, Arrays.asList(versionableObject1, versionableObject2));
@@ -125,7 +125,7 @@ public class VersioningEngineScenario1Test extends VersionEngineBaseTest {
     editedVersion.setOneToManyRelation(List.of(editedRelation));
 
     //when
-    List<VersionedObject> result = versioningEngine.applyVersioning(
+    List<VersionedObject> result = versionableService.versioningObjects(
         VersionableObject.VERSIONABLE,
         versionableObject2,
         editedVersion, Arrays.asList(versionableObject1, versionableObject2));
@@ -192,7 +192,7 @@ public class VersioningEngineScenario1Test extends VersionEngineBaseTest {
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
 
     //when
-    List<VersionedObject> result = versioningEngine.applyVersioning(
+    List<VersionedObject> result = versionableService.versioningObjects(
         VersionableObject.VERSIONABLE, versionableObject2,
         editedVersion,
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
@@ -248,7 +248,7 @@ public class VersioningEngineScenario1Test extends VersionEngineBaseTest {
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
 
     //when
-    List<VersionedObject> result = versioningEngine.applyVersioning(
+    List<VersionedObject> result = versionableService.versioningObjects(
         VersionableObject.VERSIONABLE,
         versionableObject1,
         editedVersion,
