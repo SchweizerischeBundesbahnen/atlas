@@ -1,6 +1,6 @@
 package ch.sbb.timetable.field.number.versioning.service;
 
-import ch.sbb.timetable.field.number.versioning.VersioningEngine;
+import ch.sbb.timetable.field.number.versioning.engine.VersioningEngine;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
@@ -18,13 +18,13 @@ public class VersionableServiceImpl implements VersionableService {
 
   @Override
   public <T extends Versionable> List<VersionedObject> versioningObjects(
-      List<VersionableProperty> versionableProperties, Versionable currentVersion,
+      List<VersionableProperty> versionableProperties, Versionable current,
       Versionable editedVersion,
       List<T> currentVersions) {
 
-    logStarting(currentVersion, editedVersion, currentVersions);
+    logStarting(current, editedVersion, currentVersions);
     List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(versionableProperties,
-        currentVersion, editedVersion,
+        current, editedVersion,
         currentVersions);
 
     logDone(versionedObjects);
