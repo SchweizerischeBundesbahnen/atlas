@@ -12,36 +12,37 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class VersionServiceScenario4Test extends BaseVersionServiceTest {
+public class VersionServiceScenario5Test extends BaseVersionServiceTest {
 
   @Autowired
-  public VersionServiceScenario4Test(
+  public VersionServiceScenario5Test(
       VersionRepository versionRepository,
       VersionService versionService) {
     super(versionRepository, versionService);
   }
 
   /**
-   * Szenario 4: Update, das über eine ganze Version hinausragt
+   * Szenario 5: Update, das über mehrere Versionen hinausragt
+   *
    * NEU:             |___________________________________|
-   * IST:      |-----------|----------------------|--------------------
-   * Version:        1                 2                  3
+   * IST:      |-----------|-----------|-----------|-------------------
+   * Version:        1           2          3               4
    *
-   *
-   * RESULTAT: |------|_____|______________________|______|------------     NEUE VERSION EINGEFÜGT
-   * Version:      1     4              2              5        3
+   * RESULTAT: |------|_____|__________|____________|_____|------------     NEUE VERSION EINGEFÜGT
+   * Version:      1     5       2           3         6      4
    */
   @Test
-  public void scenario4() {
+  public void scenario5() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
+    version4 = versionRepository.save(version4);
     Version editedVersion = new Version();
     editedVersion.setName("FPFN Name <changed>");
-    editedVersion.setComment("Scenario 4");
+    editedVersion.setComment("Scenario 5");
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
-    editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
+    editedVersion.setValidTo(LocalDate.of(2025, 6, 1));
     editedVersion.getLineRelations()
                  .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version3).build());
 
@@ -51,11 +52,11 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(5);
+    assertThat(result.size()).isEqualTo(6);
     result.sort(Comparator.comparing(Version::getValidFrom));
-    assertThat(result.get(0)).isNotNull();
 
     // first current index updated
+    assertThat(result.get(0)).isNotNull();
     Version firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
@@ -68,7 +69,7 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 6, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
-    assertThat(secondTemporalVersion.getComment()).isEqualTo("Scenario 4");
+    assertThat(secondTemporalVersion.getComment()).isEqualTo("Scenario 5");
     assertThat(secondTemporalVersion.getLineRelations()).isNotEmpty();
     Set<LineRelation> lineRelationsSecondVersion = secondTemporalVersion.getLineRelations();
     assertThat(lineRelationsSecondVersion).isNotEmpty();
@@ -82,7 +83,7 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
-    assertThat(thirdTemporalVersion.getComment()).isEqualTo("Scenario 4");
+    assertThat(thirdTemporalVersion.getComment()).isEqualTo("Scenario 5");
     Set<LineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
     assertThat(lineRelationsThirdVersion).isNotEmpty();
     assertThat(lineRelationsThirdVersion.size()).isEqualTo(1);
@@ -93,9 +94,9 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     //new
     Version fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
-    assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
+    assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(fourthTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
-    assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 4");
+    assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 5");
     Set<LineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isNotEmpty();
     assertThat(lineRelationsFourthVersion.size()).isEqualTo(1);
@@ -103,13 +104,26 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(lineRelationFourthVersion).isNotNull();
     assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
 
-    //last current index updated
+    //new
     Version fifthTemporalVersion = result.get(4);
-    assertThat(fifthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 6, 2));
-    assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
-    assertThat(fifthTemporalVersion.getName()).isEqualTo("FPFN Name");
-    assertThat(fifthTemporalVersion.getComment()).isNull();
-    assertThat(fifthTemporalVersion.getLineRelations()).isEmpty();
+    assertThat(fifthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 1, 1));
+    assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 6, 1));
+    assertThat(fifthTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
+    assertThat(fifthTemporalVersion.getComment()).isEqualTo("Scenario 5");
+    Set<LineRelation> lineRelationsFifthVersion = fifthTemporalVersion.getLineRelations();
+    assertThat(lineRelationsFifthVersion).isNotEmpty();
+    assertThat(lineRelationsFifthVersion.size()).isEqualTo(1);
+    LineRelation lineRelationFifthVersion = lineRelationsFifthVersion.stream().iterator().next();
+    assertThat(lineRelationFifthVersion).isNotNull();
+    assertThat(lineRelationFifthVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+
+    //last current index updated
+    Version sixthTemporalVersion = result.get(5);
+    assertThat(sixthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 6, 2));
+    assertThat(sixthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
+    assertThat(sixthTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(sixthTemporalVersion.getComment()).isNull();
+    assertThat(sixthTemporalVersion.getLineRelations()).isEmpty();
 
   }
 
