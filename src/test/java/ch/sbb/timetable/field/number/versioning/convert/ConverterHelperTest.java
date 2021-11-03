@@ -7,13 +7,30 @@ import ch.sbb.timetable.field.number.BaseTest.VersionableObject.Relation;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
+import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
+import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ConverterHelperTest extends BaseTest {
+
+  public static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+
+  static {
+    VERSIONABLE.add(VersionableProperty.builder()
+                                       .fieldName(BaseTest.VersionableObject.Fields.property)
+                                       .relationType(RelationType.NONE)
+                                       .build());
+    VERSIONABLE.add(VersionableProperty.builder()
+                           .fieldName(BaseTest.VersionableObject.Fields.oneToManyRelation)
+                           .relationType(RelationType.ONE_TO_MANY)
+                           .relationsFields(List.of(Relation.Fields.value))
+                           .build());
+  }
 
   private VersionableObject versionableObject1;
   private VersionableObject versionableObject2;
@@ -44,7 +61,7 @@ public class ConverterHelperTest extends BaseTest {
     //given
 
     //when
-    Entity result = ConverterHelper.convertToEditedEntity(VersionableObject.VERSIONABLE,
+    Entity result = ConverterHelper.convertToEditedEntity(VERSIONABLE,
         versionableObject1.getId(), versionableObject1);
 
     //then
@@ -94,7 +111,7 @@ public class ConverterHelperTest extends BaseTest {
 
     //when
     List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(
-        VersionableObject.VERSIONABLE,
+        VERSIONABLE,
         List.of(versionableObject1, versionableObject2));
 
     //then
@@ -125,7 +142,8 @@ public class ConverterHelperTest extends BaseTest {
 
     Property secondPropertyFirstItem = entityFirstItemProperties.get(1);
     assertThat(secondPropertyFirstItem).isNotNull();
-    assertThat(secondPropertyFirstItem.getKey()).isEqualTo(VersionableObject.Fields.oneToManyRelation);
+    assertThat(secondPropertyFirstItem.getKey()).isEqualTo(
+        VersionableObject.Fields.oneToManyRelation);
     assertThat(secondPropertyFirstItem.getValue()).isNull();
     assertThat(secondPropertyFirstItem.getOneToOne()).isNull();
     List<Entity> oneToManyRelation = secondPropertyFirstItem.getOneToMany();
