@@ -43,7 +43,6 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
-        VersionableObject.VERSIONABLE,
         versionableObject2,
         editedVersion, Arrays.asList(versionableObject1, versionableObject2));
 
@@ -126,7 +125,6 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
-        VersionableObject.VERSIONABLE,
         versionableObject2,
         editedVersion, Arrays.asList(versionableObject1, versionableObject2));
 
@@ -192,8 +190,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
 
     //when
-    List<VersionedObject> result = versionableService.versioningObjects(
-        VersionableObject.VERSIONABLE, versionableObject2,
+    List<VersionedObject> result = versionableService.versioningObjects(versionableObject2,
         editedVersion,
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
@@ -249,7 +246,6 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
-        VersionableObject.VERSIONABLE,
         versionableObject1,
         editedVersion,
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
