@@ -4,11 +4,16 @@ spring:
     username: user
     password: pwd
     driver-class-name: org.postgresql.Driver
-  security:
-    user:
-      password: pwd
   jpa:
     open-in-view: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+auth:
+  audience:
+    service-name: fa0c4e69-d22b-47ff-b71d-af9493919cc6
 server:
   port: 8080
 management:

@@ -3,6 +3,7 @@ package ch.sbb.timetable.field.number.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.timetable.field.number.IntegrationTest;
+import ch.sbb.timetable.field.number.WithMockJwtAuthentication;
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
 import java.time.LocalDate;
@@ -39,6 +40,9 @@ public class VersionRepositoryTest {
         Set.of(LineRelation.builder().slnid("ch:1:slnid:100000").version(version).build(),
             LineRelation.builder().slnid("ch:1:slnid:100001").version(version).build())));
     version = versionRepository.save(version);
+
+    assertThat(version.getCreator()).isEqualTo(WithMockJwtAuthentication.SBB_UID);
+    assertThat(version.getEditor()).isEqualTo(WithMockJwtAuthentication.SBB_UID);
   }
 
   @Test
