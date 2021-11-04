@@ -1,34 +1,34 @@
 <ng-template [ngIf]="isAuthenticated">
   <button mat-button id="user-menu-button" [matMenuTriggerFor]="profile" title="{{ userName }}">
-    <i class="bi bi-person-fill"></i>
+    <em class="bi bi-person-fill"></em>
   </button>
   <mat-menu #profile="matMenu">
     <div class="ps-1 pe-1 d-flex flex-column">
       <div class="user-info-modal d-flex">
         <div class="d-inline-block">
-          <i class="bi bi-person-fill pe-2"></i>
+          <em class="bi bi-person-fill pe-2"></em>
         </div>
         <div class="d-inline-block user-name-modal" title="{{ userName }}">
           {{ userName }}
         </div>
       </div>
-      <div *ngIf="showRoles()" class="d-flex" id="user-roles-modal">
+      <div *ngIf="roles" class="d-flex" id="user-roles-modal">
         <div class="d-inline-block ps-2">
-          <i class="bi bi-people-fill"></i>
+          <em class="bi bi-people-fill"></em>
         </div>
         <div class="d-inline-block">
           <span class="mb-0 user-info-modal">{{ 'PROFILE.YOUR_ROLES' | translate }}</span>
           <mat-list>
-            <mat-list-item class="mat-list-item" *ngFor="let role of user?.roles">
-              <span class="material-icons user-roles-list-item pe-1">fiber_manual_record</span>
-              {{ role }}
+            <mat-list-item class="mat-list-item" *ngFor="let role of roles">
+              <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
+              {{ 'COMMON.ROLES.' + role | translate }}
             </mat-list-item>
           </mat-list>
         </div>
       </div>
       <hr />
       <button mat-button (click)="logout()" id="logout">
-        <i class="bi bi-box-arrow-right"></i>
+        <em class="bi bi-box-arrow-right"></em>
         {{ 'PROFILE.LOGOUT' | translate }}
       </button>
     </div>
@@ -36,7 +36,7 @@
 </ng-template>
 <ng-template [ngIf]="!isAuthenticated">
   <button mat-button id="login" (click)="login()">
-    <i class="bi bi-person"></i>
+    <em class="bi bi-person"></em>
     {{ 'PROFILE.LOGIN' | translate }}
   </button>
 </ng-template>

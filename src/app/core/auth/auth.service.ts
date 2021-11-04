@@ -16,6 +16,10 @@ export class AuthService {
     return this.oauthService.getIdentityClaims() as User;
   }
 
+  get accessToken() {
+    return this.oauthService.getAccessToken();
+  }
+
   get scopes() {
     return this.oauthService.getGrantedScopes() as string[];
   }

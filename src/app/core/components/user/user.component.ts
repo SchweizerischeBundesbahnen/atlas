@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { User } from './user';
+import jwtDecode from 'jwt-decode';
 
 @Component({
   selector: 'app-user',
@@ -11,6 +12,7 @@ export class UserComponent implements OnInit {
   user: User | undefined;
   userName: string | undefined;
   isAuthenticated = false;
+  roles: string[] | undefined;
 
   protected authenticated: boolean | undefined;
 
@@ -30,10 +32,18 @@ export class UserComponent implements OnInit {
     this.user = this.authService.claims;
     this.extractUserName();
     this.authenticate();
+    this.extractRoles();
   }
 
   extractUserName() {
     this.userName = this.user?.name.substr(0, this.user.name.indexOf('(')).trim();
+  }
+
+  extractRoles() {
+    if (this.authService.accessToken) {
+      const decodedToken = jwtDecode(this.authService.accessToken) as User;
+      this.roles = decodedToken.roles.filter((role) => role !== 'apim-default-role');
+    }
   }
 
   authenticate() {
@@ -49,9 +59,5 @@ export class UserComponent implements OnInit {
       this.user = undefined;
       this.authenticate();
     });
-  }
-
-  showRoles() {
-    return this.user?.roles !== undefined && this.user?.roles.length > 0;
   }
 }
