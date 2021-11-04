@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.entity;
 
 import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.service.UserService;
 import ch.sbb.timetable.field.number.versioning.annotation.AtlasVersionable;
 import ch.sbb.timetable.field.number.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
@@ -19,6 +20,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -93,4 +96,15 @@ public class Version implements Versionable {
   @AtlasVersionableProperty
   private String nameCompact;
 
+  @PrePersist
+  public void onPrePersist(){
+    String sbbUid = UserService.getSbbUid();
+    setCreator(sbbUid);
+    setEditor(sbbUid);
+  }
+
+  @PreUpdate
+  public void onPreUpdate(){
+    setEditor(UserService.getSbbUid());
+  }
 }
