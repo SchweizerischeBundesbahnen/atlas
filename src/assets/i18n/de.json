@@ -32,7 +32,11 @@
     "EDIT_VERSION": "Version editieren",
     "CREATE_VERSION": "Version hinzufügen",
     "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
-    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100"
+    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
+    "ROLES": {
+      "lidi-writer": "LiDi Writer",
+      "lidi-admin": "LiDi Admin"
+    }
   },
   "DIALOG": {
     "OK": "Weiter",
