@@ -26,7 +26,7 @@ public class VersionEngineTest  {
   }
 
   @Test
-  public void shouldReturnTrueWhenEditedValidFromIsEqualToCurrentValidFromAndValidToIsNotEdited() {
+  public void shouldReturnFalseWhenEditedValidFromIsEqualToCurrentValidFromAndValidToIsNotEdited() {
     //given
     VersionableObject edited = VersionableObject.builder()
                                                 .validFrom(LocalDate.of(2000, 1, 1))
@@ -39,11 +39,11 @@ public class VersionEngineTest  {
     boolean result = versioningEngine.areValidToAndValidFromNotEdited(current, edited);
 
     //then
-    assertThat(result).isTrue();
+    assertThat(result).isFalse();
   }
 
   @Test
-  public void shouldReturnTrueWhenValidFromIsNotEditedAndEditedValidToIsEqualToCurrentValidTo() {
+  public void shouldReturnFalseWhenValidFromIsNotEditedAndEditedValidToIsEqualToCurrentValidTo() {
     //given
     VersionableObject edited = VersionableObject.builder()
                                                 .validTo(LocalDate.of(2000, 12, 31))
@@ -56,7 +56,7 @@ public class VersionEngineTest  {
     boolean result = versioningEngine.areValidToAndValidFromNotEdited(current, edited);
 
     //then
-    assertThat(result).isTrue();
+    assertThat(result).isFalse();
   }
 
   @Test
