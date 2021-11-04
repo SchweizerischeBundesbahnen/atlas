@@ -31,7 +31,7 @@ public class OpenApiConfig {
 
   @Bean
   public OpenAPI openAPI() {
-    final String oauthProvider = "RHSSO";
+    final String oauthProvider = "Azure Ad";
     return new OpenAPI()
         .addServersItem(new Server().url("/"))
         .info(new Info()
@@ -45,14 +45,14 @@ public class OpenApiConfig {
         .components(new Components()
             .addSecuritySchemes(oauthProvider, new SecurityScheme()
                 .type(SecurityScheme.Type.OAUTH2)
-                .description("RHSSO OAuth2 Security Scheme")
+                .description("OAuth2 Security Scheme")
                 .flows(new OAuthFlows()
                     .authorizationCode(new OAuthFlow()
                         .authorizationUrl(
-                            "https://sso.sbb.ch/auth/realms/SBB_Public/protocol/openid-connect/auth")
+                            "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/authorize")
                         .tokenUrl(
-                            "https://sso.sbb.ch/auth/realms/SBB_Public/protocol/openid-connect/token")
-                        .scopes(new Scopes())
+                            "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token")
+                        .scopes(new Scopes().addString("default", "api://fa0c4e69-d22b-47ff-b71d-af9493919cc6/.default"))
                     ))))
         .addSecurityItem(new SecurityRequirement().addList(oauthProvider));
   }
