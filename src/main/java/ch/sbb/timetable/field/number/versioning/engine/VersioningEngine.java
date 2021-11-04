@@ -7,8 +7,6 @@ import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.version.Versioning;
-import ch.sbb.timetable.field.number.versioning.version.VersioningWhenOnlyValidFromIsEdited;
-import ch.sbb.timetable.field.number.versioning.version.VersioningWhenOnlyValidToIsEdited;
 import ch.sbb.timetable.field.number.versioning.version.VersioningWhenValidFromAndValidToAreNotEdited;
 import ch.sbb.timetable.field.number.versioning.version.VersioningWhenValidToAndValidFromAreEdited;
 import java.util.ArrayList;
@@ -45,23 +43,23 @@ public class VersioningEngine {
       versioning = new VersioningWhenValidFromAndValidToAreNotEdited();
       return versioning.applyVersioning(currentVersion, editedEntity, objectsToVersioning);
     }
-
-    //only validFrom is modified
-    if (isOnlyValidFromEdited(currentVersion, editedVersion)) {
-      log.info("Only ValidFrom is edited.");
-      versioning = new VersioningWhenOnlyValidFromIsEdited();
-      return versioning.applyVersioning(editedVersion, currentVersion, objectsToVersioning,
-          editedEntity);
-    }
-
-    //only validTo is modified
-    if (isOnlyValidToEdited(currentVersion, editedVersion)) {
-      //get all versions between actual.getValidFrom() and edited.getValidTo()
-      log.info("Only ValidTo is edited.");
-      versioning = new VersioningWhenOnlyValidToIsEdited();
-      return versioning.applyVersioning(editedVersion, currentVersion, objectsToVersioning,
-          editedEntity);
-    }
+//
+//    //only validFrom is modified
+//    if (isOnlyValidFromEdited(currentVersion, editedVersion)) {
+//      log.info("Only ValidFrom is edited.");
+//      versioning = new VersioningWhenOnlyValidFromIsEdited();
+//      return versioning.applyVersioning(editedVersion, currentVersion, objectsToVersioning,
+//          editedEntity);
+//    }
+//
+//    //only validTo is modified
+//    if (isOnlyValidToEdited(currentVersion, editedVersion)) {
+//      //get all versions between actual.getValidFrom() and edited.getValidTo()
+//      log.info("Only ValidTo is edited.");
+//      versioning = new VersioningWhenOnlyValidToIsEdited();
+//      return versioning.applyVersioning(editedVersion, currentVersion, objectsToVersioning,
+//          editedEntity);
+//    }
 
     //validFrom and validTo are modified
     if (areValidFromAndValidToEdited(editedVersion)) {
@@ -78,7 +76,7 @@ public class VersioningEngine {
       Versionable editedVersion) {
     return (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) || (
         currentVersion.getValidFrom().equals(editedVersion.getValidFrom())
-            || currentVersion.getValidTo().equals(editedVersion.getValidTo()));
+            && currentVersion.getValidTo().equals(editedVersion.getValidTo()));
   }
 
   public boolean isOnlyValidFromEdited(Versionable currentVersion, Versionable editedVersion) {
@@ -92,7 +90,7 @@ public class VersioningEngine {
   }
 
   public boolean areValidFromAndValidToEdited(Versionable editedVersion) {
-    return editedVersion.getValidFrom() != null && editedVersion.getValidTo() != null;
+    return editedVersion.getValidFrom() != null || editedVersion.getValidTo() != null;
   }
 
 }
