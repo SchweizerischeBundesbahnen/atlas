@@ -24,17 +24,11 @@ const authConfig: AuthConfig = {
   issuer: 'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
   // This is required, since Azure AD uses different domains in their issuer configuration
   strictDiscoveryDocumentValidation: false,
-  // TODO: Replace this with your own clientId
-  clientId: '8184c96f-07a5-4ae1-b4a9-04a0e83cb578',
-  // TODO: If you do not need multiple languages, replace the below code with the following line:
-  // redirectUri: location.origin
-  // Note that these URIs must also be added to allowed redirect URIs in azure-app-registration.yml
-  // (e.g. https://your-domain/en/, https://your-domain/de/, ...)
+  clientId: process.env.API_CLIENT_ID!,
   redirectUri:
     location.origin + location.pathname.substring(0, location.pathname.indexOf('/', 1) + 1),
   responseType: 'code',
-  // TODO: Replace uuid with your own clientId or service id
-  scope: `openid profile email offline_access 8184c96f-07a5-4ae1-b4a9-04a0e83cb578/.default`,
+  scope: process.env.API_SCOPE!,
 };
 
 export const environment: Environment = {
