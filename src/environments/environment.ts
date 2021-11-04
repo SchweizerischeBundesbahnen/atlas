@@ -11,11 +11,10 @@ const authConfig: AuthConfig = {
   issuer: 'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
   // This is required, since Azure AD uses different domains in their issuer configuration
   strictDiscoveryDocumentValidation: false,
-  clientId: '8184c96f-07a5-4ae1-b4a9-04a0e83cb578',
+  clientId: '6f389026-1e55-44d4-9350-81b28e8be3fe',
   redirectUri: location.origin,
   responseType: 'code',
-  // TODO: Replace uuid with your own clientId or service id
-  scope: `openid profile email offline_access 8184c96f-07a5-4ae1-b4a9-04a0e83cb578/.default`,
+  scope: `openid profile email offline_access api://fa0c4e69-d22b-47ff-b71d-af9493919cc6/.default`,
 };
 
 export const environment: Environment = {

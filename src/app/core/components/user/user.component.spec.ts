@@ -63,6 +63,7 @@ describe('UserComponent', () => {
       authServiceMock.eventUserComponentNotification?.emit(user);
       fixture.detectChanges();
       fixture.componentInstance.user = user;
+      fixture.componentInstance.roles = user.roles;
       fixture.componentInstance.isAuthenticated = true;
       fixture.componentInstance.authenticate();
       fixture.detectChanges();
@@ -156,13 +157,9 @@ describe('UserComponent', () => {
 
     it('should show roles', () => {
       //given
-      component.user = {
-        name: 'Test (ITC)',
-        email: 'test@test.ch',
-        roles: ['role1', 'role2', 'role3'],
-      };
+      component.roles = ['role1', 'role2', 'role3'];
       //when
-      const result = component.showRoles();
+      const result = component.roles;
 
       //then
       expect(result).toBeTruthy();
@@ -174,7 +171,7 @@ describe('UserComponent', () => {
         component.user.roles = [];
       }
       //when
-      const result = component.showRoles();
+      const result = component.roles;
 
       //then
       expect(result).toBeFalsy();
