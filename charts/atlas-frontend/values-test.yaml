@@ -1,6 +1,6 @@
 routeHost: 'atlas-frontend-test.apps.aws01t.sbb-aws-test.net'
 environmentLabel: 'test'
-ttfnBackendUrl: 'https://timetable-field-number-backend-test.apps.aws01t.sbb-aws-test.net'
+ttfnBackendUrl: 'https://timetable-field-number-test-int.api.sbb.ch'
 lidiBackendUrl: 'https://line-directory-backend-test.apps.aws01t.sbb-aws-test.net'
 splunkIndex: 'sbb_applications_internal_test_events'
 apiClientId: 'a4b0a771-8dfe-4d52-bc4e-30f0ae525714'
