@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,7 +24,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -60,10 +58,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // that permit to set fine grained control using the Spring Expression Language:
                 // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#method-security-expressions">Method Security Expressions</a>
                 // In order to use these annotations, you have to enable global-method-security using <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
-                .mvcMatchers(HttpMethod.GET, "/").authenticated()
-                .mvcMatchers(HttpMethod.POST, "/").hasAnyRole(Role.LIDI_WRITER, Role.LIDI_ADMIN)
-                .mvcMatchers(HttpMethod.PUT, "/").hasAnyRole(Role.LIDI_WRITER, Role.LIDI_ADMIN)
-                .mvcMatchers(HttpMethod.DELETE, "/").hasRole(Role.LIDI_ADMIN)
+                .mvcMatchers(HttpMethod.GET, "/**").authenticated()
+                .mvcMatchers(HttpMethod.POST, "/**").hasAnyRole(Role.LIDI_WRITER, Role.LIDI_ADMIN)
+                .mvcMatchers(HttpMethod.PUT, "/**").hasAnyRole(Role.LIDI_WRITER, Role.LIDI_ADMIN)
+                .mvcMatchers(HttpMethod.DELETE, "/**").hasRole(Role.LIDI_ADMIN)
                 .anyRequest().authenticated()
         )
 
