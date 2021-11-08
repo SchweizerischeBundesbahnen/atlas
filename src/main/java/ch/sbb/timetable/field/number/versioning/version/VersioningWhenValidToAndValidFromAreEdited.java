@@ -41,7 +41,9 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
         objectsToVersioning, editedValidFrom, editedValidTo);
 
     if (objectToVersioningFound.isEmpty()) {
-      applyVersioningWennNoEntityFound(objectsToVersioning, editedValidFrom, editedValidTo);
+      List<VersionedObject> versionedObjectsOnNoObjectFound = applyVersioningWennNoEntityFound(
+          editedEntity, editedValidFrom, editedValidTo, objectsToVersioning);
+      versionedObjects.addAll(versionedObjectsOnNoObjectFound);
     } else if (objectToVersioningFound.size() == 1) {
       List<VersionedObject> versionedObjectsOnOnlyOneObjectFound = applyVersioningOnSingleFoundEntity(
           editedVersion, currentVersion, editedEntity, editedValidFrom, editedValidTo,
@@ -49,9 +51,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       versionedObjects.addAll(versionedObjectsOnOnlyOneObjectFound);
     } else {
       List<VersionedObject> versionedObjectsOverMultipleEntity = applyVersioningOverMultipleFoundEntities(
-          editedEntity,
-          editedValidFrom, editedValidTo,
-          objectToVersioningFound);
+          editedEntity, editedValidFrom, editedValidTo, objectToVersioningFound);
       versionedObjects.addAll(versionedObjectsOverMultipleEntity);
     }
 
@@ -71,19 +71,19 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
           toVersioning);
       versionedObjects.addAll(versionedObjectsInTheMiddleOfAnExistingEntity);
     } else {
-      List<VersionedObject> versionedObjectsOnTheBorder = applyVersioningOnTheBorder(editedVersion, editedEntity, editedValidFrom, editedValidTo,
-          toVersioning);
+      List<VersionedObject> versionedObjectsOnTheBorder = applyVersioningOnTheBorder(editedVersion,
+          editedEntity, editedValidFrom, editedValidTo, toVersioning);
       versionedObjects.addAll(versionedObjectsOnTheBorder);
     }
 
     return versionedObjects;
   }
 
-  private List<VersionedObject> applyVersioningOnTheBorder(Versionable editedVersion, Entity editedEntity,
+  private List<VersionedObject> applyVersioningOnTheBorder(Versionable editedVersion,
+      Entity editedEntity,
       LocalDate editedValidFrom,
-      LocalDate editedValidTo, ToVersioning toVersioning ) {
+      LocalDate editedValidTo, ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
-
     log.info("We are in scenario 6");
     if (editedVersion.getValidFrom() == null) {
       //Just make the version bigger
@@ -123,20 +123,32 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     return versionedObjects;
   }
 
-  private List<VersionedObject> applyVersioningWennNoEntityFound(List<ToVersioning> objectsToVersioning,
+  private List<VersionedObject> applyVersioningWennNoEntityFound(Entity editedEntity,
       LocalDate editedValidFrom,
-      LocalDate editedValidTo) {
+      LocalDate editedValidTo,
+      List<ToVersioning> objectsToVersioning) {
 
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
-    if (editedValidFrom.isAfter(
-        objectsToVersioning.get(objectsToVersioning.size() - 1).getVersionable().getValidTo())) {
-      //scenario 7d
-      throw new IllegalStateException("Scenario not Implemented");
+    ToVersioning rightBorderVersion = objectsToVersioning.get(objectsToVersioning.size() - 1);
+    if (editedValidFrom.isAfter(rightBorderVersion.getVersionable().getValidTo())) {
+
+      Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
+          editedEntity,
+          rightBorderVersion.getEntity());
+      VersionedObject versionedObject = buildVersionedObjectToCreate(editedValidFrom,
+          editedValidTo, entityToAdd);
+      versionedObjects.add(versionedObject);
     }
-    if (editedValidTo.isBefore(objectsToVersioning.get(0).getVersionable().getValidFrom())) {
-      //scenario 7c
-      throw new IllegalStateException("Scenario not Implemented");
+
+    ToVersioning leftBorderVersion = objectsToVersioning.get(0);
+    if (editedValidTo.isBefore(leftBorderVersion.getVersionable().getValidFrom())) {
+      Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
+          editedEntity,
+          leftBorderVersion.getEntity());
+      VersionedObject versionedObject = buildVersionedObjectToCreate(editedValidFrom,
+          editedValidTo, entityToAdd);
+      versionedObjects.add(versionedObject);
     }
     return versionedObjects;
   }
