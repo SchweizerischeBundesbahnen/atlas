@@ -132,9 +132,11 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     if (editedValidFrom.isAfter(
         objectsToVersioning.get(objectsToVersioning.size() - 1).getVersionable().getValidTo())) {
       //scenario 7d
+      throw new IllegalStateException("Scenario not Implemented");
     }
     if (editedValidTo.isBefore(objectsToVersioning.get(0).getVersionable().getValidFrom())) {
       //scenario 7c
+      throw new IllegalStateException("Scenario not Implemented");
     }
     return versionedObjects;
   }
