@@ -15,8 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
 
   @Override
-  public List<VersionedObject> applyVersioning(
-      Versionable editedVersion,
+  public List<VersionedObject> applyVersioning(Versionable editedVersion,
       Versionable currentVersion,
       List<ToVersioning> objectsToVersioning,
       Entity editedEntity) {
@@ -24,31 +23,123 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
     LocalDate editedValidFrom = editedVersion.getValidFrom();
+    if (editedValidFrom == null) {
+      log.info("ValidFrom not edited.");
+      editedValidFrom = currentVersion.getValidFrom();
+    }
     LocalDate editedValidTo = editedVersion.getValidTo();
+    if (editedValidTo == null) {
+      log.info("ValidTo not edited.");
+      editedValidTo = currentVersion.getValidTo();
+    }
 
     //sort objectsToVersioning
     objectsToVersioning.sort(
         Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
 
-    List<ToVersioning> objectToVersioningInValidFromValidToRange = findObjectToVersioningInValidFromValidToRange(
+    List<ToVersioning> objectToVersioningFound = findObjectToVersioningInValidFromValidToRange(
         objectsToVersioning, editedValidFrom, editedValidTo);
 
-    if (objectToVersioningInValidFromValidToRange.size() == 1) {
-      List<VersionedObject> versionedObjectsInTheMiddleOfAnExistingEntity = applyVersioningToAnObjectInTheMiddleOfAnExistingEntity(
-          currentVersion, editedEntity, editedValidFrom, editedValidTo,
-          objectToVersioningInValidFromValidToRange);
-      versionedObjects.addAll(versionedObjectsInTheMiddleOfAnExistingEntity);
+    if (objectToVersioningFound.isEmpty()) {
+      applyVersioningWennNoEntityFound(objectsToVersioning, editedValidFrom, editedValidTo);
+    } else if (objectToVersioningFound.size() == 1) {
+      List<VersionedObject> versionedObjectsOnOnlyOneObjectFound = applyVersioningOnSingleFoundEntity(
+          editedVersion, currentVersion, editedEntity, editedValidFrom, editedValidTo,
+          objectToVersioningFound.get(0));
+      versionedObjects.addAll(versionedObjectsOnOnlyOneObjectFound);
     } else {
-      List<VersionedObject> versionedObjectsOverMultipleEntity = applyVersioningOverMultipleEntity(editedEntity,
+      List<VersionedObject> versionedObjectsOverMultipleEntity = applyVersioningOverMultipleFoundEntities(
+          editedEntity,
           editedValidFrom, editedValidTo,
-          objectToVersioningInValidFromValidToRange);
+          objectToVersioningFound);
       versionedObjects.addAll(versionedObjectsOverMultipleEntity);
     }
 
     return versionedObjects;
   }
 
-  private List<VersionedObject> applyVersioningOverMultipleEntity(Entity editedEntity,
+  private List<VersionedObject> applyVersioningOnSingleFoundEntity(Versionable editedVersion,
+      Versionable currentVersion, Entity editedEntity,
+      LocalDate editedValidFrom, LocalDate editedValidTo,
+      ToVersioning toVersioning) {
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+
+    if (editedValidFrom.isAfter(toVersioning.getVersionable().getValidFrom())
+        && editedValidTo.isBefore(toVersioning.getVersionable().getValidTo())) {
+      List<VersionedObject> versionedObjectsInTheMiddleOfAnExistingEntity = applyVersioningToAnObjectInTheMiddleOfAnExistingEntity(
+          currentVersion, editedEntity, editedValidFrom, editedValidTo,
+          toVersioning);
+      versionedObjects.addAll(versionedObjectsInTheMiddleOfAnExistingEntity);
+    } else {
+      List<VersionedObject> versionedObjectsOnTheBorder = applyVersioningOnTheBorder(editedVersion, editedEntity, editedValidFrom, editedValidTo,
+          toVersioning);
+      versionedObjects.addAll(versionedObjectsOnTheBorder);
+    }
+
+    return versionedObjects;
+  }
+
+  private List<VersionedObject> applyVersioningOnTheBorder(Versionable editedVersion, Entity editedEntity,
+      LocalDate editedValidFrom,
+      LocalDate editedValidTo, ToVersioning toVersioning ) {
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+
+    log.info("We are in scenario 6");
+    if (editedVersion.getValidFrom() == null) {
+      //Just make the version bigger
+      // 1. version
+      //    validTo = editedValidTo
+      //    do not update properties
+      //    VersioningAction = UPDATE
+      Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+          toVersioning.getEntity());
+      VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
+          toVersioning.getVersionable().getValidFrom(), editedValidTo,
+          entity);
+      versionedObjects.add(versionedObjectLastIndex);
+    } else {
+      // 1. version
+      //    validTo = editedValidFrom.minusDay(1)
+      //    do not update properties
+      //    VersioningAction = UPDATE
+      VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
+          toVersioning.getVersionable().getValidFrom(), editedValidFrom.minusDays(1),
+          toVersioning.getEntity());
+      versionedObjects.add(versionedObjectLastIndex);
+
+      // 2. Create new version:
+      //    versions.get(0)
+      //    validFrom = editedValidFrom
+      //    validTo = versions.get(0).getValidTo()
+      //    update properties with edited properties
+      //    VersioningAction = NEW
+      Entity entityToAddAfterLastIndex = replaceEditedPropertiesWithCurrentProperties(
+          editedEntity,
+          toVersioning.getEntity());
+      VersionedObject versionedObjectAfterIndex0 = buildVersionedObjectToCreate(editedValidFrom,
+          editedValidTo, entityToAddAfterLastIndex);
+      versionedObjects.add(versionedObjectAfterIndex0);
+    }
+    return versionedObjects;
+  }
+
+  private List<VersionedObject> applyVersioningWennNoEntityFound(List<ToVersioning> objectsToVersioning,
+      LocalDate editedValidFrom,
+      LocalDate editedValidTo) {
+
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+
+    if (editedValidFrom.isAfter(
+        objectsToVersioning.get(objectsToVersioning.size() - 1).getVersionable().getValidTo())) {
+      //scenario 7d
+    }
+    if (editedValidTo.isBefore(objectsToVersioning.get(0).getVersionable().getValidFrom())) {
+      //scenario 7c
+    }
+    return versionedObjects;
+  }
+
+  private List<VersionedObject> applyVersioningOverMultipleFoundEntities(Entity editedEntity,
       LocalDate editedValidFrom, LocalDate editedValidTo,
       List<ToVersioning> objectToVersioningInValidFromValidToRange) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
@@ -121,10 +212,9 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
   private List<VersionedObject> applyVersioningToAnObjectInTheMiddleOfAnExistingEntity(
       Versionable currentVersion, Entity editedEntity, LocalDate editedValidFrom,
       LocalDate editedValidTo,
-      List<ToVersioning> objectToVersioningInValidFromValidToRange) {
+      ToVersioning toVersioning) {
     //applyVersioningToAnObjectInTheMiddleOfAnExistingEntity
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    ToVersioning toVersioning = objectToVersioningInValidFromValidToRange.get(0);
     // Scenario2:
     // The edited version is in the middle of an existing Version
     if (editedValidFrom.isAfter(toVersioning.getVersionable().getValidFrom())
@@ -158,14 +248,15 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       VersionedObject toCreateVersionedObject = buildVersionedObjectToCreate(editedValidFrom,
           editedValidTo, entityToAddAtEnd);
       versionedObjects.add(toCreateVersionedObject);
-    } else{
-      throw new IllegalStateException("Something went wrong! If we found just one entity to versioning "
-          + " the new version range must be included in the current range!");
+    } else {
+      throw new IllegalStateException(
+          "Something went wrong! If we found just one entity to versioning "
+              + " the new version range must be included in the current range!");
     }
     return versionedObjects;
   }
 
-  private List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
+  List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
       List<ToVersioning> objectsToVersioning,
       LocalDate editedValidFrom, LocalDate editedValidTo) {
     return objectsToVersioning.stream()
