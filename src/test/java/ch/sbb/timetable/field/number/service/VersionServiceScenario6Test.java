@@ -308,4 +308,50 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
 
   }
 
+  /**
+   * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
+   *
+   * NEU:                             |________________________________
+   * IST:      |-------------------------------------------------------
+   * Version:                               1
+   *
+   * RESULTAT: |----------------------|________________________________     NEUE VERSION EINGEFÜGT
+   * Version:        1                               2
+   *
+   */
+  @Test
+  public void scenario6WhenOnlyValidToIsEditedasdasdas() {
+    //given
+    version1 = versionRepository.save(version1);
+    Version editedVersion = new Version();
+    editedVersion.setName("FPFN Name <changed>");
+    editedVersion.setComment("Scenario 6");
+    editedVersion.setValidTo(LocalDate.of(2023, 6, 1));
+    editedVersion.getLineRelations()
+                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version1).build());
+
+    //when
+    versionService.updateVersion(version1, editedVersion);
+    List<Version> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(1);
+    result.sort(Comparator.comparing(Version::getValidFrom));
+
+    // first version no changes
+    Version firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 6, 1));
+    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
+    assertThat(firstTemporalVersion.getComment()).isEqualTo("Scenario 6");
+    Set<LineRelation> lineRelationsFirstVersion = firstTemporalVersion.getLineRelations();
+    assertThat(lineRelationsFirstVersion).isNotEmpty();
+    assertThat(lineRelationsFirstVersion.size()).isEqualTo(1);
+    LineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream().iterator().next();
+    assertThat(lineRelationFirstVersion).isNotNull();
+    assertThat(lineRelationFirstVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+
+  }
+
 }
