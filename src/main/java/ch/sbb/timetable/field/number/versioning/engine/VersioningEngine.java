@@ -49,9 +49,9 @@ public class VersioningEngine {
           currentVersion, objectsToVersioning,
           editedEntity));
     }
-//    List<VersionedObject> versionedObjectsMerged = MergeEngine.mergeVersionedObject(versionedObjects);
-//    return versionedObjectsMerged;
-    return versionedObjects;
+    List<VersionedObject> versionedObjectsMerged = MergeEngine.mergeVersionedObject(versionedObjects);
+    return versionedObjectsMerged;
+//    return versionedObjects;
   }
 
 
