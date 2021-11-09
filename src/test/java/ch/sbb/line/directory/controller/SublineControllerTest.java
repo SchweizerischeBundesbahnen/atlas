@@ -25,12 +25,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-public class SublineVersionControllerTest {
+public class SublineControllerTest {
 
   @Mock
   private SublineService sublineService;
 
-  private SublineVersionController sublineVersionController;
+  private SublineController sublineController;
 
   @Captor
   private ArgumentCaptor<SublineVersion> versionArgumentCaptor;
@@ -38,7 +38,7 @@ public class SublineVersionControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sublineVersionController = new SublineVersionController(sublineService);
+    sublineController = new SublineController(sublineService);
     when(sublineService.save(any())).then(i -> i.getArgument(0, SublineVersion.class));
   }
 
@@ -48,7 +48,7 @@ public class SublineVersionControllerTest {
     SublineVersionModel sublineVersionModel = createModel();
 
     // When
-    sublineVersionController.createSublineVersion(sublineVersionModel);
+    sublineController.createSublineVersion(sublineVersionModel);
 
     // Then
     verify(sublineService).save(versionArgumentCaptor.capture());
@@ -66,7 +66,7 @@ public class SublineVersionControllerTest {
     when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
 
     // When
-    SublineVersionModel sublineVersionModel = sublineVersionController.getSublineVersion(1L);
+    SublineVersionModel sublineVersionModel = sublineController.getSublineVersion(1L);
 
     // Then
     assertThat(sublineVersionModel).usingRecursiveComparison()
@@ -83,7 +83,7 @@ public class SublineVersionControllerTest {
 
     // Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> sublineVersionController.getSublineVersion(1L))
+                                                                () -> sublineController.getSublineVersion(1L))
                                                             .withMessage(
                                                                 HttpStatus.NOT_FOUND.toString());
   }
@@ -93,7 +93,7 @@ public class SublineVersionControllerTest {
     // Given
 
     // When
-    sublineVersionController.deleteSublineVersion(1L);
+    sublineController.deleteSublineVersion(1L);
 
     // Then
     verify(sublineService).deleteById(1L);
@@ -110,7 +110,7 @@ public class SublineVersionControllerTest {
     when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
 
     // When
-    SublineVersionModel result = sublineVersionController.updateSublineVersion(1L, sublineVersionModel);
+    SublineVersionModel result = sublineController.updateSublineVersion(1L, sublineVersionModel);
 
     // Then
     assertThat(result).usingRecursiveComparison()
@@ -128,7 +128,7 @@ public class SublineVersionControllerTest {
 
     // Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> sublineVersionController.updateSublineVersion(1L,
+                                                                () -> sublineController.updateSublineVersion(1L,
                                                                     sublineVersionModel))
                                                             .withMessage(
                                                                 HttpStatus.NOT_FOUND.toString());
