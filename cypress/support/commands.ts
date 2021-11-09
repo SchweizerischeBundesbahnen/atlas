@@ -63,6 +63,7 @@ Cypress.Commands.add('login', () => {
       body: {
         grant_type: 'password',
         client_id: Cypress.env('CLIENT_ID'),
+        client_secret: Cypress.env('CLIENT_SECRET'),
         username: Cypress.env('USERNAME'),
         password: Cypress.env('PASSWORD'),
         scope: Cypress.env('SCOPE'),
