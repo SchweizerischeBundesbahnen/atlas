@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.line.directory.api.LineVersionApi;
+import ch.sbb.line.directory.api.LineApiV1;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.converter.CmykColorConverter;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class LineVersionController implements LineVersionApi {
+public class LineController implements LineApiV1 {
 
   private final LineService lineService;
 
