@@ -9,6 +9,7 @@ import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,9 +55,33 @@ public abstract class Versioning {
         .orElse(null);
   }
 
+  protected List<VersionedObject> fillNotTouchedVersionedObject(
+      List<ToVersioning> objectsToVersioning,
+      List<ToVersioning> objectToVersioningFound) {
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+    List<ToVersioning> objectsToVersioningNotFound =
+        objectsToVersioning.stream()
+                           .filter(toVersioning ->
+                               objectToVersioningFound.stream()
+                                                      .noneMatch(toVersioningFound ->
+                                                          toVersioningFound.equals(toVersioning))
+                           ).collect(Collectors.toList());
+    objectsToVersioningNotFound.forEach(toVersioning -> {
+      versionedObjects.add(
+          buildVersionedObjectNotTouched(toVersioning.getVersionable().getValidFrom(),
+              toVersioning.getVersionable().getValidTo(), toVersioning.getEntity()));
+    });
+    return versionedObjects;
+  }
+
   protected VersionedObject buildVersionedObjectToUpdate(LocalDate validFrom, LocalDate validTo,
       Entity entity) {
     return buildVersionedObject(validFrom, validTo, entity, VersioningAction.UPDATE);
+  }
+
+  protected VersionedObject buildVersionedObjectNotTouched(LocalDate validFrom, LocalDate validTo,
+      Entity entity) {
+    return buildVersionedObject(validFrom, validTo, entity, VersioningAction.NOT_TOUCHED);
   }
 
   protected VersionedObject buildVersionedObjectToCreate(LocalDate validFrom, LocalDate validTo,
