@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.line.directory.api.SublineVersionApi;
+import ch.sbb.line.directory.api.SublinenApiV1;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class SublineVersionController implements SublineVersionApi {
+public class SublineController implements SublinenApiV1 {
 
   private final SublineService sublineService;
 
   @Override
   public SublineVersionModel getSublineVersion(Long id) {
     return sublineService.findById(id)
-                         .map(SublineVersionController::toModel)
+                         .map(SublineController::toModel)
                          .orElseThrow(NotFoundExcpetion.getInstance());
   }
 
@@ -73,7 +73,7 @@ public class SublineVersionController implements SublineVersionApi {
 
   private static List<SublineVersionModel> toModel(Iterable<SublineVersion> versions) {
     return StreamSupport.stream(versions.spliterator(), false)
-                        .map(SublineVersionController::toModel)
+                        .map(SublineController::toModel)
                         .collect(Collectors.toList());
   }
 
