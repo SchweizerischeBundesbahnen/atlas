@@ -1,6 +1,6 @@
 package ch.sbb.timetable.field.number.controller;
 
-import ch.sbb.timetable.field.number.api.VersionApi;
+import ch.sbb.timetable.field.number.api.TimetableFieldNumberApiV1;
 import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.api.VersionsContainer;
 import ch.sbb.timetable.field.number.entity.Version;
@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @Slf4j
-public class VersionController implements VersionApi {
+public class VersionController implements TimetableFieldNumberApiV1 {
 
   private static final Supplier<ResponseStatusException> NOT_FOUND_EXCEPTION = () -> new ResponseStatusException(
       HttpStatus.NOT_FOUND);
