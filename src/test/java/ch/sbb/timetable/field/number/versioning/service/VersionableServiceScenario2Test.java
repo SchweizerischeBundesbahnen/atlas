@@ -69,7 +69,7 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
     Property propertySecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertySecondVersionedObjectEntity).isNotNull();
-    assertThat(propertySecondVersionedObjectEntity.getValue()).isEqualTo("Ciao1");
+    assertThat(propertySecondVersionedObjectEntity.getValue()).isEqualTo("Ciao2");
     Property oneToManyRelationSecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), VersionableObject.Fields.oneToManyRelation);
     assertThat(oneToManyRelationSecondVersionedObjectEntity.hasOneToManyRelation()).isTrue();

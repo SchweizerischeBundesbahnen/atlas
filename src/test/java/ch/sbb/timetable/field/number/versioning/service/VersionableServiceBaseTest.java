@@ -29,21 +29,21 @@ public abstract class VersionableServiceBaseTest extends BaseTest {
         .id(2L)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2023, 12, 31))
-        .property("Ciao1")
+        .property("Ciao2")
         .build();
     versionableObject3 = VersionableObject
         .builder()
         .id(2L)
         .validFrom(LocalDate.of(2024, 1, 1))
         .validTo(LocalDate.of(2024, 12, 31))
-        .property("Ciao1")
+        .property("Ciao3")
         .build();
     versionableObject4 = VersionableObject
         .builder()
         .id(2L)
         .validFrom(LocalDate.of(2025, 1, 1))
         .validTo(LocalDate.of(2025, 12, 31))
-        .property("Ciao1")
+        .property("Ciao4")
         .build();
 
   }
