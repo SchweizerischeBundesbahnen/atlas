@@ -31,7 +31,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-public class LineVersionControllerTest {
+public class LineControllerTest {
 
   private static final RgbColor RGB_COLOR = new RgbColor(0, 0, 0);
   private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
@@ -40,9 +40,9 @@ public class LineVersionControllerTest {
   private LineService lineService;
 
   @Mock
-  private SublineVersionController sublineVersionController;
+  private SublineController sublineController;
 
-  private LineVersionController lineVersionController;
+  private LineController lineController;
 
   @Captor
   private ArgumentCaptor<LineVersion> versionArgumentCaptor;
@@ -50,7 +50,7 @@ public class LineVersionControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineVersionController = new LineVersionController(lineService);
+    lineController = new LineController(lineService);
     when(lineService.save(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
 
@@ -60,7 +60,7 @@ public class LineVersionControllerTest {
     LineVersionModel lineVersionModel = createModel();
 
     // When
-    lineVersionController.createLineVersion(lineVersionModel);
+    lineController.createLineVersion(lineVersionModel);
 
     // Then
     verify(lineService).save(versionArgumentCaptor.capture());
@@ -80,7 +80,7 @@ public class LineVersionControllerTest {
     when(lineService.totalCount()).thenReturn(1L);
 
     // When
-    VersionsContainer<LineVersionModel> lineVersionContainer = lineVersionController.getLineVersions(
+    VersionsContainer<LineVersionModel> lineVersionContainer = lineController.getLineVersions(
         Pageable.unpaged());
 
     // Then
@@ -103,7 +103,7 @@ public class LineVersionControllerTest {
     when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
 
     // When
-    LineVersionModel lineVersionModel = lineVersionController.getLineVersion(1L);
+    LineVersionModel lineVersionModel = lineController.getLineVersion(1L);
 
     // Then
     assertThat(lineVersionModel).usingRecursiveComparison()
@@ -120,7 +120,7 @@ public class LineVersionControllerTest {
 
     // Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> lineVersionController.getLineVersion(1L))
+                                                                () -> lineController.getLineVersion(1L))
                                                             .withMessage(
                                                                 HttpStatus.NOT_FOUND.toString());
   }
@@ -130,7 +130,7 @@ public class LineVersionControllerTest {
     // Given
 
     // When
-    lineVersionController.deleteLineVersion(1L);
+    lineController.deleteLineVersion(1L);
 
     // Then
     verify(lineService).deleteById(1L);
@@ -147,7 +147,7 @@ public class LineVersionControllerTest {
     when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
 
     // When
-    LineVersionModel result = lineVersionController.updateLineVersion(1L, lineVersionModel);
+    LineVersionModel result = lineController.updateLineVersion(1L, lineVersionModel);
 
     // Then
     assertThat(result).usingRecursiveComparison()
@@ -165,7 +165,7 @@ public class LineVersionControllerTest {
 
     // Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> lineVersionController.updateLineVersion(1L,
+                                                                () -> lineController.updateLineVersion(1L,
                                                                     lineVersionModel))
                                                             .withMessage(
                                                                 HttpStatus.NOT_FOUND.toString());

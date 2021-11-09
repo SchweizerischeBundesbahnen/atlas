@@ -1,0 +1,4 @@
+# Splunk index to write to
+splunkIndex: "sbb_applications_internal_test_events"
+# spring profile for the environment
+springProfilesActive: "test"
