@@ -10,6 +10,11 @@
     "openshiftAppName": "line-directory-api",
     "artifactorySupressProjectSubfolderCreation": true
   },
+  "helm" : {
+    "chart": "line-directory-backend",
+    "repository": "atlas.helm",
+    "release": "line-directory-backend"
+  },
   "mvn": {
     "parentPom": "pom.xml",
     "deployableArtifactsPom": "pom.xml",
