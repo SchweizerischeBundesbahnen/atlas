@@ -16,6 +16,6 @@ public class VersionedObject {
 
   private final Entity entity;
 
-  private final VersioningAction action;
+  private VersioningAction action;
 
 }

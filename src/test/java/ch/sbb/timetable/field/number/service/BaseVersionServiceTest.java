@@ -22,6 +22,7 @@ public abstract class BaseVersionServiceTest {
   protected Version version2;
   protected Version version3;
   protected Version version4;
+  protected Version version5;
 
   @Autowired
   public BaseVersionServiceTest(VersionRepository versionRepository,
@@ -59,6 +60,13 @@ public abstract class BaseVersionServiceTest {
                       .swissTimetableFieldNumber("b0.BEX")
                       .validFrom(LocalDate.of(2025, 1, 1))
                       .validTo(LocalDate.of(2025, 12, 31))
+                      .build();
+    version5 = Version.builder().ttfnid(TTFNID)
+                      .name("FPFN Name")
+                      .number("BEX")
+                      .swissTimetableFieldNumber("b0.BEX")
+                      .validFrom(LocalDate.of(2026, 1, 1))
+                      .validTo(LocalDate.of(2026, 12, 31))
                       .build();
   }
 
