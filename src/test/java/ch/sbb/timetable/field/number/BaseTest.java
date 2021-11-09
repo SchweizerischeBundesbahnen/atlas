@@ -25,6 +25,8 @@ public abstract class BaseTest {
     private Long id;
     @AtlasVersionableProperty
     private String property;
+    @AtlasVersionableProperty
+    private String anotherProperty;
     @AtlasVersionableProperty(relationType = RelationType.ONE_TO_MANY, relationsFields = {Relation.Fields.value})
     private List<Relation> oneToManyRelation;
 

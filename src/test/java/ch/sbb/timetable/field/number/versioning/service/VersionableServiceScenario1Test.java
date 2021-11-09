@@ -66,7 +66,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
     assertThat(entityToChange.getProperties()).isNotEmpty();
     List<Property> propertiesResult = entityToChange.getProperties();
-    assertThat(propertiesResult.size()).isEqualTo(2);
+    assertThat(propertiesResult.size()).isEqualTo(3);
     Property property1Result = propertiesResult.stream()
                                                .filter(
                                                    property -> VersionableObject.Fields.property.equals(
@@ -155,7 +155,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
     assertThat(entityToChange.getProperties()).isNotEmpty();
     List<Property> propertiesResult = entityToChange.getProperties();
-    assertThat(propertiesResult.size()).isEqualTo(2);
+    assertThat(propertiesResult.size()).isEqualTo(3);
     Property property1Result = propertiesResult.stream()
                                                .filter(
                                                    property -> VersionableObject.Fields.property.equals(
@@ -226,7 +226,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     Entity entityToChange = versionedObject.getEntity();
     assertThat(entityToChange).isNotNull();
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
-    assertThat(entityToChange.getProperties().size()).isEqualTo(2);
+    assertThat(entityToChange.getProperties().size()).isEqualTo(3);
     Property propertyOneToManyRelation = entityToChange.getProperties()
                                                        .stream()
                                                        .filter(
@@ -286,7 +286,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject1.getValidFrom());
     assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject1.getValidTo());
     Entity entityToChange = versionedObject.getEntity();
-    assertThat(entityToChange.getProperties().size()).isEqualTo(2);
+    assertThat(entityToChange.getProperties().size()).isEqualTo(3);
     Property propertyOneToManyRelation = entityToChange.getProperties()
                                                        .stream()
                                                        .filter(
