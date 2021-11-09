@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "timetable-field-numbers")
-public interface VersionApi {
+@Tag(name = "Timetable field numbers")
+@RequestMapping("v1/field-numbers")
+public interface TimetableFieldNumberApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
