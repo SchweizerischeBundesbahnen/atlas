@@ -56,13 +56,6 @@ export class Configuration {
     } else {
       this.credentials = {};
     }
-
-    // init default RHSSO credential
-    if (!this.credentials['RHSSO']) {
-      this.credentials['RHSSO'] = () => {
-        return typeof this.accessToken === 'function' ? this.accessToken() : this.accessToken;
-      };
-    }
   }
 
   /**
