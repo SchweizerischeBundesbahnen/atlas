@@ -50,7 +50,7 @@ declare namespace Cypress {
      * @example
      * cy.login()
      */
-    login(): Chainable<any>;
+    login(): Chainable<Subject>;
   }
 }
 
@@ -58,15 +58,15 @@ Cypress.Commands.add('login', () => {
   return cy
     .request({
       method: 'POST',
-      url: `${Cypress.env('authority')}/oauth2/token`,
+      url: `https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token`,
       form: true,
       body: {
-        grant_type: Cypress.env('grantType'),
-      },
-      auth: {
-        user: Cypress.env('CLIENT_ID'),
-        pass: Cypress.env('CLIENT_SECRET'),
-        sendImmediately: true,
+        grant_type: 'password',
+        client_id: Cypress.env('CLIENT_ID'),
+        client_secret: Cypress.env('CLIENT_SECRET'),
+        username: Cypress.env('USERNAME'),
+        password: Cypress.env('PASSWORD'),
+        scope: Cypress.env('SCOPE'),
       },
     })
     .then((response) => {

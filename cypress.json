@@ -7,11 +7,5 @@
   "fixturesFolder": "cypress/fixtures",
   "baseUrl": "http://localhost:4200",
   "viewportWidth": 1920,
-  "viewportHeight": 1080,
-  "env": {
-    "authority": "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a",
-    "CLIENT_ID": "my_client_id",
-    "CLIENT_SECRET": "my_client_secret",
-    "grantType": "client_credentials"
-  }
+  "viewportHeight": 1080
 }
