@@ -146,7 +146,7 @@ public class VersionableServiceScenario5Test extends VersionableServiceBaseTest 
     Property propertySixthVersionedObjectEntity = filterProperty(
         sixthVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertySixthVersionedObjectEntity).isNotNull();
-    assertThat(propertySixthVersionedObjectEntity.getValue()).isEqualTo("Ciao1");
+    assertThat(propertySixthVersionedObjectEntity.getValue()).isEqualTo("Ciao4");
     Property oneToManyRelationSixthVersionedObjectEntity = filterProperty(
         sixthVersionedObjectEntity.getProperties(), VersionableObject.Fields.oneToManyRelation);
     assertThat(oneToManyRelationSixthVersionedObjectEntity.hasOneToManyRelation()).isTrue();
