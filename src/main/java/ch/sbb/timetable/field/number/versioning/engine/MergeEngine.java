@@ -29,7 +29,8 @@ public final class MergeEngine {
     for (int i = 1; i < versionedObjects.size(); i++) {
       VersionedObject current = versionedObjects.get(i - 1);
       VersionedObject next = versionedObjects.get(i);
-      if (current.getEntity().getProperties().equals(next.getEntity().getProperties())) { //TODO: && check that current and next are sequential!!
+      if (current.getEntity().getProperties().equals(next.getEntity().getProperties())
+          && areVersionsSequential(current,next)) {
         if (current.getEntity().getId() != null) {
           current.setAction(VersioningAction.DELETE);
         }
@@ -39,6 +40,10 @@ public final class MergeEngine {
     }
 
     return versionedObjects;
+  }
+
+  private static boolean areVersionsSequential(VersionedObject current, VersionedObject next){
+    return current.getValidTo().plusDays(1).equals(next.getValidFrom());
   }
 
 
