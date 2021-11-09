@@ -50,3 +50,4 @@ Thumbs.db
 /cypress/screenshots/
 /cypress/logs/
 /.angular/
+/cypress.env.json
