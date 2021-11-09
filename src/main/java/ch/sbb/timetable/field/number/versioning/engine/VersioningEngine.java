@@ -9,6 +9,7 @@ import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.version.Versioning;
 import ch.sbb.timetable.field.number.versioning.version.VersioningWhenValidFromAndValidToAreNotEdited;
 import ch.sbb.timetable.field.number.versioning.version.VersioningWhenValidToAndValidFromAreEdited;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -33,19 +34,27 @@ public class VersioningEngine {
     objectsToVersioning.sort(Comparator.comparing(o -> o.getVersionable().getValidFrom()));
 
     Versioning versioning;
+    List<VersionedObject> versionedObjects = new ArrayList<>();
     if (areValidToAndValidFromNotEdited(currentVersion, editedVersion)) {
       //update actual version
       log.info("ValidFrom and ValidTo are not edited.");
       versioning = new VersioningWhenValidFromAndValidToAreNotEdited();
-      return versioning.applyVersioning(currentVersion, editedEntity, objectsToVersioning);
+       versionedObjects.addAll( versioning.applyVersioning(currentVersion,
+          editedEntity, objectsToVersioning));
     }
     else {
       log.info("ValidFrom and ValidTo are edited.");
       versioning = new VersioningWhenValidToAndValidFromAreEdited();
-      return versioning.applyVersioning(editedVersion, currentVersion, objectsToVersioning,
-          editedEntity);
+      versionedObjects.addAll( versioning.applyVersioning(editedVersion,
+          currentVersion, objectsToVersioning,
+          editedEntity));
     }
+//    List<VersionedObject> versionedObjectsMerged = MergeEngine.mergeVersionedObject(versionedObjects);
+//    return versionedObjectsMerged;
+    return versionedObjects;
   }
+
+
 
   public boolean areValidToAndValidFromNotEdited(Versionable currentVersion,
       Versionable editedVersion) {

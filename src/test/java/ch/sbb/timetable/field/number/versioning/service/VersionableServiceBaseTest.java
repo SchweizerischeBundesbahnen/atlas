@@ -23,6 +23,7 @@ public abstract class VersionableServiceBaseTest extends BaseTest {
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
         .property("Ciao1")
+        .anotherProperty("prop1")
         .build();
     versionableObject2 = VersionableObject
         .builder()
@@ -30,6 +31,7 @@ public abstract class VersionableServiceBaseTest extends BaseTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2023, 12, 31))
         .property("Ciao2")
+        .anotherProperty("prop2")
         .build();
     versionableObject3 = VersionableObject
         .builder()
@@ -37,6 +39,7 @@ public abstract class VersionableServiceBaseTest extends BaseTest {
         .validFrom(LocalDate.of(2024, 1, 1))
         .validTo(LocalDate.of(2024, 12, 31))
         .property("Ciao3")
+        .anotherProperty("prop3")
         .build();
     versionableObject4 = VersionableObject
         .builder()
@@ -44,6 +47,7 @@ public abstract class VersionableServiceBaseTest extends BaseTest {
         .validFrom(LocalDate.of(2025, 1, 1))
         .validTo(LocalDate.of(2025, 12, 31))
         .property("Ciao4")
+        .anotherProperty("prop4")
         .build();
 
   }
