@@ -9,6 +9,7 @@ import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -47,10 +48,17 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
         editedVersion, Arrays.asList(versionableObject1, versionableObject2));
 
     //then
+    result.sort(Comparator.comparing(VersionedObject::getValidFrom));
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result.size()).isEqualTo(2);
     assertThat(result.get(0)).isNotNull();
-    VersionedObject versionedObject = result.get(0);
+
+    //first version
+    VersionedObject notTouchedVersionedObject = result.get(0);
+    assertThat(notTouchedVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
+
+    //second version
+    VersionedObject versionedObject = result.get(1);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
     assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject2.getValidFrom());
     assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject2.getValidTo());
@@ -58,7 +66,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
     assertThat(entityToChange.getProperties()).isNotEmpty();
     List<Property> propertiesResult = entityToChange.getProperties();
-    assertThat(propertiesResult.size()).isEqualTo(2);
+    assertThat(propertiesResult.size()).isEqualTo(3);
     Property property1Result = propertiesResult.stream()
                                                .filter(
                                                    property -> VersionableObject.Fields.property.equals(
@@ -129,10 +137,17 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
         editedVersion, Arrays.asList(versionableObject1, versionableObject2));
 
     //then
+    result.sort(Comparator.comparing(VersionedObject::getValidFrom));
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result.size()).isEqualTo(2);
     assertThat(result.get(0)).isNotNull();
-    VersionedObject versionedObject = result.get(0);
+
+    //first version
+    VersionedObject firstVersionedObject = result.get(0);
+    assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
+
+    //second version
+    VersionedObject versionedObject = result.get(1);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
     assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject2.getValidFrom());
     assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject2.getValidTo());
@@ -140,7 +155,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
     assertThat(entityToChange.getProperties()).isNotEmpty();
     List<Property> propertiesResult = entityToChange.getProperties();
-    assertThat(propertiesResult.size()).isEqualTo(2);
+    assertThat(propertiesResult.size()).isEqualTo(3);
     Property property1Result = propertiesResult.stream()
                                                .filter(
                                                    property -> VersionableObject.Fields.property.equals(
@@ -195,17 +210,23 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
+    result.sort(Comparator.comparing(VersionedObject::getValidFrom));
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(1);
-    assertThat(result.get(0)).isNotNull();
-    VersionedObject versionedObject = result.get(0);
+    assertThat(result.size()).isEqualTo(3);
+
+    //first version
+    VersionedObject firstVersionedObject = result.get(0);
+    assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
+
+    //second version
+    VersionedObject versionedObject = result.get(1);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
     assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject2.getValidFrom());
     assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject2.getValidTo());
     Entity entityToChange = versionedObject.getEntity();
     assertThat(entityToChange).isNotNull();
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
-    assertThat(entityToChange.getProperties().size()).isEqualTo(2);
+    assertThat(entityToChange.getProperties().size()).isEqualTo(3);
     Property propertyOneToManyRelation = entityToChange.getProperties()
                                                        .stream()
                                                        .filter(
@@ -226,6 +247,10 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(propertyProperty.getValue()).isEqualTo("Ciao-Ciao");
     assertThat(propertyProperty.getOneToMany()).isNull();
     assertThat(propertyProperty.getOneToOne()).isNull();
+
+    //third version
+    VersionedObject thirdVersionedObject = result.get(2);
+    assertThat(thirdVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
   }
 
 
@@ -251,15 +276,17 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
+    result.sort(Comparator.comparing(VersionedObject::getValidFrom));
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result.size()).isEqualTo(3);
     assertThat(result.get(0)).isNotNull();
+
     VersionedObject versionedObject = result.get(0);
     assertThat(versionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
     assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject1.getValidFrom());
     assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject1.getValidTo());
     Entity entityToChange = versionedObject.getEntity();
-    assertThat(entityToChange.getProperties().size()).isEqualTo(2);
+    assertThat(entityToChange.getProperties().size()).isEqualTo(3);
     Property propertyOneToManyRelation = entityToChange.getProperties()
                                                        .stream()
                                                        .filter(
@@ -280,6 +307,14 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(propertyProperty.getValue()).isEqualTo("Ciao-Ciao");
     assertThat(propertyProperty.getOneToMany()).isNull();
     assertThat(propertyProperty.getOneToOne()).isNull();
+
+    //second version
+    VersionedObject secondVersionedObject = result.get(1);
+    assertThat(secondVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
+
+    //third version
+    VersionedObject thirdVersionedObject = result.get(2);
+    assertThat(thirdVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
   }
 
 }
