@@ -44,7 +44,7 @@
       "openshiftCluster": "aws_aws01t",
       "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
       "preCiDeploymentJob": "",
-      "postCiDeploymentJob": "KI_ATLAS_E2E/atlas-frontend/master"
+      "postCiDeploymentJob": "KI_ATLAS_E2E/atlas-frontend/master?successJob=KI_ATLAS/atlas-frontend/master"
     },
     {
       "stageName": "int",
