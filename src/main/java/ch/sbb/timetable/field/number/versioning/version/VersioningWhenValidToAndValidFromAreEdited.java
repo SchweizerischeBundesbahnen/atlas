@@ -20,8 +20,6 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       List<ToVersioning> objectsToVersioning,
       Entity editedEntity) {
 
-    List<VersionedObject> versionedObjects = new ArrayList<>();
-
     LocalDate editedValidFrom = editedVersion.getValidFrom();
     if (editedValidFrom == null) {
       log.info("ValidFrom not edited.");
@@ -40,8 +38,13 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     List<ToVersioning> objectToVersioningFound = findObjectToVersioningInValidFromValidToRange(
         objectsToVersioning, editedValidFrom, editedValidTo);
 
+    List<VersionedObject> versionedObjects = new ArrayList<>(
+        fillNotTouchedVersionedObject(objectsToVersioning, objectToVersioningFound));
+
     if (objectToVersioningFound.isEmpty()) {
-      applyVersioningWennNoEntityFound(objectsToVersioning, editedValidFrom, editedValidTo);
+      List<VersionedObject> versionedObjectsOnNoObjectFound = applyVersioningWennNoEntityFound(
+          editedEntity, editedValidFrom, editedValidTo, objectsToVersioning);
+      versionedObjects.addAll(versionedObjectsOnNoObjectFound);
     } else if (objectToVersioningFound.size() == 1) {
       List<VersionedObject> versionedObjectsOnOnlyOneObjectFound = applyVersioningOnSingleFoundEntity(
           editedVersion, currentVersion, editedEntity, editedValidFrom, editedValidTo,
@@ -49,9 +52,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       versionedObjects.addAll(versionedObjectsOnOnlyOneObjectFound);
     } else {
       List<VersionedObject> versionedObjectsOverMultipleEntity = applyVersioningOverMultipleFoundEntities(
-          editedEntity,
-          editedValidFrom, editedValidTo,
-          objectToVersioningFound);
+          editedEntity, editedValidFrom, editedValidTo, objectToVersioningFound);
       versionedObjects.addAll(versionedObjectsOverMultipleEntity);
     }
 
@@ -71,21 +72,22 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
           toVersioning);
       versionedObjects.addAll(versionedObjectsInTheMiddleOfAnExistingEntity);
     } else {
-      List<VersionedObject> versionedObjectsOnTheBorder = applyVersioningOnTheBorder(editedVersion, editedEntity, editedValidFrom, editedValidTo,
-          toVersioning);
+      List<VersionedObject> versionedObjectsOnTheBorder = applyVersioningOnTheBorder(editedVersion,
+          editedEntity, editedValidFrom, editedValidTo, toVersioning);
       versionedObjects.addAll(versionedObjectsOnTheBorder);
     }
 
     return versionedObjects;
   }
 
-  private List<VersionedObject> applyVersioningOnTheBorder(Versionable editedVersion, Entity editedEntity,
+  private List<VersionedObject> applyVersioningOnTheBorder(Versionable editedVersion,
+      Entity editedEntity,
       LocalDate editedValidFrom,
-      LocalDate editedValidTo, ToVersioning toVersioning ) {
+      LocalDate editedValidTo, ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
-
     log.info("We are in scenario 6");
     if (editedVersion.getValidFrom() == null) {
+      // TODO:Tested with VersionServiceScenario6Test#scenario6WhenOnlyValidToIsEdited() maybe wrong implemented!!!
       //Just make the version bigger
       // 1. version
       //    validTo = editedValidTo
@@ -123,90 +125,126 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     return versionedObjects;
   }
 
-  private List<VersionedObject> applyVersioningWennNoEntityFound(List<ToVersioning> objectsToVersioning,
+  private List<VersionedObject> applyVersioningWennNoEntityFound(Entity editedEntity,
       LocalDate editedValidFrom,
-      LocalDate editedValidTo) {
+      LocalDate editedValidTo,
+      List<ToVersioning> objectsToVersioning) {
 
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
-    if (editedValidFrom.isAfter(
-        objectsToVersioning.get(objectsToVersioning.size() - 1).getVersionable().getValidTo())) {
-      //scenario 7d
-      throw new IllegalStateException("Scenario not Implemented");
+    // On the right border
+    ToVersioning rightBorderVersion = objectsToVersioning.get(objectsToVersioning.size() - 1);
+    if (editedValidFrom.isAfter(rightBorderVersion.getVersionable().getValidTo())) {
+      Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
+          editedEntity,
+          rightBorderVersion.getEntity());
+      VersionedObject versionedObject = buildVersionedObjectToCreate(editedValidFrom,
+          editedValidTo, entityToAdd);
+      versionedObjects.add(versionedObject);
     }
-    if (editedValidTo.isBefore(objectsToVersioning.get(0).getVersionable().getValidFrom())) {
-      //scenario 7c
-      throw new IllegalStateException("Scenario not Implemented");
+
+    // On the left border
+    ToVersioning leftBorderVersion = objectsToVersioning.get(0);
+    if (editedValidTo.isBefore(leftBorderVersion.getVersionable().getValidFrom())) {
+      Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
+          editedEntity,
+          leftBorderVersion.getEntity());
+      VersionedObject versionedObject = buildVersionedObjectToCreate(editedValidFrom,
+          editedValidTo, entityToAdd);
+      versionedObjects.add(versionedObject);
     }
+
     return versionedObjects;
   }
 
   private List<VersionedObject> applyVersioningOverMultipleFoundEntities(Entity editedEntity,
       LocalDate editedValidFrom, LocalDate editedValidTo,
-      List<ToVersioning> objectToVersioningInValidFromValidToRange) {
+      List<ToVersioning> toVersioningList) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    //applyVersioningOverMultipleObjects
-    //Found more than one versions
-    // 1. versions.get(0)
-    //    validTo = editedValidFrom.minusDay(1)
-    //    do not update properties
-    //    VersioningAction = UPDATE
-    ToVersioning index0toVersioning = objectToVersioningInValidFromValidToRange.get(0);
-    LocalDate index0toVersioningValidTo = editedValidFrom.minusDays(1);
-    VersionedObject versionedObjectIndex0 = buildVersionedObjectToUpdate(
-        index0toVersioning.getVersionable().getValidFrom(), index0toVersioningValidTo,
-        index0toVersioning.getEntity());
-    versionedObjects.add(versionedObjectIndex0);
-    // 2. Create new version:
-    //    versions.get(0)
-    //    validFrom = editedValidFrom
-    //    validTo = versions.get(0).getValidTo()
-    //    update properties with edited properties
-    //    VersioningAction = NEW
-    Entity entityToAddAfterIndex0 = replaceEditedPropertiesWithCurrentProperties(editedEntity,
-        index0toVersioning.getEntity());
-    VersionedObject versionedObjectAfterIndex0 = buildVersionedObjectToCreate(editedValidFrom,
-        index0toVersioning.getVersionable().getValidTo(), entityToAddAfterIndex0);
-    versionedObjects.add(versionedObjectAfterIndex0);
 
-    // 3. versions.get(versions.size()-1)
-    //    validFrom = editedValidTo.plusDay(1)
-    //    do not update properties
-    //    VersioningAction = UPDATE
-    ToVersioning lastIndexToVersioning = objectToVersioningInValidFromValidToRange.get(
-        objectToVersioningInValidFromValidToRange.size() - 1);
-    LocalDate lastIndexToVersioningValidFrom = editedValidTo.plusDays(1);
-    VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
-        lastIndexToVersioningValidFrom, lastIndexToVersioning.getVersionable().getValidTo(),
-        lastIndexToVersioning.getEntity());
-    versionedObjects.add(versionedObjectLastIndex);
-    // 4. Create new version:
-    //    versions.get(versions.size()-1)
-    //    validFrom =  versions.get(versions.size()-1).getValidFrom()
-    //    validTo = editedValidTo
-    //    update properties with edited properties
-    //    VersioningAction = NEW
-    Entity entityToAddBeforeLastIndex = replaceEditedPropertiesWithCurrentProperties(editedEntity,
-        lastIndexToVersioning.getEntity());
-    VersionedObject versionedObjectBeforeLastIndex = buildVersionedObjectToCreate(
-        lastIndexToVersioning.getVersionable()
-                             .getValidFrom(),
-        editedValidTo, entityToAddBeforeLastIndex);
-    versionedObjects.add(versionedObjectBeforeLastIndex);
+    //1. if (toVersioningList(0).getValidFrom() == editedValidFrom &&
+    //      toVersioningList(toVersioningList.size()-1).getValidTo() == editedValidTo)
+    //  then
+    //    forEach version update only the properties
+    if (toVersioningList.get(0).getVersionable().getValidFrom() == editedValidFrom &&
+        toVersioningList.get(toVersioningList.size() - 1).getVersionable().getValidTo()
+            == editedValidTo) {
+      log.info(
+          "Matched multiple versions on the borders: editedValidFrom is equal to the first matched version validFrom"
+              + " and the editedValidTo is equal to the last matched version ValidTo.");
+      for (ToVersioning toVersioning : toVersioningList) {
+        Entity entityToUpdate = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+            toVersioning.getEntity());
+        VersionedObject versionedObjectAfterIndex0 = buildVersionedObjectToUpdate(
+            toVersioning.getVersionable().getValidFrom(),
+            toVersioning.getVersionable().getValidTo(), entityToUpdate);
+        versionedObjects.add(versionedObjectAfterIndex0);
+      }
+    } else {
+      log.info("Matched multiple versions over the borders.");
+      //applyVersioningOverMultipleObjects
+      //Found more than one versions
+      // 1. versions.get(0)
+      //    validTo = editedValidFrom.minusDay(1)
+      //    do not update properties
+      //    VersioningAction = UPDATE
+      ToVersioning index0toVersioning = toVersioningList.get(0);
+      LocalDate index0toVersioningValidTo = editedValidFrom.minusDays(1);
+      VersionedObject versionedObjectIndex0 = buildVersionedObjectToUpdate(
+          index0toVersioning.getVersionable().getValidFrom(), index0toVersioningValidTo,
+          index0toVersioning.getEntity());
+      versionedObjects.add(versionedObjectIndex0);
+      // 2. Create new version:
+      //    versions.get(0)
+      //    validFrom = editedValidFrom
+      //    validTo = versions.get(0).getValidTo()
+      //    update properties with edited properties
+      //    VersioningAction = NEW
+      Entity entityToAddAfterIndex0 = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+          index0toVersioning.getEntity());
+      VersionedObject versionedObjectAfterIndex0 = buildVersionedObjectToCreate(editedValidFrom,
+          index0toVersioning.getVersionable().getValidTo(), entityToAddAfterIndex0);
+      versionedObjects.add(versionedObjectAfterIndex0);
 
-    // 3. update properties for each version between index = 1 and index = version.size()-1
-    //    forEach Versions
-    //      update properties
-    //      VersioningAction = UPDATE
-    for (int i = 1; i < objectToVersioningInValidFromValidToRange.size() - 1; i++) {
-      ToVersioning toVersioning = objectToVersioningInValidFromValidToRange.get(i);
-      Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
-          toVersioning.getEntity());
-      VersionedObject versionedObject = buildVersionedObjectToUpdate(
-          toVersioning.getVersionable().getValidFrom(),
-          toVersioning.getVersionable().getValidTo(),
-          entity);
-      versionedObjects.add(versionedObject);
+      // 3. versions.get(versions.size()-1)
+      //    validFrom = editedValidTo.plusDay(1)
+      //    do not update properties
+      //    VersioningAction = UPDATE
+      ToVersioning lastIndexToVersioning = toVersioningList.get(
+          toVersioningList.size() - 1);
+      LocalDate lastIndexToVersioningValidFrom = editedValidTo.plusDays(1);
+      VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
+          lastIndexToVersioningValidFrom, lastIndexToVersioning.getVersionable().getValidTo(),
+          lastIndexToVersioning.getEntity());
+      versionedObjects.add(versionedObjectLastIndex);
+      // 4. Create new version:
+      //    versions.get(versions.size()-1)
+      //    validFrom =  versions.get(versions.size()-1).getValidFrom()
+      //    validTo = editedValidTo
+      //    update properties with edited properties
+      //    VersioningAction = NEW
+      Entity entityToAddBeforeLastIndex = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+          lastIndexToVersioning.getEntity());
+      VersionedObject versionedObjectBeforeLastIndex = buildVersionedObjectToCreate(
+          lastIndexToVersioning.getVersionable()
+                               .getValidFrom(),
+          editedValidTo, entityToAddBeforeLastIndex);
+      versionedObjects.add(versionedObjectBeforeLastIndex);
+
+      // 3. update properties for each version between index = 1 and index = version.size()-1
+      //    forEach Versions
+      //      update properties
+      //      VersioningAction = UPDATE
+      for (int i = 1; i < toVersioningList.size() - 1; i++) {
+        ToVersioning toVersioning = toVersioningList.get(i);
+        Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+            toVersioning.getEntity());
+        VersionedObject versionedObject = buildVersionedObjectToUpdate(
+            toVersioning.getVersionable().getValidFrom(),
+            toVersioning.getVersionable().getValidTo(),
+            entity);
+        versionedObjects.add(versionedObject);
+      }
     }
     return versionedObjects;
   }
