@@ -1,5 +1,13 @@
 package ch.sbb.timetable.field.number.versioning.version;
 
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionExactMatchingMultipleVersions;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToEditedWithNoEditedProperties;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isValidToEditedAndPropertiesAreEdited;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOnTheLeftBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOnTheRightBorder;
+
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
@@ -65,13 +73,13 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
-    if (editedValidFrom.isAfter(toVersioning.getVersionable().getValidFrom())
-        && editedValidTo.isBefore(toVersioning.getVersionable().getValidTo())) {
+    if (isEditedVersionInTheMiddleOfCurrentVersion(editedValidFrom, editedValidTo, toVersioning)) {
       List<VersionedObject> versionedObjectsInTheMiddleOfAnExistingEntity = applyVersioningToAnObjectInTheMiddleOfAnExistingEntity(
           currentVersion, editedEntity, editedValidFrom, editedValidTo,
           toVersioning);
       versionedObjects.addAll(versionedObjectsInTheMiddleOfAnExistingEntity);
     } else {
+      //check that is really on the border. If There are gap between versions?
       List<VersionedObject> versionedObjectsOnTheBorder = applyVersioningOnTheBorder(editedVersion,
           editedEntity, editedValidFrom, editedValidTo, toVersioning);
       versionedObjects.addAll(versionedObjectsOnTheBorder);
@@ -85,9 +93,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       LocalDate editedValidFrom,
       LocalDate editedValidTo, ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    log.info("We are in scenario 6");
-    if (editedVersion.getValidFrom() == null) {
-      // TODO:Tested with VersionServiceScenario6Test#scenario6WhenOnlyValidToIsEdited() maybe wrong implemented!!!
+    if (isOnlyValidToEditedWithNoEditedProperties(editedVersion, editedEntity)) {
       //Just make the version bigger
       // 1. version
       //    validTo = editedValidTo
@@ -99,6 +105,39 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
           toVersioning.getVersionable().getValidFrom(), editedValidTo,
           entity);
       versionedObjects.add(versionedObjectLastIndex);
+
+    } else if (isValidToEditedAndPropertiesAreEdited(editedVersion, editedEntity)) {
+      //scenario 8d
+      //editedValidTo isAfter toVersioning.validTo
+      if (isEditedValidToAfterTheRightBorder(editedValidTo, toVersioning)) {
+        Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+            toVersioning.getEntity());
+        VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
+            toVersioning.getVersionable().getValidFrom(), editedValidTo,
+            entity);
+        versionedObjects.add(versionedObjectLastIndex);
+      } else {
+        log.info("Matched version to split on the right border (validTo and properties edited).");
+        //1. currentVersion update
+        //    validTo = editedValidTo
+        //    merge props
+        Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+            toVersioning.getEntity());
+        VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
+            toVersioning.getVersionable().getValidFrom(), editedValidTo,
+            entity);
+        versionedObjects.add(versionedObjectLastIndex);
+
+        //2. new version
+        //    validFrom = editedValidTo.plusDay(1)
+        //    validTo = currentVersion.validTo()
+        //    copy currentVersion Props
+        VersionedObject versionedObjectCreated = buildVersionedObjectToCreate(
+            editedValidTo.plusDays(1),
+            toVersioning.getVersionable()
+                        .getValidTo(), toVersioning.getEntity());
+        versionedObjects.add(versionedObjectCreated);
+      }
     } else {
       // 1. version
       //    validTo = editedValidFrom.minusDay(1)
@@ -134,7 +173,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
 
     // On the right border
     ToVersioning rightBorderVersion = objectsToVersioning.get(objectsToVersioning.size() - 1);
-    if (editedValidFrom.isAfter(rightBorderVersion.getVersionable().getValidTo())) {
+    if (isVersionOnTheRightBorder(rightBorderVersion, editedValidFrom)) {
       Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
           editedEntity,
           rightBorderVersion.getEntity());
@@ -145,7 +184,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
 
     // On the left border
     ToVersioning leftBorderVersion = objectsToVersioning.get(0);
-    if (editedValidTo.isBefore(leftBorderVersion.getVersionable().getValidFrom())) {
+    if (isVersionOnTheLeftBorder(leftBorderVersion, editedValidTo)) {
       Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
           editedEntity,
           leftBorderVersion.getEntity());
@@ -153,6 +192,8 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
           editedValidTo, entityToAdd);
       versionedObjects.add(versionedObject);
     }
+
+    //TODO if is in the middle (gap) of two versions
 
     return versionedObjects;
   }
@@ -166,9 +207,9 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     //      toVersioningList(toVersioningList.size()-1).getValidTo() == editedValidTo)
     //  then
     //    forEach version update only the properties
-    if (toVersioningList.get(0).getVersionable().getValidFrom() == editedValidFrom &&
-        toVersioningList.get(toVersioningList.size() - 1).getVersionable().getValidTo()
-            == editedValidTo) {
+    if (isEditedVersionExactMatchingMultipleVersions(editedValidFrom, editedValidTo,
+        toVersioningList)) {
+      //scenario 1d
       log.info(
           "Matched multiple versions on the borders: editedValidFrom is equal to the first matched version validFrom"
               + " and the editedValidTo is equal to the last matched version ValidTo.");
@@ -181,6 +222,9 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
         versionedObjects.add(versionedObjectAfterIndex0);
       }
     } else {
+      //TODO: check if there are gap between versions (scenario8e)
+
+      //scenario5, scenario6,scenario3
       log.info("Matched multiple versions over the borders.");
       //applyVersioningOverMultipleObjects
       //Found more than one versions
@@ -257,8 +301,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     List<VersionedObject> versionedObjects = new ArrayList<>();
     // Scenario2:
     // The edited version is in the middle of an existing Version
-    if (editedValidFrom.isAfter(toVersioning.getVersionable().getValidFrom())
-        && editedValidTo.isBefore(toVersioning.getVersionable().getValidTo())) {
+    if (isEditedVersionInTheMiddleOfCurrentVersion(editedValidFrom, editedValidTo, toVersioning)) {
       log.info("Found in the middle of an exiting Version -> Scenario 2");
 
       //1. Update the existing version:
