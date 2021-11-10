@@ -22,6 +22,7 @@ public abstract class BaseVersionServiceTest {
   protected Version version2;
   protected Version version3;
   protected Version version4;
+  protected Version version5;
 
   @Autowired
   public BaseVersionServiceTest(VersionRepository versionRepository,
@@ -34,31 +35,38 @@ public abstract class BaseVersionServiceTest {
   void init() {
     version1 = Version.builder().ttfnid(TTFNID)
                       .name("FPFN Name")
-                      .number("BEX")
+                      .number("BEX1")
                       .swissTimetableFieldNumber("b0.BEX")
                       .validFrom(LocalDate.of(2020, 1, 1))
                       .validTo(LocalDate.of(2021, 12, 31))
                       .build();
     version2 = Version.builder().ttfnid(TTFNID)
                       .name("FPFN Name")
-                      .number("BEX")
+                      .number("BEX2")
                       .swissTimetableFieldNumber("b0.BEX")
                       .validFrom(LocalDate.of(2022, 1, 1))
                       .validTo(LocalDate.of(2023, 12, 31))
                       .build();
     version3 = Version.builder().ttfnid(TTFNID)
                       .name("FPFN Name")
-                      .number("BEX")
+                      .number("BEX3")
                       .swissTimetableFieldNumber("b0.BEX")
                       .validFrom(LocalDate.of(2024, 1, 1))
                       .validTo(LocalDate.of(2024, 12, 31))
                       .build();
     version4 = Version.builder().ttfnid(TTFNID)
                       .name("FPFN Name")
-                      .number("BEX")
+                      .number("BEX4")
                       .swissTimetableFieldNumber("b0.BEX")
                       .validFrom(LocalDate.of(2025, 1, 1))
                       .validTo(LocalDate.of(2025, 12, 31))
+                      .build();
+    version5 = Version.builder().ttfnid(TTFNID)
+                      .name("FPFN Name")
+                      .number("BEX5")
+                      .swissTimetableFieldNumber("b0.BEX")
+                      .validFrom(LocalDate.of(2026, 1, 1))
+                      .validTo(LocalDate.of(2026, 12, 31))
                       .build();
   }
 

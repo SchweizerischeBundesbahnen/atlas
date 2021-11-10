@@ -15,12 +15,13 @@ public class VersioningWhenValidFromAndValidToAreNotEdited extends Versioning {
   public List<VersionedObject> applyVersioning(Versionable currentVersion, Entity editedEntity,
       List<ToVersioning> objectsToVersioning) {
     ToVersioning toVersioning = findObjectToVersioning(currentVersion, objectsToVersioning);
+    List<VersionedObject> versionedObjects = fillNotTouchedVersionedObject(objectsToVersioning,List.of(toVersioning));
 
     Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
         toVersioning.getEntity());
 
-    VersionedObject versionedObjectToUpdate = buildVersionedObjectToUpdate(currentVersion.getValidFrom(),
-        currentVersion.getValidTo(), entity);
-    return List.of(versionedObjectToUpdate);
+    versionedObjects.add(buildVersionedObjectToUpdate(currentVersion.getValidFrom(),
+        currentVersion.getValidTo(), entity));
+    return versionedObjects;
   }
 }
