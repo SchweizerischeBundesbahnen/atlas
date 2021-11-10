@@ -9,6 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class MergeHelper {
 
+  private MergeHelper(){
+    throw new IllegalStateException("Utility class");
+  }
+
   public static List<VersionedObject> mergeVersionedObject(List<VersionedObject> versionedObjects) {
     versionedObjects.sort(Comparator.comparing(VersionedObject::getValidFrom));
     for (int i = 1; i < versionedObjects.size(); i++) {
