@@ -18,6 +18,11 @@ pipeline {
     NO_COLOR = 1
   }
 
+  parameters {
+    string(name: 'successJob', defaultValue: '', description: 'The job triggered on success')
+    string(name: 'releaseVersion', defaultValue: '', description: 'Version of triggering release, passed down by EstaCloudPipeline')
+  }
+
   options {
     disableConcurrentBuilds()
     buildDiscarder(logRotator(numToKeepStr:'15'))
@@ -48,6 +53,21 @@ pipeline {
     always {
       echo 'Archive cypress videos'
       archiveArtifacts 'cypress/videos/*.mp4'
+    }
+    success {
+      echo 'Parameters: '
+      params.each {param ->
+        echo "${param.key} -> ${param.value} "
+      }
+
+      if(!params.successJob.isEmpty() && !params.releaseVersion.isEmpty()){
+        echo 'Executing successJob ...'
+        build job: params.successJob,
+                   parameters: [
+                    string(name: 'manualstartcause', value: 'deploy:simple,stage:int'),
+                    string(name: 'version', value: params.releaseVersion)
+                   ]
+      }
     }
     failure {
       echo 'Failure...'
