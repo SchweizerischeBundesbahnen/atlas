@@ -42,13 +42,10 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 ### Cypress E2E
 
-To run the cypress tests on your machine you have to replace the **clientId** and the **clientSecretId** properties
-in the [cypress.json](cypress.json). The credentials are stored [here](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050).
-
-#### Run cypress test
+#### Run cypress test locally
 
 1. Create the file `cypress.env.json`
-2. Paste the json from the credentials site. This is excluded from git, so the credentials are not commited.
+2. Paste the json from the [credentials site](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050). This is excluded from git, so the credentials are not commited.
 3. run cypress:
    1. with the console for debugging: `npm run cypress:open` or `cypress open`
    2. as headless test: `npm run cypress:run` or `cypress run`

@@ -1,0 +1,7 @@
+routeHost: 'atlas-frontend-int.apps.maggie.sbb-aws.net'
+environmentLabel: 'int'
+ttfnBackendUrl: 'https://timetable-field-number-int.api.sbb.ch'
+lidiBackendUrl: 'https://line-directory-backend-int.apps.maggie.sbb-aws.net'
+splunkIndex: 'sbb_applications_internal_int_events'
+apiClientId: 'bee1cbac-06fe-4baa-bd0d-b333e0353861'
+apiScope: 'openid profile email offline_access api://508044c9-a1d5-4eb6-bd22-0b7db029e76d/.default'
