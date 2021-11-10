@@ -132,9 +132,9 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
 
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
+    // On the right border
     ToVersioning rightBorderVersion = objectsToVersioning.get(objectsToVersioning.size() - 1);
     if (editedValidFrom.isAfter(rightBorderVersion.getVersionable().getValidTo())) {
-
       Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
           editedEntity,
           rightBorderVersion.getEntity());
@@ -143,6 +143,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       versionedObjects.add(versionedObject);
     }
 
+    // On the left border
     ToVersioning leftBorderVersion = objectsToVersioning.get(0);
     if (editedValidTo.isBefore(leftBorderVersion.getVersionable().getValidFrom())) {
       Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
@@ -152,6 +153,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
           editedValidTo, entityToAdd);
       versionedObjects.add(versionedObject);
     }
+
     return versionedObjects;
   }
 
@@ -159,15 +161,18 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       LocalDate editedValidFrom, LocalDate editedValidTo,
       List<ToVersioning> toVersioningList) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    //there 2 cases
+
     //1. if (toVersioningList(0).getValidFrom() == editedValidFrom &&
     //      toVersioningList(toVersioningList.size()-1).getValidTo() == editedValidTo)
     //  then
     //    forEach version update only the properties
     if (toVersioningList.get(0).getVersionable().getValidFrom() == editedValidFrom &&
-              toVersioningList.get(toVersioningList.size()-1).getVersionable().getValidTo() == editedValidTo){
-      log.info("Sta minkia");
-      for(ToVersioning toVersioning : toVersioningList){
+        toVersioningList.get(toVersioningList.size() - 1).getVersionable().getValidTo()
+            == editedValidTo) {
+      log.info(
+          "Matched multiple versions on the borders: editedValidFrom is equal to the first matched version validFrom"
+              + " and the editedValidTo is equal to the last matched version ValidTo.");
+      for (ToVersioning toVersioning : toVersioningList) {
         Entity entityToUpdate = replaceEditedPropertiesWithCurrentProperties(editedEntity,
             toVersioning.getEntity());
         VersionedObject versionedObjectAfterIndex0 = buildVersionedObjectToUpdate(
@@ -175,8 +180,8 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
             toVersioning.getVersionable().getValidTo(), entityToUpdate);
         versionedObjects.add(versionedObjectAfterIndex0);
       }
-    }else {
-
+    } else {
+      log.info("Matched multiple versions over the borders.");
       //applyVersioningOverMultipleObjects
       //Found more than one versions
       // 1. versions.get(0)
