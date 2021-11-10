@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://timetable-field-number-int.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/timetable_field_number
+    username: ${DB_USER}
+    password: ${DB_PWD}
+endpoints:
+  web:
+    cors:
+      allowed-origins: https://atlas-frontend-int.apps.maggie.sbb-aws.net,https://timetable-field-number-backend-int.apps.maggie.sbb-aws.net,https://developer-int.sbb.ch,https://developer.sbb.ch
+auth:
+  audience:
+    service-name: 00dcfe9e-caa3-45da-a9bc-47c408182ee8
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n

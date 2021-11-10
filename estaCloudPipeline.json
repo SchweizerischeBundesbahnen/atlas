@@ -39,6 +39,15 @@
       "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": ""
+    },
+    {
+      "stageName": "int",
+      "isOpenshiftDeploymentEnabled": true,
+      "openshiftProject": "atlas-int",
+      "openshiftCluster": "aws_maggie",
+      "openshiftJenkinsCredentialsId": "3a6d45b4-ab76-467a-a970-44038a0120fd",
+      "preCiDeploymentJob": "",
+      "postCiDeploymentJob": ""
     }
   ],
   "teamsNotifications": {
