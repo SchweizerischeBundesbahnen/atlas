@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>ch.sbb</groupId>
 	<artifactId>line-directory-backend</artifactId>
-	<version>0.13.0</version>
+	<version>0.14.0-SNAPSHOT</version>
 	<name>LineDirectory Backend</name>
 	<description>LineDirectory Backend</description>
 	<properties>
