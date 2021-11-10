@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.versioning.engine;
 
 import ch.sbb.timetable.field.number.versioning.convert.ConverterHelper;
+import ch.sbb.timetable.field.number.versioning.merge.MergeHelper;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
@@ -49,7 +50,7 @@ public class VersioningEngine {
           currentVersion, objectsToVersioning,
           editedEntity));
     }
-    List<VersionedObject> versionedObjectsMerged = MergeEngine.mergeVersionedObject(versionedObjects);
+    List<VersionedObject> versionedObjectsMerged = MergeHelper.mergeVersionedObject(versionedObjects);
     return versionedObjectsMerged;
 //    return versionedObjects;
   }
