@@ -37,6 +37,12 @@ This project uses [Semantic Versioning](https://semver.org/).
 * Project deploy: https://timetable-field-number-backend-test.apps.aws01t.sbb-aws-test.net
 * Swagger UI: https://timetable-field-number-backend-test.apps.aws01t.sbb-aws-test.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
+### Integration
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=timetable-field-number-int
+* Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
+* Project deploy: https://timetable-field-number-backend-int.apps.maggie.sbb-aws.net
+* Swagger UI: https://timetable-field-number-backend-int.apps.maggie.sbb-aws.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+
 ### Project Infrastructure
 * Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/
 * Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number
