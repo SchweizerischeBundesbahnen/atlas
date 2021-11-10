@@ -47,8 +47,8 @@ in the [cypress.json](cypress.json). The credentials are stored [here](https://c
 
 #### Run cypress test
 
-1. replace **clientId** and the **clientSecretId** in [cypress.json](cypress.json) (see above)
-2. replace **baseUrl** with your localhost running app (e.g. http://localhost:4200) or your deployed app url in [cypress.json](cypress.json)
+1. Create the file `cypress.env.json`
+2. Paste the json from the credentials site. This is excluded from git, so the credentials are not commited.
 3. run cypress:
    1. with the console for debugging: `npm run cypress:open` or `cypress open`
    2. as headless test: `npm run cypress:run` or `cypress run`
