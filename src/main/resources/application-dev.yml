@@ -6,7 +6,7 @@ spring:
 endpoints:
   web:
     cors:
-      allowed-origins: https://atlas-frontend-dev.apps.aws01t.sbb-aws-test.net,https://line-directory-backend-dev.apps.aws01t.sbb-aws-test.net,https://developer-int.sbb.ch,https://developer.sbb.ch
+      allowed-origins: http://localhost:4200,https://atlas-frontend-dev.apps.aws01t.sbb-aws-test.net,https://line-directory-backend-dev.apps.aws01t.sbb-aws-test.net,https://developer-int.sbb.ch,https://developer.sbb.ch
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n
