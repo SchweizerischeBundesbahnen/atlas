@@ -219,76 +219,96 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
             toVersioning.getVersionable().getValidTo(), entityToUpdate);
         versionedObjects.add(versionedObjectAfterIndex0);
       }
-    } else if(VersioningHelper.isThereGapBetweenVersions(toVersioningList)){
+    } else if (VersioningHelper.isThereGapBetweenVersions(toVersioningList)) {
       log.info("Matched multiple versions with gap");
-      for (int i = 1; i < toVersioningList.size(); i++) {
-        ToVersioning current = toVersioningList.get(i - 1);
-        ToVersioning next = toVersioningList.get(i);
-        if (!DateHelper.areDatesSequential(current.getVersionable().getValidTo(),next.getVersionable().getValidFrom())) {
-          log.info("Matched gap {} - {}", current.getVersionable().getValidTo(), next.getVersionable().getValidFrom());
-          log.info("{}\n{}",current,next);
-          //1. current UPDATE
-          //    current.validTo=editedValidFrom-1
-          //    merge props with edited props
-          Entity currentEntityToUpdate = replaceEditedPropertiesWithCurrentProperties(editedEntity,
-              current.getEntity());
-          VersionedObject versionedObjectFillGap = buildVersionedObjectToUpdate(
-              current.getVersionable().getValidFrom(),
-              next.getVersionable().getValidFrom().minusDays(1), currentEntityToUpdate);
-          versionedObjects.add(versionedObjectFillGap);
+      for (int i = 0; i < toVersioningList.size(); i++) {
+        ToVersioning current = toVersioningList.get(i);
+        //if has next version
+        if ((i + 1) < toVersioningList.size()) {
+          ToVersioning next = toVersioningList.get(i + 1);
+          if (!DateHelper.areDatesSequential(current.getVersionable().getValidTo(),
+              next.getVersionable().getValidFrom())) {
+            log.info("Matched gap {} - {}", current.getVersionable().getValidTo(),
+                next.getVersionable().getValidFrom());
+            log.info("{}\n{}", current, next);
+            //1. current UPDATE
+            //    current.validTo=editedValidFrom-1
+            //    merge props with edited props
+            Entity currentEntityToUpdate = replaceEditedPropertiesWithCurrentProperties(
+                editedEntity,
+                current.getEntity());
+            VersionedObject versionedObjectFillGap = buildVersionedObjectToUpdate(
+                current.getVersionable().getValidFrom(),
+                next.getVersionable().getValidFrom().minusDays(1), currentEntityToUpdate);
+            versionedObjects.add(versionedObjectFillGap);
+          } else {
+            if (editedValidTo.isAfter(current.getVersionable().getValidTo())) {
+              //just update current version properties
+              Entity entityToUpdate = replaceEditedPropertiesWithCurrentProperties(
+                  editedEntity,
+                  current.getEntity());
+              VersionedObject updateCurrentVersionedObject = buildVersionedObjectToUpdate(
+                  current.getVersionable().getValidFrom(),
+                  current.getVersionable().getValidTo(), entityToUpdate);
+              versionedObjects.add(updateCurrentVersionedObject);
+            }
+            if (editedValidTo.isBefore(current.getVersionable().getValidTo())) {
+              //split versions
+              //2. NEW version
+              //    validFrom=next.getValidFrom
+              //    validTo=editedValidTo
+              //    merge props next + edited
+              Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
+                  editedEntity,
+                  current.getEntity());
+              VersionedObject versionedObject = buildVersionedObjectToCreate(
+                  current.getVersionable().getValidFrom(),
+                  editedValidTo, entityToAdd);
+              versionedObjects.add(versionedObject);
 
-          //2. NEW version
-          //    validFrom=next.getValidFrom
-          //    validTo=editedValidTo
-          //    merge props next + edited
-          Entity entityToAddAfterGap = replaceEditedPropertiesWithCurrentProperties(
-              editedEntity,
-              next.getEntity());
-          VersionedObject versionedObject = buildVersionedObjectToCreate(
-              next.getVersionable().getValidFrom(),
-              editedValidTo, entityToAddAfterGap);
-          versionedObjects.add(versionedObject);
+              ///3. next version UPDATE
+              //   validFrom = editedValidTo +1
+              VersionedObject nextVersionedObject = buildVersionedObjectToUpdate(
+                  editedValidTo.plusDays(1),
+                  current.getVersionable().getValidTo(), current.getEntity());
+              versionedObjects.add(nextVersionedObject);
+            }
+          }
 
-          //3. next version UPDATE
-          //   validFrom = editedValidTo +1
-          VersionedObject nextVersionedObject = buildVersionedObjectToUpdate(
-              editedValidTo.plusDays(1),
-              next.getVersionable().getValidTo(), next.getEntity());
-          versionedObjects.add(nextVersionedObject);
+        } else {
+          if (editedValidTo.isAfter(current.getVersionable().getValidTo())) {
+            //just update current version properties
+            Entity entityToUpdate = replaceEditedPropertiesWithCurrentProperties(
+                editedEntity,
+                current.getEntity());
+            VersionedObject updateCurrentVersionedObject = buildVersionedObjectToUpdate(
+                current.getVersionable().getValidFrom(),
+                current.getVersionable().getValidTo(), entityToUpdate);
+            versionedObjects.add(updateCurrentVersionedObject);
+          }
+          if (editedValidTo.isBefore(current.getVersionable().getValidTo())) {
+            //split versions
+            //2. NEW version
+            //    validFrom=next.getValidFrom
+            //    validTo=editedValidTo
+            //    merge props next + edited
+            Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
+                editedEntity,
+                current.getEntity());
+            VersionedObject versionedObject = buildVersionedObjectToCreate(
+                current.getVersionable().getValidFrom(),
+                editedValidTo, entityToAdd);
+            versionedObjects.add(versionedObject);
 
-        }else{
-          log.info("No Matched gap {} - {}", current.getVersionable().getValidTo(), next.getVersionable().getValidFrom());
-//          if(editedValidTo.isAfter(next.getVersionable().getValidTo())){
-//            //just update current version properties
-//            VersionedObject updateCurrentVersionedObject = buildVersionedObjectToUpdate(
-//                next.getVersionable().getValidFrom(),
-//                next.getVersionable().getValidTo(), next.getEntity());
-//            versionedObjects.add(updateCurrentVersionedObject);
-//          }
-//          if(editedValidTo.isBefore(next.getVersionable().getValidTo())){
-//            //split versions
-//            //2. NEW version
-//            //    validFrom=next.getValidFrom
-//            //    validTo=editedValidTo
-//            //    merge props next + edited
-//            Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
-//                editedEntity,
-//                next.getEntity());
-//            VersionedObject versionedObject = buildVersionedObjectToCreate(
-//                next.getVersionable().getValidFrom(),
-//                editedValidTo, entityToAdd);
-//            versionedObjects.add(versionedObject);
-//
-//            ///3. next version UPDATE
-//            //   validFrom = editedValidTo +1
-//            VersionedObject nextVersionedObject = buildVersionedObjectToUpdate(
-//                editedValidTo.plusDays(1),
-//                next.getVersionable().getValidTo(), next.getEntity());
-//            versionedObjects.add(nextVersionedObject);
-//          }
+            ///3. next version UPDATE
+            //   validFrom = editedValidTo +1
+            VersionedObject nextVersionedObject = buildVersionedObjectToUpdate(
+                editedValidTo.plusDays(1),
+                current.getVersionable().getValidTo(), current.getEntity());
+            versionedObjects.add(nextVersionedObject);
+          }
         }
       }
-
     } else {
       //TODO: check if there are gap between versions (scenario8e)
 
