@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.versioning.version;
 
+import ch.sbb.timetable.field.number.versioning.date.DateHelper;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
@@ -52,6 +53,17 @@ public final class VersioningHelper {
 
   public static boolean isVersionOnTheLeftBorder(ToVersioning leftBorderVersion, LocalDate editedValidTo){
     return editedValidTo.isBefore(leftBorderVersion.getVersionable().getValidFrom());
+  }
+
+  public static boolean isThereGapBetweenVersions(List<ToVersioning> toVersioningList) {
+    for (int i = 1; i < toVersioningList.size(); i++) {
+      ToVersioning current = toVersioningList.get(i - 1);
+      ToVersioning next = toVersioningList.get(i);
+      if (!DateHelper.areDatesSequential(current.getVersionable().getValidTo(),next.getVersionable().getValidFrom())) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }
