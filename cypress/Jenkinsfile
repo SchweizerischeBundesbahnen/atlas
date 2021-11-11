@@ -65,8 +65,8 @@ pipeline {
           echo 'Executing successJob ...'
           build job: params.successJob,
             parameters: [
-              choice(name: 'manualstartcause', value: 'deploy:simple,stage:int'),
-              string(name: 'version', value: params.releaseVersion)
+              string(name: "manualstartcause", value: "deploy:simple,stage:int"),
+              string(name: "version", value: params.releaseVersion)
             ]
         }
       }
