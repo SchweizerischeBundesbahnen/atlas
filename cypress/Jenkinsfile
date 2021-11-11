@@ -66,8 +66,9 @@ pipeline {
           build job: params.successJob,
             parameters: [
               string(name: "manualstartcause", value: "deploy:simple,stage:int"),
-              string(name: "version", value: params.releaseVersion)
-            ]
+              string(name: "version", value: params.releaseVersion),
+            ],
+            wait: false
         }
       }
     }
