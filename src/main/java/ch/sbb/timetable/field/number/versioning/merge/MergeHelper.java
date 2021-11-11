@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.versioning.merge;
 
+import ch.sbb.timetable.field.number.versioning.date.DateHelper;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import java.util.Comparator;
@@ -19,7 +20,7 @@ public final class MergeHelper {
       VersionedObject current = versionedObjects.get(i - 1);
       VersionedObject next = versionedObjects.get(i);
       if (current.getEntity().getProperties().equals(next.getEntity().getProperties())
-          && areVersionsSequential(current,next)) {
+          && areVersionedObjectsSequential(current,next)) {
         if (current.getEntity().getId() != null) {
           current.setAction(VersioningAction.DELETE);
         }
@@ -30,8 +31,8 @@ public final class MergeHelper {
     return versionedObjects;
   }
 
-  static boolean areVersionsSequential(VersionedObject current, VersionedObject next){
-    return current.getValidTo().plusDays(1).equals(next.getValidFrom());
+  static boolean areVersionedObjectsSequential(VersionedObject current, VersionedObject next){
+    return DateHelper.areDatesSequential(current.getValidTo(),next.getValidFrom());
   }
 
 

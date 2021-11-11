@@ -191,7 +191,7 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
                                           .validTo(LocalDate.of(2001, 12, 31))
                                           .build();
     //when
-    boolean result = MergeHelper.areVersionsSequential(current, next);
+    boolean result = MergeHelper.areVersionedObjectsSequential(current, next);
 
     //then
     assertThat(result).isTrue();
@@ -210,7 +210,7 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
                                           .validTo(LocalDate.of(2001, 12, 31))
                                           .build();
     //when
-    boolean result = MergeHelper.areVersionsSequential(current, next);
+    boolean result = MergeHelper.areVersionedObjectsSequential(current, next);
 
     //then
     assertThat(result).isFalse();

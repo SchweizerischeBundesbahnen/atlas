@@ -252,7 +252,7 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
    * Version:             1                             2
    *
    * RESULTAT: |--------------------------|    |------------------------|
-   * Version:             1                              3
+   * Version:             1                             2
    */
   @Test
   public void scenario8d() {
@@ -376,8 +376,8 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
 
     // Fifth new version
     Version fifthTemporalVersion = result.get(4);
-    assertThat(fifthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 6, 1));
-    assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 8, 1));
+    assertThat(fifthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 8, 2));
+    assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     assertThat(fifthTemporalVersion.getName()).isEqualTo("FPFN Name");
     Set<LineRelation> lineRelationsFifthVersion = fifthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFifthVersion).isEmpty();
