@@ -8,7 +8,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.timetable.field.number.api.VersionModel;
-import ch.sbb.timetable.field.number.api.VersionsContainer;
+import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
+import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
@@ -60,26 +61,23 @@ public class VersionControllerTest {
   }
 
   @Test
-  void shouldGetVersions() {
+  void shouldGetOverview() {
     // Given
-    Version version = createEntity();
-    when(versionService.findAll(any(Pageable.class))).thenReturn(
+    TimetableFieldNumber version = createOverviewEntity();
+    when(versionService.getOverview(any(Pageable.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(version)));
-    when(versionService.count()).thenReturn(1l);
+    when(versionService.count()).thenReturn(1L);
 
     // When
-    VersionsContainer versions = versionController.getVersions(Pageable.unpaged());
+    TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getVersions(Pageable.unpaged());
 
     // Then
-    assertThat(versions).isNotNull();
-    assertThat(versions.getVersions()).hasSize(1)
-                                      .first()
-                                      .usingRecursiveComparison()
-                                      .ignoringFields("editor", "creator", "editionDate",
-                                          "creationDate",
-                                          "lineRelations")
-                                      .isEqualTo(version);
-    assertThat(versions.getTotalCount()).isEqualTo(1);
+    assertThat(timetableFieldNumberContainer).isNotNull();
+    assertThat(timetableFieldNumberContainer.getFieldNumbers()).hasSize(1)
+                                                               .first()
+                                                               .usingRecursiveComparison()
+                                                               .isEqualTo(version);
+    assertThat(timetableFieldNumberContainer.getTotalCount()).isEqualTo(1);
   }
 
   @Test
@@ -166,6 +164,16 @@ public class VersionControllerTest {
                                                                 () -> versionController.updateVersion(1L, versionModel))
                                                             .withMessage(
                                                                 HttpStatus.NOT_FOUND.toString());
+  }
+
+  private static TimetableFieldNumber createOverviewEntity() {
+    return TimetableFieldNumber.builder()
+                  .ttfnid("ch:1:fpfnid:100000")
+                  .name("FPFN Name")
+                  .swissTimetableFieldNumber("b0.BEX")
+                  .validFrom(LocalDate.of(2020, 12, 12))
+                  .validTo(LocalDate.of(2099, 12, 12))
+                  .build();
   }
 
   private static Version createEntity() {

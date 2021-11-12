@@ -1,8 +1,10 @@
 package ch.sbb.timetable.field.number.controller;
 
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberApiV1;
+import ch.sbb.timetable.field.number.api.TimetableFieldNumberModel;
 import ch.sbb.timetable.field.number.api.VersionModel;
-import ch.sbb.timetable.field.number.api.VersionsContainer;
+import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
+import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,14 +33,25 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   }
 
   @Override
-  public VersionsContainer getVersions(Pageable pageable) {
-    log.info("Load Versions using pageable={}", pageable);
-    List<VersionModel> versions = versionService.findAll(pageable).stream().map(this::toModel)
-                                                .collect(Collectors.toList());
-    long totalCount = versionService.count();
-    return VersionsContainer.builder()
-                            .versions(versions)
-                            .totalCount(totalCount).build();
+  public TimetableFieldNumberContainer getVersions(Pageable pageable) {
+    log.info("Load TimetableFieldNumbers using pageable={}", pageable);
+    Page<TimetableFieldNumber> timetableFieldNumbers = versionService.getOverview(pageable);
+    List<TimetableFieldNumberModel> versions = timetableFieldNumbers.stream().map(this::toModel)
+                                          .collect(Collectors.toList());
+    return TimetableFieldNumberContainer.builder()
+                                        .fieldNumbers(versions)
+                                        .totalCount(timetableFieldNumbers.getTotalElements()).build();
+  }
+
+  private TimetableFieldNumberModel toModel(TimetableFieldNumber version) {
+    return TimetableFieldNumberModel.builder()
+                       .name(version.getName())
+                       .ttfnid(version.getTtfnid())
+                       .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
+                       .status(version.getStatus())
+                       .validFrom(version.getValidFrom())
+                       .validTo(version.getValidTo())
+                       .build();
   }
 
   @Override
