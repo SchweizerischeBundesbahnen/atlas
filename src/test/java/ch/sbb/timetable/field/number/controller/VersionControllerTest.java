@@ -69,7 +69,7 @@ public class VersionControllerTest {
     when(versionService.count()).thenReturn(1L);
 
     // When
-    TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getVersions(Pageable.unpaged());
+    TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getOverview(Pageable.unpaged());
 
     // Then
     assertThat(timetableFieldNumberContainer).isNotNull();
