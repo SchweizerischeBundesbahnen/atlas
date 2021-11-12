@@ -33,7 +33,7 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   }
 
   @Override
-  public TimetableFieldNumberContainer getVersions(Pageable pageable) {
+  public TimetableFieldNumberContainer getOverview(Pageable pageable) {
     log.info("Load TimetableFieldNumbers using pageable={}", pageable);
     Page<TimetableFieldNumber> timetableFieldNumbers = versionService.getOverview(pageable);
     List<TimetableFieldNumberModel> versions = timetableFieldNumbers.stream().map(this::toModel)

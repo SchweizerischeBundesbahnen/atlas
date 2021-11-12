@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Schema(name = "TimetableFieldNumberVersion")
+@Schema(name = "Version")
 public class VersionModel {
 
   @Schema(description = "Technical identifier")
