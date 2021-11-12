@@ -20,7 +20,7 @@ import org.hibernate.annotations.Immutable;
 @ToString
 @Builder
 @Immutable
-@Entity(name = "timetable_field_numbers_overview")
+@Entity(name = "timetable_field_number")
 public class TimetableFieldNumber {
 
   private String swissTimetableFieldNumber;
