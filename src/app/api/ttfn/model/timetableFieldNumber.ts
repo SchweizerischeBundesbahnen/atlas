@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface Version {
+export interface TimetableFieldNumber {
   /**
-   * Technical identifier
+   * Timetable field number
    */
-  id?: number;
+  swissTimetableFieldNumber?: string;
   /**
    * Timetable field number identifier
    */
@@ -23,18 +23,7 @@ export interface Version {
    * Name
    */
   name?: string;
-  /**
-   * Number
-   */
-  number?: string;
-  /**
-   * Timetable field number
-   */
-  swissTimetableFieldNumber?: string;
-  /**
-   * Status
-   */
-  status?: Version.StatusEnum;
+  status?: TimetableFieldNumber.StatusEnum;
   /**
    * Date - valid from
    */
@@ -43,20 +32,8 @@ export interface Version {
    * Date - valid to
    */
   validTo?: Date;
-  /**
-   * Business organisation
-   */
-  businessOrganisation?: string;
-  /**
-   * Additional comment
-   */
-  comment?: string;
-  /**
-   * Compact name
-   */
-  nameCompact?: string;
 }
-export namespace Version {
+export namespace TimetableFieldNumber {
   export type StatusEnum = 'ACTIVE' | 'INACTIVE' | 'NEEDS_REVIEW' | 'IN_REVIEW' | 'REVIEWED';
   export const StatusEnum = {
     Active: 'ACTIVE' as StatusEnum,
