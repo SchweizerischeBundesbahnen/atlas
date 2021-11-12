@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { TimetableFieldNumbersService, Version } from '../../../api/ttfn';
 import { Pages } from '../../pages';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class TimetableFieldNumberDetailResolver implements Resolve<Version> {
@@ -15,11 +16,12 @@ export class TimetableFieldNumberDetailResolver implements Resolve<Version> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of({})
-      : this.timetableFieldNumbersService.getVersion(parseInt(idParameter)).pipe(
+      : this.timetableFieldNumbersService.getAllVersionsVersioned(idParameter).pipe(
           catchError(() => {
             this.router.navigate([Pages.TTFN.path]).then();
             return EMPTY;
-          })
+          }),
+          map((arr) => arr[0]) // TODO: remove once detail supports multiple
         );
   }
 }
