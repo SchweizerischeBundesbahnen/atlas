@@ -1,4 +1,4 @@
-create view timetable_field_numbers_overview as
+create view timetable_field_number as
 with timetable_field_numbers_fields as (
     with valid_today as (
         select *

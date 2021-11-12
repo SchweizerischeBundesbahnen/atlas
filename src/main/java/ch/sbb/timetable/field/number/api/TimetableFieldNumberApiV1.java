@@ -21,7 +21,7 @@ public interface TimetableFieldNumberApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  VersionsContainer getVersions(@Parameter(hidden = true) Pageable pageable);
+  TimetableFieldNumberContainer getVersions(@Parameter(hidden = true) Pageable pageable);
 
   @GetMapping("/{id}")
   VersionModel getVersion(@PathVariable Long id);
