@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { TimetableFieldNumbersService, Version } from '../../../api/ttfn';
+import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api/ttfn';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 
@@ -13,7 +13,7 @@ import { TablePagination } from '../../../core/components/table/table-pagination
   styleUrls: ['./timetable-field-number-overview.component.scss'],
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
-  tableColumns: TableColumn<Version>[] = [
+  tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
     { headerTitle: 'TTFN.NAME', value: 'name' },
     {
@@ -26,7 +26,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  versions$: Version[] = [];
+  timetableFieldNumbers: TimetableFieldNumber[] = [];
   totalCount$ = 0;
   isLoading = false;
   private getVersionsSubscription!: Subscription;
@@ -39,13 +39,13 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
   ) {}
 
   ngOnInit(): void {
-    this.getVersions({ page: 0, size: 10, sort: 'swissTimetableFieldNumber,ASC' });
+    this.getOverview({ page: 0, size: 10, sort: 'swissTimetableFieldNumber,ASC' });
   }
 
-  getVersions($pagination: TablePagination) {
+  getOverview($pagination: TablePagination) {
     this.isLoading = true;
     this.getVersionsSubscription = this.timetableFieldNumbersService
-      .getVersions($pagination.page, $pagination.size, [$pagination.sort!])
+      .getOverview($pagination.page, $pagination.size, [$pagination.sort!])
       .pipe(
         catchError((err) => {
           this.notificationService.error('TTFN.NOTIFICATION.FETCH_ERROR');
@@ -53,9 +53,9 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
           throw err;
         })
       )
-      .subscribe((versionContainer) => {
-        this.versions$ = versionContainer.versions!;
-        this.totalCount$ = versionContainer.totalCount!;
+      .subscribe((container) => {
+        this.timetableFieldNumbers = container.fieldNumbers!;
+        this.totalCount$ = container.totalCount!;
         this.isLoading = false;
       });
   }
@@ -68,9 +68,9 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
       .then();
   }
 
-  editVersion($event: Version) {
+  editVersion($event: TimetableFieldNumber) {
     this.router
-      .navigate([$event.id], {
+      .navigate([$event.ttfnid], {
         relativeTo: this.route,
       })
       .then();
