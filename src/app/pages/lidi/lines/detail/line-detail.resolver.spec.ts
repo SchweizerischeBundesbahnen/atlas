@@ -23,7 +23,7 @@ const version: LineVersion = {
 
 describe('LineDetailResolver', () => {
   const linesServiceSpy = jasmine.createSpyObj('linesService', ['getLine']);
-  linesServiceSpy.getLine.and.returnValue(of(version));
+  linesServiceSpy.getLine.and.returnValue(of([version]));
 
   let resolver: LineDetailResolver;
 
