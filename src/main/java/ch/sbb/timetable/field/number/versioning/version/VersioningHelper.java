@@ -48,7 +48,7 @@ public final class VersioningHelper {
         && editedEntity.getProperties().isEmpty();
   }
 
-  public static boolean isValidToEditedAndPropertiesAreEdited(Versionable editedVersion,
+  public static boolean areValidToAndPropertiesEdited(Versionable editedVersion,
       Entity editedEntity) {
     return editedVersion.getValidTo() != null && editedVersion.getValidFrom() == null
         && !editedEntity.getProperties().isEmpty();
