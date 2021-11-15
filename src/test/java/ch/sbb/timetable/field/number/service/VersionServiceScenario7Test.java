@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
@@ -139,7 +140,6 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     LineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream().iterator().next();
     assertThat(lineRelationFirstVersion).isNotNull();
     assertThat(lineRelationFirstVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
-
 
     // first version no changes
     Version secondTemporalVersion = result.get(1);
@@ -286,7 +286,6 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     assertThat(lineRelationFirstVersion).isNotNull();
     assertThat(lineRelationFirstVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
 
-
     // first version no changes
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
@@ -311,6 +310,30 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Set<LineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isEmpty();
 
+  }
+
+  /**
+   * ValidFrom is bigger than validTo: expected exception
+   */
+  @Test
+  public void scenarioValidFromBiggerThenValidTo() {
+    //given
+    version1.setValidFrom(LocalDate.of(2020, 12, 12));
+    version1.setValidTo(LocalDate.of(2029, 12, 8));
+    version1 = versionRepository.save(version1);
+    Version editedVersion = new Version();
+    editedVersion.setName("FPFN Name Frederic");
+    editedVersion.setComment("Frederic");
+    editedVersion.setValidFrom(LocalDate.of(2029, 12, 9));
+    editedVersion.getLineRelations()
+                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version1).build());
+
+    //when
+    assertThatThrownBy(() -> {
+      versionService.updateVersion(version1, editedVersion);
+      //then
+    }).isInstanceOf(IllegalStateException.class)
+      .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger then edited ValidTo 2029-12-08");
   }
 
 }
