@@ -1,5 +1,7 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.line.directory.entity.Line;
+import ch.sbb.line.directory.entity.Line.LineBuilder;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersion.LineVersionBuilder;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -38,5 +40,22 @@ public class LineTestData {
 
   public static LineVersion lineVersion() {
     return lineVersionBuilder().build();
+  }
+
+  public static LineBuilder lineBuilder() {
+    return Line.builder()
+               .status(Status.ACTIVE)
+               .type(LineType.ORDERLY)
+               .number("number")
+               .description("description")
+               .validFrom(LocalDate.of(2020, 1, 1))
+               .validTo(LocalDate.of(2020, 12, 31))
+               .businessOrganisation(
+                          "businessOrganisation")
+               .swissLineNumber("swissLineNumber");
+  }
+
+  public static Line line() {
+    return lineBuilder().build();
   }
 }
