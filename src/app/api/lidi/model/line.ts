@@ -10,11 +10,7 @@
  * Do not edit the class manually.
  */
 
-export interface LineVersion {
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
+export interface Line {
   /**
    * SwissLineNumber
    */
@@ -22,55 +18,19 @@ export interface LineVersion {
   /**
    * Status
    */
-  readonly status?: LineVersion.StatusEnum;
+  readonly status?: Line.StatusEnum;
   /**
    * LineType
    */
-  type: LineVersion.TypeEnum;
+  type: Line.TypeEnum;
   /**
    * SLNID
    */
   readonly slnid?: string;
   /**
-   * PaymentType
-   */
-  paymentType: LineVersion.PaymentTypeEnum;
-  /**
    * Number
    */
   number?: string;
-  /**
-   * AlternativeName
-   */
-  alternativeName?: string;
-  /**
-   * CombinationName
-   */
-  combinationName?: string;
-  /**
-   * LongName
-   */
-  longName?: string;
-  /**
-   * Color of the font in RGB
-   */
-  colorFontRgb?: string;
-  /**
-   * Color of the background in RGB
-   */
-  colorBackRgb?: string;
-  /**
-   * Color of the font in CMYK
-   */
-  colorFontCmyk?: string;
-  /**
-   * Color of the background in CMYK
-   */
-  colorBackCmyk?: string;
-  /**
-   * Icon
-   */
-  icon?: string;
   /**
    * Description
    */
@@ -87,12 +47,8 @@ export interface LineVersion {
    * BusinessOrganisation
    */
   businessOrganisation: string;
-  /**
-   * Comment
-   */
-  comment?: string;
 }
-export namespace LineVersion {
+export namespace Line {
   export type StatusEnum = 'ACTIVE' | 'INACTIVE' | 'NEEDS_REVIEW' | 'IN_REVIEW' | 'REVIEWED';
   export const StatusEnum = {
     Active: 'ACTIVE' as StatusEnum,
@@ -106,20 +62,5 @@ export namespace LineVersion {
     Orderly: 'ORDERLY' as TypeEnum,
     Temporary: 'TEMPORARY' as TypeEnum,
     Operational: 'OPERATIONAL' as TypeEnum,
-  };
-  export type PaymentTypeEnum =
-    | 'INTERNATIONAL'
-    | 'REGIONAL'
-    | 'REGIONALWITHOUT'
-    | 'LOCAL'
-    | 'OTHER'
-    | 'NONE';
-  export const PaymentTypeEnum = {
-    International: 'INTERNATIONAL' as PaymentTypeEnum,
-    Regional: 'REGIONAL' as PaymentTypeEnum,
-    Regionalwithout: 'REGIONALWITHOUT' as PaymentTypeEnum,
-    Local: 'LOCAL' as PaymentTypeEnum,
-    Other: 'OTHER' as PaymentTypeEnum,
-    None: 'NONE' as PaymentTypeEnum,
   };
 }
