@@ -1,10 +1,10 @@
 <app-table
-  [tableData]="sublineVersions"
+  [tableData]="sublines"
   [totalCount]="totalCount$"
   [tableColumns]="sublinesTableColumns"
   [canEdit]="true"
   [isLoading]="isLoading"
   (newElementEvent)="newVersion()"
   (editElementEvent)="editVersion($event)"
-  (getTableElementsEvent)="getVersions($event)"
+  (getTableElementsEvent)="getOverview($event)"
 ></app-table>
