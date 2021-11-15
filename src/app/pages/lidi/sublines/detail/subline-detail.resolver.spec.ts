@@ -23,7 +23,7 @@ const version: SublineVersion = {
 
 describe('SublineDetailResolver', () => {
   const sublinesServiceSpy = jasmine.createSpyObj('sublinesService', ['getSubline']);
-  sublinesServiceSpy.getSubline.and.returnValue(of(version));
+  sublinesServiceSpy.getSubline.and.returnValue(of([version]));
 
   let resolver: SublineDetailResolver;
 
