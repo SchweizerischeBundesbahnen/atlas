@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import javax.validation.Valid;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -24,12 +25,15 @@ public interface LineApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  VersionsContainer<LineVersionModel> getLineVersions(@Parameter(hidden = true) Pageable pageable);
+  Container<LineModel> getLines(@Parameter(hidden = true) Pageable pageable);
 
-  @GetMapping("/{id}")
+  @GetMapping("/{slnid}")
+  List<LineVersionModel> getLine(@PathVariable String slnid);
+
+  @GetMapping("version/{id}")
   LineVersionModel getLineVersion(@PathVariable Long id);
 
-  @PostMapping
+  @PostMapping("version")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
@@ -37,7 +41,7 @@ public interface LineApiV1 {
   })
   LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
-  @PutMapping({"/{id}"})
+  @PutMapping({"version/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
@@ -45,6 +49,6 @@ public interface LineApiV1 {
   LineVersionModel updateLineVersion(@PathVariable Long id,
       @RequestBody @Valid LineVersionModel newVersion);
 
-  @DeleteMapping({"/{id}"})
+  @DeleteMapping("version/{id}")
   void deleteLineVersion(@PathVariable Long id);
 }

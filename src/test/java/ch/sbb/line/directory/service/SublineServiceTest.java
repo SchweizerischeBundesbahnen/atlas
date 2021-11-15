@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,16 +26,19 @@ class SublineServiceTest {
   @Mock
   private SublineVersionRepository sublineVersionRepository;
 
+  @Mock
+  private SublineRepository sublineRepository;
+
   private SublineService sublineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sublineService = new SublineService(sublineVersionRepository);
+    sublineService = new SublineService(sublineVersionRepository, sublineRepository);
   }
 
   @Test
-  void shouldGetPagableLinesFromRepository() {
+  void shouldGetPagableSublinesFromRepository() {
     // Given
     Pageable pageable = Pageable.unpaged();
 
@@ -42,24 +46,24 @@ class SublineServiceTest {
     sublineService.findAll(pageable);
 
     // Then
-    verify(sublineVersionRepository).findAll(pageable);
+    verify(sublineRepository).findAll(pageable);
   }
 
+
   @Test
-  void shouldGetTotalLinesFromRepository() {
+  void shouldGetSubline() {
     // Given
-    Long totalCount = ID;
-    when(sublineVersionRepository.count()).thenReturn(totalCount);
+    String slnid = "slnid";
+
     // When
-    long result = sublineService.totalCount();
+    sublineService.findSubline(slnid);
 
     // Then
-    verify(sublineVersionRepository).count();
-    assertThat(result).isEqualTo(totalCount);
+    verify(sublineVersionRepository).findAllBySlnid(slnid);
   }
 
   @Test
-  void shouldGetLineFromRepository() {
+  void shouldGetSublineVersionFromRepository() {
     // Given
     when(sublineVersionRepository.findById(anyLong())).thenReturn(Optional.empty());
     // When

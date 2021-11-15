@@ -8,13 +8,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.line.directory.api.Container;
+import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
+import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.service.SublineService;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +27,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,6 +47,43 @@ public class SublineControllerTest {
     MockitoAnnotations.openMocks(this);
     sublineController = new SublineController(sublineService);
     when(sublineService.save(any())).then(i -> i.getArgument(0, SublineVersion.class));
+  }
+
+  @Test
+  void shouldGetSublines() {
+    // Given
+    Subline subline = SublineTestData.subline();
+    when(sublineService.findAll(any(Pageable.class))).thenReturn(
+        new PageImpl<>(Collections.singletonList(subline)));
+
+    // When
+    Container<SublineModel> sublineContainer = sublineController.getSublines(
+        Pageable.unpaged());
+
+    // Then
+    assertThat(sublineContainer).isNotNull();
+    assertThat(sublineContainer.getObjects()).hasSize(1)
+                                             .first()
+                                             .usingRecursiveComparison()
+                                             .isEqualTo(subline);
+    assertThat(sublineContainer.getTotalCount()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldGetSubline() {
+    // Given
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    when(sublineService.findSubline(any())).thenReturn(Collections.singletonList(sublineVersion));
+
+    // When
+    List<SublineVersionModel> subline = sublineController.getSubline("slnid");
+
+    // Then
+    assertThat(subline).isNotNull();
+    assertThat(subline).hasSize(1)
+                       .first()
+                       .usingRecursiveComparison()
+                       .isEqualTo(sublineVersion);
   }
 
   @Test
