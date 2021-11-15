@@ -2,7 +2,9 @@ package ch.sbb.timetable.field.number.service;
 
 
 import ch.sbb.timetable.field.number.entity.LineRelation;
+import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.repository.TimetableFieldNumberRepository;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
@@ -26,12 +28,15 @@ import org.springframework.stereotype.Service;
 public class VersionService {
 
   private final VersionRepository versionRepository;
+  private final TimetableFieldNumberRepository timetableFieldNumberRepository;
   private final VersionableService versionableService;
 
   @Autowired
   public VersionService(VersionRepository versionRepository,
+      TimetableFieldNumberRepository timetableFieldNumberRepository,
       VersionableService versionableService) {
     this.versionRepository = versionRepository;
+    this.timetableFieldNumberRepository = timetableFieldNumberRepository;
     this.versionableService = versionableService;
   }
 
@@ -55,8 +60,8 @@ public class VersionService {
     versionRepository.deleteById(id);
   }
 
-  public Page<Version> findAll(Pageable pageable) {
-    return versionRepository.findAll(pageable);
+  public Page<TimetableFieldNumber> getOverview(Pageable pageable) {
+    return timetableFieldNumberRepository.findAll(pageable);
   }
 
   public long count() {
