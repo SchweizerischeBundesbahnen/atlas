@@ -17,9 +17,9 @@ const version: Version = {
 
 describe('TimetableFieldNumberDetailResolver', () => {
   const timetableFieldNumberServiceSpy = jasmine.createSpyObj('timetableFieldNumbersService', [
-    'getVersion',
+    'getAllVersionsVersioned',
   ]);
-  timetableFieldNumberServiceSpy.getVersion.and.returnValue(of(version));
+  timetableFieldNumberServiceSpy.getAllVersionsVersioned.and.returnValue(of([version]));
 
   let resolver: TimetableFieldNumberDetailResolver;
 
