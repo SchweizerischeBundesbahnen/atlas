@@ -44,7 +44,7 @@ public class VersioningEngine {
           editedEntity, objectsToVersioning));
     }
     else {
-      log.info("ValidFrom and ValidTo are edited.");
+      log.info("ValidFrom and/or ValidTo are edited.");
       versioning = new VersioningWhenValidToAndValidFromAreEdited();
       versionedObjects.addAll( versioning.applyVersioning(editedVersion,
           currentVersion, objectsToVersioning,
