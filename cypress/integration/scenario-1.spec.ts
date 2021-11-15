@@ -1,6 +1,6 @@
 describe('Fahrplanfeldnummer', () => {
   const swissTimetableFieldNumber = 'aa.AAA';
-  const ttfnid = 'ch:1:fpfnid:100000';
+  const ttfnid = 'ch:1:fpfnid:100';
   const validFrom = '22.09.2099';
   const validTo = '22.09.2099';
   const businessOrganisation = 'SBB';
