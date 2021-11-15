@@ -9,9 +9,11 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/containerLine.ts
+model/containerSubline.ts
+model/line.ts
 model/lineVersion.ts
 model/models.ts
+model/subline.ts
 model/sublineVersion.ts
-model/versionsContainerLineVersion.ts
-model/versionsContainerSublineVersion.ts
 variables.ts
