@@ -40,6 +40,10 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       editedValidTo = currentVersion.getValidTo();
     }
 
+    if(editedValidFrom.isAfter(editedValidTo)){
+      throw new IllegalStateException("Edited ValidFrom "+  editedValidFrom +" is bigger then edited ValidTo " +  editedValidTo);
+    }
+
     //sort objectsToVersioning
     objectsToVersioning.sort(
         comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
