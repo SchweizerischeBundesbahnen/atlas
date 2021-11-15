@@ -6,29 +6,21 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
-import {
-  SublinesService,
-  SublineVersion,
-  VersionsContainerSublineVersion,
-} from '../../../api/lidi';
+import { ContainerSubline, SublinesService, SublineVersion } from '../../../api/lidi';
 import { SublinesComponent } from './sublines.component';
 import { CoreModule } from '../../../core/module/core.module';
 import StatusEnum = SublineVersion.StatusEnum;
 import TypeEnum = SublineVersion.TypeEnum;
-import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;
 
-const versionContainer: VersionsContainerSublineVersion = {
-  versions: [
+const versionContainer: ContainerSubline = {
+  objects: [
     {
-      id: 1,
       slnid: 'slnid',
-      number: 'name',
       description: 'asdf',
       validFrom: new Date('2021-06-01'),
       validTo: new Date('2029-06-01'),
       status: StatusEnum.Active,
       businessOrganisation: 'SBB',
-      paymentType: PaymentTypeEnum.None,
       swissSublineNumber: 'L1:2',
       type: TypeEnum.Technical,
     },
@@ -41,8 +33,8 @@ describe('SublinesComponent', () => {
   let fixture: ComponentFixture<SublinesComponent>;
 
   // With Spy
-  const sublinesService = jasmine.createSpyObj('linesService', ['getSublineVersions']);
-  sublinesService.getSublineVersions.and.returnValue(of(versionContainer));
+  const sublinesService = jasmine.createSpyObj('linesService', ['getSublines']);
+  sublinesService.getSublines.and.returnValue(of(versionContainer));
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [SublinesComponent, TableComponent, LoadingSpinnerComponent],
@@ -64,9 +56,9 @@ describe('SublinesComponent', () => {
   });
 
   it('should create', () => {
-    expect(sublinesService.getSublineVersions).toHaveBeenCalled();
+    expect(sublinesService.getSublines).toHaveBeenCalled();
 
-    expect(component.sublineVersions.length).toBe(1);
+    expect(component.sublines.length).toBe(1);
     expect(component.totalCount$).toBe(1);
   });
 });

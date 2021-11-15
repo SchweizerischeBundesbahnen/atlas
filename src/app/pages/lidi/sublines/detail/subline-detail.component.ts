@@ -79,7 +79,7 @@ export class SublineDetailComponent
       .subscribe(() => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, this.getId()])
+          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, this.record.slnid])
           .then(() => this.ngOnInit());
       });
   }
@@ -102,7 +102,7 @@ export class SublineDetailComponent
       .subscribe((version) => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, version.id])
+          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, version.slnid])
           .then(() => this.ngOnInit());
       });
   }
