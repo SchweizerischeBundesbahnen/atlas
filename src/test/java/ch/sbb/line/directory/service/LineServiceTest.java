@@ -50,6 +50,18 @@ class LineServiceTest {
   }
 
   @Test
+  void shouldGetLine() {
+    // Given
+    String slnid = "slnid";
+
+    // When
+    lineService.findLine(slnid);
+
+    // Then
+    verify(lineVersionRepository).findAllBySlnid(slnid);
+  }
+
+  @Test
   void shouldGetLineFromRepository() {
     // Given
     when(lineVersionRepository.findById(anyLong())).thenReturn(Optional.empty());

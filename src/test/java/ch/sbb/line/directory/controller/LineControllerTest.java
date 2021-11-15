@@ -8,9 +8,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.LineModel;
 import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -21,6 +21,7 @@ import ch.sbb.line.directory.model.RgbColor;
 import ch.sbb.line.directory.service.LineService;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,9 +41,6 @@ public class LineControllerTest {
 
   @Mock
   private LineService lineService;
-
-  @Mock
-  private SublineController sublineController;
 
   private LineController lineController;
 
@@ -91,6 +89,27 @@ public class LineControllerTest {
                                           .usingRecursiveComparison()
                                           .isEqualTo(line);
     assertThat(lineContainer.getTotalCount()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldGetLine() {
+    // Given
+    LineVersion lineVersion = LineTestData.lineVersion();
+    when(lineService.findLine(any())).thenReturn(Collections.singletonList(lineVersion));
+
+    // When
+    List<LineVersionModel> line = lineController.getLine("slnid");
+
+    // Then
+    assertThat(line).isNotNull();
+    assertThat(line).hasSize(1)
+                    .first()
+                    .usingRecursiveComparison()
+                    .ignoringFields("editor", "creator",
+                        "editionDate",
+                        "creationDate")
+                    .ignoringFieldsMatchingRegexes("color.*")
+                    .isEqualTo(lineVersion);
   }
 
   @Test
