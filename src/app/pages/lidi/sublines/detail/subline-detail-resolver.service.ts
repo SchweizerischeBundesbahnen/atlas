@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { SublinesService, SublineVersion } from '../../../../api/lidi';
 import { Pages } from '../../../pages';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SublineDetailResolver implements Resolve<Partial<SublineVersion>> {
@@ -12,11 +13,12 @@ export class SublineDetailResolver implements Resolve<Partial<SublineVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of({})
-      : this.sublinesService.getSublineVersion(parseInt(idParameter)).pipe(
+      : this.sublinesService.getSubline(idParameter).pipe(
           catchError(() => {
             this.router.navigate([Pages.LIDI.path]).then();
             return EMPTY;
-          })
+          }),
+          map((arr) => arr[0]) // TODO: remove once detail supports multiple
         );
   }
 }
