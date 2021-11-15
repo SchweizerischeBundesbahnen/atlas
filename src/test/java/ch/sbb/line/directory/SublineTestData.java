@@ -1,5 +1,7 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.line.directory.entity.Subline;
+import ch.sbb.line.directory.entity.Subline.SublineBuilder;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
 import ch.sbb.line.directory.enumaration.PaymentType;
@@ -31,5 +33,23 @@ public class SublineTestData {
 
   public static SublineVersion sublineVersion() {
     return sublineVersionBuilder().build();
+  }
+
+  public static SublineBuilder sublineBuilder() {
+    return Subline.builder()
+                  .status(Status.ACTIVE)
+                  .type(SublineType.TECHNICAL)
+                  .description("description")
+                  .slnid("slnid")
+                  .swissSublineNumber("swissSublineNumber")
+                  .validFrom(LocalDate.of(2020, 1, 1))
+                  .validTo(LocalDate.of(2020, 12, 31))
+                  .businessOrganisation(
+                      "businessOrganisation")
+                  .swissLineNumber("swissLineNumber");
+  }
+
+  public static Subline subline() {
+    return sublineBuilder().build();
   }
 }
