@@ -2,15 +2,13 @@ package ch.sbb.timetable.field.number.versioning.version;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.timetable.field.number.BaseTest;
+import ch.sbb.timetable.field.number.BaseTest.VersionableObject;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class VersioningWhenValidToAndValidFromAreEditedTest extends BaseTest {
-
-  private final VersioningWhenValidToAndValidFromAreEdited versioningWhenValidToAndValidFromAreEdited = new VersioningWhenValidToAndValidFromAreEdited();
+public class VersioningHelperTest {
 
   @Test
   public void shouldFindObjectToVersioningIfEditedValidFromIsEqualToCurrentValidTo(){
@@ -26,13 +24,13 @@ public class VersioningWhenValidToAndValidFromAreEditedTest extends BaseTest {
     List<ToVersioning> objectsToVersioning = List.of(toVersioning);
     LocalDate editedValidFrom = LocalDate.of(2021, 12, 31);
     LocalDate editedValidTo = LocalDate.of(2022, 12, 31);
+
     //when
-    List<ToVersioning> result = versioningWhenValidToAndValidFromAreEdited.findObjectToVersioningInValidFromValidToRange(
+    List<ToVersioning> result = VersioningHelper.findObjectToVersioningInValidFromValidToRange(
         objectsToVersioning, editedValidFrom, editedValidTo);
-    assertThat(result).isNotNull();
 
     //then
+    assertThat(result).isNotNull();
 
   }
-
 }
