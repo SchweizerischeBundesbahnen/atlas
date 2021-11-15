@@ -3,6 +3,7 @@ package ch.sbb.timetable.field.number.versioning.service;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
@@ -255,7 +256,6 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
 
   }
 
-
   /**
    * Szenario 7d: Neue Version in der Vergangenheit, die nächste Version nicht überschneidet
    *
@@ -334,6 +334,33 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
     assertThat(fourthVersionedObjectEntity).isNotNull();
     assertThat(fourthVersionedObjectEntity.getProperties()).isNotEmpty();
 
+
+  }
+
+  /**
+   * ValidFrom is bigger than validTo: expected exception
+   */
+  @Test
+  public void scenarioValidFromBiggerThenValidTo() {
+    //given
+    versionableObject1.setValidFrom(LocalDate.of(2020, 12, 12));
+    versionableObject1.setValidTo(LocalDate.of(2029, 12, 8));
+    LocalDate editedValidFrom = LocalDate.of(2029, 12, 9);
+
+    VersionableObject editedVersion = VersionableObject.builder()
+                                                       .property("Ciao-Ciao")
+                                                       .validFrom(editedValidFrom)
+                                                       .build();
+
+    //when
+    assertThatThrownBy(() -> {
+      versionableService.versioningObjects(
+          versionableObject1,
+          editedVersion,
+          Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
+      //then
+    }).isInstanceOf(IllegalStateException.class)
+      .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger then edited ValidTo 2029-12-08");
 
   }
 
