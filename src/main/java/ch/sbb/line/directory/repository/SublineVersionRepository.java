@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.repository;
 
+import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,4 +29,6 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
 
   List<SublineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumber(
       LocalDate validFrom, LocalDate validTo, String swissNumber);
+
+  List<SublineVersion> findAllBySlnid(String slnid);
 }
