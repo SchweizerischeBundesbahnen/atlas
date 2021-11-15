@@ -10,11 +10,7 @@
  * Do not edit the class manually.
  */
 
-export interface SublineVersion {
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
+export interface Subline {
   /**
    * SwissSublineNumber
    */
@@ -26,11 +22,11 @@ export interface SublineVersion {
   /**
    * Status
    */
-  readonly status?: SublineVersion.StatusEnum;
+  readonly status?: Subline.StatusEnum;
   /**
    * Subline Type
    */
-  type: SublineVersion.TypeEnum;
+  type: Subline.TypeEnum;
   /**
    * SLNID
    */
@@ -39,18 +35,6 @@ export interface SublineVersion {
    * Description
    */
   description?: string;
-  /**
-   * Number
-   */
-  number?: string;
-  /**
-   * LongName
-   */
-  longName?: string;
-  /**
-   * PaymentType
-   */
-  paymentType: SublineVersion.PaymentTypeEnum;
   /**
    * Valid from
    */
@@ -64,7 +48,7 @@ export interface SublineVersion {
    */
   businessOrganisation: string;
 }
-export namespace SublineVersion {
+export namespace Subline {
   export type StatusEnum = 'ACTIVE' | 'INACTIVE' | 'NEEDS_REVIEW' | 'IN_REVIEW' | 'REVIEWED';
   export const StatusEnum = {
     Active: 'ACTIVE' as StatusEnum,
@@ -77,20 +61,5 @@ export namespace SublineVersion {
   export const TypeEnum = {
     Technical: 'TECHNICAL' as TypeEnum,
     Compensation: 'COMPENSATION' as TypeEnum,
-  };
-  export type PaymentTypeEnum =
-    | 'INTERNATIONAL'
-    | 'REGIONAL'
-    | 'REGIONALWITHOUT'
-    | 'LOCAL'
-    | 'OTHER'
-    | 'NONE';
-  export const PaymentTypeEnum = {
-    International: 'INTERNATIONAL' as PaymentTypeEnum,
-    Regional: 'REGIONAL' as PaymentTypeEnum,
-    Regionalwithout: 'REGIONALWITHOUT' as PaymentTypeEnum,
-    Local: 'LOCAL' as PaymentTypeEnum,
-    Other: 'OTHER' as PaymentTypeEnum,
-    None: 'NONE' as PaymentTypeEnum,
   };
 }
