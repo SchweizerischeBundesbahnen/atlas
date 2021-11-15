@@ -1,10 +1,12 @@
 package ch.sbb.line.directory.controller;
 
+import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.LineApiV1;
+import ch.sbb.line.directory.api.LineModel;
 import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.VersionsContainer;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
+import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.service.LineService;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,16 +26,37 @@ public class LineController implements LineApiV1 {
   private final LineService lineService;
 
   @Override
-  public VersionsContainer<LineVersionModel> getLineVersions(Pageable pageable) {
+  public Container<LineModel> getLines(Pageable pageable) {
     log.info("Load Versions using pageable={}", pageable);
-    List<LineVersionModel> versions = lineService.findAll(pageable)
-                                                 .stream()
-                                                 .map(this::toModel)
-                                                 .collect(Collectors.toList());
-    long totalCount = lineService.totalCount();
-    return VersionsContainer.<LineVersionModel>builder()
-                            .versions(versions)
-                            .totalCount(totalCount).build();
+    Page<Line> lines = lineService.findAll(pageable);
+    List<LineModel> lineModels = lines
+        .stream()
+        .map(this::toModel)
+        .collect(Collectors.toList());
+    return Container.<LineModel>builder()
+                    .objects(lineModels)
+                    .totalCount(lines.getTotalElements()).build();
+  }
+
+  @Override
+  public List<LineVersionModel> getLine(String slnid) {
+    return lineService.findLine(slnid).stream()
+                      .map(this::toModel)
+                      .collect(Collectors.toList());
+  }
+
+  private LineModel toModel(Line lineVersion) {
+    return LineModel.builder()
+                    .status(lineVersion.getStatus())
+                    .type(lineVersion.getType())
+                    .slnid(lineVersion.getSlnid())
+                    .number(lineVersion.getNumber())
+                    .description(lineVersion.getDescription())
+                    .validFrom(lineVersion.getValidFrom())
+                    .validTo(lineVersion.getValidTo())
+                    .businessOrganisation(lineVersion.getBusinessOrganisation())
+                    .swissLineNumber(lineVersion.getSwissLineNumber())
+                    .build();
   }
 
   @Override

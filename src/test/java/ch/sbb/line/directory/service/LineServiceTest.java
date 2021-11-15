@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,12 +26,15 @@ class LineServiceTest {
   @Mock
   private LineVersionRepository lineVersionRepository;
 
+  @Mock
+  private LineRepository lineRepository;
+
   private LineService lineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineService = new LineService(lineVersionRepository);
+    lineService = new LineService(lineVersionRepository,lineRepository);
   }
 
   @Test
@@ -42,20 +46,7 @@ class LineServiceTest {
     lineService.findAll(pageable);
 
     // Then
-    verify(lineVersionRepository).findAll(pageable);
-  }
-
-  @Test
-  void shouldGetTotalLinesFromRepository() {
-    // Given
-    Long totalCount = ID;
-    when(lineVersionRepository.count()).thenReturn(totalCount);
-    // When
-    long result = lineService.totalCount();
-
-    // Then
-    verify(lineVersionRepository).count();
-    assertThat(result).isEqualTo(totalCount);
+    verify(lineRepository).findAll(pageable);
   }
 
   @Test
