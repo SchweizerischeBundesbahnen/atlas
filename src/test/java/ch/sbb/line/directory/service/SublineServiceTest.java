@@ -38,7 +38,7 @@ class SublineServiceTest {
   }
 
   @Test
-  void shouldGetPagableLinesFromRepository() {
+  void shouldGetPagableSublinesFromRepository() {
     // Given
     Pageable pageable = Pageable.unpaged();
 
@@ -49,8 +49,21 @@ class SublineServiceTest {
     verify(sublineRepository).findAll(pageable);
   }
 
+
   @Test
-  void shouldGetLineFromRepository() {
+  void shouldGetSubline() {
+    // Given
+    String slnid = "slnid";
+
+    // When
+    sublineService.findSubline(slnid);
+
+    // Then
+    verify(sublineVersionRepository).findAllBySlnid(slnid);
+  }
+
+  @Test
+  void shouldGetSublineVersionFromRepository() {
     // Given
     when(sublineVersionRepository.findById(anyLong())).thenReturn(Optional.empty());
     // When
