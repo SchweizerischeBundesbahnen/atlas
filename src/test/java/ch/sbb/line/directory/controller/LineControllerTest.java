@@ -8,8 +8,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.api.LineModel;
 import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.VersionsContainer;
+import ch.sbb.line.directory.api.Container;
+import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
@@ -72,28 +74,23 @@ public class LineControllerTest {
   }
 
   @Test
-  void shouldGetVersions() {
+  void shouldGetLines() {
     // Given
-    LineVersion lineVersion = LineTestData.lineVersion();
+    Line line = LineTestData.line();
     when(lineService.findAll(any(Pageable.class))).thenReturn(
-        new PageImpl<>(Collections.singletonList(lineVersion)));
-    when(lineService.totalCount()).thenReturn(1L);
+        new PageImpl<>(Collections.singletonList(line)));
 
     // When
-    VersionsContainer<LineVersionModel> lineVersionContainer = lineController.getLineVersions(
+    Container<LineModel> lineContainer = lineController.getLines(
         Pageable.unpaged());
 
     // Then
-    assertThat(lineVersionContainer).isNotNull();
-    assertThat(lineVersionContainer.getVersions()).hasSize(1)
-                                                  .first()
-                                                  .usingRecursiveComparison()
-                                                  .ignoringFields("editor", "creator",
-                                                      "editionDate",
-                                                      "creationDate")
-                                                  .ignoringFieldsMatchingRegexes("color.*")
-                                                  .isEqualTo(lineVersion);
-    assertThat(lineVersionContainer.getTotalCount()).isEqualTo(1);
+    assertThat(lineContainer).isNotNull();
+    assertThat(lineContainer.getObjects()).hasSize(1)
+                                          .first()
+                                          .usingRecursiveComparison()
+                                          .isEqualTo(line);
+    assertThat(lineContainer.getTotalCount()).isEqualTo(1);
   }
 
   @Test
