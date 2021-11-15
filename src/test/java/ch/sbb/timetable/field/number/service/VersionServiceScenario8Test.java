@@ -276,7 +276,6 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
    * RESULTAT: |------------------------------|--------|----------------|
    * Version:             1                        2            3
    */
-
   @Test
   public void scenario8e() {
     //given
