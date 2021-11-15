@@ -1,16 +1,18 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.line.directory.api.SublinenApiV1;
+import ch.sbb.line.directory.api.Container;
+import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
-import ch.sbb.line.directory.api.VersionsContainer;
+import ch.sbb.line.directory.api.SublinenApiV1;
+import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.service.SublineService;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,19 +24,41 @@ public class SublineController implements SublinenApiV1 {
   private final SublineService sublineService;
 
   @Override
-  public SublineVersionModel getSublineVersion(Long id) {
-    return sublineService.findById(id)
-                         .map(SublineController::toModel)
-                         .orElseThrow(NotFoundExcpetion.getInstance());
+  public Container<SublineModel> getSublines(Pageable pageable) {
+    Page<Subline> sublines = sublineService.findAll(        pageable);
+    return Container.<SublineModel>builder()
+                    .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
+                    .totalCount(sublines.getTotalElements())
+                    .build();
   }
 
-  public VersionsContainer<SublineVersionModel> getSublineVersions(Pageable pageable) {
-    List<SublineVersionModel> sublineVersions = toModel(sublineService.findAll(
-        pageable));
-    return VersionsContainer.<SublineVersionModel>builder()
-                            .versions(sublineVersions)
-                            .totalCount(sublineService.totalCount())
-                            .build();
+  private SublineModel toModel(Subline sublineVersion) {
+    return SublineModel.builder()
+                       .swissSublineNumber(sublineVersion.getSwissSublineNumber())
+                       .swissLineNumber(sublineVersion.getSwissLineNumber())
+                       .status(sublineVersion.getStatus())
+                       .type(sublineVersion.getType())
+                       .slnid(sublineVersion.getSlnid())
+                       .description(sublineVersion.getDescription())
+                       .validFrom(sublineVersion.getValidFrom())
+                       .validTo(sublineVersion.getValidTo())
+                       .businessOrganisation(sublineVersion.getBusinessOrganisation())
+                       .build();
+  }
+
+  @Override
+  public List<SublineVersionModel> getSubline(String slnid) {
+    return sublineService.findSubline(slnid)
+                         .stream()
+                         .map(this::toModel)
+                         .collect(Collectors.toList());
+  }
+
+  @Override
+  public SublineVersionModel getSublineVersion(Long id) {
+    return sublineService.findById(id)
+                         .map(this::toModel)
+                         .orElseThrow(NotFoundExcpetion.getInstance());
   }
 
   @Override
@@ -71,13 +95,7 @@ public class SublineController implements SublinenApiV1 {
     sublineService.deleteById(id);
   }
 
-  private static List<SublineVersionModel> toModel(Iterable<SublineVersion> versions) {
-    return StreamSupport.stream(versions.spliterator(), false)
-                        .map(SublineController::toModel)
-                        .collect(Collectors.toList());
-  }
-
-  static SublineVersionModel toModel(SublineVersion sublineVersion) {
+  private SublineVersionModel toModel(SublineVersion sublineVersion) {
     return SublineVersionModel.builder()
                               .id(sublineVersion.getId())
                               .swissSublineNumber(sublineVersion.getSwissSublineNumber())
@@ -95,7 +113,7 @@ public class SublineController implements SublinenApiV1 {
                               .build();
   }
 
-  static SublineVersion toEntity(SublineVersionModel sublineVersionModel) {
+  private SublineVersion toEntity(SublineVersionModel sublineVersionModel) {
     return SublineVersion.builder()
                          .id(sublineVersionModel.getId())
                          .swissSublineNumber(sublineVersionModel.getSwissSublineNumber())

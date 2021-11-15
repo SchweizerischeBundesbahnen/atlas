@@ -1,8 +1,11 @@
 package ch.sbb.line.directory.service;
 
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
+import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,13 +17,14 @@ import org.springframework.stereotype.Service;
 public class LineService {
 
   private final LineVersionRepository lineVersionRepository;
+  private final LineRepository lineRepository;
 
-  public Page<LineVersion> findAll(Pageable pageable) {
-    return lineVersionRepository.findAll(pageable);
+  public Page<Line> findAll(Pageable pageable) {
+    return lineRepository.findAll(pageable);
   }
 
-  public long totalCount() {
-    return lineVersionRepository.count();
+  public List<LineVersion> findLine(String slnid) {
+    return lineVersionRepository.findAllBySlnid(slnid);
   }
 
   public Optional<LineVersion> findById(Long id) {

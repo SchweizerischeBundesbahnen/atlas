@@ -56,7 +56,7 @@ public class LineVersion implements SequenctialValidRange {
   private String swissLineNumber;
 
   @GeneratorType(type = SlnidGenerator.class, when = GenerationTime.INSERT)
-  @Column(updatable = false, unique = true)
+  @Column(updatable = false)
   private String slnid;
 
   @NotNull

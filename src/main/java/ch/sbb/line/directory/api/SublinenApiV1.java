@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,14 +22,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("v1/sublines")
 public interface SublinenApiV1 {
 
-  @GetMapping("/{id}")
-  SublineVersionModel getSublineVersion(@PathVariable Long id);
-
   @GetMapping
   @PageableAsQueryParam
-  VersionsContainer<SublineVersionModel> getSublineVersions(@Parameter(hidden = true) Pageable pageable);
+  Container<SublineModel> getSublines(@Parameter(hidden = true) Pageable pageable);
 
-  @PostMapping
+  @GetMapping("/{slnid}")
+  List<SublineVersionModel> getSubline(@PathVariable String slnid);
+
+  @GetMapping("version/{id}")
+  SublineVersionModel getSublineVersion(@PathVariable Long id);
+
+  @PostMapping("version")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
@@ -36,13 +40,13 @@ public interface SublinenApiV1 {
   })
   SublineVersionModel createSublineVersion(@RequestBody SublineVersionModel newSublineVersion);
 
-  @PutMapping({"/{id}"})
+  @PutMapping({"version/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
   })
   SublineVersionModel updateSublineVersion(@PathVariable Long id, @RequestBody SublineVersionModel newVersion);
 
-  @DeleteMapping({"/{id}"})
+  @DeleteMapping("version/{id}")
   void deleteSublineVersion(@PathVariable Long id);
 }
