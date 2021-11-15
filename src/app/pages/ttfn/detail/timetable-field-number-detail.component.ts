@@ -77,7 +77,7 @@ export class TimetableFieldNumberDetailComponent
       )
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
-        this.router.navigate([Pages.TTFN.path, this.getId()]).then(() => this.ngOnInit());
+        this.router.navigate([Pages.TTFN.path, this.record.ttfnid]).then(() => this.ngOnInit());
       });
   }
 
@@ -94,7 +94,7 @@ export class TimetableFieldNumberDetailComponent
       )
       .subscribe((version) => {
         this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
-        this.router.navigate([Pages.TTFN.path, version.id]).then(() => this.ngOnInit());
+        this.router.navigate([Pages.TTFN.path, version.ttfnid]).then(() => this.ngOnInit());
       });
   }
 
