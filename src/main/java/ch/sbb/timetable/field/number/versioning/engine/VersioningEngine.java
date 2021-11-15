@@ -1,7 +1,10 @@
 package ch.sbb.timetable.field.number.versioning.engine;
 
-import ch.sbb.timetable.field.number.versioning.convert.ConverterHelper;
-import ch.sbb.timetable.field.number.versioning.merge.MergeHelper;
+import static ch.sbb.timetable.field.number.versioning.convert.ConverterHelper.convertAllObjectsToVersioning;
+import static ch.sbb.timetable.field.number.versioning.convert.ConverterHelper.convertToEditedEntity;
+import static ch.sbb.timetable.field.number.versioning.merge.MergeHelper.mergeVersionedObject;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.areValidToAndValidFromNotEdited;
+
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
@@ -25,11 +28,11 @@ public class VersioningEngine {
       List<T> currentVersions) {
 
     //2. get edited properties from editedVersion
-    Entity editedEntity = ConverterHelper.convertToEditedEntity(versionableProperties,
+    Entity editedEntity = convertToEditedEntity(versionableProperties,
         currentVersion.getId(), editedVersion);
 
     //3. collect all versions to versioning in ToVersioning object
-    List<ToVersioning> objectsToVersioning = ConverterHelper.convertAllObjectsToVersioning(
+    List<ToVersioning> objectsToVersioning = convertAllObjectsToVersioning(
         versionableProperties, currentVersions);
     //Temporal sort objects versioning
     objectsToVersioning.sort(Comparator.comparing(o -> o.getVersionable().getValidFrom()));
@@ -40,28 +43,17 @@ public class VersioningEngine {
       //update actual version
       log.info("ValidFrom and ValidTo are not edited.");
       versioning = new VersioningWhenValidFromAndValidToAreNotEdited();
-       versionedObjects.addAll( versioning.applyVersioning(currentVersion,
+      versionedObjects.addAll(versioning.applyVersioning(currentVersion,
           editedEntity, objectsToVersioning));
-    }
-    else {
-      log.info("ValidFrom and ValidTo are edited.");
+    } else {
+      log.info("ValidFrom and/or ValidTo are edited.");
       versioning = new VersioningWhenValidToAndValidFromAreEdited();
-      versionedObjects.addAll( versioning.applyVersioning(editedVersion,
+      versionedObjects.addAll(versioning.applyVersioning(editedVersion,
           currentVersion, objectsToVersioning,
           editedEntity));
     }
-    List<VersionedObject> versionedObjectsMerged = MergeHelper.mergeVersionedObject(versionedObjects);
-    return versionedObjectsMerged;
-//    return versionedObjects;
+    return mergeVersionedObject(versionedObjects);
   }
 
-
-
-  public boolean areValidToAndValidFromNotEdited(Versionable currentVersion,
-      Versionable editedVersion) {
-    return (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) || (
-        currentVersion.getValidFrom().equals(editedVersion.getValidFrom())
-            && currentVersion.getValidTo().equals(editedVersion.getValidTo()));
-  }
 
 }
