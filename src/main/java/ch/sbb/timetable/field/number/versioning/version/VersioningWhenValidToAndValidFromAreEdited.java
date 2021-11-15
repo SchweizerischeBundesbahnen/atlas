@@ -1,12 +1,12 @@
 package ch.sbb.timetable.field.number.versioning.version;
 
 import static ch.sbb.timetable.field.number.versioning.date.DateHelper.areDatesSequential;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.areValidToAndPropertiesEdited;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.findObjectToVersioningInValidFromValidToRange;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionExactMatchingMultipleVersions;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToEditedWithNoEditedProperties;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isValidToEditedAndPropertiesAreEdited;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOnTheLeftBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOnTheRightBorder;
 import static java.util.Comparator.comparing;
@@ -109,7 +109,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
           entity);
       versionedObjects.add(versionedObjectLastIndex);
 
-    } else if (isValidToEditedAndPropertiesAreEdited(editedVersion, editedEntity)) {
+    } else if (areValidToAndPropertiesEdited(editedVersion, editedEntity)) {
       //scenario 8d
       //editedValidTo isAfter toVersioning.validTo
       if (isEditedValidToAfterTheRightBorder(editedValidTo, toVersioning)) {
