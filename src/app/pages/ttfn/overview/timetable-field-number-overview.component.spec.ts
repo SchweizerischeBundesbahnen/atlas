@@ -6,15 +6,14 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { TimetableFieldNumbersService, VersionsContainer } from '../../../api/ttfn';
+import { TimetableFieldNumberContainer, TimetableFieldNumbersService } from '../../../api/ttfn';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { CoreModule } from '../../../core/module/core.module';
 
-const versionContainer: VersionsContainer = {
-  versions: [
+const timetableFieldNumberContainer: TimetableFieldNumberContainer = {
+  fieldNumbers: [
     {
-      id: 1,
       ttfnid: 'ttfnid',
       name: 'name',
       swissTimetableFieldNumber: 'asdf',
@@ -32,9 +31,9 @@ describe('TimetableFieldNumberOverviewComponent', () => {
 
   // With Spy
   const timetableFieldNumberService = jasmine.createSpyObj('timetableFieldNumbersService', [
-    'getVersions',
+    'getOverview',
   ]);
-  timetableFieldNumberService.getVersions.and.returnValue(of(versionContainer));
+  timetableFieldNumberService.getOverview.and.returnValue(of(timetableFieldNumberContainer));
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -62,9 +61,9 @@ describe('TimetableFieldNumberOverviewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
     fixture.detectChanges();
-    expect(timetableFieldNumberService.getVersions).toHaveBeenCalled();
+    expect(timetableFieldNumberService.getOverview).toHaveBeenCalled();
 
-    expect(component.versions$.length).toBe(1);
+    expect(component.timetableFieldNumbers.length).toBe(1);
     expect(component.totalCount$).toBe(1);
   });
 });

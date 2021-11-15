@@ -1,10 +1,10 @@
 <app-table
-  [tableData]="versions$"
+  [tableData]="timetableFieldNumbers"
   [totalCount]="totalCount$"
   [tableColumns]="tableColumns"
   [canEdit]="true"
   [isLoading]="isLoading"
   (newElementEvent)="newVersion()"
   (editElementEvent)="editVersion($event)"
-  (getTableElementsEvent)="getVersions($event)"
+  (getTableElementsEvent)="getOverview($event)"
 ></app-table>

@@ -9,6 +9,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/models.ts
+model/timetableFieldNumber.ts
+model/timetableFieldNumberContainer.ts
 model/version.ts
-model/versionsContainer.ts
 variables.ts
