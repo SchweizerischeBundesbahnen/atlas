@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class VersionsContainer {
+public class TimetableFieldNumberContainer {
 
-  private List<VersionModel> versions;
+  private List<TimetableFieldNumberModel> fieldNumbers;
   private long totalCount;
 
 }
