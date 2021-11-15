@@ -76,6 +76,13 @@ public final class VersioningHelper {
     return false;
   }
 
+  public static boolean areValidToAndValidFromNotEdited(Versionable currentVersion,
+      Versionable editedVersion) {
+    return (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) || (
+        currentVersion.getValidFrom().equals(editedVersion.getValidFrom())
+            && currentVersion.getValidTo().equals(editedVersion.getValidTo()));
+  }
+
   public static List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
       List<ToVersioning> objectsToVersioning,
       LocalDate editedValidFrom, LocalDate editedValidTo) {

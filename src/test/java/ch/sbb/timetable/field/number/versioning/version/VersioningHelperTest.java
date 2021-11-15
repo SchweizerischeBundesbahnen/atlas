@@ -446,4 +446,72 @@ public class VersioningHelperTest {
     assertThat(result).isNotNull();
 
   }
+
+
+  @Test
+  public void shouldReturnTrueWhenValidFromAndValidToAreNotEdited() {
+    //given
+    VersionableObject edited = VersionableObject.builder().build();
+    VersionableObject current = VersionableObject.builder()
+                                                 .validFrom(LocalDate.of(2000, 1, 1))
+                                                 .validTo(LocalDate.of(2000, 12, 31))
+                                                 .build();
+    //when
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(current, edited);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenEditedValidFromIsEqualToCurrentValidFromAndValidToIsNotEdited() {
+    //given
+    VersionableObject edited = VersionableObject.builder()
+                                                .validFrom(LocalDate.of(2000, 1, 1))
+                                                .build();
+    VersionableObject current = VersionableObject.builder()
+                                                 .validFrom(LocalDate.of(2000, 1, 1))
+                                                 .validTo(LocalDate.of(2000, 12, 31))
+                                                 .build();
+    //when
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(current, edited);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenValidFromIsNotEditedAndEditedValidToIsEqualToCurrentValidTo() {
+    //given
+    VersionableObject edited = VersionableObject.builder()
+                                                .validTo(LocalDate.of(2000, 12, 31))
+                                                .build();
+    VersionableObject current = VersionableObject.builder()
+                                                 .validFrom(LocalDate.of(2000, 1, 1))
+                                                 .validTo(LocalDate.of(2000, 12, 31))
+                                                 .build();
+    //when
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(current, edited);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenCurrentAndEditedValidFrom_ValidToAreEquals() {
+    //given
+    VersionableObject edited = VersionableObject.builder()
+                                                .validFrom(LocalDate.of(2000, 1, 1))
+                                                .validTo(LocalDate.of(2000, 12, 31))
+                                                .build();
+    VersionableObject current = VersionableObject.builder()
+                                                 .validFrom(LocalDate.of(2000, 1, 1))
+                                                 .validTo(LocalDate.of(2000, 12, 31))
+                                                 .build();
+    //when
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(current, edited);
+
+    //then
+    assertThat(result).isTrue();
+  }
 }

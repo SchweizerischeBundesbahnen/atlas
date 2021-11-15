@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.versioning.merge;
 
-import ch.sbb.timetable.field.number.versioning.date.DateHelper;
+import static ch.sbb.timetable.field.number.versioning.date.DateHelper.areDatesSequential;
+
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import java.util.Comparator;
@@ -32,7 +33,7 @@ public final class MergeHelper {
   }
 
   static boolean areVersionedObjectsSequential(VersionedObject current, VersionedObject next){
-    return DateHelper.areDatesSequential(current.getValidTo(),next.getValidFrom());
+    return areDatesSequential(current.getValidTo(),next.getValidFrom());
   }
 
 
