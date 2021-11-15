@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { SublinesService, SublineVersion } from '../../../api/lidi';
+import { SublinesService, Subline } from '../../../api/lidi';
 import { Pages } from '../../pages';
 
 @Component({
@@ -14,7 +14,7 @@ import { Pages } from '../../pages';
   styleUrls: ['./sublines.component.scss'],
 })
 export class SublinesComponent implements OnInit, OnDestroy {
-  sublinesTableColumns: TableColumn<SublineVersion>[] = [
+  sublinesTableColumns: TableColumn<Subline>[] = [
     { headerTitle: 'LIDI.SWISS_SUBLINE_NUMBER', value: 'swissSublineNumber' },
     { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },
     { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
@@ -34,7 +34,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  sublineVersions: SublineVersion[] = [];
+  sublines: Subline[] = [];
   totalCount$ = 0;
   isLoading = false;
   private sublineVersionsSubscription!: Subscription;
@@ -47,13 +47,13 @@ export class SublinesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getVersions({ page: 0, size: 10, sort: 'swissSublineNumber,ASC' });
+    this.getOverview({ page: 0, size: 10, sort: 'swissSublineNumber,ASC' });
   }
 
-  getVersions($pagination: TablePagination) {
+  getOverview($pagination: TablePagination) {
     this.isLoading = true;
     this.sublineVersionsSubscription = this.sublinesService
-      .getSublineVersions($pagination.page, $pagination.size, [$pagination.sort!])
+      .getSublines($pagination.page, $pagination.size, [$pagination.sort!])
       .pipe(
         catchError((err) => {
           this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.FETCH_ERROR');
@@ -61,9 +61,9 @@ export class SublinesComponent implements OnInit, OnDestroy {
           throw err;
         })
       )
-      .subscribe((sublineVersionContainer) => {
-        this.sublineVersions = sublineVersionContainer.versions!;
-        this.totalCount$ = sublineVersionContainer.totalCount!;
+      .subscribe((sublineContainer) => {
+        this.sublines = sublineContainer.objects!;
+        this.totalCount$ = sublineContainer.totalCount!;
         this.isLoading = false;
       });
   }
@@ -76,9 +76,9 @@ export class SublinesComponent implements OnInit, OnDestroy {
       .then();
   }
 
-  editVersion($event: SublineVersion) {
+  editVersion($event: Subline) {
     this.router
-      .navigate([Pages.SUBLINES.path, $event.id], {
+      .navigate([Pages.SUBLINES.path, $event.slnid], {
         relativeTo: this.route,
       })
       .then();

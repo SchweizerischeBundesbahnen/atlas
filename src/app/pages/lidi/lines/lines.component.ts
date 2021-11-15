@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { LinesService, LineVersion } from '../../../api/lidi';
+import { Line, LinesService } from '../../../api/lidi';
 import { Pages } from '../../pages';
 
 @Component({
@@ -14,7 +14,7 @@ import { Pages } from '../../pages';
   styleUrls: ['./lines.component.scss'],
 })
 export class LinesComponent implements OnInit, OnDestroy {
-  linesTableColumns: TableColumn<LineVersion>[] = [
+  linesTableColumns: TableColumn<Line>[] = [
     { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
     { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
@@ -30,7 +30,7 @@ export class LinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  lineVersions: LineVersion[] = [];
+  lineVersions: Line[] = [];
   totalCount$ = 0;
   isLoading = false;
   private lineVersionsSubscription!: Subscription;
@@ -43,13 +43,13 @@ export class LinesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getVersions({ page: 0, size: 10, sort: 'swissLineNumber,ASC' });
+    this.getOverview({ page: 0, size: 10, sort: 'swissLineNumber,ASC' });
   }
 
-  getVersions($pagination: TablePagination) {
+  getOverview($pagination: TablePagination) {
     this.isLoading = true;
     this.lineVersionsSubscription = this.linesService
-      .getLineVersions($pagination.page, $pagination.size, [$pagination.sort!])
+      .getLines($pagination.page, $pagination.size, [$pagination.sort!])
       .pipe(
         catchError((err) => {
           this.notificationService.error('LIDI.LINE.NOTIFICATION.FETCH_ERROR');
@@ -57,9 +57,9 @@ export class LinesComponent implements OnInit, OnDestroy {
           throw err;
         })
       )
-      .subscribe((lineVersionContainer) => {
-        this.lineVersions = lineVersionContainer.versions!;
-        this.totalCount$ = lineVersionContainer.totalCount!;
+      .subscribe((lineContainer) => {
+        this.lineVersions = lineContainer.objects!;
+        this.totalCount$ = lineContainer.totalCount!;
         this.isLoading = false;
       });
   }
@@ -72,9 +72,9 @@ export class LinesComponent implements OnInit, OnDestroy {
       .then();
   }
 
-  editVersion($event: LineVersion) {
+  editVersion($event: Line) {
     this.router
-      .navigate([Pages.LINES.path, $event.id], {
+      .navigate([Pages.LINES.path, $event.slnid], {
         relativeTo: this.route,
       })
       .then();

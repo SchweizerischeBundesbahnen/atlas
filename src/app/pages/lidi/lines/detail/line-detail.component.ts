@@ -79,7 +79,7 @@ export class LineDetailComponent
       .subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, this.getId()])
+          .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
           .then(() => this.ngOnInit());
       });
   }
@@ -102,7 +102,7 @@ export class LineDetailComponent
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, version.id])
+          .navigate([Pages.LIDI.path, Pages.LINES.path, version.slnid])
           .then(() => this.ngOnInit());
       });
   }
