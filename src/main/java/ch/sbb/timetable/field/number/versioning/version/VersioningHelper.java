@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.versioning.version;
 
-import ch.sbb.timetable.field.number.versioning.date.DateHelper;
+import static ch.sbb.timetable.field.number.versioning.date.DateHelper.areDatesSequential;
+
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
@@ -92,12 +93,12 @@ public final class VersioningHelper {
         && !editedEntity.getProperties().isEmpty();
   }
 
-  public static boolean isVersionOnTheRightBorder(ToVersioning rightBorderVersion,
+  public static boolean isVersionOverTheRightBorder(ToVersioning rightBorderVersion,
       LocalDate editedValidFrom) {
     return editedValidFrom.isAfter(rightBorderVersion.getVersionable().getValidTo());
   }
 
-  public static boolean isVersionOnTheLeftBorder(ToVersioning leftBorderVersion,
+  public static boolean isVersionOverTheLeftBorder(ToVersioning leftBorderVersion,
       LocalDate editedValidTo) {
     return editedValidTo.isBefore(leftBorderVersion.getVersionable().getValidFrom());
   }
@@ -106,12 +107,29 @@ public final class VersioningHelper {
     for (int i = 1; i < toVersioningList.size(); i++) {
       ToVersioning current = toVersioningList.get(i - 1);
       ToVersioning next = toVersioningList.get(i);
-      if (!DateHelper.areDatesSequential(current.getVersionable().getValidTo(),
+      if (!areDatesSequential(current.getVersionable().getValidTo(),
           next.getVersionable().getValidFrom())) {
         return true;
       }
     }
     return false;
+  }
+
+  public static ToVersioning getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
+      LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+    for (int i = 1; i < toVersioningList.size(); i++) {
+      ToVersioning current = toVersioningList.get(i - 1);
+      ToVersioning next = toVersioningList.get(i);
+      if (!areDatesSequential(current.getVersionable().getValidTo(),
+          next.getVersionable().getValidFrom())
+          &&
+          editedValidFrom.isAfter(current.getVersionable().getValidTo())
+          && editedValidTo.isBefore(next.getVersionable().getValidFrom())
+      ) {
+        return current;
+      }
+    }
+    return null;
   }
 
   public static boolean areValidToAndValidFromNotEdited(Versionable currentVersion,
