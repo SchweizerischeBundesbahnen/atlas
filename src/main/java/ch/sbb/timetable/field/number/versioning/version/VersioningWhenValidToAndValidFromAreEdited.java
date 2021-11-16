@@ -100,6 +100,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       LocalDate editedValidFrom,
       LocalDate editedValidTo, ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
+    //right border without properties changes
     if (isOnlyValidToEditedWithNoEditedProperties(editedVersion, editedEntity)) {
       //Just make the version bigger
       // 1. version
@@ -113,7 +114,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
           entity);
       versionedObjects.add(versionedObjectLastIndex);
 
-    } else if (areValidToAndPropertiesEdited(editedVersion, editedEntity)) {
+    } else if (areValidToAndPropertiesEdited(editedVersion, editedEntity)) { //right border with properties changes
       //scenario 8d
       //editedValidTo isAfter toVersioning.validTo
       if (isEditedValidToAfterTheRightBorder(editedValidTo, toVersioning)) {
@@ -145,7 +146,19 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
                         .getValidTo(), toVersioning.getEntity());
         versionedObjects.add(versionedObjectCreated);
       }
-    } else {
+    }
+    //left border with or without properties changes
+    else if(editedValidTo.equals(toVersioning.getVersionable().getValidTo()) && editedValidFrom != null && editedValidFrom.isBefore(toVersioning.getVersionable().getValidFrom())){
+      //1. update validFrom with editedValidTo
+      //2. merge properties
+      Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+          toVersioning.getEntity());
+      VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
+           editedValidFrom,toVersioning.getVersionable().getValidTo(),
+          entity);
+      versionedObjects.add(versionedObjectLastIndex);
+    }
+    else { //Scenario6 when only validFrom is edited with properties changes, Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
       // 1. version
       //    validTo = editedValidFrom.minusDay(1)
       //    do not update properties
