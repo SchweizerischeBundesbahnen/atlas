@@ -366,7 +366,7 @@ public class VersioningHelperTest {
     //given
     VersionableObject versionableObject = VersionableObject
         .builder()
-        .validTo(LocalDate.of(2020,1,1))
+        .validTo(LocalDate.of(2020, 1, 1))
         .id(1L)
         .property("Ciao1")
         .build();
@@ -386,7 +386,7 @@ public class VersioningHelperTest {
     //given
     VersionableObject versionableObject = VersionableObject
         .builder()
-        .validTo(LocalDate.of(2020,1,1))
+        .validTo(LocalDate.of(2020, 1, 1))
         .id(1L)
         .property("Ciao1")
         .build();
@@ -514,4 +514,105 @@ public class VersioningHelperTest {
     //then
     assertThat(result).isTrue();
   }
+
+  @Test
+  public void shouldReturnTrueWhenEditedVersionIsBetweenMultipleVersionsAndOverTheBorders() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    VersionableObject versionableObject3 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning3 = ToVersioning.builder().versionable(versionableObject3).build();
+    LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
+    LocalDate editedValidTo = LocalDate.of(2022, 6, 1);
+    //when
+    boolean result = VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders(editedValidFrom,
+        editedValidTo, List.of(toVersioning1, toVersioning2, toVersioning3));
+
+    //then
+    assertThat(result).isTrue();
+  }
+ @Test
+  public void shouldReturnFalseWhenEditedVersionIsOverOneVersionAndOverTheBorders() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    LocalDate editedValidFrom = LocalDate.of(2019, 6, 1);
+    LocalDate editedValidTo = LocalDate.of(2021, 6, 1);
+    //when
+    boolean result = VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders(editedValidFrom,
+        editedValidTo, List.of(toVersioning1));
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenVersionIsOnOrOverTheLeftBorder() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning = ToVersioning.builder().versionable(versionableObject1).build();
+    LocalDate editedValidFrom = LocalDate.of(2019, 2, 1);
+    LocalDate editedValidTo = LocalDate.of(2020, 12, 31);
+    //when
+    boolean result = VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(
+        editedValidFrom, editedValidTo, toVersioning);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenVersionIsOnOrOverTheRightBorder() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning = ToVersioning.builder().versionable(versionableObject1).build();
+    LocalDate editedValidFrom = LocalDate.of(2020, 2, 1);
+    LocalDate editedValidTo = LocalDate.of(2021, 12, 31);
+    //when
+    boolean result = VersioningHelper.isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(
+        editedValidFrom, editedValidTo, toVersioning);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+
 }

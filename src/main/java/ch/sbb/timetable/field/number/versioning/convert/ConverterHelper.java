@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.versioning.convert;
 
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Entity.EntityBuilder;
 import ch.sbb.timetable.field.number.versioning.model.Property;
@@ -18,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class ConverterHelper {
 
-  private ConverterHelper(){
+  private ConverterHelper() {
     throw new IllegalStateException("Utility class");
   }
 
@@ -71,7 +72,7 @@ public final class ConverterHelper {
         properties.add(extractOneToManyRelationProperty);
       }
       if (RelationType.ONE_TO_ONE == versionableProperty.getRelationType()) {
-        throw new IllegalStateException("OneToOne Relation not implemented");
+        throw new VersioningException("OneToOne Relation not implemented");
       }
     }
     return properties;
@@ -86,8 +87,8 @@ public final class ConverterHelper {
       Object propertyValue = declaredField.get(version);
       return buildProperty(property.getFieldName(), propertyValue);
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      log.error(e.getMessage());
-      throw new RuntimeException(e);
+      log.error("Error during parse field {}", e.getMessage());
+      throw new VersioningException("Error during parse field "+e.getMessage(), e);
     }
   }
 
@@ -118,8 +119,8 @@ public final class ConverterHelper {
         }
       }
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      log.error(e.getMessage());
-      throw new RuntimeException(e);
+      log.error("Error during parse field {}",e.getMessage());
+      throw new VersioningException("Error during parse field "+e.getMessage(), e);
     }
     return propertyBuilder.oneToMany(entityRelations).build();
   }
