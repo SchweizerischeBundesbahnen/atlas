@@ -15,7 +15,7 @@ public final class VersioningHelper {
   }
 
   /**
-   * |___________|
+   *                  |___________|
    * |-----------|----------------------|--------------------|
    */
   public static boolean isEditedVersionInTheMiddleOfCurrentVersion(LocalDate editedValidFrom,
@@ -25,7 +25,7 @@ public final class VersioningHelper {
   }
 
   /**
-   * |_____________________|
+   *            |_____________________|
    * |----------|----------|----------|----------|----------|
    */
   public static boolean isEditedVersionExactMatchingMultipleVersions(LocalDate editedValidFrom,
@@ -41,8 +41,10 @@ public final class VersioningHelper {
    * |_____________________|
    *            |----------|----------|----------|----------|----------|
    */
-  public static boolean isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning toVersioning){
-    return editedValidTo.equals(toVersioning.getVersionable().getValidTo()) && editedValidFrom != null
+  public static boolean isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(
+      LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning toVersioning) {
+    return editedValidTo.equals(toVersioning.getVersionable().getValidTo())
+        && editedValidFrom != null
         && editedValidFrom.isBefore(toVersioning.getVersionable().getValidFrom());
   }
 
@@ -50,13 +52,13 @@ public final class VersioningHelper {
    *                                                    |______________|
    * |----------|----------|----------|----------|----------|
    */
-  public static boolean isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning toVersioning){
+  public static boolean isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(
+      LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning toVersioning) {
     return editedValidFrom != null &&
         (editedValidTo.equals(toVersioning.getVersionable().getValidTo()) || editedValidTo.isAfter(
             toVersioning.getVersionable()
                         .getValidTo()));
   }
-
 
 
   public static boolean isEditedValidToAfterTheRightBorder(LocalDate editedValidTo,
