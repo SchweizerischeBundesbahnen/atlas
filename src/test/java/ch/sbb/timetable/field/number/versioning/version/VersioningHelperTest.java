@@ -299,7 +299,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2019, 12, 31);
 
     //when
-    boolean result = VersioningHelper.isVersionOnTheLeftBorder(toVersioning, editedValidTo);
+    boolean result = VersioningHelper.isVersionOverTheLeftBorder(toVersioning, editedValidTo);
 
     //then
     assertThat(result).isTrue();
@@ -439,7 +439,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2019, 12, 31);
 
     //when
-    boolean result = VersioningHelper.isVersionOnTheRightBorder(
+    boolean result = VersioningHelper.isVersionOverTheRightBorder(
         toVersioning, editedValidTo);
 
     //then
@@ -612,6 +612,152 @@ public class VersioningHelperTest {
 
     //then
     assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnToVersioningObjectWhenEntityIsOnAGapBetweenTwoVersions() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    LocalDate editedValidFrom = LocalDate.of(2021, 1, 1);
+    LocalDate editedValidTo = LocalDate.of(2021, 12, 31);
+    //when
+    ToVersioning result = VersioningHelper.getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
+        editedValidFrom, editedValidTo, List.of(toVersioning1,toVersioning2));
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result).isEqualTo(toVersioning1);
+  }
+
+  @Test
+  public void shouldReturnNullWhenEntityIsOverTheLeftGapBetweenTwoVersions() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    LocalDate editedValidFrom = LocalDate.of(2020, 12, 31);
+    LocalDate editedValidTo = LocalDate.of(2021, 12, 31);
+    //when
+    ToVersioning result = VersioningHelper.getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
+        editedValidFrom, editedValidTo, List.of(toVersioning1,toVersioning2));
+
+    //then
+    assertThat(result).isNull();
+  }
+
+  @Test
+  public void shouldReturnNullWhenEntityIsOverTheRightGapBetweenTwoVersions() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    LocalDate editedValidFrom = LocalDate.of(2021, 1, 1);
+    LocalDate editedValidTo = LocalDate.of(2022, 1, 1);
+    //when
+    ToVersioning result = VersioningHelper.getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
+        editedValidFrom, editedValidTo, List.of(toVersioning1,toVersioning2));
+
+    //then
+    assertThat(result).isNull();
+  }
+
+  @Test
+  public void shouldReturnNullWhenEntityIsOverTheRightAndTheLeftGapBetweenTwoVersions() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    LocalDate editedValidFrom = LocalDate.of(2020, 12, 31);
+    LocalDate editedValidTo = LocalDate.of(2022, 1, 1);
+    //when
+    ToVersioning result = VersioningHelper.getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
+        editedValidFrom, editedValidTo, List.of(toVersioning1,toVersioning2));
+
+    //then
+    assertThat(result).isNull();
+  }
+
+  @Test
+  public void shouldReturnNullWhenThereIsNoGapBetweenTwoVersions() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    LocalDate editedValidFrom = LocalDate.of(2021, 1, 1);
+    LocalDate editedValidTo = LocalDate.of(2021, 12, 31);
+    //when
+    ToVersioning result = VersioningHelper.getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
+        editedValidFrom, editedValidTo, List.of(toVersioning1,toVersioning2));
+
+    //then
+    assertThat(result).isNull();
   }
 
 
