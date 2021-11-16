@@ -3,6 +3,7 @@ package ch.sbb.timetable.field.number.versioning.version;
 import static ch.sbb.timetable.field.number.versioning.date.DateHelper.areDatesSequential;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.areValidToAndPropertiesEdited;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.findObjectToVersioningInValidFromValidToRange;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionExactMatchingMultipleVersions;
@@ -11,8 +12,8 @@ import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToEditedWithNoEditedProperties;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isThereGapBetweenVersions;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOnTheLeftBorder;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOnTheRightBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOverTheLeftBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOverTheRightBorder;
 import static java.util.Comparator.comparing;
 
 import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
@@ -215,7 +216,8 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
 
     // On the right border
     ToVersioning rightBorderVersion = objectsToVersioning.get(objectsToVersioning.size() - 1);
-    if (isVersionOnTheRightBorder(rightBorderVersion, editedValidFrom)) {
+    if (isVersionOverTheRightBorder(rightBorderVersion, editedValidFrom)) {
+      log.info("Match over the right border.");
       Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
           editedEntity,
           rightBorderVersion.getEntity());
@@ -227,7 +229,8 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
 
     // On the left border
     ToVersioning leftBorderVersion = objectsToVersioning.get(0);
-    if (isVersionOnTheLeftBorder(leftBorderVersion, editedValidTo)) {
+    if (isVersionOverTheLeftBorder(leftBorderVersion, editedValidTo)) {
+      log.info("Match over the left border.");
       Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
           editedEntity,
           leftBorderVersion.getEntity());
@@ -236,7 +239,23 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       versionedObjects.add(versionedObject);
       return versionedObjects;
     }
-
+    //Gap between two objects
+    if(isThereGapBetweenVersions(objectsToVersioning)){
+      log.info("Match a gap between two objects.");
+      ToVersioning toVersioningBeforeGap = getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
+          editedValidFrom, editedValidTo, objectsToVersioning);
+      if(toVersioningBeforeGap == null){
+        throw new VersioningException(
+            "Something went wrong. I'm not able to apply versioning on this scenario.");
+      }
+      Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
+          editedEntity,
+          toVersioningBeforeGap.getEntity());
+      VersionedObject versionedObject = buildVersionedObjectToCreate(editedValidFrom,
+          editedValidTo, entityToAdd);
+      versionedObjects.add(versionedObject);
+      return versionedObjects;
+    }
     throw new VersioningException(
         "Something went wrong. I'm not able to apply versioning on this scenario.");
   }
