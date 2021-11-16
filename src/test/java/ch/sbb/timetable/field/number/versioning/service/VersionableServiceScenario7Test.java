@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
@@ -359,7 +360,7 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
           editedVersion,
           Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
       //then
-    }).isInstanceOf(IllegalStateException.class)
+    }).isInstanceOf(VersioningException.class)
       .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger then edited ValidTo 2029-12-08");
 
   }

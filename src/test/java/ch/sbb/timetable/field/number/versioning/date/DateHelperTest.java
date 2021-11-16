@@ -3,13 +3,14 @@ package ch.sbb.timetable.field.number.versioning.date;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 class DateHelperTest {
 
   @Test
-  public void shouldReturnTrueWhenTwoDatesAreSequential(){
+  public void shouldReturnTrueWhenTwoDatesAreSequential() {
     //given
     LocalDate current = LocalDate.of(2000, 1, 1);
     LocalDate next = LocalDate.of(2000, 1, 2);
@@ -22,7 +23,7 @@ class DateHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenTwoDatesAreNotSequential(){
+  public void shouldReturnFalseWhenTwoDatesAreNotSequential() {
     //given
     LocalDate current = LocalDate.of(2000, 1, 1);
     LocalDate next = LocalDate.of(2000, 1, 3);
@@ -35,7 +36,7 @@ class DateHelperTest {
   }
 
   @Test
-  public void shouldThrowIllegalStateExceptionWhenCurrentDateIsNull(){
+  public void shouldThrowIllegalStateExceptionWhenCurrentDateIsNull() {
     //given
     LocalDate next = LocalDate.of(2000, 1, 3);
 
@@ -43,13 +44,13 @@ class DateHelperTest {
     assertThatThrownBy(() -> {
       DateHelper.areDatesSequential(null, next);
       //then
-    }).isInstanceOf(IllegalStateException.class)
-      .hasMessageContaining(
-          "Current date is null");
+    }).isInstanceOf(VersioningException.class)
+      .hasMessageContaining("Current date is null");
 
   }
+
   @Test
-  public void shouldThrowIllegalStateExceptionWhenNextDateIsNull(){
+  public void shouldThrowIllegalStateExceptionWhenNextDateIsNull() {
     //given
     LocalDate current = LocalDate.of(2000, 1, 1);
 
@@ -57,9 +58,8 @@ class DateHelperTest {
     assertThatThrownBy(() -> {
       DateHelper.areDatesSequential(current, null);
       //then
-    }).isInstanceOf(IllegalStateException.class)
-      .hasMessageContaining(
-          "Next date is null");
+    }).isInstanceOf(VersioningException.class)
+      .hasMessageContaining("Next date is null");
 
   }
 
