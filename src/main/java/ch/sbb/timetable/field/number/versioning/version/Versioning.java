@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.versioning.version;
 
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
@@ -18,12 +19,12 @@ public abstract class Versioning {
 
   public List<VersionedObject> applyVersioning(Versionable currentVersion,
       Entity editedEntity, List<ToVersioning> objectsToVersioning) {
-    throw new IllegalStateException("You have to implement me!!");
+    throw new VersioningException("You have to implement me!!");
   }
 
   public List<VersionedObject> applyVersioning(Versionable edited, Versionable current,
       List<ToVersioning> objectsToVersioning, Entity editedEntity) {
-    throw new IllegalStateException("You have to implement me!!");
+    throw new VersioningException("You have to implement me!!");
   }
 
   protected Entity replaceEditedPropertiesWithCurrentProperties(Entity editedEntity,
