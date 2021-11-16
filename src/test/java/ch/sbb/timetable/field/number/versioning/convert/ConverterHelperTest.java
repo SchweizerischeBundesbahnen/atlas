@@ -1,9 +1,11 @@
 package ch.sbb.timetable.field.number.versioning.convert;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.timetable.field.number.BaseTest;
 import ch.sbb.timetable.field.number.BaseTest.VersionableObject.Relation;
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
@@ -189,6 +191,70 @@ public class ConverterHelperTest extends BaseTest {
     assertThat(secondPropertySecondItem.getOneToOne()).isNull();
     List<Entity> oneToManyRelationSecondItem = secondPropertySecondItem.getOneToMany();
     assertThat(oneToManyRelationSecondItem).isEmpty();
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenTryToUseNotImplementOneToOneRelation() {
+    //given
+    List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+
+      VERSIONABLE.add(VersionableProperty.builder()
+                                         .fieldName(BaseTest.VersionableObject.Fields.property)
+                                         .relationType(RelationType.ONE_TO_ONE)
+                                         .build());
+    //when
+
+    assertThatThrownBy(() -> {
+      ConverterHelper.convertAllObjectsToVersioning(
+          VERSIONABLE,
+          List.of(versionableObject1, versionableObject2));
+      //then
+    }).isInstanceOf(VersioningException.class)
+      .hasMessageContaining("OneToOne Relation not implemented");
+
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenTryToUsePropertyNotDefinedAsVersionable() {
+    //given
+    List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+
+      VERSIONABLE.add(VersionableProperty.builder()
+                                         .fieldName("not_defined")
+                                         .relationType(RelationType.NONE)
+                                         .build());
+    //when
+
+    assertThatThrownBy(() -> {
+      ConverterHelper.convertAllObjectsToVersioning(
+          VERSIONABLE,
+          List.of(versionableObject1, versionableObject2));
+      //then
+    }).isInstanceOf(VersioningException.class)
+      .hasMessageContaining("Error during parse field not_defined");
+
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenTryToUsePropertyOnOneToManyRelationNotDefinedAsVersionable() {
+    //given
+    List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+
+    VERSIONABLE.add(VersionableProperty.builder()
+                                       .fieldName(BaseTest.VersionableObject.Fields.oneToManyRelation)
+                                       .relationType(RelationType.ONE_TO_MANY)
+                                       .relationsFields(List.of("not_defined"))
+                                       .build());
+    //when
+
+    assertThatThrownBy(() -> {
+      ConverterHelper.convertAllObjectsToVersioning(
+          VERSIONABLE,
+          List.of(versionableObject1, versionableObject2));
+      //then
+    }).isInstanceOf(VersioningException.class)
+      .hasMessageContaining("Error during parse field not_defined");
+
   }
 
 }

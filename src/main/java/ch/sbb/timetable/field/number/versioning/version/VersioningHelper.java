@@ -49,6 +49,20 @@ public final class VersioningHelper {
   }
 
   /**
+   *                             |______________________________|
+   *            |----------|----------|----------|----------|----------|
+   */
+  public static boolean isBetweenMultipleVersionsAndOverTheBorders(
+      LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+    return toVersioningList.size() > 1
+        &&
+        editedValidFrom.isAfter(toVersioningList.get(0).getVersionable().getValidFrom())
+        &&
+        editedValidTo.isBefore(
+            toVersioningList.get(toVersioningList.size() - 1).getVersionable().getValidTo());
+  }
+
+  /**
    *                                                    |______________|
    * |----------|----------|----------|----------|----------|
    */
