@@ -6,6 +6,8 @@ import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionExactMatchingMultipleVersions;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToEditedWithNoEditedProperties;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOnTheLeftBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOnTheRightBorder;
@@ -40,8 +42,10 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       editedValidTo = currentVersion.getValidTo();
     }
 
-    if(editedValidFrom.isAfter(editedValidTo)){
-      throw new IllegalStateException("Edited ValidFrom "+  editedValidFrom +" is bigger then edited ValidTo " +  editedValidTo);
+    if (editedValidFrom.isAfter(editedValidTo)) {
+      throw new IllegalStateException(
+          "Edited ValidFrom " + editedValidFrom + " is bigger then edited ValidTo "
+              + editedValidTo);
     }
 
     //sort objectsToVersioning
@@ -100,6 +104,20 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       LocalDate editedValidFrom,
       LocalDate editedValidTo, ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
+
+    //left border no matter if properties and or validFrom is changed
+    if (isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(editedValidFrom, editedValidTo, toVersioning)) {
+      //1. update validFrom with editedValidTo
+      //2. merge properties
+      Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+          toVersioning.getEntity());
+      VersionedObject versionedObject = buildVersionedObjectToUpdate(
+          editedValidFrom, toVersioning.getVersionable().getValidTo(),
+          entity);
+      versionedObjects.add(versionedObject);
+      return versionedObjects;
+    }
+
     //right border without properties changes
     if (isOnlyValidToEditedWithNoEditedProperties(editedVersion, editedEntity)) {
       //Just make the version bigger
@@ -113,10 +131,12 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
           toVersioning.getVersionable().getValidFrom(), editedValidTo,
           entity);
       versionedObjects.add(versionedObjectLastIndex);
+      return versionedObjects;
 
-    } else if (areValidToAndPropertiesEdited(editedVersion, editedEntity)) { //right border with properties changes
+    }
+    //right border with properties changes
+    if (areValidToAndPropertiesEdited(editedVersion, editedEntity)) {
       //scenario 8d
-      //editedValidTo isAfter toVersioning.validTo
       if (isEditedValidToAfterTheRightBorder(editedValidTo, toVersioning)) {
         Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
             toVersioning.getEntity());
@@ -146,19 +166,11 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
                         .getValidTo(), toVersioning.getEntity());
         versionedObjects.add(versionedObjectCreated);
       }
+      return versionedObjects;
     }
-    //left border with or without properties changes
-    else if(editedValidTo.equals(toVersioning.getVersionable().getValidTo()) && editedValidFrom != null && editedValidFrom.isBefore(toVersioning.getVersionable().getValidFrom())){
-      //1. update validFrom with editedValidTo
-      //2. merge properties
-      Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
-          toVersioning.getEntity());
-      VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
-           editedValidFrom,toVersioning.getVersionable().getValidTo(),
-          entity);
-      versionedObjects.add(versionedObjectLastIndex);
-    }
-    else { //Scenario6 when only validFrom is edited with properties changes, Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
+    //right border and validTo is bigger/equals than current validTo
+    //Scenario6 when only validFrom is edited with properties changes, Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
+    if (isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(editedValidFrom, editedValidTo,toVersioning)) {
       // 1. version
       //    validTo = editedValidFrom.minusDay(1)
       //    do not update properties
