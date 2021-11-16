@@ -37,6 +37,28 @@ public final class VersioningHelper {
                         .equals(editedValidTo);
   }
 
+  /**
+   * |_____________________|
+   *            |----------|----------|----------|----------|----------|
+   */
+  public static boolean isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning toVersioning){
+    return editedValidTo.equals(toVersioning.getVersionable().getValidTo()) && editedValidFrom != null
+        && editedValidFrom.isBefore(toVersioning.getVersionable().getValidFrom());
+  }
+
+  /**
+   *                                                    |______________|
+   * |----------|----------|----------|----------|----------|
+   */
+  public static boolean isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning toVersioning){
+    return editedValidFrom != null &&
+        (editedValidTo.equals(toVersioning.getVersionable().getValidTo()) || editedValidTo.isAfter(
+            toVersioning.getVersionable()
+                        .getValidTo()));
+  }
+
+
+
   public static boolean isEditedValidToAfterTheRightBorder(LocalDate editedValidTo,
       ToVersioning toVersioning) {
     return editedValidTo.isAfter(toVersioning.getVersionable().getValidTo());
