@@ -67,11 +67,9 @@ public abstract class Versioning {
                                                       .noneMatch(toVersioningFound ->
                                                           toVersioningFound.equals(toVersioning))
                            ).collect(Collectors.toList());
-    objectsToVersioningNotFound.forEach(toVersioning -> {
-      versionedObjects.add(
-          buildVersionedObjectNotTouched(toVersioning.getVersionable().getValidFrom(),
-              toVersioning.getVersionable().getValidTo(), toVersioning.getEntity()));
-    });
+    objectsToVersioningNotFound.forEach(toVersioning -> versionedObjects.add(
+        buildVersionedObjectNotTouched(toVersioning.getVersionable().getValidFrom(),
+            toVersioning.getVersionable().getValidTo(), toVersioning.getEntity())));
     return versionedObjects;
   }
 

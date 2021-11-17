@@ -11,15 +11,9 @@ import java.util.Objects;
 
 public class AtlasAnnotationProcessor {
 
-  public List<VersionableProperty> getVersionableProperties(Object object)
-      throws AtlasVersionableException {
-    try {
+  public List<VersionableProperty> getVersionableProperties(Object object){
       checkIfIsAtlasVersionable(object);
       return getAnnotatedField(object);
-
-    } catch (Exception e) {
-      throw new AtlasVersionableException(e.getMessage());
-    }
   }
 
   private void checkIfIsAtlasVersionable(Object object) {
