@@ -16,7 +16,7 @@ public final class VersioningHelper {
   }
 
   /**
-   * |___________|
+   *                  |___________|
    * |-----------|----------------------|--------------------|
    */
   public static boolean isEditedVersionInTheMiddleOfCurrentVersion(LocalDate editedValidFrom,
@@ -26,7 +26,7 @@ public final class VersioningHelper {
   }
 
   /**
-   * |_____________________|
+   *            |_____________________|
    * |----------|----------|----------|----------|----------|
    */
   public static boolean isEditedVersionExactMatchingMultipleVersions(LocalDate editedValidFrom,
@@ -40,7 +40,7 @@ public final class VersioningHelper {
 
   /**
    * |_____________________|
-   * |----------|----------|----------|----------|----------|
+   *            |----------|----------|----------|----------|----------|
    */
   public static boolean isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(
       LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning toVersioning) {
@@ -50,8 +50,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |______________________________|
-   * |----------|----------|----------|----------|----------|
+   *                             |______________________________|
+   *            |----------|----------|----------|----------|----------|
    */
   public static boolean isBetweenMultipleVersionsAndOverTheBorders(
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
@@ -64,7 +64,7 @@ public final class VersioningHelper {
   }
 
   /**
-   * |______________|
+   *                                                    |______________|
    * |----------|----------|----------|----------|----------|
    */
   public static boolean isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(
@@ -74,7 +74,6 @@ public final class VersioningHelper {
             toVersioning.getVersionable()
                         .getValidTo()));
   }
-
 
   public static boolean isEditedValidToAfterTheRightBorder(LocalDate editedValidTo,
       ToVersioning toVersioning) {

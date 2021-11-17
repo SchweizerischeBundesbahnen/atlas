@@ -25,14 +25,25 @@ public final class ConverterHelper {
 
   public static <T extends Versionable> Entity convertToEditedEntity(
       List<VersionableProperty> versionableProperties,
-      Long actualVersionId,
-      T editedVersion) {
+      Versionable currentVersion,
+      Versionable editedVersion) {
 
-    List<Property> properties = extractProperties(versionableProperties, editedVersion);
-    List<Property> propertiesNotEmpty = properties.stream()
+    List<Property> editedProperties = extractProperties(versionableProperties, editedVersion);
+    List<Property> currentProperties = extractProperties(versionableProperties, currentVersion);
+
+    List<Property> propertiesEqualsBetweenCurrentAndEdited = new ArrayList<>();
+    for (Property editedProperty : editedProperties){
+      currentProperties.stream()
+                       .filter(p -> p.equals(editedProperty))
+                       .findFirst().ifPresent(propertiesEqualsBetweenCurrentAndEdited::add);
+    }
+
+    editedProperties.removeAll(propertiesEqualsBetweenCurrentAndEdited);
+    List<Property> propertiesNotEmpty = editedProperties.stream()
                                                   .filter(Property::isNotEmpty)
                                                   .collect(Collectors.toList());
-    return buildEntity(actualVersionId, propertiesNotEmpty);
+
+    return buildEntity(currentVersion.getId(), propertiesNotEmpty);
   }
 
   public static <T extends Versionable> List<ToVersioning> convertAllObjectsToVersioning(
