@@ -29,7 +29,7 @@ public class VersioningEngine {
 
     //2. get edited properties from editedVersion
     Entity editedEntity = convertToEditedEntity(versionableProperties,
-        currentVersion.getId(), editedVersion);
+        currentVersion, editedVersion);
 
     //3. collect all versions to versioning in ToVersioning object
     List<ToVersioning> objectsToVersioning = convertAllObjectsToVersioning(

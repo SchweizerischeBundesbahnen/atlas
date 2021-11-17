@@ -28,10 +28,11 @@ public class ConverterHelperTest extends BaseTest {
                                        .relationType(RelationType.NONE)
                                        .build());
     VERSIONABLE.add(VersionableProperty.builder()
-                           .fieldName(BaseTest.VersionableObject.Fields.oneToManyRelation)
-                           .relationType(RelationType.ONE_TO_MANY)
-                           .relationsFields(List.of(Relation.Fields.value))
-                           .build());
+                                       .fieldName(
+                                           BaseTest.VersionableObject.Fields.oneToManyRelation)
+                                       .relationType(RelationType.ONE_TO_MANY)
+                                       .relationsFields(List.of(Relation.Fields.value))
+                                       .build());
   }
 
   private VersionableObject versionableObject1;
@@ -61,17 +62,31 @@ public class ConverterHelperTest extends BaseTest {
   @Test
   public void shouldConvertToEditedEntity() {
     //given
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .property("Ciao")
+        .oneToManyRelation(List.of(relation))
+        .build();
+    VersionableObject edited = VersionableObject
+        .builder()
+        .id(2L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .property("Ciao2")
+        .build();
 
     //when
-    Entity result = ConverterHelper.convertToEditedEntity(VERSIONABLE,
-        versionableObject1.getId(), versionableObject1);
+    Entity result = ConverterHelper.convertToEditedEntity(VERSIONABLE, current, edited);
 
     //then
     assertThat(result).isNotNull();
     assertThat(result.getId()).isEqualTo(1L);
     List<Property> properties = result.getProperties();
     assertThat(properties).isNotEmpty();
-    assertThat(properties.size()).isEqualTo(2);
+    assertThat(properties.size()).isEqualTo(1);
     Property propertyField = properties.stream()
                                        .filter(
                                            property -> VersionableObject.Fields.property.equals(
@@ -81,30 +96,22 @@ public class ConverterHelperTest extends BaseTest {
     assertThat(propertyField).isNotNull();
     assertThat(propertyField.getKey()).isEqualTo(
         VersionableObject.Fields.property);
-    assertThat(propertyField.getValue()).isEqualTo("Ciao");
+    assertThat(propertyField.getValue()).isEqualTo("Ciao2");
 
-    Property oneToManyRelationField = properties.stream()
-                                                .filter(
-                                                    property -> VersionableObject.Fields.oneToManyRelation.equals(
-                                                        property.getKey()))
-                                                .findFirst()
-                                                .orElse(null);
-    assertThat(oneToManyRelationField).isNotNull();
-    assertThat(oneToManyRelationField.getKey()).isEqualTo(
-        VersionableObject.Fields.oneToManyRelation);
-    assertThat(oneToManyRelationField.hasOneToManyRelation()).isTrue();
-    List<Entity> oneToManyRelation = oneToManyRelationField.getOneToMany();
-    assertThat(oneToManyRelation).isNotEmpty();
-    assertThat(oneToManyRelation.size()).isEqualTo(1);
-    Entity entityRelation = oneToManyRelation.get(0);
-    assertThat(entityRelation).isNotNull();
-    List<Property> entityRelationProperties = entityRelation.getProperties();
-    assertThat(entityRelationProperties).isNotEmpty();
-    assertThat(entityRelationProperties.size()).isEqualTo(1);
-    Property entityRelationProperty = entityRelationProperties.get(0);
-    assertThat(entityRelationProperty).isNotNull();
-    assertThat(entityRelationProperty.getKey()).isEqualTo(Relation.Fields.value);
-    assertThat(entityRelationProperty.getValue()).isEqualTo("value1");
+  }
+
+  @Test
+  public void shouldReturnConvertedEntityWithEmptyPropertiesWhenCurrentANdEditedPropertiesAreEquals() {
+
+    //when
+    Entity result = ConverterHelper.convertToEditedEntity(VERSIONABLE,
+        versionableObject1, versionableObject1);
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getId()).isEqualTo(1L);
+    List<Property> properties = result.getProperties();
+    assertThat(properties).isEmpty();
   }
 
   @Test
@@ -198,10 +205,10 @@ public class ConverterHelperTest extends BaseTest {
     //given
     List<VersionableProperty> VERSIONABLE = new ArrayList<>();
 
-      VERSIONABLE.add(VersionableProperty.builder()
-                                         .fieldName(BaseTest.VersionableObject.Fields.property)
-                                         .relationType(RelationType.ONE_TO_ONE)
-                                         .build());
+    VERSIONABLE.add(VersionableProperty.builder()
+                                       .fieldName(BaseTest.VersionableObject.Fields.property)
+                                       .relationType(RelationType.ONE_TO_ONE)
+                                       .build());
     //when
 
     assertThatThrownBy(() -> {
@@ -219,10 +226,10 @@ public class ConverterHelperTest extends BaseTest {
     //given
     List<VersionableProperty> VERSIONABLE = new ArrayList<>();
 
-      VERSIONABLE.add(VersionableProperty.builder()
-                                         .fieldName("not_defined")
-                                         .relationType(RelationType.NONE)
-                                         .build());
+    VERSIONABLE.add(VersionableProperty.builder()
+                                       .fieldName("not_defined")
+                                       .relationType(RelationType.NONE)
+                                       .build());
     //when
 
     assertThatThrownBy(() -> {
@@ -241,7 +248,8 @@ public class ConverterHelperTest extends BaseTest {
     List<VersionableProperty> VERSIONABLE = new ArrayList<>();
 
     VERSIONABLE.add(VersionableProperty.builder()
-                                       .fieldName(BaseTest.VersionableObject.Fields.oneToManyRelation)
+                                       .fieldName(
+                                           BaseTest.VersionableObject.Fields.oneToManyRelation)
                                        .relationType(RelationType.ONE_TO_MANY)
                                        .relationsFields(List.of("not_defined"))
                                        .build());

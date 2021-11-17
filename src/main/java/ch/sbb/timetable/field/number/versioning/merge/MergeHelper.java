@@ -22,6 +22,7 @@ public final class MergeHelper {
       VersionedObject next = versionedObjects.get(i);
       if (current.getEntity().getProperties().equals(next.getEntity().getProperties())
           && areVersionedObjectsSequential(current,next)) {
+        log.info("Following objects marked to be merged: \n1. {} \n2. {}", current,next);
         if (current.getEntity().getId() != null) {
           current.setAction(VersioningAction.DELETE);
         }
