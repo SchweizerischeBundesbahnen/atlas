@@ -16,7 +16,7 @@ public final class VersioningHelper {
   }
 
   /**
-   *                  |___________|
+   * |___________|
    * |-----------|----------------------|--------------------|
    */
   public static boolean isEditedVersionInTheMiddleOfCurrentVersion(LocalDate editedValidFrom,
@@ -26,7 +26,7 @@ public final class VersioningHelper {
   }
 
   /**
-   *            |_____________________|
+   * |_____________________|
    * |----------|----------|----------|----------|----------|
    */
   public static boolean isEditedVersionExactMatchingMultipleVersions(LocalDate editedValidFrom,
@@ -40,7 +40,7 @@ public final class VersioningHelper {
 
   /**
    * |_____________________|
-   *            |----------|----------|----------|----------|----------|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(
       LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning toVersioning) {
@@ -50,8 +50,8 @@ public final class VersioningHelper {
   }
 
   /**
-   *                             |______________________________|
-   *            |----------|----------|----------|----------|----------|
+   * |______________________________|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isBetweenMultipleVersionsAndOverTheBorders(
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
@@ -64,7 +64,7 @@ public final class VersioningHelper {
   }
 
   /**
-   *                                                    |______________|
+   * |______________|
    * |----------|----------|----------|----------|----------|
    */
   public static boolean isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(
@@ -137,6 +137,51 @@ public final class VersioningHelper {
     return (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) || (
         currentVersion.getValidFrom().equals(editedVersion.getValidFrom())
             && currentVersion.getValidTo().equals(editedVersion.getValidTo()));
+  }
+
+  public static boolean hasNextVersion(List<ToVersioning> toVersioningList, int index) {
+    return (index + 1) < toVersioningList.size();
+  }
+
+  public static boolean isOnlyValidToChanged(Versionable editedVersion,
+      Versionable currentVersion) {
+    return (editedVersion.getValidFrom() == null ||
+        currentVersion.getValidFrom().equals(editedVersion.getValidFrom()))
+        && editedVersion.getValidTo() != null;
+  }
+
+  public static boolean areBothValidToAndValidFromChanged(Versionable editedVersion,
+      Versionable currentVersion) {
+    return (
+        (editedVersion.getValidFrom() != null
+            || editedVersion.getValidFrom().equals(currentVersion.getValidFrom()))
+            &&
+            (editedVersion.getValidTo() != null
+                || editedVersion.getValidTo().equals(currentVersion.getValidTo()))
+    );
+  }
+
+  //  editedValidFrom is before current valid from
+  //              editedValidFrom
+  //  edited             |--------------|
+  //  current |--------------|    |---------------|
+  public static boolean isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(
+      LocalDate editedValidFrom, ToVersioning current) {
+    return editedValidFrom.isBefore(current.getVersionable().getValidTo())
+        && !editedValidFrom.equals(current.getVersionable().getValidFrom())
+        && editedValidFrom.isAfter(current.getVersionable().getValidFrom());
+  }
+
+  public static boolean isEditedValidFromEqualsToCurrentValidFrom(LocalDate editedValidFrom,
+      ToVersioning current) {
+    return editedValidFrom.equals(current.getVersionable().getValidFrom());
+  }
+
+  public static boolean isCurrentVersionBetweenEditedValidFromAndEditedValidTo(
+      LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning current) {
+    return editedValidFrom.isBefore(current.getVersionable().getValidFrom())
+        &&
+        editedValidTo.isAfter(current.getVersionable().getValidTo());
   }
 
   public static List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
