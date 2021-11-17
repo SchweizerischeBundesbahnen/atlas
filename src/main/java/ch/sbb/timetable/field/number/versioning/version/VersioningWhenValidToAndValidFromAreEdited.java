@@ -1,15 +1,21 @@
 package ch.sbb.timetable.field.number.versioning.version;
 
 import static ch.sbb.timetable.field.number.versioning.date.DateHelper.areDatesSequential;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.areBothValidToAndValidFromChanged;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.areValidToAndPropertiesEdited;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.findObjectToVersioningInValidFromValidToRange;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.hasNextVersion;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isCurrentVersionBetweenEditedValidFromAndEditedValidTo;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidFromEqualsToCurrentValidFrom;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionExactMatchingMultipleVersions;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToChanged;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToEditedWithNoEditedProperties;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isThereGapBetweenVersions;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOverTheLeftBorder;
@@ -73,7 +79,8 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       versionedObjects.addAll(versionedObjectsOnOnlyOneObjectFound);
     } else {
       List<VersionedObject> versionedObjectsOverMultipleEntity = applyVersioningOverMultipleFoundEntities(
-          editedEntity, editedValidFrom, editedValidTo, objectToVersioningFound);
+          editedEntity, editedValidFrom, editedValidTo, editedVersion, currentVersion,
+          objectToVersioningFound);
       versionedObjects.addAll(versionedObjectsOverMultipleEntity);
     }
 
@@ -240,11 +247,11 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       return versionedObjects;
     }
     //Gap between two objects
-    if(isThereGapBetweenVersions(objectsToVersioning)){
+    if (isThereGapBetweenVersions(objectsToVersioning)) {
       log.info("Match a gap between two objects.");
       ToVersioning toVersioningBeforeGap = getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
           editedValidFrom, editedValidTo, objectsToVersioning);
-      if(toVersioningBeforeGap == null){
+      if (toVersioningBeforeGap == null) {
         throw new VersioningException(
             "Something went wrong. I'm not able to apply versioning on this scenario.");
       }
@@ -263,6 +270,8 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
   //TODO: create class VersioningOverMultipleEntities
   private List<VersionedObject> applyVersioningOverMultipleFoundEntities(Entity editedEntity,
       LocalDate editedValidFrom, LocalDate editedValidTo,
+      Versionable editedVersion,
+      Versionable currentVersion,
       List<ToVersioning> toVersioningList) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
@@ -288,6 +297,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
     }
     if (isThereGapBetweenVersions(toVersioningList)) {
       return applyVersioningWhenThereIsGapBetweenVersionsFound(editedEntity, editedValidTo,
+          editedValidFrom, editedVersion, currentVersion,
           toVersioningList);
     }
     if (isBetweenMultipleVersionsAndOverTheBorders(editedValidFrom, editedValidTo,
@@ -366,40 +376,96 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
   private List<VersionedObject> applyVersioningWhenThereIsGapBetweenVersionsFound(
       Entity editedEntity,
       LocalDate editedValidTo,
+      LocalDate editedValidFrom,
+      Versionable editedVersion,
+      Versionable currentVersion,
       List<ToVersioning> toVersioningList) {
     log.info("Matched multiple versions with gap");
-    List<VersionedObject> versionedObjects = new ArrayList<>();
-    for (int i = 0; i < toVersioningList.size(); i++) {
-      ToVersioning current = toVersioningList.get(i);
-      //if it has next version
-      if ((i + 1) < toVersioningList.size()) {
-        ToVersioning next = toVersioningList.get(i + 1);
-        if (!areDatesSequential(current.getVersionable().getValidTo(),
-            next.getVersionable().getValidFrom())) {
-          log.info("Matched gap {} - {}", current.getVersionable().getValidTo(),
-              next.getVersionable().getValidFrom());
-          log.info("{}\n{}", current, next);
-          //1. current UPDATE
-          //    current.validTo=editedValidFrom-1
-          //    merge props with edited props
-          Entity currentEntityToUpdate = replaceEditedPropertiesWithCurrentProperties(
-              editedEntity,
-              current.getEntity());
-          VersionedObject versionedObjectFillGap = buildVersionedObjectToUpdate(
-              current.getVersionable().getValidFrom(),
-              next.getVersionable().getValidFrom().minusDays(1), currentEntityToUpdate);
-          versionedObjects.add(versionedObjectFillGap);
-        } else {
-          applyVersioningWhenThereIsGapNearToTheVersion(editedEntity, editedValidTo,
-              versionedObjects, current);
-        }
 
-      } else {
-        applyVersioningWhenThereIsGapNearToTheVersion(editedEntity, editedValidTo, versionedObjects,
-            current);
+    if (isOnlyValidToChanged(editedVersion, currentVersion)
+        || areBothValidToAndValidFromChanged(editedVersion, currentVersion)) {
+      List<VersionedObject> versionedObjects = new ArrayList<>();
+      for (int i = 0; i < toVersioningList.size(); i++) {
+        ToVersioning current = toVersioningList.get(i);
+
+        if (hasNextVersion(toVersioningList, i)) {
+          ToVersioning next = toVersioningList.get(i + 1);
+
+          if (!areDatesSequential(current.getVersionable().getValidTo(),
+              next.getVersionable().getValidFrom())) {
+            log.info("Matched gap {} - {}", current.getVersionable().getValidTo(),
+                next.getVersionable().getValidFrom());
+            log.info("{}\n{}", current, next);
+
+            if (isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(editedValidFrom,
+                current)) {
+              //1. current Version UPDATE
+              //   current.validTo=editedValidTo-1
+              VersionedObject versionedObjectToUpdate = buildVersionedObjectToUpdate(
+                  current.getVersionable().getValidFrom(),
+                  editedValidFrom.minusDays(1), current.getEntity());
+              versionedObjects.add(versionedObjectToUpdate);
+              //2. create new Version
+              //  new.validFrom=editedValidFom
+              //  new.validTo=next.validFrom-1
+              //  merge properties
+              Entity currentEntityToCreate = replaceEditedPropertiesWithCurrentProperties(
+                  editedEntity,
+                  current.getEntity());
+              VersionedObject versionedObjectFillGap = buildVersionedObjectToCreate(
+                  editedValidFrom,
+                  next.getVersionable().getValidFrom().minusDays(1), currentEntityToCreate);
+              versionedObjects.add(versionedObjectFillGap);
+            }
+            //1.case: perfect match editedValidFrom == current.validFrom
+            //2.case: we are in the middle of multiple versions with gap
+            // and we are matching the second item (e.g.) where:
+            // editValidFrom < 2.validFrom && editedValidTo > 2.validTo
+            // edited  |-------------------------------------------------|
+            // current |--------------|    |---------------|    |---------------|
+            //                1                     2                   3
+            else if (isEditedValidFromEqualsToCurrentValidFrom(editedValidFrom, current) ||
+                isCurrentVersionBetweenEditedValidFromAndEditedValidTo(editedValidFrom,
+                    editedValidTo, current)) {
+              //1. current UPDATE
+              //    current.validTo=editedValidFrom-1
+              //    merge props with edited props
+              Entity currentEntityToUpdate = replaceEditedPropertiesWithCurrentProperties(
+                  editedEntity,
+                  current.getEntity());
+              VersionedObject versionedObjectFillGap = buildVersionedObjectToUpdate(
+                  current.getVersionable().getValidFrom(),
+                  next.getVersionable().getValidFrom().minusDays(1), currentEntityToUpdate);
+              versionedObjects.add(versionedObjectFillGap);
+            } else {
+              throw new VersioningException(
+                  "Something went wrong. I'm not able to apply versioning on this scenario.");
+            }
+
+          } else if (areDatesSequential(current.getVersionable().getValidTo(),
+              next.getVersionable().getValidFrom())) {
+            //versions current and next are sequential
+            applyVersioningWhenThereIsGapNearToTheVersion(editedEntity, editedValidTo,
+                versionedObjects, current);
+          } else {
+            throw new VersioningException(
+                "Something went wrong. I'm not able to apply versioning on this scenario.");
+          }
+        } else if (!hasNextVersion(toVersioningList, i)) {
+          //does not have next
+          applyVersioningWhenThereIsGapNearToTheVersion(editedEntity, editedValidTo,
+              versionedObjects,
+              current);
+        } else {
+          throw new VersioningException(
+              "Something went wrong. I'm not able to apply versioning on this scenario.");
+        }
       }
+      return versionedObjects;
     }
-    return versionedObjects;
+
+    throw new VersioningException(
+        "Something went wrong. I'm not able to apply versioning on this scenario.");
   }
 
   private void applyVersioningWhenThereIsGapNearToTheVersion(Entity editedEntity,
