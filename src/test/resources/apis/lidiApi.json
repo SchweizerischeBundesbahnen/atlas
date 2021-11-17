@@ -1,0 +1,895 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Line Directory API",
+    "description": "This is the API for all your needs on lines",
+    "contact": {
+      "name": "ATLAS Team",
+      "url": "https://confluence.sbb.ch/display/ATLAS/ATLAS+-+SKI+Business+Platform",
+      "email": "TechSupport-ATLAS@sbb.ch"
+    },
+    "version": "0.17.0-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/v1/sublines/version/{id}": {
+      "get": {
+        "tags": [
+          "Sublines"
+        ],
+        "operationId": "getSublineVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SublineVersion"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Sublines"
+        ],
+        "operationId": "updateSublineVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SublineVersion"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SublineVersion"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Swiss number is not unique in time"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Sublines"
+        ],
+        "operationId": "deleteSublineVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/lines/version/{id}": {
+      "get": {
+        "tags": [
+          "Lines"
+        ],
+        "operationId": "getLineVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LineVersion"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Lines"
+        ],
+        "operationId": "updateLineVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LineVersion"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LineVersion"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Swiss number is not unique in time"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Lines"
+        ],
+        "operationId": "deleteLineVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/sublines/version": {
+      "post": {
+        "tags": [
+          "Sublines"
+        ],
+        "operationId": "createSublineVersion",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SublineVersion"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SublineVersion"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Swiss number is not unique in time"
+          }
+        }
+      }
+    },
+    "/v1/lines/version": {
+      "post": {
+        "tags": [
+          "Lines"
+        ],
+        "operationId": "createLineVersion",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LineVersion"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LineVersion"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Swiss number is not unique in time"
+          }
+        }
+      }
+    },
+    "/v1/sublines": {
+      "get": {
+        "tags": [
+          "Sublines"
+        ],
+        "operationId": "getSublines",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerSubline"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sublines/{slnid}": {
+      "get": {
+        "tags": [
+          "Sublines"
+        ],
+        "operationId": "getSubline",
+        "parameters": [
+          {
+            "name": "slnid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SublineVersion"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/lines": {
+      "get": {
+        "tags": [
+          "Lines"
+        ],
+        "operationId": "getLines",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerLine"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/lines/{slnid}": {
+      "get": {
+        "tags": [
+          "Lines"
+        ],
+        "operationId": "getLine",
+        "parameters": [
+          {
+            "name": "slnid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LineVersion"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SublineVersion": {
+        "required": [
+          "businessOrganisation",
+          "paymentType",
+          "swissSublineNumber",
+          "type",
+          "validFrom",
+          "validTo"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Technical identifier",
+            "format": "int64",
+            "readOnly": true
+          },
+          "swissSublineNumber": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "SwissSublineNumber",
+            "example": "b1.L1.X"
+          },
+          "swissLineNumber": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "SwissLineNumber",
+            "example": "b1.L1"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "readOnly": true,
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "NEEDS_REVIEW",
+              "IN_REVIEW",
+              "REVIEWED"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Subline Type",
+            "enum": [
+              "TECHNICAL",
+              "COMPENSATION"
+            ]
+          },
+          "slnid": {
+            "type": "string",
+            "description": "SLNID",
+            "readOnly": true,
+            "example": "ch:1:slnid:10001235"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Description",
+            "example": "Meiringen - Innertkirchen"
+          },
+          "number": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Number",
+            "example": "L1"
+          },
+          "longName": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "description": "LongName",
+            "example": "Spiseggfräser; Talstation - Bergstation; Ersatzbus"
+          },
+          "paymentType": {
+            "type": "string",
+            "description": "PaymentType",
+            "enum": [
+              "INTERNATIONAL",
+              "REGIONAL",
+              "REGIONALWITHOUT",
+              "LOCAL",
+              "OTHER",
+              "NONE"
+            ]
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Valid from",
+            "format": "date"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Valid to",
+            "format": "date"
+          },
+          "businessOrganisation": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "BusinessOrganisation",
+            "example": "11 - SBB - Schweizerische Bundesbahnen - 100001"
+          }
+        }
+      },
+      "LineVersion": {
+        "required": [
+          "businessOrganisation",
+          "paymentType",
+          "swissLineNumber",
+          "type",
+          "validFrom",
+          "validTo"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Technical identifier",
+            "format": "int64",
+            "readOnly": true
+          },
+          "swissLineNumber": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "SwissLineNumber",
+            "example": "b1.L1"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "readOnly": true,
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "NEEDS_REVIEW",
+              "IN_REVIEW",
+              "REVIEWED"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "LineType",
+            "enum": [
+              "ORDERLY",
+              "TEMPORARY",
+              "OPERATIONAL"
+            ]
+          },
+          "slnid": {
+            "type": "string",
+            "description": "SLNID",
+            "readOnly": true,
+            "example": "ch:1:slnid:10001234"
+          },
+          "paymentType": {
+            "type": "string",
+            "description": "PaymentType",
+            "enum": [
+              "INTERNATIONAL",
+              "REGIONAL",
+              "REGIONALWITHOUT",
+              "LOCAL",
+              "OTHER",
+              "NONE"
+            ]
+          },
+          "number": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Number",
+            "example": "L1"
+          },
+          "alternativeName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "AlternativeName",
+            "example": "L1"
+          },
+          "combinationName": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "CombinationName",
+            "example": "S L1"
+          },
+          "longName": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "description": "LongName",
+            "example": "Spiseggfräser; Talstation - Bergstation; Ersatzbus"
+          },
+          "colorFontRgb": {
+            "pattern": "^#([a-fA-F0-9]{6})$",
+            "type": "string",
+            "description": "Color of the font in RGB",
+            "example": "#FF0000"
+          },
+          "colorBackRgb": {
+            "pattern": "^#([a-fA-F0-9]{6})$",
+            "type": "string",
+            "description": "Color of the background in RGB",
+            "example": "#FF0000"
+          },
+          "colorFontCmyk": {
+            "pattern": "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$",
+            "type": "string",
+            "description": "Color of the font in CMYK",
+            "example": "10,100,0,50"
+          },
+          "colorBackCmyk": {
+            "pattern": "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$",
+            "type": "string",
+            "description": "Color of the background in CMYK",
+            "example": "10,100,0,50"
+          },
+          "icon": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Icon",
+            "example": "https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Description",
+            "example": "Meiringen - Innertkirchen"
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Valid from",
+            "format": "date"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Valid to",
+            "format": "date"
+          },
+          "businessOrganisation": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "BusinessOrganisation",
+            "example": "11 - SBB - Schweizerische Bundesbahnen - 100001"
+          },
+          "comment": {
+            "maxLength": 1500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Comment",
+            "example": "Comment regarding the line"
+          }
+        }
+      },
+      "ContainerSubline": {
+        "type": "object",
+        "properties": {
+          "objects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subline"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Subline": {
+        "required": [
+          "businessOrganisation",
+          "swissSublineNumber",
+          "type",
+          "validFrom",
+          "validTo"
+        ],
+        "type": "object",
+        "properties": {
+          "swissSublineNumber": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "SwissSublineNumber",
+            "example": "b1.L1.X"
+          },
+          "swissLineNumber": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "SwissLineNumber",
+            "example": "b1.L1"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "readOnly": true,
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "NEEDS_REVIEW",
+              "IN_REVIEW",
+              "REVIEWED"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Subline Type",
+            "enum": [
+              "TECHNICAL",
+              "COMPENSATION"
+            ]
+          },
+          "slnid": {
+            "type": "string",
+            "description": "SLNID",
+            "readOnly": true,
+            "example": "ch:1:slnid:10001235"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Description",
+            "example": "Meiringen - Innertkirchen"
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Valid from",
+            "format": "date"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Valid to",
+            "format": "date"
+          },
+          "businessOrganisation": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "BusinessOrganisation",
+            "example": "11 - SBB - Schweizerische Bundesbahnen - 100001"
+          }
+        }
+      },
+      "ContainerLine": {
+        "type": "object",
+        "properties": {
+          "objects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Line"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Line": {
+        "required": [
+          "businessOrganisation",
+          "swissLineNumber",
+          "type",
+          "validFrom",
+          "validTo"
+        ],
+        "type": "object",
+        "properties": {
+          "swissLineNumber": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "SwissLineNumber",
+            "example": "b1.L1"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "readOnly": true,
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "NEEDS_REVIEW",
+              "IN_REVIEW",
+              "REVIEWED"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "LineType",
+            "enum": [
+              "ORDERLY",
+              "TEMPORARY",
+              "OPERATIONAL"
+            ]
+          },
+          "slnid": {
+            "type": "string",
+            "description": "SLNID",
+            "readOnly": true,
+            "example": "ch:1:slnid:10001234"
+          },
+          "number": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Number",
+            "example": "L1"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Description",
+            "example": "Meiringen - Innertkirchen"
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Valid from",
+            "format": "date"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Valid to",
+            "format": "date"
+          },
+          "businessOrganisation": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "BusinessOrganisation",
+            "example": "11 - SBB - Schweizerische Bundesbahnen - 100001"
+          }
+        }
+      }
+    }
+  }
+}

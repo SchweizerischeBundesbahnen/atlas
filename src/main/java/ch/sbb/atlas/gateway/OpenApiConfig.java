@@ -27,10 +27,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Configuration
 @EnableFeignClients
+@Profile("!integration-test")
 public class OpenApiConfig {
 
   private static final String NEWLINE = "<br/>";
@@ -40,7 +42,10 @@ public class OpenApiConfig {
 
   @Bean
   public OpenAPI openApi(RouteLocator routeLocator) {
-    Map<String, OpenAPI> openApis = loadOpenApis(routeLocator);
+    return getCombinedApi(loadOpenApis(routeLocator));
+  }
+
+  OpenAPI getCombinedApi(Map<String, OpenAPI> openApis) {
     return createAtlasApi(openApis).components(combineComponents(openApis))
                                    .paths(combinePaths(openApis));
   }
