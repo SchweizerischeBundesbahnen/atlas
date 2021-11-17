@@ -27,16 +27,6 @@ spec:
       - env:
         - name: SPRING_PROFILES_ACTIVE
           value: '{{ .Values.springProfilesActive }}'
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: db-secret-{{ .Values.product }}
-              key: user
-        - name: DB_PWD
-          valueFrom:
-            secretKeyRef:
-              name: db-secret-{{ .Values.product }}
-              key: password
         image: "atlas.docker.bin.sbb.ch/{{ .Values.imageName }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.imagePullPolicy }}'
         name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
