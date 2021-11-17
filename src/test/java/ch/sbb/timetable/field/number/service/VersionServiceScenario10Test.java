@@ -22,9 +22,9 @@ public class VersionServiceScenario10Test extends BaseVersionServiceTest {
   /**
    * Szenario 10a (Spezialfall 3): Update in der Lücke zwischen zwei Versionen
    *
-   * Änderung                    |_________|
-   *                 |-----------|         |-------------|
-   *                   Version 1              Version 2
+   * Änderung                     |_________|
+   *                 |-----------|           |-------------|
+   *                   Version 1                Version 2
    *
    * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 3)
    */
@@ -77,9 +77,9 @@ public class VersionServiceScenario10Test extends BaseVersionServiceTest {
   /**
    * Szenario 10a (Spezialfall 3): Update in der Lücke zwischen zwei Versionen
    *
-   * Änderung                    |_________|
-   *                 |-----------|         |-------------|
-   *                   Version 1              Version 2
+   * Änderung                     |_________|
+   *                 |-----------|           |-------------|
+   *                   Version 1                Version 2
    *
    * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 3)
    */

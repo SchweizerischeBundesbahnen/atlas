@@ -760,5 +760,295 @@ public class VersioningHelperTest {
     assertThat(result).isNull();
   }
 
+  @Test
+  public void shouldReturnTrueWennIndexIsTheNextItemThatExists(){
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    //when
+    boolean result = VersioningHelper.hasNextVersion(List.of(toVersioning1, toVersioning2), 0);
+
+    //then
+    assertThat(result).isTrue();
+
+  }
+
+  @Test
+  public void shouldReturnFalseWennIndexIsBiggerThenSizeOfTheList(){
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+
+    //when
+    boolean result = VersioningHelper.hasNextVersion(List.of(toVersioning1, toVersioning2), 1);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnTrueWennOnlyValidToIsChanged(){
+    //given
+    VersionableObject edited = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
+
+    //when
+    boolean result = VersioningHelper.isOnlyValidToChanged(edited,current);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWennEditedValidToAndEditedValidFromIsChanged(){
+    //given
+    VersionableObject edited = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
+
+    //when
+    boolean result = VersioningHelper.isOnlyValidToChanged(edited,current);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenBothValidToAndValidFromChanged(){
+    //given
+    VersionableObject edited = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
+
+    //when
+    boolean result = VersioningHelper.areBothValidToAndValidFromChanged(edited,current);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenBothEditedValidToAndEditedValidFromChanged(){
+    //given
+    VersionableObject edited = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
+
+    //when
+    boolean result = VersioningHelper.areBothValidToAndValidFromChanged(edited,current);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenBothEditedValidToAndEditedValidAreNull(){
+    //given
+    VersionableObject edited = VersionableObject
+        .builder()
+        .id(1L)
+        .build();
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
+
+    //when
+    boolean result = VersioningHelper.areBothValidToAndValidFromChanged(edited,current);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnTrueEditedValidFromIsAfterCurrentValidFromAndBetweenCurrentValidTo(){
+    //given
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    LocalDate editedValidFrom = LocalDate.of(2021,6,1);
+    //when
+    boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(editedValidFrom,toVersioningCurrent);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWennEditedValidFromIsBeforeCurrentValidFrom(){
+    //given
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    LocalDate editedValidFrom = LocalDate.of(2020,6,1);
+    //when
+    boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(editedValidFrom,toVersioningCurrent);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnFalseWennEditedValidFromIsAfterCurrentValidTo(){
+    //given
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    LocalDate editedValidFrom = LocalDate.of(2022,6,1);
+    //when
+    boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(editedValidFrom,toVersioningCurrent);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenEditedValidFromIsEqualToCurrentValidFrom(){
+    //given
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    LocalDate editedValidFrom = LocalDate.of(2021,1,1);
+    //when
+    boolean result = VersioningHelper.isEditedValidFromEqualsToCurrentValidFrom(editedValidFrom,toVersioningCurrent);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenEditedValidFromIsBiggerThanCurrentValidFrom(){
+    //given
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    LocalDate editedValidFrom = LocalDate.of(2021,1,2);
+    //when
+    boolean result = VersioningHelper.isEditedValidFromEqualsToCurrentValidFrom(editedValidFrom,toVersioningCurrent);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenEditedValidFromIsSmallerThanCurrentValidFrom(){
+    //given
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    LocalDate editedValidFrom = LocalDate.of(2020,12,31);
+    //when
+    boolean result = VersioningHelper.isEditedValidFromEqualsToCurrentValidFrom(editedValidFrom,toVersioningCurrent);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenCurrentVersionIsBetweenEditedValidFromAndEditedValidTo(){
+    //given
+    VersionableObject current = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
+    LocalDate editedValidFrom = LocalDate.of(2020,12,31);
+    LocalDate editedValidTo = LocalDate.of(2023,1,1);
+    //when
+    boolean result = VersioningHelper.isCurrentVersionBetweenEditedValidFromAndEditedValidTo(editedValidFrom,editedValidTo,toVersioningCurrent);
+
+    //then
+    assertThat(result).isTrue();
+  }
 
 }
