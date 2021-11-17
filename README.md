@@ -28,3 +28,17 @@ gateway:
     timetable-field-number: http://localhost:8080
     line-directory: http://localhost:8082
 ```
+
+## Links
+
+### Development
+* Swagger UI: https://atlas-gateway-dev.apps.aws01t.sbb-aws-test.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://atlas-gateway-dev.apps.aws01t.sbb-aws-test.net/v3/api-docs
+
+### Test
+* Swagger UI: https://atlas-gateway-test.apps.aws01t.sbb-aws-test.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://atlas-gateway-test.apps.aws01t.sbb-aws-test.net/v3/api-docs
+
+### Integration
+* Swagger UI: https://atlas-gateway-int.apps.maggie.sbb-aws.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://atlas-gateway-int.apps.maggie.sbb-aws.net/v3/api-docs
