@@ -64,6 +64,28 @@ public final class VersioningHelper {
   }
 
   /**
+   *       |______________________________
+   *            |----------|----------|----------|----------|----------|
+   */
+  public static boolean isOverTheLeftBorder(
+      LocalDate editedValidFrom, List<ToVersioning> toVersioningList) {
+    return toVersioningList.size() > 1
+        &&
+        editedValidFrom.isBefore(toVersioningList.get(0).getVersionable().getValidFrom());
+  }
+
+  /**
+   *                                            ______________________________|
+   *            |----------|----------|----------|----------|----------|
+   */
+  public static boolean isOverTheRightBorder(LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+    return toVersioningList.size() > 1
+        &&
+        editedValidTo.isAfter(
+            toVersioningList.get(toVersioningList.size() - 1).getVersionable().getValidTo());
+  }
+
+  /**
    *                                                    |______________|
    * |----------|----------|----------|----------|----------|
    */
@@ -172,9 +194,14 @@ public final class VersioningHelper {
         && editedValidFrom.isAfter(current.getVersionable().getValidFrom());
   }
 
-  public static boolean isEditedValidFromEqualsToCurrentValidFrom(LocalDate editedValidFrom,
+  public static boolean isEditedValidFromExactOnTheLeftBorder(LocalDate editedValidFrom,
       ToVersioning current) {
     return editedValidFrom.equals(current.getVersionable().getValidFrom());
+  }
+
+  public static boolean isEditedValidToExactOnTheRightBorder(LocalDate editedValidTo,
+      ToVersioning toVersioning) {
+    return editedValidTo.equals(toVersioning.getVersionable().getValidTo());
   }
 
   public static boolean isCurrentVersionBetweenEditedValidFromAndEditedValidTo(
