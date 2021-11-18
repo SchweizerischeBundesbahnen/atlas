@@ -2,6 +2,7 @@ package ch.sbb.timetable.field.number.versioning.version;
 
 import static ch.sbb.timetable.field.number.versioning.date.DateHelper.areDatesSequential;
 
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
@@ -67,21 +68,23 @@ public final class VersioningHelper {
    *       |______________________________
    *            |----------|----------|----------|----------|----------|
    */
-  public static boolean isOverTheLeftBorder(
+  public static boolean isEditedValidFromOverTheLeftBorder(
       LocalDate editedValidFrom, List<ToVersioning> toVersioningList) {
-    return toVersioningList.size() > 1
-        &&
-        editedValidFrom.isBefore(toVersioningList.get(0).getVersionable().getValidFrom());
+    if(toVersioningList.size()<=1){
+      throw new VersioningException("toVersioningList size must be bigger then 1.");
+    }
+    return editedValidFrom.isBefore(toVersioningList.get(0).getVersionable().getValidFrom());
   }
 
   /**
    *                                            ______________________________|
    *            |----------|----------|----------|----------|----------|
    */
-  public static boolean isOverTheRightBorder(LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
-    return toVersioningList.size() > 1
-        &&
-        editedValidTo.isAfter(
+  public static boolean isEditedValidToOverTheRightBorder(LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+    if(toVersioningList.size()<=1){
+      throw new VersioningException("toVersioningList size must be bigger then 1.");
+    }
+    return editedValidTo.isAfter(
             toVersioningList.get(toVersioningList.size() - 1).getVersionable().getValidTo());
   }
 
