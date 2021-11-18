@@ -50,9 +50,9 @@ for index, row in data.iterrows():
 
 	result_sql_file.write(
 			"INSERT INTO timetable_field_number_version "
-			"(id, ttfnid, name, number, swiss_timetable_field_number, creation_date, creator, edition_date, editor, valid_from, valid_to, comment, name_compact, status) "
+			"(id, ttfnid, name, number, swiss_timetable_field_number, creation_date, creator, edition_date, editor, valid_from, valid_to, comment, status) "
 			"VALUES "
-			"(nextval('timetable_field_number_version_seq'), 'ch:1:fpfnid:{}', '{}', '{}', '{}', current_timestamp, 'xlsx', current_timestamp, 'xlsx', '2020-12-12', '{}', '{}', null, 'ACTIVE');"
+			"(nextval('timetable_field_number_version_seq'), 'ch:1:fpfnid:{}', '{}', '{}', '{}', current_timestamp, 'xlsx', current_timestamp, 'xlsx', '2020-12-12', '{}', '{}', 'ACTIVE');"
 				.format(
 					fpnfid,
 					name,  # name
