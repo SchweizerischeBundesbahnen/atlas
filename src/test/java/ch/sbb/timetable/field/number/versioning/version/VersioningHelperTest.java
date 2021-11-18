@@ -992,7 +992,7 @@ public class VersioningHelperTest {
     ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
     LocalDate editedValidFrom = LocalDate.of(2021,1,1);
     //when
-    boolean result = VersioningHelper.isEditedValidFromEqualsToCurrentValidFrom(editedValidFrom,toVersioningCurrent);
+    boolean result = VersioningHelper.isEditedValidFromExactOnTheLeftBorder(editedValidFrom,toVersioningCurrent);
 
     //then
     assertThat(result).isTrue();
@@ -1009,7 +1009,7 @@ public class VersioningHelperTest {
     ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
     LocalDate editedValidFrom = LocalDate.of(2021,1,2);
     //when
-    boolean result = VersioningHelper.isEditedValidFromEqualsToCurrentValidFrom(editedValidFrom,toVersioningCurrent);
+    boolean result = VersioningHelper.isEditedValidFromExactOnTheLeftBorder(editedValidFrom,toVersioningCurrent);
 
     //then
     assertThat(result).isFalse();
@@ -1026,7 +1026,7 @@ public class VersioningHelperTest {
     ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(current).build();
     LocalDate editedValidFrom = LocalDate.of(2020,12,31);
     //when
-    boolean result = VersioningHelper.isEditedValidFromEqualsToCurrentValidFrom(editedValidFrom,toVersioningCurrent);
+    boolean result = VersioningHelper.isEditedValidFromExactOnTheLeftBorder(editedValidFrom,toVersioningCurrent);
 
     //then
     assertThat(result).isFalse();
