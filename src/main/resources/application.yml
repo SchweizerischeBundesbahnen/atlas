@@ -16,6 +16,10 @@ info:
 logging:
   level:
     root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: DEBUG
 gateway:
   routes:
     timetable-field-number: http://localhost:8080
