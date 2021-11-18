@@ -70,6 +70,9 @@ for index, row in data.iterrows():
   if description != 'nan':
     description = cleanhtml(description).replace("'", "''")
 
+  if len(description) > 255:
+    description = description[:255]
+
   # Wenn Spalte C ein Doppelpunkt enthält, ist es eine Teillinie
   if ':' in str(row[2]):
     result_sql_file.write(

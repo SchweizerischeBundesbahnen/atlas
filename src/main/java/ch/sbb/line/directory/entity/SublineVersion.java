@@ -71,7 +71,7 @@ public class SublineVersion implements SequenctialValidRange {
   @Size(max = 50)
   private String number;
 
-  @Size(max = 1000)
+  @Size(max = 255)
   private String longName;
 
   @NotNull
