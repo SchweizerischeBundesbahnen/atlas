@@ -93,9 +93,6 @@ public class Version implements Versionable {
   @AtlasVersionableProperty
   private String comment;
 
-  @AtlasVersionableProperty
-  private String nameCompact;
-
   @PrePersist
   public void onPrePersist(){
     String sbbUid = UserService.getSbbUid();
