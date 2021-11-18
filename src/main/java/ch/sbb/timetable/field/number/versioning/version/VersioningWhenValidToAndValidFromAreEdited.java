@@ -10,16 +10,16 @@ import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isCurrentVersionBetweenEditedValidFromAndEditedValidTo;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidFromExactOnTheLeftBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidFromOverTheLeftBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToExactOnTheRightBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToOverTheRightBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionExactMatchingMultipleVersions;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToChanged;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToEditedWithNoEditedProperties;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOverTheLeftBorder;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOverTheRightBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isThereGapBetweenVersions;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOverTheLeftBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isVersionOverTheRightBorder;
@@ -314,8 +314,8 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
       applyVersioningBetweenLeftAndRightBorder(editedEntity, toVersioningList, versionedObjects);
       return versionedObjects;
     }
-    if(isOverTheLeftBorder(editedValidFrom,toVersioningList) || isOverTheRightBorder(editedValidTo,toVersioningList)){
-      if(isOverTheLeftBorder(editedValidFrom,toVersioningList)){
+    if(isEditedValidFromOverTheLeftBorder(editedValidFrom,toVersioningList) || isEditedValidToOverTheRightBorder(editedValidTo,toVersioningList)){
+      if(isEditedValidFromOverTheLeftBorder(editedValidFrom,toVersioningList)){
         //update validTo and merge props
         ToVersioning leftBorderToVersioning = toVersioningList.get(0);
         Entity entityLeftBorderToUpdate = replaceEditedPropertiesWithCurrentProperties(editedEntity,
@@ -336,13 +336,13 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
         versionedObjects.add(versionedLeftBorder);
 
       }
-      else if(!isOverTheLeftBorder(editedValidFrom,toVersioningList) && !isEditedValidFromExactOnTheLeftBorder(editedValidFrom,toVersioningList.get(0))){
+      else if(!isEditedValidFromOverTheLeftBorder(editedValidFrom,toVersioningList) && !isEditedValidFromExactOnTheLeftBorder(editedValidFrom,toVersioningList.get(0))){
         applyVersioningOnLeftBorderWhenValidFromIsAfterCurrentValidFrom(editedEntity, editedValidFrom, toVersioningList, versionedObjects);
       }else {
         throw new VersioningException(
             "Something went wrong. I'm not able to apply versioning on this scenario.");
       }
-      if(isOverTheRightBorder(editedValidTo,toVersioningList)){
+      if(isEditedValidToOverTheRightBorder(editedValidTo,toVersioningList)){
         //update validTo and merge props
         ToVersioning rightBorderToVersioning = toVersioningList.get(
             toVersioningList.size() - 1);
@@ -365,7 +365,7 @@ public class VersioningWhenValidToAndValidFromAreEdited extends Versioning {
             entityRightBorderToUpdate);
         versionedObjects.add(versionedRightBorder);
 
-      }else if(!isOverTheRightBorder(editedValidTo,toVersioningList) && !isEditedValidToExactOnTheRightBorder(editedValidTo,toVersioningList.get(
+      }else if(!isEditedValidToOverTheRightBorder(editedValidTo,toVersioningList) && !isEditedValidToExactOnTheRightBorder(editedValidTo,toVersioningList.get(
           toVersioningList.size() - 1))){
         applyVersioninOnTheLeftBorderWhenValidToIsBeforeCurrentValidTo(editedEntity, editedValidTo, toVersioningList, versionedObjects);
       }else {

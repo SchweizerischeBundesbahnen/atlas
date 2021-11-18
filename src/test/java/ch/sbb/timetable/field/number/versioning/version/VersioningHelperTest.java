@@ -1,8 +1,10 @@
 package ch.sbb.timetable.field.number.versioning.version;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.timetable.field.number.BaseTest.VersionableObject;
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
@@ -1049,6 +1051,190 @@ public class VersioningHelperTest {
 
     //then
     assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenEditedValidFromIsOverTheLeftBorder(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    VersionableObject second = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2023, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .build();
+    ToVersioning toVersioningSecond = ToVersioning.builder().versionable(second).build();
+    LocalDate editedValidFrom = LocalDate.of(2019,12,31);
+    //when
+    boolean result = VersioningHelper.isEditedValidFromOverTheLeftBorder(editedValidFrom,List.of(toVersioningFirst,toVersioningSecond));
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenEditedValidFromIsNotOverTheLeftBorder(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    VersionableObject second = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2023, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .build();
+    ToVersioning toVersioningSecond = ToVersioning.builder().versionable(second).build();
+    LocalDate editedValidFrom = LocalDate.of(2021,1,1);
+    //when
+    boolean result = VersioningHelper.isEditedValidFromOverTheLeftBorder(editedValidFrom,List.of(toVersioningFirst,toVersioningSecond));
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldThrowVersioningExceptionWhenToVersioningListHasLessThenTwoItems(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    LocalDate editedValidFrom = LocalDate.of(2021,1,1);
+
+    //when
+    assertThatThrownBy(() -> {
+      VersioningHelper.isEditedValidFromOverTheLeftBorder(editedValidFrom,List.of(toVersioningFirst));
+
+      //then
+    }).isInstanceOf(VersioningException.class)
+      .hasMessageContaining(
+          "toVersioningList size must be bigger then 1");
+  }
+
+  @Test
+  public void shouldReturnTrueWhenEditedValidToIsOverTheRightBorder(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    VersionableObject second = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2023, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .build();
+    ToVersioning toVersioningSecond = ToVersioning.builder().versionable(second).build();
+    LocalDate editedValidTo = LocalDate.of(2025,1,1);
+    //when
+    boolean result = VersioningHelper.isEditedValidToOverTheRightBorder(editedValidTo,List.of(toVersioningFirst,toVersioningSecond));
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenEditedValidToIsNotOverTheRightBorder(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    VersionableObject second = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2023, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .build();
+    ToVersioning toVersioningSecond = ToVersioning.builder().versionable(second).build();
+    LocalDate editedValidTo = LocalDate.of(2024,12,30);
+    //when
+    boolean result = VersioningHelper.isEditedValidToOverTheRightBorder(editedValidTo,List.of(toVersioningFirst,toVersioningSecond));
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldThrowVersioningExceptionWhenToVersioningListHasLessThenTwoItemsToCheckTheRightBorder(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    LocalDate editedValidFrom = LocalDate.of(2021,1,1);
+
+    //when
+    assertThatThrownBy(() -> {
+      VersioningHelper.isEditedValidToOverTheRightBorder(editedValidFrom,List.of(toVersioningFirst));
+
+      //then
+    }).isInstanceOf(VersioningException.class)
+      .hasMessageContaining(
+          "toVersioningList size must be bigger then 1");
+  }
+
+  @Test
+  public void shouldReturnTrueWhenEditedValidToIsExactOnTheRightBorder(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    LocalDate editedValidTo = LocalDate.of(2022,12,31);
+
+    //when
+    boolean result = VersioningHelper.isEditedValidToExactOnTheRightBorder(
+        editedValidTo, toVersioningFirst);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenEditedValidToIsNotExactOnTheRightBorder(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    LocalDate editedValidTo = LocalDate.of(2022,12,30);
+
+    //when
+    boolean result = VersioningHelper.isEditedValidToExactOnTheRightBorder(
+        editedValidTo, toVersioningFirst);
+
+    //then
+    assertThat(result).isFalse();
   }
 
 }
