@@ -77,10 +77,10 @@ public class LineVersion implements SequenctialValidRange {
   @Size(max = 50)
   private String alternativeName;
 
-  @Size(max = 500)
+  @Size(max = 50)
   private String combinationName;
 
-  @Size(max = 1000)
+  @Size(max = 255)
   private String longName;
 
   @Convert(converter = RgbColorConverter.class)
