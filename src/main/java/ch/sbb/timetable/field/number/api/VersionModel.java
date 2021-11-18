@@ -44,7 +44,4 @@ public class VersionModel {
 
   @Schema(description = "Additional comment")
   private String comment;
-
-  @Schema(description = "Compact name")
-  private String nameCompact;
 }
