@@ -16,7 +16,8 @@ public class TimetableFieldNumberApplication {
     SpringApplication.run(TimetableFieldNumberApplication.class, args);
   }
 
-  @Bean public VersionableService versionableService() {
+  @Bean
+  public VersionableService versionableService() {
     return new VersionableServiceImpl();
   }
 

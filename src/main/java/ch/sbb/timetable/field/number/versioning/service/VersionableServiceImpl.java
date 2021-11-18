@@ -20,10 +20,10 @@ public class VersionableServiceImpl implements VersionableService {
   }
 
   @Override
-  public <T extends Versionable> List<VersionedObject> versioningObjects( Versionable current,
+  public <T extends Versionable> List<VersionedObject> versioningObjects(Versionable current,
       Versionable editedVersion,
       List<T> currentVersions) {
-    
+
     List<VersionableProperty> versionableProperties = atlasAnnotationProcessor.getVersionableProperties(
         current);
 
@@ -49,7 +49,4 @@ public class VersionableServiceImpl implements VersionableService {
     log.info("Got {} Versioned objects: {}", versionedObjects.size(), versionedObjects);
     log.info("Versioning done.");
   }
-
-
-
 }

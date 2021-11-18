@@ -83,7 +83,6 @@ public class VersionController implements TimetableFieldNumberApiV1 {
     versionToUpdate.setValidTo(newVersion.getValidTo());
     versionToUpdate.setComment(newVersion.getComment());
     versionToUpdate.setBusinessOrganisation(newVersion.getBusinessOrganisation());
-    versionToUpdate.setNameCompact(newVersion.getNameCompact());
     versionService.save(versionToUpdate);
 
     return toModel(versionToUpdate);
@@ -116,7 +115,6 @@ public class VersionController implements TimetableFieldNumberApiV1 {
                        .validTo(version.getValidTo())
                        .businessOrganisation(version.getBusinessOrganisation())
                        .comment(version.getComment())
-                       .nameCompact(version.getNameCompact())
                        .build();
   }
 
@@ -132,7 +130,6 @@ public class VersionController implements TimetableFieldNumberApiV1 {
                   .validTo(versionModel.getValidTo())
                   .businessOrganisation(versionModel.getBusinessOrganisation())
                   .comment(versionModel.getComment())
-                  .nameCompact(versionModel.getNameCompact())
                   .build();
   }
 }
