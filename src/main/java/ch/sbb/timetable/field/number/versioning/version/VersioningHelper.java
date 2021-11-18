@@ -156,8 +156,8 @@ public final class VersioningHelper {
     return null;
   }
 
-  public static boolean areValidToAndValidFromNotEdited(Versionable currentVersion,
-      Versionable editedVersion) {
+  public static boolean areValidToAndValidFromNotEdited(Versionable editedVersion,
+      Versionable currentVersion) {
     return (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) || (
         currentVersion.getValidFrom().equals(editedVersion.getValidFrom())
             && currentVersion.getValidTo().equals(editedVersion.getValidTo()));
@@ -215,8 +215,7 @@ public final class VersioningHelper {
   }
 
   public static List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
-      List<ToVersioning> objectsToVersioning,
-      LocalDate editedValidFrom, LocalDate editedValidTo) {
+      LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> objectsToVersioning) {
     return objectsToVersioning.stream()
                               .filter(
                                   toVersioning -> !toVersioning.getVersionable()

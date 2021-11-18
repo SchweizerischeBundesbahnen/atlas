@@ -420,7 +420,7 @@ public class VersioningHelperTest {
 
     //when
     List<ToVersioning> result = VersioningHelper.findObjectToVersioningInValidFromValidToRange(
-        objectsToVersioning, editedValidFrom, editedValidTo);
+        editedValidFrom, editedValidTo, objectsToVersioning);
 
     //then
     assertThat(result).isNotNull();
@@ -459,7 +459,7 @@ public class VersioningHelperTest {
                                                  .validTo(LocalDate.of(2000, 12, 31))
                                                  .build();
     //when
-    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(current, edited);
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(edited, current);
 
     //then
     assertThat(result).isTrue();
@@ -476,7 +476,7 @@ public class VersioningHelperTest {
                                                  .validTo(LocalDate.of(2000, 12, 31))
                                                  .build();
     //when
-    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(current, edited);
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(edited, current);
 
     //then
     assertThat(result).isFalse();
@@ -493,7 +493,7 @@ public class VersioningHelperTest {
                                                  .validTo(LocalDate.of(2000, 12, 31))
                                                  .build();
     //when
-    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(current, edited);
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(edited, current);
 
     //then
     assertThat(result).isFalse();
@@ -511,7 +511,7 @@ public class VersioningHelperTest {
                                                  .validTo(LocalDate.of(2000, 12, 31))
                                                  .build();
     //when
-    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(current, edited);
+    boolean result = VersioningHelper.areValidToAndValidFromNotEdited(edited, current);
 
     //then
     assertThat(result).isTrue();
