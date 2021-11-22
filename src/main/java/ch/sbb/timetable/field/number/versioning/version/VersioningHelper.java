@@ -214,6 +214,15 @@ public final class VersioningHelper {
         editedValidTo.isAfter(current.getVersionable().getValidTo());
   }
 
+  public static ToVersioning findObjectToVersioning(Versionable currentVersion,
+      List<ToVersioning> objectsToVersioning) {
+    return objectsToVersioning
+        .stream()
+        .filter(versioning -> versioning.getEntity().getId().equals(currentVersion.getId()))
+        .findFirst()
+        .orElse(null);
+  }
+
   public static List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> objectsToVersioning) {
     return objectsToVersioning.stream()
