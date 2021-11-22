@@ -38,7 +38,6 @@ public class VersioningEngine {
 
     Versioning versioning;
     if (areValidToAndValidFromNotEdited(editedVersion, currentVersion)) {
-      //update actual version
       log.info("ValidFrom and ValidTo are not edited.");
       versioning = new VersioningWhenValidFromAndValidToAreNotEdited();
     } else {
