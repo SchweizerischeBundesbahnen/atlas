@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { SublinesService, Subline } from '../../../api/lidi';
+import { SublinesService, Subline } from '../../../api';
 import { Pages } from '../../pages';
 
 @Component({

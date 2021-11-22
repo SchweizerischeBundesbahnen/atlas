@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
-import { LinesService, LineVersion } from '../../../../api/lidi';
+import { LinesService, LineVersion } from '../../../../api';
 import { Pages } from '../../../pages';
 import { map } from 'rxjs/operators';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
-import { SublinesService, SublineVersion } from '../../../../api/lidi';
+import { SublinesService, SublineVersion } from '../../../../api';
 import { Pages } from '../../../pages';
 import { map } from 'rxjs/operators';
 
