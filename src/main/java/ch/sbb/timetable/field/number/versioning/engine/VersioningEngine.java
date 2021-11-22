@@ -25,11 +25,9 @@ public class VersioningEngine {
       Versionable currentVersion, Versionable editedVersion,
       List<T> currentVersions, List<VersionableProperty> versionableProperties) {
 
-    //2. get edited properties from editedVersion
     Entity editedEntity = convertToEditedEntity(currentVersion, editedVersion,
         versionableProperties);
 
-    //3. collect all versions to versioning in ToVersioning object
     List<ToVersioning> objectsToVersioning = convertAllObjectsToVersioning(
         currentVersions, versionableProperties);
 
@@ -47,6 +45,5 @@ public class VersioningEngine {
     List<VersionedObject> versionedObjects = new ArrayList<>(versioning.applyVersioning(vd));
     return mergeVersionedObject(versionedObjects);
   }
-
 
 }

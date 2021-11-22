@@ -152,19 +152,11 @@ public class VersioningOnSingleFoundEntity implements Versioning {
     log.info("Found version to split on or over the right border, validTo and properties edited.");
 
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    // 1. version
-    //    validTo = editedValidFrom.minusDay(1)
-    //    do not update properties
-    //    VersioningAction = UPDATE
+    // update current version: validTo = editedValidFrom.minusDay(1),do not update properties
     VersionedObject shortenRightVersion = shortenRightVersion(vd, toVersioning);
     versionedObjects.add(shortenRightVersion);
 
-    // 2. Create new version:
-    //    versions.get(0)
-    //    validFrom = editedValidFrom
-    //    validTo = versions.get(0).getValidTo()
-    //    update properties with edited properties
-    //    VersioningAction = NEW
+    // Create new version: validFrom = editedValidFrom, validTo = versions.get(0).getValidTo(), update properties
     VersionedObject newVersionAfterTheRightBorder = addNewVersionAfterTheRightBorder(vd,
         toVersioning);
     versionedObjects.add(newVersionAfterTheRightBorder);
