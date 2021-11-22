@@ -8,6 +8,7 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
+import ch.sbb.line.directory.service.UserService;
 import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
@@ -18,6 +19,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
@@ -130,4 +133,15 @@ public class LineVersion implements SequenctialValidRange {
 
   private String editor;
 
+  @PrePersist
+  public void onPrePersist() {
+    String sbbUid = UserService.getSbbUid();
+    setCreator(sbbUid);
+    setEditor(sbbUid);
+  }
+
+  @PreUpdate
+  public void onPreUpdate() {
+    setEditor(UserService.getSbbUid());
+  }
 }

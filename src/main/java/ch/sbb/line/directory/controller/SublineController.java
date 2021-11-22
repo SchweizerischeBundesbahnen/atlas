@@ -25,7 +25,7 @@ public class SublineController implements SublinenApiV1 {
 
   @Override
   public Container<SublineModel> getSublines(Pageable pageable) {
-    Page<Subline> sublines = sublineService.findAll(        pageable);
+    Page<Subline> sublines = sublineService.findAll(pageable);
     return Container.<SublineModel>builder()
                     .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
                     .totalCount(sublines.getTotalElements())
