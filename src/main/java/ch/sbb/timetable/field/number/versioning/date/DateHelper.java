@@ -1,8 +1,9 @@
 package ch.sbb.timetable.field.number.versioning.date;
 
+import static java.util.Objects.isNull;
+
 import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import java.time.LocalDate;
-import java.util.Objects;
 
 public final class DateHelper {
 
@@ -11,10 +12,10 @@ public final class DateHelper {
   }
 
   public static boolean areDatesSequential(LocalDate current, LocalDate next) {
-    if (Objects.isNull(current)) {
+    if (isNull(current)) {
       throw new VersioningException("Current date is null");
     }
-    if (Objects.isNull(next)) {
+    if (isNull(next)) {
       throw new VersioningException("Next date is null");
     }
     return current.plusDays(1).equals(next);

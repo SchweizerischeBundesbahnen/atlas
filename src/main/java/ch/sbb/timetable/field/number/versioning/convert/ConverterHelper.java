@@ -1,5 +1,9 @@
 package ch.sbb.timetable.field.number.versioning.convert;
 
+import static ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType.NONE;
+import static ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType.ONE_TO_MANY;
+import static ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType.ONE_TO_ONE;
+
 import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Entity.EntityBuilder;
@@ -8,7 +12,6 @@ import ch.sbb.timetable.field.number.versioning.model.Property.PropertyBuilder;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
-import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,16 +75,16 @@ public final class ConverterHelper {
 
     List<Property> properties = new ArrayList<>();
     for (VersionableProperty versionableProperty : versionableProperties) {
-      if (RelationType.NONE == versionableProperty.getRelationType()) {
+      if (NONE == versionableProperty.getRelationType()) {
         Property property = exportProperty(version, versionableProperty);
         properties.add(property);
       }
-      if (RelationType.ONE_TO_MANY == versionableProperty.getRelationType()) {
+      if (ONE_TO_MANY == versionableProperty.getRelationType()) {
         Property extractOneToManyRelationProperty = extractOneToManyRelationProperty(
             version, versionableProperty);
         properties.add(extractOneToManyRelationProperty);
       }
-      if (RelationType.ONE_TO_ONE == versionableProperty.getRelationType()) {
+      if (ONE_TO_ONE == versionableProperty.getRelationType()) {
         throw new VersioningException("OneToOne Relation not implemented");
       }
     }

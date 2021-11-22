@@ -6,6 +6,7 @@ import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.TimetableFieldNumberRepository;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
@@ -117,7 +118,7 @@ public class VersionService {
     for (Property property : entity.getProperties()) {
       if (property.hasOneToOneRelation()) {
         //parse and build one to one relation
-        throw new IllegalStateException("OneToOneRelation not implemented!");
+        throw new VersioningException("OneToOneRelation not implemented!");
       } else if (property.hasOneToManyRelation()) {
         Set<LineRelation> lineRelations = new HashSet<>();
         List<Entity> oneToManyEntities = property.getOneToMany();
