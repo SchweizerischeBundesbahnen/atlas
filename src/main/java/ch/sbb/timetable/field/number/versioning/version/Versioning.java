@@ -7,6 +7,4 @@ import java.util.List;
 public interface Versioning {
 
   List<VersionedObject> applyVersioning(VersioningData vd);
-
-
 }

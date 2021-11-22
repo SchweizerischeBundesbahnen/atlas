@@ -30,17 +30,12 @@ public class VersioningData {
     this.currentVersion = currentVersion;
     this.editedEntity = editedEntity;
     this.objectsToVersioning = objectsToVersioning;
-    populateValidFromAndValidTo(editedVersion);
-    sortObjectsToVersioning(this.objectsToVersioning);
+    this.populateValidFromAndValidTo(editedVersion);
+    this.sortObjectsToVersioning(this.objectsToVersioning);
     this.objectToVersioningFound = findObjectToVersioningInValidFromValidToRange(
         this.editedValidFrom, this.editedValidTo, this.objectsToVersioning);
     this.versionedObjects = new ArrayList<>(
         fillNotTouchedVersionedObject(objectsToVersioning, this.objectToVersioningFound));
-  }
-
-  private void sortObjectsToVersioning(List<ToVersioning> objectsToVersioning){
-    objectsToVersioning.sort(
-        comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
   }
 
   public boolean isNoObjectToVersioningFound(){
@@ -77,4 +72,10 @@ public class VersioningData {
               + this.editedValidTo);
     }
   }
+
+  private void sortObjectsToVersioning(List<ToVersioning> objectsToVersioning){
+    objectsToVersioning.sort(
+        comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
+  }
+
 }
