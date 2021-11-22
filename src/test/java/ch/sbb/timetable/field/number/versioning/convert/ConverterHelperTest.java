@@ -79,7 +79,7 @@ public class ConverterHelperTest extends BaseTest {
         .build();
 
     //when
-    Entity result = ConverterHelper.convertToEditedEntity(VERSIONABLE, current, edited);
+    Entity result = ConverterHelper.convertToEditedEntity(current, edited, VERSIONABLE);
 
     //then
     assertThat(result).isNotNull();
@@ -104,8 +104,9 @@ public class ConverterHelperTest extends BaseTest {
   public void shouldReturnConvertedEntityWithEmptyPropertiesWhenCurrentANdEditedPropertiesAreEquals() {
 
     //when
-    Entity result = ConverterHelper.convertToEditedEntity(VERSIONABLE,
-        versionableObject1, versionableObject1);
+    Entity result = ConverterHelper.convertToEditedEntity(versionableObject1, versionableObject1,
+        VERSIONABLE
+    );
 
     //then
     assertThat(result).isNotNull();
@@ -120,8 +121,8 @@ public class ConverterHelperTest extends BaseTest {
 
     //when
     List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(
-        VERSIONABLE,
-        List.of(versionableObject1, versionableObject2));
+        List.of(versionableObject1, versionableObject2), VERSIONABLE
+    );
 
     //then
     assertThat(result).isNotEmpty();
@@ -213,8 +214,8 @@ public class ConverterHelperTest extends BaseTest {
 
     assertThatThrownBy(() -> {
       ConverterHelper.convertAllObjectsToVersioning(
-          VERSIONABLE,
-          List.of(versionableObject1, versionableObject2));
+          List.of(versionableObject1, versionableObject2), VERSIONABLE
+      );
       //then
     }).isInstanceOf(VersioningException.class)
       .hasMessageContaining("OneToOne Relation not implemented");
@@ -234,8 +235,8 @@ public class ConverterHelperTest extends BaseTest {
 
     assertThatThrownBy(() -> {
       ConverterHelper.convertAllObjectsToVersioning(
-          VERSIONABLE,
-          List.of(versionableObject1, versionableObject2));
+          List.of(versionableObject1, versionableObject2), VERSIONABLE
+      );
       //then
     }).isInstanceOf(VersioningException.class)
       .hasMessageContaining("Error during parse field not_defined");
@@ -257,8 +258,8 @@ public class ConverterHelperTest extends BaseTest {
 
     assertThatThrownBy(() -> {
       ConverterHelper.convertAllObjectsToVersioning(
-          VERSIONABLE,
-          List.of(versionableObject1, versionableObject2));
+          List.of(versionableObject1, versionableObject2), VERSIONABLE
+      );
       //then
     }).isInstanceOf(VersioningException.class)
       .hasMessageContaining("Error during parse field not_defined");
