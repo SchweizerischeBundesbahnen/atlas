@@ -3,9 +3,7 @@ package ch.sbb.timetable.field.number.versioning.version;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningData;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class VersioningWhenValidToAndValidFromAreEdited implements Versioning {
 
   @Override
