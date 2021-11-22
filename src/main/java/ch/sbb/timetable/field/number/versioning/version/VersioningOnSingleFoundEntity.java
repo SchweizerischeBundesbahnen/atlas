@@ -110,8 +110,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
         vd.getEditedValidTo(), toVersioning)) {
       return applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(vd, toVersioning);
     }
-    throw new VersioningException(
-        "Something went wrong. I'm not able to apply versioning on this scenario.");
+    throw new VersioningException();
   }
 
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(

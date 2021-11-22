@@ -50,8 +50,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
         || isEditedValidToOverTheRightBorder(vd.getEditedValidTo(), toVersioningList)) {
       return applyVersioningOverTheBorders(vd, toVersioningList);
     }
-    throw new VersioningException(
-        "Something went wrong. I'm not able to apply versioning on this scenario.");
+    throw new VersioningException();
   }
 
   private List<VersionedObject> applyVersioningExactMatchingMultipleVersions(VersioningData vd,
@@ -101,8 +100,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
       applyVersioningOnLeftBorderWhenValidFromIsAfterCurrentValidFrom(vd, toVersioningList,
           versionedObjects);
     } else {
-      throw new VersioningException(
-          "Something went wrong. I'm not able to apply versioning on this scenario.");
+      throw new VersioningException();
     }
   }
 
@@ -128,8 +126,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
       applyVersioningOnTheLeftBorderWhenValidToIsBeforeCurrentValidTo(vd, toVersioningList,
           versionedObjects);
     } else {
-      throw new VersioningException(
-          "Something went wrong. I'm not able to apply versioning on this scenario.");
+      throw new VersioningException();
     }
   }
 
@@ -162,21 +159,18 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
             applyVersioningWhenThereIsGapNearToTheVersion(vd.getEditedValidTo(),
                 vd.getEditedEntity(), current, versionedObjects);
           } else {
-            throw new VersioningException(
-                "Something went wrong. I'm not able to apply versioning on this scenario.");
+            throw new VersioningException();
           }
         } else if (!hasNextVersion(toVersioningList, i)) {
           applyVersioningWhenThereIsGapNearToTheVersion(vd.getEditedValidTo(), vd.getEditedEntity(),
               current, versionedObjects);
         } else {
-          throw new VersioningException(
-              "Something went wrong. I'm not able to apply versioning on this scenario.");
+          throw new VersioningException();
         }
       }
       return versionedObjects;
     }
-    throw new VersioningException(
-        "Something went wrong. I'm not able to apply versioning on this scenario.");
+    throw new VersioningException();
   }
 
   private void applyVersioningWhenVersionsAreNotSequential(VersioningData vd,
@@ -212,8 +206,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
           current.getValidFrom(), next.getValidFrom().minusDays(1), current, vd.getEditedEntity());
       versionedObjects.add(versionedObjectFillGap);
     } else {
-      throw new VersioningException(
-          "Something went wrong. I'm not able to apply versioning on this scenario.");
+      throw new VersioningException();
     }
   }
 

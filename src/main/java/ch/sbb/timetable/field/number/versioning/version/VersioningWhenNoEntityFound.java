@@ -55,8 +55,7 @@ public class VersioningWhenNoEntityFound implements Versioning {
     ToVersioning toVersioningBeforeGap = getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
         vd.getEditedValidFrom(), vd.getEditedValidTo(), vd.getObjectsToVersioning());
     if (toVersioningBeforeGap == null) {
-      throw new VersioningException(
-          "Something went wrong. I'm not able to apply versioning on this scenario.");
+      throw new VersioningException();
     }
     return applyVersioningOverTheBorder(vd, toVersioningBeforeGap);
   }
