@@ -30,7 +30,7 @@ public final class VersioningHelper {
    * |_____________________|
    * |----------|----------|----------|----------|----------|
    */
-  public static boolean isEditedVersionExactMatchingMultipleVersions(LocalDate editedValidFrom,
+  public static boolean isEditedVersionExactMatchingMultipleEntities(LocalDate editedValidFrom,
       LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
     return toVersioningList.get(0).getValidFrom().equals(editedValidFrom) &&
         toVersioningList.get(toVersioningList.size() - 1)
@@ -70,7 +70,7 @@ public final class VersioningHelper {
   public static boolean isEditedValidFromOverTheLeftBorder(
       LocalDate editedValidFrom, List<ToVersioning> toVersioningList) {
     if (toVersioningList.size() <= 1) {
-      throw new VersioningException("toVersioningList size must be bigger then 1.");
+      throw new VersioningException("toVersioningList size must be bigger than 1.");
     }
     return editedValidFrom.isBefore(toVersioningList.get(0).getValidFrom());
   }
@@ -82,7 +82,7 @@ public final class VersioningHelper {
   public static boolean isEditedValidToOverTheRightBorder(LocalDate editedValidTo,
       List<ToVersioning> toVersioningList) {
     if (toVersioningList.size() <= 1) {
-      throw new VersioningException("toVersioningList size must be bigger then 1.");
+      throw new VersioningException("toVersioningList size must be bigger than 1.");
     }
     return editedValidTo.isAfter(
         toVersioningList.get(toVersioningList.size() - 1).getValidTo());

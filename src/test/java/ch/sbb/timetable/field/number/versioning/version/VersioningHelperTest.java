@@ -150,7 +150,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2021, 12, 31);
 
     //when
-    boolean result = VersioningHelper.isEditedVersionExactMatchingMultipleVersions(
+    boolean result = VersioningHelper.isEditedVersionExactMatchingMultipleEntities(
         editedValidFrom, editedValidTo, objectsToVersioning);
 
     //then
@@ -183,7 +183,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2022, 1, 1);
 
     //when
-    boolean result = VersioningHelper.isEditedVersionExactMatchingMultipleVersions(
+    boolean result = VersioningHelper.isEditedVersionExactMatchingMultipleEntities(
         editedValidFrom, editedValidTo, objectsToVersioning);
 
     //then
@@ -216,7 +216,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2021, 12, 30);
 
     //when
-    boolean result = VersioningHelper.isEditedVersionExactMatchingMultipleVersions(
+    boolean result = VersioningHelper.isEditedVersionExactMatchingMultipleEntities(
         editedValidFrom, editedValidTo, objectsToVersioning);
 
     //then
@@ -1122,7 +1122,7 @@ public class VersioningHelperTest {
       //then
     }).isInstanceOf(VersioningException.class)
       .hasMessageContaining(
-          "toVersioningList size must be bigger then 1");
+          "toVersioningList size must be bigger than 1");
   }
 
   @Test
@@ -1194,7 +1194,7 @@ public class VersioningHelperTest {
       //then
     }).isInstanceOf(VersioningException.class)
       .hasMessageContaining(
-          "toVersioningList size must be bigger then 1");
+          "toVersioningList size must be bigger than 1");
   }
 
   @Test
@@ -1235,6 +1235,120 @@ public class VersioningHelperTest {
 
     //then
     assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenVersionsAreSequential(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    VersionableObject second = VersionableObject
+        .builder()
+        .id(2L)
+        .validFrom(LocalDate.of(2023, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .build();
+    ToVersioning toVersioningSecond = ToVersioning.builder().versionable(second).build();
+
+    //when
+    boolean result = VersioningHelper.areVersionsSequential(toVersioningFirst, toVersioningSecond);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenVersionsAreSequential(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    VersionableObject second = VersionableObject
+        .builder()
+        .id(2L)
+        .validFrom(LocalDate.of(2023, 1, 2))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .build();
+    ToVersioning toVersioningSecond = ToVersioning.builder().versionable(second).build();
+
+    //when
+    boolean result = VersioningHelper.areVersionsSequential(toVersioningFirst, toVersioningSecond);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldFoundObjectToVersioning(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    Property property = Property.builder().value("CiaoCiao").key("property").build();
+    Entity firstEntity = Entity.builder().id(1L).properties(List.of(property)).build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).entity(firstEntity).build();
+    VersionableObject second = VersionableObject
+        .builder()
+        .id(2L)
+        .validFrom(LocalDate.of(2023, 1, 2))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .build();
+    Entity secondEntity = Entity.builder().id(1L).properties(List.of(property)).build();
+    ToVersioning toVersioningSecond = ToVersioning.builder().versionable(second).entity(secondEntity).build();
+
+    //when
+    ToVersioning result = VersioningHelper.findObjectToVersioning(first, List.of(toVersioningFirst,toVersioningSecond));
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result).isEqualTo(toVersioningFirst);
+  }
+
+  @Test
+  public void shouldNotFoundObjectToVersioning(){
+    //given
+    VersionableObject first = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    Property property = Property.builder().value("CiaoCiao").key("property").build();
+    Entity firstEntity = Entity.builder().id(1L).properties(List.of(property)).build();
+    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).entity(firstEntity).build();
+    VersionableObject second = VersionableObject
+        .builder()
+        .id(2L)
+        .validFrom(LocalDate.of(2023, 1, 2))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .build();
+    Entity secondEntity = Entity.builder().id(1L).properties(List.of(property)).build();
+    ToVersioning toVersioningSecond = ToVersioning.builder().versionable(second).entity(secondEntity).build();
+
+    VersionableObject toFind = VersionableObject
+        .builder()
+        .id(3L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    //when
+    ToVersioning result = VersioningHelper.findObjectToVersioning(toFind, List.of(toVersioningFirst,toVersioningSecond));
+
+    //then
+    assertThat(result).isNull();
   }
 
 }
