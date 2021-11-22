@@ -20,7 +20,7 @@ public final class VersioningHelper {
    *                  |___________|
    * |-----------|----------------------|--------------------|
    */
-  public static boolean isEditedVersionInTheMiddleOfCurrentVersion(LocalDate editedValidFrom,
+  public static boolean isEditedVersionInTheMiddleOfCurrentEntity(LocalDate editedValidFrom,
       LocalDate editedValidTo, ToVersioning toVersioning) {
     return editedValidFrom.isAfter(toVersioning.getVersionable().getValidFrom())
         && editedValidTo.isBefore(toVersioning.getVersionable().getValidTo());
@@ -105,13 +105,13 @@ public final class VersioningHelper {
     return editedValidTo.isAfter(toVersioning.getVersionable().getValidTo());
   }
 
-  public static boolean isOnlyValidToEditedWithNoEditedProperties(Versionable editedVersion,
+  public static boolean isOnTheRightBorderAndOnlyValidToIsEditedWithNoEditedProperties(Versionable editedVersion,
       Entity editedEntity) {
     return editedVersion.getValidTo() != null && editedVersion.getValidFrom() == null
         && editedEntity.getProperties().isEmpty();
   }
 
-  public static boolean areValidToAndPropertiesEdited(Versionable editedVersion,
+  public static boolean isOnTheRightBorderAndValidToAndPropertiesAreEdited(Versionable editedVersion,
       Entity editedEntity) {
     return editedVersion.getValidTo() != null && editedVersion.getValidFrom() == null
         && !editedEntity.getProperties().isEmpty();
