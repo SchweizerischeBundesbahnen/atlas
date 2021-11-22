@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
-import { LinesService, LineVersion } from '../../../../api/lidi';
+import { LinesService, LineVersion } from '../../../../api';
 import { LineDetailResolver } from './line-detail.resolver';
 import StatusEnum = LineVersion.StatusEnum;
 import PaymentTypeEnum = LineVersion.PaymentTypeEnum;

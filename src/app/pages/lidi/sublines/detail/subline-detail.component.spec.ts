@@ -6,7 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
-import { SublinesService, SublineVersion } from '../../../../api/lidi';
+import { SublinesService, SublineVersion } from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
 import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;

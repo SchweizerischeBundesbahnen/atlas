@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
-import { SublinesService, SublineVersion } from '../../../../api/lidi';
+import { SublinesService, SublineVersion } from '../../../../api';
 import { SublineDetailResolver } from './subline-detail-resolver.service';
 import StatusEnum = SublineVersion.StatusEnum;
 import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;
