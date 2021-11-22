@@ -125,6 +125,10 @@ public final class VersioningHelper {
     return editedValidTo.isBefore(leftBorderVersion.getValidFrom());
   }
 
+  public static boolean areVersionsSequential(ToVersioning current, ToVersioning next){
+    return areDatesSequential(current.getValidTo(),next.getValidFrom());
+  }
+
   public static boolean isThereGapBetweenVersions(List<ToVersioning> toVersioningList) {
     for (int i = 1; i < toVersioningList.size(); i++) {
       ToVersioning current = toVersioningList.get(i - 1);
