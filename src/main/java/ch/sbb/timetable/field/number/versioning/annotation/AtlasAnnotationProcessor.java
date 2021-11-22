@@ -11,9 +11,9 @@ import java.util.Objects;
 
 public class AtlasAnnotationProcessor {
 
-  public List<VersionableProperty> getVersionableProperties(Object object){
-      checkIfIsAtlasVersionable(object);
-      return getAnnotatedField(object);
+  public List<VersionableProperty> getVersionableProperties(Object object) {
+    checkIfIsAtlasVersionable(object);
+    return getAnnotatedField(object);
   }
 
   private void checkIfIsAtlasVersionable(Object object) {

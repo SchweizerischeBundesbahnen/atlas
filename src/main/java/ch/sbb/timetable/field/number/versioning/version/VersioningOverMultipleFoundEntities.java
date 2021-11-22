@@ -161,10 +161,11 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
 
         if (hasNextVersion(toVersioningList, i)) {
           ToVersioning next = toVersioningList.get(i + 1);
-          if (!areVersionsSequential(current,next)) {
+          if (!areVersionsSequential(current, next)) {
             applyVersioningWhenVersionsAreNotSequential(vd, versionedObjects, current, next);
-          } else if (areVersionsSequential(current,next)) {
-            applyVersioningWhenThereIsGapNearToTheVersion(vd.getEditedValidTo(), vd.getEditedEntity(),
+          } else if (areVersionsSequential(current, next)) {
+            applyVersioningWhenThereIsGapNearToTheVersion(vd.getEditedValidTo(),
+                vd.getEditedEntity(),
                 current, versionedObjects);
           } else {
             throw new VersioningException(
@@ -184,7 +185,8 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
         "Something went wrong. I'm not able to apply versioning on this scenario.");
   }
 
-  private void applyVersioningWhenVersionsAreNotSequential(VersioningData vd, List<VersionedObject> versionedObjects,
+  private void applyVersioningWhenVersionsAreNotSequential(VersioningData vd,
+      List<VersionedObject> versionedObjects,
       ToVersioning current, ToVersioning next) {
     log.info("Matched gap {} - {}", current.getValidTo(), next.getValidFrom());
     log.info("{}\n{}", current, next);
