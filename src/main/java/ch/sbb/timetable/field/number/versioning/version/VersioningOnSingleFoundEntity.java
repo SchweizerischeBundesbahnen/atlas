@@ -25,7 +25,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
 
   @Override
   public List<VersionedObject> applyVersioning(VersioningData vd) {
-    log.info("Apply versioning wenn just one entity to versioning found.");
+    log.info("Apply versioning on single found entity.");
     ToVersioning toVersioning = vd.getSingleFoundObjectToVersioning();
     List<VersionedObject> versionedObjects = new ArrayList<>();
     if (isEditedVersionInTheMiddleOfCurrentEntity(vd.getEditedValidFrom(), vd.getEditedValidTo(),
@@ -88,8 +88,8 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       log.info("Found on the left border, "
           + "editedValidFrom is before current validFrom and validTo is not edited.");
       // update validFrom=editedValidFrom and merge properties
-      VersionedObject versionedObject = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(
-          vd, toVersioning);
+      VersionedObject versionedObject =
+          shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd, toVersioning);
       versionedObjects.add(versionedObject);
       return versionedObjects;
     }
@@ -97,8 +97,8 @@ public class VersioningOnSingleFoundEntity implements Versioning {
         vd.getEditedEntity())) {
       log.info("Found on the right border, validTo is edited, no properties are edited.");
       // update validTo=editedValidTo and merge properties
-      VersionedObject versionedObject = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd,
-          toVersioning);
+      VersionedObject versionedObject =
+          shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd, toVersioning);
       versionedObjects.add(versionedObject);
       return versionedObjects;
     }
@@ -107,8 +107,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       return applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(vd, toVersioning);
     }
     if (isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(vd.getEditedValidFrom(),
-        vd.getEditedValidTo(),
-        toVersioning)) {
+        vd.getEditedValidTo(), toVersioning)) {
       return applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(vd, toVersioning);
     }
     throw new VersioningException(
@@ -116,25 +115,23 @@ public class VersioningOnSingleFoundEntity implements Versioning {
   }
 
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(
-      VersioningData vd,
-      ToVersioning toVersioning) {
+      VersioningData vd, ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
     if (isEditedValidToAfterTheRightBorder(vd.getEditedValidTo(), toVersioning)) {
-      log.info(
-          "Found on the right border, validTo is after current validTo, properties are edited.");
+      log.info("Found on the right border, validTo is after current validTo, properties edited.");
       // update validTo=editedValidTo and update properties
-      VersionedObject versionedObject = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd,
-          toVersioning);
+      VersionedObject versionedObject =
+          shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd, toVersioning);
       versionedObjects.add(versionedObject);
     } else {
       log.info("Found version to split on the right border, validTo and properties edited.");
       // update validTo=editedValidTo and update properties
-      VersionedObject versionedObject = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd,
-          toVersioning);
+      VersionedObject versionedObject =
+          shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd, toVersioning);
       versionedObjects.add(versionedObject);
       // add new version after the current edited version
-      VersionedObject versionedObjectCreated = addNewVersionOnTheCurrentRightBorder(vd,
-          toVersioning);
+      VersionedObject versionedObjectCreated =
+          addNewVersionOnTheCurrentRightBorder(vd, toVersioning);
       versionedObjects.add(versionedObjectCreated);
     }
     return versionedObjects;
@@ -142,8 +139,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
 
   private VersionedObject addNewVersionOnTheCurrentRightBorder(VersioningData vd,
       ToVersioning toVersioning) {
-    return buildVersionedObjectToCreate(
-        vd.getEditedValidTo().plusDays(1),
+    return buildVersionedObjectToCreate(vd.getEditedValidTo().plusDays(1),
         toVersioning.getValidTo(), toVersioning.getEntity());
   }
 
@@ -174,8 +170,8 @@ public class VersioningOnSingleFoundEntity implements Versioning {
   }
 
   private VersionedObject shortenRightVersion(VersioningData vd, ToVersioning toVersioning) {
-    return buildVersionedObjectToUpdate(
-        toVersioning.getValidFrom(), vd.getEditedValidFrom().minusDays(1),
+    return buildVersionedObjectToUpdate(toVersioning.getValidFrom(),
+        vd.getEditedValidFrom().minusDays(1),
         toVersioning.getEntity());
   }
 
