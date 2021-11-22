@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class MergeHelper {
 
-  private MergeHelper(){
+  private MergeHelper() {
     throw new IllegalStateException("Utility class");
   }
 
@@ -21,8 +21,8 @@ public final class MergeHelper {
       VersionedObject current = versionedObjects.get(i - 1);
       VersionedObject next = versionedObjects.get(i);
       if (current.getEntity().getProperties().equals(next.getEntity().getProperties())
-          && areVersionedObjectsSequential(current,next)) {
-        log.info("Following objects marked to be merged: \n1. {} \n2. {}", current,next);
+          && areVersionedObjectsSequential(current, next)) {
+        log.info("Following objects marked to be merged: \n1. {} \n2. {}", current, next);
         if (current.getEntity().getId() != null) {
           current.setAction(VersioningAction.DELETE);
         }
@@ -33,8 +33,8 @@ public final class MergeHelper {
     return versionedObjects;
   }
 
-  static boolean areVersionedObjectsSequential(VersionedObject current, VersionedObject next){
-    return areDatesSequential(current.getValidTo(),next.getValidFrom());
+  static boolean areVersionedObjectsSequential(VersionedObject current, VersionedObject next) {
+    return areDatesSequential(current.getValidTo(), next.getValidFrom());
   }
 
 

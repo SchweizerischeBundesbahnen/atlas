@@ -62,7 +62,8 @@ public class VersionedObject {
       VersioningAction action) {
     if (VersioningAction.NEW.equals(action) && entity.getId() != null) {
       throw new VersioningException(
-          "To create a new VersionedObject the entity id must be null, to avoid to override an existing Entity.\n" + entity);
+          "To create a new VersionedObject the entity id must be null, to avoid to override an existing Entity.\n"
+              + entity);
     }
     return VersionedObject.builder()
                           .validFrom(validFrom)

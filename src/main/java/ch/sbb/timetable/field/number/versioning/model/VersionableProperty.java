@@ -16,5 +16,5 @@ public class VersionableProperty {
 
   private List<String> relationsFields;
 
-  public enum RelationType { ONE_TO_MANY, ONE_TO_ONE, NONE }
+  public enum RelationType {ONE_TO_MANY, ONE_TO_ONE, NONE}
 }
