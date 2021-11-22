@@ -2,6 +2,7 @@ package ch.sbb.timetable.field.number.versioning.version;
 
 import static ch.sbb.timetable.field.number.versioning.date.DateHelper.areDatesSequential;
 
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
@@ -60,6 +61,30 @@ public final class VersioningHelper {
         editedValidFrom.isAfter(toVersioningList.get(0).getVersionable().getValidFrom())
         &&
         editedValidTo.isBefore(
+            toVersioningList.get(toVersioningList.size() - 1).getVersionable().getValidTo());
+  }
+
+  /**
+   *       |______________________________
+   *            |----------|----------|----------|----------|----------|
+   */
+  public static boolean isEditedValidFromOverTheLeftBorder(
+      LocalDate editedValidFrom, List<ToVersioning> toVersioningList) {
+    if(toVersioningList.size()<=1){
+      throw new VersioningException("toVersioningList size must be bigger then 1.");
+    }
+    return editedValidFrom.isBefore(toVersioningList.get(0).getVersionable().getValidFrom());
+  }
+
+  /**
+   *                                            ______________________________|
+   *            |----------|----------|----------|----------|----------|
+   */
+  public static boolean isEditedValidToOverTheRightBorder(LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+    if(toVersioningList.size()<=1){
+      throw new VersioningException("toVersioningList size must be bigger then 1.");
+    }
+    return editedValidTo.isAfter(
             toVersioningList.get(toVersioningList.size() - 1).getVersionable().getValidTo());
   }
 
@@ -131,8 +156,8 @@ public final class VersioningHelper {
     return null;
   }
 
-  public static boolean areValidToAndValidFromNotEdited(Versionable currentVersion,
-      Versionable editedVersion) {
+  public static boolean areValidToAndValidFromNotEdited(Versionable editedVersion,
+      Versionable currentVersion) {
     return (editedVersion.getValidFrom() == null && editedVersion.getValidTo() == null) || (
         currentVersion.getValidFrom().equals(editedVersion.getValidFrom())
             && currentVersion.getValidTo().equals(editedVersion.getValidTo()));
@@ -172,9 +197,14 @@ public final class VersioningHelper {
         && editedValidFrom.isAfter(current.getVersionable().getValidFrom());
   }
 
-  public static boolean isEditedValidFromEqualsToCurrentValidFrom(LocalDate editedValidFrom,
+  public static boolean isEditedValidFromExactOnTheLeftBorder(LocalDate editedValidFrom,
       ToVersioning current) {
     return editedValidFrom.equals(current.getVersionable().getValidFrom());
+  }
+
+  public static boolean isEditedValidToExactOnTheRightBorder(LocalDate editedValidTo,
+      ToVersioning toVersioning) {
+    return editedValidTo.equals(toVersioning.getVersionable().getValidTo());
   }
 
   public static boolean isCurrentVersionBetweenEditedValidFromAndEditedValidTo(
@@ -185,8 +215,7 @@ public final class VersioningHelper {
   }
 
   public static List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
-      List<ToVersioning> objectsToVersioning,
-      LocalDate editedValidFrom, LocalDate editedValidTo) {
+      LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> objectsToVersioning) {
     return objectsToVersioning.stream()
                               .filter(
                                   toVersioning -> !toVersioning.getVersionable()

@@ -23,7 +23,7 @@ public abstract class Versioning {
   }
 
   public List<VersionedObject> applyVersioning(Versionable edited, Versionable current,
-      List<ToVersioning> objectsToVersioning, Entity editedEntity) {
+      Entity editedEntity, List<ToVersioning> objectsToVersioning) {
     throw new VersioningException("You have to implement me!!");
   }
 
