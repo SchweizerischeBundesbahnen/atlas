@@ -21,19 +21,23 @@ public class Entity {
 
     //Copy currentProperties
     List<Property> properties = new ArrayList<>(currentEntity.getProperties());
-
     for (Property editedProperty : editedEntity.getProperties()) {
       //find the index of the edited attribute end replace it with the new value
-      int index = IntStream.range(0, properties.size())
-                           .filter(i -> currentEntity.getProperties().get(i)
-                                                     .getKey()
-                                                     .equals(editedProperty.getKey()))
-                           .findFirst().orElse(-1);
-      if (index >= 0) {
-        properties.set(index, editedProperty);
+      int editedAttributeIndex = findEditedAttributeIndex(currentEntity, properties, editedProperty);
+      if (editedAttributeIndex >= 0) {
+        properties.set(editedAttributeIndex, editedProperty);
       }
     }
     return Entity.builder().id(currentEntity.getId()).properties(properties).build();
+  }
+
+  private static int findEditedAttributeIndex(Entity currentEntity, List<Property> properties,
+      Property editedProperty) {
+    return IntStream.range(0, properties.size())
+                         .filter(i -> currentEntity.getProperties().get(i)
+                                                   .getKey()
+                                                   .equals(editedProperty.getKey()))
+                         .findFirst().orElse(-1);
   }
 
 }
