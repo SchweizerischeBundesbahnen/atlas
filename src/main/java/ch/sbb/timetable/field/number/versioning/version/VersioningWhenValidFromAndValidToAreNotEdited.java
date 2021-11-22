@@ -13,7 +13,8 @@ public class VersioningWhenValidFromAndValidToAreNotEdited implements Versioning
 
   @Override
   public List<VersionedObject> applyVersioning(VersioningData vd) {
-    ToVersioning toVersioning = findObjectToVersioning(vd.getCurrentVersion(), vd.getObjectsToVersioning());
+    ToVersioning toVersioning = findObjectToVersioning(vd.getCurrentVersion(),
+        vd.getObjectsToVersioning());
     Entity entity = Entity.replaceEditedPropertiesWithCurrentProperties(vd.getEditedEntity(),
         toVersioning.getEntity());
 

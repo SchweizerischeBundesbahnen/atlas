@@ -31,7 +31,7 @@ public final class ConverterHelper {
     List<Property> currentProperties = extractProperties(versionableProperties, currentVersion);
 
     List<Property> propertiesEqualsBetweenCurrentAndEdited = new ArrayList<>();
-    for (Property editedProperty : editedProperties){
+    for (Property editedProperty : editedProperties) {
       currentProperties.stream()
                        .filter(p -> p.equals(editedProperty))
                        .findFirst().ifPresent(propertiesEqualsBetweenCurrentAndEdited::add);
@@ -39,8 +39,8 @@ public final class ConverterHelper {
 
     editedProperties.removeAll(propertiesEqualsBetweenCurrentAndEdited);
     List<Property> propertiesNotEmpty = editedProperties.stream()
-                                                  .filter(Property::isNotEmpty)
-                                                  .collect(Collectors.toList());
+                                                        .filter(Property::isNotEmpty)
+                                                        .collect(Collectors.toList());
 
     return buildEntity(currentVersion.getId(), propertiesNotEmpty);
   }
@@ -98,7 +98,7 @@ public final class ConverterHelper {
       return buildProperty(property.getFieldName(), propertyValue);
     } catch (NoSuchFieldException | IllegalAccessException e) {
       log.error("Error during parse field {}", e.getMessage());
-      throw new VersioningException("Error during parse field "+e.getMessage(), e);
+      throw new VersioningException("Error during parse field " + e.getMessage(), e);
     }
   }
 
@@ -129,8 +129,8 @@ public final class ConverterHelper {
         }
       }
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      log.error("Error during parse field {}",e.getMessage());
-      throw new VersioningException("Error during parse field "+e.getMessage(), e);
+      log.error("Error during parse field {}", e.getMessage());
+      throw new VersioningException("Error during parse field " + e.getMessage(), e);
     }
     return propertyBuilder.oneToMany(entityRelations).build();
   }

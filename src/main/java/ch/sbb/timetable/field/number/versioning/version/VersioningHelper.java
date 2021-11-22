@@ -17,7 +17,7 @@ public final class VersioningHelper {
   }
 
   /**
-   *                  |___________|
+   * |___________|
    * |-----------|----------------------|--------------------|
    */
   public static boolean isEditedVersionInTheMiddleOfCurrentEntity(LocalDate editedValidFrom,
@@ -27,7 +27,7 @@ public final class VersioningHelper {
   }
 
   /**
-   *            |_____________________|
+   * |_____________________|
    * |----------|----------|----------|----------|----------|
    */
   public static boolean isEditedVersionExactMatchingMultipleVersions(LocalDate editedValidFrom,
@@ -40,7 +40,7 @@ public final class VersioningHelper {
 
   /**
    * |_____________________|
-   *            |----------|----------|----------|----------|----------|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(
       LocalDate editedValidFrom, LocalDate editedValidTo, ToVersioning toVersioning) {
@@ -50,8 +50,8 @@ public final class VersioningHelper {
   }
 
   /**
-   *                             |______________________________|
-   *            |----------|----------|----------|----------|----------|
+   * |______________________________|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isBetweenMultipleVersionsAndOverTheBorders(
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
@@ -64,31 +64,32 @@ public final class VersioningHelper {
   }
 
   /**
-   *       |______________________________
-   *            |----------|----------|----------|----------|----------|
+   * |______________________________
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isEditedValidFromOverTheLeftBorder(
       LocalDate editedValidFrom, List<ToVersioning> toVersioningList) {
-    if(toVersioningList.size()<=1){
+    if (toVersioningList.size() <= 1) {
       throw new VersioningException("toVersioningList size must be bigger then 1.");
     }
     return editedValidFrom.isBefore(toVersioningList.get(0).getValidFrom());
   }
 
   /**
-   *                                            ______________________________|
-   *            |----------|----------|----------|----------|----------|
+   * ______________________________|
+   * |----------|----------|----------|----------|----------|
    */
-  public static boolean isEditedValidToOverTheRightBorder(LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
-    if(toVersioningList.size()<=1){
+  public static boolean isEditedValidToOverTheRightBorder(LocalDate editedValidTo,
+      List<ToVersioning> toVersioningList) {
+    if (toVersioningList.size() <= 1) {
       throw new VersioningException("toVersioningList size must be bigger then 1.");
     }
     return editedValidTo.isAfter(
-            toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+        toVersioningList.get(toVersioningList.size() - 1).getValidTo());
   }
 
   /**
-   *                                                    |______________|
+   * |______________|
    * |----------|----------|----------|----------|----------|
    */
   public static boolean isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(
@@ -103,13 +104,15 @@ public final class VersioningHelper {
     return editedValidTo.isAfter(toVersioning.getValidTo());
   }
 
-  public static boolean isOnTheRightBorderAndOnlyValidToIsEditedWithNoEditedProperties(Versionable editedVersion,
+  public static boolean isOnTheRightBorderAndOnlyValidToIsEditedWithNoEditedProperties(
+      Versionable editedVersion,
       Entity editedEntity) {
     return editedVersion.getValidTo() != null && editedVersion.getValidFrom() == null
         && editedEntity.getProperties().isEmpty();
   }
 
-  public static boolean isOnTheRightBorderAndValidToAndPropertiesAreEdited(Versionable editedVersion,
+  public static boolean isOnTheRightBorderAndValidToAndPropertiesAreEdited(
+      Versionable editedVersion,
       Entity editedEntity) {
     return editedVersion.getValidTo() != null && editedVersion.getValidFrom() == null
         && !editedEntity.getProperties().isEmpty();
@@ -125,8 +128,8 @@ public final class VersioningHelper {
     return editedValidTo.isBefore(leftBorderVersion.getValidFrom());
   }
 
-  public static boolean areVersionsSequential(ToVersioning current, ToVersioning next){
-    return areDatesSequential(current.getValidTo(),next.getValidFrom());
+  public static boolean areVersionsSequential(ToVersioning current, ToVersioning next) {
+    return areDatesSequential(current.getValidTo(), next.getValidFrom());
   }
 
   public static boolean isThereGapBetweenVersions(List<ToVersioning> toVersioningList) {

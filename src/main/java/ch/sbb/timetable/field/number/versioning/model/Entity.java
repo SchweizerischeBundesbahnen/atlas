@@ -23,7 +23,8 @@ public class Entity {
     List<Property> properties = new ArrayList<>(currentEntity.getProperties());
     for (Property editedProperty : editedEntity.getProperties()) {
       //find the index of the edited attribute end replace it with the new value
-      int editedAttributeIndex = findEditedAttributeIndex(currentEntity, properties, editedProperty);
+      int editedAttributeIndex = findEditedAttributeIndex(currentEntity, properties,
+          editedProperty);
       if (editedAttributeIndex >= 0) {
         properties.set(editedAttributeIndex, editedProperty);
       }
@@ -34,10 +35,10 @@ public class Entity {
   private static int findEditedAttributeIndex(Entity currentEntity, List<Property> properties,
       Property editedProperty) {
     return IntStream.range(0, properties.size())
-                         .filter(i -> currentEntity.getProperties().get(i)
-                                                   .getKey()
-                                                   .equals(editedProperty.getKey()))
-                         .findFirst().orElse(-1);
+                    .filter(i -> currentEntity.getProperties().get(i)
+                                              .getKey()
+                                              .equals(editedProperty.getKey()))
+                    .findFirst().orElse(-1);
   }
 
 }

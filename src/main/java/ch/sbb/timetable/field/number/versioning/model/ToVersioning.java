@@ -15,15 +15,15 @@ public class ToVersioning {
 
   private Entity entity;
 
-  public LocalDate getValidFrom(){
-    if(this.versionable == null){
+  public LocalDate getValidFrom() {
+    if (this.versionable == null) {
       throw new VersioningException("Versionable object is null.");
     }
     return this.versionable.getValidFrom();
   }
 
-  public LocalDate getValidTo(){
-    if(this.versionable == null){
+  public LocalDate getValidTo() {
+    if (this.versionable == null) {
       throw new VersioningException("Versionable object is null.");
     }
     return this.versionable.getValidTo();

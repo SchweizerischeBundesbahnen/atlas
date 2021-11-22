@@ -41,7 +41,8 @@ public class VersioningWhenNoEntityFound implements Versioning {
         "Something went wrong. I'm not able to apply versioning on this scenario.");
   }
 
-  private List<VersionedObject> applyVersioningOverTheBorder(VersioningData vd,ToVersioning borderVersion) {
+  private List<VersionedObject> applyVersioningOverTheBorder(VersioningData vd,
+      ToVersioning borderVersion) {
     Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
         vd.getEditedEntity(),
         borderVersion.getEntity());
