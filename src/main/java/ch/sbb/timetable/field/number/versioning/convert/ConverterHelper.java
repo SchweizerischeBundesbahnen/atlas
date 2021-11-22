@@ -24,9 +24,8 @@ public final class ConverterHelper {
   }
 
   public static <T extends Versionable> Entity convertToEditedEntity(
-      List<VersionableProperty> versionableProperties,
-      Versionable currentVersion,
-      Versionable editedVersion) {
+      Versionable currentVersion, Versionable editedVersion,
+      List<VersionableProperty> versionableProperties) {
 
     List<Property> editedProperties = extractProperties(versionableProperties, editedVersion);
     List<Property> currentProperties = extractProperties(versionableProperties, currentVersion);
@@ -47,7 +46,7 @@ public final class ConverterHelper {
   }
 
   public static <T extends Versionable> List<ToVersioning> convertAllObjectsToVersioning(
-      List<VersionableProperty> versionableProperties, List<T> currentVersions) {
+      List<T> currentVersions, List<VersionableProperty> versionableProperties) {
     List<ToVersioning> objectsToVersioning = new ArrayList<>();
     for (Versionable currentVersion : currentVersions) {
       objectsToVersioning.add(
