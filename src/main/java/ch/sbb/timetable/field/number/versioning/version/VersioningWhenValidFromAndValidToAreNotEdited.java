@@ -1,5 +1,8 @@
 package ch.sbb.timetable.field.number.versioning.version;
 
+import static ch.sbb.timetable.field.number.versioning.model.VersionedObject.buildVersionedObjectToUpdate;
+import static ch.sbb.timetable.field.number.versioning.model.VersionedObject.fillNotTouchedVersionedObject;
+
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
