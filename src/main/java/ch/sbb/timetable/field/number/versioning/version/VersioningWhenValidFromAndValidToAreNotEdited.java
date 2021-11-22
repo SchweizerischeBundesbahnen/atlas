@@ -8,11 +8,14 @@ import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningData;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class VersioningWhenValidFromAndValidToAreNotEdited implements Versioning {
 
   @Override
   public List<VersionedObject> applyVersioning(VersioningData vd) {
+    log.info("Apply versioning when validFrom and validTo are not edited.");
     ToVersioning toVersioning = findObjectToVersioning(vd.getCurrentVersion(),
         vd.getObjectsToVersioning());
     Entity entity = Entity.replaceEditedPropertiesWithCurrentProperties(vd.getEditedEntity(),

@@ -13,7 +13,7 @@ import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningData;
 import ch.sbb.timetable.field.number.versioning.version.Versioning;
 import ch.sbb.timetable.field.number.versioning.version.VersioningWhenValidFromAndValidToAreNotEdited;
-import ch.sbb.timetable.field.number.versioning.version.VersioningWhenValidToAndValidFromAreEdited;
+import ch.sbb.timetable.field.number.versioning.version.VersioningWhenValidToAndOrValidFromAreEdited;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class VersioningEngine {
       versioning = new VersioningWhenValidFromAndValidToAreNotEdited();
     } else {
       log.info("ValidFrom and/or ValidTo are edited.");
-      versioning = new VersioningWhenValidToAndValidFromAreEdited();
+      versioning = new VersioningWhenValidToAndOrValidFromAreEdited();
     }
     List<VersionedObject> versionedObjects = new ArrayList<>(versioning.applyVersioning(vd));
     return mergeVersionedObject(versionedObjects);
