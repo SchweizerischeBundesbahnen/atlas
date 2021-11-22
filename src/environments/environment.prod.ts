@@ -34,7 +34,6 @@ const authConfig: AuthConfig = {
 export const environment: Environment = {
   production: process.env.PRODUCTION !== 'false',
   label: process.env.ENVIRONMENT_LABEL!,
-  ttfnBackendUrl: process.env.TTFN_BACKEND_URL!,
-  lidiBackendUrl: process.env.LIDI_BACKEND_URL!,
+  atlasApiUrl: process.env.ATLAS_API_URL!,
   authConfig,
 };

@@ -44,7 +44,7 @@ import { TrimInputDirective } from '../text-input/trim-input';
         // a request to these, the access token is appended.
         // Documentation:
         // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/working-with-httpinterceptors.html
-        allowedUrls: [environment.ttfnBackendUrl, environment.lidiBackendUrl],
+        allowedUrls: [environment.atlasApiUrl],
         sendAccessToken: true,
       },
     }),
