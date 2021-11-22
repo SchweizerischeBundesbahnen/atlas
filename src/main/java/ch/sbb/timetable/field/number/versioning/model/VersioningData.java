@@ -33,12 +33,12 @@ public class VersioningData {
     populateValidFromAndValidTo(editedVersion);
     sortObjectsToVersioning(this.objectsToVersioning);
     this.objectToVersioningFound = findObjectToVersioningInValidFromValidToRange(
-        editedValidFrom, editedValidTo, this.objectsToVersioning);
+        this.editedValidFrom, this.editedValidTo, this.objectsToVersioning);
     this.versionedObjects = new ArrayList<>(
-        fillNotTouchedVersionedObject(objectsToVersioning, objectToVersioningFound));
+        fillNotTouchedVersionedObject(objectsToVersioning, this.objectToVersioningFound));
   }
 
-  void sortObjectsToVersioning(List<ToVersioning> objectsToVersioning){
+  private void sortObjectsToVersioning(List<ToVersioning> objectsToVersioning){
     objectsToVersioning.sort(
         comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
   }
@@ -58,12 +58,13 @@ public class VersioningData {
     throw new VersioningException("Found more or less then one object to versioning.");
   }
 
-  void populateValidFromAndValidTo(Versionable editedVersion) {
+  private void populateValidFromAndValidTo(Versionable editedVersion) {
     this.editedValidFrom = editedVersion.getValidFrom();
     if (this.editedValidFrom == null) {
       log.info("ValidFrom not edited.");
       this.editedValidFrom = currentVersion.getValidFrom();
     }
+
     this.editedValidTo = editedVersion.getValidTo();
     if (this.editedValidTo == null) {
       log.info("ValidTo not edited.");
