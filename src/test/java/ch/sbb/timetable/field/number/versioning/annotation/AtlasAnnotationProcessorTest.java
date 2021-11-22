@@ -99,7 +99,7 @@ public class AtlasAnnotationProcessorTest {
       //then
     }).isInstanceOf(AtlasVersionableException.class)
       .hasMessageContaining(
-          "The class NonVersionable is not annotated with @AtlasVersionable.  Please check the documentation.");
+          "The class NonVersionable is not annotated with @AtlasVersionable. Please check the documentation.");
 
   }
 
