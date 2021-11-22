@@ -172,7 +172,6 @@ public final class VersioningHelper {
     return (index + 1) < toVersioningList.size();
   }
 
-  //TODO: check evan with properties?
   public static boolean isOnlyValidToChanged(Versionable editedVersion,
       Versionable currentVersion) {
     return (editedVersion.getValidFrom() == null ||
