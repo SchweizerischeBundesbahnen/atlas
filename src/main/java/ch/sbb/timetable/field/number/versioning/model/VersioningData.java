@@ -74,8 +74,7 @@ public class VersioningData {
   }
 
   private void sortObjectsToVersioning(List<ToVersioning> objectsToVersioning) {
-    objectsToVersioning.sort(
-        comparing(ToVersioning::getValidFrom));
+    objectsToVersioning.sort(comparing(ToVersioning::getValidFrom));
   }
 
 }
