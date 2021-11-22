@@ -9,9 +9,6 @@ import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningData;
 import java.util.List;
 
-/**
- * Scenario 1q,1b,1c
- */
 public class VersioningWhenValidFromAndValidToAreNotEdited implements Versioning {
 
   @Override

@@ -13,7 +13,6 @@ import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.
 import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
-import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
 import ch.sbb.timetable.field.number.versioning.model.VersioningData;
 import java.time.LocalDate;
@@ -36,9 +35,8 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       versionedObjects.addAll(versionedObjectsInTheMiddleOfAnExistingEntity);
       return versionedObjects;
     } else {
-      List<VersionedObject> versionedObjectsOnTheBorder = applyVersioningOnTheBorderOfSingleFoundEntity(
-          vd.getEditedValidFrom(), vd.getEditedValidTo(), vd.getEditedVersion(),
-          vd.getEditedEntity(), toVersioning);
+      List<VersionedObject> versionedObjectsOnTheBorder =
+          applyVersioningOnTheBorderOfSingleFoundEntity(vd, toVersioning);
       versionedObjects.addAll(versionedObjectsOnTheBorder);
       return versionedObjects;
     }
@@ -48,127 +46,118 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       ToVersioning toVersioning) {
     log.info("Found in the middle of an exiting.");
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    return applyVersioningInTheMiddleOfCurrentEntity(vd, toVersioning, versionedObjects);
-  }
-
-  private List<VersionedObject> applyVersioningInTheMiddleOfCurrentEntity(VersioningData vd,
-      ToVersioning toVersioning,
-      List<VersionedObject> versionedObjects) {
-    //1. Update the existing version:
-    // currentVersion.setValidTo(editedValidFrom.minusDay(1))
-    // do not change properties
-    LocalDate toUpdateValidTo = vd.getEditedValidFrom().minusDays(1);
-    VersionedObject toUpdateVersionedObject = buildVersionedObjectToUpdate(
-        toVersioning.getVersionable().getValidFrom(), toUpdateValidTo,
-        toVersioning.getEntity());
-    versionedObjects.add(toUpdateVersionedObject);
-    //2. Copy the currentVersion splittedCurrentVersion.copy(currentVersion)
-    //  splittedCurrentVersion.setValidFrom(editedValidTo.plusDay(1))
-    //  splittedCurrentVersion.setValidTo(currentVersion.ValidTo())
-    // do not change properties
-    LocalDate toAddAtEndValidFrom = vd.getEditedValidTo().plusDays(1);
-    LocalDate toAddAtEndValidTo = vd.getCurrentVersion().getValidTo();
-    VersionedObject toAddAtEndVersionedObject = buildVersionedObjectToCreate(
-        toAddAtEndValidFrom,
-        toAddAtEndValidTo, toVersioning.getEntity());
-    versionedObjects.add(toAddAtEndVersionedObject);
-    //3. Create a new Version
-    // newVersion.setValidFrom(edited.validFrom())
-    // newVersion.setValidTo(edited.validTo())
-    // copy all properties from currentVersion and replace them with the edited properties
-    Entity entityToAddAtEnd = replaceEditedPropertiesWithCurrentProperties(vd.getEditedEntity(),
-        toVersioning.getEntity());
-    VersionedObject toCreateVersionedObject = buildVersionedObjectToCreate(
-        vd.getEditedValidFrom(),
-        vd.getEditedValidTo(), entityToAddAtEnd);
+    VersionedObject currentVersionUpdate = shortenLeftCurrentVersion(vd, toVersioning);
+    versionedObjects.add(currentVersionUpdate);
+    VersionedObject toCreateVersionedObject = shortenOnRightCurrentVersion(vd, toVersioning);
     versionedObjects.add(toCreateVersionedObject);
+    VersionedObject toAddAtEndVersionedObject = createNewVersionInTheMiddle(vd, toVersioning);
+    versionedObjects.add(toAddAtEndVersionedObject);
     return versionedObjects;
   }
 
-  private List<VersionedObject> applyVersioningOnTheBorderOfSingleFoundEntity(
-      LocalDate editedValidFrom, LocalDate editedValidTo, Versionable editedVersion,
-      Entity editedEntity,
+  private VersionedObject shortenLeftCurrentVersion(VersioningData vd, ToVersioning toVersioning) {
+    LocalDate toUpdateValidTo = vd.getEditedValidFrom().minusDays(1);
+    return buildVersionedObjectToUpdate(toVersioning.getVersionable().getValidFrom(),
+        toUpdateValidTo,
+        toVersioning.getEntity());
+  }
+
+  private VersionedObject shortenOnRightCurrentVersion(VersioningData vd,
+      ToVersioning toVersioning) {
+    Entity entityToAddAtEnd = replaceEditedPropertiesWithCurrentProperties(vd.getEditedEntity(),
+        toVersioning.getEntity());
+    return buildVersionedObjectToCreate(vd.getEditedValidFrom(), vd.getEditedValidTo(),
+        entityToAddAtEnd);
+  }
+
+  private VersionedObject createNewVersionInTheMiddle(VersioningData vd,
+      ToVersioning toVersioning) {
+    LocalDate toAddAtEndValidFrom = vd.getEditedValidTo().plusDays(1);
+    LocalDate toAddAtEndValidTo = vd.getCurrentVersion().getValidTo();
+    return buildVersionedObjectToCreate(toAddAtEndValidFrom, toAddAtEndValidTo,
+        toVersioning.getEntity());
+  }
+
+  private List<VersionedObject> applyVersioningOnTheBorderOfSingleFoundEntity(VersioningData vd,
       ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
-    if (isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(editedValidFrom, editedValidTo,
+    if (isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(vd.getEditedValidFrom(),
+        vd.getEditedValidTo(),
         toVersioning)) {
-      log.info(
-          "Found on the left border, editedValidTo is before current validFrom and validTo is not edited.");
-      //1. update validFrom with editedValidTo
-      //2. merge properties
-      applyVersioningUpdateOnTheBorder(editedValidFrom, toVersioning.getVersionable().getValidTo(),
-          editedEntity, toVersioning, versionedObjects);
+      log.info("Found on the left border, "
+          + "editedValidFrom is before current validFrom and validTo is not edited.");
+      // update validFrom=editedValidFrom and merge properties
+      VersionedObject versionedObject = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(
+          vd, toVersioning);
+      versionedObjects.add(versionedObject);
       return versionedObjects;
     }
-    if (isOnTheRightBorderAndOnlyValidToIsEditedWithNoEditedProperties(editedVersion,
-        editedEntity)) {
+    if (isOnTheRightBorderAndOnlyValidToIsEditedWithNoEditedProperties(vd.getEditedVersion(),
+        vd.getEditedEntity())) {
       log.info("Found on the right border, validTo is edited, no properties are edited.");
-      //Just make the version bigger
-      // 1. validTo = editedValidTo
-      //    do not update properties
-      //    VersioningAction = UPDATE
-      applyVersioningUpdateOnTheBorder(toVersioning.getVersionable().getValidFrom(), editedValidTo,
-          editedEntity,
-          toVersioning, versionedObjects);
+      // update validTo=editedValidTo and merge properties
+      VersionedObject versionedObject = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd,
+          toVersioning);
+      versionedObjects.add(versionedObject);
       return versionedObjects;
     }
-    if (isOnTheRightBorderAndValidToAndPropertiesAreEdited(editedVersion, editedEntity)) {
-      return applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(editedValidTo,
-          editedEntity, toVersioning, versionedObjects);
+    if (isOnTheRightBorderAndValidToAndPropertiesAreEdited(vd.getEditedVersion(),
+        vd.getEditedEntity())) {
+      return applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(vd, toVersioning);
     }
-    if (isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(editedValidFrom, editedValidTo,
+    if (isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(vd.getEditedValidFrom(),
+        vd.getEditedValidTo(),
         toVersioning)) {
-      return applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(editedValidFrom,
-          editedValidTo, editedEntity, toVersioning,
-          versionedObjects);
+      return applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(vd, toVersioning);
     }
     throw new VersioningException(
         "Something went wrong. I'm not able to apply versioning on this scenario.");
   }
 
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(
-      LocalDate editedValidTo, Entity editedEntity,
-      ToVersioning toVersioning, List<VersionedObject> versionedObjects) {
-    if (isEditedValidToAfterTheRightBorder(editedValidTo, toVersioning)) {
+      VersioningData vd,
+      ToVersioning toVersioning) {
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+    if (isEditedValidToAfterTheRightBorder(vd.getEditedValidTo(), toVersioning)) {
       log.info(
           "Found on the right border, validTo is after current validTo, properties are edited.");
-      applyVersioningUpdateOnTheBorder(toVersioning.getVersionable().getValidFrom(),
-          editedValidTo, editedEntity,
-          toVersioning, versionedObjects);
+      // update validTo=editedValidTo and update properties
+      VersionedObject versionedObject = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd,
+          toVersioning);
+      versionedObjects.add(versionedObject);
     } else {
       log.info("Found version to split on the right border, validTo and properties edited.");
-      //1. currentVersion update
-      //    validTo = editedValidTo
-      //    merge props
-      applyVersioningUpdateOnTheBorder(toVersioning.getVersionable().getValidFrom(),
-          editedValidTo, editedEntity,
-          toVersioning, versionedObjects);
-      //2. new version
-      //    validFrom = editedValidTo.plusDay(1)
-      //    validTo = currentVersion.validTo()
-      //    copy currentVersion Props
-      VersionedObject versionedObjectCreated = buildVersionedObjectToCreate(
-          editedValidTo.plusDays(1),
-          toVersioning.getVersionable()
-                      .getValidTo(), toVersioning.getEntity());
+      // update validTo=editedValidTo and update properties
+      VersionedObject versionedObject = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd,
+          toVersioning);
+      versionedObjects.add(versionedObject);
+      // add new version after the current edited version
+      VersionedObject versionedObjectCreated = addNewVersionOnTheCurrentRightBorder(vd,
+          toVersioning);
       versionedObjects.add(versionedObjectCreated);
     }
     return versionedObjects;
   }
 
+  private VersionedObject addNewVersionOnTheCurrentRightBorder(VersioningData vd,
+      ToVersioning toVersioning) {
+    return buildVersionedObjectToCreate(
+        vd.getEditedValidTo().plusDays(1),
+        toVersioning.getVersionable().getValidTo(), toVersioning.getEntity());
+  }
+
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(
-      LocalDate editedValidFrom,
-      LocalDate editedValidTo, Entity editedEntity, ToVersioning toVersioning,
-      List<VersionedObject> versionedObjects) {
+      VersioningData vd, ToVersioning toVersioning) {
+    log.info("Found version to split on or over the right border, validTo and properties edited.");
+
+    List<VersionedObject> versionedObjects = new ArrayList<>();
     // 1. version
     //    validTo = editedValidFrom.minusDay(1)
     //    do not update properties
     //    VersioningAction = UPDATE
-    VersionedObject versionedObjectLastIndex = buildVersionedObjectToUpdate(
-        toVersioning.getVersionable().getValidFrom(), editedValidFrom.minusDays(1),
-        toVersioning.getEntity());
-    versionedObjects.add(versionedObjectLastIndex);
+    VersionedObject shortenRightVersion = shortenRightVersion(vd, toVersioning);
+    versionedObjects.add(shortenRightVersion);
 
     // 2. Create new version:
     //    versions.get(0)
@@ -176,25 +165,33 @@ public class VersioningOnSingleFoundEntity implements Versioning {
     //    validTo = versions.get(0).getValidTo()
     //    update properties with edited properties
     //    VersioningAction = NEW
-    Entity entityToAddAfterLastIndex = replaceEditedPropertiesWithCurrentProperties(
-        editedEntity,
-        toVersioning.getEntity());
-    VersionedObject versionedObjectAfterIndex0 = buildVersionedObjectToCreate(editedValidFrom,
-        editedValidTo, entityToAddAfterLastIndex);
-    versionedObjects.add(versionedObjectAfterIndex0);
+    VersionedObject newVersionAfterTheRightBorder = addNewVersionAfterTheRightBorder(vd,
+        toVersioning);
+    versionedObjects.add(newVersionAfterTheRightBorder);
     return versionedObjects;
   }
 
-  private void applyVersioningUpdateOnTheBorder(LocalDate editedValidFrom, LocalDate validTo,
-      Entity editedEntity,
-      ToVersioning toVersioning,
-      List<VersionedObject> versionedObjects) {
-    Entity entity = replaceEditedPropertiesWithCurrentProperties(editedEntity,
+  private VersionedObject addNewVersionAfterTheRightBorder(VersioningData vd,
+      ToVersioning toVersioning) {
+    Entity entityToAddAfterLastIndex = replaceEditedPropertiesWithCurrentProperties(
+        vd.getEditedEntity(),
         toVersioning.getEntity());
-    VersionedObject versionedObject = buildVersionedObjectToUpdate(
-        editedValidFrom, validTo,
-        entity);
-    versionedObjects.add(versionedObject);
+    return buildVersionedObjectToCreate(
+        vd.getEditedValidFrom(),
+        vd.getEditedValidTo(), entityToAddAfterLastIndex);
+  }
+
+  private VersionedObject shortenRightVersion(VersioningData vd, ToVersioning toVersioning) {
+    return buildVersionedObjectToUpdate(
+        toVersioning.getVersionable().getValidFrom(), vd.getEditedValidFrom().minusDays(1),
+        toVersioning.getEntity());
+  }
+
+  private VersionedObject shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(VersioningData vd,
+      ToVersioning toVersioning) {
+    Entity entity = replaceEditedPropertiesWithCurrentProperties(vd.getEditedEntity(),
+        toVersioning.getEntity());
+    return buildVersionedObjectToUpdate(vd.getEditedValidFrom(), vd.getEditedValidTo(), entity);
   }
 
 }
