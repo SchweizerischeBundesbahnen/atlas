@@ -35,7 +35,7 @@ public class VersioningData {
     this.objectToVersioningFound = findObjectToVersioningInValidFromValidToRange(
         this.editedValidFrom, this.editedValidTo, this.objectsToVersioning);
     this.versionedObjects = new ArrayList<>(
-        fillNotTouchedVersionedObject(objectsToVersioning, this.objectToVersioningFound));
+        fillNotTouchedVersionedObject(this.objectsToVersioning, this.objectToVersioningFound));
   }
 
   public boolean isNoObjectToVersioningFound() {
@@ -50,7 +50,7 @@ public class VersioningData {
     if (isJustOneObjectToVersioningFound()) {
       return this.objectToVersioningFound.get(0);
     }
-    throw new VersioningException("Found more or less then one object to versioning.");
+    throw new VersioningException("Found more or less than one object to versioning.");
   }
 
   private void populateValidFromAndValidTo(Versionable editedVersion) {
@@ -68,7 +68,7 @@ public class VersioningData {
 
     if (this.editedValidFrom.isAfter(this.editedValidTo)) {
       throw new VersioningException(
-          "Edited ValidFrom " + this.editedValidFrom + " is bigger then edited ValidTo "
+          "Edited ValidFrom " + this.editedValidFrom + " is bigger than edited ValidTo "
               + this.editedValidTo);
     }
   }
