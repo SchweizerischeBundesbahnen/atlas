@@ -38,16 +38,16 @@ public class VersioningData {
         fillNotTouchedVersionedObject(objectsToVersioning, this.objectToVersioningFound));
   }
 
-  public boolean isNoObjectToVersioningFound(){
+  public boolean isNoObjectToVersioningFound() {
     return this.objectToVersioningFound.isEmpty();
   }
 
-  public boolean isJustOneObjectToVersioningFound(){
+  public boolean isJustOneObjectToVersioningFound() {
     return this.objectToVersioningFound.size() == 1;
   }
 
-  public ToVersioning getSingleFoundObjectToVersioning(){
-    if(isJustOneObjectToVersioningFound()){
+  public ToVersioning getSingleFoundObjectToVersioning() {
+    if (isJustOneObjectToVersioningFound()) {
       return this.objectToVersioningFound.get(0);
     }
     throw new VersioningException("Found more or less then one object to versioning.");
@@ -73,9 +73,9 @@ public class VersioningData {
     }
   }
 
-  private void sortObjectsToVersioning(List<ToVersioning> objectsToVersioning){
+  private void sortObjectsToVersioning(List<ToVersioning> objectsToVersioning) {
     objectsToVersioning.sort(
-        comparing(toVersioning -> toVersioning.getValidFrom()));
+        comparing(ToVersioning::getValidFrom));
   }
 
 }
