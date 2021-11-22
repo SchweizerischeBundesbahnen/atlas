@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { LinesService } from './api/lines.service';
 import { SublinesService } from './api/sublines.service';
+import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
 
 @NgModule({
   imports: [],
@@ -11,19 +12,19 @@ import { SublinesService } from './api/sublines.service';
   exports: [],
   providers: [],
 })
-export class LiDiApiModule {
+export class AtlasApiModule {
   public static forRoot(
     configurationFactory: () => Configuration
-  ): ModuleWithProviders<LiDiApiModule> {
+  ): ModuleWithProviders<AtlasApiModule> {
     return {
-      ngModule: LiDiApiModule,
+      ngModule: AtlasApiModule,
       providers: [{ provide: Configuration, useFactory: configurationFactory }],
     };
   }
 
-  constructor(@Optional() @SkipSelf() parentModule: LiDiApiModule, @Optional() http: HttpClient) {
+  constructor(@Optional() @SkipSelf() parentModule: AtlasApiModule, @Optional() http: HttpClient) {
     if (parentModule) {
-      throw new Error('LiDiApiModule is already loaded. Import in your base AppModule only.');
+      throw new Error('AtlasApiModule is already loaded. Import in your base AppModule only.');
     }
     if (!http) {
       throw new Error(
