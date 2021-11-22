@@ -13,7 +13,7 @@ import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidFromOverTheLeftBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToExactOnTheRightBorder;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToOverTheRightBorder;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionExactMatchingMultipleVersions;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionExactMatchingMultipleEntities;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToChanged;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isThereGapBetweenVersions;
 
@@ -35,12 +35,12 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     log.info("Apply versioning over multiple found entities.");
     List<ToVersioning> toVersioningList = vd.getObjectToVersioningFound();
 
-    if (isEditedVersionExactMatchingMultipleVersions(vd.getEditedValidFrom(), vd.getEditedValidTo(),
+    if (isEditedVersionExactMatchingMultipleEntities(vd.getEditedValidFrom(), vd.getEditedValidTo(),
         toVersioningList)) {
       return applyVersioningExactMatchingMultipleVersions(vd, toVersioningList);
     }
     if (isThereGapBetweenVersions(toVersioningList)) {
-      return applyVersioningWhenThereIsGapBetweenFoundVersions(vd, toVersioningList);
+      return applyVersioningWhenThereIsGapBetweenMultipleEntities(vd, toVersioningList);
     }
     if (isBetweenMultipleVersionsAndOverTheBorders(vd.getEditedValidFrom(), vd.getEditedValidTo(),
         toVersioningList)) {
@@ -142,7 +142,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     return versionedObjects;
   }
 
-  private List<VersionedObject> applyVersioningWhenThereIsGapBetweenFoundVersions(VersioningData vd,
+  private List<VersionedObject> applyVersioningWhenThereIsGapBetweenMultipleEntities(VersioningData vd,
       List<ToVersioning> toVersioningList) {
     log.info("Matched multiple versions with gap");
     if (isOnlyValidToChanged(vd.getEditedVersion(), vd.getCurrentVersion())

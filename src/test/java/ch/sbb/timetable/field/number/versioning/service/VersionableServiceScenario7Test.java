@@ -361,7 +361,7 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
           Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
       //then
     }).isInstanceOf(VersioningException.class)
-      .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger then edited ValidTo 2029-12-08");
+      .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger than edited ValidTo 2029-12-08");
 
   }
 
