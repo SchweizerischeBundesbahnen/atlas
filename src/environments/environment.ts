@@ -11,18 +11,16 @@ const authConfig: AuthConfig = {
   issuer: 'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
   // This is required, since Azure AD uses different domains in their issuer configuration
   strictDiscoveryDocumentValidation: false,
-  clientId: '6f389026-1e55-44d4-9350-81b28e8be3fe',
+  clientId: '18746f30-7978-48b5-b19b-0f871fb12e67',
   redirectUri: location.origin,
   responseType: 'code',
-  scope: `openid profile email offline_access api://fa0c4e69-d22b-47ff-b71d-af9493919cc6/.default`,
+  scope: `openid profile email offline_access api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default`,
 };
 
 export const environment: Environment = {
   production: false,
   label: 'dev',
-  // TODO: Replace url with your backend url
-  ttfnBackendUrl: 'http://localhost:8080',
-  lidiBackendUrl: 'http://localhost:8082',
+  atlasApiUrl: 'http://localhost:8888',
   authConfig,
 };
 
