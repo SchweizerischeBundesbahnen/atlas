@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { TimetableFieldNumberContainer, TimetableFieldNumbersService } from '../../../api/ttfn';
+import { TimetableFieldNumberContainer, TimetableFieldNumbersService } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { CoreModule } from '../../../core/module/core.module';
