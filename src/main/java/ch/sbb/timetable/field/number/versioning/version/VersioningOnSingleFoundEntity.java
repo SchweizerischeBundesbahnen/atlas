@@ -57,7 +57,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
 
   private VersionedObject shortenLeftCurrentVersion(VersioningData vd, ToVersioning toVersioning) {
     LocalDate toUpdateValidTo = vd.getEditedValidFrom().minusDays(1);
-    return buildVersionedObjectToUpdate(toVersioning.getVersionable().getValidFrom(),
+    return buildVersionedObjectToUpdate(toVersioning.getValidFrom(),
         toUpdateValidTo,
         toVersioning.getEntity());
   }
@@ -144,7 +144,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       ToVersioning toVersioning) {
     return buildVersionedObjectToCreate(
         vd.getEditedValidTo().plusDays(1),
-        toVersioning.getVersionable().getValidTo(), toVersioning.getEntity());
+        toVersioning.getValidTo(), toVersioning.getEntity());
   }
 
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(
@@ -183,7 +183,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
 
   private VersionedObject shortenRightVersion(VersioningData vd, ToVersioning toVersioning) {
     return buildVersionedObjectToUpdate(
-        toVersioning.getVersionable().getValidFrom(), vd.getEditedValidFrom().minusDays(1),
+        toVersioning.getValidFrom(), vd.getEditedValidFrom().minusDays(1),
         toVersioning.getEntity());
   }
 

@@ -75,7 +75,7 @@ public class VersioningData {
 
   private void sortObjectsToVersioning(List<ToVersioning> objectsToVersioning){
     objectsToVersioning.sort(
-        comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
+        comparing(toVersioning -> toVersioning.getValidFrom()));
   }
 
 }

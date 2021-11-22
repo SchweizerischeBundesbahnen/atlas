@@ -52,8 +52,8 @@ public class VersionedObject {
                                                           toVersioningFound.equals(toVersioning))
                            ).collect(Collectors.toList());
     objectsToVersioningNotFound.forEach(toVersioning -> versionedObjects.add(
-        buildVersionedObjectNotTouched(toVersioning.getVersionable().getValidFrom(),
-            toVersioning.getVersionable().getValidTo(), toVersioning.getEntity())));
+        buildVersionedObjectNotTouched(toVersioning.getValidFrom(),
+            toVersioning.getValidTo(), toVersioning.getEntity())));
     return versionedObjects;
   }
 
