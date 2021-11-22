@@ -10,11 +10,11 @@ import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
+import ch.sbb.timetable.field.number.versioning.model.VersioningData;
 import ch.sbb.timetable.field.number.versioning.version.Versioning;
 import ch.sbb.timetable.field.number.versioning.version.VersioningWhenValidFromAndValidToAreNotEdited;
 import ch.sbb.timetable.field.number.versioning.version.VersioningWhenValidToAndValidFromAreEdited;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,30 +26,26 @@ public class VersioningEngine {
       List<T> currentVersions, List<VersionableProperty> versionableProperties) {
 
     //2. get edited properties from editedVersion
-    Entity editedEntity = convertToEditedEntity(currentVersion, editedVersion, versionableProperties
-    );
+    Entity editedEntity = convertToEditedEntity(currentVersion, editedVersion,
+        versionableProperties);
 
     //3. collect all versions to versioning in ToVersioning object
     List<ToVersioning> objectsToVersioning = convertAllObjectsToVersioning(
         currentVersions, versionableProperties);
-    //Temporal sort objects versioning
-    objectsToVersioning.sort(Comparator.comparing(o -> o.getVersionable().getValidFrom()));
+
+    VersioningData vd = new VersioningData(editedVersion, currentVersion, editedEntity,
+        objectsToVersioning);
 
     Versioning versioning;
-    List<VersionedObject> versionedObjects = new ArrayList<>();
     if (areValidToAndValidFromNotEdited(editedVersion, currentVersion)) {
       //update actual version
       log.info("ValidFrom and ValidTo are not edited.");
       versioning = new VersioningWhenValidFromAndValidToAreNotEdited();
-      versionedObjects.addAll(versioning.applyVersioning(currentVersion,
-          editedEntity, objectsToVersioning));
     } else {
       log.info("ValidFrom and/or ValidTo are edited.");
       versioning = new VersioningWhenValidToAndValidFromAreEdited();
-      versionedObjects.addAll(versioning.applyVersioning(editedVersion,
-          currentVersion, editedEntity, objectsToVersioning
-      ));
     }
+    List<VersionedObject> versionedObjects = new ArrayList<>(versioning.applyVersioning(vd));
     return mergeVersionedObject(versionedObjects);
   }
 
