@@ -69,6 +69,9 @@ public class VersionedObject {
           "To create a new VersionedObject the entity id must be null, to avoid to override an existing Entity.\n"
               + entity);
     }
+    if(validTo.isBefore(validFrom)){
+      throw new VersioningException("ValidFrom: " + validFrom + " is bigger than validTo: " + validTo);
+    }
     return VersionedObject.builder()
                           .validFrom(validFrom)
                           .validTo(validTo)
