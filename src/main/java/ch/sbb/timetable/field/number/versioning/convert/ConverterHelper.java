@@ -23,7 +23,7 @@ public final class ConverterHelper {
     throw new IllegalStateException("Utility class");
   }
 
-  public static <T extends Versionable> Entity convertToEditedEntity(
+  public static Entity convertToEditedEntity(
       Versionable currentVersion, Versionable editedVersion,
       List<VersionableProperty> versionableProperties) {
 

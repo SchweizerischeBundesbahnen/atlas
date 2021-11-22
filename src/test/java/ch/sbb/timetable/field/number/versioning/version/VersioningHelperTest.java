@@ -30,7 +30,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2020, 8, 1);
 
     //when
-    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion(
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity(
         editedValidFrom, editedValidTo, toVersioning);
 
     //then
@@ -52,7 +52,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2021, 1, 1);
 
     //when
-    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion(
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity(
         editedValidFrom, editedValidTo, toVersioning);
 
     //then
@@ -74,7 +74,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2020, 11, 1);
 
     //when
-    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion(
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity(
         editedValidFrom, editedValidTo, toVersioning);
 
     //then
@@ -96,7 +96,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2019, 12, 31);
 
     //when
-    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion(
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity(
         editedValidFrom, editedValidTo, toVersioning);
 
     //then
@@ -118,7 +118,7 @@ public class VersioningHelperTest {
     LocalDate editedValidTo = LocalDate.of(2021, 12, 31);
 
     //when
-    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentVersion(
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity(
         editedValidFrom, editedValidTo, toVersioning);
 
     //then
@@ -375,7 +375,7 @@ public class VersioningHelperTest {
     Entity entity = Entity.builder().properties(Collections.emptyList()).build();
 
     //when
-    boolean result = VersioningHelper.isOnlyValidToEditedWithNoEditedProperties(
+    boolean result = VersioningHelper.isOnTheRightBorderAndOnlyValidToIsEditedWithNoEditedProperties(
         versionableObject, entity);
 
     //then
@@ -395,7 +395,7 @@ public class VersioningHelperTest {
     Property property = Property.builder().value("CiaoCiao").key("property").build();
     Entity entity = Entity.builder().properties(List.of(property)).build();
     //when
-    boolean result = VersioningHelper.areValidToAndPropertiesEdited(
+    boolean result = VersioningHelper.isOnTheRightBorderAndValidToAndPropertiesAreEdited(
         versionableObject, entity);
 
     //then
