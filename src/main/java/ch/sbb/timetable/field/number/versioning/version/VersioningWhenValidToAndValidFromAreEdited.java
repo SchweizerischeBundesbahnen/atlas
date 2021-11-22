@@ -12,16 +12,17 @@ public class VersioningWhenValidToAndValidFromAreEdited implements Versioning {
   public List<VersionedObject> applyVersioning(VersioningData vd) {
 
     if (vd.isNoObjectToVersioningFound()) {
-      VersioningWhenNoEntityFound versioningWhenNoEntityFound = new VersioningWhenNoEntityFound();
-      List<VersionedObject> versionedObjectsOnNoObjectFound = versioningWhenNoEntityFound.applyVersioning(vd);
+      Versioning versioningWhenNoEntityFound = new VersioningWhenNoEntityFound();
+      List<VersionedObject> versionedObjectsOnNoObjectFound =
+          versioningWhenNoEntityFound.applyVersioning(vd);
       vd.getVersionedObjects().addAll(versionedObjectsOnNoObjectFound);
     } else if (vd.isJustOneObjectToVersioningFound()) {
-      VersioningOnSingleFoundEntity versioningOnSingleFoundEntity = new VersioningOnSingleFoundEntity();
+      Versioning versioningOnSingleFoundEntity = new VersioningOnSingleFoundEntity();
       List<VersionedObject> versionedObjectsOnOnlyOneObjectFound =
           versioningOnSingleFoundEntity.applyVersioning(vd);
       vd.getVersionedObjects().addAll(versionedObjectsOnOnlyOneObjectFound);
     } else {
-      VersioningOverMultipleFoundEntities versioningOverMultipleFoundEntities = new VersioningOverMultipleFoundEntities();
+      Versioning versioningOverMultipleFoundEntities = new VersioningOverMultipleFoundEntities();
       List<VersionedObject> versionedObjectsOverMultipleEntity =
           versioningOverMultipleFoundEntities.applyVersioning(vd);
       vd.getVersionedObjects().addAll(versionedObjectsOverMultipleEntity);

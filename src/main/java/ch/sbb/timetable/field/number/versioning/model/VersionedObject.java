@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.versioning.model;
 
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,8 @@ public class VersionedObject {
     return buildVersionedObject(validFrom, validTo, entity, VersioningAction.UPDATE);
   }
 
-  public static VersionedObject buildVersionedObjectNotTouched(LocalDate validFrom, LocalDate validTo,
+  public static VersionedObject buildVersionedObjectNotTouched(LocalDate validFrom,
+      LocalDate validTo,
       Entity entity) {
     return buildVersionedObject(validFrom, validTo, entity, VersioningAction.NOT_TOUCHED);
   }
@@ -58,6 +60,10 @@ public class VersionedObject {
   private static VersionedObject buildVersionedObject(LocalDate validFrom, LocalDate validTo,
       Entity entity,
       VersioningAction action) {
+    if (VersioningAction.NEW.equals(action) && entity.getId() != null) {
+      throw new VersioningException(
+          "To create a new VersionedObject the entity id must be null, to avoid to override an existing Entity.\n" + entity);
+    }
     return VersionedObject.builder()
                           .validFrom(validFrom)
                           .validTo(validTo)

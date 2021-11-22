@@ -25,7 +25,6 @@ public class VersioningWhenNoEntityFound implements Versioning {
 
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
-    // On the right border
     ToVersioning rightBorderVersion = vd.getObjectsToVersioning()
                                         .get(vd.getObjectsToVersioning().size() - 1);
     if (isVersionOverTheRightBorder(rightBorderVersion, vd.getEditedValidFrom())) {
@@ -33,14 +32,12 @@ public class VersioningWhenNoEntityFound implements Versioning {
       applyVersioningOverTheBorder(vd, rightBorderVersion, versionedObjects);
       return versionedObjects;
     }
-    // On the left border
     ToVersioning leftBorderVersion = vd.getObjectsToVersioning().get(0);
     if (isVersionOverTheLeftBorder(leftBorderVersion, vd.getEditedValidTo())) {
       log.info("Match over the left border.");
       applyVersioningOverTheBorder(vd, leftBorderVersion, versionedObjects);
       return versionedObjects;
     }
-    //Gap between two objects
     if (isThereGapBetweenVersions(vd.getObjectsToVersioning())) {
       log.info("Match a gap between two objects.");
       return applyVersioningOnTheGap(vd, versionedObjects);
