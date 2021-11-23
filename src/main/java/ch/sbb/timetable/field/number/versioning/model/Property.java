@@ -18,20 +18,20 @@ public class Property {
 
   private List<Entity> oneToMany;
 
-  public boolean hasOneToManyRelation(){
+  public boolean hasOneToManyRelation() {
     return this.oneToMany != null;
   }
 
-  public boolean hasOneToOneRelation(){
+  public boolean hasOneToOneRelation() {
     return this.oneToOne != null;
   }
 
-  public boolean isNotEmpty(){
-    if(this.key != null){
-      if(this.value != null){
+  public boolean isNotEmpty() {
+    if (this.key != null) {
+      if (this.value != null) {
         return true;
       }
-      if(this.oneToOne != null){
+      if (this.oneToOne != null) {
         return true;
       }
       return this.oneToMany != null && !this.oneToMany.isEmpty();
