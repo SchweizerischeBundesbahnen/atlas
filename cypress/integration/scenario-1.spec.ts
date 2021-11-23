@@ -1,10 +1,10 @@
 describe('Fahrplanfeldnummer', () => {
   const swissTimetableFieldNumber = '00.AAA';
-  const ttfnid = 'ch:1:fpfnid:100';
+  const ttfnid = 'ch:1:ttfnid:100';
   const validFrom = '22.09.2099';
   const validTo = '22.09.2099';
   const businessOrganisation = 'SBB';
-  const number = 'BEXsZs';
+  const number = '1.1';
   const name =
     'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z';
   const comment = 'This is a comment';
