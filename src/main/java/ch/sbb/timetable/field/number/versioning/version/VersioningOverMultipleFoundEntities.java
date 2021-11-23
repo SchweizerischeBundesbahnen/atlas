@@ -145,8 +145,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
   private List<VersionedObject> applyVersioningWhenThereIsGapBetweenMultipleEntities(VersioningData vd,
       List<ToVersioning> toVersioningList) {
     log.info("Matched multiple versions with gap");
-    if (isOnlyValidToChanged(vd.getEditedVersion(), vd.getCurrentVersion())
-        || areBothValidToAndValidFromChanged(vd.getEditedVersion(), vd.getCurrentVersion())) {
+    if (isOnlyValidToChanged(vd) || areBothValidToAndValidFromChanged(vd)) {
       List<VersionedObject> versionedObjects = new ArrayList<>();
       for (int i = 0; i < toVersioningList.size(); i++) {
         ToVersioning current = toVersioningList.get(i);
@@ -179,9 +178,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     log.info("Matched gap {} - {}", current.getValidTo(), next.getValidFrom());
     log.info("{}\n{}", current, next);
 
-    if (isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(
-        vd.getEditedValidFrom(),
-        current)) {
+    if (isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(vd, current)) {
       // update current version: validTo=editedValidTo-1
       VersionedObject versionedObjectToUpdate = updateCurrentVersion(current,
           current.getValidFrom(), vd.getEditedValidFrom().minusDays(1));
