@@ -6,7 +6,7 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
-import { ContainerSubline, SublinesService, SublineVersion } from '../../../api/lidi';
+import { ContainerSubline, SublinesService, SublineVersion } from '../../../api';
 import { SublinesComponent } from './sublines.component';
 import { CoreModule } from '../../../core/module/core.module';
 import StatusEnum = SublineVersion.StatusEnum;

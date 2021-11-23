@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api/ttfn';
+import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 

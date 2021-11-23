@@ -4,3 +4,6 @@ export * from './line';
 export * from './lineVersion';
 export * from './subline';
 export * from './sublineVersion';
+export * from './timetableFieldNumber';
+export * from './timetableFieldNumberContainer';
+export * from './version';
