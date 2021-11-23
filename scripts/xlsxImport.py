@@ -52,9 +52,8 @@ for index, row in data.iterrows():
 			"INSERT INTO timetable_field_number_version "
 			"(id, ttfnid, name, number, swiss_timetable_field_number, creation_date, creator, edition_date, editor, valid_from, valid_to, comment, status) "
 			"VALUES "
-			"(nextval('timetable_field_number_version_seq'), 'ch:1:fpfnid:{}', '{}', '{}', '{}', current_timestamp, 'xlsx', current_timestamp, 'xlsx', '2020-12-12', '{}', '{}', 'ACTIVE');"
+			"(nextval('timetable_field_number_version_seq'), format('ch:1:ttfnid:%s', nextval('ttfnid_seq')), '{}', '{}', '{}', current_timestamp, 'xlsx', current_timestamp, 'xlsx', '2020-12-12', '{}', '{}', 'ACTIVE');"
 				.format(
-					fpnfid,
 					name,  # name
 					row[3],  # number
 					row[0],  # swiss_timetable_field_number
@@ -64,10 +63,7 @@ for index, row in data.iterrows():
 	result_sql_file.write("\n")
 	result_sql_file.write(
 			"INSERT INTO timetable_field_line_relation (id, slnid, timetable_field_version_id) "
-			"VALUES (nextval('timetable_field_line_relation_seq'), 'ch:1:slnid:{}', currval('timetable_field_number_version_seq'));".format(
-					fpnfid))
+			"VALUES (nextval('timetable_field_line_relation_seq'), format('ch:1:slnid:%s', currval('ttfnid_seq')), currval('timetable_field_number_version_seq'));")
 	result_sql_file.write("\n\n")
-
-	fpnfid += 1
 
 result_sql_file.close()
