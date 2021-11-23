@@ -1,7 +1,7 @@
 package ch.sbb.timetable.field.number;
 
-import ch.sbb.timetable.field.number.versioning.service.VersionableService;
-import ch.sbb.timetable.field.number.versioning.service.VersionableServiceImpl;
+import ch.sbb.atlas.versioning.service.VersionableService;
+import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
 import java.time.ZoneId;
 import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
