@@ -139,6 +139,7 @@ public class VersionServiceScenario9Test extends BaseVersionServiceTest {
     version2 = versionRepository.save(version2);
     Version editedVersion = new Version();
     editedVersion.setValidFrom(LocalDate.of(2019, 1, 1));
+    editedVersion.setValidTo(version1.getValidTo());
     editedVersion.setName("FPFN Name <changed>");
 
     //when
