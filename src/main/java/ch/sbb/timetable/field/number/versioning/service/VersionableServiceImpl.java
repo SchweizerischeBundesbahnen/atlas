@@ -28,9 +28,9 @@ public class VersionableServiceImpl implements VersionableService {
         current);
 
     logStarting(current, editedVersion, currentVersions);
-    List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(versionableProperties,
-        current, editedVersion,
-        currentVersions);
+    List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(current,
+        editedVersion, currentVersions, versionableProperties
+    );
 
     logDone(versionedObjects);
     return versionedObjects;
