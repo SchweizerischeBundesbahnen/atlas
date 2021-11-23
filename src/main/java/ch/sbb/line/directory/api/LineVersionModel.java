@@ -56,11 +56,11 @@ public class LineVersionModel implements SequenctialValidRange {
   private String alternativeName;
 
   @Schema(description = "CombinationName", example = "S L1")
-  @Size(max = 500)
+  @Size(max = 50)
   private String combinationName;
 
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus")
-  @Size(max = 1000)
+  @Size(max = 255)
   private String longName;
 
   @Schema(description = "Color of the font in RGB", example = "#FF0000")

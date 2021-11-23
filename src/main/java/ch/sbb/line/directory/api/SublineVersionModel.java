@@ -52,7 +52,7 @@ public class SublineVersionModel implements SequenctialValidRange {
   private String number;
 
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus")
-  @Size(max = 1000)
+  @Size(max = 255)
   private String longName;
 
   @Schema(description = "PaymentType")
