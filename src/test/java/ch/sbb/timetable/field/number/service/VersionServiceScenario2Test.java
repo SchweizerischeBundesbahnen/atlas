@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -39,10 +40,11 @@ public class VersionServiceScenario2Test extends BaseVersionServiceTest {
     Version editedVersion = new Version();
     editedVersion.setName("FPFN Name <changed>");
     editedVersion.setComment("Scenario 2");
+    editedVersion.setStatus(Status.ACTIVE);
     editedVersion.setValidFrom(LocalDate.of(2022, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2023, 6, 1));
     editedVersion.getLineRelations()
-                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version2).build());
+                 .add(LineRelation.builder().slnid("ch:1:ttfnid:111111").version(version2).build());
 
     //when
     versionService.updateVersion(version2, editedVersion);
@@ -80,7 +82,7 @@ public class VersionServiceScenario2Test extends BaseVersionServiceTest {
     assertThat(lineRelations.size()).isEqualTo(1);
     LineRelation lineRelation = lineRelations.stream().iterator().next();
     assertThat(lineRelation).isNotNull();
-    assertThat(lineRelation.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelation.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
 
     //new
     Version fourthTemporalVersion = result.get(3);

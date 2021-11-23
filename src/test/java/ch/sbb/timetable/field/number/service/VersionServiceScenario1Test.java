@@ -43,7 +43,7 @@ public class VersionServiceScenario1Test extends BaseVersionServiceTest {
     Version editedVersion = new Version();
     editedVersion.setName("FPFN Name <CHANGED>");
     editedVersion.getLineRelations()
-                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version2).build());
+                 .add(LineRelation.builder().slnid("ch:1:ttfnid:111111").version(version2).build());
     //when
     versionService.updateVersion(version2, editedVersion);
     List<Version> result = versionRepository.getAllVersionsVersioned(version2.getTtfnid());
@@ -68,7 +68,7 @@ public class VersionServiceScenario1Test extends BaseVersionServiceTest {
     Set<LineRelation> lineRelations = secondTemporalVersion.getLineRelations();
     LineRelation lineRelation = lineRelations.stream().iterator().next();
     assertThat(lineRelation).isNotNull();
-    assertThat(lineRelation.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelation.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
   }
 
   /**
@@ -94,7 +94,7 @@ public class VersionServiceScenario1Test extends BaseVersionServiceTest {
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version2.getValidTo());
     editedVersion.getLineRelations()
-                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version2).build());
+                 .add(LineRelation.builder().slnid("ch:1:ttfnid:111111").version(version2).build());
     //when
     versionService.updateVersion(version2, editedVersion);
     List<Version> result = versionRepository.getAllVersionsVersioned(version2.getTtfnid());
@@ -119,7 +119,7 @@ public class VersionServiceScenario1Test extends BaseVersionServiceTest {
     Set<LineRelation> lineRelations = secondTemporalVersion.getLineRelations();
     LineRelation lineRelation = lineRelations.stream().iterator().next();
     assertThat(lineRelation).isNotNull();
-    assertThat(lineRelation.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelation.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
   }
 
   /**
