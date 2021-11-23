@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.api;
 
-import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import io.swagger.v3.oas.annotations.media.Schema;
