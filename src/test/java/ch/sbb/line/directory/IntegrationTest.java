@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
+@WithMockJwtAuthentication
 @SpringBootTest
 @ActiveProfiles("integration-test")
 public @interface IntegrationTest {

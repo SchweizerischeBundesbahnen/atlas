@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.service;
 
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
-import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.SublineRepository;
