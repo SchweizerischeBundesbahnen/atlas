@@ -1,15 +1,20 @@
 package ch.sbb.timetable.field.number.service;
 
 
+import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.DELETE;
+import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.NEW;
+import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.NOT_TOUCHED;
+import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.UPDATE;
+
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.TimetableFieldNumberRepository;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
+import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
-import ch.sbb.timetable.field.number.versioning.model.VersioningAction;
 import ch.sbb.timetable.field.number.versioning.service.VersionableService;
 import java.util.HashSet;
 import java.util.List;
@@ -77,25 +82,28 @@ public class VersionService {
         editedVersion, currentVersions);
 
     for (VersionedObject versionedObject : versionedObjects) {
-      if (VersioningAction.NOT_TOUCHED.equals(versionedObject.getAction())) {
+      if (NOT_TOUCHED.equals(versionedObject.getAction())) {
         //nothing to do
         log(versionedObject);
       }
-      if (VersioningAction.UPDATE.equals(versionedObject.getAction())) {
+      if (UPDATE.equals(versionedObject.getAction())) {
         //update existing Version
         log(versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
         versionRepository.save(version);
       }
-      if (VersioningAction.NEW.equals(versionedObject.getAction())) {
+      if (NEW.equals(versionedObject.getAction())) {
         //create new version
         log.info("A new Version was added. VersionedObject={}", versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
         //ensure version.getId() == null to avoid to update a Version
         version.setId(null);
+        version.getLineRelations().forEach(lineRelation-> {
+          lineRelation.setVersion(version);
+        });
         versionRepository.save(version);
       }
-      if (VersioningAction.DELETE.equals(versionedObject.getAction())) {
+      if (DELETE.equals(versionedObject.getAction())) {
         //delete existing version
         log(versionedObject);
         versionRepository.deleteById(versionedObject.getEntity().getId());
@@ -117,7 +125,7 @@ public class VersionService {
     for (Property property : entity.getProperties()) {
       if (property.hasOneToOneRelation()) {
         //parse and build one to one relation
-        throw new IllegalStateException("OneToOneRelation not implemented!");
+        throw new VersioningException("OneToOneRelation not implemented!");
       } else if (property.hasOneToManyRelation()) {
         Set<LineRelation> lineRelations = new HashSet<>();
         List<Entity> oneToManyEntities = property.getOneToMany();
