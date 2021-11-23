@@ -326,6 +326,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     editedVersion.setName("FPFN Name Frederic");
     editedVersion.setComment("Frederic");
     editedVersion.setValidFrom(LocalDate.of(2029, 12, 9));
+    editedVersion.setValidTo(version1.getValidTo());
     editedVersion.getLineRelations()
                  .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version1).build());
 
@@ -334,7 +335,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
       versionService.updateVersion(version1, editedVersion);
       //then
     }).isInstanceOf(VersioningException.class)
-      .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger then edited ValidTo 2029-12-08");
+      .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger than edited ValidTo 2029-12-08");
   }
 
 }

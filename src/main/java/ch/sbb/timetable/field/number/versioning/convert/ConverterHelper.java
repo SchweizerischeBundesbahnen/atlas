@@ -1,5 +1,9 @@
 package ch.sbb.timetable.field.number.versioning.convert;
 
+import static ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType.NONE;
+import static ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType.ONE_TO_MANY;
+import static ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType.ONE_TO_ONE;
+
 import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Entity.EntityBuilder;
@@ -8,7 +12,6 @@ import ch.sbb.timetable.field.number.versioning.model.Property.PropertyBuilder;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
 import ch.sbb.timetable.field.number.versioning.model.VersionableProperty;
-import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +26,7 @@ public final class ConverterHelper {
     throw new IllegalStateException("Utility class");
   }
 
-  public static <T extends Versionable> Entity convertToEditedEntity(
+  public static Entity convertToEditedEntity(
       Versionable currentVersion, Versionable editedVersion,
       List<VersionableProperty> versionableProperties) {
 
@@ -31,7 +34,7 @@ public final class ConverterHelper {
     List<Property> currentProperties = extractProperties(versionableProperties, currentVersion);
 
     List<Property> propertiesEqualsBetweenCurrentAndEdited = new ArrayList<>();
-    for (Property editedProperty : editedProperties){
+    for (Property editedProperty : editedProperties) {
       currentProperties.stream()
                        .filter(p -> p.equals(editedProperty))
                        .findFirst().ifPresent(propertiesEqualsBetweenCurrentAndEdited::add);
@@ -39,8 +42,8 @@ public final class ConverterHelper {
 
     editedProperties.removeAll(propertiesEqualsBetweenCurrentAndEdited);
     List<Property> propertiesNotEmpty = editedProperties.stream()
-                                                  .filter(Property::isNotEmpty)
-                                                  .collect(Collectors.toList());
+                                                        .filter(Property::isNotEmpty)
+                                                        .collect(Collectors.toList());
 
     return buildEntity(currentVersion.getId(), propertiesNotEmpty);
   }
@@ -72,16 +75,16 @@ public final class ConverterHelper {
 
     List<Property> properties = new ArrayList<>();
     for (VersionableProperty versionableProperty : versionableProperties) {
-      if (RelationType.NONE == versionableProperty.getRelationType()) {
+      if (NONE == versionableProperty.getRelationType()) {
         Property property = exportProperty(version, versionableProperty);
         properties.add(property);
       }
-      if (RelationType.ONE_TO_MANY == versionableProperty.getRelationType()) {
+      if (ONE_TO_MANY == versionableProperty.getRelationType()) {
         Property extractOneToManyRelationProperty = extractOneToManyRelationProperty(
             version, versionableProperty);
         properties.add(extractOneToManyRelationProperty);
       }
-      if (RelationType.ONE_TO_ONE == versionableProperty.getRelationType()) {
+      if (ONE_TO_ONE == versionableProperty.getRelationType()) {
         throw new VersioningException("OneToOne Relation not implemented");
       }
     }
@@ -98,7 +101,7 @@ public final class ConverterHelper {
       return buildProperty(property.getFieldName(), propertyValue);
     } catch (NoSuchFieldException | IllegalAccessException e) {
       log.error("Error during parse field {}", e.getMessage());
-      throw new VersioningException("Error during parse field "+e.getMessage(), e);
+      throw new VersioningException("Error during parse field " + e.getMessage(), e);
     }
   }
 
@@ -129,8 +132,8 @@ public final class ConverterHelper {
         }
       }
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      log.error("Error during parse field {}",e.getMessage());
-      throw new VersioningException("Error during parse field "+e.getMessage(), e);
+      log.error("Error during parse field {}", e.getMessage());
+      throw new VersioningException("Error during parse field " + e.getMessage(), e);
     }
     return propertyBuilder.oneToMany(entityRelations).build();
   }

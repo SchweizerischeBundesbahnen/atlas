@@ -226,6 +226,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     editedVersion.setName("FPFN Name <changed>");
     editedVersion.setComment("Scenario 6");
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
+    editedVersion.setValidTo(version1.getValidTo());
     editedVersion.getLineRelations()
                  .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version1).build());
 

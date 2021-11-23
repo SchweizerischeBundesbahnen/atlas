@@ -9,5 +9,4 @@ public interface VersionableService {
   <T extends Versionable> List<VersionedObject> versioningObjects(Versionable current,
       Versionable edited,
       List<T> currentVersions);
-
 }

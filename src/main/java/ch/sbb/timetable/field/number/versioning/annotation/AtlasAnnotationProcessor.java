@@ -11,9 +11,9 @@ import java.util.Objects;
 
 public class AtlasAnnotationProcessor {
 
-  public List<VersionableProperty> getVersionableProperties(Object object){
-      checkIfIsAtlasVersionable(object);
-      return getAnnotatedField(object);
+  public List<VersionableProperty> getVersionableProperties(Object object) {
+    checkIfIsAtlasVersionable(object);
+    return getAnnotatedField(object);
   }
 
   private void checkIfIsAtlasVersionable(Object object) {
@@ -25,7 +25,7 @@ public class AtlasAnnotationProcessor {
     if (!clazz.isAnnotationPresent(AtlasVersionable.class)) {
       throw new AtlasVersionableException(
           "The class " + clazz.getSimpleName()
-              + " is not annotated with @AtlasVersionable.  Please check the documentation.");
+              + " is not annotated with @AtlasVersionable. Please check the documentation.");
     }
     if (!Versionable.class.isAssignableFrom(clazz)) {
       throw new AtlasVersionableException(
@@ -56,7 +56,6 @@ public class AtlasAnnotationProcessor {
     }
     return versionableProperties;
   }
-
 
   private String getKey(Field field) {
     String value = field.getAnnotation(AtlasVersionableProperty.class)
