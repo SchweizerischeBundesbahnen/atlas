@@ -8,6 +8,7 @@ import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.Property;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
+import ch.sbb.timetable.field.number.versioning.model.VersioningData;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -236,9 +237,9 @@ public class VersioningHelperTest {
         .build();
     ToVersioning toVersioning = ToVersioning.builder().versionable(versionableObject1).build();
     LocalDate editedValidTo = LocalDate.of(2021, 1, 1);
-
+    VersioningData versioningData = VersioningData.builder().editedValidTo(editedValidTo).build();
     //when
-    boolean result = VersioningHelper.isEditedValidToAfterTheRightBorder(editedValidTo,
+    boolean result = VersioningHelper.isEditedValidToAfterTheRightBorder(versioningData,
         toVersioning);
 
     //then
@@ -257,9 +258,10 @@ public class VersioningHelperTest {
         .build();
     ToVersioning toVersioning = ToVersioning.builder().versionable(versionableObject1).build();
     LocalDate editedValidTo = LocalDate.of(2020, 12, 31);
+    VersioningData versioningData = VersioningData.builder().editedValidTo(editedValidTo).build();
 
     //when
-    boolean result = VersioningHelper.isEditedValidToAfterTheRightBorder(editedValidTo,
+    boolean result = VersioningHelper.isEditedValidToAfterTheRightBorder(versioningData,
         toVersioning);
 
     //then
@@ -278,9 +280,10 @@ public class VersioningHelperTest {
         .build();
     ToVersioning toVersioning = ToVersioning.builder().versionable(versionableObject1).build();
     LocalDate editedValidTo = LocalDate.of(2020, 12, 30);
+    VersioningData versioningData = VersioningData.builder().editedValidTo(editedValidTo).build();
 
     //when
-    boolean result = VersioningHelper.isEditedValidToAfterTheRightBorder(editedValidTo,
+    boolean result = VersioningHelper.isEditedValidToAfterTheRightBorder(versioningData,
         toVersioning);
 
     //then
@@ -394,9 +397,10 @@ public class VersioningHelperTest {
         .build();
     Property property = Property.builder().value("CiaoCiao").key("property").build();
     Entity entity = Entity.builder().properties(List.of(property)).build();
+    ToVersioning toVersioning = ToVersioning.builder().versionable(versionableObject).build();
     //when
     boolean result = VersioningHelper.isOnTheRightBorderAndValidToAndPropertiesAreEdited(
-        versionableObject, entity);
+        versionableObject, entity, toVersioning);
 
     //then
     assertThat(result).isTrue();

@@ -8,11 +8,15 @@ import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
+@Builder
+@AllArgsConstructor
 public class VersioningData {
 
   private final Versionable editedVersion;
