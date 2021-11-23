@@ -27,6 +27,8 @@ public class VersioningData {
   private final List<ToVersioning> objectsToVersioning;
   private final List<ToVersioning> objectToVersioningFound;
   private final List<VersionedObject> versionedObjects;
+  private boolean onlyValidToEdited;
+  private boolean onlyValidFromEdited;
 
   public VersioningData(Versionable editedVersion, Versionable currentVersion, Entity editedEntity,
       List<ToVersioning> objectsToVersioning) {
@@ -57,6 +59,22 @@ public class VersioningData {
     throw new VersioningException("Found more or less than one object to versioning.");
   }
 
+  public boolean isOnlyValidFromEdited() {
+    return editedVersion.getValidFrom() != null
+        && (!editedVersion.getValidFrom().equals(this.currentVersion.getValidFrom()))
+        && (editedVersion.getValidTo() == null || editedVersion.getValidTo()
+                                                               .equals(
+                                                                   currentVersion.getValidTo()));
+  }
+
+  public boolean isOnlyValidToEdited() {
+    return editedVersion.getValidTo() != null
+        && (!editedVersion.getValidTo().equals(this.currentVersion.getValidTo()))
+        && (editedVersion.getValidFrom() == null || editedVersion.getValidFrom()
+                                                                 .equals(
+                                                                     currentVersion.getValidFrom()));
+  }
+
   private void populateValidFromAndValidTo(Versionable editedVersion) {
     this.editedValidFrom = editedVersion.getValidFrom();
     if (this.editedValidFrom == null) {
@@ -70,7 +88,8 @@ public class VersioningData {
       this.editedValidTo = currentVersion.getValidTo();
     }
 
-    if (this.editedValidFrom.isAfter(this.editedValidTo)) {
+    if (editedVersion.getValidFrom() != null && editedVersion.getValidTo() != null
+        && editedVersion.getValidFrom().isAfter(editedVersion.getValidTo())) {
       throw new VersioningException(
           "Edited ValidFrom " + this.editedValidFrom + " is bigger than edited ValidTo "
               + this.editedValidTo);

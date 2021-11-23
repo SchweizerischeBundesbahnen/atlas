@@ -334,7 +334,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
       versionService.updateVersion(version1, editedVersion);
       //then
     }).isInstanceOf(VersioningException.class)
-      .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger than edited ValidTo 2029-12-08");
+      .hasMessageContaining("ValidFrom: 2029-12-09 is bigger than validTo: 2029-12-08");
   }
 
 }

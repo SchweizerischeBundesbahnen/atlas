@@ -3,12 +3,12 @@ package ch.sbb.timetable.field.number.versioning.version;
 import static ch.sbb.timetable.field.number.versioning.model.Entity.replaceEditedPropertiesWithCurrentProperties;
 import static ch.sbb.timetable.field.number.versioning.model.VersionedObject.buildVersionedObjectToCreate;
 import static ch.sbb.timetable.field.number.versioning.model.VersionedObject.buildVersionedObjectToUpdate;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorderAndValidFromNotEdited;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity;
 import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheRightBorderAndOnlyValidToIsEditedWithNoEditedProperties;
-import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheRightBorderAndValidToAndPropertiesAreEdited;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnTheRightBorderAndValidToIsOnOrOverTheBorder;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreEdited;
+import static ch.sbb.timetable.field.number.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreNotEdited;
 
 import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
@@ -82,9 +82,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
-    if (isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(vd.getEditedValidFrom(),
-        vd.getEditedValidTo(),
-        toVersioning)) {
+    if (isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(vd,toVersioning)) {
       log.info("Found on the left border, "
           + "editedValidFrom is before current validFrom and validTo is not edited.");
       // update validFrom=editedValidFrom and merge properties
@@ -93,8 +91,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       versionedObjects.add(versionedObject);
       return versionedObjects;
     }
-    if (isOnTheRightBorderAndOnlyValidToIsEditedWithNoEditedProperties(vd.getEditedVersion(),
-        vd.getEditedEntity())) {
+    if (isOnlyValidToEditedAndPropertiesAreNotEdited(vd)) {
       log.info("Found on the right border, validTo is edited, no properties are edited.");
       // update validTo=editedValidTo and merge properties
       VersionedObject versionedObject =
@@ -102,12 +99,10 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       versionedObjects.add(versionedObject);
       return versionedObjects;
     }
-    if (isOnTheRightBorderAndValidToAndPropertiesAreEdited(vd.getEditedVersion(),
-        vd.getEditedEntity(),toVersioning)) {
+    if (isOnlyValidToEditedAndPropertiesAreEdited(vd)) {
       return applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(vd, toVersioning);
     }
-    if (isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(vd.getEditedValidFrom(),
-        vd.getEditedValidTo(), toVersioning)) {
+    if (isOnTheRightBorderAndValidToIsOnOrOverTheBorder(vd, toVersioning)) {
       return applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(vd, toVersioning);
     }
     throw new VersioningException();
@@ -116,7 +111,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(
       VersioningData vd, ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    if (isEditedValidToAfterTheRightBorder(vd, toVersioning)) {
+    if (isEditedValidToAfterTheRightBorderAndValidFromNotEdited(vd, toVersioning)) {
       log.info("Found on the right border, validTo is after current validTo, properties edited.");
       // update validTo=editedValidTo and update properties
       VersionedObject versionedObject =
