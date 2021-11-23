@@ -1,9 +1,10 @@
 package ch.sbb.timetable.field.number.service;
 
-
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.exceptions.ConflictException;
 import ch.sbb.timetable.field.number.repository.TimetableFieldNumberRepository;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
@@ -49,6 +50,9 @@ public class VersionService {
   }
 
   public Version save(Version newVersion) {
+    if (!areNumberAndSttfnUnique(newVersion)) {
+      throw new ConflictException("Number or SwissTimeTableFieldNumber are already taken");
+    }
     return versionRepository.save(newVersion);
   }
 
@@ -70,8 +74,7 @@ public class VersionService {
 
   public List<VersionedObject> updateVersion(Version currentVersion, Version editedVersion) {
     //1. get all versions from currentVersion.getTtfnid(); and sort it by from asc
-    List<Version> currentVersions = versionRepository.getAllVersionsVersioned(
-        currentVersion.getTtfnid());
+    List<Version> currentVersions = getAllVersionsVersioned(currentVersion.getTtfnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
@@ -85,7 +88,8 @@ public class VersionService {
         //update existing Version
         log(versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
-        versionRepository.save(version);
+        version.setStatus(Status.ACTIVE);
+        save(version);
       }
       if (VersioningAction.NEW.equals(versionedObject.getAction())) {
         //create new version
@@ -93,15 +97,30 @@ public class VersionService {
         Version version = convertVersionedObjectToVersion(versionedObject);
         //ensure version.getId() == null to avoid to update a Version
         version.setId(null);
-        versionRepository.save(version);
+        version.setStatus(Status.ACTIVE);
+        save(version);
       }
       if (VersioningAction.DELETE.equals(versionedObject.getAction())) {
         //delete existing version
         log(versionedObject);
-        versionRepository.deleteById(versionedObject.getEntity().getId());
+        deleteById(versionedObject.getEntity().getId());
       }
     }
     return versionedObjects;
+  }
+
+  private boolean areNumberAndSttfnUnique(Version version) {
+    List<Version> ttfnidVersions = versionRepository.findAllByTtfnid(version.getTtfnid());
+    if (ttfnidVersions.size() == 0) {
+      // new element
+      return !versionRepository.existsByNumberOrSwissTimetableFieldNumber(version.getNumber(), version.getSwissTimetableFieldNumber());
+    }
+    // new version
+    if (ttfnidVersions.stream().allMatch((ttfnidVersion) -> ttfnidVersion.getNumber().equals(version.getNumber())) &&
+        ttfnidVersions.stream().allMatch((ttfnidVersion) -> ttfnidVersion.getSwissTimetableFieldNumber().equals(version.getSwissTimetableFieldNumber()))) {
+      return true;
+    }
+    return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWhereTtfnidIsDifferent(version.getTtfnid(), version.getNumber(), version.getSwissTimetableFieldNumber()).size() == 0;
   }
 
   private Version convertVersionedObjectToVersion(VersionedObject versionedObject) {
@@ -112,6 +131,7 @@ public class VersionService {
     }
     version.setValidFrom(versionedObject.getValidFrom());
     version.setValidTo(versionedObject.getValidTo());
+    version.setCreator(UserService.getSbbUid());
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         version);
     for (Property property : entity.getProperties()) {
@@ -145,5 +165,4 @@ public class VersionService {
         versionedObject.getAction(),
         versionedObject);
   }
-
 }

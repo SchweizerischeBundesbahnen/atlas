@@ -23,6 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +32,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.GeneratorType;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -57,28 +62,42 @@ public class Version implements Versionable {
   private Set<LineRelation> lineRelations = new HashSet<>();
 
   @AtlasVersionableProperty
+  @GeneratorType(type = TtfnidGenerator.class, when = GenerationTime.INSERT)
+  @Column(updatable = false)
+  @NotNull
   private String ttfnid;
 
   @AtlasVersionableProperty
+  @Size(max = 255)
   private String name;
 
   @AtlasVersionableProperty
+  @NotNull
+  @Size(max = 50)
   private String number;
 
   @AtlasVersionableProperty
+  @Size(max = 50)
+  @NotNull
   private String swissTimetableFieldNumber;
 
   @Enumerated(EnumType.STRING)
+  @NotNull
   private Status status;
 
-  @Column(columnDefinition = "TIMESTAMP")
+  @CreationTimestamp
+  @Column(columnDefinition = "TIMESTAMP", updatable = false)
   private LocalDateTime creationDate;
 
+  @Column(updatable = false)
+  @NotNull
   private String creator;
 
   @Column(columnDefinition = "TIMESTAMP")
+  @NotNull
   private LocalDateTime editionDate;
 
+  @NotNull
   private String editor;
 
   @Column(columnDefinition = "TIMESTAMP")
@@ -91,17 +110,20 @@ public class Version implements Versionable {
   private String businessOrganisation;
 
   @AtlasVersionableProperty
+  @Size(max = 250)
   private String comment;
 
   @PrePersist
-  public void onPrePersist(){
+  public void onPrePersist() {
     String sbbUid = UserService.getSbbUid();
     setCreator(sbbUid);
     setEditor(sbbUid);
+    setEditionDate(LocalDateTime.now());
   }
 
   @PreUpdate
-  public void onPreUpdate(){
+  public void onPreUpdate() {
     setEditor(UserService.getSbbUid());
+    setEditionDate(LocalDateTime.now());
   }
 }

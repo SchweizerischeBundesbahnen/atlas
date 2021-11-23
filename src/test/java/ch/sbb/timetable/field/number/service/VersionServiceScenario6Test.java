@@ -44,7 +44,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     editedVersion.setValidFrom(LocalDate.of(2024, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2024, 12, 31));
     editedVersion.getLineRelations()
-                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version3).build());
+                 .add(LineRelation.builder().slnid("ch:1:ttfnid:111111").version(version3).build());
 
     //when
     versionService.updateVersion(version3, editedVersion);
@@ -91,7 +91,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     assertThat(lineRelationsFourthVersion.size()).isEqualTo(1);
     LineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream().iterator().next();
     assertThat(lineRelationFourthVersion).isNotNull();
-    assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
 
   }
 
@@ -116,7 +116,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
     editedVersion.getLineRelations()
-                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version1).build());
+                 .add(LineRelation.builder().slnid("ch:1:ttfnid:111111").version(version1).build());
 
     //when
     versionService.updateVersion(version1, editedVersion);
@@ -147,7 +147,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     assertThat(lineRelationsSecondVersion.size()).isEqualTo(1);
     LineRelation lineRelationSecondVersion = lineRelationsSecondVersion.stream().iterator().next();
     assertThat(lineRelationSecondVersion).isNotNull();
-    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
 
   }
 
@@ -172,7 +172,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
     editedVersion.getLineRelations()
-                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version1).build());
+                 .add(LineRelation.builder().slnid("ch:1:ttfnid:111111").version(version1).build());
 
     //when
     versionService.updateVersion(version1, editedVersion);
@@ -203,7 +203,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     assertThat(lineRelationsSecondVersion.size()).isEqualTo(1);
     LineRelation lineRelationSecondVersion = lineRelationsSecondVersion.stream().iterator().next();
     assertThat(lineRelationSecondVersion).isNotNull();
-    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
 
   }
 
@@ -227,7 +227,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     editedVersion.setComment("Scenario 6");
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
     editedVersion.getLineRelations()
-                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version1).build());
+                 .add(LineRelation.builder().slnid("ch:1:ttfnid:111111").version(version1).build());
 
     //when
     versionService.updateVersion(version1, editedVersion);
@@ -258,7 +258,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     assertThat(lineRelationsSecondVersion.size()).isEqualTo(1);
     LineRelation lineRelationSecondVersion = lineRelationsSecondVersion.stream().iterator().next();
     assertThat(lineRelationSecondVersion).isNotNull();
-    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
 
   }
 
