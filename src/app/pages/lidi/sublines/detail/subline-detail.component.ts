@@ -145,7 +145,7 @@ export class SublineDetailComponent
           [Validators.required, Validators.maxLength(50)],
         ],
         number: [version.number, [Validators.maxLength(50)]],
-        longName: [version.longName, [Validators.maxLength(1000)]],
+        longName: [version.longName, [Validators.maxLength(255)]],
         description: [version.description, [Validators.maxLength(255)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
