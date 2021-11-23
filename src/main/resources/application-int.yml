@@ -3,10 +3,9 @@ spring:
     url: jdbc:postgresql://line-directory-int.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/line_directory
     username: ${DB_USER}
     password: ${DB_PWD}
-endpoints:
-  web:
-    cors:
-      allowed-origins: https://atlas-frontend-int.apps.maggie.sbb-aws.net,https://line-directory-backend-int.apps.maggie.sbb-aws.net,https://developer-int.sbb.ch,https://developer.sbb.ch
+auth:
+  audience:
+    service-name: 733b361e-a067-4882-bb00-6bbaf36a007f
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n

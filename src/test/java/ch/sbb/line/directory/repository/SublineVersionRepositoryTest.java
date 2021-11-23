@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.line.directory.WithMockJwtAuthentication;
 import ch.sbb.line.directory.entity.SublineVersion;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +36,12 @@ public class SublineVersionRepositoryTest {
     assertThat(result).usingRecursiveComparison().ignoringActualNullFields().isEqualTo(
         SUBLINE_VERSION);
     assertThat(result.getSlnid()).startsWith("ch:1:slnid:");
+
+    assertThat(result.getCreationDate()).isNotNull();
+    assertThat(result.getEditionDate()).isNotNull();
+
+    assertThat(result.getCreator()).isEqualTo(WithMockJwtAuthentication.SBB_UID);
+    assertThat(result.getEditor()).isEqualTo(WithMockJwtAuthentication.SBB_UID);
   }
 
   @Test
