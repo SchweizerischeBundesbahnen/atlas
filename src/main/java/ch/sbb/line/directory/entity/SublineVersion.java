@@ -1,12 +1,9 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.api.SequenctialValidRange;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.service.UserService;
 import java.time.LocalDate;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,10 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,7 +22,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GeneratorType;
 
@@ -40,7 +33,7 @@ import org.hibernate.annotations.GeneratorType;
 @Builder
 @FieldNameConstants
 @Entity(name = "subline_version")
-public class SublineVersion implements SequenctialValidRange {
+public class SublineVersion extends BaseVersion {
 
   private static final String SUBLINE_VERSION_SEQ = "subline_version_seq";
 
@@ -93,29 +86,4 @@ public class SublineVersion implements SequenctialValidRange {
   @Size(max = 50)
   private String businessOrganisation;
 
-  @CreationTimestamp
-  @Column(columnDefinition = "TIMESTAMP", updatable = false)
-  private Date creationDate;
-
-  @Column(updatable = false)
-  private String creator;
-
-  @NotNull
-  @Version
-  @Column(columnDefinition = "TIMESTAMP")
-  private Date editionDate;
-
-  private String editor;
-
-  @PrePersist
-  public void onPrePersist() {
-    String sbbUid = UserService.getSbbUid();
-    setCreator(sbbUid);
-    setEditor(sbbUid);
-  }
-
-  @PreUpdate
-  public void onPreUpdate() {
-    setEditor(UserService.getSbbUid());
-  }
 }
