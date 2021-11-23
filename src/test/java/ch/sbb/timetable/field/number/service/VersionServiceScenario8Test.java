@@ -38,6 +38,7 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
     version3 = versionRepository.save(version3);
     Version editedVersion = new Version();
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
+    editedVersion.setValidFrom(version3.getValidFrom());
 
     //when
     versionService.updateVersion(version3, editedVersion);
@@ -92,6 +93,7 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
     version3 = versionRepository.save(version3);
     Version editedVersion = new Version();
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
+    editedVersion.setValidFrom(version3.getValidFrom());
     editedVersion.setName("FPFN Name <changed>");
 
     //when
@@ -157,6 +159,7 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
     version4 = versionRepository.save(version4);
     Version editedVersion = new Version();
     editedVersion.setValidTo(LocalDate.of(2025, 2, 1));
+    editedVersion.setValidFrom(version3.getValidFrom());
 
     //when
     versionService.updateVersion(version3, editedVersion);
@@ -221,6 +224,7 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
     version4 = versionRepository.save(version4);
     Version editedVersion = new Version();
     editedVersion.setValidTo(LocalDate.of(2025, 2, 1));
+    editedVersion.setValidFrom(version3.getValidFrom());
     editedVersion.setName("FPFN Name <changed>");
 
     //when
@@ -286,6 +290,7 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
     version4 = versionRepository.save(version4);
     Version editedVersion = new Version();
     editedVersion.setValidTo(LocalDate.of(2025, 8, 1));
+    editedVersion.setValidFrom(version3.getValidFrom());
     editedVersion.setName("FPFN Name <changed>");
 
     //when
@@ -359,6 +364,7 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
     version4 = versionRepository.save(version4);
     Version editedVersion = new Version();
     editedVersion.setValidTo(LocalDate.of(2025, 6, 1));
+    editedVersion.setValidFrom(version1.getValidFrom());
     editedVersion.setName("FPFN Name <changed>");
 
     //when
@@ -432,6 +438,7 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
     version3 = versionRepository.save(version3);
     Version editedVersion = new Version();
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
+    editedVersion.setValidFrom(version1.getValidFrom());
     editedVersion.setName("FPFN Name <changed>");
 
     //when
@@ -475,9 +482,6 @@ public class VersionServiceScenario8Test extends BaseVersionServiceTest {
     assertThat(fourthTemporalVersion.getName()).isEqualTo("FPFN Name");
     Set<LineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isEmpty();
-
-
   }
-
 
 }
