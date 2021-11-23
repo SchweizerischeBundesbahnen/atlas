@@ -1,11 +1,11 @@
 package ch.sbb.timetable.field.number.entity;
 
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.service.UserService;
-import ch.sbb.timetable.field.number.versioning.annotation.AtlasVersionable;
-import ch.sbb.timetable.field.number.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.timetable.field.number.versioning.model.Versionable;
-import ch.sbb.timetable.field.number.versioning.model.VersionableProperty.RelationType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -94,14 +94,14 @@ public class Version implements Versionable {
   private String comment;
 
   @PrePersist
-  public void onPrePersist(){
+  public void onPrePersist() {
     String sbbUid = UserService.getSbbUid();
     setCreator(sbbUid);
     setEditor(sbbUid);
   }
 
   @PreUpdate
-  public void onPreUpdate(){
+  public void onPreUpdate() {
     setEditor(UserService.getSbbUid());
   }
 }
