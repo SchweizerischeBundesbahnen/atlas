@@ -8,9 +8,8 @@ import { HomeComponent } from './pages/home/home.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TtfnApiModule } from './api/ttfn';
 import { environment } from '../environments/environment';
-import { Configuration, LiDiApiModule } from './api/lidi';
+import { AtlasApiModule, Configuration } from './api';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
@@ -32,8 +31,7 @@ function withBasePath(basePath: string) {
     }),
     BrowserAnimationsModule,
     AppRoutingModule,
-    TtfnApiModule.forRoot(withBasePath(environment.ttfnBackendUrl)),
-    LiDiApiModule.forRoot(withBasePath(environment.lidiBackendUrl)),
+    AtlasApiModule.forRoot(withBasePath(environment.atlasApiUrl)),
   ],
   bootstrap: [AppComponent],
 })

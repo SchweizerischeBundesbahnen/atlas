@@ -8,8 +8,8 @@ pipeline {
   environment {
     CYPRESS_BASE_URL = 'https://atlas-frontend-test.apps.aws01t.sbb-aws-test.net'
 
-    CYPRESS_CLIENT_ID = 'a4b0a771-8dfe-4d52-bc4e-30f0ae525714'
-    CYPRESS_CLIENT_SECRET = credentials('ca97e11a-0ca0-4281-81c8-c3fbd33d17c2	')
+    CYPRESS_CLIENT_ID = 'f06799ef-d6a7-4d98-9e31-a51c60761e83'
+    CYPRESS_CLIENT_SECRET = credentials('f696bc4f-0636-470c-aed3-f0d8fd17503d')
 
     CYPRESS_USERNAME = 'fxatl_a@sbb.ch'
     CYPRESS_PASSWORD = credentials('678b4989-f12c-4b4a-955f-35437d7a476f')
