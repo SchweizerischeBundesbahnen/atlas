@@ -103,7 +103,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       return versionedObjects;
     }
     if (isOnTheRightBorderAndValidToAndPropertiesAreEdited(vd.getEditedVersion(),
-        vd.getEditedEntity())) {
+        vd.getEditedEntity(),toVersioning)) {
       return applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(vd, toVersioning);
     }
     if (isOnTheRightBorderAndEditedEntityIsOnOrOverTheBorder(vd.getEditedValidFrom(),
@@ -116,7 +116,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(
       VersioningData vd, ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    if (isEditedValidToAfterTheRightBorder(vd.getEditedValidTo(), toVersioning)) {
+    if (isEditedValidToAfterTheRightBorder(vd, toVersioning)) {
       log.info("Found on the right border, validTo is after current validTo, properties edited.");
       // update validTo=editedValidTo and update properties
       VersionedObject versionedObject =

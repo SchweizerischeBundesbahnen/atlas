@@ -6,6 +6,7 @@ import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.versioning.model.Entity;
 import ch.sbb.timetable.field.number.versioning.model.ToVersioning;
 import ch.sbb.timetable.field.number.versioning.model.Versionable;
+import ch.sbb.timetable.field.number.versioning.model.VersioningData;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,9 +100,11 @@ public final class VersioningHelper {
             toVersioning.getValidTo()));
   }
 
-  public static boolean isEditedValidToAfterTheRightBorder(LocalDate editedValidTo,
+  public static boolean isEditedValidToAfterTheRightBorder(VersioningData vd,
       ToVersioning toVersioning) {
-    return editedValidTo.isAfter(toVersioning.getValidTo());
+    return vd.getEditedValidTo().isAfter(toVersioning.getValidTo()) && (
+        vd.getEditedValidFrom() == null || vd.getEditedValidFrom()
+                                             .equals(toVersioning.getValidFrom()));
   }
 
   public static boolean isOnTheRightBorderAndOnlyValidToIsEditedWithNoEditedProperties(
@@ -113,8 +116,9 @@ public final class VersioningHelper {
 
   public static boolean isOnTheRightBorderAndValidToAndPropertiesAreEdited(
       Versionable editedVersion,
-      Entity editedEntity) {
-    return editedVersion.getValidTo() != null && editedVersion.getValidFrom() == null
+      Entity editedEntity, ToVersioning toVersioning) {
+    return editedVersion.getValidTo() != null && (editedVersion.getValidFrom() == null
+        || toVersioning.getValidFrom().equals(editedVersion.getValidFrom()))
         && !editedEntity.getProperties().isEmpty();
   }
 
