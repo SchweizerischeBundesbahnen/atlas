@@ -1,8 +1,12 @@
 package ch.sbb.timetable.field.number.api;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import javax.validation.Valid;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,14 +34,26 @@ public interface TimetableFieldNumberApiV1 {
   List<VersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
 
   @PutMapping({"versions/{id}"})
-  List<VersionModel> updateVersionWithVersioning(@PathVariable Long id, @RequestBody VersionModel newVersion);
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content)
+  })
+  List<VersionModel> updateVersionWithVersioning(@PathVariable Long id, @RequestBody @Valid VersionModel newVersion);
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  VersionModel createVersion(@RequestBody VersionModel newVersion);
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201"),
+      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content)
+  })
+  VersionModel createVersion(@RequestBody @Valid VersionModel newVersion);
 
   @PutMapping({"/{id}"})
-  VersionModel updateVersion(@PathVariable Long id, @RequestBody VersionModel newVersion);
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content)
+  })
+  VersionModel updateVersion(@PathVariable Long id, @RequestBody @Valid VersionModel newVersion);
 
   @DeleteMapping({"/{id}"})
   void deleteVersion(@PathVariable Long id);

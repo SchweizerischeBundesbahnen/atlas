@@ -43,7 +43,7 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.getLineRelations()
-                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version3).build());
+                 .add(LineRelation.builder().slnid("ch:1:ttfnid:111111").version(version3).build());
 
     //when
     versionService.updateVersion(version3, editedVersion);
@@ -75,7 +75,7 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(lineRelationsSecondVersion.size()).isEqualTo(1);
     LineRelation lineRelationSecondVersion = lineRelationsSecondVersion.stream().iterator().next();
     assertThat(lineRelationSecondVersion).isNotNull();
-    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
 
     //update
     Version thirdTemporalVersion = result.get(2);
@@ -88,7 +88,7 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(lineRelationsThirdVersion.size()).isEqualTo(1);
     LineRelation lineRelationThirdVersion = lineRelationsThirdVersion.stream().iterator().next();
     assertThat(lineRelationThirdVersion).isNotNull();
-    assertThat(lineRelationThirdVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationThirdVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
 
     //new
     Version fourthTemporalVersion = result.get(3);
@@ -101,7 +101,7 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(lineRelationsFourthVersion.size()).isEqualTo(1);
     LineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream().iterator().next();
     assertThat(lineRelationFourthVersion).isNotNull();
-    assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
 
     //last current index updated
     Version fifthTemporalVersion = result.get(4);

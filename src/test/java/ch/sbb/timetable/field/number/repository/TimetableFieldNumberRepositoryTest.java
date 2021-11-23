@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.timetable.field.number.IntegrationTest;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.enumaration.Status;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,27 +35,36 @@ public class TimetableFieldNumberRepositoryTest {
   void shouldDisplayNameOfCurrentDay() {
     // Given
     Version validLastYear = Version.builder()
-                                   .ttfnid(TTFNID)
-                                   .name("Last Year")
-                                   .validFrom(LocalDate.now().minusYears(2))
-                                   .validTo(LocalDate.now().minusYears(1))
-                                   .build();
+        .ttfnid(TTFNID)
+        .name("Last Year")
+        .swissTimetableFieldNumber("a.100")
+        .status(Status.ACTIVE)
+        .number("10.100")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .build();
     versionRepository.saveAndFlush(validLastYear);
 
     Version validToday = Version.builder()
-                                .ttfnid(TTFNID)
-                                .name("Today")
-                                .validFrom(LocalDate.now().minusDays(1))
-                                .validTo(LocalDate.now().plusDays(1))
-                                .build();
+        .ttfnid(TTFNID)
+        .name("Today")
+        .swissTimetableFieldNumber("a.100")
+        .status(Status.ACTIVE)
+        .number("10.100")
+        .validFrom(LocalDate.now().minusDays(1))
+        .validTo(LocalDate.now().plusDays(1))
+        .build();
     versionRepository.saveAndFlush(validToday);
 
     Version validNextYear = Version.builder()
-                                   .ttfnid(TTFNID)
-                                   .name("Next Year")
-                                   .validFrom(LocalDate.now().plusYears(1))
-                                   .validTo(LocalDate.now().plusYears(2))
-                                   .build();
+        .ttfnid(TTFNID)
+        .name("Next Year")
+        .swissTimetableFieldNumber("a.100")
+        .status(Status.ACTIVE)
+        .number("10.100")
+        .validFrom(LocalDate.now().plusYears(1))
+        .validTo(LocalDate.now().plusYears(2))
+        .build();
     versionRepository.saveAndFlush(validNextYear);
 
     // When
@@ -66,8 +76,8 @@ public class TimetableFieldNumberRepositoryTest {
 
     TimetableFieldNumber timetableFieldNumber = result.getContent().get(0);
     assertThat(timetableFieldNumber).usingRecursiveComparison()
-                                    .ignoringFields("validFrom", "validTo")
-                                    .isEqualTo(validToday);
+        .ignoringFields("validFrom", "validTo")
+        .isEqualTo(validToday);
     assertThat(timetableFieldNumber.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
     assertThat(timetableFieldNumber.getValidTo()).isEqualTo(validNextYear.getValidTo());
   }
@@ -79,27 +89,36 @@ public class TimetableFieldNumberRepositoryTest {
   void shouldDisplayNameOfNextYear() {
     // Given
     Version validLastYear = Version.builder()
-                                   .ttfnid(TTFNID)
-                                   .name("Last Year")
-                                   .validFrom(LocalDate.now().minusYears(2))
-                                   .validTo(LocalDate.now().minusYears(1))
-                                   .build();
+        .ttfnid(TTFNID)
+        .name("Last Year")
+        .swissTimetableFieldNumber("a.100")
+        .status(Status.ACTIVE)
+        .number("10.100")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .build();
     versionRepository.saveAndFlush(validLastYear);
 
     Version validNextYear = Version.builder()
-                                   .ttfnid(TTFNID)
-                                   .name("Next Year")
-                                   .validFrom(LocalDate.now().plusYears(1))
-                                   .validTo(LocalDate.now().plusYears(2))
-                                   .build();
+        .ttfnid(TTFNID)
+        .name("Next Year")
+        .swissTimetableFieldNumber("a.100")
+        .status(Status.ACTIVE)
+        .number("10.100")
+        .validFrom(LocalDate.now().plusYears(1))
+        .validTo(LocalDate.now().plusYears(2))
+        .build();
     versionRepository.saveAndFlush(validNextYear);
 
     Version validInTwoYears = Version.builder()
-                                   .ttfnid(TTFNID)
-                                   .name("Later")
-                                   .validFrom(LocalDate.now().plusYears(3))
-                                   .validTo(LocalDate.now().plusYears(4))
-                                   .build();
+        .ttfnid(TTFNID)
+        .name("Later")
+        .swissTimetableFieldNumber("a.100")
+        .status(Status.ACTIVE)
+        .number("10.100")
+        .validFrom(LocalDate.now().plusYears(3))
+        .validTo(LocalDate.now().plusYears(4))
+        .build();
     versionRepository.saveAndFlush(validInTwoYears);
 
     // When
@@ -111,8 +130,8 @@ public class TimetableFieldNumberRepositoryTest {
 
     TimetableFieldNumber timetableFieldNumber = result.getContent().get(0);
     assertThat(timetableFieldNumber).usingRecursiveComparison()
-                                    .ignoringFields("validFrom", "validTo")
-                                    .isEqualTo(validNextYear);
+        .ignoringFields("validFrom", "validTo")
+        .isEqualTo(validNextYear);
     assertThat(timetableFieldNumber.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
     assertThat(timetableFieldNumber.getValidTo()).isEqualTo(validInTwoYears.getValidTo());
   }
@@ -124,19 +143,25 @@ public class TimetableFieldNumberRepositoryTest {
   void shouldDisplayNameOfLastYear() {
     // Given
     Version validEarlier = Version.builder()
-                                   .ttfnid(TTFNID)
-                                   .name("Earlier")
-                                   .validFrom(LocalDate.now().minusYears(4))
-                                   .validTo(LocalDate.now().minusYears(3))
-                                   .build();
+        .ttfnid(TTFNID)
+        .name("Earlier")
+        .swissTimetableFieldNumber("a.100")
+        .status(Status.ACTIVE)
+        .number("10.100")
+        .validFrom(LocalDate.now().minusYears(4))
+        .validTo(LocalDate.now().minusYears(3))
+        .build();
     versionRepository.saveAndFlush(validEarlier);
 
     Version validLastYear = Version.builder()
-                                   .ttfnid(TTFNID)
-                                   .name("Last Year")
-                                   .validFrom(LocalDate.now().minusYears(2))
-                                   .validTo(LocalDate.now().minusYears(1))
-                                   .build();
+        .ttfnid(TTFNID)
+        .name("Last Year")
+        .swissTimetableFieldNumber("a.100")
+        .status(Status.ACTIVE)
+        .number("10.100")
+        .validFrom(LocalDate.now().minusYears(2))
+        .validTo(LocalDate.now().minusYears(1))
+        .build();
     versionRepository.saveAndFlush(validLastYear);
 
     // When
@@ -148,8 +173,8 @@ public class TimetableFieldNumberRepositoryTest {
 
     TimetableFieldNumber timetableFieldNumber = result.getContent().get(0);
     assertThat(timetableFieldNumber).usingRecursiveComparison()
-                                    .ignoringFields("validFrom", "validTo")
-                                    .isEqualTo(validLastYear);
+        .ignoringFields("validFrom", "validTo")
+        .isEqualTo(validLastYear);
     assertThat(timetableFieldNumber.getValidFrom()).isEqualTo(validEarlier.getValidFrom());
     assertThat(timetableFieldNumber.getValidTo()).isEqualTo(validLastYear.getValidTo());
   }
