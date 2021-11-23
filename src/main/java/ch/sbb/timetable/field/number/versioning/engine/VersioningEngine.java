@@ -22,24 +22,22 @@ import lombok.extern.slf4j.Slf4j;
 public class VersioningEngine {
 
   public <T extends Versionable> List<VersionedObject> applyVersioning(
-      List<VersionableProperty> versionableProperties,
-      Versionable currentVersion,
-      Versionable editedVersion,
-      List<T> currentVersions) {
+      Versionable currentVersion, Versionable editedVersion,
+      List<T> currentVersions, List<VersionableProperty> versionableProperties) {
 
     //2. get edited properties from editedVersion
-    Entity editedEntity = convertToEditedEntity(versionableProperties,
-        currentVersion, editedVersion);
+    Entity editedEntity = convertToEditedEntity(currentVersion, editedVersion, versionableProperties
+    );
 
     //3. collect all versions to versioning in ToVersioning object
     List<ToVersioning> objectsToVersioning = convertAllObjectsToVersioning(
-        versionableProperties, currentVersions);
+        currentVersions, versionableProperties);
     //Temporal sort objects versioning
     objectsToVersioning.sort(Comparator.comparing(o -> o.getVersionable().getValidFrom()));
 
     Versioning versioning;
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    if (areValidToAndValidFromNotEdited(currentVersion, editedVersion)) {
+    if (areValidToAndValidFromNotEdited(editedVersion, currentVersion)) {
       //update actual version
       log.info("ValidFrom and ValidTo are not edited.");
       versioning = new VersioningWhenValidFromAndValidToAreNotEdited();
@@ -49,8 +47,8 @@ public class VersioningEngine {
       log.info("ValidFrom and/or ValidTo are edited.");
       versioning = new VersioningWhenValidToAndValidFromAreEdited();
       versionedObjects.addAll(versioning.applyVersioning(editedVersion,
-          currentVersion, objectsToVersioning,
-          editedEntity));
+          currentVersion, editedEntity, objectsToVersioning
+      ));
     }
     return mergeVersionedObject(versionedObjects);
   }
