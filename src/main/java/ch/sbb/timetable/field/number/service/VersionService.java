@@ -98,6 +98,9 @@ public class VersionService {
         Version version = convertVersionedObjectToVersion(versionedObject);
         //ensure version.getId() == null to avoid to update a Version
         version.setId(null);
+        version.getLineRelations().forEach(lineRelation-> {
+          lineRelation.setVersion(version);
+        });
         versionRepository.save(version);
       }
       if (DELETE.equals(versionedObject.getAction())) {
