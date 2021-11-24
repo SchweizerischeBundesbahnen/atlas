@@ -13,7 +13,7 @@ pipeline {
 
     CYPRESS_USERNAME = 'fxatl_a@sbb.ch'
     CYPRESS_PASSWORD = credentials('678b4989-f12c-4b4a-955f-35437d7a476f')
-    CYPRESS_SCOPE = 'openid profile email offline_access api://00dcfe9e-caa3-45da-a9bc-47c408182ee8/.default'
+    CYPRESS_SCOPE = 'openid profile email offline_access api://2e8c6ce0-304d-42e1-9bce-600b3ea43aad/.default'
 
     NO_COLOR = 1
   }
