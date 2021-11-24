@@ -73,11 +73,11 @@ public class Version implements Versionable {
 
   @AtlasVersionableProperty
   @NotNull
-  @Size(max = 50)
+  @Size(min = 1, max = 50)
   private String number;
 
   @AtlasVersionableProperty
-  @Size(max = 50)
+  @Size(min = 1, max = 50)
   @NotNull
   private String swissTimetableFieldNumber;
 
@@ -93,6 +93,7 @@ public class Version implements Versionable {
   @NotNull
   private String creator;
 
+  //@javax.persistence.Version
   @Column(columnDefinition = "TIMESTAMP")
   @NotNull
   private LocalDateTime editionDate;
@@ -101,9 +102,11 @@ public class Version implements Versionable {
   private String editor;
 
   @Column(columnDefinition = "TIMESTAMP")
+  @NotNull
   private LocalDate validFrom;
 
   @Column(columnDefinition = "TIMESTAMP")
+  @NotNull
   private LocalDate validTo;
 
   @AtlasVersionableProperty

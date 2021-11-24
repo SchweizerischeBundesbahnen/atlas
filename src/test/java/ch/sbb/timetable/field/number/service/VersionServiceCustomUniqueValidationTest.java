@@ -20,11 +20,11 @@ public class VersionServiceCustomUniqueValidationTest {
   private final VersionRepository versionRepository;
   private final Version version = Version.builder().ttfnid("ch:1:ttfnid:100000")
       .name("FPFN Name")
-      .number("BEX1")
+      .number("10.100")
       .status(Status.ACTIVE)
-      .swissTimetableFieldNumber("b0.BEX")
+      .swissTimetableFieldNumber("b0.100")
       .validFrom(LocalDate.of(2020, 1, 1))
-      .validTo(LocalDate.of(2021, 12, 31))
+      .validTo(LocalDate.of(2020, 12, 31))
       .build();
 
   @Autowired
@@ -42,27 +42,17 @@ public class VersionServiceCustomUniqueValidationTest {
   @Test
   void shouldNotThrowConflictException() {
     // Given
-    Version version1 = Version.builder()
+    Version version = Version.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .name("FPFN Name")
-        .number("BEX1")
-        .status(Status.ACTIVE)
-        .swissTimetableFieldNumber("b0.BEX")
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31)).build();
-    Version version2 = Version.builder()
-        .ttfnid("ch:1:ttfnid:100001")
         .name("FPFN Name")
         .number("10.100")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.100")
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31)).build();
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
     // When
-    Executable saveExecutable = () -> {
-      versionService.save(version1);
-      versionService.save(version2);
-    };
+    Executable saveExecutable = () -> versionService.save(version);
     // Then
     Assertions.assertDoesNotThrow(saveExecutable);
   }
@@ -73,11 +63,11 @@ public class VersionServiceCustomUniqueValidationTest {
     Version version = Version.builder()
         .ttfnid("ch:1:ttfnid:100001")
         .name("FPFN Name")
-        .number("BEX1")
+        .number("10.100")
         .status(Status.ACTIVE)
-        .swissTimetableFieldNumber("b0.100")
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31)).build();
+        .swissTimetableFieldNumber("b0.101")
+        .validFrom(LocalDate.of(2020, 2, 1))
+        .validTo(LocalDate.of(2020, 10, 1)).build();
     // When
     Executable saveExecutable = () -> versionService.save(version);
     // Then
@@ -90,11 +80,53 @@ public class VersionServiceCustomUniqueValidationTest {
     Version version = Version.builder()
         .ttfnid("ch:1:ttfnid:100001")
         .name("FPFN Name")
+        .number("10.101")
+        .status(Status.ACTIVE)
+        .swissTimetableFieldNumber("b0.100")
+        .validFrom(LocalDate.of(2019, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31)).build();
+    // When
+    Executable saveExecutable = () -> versionService.save(version);
+    // Then
+    Assertions.assertThrows(ConflictException.class, saveExecutable);
+  }
+
+  @Test
+  void shouldThrowConflictExceptionIfBothNotUnique() {
+    // Given
+    versionRepository.save(Version.builder().ttfnid("ch:1:ttfnid:100000")
+        .name("FPFN Name")
         .number("10.100")
         .status(Status.ACTIVE)
-        .swissTimetableFieldNumber("b0.BEX")
-        .validFrom(LocalDate.of(2022, 1, 1))
+        .swissTimetableFieldNumber("b0.100")
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build());
+    Version version = Version.builder()
+        .ttfnid("ch:1:ttfnid:100001")
+        .name("FPFN Name")
+        .number("10.100")
+        .status(Status.ACTIVE)
+        .swissTimetableFieldNumber("b0.100")
+        .validFrom(LocalDate.of(2019, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31)).build();
+    // When
+    Executable saveExecutable = () -> versionService.save(version);
+    // Then
+    Assertions.assertThrows(ConflictException.class, saveExecutable);
+  }
+
+  @Test
+  void shouldThrowConflictExceptionIfNotUniqueAndValidityOverlap() {
+    // Given
+    Version version = Version.builder()
+        .ttfnid("ch:1:ttfnid:100001")
+        .name("FPFN Name")
+        .number("10.100")
+        .status(Status.ACTIVE)
+        .swissTimetableFieldNumber("b0.101")
+        .validFrom(LocalDate.of(2019, 1, 1))
+        .validTo(LocalDate.of(2020, 10, 1)).build();
     // When
     Executable saveExecutable = () -> versionService.save(version);
     // Then

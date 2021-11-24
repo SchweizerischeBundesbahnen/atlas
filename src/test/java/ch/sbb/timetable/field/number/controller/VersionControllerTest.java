@@ -56,7 +56,7 @@ public class VersionControllerTest {
     verify(versionService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate", "lineRelations")
+                                                    "creationDate", "lineRelations", "ttfnid")
                                                 .isEqualTo(versionModel);
   }
 
