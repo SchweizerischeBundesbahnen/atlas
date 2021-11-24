@@ -1,6 +1,5 @@
 package ch.sbb.timetable.field.number.service;
 
-
 import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.DELETE;
 import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.NEW;
 import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.NOT_TOUCHED;
@@ -104,7 +103,7 @@ public class VersionService {
         //ensure version.getId() == null to avoid to update a Version
         version.setId(null);
         version.setStatus(Status.ACTIVE);
-        version.getLineRelations().forEach(lineRelation-> {
+        version.getLineRelations().forEach(lineRelation -> {
           lineRelation.setVersion(version);
         });
         save(version);
