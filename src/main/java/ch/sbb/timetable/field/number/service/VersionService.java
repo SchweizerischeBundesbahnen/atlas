@@ -1,10 +1,16 @@
 package ch.sbb.timetable.field.number.service;
 
-import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.DELETE;
-import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.NEW;
-import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.NOT_TOUCHED;
-import static ch.sbb.timetable.field.number.versioning.model.VersioningAction.UPDATE;
 
+import static ch.sbb.atlas.versioning.model.VersioningAction.DELETE;
+import static ch.sbb.atlas.versioning.model.VersioningAction.NEW;
+import static ch.sbb.atlas.versioning.model.VersioningAction.NOT_TOUCHED;
+import static ch.sbb.atlas.versioning.model.VersioningAction.UPDATE;
+
+import ch.sbb.atlas.versioning.exception.VersioningException;
+import ch.sbb.atlas.versioning.model.Entity;
+import ch.sbb.atlas.versioning.model.Property;
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
@@ -12,11 +18,6 @@ import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.exceptions.ConflictException;
 import ch.sbb.timetable.field.number.repository.TimetableFieldNumberRepository;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
-import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
-import ch.sbb.timetable.field.number.versioning.model.Entity;
-import ch.sbb.timetable.field.number.versioning.model.Property;
-import ch.sbb.timetable.field.number.versioning.model.VersionedObject;
-import ch.sbb.timetable.field.number.versioning.service.VersionableService;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;

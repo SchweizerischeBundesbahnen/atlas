@@ -3,10 +3,10 @@ package ch.sbb.timetable.field.number.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
-import ch.sbb.timetable.field.number.versioning.exception.VersioningException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
