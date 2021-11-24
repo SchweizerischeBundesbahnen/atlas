@@ -78,7 +78,6 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   public VersionModel updateVersion(Long id, VersionModel newVersion) {
     Version versionToUpdate = versionService.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
 
-    versionToUpdate.setTtfnid(newVersion.getTtfnid());
     versionToUpdate.setName(newVersion.getName());
     versionToUpdate.setNumber(newVersion.getNumber());
     versionToUpdate.setSwissTimetableFieldNumber(newVersion.getSwissTimetableFieldNumber());
@@ -126,7 +125,6 @@ public class VersionController implements TimetableFieldNumberApiV1 {
         .id(versionModel.getId())
         .name(versionModel.getName())
         .number(versionModel.getNumber())
-        .ttfnid(versionModel.getTtfnid())
         .swissTimetableFieldNumber(versionModel.getSwissTimetableFieldNumber())
         .status(versionModel.getStatus())
         .validFrom(versionModel.getValidFrom())
