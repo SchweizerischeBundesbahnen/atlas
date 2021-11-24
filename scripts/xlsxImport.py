@@ -48,6 +48,9 @@ for index, row in data.iterrows():
 	name = row[1] if isinstance(row[1], str) else row[2]
 	name = cleanhtml(name).replace("'", "''")
 
+	if len(name) > 255:
+		name = name[:255]
+
 	result_sql_file.write(
 			"INSERT INTO timetable_field_number_version "
 			"(id, ttfnid, name, number, swiss_timetable_field_number, creation_date, creator, edition_date, editor, valid_from, valid_to, comment, status) "
