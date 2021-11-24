@@ -64,7 +64,6 @@ public class Version implements Versionable {
   @AtlasVersionableProperty
   @GeneratorType(type = TtfnidGenerator.class, when = GenerationTime.INSERT)
   @Column(updatable = false)
-  @NotNull
   private String ttfnid;
 
   @AtlasVersionableProperty
