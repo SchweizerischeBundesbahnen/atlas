@@ -110,17 +110,9 @@ public class VersionService {
   }
 
   private boolean areNumberAndSttfnUnique(Version version) {
-    List<Version> ttfnidVersions = versionRepository.findAllByTtfnid(version.getTtfnid());
-    if (ttfnidVersions.size() == 0) {
-      // new element
-      return !versionRepository.existsByNumberOrSwissTimetableFieldNumber(version.getNumber(), version.getSwissTimetableFieldNumber());
-    }
-    // new version
-    if (ttfnidVersions.stream().allMatch((ttfnidVersion) -> ttfnidVersion.getNumber().equals(version.getNumber())) &&
-        ttfnidVersions.stream().allMatch((ttfnidVersion) -> ttfnidVersion.getSwissTimetableFieldNumber().equals(version.getSwissTimetableFieldNumber()))) {
-      return true;
-    }
-    return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWhereTtfnidIsDifferent(version.getTtfnid(), version.getNumber(), version.getSwissTimetableFieldNumber()).size() == 0;
+    String ttfnid = version.getTtfnid() == null ? "" : version.getTtfnid();
+    return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber(),
+        version.getValidFrom(), version.getValidTo(), ttfnid).size() == 0;
   }
 
   private Version convertVersionedObjectToVersion(VersionedObject versionedObject) {

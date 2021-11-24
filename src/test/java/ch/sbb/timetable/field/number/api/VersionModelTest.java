@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.timetable.field.number.api.VersionModel.VersionModelBuilder;
 import ch.sbb.timetable.field.number.enumaration.Status;
+import java.time.LocalDate;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -137,6 +138,8 @@ public class VersionModelTest {
     return VersionModel.builder()
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("a.90")
-        .number("10.100");
+        .number("10.100")
+        .validFrom(LocalDate.of(2021, 12, 1))
+        .validTo(LocalDate.of(2022, 12, 1));
   }
 }

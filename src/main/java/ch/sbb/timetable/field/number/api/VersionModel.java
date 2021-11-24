@@ -30,23 +30,25 @@ public class VersionModel {
   private String name;
 
   @Schema(description = "Number", example = "100; 80.099; 2700")
-  @Size(max = 50)
+  @Size(min = 1, max = 50)
   @NotNull
   @Pattern(regexp = "^[.0-9]{1,50}$")
   private String number;
 
   @Schema(description = "Timetable field number")
-  @Size(max = 50)
+  @Size(min = 1, max = 50)
   @NotNull
   private String swissTimetableFieldNumber;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
   private Status status;
 
-  @Schema(description = "Date - valid from")
+  @Schema(description = "Date - valid from", example = "2021-11-23")
+  @NotNull
   private LocalDate validFrom;
 
-  @Schema(description = "Date - valid to")
+  @Schema(description = "Date - valid to", example = "2021-12-01")
+  @NotNull
   private LocalDate validTo;
 
   @Schema(description = "Business organisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
