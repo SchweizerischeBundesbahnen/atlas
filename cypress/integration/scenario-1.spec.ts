@@ -73,7 +73,6 @@ describe('Fahrplanfeldnummer', () => {
     cy.get('[data-cy=swissTimetableFieldNumber]')
       .invoke('val')
       .should('eq', swissTimetableFieldNumber);
-    cy.get('[data-cy=ttfnid]').invoke('val').should('eq', ttfnid);
     cy.get('[data-cy=validFrom]').invoke('val').should('eq', validFrom);
     cy.get('[data-cy=validTo]').invoke('val').should('eq', validTo);
     cy.get('[data-cy=businessOrganisation]').invoke('val').should('eq', businessOrganisation);
