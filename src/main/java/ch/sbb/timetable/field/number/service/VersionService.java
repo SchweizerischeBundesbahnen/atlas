@@ -132,7 +132,6 @@ public class VersionService {
     }
     version.setValidFrom(versionedObject.getValidFrom());
     version.setValidTo(versionedObject.getValidTo());
-    version.setCreator(UserService.getSbbUid());
     ConfigurablePropertyAccessor propertyAccessor = PropertyAccessorFactory.forDirectFieldAccess(
         version);
     for (Property property : entity.getProperties()) {
