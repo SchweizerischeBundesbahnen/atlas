@@ -92,7 +92,10 @@ public class Version implements Versionable {
   @NotNull
   private String creator;
 
-  //@javax.persistence.Version
+  @AtlasVersionableProperty
+  @javax.persistence.Version
+  private Integer version;
+
   @Column(columnDefinition = "TIMESTAMP")
   @NotNull
   private LocalDateTime editionDate;

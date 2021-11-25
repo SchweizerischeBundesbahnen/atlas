@@ -7,8 +7,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
+import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.service.VersionService;
@@ -56,7 +56,7 @@ public class VersionControllerTest {
     verify(versionService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate", "lineRelations", "ttfnid")
+                                                    "creationDate", "lineRelations", "ttfnid", "version")
                                                 .isEqualTo(versionModel);
   }
 
