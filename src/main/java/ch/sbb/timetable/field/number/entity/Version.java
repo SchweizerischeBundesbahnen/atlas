@@ -88,6 +88,7 @@ public class Version implements Versionable {
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
   private LocalDateTime creationDate;
 
+  @AtlasVersionableProperty
   @Column(updatable = false)
   @NotNull
   private String creator;
