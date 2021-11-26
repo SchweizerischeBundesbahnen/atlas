@@ -41,6 +41,7 @@ public abstract class BaseVersionServiceTest {
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
+        .businessOrganisation("sbb")
         .build();
     version2 = Version.builder().ttfnid(TTFNID)
         .name("FPFN Name")
@@ -49,6 +50,7 @@ public abstract class BaseVersionServiceTest {
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2023, 12, 31))
+        .businessOrganisation("sbb")
         .build();
     version3 = Version.builder().ttfnid(TTFNID)
         .name("FPFN Name")
@@ -57,6 +59,7 @@ public abstract class BaseVersionServiceTest {
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2024, 1, 1))
         .validTo(LocalDate.of(2024, 12, 31))
+        .businessOrganisation("sbb")
         .build();
     version4 = Version.builder().ttfnid(TTFNID)
         .name("FPFN Name")
@@ -65,6 +68,7 @@ public abstract class BaseVersionServiceTest {
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2025, 1, 1))
         .validTo(LocalDate.of(2025, 12, 31))
+        .businessOrganisation("sbb")
         .build();
     version5 = Version.builder().ttfnid(TTFNID)
         .name("FPFN Name")
@@ -73,6 +77,7 @@ public abstract class BaseVersionServiceTest {
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2026, 1, 1))
         .validTo(LocalDate.of(2026, 12, 31))
+        .businessOrganisation("sbb")
         .build();
   }
 

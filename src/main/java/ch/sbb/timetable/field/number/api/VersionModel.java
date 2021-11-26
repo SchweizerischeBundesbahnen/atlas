@@ -52,6 +52,8 @@ public class VersionModel {
   private LocalDate validTo;
 
   @Schema(description = "Business organisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
+  @Size(min = 1, max = 50)
+  @NotNull
   private String businessOrganisation;
 
   @Schema(description = "Additional comment", example = "Hier kann für interne Zwecke ein Kommentar welcher das Fahrplanfeld betrifft erfasst werden.")

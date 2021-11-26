@@ -25,6 +25,7 @@ public class VersionServiceCustomUniqueValidationTest {
       .swissTimetableFieldNumber("b0.100")
       .validFrom(LocalDate.of(2020, 1, 1))
       .validTo(LocalDate.of(2020, 12, 31))
+      .businessOrganisation("sbb")
       .build();
 
   @Autowired
@@ -50,6 +51,7 @@ public class VersionServiceCustomUniqueValidationTest {
         .swissTimetableFieldNumber("b0.100")
         .validFrom(LocalDate.of(2021, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
+        .businessOrganisation("sbb")
         .build();
     // When
     Executable saveExecutable = () -> versionService.save(version);
@@ -101,6 +103,7 @@ public class VersionServiceCustomUniqueValidationTest {
         .swissTimetableFieldNumber("b0.100")
         .validFrom(LocalDate.of(2021, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
+        .businessOrganisation("sbb")
         .build());
     Version version = Version.builder()
         .ttfnid("ch:1:ttfnid:100001")
