@@ -53,9 +53,9 @@ for index, row in data.iterrows():
 
 	result_sql_file.write(
 			"INSERT INTO timetable_field_number_version "
-			"(id, ttfnid, name, number, swiss_timetable_field_number, creation_date, creator, edition_date, editor, valid_from, valid_to, comment, status, business_organisation) "
+			"(id, ttfnid, name, number, swiss_timetable_field_number, creation_date, creator, edition_date, editor, valid_from, valid_to, comment, status, business_organisation, version) "
 			"VALUES "
-			"(nextval('timetable_field_number_version_seq'), 'ch:1:ttfnid:' || nextval('ttfnid_seq'), '{}', '{}', '{}', current_timestamp, 'xlsx', current_timestamp, 'xlsx', '2020-12-12', '{}', '{}', 'ACTIVE', '-');"
+			"(nextval('timetable_field_number_version_seq'), 'ch:1:ttfnid:' || nextval('ttfnid_seq'), '{}', '{}', '{}', current_timestamp, 'xlsx', current_timestamp, 'xlsx', '2020-12-12', '{}', '{}', 'ACTIVE', '-', 0);"
 				.format(
 					name,  # name
 					row[3],  # number
