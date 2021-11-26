@@ -60,12 +60,18 @@ where valid_from IS NULL;
 ALTER TABLE timetable_field_number_version
     alter column valid_from set not null;
 
+update timetable_field_number_version
+set business_organisation = '-'
+where business_organisation is null;
+alter table timetable_field_number_version
+    alter column business_organisation set not null;
+
 drop view timetable_field_number;
 
 update timetable_field_number_version
 set name = substr(name, 1, 255)
 where length(name) > 255;
-alter table public.timetable_field_number_version
+alter table timetable_field_number_version
     alter column name type varchar(255);
 
 create or replace view timetable_field_number as
@@ -77,13 +83,21 @@ with timetable_field_numbers_fields as (
           and current_timestamp <= valid_to
     ),
          valid_in_future as (
-             select distinct on (ttfnid) swiss_timetable_field_number, name, status, ttfnid, valid_from as vf
+             select distinct on (ttfnid) swiss_timetable_field_number,
+                                         name,
+                                         status,
+                                         ttfnid,
+                                         valid_from as vf
              from timetable_field_number_version
              where valid_from >= current_timestamp
              order by ttfnid, valid_from asc
          ),
          last_valid_in_past as (
-             select distinct on (ttfnid) swiss_timetable_field_number, name, status, ttfnid, valid_to as vt
+             select distinct on (ttfnid) swiss_timetable_field_number,
+                                         name,
+                                         status,
+                                         ttfnid,
+                                         valid_to as vt
              from timetable_field_number_version
              where valid_to <= current_timestamp
              order by ttfnid, valid_to desc
