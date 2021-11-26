@@ -35,7 +35,9 @@ export class TimetableFieldNumberDetailComponent
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
-  MAX_LENGTH = 255;
+  MAX_LENGTH_255 = 255;
+  MAX_LENGTH_250 = 250;
+  MAX_LENGTH_50 = 50;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -124,9 +126,8 @@ export class TimetableFieldNumberDetailComponent
       {
         swissTimetableFieldNumber: [
           version.swissTimetableFieldNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(this.MAX_LENGTH_50)],
         ],
-        ttfnid: [version.ttfnid, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -137,11 +138,18 @@ export class TimetableFieldNumberDetailComponent
         ],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(this.MAX_LENGTH_50)],
         ],
-        number: [version.number, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        name: [version.name, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        comment: [version.comment],
+        number: [
+          version.number,
+          [
+            Validators.required,
+            Validators.maxLength(this.MAX_LENGTH_50),
+            Validators.pattern('^[.0-9]+$'),
+          ],
+        ],
+        name: [version.name, Validators.maxLength(this.MAX_LENGTH_255)],
+        comment: [version.comment, Validators.maxLength(this.MAX_LENGTH_250)],
       },
       {
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],

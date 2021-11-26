@@ -1,6 +1,5 @@
 describe('Fahrplanfeldnummer', () => {
   const swissTimetableFieldNumber = '00.AAA';
-  const ttfnid = 'ch:1:ttfnid:100';
   const validFrom = '22.09.2099';
   const validTo = '22.09.2099';
   const businessOrganisation = 'SBB';
@@ -45,7 +44,6 @@ describe('Fahrplanfeldnummer', () => {
 
     //add input values
     cy.get('[data-cy=swissTimetableFieldNumber]').type(swissTimetableFieldNumber);
-    cy.get('[data-cy=ttfnid]').type(ttfnid);
     cy.get('[data-cy=validFrom]').type(validFrom);
     cy.get('[data-cy=validTo]').type(validTo);
     cy.get('[data-cy=businessOrganisation]').type(businessOrganisation);

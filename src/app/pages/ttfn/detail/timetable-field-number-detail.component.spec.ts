@@ -22,6 +22,8 @@ const version: Version = {
   status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
+  number: '1.1',
+  businessOrganisation: 'sbb',
 };
 
 const routeSnapshotVersionReadMock = {
@@ -236,29 +238,6 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
   });
 
-  describe('Validation ttfnid ', () => {
-    it('should be required', () => {
-      const ttfndi: AbstractControl = fixture.componentInstance.form.controls['ttfnid'];
-      ttfndi.markAsTouched();
-
-      const validationErrors = ttfndi.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.required).toBeDefined();
-    });
-
-    it('should not be greater then 255', () => {
-      const ttfnid: AbstractControl = fixture.componentInstance.form.controls['ttfnid'];
-      ttfnid.setValue(loremIpsum256Chars);
-      ttfnid.markAsTouched();
-
-      const validationErrors = ttfnid.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.maxlength).toBeDefined();
-    });
-  });
-
   describe('Validation businessOrganisation ', () => {
     it('should be required', () => {
       const businessOrganisation: AbstractControl =
@@ -308,16 +287,6 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
   });
 
   describe('Validation name ', () => {
-    it('should be required', () => {
-      const name: AbstractControl = fixture.componentInstance.form.controls['name'];
-      name.markAsTouched();
-
-      const validationErrors = name.errors;
-
-      expect(validationErrors).toBeDefined();
-      expect(validationErrors?.required).toBeDefined();
-    });
-
     it('should not be greater then 255', () => {
       const name: AbstractControl = fixture.componentInstance.form.controls['name'];
       name.setValue(loremIpsum256Chars);
