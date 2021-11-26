@@ -134,12 +134,43 @@ public class VersionModelTest {
         .hasToString("name");
   }
 
+  @Test
+  void businessOrganisationShouldNotHaveMoreThan50Chars() {
+    // Given
+    StringBuilder businessOrganisation = new StringBuilder("test");
+    while (businessOrganisation.length() < 50) {
+      businessOrganisation.append("test");
+    }
+    VersionModel version = versionModel().businessOrganisation(businessOrganisation.toString()).build();
+    // When
+    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+        version);
+    // Then
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getPropertyPath())
+        .hasToString("businessOrganisation");
+  }
+
+  @Test
+  void businessOrganisationShouldNotBeNull() {
+    // Given
+    VersionModel version = versionModel().businessOrganisation(null).build();
+    // When
+    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+        version);
+    // Then
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getPropertyPath())
+        .hasToString("businessOrganisation");
+  }
+
   private static VersionModelBuilder versionModel() {
     return VersionModel.builder()
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("a.90")
         .number("10.100")
         .validFrom(LocalDate.of(2021, 12, 1))
-        .validTo(LocalDate.of(2022, 12, 1));
+        .validTo(LocalDate.of(2022, 12, 1))
+        .businessOrganisation("sbb");
   }
 }
