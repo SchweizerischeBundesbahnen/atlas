@@ -42,6 +42,7 @@ public class TimetableFieldNumberRepositoryTest {
         .number("10.100")
         .validFrom(LocalDate.now().minusYears(2))
         .validTo(LocalDate.now().minusYears(1))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validLastYear);
 
@@ -53,6 +54,7 @@ public class TimetableFieldNumberRepositoryTest {
         .number("10.100")
         .validFrom(LocalDate.now().minusDays(1))
         .validTo(LocalDate.now().plusDays(1))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validToday);
 
@@ -64,6 +66,7 @@ public class TimetableFieldNumberRepositoryTest {
         .number("10.100")
         .validFrom(LocalDate.now().plusYears(1))
         .validTo(LocalDate.now().plusYears(2))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validNextYear);
 
@@ -96,6 +99,7 @@ public class TimetableFieldNumberRepositoryTest {
         .number("10.100")
         .validFrom(LocalDate.now().minusYears(2))
         .validTo(LocalDate.now().minusYears(1))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validLastYear);
 
@@ -107,6 +111,7 @@ public class TimetableFieldNumberRepositoryTest {
         .number("10.100")
         .validFrom(LocalDate.now().plusYears(1))
         .validTo(LocalDate.now().plusYears(2))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validNextYear);
 
@@ -118,6 +123,7 @@ public class TimetableFieldNumberRepositoryTest {
         .number("10.100")
         .validFrom(LocalDate.now().plusYears(3))
         .validTo(LocalDate.now().plusYears(4))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validInTwoYears);
 
@@ -150,6 +156,7 @@ public class TimetableFieldNumberRepositoryTest {
         .number("10.100")
         .validFrom(LocalDate.now().minusYears(4))
         .validTo(LocalDate.now().minusYears(3))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validEarlier);
 
@@ -161,6 +168,7 @@ public class TimetableFieldNumberRepositoryTest {
         .number("10.100")
         .validFrom(LocalDate.now().minusYears(2))
         .validTo(LocalDate.now().minusYears(1))
+        .businessOrganisation("sbb")
         .build();
     versionRepository.saveAndFlush(validLastYear);
 

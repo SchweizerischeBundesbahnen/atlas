@@ -113,6 +113,8 @@ public class Version implements Versionable {
   private LocalDate validTo;
 
   @AtlasVersionableProperty
+  @Size(min = 1, max = 50)
+  @NotNull
   private String businessOrganisation;
 
   @AtlasVersionableProperty

@@ -38,6 +38,7 @@ public class VersionRepositoryTest {
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2020, 12, 12))
         .validTo(LocalDate.of(2099, 12, 12))
+        .businessOrganisation("sbb")
         .build();
     version.setLineRelations(new HashSet<>(
         Set.of(LineRelation.builder().slnid("ch:1:slnid:100000").version(version).build(),
