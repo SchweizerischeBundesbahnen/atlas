@@ -99,7 +99,8 @@
     "MATDATEPICKERMIN": "La date doit être plus récente ou égale à {{date}}",
     "MATDATEPICKERMAX": "La date doit être plus anciente ou égale à {{date}}",
     "MATDATEPICKERPARSE": "Format de date invalide (doit être JJ.MM.AAAA)",
-    "DATE_RANGE_ERROR": "La date de début de validité ne peut pas être plus récente que la date de fin de validité: {{date}}"
+    "DATE_RANGE_ERROR": "La date de début de validité ne peut pas être plus récente que la date de fin de validité: {{date}}",
+    "PATTERN": "__fr__Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}"
   },
   "LIDI": {
     "LINES": "Linienverzeichnis",

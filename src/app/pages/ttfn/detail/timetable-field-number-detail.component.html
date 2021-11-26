@@ -56,22 +56,6 @@
           }}
         </mat-error>
       </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'TTFN.TTFNID' | translate }}</mat-label>
-        <input
-          data-cy="ttfnid"
-          required
-          matInput
-          formControlName="ttfnid"
-          placeholder="{{ TTFNID_PLACEHOLDER }}"
-        />
-        <mat-error *ngFor="let validationError of this.getValidation('ttfnid')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
-      </mat-form-field>
     </div>
 
     <div class="row mb-3">
@@ -80,7 +64,8 @@
         <input data-cy="number" required matInput formControlName="number" />
         <mat-error *ngFor="let validationError of this.getValidation('number')">
           {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
+            validationError.error
+              | translate: { length: validationError.value['requiredLength'], allowedChars: '.0-9' }
           }}
         </mat-error>
       </mat-form-field>
@@ -91,7 +76,6 @@
         <mat-label>{{ 'TTFN.NAME' | translate }}</mat-label>
         <input
           data-cy="name"
-          required
           matInput
           formControlName="name"
           placeholder="{{ NAME_PLACEHOLDER }}"
@@ -125,6 +109,11 @@
       <mat-form-field>
         <mat-label>{{ 'TTFN.COMMENT' | translate }}</mat-label>
         <input data-cy="comment" matInput formControlName="comment" />
+        <mat-error *ngFor="let validationError of this.getValidation('comment')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
       </mat-form-field>
     </div>
   </form>
