@@ -4,8 +4,8 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Entity;
+import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
 import java.time.LocalDate;

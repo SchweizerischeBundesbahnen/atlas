@@ -80,13 +80,28 @@ public class AtlasAnnotationProcessorTest {
       }
 
       @Override
+      public void setValidFrom(LocalDate validFrom) {
+
+      }
+
+      @Override
       public LocalDate getValidTo() {
         return null;
       }
 
       @Override
+      public void setValidTo(LocalDate validTo) {
+
+      }
+
+      @Override
       public Long getId() {
         return null;
+      }
+
+      @Override
+      public void setId(Long id) {
+
       }
     }
 
@@ -125,13 +140,28 @@ public class AtlasAnnotationProcessorTest {
       }
 
       @Override
+      public void setValidFrom(LocalDate validFrom) {
+
+      }
+
+      @Override
       public LocalDate getValidTo() {
         return null;
       }
 
       @Override
+      public void setValidTo(LocalDate validTo) {
+
+      }
+
+      @Override
       public Long getId() {
         return null;
+      }
+
+      @Override
+      public void setId(Long id) {
+
       }
     }
 
@@ -171,13 +201,28 @@ public class AtlasAnnotationProcessorTest {
       }
 
       @Override
+      public void setValidFrom(LocalDate validFrom) {
+
+      }
+
+      @Override
       public LocalDate getValidTo() {
         return null;
       }
 
       @Override
+      public void setValidTo(LocalDate validTo) {
+
+      }
+
+      @Override
       public Long getId() {
         return null;
+      }
+
+      @Override
+      public void setId(Long id) {
+
       }
     }
 

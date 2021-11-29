@@ -44,7 +44,7 @@ Add in the **pom.xml**:
   <dependency>
     <groupId>ch.sbb</groupId>
 	<artifactId>atlas-versioning</artifactId>
-	<version>0.2.0</version>
+	<version>0.8.0</version>
   </dependency>
 <dependencies>
 ```
@@ -75,12 +75,14 @@ public class VersionableObject implements Versionable {
   private String property;
 
   @AtlasVersionableProperty(relationType = RelationType.ONE_TO_MANY, relationsFields = {"value"})
-  private List<Relation> oneToManyRelation;
+  private List<Relation> oneToManyRelation = new ArrayList<>();
 
   public class Relation {
 
     private Long id;
+    @AtlasVersionableProperty
     private String value;
+    private VersionableObject versionableObject;
   }
 
 }
@@ -116,41 +118,14 @@ E.g.
 
 ````java
 public List<VersionedObject> updateVersion(Version currentVersion, Version editedVersion) {
-    //1. get all versions from currentVersion.getTtfnid(); and sort it by from asc
     List<Version> currentVersions = versionRepository.getAllVersionsVersioned(
-        currentVersion.getTtfnid());
+    currentVersion.getTtfnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
-        editedVersion, currentVersions);
+    editedVersion, currentVersions);
 
-    for (VersionedObject versionedObject : versionedObjects) {
-      if (NOT_TOUCHED.equals(versionedObject.getAction())) {
-        //nothing to do
-        log(versionedObject);
-      }
-      if (UPDATE.equals(versionedObject.getAction())) {
-        //update existing Version
-        log(versionedObject);
-        Version version = convertVersionedObjectToVersion(versionedObject);
-        versionRepository.save(version);
-      }
-      if (NEW.equals(versionedObject.getAction())) {
-        //create new version
-        log.info("A new Version was added. VersionedObject={}", versionedObject);
-        Version version = convertVersionedObjectToVersion(versionedObject);
-        //ensure version.getId() == null to avoid to update a Version
-        version.setId(null);
-        version.getLineRelations().forEach(lineRelation -> {
-          lineRelation.setVersion(version);
-        });
-        versionRepository.save(version);
-      }
-      if (DELETE.equals(versionedObject.getAction())) {
-        //delete existing version
-        log(versionedObject);
-        versionRepository.deleteById(versionedObject.getEntity().getId());
-      }
-    }
+    versionableService.applyVersioning(Version.class, versionedObjects, this::save,
+    this::deleteById);
     return versionedObjects;
-  }
+}
 ````

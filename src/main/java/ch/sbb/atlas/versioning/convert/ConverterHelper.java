@@ -6,11 +6,11 @@ import static ch.sbb.atlas.versioning.model.VersionableProperty.RelationType.ONE
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
-import ch.sbb.atlas.versioning.model.Property;
-import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.Entity.EntityBuilder;
+import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Property.PropertyBuilder;
 import ch.sbb.atlas.versioning.model.ToVersioning;
+import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty;
 import java.lang.reflect.Field;
 import java.util.ArrayList;

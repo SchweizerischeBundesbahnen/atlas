@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.atlas.versioning.BaseTest.VersionableObject;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableException;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import java.time.LocalDate;
 import java.util.Arrays;

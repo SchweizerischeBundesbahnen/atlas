@@ -1,7 +1,7 @@
 package ch.sbb.atlas.versioning.service;
 
-import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.BaseTest;
+import ch.sbb.atlas.versioning.model.Property;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

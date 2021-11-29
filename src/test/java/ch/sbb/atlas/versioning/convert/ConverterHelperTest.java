@@ -3,11 +3,11 @@ package ch.sbb.atlas.versioning.convert;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.atlas.versioning.model.Entity;
-import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.BaseTest;
 import ch.sbb.atlas.versioning.BaseTest.VersionableObject.Relation;
 import ch.sbb.atlas.versioning.exception.VersioningException;
+import ch.sbb.atlas.versioning.model.Entity;
+import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.ToVersioning;
 import ch.sbb.atlas.versioning.model.VersionableProperty;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
