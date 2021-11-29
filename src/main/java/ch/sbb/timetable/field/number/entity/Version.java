@@ -84,8 +84,10 @@ public class Version implements Versionable {
   @NotNull
   private Status status;
 
+  //@AtlasVersionableProperty
   @CreationTimestamp
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
+  //@NotNull
   private LocalDateTime creationDate;
 
   @AtlasVersionableProperty
@@ -95,6 +97,7 @@ public class Version implements Versionable {
 
   @AtlasVersionableProperty
   @javax.persistence.Version
+  @NotNull
   private Integer version;
 
   @Column(columnDefinition = "TIMESTAMP")
