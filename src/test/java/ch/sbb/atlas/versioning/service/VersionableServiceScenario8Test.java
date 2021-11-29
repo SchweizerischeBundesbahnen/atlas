@@ -32,6 +32,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .validTo(editedValidTo)
+                                                       .validFrom(versionableObject3.getValidFrom())
                                                        .build();
 
     //when
@@ -92,6 +93,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .property("Ciao-Ciao")
                                                        .validTo(editedValidTo)
+                                                       .validFrom(versionableObject3.getValidFrom())
                                                        .build();
 
     //when
@@ -178,13 +180,15 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .validTo(editedValidTo)
+                                                       .validFrom(versionableObject3.getValidFrom())
                                                        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
         versionableObject3,
         editedVersion,
-        Arrays.asList(versionableObject1, versionableObject2, versionableObject3, versionableObject4));
+        Arrays.asList(versionableObject1, versionableObject2, versionableObject3,
+            versionableObject4));
 
     //then
     assertThat(result).isNotNull();
@@ -247,13 +251,15 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .property("Ciao-Ciao")
                                                        .validTo(editedValidTo)
+                                                       .validFrom(versionableObject3.getValidFrom())
                                                        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
         versionableObject3,
         editedVersion,
-        Arrays.asList(versionableObject1, versionableObject2, versionableObject3, versionableObject4));
+        Arrays.asList(versionableObject1, versionableObject2, versionableObject3,
+            versionableObject4));
 
     //then
     assertThat(result).isNotNull();
@@ -296,7 +302,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     assertThat(oneToManyRelationThirdVersionedObjectEntity.getOneToMany()).isEmpty();
 
-
     VersionedObject fourthVersionedObject = sortedVersionedObjects.get(3);
     assertThat(fourthVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
     assertThat(fourthVersionedObject).isNotNull();
@@ -325,13 +330,15 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .property("Ciao-Ciao")
                                                        .validTo(editedValidTo)
+                                                       .validFrom(versionableObject3.getValidFrom())
                                                        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
         versionableObject3,
         editedVersion,
-        Arrays.asList(versionableObject1, versionableObject2, versionableObject3, versionableObject4));
+        Arrays.asList(versionableObject1, versionableObject2, versionableObject3,
+            versionableObject4));
 
     //then
     assertThat(result).isNotNull();
@@ -411,13 +418,15 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .property("Ciao-Ciao")
                                                        .validTo(editedValidTo)
+                                                       .validFrom(versionableObject1.getValidFrom())
                                                        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
         versionableObject1,
         editedVersion,
-        Arrays.asList(versionableObject1, versionableObject2, versionableObject3, versionableObject4));
+        Arrays.asList(versionableObject1, versionableObject2, versionableObject3,
+            versionableObject4));
 
     //then
     assertThat(result).isNotNull();
@@ -476,7 +485,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     assertThat(oneToManyRelationThirdVersionedObjectEntity.getOneToMany()).isEmpty();
 
-
     VersionedObject fourthVersionedObject = sortedVersionedObjects.get(3);
     assertThat(fourthVersionedObject.getAction()).isEqualTo(VersioningAction.NEW);
     assertThat(fourthVersionedObject).isNotNull();
@@ -531,6 +539,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .property("Ciao-Ciao")
                                                        .validTo(editedValidTo)
+                                                       .validFrom(versionableObject1.getValidFrom())
                                                        .build();
 
     //when
@@ -595,7 +604,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
         thirdVersionedObjectEntity.getProperties(), Fields.oneToManyRelation);
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     assertThat(oneToManyRelationThirdVersionedObjectEntity.getOneToMany()).isEmpty();
-
 
     VersionedObject fourthVersionedObject = sortedVersionedObjects.get(3);
     assertThat(fourthVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);

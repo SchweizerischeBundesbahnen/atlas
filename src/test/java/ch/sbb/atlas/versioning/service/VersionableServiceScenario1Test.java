@@ -42,6 +42,8 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
     Relation editedRelation = Relation.builder().id(3L).value("value-3-changed").build();
     editedVersion.setOneToManyRelation(List.of(editedRelation));
+    editedVersion.setValidFrom(versionableObject2.getValidFrom());
+    editedVersion.setValidTo(versionableObject2.getValidTo());
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -208,6 +210,8 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
   public void scenario1b() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
+    editedVersion.setValidFrom(versionableObject2.getValidFrom());
+    editedVersion.setValidTo(versionableObject2.getValidTo());
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(versionableObject2,
@@ -274,6 +278,8 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
   public void scenario1c() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
+    editedVersion.setValidFrom(versionableObject1.getValidFrom());
+    editedVersion.setValidTo(versionableObject1.getValidTo());
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(

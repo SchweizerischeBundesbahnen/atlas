@@ -254,6 +254,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .property("Ciao-Ciao")
                                                        .validFrom(editedValidFrom)
+                                                       .validTo(versionableObject1.getValidTo())
                                                        .build();
 
     //when

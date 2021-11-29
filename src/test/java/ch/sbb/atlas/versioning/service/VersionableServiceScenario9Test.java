@@ -80,8 +80,8 @@ public class VersionableServiceScenario9Test extends VersionableServiceBaseTest 
    * Szenario 9b (Spezialfall 5): Update vor erster existierender Version
    *
    * Änderung  |___|
-   *                  |-----------------|----------------|-----------|         |-------------|
-   *                       Version 1        Version 2     Version 3               Version 4
+   * |-----------------|----------------|-----------|         |-------------|
+   * Version 1        Version 2     Version 3               Version 4
    *
    * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 1)
    */
@@ -149,8 +149,8 @@ public class VersionableServiceScenario9Test extends VersionableServiceBaseTest 
   /**
    * Szenario 9c (Spezialfall 1): Update vor und während erster Version
    * Änderung    |_____________________|
-   *                 |-----------------|----------------|-----------|         |-------------|
-   *                     Version 1          Version 2     Version 3               Version 4
+   * |-----------------|----------------|-----------|         |-------------|
+   * Version 1          Version 2     Version 3               Version 4
    *
    * Ergebnis: Version 1 wird verlängert
    */
@@ -161,6 +161,7 @@ public class VersionableServiceScenario9Test extends VersionableServiceBaseTest 
 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .validFrom(editedValidFrom)
+                                                       .validTo(versionableObject1.getValidTo())
                                                        .property("Ciao-Ciao")
                                                        .build();
 
