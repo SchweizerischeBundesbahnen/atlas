@@ -3,6 +3,7 @@ package ch.sbb.line.directory.api;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Schema(name = "LineVersion")
-public class LineVersionModel implements SequenctialValidRange {
+public class LineVersionModel implements DatesValidator {
 
   private static final String HEX_COLOR_PATTERN = "^#([a-fA-F0-9]{6})$";
   private static final String CMYK_COLOR_PATTERN = "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$";
