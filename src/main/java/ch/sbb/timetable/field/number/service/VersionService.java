@@ -94,7 +94,7 @@ public class VersionService {
         //update existing Version
         log(versionedObject);
         Version version = convertVersionedObjectToVersion(versionedObject);
-        versionRepository.save(version);
+        save(version);
       }
       if (NEW.equals(versionedObject.getAction())) {
         //create new version
@@ -105,12 +105,12 @@ public class VersionService {
         version.getLineRelations().forEach(lineRelation -> {
           lineRelation.setVersion(version);
         });
-        versionRepository.save(version);
+        save(version);
       }
       if (DELETE.equals(versionedObject.getAction())) {
         //delete existing version
         log(versionedObject);
-        versionRepository.deleteById(versionedObject.getEntity().getId());
+        deleteById(versionedObject.getEntity().getId());
       }
     }
     return versionedObjects;
