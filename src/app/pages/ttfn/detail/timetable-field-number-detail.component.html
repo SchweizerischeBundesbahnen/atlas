@@ -56,6 +56,16 @@
           }}
         </mat-error>
       </mat-form-field>
+      <mat-form-field class="col">
+        <mat-label>{{ 'TTFN.TTFNID' | translate }}</mat-label>
+        <input
+          matInput
+          [value]="form.value.ttfnid || ''"
+          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
+          [disabled]="true"
+          required
+        />
+      </mat-form-field>
     </div>
 
     <div class="row mb-3">
