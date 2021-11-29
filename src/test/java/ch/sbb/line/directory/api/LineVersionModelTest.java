@@ -7,7 +7,9 @@ import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -99,6 +101,84 @@ class LineVersionModelTest {
 
     // Then
     assertThat(constraintViolations).isEmpty();
+  }
+
+  @Test
+  public void shouldHaveDateValidationExceptionWhenValidFromIsBefore1900_1_1() {
+    //given
+    LineVersionModel lineVersion = lineVersionModel()
+        .validFrom(LocalDate.of(1899, 12, 31))
+        .build();
+    //when
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersion);
+
+    //then
+    assertThat(constraintViolations).isNotEmpty();
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(
+        "validFromValid");
+  }
+
+  @Test
+  public void shouldHaveDateValidationExceptionWhenValidFromIsAfter2099_12_31() {
+    //given
+    LineVersionModel lineVersion = lineVersionModel()
+        .validFrom(LocalDate.of(2100, 1, 1))
+        .build();
+    //when
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersion);
+
+    //then
+    assertThat(constraintViolations).isNotEmpty();
+    assertThat(constraintViolations).hasSize(2);
+    List<String> violationMessages = constraintViolations.stream()
+                                                         .map(ConstraintViolation::getMessage)
+                                                         .collect(Collectors.toList());
+    assertThat(violationMessages).contains(
+        "validTo must not be before validFrom",
+        "ValidFrom must be between 1.1.1900 and 31.12.2099");
+  }
+
+  @Test
+  public void shouldHaveDateValidationExceptionWhenValidToIsBefore1900_1_1() {
+    //given
+    LineVersionModel lineVersion = lineVersionModel()
+        .validTo(LocalDate.of(1899, 12, 31))
+        .build();
+    //when
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersion);
+
+    //then
+    assertThat(constraintViolations).isNotEmpty();
+    assertThat(constraintViolations).hasSize(2);
+    List<String> violationMessages = constraintViolations.stream()
+                                                         .map(ConstraintViolation::getMessage)
+                                                         .collect(Collectors.toList());
+    assertThat(violationMessages).contains(
+        "validTo must not be before validFrom",
+        "ValidTo must be between 1.1.1900 and 31.12.2099");
+  }
+
+  @Test
+  public void shouldHaveDateValidationExceptionWhenValidToIsAfter2099_12_31() {
+    //given
+    LineVersionModel lineVersion = lineVersionModel()
+        .validTo(LocalDate.of(2100, 1, 1))
+        .build();
+    //when
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersion);
+
+    //then
+    assertThat(constraintViolations).isNotEmpty();
+    assertThat(constraintViolations).hasSize(1);
+    List<String> violationMessages = constraintViolations.stream()
+                                                         .map(ConstraintViolation::getMessage)
+                                                         .collect(Collectors.toList());
+    assertThat(violationMessages).contains("ValidTo must be between 1.1.1900 and 31.12.2099");
   }
 
   @Test
