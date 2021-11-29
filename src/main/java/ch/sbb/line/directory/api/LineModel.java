@@ -2,6 +2,7 @@ package ch.sbb.line.directory.api;
 
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Schema(name = "Line")
-public class LineModel implements SequenctialValidRange {
+public class LineModel implements DatesValidator {
 
   @Schema(description = "SwissLineNumber", example = "b1.L1")
   @NotBlank
