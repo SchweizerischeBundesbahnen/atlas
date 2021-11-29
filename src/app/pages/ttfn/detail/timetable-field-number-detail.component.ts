@@ -136,6 +136,7 @@ export class TimetableFieldNumberDetailComponent
           version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required],
         ],
+        ttfnid: version.ttfnid,
         businessOrganisation: [
           version.businessOrganisation,
           [Validators.required, Validators.maxLength(this.MAX_LENGTH_50)],
