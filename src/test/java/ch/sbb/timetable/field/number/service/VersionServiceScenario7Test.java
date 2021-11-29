@@ -75,7 +75,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
-    assertThat(firstTemporalVersion.getComment()).isNull();
+    assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX2");
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
@@ -87,7 +87,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
-    assertThat(firstTemporalVersion.getComment()).isNull();
+    assertThat(thirdTemporalVersion.getComment()).isNull();
     Set<LineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
     assertThat(lineRelationsThirdVersion).isEmpty();
     assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX3");
@@ -193,7 +193,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(fourthTemporalVersion.getName()).isEqualTo("FPFN Name");
-    assertThat(firstTemporalVersion.getComment()).isEqualTo("Scenario 7b");
+    assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 7b");
     Set<LineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isEmpty();
     assertThat(fourthTemporalVersion.getNumber()).isEqualTo("BEX3");

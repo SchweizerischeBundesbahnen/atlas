@@ -86,6 +86,7 @@ public class VersionServiceScenario6Test extends BaseVersionServiceTest {
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 5, 31));
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(thirdTemporalVersion.getComment()).isNull();
     Set<LineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
     assertThat(lineRelationsThirdVersion).isEmpty();
     assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX3");
