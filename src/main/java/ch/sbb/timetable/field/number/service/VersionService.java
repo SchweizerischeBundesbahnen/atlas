@@ -1,6 +1,5 @@
 package ch.sbb.timetable.field.number.service;
 
-
 import static ch.sbb.atlas.versioning.model.VersioningAction.DELETE;
 import static ch.sbb.atlas.versioning.model.VersioningAction.NEW;
 import static ch.sbb.atlas.versioning.model.VersioningAction.NOT_TOUCHED;
@@ -163,5 +162,4 @@ public class VersionService {
     return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber(),
         version.getValidFrom(), version.getValidTo(), ttfnid).size() == 0;
   }
-
 }

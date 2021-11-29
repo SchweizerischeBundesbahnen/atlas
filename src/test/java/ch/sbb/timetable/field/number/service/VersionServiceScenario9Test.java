@@ -3,6 +3,7 @@ package ch.sbb.timetable.field.number.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -52,18 +53,24 @@ public class VersionServiceScenario9Test extends BaseVersionServiceTest {
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2019, 6, 1));
     assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // second version no changes
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
-    assertThat(firstTemporalVersion.getComment()).isNull();
+    assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
-
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
   }
 
@@ -101,18 +108,24 @@ public class VersionServiceScenario9Test extends BaseVersionServiceTest {
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2019, 6, 1));
     assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // second version no changes
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
-    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX1");
     assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // third version no changes
     Version thirdTemporalVersion = result.get(2);
@@ -121,6 +134,10 @@ public class VersionServiceScenario9Test extends BaseVersionServiceTest {
     assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
     assertThat(thirdTemporalVersion.getComment()).isNull();
     assertThat(thirdTemporalVersion.getLineRelations()).isEmpty();
+    assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX2");
+    assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
   }
 
@@ -157,18 +174,24 @@ public class VersionServiceScenario9Test extends BaseVersionServiceTest {
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
-    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // second version no changes
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
-    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX2");
     assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX2");
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
   }
 
