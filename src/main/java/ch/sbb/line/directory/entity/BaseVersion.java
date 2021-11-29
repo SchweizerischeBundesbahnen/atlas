@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.api.SequenctialValidRange;
+import ch.sbb.line.directory.validation.DatesValidator;
 import ch.sbb.line.directory.service.UserService;
 import java.util.Date;
 import javax.persistence.Column;
@@ -22,7 +22,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Setter
 @ToString
 @MappedSuperclass
-public abstract class BaseVersion implements SequenctialValidRange {
+public abstract class BaseVersion implements DatesValidator {
 
   @CreationTimestamp
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
