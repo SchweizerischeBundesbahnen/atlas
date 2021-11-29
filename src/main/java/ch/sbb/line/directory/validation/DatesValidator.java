@@ -1,11 +1,11 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.line.directory.validation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import javax.validation.constraints.AssertTrue;
 
-public interface SequenctialValidRange {
+public interface DatesValidator {
 
   LocalDate minDate = LocalDate.of(1899, 12, 31);
   LocalDate maxDate = LocalDate.of(2100, 1, 1);
@@ -27,6 +27,7 @@ public interface SequenctialValidRange {
   default boolean isValidToValid() {
     return getValidTo().isAfter(minDate) && getValidTo().isBefore(maxDate);
   }
+
   @Schema(hidden = true)
   @JsonIgnore
   @AssertTrue(message = "ValidFrom must be between 1.1.1900 and 31.12.2099")
