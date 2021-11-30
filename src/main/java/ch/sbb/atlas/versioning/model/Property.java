@@ -14,6 +14,8 @@ public class Property {
 
   private Object value;
 
+  private boolean ignoreDiff;
+
   private Entity oneToOne;
 
   private List<Entity> oneToMany;

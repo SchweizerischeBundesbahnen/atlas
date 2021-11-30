@@ -44,6 +44,7 @@ public class AtlasAnnotationProcessor {
         VersionableProperty versionableProperty =
             VersionableProperty.builder()
                                .fieldName(getKey(field))
+                               .ignoreDiff(getIgnoredDiff(field))
                                .relationsFields(Arrays.asList(getRelationFields(field)))
                                .relationType(getRelationType(field))
                                .build();
@@ -61,6 +62,11 @@ public class AtlasAnnotationProcessor {
     String value = field.getAnnotation(AtlasVersionableProperty.class)
                         .key();
     return value.isEmpty() ? field.getName() : value;
+  }
+
+  private boolean getIgnoredDiff(Field field) {
+    return field.getAnnotation(AtlasVersionableProperty.class)
+                .ignoreDiff();
   }
 
   private RelationType getRelationType(Field field) {
