@@ -4,7 +4,7 @@ package ch.sbb.line.directory.service;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-public class UserService {
+public final class UserService {
 
   public static String getSbbUid() {
     return getAccessToken().getClaimAsString("sbbuid");
