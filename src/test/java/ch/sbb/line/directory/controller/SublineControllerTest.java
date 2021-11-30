@@ -98,7 +98,7 @@ public class SublineControllerTest {
     verify(sublineService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate")
+                                                    "creationDate", "version")
                                                 .isEqualTo(sublineVersionModel);
   }
 
