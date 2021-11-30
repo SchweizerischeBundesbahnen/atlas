@@ -19,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 public class VersioningData {
 
+  private static final LocalDate MAX_DATE = LocalDate.of(2099, 12, 31);
+  private static final LocalDate MIN_DATE = LocalDate.of(1900, 1, 1);
+
   private final Versionable editedVersion;
   private final Versionable currentVersion;
   private LocalDate editedValidFrom;
@@ -103,13 +106,13 @@ public class VersioningData {
   }
 
   private void validateValidTo(LocalDate validTo) {
-    if (validTo.isAfter(LocalDate.of(2099,12,31))){
+    if (validTo.isAfter(MAX_DATE)){
       throw new DateValidationException("ValidTo cannot be after 31.12.2099.");
     }
   }
 
   private void validateValidFrom(LocalDate validFrom) {
-    if (validFrom.isBefore(LocalDate.of(1900,1,1))){
+    if (validFrom.isBefore(MIN_DATE)){
       throw new DateValidationException("ValidFrom cannot be before 1.1.1900.");
     }
   }

@@ -1,5 +1,6 @@
 package ch.sbb.atlas.versioning.annotation;
 
+import ch.sbb.atlas.versioning.convert.ReflectionHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
@@ -38,8 +39,7 @@ public class AtlasAnnotationProcessor {
       throws IllegalArgumentException {
     List<VersionableProperty> versionableProperties = new ArrayList<>();
     Class<?> clazz = object.getClass();
-    for (Field field : clazz.getDeclaredFields()) {
-      field.setAccessible(true);
+    for (Field field : ReflectionHelper.getAllFieldsAccessible(clazz)) {
       if (field.isAnnotationPresent(AtlasVersionableProperty.class)) {
         VersionableProperty versionableProperty =
             VersionableProperty.builder()

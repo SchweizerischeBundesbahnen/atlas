@@ -1,5 +1,6 @@
 package ch.sbb.atlas.versioning.service;
 
+import ch.sbb.atlas.versioning.convert.ReflectionHelper;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.Property;
@@ -42,7 +43,7 @@ final class ToVersionableMapper {
     Class<? extends Versionable> versionableClass = versionable.getClass();
 
     for (Property property : entity.getProperties()) {
-      Field field = getAccessibleField(versionableClass, property.getKey());
+      Field field = ReflectionHelper.getFieldAccessible(versionableClass, property.getKey());
 
       if (property.hasOneToOneRelation()) {
         throw new VersioningException("OneToOneRelation not implemented!");
@@ -52,12 +53,12 @@ final class ToVersionableMapper {
           Object relationElement = newInstanceOfCollectionType(versionableClass, property.getKey());
 
           for (Property propertyRelation : entityRelation.getProperties()) {
-            Field relationField = getAccessibleField(relationElement.getClass(),
+            Field relationField = ReflectionHelper.getFieldAccessible(relationElement.getClass(),
                 propertyRelation.getKey());
             relationField.set(relationElement, propertyRelation.getValue());
           }
 
-          Field versionableReference = getAccessibleField(relationElement.getClass(),
+          Field versionableReference = ReflectionHelper.getFieldAccessible(relationElement.getClass(),
               getPropertyName(versionableClass));
           versionableReference.set(relationElement, versionable);
 
@@ -92,10 +93,4 @@ final class ToVersionableMapper {
     }
   }
 
-  private static Field getAccessibleField(Class<?> clazz, String fieldName)
-      throws NoSuchFieldException {
-    Field field = clazz.getDeclaredField(fieldName);
-    field.setAccessible(true);
-    return field;
-  }
 }
