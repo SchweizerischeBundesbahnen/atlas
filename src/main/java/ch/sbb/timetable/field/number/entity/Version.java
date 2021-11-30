@@ -85,10 +85,9 @@ public class Version implements Versionable, DatesValidator {
   @NotNull
   private Status status;
 
-  //@AtlasVersionableProperty
+  @AtlasVersionableProperty(ignoreDiff = true)
   @CreationTimestamp
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
-  //@NotNull
   private LocalDateTime creationDate;
 
   @AtlasVersionableProperty
