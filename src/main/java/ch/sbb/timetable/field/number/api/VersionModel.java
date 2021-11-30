@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.api;
 
 import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Schema(name = "Version")
-public class VersionModel {
+public class VersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier")
   private Long id;
