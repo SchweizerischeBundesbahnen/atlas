@@ -12,7 +12,7 @@ public class Property {
 
   private String key;
 
-  private String value;
+  private Object value;
 
   private Entity oneToOne;
 
