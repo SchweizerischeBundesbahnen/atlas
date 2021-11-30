@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.repository.LineRepository;
@@ -29,12 +30,15 @@ class LineServiceTest {
   @Mock
   private LineRepository lineRepository;
 
+  @Mock
+  private VersionableService versionableService;
+
   private LineService lineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineService = new LineService(lineVersionRepository,lineRepository);
+    lineService = new LineService(lineVersionRepository,lineRepository, versionableService);
   }
 
   @Test
