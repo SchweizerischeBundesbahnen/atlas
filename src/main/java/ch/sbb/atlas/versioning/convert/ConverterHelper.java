@@ -148,7 +148,7 @@ public final class ConverterHelper {
   private static Property buildProperty(String fieldName, Object propertyValue) {
     return Property.builder()
                    .key(fieldName)
-                   .value(propertyValue != null ? String.valueOf(propertyValue) : null)
+                   .value(propertyValue)
                    .build();
   }
 

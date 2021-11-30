@@ -44,7 +44,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
 
   private List<VersionedObject> applyVersioningInTheMiddleOfAnExistingEntity(VersioningData vd,
       ToVersioning toVersioning) {
-    log.info("Found in the middle of an exiting.");
+    log.info("Found in the middle of an existing.");
     List<VersionedObject> versionedObjects = new ArrayList<>();
     VersionedObject currentVersionUpdate = shortenLeftCurrentVersion(vd, toVersioning);
     versionedObjects.add(currentVersionUpdate);
