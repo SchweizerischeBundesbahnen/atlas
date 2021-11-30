@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.timetable.field.number.api.VersionModel.VersionModelBuilder;
 import ch.sbb.timetable.field.number.enumaration.Status;
 import java.time.LocalDate;
-import java.util.Set;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,8 +34,6 @@ public class VersionModelTest {
         "validFromValid");
   }
 
-
-
   @Test
   public void shouldHaveDateValidationExceptionWhenValidFromIsAfter2099_12_31() {
     //given
@@ -52,8 +48,8 @@ public class VersionModelTest {
     assertThat(constraintViolations).isNotEmpty();
     assertThat(constraintViolations).hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
-                                                         .map(ConstraintViolation::getMessage)
-                                                         .collect(Collectors.toList());
+        .map(ConstraintViolation::getMessage)
+        .collect(Collectors.toList());
     assertThat(violationMessages).contains(
         "validTo must not be before validFrom",
         "ValidFrom must be between 1.1.1900 and 31.12.2099");
@@ -73,8 +69,8 @@ public class VersionModelTest {
     assertThat(constraintViolations).isNotEmpty();
     assertThat(constraintViolations).hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
-                                                         .map(ConstraintViolation::getMessage)
-                                                         .collect(Collectors.toList());
+        .map(ConstraintViolation::getMessage)
+        .collect(Collectors.toList());
     assertThat(violationMessages).contains(
         "validTo must not be before validFrom",
         "ValidTo must be between 1.1.1900 and 31.12.2099");
@@ -94,22 +90,12 @@ public class VersionModelTest {
     assertThat(constraintViolations).isNotEmpty();
     assertThat(constraintViolations).hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
-                                                         .map(ConstraintViolation::getMessage)
-                                                         .collect(Collectors.toList());
+        .map(ConstraintViolation::getMessage)
+        .collect(Collectors.toList());
     assertThat(violationMessages).contains("ValidTo must be between 1.1.1900 and 31.12.2099");
   }
 
-  private VersionModelBuilder versionModel() {
-    return VersionModel.builder()
-                       .ttfnid("ch:1:fpfnid:100000")
-                       .name("FPFN Name")
-                       .number("BEX")
-                       .swissTimetableFieldNumber("b0.BEX")
-                       .validFrom(LocalDate.of(2020, 12, 12))
-                       .validTo(LocalDate.of(2099, 12, 12));
-  }
-
-}
+  @Test
   void shouldBuildValidVersion() {
     // Given
     VersionModel version = versionModel().build();
