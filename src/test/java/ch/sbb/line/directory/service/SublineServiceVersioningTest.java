@@ -1,0 +1,172 @@
+package ch.sbb.line.directory.service;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import ch.sbb.line.directory.IntegrationTest;
+import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.repository.SublineVersionRepository;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+@IntegrationTest
+@Transactional
+public class SublineServiceVersioningTest {
+
+  private static final String DESCRIPTION = SublineTestData.sublineVersion().getDescription();
+
+  private static final String SLNID = "ch:1:slnid:100000";
+  private final SublineVersionRepository sublineVersionRepository;
+  private final SublineService sublineService;
+  private SublineVersion version1;
+  private SublineVersion version2;
+  private SublineVersion version3;
+
+  @Autowired
+  public SublineServiceVersioningTest(
+      SublineVersionRepository sublineVersionRepository,
+      SublineService sublineService) {
+    this.sublineVersionRepository = sublineVersionRepository;
+    this.sublineService = sublineService;
+  }
+
+  @BeforeEach
+  void init() {
+    version1 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
+                           .swissLineNumber("1")
+                           .validFrom(LocalDate.of(2020, 1, 1))
+                           .validTo(LocalDate.of(2021, 12, 31))
+                           .build();
+    version2 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
+                           .swissLineNumber("2")
+                           .validFrom(LocalDate.of(2022, 1, 1))
+                           .validTo(LocalDate.of(2023, 12, 31))
+                           .build();
+    version3 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
+                           .swissLineNumber("3")
+                           .validFrom(LocalDate.of(2024, 1, 1))
+                           .validTo(LocalDate.of(2024, 12, 31))
+                           .build();
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sublineVersionRepository.deleteAll();
+  }
+
+  /**
+   * Szenario 2: Update innerhalb existierender Version
+   * NEU:                       |___________|
+   * IST:      |-----------|----------------------|--------------------
+   * Version:        1                 2                  3
+   *
+   * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
+   * Version:        1       2         4       5          3
+   */
+  @Test
+  public void scenario2() {
+    //given
+    version1 = sublineVersionRepository.save(version1);
+    version2 = sublineVersionRepository.save(version2);
+    version3 = sublineVersionRepository.save(version3);
+    SublineVersion editedVersion = new SublineVersion();
+    editedVersion.setDescription("Description <changed>");
+    editedVersion.setValidFrom(LocalDate.of(2022, 6, 1));
+    editedVersion.setValidTo(LocalDate.of(2023, 6, 1));
+
+    //when
+    sublineService.updateVersion(version2, editedVersion);
+    List<SublineVersion> result = sublineVersionRepository.findAllBySlnid(version1.getSlnid());
+
+    //then
+
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(5);
+    result.sort(Comparator.comparing(SublineVersion::getValidFrom));
+    assertThat(result.get(0)).isNotNull();
+
+    SublineVersion firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo(DESCRIPTION);
+
+    //updated
+    SublineVersion secondTemporalVersion = result.get(1);
+    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
+    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2022, 5, 31));
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo(DESCRIPTION);
+
+    //new
+    SublineVersion thirdTemporalVersion = result.get(2);
+    assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 6, 1));
+    assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 6, 1));
+    assertThat(thirdTemporalVersion.getDescription()).isEqualTo("Description <changed>");
+
+    //new
+    SublineVersion fourthTemporalVersion = result.get(3);
+    assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2023, 6, 2));
+    assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
+    assertThat(fourthTemporalVersion.getDescription()).isEqualTo(DESCRIPTION);
+
+    //current
+    SublineVersion fifthTemporalVersion = result.get(4);
+    assertThat(fifthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
+    assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
+    assertThat(fifthTemporalVersion.getDescription()).isEqualTo(DESCRIPTION);
+  }
+
+
+  /**
+   * Merge zwei versionen
+   *
+   * NEU:                 |__________|
+   *                        number=2
+   * IST:      |----------|----------|----------|
+   * Version:        1          2          3
+   * Änderung:  number=1   number=3  number=2
+   *
+   * RESULTAT: |----------|--------------------|
+   * Version:        1               2
+   * Änderung:  name=SBB1       number=2
+   */
+  @Test
+  public void scenarioMergeTwoVersions() {
+    //given
+    version1.setSwissLineNumber("1");
+    version1 = sublineVersionRepository.save(version1);
+    version2.setSwissLineNumber("3");
+    version2 = sublineVersionRepository.save(version2);
+    version3.setSwissLineNumber("2");
+    version3 = sublineVersionRepository.save(version3);
+    SublineVersion editedVersion = new SublineVersion();
+    editedVersion.setSwissLineNumber("2");
+
+    //when
+    sublineService.updateVersion(version2, editedVersion);
+    List<SublineVersion> result = sublineVersionRepository.findAllBySlnid(version1.getSlnid());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(2);
+    result.sort(Comparator.comparing(SublineVersion::getValidFrom));
+
+    // first version no changes
+    assertThat(result.get(0)).isNotNull();
+    SublineVersion firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(version1.getValidFrom());
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(version1.getValidTo());
+    assertThat(firstTemporalVersion.getSwissLineNumber()).isEqualTo("1");
+
+    // second merged with third
+    SublineVersion secondTemporalVersion = result.get(1);
+    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(version2.getValidFrom());
+    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(version3.getValidTo());
+    assertThat(secondTemporalVersion.getSwissLineNumber()).isEqualTo("2");
+  }
+}

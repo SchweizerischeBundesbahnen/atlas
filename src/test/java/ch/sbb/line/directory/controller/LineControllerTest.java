@@ -172,6 +172,22 @@ public class LineControllerTest {
   }
 
   @Test
+  void shouldUpdateVersionWithVersioning() {
+    // Given
+    LineVersion lineVersion = LineTestData.lineVersion();
+    LineVersionModel lineVersionModel = createModel();
+    lineVersionModel.setNumber("New name");
+
+    when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
+
+    // When
+    lineController.updateWithVersioning(1L, lineVersionModel);
+
+    // Then
+    verify(lineService).updateVersion(any(), any());
+  }
+
+  @Test
   void shouldReturnNotFoundOnUnexistingUpdateVersion() {
     // Given
     when(lineService.findById(anyLong())).thenReturn(Optional.empty());

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import javax.validation.Valid;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,14 @@ public interface SublinenApiV1 {
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
   })
   SublineVersionModel updateSublineVersion(@PathVariable Long id, @RequestBody SublineVersionModel newVersion);
+
+  @PutMapping({"versions/{id}"})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
+  })
+  List<SublineVersionModel> updateWithVersioning(@PathVariable Long id,
+      @RequestBody @Valid SublineVersionModel newVersion);
 
   @DeleteMapping("version/{id}")
   void deleteSublineVersion(@PathVariable Long id);
