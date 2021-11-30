@@ -90,20 +90,22 @@ public class Version implements Versionable, DatesValidator {
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
   private LocalDateTime creationDate;
 
-  @AtlasVersionableProperty
+  @AtlasVersionableProperty(ignoreDiff = true)
   @Column(updatable = false)
   @NotNull
   private String creator;
 
-  @AtlasVersionableProperty
+  @AtlasVersionableProperty(ignoreDiff = true)
   @javax.persistence.Version
   @NotNull
   private Integer version;
 
+  @AtlasVersionableProperty(ignoreDiff = true)
   @Column(columnDefinition = "TIMESTAMP")
   @NotNull
   private LocalDateTime editionDate;
 
+  @AtlasVersionableProperty(ignoreDiff = true)
   @NotNull
   private String editor;
 
