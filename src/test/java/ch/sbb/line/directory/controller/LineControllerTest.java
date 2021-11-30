@@ -66,7 +66,7 @@ public class LineControllerTest {
     verify(lineService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate")
+                                                    "creationDate", "version")
                                                 .ignoringFieldsMatchingRegexes("color.*")
                                                 .isEqualTo(lineVersionModel);
   }
