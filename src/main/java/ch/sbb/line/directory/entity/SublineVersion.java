@@ -1,5 +1,8 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
@@ -33,7 +36,8 @@ import org.hibernate.annotations.GeneratorType;
 @Builder
 @FieldNameConstants
 @Entity(name = "subline_version")
-public class SublineVersion extends BaseVersion {
+@AtlasVersionable
+public class SublineVersion extends BaseVersion implements Versionable {
 
   private static final String SUBLINE_VERSION_SEQ = "subline_version_seq";
 
@@ -44,13 +48,16 @@ public class SublineVersion extends BaseVersion {
 
   @NotBlank
   @Size(max = 50)
+  @AtlasVersionableProperty
   private String swissSublineNumber;
 
   @Size(max = 50)
+  @AtlasVersionableProperty
   private String swissLineNumber;
 
   @GeneratorType(type = SlnidGenerator.class, when = GenerationTime.INSERT)
   @Column(updatable = false)
+  @AtlasVersionableProperty
   private String slnid;
 
   @NotNull
@@ -59,19 +66,24 @@ public class SublineVersion extends BaseVersion {
 
   @NotNull
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private SublineType type;
 
   @Size(max = 255)
+  @AtlasVersionableProperty
   private String description;
 
   @Size(max = 50)
+  @AtlasVersionableProperty
   private String number;
 
   @Size(max = 255)
+  @AtlasVersionableProperty
   private String longName;
 
   @NotNull
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private PaymentType paymentType;
 
   @NotNull
@@ -84,6 +96,7 @@ public class SublineVersion extends BaseVersion {
 
   @NotBlank
   @Size(max = 50)
+  @AtlasVersionableProperty
   private String businessOrganisation;
 
 }
