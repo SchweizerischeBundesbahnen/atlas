@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.sbb.atlas.versioning.BaseTest.VersionableObject;
+import ch.sbb.atlas.versioning.exception.DateValidationException;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -185,7 +186,7 @@ public class VersioningDataTest {
   }
 
   @Test
-  public void shouldThrowVersioningExceptionWhenValidFromIsBiggerThanValidTo() {
+  public void shouldThrowDateValidationExceptionWhenValidFromIsBiggerThanValidTo() {
     //given
     editedVersion.setValidFrom(LocalDate.of(2020, 1, 2));
     editedVersion.setValidTo(LocalDate.of(2019, 1, 2));
@@ -195,9 +196,41 @@ public class VersioningDataTest {
       new VersioningData(editedVersion, currentVersion, editedEntity,
           toVersioningList);
       //then
-    }).isInstanceOf(VersioningException.class)
+    }).isInstanceOf(DateValidationException.class)
       .hasMessageContaining(
           "Edited ValidFrom 2020-01-02 is bigger than edited ValidTo 2019-01-02");
+  }
+
+  @Test
+  public void shouldThrowDateValidationExceptionWhenValidFromIsBefore1900_01_01() {
+    //given
+    editedVersion.setValidFrom(LocalDate.of(1899, 12, 31));
+    editedVersion.setValidTo(LocalDate.of(2019, 1, 2));
+
+    //when
+    assertThatThrownBy(() -> {
+      new VersioningData(editedVersion, currentVersion, editedEntity,
+          toVersioningList);
+      //then
+    }).isInstanceOf(DateValidationException.class)
+      .hasMessageContaining(
+          "ValidFrom cannot be before 1.1.1900.");
+  }
+
+  @Test
+  public void shouldThrowDateValidationExceptionWhenValidToIsAfter2099_12_31() {
+    //given
+    editedVersion.setValidFrom(LocalDate.of(1899, 12, 31));
+    editedVersion.setValidTo(LocalDate.of(2019, 1, 2));
+
+    //when
+    assertThatThrownBy(() -> {
+      new VersioningData(editedVersion, currentVersion, editedEntity,
+          toVersioningList);
+      //then
+    }).isInstanceOf(DateValidationException.class)
+      .hasMessageContaining(
+          "ValidFrom cannot be before 1.1.1900.");
   }
 
 }

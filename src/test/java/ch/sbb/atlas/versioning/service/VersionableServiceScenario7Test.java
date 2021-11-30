@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ch.sbb.atlas.versioning.exception.DateValidationException;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.Property;
@@ -351,6 +352,7 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
     VersionableObject editedVersion = VersionableObject.builder()
                                                        .property("Ciao-Ciao")
                                                        .validFrom(editedValidFrom)
+                                                       .validTo(versionableObject1.getValidTo())
                                                        .build();
 
     //when
@@ -360,8 +362,8 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
           editedVersion,
           Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
       //then
-    }).isInstanceOf(VersioningException.class)
-      .hasMessageContaining("ValidFrom: 2029-12-09 is bigger than validTo: 2029-12-08");
+    }).isInstanceOf(DateValidationException.class)
+      .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger than edited ValidTo 2029-12-08");
 
   }
 
