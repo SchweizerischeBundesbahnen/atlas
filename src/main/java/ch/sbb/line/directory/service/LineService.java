@@ -1,8 +1,11 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.util.List;
@@ -18,6 +21,7 @@ public class LineService {
 
   private final LineVersionRepository lineVersionRepository;
   private final LineRepository lineRepository;
+  private final VersionableService versionableService;
 
   public Page<Line> findAll(Pageable pageable) {
     return lineRepository.findAll(pageable);
@@ -32,6 +36,7 @@ public class LineService {
   }
 
   public LineVersion save(LineVersion lineVersion) {
+    lineVersion.setStatus(Status.ACTIVE);
     if (!lineVersionRepository.hasUniqueSwissLineNumber(lineVersion)) {
       throw new ConflictExcpetion();
     }
@@ -43,5 +48,17 @@ public class LineService {
       throw NotFoundExcpetion.getInstance().get();
     }
     lineVersionRepository.deleteById(id);
+  }
+
+  public void updateVersion(LineVersion currentVersion,
+      LineVersion editedVersion) {
+    List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnid(
+        currentVersion.getSlnid());
+
+    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+        editedVersion, currentVersions);
+
+    versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save,
+        this::deleteById);
   }
 }

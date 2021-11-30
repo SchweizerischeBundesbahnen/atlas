@@ -1,5 +1,8 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -38,7 +41,8 @@ import org.hibernate.annotations.GeneratorType;
 @Builder
 @FieldNameConstants
 @Entity(name = "line_version")
-public class LineVersion extends BaseVersion {
+@AtlasVersionable
+public class LineVersion extends BaseVersion implements Versionable {
 
   private static final String VERSION_SEQ = "line_version_seq";
 
@@ -49,10 +53,12 @@ public class LineVersion extends BaseVersion {
 
   @NotBlank
   @Size(max = 50)
+  @AtlasVersionableProperty
   private String swissLineNumber;
 
   @GeneratorType(type = SlnidGenerator.class, when = GenerationTime.INSERT)
   @Column(updatable = false)
+  @AtlasVersionableProperty
   private String slnid;
 
   @NotNull
@@ -61,40 +67,52 @@ public class LineVersion extends BaseVersion {
 
   @NotNull
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private LineType type;
 
   @NotNull
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private PaymentType paymentType;
 
   @Size(max = 50)
+  @AtlasVersionableProperty
   private String number;
 
   @Size(max = 50)
+  @AtlasVersionableProperty
   private String alternativeName;
 
   @Size(max = 50)
+  @AtlasVersionableProperty
   private String combinationName;
 
   @Size(max = 255)
+  @AtlasVersionableProperty
   private String longName;
 
   @Convert(converter = RgbColorConverter.class)
+  @AtlasVersionableProperty
   private RgbColor colorFontRgb;
 
   @Convert(converter = RgbColorConverter.class)
+  @AtlasVersionableProperty
   private RgbColor colorBackRgb;
 
   @Convert(converter = CmykColorConverter.class)
+  @AtlasVersionableProperty
   private CmykColor colorFontCmyk;
 
   @Convert(converter = CmykColorConverter.class)
+  @AtlasVersionableProperty
   private CmykColor colorBackCmyk;
 
   @Size(max = 255)
+  @AtlasVersionableProperty
   private String icon;
 
   @Size(max = 255)
+  @AtlasVersionableProperty
   private String description;
 
   @NotNull
@@ -107,9 +125,11 @@ public class LineVersion extends BaseVersion {
 
   @NotBlank
   @Size(max = 50)
+  @AtlasVersionableProperty
   private String businessOrganisation;
 
   @Size(max = 1500)
+  @AtlasVersionableProperty
   private String comment;
 
 }

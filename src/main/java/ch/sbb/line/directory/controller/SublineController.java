@@ -91,6 +91,14 @@ public class SublineController implements SublinenApiV1 {
   }
 
   @Override
+  public List<SublineVersionModel> updateWithVersioning(Long id, SublineVersionModel newVersion) {
+    SublineVersion versionToUpdate = sublineService.findById(id).orElseThrow(NotFoundExcpetion.getInstance());
+    sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
+    return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
+                      .collect(Collectors.toList());
+  }
+
+  @Override
   public void deleteSublineVersion(Long id) {
     sublineService.deleteById(id);
   }

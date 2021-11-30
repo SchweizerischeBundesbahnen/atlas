@@ -66,7 +66,7 @@ public class LineControllerTest {
     verify(lineService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate")
+                                                    "creationDate", "version")
                                                 .ignoringFieldsMatchingRegexes("color.*")
                                                 .isEqualTo(lineVersionModel);
   }
@@ -169,6 +169,22 @@ public class LineControllerTest {
     assertThat(result).usingRecursiveComparison()
                       .ignoringFields("editor", "creator", "editionDate", "creationDate")
                       .isEqualTo(lineVersionModel);
+  }
+
+  @Test
+  void shouldUpdateVersionWithVersioning() {
+    // Given
+    LineVersion lineVersion = LineTestData.lineVersion();
+    LineVersionModel lineVersionModel = createModel();
+    lineVersionModel.setNumber("New name");
+
+    when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
+
+    // When
+    lineController.updateWithVersioning(1L, lineVersionModel);
+
+    // Then
+    verify(lineService).updateVersion(any(), any());
   }
 
   @Test
