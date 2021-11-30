@@ -12,6 +12,8 @@ public class VersionableProperty {
 
   private String fieldName;
 
+  private boolean ignoreDiff;
+
   private RelationType relationType;
 
   private List<String> relationsFields;

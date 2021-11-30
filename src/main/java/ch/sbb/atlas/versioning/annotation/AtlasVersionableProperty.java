@@ -17,6 +17,11 @@ public @interface AtlasVersionableProperty {
 
   String key() default "";
 
+  /**
+   * Used to specify that the property must be ignored during the compare between objects
+   */
+  boolean ignoreDiff() default false;
+
   RelationType relationType() default NONE;
 
   /**

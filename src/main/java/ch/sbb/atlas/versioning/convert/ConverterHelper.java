@@ -98,7 +98,7 @@ public final class ConverterHelper {
       Field declaredField = versionClass.getDeclaredField(property.getFieldName());
       declaredField.setAccessible(true);
       Object propertyValue = declaredField.get(version);
-      return buildProperty(property.getFieldName(), propertyValue);
+      return buildProperty(property.getFieldName(), propertyValue, property.isIgnoreDiff());
     } catch (NoSuchFieldException | IllegalAccessException e) {
       log.error("Error during parse field {}", e.getMessage());
       throw new VersioningException("Error during parse field " + e.getMessage(), e);
@@ -126,7 +126,7 @@ public final class ConverterHelper {
             Field relationDeclaredField = oneToManyRelation.getClass().getDeclaredField(relation);
             relationDeclaredField.setAccessible(true);
             Object relationField = relationDeclaredField.get(oneToManyRelation);
-            relationProperties.add(buildProperty(relation, relationField));
+            relationProperties.add(buildProperty(relation, relationField,property.isIgnoreDiff()));
           }
           entityRelations.add(entityRelationBuilder.properties(relationProperties).build());
         }
@@ -145,9 +145,11 @@ public final class ConverterHelper {
                  .build();
   }
 
-  private static Property buildProperty(String fieldName, Object propertyValue) {
+  private static Property buildProperty(String fieldName, Object propertyValue,
+      boolean ignoreDiff) {
     return Property.builder()
                    .key(fieldName)
+                   .ignoreDiff(ignoreDiff)
                    .value(propertyValue)
                    .build();
   }
