@@ -1,9 +1,11 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.line.directory.api.Container;
+import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.api.SublinenApiV1;
+import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
@@ -88,6 +90,14 @@ public class SublineController implements SublinenApiV1 {
     sublineService.save(versionToUpdate);
 
     return toModel(versionToUpdate);
+  }
+
+  @Override
+  public List<SublineVersionModel> updateWithVersioning(Long id, SublineVersionModel newVersion) {
+    SublineVersion versionToUpdate = sublineService.findById(id).orElseThrow(NotFoundExcpetion.getInstance());
+    sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
+    return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
+                      .collect(Collectors.toList());
   }
 
   @Override

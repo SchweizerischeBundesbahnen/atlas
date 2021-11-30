@@ -163,6 +163,22 @@ public class SublineControllerTest {
   }
 
   @Test
+  void shouldUpdateVersionWithVersioning() {
+    // Given
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    SublineVersionModel sublineVersionModel = createModel();
+    sublineVersionModel.setNumber("New name");
+
+    when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
+
+    // When
+    sublineController.updateWithVersioning(1L, sublineVersionModel);
+
+    // Then
+    verify(sublineService).updateVersion(any(), any());
+  }
+
+  @Test
   void shouldReturnNotFoundOnUnexistingUpdateVersion() {
     // Given
     when(sublineService.findById(anyLong())).thenReturn(Optional.empty());
