@@ -243,5 +243,87 @@ public class AtlasAnnotationProcessorTest {
 
   }
 
+  @Test
+  public void shouldReturnVersionablePropertiesWithSuperclass() {
+    //given
+    class ParentVersionable {
+
+      @AtlasVersionableProperty
+      private String additionalProperty;
+
+      public String getAdditionalProperty() {
+        return additionalProperty;
+      }
+
+      public void setAdditionalProperty(String additionalProperty) {
+        this.additionalProperty = additionalProperty;
+      }
+    }
+
+    @AtlasVersionable
+    class ChildVersionable extends ParentVersionable implements Versionable {
+
+      @AtlasVersionableProperty
+      private String property;
+
+      public String getProperty() {
+        return property;
+      }
+
+      public void setProperty(String property) {
+        this.property = property;
+      }
+
+      @Override
+      public LocalDate getValidFrom() {
+        return null;
+      }
+
+      @Override
+      public void setValidFrom(LocalDate validFrom) {
+
+      }
+
+      @Override
+      public LocalDate getValidTo() {
+        return null;
+      }
+
+      @Override
+      public void setValidTo(LocalDate validTo) {
+
+      }
+
+      @Override
+      public Long getId() {
+        return null;
+      }
+
+      @Override
+      public void setId(Long id) {
+
+      }
+    }
+
+    ChildVersionable childVersionable = new ChildVersionable();
+    childVersionable.setProperty("Ciao");
+    childVersionable.setAdditionalProperty("Bella");
+
+    //when
+    List<VersionableProperty> versionableProperties = atlasAnnotationProcessor.getVersionableProperties(
+        childVersionable);
+    //then
+    assertThat(versionableProperties).isNotEmpty();
+    assertThat(versionableProperties.size()).isEqualTo(2);
+
+    VersionableProperty versionableProperty = versionableProperties.get(0);
+    assertThat(versionableProperty).isNotNull();
+    assertThat(versionableProperty.getFieldName()).isEqualTo("property");
+
+    VersionableProperty additionalProperty = versionableProperties.get(1);
+    assertThat(additionalProperty).isNotNull();
+    assertThat(additionalProperty.getFieldName()).isEqualTo("additionalProperty");
+  }
+
 
 }

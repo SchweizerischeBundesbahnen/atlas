@@ -95,8 +95,8 @@ public final class ConverterHelper {
       VersionableProperty property) {
     Class<? extends Versionable> versionClass = version.getClass();
     try {
-      Field declaredField = versionClass.getDeclaredField(property.getFieldName());
-      declaredField.setAccessible(true);
+      Field declaredField = ReflectionHelper.getFieldAccessible(versionClass,
+          property.getFieldName());
       Object propertyValue = declaredField.get(version);
       return buildProperty(property.getFieldName(), propertyValue, property.isIgnoreDiff());
     } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -116,17 +116,17 @@ public final class ConverterHelper {
 
     Class<? extends Versionable> versionClass = version.getClass();
     try {
-      Field oneToManyRelationField = versionClass.getDeclaredField(property.getFieldName());
-      oneToManyRelationField.setAccessible(true);
-      Collection<Object> oneToManyRelationCollection =
-          (Collection<Object>) oneToManyRelationField.get(version);
+      Field oneToManyRelationField = ReflectionHelper.getFieldAccessible(versionClass,
+          property.getFieldName());
+      Collection<Object> oneToManyRelationCollection = (Collection<Object>) oneToManyRelationField.get(
+          version);
       if (oneToManyRelationCollection != null) {
         for (Object oneToManyRelation : oneToManyRelationCollection) {
           for (String relation : property.getRelationsFields()) {
-            Field relationDeclaredField = oneToManyRelation.getClass().getDeclaredField(relation);
-            relationDeclaredField.setAccessible(true);
+            Field relationDeclaredField = ReflectionHelper.getFieldAccessible(
+                oneToManyRelation.getClass(), relation);
             Object relationField = relationDeclaredField.get(oneToManyRelation);
-            relationProperties.add(buildProperty(relation, relationField,property.isIgnoreDiff()));
+            relationProperties.add(buildProperty(relation, relationField, property.isIgnoreDiff()));
           }
           entityRelations.add(entityRelationBuilder.properties(relationProperties).build());
         }
