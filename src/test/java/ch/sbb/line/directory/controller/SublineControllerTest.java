@@ -98,7 +98,7 @@ public class SublineControllerTest {
     verify(sublineService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate")
+                                                    "creationDate", "version")
                                                 .isEqualTo(sublineVersionModel);
   }
 
@@ -160,6 +160,22 @@ public class SublineControllerTest {
     assertThat(result).usingRecursiveComparison()
                       .ignoringFields("editor", "creator", "editionDate", "creationDate")
                       .isEqualTo(sublineVersionModel);
+  }
+
+  @Test
+  void shouldUpdateVersionWithVersioning() {
+    // Given
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    SublineVersionModel sublineVersionModel = createModel();
+    sublineVersionModel.setNumber("New name");
+
+    when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
+
+    // When
+    sublineController.updateWithVersioning(1L, sublineVersionModel);
+
+    // Then
+    verify(sublineService).updateVersion(any(), any());
   }
 
   @Test

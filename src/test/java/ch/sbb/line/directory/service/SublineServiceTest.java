@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.SublineRepository;
@@ -29,12 +30,16 @@ class SublineServiceTest {
   @Mock
   private SublineRepository sublineRepository;
 
+  @Mock
+  private VersionableService versionableService;
+
   private SublineService sublineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sublineService = new SublineService(sublineVersionRepository, sublineRepository);
+    sublineService = new SublineService(sublineVersionRepository, sublineRepository,
+        versionableService);
   }
 
   @Test
@@ -77,7 +82,8 @@ class SublineServiceTest {
   @Test
   void shouldSaveSublineWithValidation() {
     // Given
-    when(sublineVersionRepository.save(any())).thenAnswer(i -> i.getArgument(0, SublineVersion.class));
+    when(sublineVersionRepository.save(any())).thenAnswer(
+        i -> i.getArgument(0, SublineVersion.class));
     when(sublineVersionRepository.hasUniqueSwissSublineNumber(any())).thenReturn(true);
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
     // When
@@ -108,7 +114,8 @@ class SublineServiceTest {
     when(sublineVersionRepository.existsById(ID)).thenReturn(false);
 
     // When
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(()-> sublineService.deleteById(ID));
+    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+        () -> sublineService.deleteById(ID));
 
     // Then
     verify(sublineVersionRepository).existsById(ID);
