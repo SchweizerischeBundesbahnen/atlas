@@ -11,6 +11,8 @@ import java.time.LocalDate;
 
 public class SublineTestData {
 
+  public static final String MAINLINE_SLNID = "mainlineSlnid";
+
   public static SublineVersionBuilder sublineVersionBuilder() {
     return SublineVersion.builder()
                          .status(Status.ACTIVE)
@@ -26,7 +28,7 @@ public class SublineTestData {
                              LocalDate.of(2020, 12, 31))
                          .businessOrganisation(
                              "businessOrganisation")
-                         .swissLineNumber("swissLineNumber")
+                         .mainlineSlnid(MAINLINE_SLNID)
                          .swissSublineNumber(
                              "swissSublineNumber");
   }
