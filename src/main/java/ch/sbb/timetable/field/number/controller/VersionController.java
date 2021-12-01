@@ -1,11 +1,12 @@
 package ch.sbb.timetable.field.number.controller;
 
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberApiV1;
+import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberModel;
 import ch.sbb.timetable.field.number.api.VersionModel;
-import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.util.List;
 import java.util.function.Supplier;
@@ -37,21 +38,21 @@ public class VersionController implements TimetableFieldNumberApiV1 {
     log.info("Load TimetableFieldNumbers using pageable={}", pageable);
     Page<TimetableFieldNumber> timetableFieldNumbers = versionService.getOverview(pageable);
     List<TimetableFieldNumberModel> versions = timetableFieldNumbers.stream().map(this::toModel)
-                                          .collect(Collectors.toList());
+        .collect(Collectors.toList());
     return TimetableFieldNumberContainer.builder()
-                                        .fieldNumbers(versions)
-                                        .totalCount(timetableFieldNumbers.getTotalElements()).build();
+        .fieldNumbers(versions)
+        .totalCount(timetableFieldNumbers.getTotalElements()).build();
   }
 
   private TimetableFieldNumberModel toModel(TimetableFieldNumber version) {
     return TimetableFieldNumberModel.builder()
-                       .name(version.getName())
-                       .ttfnid(version.getTtfnid())
-                       .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
-                       .status(version.getStatus())
-                       .validFrom(version.getValidFrom())
-                       .validTo(version.getValidTo())
-                       .build();
+        .name(version.getName())
+        .ttfnid(version.getTtfnid())
+        .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
+        .status(version.getStatus())
+        .validFrom(version.getValidFrom())
+        .validTo(version.getValidTo())
+        .build();
   }
 
   @Override
@@ -62,12 +63,14 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   @Override
   public List<VersionModel> getAllVersionsVersioned(String ttfnId) {
     return versionService.getAllVersionsVersioned(ttfnId).stream().map(this::toModel)
-                         .collect(Collectors.toList());
+        .collect(Collectors.toList());
   }
 
   @Override
   public VersionModel createVersion(VersionModel newVersion) {
-    Version createdVersion = versionService.save(toEntity(newVersion));
+    newVersion.setStatus(Status.ACTIVE);
+    Version version = toEntity(newVersion);
+    Version createdVersion = versionService.save(version);
     return toModel(createdVersion);
   }
 
@@ -75,7 +78,6 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   public VersionModel updateVersion(Long id, VersionModel newVersion) {
     Version versionToUpdate = versionService.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
 
-    versionToUpdate.setTtfnid(newVersion.getTtfnid());
     versionToUpdate.setName(newVersion.getName());
     versionToUpdate.setNumber(newVersion.getNumber());
     versionToUpdate.setSwissTimetableFieldNumber(newVersion.getSwissTimetableFieldNumber());
@@ -105,31 +107,30 @@ public class VersionController implements TimetableFieldNumberApiV1 {
 
   private VersionModel toModel(Version version) {
     return VersionModel.builder()
-                       .id(version.getId())
-                       .name(version.getName())
-                       .number(version.getNumber())
-                       .ttfnid(version.getTtfnid())
-                       .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
-                       .status(version.getStatus())
-                       .validFrom(version.getValidFrom())
-                       .validTo(version.getValidTo())
-                       .businessOrganisation(version.getBusinessOrganisation())
-                       .comment(version.getComment())
-                       .build();
+        .id(version.getId())
+        .name(version.getName())
+        .number(version.getNumber())
+        .ttfnid(version.getTtfnid())
+        .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
+        .status(version.getStatus())
+        .validFrom(version.getValidFrom())
+        .validTo(version.getValidTo())
+        .businessOrganisation(version.getBusinessOrganisation())
+        .comment(version.getComment())
+        .build();
   }
 
   private Version toEntity(VersionModel versionModel) {
     return Version.builder()
-                  .id(versionModel.getId())
-                  .name(versionModel.getName())
-                  .number(versionModel.getNumber())
-                  .ttfnid(versionModel.getTtfnid())
-                  .swissTimetableFieldNumber(versionModel.getSwissTimetableFieldNumber())
-                  .status(versionModel.getStatus())
-                  .validFrom(versionModel.getValidFrom())
-                  .validTo(versionModel.getValidTo())
-                  .businessOrganisation(versionModel.getBusinessOrganisation())
-                  .comment(versionModel.getComment())
-                  .build();
+        .id(versionModel.getId())
+        .name(versionModel.getName())
+        .number(versionModel.getNumber())
+        .swissTimetableFieldNumber(versionModel.getSwissTimetableFieldNumber())
+        .status(versionModel.getStatus())
+        .validFrom(versionModel.getValidFrom())
+        .validTo(versionModel.getValidTo())
+        .businessOrganisation(versionModel.getBusinessOrganisation())
+        .comment(versionModel.getComment())
+        .build();
   }
 }
