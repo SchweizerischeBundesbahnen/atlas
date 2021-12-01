@@ -11,6 +11,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.service.LineService;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +27,9 @@ public class LineController implements LineApiV1 {
   private final LineService lineService;
 
   @Override
-  public Container<LineModel> getLines(Pageable pageable) {
+  public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber) {
     log.info("Load Versions using pageable={}", pageable);
-    Page<Line> lines = lineService.findAll(pageable);
+    Page<Line> lines = lineService.findAll(pageable, swissLineNumber);
     List<LineModel> lineModels = lines
         .stream()
         .map(this::toModel)
