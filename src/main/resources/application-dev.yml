@@ -7,7 +7,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowed-origins: https://atlas-frontend-dev.apps.aws01t.sbb-aws-test.net,https://developer-int.sbb.ch
+            allowed-origins: http://localhost:4200,https://atlas-frontend-dev.apps.aws01t.sbb-aws-test.net,https://developer-int.sbb.ch
 gateway:
   routes:
     timetable-field-number: http://timetable-field-number-backend:8080
