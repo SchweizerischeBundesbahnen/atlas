@@ -45,10 +45,11 @@ describe('TimetableFieldNumberDetailResolver', () => {
 
     const resolvedVersion = resolver.resolve(mockRoute);
 
-    resolvedVersion.subscribe((version) => {
-      expect(version.id).toBe(1234);
-      expect(version.status).toBe(StatusEnum.Active);
-      expect(version.ttfnid).toBe('ttfnid');
+    resolvedVersion.subscribe((versions) => {
+      expect(versions.length).toBe(1);
+      expect(versions[0].id).toBe(1234);
+      expect(versions[0].status).toBe(StatusEnum.Active);
+      expect(versions[0].ttfnid).toBe('ttfnid');
     });
   });
 });

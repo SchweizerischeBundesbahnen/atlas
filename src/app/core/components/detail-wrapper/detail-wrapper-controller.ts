@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { Observable, of } from 'rxjs';
+import moment from 'moment/moment';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
@@ -13,7 +14,14 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   protected constructor(protected dialogService: DialogService) {}
 
   ngOnInit(): void {
-    this.record = this.readRecord();
+    const records = this.readRecord();
+    if (Array.isArray(records)) {
+      console.log('is array');
+      this.record = this.getActualRecord(records);
+    } else {
+      console.log('is not array');
+      this.record = records;
+    }
     this.form = this.getFormGroup(this.record);
 
     if (this.isExistingRecord()) {
@@ -76,6 +84,37 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
           this.deleteRecord();
         }
       });
+  }
+
+  getActualRecord(records: Array<TYPE>): TYPE {
+    if (records.length == 1) {
+      return records[0];
+    }
+    const now = moment();
+    const matchedRecord = records.filter((record) => {
+      const currentValidFrom = moment(record.validFrom);
+      const currentValidTo = moment(record.validTo);
+      return now.isBetween(currentValidFrom, currentValidTo);
+    });
+
+    console.log(matchedRecord);
+    if (matchedRecord.length == 1) {
+      return matchedRecord[0];
+    } else if (matchedRecord.length > 1) {
+      console.log('Something went wrong. Found more than one Record.');
+    } else if (matchedRecord.length == 0 && records.length > 1) {
+      //get next in future
+      const firstIndexValidFrom = records[0].validFrom;
+      if (now.isBefore(firstIndexValidFrom)) {
+        return records[0];
+      }
+      //get last in passt
+      const lastIndexValidTo = records[matchedRecord.length - 1].validTo;
+      if (now.isAfter(lastIndexValidTo)) {
+        return matchedRecord[matchedRecord.length - 1];
+      }
+    }
+    return records[0];
   }
 
   abstract getTitle(record: TYPE): string | undefined;
