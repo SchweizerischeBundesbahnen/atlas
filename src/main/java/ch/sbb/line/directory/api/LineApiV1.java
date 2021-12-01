@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public interface LineApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  Container<LineModel> getLines(@Parameter(hidden = true) Pageable pageable);
+  Container<LineModel> getLines(@Parameter(hidden = true) Pageable pageable, @Parameter Optional<String> swissLineNumber);
 
   @GetMapping("/{slnid}")
   List<LineVersionModel> getLine(@PathVariable String slnid);

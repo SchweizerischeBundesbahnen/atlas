@@ -23,7 +23,11 @@ public class LineService {
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
 
-  public Page<Line> findAll(Pageable pageable) {
+  public Page<Line> findAll(Pageable pageable, Optional<String> swissLineNumber) {
+    if (swissLineNumber.isPresent()) {
+      return lineRepository.findAllBySwissLineNumberLike(pageable,
+          swissLineNumber.map(i -> "%" + i + "%").orElseThrow());
+    }
     return lineRepository.findAll(pageable);
   }
 

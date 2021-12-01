@@ -75,12 +75,12 @@ public class LineControllerTest {
   void shouldGetLines() {
     // Given
     Line line = LineTestData.line();
-    when(lineService.findAll(any(Pageable.class))).thenReturn(
+    when(lineService.findAll(any(Pageable.class), any())).thenReturn(
         new PageImpl<>(Collections.singletonList(line)));
 
     // When
     Container<LineModel> lineContainer = lineController.getLines(
-        Pageable.unpaged());
+        Pageable.unpaged(), Optional.empty());
 
     // Then
     assertThat(lineContainer).isNotNull();
