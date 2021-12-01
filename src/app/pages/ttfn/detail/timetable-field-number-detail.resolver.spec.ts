@@ -13,6 +13,8 @@ const version: Version = {
   status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
+  number: '1.1',
+  businessOrganisation: 'sbb',
 };
 
 describe('TimetableFieldNumberDetailResolver', () => {

@@ -56,21 +56,23 @@
           }}
         </mat-error>
       </mat-form-field>
-
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.TTFNID' | translate }}</mat-label>
         <input
-          data-cy="ttfnid"
-          required
           matInput
-          formControlName="ttfnid"
-          placeholder="{{ TTFNID_PLACEHOLDER }}"
+          [value]="form.value.ttfnid || ''"
+          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
+          [disabled]="true"
+          required
         />
-        <mat-error *ngFor="let validationError of this.getValidation('ttfnid')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col">
+        <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
+        <mat-select [value]="form.value.status" [disabled]="true">
+          <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
+            {{ 'COMMON.STATUS_TYPES.' + status | translate }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 
@@ -80,7 +82,8 @@
         <input data-cy="number" required matInput formControlName="number" />
         <mat-error *ngFor="let validationError of this.getValidation('number')">
           {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
+            validationError.error
+              | translate: { length: validationError.value['requiredLength'], allowedChars: '.0-9' }
           }}
         </mat-error>
       </mat-form-field>
@@ -91,7 +94,6 @@
         <mat-label>{{ 'TTFN.NAME' | translate }}</mat-label>
         <input
           data-cy="name"
-          required
           matInput
           formControlName="name"
           placeholder="{{ NAME_PLACEHOLDER }}"
@@ -125,6 +127,11 @@
       <mat-form-field>
         <mat-label>{{ 'TTFN.COMMENT' | translate }}</mat-label>
         <input data-cy="comment" matInput formControlName="comment" />
+        <mat-error *ngFor="let validationError of this.getValidation('comment')">
+          {{
+            validationError.error | translate: { length: validationError.value['requiredLength'] }
+          }}
+        </mat-error>
       </mat-form-field>
     </div>
   </form>

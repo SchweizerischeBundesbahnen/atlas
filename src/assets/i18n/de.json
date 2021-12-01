@@ -101,7 +101,8 @@
     "MATDATEPICKERMIN": "Datum muss grösser oder gleich als {{date}} sein",
     "MATDATEPICKERMAX": "Datum muss kleiner oder gleich als {{date}} sein",
     "MATDATEPICKERPARSE": "Ungültiges Datumformat (muss TT.MM.YYYY sein)",
-    "DATE_RANGE_ERROR": "Gültig von Datum darf nicht grösser als Gültig bis sein: {{date}}"
+    "DATE_RANGE_ERROR": "Gültig von Datum darf nicht grösser als Gültig bis sein: {{date}}",
+    "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}"
   },
   "LIDI": {
     "LINES": "Linienverzeichnis",

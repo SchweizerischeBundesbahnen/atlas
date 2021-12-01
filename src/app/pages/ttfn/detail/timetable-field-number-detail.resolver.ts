@@ -15,7 +15,7 @@ export class TimetableFieldNumberDetailResolver implements Resolve<Version> {
   resolve(route: ActivatedRouteSnapshot): Observable<Version> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
-      ? of({})
+      ? of({} as Version)
       : this.timetableFieldNumbersService.getAllVersionsVersioned(idParameter).pipe(
           catchError(() => {
             this.router.navigate([Pages.TTFN.path]).then();
