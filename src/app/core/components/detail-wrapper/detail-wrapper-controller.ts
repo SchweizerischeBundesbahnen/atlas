@@ -8,16 +8,27 @@ import moment from 'moment/moment';
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
   record!: TYPE;
+  records!: Array<TYPE>;
   form = new FormGroup({});
   heading!: string | undefined;
+  switchedIndex!: number | undefined;
 
   protected constructor(protected dialogService: DialogService) {}
 
   ngOnInit(): void {
+    this.init();
+  }
+
+  private init() {
     const records = this.readRecord();
     if (Array.isArray(records)) {
+      this.records = records;
       console.log('is array');
-      this.record = this.getActualRecord(records);
+      if (this.switchedIndex !== undefined && this.switchedIndex >= 0) {
+        this.record = this.records[this.switchedIndex];
+      } else {
+        this.record = this.getActualRecord(records);
+      }
     } else {
       console.log('is not array');
       this.record = records;
@@ -30,6 +41,11 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     } else {
       this.form.enable();
     }
+  }
+
+  switchVersion(index: number) {
+    this.switchedIndex = index;
+    this.init();
   }
 
   getId(): number {

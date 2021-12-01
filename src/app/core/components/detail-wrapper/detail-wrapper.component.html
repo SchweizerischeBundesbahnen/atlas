@@ -3,7 +3,11 @@
     <strong>{{ controller.heading || (headingNew | translate) }}</strong>
   </h1>
 </div>
-
+<app-switch-version
+  [records]="controller.records"
+  [currentRecord]="controller.record"
+  (switchVersion)="controller.switchVersion($event)"
+></app-switch-version>
 <div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section mb-2">
   <div class="edit-buttons">
     <button
