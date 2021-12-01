@@ -7,8 +7,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
+import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.service.VersionService;
@@ -56,7 +56,7 @@ public class VersionControllerTest {
     verify(versionService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate", "lineRelations")
+                                                    "creationDate", "lineRelations", "ttfnid", "version")
                                                 .isEqualTo(versionModel);
   }
 
@@ -168,7 +168,7 @@ public class VersionControllerTest {
 
   private static TimetableFieldNumber createOverviewEntity() {
     return TimetableFieldNumber.builder()
-                  .ttfnid("ch:1:fpfnid:100000")
+                  .ttfnid("ch:1:ttfnid:100000")
                   .name("FPFN Name")
                   .swissTimetableFieldNumber("b0.BEX")
                   .validFrom(LocalDate.of(2020, 12, 12))
@@ -178,7 +178,7 @@ public class VersionControllerTest {
 
   private static Version createEntity() {
     return Version.builder()
-                  .ttfnid("ch:1:fpfnid:100000")
+                  .ttfnid("ch:1:ttfnid:100000")
                   .name("FPFN Name")
                   .number("BEX")
                   .swissTimetableFieldNumber("b0.BEX")
@@ -189,7 +189,7 @@ public class VersionControllerTest {
 
   private static VersionModel createModel() {
     return VersionModel.builder()
-                       .ttfnid("ch:1:fpfnid:100000")
+                       .ttfnid("ch:1:ttfnid:100000")
                        .name("FPFN Name")
                        .number("BEX")
                        .swissTimetableFieldNumber("b0.BEX")
