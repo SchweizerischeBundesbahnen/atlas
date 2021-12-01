@@ -1,11 +1,11 @@
 package ch.sbb.timetable.field.number.service;
 
-
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.exceptions.ConflictException;
 import ch.sbb.timetable.field.number.repository.TimetableFieldNumberRepository;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import java.util.List;
@@ -43,6 +43,9 @@ public class VersionService {
 
   public Version save(Version newVersion) {
     newVersion.setStatus(Status.ACTIVE);
+    if (!areNumberAndSttfnUnique(newVersion)) {
+      throw new ConflictException("Number or SwissTimeTableFieldNumber are already taken");
+    }
     return versionRepository.save(newVersion);
   }
 
@@ -63,8 +66,7 @@ public class VersionService {
   }
 
   public List<VersionedObject> updateVersion(Version currentVersion, Version editedVersion) {
-    List<Version> currentVersions = versionRepository.getAllVersionsVersioned(
-        currentVersion.getTtfnid());
+    List<Version> currentVersions = getAllVersionsVersioned(currentVersion.getTtfnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
@@ -72,6 +74,12 @@ public class VersionService {
     versionableService.applyVersioning(Version.class, versionedObjects, this::save,
         this::deleteById);
     return versionedObjects;
+  }
+
+  private boolean areNumberAndSttfnUnique(Version version) {
+    String ttfnid = version.getTtfnid() == null ? "" : version.getTtfnid();
+    return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber(),
+        version.getValidFrom(), version.getValidTo(), ttfnid).size() == 0;
   }
 
 }

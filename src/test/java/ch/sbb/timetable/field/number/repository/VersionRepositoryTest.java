@@ -6,6 +6,7 @@ import ch.sbb.timetable.field.number.IntegrationTest;
 import ch.sbb.timetable.field.number.WithMockJwtAuthentication;
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.enumaration.Status;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -29,13 +30,16 @@ public class VersionRepositoryTest {
 
   @BeforeEach
   void setUpVersionWithTwoLineRelations() {
-    version = Version.builder().ttfnid("ch:1:fpfnid:100000")
-                     .name("FPFN Name")
-                     .number("BEX")
-                     .swissTimetableFieldNumber("b0.BEX")
-                     .validFrom(LocalDate.of(2020, 12, 12))
-                     .validTo(LocalDate.of(2099, 12, 12))
-                     .build();
+    version = Version.builder()
+        .ttfnid("ch:1:ttfnid:100000")
+        .name("FPFN Name")
+        .number("BEX")
+        .status(Status.ACTIVE)
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12))
+        .businessOrganisation("sbb")
+        .build();
     version.setLineRelations(new HashSet<>(
         Set.of(LineRelation.builder().slnid("ch:1:slnid:100000").version(version).build(),
             LineRelation.builder().slnid("ch:1:slnid:100001").version(version).build())));
@@ -81,7 +85,7 @@ public class VersionRepositoryTest {
   void shouldUpdateVersionWithAdditionalLineRelation() {
     //given
     version.getLineRelations()
-           .add(LineRelation.builder().slnid("ch:1:slnid:100002").version(version).build());
+        .add(LineRelation.builder().slnid("ch:1:slnid:100002").version(version).build());
     versionRepository.save(version);
 
     //when
