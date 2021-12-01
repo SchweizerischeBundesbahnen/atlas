@@ -1,10 +1,9 @@
 describe('Fahrplanfeldnummer', () => {
   const swissTimetableFieldNumber = '00.AAA';
-  const ttfnid = 'ch:1:fpfnid:100';
   const validFrom = '22.09.2099';
   const validTo = '22.09.2099';
   const businessOrganisation = 'SBB';
-  const number = 'BEXsZs';
+  const number = '1.1';
   const name =
     'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z';
   const comment = 'This is a comment';
@@ -45,7 +44,6 @@ describe('Fahrplanfeldnummer', () => {
 
     //add input values
     cy.get('[data-cy=swissTimetableFieldNumber]').type(swissTimetableFieldNumber);
-    cy.get('[data-cy=ttfnid]').type(ttfnid);
     cy.get('[data-cy=validFrom]').type(validFrom);
     cy.get('[data-cy=validTo]').type(validTo);
     cy.get('[data-cy=businessOrganisation]').type(businessOrganisation);
@@ -73,7 +71,6 @@ describe('Fahrplanfeldnummer', () => {
     cy.get('[data-cy=swissTimetableFieldNumber]')
       .invoke('val')
       .should('eq', swissTimetableFieldNumber);
-    cy.get('[data-cy=ttfnid]').invoke('val').should('eq', ttfnid);
     cy.get('[data-cy=validFrom]').invoke('val').should('eq', validFrom);
     cy.get('[data-cy=validTo]').invoke('val').should('eq', validTo);
     cy.get('[data-cy=businessOrganisation]').invoke('val').should('eq', businessOrganisation);
