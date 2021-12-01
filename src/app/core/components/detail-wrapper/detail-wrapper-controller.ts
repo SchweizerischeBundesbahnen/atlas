@@ -91,30 +91,51 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
       return records[0];
     }
     const now = moment();
-    const matchedRecord = records.filter((record) => {
-      const currentValidFrom = moment(record.validFrom);
-      const currentValidTo = moment(record.validTo);
-      return now.isBetween(currentValidFrom, currentValidTo);
-    });
-
-    console.log(matchedRecord);
+    const matchedRecord = this.findRecordByTodayDate(records, now);
     if (matchedRecord.length == 1) {
       return matchedRecord[0];
     } else if (matchedRecord.length > 1) {
-      console.log('Something went wrong. Found more than one Record.');
+      throw new Error('Something went wrong. Found more than one Record.');
     } else if (matchedRecord.length == 0 && records.length > 1) {
+      const foundRecordBetweenGap = this.findRecordBetweenGap(records, now);
+      if (foundRecordBetweenGap != null) {
+        return foundRecordBetweenGap;
+      }
       //get next in future
-      const firstIndexValidFrom = records[0].validFrom;
+      const firstIndexValidFrom = moment(records[0].validFrom);
       if (now.isBefore(firstIndexValidFrom)) {
         return records[0];
       }
       //get last in passt
-      const lastIndexValidTo = records[matchedRecord.length - 1].validTo;
+      const lastIndexValidTo = moment(records[records.length - 1].validTo);
       if (now.isAfter(lastIndexValidTo)) {
-        return matchedRecord[matchedRecord.length - 1];
+        return records[records.length - 1];
       }
     }
     return records[0];
+  }
+
+  private findRecordByTodayDate(records: Array<TYPE>, now: moment.Moment) {
+    return records.filter((record) => {
+      const currentValidFrom = moment(record.validFrom);
+      const currentValidTo = moment(record.validTo);
+      return now.isBetween(currentValidFrom, currentValidTo);
+    });
+  }
+
+  private findRecordBetweenGap(records: Array<TYPE>, now: moment.Moment) {
+    const startRecordsDateRange = records[0].validFrom;
+    const endRecordsDateRange = records[records.length - 1].validTo;
+    if (now.isBetween(startRecordsDateRange, endRecordsDateRange)) {
+      for (let i = 1; i < records.length; i++) {
+        const currentValidTo = moment(records[i - 1].validTo);
+        const nextValidFrom = moment(records[i].validFrom);
+        if (now.isBetween(currentValidTo, nextValidFrom)) {
+          return records[i];
+        }
+      }
+    }
+    return null;
   }
 
   abstract getTitle(record: TYPE): string | undefined;
