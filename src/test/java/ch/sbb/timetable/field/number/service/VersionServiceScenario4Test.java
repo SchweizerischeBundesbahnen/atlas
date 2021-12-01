@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -43,7 +44,7 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.getLineRelations()
-                 .add(LineRelation.builder().slnid("ch:1:fpfnid:111111").version(version3).build());
+        .add(LineRelation.builder().slnid("ch:1:ttfnid:111111").version(version3).build());
 
     //when
     versionService.updateVersion(version3, editedVersion);
@@ -62,6 +63,10 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
+    assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     // new
     Version secondTemporalVersion = result.get(1);
@@ -75,7 +80,11 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(lineRelationsSecondVersion.size()).isEqualTo(1);
     LineRelation lineRelationSecondVersion = lineRelationsSecondVersion.stream().iterator().next();
     assertThat(lineRelationSecondVersion).isNotNull();
-    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
+    assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX1");
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     //update
     Version thirdTemporalVersion = result.get(2);
@@ -88,7 +97,11 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(lineRelationsThirdVersion.size()).isEqualTo(1);
     LineRelation lineRelationThirdVersion = lineRelationsThirdVersion.stream().iterator().next();
     assertThat(lineRelationThirdVersion).isNotNull();
-    assertThat(lineRelationThirdVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationThirdVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
+    assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX2");
+    assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(thirdTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     //new
     Version fourthTemporalVersion = result.get(3);
@@ -101,7 +114,11 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(lineRelationsFourthVersion.size()).isEqualTo(1);
     LineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream().iterator().next();
     assertThat(lineRelationFourthVersion).isNotNull();
-    assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:fpfnid:111111");
+    assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
+    assertThat(fourthTemporalVersion.getNumber()).isEqualTo("BEX3");
+    assertThat(fourthTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(fourthTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(fourthTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
     //last current index updated
     Version fifthTemporalVersion = result.get(4);
@@ -110,6 +127,10 @@ public class VersionServiceScenario4Test extends BaseVersionServiceTest {
     assertThat(fifthTemporalVersion.getName()).isEqualTo("FPFN Name");
     assertThat(fifthTemporalVersion.getComment()).isNull();
     assertThat(fifthTemporalVersion.getLineRelations()).isEmpty();
+    assertThat(fifthTemporalVersion.getNumber()).isEqualTo("BEX3");
+    assertThat(fifthTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(fifthTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
+    assertThat(fifthTemporalVersion.getBusinessOrganisation()).isEqualTo("sbb");
 
   }
 
