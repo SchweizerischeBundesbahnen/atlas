@@ -69,7 +69,7 @@ export class TimetableFieldNumberDetailComponent
 
   updateRecord(): void {
     this.timetableFieldNumberService
-      .updateVersion(this.getId(), this.form.value)
+      .updateVersionWithVersioning(this.getId(), this.form.value)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {

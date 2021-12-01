@@ -49,7 +49,7 @@ let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
 describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   let router: Router;
   const mockTimetableFieldNumbersService = jasmine.createSpyObj('timetableFieldNumbersService', [
-    'updateVersion',
+    'updateVersionWithVersioning',
     'deleteVersion',
   ]);
   beforeEach(async () => {
@@ -97,7 +97,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should update Version successfully', () => {
-    mockTimetableFieldNumbersService.updateVersion.and.returnValue(of(version));
+    mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(of(version));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
@@ -112,7 +112,9 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 
   it('should not update Version', () => {
     const error = new Error('404');
-    mockTimetableFieldNumbersService.updateVersion.and.returnValue(throwError(() => error));
+    mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(
+      throwError(() => error)
+    );
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
