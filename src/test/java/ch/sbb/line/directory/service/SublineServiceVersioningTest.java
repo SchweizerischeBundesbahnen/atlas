@@ -39,17 +39,17 @@ public class SublineServiceVersioningTest {
   @BeforeEach
   void init() {
     version1 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
-                           .swissLineNumber("1")
+                           .swissSublineNumber("1")
                            .validFrom(LocalDate.of(2020, 1, 1))
                            .validTo(LocalDate.of(2021, 12, 31))
                            .build();
     version2 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
-                           .swissLineNumber("2")
+                           .swissSublineNumber("2")
                            .validFrom(LocalDate.of(2022, 1, 1))
                            .validTo(LocalDate.of(2023, 12, 31))
                            .build();
     version3 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
-                           .swissLineNumber("3")
+                           .swissSublineNumber("3")
                            .validFrom(LocalDate.of(2024, 1, 1))
                            .validTo(LocalDate.of(2024, 12, 31))
                            .build();
@@ -138,14 +138,14 @@ public class SublineServiceVersioningTest {
   @Test
   public void scenarioMergeTwoVersions() {
     //given
-    version1.setSwissLineNumber("1");
+    version1.setSwissSublineNumber("1");
     version1 = sublineVersionRepository.save(version1);
-    version2.setSwissLineNumber("3");
+    version2.setSwissSublineNumber("3");
     version2 = sublineVersionRepository.save(version2);
-    version3.setSwissLineNumber("2");
+    version3.setSwissSublineNumber("2");
     version3 = sublineVersionRepository.save(version3);
     SublineVersion editedVersion = new SublineVersion();
-    editedVersion.setSwissLineNumber("2");
+    editedVersion.setSwissSublineNumber("2");
 
     //when
     sublineService.updateVersion(version2, editedVersion);
@@ -161,12 +161,12 @@ public class SublineServiceVersioningTest {
     SublineVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(version1.getValidFrom());
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(version1.getValidTo());
-    assertThat(firstTemporalVersion.getSwissLineNumber()).isEqualTo("1");
+    assertThat(firstTemporalVersion.getSwissSublineNumber()).isEqualTo("1");
 
     // second merged with third
     SublineVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(version2.getValidFrom());
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(version3.getValidTo());
-    assertThat(secondTemporalVersion.getSwissLineNumber()).isEqualTo("2");
+    assertThat(secondTemporalVersion.getSwissSublineNumber()).isEqualTo("2");
   }
 }

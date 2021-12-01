@@ -3,6 +3,7 @@ package ch.sbb.line.directory.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.line.directory.IntegrationTest;
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -20,12 +21,15 @@ public class SublineRepositoryTest {
   private static final String SLNID = "slnid";
   private final SublineVersionRepository sublineVersionRepository;
   private final SublineRepository sublineRepository;
+  private final LineVersionRepository lineVersionRepository;
 
   @Autowired
   public SublineRepositoryTest(SublineVersionRepository sublineVersionRepository,
-      SublineRepository sublineRepository) {
+      SublineRepository sublineRepository,
+      LineVersionRepository lineVersionRepository) {
     this.sublineVersionRepository = sublineVersionRepository;
     this.sublineRepository = sublineRepository;
+    this.lineVersionRepository = lineVersionRepository;
   }
 
   /**
@@ -34,6 +38,8 @@ public class SublineRepositoryTest {
   @Test
   void shouldDisplaydescriptionOfCurrentDay() {
     // Given
+    lineVersionRepository.saveAndFlush(
+        LineTestData.lineVersionBuilder().slnid(SublineTestData.MAINLINE_SLNID).build());
     SublineVersion validLastYear = SublineTestData.sublineVersionBuilder()
                                                   .slnid(SLNID)
                                                   .description("Last Year")
@@ -67,7 +73,7 @@ public class SublineRepositoryTest {
 
     Subline subline = result.getContent().get(0);
     assertThat(subline).usingRecursiveComparison()
-                       .ignoringFields("validFrom", "validTo")
+                       .ignoringFields("validFrom", "validTo", "swissLineNumber")
                        .isEqualTo(validToday);
     assertThat(subline.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
     assertThat(subline.getValidTo()).isEqualTo(validNextYear.getValidTo());
@@ -79,6 +85,8 @@ public class SublineRepositoryTest {
   @Test
   void shouldDisplaydescriptionOfNextYear() {
     // Given
+    lineVersionRepository.saveAndFlush(
+        LineTestData.lineVersionBuilder().slnid(SublineTestData.MAINLINE_SLNID).build());
     SublineVersion validLastYear = SublineTestData.sublineVersionBuilder()
                                                   .slnid(SLNID)
                                                   .description("Last Year")
@@ -112,8 +120,9 @@ public class SublineRepositoryTest {
 
     Subline subline = result.getContent().get(0);
     assertThat(subline).usingRecursiveComparison()
-                       .ignoringFields("validFrom", "validTo")
+                       .ignoringFields("validFrom", "validTo", "swissLineNumber")
                        .isEqualTo(validNextYear);
+    assertThat(subline.getSwissLineNumber()).isEqualTo("swissLineNumber");
     assertThat(subline.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
     assertThat(subline.getValidTo()).isEqualTo(validInTwoYears.getValidTo());
   }
@@ -124,6 +133,8 @@ public class SublineRepositoryTest {
   @Test
   void shouldDisplaydescriptionOfLastYear() {
     // Given
+    lineVersionRepository.saveAndFlush(
+        LineTestData.lineVersionBuilder().slnid(SublineTestData.MAINLINE_SLNID).build());
     SublineVersion validEarlier = SublineTestData.sublineVersionBuilder()
                                                  .slnid(SLNID)
                                                  .description("Earlier")
@@ -149,7 +160,7 @@ public class SublineRepositoryTest {
 
     Subline subline = result.getContent().get(0);
     assertThat(subline).usingRecursiveComparison()
-                       .ignoringFields("validFrom", "validTo")
+                       .ignoringFields("validFrom", "validTo", "swissLineNumber")
                        .isEqualTo(validLastYear);
     assertThat(subline.getValidFrom()).isEqualTo(validEarlier.getValidFrom());
     assertThat(subline.getValidTo()).isEqualTo(validLastYear.getValidTo());

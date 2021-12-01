@@ -181,7 +181,7 @@ class SublineVersionModelTest {
                               .validFrom(VALID_FROM)
                               .validTo(VALID_TO)
                               .businessOrganisation("businessOrganisation")
-                              .swissLineNumber("swissLineNumber")
+                              .mainlineSlnid("mainlineSlnid")
                               .swissSublineNumber("swissSublineNumber");
   }
 }
