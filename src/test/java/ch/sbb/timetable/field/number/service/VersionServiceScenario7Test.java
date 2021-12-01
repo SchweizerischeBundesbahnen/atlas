@@ -3,7 +3,7 @@ package ch.sbb.timetable.field.number.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.atlas.versioning.exception.VersioningException;
+import ch.sbb.atlas.versioning.exception.DateValidationException;
 import ch.sbb.timetable.field.number.entity.LineRelation;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.enumaration.Status;
@@ -403,7 +403,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     assertThatThrownBy(() -> {
       versionService.updateVersion(version1, editedVersion);
       //then
-    }).isInstanceOf(VersioningException.class)
+    }).isInstanceOf(DateValidationException.class)
       .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger than edited ValidTo 2029-12-08");
   }
 
