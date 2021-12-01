@@ -99,7 +99,8 @@
     "MATDATEPICKERMIN": "La date deve essere maggiore o uguale di {{date}}.",
     "MATDATEPICKERMAX": "La data deve essere minore o uguale di {{date}}.",
     "MATDATEPICKERPARSE": "Formato della fate non valido (deve essere TT.MM.YYYY)",
-    "DATE_RANGE_ERROR": "Valido da non può essere maggiore die valido a: {{date}}"
+    "DATE_RANGE_ERROR": "Valido da non può essere maggiore die valido a: {{date}}",
+    "PATTERN": "__it__Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}"
   },
   "LIDI": {
     "LINES": "Linienverzeichnis",

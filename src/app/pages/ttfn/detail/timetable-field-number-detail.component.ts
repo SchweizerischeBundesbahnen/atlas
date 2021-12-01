@@ -29,13 +29,16 @@ export class TimetableFieldNumberDetailComponent
   implements OnInit, OnDestroy
 {
   SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
-  TTFNID_PLACEHOLDER = 'ch:1:fpfnid:100000';
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
   NAME_PLACEHOLDER = 'Grenze - Bad, Bahnhof - Basel SBB - Zürich HB - Chur';
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
-  MAX_LENGTH = 255;
+  MAX_LENGTH_255 = 255;
+  MAX_LENGTH_250 = 250;
+  MAX_LENGTH_50 = 50;
+
+  readonly STATUS_OPTIONS = Object.values(Version.StatusEnum);
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -124,9 +127,8 @@ export class TimetableFieldNumberDetailComponent
       {
         swissTimetableFieldNumber: [
           version.swissTimetableFieldNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(this.MAX_LENGTH_50)],
         ],
-        ttfnid: [version.ttfnid, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -135,13 +137,22 @@ export class TimetableFieldNumberDetailComponent
           version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required],
         ],
+        ttfnid: version.ttfnid,
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH)],
+          [Validators.required, Validators.maxLength(this.MAX_LENGTH_50)],
         ],
-        number: [version.number, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        name: [version.name, [Validators.required, Validators.maxLength(this.MAX_LENGTH)]],
-        comment: [version.comment],
+        number: [
+          version.number,
+          [
+            Validators.required,
+            Validators.maxLength(this.MAX_LENGTH_50),
+            Validators.pattern('^[.0-9]+$'),
+          ],
+        ],
+        name: [version.name, Validators.maxLength(this.MAX_LENGTH_255)],
+        comment: [version.comment, Validators.maxLength(this.MAX_LENGTH_250)],
+        status: version.status,
       },
       {
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
