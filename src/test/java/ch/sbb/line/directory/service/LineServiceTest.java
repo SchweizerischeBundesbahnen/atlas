@@ -51,7 +51,7 @@ class LineServiceTest {
     Pageable pageable = Pageable.unpaged();
 
     // When
-    lineService.findAll(pageable);
+    lineService.findAll(pageable, Optional.empty());
 
     // Then
     verify(lineRepository).findAll(pageable);
