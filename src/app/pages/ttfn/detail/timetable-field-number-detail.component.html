@@ -66,6 +66,14 @@
           required
         />
       </mat-form-field>
+      <mat-form-field class="col">
+        <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
+        <mat-select [value]="form.value.status" [disabled]="true">
+          <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
+            {{ 'COMMON.STATUS_TYPES.' + status | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <div class="row mb-3">
