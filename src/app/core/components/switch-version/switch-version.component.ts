@@ -30,6 +30,11 @@ export class SwitchVersionComponent implements OnInit {
     return 'PAGES.LIDI.TITLE';
   }
 
+  displayVersionsItems() {
+    this.getCurrentIndex();
+    return this.currentIndex + 1 + ' / ' + this.records.length;
+  }
+
   switchLeft() {
     this.currentIndex = this.currentIndex - 1;
     this.changeSelected(this.currentIndex);
