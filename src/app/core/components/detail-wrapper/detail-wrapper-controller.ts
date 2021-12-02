@@ -13,10 +13,14 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   heading!: string | undefined;
   switchedIndex!: number | undefined;
 
+  //Temporary hach
+  showSwitch: boolean | undefined;
+
   protected constructor(protected dialogService: DialogService) {}
 
   ngOnInit(): void {
     this.init();
+    this.showSwitch = !!Array.isArray(this.records);
   }
 
   private init() {
@@ -79,6 +83,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   save() {
     this.validateAllFormFields(this.form);
+    this.switchedIndex = undefined;
     if (this.form.valid) {
       this.form.disable();
       if (this.getId()) {
@@ -109,6 +114,11 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     const now = moment();
     const matchedRecord = this.findRecordByTodayDate(records, now);
     if (matchedRecord.length == 1) {
+      records.find((value, index) => {
+        if (value.id === matchedRecord[0].id) {
+          this.switchedIndex = index;
+        }
+      });
       return matchedRecord[0];
     } else if (matchedRecord.length > 1) {
       throw new Error('Something went wrong. Found more than one Record.');
