@@ -13,7 +13,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   heading!: string | undefined;
   switchedIndex!: number | undefined;
 
-  //Temporary hach
+  //Temporary hack
   showSwitch: boolean | undefined;
 
   protected constructor(protected dialogService: DialogService) {}
@@ -25,7 +25,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   private init() {
     const records = this.readRecord();
-    if (Array.isArray(records)) {
+    if (Array.isArray(records) && records.length > 0) {
       this.records = records;
       console.log('is array');
       if (this.switchedIndex !== undefined && this.switchedIndex >= 0) {
