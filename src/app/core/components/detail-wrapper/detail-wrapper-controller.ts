@@ -47,11 +47,6 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     }
   }
 
-  switchVersion(index: number) {
-    this.switchedIndex = index;
-    this.init();
-  }
-
   getId(): number {
     return this.record.id!;
   }
@@ -64,21 +59,34 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     return !this.isNewRecord();
   }
 
+  switchVersion(index: number) {
+    this.switchedIndex = index;
+    if (this.form.enabled) {
+      this.showConfirmationDialog();
+    } else {
+      this.init();
+    }
+  }
+
   toggleEdit() {
     if (this.form.enabled) {
-      this.confirmLeave().subscribe((confirmed) => {
-        if (confirmed) {
-          if (this.isNewRecord()) {
-            this.backToOverview();
-          } else {
-            this.form.disable();
-            this.ngOnInit();
-          }
-        }
-      });
+      this.showConfirmationDialog();
     } else {
       this.form.enable();
     }
+  }
+
+  private showConfirmationDialog() {
+    this.confirmLeave().subscribe((confirmed) => {
+      if (confirmed) {
+        if (this.isNewRecord()) {
+          this.backToOverview();
+        } else {
+          this.form.disable();
+          this.ngOnInit();
+        }
+      }
+    });
   }
 
   save() {
