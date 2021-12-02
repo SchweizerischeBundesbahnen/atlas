@@ -1,36 +1,39 @@
-<div *ngIf="isArray">
-  <div class="row">
-    <div class="col"></div>
-    <div class="col">
-      <div *ngIf="records.length > 0" class="d-flex align-items-center">
-        <span>{{ 'COMMON.VERSION' | translate }}</span>
-        <div>
-          <button mat-icon-button (click)="switchLeft()" [disabled]="isLeftSwitchDisabled()">
-            <i class="bi bi-chevron-left"></i>
-          </button>
-          <span
-            ><b>{{ currentIndex + 1 }} / {{ records.length }}</b></span
-          >
-          <button mat-icon-button (click)="switchRight()" [disabled]="isRightSwitchDisabled()">
-            <i class="bi bi-chevron-right"></i>
-          </button>
-        </div>
+<div class="row">
+  <div class="col">
+    <h1>
+      <strong>{{ this.recordTitle }}</strong>
+    </h1>
+  </div>
+  <div class="col">
+    <div *ngIf="records.length > 0" class="d-flex align-items-center">
+      <span>{{ 'COMMON.VERSION' | translate }}</span>
+      <div>
+        <button mat-icon-button (click)="switchLeft()" [disabled]="isLeftSwitchDisabled()">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <span
+          ><b>{{ currentIndex + 1 }} / {{ records.length }}</b></span
+        >
+        <button mat-icon-button (click)="switchRight()" [disabled]="isRightSwitchDisabled()">
+          <i class="bi bi-chevron-right"></i>
+        </button>
       </div>
     </div>
   </div>
-  <div class="row mb3">
-    <div class="col current-date-rage">
-      <span>
-        {{ 'COMMON.FROM' | translate }}
-        <strong>{{ this.currentRecord.validFrom | date: 'dd.MM.yyyy' }}</strong>
-        {{ 'COMMON.TO' | translate }}
-        <strong>{{ this.currentRecord.validTo | date: 'dd.MM.yyyy' }}</strong>
-      </span>
-    </div>
-    <div class="col total-range">
-      <strong>{{ this.records[0].validFrom | date: 'dd.MM.yyyy' }}</strong>
+</div>
+<div class="row mb3">
+  <div class="col current-date-rage">
+    <span>
+      {{ this.displayRecordType() | translate }}
+      {{ 'COMMON.FROM' | translate }}
+      <strong>{{ this.currentRecord.validFrom | date: 'dd.MM.yyyy' }}</strong>
       {{ 'COMMON.TO' | translate }}
-      <strong>{{ this.records[records.length - 1].validTo | date: 'dd.MM.yyyy' }}</strong>
-    </div>
+      <strong>{{ this.currentRecord.validTo | date: 'dd.MM.yyyy' }}</strong>
+    </span>
+  </div>
+  <div class="col total-range">
+    <strong>{{ this.records[0].validFrom | date: 'dd.MM.yyyy' }}</strong>
+    {{ 'COMMON.TO' | translate }}
+    <strong>{{ this.records[records.length - 1].validTo | date: 'dd.MM.yyyy' }}</strong>
   </div>
 </div>
