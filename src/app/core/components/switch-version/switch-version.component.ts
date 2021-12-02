@@ -9,10 +9,11 @@ import { Record } from '../detail-wrapper/record';
 export class SwitchVersionComponent implements OnInit {
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
+  @Input() type!: string;
+  @Input() recordTitle: string | undefined;
   @Output() switchVersion = new EventEmitter<number>();
-  currentIndex: number;
 
-  isArray: boolean | undefined;
+  currentIndex: number;
 
   constructor() {
     this.currentIndex = 0;
@@ -20,15 +21,13 @@ export class SwitchVersionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCurrentIndex();
-    this.isArray = !!Array.isArray(this.records);
   }
 
-  private getCurrentIndex() {
-    this.records.forEach((record, index) => {
-      if (record.id === this.currentRecord.id) {
-        this.currentIndex = index;
-      }
-    });
+  displayRecordType() {
+    if (this.type === 'TTFN') {
+      return 'PAGES.TTFN.TITLE';
+    }
+    return 'PAGES.LIDI.TITLE';
   }
 
   switchLeft() {
@@ -51,5 +50,13 @@ export class SwitchVersionComponent implements OnInit {
 
   isRightSwitchDisabled() {
     return this.currentIndex === this.records.length - 1;
+  }
+
+  private getCurrentIndex() {
+    this.records.forEach((record, index) => {
+      if (record.id === this.currentRecord.id) {
+        this.currentIndex = index;
+      }
+    });
   }
 }
