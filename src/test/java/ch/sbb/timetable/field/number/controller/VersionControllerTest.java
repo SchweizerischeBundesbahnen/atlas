@@ -14,6 +14,7 @@ import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,9 +56,9 @@ public class VersionControllerTest {
     // Then
     verify(versionService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-                                                .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate", "lineRelations", "ttfnid", "version")
-                                                .isEqualTo(versionModel);
+        .ignoringFields("editor", "creator", "editionDate",
+            "creationDate", "lineRelations", "ttfnid", "version")
+        .isEqualTo(versionModel);
   }
 
   @Test
@@ -69,14 +70,29 @@ public class VersionControllerTest {
     when(versionService.count()).thenReturn(1L);
 
     // When
-    TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getOverview(Pageable.unpaged());
+    TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getOverview(Pageable.unpaged(), null, null);
 
     // Then
     assertThat(timetableFieldNumberContainer).isNotNull();
     assertThat(timetableFieldNumberContainer.getFieldNumbers()).hasSize(1)
-                                                               .first()
-                                                               .usingRecursiveComparison()
-                                                               .isEqualTo(version);
+        .first()
+        .usingRecursiveComparison()
+        .isEqualTo(version);
+    assertThat(timetableFieldNumberContainer.getTotalCount()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldGetSearchedVersions() {
+    // Given
+    TimetableFieldNumber version = createOverviewEntity();
+    when(versionService.getVersionsSearched(any(Pageable.class), any(), any())).thenReturn(List.of(version));
+
+    // When
+    TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getOverview(Pageable.unpaged(), List.of("sbb"), null);
+
+    // Then
+    assertThat(timetableFieldNumberContainer).isNotNull();
+    assertThat(timetableFieldNumberContainer.getFieldNumbers()).hasSize(1).first().usingRecursiveComparison().isEqualTo(version);
     assertThat(timetableFieldNumberContainer.getTotalCount()).isEqualTo(1);
   }
 
@@ -91,9 +107,9 @@ public class VersionControllerTest {
 
     // Then
     assertThat(versionModel).usingRecursiveComparison()
-                            .ignoringFields("editor", "creator", "editionDate", "creationDate",
-                                "lineRelations")
-                            .isEqualTo(versionModel);
+        .ignoringFields("editor", "creator", "editionDate", "creationDate",
+            "lineRelations")
+        .isEqualTo(versionModel);
   }
 
   @Test
@@ -146,9 +162,9 @@ public class VersionControllerTest {
 
     // Then
     assertThat(result).usingRecursiveComparison()
-                      .ignoringFields("editor", "creator", "editionDate", "creationDate",
-                          "lineRelations")
-                      .isEqualTo(versionModel);
+        .ignoringFields("editor", "creator", "editionDate", "creationDate",
+            "lineRelations")
+        .isEqualTo(versionModel);
   }
 
   @Test
@@ -161,40 +177,40 @@ public class VersionControllerTest {
 
     // Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> versionController.updateVersion(1L, versionModel))
-                                                            .withMessage(
-                                                                HttpStatus.NOT_FOUND.toString());
+            () -> versionController.updateVersion(1L, versionModel))
+        .withMessage(
+            HttpStatus.NOT_FOUND.toString());
   }
 
   private static TimetableFieldNumber createOverviewEntity() {
     return TimetableFieldNumber.builder()
-                  .ttfnid("ch:1:ttfnid:100000")
-                  .name("FPFN Name")
-                  .swissTimetableFieldNumber("b0.BEX")
-                  .validFrom(LocalDate.of(2020, 12, 12))
-                  .validTo(LocalDate.of(2099, 12, 12))
-                  .build();
+        .ttfnid("ch:1:ttfnid:100000")
+        .name("FPFN Name")
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12))
+        .build();
   }
 
   private static Version createEntity() {
     return Version.builder()
-                  .ttfnid("ch:1:ttfnid:100000")
-                  .name("FPFN Name")
-                  .number("BEX")
-                  .swissTimetableFieldNumber("b0.BEX")
-                  .validFrom(LocalDate.of(2020, 12, 12))
-                  .validTo(LocalDate.of(2099, 12, 12))
-                  .build();
+        .ttfnid("ch:1:ttfnid:100000")
+        .name("FPFN Name")
+        .number("BEX")
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12))
+        .build();
   }
 
   private static VersionModel createModel() {
     return VersionModel.builder()
-                       .ttfnid("ch:1:ttfnid:100000")
-                       .name("FPFN Name")
-                       .number("BEX")
-                       .swissTimetableFieldNumber("b0.BEX")
-                       .validFrom(LocalDate.of(2020, 12, 12))
-                       .validTo(LocalDate.of(2099, 12, 12))
-                       .build();
+        .ttfnid("ch:1:ttfnid:100000")
+        .name("FPFN Name")
+        .number("BEX")
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12))
+        .build();
   }
 }
