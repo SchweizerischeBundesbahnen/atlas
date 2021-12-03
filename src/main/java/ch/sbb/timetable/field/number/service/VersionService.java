@@ -8,6 +8,7 @@ import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.exceptions.ConflictException;
 import ch.sbb.timetable.field.number.repository.TimetableFieldNumberRepository;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,12 @@ public class VersionService {
       throw new ConflictException("Number or SwissTimeTableFieldNumber are already taken");
     }
     return versionRepository.save(newVersion);
+  }
+
+  public List<TimetableFieldNumber> getVersionsSearched(Pageable pageable,
+      List<String> searchCriteria,
+      LocalDate validOn) {
+    return timetableFieldNumberRepository.searchVersions(searchCriteria, validOn, pageable);
   }
 
   public boolean existsById(Long id) {
