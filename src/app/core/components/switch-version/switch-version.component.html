@@ -10,13 +10,23 @@
         <span>{{ 'COMMON.VERSION' | translate }}</span>
       </strong>
       <div>
-        <button mat-icon-button (click)="switchLeft()" [disabled]="isLeftSwitchDisabled()">
+        <button
+          mat-icon-button
+          (click)="switchLeft()"
+          [disabled]="isLeftSwitchDisabled()"
+          data-cy="switch-version-left"
+        >
           <i class="bi bi-chevron-left"></i>
         </button>
         <span>
-          <b>{{ this.displayVersionsItems() }}</b>
+          <b data-cy="switch-version-navigation-items">{{ this.displayVersionsItems() }}</b>
         </span>
-        <button mat-icon-button (click)="switchRight()" [disabled]="isRightSwitchDisabled()">
+        <button
+          mat-icon-button
+          (click)="switchRight()"
+          [disabled]="isRightSwitchDisabled()"
+          data-cy="switch-version-right"
+        >
           <i class="bi bi-chevron-right"></i>
         </button>
       </div>
@@ -24,7 +34,7 @@
   </div>
 </div>
 <div class="row switch-version-subtitle-row">
-  <div class="col total-rage">
+  <div class="col total-rage" data-cy="switch-version-total-range">
     <span>
       {{ this.displayRecordType() | translate }}
       {{ 'COMMON.FROM' | translate }}
@@ -33,7 +43,7 @@
       <strong>{{ this.getEndDataRage() }}</strong>
     </span>
   </div>
-  <div class="col current-date-range">
+  <div class="col current-date-range" data-cy="switch-version-current-range">
     <strong>{{ this.getInitialCurrentDataRage() }}</strong>
     {{ 'COMMON.TO' | translate }}
     <strong>{{ this.getEndCurrentDataRage() }}</strong>
