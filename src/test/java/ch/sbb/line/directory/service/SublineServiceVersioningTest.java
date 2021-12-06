@@ -3,8 +3,10 @@ package ch.sbb.line.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.line.directory.IntegrationTest;
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -23,6 +25,7 @@ public class SublineServiceVersioningTest {
 
   private static final String SLNID = "ch:1:slnid:100000";
   private final SublineVersionRepository sublineVersionRepository;
+  private final LineVersionRepository lineVersionRepository;
   private final SublineService sublineService;
   private SublineVersion version1;
   private SublineVersion version2;
@@ -31,13 +34,17 @@ public class SublineServiceVersioningTest {
   @Autowired
   public SublineServiceVersioningTest(
       SublineVersionRepository sublineVersionRepository,
+      LineVersionRepository lineVersionRepository,
       SublineService sublineService) {
     this.sublineVersionRepository = sublineVersionRepository;
+    this.lineVersionRepository = lineVersionRepository;
     this.sublineService = sublineService;
   }
 
   @BeforeEach
   void init() {
+    lineVersionRepository.save(
+        LineTestData.lineVersionBuilder().slnid(SublineTestData.MAINLINE_SLNID).build());
     version1 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
                            .swissSublineNumber("1")
                            .validFrom(LocalDate.of(2020, 1, 1))

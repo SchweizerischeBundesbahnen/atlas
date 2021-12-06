@@ -8,11 +8,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.util.List;
+import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -89,6 +91,8 @@ class SublineServiceTest {
     when(sublineVersionRepository.save(any())).thenAnswer(
         i -> i.getArgument(0, SublineVersion.class));
     when(sublineVersionRepository.hasUniqueSwissSublineNumber(any())).thenReturn(true);
+    when(lineService.findLineVersions(any())).thenReturn(
+        Collections.singletonList(LineTestData.lineVersion()));
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
     // When
     SublineVersion result = sublineService.save(sublineVersion);
