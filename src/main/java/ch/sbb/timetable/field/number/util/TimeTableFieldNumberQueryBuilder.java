@@ -1,24 +1,30 @@
 package ch.sbb.timetable.field.number.util;
 
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
+import ch.sbb.timetable.field.number.entity.TimetableFieldNumber_;
 import ch.sbb.timetable.field.number.enumaration.Status;
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.query.QueryUtils;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class TimeTableFieldNumberQueryBuilder {
 
   private final CriteriaBuilder criteriaBuilder;
@@ -31,64 +37,79 @@ public class TimeTableFieldNumberQueryBuilder {
     timetableFieldNumberRoot = criteriaQuery.from(TimetableFieldNumber.class);
   }
 
-  private static Set<String> getStringFieldNames() {
-    Field[] fields = TimetableFieldNumber.class.getDeclaredFields();
-    return Arrays.stream(fields)
-        .filter(field -> field.getType() == String.class)
-        .map(Field::getName)
-        .collect(Collectors.toSet());
+  private Predicate getValidityPredicate(LocalDate validOn) {
+    Path<LocalDate> validFrom = timetableFieldNumberRoot.get(TimetableFieldNumber_.validFrom);
+    Path<LocalDate> validTo = timetableFieldNumberRoot.get(TimetableFieldNumber_.validTo);
+    return validOn != null ? criteriaBuilder.and(
+        criteriaBuilder.lessThanOrEqualTo(validFrom, validOn),
+        criteriaBuilder.greaterThanOrEqualTo(validTo, validOn)
+    )
+        : criteriaBuilder.and();
   }
 
-  public Predicate getValidityPredicate(LocalDate validOn) {
-    // TODO: AnnotationProcessor
-    Path<LocalDate> validFrom = timetableFieldNumberRoot.get("validFrom");
-    Path<LocalDate> validTo = timetableFieldNumberRoot.get("validTo");
-    return validOn != null ? criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(validFrom, validOn),
-        criteriaBuilder.greaterThanOrEqualTo(validTo, validOn)) : criteriaBuilder.and();
-  }
-
-  public Predicate getStatusPredicate(Set<String> statuses) {
-    // TODO: AnnotationProcessor
-    if (statuses.isEmpty()) {
+  private Predicate getStatusPredicate(Set<Status> statusSearches) {
+    if (statusSearches.isEmpty()) {
       return criteriaBuilder.and();
     }
-    Path<Status> status = timetableFieldNumberRoot.get("status");
-    return criteriaBuilder.or(statuses.stream()
-        .map(searchString -> Arrays.stream(Status.values())
-            .filter(statusVal -> statusVal.isStatus(searchString.toUpperCase()))
-            .findFirst())
-        .filter(Optional::isPresent)
-        .map(statusOptional -> criteriaBuilder.equal(status, statusOptional.get()))
-        .toArray(Predicate[]::new));
+    Path<Status> status = timetableFieldNumberRoot.get(TimetableFieldNumber_.status);
+    return criteriaBuilder.or(statusSearches.stream()
+        .map(statusSearch -> criteriaBuilder.equal(status, statusSearch)
+        )
+        .toArray(Predicate[]::new)
+    );
   }
 
-  public Predicate getStringPredicate(Set<String> searchStrings) {
+  private Predicate getStringPredicate(Set<String> searchStrings) {
     if (searchStrings.isEmpty()) {
       return criteriaBuilder.and();
     }
-    List<Path<String>> stringPaths = getStringFieldNames().stream().map(timetableFieldNumberRoot::<String>get).collect(Collectors.toList());
+    List<Path<String>> stringPaths = List.of(
+        timetableFieldNumberRoot.get(TimetableFieldNumber_.swissTimetableFieldNumber),
+        timetableFieldNumberRoot.get(TimetableFieldNumber_.name),
+        timetableFieldNumberRoot.get(TimetableFieldNumber_.ttfnid)
+    );
     Predicate[] stringPredicates = searchStrings.stream().map(searchString -> criteriaBuilder.or(
-        stringPaths.stream().map(objectPath -> criteriaBuilder.like(
-                criteriaBuilder.lower(objectPath), "%" + searchString.toLowerCase() + "%"))
+        stringPaths.stream().map(stringPath -> criteriaBuilder.like(
+                criteriaBuilder.lower(stringPath), "%" + searchString.toLowerCase() + "%"))
             .toArray(Predicate[]::new)
     )).toArray(Predicate[]::new);
     return criteriaBuilder.and(stringPredicates);
   }
 
-  public CriteriaQuery<TimetableFieldNumber> queryAll(List<String> searchStrings, LocalDate validOn) {
-    Set<String> statuses = new HashSet<>();
-    Set<String> strings = new HashSet<>();
-    if (searchStrings != null) {
-      statuses = searchStrings.stream()
-          .filter(searchString -> Arrays.stream(Status.values())
-              .anyMatch(statusVal -> statusVal.isStatus(searchString.toUpperCase()))).collect(Collectors.toSet());
-      Set<String> finalStatuses = statuses;
-      strings = searchStrings.stream().filter(s -> !finalStatuses.contains(s)).collect(Collectors.toSet());
+  private Set<Status> getStatusSearches(List<String> searchStrings) {
+    return searchStrings != null ? searchStrings.stream()
+        .filter(searchString -> Arrays.stream(Status.values())
+            .anyMatch(statusVal -> statusVal.isStatus(searchString.toUpperCase())))
+        .map(searchString -> Status.valueOf(searchString.toUpperCase()))
+        .collect(Collectors.toSet())
+        : new HashSet<>();
+  }
+
+  private Set<String> getStringSearches(List<String> searchStrings, Set<Status> statusSearches) {
+    return searchStrings != null ? searchStrings.stream()
+        .filter(searchString -> !statusSearches.stream().map(Enum::name).collect(Collectors.toSet())
+            .contains(searchString.toUpperCase()) && !searchString.isBlank())
+        .collect(Collectors.toSet())
+        : new HashSet<>();
+  }
+
+  public List<Order> getOrders(Pageable pageable) {
+    try {
+      return QueryUtils.toOrders(pageable.getSort(), timetableFieldNumberRoot, criteriaBuilder);
+    } catch (PropertyReferenceException e) {
+      log.warn("Could not order query: invalid sort provided. ", e);
+      return Collections.emptyList();
     }
+  }
+
+  public CriteriaQuery<TimetableFieldNumber> queryAll(List<String> searchStrings, LocalDate validOn) {
+    Set<Status> statusSearches = getStatusSearches(searchStrings);
+    Set<String> stringSearches = getStringSearches(searchStrings, statusSearches);
     Predicate all = criteriaBuilder.and(
-        getStringPredicate(strings),
+        getStringPredicate(stringSearches),
         getValidityPredicate(validOn),
-        getStatusPredicate(statuses));
+        getStatusPredicate(statusSearches)
+    );
     return criteriaQuery.select(timetableFieldNumberRoot).where(all);
   }
 

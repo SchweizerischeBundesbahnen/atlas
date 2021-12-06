@@ -22,7 +22,10 @@ public class TimetableFieldNumberRepositorySearchImpl implements TimetableFieldN
 
   @Override
   public List<TimetableFieldNumber> searchVersions(List<String> searchStrings, LocalDate validOn, Pageable pageable) {
-    return entityManager.createQuery(timeTableFieldNumberQueryBuilder.queryAll(searchStrings, validOn))
+    return entityManager.createQuery(
+            timeTableFieldNumberQueryBuilder.queryAll(searchStrings, validOn)
+                .orderBy(timeTableFieldNumberQueryBuilder.getOrders(pageable))
+        )
         .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
         .setMaxResults(pageable.getPageSize())
         .getResultList();
