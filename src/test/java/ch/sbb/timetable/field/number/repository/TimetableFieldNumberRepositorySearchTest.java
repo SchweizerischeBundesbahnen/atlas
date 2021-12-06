@@ -15,7 +15,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 @IntegrationTest
 public class TimetableFieldNumberRepositorySearchTest {
@@ -145,6 +148,64 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Then
     assertThat(searchResult.size()).isEqualTo(1);
     assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
+  }
+
+  @Test
+  void searchWithPageNumber0AndPageSize3() {
+    // Given initial dataset
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("version"),
+        null,
+        Pageable.ofSize(3).withPage(0));
+    // Then
+    searchResult.sort(Comparator.comparing(TimetableFieldNumber::getName));
+    assertThat(searchResult.size()).isEqualTo(3);
+    assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
+    assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
+    assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
+  }
+
+  @Test
+  void searchWithPageNumber1AndPageSize2() {
+    // Given initial dataset
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("version"),
+        null,
+        Pageable.ofSize(2).withPage(1));
+    // Then
+    searchResult.sort(Comparator.comparing(TimetableFieldNumber::getName));
+    assertThat(searchResult.size()).isEqualTo(2);
+    assertThat(searchResult.get(0)).usingRecursiveComparison().isEqualTo(versionList.get(3));
+    assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(4));
+  }
+
+  @Test
+  void searchWithSortingNameDesc() {
+    // Given initial dataset
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("a.1"),
+        null,
+        PageRequest.of(0, 10, Sort.by(Direction.DESC, "name")));
+    // Then
+    assertThat(searchResult.size()).isEqualTo(2);
+    assertThat(searchResult.get(0)).usingRecursiveComparison().isEqualTo(versionList.get(4));
+    assertThat(searchResult.get(1).getName()).isEqualTo(versionList.get(0).getName());
+  }
+
+  @Test
+  void searchWithSortingSwissTimetableFieldNumberAndTtfnidAsc() {
+    // Given initial dataset
+    // When
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
+        null,
+        null,
+        PageRequest.of(0, 10, Sort.by(Direction.ASC, "swissTimetableFieldNumber", "ttfnid")));
+    // Then
+    assertThat(searchResult.size()).isEqualTo(4);
+    assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
+    assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(4));
+    assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(2));
+    assertThat(searchResult.get(3)).usingRecursiveComparison().isEqualTo(versionList.get(3));
   }
 
   @AfterEach
