@@ -31,7 +31,11 @@ public class LineService {
     return lineRepository.findAll(pageable);
   }
 
-  public List<LineVersion> findLine(String slnid) {
+  public Optional<Line> findLine(String slnid) {
+    return lineRepository.findAllBySlnid(slnid);
+  }
+
+  public List<LineVersion> findLineVersions(String slnid) {
     return lineVersionRepository.findAllBySlnid(slnid);
   }
 
