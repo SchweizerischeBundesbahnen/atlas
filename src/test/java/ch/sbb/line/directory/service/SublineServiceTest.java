@@ -104,6 +104,22 @@ class SublineServiceTest {
   }
 
   @Test
+  void shouldNotSaveSublineWithInvalidMainline() {
+    // Given
+    when(sublineVersionRepository.save(any())).thenAnswer(
+        i -> i.getArgument(0, SublineVersion.class));
+    when(sublineVersionRepository.hasUniqueSwissSublineNumber(any())).thenReturn(true);
+    when(lineService.findLineVersions(any())).thenReturn(        Collections.emptyList());
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    // When
+
+    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+        () -> sublineService.save(sublineVersion)).withMessage("400 BAD_REQUEST \"Main line with SLNID mainlineSlnid does not exist\"");
+
+    // Then
+  }
+
+  @Test
   void shouldDeleteSubline() {
     // Given
     when(sublineVersionRepository.existsById(ID)).thenReturn(true);
