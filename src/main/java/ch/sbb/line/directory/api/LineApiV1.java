@@ -28,8 +28,11 @@ public interface LineApiV1 {
   @PageableAsQueryParam
   Container<LineModel> getLines(@Parameter(hidden = true) Pageable pageable, @Parameter Optional<String> swissLineNumber);
 
-  @GetMapping("/{slnid}")
-  List<LineVersionModel> getLine(@PathVariable String slnid);
+  @GetMapping("{slnid}")
+  LineModel getLine(@PathVariable String slnid);
+
+  @GetMapping("version/{slnid}")
+  List<LineVersionModel> getLineVersions(@PathVariable String slnid);
 
   @DeleteMapping("{slnid}")
   void deleteLines(@PathVariable String slnid);
