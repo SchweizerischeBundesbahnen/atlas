@@ -95,10 +95,10 @@ public class LineControllerTest {
   void shouldGetLine() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
-    when(lineService.findLine(any())).thenReturn(Collections.singletonList(lineVersion));
+    when(lineService.findLineVersions(any())).thenReturn(Collections.singletonList(lineVersion));
 
     // When
-    List<LineVersionModel> line = lineController.getLine("slnid");
+    List<LineVersionModel> line = lineController.getLineVersions("slnid");
 
     // Then
     assertThat(line).isNotNull();

@@ -63,7 +63,7 @@ class LineServiceTest {
     String slnid = "slnid";
 
     // When
-    lineService.findLine(slnid);
+    lineService.findLineVersions(slnid);
 
     // Then
     verify(lineVersionRepository).findAllBySlnid(slnid);
