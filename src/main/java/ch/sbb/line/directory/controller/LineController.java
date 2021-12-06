@@ -40,8 +40,15 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineVersionModel> getLine(String slnid) {
-    return lineService.findLine(slnid).stream()
+  public LineModel getLine(String slnid) {
+    return lineService.findLine(slnid)
+                      .map(this::toModel)
+                      .orElseThrow(NotFoundExcpetion.getInstance());
+  }
+
+  @Override
+  public List<LineVersionModel> getLineVersions(String slnid) {
+    return lineService.findLineVersions(slnid).stream()
                       .map(this::toModel)
                       .collect(Collectors.toList());
   }
@@ -79,7 +86,7 @@ public class LineController implements LineApiV1 {
   public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id).orElseThrow(NotFoundExcpetion.getInstance());
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
-    return lineService.findLine(versionToUpdate.getSlnid()).stream().map(this::toModel)
+    return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
                       .collect(Collectors.toList());
   }
 

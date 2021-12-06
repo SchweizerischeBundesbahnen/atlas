@@ -32,6 +32,9 @@ class SublineServiceTest {
   private SublineRepository sublineRepository;
 
   @Mock
+  private LineService lineService;
+
+  @Mock
   private VersionableService versionableService;
 
   private SublineService sublineService;
@@ -40,7 +43,7 @@ class SublineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService);
+        versionableService, lineService);
   }
 
   @Test
