@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Record } from '../detail-wrapper/record';
+import moment, { Moment } from 'moment';
+import { DATE_PATTERN, DateService } from '../../date/date.service';
 
 @Component({
   selector: 'app-switch-version',
@@ -57,7 +59,27 @@ export class SwitchVersionComponent implements OnInit {
     return this.currentIndex === this.records.length - 1;
   }
 
-  private getCurrentIndex() {
+  getInitialDataRage() {
+    return this.formatDate(this.records[0].validFrom);
+  }
+
+  getEndDataRage() {
+    return this.formatDate(this.records[this.records.length - 1].validTo);
+  }
+
+  getInitialCurrentDataRage() {
+    return this.formatDate(this.currentRecord.validFrom);
+  }
+
+  getEndCurrentDataRage() {
+    return this.formatDate(this.currentRecord.validTo);
+  }
+
+  private formatDate(date: Date | undefined) {
+    return moment(date).format(DATE_PATTERN);
+  }
+
+  getCurrentIndex() {
     this.records.forEach((record, index) => {
       if (record.id === this.currentRecord.id) {
         this.currentIndex = index;

@@ -6,7 +6,9 @@
   </div>
   <div class="col">
     <div *ngIf="records.length > 0" class="d-flex align-items-center">
-      <span>{{ 'COMMON.VERSION' | translate }}</span>
+      <strong>
+        <span>{{ 'COMMON.VERSION' | translate }}</span>
+      </strong>
       <div>
         <button mat-icon-button (click)="switchLeft()" [disabled]="isLeftSwitchDisabled()">
           <i class="bi bi-chevron-left"></i>
@@ -21,19 +23,19 @@
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row switch-version-subtitle-row">
   <div class="col total-rage">
     <span>
       {{ this.displayRecordType() | translate }}
       {{ 'COMMON.FROM' | translate }}
-      <strong>{{ this.records[0].validFrom | date: 'dd.MM.yyyy' }}</strong>
+      <strong>{{ this.getInitialDataRage() }}</strong>
       {{ 'COMMON.TO' | translate }}
-      <strong>{{ this.records[records.length - 1].validTo | date: 'dd.MM.yyyy' }}</strong>
+      <strong>{{ this.getEndDataRage() }}</strong>
     </span>
   </div>
   <div class="col current-date-range">
-    <strong>{{ this.currentRecord.validFrom | date: 'dd.MM.yyyy' }}</strong>
+    <strong>{{ this.getInitialCurrentDataRage() }}</strong>
     {{ 'COMMON.TO' | translate }}
-    <strong>{{ this.currentRecord.validTo | date: 'dd.MM.yyyy' }}</strong>
+    <strong>{{ this.getEndCurrentDataRage() }}</strong>
   </div>
 </div>
