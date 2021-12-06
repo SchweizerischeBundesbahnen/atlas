@@ -24,27 +24,36 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   }
 
   private init() {
-    const records = this.readRecord();
-    if (Array.isArray(records) && records.length > 0) {
-      this.records = records;
-      console.log('is array');
-      if (this.switchedIndex !== undefined && this.switchedIndex >= 0) {
-        this.record = this.records[this.switchedIndex];
-      } else {
-        this.record = this.getActualRecord(records);
-      }
-    } else {
-      console.log('is not array');
-      this.record = records;
-    }
+    this.getRecord();
     this.form = this.getFormGroup(this.record);
-
     if (this.isExistingRecord()) {
       this.form.disable();
       this.heading = this.getTitle(this.record);
     } else {
       this.form.enable();
     }
+  }
+
+  private getRecord() {
+    const records = this.readRecord();
+
+    //if is a version/s already persist get switched or actual version and fill the Form
+    if (Array.isArray(records) && records.length > 0) {
+      this.records = records;
+
+      if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
+        this.record = this.records[this.switchedIndex];
+      } else {
+        this.record = this.getActualRecord(this.records);
+      }
+    } else {
+      //is creating a new version, prepare empty Form
+      this.record = records;
+    }
+  }
+
+  private isVersionSwitched() {
+    return this.switchedIndex !== undefined && this.switchedIndex >= 0;
   }
 
   getId(): number {
