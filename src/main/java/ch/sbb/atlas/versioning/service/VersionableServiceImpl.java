@@ -81,7 +81,9 @@ public class VersionableServiceImpl implements VersionableService {
       }
       if (DELETE.equals(versionedObject.getAction())) {
         log(versionedObject);
-        deleteById.accept(versionedObject.getEntity().getId());
+        if(versionedObject.getEntity().getId() != null){
+          deleteById.accept(versionedObject.getEntity().getId());
+        }
       }
     }
   }
