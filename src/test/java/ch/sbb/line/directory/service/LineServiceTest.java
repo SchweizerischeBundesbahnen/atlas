@@ -58,7 +58,19 @@ class LineServiceTest {
   }
 
   @Test
-  void shouldGetLine() {
+  void shouldGetPagableLinesFromRepositoryWithSwissLineNumberFiltering() {
+    // Given
+    Pageable pageable = Pageable.unpaged();
+
+    // When
+    lineService.findAll(pageable, Optional.of("b0"));
+
+    // Then
+    verify(lineRepository).findAllBySwissLineNumberLike(pageable, "%b0%");
+  }
+
+  @Test
+  void shouldGetLineVersions() {
     // Given
     String slnid = "slnid";
 
@@ -67,6 +79,18 @@ class LineServiceTest {
 
     // Then
     verify(lineVersionRepository).findAllBySlnid(slnid);
+  }
+
+  @Test
+  void shouldGetLine() {
+    // Given
+    String slnid = "slnid";
+
+    // When
+    lineService.findLine(slnid);
+
+    // Then
+    verify(lineRepository).findAllBySlnid(slnid);
   }
 
   @Test
