@@ -41,13 +41,6 @@ public interface LineApiV1 {
   })
   LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
-  @PutMapping({"version/{id}"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
-  })
-  LineVersionModel updateLineVersion(@PathVariable Long id,
-      @RequestBody @Valid LineVersionModel newVersion);
 
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
