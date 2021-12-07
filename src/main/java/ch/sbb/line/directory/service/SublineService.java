@@ -49,6 +49,14 @@ public class SublineService {
     sublineVersionRepository.deleteById(id);
   }
 
+  public void deleteAll(String slnid) {
+    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnid(slnid);
+    if (sublineVersions.isEmpty()) {
+      throw NotFoundExcpetion.getInstance().get();
+    }
+    sublineVersionRepository.deleteAll(sublineVersions);
+  }
+
   public void updateVersion(SublineVersion currentVersion,      SublineVersion editedVersion) {
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnid(
         currentVersion.getSlnid());
@@ -59,4 +67,6 @@ public class SublineService {
     versionableService.applyVersioning(SublineVersion.class, versionedObjects, this::save,
         this::deleteById);
   }
+
+
 }
