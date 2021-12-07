@@ -41,13 +41,6 @@ public interface SublinenApiV1 {
   })
   SublineVersionModel createSublineVersion(@RequestBody SublineVersionModel newSublineVersion);
 
-  @PutMapping({"version/{id}"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
-  })
-  SublineVersionModel updateSublineVersion(@PathVariable Long id, @RequestBody SublineVersionModel newVersion);
-
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
