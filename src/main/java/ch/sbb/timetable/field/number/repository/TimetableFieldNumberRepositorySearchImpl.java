@@ -5,7 +5,6 @@ import ch.sbb.timetable.field.number.util.TimeTableFieldNumberQueryBuilder;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TimetableFieldNumberRepositorySearchImpl implements TimetableFieldNumberRepositorySearch {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  private final EntityManager entityManager;
   private final TimeTableFieldNumberQueryBuilder timeTableFieldNumberQueryBuilder;
 
   @Autowired
-  public TimetableFieldNumberRepositorySearchImpl(TimeTableFieldNumberQueryBuilder timeTableFieldNumberQueryBuilder) {
+  public TimetableFieldNumberRepositorySearchImpl(
+      TimeTableFieldNumberQueryBuilder timeTableFieldNumberQueryBuilder,
+      EntityManager entityManager) {
+    this.entityManager = entityManager;
     this.timeTableFieldNumberQueryBuilder = timeTableFieldNumberQueryBuilder;
   }
 
@@ -39,7 +40,7 @@ public class TimetableFieldNumberRepositorySearchImpl implements TimetableFieldN
         .setMaxResults(pageable.getPageSize())
         .getResultList();
     long count = entityManager.createQuery(countQuery).getSingleResult();
-    return new PageImpl<TimetableFieldNumber>(resultList, pageable, count);
+    return new PageImpl<>(resultList, pageable, count);
   }
 
 }
