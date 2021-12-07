@@ -143,25 +143,6 @@ public class SublineControllerTest {
     verify(sublineService).deleteById(1L);
   }
 
-
-  @Test
-  void shouldUpdateVersion() {
-    // Given
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    SublineVersionModel sublineVersionModel = createModel();
-    sublineVersionModel.setNumber("New name");
-
-    when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
-
-    // When
-    SublineVersionModel result = sublineController.updateSublineVersion(1L, sublineVersionModel);
-
-    // Then
-    assertThat(result).usingRecursiveComparison()
-                      .ignoringFields("editor", "creator", "editionDate", "creationDate")
-                      .isEqualTo(sublineVersionModel);
-  }
-
   @Test
   void shouldUpdateVersionWithVersioning() {
     // Given
@@ -176,22 +157,6 @@ public class SublineControllerTest {
 
     // Then
     verify(sublineService).updateVersion(any(), any());
-  }
-
-  @Test
-  void shouldReturnNotFoundOnUnexistingUpdateVersion() {
-    // Given
-    when(sublineService.findById(anyLong())).thenReturn(Optional.empty());
-
-    // When
-    SublineVersionModel sublineVersionModel = createModel();
-
-    // Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> sublineController.updateSublineVersion(1L,
-                                                                    sublineVersionModel))
-                                                            .withMessage(
-                                                                HttpStatus.NOT_FOUND.toString());
   }
 
   private static SublineVersionModel createModel() {

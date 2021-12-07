@@ -154,24 +154,6 @@ public class LineControllerTest {
 
 
   @Test
-  void shouldUpdateVersion() {
-    // Given
-    LineVersion lineVersion = LineTestData.lineVersion();
-    LineVersionModel lineVersionModel = createModel();
-    lineVersionModel.setNumber("New name");
-
-    when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
-
-    // When
-    LineVersionModel result = lineController.updateLineVersion(1L, lineVersionModel);
-
-    // Then
-    assertThat(result).usingRecursiveComparison()
-                      .ignoringFields("editor", "creator", "editionDate", "creationDate")
-                      .isEqualTo(lineVersionModel);
-  }
-
-  @Test
   void shouldUpdateVersionWithVersioning() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
@@ -187,21 +169,6 @@ public class LineControllerTest {
     verify(lineService).updateVersion(any(), any());
   }
 
-  @Test
-  void shouldReturnNotFoundOnUnexistingUpdateVersion() {
-    // Given
-    when(lineService.findById(anyLong())).thenReturn(Optional.empty());
-
-    // When
-    LineVersionModel lineVersionModel = createModel();
-
-    // Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> lineController.updateLineVersion(1L,
-                                                                    lineVersionModel))
-                                                            .withMessage(
-                                                                HttpStatus.NOT_FOUND.toString());
-  }
 
   private static LineVersionModel createModel() {
     return LineVersionModel.builder()
