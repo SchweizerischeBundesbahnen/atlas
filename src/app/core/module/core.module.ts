@@ -17,6 +17,9 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
+import { TableSearchComponent } from '../components/table-search/table-search.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -31,6 +34,7 @@ import { TrimInputDirective } from '../text-input/trim-input';
     UserComponent,
     EmptyToNullDirective,
     TrimInputDirective,
+    TableSearchComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +52,8 @@ import { TrimInputDirective } from '../text-input/trim-input';
         sendAccessToken: true,
       },
     }),
+    MatChipsModule,
+    MatIconModule,
   ],
   exports: [
     BreadcrumbComponent,
@@ -64,6 +70,7 @@ import { TrimInputDirective } from '../text-input/trim-input';
     TranslateModule,
     EmptyToNullDirective,
     TrimInputDirective,
+    TableSearchComponent,
   ],
   providers: [TranslatePipe],
 })
