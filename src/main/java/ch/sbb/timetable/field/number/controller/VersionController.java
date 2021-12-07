@@ -9,12 +9,12 @@ import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,19 +38,19 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   public TimetableFieldNumberContainer getOverview(Pageable pageable, List<String> searchCriteria,
       LocalDate validOn) {
     log.info("Load TimetableFieldNumbers using pageable={}", pageable);
-    List<TimetableFieldNumber> timetableFieldNumbers = new ArrayList<>();
+    Page<TimetableFieldNumber> timetableFieldNumberPage;
     if ((searchCriteria == null || searchCriteria.isEmpty()) && validOn == null) {
-      timetableFieldNumbers = versionService.getOverview(pageable).toList();
+      timetableFieldNumberPage = versionService.getOverview(pageable);
     } else {
-      timetableFieldNumbers = versionService.getVersionsSearched(pageable,
+      timetableFieldNumberPage = versionService.getVersionsSearched(pageable,
           searchCriteria,
           validOn);
     }
-    List<TimetableFieldNumberModel> versions = timetableFieldNumbers.stream().map(this::toModel)
+    List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(this::toModel)
         .collect(Collectors.toList());
     return TimetableFieldNumberContainer.builder()
         .fieldNumbers(versions)
-        .totalCount(versions.size())
+        .totalCount(timetableFieldNumberPage.getTotalElements())
         .build();
   }
 
