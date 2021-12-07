@@ -32,7 +32,7 @@ let router: Router;
 
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
-    'updateLineVersion',
+    'updateWithVersioning1',
     'deleteLineVersion',
   ]);
   const mockRoute = {
@@ -57,7 +57,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should update LineVersion successfully', () => {
-    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
+    mockLinesService.updateWithVersioning1.and.returnValue(of(lineVersion));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
@@ -72,7 +72,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should not update Version', () => {
     const error = new Error('404');
-    mockLinesService.updateLineVersion.and.returnValue(throwError(() => error));
+    mockLinesService.updateWithVersioning1.and.returnValue(throwError(() => error));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
