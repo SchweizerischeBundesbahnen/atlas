@@ -98,11 +98,12 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   }
 
   @Override
-  public void deleteVersion(Long id) {
-    if (!versionService.existsById(id)) {
+  public void deleteVersions(String ttfnid) {
+    List<Version> allVersionsVersioned = versionService.getAllVersionsVersioned(ttfnid);
+    if (allVersionsVersioned.isEmpty()) {
       throw NOT_FOUND_EXCEPTION.get();
     }
-    versionService.deleteById(id);
+    versionService.deleteAll(allVersionsVersioned);
   }
 
   private VersionModel toModel(Version version) {
