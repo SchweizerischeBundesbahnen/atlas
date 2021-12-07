@@ -50,6 +50,15 @@ public class LineService {
     lineVersionRepository.deleteById(id);
   }
 
+
+  public void deleteAll(String slnid) {
+    List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnid(slnid);
+    if (currentVersions.isEmpty()) {
+      throw NotFoundExcpetion.getInstance().get();
+    }
+    lineVersionRepository.deleteAll(currentVersions);
+  }
+
   public void updateVersion(LineVersion currentVersion,
       LineVersion editedVersion) {
     List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnid(
@@ -61,4 +70,5 @@ public class LineService {
     versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save,
         this::deleteById);
   }
+
 }
