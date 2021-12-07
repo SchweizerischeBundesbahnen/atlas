@@ -68,7 +68,7 @@ export class LineDetailComponent
 
   updateRecord(): void {
     this.linesService
-      .updateLineVersion(this.getId(), this.form.value)
+      .updateWithVersioning1(this.getId(), this.form.value)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
