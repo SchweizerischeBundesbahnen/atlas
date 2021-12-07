@@ -7,7 +7,7 @@
   *ngIf="controller.showSwitch"
   [records]="controller.records"
   [currentRecord]="controller.record"
-  [type]="type"
+  [pageType]="controller.getPageType()"
   [recordTitle]="controller.heading"
   (switchVersion)="controller.switchVersion($event)"
 ></app-switch-version>

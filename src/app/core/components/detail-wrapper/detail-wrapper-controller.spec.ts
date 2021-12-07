@@ -6,6 +6,7 @@ import { DialogService } from '../dialog/dialog.service';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import moment from 'moment';
+import { Page } from '../../model/page';
 
 describe('DetailWrapperController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
@@ -19,6 +20,10 @@ describe('DetailWrapperController', () => {
   class DummyWrapperController extends DetailWrapperController<Record> implements OnInit {
     constructor() {
       super(dialogService);
+    }
+
+    getPageType(): Page {
+      return dummyController.getPageType();
     }
 
     backToOverview(): void {

@@ -18,6 +18,7 @@ import {
   MAX_DATE_FORMATTED,
   MIN_DATE,
 } from '../../../core/date/date.service';
+import { Page } from '../../../core/model/page';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -178,5 +179,9 @@ export class TimetableFieldNumberDetailComponent
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  getPageType(): Page {
+    return Pages.TTFN;
   }
 }

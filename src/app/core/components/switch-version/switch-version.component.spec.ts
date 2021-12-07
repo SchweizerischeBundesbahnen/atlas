@@ -4,6 +4,7 @@ import { SwitchVersionComponent } from './switch-version.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Record } from '../detail-wrapper/record';
 import moment from 'moment';
+import { Pages } from '../../../pages/pages';
 
 describe('SwitchVersionComponent', () => {
   let component: SwitchVersionComponent;
@@ -41,6 +42,7 @@ describe('SwitchVersionComponent', () => {
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
     component.currentRecord = firstRecord;
     component.records = records;
+    component.pageType = Pages.TTFN;
     fixture.detectChanges();
   });
 
