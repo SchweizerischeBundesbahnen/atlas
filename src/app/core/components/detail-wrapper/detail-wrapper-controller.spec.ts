@@ -5,6 +5,8 @@ import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
+import moment from 'moment';
+import { Page } from '../../model/page';
 
 describe('DetailWrapperController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
@@ -18,6 +20,10 @@ describe('DetailWrapperController', () => {
   class DummyWrapperController extends DetailWrapperController<Record> implements OnInit {
     constructor() {
       super(dialogService);
+    }
+
+    getPageType(): Page {
+      return dummyController.getPageType();
     }
 
     backToOverview(): void {
@@ -153,5 +159,120 @@ describe('DetailWrapperController', () => {
 
       expect(dummyController.backToOverview).toHaveBeenCalled();
     });
+  });
+});
+
+describe('Get actual versioned record', () => {
+  let controller: DetailWrapperController<Record>;
+  const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: DetailWrapperController },
+        { provide: DialogService, useValue: dialogServiceSpy },
+      ],
+    });
+    controller = TestBed.inject(DetailWrapperController);
+  });
+
+  const firstRecord: Record = {
+    id: 1,
+    validFrom: moment('1.1.2000', 'DD.MM.YYYY').toDate(),
+    validTo: moment('31.12.2000', 'DD.MM.YYYY').toDate(),
+  };
+  const secondRecord: Record = {
+    id: 1,
+    validFrom: moment('1.1.2001', 'DD.MM.YYYY').toDate(),
+    validTo: moment('31.12.2001', 'DD.MM.YYYY').toDate(),
+  };
+  const thirdRecord: Record = {
+    id: 1,
+    validFrom: moment('1.1.2002', 'DD.MM.YYYY').toDate(),
+    validTo: moment('31.12.2002', 'DD.MM.YYYY').toDate(),
+  };
+
+  it('should return the firstRecord version when today is the firstRecord range', () => {
+    //given
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const today = moment('1.2.2000').toDate();
+    jasmine.clock().mockDate(today);
+
+    //when
+    const record: Record = controller.getActualRecord(records);
+
+    //then
+    expect(record.id).toBe(firstRecord.id);
+  });
+
+  it('should return the secondRecord version when today is the secondRecord range', () => {
+    //given
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const today = moment('1.2.2001').toDate();
+    jasmine.clock().mockDate(today);
+
+    //when
+    const record: Record = controller.getActualRecord(records);
+
+    //then
+    expect(record.id).toBe(secondRecord.id);
+  });
+
+  it('should return the thirdRecord version when today is the thirdRecord range', () => {
+    //given
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const today = moment('1.2.2002').toDate();
+    jasmine.clock().mockDate(today);
+
+    //when
+    const record: Record = controller.getActualRecord(records);
+
+    //then
+    expect(record.id).toBe(thirdRecord.id);
+  });
+
+  it('should return the firstRecord version when today is before all records', () => {
+    //given
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const today = moment('1.2.1999').toDate();
+    jasmine.clock().mockDate(today);
+
+    //when
+    const record: Record = controller.getActualRecord(records);
+
+    //then
+    expect(record.id).toBe(firstRecord.id);
+  });
+
+  it('should return the thirdRecord version when today is after all records', () => {
+    //given
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const today = moment('1.2.2099').toDate();
+    jasmine.clock().mockDate(today);
+
+    //when
+    const record: Record = controller.getActualRecord(records);
+
+    //then
+    expect(record.id).toBe(thirdRecord.id);
+  });
+
+  it('should return the thirdRecord version when today is after all records', () => {
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const fourthRecord: Record = {
+      id: 4,
+      validFrom: moment('1.1.2004', 'DD.MM.YYYY').toDate(),
+      validTo: moment('31.12.2004', 'DD.MM.YYYY').toDate(),
+    };
+    records.push(fourthRecord);
+    //given
+    const today = moment('1.2.2003').toDate();
+    jasmine.clock().mockDate(today);
+
+    //when
+    const record: Record = controller.getActualRecord(records);
+
+    //then
+    expect(record.id).toBe(fourthRecord.id);
   });
 });

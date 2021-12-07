@@ -1,9 +1,16 @@
-<div class="title-section mt-3 mb-3">
+<div *ngIf="!controller.showSwitch" class="title-section mt-3 mb-3">
   <h1>
     <strong>{{ controller.heading || (headingNew | translate) }}</strong>
   </h1>
 </div>
-
+<app-switch-version
+  *ngIf="controller.showSwitch"
+  [records]="controller.records"
+  [currentRecord]="controller.record"
+  [pageType]="controller.getPageType()"
+  [recordTitle]="controller.heading"
+  (switchVersion)="controller.switchVersion($event)"
+></app-switch-version>
 <div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section mb-2">
   <div class="edit-buttons">
     <button
