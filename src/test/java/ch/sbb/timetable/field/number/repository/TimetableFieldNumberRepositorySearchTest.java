@@ -9,7 +9,6 @@ import ch.sbb.timetable.field.number.entity.Version.VersionBuilder;
 import ch.sbb.timetable.field.number.enumaration.Status;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +59,11 @@ public class TimetableFieldNumberRepositorySearchTest {
   void searchWithOneCriteriaAndNoValidOn() {
     // Given initial dataset
     // When
-    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("version 3"), null, Pageable.ofSize(20).withPage(0));
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
+            List.of("version 3"),
+            null,
+            Pageable.ofSize(20).withPage(0))
+        .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(1);
     assertThat(searchResult).first().usingRecursiveComparison().isEqualTo(versionList.get(2));
@@ -71,9 +74,10 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Given initial dataset
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
-        List.of("version"),
-        LocalDate.of(2022, 3, 1),
-        Pageable.ofSize(20).withPage(0));
+            List.of("version"),
+            LocalDate.of(2022, 3, 1),
+            Pageable.ofSize(20).withPage(0))
+        .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(1);
     assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
@@ -84,11 +88,11 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Given initial dataset
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
-        null,
-        LocalDate.of(2021, 12, 15),
-        Pageable.ofSize(20).withPage(0));
+            null,
+            LocalDate.of(2021, 12, 15),
+            PageRequest.of(0, 20, Sort.by("name")))
+        .toList();
     // Then
-    searchResult.sort(Comparator.comparing(TimetableFieldNumber::getName));
     assertThat(searchResult.size()).isEqualTo(4);
     assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
@@ -100,7 +104,11 @@ public class TimetableFieldNumberRepositorySearchTest {
   void searchWithMultipleCriteriasWithoutValidOn() {
     // Given initial dataset
     // When
-    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("a.1", "version 5"), null, Pageable.ofSize(20).withPage(0));
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
+            List.of("a.1", "version 5"),
+            null,
+            Pageable.ofSize(20).withPage(0))
+        .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(1);
     assertThat(searchResult).first().usingRecursiveComparison().isEqualTo(versionList.get(4));
@@ -110,11 +118,12 @@ public class TimetableFieldNumberRepositorySearchTest {
   void searchWithMultipleCriteriasWithValidOn() {
     // Given initial dataset
     // When
-    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("active", "Version"),
-        LocalDate.of(2021, 12, 15),
-        Pageable.ofSize(20).withPage(0));
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
+            List.of("active", "Version"),
+            LocalDate.of(2021, 12, 15),
+            PageRequest.of(0, 20, Sort.by("name")))
+        .toList();
     // Then
-    searchResult.sort(Comparator.comparing(TimetableFieldNumber::getName));
     assertThat(searchResult.size()).isEqualTo(3);
     assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
@@ -125,15 +134,19 @@ public class TimetableFieldNumberRepositorySearchTest {
   void searchWithMultipleCriteriasWithStatusAndWithoutValidOn() {
     // Given initial dataset
     // When
-    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("ch:1:ttfnid:100000", "IN_REVIEW"),
-        null,
-        Pageable.ofSize(20).withPage(0));
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
+            List.of("ch:1:ttfnid:100000", "IN_REVIEW"),
+            null,
+            Pageable.ofSize(20).withPage(0))
+        .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(0);
 
-    searchResult = timetableFieldNumberRepository.searchVersions(List.of("ch:1:ttfnid:100003", "IN_REVIEW"),
-        null,
-        Pageable.ofSize(20).withPage(0));
+    searchResult = timetableFieldNumberRepository.searchVersions(
+            List.of("ch:1:ttfnid:100003", "IN_REVIEW"),
+            null,
+            Pageable.ofSize(20).withPage(0))
+        .toList();
     assertThat(searchResult.size()).isEqualTo(1);
     assertThat(searchResult).first().usingRecursiveComparison().isEqualTo(versionList.get(4));
   }
@@ -143,8 +156,9 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Given initial dataset
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("active", "a.1"),
-        LocalDate.of(2021, 12, 15),
-        Pageable.ofSize(5).withPage(0));
+            LocalDate.of(2021, 12, 15),
+            Pageable.ofSize(5).withPage(0))
+        .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(1);
     assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
@@ -154,11 +168,12 @@ public class TimetableFieldNumberRepositorySearchTest {
   void searchWithPageNumber0AndPageSize3() {
     // Given initial dataset
     // When
-    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("version"),
-        null,
-        Pageable.ofSize(3).withPage(0));
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
+            List.of("version"),
+            null,
+            PageRequest.of(0, 3, Sort.by("name")))
+        .toList();
     // Then
-    searchResult.sort(Comparator.comparing(TimetableFieldNumber::getName));
     assertThat(searchResult.size()).isEqualTo(3);
     assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
@@ -169,11 +184,12 @@ public class TimetableFieldNumberRepositorySearchTest {
   void searchWithPageNumber1AndPageSize2() {
     // Given initial dataset
     // When
-    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("version"),
-        null,
-        Pageable.ofSize(2).withPage(1));
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
+            List.of("version"),
+            null,
+            PageRequest.of(1, 2, Sort.by("name")))
+        .toList();
     // Then
-    searchResult.sort(Comparator.comparing(TimetableFieldNumber::getName));
     assertThat(searchResult.size()).isEqualTo(2);
     assertThat(searchResult.get(0)).usingRecursiveComparison().isEqualTo(versionList.get(3));
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(4));
@@ -183,9 +199,11 @@ public class TimetableFieldNumberRepositorySearchTest {
   void searchWithSortingNameDesc() {
     // Given initial dataset
     // When
-    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(List.of("a.1"),
-        null,
-        PageRequest.of(0, 10, Sort.by(Direction.DESC, "name")));
+    List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
+            List.of("a.1"),
+            null,
+            PageRequest.of(0, 10, Sort.by(Direction.DESC, "name")))
+        .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(2);
     assertThat(searchResult.get(0)).usingRecursiveComparison().isEqualTo(versionList.get(4));
@@ -197,9 +215,10 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Given initial dataset
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
-        null,
-        null,
-        PageRequest.of(0, 10, Sort.by(Direction.ASC, "swissTimetableFieldNumber", "ttfnid")));
+            null,
+            null,
+            PageRequest.of(0, 10, Sort.by(Direction.ASC, "swissTimetableFieldNumber", "ttfnid")))
+        .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(4);
     assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());

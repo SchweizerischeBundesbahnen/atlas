@@ -85,7 +85,7 @@ public class VersionControllerTest {
   void shouldGetSearchedVersions() {
     // Given
     TimetableFieldNumber version = createOverviewEntity();
-    when(versionService.getVersionsSearched(any(Pageable.class), any(), any())).thenReturn(List.of(version));
+    when(versionService.getVersionsSearched(any(Pageable.class), any(), any())).thenReturn(new PageImpl<>(List.of(version)));
 
     // When
     TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getOverview(Pageable.unpaged(), List.of("sbb"), null);
