@@ -7,6 +7,7 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class LineRepositoryTest {
    * |--Last Year--|  |--Today--|   |--Next Year--|
    */
   @Test
-  void shouldDisplaydescriptionOfCurrentDay() {
+  void shouldDisplayDescriptionOfCurrentDay() {
     // Given
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
                                            .slnid(SLNID)
@@ -77,7 +78,7 @@ public class LineRepositoryTest {
    * |--Last Year--|  |--Next Year--| |--Later--|
    */
   @Test
-  void shouldDisplaydescriptionOfNextYear() {
+  void shouldDisplayDescriptionOfNextYear() {
     // Given
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
                                            .slnid(SLNID)
@@ -122,7 +123,7 @@ public class LineRepositoryTest {
    * |--Earlier--| |--Last Year--|
    */
   @Test
-  void shouldDisplaydescriptionOfLastYear() {
+  void shouldDisplayDescriptionOfLastYear() {
     // Given
     LineVersion validEarlier = LineTestData.lineVersionBuilder()
                                           .slnid(SLNID)
@@ -153,6 +154,37 @@ public class LineRepositoryTest {
                     .isEqualTo(validLastYear);
     assertThat(line.getValidFrom()).isEqualTo(validEarlier.getValidFrom());
     assertThat(line.getValidTo()).isEqualTo(validLastYear.getValidTo());
+  }
+
+  @Test
+  void shouldDeleteLines() {
+    // Given
+    LineVersion validEarlier = LineTestData.lineVersionBuilder()
+                                          .slnid(SLNID)
+                                          .description("Earlier")
+                                          .validFrom(LocalDate.now().minusYears(4))
+                                          .validTo(LocalDate.now().minusYears(3))
+                                          .build();
+    lineVersionRepository.saveAndFlush(validEarlier);
+
+    LineVersion validLastYear = LineTestData.lineVersionBuilder()
+                                           .slnid(SLNID)
+                                           .description("Last Year")
+                                           .validFrom(LocalDate.now().minusYears(2))
+                                           .validTo(LocalDate.now().minusYears(1))
+                                           .build();
+    lineVersionRepository.saveAndFlush(validLastYear);
+
+    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnid(SLNID);
+    assertThat(lineVersions.size()).isEqualTo(2);
+
+    // When
+    lineVersionRepository.deleteAll(lineVersions);
+
+    // Then
+    List<LineVersion> result = lineVersionRepository.findAllBySlnid(SLNID);
+    assertThat(result.size()).isEqualTo(0);
+
   }
 
 }

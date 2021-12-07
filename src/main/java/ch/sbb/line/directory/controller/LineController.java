@@ -83,8 +83,8 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public void deleteLineVersion(Long id) {
-    lineService.deleteById(id);
+  public void deleteLineVersions(String slnid) {
+    lineService.deleteAll(slnid);
   }
 
   private LineVersionModel toModel(LineVersion lineVersion) {
