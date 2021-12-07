@@ -44,16 +44,16 @@ describe('Versioning: scenario 3', () => {
   it('Step-4: Add second Version', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(secondVersion);
-    TtfnUtils.updateVersion();
+    TtfnUtils.saveVersion();
   });
 
   it('Step-5: Add third Version', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(versionUpdate);
-    TtfnUtils.updateVersion();
+    TtfnUtils.saveVersion();
   });
 
-  it('Step-6: check version display', () => {
+  it('Step-6: Check version display', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -61,7 +61,7 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=switch-version-current-range]').contains('02.06.2002 bis 31.12.2002');
   });
 
-  it('Step-7: assert fourth version (actual version)', () => {
+  it('Step-7: Assert fourth version (actual version)', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -73,7 +73,7 @@ describe('Versioning: scenario 3', () => {
     TtfnUtils.assertContainsVersion(secondVersion);
   });
 
-  it('Step-8: assert third version', () => {
+  it('Step-8: Assert third version', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -86,7 +86,7 @@ describe('Versioning: scenario 3', () => {
     TtfnUtils.assertContainsVersion(versionUpdate);
   });
 
-  it('Step-9: assert second version', () => {
+  it('Step-9: Assert second version', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -99,7 +99,7 @@ describe('Versioning: scenario 3', () => {
     TtfnUtils.assertContainsVersion(secondVersion);
   });
 
-  it('Step-10: assert first version', () => {
+  it('Step-10: Assert first version', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -112,7 +112,7 @@ describe('Versioning: scenario 3', () => {
     TtfnUtils.assertContainsVersion(firstVersion);
   });
 
-  it('Step-11: delete versions', () => {
+  it('Step-11: Delete versions', () => {
     TtfnUtils.deleteItems();
     cy.contains(headerTitle);
   });
