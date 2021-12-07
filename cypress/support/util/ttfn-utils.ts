@@ -51,11 +51,39 @@ export default class TtfnUtils {
     cy.get('[data-cy=comment]').invoke('val').should('eq', version.comment);
   }
 
-  static deleteItem() {
+  static deleteItems() {
     cy.get('[data-cy=delete-item]').click();
     cy.get('#mat-dialog-0').contains('Warnung!');
     cy.get('[data-cy=dialog-confirm-button]').should('exist');
     cy.get('[data-cy=dialog-cancel-button]').should('exist');
     cy.get('[data-cy=dialog-confirm-button]').click();
+  }
+
+  static switchLeft() {
+    cy.get('[data-cy=switch-version-left]').click();
+  }
+
+  static getFirstVersion() {
+    return {
+      swissTimetableFieldNumber: '00.AAA',
+      validFrom: '01.01.2000',
+      validTo: '31.12.2000',
+      businessOrganisation: 'SBB',
+      number: '1.1',
+      name: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      comment: 'This is a comment',
+    };
+  }
+
+  static getSecondVersion() {
+    return {
+      swissTimetableFieldNumber: '00.AAA',
+      validFrom: '01.01.2001',
+      validTo: '31.12.2002',
+      businessOrganisation: 'SBB1',
+      number: '1.1',
+      name: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      comment: 'A new comment',
+    };
   }
 }

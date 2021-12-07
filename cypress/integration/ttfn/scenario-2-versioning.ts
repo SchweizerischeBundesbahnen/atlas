@@ -1,27 +1,20 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
 
-describe('Versioning', () => {
-  const firstVersion = {
-    swissTimetableFieldNumber: '00.AAA',
-    validFrom: '01.01.2000',
-    validTo: '31.12.2000',
-    businessOrganisation: 'SBB',
-    number: '1.1',
-    name: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-    comment: 'This is a comment',
-  };
+// Szenario 3: Update, dass über Versionsgrenze geht
+// NEU:                      |______________|
+// IST:      |----------------------|--------------------|
+// Version:        1                          2
+//
+//
+// RESULTAT: |----------------|______|______|-------------     NEUE VERSION EINGEFÜGT
+// Version:        1              3     4         2
 
-  const secondVersion = {
-    swissTimetableFieldNumber: '00.AAA',
-    validFrom: '01.01.2001',
-    validTo: '31.12.2002',
-    businessOrganisation: 'SBB1',
-    number: '1.1',
-    name: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-    comment: 'A new comment',
-  };
+describe('Versioning: scenario 3', () => {
+  const firstVersion = TtfnUtils.getFirstVersion();
 
-  const thirdVersion = {
+  const secondVersion = TtfnUtils.getSecondVersion();
+
+  const versionUpdate = {
     swissTimetableFieldNumber: '00.AAA',
     validFrom: '01.06.2001',
     validTo: '01.06.2002',
@@ -39,41 +32,28 @@ describe('Versioning', () => {
 
   it('Step-2: Navigate to Fahrplanfeldnummer', () => {
     TtfnUtils.navigateToTimetableFieldNumber();
-  });
-
-  it('Step-3: Check the Fahrplanfeldnummer Table is visible', () => {
     cy.contains(headerTitle);
-    cy.get('table').get('thead tr th').eq(1).get('div').contains('CH-Fahrplanfeldnummer');
-    cy.get('table')
-      .get('thead tr th')
-      .eq(2)
-      .get('div')
-      .contains('CH-Fahrplanfeldnummer Bezeichnung');
-    cy.get('table').get('thead tr th').eq(3).get('div').contains('Status');
-    cy.get('table').get('thead tr th').eq(4).get('div').contains('Fahrplanfeldnummer-ID');
-    cy.get('table').get('thead tr th').eq(4).get('div').contains('Gültig von');
-    cy.get('table').get('thead tr th').eq(4).get('div').contains('Gültig bis');
   });
 
-  it('Step-4: Add first Version', () => {
+  it('Step-3: Add first Version', () => {
     TtfnUtils.clickOnAddNewVersion();
     TtfnUtils.fillVersionForm(firstVersion);
     TtfnUtils.saveVersion();
   });
 
-  it('Step-5: Add second Version', () => {
+  it('Step-4: Add second Version', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(secondVersion);
     TtfnUtils.updateVersion();
   });
 
-  it('Step-6: Add third Version', () => {
+  it('Step-5: Add third Version', () => {
     cy.get('[data-cy=edit-item]').click();
-    TtfnUtils.fillVersionForm(thirdVersion);
+    TtfnUtils.fillVersionForm(versionUpdate);
     TtfnUtils.updateVersion();
   });
 
-  it('Step-7: check version display', () => {
+  it('Step-6: check version display', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -81,7 +61,7 @@ describe('Versioning', () => {
     cy.get('[data-cy=switch-version-current-range]').contains('02.06.2002 bis 31.12.2002');
   });
 
-  it('Step-8: assert fourth version', () => {
+  it('Step-7: assert fourth version (actual version)', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -93,24 +73,24 @@ describe('Versioning', () => {
     TtfnUtils.assertContainsVersion(secondVersion);
   });
 
-  it('Step-9: assert third version', () => {
+  it('Step-8: assert third version', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    cy.get('[data-cy=switch-version-left]').click();
+    TtfnUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('3 / 4');
     cy.get('[data-cy=switch-version-current-range]').contains('01.06.2001 bis 01.06.2002');
 
-    thirdVersion.validFrom = '01.06.2001';
-    thirdVersion.validTo = '01.06.2002';
-    TtfnUtils.assertContainsVersion(thirdVersion);
+    versionUpdate.validFrom = '01.06.2001';
+    versionUpdate.validTo = '01.06.2002';
+    TtfnUtils.assertContainsVersion(versionUpdate);
   });
 
-  it('Step-10: assert second version', () => {
+  it('Step-9: assert second version', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    cy.get('[data-cy=switch-version-left]').click();
+    TtfnUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('2 / 4');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2001 bis 31.05.2001');
 
@@ -119,16 +99,21 @@ describe('Versioning', () => {
     TtfnUtils.assertContainsVersion(secondVersion);
   });
 
-  it('Step-11: assert first version', () => {
+  it('Step-10: assert first version', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    cy.get('[data-cy=switch-version-left]').click();
+    TtfnUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('1 / 4');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2000 bis 31.12.2000');
 
     firstVersion.validFrom = '01.01.2000';
     firstVersion.validTo = '31.12.2000';
     TtfnUtils.assertContainsVersion(firstVersion);
+  });
+
+  it('Step-11: delete versions', () => {
+    TtfnUtils.deleteItems();
+    cy.contains(headerTitle);
   });
 });

@@ -1,15 +1,7 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
 
 describe('Fahrplanfeldnummer', () => {
-  const firstVersion = {
-    swissTimetableFieldNumber: '00.AAA',
-    validFrom: '01.01.2000',
-    validTo: '31.12.2000',
-    businessOrganisation: 'SBB',
-    number: '1.1',
-    name: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-    comment: 'This is a comment',
-  };
+  const firstVersion = TtfnUtils.getFirstVersion();
 
   const headerTitle = 'Fahrplanfeldnummer';
 
@@ -56,7 +48,7 @@ describe('Fahrplanfeldnummer', () => {
   });
 
   it('Step-7: Delete the item aa.AAA ', () => {
-    TtfnUtils.deleteItem();
+    TtfnUtils.deleteItems();
     cy.contains(headerTitle);
   });
 });
