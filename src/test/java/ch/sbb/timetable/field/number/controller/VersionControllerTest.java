@@ -14,6 +14,7 @@ import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -109,27 +110,33 @@ public class VersionControllerTest {
   }
 
   @Test
-  void shouldDeleteVersion() {
+  void shouldDeleteVersions() {
     // Given
-    when(versionService.existsById(anyLong())).thenReturn(true);
+    String ttfnid = "ch:1:ttfnid:100000";
+    Version version = createEntity();
+    Version version2 = createEntity();
+    List<Version> versions = List.of(version, version2);
+    when(versionService.getAllVersionsVersioned(ttfnid)).thenReturn(versions);
 
     // When
-    versionController.deleteVersion(1L);
+    versionController.deleteVersions(ttfnid);
 
     // Then
-    verify(versionService).deleteById(1L);
+    verify(versionService).deleteAll(versions);
   }
 
   @Test
   void shouldReturnNotFoundOnDeletingUnexistingVersion() {
     // Given
-    when(versionService.existsById(anyLong())).thenReturn(false);
+    String ttfnid = "ch:1:ttfnid:100000";
+    when(
+        versionService.getAllVersionsVersioned(ttfnid)).thenReturn(List.of());
 
     // When
 
     // Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-        () -> versionController.deleteVersion(1L)).withMessage(HttpStatus.NOT_FOUND.toString());
+        () -> versionController.deleteVersions(ttfnid)).withMessage(HttpStatus.NOT_FOUND.toString());
   }
 
   @Test
