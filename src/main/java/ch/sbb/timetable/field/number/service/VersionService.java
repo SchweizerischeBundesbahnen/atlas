@@ -50,7 +50,7 @@ public class VersionService {
     return versionRepository.save(newVersion);
   }
 
-  public List<TimetableFieldNumber> getVersionsSearched(Pageable pageable,
+  public Page<TimetableFieldNumber> getVersionsSearched(Pageable pageable,
       List<String> searchCriteria,
       LocalDate validOn) {
     return timetableFieldNumberRepository.searchVersions(searchCriteria, validOn, pageable);

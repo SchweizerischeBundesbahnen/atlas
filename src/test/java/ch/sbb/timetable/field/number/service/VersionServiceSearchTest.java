@@ -48,10 +48,10 @@ public class VersionServiceSearchTest {
     // Given initial data set
     // When
     List<TimetableFieldNumber> versionsSearched = versionService.getVersionsSearched(
-        Pageable.ofSize(5).withPage(0),
-        List.of("2"),
-        null);
-
+            Pageable.ofSize(5).withPage(0),
+            List.of("2"),
+            null)
+        .toList();
     // Then
     assertThat(versionsSearched).hasSize(1);
     assertThat(versionsSearched).first().usingRecursiveComparison().isEqualTo(version2);

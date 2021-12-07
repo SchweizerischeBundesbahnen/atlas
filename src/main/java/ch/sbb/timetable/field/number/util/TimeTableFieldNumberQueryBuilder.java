@@ -18,6 +18,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.QueryUtils;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -29,12 +30,17 @@ public class TimeTableFieldNumberQueryBuilder {
 
   private final CriteriaBuilder criteriaBuilder;
   private final CriteriaQuery<TimetableFieldNumber> criteriaQuery;
+  private final CriteriaQuery<Long> criteriaQueryCount;
   private final Root<TimetableFieldNumber> timetableFieldNumberRoot;
+  private final Root<TimetableFieldNumber> timetableFieldNumberCountRoot;
 
+  @Autowired
   public TimeTableFieldNumberQueryBuilder(EntityManager entityManager) {
     criteriaBuilder = entityManager.getCriteriaBuilder();
     criteriaQuery = criteriaBuilder.createQuery(TimetableFieldNumber.class);
+    criteriaQueryCount = criteriaBuilder.createQuery(Long.class);
     timetableFieldNumberRoot = criteriaQuery.from(TimetableFieldNumber.class);
+    timetableFieldNumberCountRoot = criteriaQueryCount.from(TimetableFieldNumber.class);
   }
 
   private Predicate getValidityPredicate(LocalDate validOn) {
@@ -102,15 +108,21 @@ public class TimeTableFieldNumberQueryBuilder {
     }
   }
 
-  public CriteriaQuery<TimetableFieldNumber> queryAll(List<String> searchStrings, LocalDate validOn) {
+  public Predicate getAllPredicates(List<String> searchStrings, LocalDate validOn) {
     Set<Status> statusSearches = getStatusSearches(searchStrings);
     Set<String> stringSearches = getStringSearches(searchStrings, statusSearches);
-    Predicate all = criteriaBuilder.and(
+    return criteriaBuilder.and(
         getStringPredicate(stringSearches),
         getValidityPredicate(validOn),
         getStatusPredicate(statusSearches)
     );
-    return criteriaQuery.select(timetableFieldNumberRoot).where(all);
   }
 
+  public CriteriaQuery<Long> getTimetableFieldNumberCountQuery(Predicate predicate) {
+    return criteriaQueryCount.select(criteriaBuilder.count(timetableFieldNumberCountRoot)).where(predicate);
+  }
+
+  public CriteriaQuery<TimetableFieldNumber> getTimetableFieldNumberSearchQuery(Predicate predicate) {
+    return criteriaQuery.select(timetableFieldNumberRoot).where(predicate);
+  }
 }
