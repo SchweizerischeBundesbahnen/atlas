@@ -4,6 +4,7 @@ import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { Observable, of } from 'rxjs';
 import moment from 'moment/moment';
+import { Page } from '../../model/page';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
@@ -193,6 +194,8 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   abstract deleteRecord(): void;
 
   abstract backToOverview(): void;
+
+  abstract getPageType(): Page;
 
   private confirmLeave(): Observable<boolean> {
     if (this.form.dirty) {
