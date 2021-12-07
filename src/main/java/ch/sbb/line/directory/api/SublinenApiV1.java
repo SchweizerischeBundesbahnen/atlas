@@ -49,6 +49,6 @@ public interface SublinenApiV1 {
   List<SublineVersionModel> updateWithVersioning(@PathVariable Long id,
       @RequestBody @Valid SublineVersionModel newVersion);
 
-  @DeleteMapping("version/{id}")
-  void deleteSublineVersion(@PathVariable Long id);
+  @DeleteMapping("version/{slnid}")
+  void deleteSublineVersions(@PathVariable String slnid);
 }

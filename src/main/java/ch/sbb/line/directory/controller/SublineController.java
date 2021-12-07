@@ -78,8 +78,8 @@ public class SublineController implements SublinenApiV1 {
   }
 
   @Override
-  public void deleteSublineVersion(Long id) {
-    sublineService.deleteById(id);
+  public void deleteSublineVersions(String slnid) {
+    sublineService.deleteAll(slnid);
   }
 
   private SublineVersionModel toModel(SublineVersion sublineVersion) {

@@ -135,12 +135,12 @@ public class SublineControllerTest {
   @Test
   void shouldDeleteVersion() {
     // Given
-
+    String slnid ="ch:1:slnid:10000";
     // When
-    sublineController.deleteSublineVersion(1L);
+    sublineController.deleteSublineVersions(slnid);
 
     // Then
-    verify(sublineService).deleteById(1L);
+    verify(sublineService).deleteAll(slnid);
   }
 
   @Test
