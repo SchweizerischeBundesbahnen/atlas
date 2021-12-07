@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Record } from '../detail-wrapper/record';
 import moment from 'moment';
 import { DATE_PATTERN } from '../../date/date.service';
+import { Page } from '../../model/page';
 
 @Component({
   selector: 'app-switch-version',
@@ -11,7 +12,7 @@ import { DATE_PATTERN } from '../../date/date.service';
 export class SwitchVersionComponent implements OnInit {
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
-  @Input() type!: string;
+  @Input() pageType!: Page;
   @Input() recordTitle: string | undefined;
   @Output() switchVersion = new EventEmitter<number>();
 
@@ -23,13 +24,6 @@ export class SwitchVersionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCurrentIndex();
-  }
-
-  displayRecordType() {
-    if (this.type === 'TTFN') {
-      return 'PAGES.TTFN.TITLE';
-    }
-    return 'PAGES.LIDI.TITLE';
   }
 
   displayVersionsItems() {
