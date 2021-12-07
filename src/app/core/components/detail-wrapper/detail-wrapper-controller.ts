@@ -60,6 +60,10 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     return this.record.id!;
   }
 
+  getSelectedRecord(): TYPE {
+    return this.record;
+  }
+
   isNewRecord() {
     return !this.getId();
   }
