@@ -55,6 +55,6 @@ public interface TimetableFieldNumberApiV1 {
   })
   VersionModel updateVersion(@PathVariable Long id, @RequestBody @Valid VersionModel newVersion);
 
-  @DeleteMapping({"/{id}"})
-  void deleteVersion(@PathVariable Long id);
+  @DeleteMapping({"/{ttfnid}"})
+  void deleteVersions(@PathVariable String ttfnid);
 }
