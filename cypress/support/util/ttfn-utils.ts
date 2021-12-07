@@ -24,18 +24,7 @@ export default class TtfnUtils {
   }
 
   static saveVersion() {
-    this.saveAndCheckSnackMessage('Fahrplanfeldnummer erfolgreich hinzugefügt.');
-  }
-
-  static updateVersion() {
-    this.saveAndCheckSnackMessage('Fahrplanfeldnummer erfolgreich gespeichert.');
-  }
-
-  static saveAndCheckSnackMessage(message: string) {
     cy.get('[data-cy=save-item]').click();
-    cy.get('simple-snack-bar').should('be.visible');
-    cy.get('simple-snack-bar').contains(message);
-    cy.get('snack-bar-container').should('have.class', 'success');
     cy.get('[data-cy=edit-item]').should('be.visible');
     cy.get('[data-cy=delete-item]').should('be.visible');
   }
