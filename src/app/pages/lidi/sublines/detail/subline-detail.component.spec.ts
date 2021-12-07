@@ -33,7 +33,7 @@ let router: Router;
 describe('SublineDetailComponent for existing sublineVersion', () => {
   const mockSublinesService = jasmine.createSpyObj('sublinesService', [
     'updateWithVersioning',
-    'deleteSublineVersion',
+    'deleteSublineVersions',
   ]);
   const mockRoute = {
     snapshot: {
@@ -84,7 +84,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should delete LineVersion successfully', () => {
-    mockSublinesService.deleteSublineVersion.and.returnValue(of({}));
+    mockSublinesService.deleteSublineVersions.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
@@ -99,7 +99,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
 
   it('should not delete Version', () => {
     const error = new Error('404');
-    mockSublinesService.deleteSublineVersion.and.returnValue(throwError(() => error));
+    mockSublinesService.deleteSublineVersions.and.returnValue(throwError(() => error));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
