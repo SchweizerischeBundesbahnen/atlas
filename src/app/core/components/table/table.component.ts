@@ -6,6 +6,8 @@ import { TableColumn } from './table-column';
 import { TablePagination } from './table-pagination';
 import { DateService } from '../../date/date.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TableSearchComponent } from '../table-search/table-search.component';
+import { TableSearch } from '../table-search/table-search';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][newElementEvent][editElementEvent]',
@@ -21,10 +23,11 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
 
   @Output() newElementEvent = new EventEmitter<DATATYPE>();
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
-  @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
+  @Output() getTableElementsEvent = new EventEmitter<TablePagination & TableSearch>();
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild(TableSearchComponent, { static: true }) tableSearchComponent!: TableSearchComponent;
 
   tableDataSrc!: MatTableDataSource<DATATYPE>;
   loading = true;
@@ -50,17 +53,40 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
     this.editElementEvent.emit(row);
   }
 
+  // TODO: check initial sorting
   pageChanged(pageEvent: PageEvent) {
     this.loading = true;
     const pageIndex = pageEvent.pageIndex;
     const pageSize = pageEvent.pageSize;
-    this.getTableElementsEvent.emit({ page: pageIndex, size: pageSize });
+    this.getTableElementsEvent.emit({
+      page: pageIndex,
+      size: pageSize,
+      // sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
+      searchCriteria: this.tableSearchComponent.searchStrings,
+      validOn: this.tableSearchComponent.searchDate,
+    });
   }
 
   sortData(sort: Sort) {
     this.paginator.firstPage();
     const sortElement = sort.active + ',' + sort.direction.toUpperCase();
-    this.getTableElementsEvent.emit({ page: 0, size: 10, sort: sortElement });
+    this.getTableElementsEvent.emit({
+      page: 0,
+      size: 10,
+      sort: sortElement,
+      searchCriteria: this.tableSearchComponent.searchStrings,
+    });
+  }
+
+  searchData(search: TableSearch): void {
+    this.paginator.firstPage();
+    this.getTableElementsEvent.emit({
+      page: 0,
+      size: this.paginator.pageSize,
+      // sort: sortElement,
+      searchCriteria: search.searchCriteria,
+      validOn: search.validOn,
+    });
   }
 
   format(column: TableColumn<DATATYPE>, value: string | Date): string | null {

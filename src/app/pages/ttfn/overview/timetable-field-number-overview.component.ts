@@ -6,6 +6,7 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
+import { TableSearch } from '../../../core/components/table-search/table-search';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -42,10 +43,16 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     this.getOverview({ page: 0, size: 10, sort: 'swissTimetableFieldNumber,ASC' });
   }
 
-  getOverview($pagination: TablePagination) {
+  getOverview($paginationAndSearch: TablePagination & TableSearch) {
     this.isLoading = true;
     this.getVersionsSubscription = this.timetableFieldNumbersService
-      .getOverview($pagination.page, $pagination.size, [$pagination.sort!])
+      .getOverview(
+        $paginationAndSearch.searchCriteria,
+        $paginationAndSearch.validOn,
+        $paginationAndSearch.page,
+        $paginationAndSearch.size,
+        [$paginationAndSearch.sort!]
+      )
       .pipe(
         catchError((err) => {
           this.notificationService.error('TTFN.NOTIFICATION.FETCH_ERROR');

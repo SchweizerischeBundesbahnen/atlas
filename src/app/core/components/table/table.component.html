@@ -6,6 +6,7 @@
       <em class="bi bi-plus fs-2"></em>
     </button>
   </div>
+  <app-table-search (searchEvent)="searchData($event)"></app-table-search>
   <table
     mat-table
     [dataSource]="tableData"
