@@ -18,6 +18,7 @@ import {
   MAX_DATE_FORMATTED,
   MIN_DATE,
 } from '../../../core/date/date.service';
+import { Page } from '../../../core/model/page';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -69,7 +70,7 @@ export class TimetableFieldNumberDetailComponent
 
   updateRecord(): void {
     this.timetableFieldNumberService
-      .updateVersion(this.getId(), this.form.value)
+      .updateVersionWithVersioning(this.getId(), this.form.value)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
@@ -102,20 +103,23 @@ export class TimetableFieldNumberDetailComponent
   }
 
   deleteRecord(): void {
-    this.timetableFieldNumberService
-      .deleteVersion(this.getId())
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
-          console.log(err);
-          return EMPTY;
-        })
-      )
-      .subscribe(() => {
-        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
-        this.backToOverview();
-      });
+    const selectedRecord: Version = this.getSelectedRecord();
+    if (selectedRecord.ttfnid != null) {
+      this.timetableFieldNumberService
+        .deleteVersions(selectedRecord.ttfnid)
+        .pipe(
+          takeUntil(this.ngUnsubscribe),
+          catchError((err) => {
+            this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
+            console.log(err);
+            return EMPTY;
+          })
+        )
+        .subscribe(() => {
+          this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+          this.backToOverview();
+        });
+    }
   }
 
   backToOverview(): void {
@@ -175,5 +179,9 @@ export class TimetableFieldNumberDetailComponent
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  getPageType(): Page {
+    return Pages.TTFN;
   }
 }

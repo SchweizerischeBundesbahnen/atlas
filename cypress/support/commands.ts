@@ -51,8 +51,16 @@ declare namespace Cypress {
      * cy.login()
      */
     login(): Chainable<Subject>;
+    atlasLogin(): Chainable<Subject>;
   }
 }
+
+Cypress.Commands.add('atlasLogin', () => {
+  cy.clearCookies();
+  cy.clearLocalStorage();
+  cy.login();
+  cy.visit('/');
+});
 
 Cypress.Commands.add('login', () => {
   return cy
