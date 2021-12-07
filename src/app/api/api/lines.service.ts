@@ -172,37 +172,37 @@ export class LinesService {
   }
 
   /**
-   * @param id
+   * @param slnid
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public deleteLineVersion(
-    id: number,
+  public deleteLineVersions(
+    slnid: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any>;
-  public deleteLineVersion(
-    id: number,
+  public deleteLineVersions(
+    slnid: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpResponse<any>>;
-  public deleteLineVersion(
-    id: number,
+  public deleteLineVersions(
+    slnid: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpEvent<any>>;
-  public deleteLineVersion(
-    id: number,
+  public deleteLineVersions(
+    slnid: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any> {
-    if (id === null || id === undefined) {
+    if (slnid === null || slnid === undefined) {
       throw new Error(
-        'Required parameter id was null or undefined when calling deleteLineVersion.'
+        'Required parameter slnid was null or undefined when calling deleteLineVersions.'
       );
     }
 
@@ -225,7 +225,7 @@ export class LinesService {
 
     return this.httpClient.delete<any>(
       `${this.configuration.basePath}/line-directory/v1/lines/version/${encodeURIComponent(
-        String(id)
+        String(slnid)
       )}`,
       {
         responseType: <any>responseType_,
@@ -436,91 +436,6 @@ export class LinesService {
       `${this.configuration.basePath}/line-directory/v1/lines`,
       {
         params: queryParameters,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
-
-  /**
-   * @param id
-   * @param lineVersion
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public updateLineVersion(
-    id: number,
-    lineVersion: LineVersion,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<LineVersion>;
-  public updateLineVersion(
-    id: number,
-    lineVersion: LineVersion,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<LineVersion>>;
-  public updateLineVersion(
-    id: number,
-    lineVersion: LineVersion,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<LineVersion>>;
-  public updateLineVersion(
-    id: number,
-    lineVersion: LineVersion,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (id === null || id === undefined) {
-      throw new Error(
-        'Required parameter id was null or undefined when calling updateLineVersion.'
-      );
-    }
-    if (lineVersion === null || lineVersion === undefined) {
-      throw new Error(
-        'Required parameter lineVersion was null or undefined when calling updateLineVersion.'
-      );
-    }
-
-    let headers = this.defaultHeaders;
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    // to determine the Content-Type header
-    const consumes: string[] = ['application/json'];
-    const httpContentTypeSelected: string | undefined =
-      this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected !== undefined) {
-      headers = headers.set('Content-Type', httpContentTypeSelected);
-    }
-
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
-
-    return this.httpClient.put<LineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/lines/version/${encodeURIComponent(
-        String(id)
-      )}`,
-      lineVersion,
-      {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
         headers: headers,

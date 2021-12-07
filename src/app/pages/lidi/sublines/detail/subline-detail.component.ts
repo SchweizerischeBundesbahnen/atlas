@@ -113,20 +113,23 @@ export class SublineDetailComponent
   }
 
   deleteRecord(): void {
-    this.sublinesService
-      .deleteSublineVersion(this.getId())
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
-          console.log(err);
-          return EMPTY;
-        })
-      )
-      .subscribe(() => {
-        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
-        this.backToOverview();
-      });
+    const selectedSublineVersion = this.getSelectedRecord();
+    if (selectedSublineVersion.slnid != null) {
+      this.sublinesService
+        .deleteSublineVersions(selectedSublineVersion.slnid)
+        .pipe(
+          takeUntil(this.ngUnsubscribe),
+          catchError((err) => {
+            this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
+            console.log(err);
+            return EMPTY;
+          })
+        )
+        .subscribe(() => {
+          this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
+          this.backToOverview();
+        });
+    }
   }
 
   backToOverview(): void {
