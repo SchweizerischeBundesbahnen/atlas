@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Record } from '../detail-wrapper/record';
-import moment, { Moment } from 'moment';
-import { DATE_PATTERN, DateService } from '../../date/date.service';
+import moment from 'moment';
+import { DATE_PATTERN } from '../../date/date.service';
 
 @Component({
   selector: 'app-switch-version',

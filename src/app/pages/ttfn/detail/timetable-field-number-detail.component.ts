@@ -102,20 +102,23 @@ export class TimetableFieldNumberDetailComponent
   }
 
   deleteRecord(): void {
-    this.timetableFieldNumberService
-      .deleteVersion(this.getId())
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
-          console.log(err);
-          return EMPTY;
-        })
-      )
-      .subscribe(() => {
-        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
-        this.backToOverview();
-      });
+    const selectedRecord: Version = this.getSelectedRecord();
+    if (selectedRecord.ttfnid != null) {
+      this.timetableFieldNumberService
+        .deleteVersions(selectedRecord.ttfnid)
+        .pipe(
+          takeUntil(this.ngUnsubscribe),
+          catchError((err) => {
+            this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
+            console.log(err);
+            return EMPTY;
+          })
+        )
+        .subscribe(() => {
+          this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+          this.backToOverview();
+        });
+    }
   }
 
   backToOverview(): void {
