@@ -68,7 +68,7 @@ export class SublineDetailComponent
 
   updateRecord(): void {
     this.sublinesService
-      .updateSublineVersion(this.getId(), this.form.value)
+      .updateWithVersioning(this.getId(), this.form.value)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
