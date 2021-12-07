@@ -144,12 +144,12 @@ public class LineControllerTest {
   @Test
   void shouldDeleteVersion() {
     // Given
-
+    String slnid ="ch:1:slnid:10000";
     // When
-    lineController.deleteLineVersion(1L);
+    lineController.deleteLineVersions(slnid);
 
     // Then
-    verify(lineService).deleteById(1L);
+    verify(lineService).deleteAll(slnid);
   }
 
 
