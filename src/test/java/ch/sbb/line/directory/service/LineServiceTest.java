@@ -9,9 +9,13 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -91,6 +95,36 @@ class LineServiceTest {
     verify(lineVersionRepository).save(lineVersion);
     assertThat(result).isEqualTo(lineVersion);
   }
+
+  @Test
+  void shouldDeleteLinesWhenNotFound() {
+    // Given
+    String slnid = "ch:1:ttfnid:1000083";
+    when(lineVersionRepository.findAllBySlnid(slnid)).thenReturn(List.of());
+
+    //When & Then
+    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+        () -> lineService.deleteAll(slnid));;
+  }
+
+  @Test
+  void shouldDeleteLines() {
+    // Given
+    String slnid = "ch:1:ttfnid:1000083";
+    LineVersion lineVersion = LineVersion.builder()
+                                  .validFrom(LocalDate.of(2000, 1, 1))
+                                  .validTo(LocalDate.of(2001, 12, 31))
+                                  .description("desc")
+                                  .build();
+    List<LineVersion> lineVersions = List.of(lineVersion);
+    when(lineVersionRepository.findAllBySlnid(slnid)).thenReturn(lineVersions);
+
+    //When
+    lineService.deleteAll(slnid);
+    //Then
+    verify(lineVersionRepository).deleteAll(lineVersions);
+  }
+
 
   @Test
   void shouldDeleteLine() {
