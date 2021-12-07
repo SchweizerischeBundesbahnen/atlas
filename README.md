@@ -13,6 +13,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 - [Links](#links)
 - [Development](#development)
+  - [Node.js](#node-js)
   - [Cypress E2E](#cypress-e2e)
     - [Run cypress test](#run-cypress-test)
     - [Cypress E2E CI-Jenkins](#cypress-e2e-ci-jenkins)
@@ -39,6 +40,33 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
   - **Test**: https://atlas-frontend-test.apps.aws01t.sbb-aws-test.net
 
 ## Development
+
+### Node.js
+This project requires Node.js Version **14.6.1**. It has to be a LTS version.
+
+Use Node Version Manager to easily switch the NodeJS version between your angular projects.
+* Install NVM on Windows: https://github.com/coreybutler/nvm-windows/
+* Install NVM on macOS: `brew install nvm` => https://tecadmin.net/install-nvm-macos-with-homebrew/
+
+You should have a NVM_DIR environment variable, which points to a directory (like `./nvm`) with the current selected node version.
+
+To install new Node.js version and set it as active using nvm, type this in the console:
+```bash
+% nvm install 14.6.1
+...
+
+% nvn use 14
+Now using node v14.16.1 (npm v6.14.12)
+
+% nvm list
+->     v14.16.1
+       ...
+```
+
+Now you should be ready to install all required angular packages for this project. Just type:
+```bash
+% npm install
+```
 
 ### Cypress E2E
 
