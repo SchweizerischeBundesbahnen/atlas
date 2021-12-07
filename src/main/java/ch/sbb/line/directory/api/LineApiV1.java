@@ -50,6 +50,6 @@ public interface LineApiV1 {
   List<LineVersionModel> updateWithVersioning(@PathVariable Long id,
       @RequestBody @Valid LineVersionModel newVersion);
 
-  @DeleteMapping("version/{id}")
-  void deleteLineVersion(@PathVariable Long id);
+  @DeleteMapping("version/{slnid}")
+  void deleteLineVersions(@PathVariable String slnid);
 }
