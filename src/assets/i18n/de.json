@@ -8,6 +8,7 @@
     "EDIT": "Editieren",
     "CANCEL": "Abbrechen",
     "NODATAFOUND": "Es wurden keine Daten gefunden",
+    "TYPE_TO_SEARCH": "Tippen um zu Suchen",
     "NEWFILTER": "Neuer Filter...",
     "FILTER": "Filter",
     "JA": "Ja",
@@ -155,6 +156,7 @@
     },
     "SUBLINE": {
       "NUMBER": "Teilliniennummer",
+      "MAINLINE": "Hauptlinie",
       "DESCRIPTION": "Teillinienbezeichnung",
       "NEW": "Neue Teillinie",
       "TYPES": {
