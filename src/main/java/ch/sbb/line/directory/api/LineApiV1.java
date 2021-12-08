@@ -30,10 +30,10 @@ public interface LineApiV1 {
   @GetMapping("/{slnid}")
   List<LineVersionModel> getLine(@PathVariable String slnid);
 
-  @GetMapping("version/{id}")
-  LineVersionModel getLineVersion(@PathVariable Long id);
+  @DeleteMapping("{slnid}")
+  void deleteLines(@PathVariable String slnid);
 
-  @PostMapping("version")
+  @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
@@ -41,15 +41,16 @@ public interface LineApiV1 {
   })
   LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
+  @GetMapping("versions/{id}")
+  LineVersionModel getLineVersion(@PathVariable Long id);
+
 
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
   })
-  List<LineVersionModel> updateWithVersioning(@PathVariable Long id,
+  List<LineVersionModel> updateLineVersion(@PathVariable Long id,
       @RequestBody @Valid LineVersionModel newVersion);
 
-  @DeleteMapping("version/{slnid}")
-  void deleteLineVersions(@PathVariable String slnid);
 }
