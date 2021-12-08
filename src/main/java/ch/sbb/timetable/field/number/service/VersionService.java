@@ -89,4 +89,7 @@ public class VersionService {
         version.getValidFrom(), version.getValidTo(), ttfnid).size() == 0;
   }
 
+  public void deleteAll(List<Version> allVersionsVersioned) {
+    versionRepository.deleteAll(allVersionsVersioned);
+  }
 }
