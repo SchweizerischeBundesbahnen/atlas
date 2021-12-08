@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 import { SublinesService, SublineVersion } from '../../../../api';
-import { SublineDetailResolver } from './subline-detail-resolver.service';
 import StatusEnum = SublineVersion.StatusEnum;
 import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;
 import TypeEnum = SublineVersion.TypeEnum;
+import { SublineDetailResolver } from './subline-detail.resolver';
 
 const version: SublineVersion = {
   id: 1234,
@@ -23,8 +23,8 @@ const version: SublineVersion = {
 };
 
 describe('SublineDetailResolver', () => {
-  const sublinesServiceSpy = jasmine.createSpyObj('sublinesService', ['getSubline']);
-  sublinesServiceSpy.getSubline.and.returnValue(of([version]));
+  const sublinesServiceSpy = jasmine.createSpyObj('sublinesService', ['getSublineVersion']);
+  sublinesServiceSpy.getSublineVersion.and.returnValue(of([version]));
 
   let resolver: SublineDetailResolver;
 

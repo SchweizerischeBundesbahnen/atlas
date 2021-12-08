@@ -4,8 +4,8 @@ import { LidiOverviewComponent } from './overview/lidi-overview.component';
 import { LineDetailComponent } from './lines/detail/line-detail.component';
 import { LineDetailResolver } from './lines/detail/line-detail.resolver';
 import { Pages } from '../pages';
-import { SublineDetailResolver } from './sublines/detail/subline-detail-resolver.service';
 import { SublineDetailComponent } from './sublines/detail/subline-detail.component';
+import { SublineDetailResolver } from './sublines/detail/subline-detail.resolver';
 
 const routes: Routes = [
   {
