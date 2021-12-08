@@ -90,7 +90,11 @@
 
       <mat-form-field class="col">
         <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
-        <mat-select [value]="form.value.status" [disabled]="true">
+        <mat-select
+          [value]="form.value.status"
+          [disabled]="true"
+          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
+        >
           <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
             {{ 'COMMON.STATUS_TYPES.' + status | translate }}
           </mat-option>
@@ -116,6 +120,9 @@
             {{ 'LIDI.SUBLINE.TYPES.' + type | translate }}
           </mat-option>
         </mat-select>
+        <mat-error *ngFor="let validationError of this.getValidation('type')">
+          {{ validationError.error | translate }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -125,6 +132,9 @@
             {{ 'LIDI.PAYMENT.' + type | translate }}
           </mat-option>
         </mat-select>
+        <mat-error *ngFor="let validationError of this.getValidation('paymentType')">
+          {{ validationError.error | translate }}
+        </mat-error>
       </mat-form-field>
     </div>
 
