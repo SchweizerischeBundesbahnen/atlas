@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
@@ -31,8 +30,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 public class LineControllerTest {
 
@@ -132,35 +129,6 @@ public class LineControllerTest {
   }
 
   @Test
-  void shouldGetVersion() {
-    // Given
-    LineVersion lineVersion = LineTestData.lineVersion();
-    when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
-
-    // When
-    LineVersionModel lineVersionModel = lineController.getLineVersion(1L);
-
-    // Then
-    assertThat(lineVersionModel).usingRecursiveComparison()
-                                .ignoringFields("editor", "creator", "editionDate", "creationDate")
-                                .isEqualTo(lineVersionModel);
-  }
-
-  @Test
-  void shouldReturnNotFoundOnUnexcitingVersion() {
-    // Given
-    when(lineService.findById(anyLong())).thenReturn(Optional.empty());
-
-    // When
-
-    // Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> lineController.getLineVersion(1L))
-                                                            .withMessage(
-                                                                HttpStatus.NOT_FOUND.toString());
-  }
-
-  @Test
   void shouldDeleteVersion() {
     // Given
     String slnid ="ch:1:slnid:10000";
@@ -170,7 +138,6 @@ public class LineControllerTest {
     // Then
     verify(lineService).deleteAll(slnid);
   }
-
 
   @Test
   void shouldUpdateVersionWithVersioning() {
