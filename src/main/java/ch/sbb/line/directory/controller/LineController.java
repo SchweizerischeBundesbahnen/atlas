@@ -11,6 +11,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.service.LineService;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +27,9 @@ public class LineController implements LineApiV1 {
   private final LineService lineService;
 
   @Override
-  public Container<LineModel> getLines(Pageable pageable) {
+  public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber) {
     log.info("Load Versions using pageable={}", pageable);
-    Page<Line> lines = lineService.findAll(pageable);
+    Page<Line> lines = lineService.findAll(pageable, swissLineNumber);
     List<LineModel> lineModels = lines
         .stream()
         .map(this::toModel)
@@ -39,8 +40,15 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineVersionModel> getLine(String slnid) {
-    return lineService.findLine(slnid).stream()
+  public LineModel getLine(String slnid) {
+    return lineService.findLine(slnid)
+                      .map(this::toModel)
+                      .orElseThrow(NotFoundExcpetion.getInstance());
+  }
+
+  @Override
+  public List<LineVersionModel> getLineVersions(String slnid) {
+    return lineService.findLineVersions(slnid).stream()
                       .map(this::toModel)
                       .collect(Collectors.toList());
   }
@@ -78,7 +86,7 @@ public class LineController implements LineApiV1 {
   public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id).orElseThrow(NotFoundExcpetion.getInstance());
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
-    return lineService.findLine(versionToUpdate.getSlnid()).stream().map(this::toModel)
+    return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
                       .collect(Collectors.toList());
   }
 

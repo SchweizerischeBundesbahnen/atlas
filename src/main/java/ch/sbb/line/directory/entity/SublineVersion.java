@@ -52,8 +52,9 @@ public class SublineVersion extends BaseVersion implements Versionable {
   private String swissSublineNumber;
 
   @Size(max = 50)
+  @NotBlank
   @AtlasVersionableProperty
-  private String swissLineNumber;
+  private String mainlineSlnid;
 
   @GeneratorType(type = SlnidGenerator.class, when = GenerationTime.INSERT)
   @Column(updatable = false)
