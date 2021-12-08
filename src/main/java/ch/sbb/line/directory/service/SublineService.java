@@ -57,7 +57,6 @@ public class SublineService {
     sublineVersionRepository.deleteById(id);
   }
 
-<<<<<<< HEAD
   public void deleteAll(String slnid) {
     List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnid(slnid);
     if (sublineVersions.isEmpty()) {
@@ -66,10 +65,7 @@ public class SublineService {
     sublineVersionRepository.deleteAll(sublineVersions);
   }
 
-  public void updateVersion(SublineVersion currentVersion,      SublineVersion editedVersion) {
-=======
   public void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
->>>>>>> ATLAS-188: Zuweisung zu Teillinie
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnid(
         currentVersion.getSlnid());
 
