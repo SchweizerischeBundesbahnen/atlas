@@ -66,13 +66,3 @@ from (
              group by slnid
          ) v on f.slnid = v.slnid
      ) as sublines;
-
-
-update subline_version
-set mainline_slnid = line_version.slnid
-from line_version
-where line_version.swiss_line_number = subline_version.mainline_slnid;
-
-delete
-from subline_version
-where mainline_slnid not like 'ch:1:slnid%';
