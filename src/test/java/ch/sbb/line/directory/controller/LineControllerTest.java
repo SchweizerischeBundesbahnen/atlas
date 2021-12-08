@@ -75,12 +75,12 @@ public class LineControllerTest {
   void shouldGetLines() {
     // Given
     Line line = LineTestData.line();
-    when(lineService.findAll(any(Pageable.class))).thenReturn(
+    when(lineService.findAll(any(Pageable.class), any())).thenReturn(
         new PageImpl<>(Collections.singletonList(line)));
 
     // When
     Container<LineModel> lineContainer = lineController.getLines(
-        Pageable.unpaged());
+        Pageable.unpaged(), Optional.empty());
 
     // Then
     assertThat(lineContainer).isNotNull();
@@ -94,11 +94,30 @@ public class LineControllerTest {
   @Test
   void shouldGetLine() {
     // Given
-    LineVersion lineVersion = LineTestData.lineVersion();
-    when(lineService.findLine(any())).thenReturn(Collections.singletonList(lineVersion));
+    Line line = LineTestData.line();
+    when(lineService.findLine(any())).thenReturn(Optional.of(line));
 
     // When
-    List<LineVersionModel> line = lineController.getLine("slnid");
+    LineModel result = lineController.getLine("slnid");
+
+    // Then
+    assertThat(result).isNotNull();
+    assertThat(result).usingRecursiveComparison()
+                      .ignoringFields("editor", "creator",
+                          "editionDate",
+                          "creationDate")
+                      .ignoringFieldsMatchingRegexes("color.*")
+                      .isEqualTo(line);
+  }
+
+  @Test
+  void shouldGetLineVersions() {
+    // Given
+    LineVersion lineVersion = LineTestData.lineVersion();
+    when(lineService.findLineVersions(any())).thenReturn(Collections.singletonList(lineVersion));
+
+    // When
+    List<LineVersionModel> line = lineController.getLineVersions("slnid");
 
     // Then
     assertThat(line).isNotNull();

@@ -8,11 +8,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.util.List;
+import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,9 @@ class SublineServiceTest {
   private SublineRepository sublineRepository;
 
   @Mock
+  private LineService lineService;
+
+  @Mock
   private VersionableService versionableService;
 
   private SublineService sublineService;
@@ -40,7 +45,7 @@ class SublineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService);
+        versionableService, lineService);
   }
 
   @Test
@@ -86,6 +91,8 @@ class SublineServiceTest {
     when(sublineVersionRepository.save(any())).thenAnswer(
         i -> i.getArgument(0, SublineVersion.class));
     when(sublineVersionRepository.hasUniqueSwissSublineNumber(any())).thenReturn(true);
+    when(lineService.findLineVersions(any())).thenReturn(
+        Collections.singletonList(LineTestData.lineVersion()));
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
     // When
     SublineVersion result = sublineService.save(sublineVersion);
@@ -94,6 +101,22 @@ class SublineServiceTest {
     verify(sublineVersionRepository).hasUniqueSwissSublineNumber(sublineVersion);
     verify(sublineVersionRepository).save(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
+  }
+
+  @Test
+  void shouldNotSaveSublineWithInvalidMainline() {
+    // Given
+    when(sublineVersionRepository.save(any())).thenAnswer(
+        i -> i.getArgument(0, SublineVersion.class));
+    when(sublineVersionRepository.hasUniqueSwissSublineNumber(any())).thenReturn(true);
+    when(lineService.findLineVersions(any())).thenReturn(        Collections.emptyList());
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    // When
+
+    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+        () -> sublineService.save(sublineVersion)).withMessage("400 BAD_REQUEST \"Main line with SLNID mainlineSlnid does not exist\"");
+
+    // Then
   }
 
   @Test
@@ -117,7 +140,7 @@ class SublineServiceTest {
 
     //When & Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-        () -> sublineService.deleteAll(slnid));;
+        () -> sublineService.deleteAll(slnid));
   }
 
   @Test
