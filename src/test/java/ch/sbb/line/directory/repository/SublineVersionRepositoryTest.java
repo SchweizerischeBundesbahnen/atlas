@@ -5,7 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.WithMockJwtAuthentication;
+import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.enumaration.SublineType;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -62,6 +65,23 @@ public class SublineVersionRepositoryTest {
     //when
     sublineVersionRepository.delete(sublineVersion);
     List<SublineVersion> result = sublineVersionRepository.findAll();
+
+    //then
+    assertThat(result).isEmpty();
+  }
+
+  @Test
+  void shouldDeleteVersions() {
+    //given
+    SublineVersion sublineVersion = sublineVersionRepository.saveAndFlush(SUBLINE_VERSION);
+    String slnid = sublineVersion.getSlnid();
+    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnid(slnid);
+    assertThat(sublineVersions.size()).isEqualTo(1);
+
+    //when
+    sublineVersionRepository.deleteAll(sublineVersions);
+    List<SublineVersion> result = sublineVersionRepository.findAllBySlnid(
+        slnid);
 
     //then
     assertThat(result).isEmpty();
