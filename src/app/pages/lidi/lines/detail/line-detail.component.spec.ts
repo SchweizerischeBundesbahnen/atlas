@@ -33,7 +33,7 @@ let router: Router;
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
     'updateLineVersion',
-    'deleteLineVersion',
+    'deleteLines',
   ]);
   const mockRoute = {
     snapshot: {
@@ -84,7 +84,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should delete LineVersion successfully', () => {
-    mockLinesService.deleteLineVersion.and.returnValue(of({}));
+    mockLinesService.deleteLines.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
@@ -99,7 +99,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should not delete Version', () => {
     const error = new Error('404');
-    mockLinesService.deleteLineVersion.and.returnValue(throwError(() => error));
+    mockLinesService.deleteLines.and.returnValue(throwError(() => error));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 

@@ -18,6 +18,7 @@ import {
   MAX_DATE_FORMATTED,
   MIN_DATE,
 } from 'src/app/core/date/date.service';
+import { Page } from 'src/app/core/model/page';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -51,6 +52,10 @@ export class SublineDetailComponent
 
   ngOnInit() {
     super.ngOnInit();
+  }
+
+  getPageType(): Page {
+    return Pages.SUBLINES;
   }
 
   readRecord(): SublineVersion {
@@ -108,20 +113,23 @@ export class SublineDetailComponent
   }
 
   deleteRecord(): void {
-    this.sublinesService
-      .deleteSublineVersion(this.getId())
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
-          console.log(err);
-          return EMPTY;
-        })
-      )
-      .subscribe(() => {
-        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
-        this.backToOverview();
-      });
+    const selectedSublineVersion = this.getSelectedRecord();
+    if (selectedSublineVersion.slnid != null) {
+      this.sublinesService
+        .deleteSublines(selectedSublineVersion.slnid)
+        .pipe(
+          takeUntil(this.ngUnsubscribe),
+          catchError((err) => {
+            this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
+            console.log(err);
+            return EMPTY;
+          })
+        )
+        .subscribe(() => {
+          this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
+          this.backToOverview();
+        });
+    }
   }
 
   backToOverview(): void {

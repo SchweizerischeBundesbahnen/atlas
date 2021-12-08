@@ -17,6 +17,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
+import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
 import { TableSearchComponent } from '../components/table-search/table-search.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
   declarations: [
     BreadcrumbComponent,
     DetailWrapperComponent,
+    SwitchVersionComponent,
     DialogComponent,
     HeaderComponent,
     LanguageSwitcherComponent,
@@ -58,6 +60,7 @@ import { MatIconModule } from '@angular/material/icon';
   exports: [
     BreadcrumbComponent,
     DetailWrapperComponent,
+    SwitchVersionComponent,
     DialogComponent,
     HeaderComponent,
     LanguageSwitcherComponent,

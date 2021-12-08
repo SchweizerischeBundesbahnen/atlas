@@ -16,6 +16,7 @@
     "DATE": {
       "SELECT_DATERANGE": "Plage de validité*"
     },
+    "VERSION": "Version",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
     "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Nummer ist zu diesem Zeitraum bereits vergeben.",
     "FROM": "de",

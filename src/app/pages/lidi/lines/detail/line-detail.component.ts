@@ -18,6 +18,7 @@ import {
   MAX_DATE_FORMATTED,
   MIN_DATE,
 } from 'src/app/core/date/date.service';
+import { Page } from 'src/app/core/model/page';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -51,6 +52,10 @@ export class LineDetailComponent
 
   ngOnInit() {
     super.ngOnInit();
+  }
+
+  getPageType(): Page {
+    return Pages.LINES;
   }
 
   readRecord(): LineVersion {
@@ -108,20 +113,23 @@ export class LineDetailComponent
   }
 
   deleteRecord(): void {
-    this.linesService
-      .deleteLineVersion(this.getId())
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          this.notificationService.error('LIDI.LINE.NOTIFICATION.DELETE_ERROR');
-          console.log(err);
-          return EMPTY;
-        })
-      )
-      .subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
-        this.backToOverview();
-      });
+    const selectedLineVersion: LineVersion = this.getSelectedRecord();
+    if (selectedLineVersion.slnid != null) {
+      this.linesService
+        .deleteLines(selectedLineVersion.slnid)
+        .pipe(
+          takeUntil(this.ngUnsubscribe),
+          catchError((err) => {
+            this.notificationService.error('LIDI.LINE.NOTIFICATION.DELETE_ERROR');
+            console.log(err);
+            return EMPTY;
+          })
+        )
+        .subscribe(() => {
+          this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
+          this.backToOverview();
+        });
+    }
   }
 
   backToOverview(): void {
