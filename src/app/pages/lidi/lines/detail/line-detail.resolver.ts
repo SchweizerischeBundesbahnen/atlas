@@ -13,7 +13,7 @@ export class LineDetailResolver implements Resolve<Array<LineVersion>> {
     console.log(idParameter);
     return idParameter === 'add'
       ? of([])
-      : this.linesService.getLine(idParameter).pipe(
+      : this.linesService.getLineVersions(idParameter).pipe(
           catchError(() => {
             this.router.navigate([Pages.LIDI.path]).then();
             return EMPTY;

@@ -19,6 +19,7 @@ const version: SublineVersion = {
   paymentType: PaymentTypeEnum.None,
   swissSublineNumber: 'L1:2',
   type: TypeEnum.Technical,
+  mainlineSlnid: 'ch:1:slnid:1000',
 };
 
 describe('SublineDetailResolver', () => {
