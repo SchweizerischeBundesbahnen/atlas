@@ -1,6 +1,6 @@
 /**
  * Atlas API
- * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.25.0-SNAPSHOT<br/>timetable-field-number:0.67.0-SNAPSHOT<br/>
+ * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.25.0-SNAPSHOT<br/>timetable-field-number:0.66.0-SNAPSHOT<br/>
  *
  * The version of the OpenAPI document: 0.11.0-SNAPSHOT
  * Contact: TechSupport-ATLAS@sbb.ch

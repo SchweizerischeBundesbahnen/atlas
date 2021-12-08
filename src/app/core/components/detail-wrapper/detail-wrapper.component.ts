@@ -10,4 +10,5 @@ export class DetailWrapperComponent<TYPE> {
   @Input() controller!: DetailWrapperController<TYPE>;
   @Input() headingNew!: string;
   @Input() canEdit = true;
+  @Input() pageType!: string;
 }

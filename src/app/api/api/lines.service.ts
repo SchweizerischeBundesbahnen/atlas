@@ -1,6 +1,6 @@
 /**
  * Atlas API
- * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.25.0-SNAPSHOT<br/>timetable-field-number:0.67.0-SNAPSHOT<br/>
+ * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.25.0-SNAPSHOT<br/>timetable-field-number:0.66.0-SNAPSHOT<br/>
  *
  * The version of the OpenAPI document: 0.11.0-SNAPSHOT
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -159,7 +159,7 @@ export class LinesService {
     }
 
     return this.httpClient.post<LineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/lines/version`,
+      `${this.configuration.basePath}/line-directory/v1/lines/versions`,
       lineVersion,
       {
         responseType: <any>responseType_,
@@ -172,38 +172,36 @@ export class LinesService {
   }
 
   /**
-   * @param id
+   * @param slnid
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public deleteLineVersion(
-    id: number,
+  public deleteLines(
+    slnid: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any>;
-  public deleteLineVersion(
-    id: number,
+  public deleteLines(
+    slnid: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpResponse<any>>;
-  public deleteLineVersion(
-    id: number,
+  public deleteLines(
+    slnid: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpEvent<any>>;
-  public deleteLineVersion(
-    id: number,
+  public deleteLines(
+    slnid: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any> {
-    if (id === null || id === undefined) {
-      throw new Error(
-        'Required parameter id was null or undefined when calling deleteLineVersion.'
-      );
+    if (slnid === null || slnid === undefined) {
+      throw new Error('Required parameter slnid was null or undefined when calling deleteLines.');
     }
 
     let headers = this.defaultHeaders;
@@ -224,9 +222,7 @@ export class LinesService {
     }
 
     return this.httpClient.delete<any>(
-      `${this.configuration.basePath}/line-directory/v1/lines/version/${encodeURIComponent(
-        String(id)
-      )}`,
+      `${this.configuration.basePath}/line-directory/v1/lines/${encodeURIComponent(String(slnid))}`,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
@@ -350,7 +346,7 @@ export class LinesService {
     }
 
     return this.httpClient.get<LineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/lines/version/${encodeURIComponent(
+      `${this.configuration.basePath}/line-directory/v1/lines/versions/${encodeURIComponent(
         String(id)
       )}`,
       {
@@ -457,21 +453,21 @@ export class LinesService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<LineVersion>;
+  ): Observable<Array<LineVersion>>;
   public updateLineVersion(
     id: number,
     lineVersion: LineVersion,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<LineVersion>>;
+  ): Observable<HttpResponse<Array<LineVersion>>>;
   public updateLineVersion(
     id: number,
     lineVersion: LineVersion,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<LineVersion>>;
+  ): Observable<HttpEvent<Array<LineVersion>>>;
   public updateLineVersion(
     id: number,
     lineVersion: LineVersion,
@@ -487,91 +483,6 @@ export class LinesService {
     if (lineVersion === null || lineVersion === undefined) {
       throw new Error(
         'Required parameter lineVersion was null or undefined when calling updateLineVersion.'
-      );
-    }
-
-    let headers = this.defaultHeaders;
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    // to determine the Content-Type header
-    const consumes: string[] = ['application/json'];
-    const httpContentTypeSelected: string | undefined =
-      this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected !== undefined) {
-      headers = headers.set('Content-Type', httpContentTypeSelected);
-    }
-
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
-
-    return this.httpClient.put<LineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/lines/version/${encodeURIComponent(
-        String(id)
-      )}`,
-      lineVersion,
-      {
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
-
-  /**
-   * @param id
-   * @param lineVersion
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public updateWithVersioning1(
-    id: number,
-    lineVersion: LineVersion,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<Array<LineVersion>>;
-  public updateWithVersioning1(
-    id: number,
-    lineVersion: LineVersion,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<Array<LineVersion>>>;
-  public updateWithVersioning1(
-    id: number,
-    lineVersion: LineVersion,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<Array<LineVersion>>>;
-  public updateWithVersioning1(
-    id: number,
-    lineVersion: LineVersion,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (id === null || id === undefined) {
-      throw new Error(
-        'Required parameter id was null or undefined when calling updateWithVersioning1.'
-      );
-    }
-    if (lineVersion === null || lineVersion === undefined) {
-      throw new Error(
-        'Required parameter lineVersion was null or undefined when calling updateWithVersioning1.'
       );
     }
 
