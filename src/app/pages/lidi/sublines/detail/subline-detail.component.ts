@@ -68,7 +68,7 @@ export class SublineDetailComponent
 
   updateRecord(): void {
     this.sublinesService
-      .updateWithVersioning(this.getId(), this.form.value)
+      .updateSublineVersion(this.getId(), this.form.value)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
@@ -116,7 +116,7 @@ export class SublineDetailComponent
     const selectedSublineVersion = this.getSelectedRecord();
     if (selectedSublineVersion.slnid != null) {
       this.sublinesService
-        .deleteSublineVersions(selectedSublineVersion.slnid)
+        .deleteSublines(selectedSublineVersion.slnid)
         .pipe(
           takeUntil(this.ngUnsubscribe),
           catchError((err) => {

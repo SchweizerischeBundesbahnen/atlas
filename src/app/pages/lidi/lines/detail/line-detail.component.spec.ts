@@ -32,8 +32,8 @@ let router: Router;
 
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
-    'updateWithVersioning1',
-    'deleteLineVersions',
+    'updateLineVersion',
+    'deleteLines',
   ]);
   const mockRoute = {
     snapshot: {
@@ -57,7 +57,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should update LineVersion successfully', () => {
-    mockLinesService.updateWithVersioning1.and.returnValue(of(lineVersion));
+    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
@@ -72,7 +72,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should not update Version', () => {
     const error = new Error('404');
-    mockLinesService.updateWithVersioning1.and.returnValue(throwError(() => error));
+    mockLinesService.updateLineVersion.and.returnValue(throwError(() => error));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
@@ -84,7 +84,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should delete LineVersion successfully', () => {
-    mockLinesService.deleteLineVersions.and.returnValue(of({}));
+    mockLinesService.deleteLines.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
@@ -99,7 +99,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should not delete Version', () => {
     const error = new Error('404');
-    mockLinesService.deleteLineVersions.and.returnValue(throwError(() => error));
+    mockLinesService.deleteLines.and.returnValue(throwError(() => error));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 

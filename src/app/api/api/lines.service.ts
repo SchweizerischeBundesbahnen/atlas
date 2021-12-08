@@ -159,7 +159,7 @@ export class LinesService {
     }
 
     return this.httpClient.post<LineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/lines/version`,
+      `${this.configuration.basePath}/line-directory/v1/lines/versions`,
       lineVersion,
       {
         responseType: <any>responseType_,
@@ -176,34 +176,32 @@ export class LinesService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public deleteLineVersions(
+  public deleteLines(
     slnid: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any>;
-  public deleteLineVersions(
+  public deleteLines(
     slnid: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpResponse<any>>;
-  public deleteLineVersions(
+  public deleteLines(
     slnid: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpEvent<any>>;
-  public deleteLineVersions(
+  public deleteLines(
     slnid: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any> {
     if (slnid === null || slnid === undefined) {
-      throw new Error(
-        'Required parameter slnid was null or undefined when calling deleteLineVersions.'
-      );
+      throw new Error('Required parameter slnid was null or undefined when calling deleteLines.');
     }
 
     let headers = this.defaultHeaders;
@@ -224,9 +222,7 @@ export class LinesService {
     }
 
     return this.httpClient.delete<any>(
-      `${this.configuration.basePath}/line-directory/v1/lines/version/${encodeURIComponent(
-        String(slnid)
-      )}`,
+      `${this.configuration.basePath}/line-directory/v1/lines/${encodeURIComponent(String(slnid))}`,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
@@ -350,7 +346,7 @@ export class LinesService {
     }
 
     return this.httpClient.get<LineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/lines/version/${encodeURIComponent(
+      `${this.configuration.basePath}/line-directory/v1/lines/versions/${encodeURIComponent(
         String(id)
       )}`,
       {
@@ -451,28 +447,28 @@ export class LinesService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public updateWithVersioning1(
+  public updateLineVersion(
     id: number,
     lineVersion: LineVersion,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<Array<LineVersion>>;
-  public updateWithVersioning1(
+  public updateLineVersion(
     id: number,
     lineVersion: LineVersion,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpResponse<Array<LineVersion>>>;
-  public updateWithVersioning1(
+  public updateLineVersion(
     id: number,
     lineVersion: LineVersion,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpEvent<Array<LineVersion>>>;
-  public updateWithVersioning1(
+  public updateLineVersion(
     id: number,
     lineVersion: LineVersion,
     observe: any = 'body',
@@ -481,12 +477,12 @@ export class LinesService {
   ): Observable<any> {
     if (id === null || id === undefined) {
       throw new Error(
-        'Required parameter id was null or undefined when calling updateWithVersioning1.'
+        'Required parameter id was null or undefined when calling updateLineVersion.'
       );
     }
     if (lineVersion === null || lineVersion === undefined) {
       throw new Error(
-        'Required parameter lineVersion was null or undefined when calling updateWithVersioning1.'
+        'Required parameter lineVersion was null or undefined when calling updateLineVersion.'
       );
     }
 
