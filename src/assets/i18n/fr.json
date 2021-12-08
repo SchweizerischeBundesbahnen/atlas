@@ -17,11 +17,13 @@
     "DATE": {
       "SELECT_DATERANGE": "Plage de validité*"
     },
+    "FROM": "de",
+    "TO": "à",
     "VERSION": "Version",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
     "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Nummer ist zu diesem Zeitraum bereits vergeben.",
-    "FROM": "de",
-    "TO": "à",
+    "VALID_FROM": "Valide du",
+    "VALID_TO": "Valide jusqu'au",
     "STATUS": "Statut",
     "STATUS_TYPES": {
       "ACTIVE": "Actif",
@@ -34,7 +36,11 @@
     "EDIT_VERSION": "Éditer la version",
     "CREATE_VERSION": "Ajouter la version",
     "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
-    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100"
+    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
+    "ROLES": {
+      "lidi-writer": "LiDi Writer",
+      "lidi-admin": "LiDi Admin"
+    }
   },
   "DIALOG": {
     "OK": "Continuer",
@@ -75,8 +81,6 @@
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "NUMBER": "Nr.",
     "TTFNID": "Identifcateur numéro de tableau-horaire",
-    "VALID_FROM": "Valide du",
-    "VALID_TO": "Valide jusqu'au",
     "COMMENT": "Commentaire",
     "NOTIFICATION": {
       "ADD_SUCCESS": "Numéro de tableau-horaire ajouté avec succès.",
@@ -97,7 +101,7 @@
   },
   "VALIDATION": {
     "REQUIRED": "Ce champ est obligatoire.",
-    "MAX_LENGTH": "Maximum {{length}} caractères autorisés.",
+    "MAXLENGTH": "Maximum {{length}} caractères autorisés.",
     "MATDATEPICKERMIN": "La date doit être plus récente ou égale à {{date}}",
     "MATDATEPICKERMAX": "La date doit être plus anciente ou égale à {{date}}",
     "MATDATEPICKERPARSE": "Format de date invalide (doit être JJ.MM.AAAA)",
@@ -117,8 +121,6 @@
     "SUBLINE_TYPE": "Teillinientyp",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "SLNID": "SLNID",
-    "VALID_FROM": "von",
-    "VALID_TO": "bis",
     "COMMENT": "Kommentar",
     "PAYMENT": {
       "TYPE": "Bezahlungsart",
@@ -137,6 +139,11 @@
       "FONT_CMYK": "Schriftfarbe CMYK",
       "BACKGROUND_CMYK": "Schrifthintergrundfarbe CMYK",
       "NEW": "Neue Linie",
+      "TYPES": {
+        "ORDERLY": "Ordentlich",
+        "TEMPORARY": "Temporär",
+        "OPERATIONAL": "Betrieblich"
+      },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Linie erfolgreich hinzugefügt.",
         "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
@@ -152,6 +159,10 @@
       "MAINLINE": "Ligne principale",
       "DESCRIPTION": "Teillinienbezeichnung",
       "NEW": "Neue Teillinie",
+      "TYPES": {
+        "COMPENSATION": "Kompensation",
+        "TECHNICAL": "Technisch"
+      },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Teillinie erfolgreich hinzugefügt.",
         "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",
