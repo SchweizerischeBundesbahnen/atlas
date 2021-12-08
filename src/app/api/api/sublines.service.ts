@@ -159,7 +159,7 @@ export class SublinesService {
     }
 
     return this.httpClient.post<SublineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/sublines/version`,
+      `${this.configuration.basePath}/line-directory/v1/sublines/versions`,
       sublineVersion,
       {
         responseType: <any>responseType_,
@@ -172,37 +172,37 @@ export class SublinesService {
   }
 
   /**
-   * @param id
+   * @param slnid
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public deleteSublineVersion(
-    id: number,
+  public deleteSublines(
+    slnid: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any>;
-  public deleteSublineVersion(
-    id: number,
+  public deleteSublines(
+    slnid: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpResponse<any>>;
-  public deleteSublineVersion(
-    id: number,
+  public deleteSublines(
+    slnid: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpEvent<any>>;
-  public deleteSublineVersion(
-    id: number,
+  public deleteSublines(
+    slnid: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any> {
-    if (id === null || id === undefined) {
+    if (slnid === null || slnid === undefined) {
       throw new Error(
-        'Required parameter id was null or undefined when calling deleteSublineVersion.'
+        'Required parameter slnid was null or undefined when calling deleteSublines.'
       );
     }
 
@@ -224,8 +224,8 @@ export class SublinesService {
     }
 
     return this.httpClient.delete<any>(
-      `${this.configuration.basePath}/line-directory/v1/sublines/version/${encodeURIComponent(
-        String(id)
+      `${this.configuration.basePath}/line-directory/v1/sublines/${encodeURIComponent(
+        String(slnid)
       )}`,
       {
         responseType: <any>responseType_,
@@ -354,7 +354,7 @@ export class SublinesService {
     }
 
     return this.httpClient.get<SublineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/sublines/version/${encodeURIComponent(
+      `${this.configuration.basePath}/line-directory/v1/sublines/versions/${encodeURIComponent(
         String(id)
       )}`,
       {
@@ -461,21 +461,21 @@ export class SublinesService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<SublineVersion>;
+  ): Observable<Array<SublineVersion>>;
   public updateSublineVersion(
     id: number,
     sublineVersion: SublineVersion,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<SublineVersion>>;
+  ): Observable<HttpResponse<Array<SublineVersion>>>;
   public updateSublineVersion(
     id: number,
     sublineVersion: SublineVersion,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<SublineVersion>>;
+  ): Observable<HttpEvent<Array<SublineVersion>>>;
   public updateSublineVersion(
     id: number,
     sublineVersion: SublineVersion,
@@ -491,91 +491,6 @@ export class SublinesService {
     if (sublineVersion === null || sublineVersion === undefined) {
       throw new Error(
         'Required parameter sublineVersion was null or undefined when calling updateSublineVersion.'
-      );
-    }
-
-    let headers = this.defaultHeaders;
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    // to determine the Content-Type header
-    const consumes: string[] = ['application/json'];
-    const httpContentTypeSelected: string | undefined =
-      this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected !== undefined) {
-      headers = headers.set('Content-Type', httpContentTypeSelected);
-    }
-
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
-
-    return this.httpClient.put<SublineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/sublines/version/${encodeURIComponent(
-        String(id)
-      )}`,
-      sublineVersion,
-      {
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
-
-  /**
-   * @param id
-   * @param sublineVersion
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public updateWithVersioning(
-    id: number,
-    sublineVersion: SublineVersion,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<Array<SublineVersion>>;
-  public updateWithVersioning(
-    id: number,
-    sublineVersion: SublineVersion,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<Array<SublineVersion>>>;
-  public updateWithVersioning(
-    id: number,
-    sublineVersion: SublineVersion,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<Array<SublineVersion>>>;
-  public updateWithVersioning(
-    id: number,
-    sublineVersion: SublineVersion,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (id === null || id === undefined) {
-      throw new Error(
-        'Required parameter id was null or undefined when calling updateWithVersioning.'
-      );
-    }
-    if (sublineVersion === null || sublineVersion === undefined) {
-      throw new Error(
-        'Required parameter sublineVersion was null or undefined when calling updateWithVersioning.'
       );
     }
 
