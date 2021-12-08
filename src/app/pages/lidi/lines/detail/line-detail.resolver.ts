@@ -10,7 +10,6 @@ export class LineDetailResolver implements Resolve<Array<LineVersion>> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<LineVersion>> {
     const idParameter = route.paramMap.get('id') || '';
-    console.log(idParameter);
     return idParameter === 'add'
       ? of([])
       : this.linesService.getLineVersions(idParameter).pipe(

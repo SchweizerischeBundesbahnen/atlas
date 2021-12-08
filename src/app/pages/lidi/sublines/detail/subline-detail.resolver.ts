@@ -12,7 +12,7 @@ export class SublineDetailResolver implements Resolve<Array<SublineVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
-      : this.sublinesService.getSubline(idParameter).pipe(
+      : this.sublinesService.getSublineVersion(idParameter).pipe(
           catchError(() => {
             this.router.navigate([Pages.LIDI.path]).then();
             return EMPTY;
