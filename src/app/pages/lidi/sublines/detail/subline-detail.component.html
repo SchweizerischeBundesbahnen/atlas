@@ -49,15 +49,33 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}</mat-label>
-        <input required matInput formControlName="swissLineNumber" placeholder="b0.IC2" />
-        <mat-error *ngFor="let validationError of this.getValidation('swissLineNumber')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
-      </mat-form-field>
+      <div class="col">
+        <ng-select
+          [items]="mainlines"
+          bindValue="slnid"
+          formControlName="mainlineSlnid"
+          [minTermLength]="1"
+          [typeahead]="mainlineSearchTerm"
+          [placeholder]="('LIDI.SUBLINE.MAINLINE' | translate) + ' *'"
+          notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
+          typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
+        >
+          <ng-template ng-label-tmp let-item="item">
+            {{ item.swissLineNumber + ' (' + item.description + ')' }}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            {{ item.swissLineNumber + ' (' + item.description + ')' }}
+          </ng-template>
+        </ng-select>
+        <div *ngIf="form.get('mainlineSlnid')?.touched">
+          <mat-error
+            *ngFor="let validationError of this.getValidation('mainlineSlnid')"
+            class="fs-75p"
+          >
+            {{ validationError.error | translate }}
+          </mat-error>
+        </div>
+      </div>
 
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.SLNID' | translate }}</mat-label>
