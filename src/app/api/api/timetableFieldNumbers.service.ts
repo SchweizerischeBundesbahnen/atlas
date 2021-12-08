@@ -1,6 +1,6 @@
 /**
  * Atlas API
- * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.25.0-SNAPSHOT<br/>timetable-field-number:0.67.0-SNAPSHOT<br/>
+ * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.25.0-SNAPSHOT<br/>timetable-field-number:0.66.0-SNAPSHOT<br/>
  *
  * The version of the OpenAPI document: 0.11.0-SNAPSHOT
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -172,36 +172,38 @@ export class TimetableFieldNumbersService {
   }
 
   /**
-   * @param id
+   * @param ttfnid
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public deleteVersion(
-    id: number,
+  public deleteVersions(
+    ttfnid: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any>;
-  public deleteVersion(
-    id: number,
+  public deleteVersions(
+    ttfnid: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpResponse<any>>;
-  public deleteVersion(
-    id: number,
+  public deleteVersions(
+    ttfnid: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpEvent<any>>;
-  public deleteVersion(
-    id: number,
+  public deleteVersions(
+    ttfnid: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any> {
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling deleteVersion.');
+    if (ttfnid === null || ttfnid === undefined) {
+      throw new Error(
+        'Required parameter ttfnid was null or undefined when calling deleteVersions.'
+      );
     }
 
     let headers = this.defaultHeaders;
@@ -223,7 +225,7 @@ export class TimetableFieldNumbersService {
 
     return this.httpClient.delete<any>(
       `${this.configuration.basePath}/timetable-field-number/v1/field-numbers/${encodeURIComponent(
-        String(id)
+        String(ttfnid)
       )}`,
       {
         responseType: <any>responseType_,
@@ -302,8 +304,6 @@ export class TimetableFieldNumbersService {
   }
 
   /**
-   * @param searchCriteria
-   * @param validOn
    * @param page Zero-based page index (0..N)
    * @param size The size of the page to be returned
    * @param sort Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -311,8 +311,6 @@ export class TimetableFieldNumbersService {
    * @param reportProgress flag to report request and response progress.
    */
   public getOverview(
-    searchCriteria?: Array<string>,
-    validOn?: Date,
     page?: number,
     size?: number,
     sort?: Array<string>,
@@ -321,8 +319,6 @@ export class TimetableFieldNumbersService {
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<TimetableFieldNumberContainer>;
   public getOverview(
-    searchCriteria?: Array<string>,
-    validOn?: Date,
     page?: number,
     size?: number,
     sort?: Array<string>,
@@ -331,8 +327,6 @@ export class TimetableFieldNumbersService {
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpResponse<TimetableFieldNumberContainer>>;
   public getOverview(
-    searchCriteria?: Array<string>,
-    validOn?: Date,
     page?: number,
     size?: number,
     sort?: Array<string>,
@@ -341,8 +335,6 @@ export class TimetableFieldNumbersService {
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpEvent<TimetableFieldNumberContainer>>;
   public getOverview(
-    searchCriteria?: Array<string>,
-    validOn?: Date,
     page?: number,
     size?: number,
     sort?: Array<string>,
@@ -351,14 +343,6 @@ export class TimetableFieldNumbersService {
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<any> {
     let queryParameters = new HttpParams({ encoder: this.encoder });
-    if (searchCriteria) {
-      searchCriteria.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'searchCriteria');
-      });
-    }
-    if (validOn !== undefined && validOn !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>validOn, 'validOn');
-    }
     if (page !== undefined && page !== null) {
       queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
     }

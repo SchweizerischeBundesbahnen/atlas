@@ -49,8 +49,8 @@ let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
 describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   let router: Router;
   const mockTimetableFieldNumbersService = jasmine.createSpyObj('timetableFieldNumbersService', [
-    'updateVersion',
-    'deleteVersion',
+    'updateVersionWithVersioning',
+    'deleteVersions',
   ]);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -97,7 +97,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should update Version successfully', () => {
-    mockTimetableFieldNumbersService.updateVersion.and.returnValue(of(version));
+    mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(of(version));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
@@ -112,7 +112,9 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 
   it('should not update Version', () => {
     const error = new Error('404');
-    mockTimetableFieldNumbersService.updateVersion.and.returnValue(throwError(() => error));
+    mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(
+      throwError(() => error)
+    );
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
@@ -124,7 +126,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should delete Version successfully', () => {
-    mockTimetableFieldNumbersService.deleteVersion.and.returnValue(of({}));
+    mockTimetableFieldNumbersService.deleteVersions.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
@@ -139,7 +141,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 
   it('should not delete Version', () => {
     const error = new Error('404');
-    mockTimetableFieldNumbersService.deleteVersion.and.returnValue(throwError(() => error));
+    mockTimetableFieldNumbersService.deleteVersions.and.returnValue(throwError(() => error));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
