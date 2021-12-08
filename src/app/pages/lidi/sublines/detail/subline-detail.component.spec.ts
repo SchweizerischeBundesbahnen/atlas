@@ -32,8 +32,8 @@ let router: Router;
 
 describe('SublineDetailComponent for existing sublineVersion', () => {
   const mockSublinesService = jasmine.createSpyObj('sublinesService', [
-    'updateWithVersioning',
-    'deleteSublineVersions',
+    'updateSublineVersion',
+    'deleteSublines',
   ]);
   const mockRoute = {
     snapshot: {
@@ -57,7 +57,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should update SublineVersion successfully', () => {
-    mockSublinesService.updateWithVersioning.and.returnValue(of(sublineVersion));
+    mockSublinesService.updateSublineVersion.and.returnValue(of(sublineVersion));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
@@ -72,7 +72,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
 
   it('should not update Version', () => {
     const error = new Error('404');
-    mockSublinesService.updateWithVersioning.and.returnValue(throwError(() => error));
+    mockSublinesService.updateSublineVersion.and.returnValue(throwError(() => error));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
@@ -84,7 +84,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should delete LineVersion successfully', () => {
-    mockSublinesService.deleteSublineVersions.and.returnValue(of({}));
+    mockSublinesService.deleteSublines.and.returnValue(of({}));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
@@ -99,7 +99,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
 
   it('should not delete Version', () => {
     const error = new Error('404');
-    mockSublinesService.deleteSublineVersions.and.returnValue(throwError(() => error));
+    mockSublinesService.deleteSublines.and.returnValue(throwError(() => error));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 

@@ -159,7 +159,7 @@ export class SublinesService {
     }
 
     return this.httpClient.post<SublineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/sublines/version`,
+      `${this.configuration.basePath}/line-directory/v1/sublines/versions`,
       sublineVersion,
       {
         responseType: <any>responseType_,
@@ -176,25 +176,25 @@ export class SublinesService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public deleteSublineVersions(
+  public deleteSublines(
     slnid: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any>;
-  public deleteSublineVersions(
+  public deleteSublines(
     slnid: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpResponse<any>>;
-  public deleteSublineVersions(
+  public deleteSublines(
     slnid: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpEvent<any>>;
-  public deleteSublineVersions(
+  public deleteSublines(
     slnid: string,
     observe: any = 'body',
     reportProgress: boolean = false,
@@ -202,7 +202,7 @@ export class SublinesService {
   ): Observable<any> {
     if (slnid === null || slnid === undefined) {
       throw new Error(
-        'Required parameter slnid was null or undefined when calling deleteSublineVersions.'
+        'Required parameter slnid was null or undefined when calling deleteSublines.'
       );
     }
 
@@ -224,7 +224,7 @@ export class SublinesService {
     }
 
     return this.httpClient.delete<any>(
-      `${this.configuration.basePath}/line-directory/v1/sublines/version/${encodeURIComponent(
+      `${this.configuration.basePath}/line-directory/v1/sublines/${encodeURIComponent(
         String(slnid)
       )}`,
       {
@@ -354,7 +354,7 @@ export class SublinesService {
     }
 
     return this.httpClient.get<SublineVersion>(
-      `${this.configuration.basePath}/line-directory/v1/sublines/version/${encodeURIComponent(
+      `${this.configuration.basePath}/line-directory/v1/sublines/versions/${encodeURIComponent(
         String(id)
       )}`,
       {
@@ -455,28 +455,28 @@ export class SublinesService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public updateWithVersioning(
+  public updateSublineVersion(
     id: number,
     sublineVersion: SublineVersion,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<Array<SublineVersion>>;
-  public updateWithVersioning(
+  public updateSublineVersion(
     id: number,
     sublineVersion: SublineVersion,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpResponse<Array<SublineVersion>>>;
-  public updateWithVersioning(
+  public updateSublineVersion(
     id: number,
     sublineVersion: SublineVersion,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpEvent<Array<SublineVersion>>>;
-  public updateWithVersioning(
+  public updateSublineVersion(
     id: number,
     sublineVersion: SublineVersion,
     observe: any = 'body',
@@ -485,12 +485,12 @@ export class SublinesService {
   ): Observable<any> {
     if (id === null || id === undefined) {
       throw new Error(
-        'Required parameter id was null or undefined when calling updateWithVersioning.'
+        'Required parameter id was null or undefined when calling updateSublineVersion.'
       );
     }
     if (sublineVersion === null || sublineVersion === undefined) {
       throw new Error(
-        'Required parameter sublineVersion was null or undefined when calling updateWithVersioning.'
+        'Required parameter sublineVersion was null or undefined when calling updateSublineVersion.'
       );
     }
 
