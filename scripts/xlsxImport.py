@@ -63,7 +63,6 @@ payment_types = ['INTERNATIONAL', 'REGIONAL', 'REGIONALWITHOUT', 'LOCAL',
                  'OTHER', 'NONE']
 subline_types = ['TECHNICAL', 'COMPENSATION']
 
-slnid = 100000
 for index, row in data.iterrows():
 
   description = str(row[4])  # I
@@ -77,14 +76,13 @@ for index, row in data.iterrows():
   if ':' in str(row[2]):
     result_sql_file.write(
         "INSERT INTO subline_version "
-        "(id, swiss_subline_number, swiss_line_number, type, status, slnid, description, number, long_name, payment_type, valid_from, valid_to, business_organisation, creation_date, creator, edition_date, editor) "
+        "(id, swiss_subline_number, mainline_slnid, type, status, slnid, description, number, long_name, payment_type, valid_from, valid_to, business_organisation, creation_date, creator, edition_date, editor) "
         "VALUES "
-        "(nextval('subline_version_seq'), '{}', '{}', '{}', 'ACTIVE', 'ch:1:slnid:{}', 'lorem ipsum Teillinie', '{}', '{}', '{}', '2020-12-12', '{}', 'ATLAS Transportation surrogate', current_timestamp, 'xlsx', current_timestamp, 'xlsx');"
+        "(nextval('subline_version_seq'), '{}', '{}', '{}', 'ACTIVE', 'ch:1:slnid:'|| nextval('slnid_seq'), 'lorem ipsum Teillinie', '{}', '{}', '{}', '2020-12-12', '{}', 'ATLAS Transportation surrogate', current_timestamp, 'xlsx', current_timestamp, 'xlsx');"
           .format(
             row[2],
             str(row[2]).split(':', 1)[0],
             random.choice(subline_types),
-            slnid,
             row[3],  # short_name
             description,  # long_name
             random.choice(payment_types),
@@ -98,10 +96,9 @@ for index, row in data.iterrows():
         "(id, status, type, slnid, payment_type, number, alternative_name, combination_name, long_name, color_font_rgb, color_back_rgb, color_font_cmyk, color_back_cmyk, "
         "icon, description, valid_from, valid_to, business_organisation, comment, swiss_line_number, creation_date, creator, edition_date, editor) "
         "VALUES "
-        "(nextval('line_version_seq'), 'ACTIVE', 'ORDERLY', 'ch:1:slnid:{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', "
+        "(nextval('line_version_seq'), 'ACTIVE', 'ORDERLY', 'ch:1:slnid:' || nextval('slnid_seq'), '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', "
         "'https://en.wikipedia.org/wiki/File:Icon_train.svg', 'Lorem Ipsum Linie', '2020-12-12', '{}', 'SBB surrogate', '{}', '{}', current_timestamp, 'xlsx', current_timestamp, 'xlsx');"
           .format(
-            slnid,
             random.choice(payment_types),
             spalte_d,  # SLNID
             spalte_d + ' alt',  # SLNID
@@ -117,6 +114,6 @@ for index, row in data.iterrows():
         ).replace("'nan'", "null"))
     result_sql_file.write("\n")
 
-  slnid += 1
-
+result_sql_file.write("update subline_version set mainline_slnid = line_version.slnid from line_version where line_version.swiss_line_number=subline_version.mainline_slnid;")
+result_sql_file.write("delete from subline_version where mainline_slnid not like 'ch:1:slnid%';")
 result_sql_file.close()

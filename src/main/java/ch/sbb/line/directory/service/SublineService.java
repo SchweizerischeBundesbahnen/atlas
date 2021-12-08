@@ -13,7 +13,9 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 @Service
@@ -22,6 +24,7 @@ public class SublineService {
   private final SublineVersionRepository sublineVersionRepository;
   private final SublineRepository sublineRepository;
   private final VersionableService versionableService;
+  private final LineService lineService;
 
   public Page<Subline> findAll(Pageable pageable) {
     return sublineRepository.findAll(pageable);
@@ -30,6 +33,7 @@ public class SublineService {
   public List<SublineVersion> findSubline(String slnid) {
     return sublineVersionRepository.findAllBySlnid(slnid);
   }
+
   public Optional<SublineVersion> findById(Long id) {
     return sublineVersionRepository.findById(id);
   }
@@ -38,6 +42,10 @@ public class SublineService {
     sublineVersion.setStatus(Status.ACTIVE);
     if (!sublineVersionRepository.hasUniqueSwissSublineNumber(sublineVersion)) {
       throw new ConflictExcpetion();
+    }
+    if (lineService.findLineVersions(sublineVersion.getMainlineSlnid()).isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "Main line with SLNID " + sublineVersion.getMainlineSlnid() + " does not exist");
     }
     return sublineVersionRepository.save(sublineVersion);
   }
@@ -57,7 +65,7 @@ public class SublineService {
     sublineVersionRepository.deleteAll(sublineVersions);
   }
 
-  public void updateVersion(SublineVersion currentVersion,      SublineVersion editedVersion) {
+  public void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnid(
         currentVersion.getSlnid());
 
