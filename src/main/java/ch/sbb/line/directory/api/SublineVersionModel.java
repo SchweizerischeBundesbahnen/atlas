@@ -30,9 +30,10 @@ public class SublineVersionModel implements DatesValidator {
   @Size(min = 1, max = 50)
   private String swissSublineNumber;
 
-  @Schema(description = "SwissLineNumber", example = "b1.L1")
+  @Schema(description = "SLNID of main line", example = "ch:1:slnid:10001235")
   @Size(max = 50)
-  private String swissLineNumber;
+  @NotBlank
+  private String mainlineSlnid;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
   private Status status;
