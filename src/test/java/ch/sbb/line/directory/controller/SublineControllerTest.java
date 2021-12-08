@@ -137,7 +137,7 @@ public class SublineControllerTest {
     // Given
     String slnid ="ch:1:slnid:10000";
     // When
-    sublineController.deleteSublineVersions(slnid);
+    sublineController.deleteSublines(slnid);
 
     // Then
     verify(sublineService).deleteAll(slnid);
@@ -153,7 +153,7 @@ public class SublineControllerTest {
     when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
 
     // When
-    sublineController.updateWithVersioning(1L, sublineVersionModel);
+    sublineController.updateSublineVersion(1L, sublineVersionModel);
 
     // Then
     verify(sublineService).updateVersion(any(), any());

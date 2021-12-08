@@ -146,7 +146,7 @@ public class LineControllerTest {
     // Given
     String slnid ="ch:1:slnid:10000";
     // When
-    lineController.deleteLineVersions(slnid);
+    lineController.deleteLines(slnid);
 
     // Then
     verify(lineService).deleteAll(slnid);
@@ -163,7 +163,7 @@ public class LineControllerTest {
     when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
 
     // When
-    lineController.updateWithVersioning(1L, lineVersionModel);
+    lineController.updateLineVersion(1L, lineVersionModel);
 
     // Then
     verify(lineService).updateVersion(any(), any());
