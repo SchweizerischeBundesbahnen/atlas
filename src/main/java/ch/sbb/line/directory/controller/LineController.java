@@ -75,40 +75,7 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public LineVersionModel updateLineVersion(Long id, LineVersionModel newVersion) {
-    LineVersion versionToUpdate = lineService.findById(id)
-                                             .orElseThrow(
-                                                 NotFoundExcpetion.getInstance());
-
-    versionToUpdate.setType(newVersion.getType());
-    versionToUpdate.setSlnid(newVersion.getSlnid());
-    versionToUpdate.setPaymentType(newVersion.getPaymentType());
-    versionToUpdate.setNumber(newVersion.getNumber());
-    versionToUpdate.setAlternativeName(newVersion.getAlternativeName());
-    versionToUpdate.setCombinationName(newVersion.getCombinationName());
-    versionToUpdate.setLongName(newVersion.getLongName());
-    versionToUpdate.setColorFontRgb(
-        RgbColorConverter.fromHex(newVersion.getColorFontRgb()));
-    versionToUpdate.setColorBackRgb(
-        RgbColorConverter.fromHex(newVersion.getColorBackRgb()));
-    versionToUpdate.setColorFontCmyk(
-        CmykColorConverter.fromCmykString(newVersion.getColorFontCmyk()));
-    versionToUpdate.setColorBackCmyk(
-        CmykColorConverter.fromCmykString(newVersion.getColorBackCmyk()));
-    versionToUpdate.setDescription(newVersion.getDescription());
-    versionToUpdate.setIcon(newVersion.getIcon());
-    versionToUpdate.setValidFrom(newVersion.getValidFrom());
-    versionToUpdate.setValidTo(newVersion.getValidTo());
-    versionToUpdate.setBusinessOrganisation(newVersion.getBusinessOrganisation());
-    versionToUpdate.setComment(newVersion.getComment());
-    versionToUpdate.setSwissLineNumber(newVersion.getSwissLineNumber());
-    lineService.save(versionToUpdate);
-
-    return toModel(versionToUpdate);
-  }
-
-  @Override
-  public List<LineVersionModel> updateWithVersioning(Long id, LineVersionModel newVersion) {
+  public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id).orElseThrow(NotFoundExcpetion.getInstance());
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLine(versionToUpdate.getSlnid()).stream().map(this::toModel)
@@ -116,8 +83,8 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public void deleteLineVersion(Long id) {
-    lineService.deleteById(id);
+  public void deleteLines(String slnid) {
+    lineService.deleteAll(slnid);
   }
 
   private LineVersionModel toModel(LineVersion lineVersion) {

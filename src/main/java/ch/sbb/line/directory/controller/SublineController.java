@@ -70,28 +70,7 @@ public class SublineController implements SublinenApiV1 {
   }
 
   @Override
-  public SublineVersionModel updateSublineVersion(Long id, SublineVersionModel newVersion) {
-    SublineVersion versionToUpdate = sublineService.findById(id)
-                                                   .orElseThrow(
-                                                       NotFoundExcpetion.getInstance());
-    versionToUpdate.setSwissSublineNumber(newVersion.getSwissSublineNumber());
-    versionToUpdate.setSwissLineNumber(newVersion.getSwissLineNumber());
-    versionToUpdate.setType(newVersion.getType());
-    versionToUpdate.setSlnid(newVersion.getSlnid());
-    versionToUpdate.setPaymentType(newVersion.getPaymentType());
-    versionToUpdate.setNumber(newVersion.getNumber());
-    versionToUpdate.setLongName(newVersion.getLongName());
-    versionToUpdate.setDescription(newVersion.getDescription());
-    versionToUpdate.setValidFrom(newVersion.getValidFrom());
-    versionToUpdate.setValidTo(newVersion.getValidTo());
-    versionToUpdate.setBusinessOrganisation(newVersion.getBusinessOrganisation());
-    sublineService.save(versionToUpdate);
-
-    return toModel(versionToUpdate);
-  }
-
-  @Override
-  public List<SublineVersionModel> updateWithVersioning(Long id, SublineVersionModel newVersion) {
+  public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id).orElseThrow(NotFoundExcpetion.getInstance());
     sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
@@ -99,8 +78,8 @@ public class SublineController implements SublinenApiV1 {
   }
 
   @Override
-  public void deleteSublineVersion(Long id) {
-    sublineService.deleteById(id);
+  public void deleteSublines(String slnid) {
+    sublineService.deleteAll(slnid);
   }
 
   private SublineVersionModel toModel(SublineVersion sublineVersion) {
