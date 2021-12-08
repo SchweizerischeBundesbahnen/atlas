@@ -68,7 +68,7 @@ export class LineDetailComponent
 
   updateRecord(): void {
     this.linesService
-      .updateWithVersioning1(this.getId(), this.form.value)
+      .updateLineVersion(this.getId(), this.form.value)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
@@ -116,7 +116,7 @@ export class LineDetailComponent
     const selectedLineVersion: LineVersion = this.getSelectedRecord();
     if (selectedLineVersion.slnid != null) {
       this.linesService
-        .deleteLineVersions(selectedLineVersion.slnid)
+        .deleteLines(selectedLineVersion.slnid)
         .pipe(
           takeUntil(this.ngUnsubscribe),
           catchError((err) => {
