@@ -8,6 +8,7 @@
     "EDIT": "Modificare",
     "CANCEL": "Annullare",
     "NODATAFOUND": "Nessun dato trovato",
+    "TYPE_TO_SEARCH": "Tippen um zu Suchen",
     "NEWFILTER": "nuovo filtro",
     "FILTER": "Filtri",
     "JA": "Sì",
@@ -148,6 +149,7 @@
     },
     "SUBLINE": {
       "NUMBER": "Teilliniennummer",
+      "MAINLINE": "Linea principale",
       "DESCRIPTION": "Teillinienbezeichnung",
       "NEW": "Neue Teillinie",
       "NOTIFICATION": {
