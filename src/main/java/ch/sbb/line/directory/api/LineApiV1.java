@@ -31,9 +31,6 @@ public interface LineApiV1 {
   @GetMapping("{slnid}")
   LineModel getLine(@PathVariable String slnid);
 
-  @GetMapping("version/{slnid}")
-  List<LineVersionModel> getLineVersions(@PathVariable String slnid);
-
   @DeleteMapping("{slnid}")
   void deleteLines(@PathVariable String slnid);
 
@@ -47,6 +44,9 @@ public interface LineApiV1 {
 
   @GetMapping("versions/{id}")
   LineVersionModel getLineVersion(@PathVariable Long id);
+
+  @GetMapping("versions/{slnid}")
+  List<LineVersionModel> getLineVersions(@PathVariable String slnid);
 
 
   @PutMapping({"versions/{id}"})
