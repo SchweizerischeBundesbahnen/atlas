@@ -35,3 +35,4 @@ build/
 !.idea/fileTemplates/
 \!.idea/codeStyles/codeStyleConfig.xml
 /scripts/~$*
+http-requests/http-client.private.env.json
