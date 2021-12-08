@@ -25,6 +25,7 @@ import { TranslatedPaginator } from '../components/table/translated-paginator';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
 import { MatSelectModule } from '@angular/material/select';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 export const FORMAT = {
   parse: {
@@ -58,6 +59,7 @@ export const FORMAT = {
     MatTableModule,
     MatToolbarModule,
     ReactiveFormsModule,
+    NgSelectModule,
   ],
   providers: [
     {

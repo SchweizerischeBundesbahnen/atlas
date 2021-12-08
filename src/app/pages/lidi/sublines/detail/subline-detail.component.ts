@@ -1,24 +1,24 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LineVersion, SublinesService, SublineVersion } from '../../../../api';
-import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../../../core/validation/validation.service';
-import { takeUntil } from 'rxjs/operators';
-import { catchError, EMPTY, Subject } from 'rxjs';
-import moment from 'moment/moment';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { Pages } from '../../../pages';
-import { ValidationError } from '../../../../core/validation/validation-error';
+import { Line, LinesService, LineVersion, SublinesService, SublineVersion } from '../../../../api';
 import {
   DateService,
   MAX_DATE,
   MAX_DATE_FORMATTED,
   MIN_DATE,
 } from 'src/app/core/date/date.service';
-import { Page } from 'src/app/core/model/page';
+import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
+import { catchError, distinctUntilChanged, EMPTY, Subject, takeUntil } from 'rxjs';
+import { ValidationService } from '../../../../core/validation/validation.service';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Page } from '../../../../core/model/page';
+import { Pages } from '../../../pages';
+import moment from 'moment';
+import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
+import { ValidationError } from '../../../../core/validation/validation-error';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -36,6 +36,8 @@ export class SublineDetailComponent
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
 
   private ngUnsubscribe = new Subject<void>();
+  mainlineSearchTerm = new Subject<string>();
+  mainlines: Line[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -45,13 +47,20 @@ export class SublineDetailComponent
     private notificationService: NotificationService,
     protected dialogService: DialogService,
     private validationService: ValidationService,
-    private dateService: DateService
+    private dateService: DateService,
+    private linesService: LinesService
   ) {
     super(dialogService);
   }
 
   ngOnInit() {
     super.ngOnInit();
+    if (this.isExistingRecord()) {
+      this.linesService
+        .getLine(this.record.mainlineSlnid)
+        .subscribe((line) => (this.mainlines = [line]));
+    }
+    this.initMainlineSearch();
   }
 
   getPageType(): Page {
@@ -143,7 +152,7 @@ export class SublineDetailComponent
           version.swissSublineNumber,
           [Validators.required, Validators.maxLength(50)],
         ],
-        swissLineNumber: [version.swissLineNumber, [Validators.required, Validators.maxLength(50)]],
+        mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
         status: [version.status],
         type: [version.type, [Validators.required]],
@@ -185,5 +194,16 @@ export class SublineDetailComponent
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  initMainlineSearch() {
+    this.mainlineSearchTerm
+      .pipe(
+        distinctUntilChanged(),
+        switchMap((term) =>
+          this.linesService.getLines(term, undefined, undefined, ['swissLineNumber,ASC'])
+        )
+      )
+      .subscribe((lines) => (this.mainlines = lines.objects!));
   }
 }
