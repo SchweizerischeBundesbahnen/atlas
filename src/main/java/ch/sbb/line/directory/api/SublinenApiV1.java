@@ -27,13 +27,13 @@ public interface SublinenApiV1 {
   @PageableAsQueryParam
   Container<SublineModel> getSublines(@Parameter(hidden = true) Pageable pageable);
 
-  @GetMapping("/{slnid}")
+  @GetMapping("{slnid}")
   List<SublineVersionModel> getSubline(@PathVariable String slnid);
 
-  @GetMapping("version/{id}")
-  SublineVersionModel getSublineVersion(@PathVariable Long id);
+  @DeleteMapping("{slnid}")
+  void deleteSublines(@PathVariable String slnid);
 
-  @PostMapping("version")
+  @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
@@ -41,21 +41,15 @@ public interface SublinenApiV1 {
   })
   SublineVersionModel createSublineVersion(@RequestBody SublineVersionModel newSublineVersion);
 
-  @PutMapping({"version/{id}"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
-  })
-  SublineVersionModel updateSublineVersion(@PathVariable Long id, @RequestBody SublineVersionModel newVersion);
+  @GetMapping("versions/{id}")
+  SublineVersionModel getSublineVersion(@PathVariable Long id);
 
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
   })
-  List<SublineVersionModel> updateWithVersioning(@PathVariable Long id,
+  List<SublineVersionModel> updateSublineVersion(@PathVariable Long id,
       @RequestBody @Valid SublineVersionModel newVersion);
 
-  @DeleteMapping("version/{id}")
-  void deleteSublineVersion(@PathVariable Long id);
 }

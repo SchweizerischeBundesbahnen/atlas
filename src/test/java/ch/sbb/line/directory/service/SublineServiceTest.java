@@ -12,6 +12,7 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -106,6 +107,31 @@ class SublineServiceTest {
     // Then
     verify(sublineVersionRepository).existsById(ID);
     verify(sublineVersionRepository).deleteById(ID);
+  }
+
+  @Test
+  void shouldDeleteSublinesWhenNotFound() {
+    // Given
+    String slnid = "ch:1:ttfnid:1000083";
+    when(sublineVersionRepository.findAllBySlnid(slnid)).thenReturn(List.of());
+
+    //When & Then
+    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+        () -> sublineService.deleteAll(slnid));;
+  }
+
+  @Test
+  void shouldDeleteSublines() {
+    // Given
+    String slnid = "ch:1:ttfnid:1000083";
+    SublineVersion sublineVersion = SublineTestData.sublineVersionBuilder().build();
+    List<SublineVersion> sublineVersions = List.of(sublineVersion);
+    when(sublineVersionRepository.findAllBySlnid(slnid)).thenReturn(sublineVersions);
+
+    //When
+    sublineService.deleteAll(slnid);
+    //Then
+    verify(sublineVersionRepository).deleteAll(sublineVersions);
   }
 
   @Test
