@@ -42,12 +42,8 @@ public interface LineApiV1 {
   })
   LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
-  @GetMapping("versions/{id}")
-  LineVersionModel getLineVersion(@PathVariable Long id);
-
   @GetMapping("versions/{slnid}")
   List<LineVersionModel> getLineVersions(@PathVariable String slnid);
-
 
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
