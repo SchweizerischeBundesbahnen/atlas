@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
@@ -29,8 +28,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 public class SublineControllerTest {
 
@@ -76,7 +73,7 @@ public class SublineControllerTest {
     when(sublineService.findSubline(any())).thenReturn(Collections.singletonList(sublineVersion));
 
     // When
-    List<SublineVersionModel> subline = sublineController.getSubline("slnid");
+    List<SublineVersionModel> subline = sublineController.getSublineVersion("slnid");
 
     // Then
     assertThat(subline).isNotNull();
@@ -100,36 +97,6 @@ public class SublineControllerTest {
                                                 .ignoringFields("editor", "creator", "editionDate",
                                                     "creationDate", "version")
                                                 .isEqualTo(sublineVersionModel);
-  }
-
-
-  @Test
-  void shouldGetVersion() {
-    // Given
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));
-
-    // When
-    SublineVersionModel sublineVersionModel = sublineController.getSublineVersion(1L);
-
-    // Then
-    assertThat(sublineVersionModel).usingRecursiveComparison()
-                                .ignoringFields("editor", "creator", "editionDate", "creationDate")
-                                .isEqualTo(sublineVersionModel);
-  }
-
-  @Test
-  void shouldReturnNotFoundOnUnexcitingVersion() {
-    // Given
-    when(sublineService.findById(anyLong())).thenReturn(Optional.empty());
-
-    // When
-
-    // Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> sublineController.getSublineVersion(1L))
-                                                            .withMessage(
-                                                                HttpStatus.NOT_FOUND.toString());
   }
 
   @Test
