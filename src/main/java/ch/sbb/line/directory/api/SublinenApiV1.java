@@ -27,9 +27,6 @@ public interface SublinenApiV1 {
   @PageableAsQueryParam
   Container<SublineModel> getSublines(@Parameter(hidden = true) Pageable pageable);
 
-  @GetMapping("{slnid}")
-  List<SublineVersionModel> getSubline(@PathVariable String slnid);
-
   @DeleteMapping("{slnid}")
   void deleteSublines(@PathVariable String slnid);
 
@@ -41,8 +38,8 @@ public interface SublinenApiV1 {
   })
   SublineVersionModel createSublineVersion(@RequestBody SublineVersionModel newSublineVersion);
 
-  @GetMapping("versions/{id}")
-  SublineVersionModel getSublineVersion(@PathVariable Long id);
+  @GetMapping("versions/{slnid}")
+  List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
 
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {

@@ -68,13 +68,6 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public LineVersionModel getLineVersion(Long id) {
-    return lineService.findById(id)
-                      .map(this::toModel)
-                      .orElseThrow(NotFoundExcpetion.getInstance());
-  }
-
-  @Override
   public LineVersionModel createLineVersion(LineVersionModel newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
     newLineVersion.setStatus(Status.ACTIVE);

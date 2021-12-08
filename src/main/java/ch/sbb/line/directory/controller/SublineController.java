@@ -47,18 +47,11 @@ public class SublineController implements SublinenApiV1 {
   }
 
   @Override
-  public List<SublineVersionModel> getSubline(String slnid) {
+  public List<SublineVersionModel> getSublineVersion(String slnid) {
     return sublineService.findSubline(slnid)
                          .stream()
                          .map(this::toModel)
                          .collect(Collectors.toList());
-  }
-
-  @Override
-  public SublineVersionModel getSublineVersion(Long id) {
-    return sublineService.findById(id)
-                         .map(this::toModel)
-                         .orElseThrow(NotFoundExcpetion.getInstance());
   }
 
   @Override
