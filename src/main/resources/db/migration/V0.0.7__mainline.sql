@@ -18,41 +18,44 @@ from (
                   from (
                            select distinct on (slnid) *
                            from ((select distinct on (s.slnid) s.swiss_subline_number,
-                                                             s.description,
-                                                             l.swiss_line_number,
-                                                             s.status,
-                                                             s.type,
-                                                             s.business_organisation,
-                                                             s.slnid,
-                                                             s.valid_from,
-                                                             s.valid_to
-                                  from subline_version s join line l on s.mainline_slnid = l.slnid
+                                                               s.description,
+                                                               l.swiss_line_number,
+                                                               s.status,
+                                                               s.type,
+                                                               s.business_organisation,
+                                                               s.slnid,
+                                                               s.valid_from,
+                                                               s.valid_to
+                                  from subline_version s
+                                           join line l on s.mainline_slnid = l.slnid
                                   where s.valid_from <= current_timestamp
                                     and current_timestamp <= s.valid_to)
                                  union all
                                  (select distinct on (s.slnid) s.swiss_subline_number,
-                                                             s.description,
-                                                             l.swiss_line_number,
-                                                             s.status,
-                                                             s.type,
-                                                             s.business_organisation,
-                                                             s.slnid,
-                                                             s.valid_from,
-                                                             s.valid_to
-                                  from subline_version s join line l on s.mainline_slnid = l.slnid
+                                                               s.description,
+                                                               l.swiss_line_number,
+                                                               s.status,
+                                                               s.type,
+                                                               s.business_organisation,
+                                                               s.slnid,
+                                                               s.valid_from,
+                                                               s.valid_to
+                                  from subline_version s
+                                           join line l on s.mainline_slnid = l.slnid
                                   where s.valid_from >= current_timestamp
                                   order by s.slnid, s.valid_from asc)
                                  union all
                                  (select distinct on (s.slnid) s.swiss_subline_number,
-                                                             s.description,
-                                                             l.swiss_line_number,
-                                                             s.status,
-                                                             s.type,
-                                                             s.business_organisation,
-                                                             s.slnid,
-                                                             s.valid_from,
-                                                             s.valid_to
-                                  from subline_version s join line l on s.mainline_slnid = l.slnid
+                                                               s.description,
+                                                               l.swiss_line_number,
+                                                               s.status,
+                                                               s.type,
+                                                               s.business_organisation,
+                                                               s.slnid,
+                                                               s.valid_from,
+                                                               s.valid_to
+                                  from subline_version s
+                                           join line l on s.mainline_slnid = l.slnid
                                   where s.valid_to <= current_timestamp
                                   order by s.slnid, s.valid_to desc)) as ranked
                        ) as chosen
@@ -63,3 +66,13 @@ from (
              group by slnid
          ) v on f.slnid = v.slnid
      ) as sublines;
+
+
+update subline_version
+set mainline_slnid = line_version.slnid
+from line_version
+where line_version.swiss_line_number = subline_version.mainline_slnid;
+
+delete
+from subline_version
+where mainline_slnid not like 'ch:1:slnid%';
