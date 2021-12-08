@@ -5,17 +5,22 @@ import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberModel;
 import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
+import ch.sbb.timetable.field.number.entity.TimetableFieldNumber_;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.service.VersionService;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,7 +42,16 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   @Override
   public TimetableFieldNumberContainer getOverview(Pageable pageable, List<String> searchCriteria,
       LocalDate validOn) {
-    log.info("Load TimetableFieldNumbers using pageable={}", pageable);
+    log.info("Load TimetableFieldNumbers using pageable={}, searchCriteria={} and validOn={}", pageable, searchCriteria, validOn);
+    Set<String> timeTableFieldNumberFields = Arrays.stream(TimetableFieldNumber_.class.getDeclaredFields())
+        .filter(field -> !field.getType().equals(String.class))
+        .map(Field::getName)
+        .collect(Collectors.toSet());
+    Set<Order> pageableSortOrders = pageable.getSort().get().collect(Collectors.toSet());
+    boolean match = pageableSortOrders.stream().anyMatch(order -> !timeTableFieldNumberFields.contains(order.getProperty()));
+    if (match) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pageable sort parameter is not valid");
+    }
     Page<TimetableFieldNumber> timetableFieldNumberPage;
     if ((searchCriteria == null || searchCriteria.isEmpty()) && validOn == null) {
       timetableFieldNumberPage = versionService.getOverview(pageable);

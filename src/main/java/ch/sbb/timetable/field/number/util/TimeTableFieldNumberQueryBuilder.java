@@ -5,7 +5,6 @@ import ch.sbb.timetable.field.number.entity.TimetableFieldNumber_;
 import ch.sbb.timetable.field.number.enumaration.Status;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.QueryUtils;
-import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -100,12 +98,7 @@ public class TimeTableFieldNumberQueryBuilder {
   }
 
   public List<Order> getOrders(Pageable pageable) {
-    try {
-      return QueryUtils.toOrders(pageable.getSort(), timetableFieldNumberRoot, criteriaBuilder);
-    } catch (PropertyReferenceException e) {
-      log.warn("Could not order query: invalid sort provided. ", e);
-      return Collections.emptyList();
-    }
+    return QueryUtils.toOrders(pageable.getSort(), timetableFieldNumberRoot, criteriaBuilder);
   }
 
   public Predicate getAllPredicates(List<String> searchStrings, LocalDate validOn) {
