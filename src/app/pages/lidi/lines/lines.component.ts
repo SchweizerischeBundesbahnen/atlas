@@ -49,7 +49,7 @@ export class LinesComponent implements OnInit, OnDestroy {
   getOverview($pagination: TablePagination) {
     this.isLoading = true;
     this.lineVersionsSubscription = this.linesService
-      .getLines($pagination.page, $pagination.size, [$pagination.sort!])
+      .getLines(undefined, $pagination.page, $pagination.size, [$pagination.sort!])
       .pipe(
         catchError((err) => {
           this.notificationService.error('LIDI.LINE.NOTIFICATION.FETCH_ERROR');

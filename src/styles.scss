@@ -1,6 +1,7 @@
 @import './theme.scss';
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-icons/font/bootstrap-icons.css';
+@import 'ng-select';
 /* You can add global styles to this file, and also import other style files */
 
 .breadcrumb-item + .breadcrumb-item::before {
@@ -17,6 +18,7 @@
 .white {
   color: white;
 }
+
 .gray-1 {
   color: hsl(0, 0%, 40%);
   font-size: 1.1rem;
