@@ -140,7 +140,7 @@ class SublineServiceTest {
 
     //When & Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-        () -> sublineService.deleteAll(slnid));;
+        () -> sublineService.deleteAll(slnid));
   }
 
   @Test
