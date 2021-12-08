@@ -75,7 +75,7 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineVersionModel> updateWithVersioning(Long id, LineVersionModel newVersion) {
+  public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id).orElseThrow(NotFoundExcpetion.getInstance());
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLine(versionToUpdate.getSlnid()).stream().map(this::toModel)
@@ -83,7 +83,7 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public void deleteLineVersions(String slnid) {
+  public void deleteLines(String slnid) {
     lineService.deleteAll(slnid);
   }
 
