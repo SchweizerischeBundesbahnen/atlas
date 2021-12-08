@@ -37,7 +37,7 @@ public class VersionRepositoryTest {
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2020, 12, 12))
-        .validTo(LocalDate.of(2099, 12, 12))
+        .validTo(LocalDate.of(2020, 12, 12))
         .businessOrganisation("sbb")
         .build();
     version.setLineRelations(new HashSet<>(
@@ -117,6 +117,36 @@ public class VersionRepositoryTest {
     List<Version> result = versionRepository.findAll();
 
     //then
+    assertThat(result).isEmpty();
+  }
+
+  @Test
+  void shouldDeleteVersions() {
+    //given
+    String ttfnid = "ch:1:ttfnid:100000";
+    Version secondVersion = Version.builder()
+                     .ttfnid("ch:1:ttfnid:100000")
+                     .name("FPFN Name2")
+                     .number("BEX2")
+                     .status(Status.ACTIVE)
+                     .swissTimetableFieldNumber("b0.BEX2")
+                     .validFrom(LocalDate.of(2021, 12, 12))
+                     .validTo(LocalDate.of(2021, 12, 12))
+                     .businessOrganisation("sbb")
+                     .build();
+    secondVersion.setLineRelations(new HashSet<>(
+        Set.of(LineRelation.builder().slnid("ch:1:slnid:100000").version(secondVersion).build(),
+            LineRelation.builder().slnid("ch:1:slnid:100001").version(secondVersion).build())));
+    versionRepository.save(secondVersion);
+
+    List<Version> allVersionsVersioned = versionRepository.getAllVersionsVersioned(ttfnid);
+    assertThat(allVersionsVersioned.size()).isEqualTo(2);
+
+    //when
+    versionRepository.deleteAll(allVersionsVersioned);
+
+    //then
+    List<Version> result = versionRepository.getAllVersionsVersioned(ttfnid);
     assertThat(result).isEmpty();
   }
 }

@@ -55,6 +55,30 @@ This project uses [Semantic Versioning](https://semver.org/).
 ## Development
 For an easy local development setup, we provide a `docker-compose.yml`, which can be used to start dependent infrastructure.
 
+### Test RESTful Web services
+We use InteliJ HTTP Client for testing: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html.
+
+U need only to configure some secrets:
+* in `/http-requests` directory create a new json file: `http-client.private.env.json`
+* get the secrets from ATLAS Confluence Page "Restricted Access -> E2ETests with Cypress":
+```javascript
+{
+  "local": {
+    "clientSecret": "<client secret>",
+    "username": "<user name>",
+    /* IMPORTANT !!!*/
+    "password": "<password: the % must be url-encoded as %25>"
+  },
+  "integration": {
+    "clientSecret": "" // integration
+  },
+  "production": {
+    "clientSecret": "" //production 
+  }
+  // ... etc...
+}
+```
+
 ### PostgreSQL Docker
 Run PostgreSQL in docker:
 ~~~
