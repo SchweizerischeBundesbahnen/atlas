@@ -2,6 +2,7 @@
   <mat-form-field class="col-9 pe-3">
     <mat-label>Search Criteria</mat-label>
     <mat-chip-list #chipList>
+      <em class="bi bi-search"></em>
       <mat-chip *ngFor="let search of searchStrings" (removed)="remove(search)">
         {{ search }}
         <button matChipRemove>
