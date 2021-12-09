@@ -8,5 +8,17 @@
       margin: 0 2px;
     }
   }
+
+  mat-form-field input.mat-datepicker-input {
+    height: 15.75px;
+    margin: 4px 0;
+  }
+
+  mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+    align-items: center;
+
+    .mat-form-field-suffix {
+      padding-top: 10px;
+    }
+  }
 }
-// TODO: padding bei gültig-feld anpassen (gleiche höhe)

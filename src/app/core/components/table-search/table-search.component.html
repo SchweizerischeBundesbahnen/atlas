@@ -1,8 +1,8 @@
-<div class="col-12 ps-3 pe-3">
+<div class="col-12 ps-3 pe-3 d-flex">
   <mat-form-field class="col-9 pe-3">
-    <mat-label>Search Criteria</mat-label>
+    <mat-label>{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
     <mat-chip-list #chipList>
-      <em class="bi bi-search"></em>
+      <em class="bi bi-search me-2"></em>
       <mat-chip *ngFor="let search of searchStrings" (removed)="remove(search)">
         {{ search }}
         <button matChipRemove>
@@ -10,23 +10,25 @@
         </button>
       </mat-chip>
       <input
-        placeholder="New search..."
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
         (matChipInputTokenEnd)="add($event)"
       />
     </mat-chip-list>
   </mat-form-field>
-  <!-- TODO: translate -->
   <!--  TODO: date-field validation -->
-  <!--  TODO: border-bottom from chip input is lower than datepicker if it's not empty -->
   <mat-form-field class="col-3">
-    <mat-label>Gültig am</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="onDateChanged($event)" />
+    <mat-label>{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
+    <input
+      [formControl]="dateControl"
+      matInput
+      [matDatepicker]="picker"
+      (dateChange)="onDateChanged($event)"
+      [min]="MIN_DATE"
+      [max]="MAX_DATE"
+    />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-    <!--    <mat-error *ngFor="let validationError of this.getValidation('validFrom')">-->
-    <!--      {{ validationError.error | translate: { date: displayDate(validationError) } }}-->
-    <!--    </mat-error>-->
   </mat-form-field>
 </div>
+<p>{{ dateControl.errors | json }}</p>
