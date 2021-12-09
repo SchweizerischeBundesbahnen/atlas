@@ -68,7 +68,11 @@
       </mat-form-field>
       <mat-form-field class="col">
         <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
-        <mat-select [value]="form.value.status" [disabled]="true">
+        <mat-select
+          [value]="form.value.status"
+          [disabled]="true"
+          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
+        >
           <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
             {{ 'COMMON.STATUS_TYPES.' + status | translate }}
           </mat-option>
