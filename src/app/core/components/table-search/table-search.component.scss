@@ -1,0 +1,12 @@
+:host::ng-deep {
+  mat-form-field mat-chip-list .mat-chip-list-wrapper {
+    margin: 0;
+
+    mat-chip {
+      min-height: 20px;
+      padding: 0 7px;
+      margin: 0 2px;
+    }
+  }
+}
+// TODO: padding bei gültig-feld anpassen (gleiche höhe)
