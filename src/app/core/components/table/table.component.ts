@@ -53,7 +53,6 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
     this.editElementEvent.emit(row);
   }
 
-  // TODO: check initial sorting
   pageChanged(pageEvent: PageEvent) {
     this.loading = true;
     const pageIndex = pageEvent.pageIndex;
@@ -61,32 +60,38 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
     this.getTableElementsEvent.emit({
       page: pageIndex,
       size: pageSize,
-      // sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
+      sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
       searchCriteria: this.tableSearchComponent.searchStrings,
       validOn: this.tableSearchComponent.searchDate,
     });
   }
 
   sortData(sort: Sort) {
-    this.paginator.firstPage();
-    const sortElement = sort.active + ',' + sort.direction.toUpperCase();
-    this.getTableElementsEvent.emit({
-      page: 0,
-      size: 10,
-      sort: sortElement,
-      searchCriteria: this.tableSearchComponent.searchStrings,
-    });
+    if (this.paginator.pageIndex !== 0) {
+      this.paginator.firstPage();
+    } else {
+      this.getTableElementsEvent.emit({
+        page: 0,
+        size: this.paginator.pageSize,
+        sort: `${sort.active},${sort.direction.toUpperCase()}`,
+        searchCriteria: this.tableSearchComponent.searchStrings,
+        validOn: this.tableSearchComponent.searchDate,
+      });
+    }
   }
 
   searchData(search: TableSearch): void {
-    this.paginator.firstPage();
-    this.getTableElementsEvent.emit({
-      page: 0,
-      size: this.paginator.pageSize,
-      // sort: sortElement,
-      searchCriteria: search.searchCriteria,
-      validOn: search.validOn,
-    });
+    if (this.paginator.pageIndex !== 0) {
+      this.paginator.firstPage();
+    } else {
+      this.getTableElementsEvent.emit({
+        page: 0,
+        size: this.paginator.pageSize,
+        sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
+        searchCriteria: search.searchCriteria,
+        validOn: search.validOn,
+      });
+    }
   }
 
   format(column: TableColumn<DATATYPE>, value: string | Date): string | null {

@@ -40,6 +40,10 @@
     "ROLES": {
       "lidi-writer": "LiDi Writer",
       "lidi-admin": "LiDi Admin"
+    },
+    "SEARCH": {
+      "VALIDITY": "Gültig am",
+      "SEARCH_CRITERIA": "Suche nach Status, CH-Fahrplanfeldnummer, CH-Fahrplanfeldnummer Bezeichnung und Fahrplanfeldnummer-ID"
     }
   },
   "DIALOG": {
