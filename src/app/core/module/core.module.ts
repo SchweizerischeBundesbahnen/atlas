@@ -19,8 +19,6 @@ import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
 import { TableSearchComponent } from '../components/table-search/table-search.component';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -54,8 +52,6 @@ import { MatIconModule } from '@angular/material/icon';
         sendAccessToken: true,
       },
     }),
-    MatChipsModule,
-    MatIconModule,
   ],
   exports: [
     BreadcrumbComponent,

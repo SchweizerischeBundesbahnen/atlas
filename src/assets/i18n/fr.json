@@ -43,7 +43,7 @@
     },
     "SEARCH": {
       "VALIDITY": "__fr__Gültig am",
-      "SEARCH_CRITERIA": "__fr__Suche nach Status, CH-Fahrplanfeldnummer, CH-Fahrplanfeldnummer Bezeichnung und Fahrplanfeldnummer-ID"
+      "SEARCH_CRITERIA": "__fr__Suche nach CH-Fahrplanfeldnummer, CH-Fahrplanfeldnummer Bezeichnung und Fahrplanfeldnummer-ID"
     }
   },
   "DIALOG": {

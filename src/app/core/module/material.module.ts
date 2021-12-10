@@ -26,6 +26,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
 import { MatSelectModule } from '@angular/material/select';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export const FORMAT = {
   parse: {
@@ -60,6 +63,9 @@ export const FORMAT = {
     MatToolbarModule,
     ReactiveFormsModule,
     NgSelectModule,
+    MatChipsModule,
+    MatIconModule,
+    MatCheckboxModule,
   ],
   providers: [
     {
