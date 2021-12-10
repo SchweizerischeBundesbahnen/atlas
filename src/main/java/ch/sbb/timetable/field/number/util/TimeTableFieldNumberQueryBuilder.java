@@ -74,7 +74,7 @@ public class TimeTableFieldNumberQueryBuilder {
     );
     Predicate[] stringPredicates = searchStrings.stream().map(searchString -> criteriaBuilder.or(
         stringPaths.stream().map(stringPath -> criteriaBuilder.like(
-                criteriaBuilder.lower(stringPath), "%" + searchString.toLowerCase() + "%"))
+                criteriaBuilder.lower(stringPath), "%" + searchString + "%"))
             .toArray(Predicate[]::new)
     )).toArray(Predicate[]::new);
     return criteriaBuilder.and(stringPredicates);
