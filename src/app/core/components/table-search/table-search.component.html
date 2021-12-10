@@ -16,12 +16,11 @@
       />
     </mat-chip-list>
   </mat-form-field>
-  <!--  TODO: date-field validation -->
   <mat-form-field class="col-3">
     <mat-label>{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
     <input
-      [formControl]="dateControl"
       matInput
+      [formControl]="dateControl"
       [matDatepicker]="picker"
       (dateChange)="onDateChanged($event)"
       [min]="MIN_DATE"
@@ -29,6 +28,19 @@
     />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngFor="let validationError of getDateControlValidation()">
+      {{
+        validationError.error | translate: { date: getMinOrMaxDateDisplay(validationError.value) }
+      }}
+    </mat-error>
   </mat-form-field>
 </div>
-<p>{{ dateControl.errors | json }}</p>
+<section>
+  <mat-checkbox
+    class="ms-3"
+    *ngFor="let status of STATUS_OPTIONS"
+    (change)="checkboxChanged($event.checked, status)"
+  >
+    {{ 'COMMON.STATUS_TYPES.' + status | translate }}
+  </mat-checkbox>
+</section>
