@@ -80,21 +80,11 @@ public class TimeTableFieldNumberQueryBuilder {
     return criteriaBuilder.and(stringPredicates);
   }
 
-  private Set<Status> getStatusSearches(List<String> searchStrings) {
-    return searchStrings != null ? searchStrings.stream()
+  private Set<String> getStatusSearches(Set<String> searchStrings) {
+    return searchStrings.stream()
         .filter(searchString -> Arrays.stream(Status.values())
             .anyMatch(statusVal -> statusVal.isStatus(searchString.toUpperCase())))
-        .map(searchString -> Status.valueOf(searchString.toUpperCase()))
-        .collect(Collectors.toSet())
-        : new HashSet<>();
-  }
-
-  private Set<String> getStringSearches(List<String> searchStrings, Set<Status> statusSearches) {
-    return searchStrings != null ? searchStrings.stream()
-        .filter(searchString -> !statusSearches.stream().map(Enum::name).collect(Collectors.toSet())
-            .contains(searchString.toUpperCase()) && !searchString.isBlank())
-        .collect(Collectors.toSet())
-        : new HashSet<>();
+        .collect(Collectors.toSet());
   }
 
   public List<Order> getOrders(Pageable pageable) {
@@ -102,12 +92,21 @@ public class TimeTableFieldNumberQueryBuilder {
   }
 
   public Predicate getAllPredicates(List<String> searchStrings, LocalDate validOn) {
-    Set<Status> statusSearches = getStatusSearches(searchStrings);
-    Set<String> stringSearches = getStringSearches(searchStrings, statusSearches);
+    Set<String> searchStringsFiltered = new HashSet<>();
+    if (searchStrings != null) {
+      searchStringsFiltered = searchStrings.stream()
+          .filter(string -> !string.isBlank())
+          .map(String::toLowerCase)
+          .collect(Collectors.toSet());
+    }
+    Set<String> statusSearches = getStatusSearches(searchStringsFiltered);
+    Set<String> stringSearches = new HashSet<>(searchStringsFiltered);
+    stringSearches.removeAll(statusSearches);
+    Set<Status> statusSet = statusSearches.stream().map(status -> Status.valueOf(status.toUpperCase())).collect(Collectors.toSet());
     return criteriaBuilder.and(
         getStringPredicate(stringSearches),
         getValidityPredicate(validOn),
-        getStatusPredicate(statusSearches)
+        getStatusPredicate(statusSet)
     );
   }
 
