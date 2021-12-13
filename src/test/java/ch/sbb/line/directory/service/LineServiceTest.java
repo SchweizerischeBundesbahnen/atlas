@@ -9,9 +9,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
@@ -78,7 +76,7 @@ class LineServiceTest {
     lineService.findLineVersions(slnid);
 
     // Then
-    verify(lineVersionRepository).findAllBySlnid(slnid);
+    verify(lineVersionRepository).findAllBySlnidOrderByValidFrom(slnid);
   }
 
   @Test
@@ -124,7 +122,7 @@ class LineServiceTest {
   void shouldDeleteLinesWhenNotFound() {
     // Given
     String slnid = "ch:1:ttfnid:1000083";
-    when(lineVersionRepository.findAllBySlnid(slnid)).thenReturn(List.of());
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(List.of());
 
     //When & Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
@@ -141,7 +139,7 @@ class LineServiceTest {
                                   .description("desc")
                                   .build();
     List<LineVersion> lineVersions = List.of(lineVersion);
-    when(lineVersionRepository.findAllBySlnid(slnid)).thenReturn(lineVersions);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(lineVersions);
 
     //When
     lineService.deleteAll(slnid);
