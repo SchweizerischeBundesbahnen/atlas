@@ -175,14 +175,14 @@ public class LineRepositoryTest {
                                            .build();
     lineVersionRepository.saveAndFlush(validLastYear);
 
-    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnid(SLNID);
+    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(SLNID);
     assertThat(lineVersions.size()).isEqualTo(2);
 
     // When
     lineVersionRepository.deleteAll(lineVersions);
 
     // Then
-    List<LineVersion> result = lineVersionRepository.findAllBySlnid(SLNID);
+    List<LineVersion> result = lineVersionRepository.findAllBySlnidOrderByValidFrom(SLNID);
     assertThat(result.size()).isEqualTo(0);
 
   }
