@@ -8,7 +8,7 @@ export default class LidiUtils {
     cy.get('#home').click();
   }
 
-  static clickOnAddNewVersion() {
+  static clickOnAddNewLinieVersion() {
     cy.get('[data-cy=lidi-lines] [data-cy=new-item]').click();
     cy.get('[data-cy=save-item]').should('be.disabled');
     cy.get('[data-cy=edit-item]').should('not.exist');
@@ -16,17 +16,21 @@ export default class LidiUtils {
     cy.contains('Neue Linie');
   }
 
-  static fillVersionForm(version: any) {
+  static fillLineVersionForm(version: any) {
     cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
     cy.get('[data-cy=validTo]').clear().type(version.validTo);
     cy.get('[data-cy=swissLineNumber]').clear().type(version.swissLineNumber);
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
     this.selectItemFromDropDown('[data-cy=type]', version.type);
     this.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
-    cy.get('[data-cy=colorFontRgb]').type(version.colorFontRgb);
-    cy.get('[data-cy=colorBackRgb]').type(version.colorBackRgb);
-    cy.get('[data-cy=colorFontCmyk]').type(version.colorFontCmyk);
-    cy.get('[data-cy=colorBackCmyk]').type(version.colorBackCmyk);
+    cy.get('[data-cy=colorFontRgb] [data-cy=rgb-picker-input]').clear().type(version.colorFontRgb);
+    cy.get('[data-cy=colorBackRgb] [data-cy=rgb-picker-input]').clear().type(version.colorBackRgb);
+    cy.get('[data-cy=colorFontCmyk] [data-cy=cmyk-picker-input]')
+      .clear()
+      .type(version.colorFontCmyk);
+    cy.get('[data-cy=colorBackCmyk] [data-cy=cmyk-picker-input]')
+      .clear()
+      .type(version.colorBackCmyk);
     cy.get('[data-cy=description]').clear().type(version.description);
     cy.get('[data-cy=number]').clear().type(version.number);
     cy.get('[data-cy=alternativeName]').clear().type(version.alternativeName);
@@ -53,6 +57,7 @@ export default class LidiUtils {
     cy.get('[data-cy=save-item]').click();
     cy.get('[data-cy=edit-item]').should('be.visible');
     cy.get('[data-cy=delete-item]').should('be.visible');
+    cy.wait(1000);
   }
 
   static assertContainsVersion(version: any) {
@@ -114,7 +119,7 @@ export default class LidiUtils {
     cy.get('[data-cy=switch-version-left]').click();
   }
 
-  static assertLidiTableHeader(columnHeaderNumber: number, columnHeaderContent: string) {
+  static assertTableHeader(columnHeaderNumber: number, columnHeaderContent: string) {
     cy.get('table')
       .get('thead tr th')
       .eq(columnHeaderNumber)
@@ -122,7 +127,11 @@ export default class LidiUtils {
       .contains(columnHeaderContent);
   }
 
-  static getFirstVersion() {
+  static clickOnEditLinie() {
+    cy.get('[data-cy=edit-item]').click();
+  }
+
+  static getFirstLineVersion() {
     return {
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
@@ -142,6 +151,60 @@ export default class LidiUtils {
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
       comment: 'Kommentar',
+    };
+  }
+
+  static getSecondLineVersion() {
+    return {
+      validFrom: '01.01.2001',
+      validTo: '31.12.2001',
+      swissLineNumber: 'b0.IC2',
+      businessOrganisation: 'SBB-1',
+      type: 'Temporär',
+      paymentType: 'International',
+      colorFontRgb: '#FFFFFF',
+      colorBackRgb: '#FFFFFF',
+      colorFontCmyk: '10,10,0,100',
+      colorBackCmyk: '10,10,0,100',
+      description: 'Lorem Ipus Linie',
+      number: 'IC2',
+      alternativeName: 'IC2 alt',
+      combinationName: 'IC2 comb',
+      longName:
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
+      comment: 'Kommentar-1',
+    };
+  }
+
+  static getThirdLineVersion() {
+    return {
+      validFrom: '01.01.2002',
+      validTo: '31.12.2002',
+      swissLineNumber: 'b0.IC2',
+      businessOrganisation: 'SBB-2',
+      type: 'Temporär',
+      paymentType: 'International',
+      colorFontRgb: '#FFFFFF',
+      colorBackRgb: '#FFFFFF',
+      colorFontCmyk: '10,10,0,100',
+      colorBackCmyk: '10,10,0,100',
+      description: 'Lorem Ipus Linie',
+      number: 'IC2',
+      alternativeName: 'IC2 alt',
+      combinationName: 'IC2 comb',
+      longName:
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
+      comment: 'Kommentar-2',
+    };
+  }
+
+  static getEditedLineVersion() {
+    return {
+      validFrom: '01.06.2000',
+      validTo: '01.06.2002',
+      alternativeName: 'IC2 alt edit',
     };
   }
 }
