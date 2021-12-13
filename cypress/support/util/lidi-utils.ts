@@ -56,48 +56,52 @@ export default class LidiUtils {
   }
 
   static assertContainsVersion(version: any) {
-    cy.get('[data-cy=validFrom]').invoke('val').should('eq', version.validFrom);
-    cy.get('[data-cy=validTo]').invoke('val').should('eq', version.validTo);
-    cy.get('[data-cy=swissLineNumber]').invoke('val').should('eq', version.swissLineNumber);
-    cy.get('[data-cy=businessOrganisation]')
-      .invoke('val')
-      .should('eq', version.businessOrganisation);
-    cy.get('[data-cy=type] .mat-select-value-text > .mat-select-min-line')
-      .invoke('text')
-      .should('eq', version.type);
-    cy.get('[data-cy=paymentType] .mat-select-value-text > .mat-select-min-line')
-      .invoke('text')
-      .should('eq', version.paymentType);
-    cy.get(
-      '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]'
-    )
-      .invoke('val')
-      .should('eq', version.colorFontRgb);
-    cy.get(
-      '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]'
-    )
-      .invoke('val')
-      .should('eq', version.colorBackRgb);
-    cy.get(
-      '[data-cy=colorFontCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]'
-    )
-      .invoke('val')
-      .should('eq', version.colorFontCmyk);
-    cy.get(
-      '[data-cy=colorBackCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]'
-    )
-      .invoke('val')
-      .should('eq', version.colorBackCmyk);
-    cy.get('[data-cy=description]').invoke('val').should('eq', version.description);
-    cy.get('[data-cy=number]').invoke('val').should('eq', version.number);
-    cy.get('[data-cy=alternativeName]').invoke('val').should('eq', version.alternativeName);
-    cy.get('[data-cy=combinationName]').invoke('val').should('eq', version.combinationName);
-    cy.get('[data-cy=longName]').invoke('val').should('eq', version.longName);
-    cy.get('[data-cy=icon]').invoke('val').should('eq', version.icon);
-    cy.get('[data-cy=comment]').invoke('val').should('eq', version.comment);
+    this.assertItemValue('[data-cy=validFrom]', version.validFrom);
+    this.assertItemValue('[data-cy=validTo]', version.validTo);
+    this.assertItemValue('[data-cy=swissLineNumber]', version.swissLineNumber);
+    this.assertItemValue('[data-cy=businessOrganisation]', version.businessOrganisation);
+    this.assertItemText(
+      '[data-cy=type] .mat-select-value-text > .mat-select-min-line',
+      version.type
+    );
+    this.assertItemText(
+      '[data-cy=paymentType] .mat-select-value-text > .mat-select-min-line',
+      version.paymentType
+    );
+    this.assertItemValue(
+      '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]',
+      version.colorFontRgb
+    );
+    this.assertItemValue(
+      '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]',
+      version.colorBackRgb
+    );
+    this.assertItemValue(
+      '[data-cy=colorFontCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]',
+      version.colorFontCmyk
+    );
+    this.assertItemValue(
+      '[data-cy=colorBackCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]',
+      version.colorBackCmyk
+    );
+    this.assertItemValue('[data-cy=description]', version.description);
+    this.assertItemValue('[data-cy=number]', version.number);
+    this.assertItemValue('[data-cy=alternativeName]', version.alternativeName);
+    this.assertItemValue('[data-cy=combinationName]', version.combinationName);
+    this.assertItemValue('[data-cy=longName]', version.longName);
+    this.assertItemValue('[data-cy=icon]', version.icon);
+    this.assertItemValue('[data-cy=comment]', version.comment);
+
     cy.get('[data-cy=edit-item]').should('not.be.disabled');
   }
 
+  private static assertItemValue(selector: string, value: string) {
+    cy.get(selector).invoke('val').should('eq', value);
+  }
+
+  private static assertItemText(selector: string, value: string) {
+    cy.get(selector).invoke('text').should('eq', value);
+  }
   static deleteItems() {
     cy.get('[data-cy=delete-item]').click();
     cy.get('#mat-dialog-0').contains('Warnung!');
@@ -108,6 +112,14 @@ export default class LidiUtils {
 
   static switchLeft() {
     cy.get('[data-cy=switch-version-left]').click();
+  }
+
+  static assertLidiTableHeader(columnHeaderNumber: number, columnHeaderContent: string) {
+    cy.get('table')
+      .get('thead tr th')
+      .eq(columnHeaderNumber)
+      .get('div')
+      .contains(columnHeaderContent);
   }
 
   static getFirstVersion() {
@@ -130,18 +142,6 @@ export default class LidiUtils {
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
       comment: 'Kommentar',
-    };
-  }
-
-  static getSecondVersion() {
-    return {
-      swissTimetableFieldNumber: '00.AAA',
-      validFrom: '01.01.2001',
-      validTo: '31.12.2002',
-      businessOrganisation: 'SBB1',
-      number: '1.1',
-      name: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-      comment: 'A new comment',
     };
   }
 }

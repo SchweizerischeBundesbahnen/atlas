@@ -1,7 +1,7 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 
 describe('Linienverzeichnis', () => {
-  const firstVersion = LidiUtils.getFirstVersion();
+  const linie = LidiUtils.getFirstVersion();
 
   const headerTitle = 'Linienverzeichnis';
 
@@ -15,23 +15,19 @@ describe('Linienverzeichnis', () => {
 
   it('Step-3: Check the Linienverzeichnis Line Table is visible', () => {
     cy.contains(headerTitle);
-    cy.get('table').get('thead tr th').eq(1).get('div').contains('CH-Liniennummer (CHLNR)');
-    cy.get('table').get('thead tr th').eq(2).get('div').contains('Liniennummer');
-    cy.get('table').get('thead tr th').eq(3).get('div').contains('Linienbezeichnung');
-    cy.get('table').get('thead tr th').eq(4).get('div').contains('Status');
-    cy.get('table')
-      .get('thead tr th')
-      .eq(5)
-      .get('div')
-      .contains('Geschäftsorganisation Konzessionär');
-    cy.get('table').get('thead tr th').eq(6).get('div').contains('SLNID');
-    cy.get('table').get('thead tr th').eq(7).get('div').contains('Gültig bis');
-    cy.get('table').get('thead tr th').eq(8).get('div').contains('Gültig bis');
+    LidiUtils.assertLidiTableHeader(1, 'CH-Liniennummer (CHLNR)');
+    LidiUtils.assertLidiTableHeader(2, 'Liniennummer');
+    LidiUtils.assertLidiTableHeader(3, 'Linienbezeichnung');
+    LidiUtils.assertLidiTableHeader(4, 'Status');
+    LidiUtils.assertLidiTableHeader(5, 'Geschäftsorganisation Konzessionär');
+    LidiUtils.assertLidiTableHeader(6, 'SLNID');
+    LidiUtils.assertLidiTableHeader(7, 'Gültig von');
+    LidiUtils.assertLidiTableHeader(8, 'Gültig bis');
   });
 
   it('Step-4: Go to page Add new Version', () => {
     LidiUtils.clickOnAddNewVersion();
-    LidiUtils.fillVersionForm(firstVersion);
+    LidiUtils.fillVersionForm(linie);
     LidiUtils.saveVersion();
   });
 
@@ -42,9 +38,9 @@ describe('Linienverzeichnis', () => {
   });
 
   it('Step-6: Check the added is present on the table result and navigate to it ', () => {
-    cy.contains(firstVersion.swissLineNumber).parents('tr').click();
-    cy.contains(firstVersion.swissLineNumber);
-    LidiUtils.assertContainsVersion(firstVersion);
+    cy.contains(linie.swissLineNumber).parents('tr').click();
+    cy.contains(linie.swissLineNumber);
+    LidiUtils.assertContainsVersion(linie);
   });
 
   it('Step-7: Delete the item ', () => {
