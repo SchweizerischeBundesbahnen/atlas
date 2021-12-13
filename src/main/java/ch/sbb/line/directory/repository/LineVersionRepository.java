@@ -20,5 +20,5 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
   List<LineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumber(
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
-  List<LineVersion> findAllBySlnid(String slnid);
+  List<LineVersion> findAllBySlnidOrderByValidFrom(String slnid);
 }
