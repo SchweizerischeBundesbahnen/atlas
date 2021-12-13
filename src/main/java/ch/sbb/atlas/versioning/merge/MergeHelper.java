@@ -40,7 +40,11 @@ public final class MergeHelper {
         }else if(current.getEntity().getId() != null && next.getEntity().getId() != null){
           next.setValidFrom(current.getValidFrom());
           next.setAction(VersioningAction.UPDATE);
-        }else {
+        } else if(current.getEntity().getId() == null && next.getEntity().getId() != null){
+          current.setAction(VersioningAction.DELETE);
+          next.setValidFrom(current.getValidFrom());
+          next.setAction(VersioningAction.UPDATE);
+        } else {
           throw new VersioningException("Something went wrong during merge. I'm not able to apply versioning.");
         }
       }

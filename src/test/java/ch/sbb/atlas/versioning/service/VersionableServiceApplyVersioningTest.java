@@ -17,7 +17,9 @@ import java.util.function.Consumer;
 import java.util.function.LongConsumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class VersionableServiceApplyVersioningTest extends VersionableServiceBaseTest {
@@ -140,8 +142,9 @@ public class VersionableServiceApplyVersioningTest extends VersionableServiceBas
 
     versionableService.applyVersioning(VersionableObject.class, result, save, deleteById);
 
-    verify(save).accept(any());
-    verify(deleteById).accept(firstVersionedObject.getEntity().getId());
+    InOrder inOrder = Mockito.inOrder(deleteById, save);
+    inOrder.verify(deleteById).accept(firstVersionedObject.getEntity().getId());
+    inOrder.verify(save).accept(any());
 
   }
 }
