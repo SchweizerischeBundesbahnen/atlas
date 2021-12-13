@@ -56,7 +56,6 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
   @Test
   public void shouldMergeTwoIdenticalSequentialVersionedObjectFirstNewSecondUpdate() {
     //given
-
     Property prop = Property.builder().key("prop").value("ciao").build();
 
     VersionedObject first = VersionedObject.builder()
