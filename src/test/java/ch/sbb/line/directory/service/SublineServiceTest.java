@@ -70,7 +70,7 @@ class SublineServiceTest {
     sublineService.findSubline(slnid);
 
     // Then
-    verify(sublineVersionRepository).findAllBySlnid(slnid);
+    verify(sublineVersionRepository).findAllBySlnidOrderByValidFrom(slnid);
   }
 
   @Test
@@ -136,7 +136,7 @@ class SublineServiceTest {
   void shouldDeleteSublinesWhenNotFound() {
     // Given
     String slnid = "ch:1:ttfnid:1000083";
-    when(sublineVersionRepository.findAllBySlnid(slnid)).thenReturn(List.of());
+    when(sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(List.of());
 
     //When & Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
@@ -149,7 +149,7 @@ class SublineServiceTest {
     String slnid = "ch:1:ttfnid:1000083";
     SublineVersion sublineVersion = SublineTestData.sublineVersionBuilder().build();
     List<SublineVersion> sublineVersions = List.of(sublineVersion);
-    when(sublineVersionRepository.findAllBySlnid(slnid)).thenReturn(sublineVersions);
+    when(sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(sublineVersions);
 
     //When
     sublineService.deleteAll(slnid);
