@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -86,7 +87,8 @@ public class LineServiceVersioningTest {
 
     //when
     lineService.updateVersion(version2, editedVersion);
-    List<LineVersion> result = lineVersionRepository.findAllBySlnid(version1.getSlnid());
+    List<LineVersion> result = lineVersionRepository.findAllBySlnidOrderByValidFrom(
+        version1.getSlnid());
 
     //then
 
@@ -135,7 +137,7 @@ public class LineServiceVersioningTest {
    * Merge zwei versionen
    *
    * NEU:                 |__________|
-   *                        number=2
+   * number=2
    * IST:      |----------|----------|----------|
    * Version:        1          2          3
    * Änderung:  number=1   number=3  number=2
@@ -158,7 +160,8 @@ public class LineServiceVersioningTest {
 
     //when
     lineService.updateVersion(version2, editedVersion);
-    List<LineVersion> result = lineVersionRepository.findAllBySlnid(version1.getSlnid());
+    List<LineVersion> result = lineVersionRepository.findAllBySlnidOrderByValidFrom(
+        version1.getSlnid());
 
     //then
     assertThat(result).isNotNull();
@@ -179,6 +182,84 @@ public class LineServiceVersioningTest {
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(version3.getValidTo());
     assertThat(secondTemporalVersion.getSwissLineNumber()).isEqualTo("2");
     assertThat(firstTemporalVersion.getComment()).isNull();
+  }
+
+  /**
+   * Szenario 4: Update, das über eine ganze Version hinausragt
+   * NEU:             |___________________________________|
+   * IST:      |-----------|----------------------|--------------------
+   * Version:        1                 2                  3
+   *
+   *
+   * RESULTAT: |------|_____|______________________|______|------------     NEUE VERSION EINGEFÜGT
+   * Version:      1     4              2              5        3
+   */
+  @Test
+  public void scenario4() {
+    //given
+    version1 = lineVersionRepository.save(version1);
+    version2 = lineVersionRepository.save(version2);
+    version3 = lineVersionRepository.save(version3);
+    LineVersion editedVersion = new LineVersion();
+    editedVersion.setDescription("Name <changed>");
+    editedVersion.setComment("Scenario 4");
+    editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
+    editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
+
+    //when
+    lineService.updateVersion(version3, editedVersion);
+    List<LineVersion> result = lineService.findLineVersions(version1.getSlnid());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(5);
+    result.sort(Comparator.comparing(LineVersion::getValidFrom));
+    assertThat(result.get(0)).isNotNull();
+
+    // first current index updated
+    LineVersion firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("description");
+    assertThat(firstTemporalVersion.getComment()).isNull();
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(firstTemporalVersion.getSwissLineNumber()).isEqualTo("1");
+
+    // new
+    LineVersion secondTemporalVersion = result.get(1);
+    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 6, 1));
+    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo("Name <changed>");
+    assertThat(secondTemporalVersion.getComment()).isEqualTo("Scenario 4");
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(secondTemporalVersion.getSwissLineNumber()).isEqualTo("1");
+
+    //update
+    LineVersion thirdTemporalVersion = result.get(2);
+    assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
+    assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
+    assertThat(thirdTemporalVersion.getDescription()).isEqualTo("Name <changed>");
+    assertThat(thirdTemporalVersion.getComment()).isEqualTo("Scenario 4");
+    assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(thirdTemporalVersion.getSwissLineNumber()).isEqualTo("2");
+
+    //new
+    LineVersion fourthTemporalVersion = result.get(3);
+    assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
+    assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
+    assertThat(fourthTemporalVersion.getDescription()).isEqualTo("Name <changed>");
+    assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 4");
+    assertThat(fourthTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(fourthTemporalVersion.getSwissLineNumber()).isEqualTo("3");
+
+    //last current index updated
+    LineVersion fifthTemporalVersion = result.get(4);
+    assertThat(fifthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 6, 2));
+    assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
+    assertThat(fifthTemporalVersion.getDescription()).isEqualTo("description");
+    assertThat(fifthTemporalVersion.getComment()).isNull();
+    assertThat(fifthTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(fifthTemporalVersion.getSwissLineNumber()).isEqualTo("3");
 
   }
 }
