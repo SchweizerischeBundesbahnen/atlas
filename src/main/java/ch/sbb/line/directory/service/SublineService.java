@@ -15,10 +15,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class SublineService {
 
   private final SublineVersionRepository sublineVersionRepository;
@@ -31,7 +33,7 @@ public class SublineService {
   }
 
   public List<SublineVersion> findSubline(String slnid) {
-    return sublineVersionRepository.findAllBySlnid(slnid);
+    return sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
   }
 
   public Optional<SublineVersion> findById(Long id) {
@@ -58,7 +60,7 @@ public class SublineService {
   }
 
   public void deleteAll(String slnid) {
-    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnid(slnid);
+    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
     if (sublineVersions.isEmpty()) {
       throw NotFoundExcpetion.getInstance().get();
     }
@@ -66,7 +68,7 @@ public class SublineService {
   }
 
   public void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
-    List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnid(
+    List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         currentVersion.getSlnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,

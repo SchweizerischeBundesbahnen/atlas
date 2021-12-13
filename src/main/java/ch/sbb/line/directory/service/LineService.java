@@ -14,9 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class LineService {
 
   private final LineVersionRepository lineVersionRepository;
@@ -36,7 +38,7 @@ public class LineService {
   }
 
   public List<LineVersion> findLineVersions(String slnid) {
-    return lineVersionRepository.findAllBySlnid(slnid);
+    return lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
   }
 
   public Optional<LineVersion> findById(Long id) {
@@ -60,7 +62,7 @@ public class LineService {
 
 
   public void deleteAll(String slnid) {
-    List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnid(slnid);
+    List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
     if (currentVersions.isEmpty()) {
       throw NotFoundExcpetion.getInstance().get();
     }
@@ -69,7 +71,7 @@ public class LineService {
 
   public void updateVersion(LineVersion currentVersion,
       LineVersion editedVersion) {
-    List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnid(
+    List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
         currentVersion.getSlnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
