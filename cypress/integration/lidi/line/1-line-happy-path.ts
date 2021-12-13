@@ -1,7 +1,7 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 
 describe('Linienverzeichnis', () => {
-  const linie = LidiUtils.getFirstVersion();
+  const line = LidiUtils.getFirstLineVersion();
 
   const headerTitle = 'Linienverzeichnis';
 
@@ -15,19 +15,19 @@ describe('Linienverzeichnis', () => {
 
   it('Step-3: Check the Linienverzeichnis Line Table is visible', () => {
     cy.contains(headerTitle);
-    LidiUtils.assertLidiTableHeader(1, 'CH-Liniennummer (CHLNR)');
-    LidiUtils.assertLidiTableHeader(2, 'Liniennummer');
-    LidiUtils.assertLidiTableHeader(3, 'Linienbezeichnung');
-    LidiUtils.assertLidiTableHeader(4, 'Status');
-    LidiUtils.assertLidiTableHeader(5, 'Geschäftsorganisation Konzessionär');
-    LidiUtils.assertLidiTableHeader(6, 'SLNID');
-    LidiUtils.assertLidiTableHeader(7, 'Gültig von');
-    LidiUtils.assertLidiTableHeader(8, 'Gültig bis');
+    LidiUtils.assertTableHeader(1, 'CH-Liniennummer (CHLNR)');
+    LidiUtils.assertTableHeader(2, 'Liniennummer');
+    LidiUtils.assertTableHeader(3, 'Linienbezeichnung');
+    LidiUtils.assertTableHeader(4, 'Status');
+    LidiUtils.assertTableHeader(5, 'Geschäftsorganisation Konzessionär');
+    LidiUtils.assertTableHeader(6, 'SLNID');
+    LidiUtils.assertTableHeader(7, 'Gültig von');
+    LidiUtils.assertTableHeader(8, 'Gültig bis');
   });
 
   it('Step-4: Go to page Add new Version', () => {
-    LidiUtils.clickOnAddNewVersion();
-    LidiUtils.fillVersionForm(linie);
+    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.fillLineVersionForm(line);
     LidiUtils.saveVersion();
   });
 
@@ -38,9 +38,9 @@ describe('Linienverzeichnis', () => {
   });
 
   it('Step-6: Check the added is present on the table result and navigate to it ', () => {
-    cy.contains(linie.swissLineNumber).parents('tr').click();
-    cy.contains(linie.swissLineNumber);
-    LidiUtils.assertContainsVersion(linie);
+    cy.contains(line.swissLineNumber).parents('tr').click();
+    cy.contains(line.swissLineNumber);
+    LidiUtils.assertContainsVersion(line);
   });
 
   it('Step-7: Delete the item ', () => {
