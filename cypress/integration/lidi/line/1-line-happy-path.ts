@@ -1,4 +1,5 @@
 import LidiUtils from '../../../support/util/lidi-utils';
+import CommonUtils from '../../../support/util/common-utils';
 
 describe('Linienverzeichnis', () => {
   const line = LidiUtils.getFirstLineVersion();
@@ -15,24 +16,24 @@ describe('Linienverzeichnis', () => {
 
   it('Step-3: Check the Linienverzeichnis Line Table is visible', () => {
     cy.contains(headerTitle);
-    LidiUtils.assertTableHeader(1, 'CH-Liniennummer (CHLNR)');
-    LidiUtils.assertTableHeader(2, 'Liniennummer');
-    LidiUtils.assertTableHeader(3, 'Linienbezeichnung');
-    LidiUtils.assertTableHeader(4, 'Status');
-    LidiUtils.assertTableHeader(5, 'Geschäftsorganisation Konzessionär');
-    LidiUtils.assertTableHeader(6, 'SLNID');
-    LidiUtils.assertTableHeader(7, 'Gültig von');
-    LidiUtils.assertTableHeader(8, 'Gültig bis');
+    CommonUtils.assertTableHeader(1, 'CH-Liniennummer (CHLNR)');
+    CommonUtils.assertTableHeader(2, 'Liniennummer');
+    CommonUtils.assertTableHeader(3, 'Linienbezeichnung');
+    CommonUtils.assertTableHeader(4, 'Status');
+    CommonUtils.assertTableHeader(5, 'Geschäftsorganisation Konzessionär');
+    CommonUtils.assertTableHeader(6, 'SLNID');
+    CommonUtils.assertTableHeader(7, 'Gültig von');
+    CommonUtils.assertTableHeader(8, 'Gültig bis');
   });
 
   it('Step-4: Go to page Add new Version', () => {
     LidiUtils.clickOnAddNewLinieVersion();
     LidiUtils.fillLineVersionForm(line);
-    LidiUtils.saveVersion();
+    CommonUtils.saveVersion();
   });
 
   it('Step-5: Navigate to Linienverzeichnis', () => {
-    LidiUtils.navigateToHome();
+    CommonUtils.navigateToHome();
     LidiUtils.navigateToLidi();
     cy.contains(headerTitle);
   });
@@ -44,7 +45,7 @@ describe('Linienverzeichnis', () => {
   });
 
   it('Step-7: Delete the item ', () => {
-    LidiUtils.deleteItems();
+    CommonUtils.deleteItems();
     cy.contains(headerTitle);
   });
 });
