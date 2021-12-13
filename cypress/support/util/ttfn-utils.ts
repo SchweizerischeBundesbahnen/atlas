@@ -1,3 +1,5 @@
+import CommonUtils from './common-utils';
+
 export default class TtfnUtils {
   static navigateToTimetableFieldNumber() {
     cy.get('#\\timetable-field-number').click();
@@ -23,33 +25,13 @@ export default class TtfnUtils {
     cy.get('[data-cy=save-item]').should('not.be.disabled');
   }
 
-  static saveVersion() {
-    cy.get('[data-cy=save-item]').click();
-    cy.get('[data-cy=edit-item]').should('be.visible');
-    cy.get('[data-cy=delete-item]').should('be.visible');
-  }
-
   static assertContainsVersion(version: any) {
-    cy.get('[data-cy=validFrom]').invoke('val').should('eq', version.validFrom);
-    cy.get('[data-cy=validTo]').invoke('val').should('eq', version.validTo);
-    cy.get('[data-cy=businessOrganisation]')
-      .invoke('val')
-      .should('eq', version.businessOrganisation);
-    cy.get('[data-cy=number]').invoke('val').should('eq', version.number);
-    cy.get('[data-cy=name]').invoke('val').should('eq', version.name);
-    cy.get('[data-cy=comment]').invoke('val').should('eq', version.comment);
-  }
-
-  static deleteItems() {
-    cy.get('[data-cy=delete-item]').click();
-    cy.get('#mat-dialog-0').contains('Warnung!');
-    cy.get('[data-cy=dialog-confirm-button]').should('exist');
-    cy.get('[data-cy=dialog-cancel-button]').should('exist');
-    cy.get('[data-cy=dialog-confirm-button]').click();
-  }
-
-  static switchLeft() {
-    cy.get('[data-cy=switch-version-left]').click();
+    CommonUtils.assertItemValue('[data-cy=validFrom]', version.validFrom);
+    CommonUtils.assertItemValue('[data-cy=validTo]', version.validTo);
+    CommonUtils.assertItemValue('[data-cy=businessOrganisation]', version.businessOrganisation);
+    CommonUtils.assertItemValue('[data-cy=number]', version.number);
+    CommonUtils.assertItemValue('[data-cy=name]', version.name);
+    CommonUtils.assertItemValue('[data-cy=comment]', version.comment);
   }
 
   static getFirstVersion() {

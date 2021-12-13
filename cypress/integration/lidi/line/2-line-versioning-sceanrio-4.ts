@@ -1,4 +1,5 @@
 import LidiUtils from '../../../support/util/lidi-utils';
+import CommonUtils from '../../../support/util/common-utils';
 
 // Szenario 4: Update, das über eine ganze Version hinausragt
 // NEU:             |___________________________________|
@@ -28,28 +29,28 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   it('Step-3: Add first Linie Version', () => {
     LidiUtils.clickOnAddNewLinieVersion();
     LidiUtils.fillLineVersionForm(firstLinieVersion);
-    LidiUtils.saveVersion();
+    CommonUtils.saveVersion();
   });
 
   it('Step-4: Add second Linie Version', () => {
-    LidiUtils.clickOnEditLinie();
+    CommonUtils.clickOnEdit();
     LidiUtils.fillLineVersionForm(secondLineVersion);
-    LidiUtils.saveVersion();
+    CommonUtils.saveVersion();
   });
 
   it('Step-5: Add third Linie Version', () => {
-    LidiUtils.clickOnEditLinie();
+    CommonUtils.clickOnEdit();
     LidiUtils.fillLineVersionForm(thirdLineVersion);
-    LidiUtils.saveVersion();
+    CommonUtils.saveVersion();
   });
 
   it('Step-6: Add edited Linie Version to trigger versioning Scenario 4', () => {
-    LidiUtils.clickOnEditLinie();
+    CommonUtils.clickOnEdit();
     cy.get('[data-cy=validFrom]').clear().type(editedLineVersion.validFrom);
     cy.get('[data-cy=validTo]').clear().type(editedLineVersion.validTo);
     cy.get('[data-cy=alternativeName]').clear().type(editedLineVersion.alternativeName);
 
-    LidiUtils.saveVersion();
+    CommonUtils.saveVersion();
   });
 
   it('Step-7: Check version display', () => {
@@ -68,7 +69,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-9: Assert fourth version', () => {
-    LidiUtils.switchLeft();
+    CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('4 / 5');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2002 bis 01.06.2002');
 
@@ -79,7 +80,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-9: Assert third version', () => {
-    LidiUtils.switchLeft();
+    CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('3 / 5');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2001 bis 31.12.2001');
 
@@ -92,7 +93,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-10: Assert second version', () => {
-    LidiUtils.switchLeft();
+    CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('2 / 5');
     cy.get('[data-cy=switch-version-current-range]').contains('01.06.2000 bis 31.12.2000');
 
@@ -105,7 +106,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-11: Assert first version', () => {
-    LidiUtils.switchLeft();
+    CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('1 / 5');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2000 bis 31.05.2000');
 
@@ -114,7 +115,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-12: Delete the item ', () => {
-    LidiUtils.deleteItems();
+    CommonUtils.deleteItems();
     cy.contains(headerTitle);
   });
 });
