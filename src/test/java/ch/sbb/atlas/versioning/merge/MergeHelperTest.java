@@ -54,6 +54,42 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
   }
 
   @Test
+  public void shouldMergeTwoIdenticalSequentialVersionedObjectFirstNewSecondUpdate() {
+    //given
+
+    Property prop = Property.builder().key("prop").value("ciao").build();
+
+    VersionedObject first = VersionedObject.builder()
+                                           .validFrom(LocalDate.of(2000, 1, 1))
+                                           .validTo(LocalDate.of(2000, 12, 31))
+                                           .entity(Entity.builder().properties(List.of(prop)).build())
+                                           .build();
+
+    VersionedObject second = VersionedObject.builder()
+                                            .validFrom(LocalDate.of(2001, 1, 1))
+                                            .validTo(LocalDate.of(2001, 12, 31))
+                                            .entity(Entity.builder().properties(List.of(prop)).id(1L).build())
+                                            .build();
+    //when
+    List<VersionedObject> result = MergeHelper.mergeVersionedObject(
+        Arrays.asList(first, second));
+    //then
+    assertThat(result).isNotEmpty();
+    result.sort(Comparator.comparing(VersionedObject::getValidFrom));
+    assertThat(result.size()).isEqualTo(2);
+
+    VersionedObject firstVersionedObject = result.get(0);
+    assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.DELETE);
+    assertThat(firstVersionedObject.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
+    assertThat(firstVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2000, 12, 31));
+
+    VersionedObject secondVersionedObject = result.get(1);
+    assertThat(secondVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
+    assertThat(secondVersionedObject.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
+    assertThat(secondVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
+  }
+
+  @Test
   public void shouldNotMergeTwoIdenticalNotSequentialVersionedObject() {
     //given
 

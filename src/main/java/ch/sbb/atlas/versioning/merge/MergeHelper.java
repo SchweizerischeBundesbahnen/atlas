@@ -31,21 +31,22 @@ public final class MergeHelper {
           current.setAction(VersioningAction.DELETE);
           next.setValidFrom(current.getValidFrom());
           next.setAction(VersioningAction.UPDATE);
-        }else if(current.getEntity().getId() == null && next.getEntity().getId() == null){
+        } else if (current.getEntity().getId() == null && next.getEntity().getId() == null) {
           //After versioning we have 2 new sequential versions. In this case we merge them together,
           //we mark the current version to be deleted and the next to be created.
           current.setAction(VersioningAction.DELETE);
           next.setValidFrom(current.getValidFrom());
           next.setAction(VersioningAction.NEW);
-        }else if(current.getEntity().getId() != null && next.getEntity().getId() != null){
+        } else if (current.getEntity().getId() != null && next.getEntity().getId() != null) {
           next.setValidFrom(current.getValidFrom());
           next.setAction(VersioningAction.UPDATE);
-        } else if(current.getEntity().getId() == null && next.getEntity().getId() != null){
+        } else if (current.getEntity().getId() == null && next.getEntity().getId() != null) {
           current.setAction(VersioningAction.DELETE);
           next.setValidFrom(current.getValidFrom());
           next.setAction(VersioningAction.UPDATE);
         } else {
-          throw new VersioningException("Something went wrong during merge. I'm not able to apply versioning.");
+          throw new VersioningException(
+              "Something went wrong during merge. I'm not able to apply versioning.");
         }
       }
     }
@@ -54,11 +55,11 @@ public final class MergeHelper {
 
   private static List<Property> getNotIgnoredCurrentProperties(VersionedObject versionedObject) {
     return versionedObject.getEntity()
-                  .getProperties()
-                  .stream()
-                  .filter(property -> !property.isIgnoreDiff())
-                  .collect(
-                      Collectors.toList());
+                          .getProperties()
+                          .stream()
+                          .filter(property -> !property.isIgnoreDiff())
+                          .collect(
+                              Collectors.toList());
   }
 
 
