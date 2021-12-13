@@ -20,5 +20,5 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
   List<SublineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumber(
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
-  List<SublineVersion> findAllBySlnid(String slnid);
+  List<SublineVersion> findAllBySlnidOrderByValidFrom(String slnid);
 }
