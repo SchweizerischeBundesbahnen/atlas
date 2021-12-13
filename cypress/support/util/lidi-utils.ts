@@ -1,11 +1,9 @@
+import CommonUtils from './common-utils';
+
 export default class LidiUtils {
   static navigateToLidi() {
     cy.get('#line-directory').click();
     cy.url().should('contain', '/line-directory');
-  }
-
-  static navigateToHome() {
-    cy.get('#home').click();
   }
 
   static clickOnAddNewLinieVersion() {
@@ -53,70 +51,44 @@ export default class LidiUtils {
     });
   }
 
-  static saveVersion() {
-    cy.get('[data-cy=save-item]').click();
-    cy.get('[data-cy=edit-item]').should('be.visible');
-    cy.get('[data-cy=delete-item]').should('be.visible');
-    cy.wait(1000);
-  }
-
   static assertContainsVersion(version: any) {
-    this.assertItemValue('[data-cy=validFrom]', version.validFrom);
-    this.assertItemValue('[data-cy=validTo]', version.validTo);
-    this.assertItemValue('[data-cy=swissLineNumber]', version.swissLineNumber);
-    this.assertItemValue('[data-cy=businessOrganisation]', version.businessOrganisation);
-    this.assertItemText(
+    CommonUtils.assertItemValue('[data-cy=validFrom]', version.validFrom);
+    CommonUtils.assertItemValue('[data-cy=validTo]', version.validTo);
+    CommonUtils.assertItemValue('[data-cy=swissLineNumber]', version.swissLineNumber);
+    CommonUtils.assertItemValue('[data-cy=businessOrganisation]', version.businessOrganisation);
+    CommonUtils.assertItemText(
       '[data-cy=type] .mat-select-value-text > .mat-select-min-line',
       version.type
     );
-    this.assertItemText(
+    CommonUtils.assertItemText(
       '[data-cy=paymentType] .mat-select-value-text > .mat-select-min-line',
       version.paymentType
     );
-    this.assertItemValue(
+    CommonUtils.assertItemValue(
       '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]',
       version.colorFontRgb
     );
-    this.assertItemValue(
+    CommonUtils.assertItemValue(
       '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]',
       version.colorBackRgb
     );
-    this.assertItemValue(
+    CommonUtils.assertItemValue(
       '[data-cy=colorFontCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]',
       version.colorFontCmyk
     );
-    this.assertItemValue(
+    CommonUtils.assertItemValue(
       '[data-cy=colorBackCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]',
       version.colorBackCmyk
     );
-    this.assertItemValue('[data-cy=description]', version.description);
-    this.assertItemValue('[data-cy=number]', version.number);
-    this.assertItemValue('[data-cy=alternativeName]', version.alternativeName);
-    this.assertItemValue('[data-cy=combinationName]', version.combinationName);
-    this.assertItemValue('[data-cy=longName]', version.longName);
-    this.assertItemValue('[data-cy=icon]', version.icon);
-    this.assertItemValue('[data-cy=comment]', version.comment);
+    CommonUtils.assertItemValue('[data-cy=description]', version.description);
+    CommonUtils.assertItemValue('[data-cy=number]', version.number);
+    CommonUtils.assertItemValue('[data-cy=alternativeName]', version.alternativeName);
+    CommonUtils.assertItemValue('[data-cy=combinationName]', version.combinationName);
+    CommonUtils.assertItemValue('[data-cy=longName]', version.longName);
+    CommonUtils.assertItemValue('[data-cy=icon]', version.icon);
+    CommonUtils.assertItemValue('[data-cy=comment]', version.comment);
 
     cy.get('[data-cy=edit-item]').should('not.be.disabled');
-  }
-
-  private static assertItemValue(selector: string, value: string) {
-    cy.get(selector).invoke('val').should('eq', value);
-  }
-
-  private static assertItemText(selector: string, value: string) {
-    cy.get(selector).invoke('text').should('eq', value);
-  }
-  static deleteItems() {
-    cy.get('[data-cy=delete-item]').click();
-    cy.get('#mat-dialog-0').contains('Warnung!');
-    cy.get('[data-cy=dialog-confirm-button]').should('exist');
-    cy.get('[data-cy=dialog-cancel-button]').should('exist');
-    cy.get('[data-cy=dialog-confirm-button]').click();
-  }
-
-  static switchLeft() {
-    cy.get('[data-cy=switch-version-left]').click();
   }
 
   static assertTableHeader(columnHeaderNumber: number, columnHeaderContent: string) {
@@ -125,10 +97,6 @@ export default class LidiUtils {
       .eq(columnHeaderNumber)
       .get('div')
       .contains(columnHeaderContent);
-  }
-
-  static clickOnEditLinie() {
-    cy.get('[data-cy=edit-item]').click();
   }
 
   static getFirstLineVersion() {
