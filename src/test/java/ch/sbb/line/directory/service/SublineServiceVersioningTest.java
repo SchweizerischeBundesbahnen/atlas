@@ -89,7 +89,7 @@ public class SublineServiceVersioningTest {
 
     //when
     sublineService.updateVersion(version2, editedVersion);
-    List<SublineVersion> result = sublineVersionRepository.findAllBySlnid(version1.getSlnid());
+    List<SublineVersion> result = sublineVersionRepository.findAllBySlnidOrderByValidFrom(version1.getSlnid());
 
     //then
 
@@ -156,7 +156,7 @@ public class SublineServiceVersioningTest {
 
     //when
     sublineService.updateVersion(version2, editedVersion);
-    List<SublineVersion> result = sublineVersionRepository.findAllBySlnid(version1.getSlnid());
+    List<SublineVersion> result = sublineVersionRepository.findAllBySlnidOrderByValidFrom(version1.getSlnid());
 
     //then
     assertThat(result).isNotNull();
