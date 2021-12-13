@@ -61,31 +61,38 @@ public class VersionableServiceImpl implements VersionableService {
   @Override
   public <T extends Versionable> void applyVersioning(Class<T> clazz,
       List<VersionedObject> versionedObjects, Consumer<T> save, LongConsumer deleteById) {
-    for (VersionedObject versionedObject : versionedObjects) {
-      if (NOT_TOUCHED.equals(versionedObject.getAction())) {
-        log(versionedObject);
-      }
-      if (UPDATE.equals(versionedObject.getAction())) {
-        log(versionedObject);
-        T version = ToVersionableMapper.convert(versionedObject,
-            clazz);
-        save.accept(version);
-      }
-      if (NEW.equals(versionedObject.getAction())) {
-        log.info("A new Version was added. VersionedObject={}", versionedObject);
-        T version = ToVersionableMapper.convert(versionedObject,
-            clazz);
-        //ensure version.getId() == null to avoid to update a Version
-        version.setId(null);
-        save.accept(version);
-      }
-      if (DELETE.equals(versionedObject.getAction())) {
-        log(versionedObject);
-        if(versionedObject.getEntity().getId() != null){
-          deleteById.accept(versionedObject.getEntity().getId());
-        }
-      }
-    }
+    versionedObjects.stream()
+                    .filter(versionedObject -> NOT_TOUCHED == versionedObject.getAction())
+                    .forEach(this::log);
+
+    versionedObjects.stream()
+                    .filter(versionedObject -> DELETE == versionedObject.getAction())
+                    .forEach(versionedObject -> {
+                      log(versionedObject);
+                      if (versionedObject.getEntity().getId() != null) {
+                        deleteById.accept(versionedObject.getEntity().getId());
+                      }
+                    });
+
+    versionedObjects.stream()
+                    .filter(versionedObject -> UPDATE == versionedObject.getAction())
+                    .forEach(versionedObject -> {
+                      log(versionedObject);
+                      T version = ToVersionableMapper.convert(versionedObject,
+                          clazz);
+                      save.accept(version);
+                    });
+
+    versionedObjects.stream()
+                    .filter(versionedObject -> NEW == versionedObject.getAction())
+                    .forEach(versionedObject -> {
+                      log.info("A new Version was added. VersionedObject={}", versionedObject);
+                      T version = ToVersionableMapper.convert(versionedObject,
+                          clazz);
+                      //ensure version.getId() == null to avoid to update a Version
+                      version.setId(null);
+                      save.accept(version);
+                    });
   }
 
   private void log(VersionedObject versionedObject) {
