@@ -52,24 +52,13 @@ public class VersionService {
 
   public Page<TimetableFieldNumber> getVersionsSearched(Pageable pageable,
       List<String> searchCriteria,
-      LocalDate validOn) {
-    return timetableFieldNumberRepository.searchVersions(searchCriteria, validOn, pageable);
-  }
-
-  public boolean existsById(Long id) {
-    return versionRepository.existsById(id);
+      LocalDate validOn,
+      List<Status> statusChoices) {
+    return timetableFieldNumberRepository.searchVersions(pageable, searchCriteria, validOn, statusChoices);
   }
 
   public void deleteById(Long id) {
     versionRepository.deleteById(id);
-  }
-
-  public Page<TimetableFieldNumber> getOverview(Pageable pageable) {
-    return timetableFieldNumberRepository.findAll(pageable);
-  }
-
-  public long count() {
-    return versionRepository.count();
   }
 
   public List<VersionedObject> updateVersion(Version currentVersion, Version editedVersion) {
