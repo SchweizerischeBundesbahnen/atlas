@@ -40,16 +40,12 @@ public class VersionController implements TimetableFieldNumberApiV1 {
 
   @Override
   public TimetableFieldNumberContainer getOverview(Pageable pageable, List<String> searchCriteria,
-      LocalDate validOn) {
-    log.info("Load TimetableFieldNumbers using pageable={}, searchCriteria={} and validOn={}", pageable, searchCriteria, validOn);
-    Page<TimetableFieldNumber> timetableFieldNumberPage;
-    if ((searchCriteria == null || searchCriteria.isEmpty()) && validOn == null) {
-      timetableFieldNumberPage = versionService.getOverview(pageable);
-    } else {
-      timetableFieldNumberPage = versionService.getVersionsSearched(pageable,
-          searchCriteria,
-          validOn);
-    }
+      LocalDate validOn, List<Status> statusChoices) {
+    log.info("Load TimetableFieldNumbers using pageable={}, searchCriteria={}, validOn={} and statusChoices={}",
+        pageable, searchCriteria, validOn, statusChoices);
+    Page<TimetableFieldNumber> timetableFieldNumberPage = versionService.getVersionsSearched(pageable,
+        searchCriteria,
+        validOn, statusChoices);
     List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(this::toModel)
         .collect(Collectors.toList());
     return TimetableFieldNumberContainer.builder()
