@@ -4,10 +4,13 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
 import ch.sbb.line.directory.entity.Subline;
+import ch.sbb.line.directory.entity.SublineSearchSpecification;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +31,12 @@ public class SublineService {
   private final VersionableService versionableService;
   private final LineService lineService;
 
-  public Page<Subline> findAll(Pageable pageable) {
-    return sublineRepository.findAll(pageable);
+  public Page<Subline> findAll(Pageable pageable, List<String> searchCriteria,
+      List<Status> statusRestrictions,List<SublineType> typeRestrictions,
+      Optional<LocalDate> validOn) {
+    return sublineRepository.findAll(
+        SublineSearchSpecification.build(searchCriteria, statusRestrictions, typeRestrictions, validOn),
+        pageable);
   }
 
   public List<SublineVersion> findSubline(String slnid) {
@@ -60,7 +67,8 @@ public class SublineService {
   }
 
   public void deleteAll(String slnid) {
-    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
+    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
+        slnid);
     if (sublineVersions.isEmpty()) {
       throw NotFoundExcpetion.getInstance().get();
     }
