@@ -14,7 +14,7 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
         sublineVersion.getValidFrom(), sublineVersion.getValidTo(),
         sublineVersion.getSwissSublineNumber()).stream()
                                                .allMatch(
-                                                   i -> sublineVersion.getId().equals(i.getId()));
+                                                   i -> i.getSlnid().equals(sublineVersion.getSlnid()));
   }
 
   List<SublineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumber(
