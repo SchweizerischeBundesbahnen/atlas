@@ -8,6 +8,7 @@ import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.line.directory.service.SublineSearchRestrictions;
 import ch.sbb.line.directory.service.SublineService;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,9 +29,18 @@ public class SublineController implements SublinenApiV1 {
 
   @Override
   public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
-      List<Status> statusRestrictions, List<SublineType> typeRestrictions, Optional<LocalDate> validOn) {
-    Page<Subline> sublines = sublineService.findAll(pageable, searchCriteria, statusRestrictions,
-        typeRestrictions, validOn);
+      List<Status> statusRestrictions, List<SublineType> typeRestrictions,
+      Optional<LocalDate> validOn) {
+    Page<Subline> sublines = sublineService.findAll(SublineSearchRestrictions.builder()
+                                                                             .pageable(pageable)
+                                                                             .searchCriteria(
+                                                                                 searchCriteria)
+                                                                             .statusRestrictions(
+                                                                                 statusRestrictions)
+                                                                             .typeRestrictions(
+                                                                                 typeRestrictions)
+                                                                             .validOn(validOn)
+                                                                             .build());
     return Container.<SublineModel>builder()
                     .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
                     .totalCount(sublines.getTotalElements())

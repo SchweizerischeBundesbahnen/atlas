@@ -7,15 +7,12 @@ import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineSearchSpecification;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,12 +28,9 @@ public class SublineService {
   private final VersionableService versionableService;
   private final LineService lineService;
 
-  public Page<Subline> findAll(Pageable pageable, List<String> searchCriteria,
-      List<Status> statusRestrictions,List<SublineType> typeRestrictions,
-      Optional<LocalDate> validOn) {
-    return sublineRepository.findAll(
-        SublineSearchSpecification.build(searchCriteria, statusRestrictions, typeRestrictions, validOn),
-        pageable);
+  public Page<Subline> findAll(SublineSearchRestrictions sublineSearchRestrictions) {
+    return sublineRepository.findAll(SublineSearchSpecification.build(sublineSearchRestrictions),
+        sublineSearchRestrictions.getPageable());
   }
 
   public List<SublineVersion> findSubline(String slnid) {

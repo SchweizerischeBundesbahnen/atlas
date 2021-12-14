@@ -58,7 +58,7 @@ class SublineServiceTest {
     Pageable pageable = Pageable.unpaged();
 
     // When
-    sublineService.findAll(pageable,Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Optional.empty() );
+    sublineService.findAll(SublineSearchRestrictions.builder().pageable(pageable).build() );
 
     // Then
     verify(sublineRepository).findAll(ArgumentMatchers.<Specification<Subline>>any(), eq(pageable));
