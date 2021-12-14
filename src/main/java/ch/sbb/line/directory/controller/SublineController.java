@@ -7,8 +7,11 @@ import ch.sbb.line.directory.api.SublinenApiV1;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.service.SublineService;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +27,10 @@ public class SublineController implements SublinenApiV1 {
   private final SublineService sublineService;
 
   @Override
-  public Container<SublineModel> getSublines(Pageable pageable) {
-    Page<Subline> sublines = sublineService.findAll(pageable);
+  public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
+      List<Status> statusRestrictions, List<SublineType> typeRestrictions, Optional<LocalDate> validOn) {
+    Page<Subline> sublines = sublineService.findAll(pageable, searchCriteria, statusRestrictions,
+        typeRestrictions, validOn);
     return Container.<SublineModel>builder()
                     .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
                     .totalCount(sublines.getTotalElements())
@@ -64,10 +69,11 @@ public class SublineController implements SublinenApiV1 {
 
   @Override
   public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
-    SublineVersion versionToUpdate = sublineService.findById(id).orElseThrow(NotFoundExcpetion.getInstance());
+    SublineVersion versionToUpdate = sublineService.findById(id)
+                                                   .orElseThrow(NotFoundExcpetion.getInstance());
     sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
-                      .collect(Collectors.toList());
+                         .collect(Collectors.toList());
   }
 
   @Override

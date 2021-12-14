@@ -50,12 +50,13 @@ public class SublineControllerTest {
   void shouldGetSublines() {
     // Given
     Subline subline = SublineTestData.subline();
-    when(sublineService.findAll(any(Pageable.class))).thenReturn(
+    when(sublineService.findAll(any(Pageable.class), any(), any(), any(), any())).thenReturn(
         new PageImpl<>(Collections.singletonList(subline)));
 
     // When
     Container<SublineModel> sublineContainer = sublineController.getSublines(
-        Pageable.unpaged());
+        Pageable.unpaged(), Collections.emptyList(), Collections.emptyList(),
+        Collections.emptyList(), Optional.of(LocalDate.now()));
 
     // Then
     assertThat(sublineContainer).isNotNull();
@@ -102,7 +103,7 @@ public class SublineControllerTest {
   @Test
   void shouldDeleteVersion() {
     // Given
-    String slnid ="ch:1:slnid:10000";
+    String slnid = "ch:1:slnid:10000";
     // When
     sublineController.deleteSublines(slnid);
 
@@ -128,18 +129,18 @@ public class SublineControllerTest {
 
   private static SublineVersionModel createModel() {
     return SublineVersionModel.builder()
-                         .swissSublineNumber("swissSublineNumber")
-                         .mainlineSlnid("mainlineSlnid")
-                         .status(Status.ACTIVE)
-                         .type(SublineType.TECHNICAL)
-                         .slnid("slnid")
-                         .description("description")
-                         .number("number")
-                         .longName("longName")
-                         .paymentType(PaymentType.INTERNATIONAL)
-                         .validFrom(LocalDate.of(2020,12,12))
-                         .validTo(LocalDate.of(2099,12,12))
-                         .businessOrganisation("businessOrganisation")
-                         .build();
+                              .swissSublineNumber("swissSublineNumber")
+                              .mainlineSlnid("mainlineSlnid")
+                              .status(Status.ACTIVE)
+                              .type(SublineType.TECHNICAL)
+                              .slnid("slnid")
+                              .description("description")
+                              .number("number")
+                              .longName("longName")
+                              .paymentType(PaymentType.INTERNATIONAL)
+                              .validFrom(LocalDate.of(2020, 12, 12))
+                              .validTo(LocalDate.of(2099, 12, 12))
+                              .businessOrganisation("businessOrganisation")
+                              .build();
   }
 }
