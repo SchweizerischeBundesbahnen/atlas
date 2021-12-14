@@ -3,16 +3,17 @@
     <mat-label>{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
     <mat-chip-list #chipList>
       <em class="bi bi-search me-2"></em>
-      <mat-chip *ngFor="let search of searchStrings" (removed)="remove(search)">
+      <mat-chip *ngFor="let search of searchStrings" (removed)="removeSearch(search)">
         {{ search }}
         <button matChipRemove>
           <em class="bi bi-x-circle-fill"></em>
         </button>
       </mat-chip>
       <input
+        data-cy="ttfn-search-chip-input"
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
-        (matChipInputTokenEnd)="add($event)"
+        (matChipInputTokenEnd)="addSearch($event)"
       />
     </mat-chip-list>
   </mat-form-field>
@@ -35,8 +36,9 @@
     </mat-error>
   </mat-form-field>
 </div>
-<section>
+<section class="pb-2 border-bottom">
   <mat-checkbox
+    color="primary"
     class="ms-3"
     *ngFor="let status of STATUS_OPTIONS"
     (change)="checkboxChanged($event.checked, status)"
