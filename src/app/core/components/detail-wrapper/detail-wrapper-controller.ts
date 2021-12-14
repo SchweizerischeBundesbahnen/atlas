@@ -78,7 +78,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
-      this.init();
+      this.ngOnInit();
     }
   }
 
