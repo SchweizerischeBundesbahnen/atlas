@@ -20,7 +20,7 @@ export default class CommonUtils {
 
   static deleteItems() {
     cy.get('[data-cy=delete-item]').click();
-    cy.get('#mat-dialog-0').contains('Warnung!');
+    cy.get('[data-cy=dialog]').contains('Warnung!');
     cy.get('[data-cy=dialog-confirm-button]').should('exist');
     cy.get('[data-cy=dialog-cancel-button]').should('exist');
     cy.get('[data-cy=dialog-confirm-button]').click();

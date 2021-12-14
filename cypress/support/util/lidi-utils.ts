@@ -14,6 +14,14 @@ export default class LidiUtils {
     cy.contains('Neue Linie');
   }
 
+  static clickOnAddNewSublinesLinieVersion() {
+    cy.get('[data-cy=lidi-sublines] [data-cy=new-item]').click();
+    cy.get('[data-cy=save-item]').should('be.disabled');
+    cy.get('[data-cy=edit-item]').should('not.exist');
+    cy.get('[data-cy=delete-item]').should('not.exist');
+    cy.contains('Neue Teillinie');
+  }
+
   static fillLineVersionForm(version: any) {
     cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
     cy.get('[data-cy=validTo]').clear().type(version.validTo);
@@ -51,7 +59,11 @@ export default class LidiUtils {
     });
   }
 
-  static assertContainsVersion(version: any) {
+  static typeAndSelectItemFromDropDown(selector: string, value: string) {
+    cy.get(selector).first().type(value).type('Cypress.io{enter}');
+  }
+
+  static assertContainsLineVersion(version: any) {
     CommonUtils.assertItemValue('[data-cy=validFrom]', version.validFrom);
     CommonUtils.assertItemValue('[data-cy=validTo]', version.validTo);
     CommonUtils.assertItemValue('[data-cy=swissLineNumber]', version.swissLineNumber);
@@ -173,6 +185,57 @@ export default class LidiUtils {
       validFrom: '01.06.2000',
       validTo: '01.06.2002',
       alternativeName: 'IC2 alt edit',
+    };
+  }
+
+  static fillSublineVersionForm(version: any) {
+    cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
+    cy.get('[data-cy=validTo]').clear().type(version.validTo);
+    cy.get('[data-cy=swissSublineNumber]').clear().type(version.swissSublineNumber);
+    this.typeAndSelectItemFromDropDown('[data-cy=mainlineSlnid]', version.mainlineSlnid);
+    cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
+    this.selectItemFromDropDown('[data-cy=type]', version.type);
+    this.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
+    cy.get('[data-cy=description]').clear().type(version.description);
+    cy.get('[data-cy=number]').clear().type(version.number);
+    cy.get('[data-cy=longName]').clear().type(version.longName);
+    cy.get('[data-cy=save-item]').should('not.be.disabled');
+  }
+
+  static assertContainsSublineVersion(version: any) {
+    CommonUtils.assertItemValue('[data-cy=validFrom]', version.validFrom);
+    CommonUtils.assertItemValue('[data-cy=validTo]', version.validTo);
+    CommonUtils.assertItemValue('[data-cy=swissSublineNumber]', version.swissSublineNumber);
+    cy.get('[data-cy=mainlineSlnid]').should('contain.text', version.mainlineSlnid);
+    CommonUtils.assertItemValue('[data-cy=businessOrganisation]', version.businessOrganisation);
+    CommonUtils.assertItemText(
+      '[data-cy=type] .mat-select-value-text > .mat-select-min-line',
+      version.type
+    );
+    CommonUtils.assertItemText(
+      '[data-cy=paymentType] .mat-select-value-text > .mat-select-min-line',
+      version.paymentType
+    );
+    CommonUtils.assertItemValue('[data-cy=description]', version.description);
+    CommonUtils.assertItemValue('[data-cy=number]', version.number);
+    CommonUtils.assertItemValue('[data-cy=longName]', version.longName);
+
+    cy.get('[data-cy=edit-item]').should('not.be.disabled');
+  }
+
+  static getFirstSublineVersion() {
+    return {
+      validFrom: '01.01.2000',
+      validTo: '31.12.2000',
+      swissSublineNumber: 'b0.IC23',
+      mainlineSlnid: 'b0.IC2',
+      businessOrganisation: 'SBB-2',
+      type: 'Technisch',
+      paymentType: 'International',
+      description: 'Lorem Ipus Linie',
+      number: 'IC2',
+      longName:
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
     };
   }
 }

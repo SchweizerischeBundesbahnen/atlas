@@ -1,7 +1,7 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
 
-describe('Linienverzeichnis', () => {
+describe('Linie', () => {
   const line = LidiUtils.getFirstLineVersion();
 
   const headerTitle = 'Linienverzeichnis';
@@ -41,7 +41,7 @@ describe('Linienverzeichnis', () => {
   it('Step-6: Check the added is present on the table result and navigate to it ', () => {
     cy.contains(line.swissLineNumber).parents('tr').click();
     cy.contains(line.swissLineNumber);
-    LidiUtils.assertContainsVersion(line);
+    LidiUtils.assertContainsLineVersion(line);
   });
 
   it('Step-7: Delete the item ', () => {
