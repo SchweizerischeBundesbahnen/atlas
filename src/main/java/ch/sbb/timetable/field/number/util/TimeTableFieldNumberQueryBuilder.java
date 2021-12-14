@@ -4,7 +4,6 @@ import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber_;
 import ch.sbb.timetable.field.number.enumaration.Status;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,16 +50,12 @@ public class TimeTableFieldNumberQueryBuilder {
         : criteriaBuilder.and();
   }
 
-  private Predicate getStatusPredicate(Set<Status> statusSearches) {
-    if (statusSearches.isEmpty()) {
+  private Predicate getStatusPredicate(Set<Status> statusChoices) {
+    if (statusChoices.isEmpty()) {
       return criteriaBuilder.and();
     }
     Path<Status> status = timetableFieldNumberRoot.get(TimetableFieldNumber_.status);
-    return criteriaBuilder.or(statusSearches.stream()
-        .map(statusSearch -> criteriaBuilder.equal(status, statusSearch)
-        )
-        .toArray(Predicate[]::new)
-    );
+    return status.in(statusChoices);
   }
 
   private Predicate getStringPredicate(Set<String> searchStrings) {
@@ -80,18 +75,11 @@ public class TimeTableFieldNumberQueryBuilder {
     return criteriaBuilder.and(stringPredicates);
   }
 
-  private Set<String> getStatusSearches(Set<String> searchStrings) {
-    return searchStrings.stream()
-        .filter(searchString -> Arrays.stream(Status.values())
-            .anyMatch(statusVal -> statusVal.isStatus(searchString.toUpperCase())))
-        .collect(Collectors.toSet());
-  }
-
   public List<Order> getOrders(Pageable pageable) {
     return QueryUtils.toOrders(pageable.getSort(), timetableFieldNumberRoot, criteriaBuilder);
   }
 
-  public Predicate getAllPredicates(List<String> searchStrings, LocalDate validOn) {
+  public Predicate getAllPredicates(List<String> searchStrings, LocalDate validOn, List<Status> statusChoices) {
     Set<String> searchStringsFiltered = new HashSet<>();
     if (searchStrings != null) {
       searchStringsFiltered = searchStrings.stream()
@@ -99,12 +87,9 @@ public class TimeTableFieldNumberQueryBuilder {
           .map(String::toLowerCase)
           .collect(Collectors.toSet());
     }
-    Set<String> statusSearches = getStatusSearches(searchStringsFiltered);
-    Set<String> stringSearches = new HashSet<>(searchStringsFiltered);
-    stringSearches.removeAll(statusSearches);
-    Set<Status> statusSet = statusSearches.stream().map(status -> Status.valueOf(status.toUpperCase())).collect(Collectors.toSet());
+    Set<Status> statusSet = statusChoices == null ? new HashSet<>() : new HashSet<>(statusChoices);
     return criteriaBuilder.and(
-        getStringPredicate(stringSearches),
+        getStringPredicate(searchStringsFiltered),
         getValidityPredicate(validOn),
         getStatusPredicate(statusSet)
     );

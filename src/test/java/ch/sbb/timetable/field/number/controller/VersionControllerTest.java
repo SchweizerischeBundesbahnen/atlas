@@ -65,12 +65,11 @@ public class VersionControllerTest {
   void shouldGetOverview() {
     // Given
     TimetableFieldNumber version = createOverviewEntity();
-    when(versionService.getOverview(any(Pageable.class))).thenReturn(
+    when(versionService.getVersionsSearched(any(Pageable.class), any(), any(), any())).thenReturn(
         new PageImpl<>(Collections.singletonList(version)));
-    when(versionService.count()).thenReturn(1L);
 
     // When
-    TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getOverview(Pageable.unpaged(), null, null);
+    TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getOverview(Pageable.unpaged(), null, null, null);
 
     // Then
     assertThat(timetableFieldNumberContainer).isNotNull();
@@ -78,21 +77,6 @@ public class VersionControllerTest {
         .first()
         .usingRecursiveComparison()
         .isEqualTo(version);
-    assertThat(timetableFieldNumberContainer.getTotalCount()).isEqualTo(1);
-  }
-
-  @Test
-  void shouldGetSearchedVersions() {
-    // Given
-    TimetableFieldNumber version = createOverviewEntity();
-    when(versionService.getVersionsSearched(any(Pageable.class), any(), any())).thenReturn(new PageImpl<>(List.of(version)));
-
-    // When
-    TimetableFieldNumberContainer timetableFieldNumberContainer = versionController.getOverview(Pageable.unpaged(), List.of("sbb"), null);
-
-    // Then
-    assertThat(timetableFieldNumberContainer).isNotNull();
-    assertThat(timetableFieldNumberContainer.getFieldNumbers()).hasSize(1).first().usingRecursiveComparison().isEqualTo(version);
     assertThat(timetableFieldNumberContainer.getTotalCount()).isEqualTo(1);
   }
 
