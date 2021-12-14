@@ -38,7 +38,21 @@ describe('Fahrplanfeldnummer', () => {
     cy.contains(headerTitle);
   });
 
-  it('Step-6: Check the item aa.AAA is present on the table result and navigate to it ', () => {
+  it('Step-6: search for item 00.AAA in table and check results', () => {
+    cy.get('[data-cy=ttfn-search-chip-input]')
+      .clear()
+      .type(`${firstVersion.swissTimetableFieldNumber}{enter}`);
+    cy.wait(500);
+    cy.get('table').get('tbody tr').contains(firstVersion.swissTimetableFieldNumber).click();
+    cy.contains(firstVersion.swissTimetableFieldNumber);
+  });
+
+  it('Step-7: Navigate to the Fahrplanfeldnummer', () => {
+    cy.get('#\\/timetable-field-number').click();
+    cy.contains(headerTitle);
+  });
+
+  it('Step-8: Check the item aa.AAA is present on the table result and navigate to it ', () => {
     cy.contains(firstVersion.swissTimetableFieldNumber).parents('tr').click();
     cy.contains(firstVersion.swissTimetableFieldNumber);
     cy.get('[data-cy=swissTimetableFieldNumber]')
@@ -47,7 +61,7 @@ describe('Fahrplanfeldnummer', () => {
     TtfnUtils.assertContainsVersion(firstVersion);
   });
 
-  it('Step-7: Delete the item aa.AAA ', () => {
+  it('Step-9: Delete the item aa.AAA ', () => {
     TtfnUtils.deleteItems();
     cy.contains(headerTitle);
   });

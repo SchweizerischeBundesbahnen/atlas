@@ -49,7 +49,7 @@ export class TableSearchComponent {
     this.emitSearch();
   }
 
-  add(event: MatChipInputEvent): void {
+  addSearch(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (this.searchStrings.indexOf(value) !== -1) {
       event.chipInput!.clear();
@@ -60,6 +60,14 @@ export class TableSearchComponent {
     }
     // Clear the input value
     event.chipInput!.clear();
+    this.emitSearch();
+  }
+
+  removeSearch(search: string): void {
+    const index = this.searchStrings.indexOf(search);
+    if (index >= 0) {
+      this.searchStrings.splice(index, 1);
+    }
     this.emitSearch();
   }
 
@@ -74,13 +82,5 @@ export class TableSearchComponent {
       searchCriteria: this.searchStrings.concat(this.activeStatuses),
       validOn: this.searchDate,
     });
-  }
-
-  remove(search: string): void {
-    const index = this.searchStrings.indexOf(search);
-    if (index >= 0) {
-      this.searchStrings.splice(index, 1);
-    }
-    this.emitSearch();
   }
 }
