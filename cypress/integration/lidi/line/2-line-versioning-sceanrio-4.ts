@@ -65,7 +65,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
 
     thirdLineVersion.validFrom = '02.06.2002';
     thirdLineVersion.validTo = '31.12.2002';
-    LidiUtils.assertContainsVersion(thirdLineVersion);
+    LidiUtils.assertContainsLineVersion(thirdLineVersion);
   });
 
   it('Step-9: Assert fourth version', () => {
@@ -76,7 +76,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     thirdLineVersion.validFrom = '01.01.2002';
     thirdLineVersion.validTo = '01.06.2002';
     thirdLineVersion.alternativeName = editedLineVersion.alternativeName;
-    LidiUtils.assertContainsVersion(thirdLineVersion);
+    LidiUtils.assertContainsLineVersion(thirdLineVersion);
   });
 
   it('Step-9: Assert third version', () => {
@@ -89,7 +89,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     thirdLineVersion.alternativeName = editedLineVersion.alternativeName;
     thirdLineVersion.businessOrganisation = 'SBB-1';
     thirdLineVersion.comment = 'Kommentar-1';
-    LidiUtils.assertContainsVersion(thirdLineVersion);
+    LidiUtils.assertContainsLineVersion(thirdLineVersion);
   });
 
   it('Step-10: Assert second version', () => {
@@ -102,7 +102,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     secondLineVersion.businessOrganisation = 'SBB';
     secondLineVersion.alternativeName = editedLineVersion.alternativeName;
     secondLineVersion.comment = firstLinieVersion.comment;
-    LidiUtils.assertContainsVersion(secondLineVersion);
+    LidiUtils.assertContainsLineVersion(secondLineVersion);
   });
 
   it('Step-11: Assert first version', () => {
@@ -111,7 +111,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2000 bis 31.05.2000');
 
     firstLinieVersion.validTo = '31.05.2000';
-    LidiUtils.assertContainsVersion(firstLinieVersion);
+    LidiUtils.assertContainsLineVersion(firstLinieVersion);
   });
 
   it('Step-12: Delete the item ', () => {
