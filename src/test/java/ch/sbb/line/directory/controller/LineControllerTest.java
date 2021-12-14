@@ -17,6 +17,7 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
+import ch.sbb.line.directory.service.LineSearchRestrictions;
 import ch.sbb.line.directory.service.LineService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -72,12 +73,12 @@ public class LineControllerTest {
   void shouldGetLines() {
     // Given
     Line line = LineTestData.line();
-    when(lineService.findAll(any(Pageable.class), any())).thenReturn(
+    when(lineService.findAll(any(LineSearchRestrictions.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(line)));
 
     // When
     Container<LineModel> lineContainer = lineController.getLines(
-        Pageable.unpaged(), Optional.empty());
+        Pageable.unpaged(), Optional.empty(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Optional.empty());
 
     // Then
     assertThat(lineContainer).isNotNull();

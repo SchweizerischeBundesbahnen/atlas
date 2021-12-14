@@ -2,6 +2,7 @@ package ch.sbb.line.directory.entity;
 
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.line.directory.service.SublineSearchRestrictions;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,15 +20,12 @@ public final class SublineSearchSpecification {
     throw new IllegalStateException("Use build");
   }
 
-  public static Specification<Subline> build(List<String> searchCriteria,
-      List<Status> statusRestrictions,
-      List<SublineType> typeRestrictions,
-      Optional<LocalDate> validOn) {
-    return new SearchCriteriaSpecification(searchCriteria).and(new ValidOnSpecification(validOn))
+  public static Specification<Subline> build(SublineSearchRestrictions sublineSearchRestrictions) {
+    return new SearchCriteriaSpecification(sublineSearchRestrictions.getSearchCriteria()).and(new ValidOnSpecification(sublineSearchRestrictions.getValidOn()))
                                                           .and(new StatusSpecification(
-                                                              statusRestrictions))
+                                                              sublineSearchRestrictions.getStatusRestrictions()))
                                                           .and(new SublineTypeSpecification(
-                                                              typeRestrictions));
+                                                              sublineSearchRestrictions.getTypeRestrictions()));
   }
 
   private static class SearchCriteriaSpecification implements Specification<Subline> {
@@ -46,22 +43,17 @@ public final class SublineSearchSpecification {
       List<Predicate> searchOnFields = new ArrayList<>();
       for (String searchString : searchCriteria) {
         searchOnFields.add(criteriaBuilder.or(
-            likeIgnoreCase(criteriaBuilder, root.get(Subline_.swissSublineNumber), searchString),
-            likeIgnoreCase(criteriaBuilder, root.get(Subline_.description), searchString),
-            likeIgnoreCase(criteriaBuilder, root.get(Subline_.swissLineNumber), searchString),
-            likeIgnoreCase(criteriaBuilder, root.get(Subline_.businessOrganisation), searchString),
-            likeIgnoreCase(criteriaBuilder, root.get(Subline_.slnid), searchString)
+            LineSearchSpecification.likeIgnoreCase(criteriaBuilder, root.get(Subline_.swissSublineNumber), searchString),
+            LineSearchSpecification.likeIgnoreCase(criteriaBuilder, root.get(Subline_.description), searchString),
+            LineSearchSpecification.likeIgnoreCase(criteriaBuilder, root.get(Subline_.swissLineNumber), searchString),
+            LineSearchSpecification.likeIgnoreCase(criteriaBuilder, root.get(Subline_.businessOrganisation), searchString),
+            LineSearchSpecification.likeIgnoreCase(criteriaBuilder, root.get(Subline_.slnid), searchString)
         ));
       }
 
       return criteriaBuilder.and(searchOnFields.toArray(Predicate[]::new));
     }
 
-    private static Predicate likeIgnoreCase(CriteriaBuilder criteriaBuilder, Path<String> path,
-        String searchString) {
-      return criteriaBuilder.like(criteriaBuilder.lower(path),
-          "%" + searchString.toLowerCase() + "%");
-    }
   }
 
   private static class StatusSpecification implements Specification<Subline> {
