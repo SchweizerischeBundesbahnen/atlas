@@ -275,4 +275,27 @@ describe('Get actual versioned record', () => {
     //then
     expect(record.id).toBe(fourthRecord.id);
   });
+
+  it('should return the record version with today', () => {
+    const todayRecord: Record = {
+      id: 1,
+      validFrom: moment('1.1.2004', 'DD.MM.YYYY').toDate(),
+      validTo: moment('1.1.2004', 'DD.MM.YYYY').toDate(),
+    };
+    const tomorrowRecord: Record = {
+      id: 2,
+      validFrom: moment('2.1.2004', 'DD.MM.YYYY').toDate(),
+      validTo: moment('2.1.2004', 'DD.MM.YYYY').toDate(),
+    };
+    const records: Array<Record> = [todayRecord, tomorrowRecord];
+    //given
+    const today = moment('1.1.2004').toDate();
+    jasmine.clock().mockDate(today);
+
+    //when
+    const record: Record = controller.getActualRecord(records);
+
+    //then
+    expect(record.id).toBe(todayRecord.id);
+  });
 });
