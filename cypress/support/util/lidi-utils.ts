@@ -60,7 +60,7 @@ export default class LidiUtils {
   }
 
   static typeAndSelectItemFromDropDown(selector: string, value: string) {
-    cy.get(selector).first().type(value).type('Cypress.io{enter}');
+    cy.get(selector).type(value).type('Cypress.io{enter}');
   }
 
   static assertContainsLineVersion(version: any) {
@@ -227,7 +227,7 @@ export default class LidiUtils {
     return {
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
-      swissSublineNumber: 'b0.IC23',
+      swissSublineNumber: 'b0.IC233',
       mainlineSlnid: 'b0.IC2',
       businessOrganisation: 'SBB-2',
       type: 'Technisch',
@@ -236,6 +236,32 @@ export default class LidiUtils {
       number: 'IC2',
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+    };
+  }
+
+  static getSecondSublineVersion() {
+    return {
+      validFrom: '01.01.2002',
+      validTo: '31.12.2002',
+      swissSublineNumber: 'b0.IC233',
+      mainlineSlnid: 'b0.IC2',
+      businessOrganisation: 'SBB-2-update',
+      type: 'Technisch',
+      paymentType: 'International',
+      description: 'Lorem Ipus Linie',
+      number: 'IC2-update',
+      longName:
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+    };
+  }
+
+  static getEditedFirstSublineVersion() {
+    return {
+      validFrom: '01.01.2000',
+      validTo: '01.06.2002',
+      number: 'IC2-Edit',
+      longName:
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z - Edit',
     };
   }
 }
