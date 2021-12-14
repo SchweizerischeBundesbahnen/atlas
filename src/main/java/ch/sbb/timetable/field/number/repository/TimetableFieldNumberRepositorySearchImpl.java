@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.repository;
 
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
+import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.util.TimeTableFieldNumberQueryBuilder;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,8 +29,8 @@ public class TimetableFieldNumberRepositorySearchImpl implements TimetableFieldN
   }
 
   @Override
-  public Page<TimetableFieldNumber> searchVersions(List<String> searchStrings, LocalDate validOn, Pageable pageable) {
-    Predicate searchPredicate = timeTableFieldNumberQueryBuilder.getAllPredicates(searchStrings, validOn);
+  public Page<TimetableFieldNumber> searchVersions(Pageable pageable, List<String> searchStrings, LocalDate validOn, List<Status> statusChoices) {
+    Predicate searchPredicate = timeTableFieldNumberQueryBuilder.getAllPredicates(searchStrings, validOn, statusChoices);
     CriteriaQuery<TimetableFieldNumber> criteriaQuery = timeTableFieldNumberQueryBuilder.getTimetableFieldNumberSearchQuery(searchPredicate)
         .orderBy(timeTableFieldNumberQueryBuilder.getOrders(pageable));
     CriteriaQuery<Long> countQuery = timeTableFieldNumberQueryBuilder.getTimetableFieldNumberCountQuery(searchPredicate);

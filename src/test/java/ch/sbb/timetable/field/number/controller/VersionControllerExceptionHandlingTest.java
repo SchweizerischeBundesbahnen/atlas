@@ -30,7 +30,7 @@ public class VersionControllerExceptionHandlingTest {
   @Test
   void shouldReturnBadRequestExceptionOnInvalidSortParam() throws Exception {
     // Given
-    when(versionService.getOverview(any(Pageable.class))).thenThrow(mock(PropertyReferenceException.class));
+    when(versionService.getVersionsSearched(any(Pageable.class), any(), any(), any())).thenThrow(mock(PropertyReferenceException.class));
     // When
     // Then
     this.mockMvc.perform(get("/v1/field-numbers")

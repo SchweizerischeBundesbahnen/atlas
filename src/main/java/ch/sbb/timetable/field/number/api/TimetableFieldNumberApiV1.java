@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.api;
 
+import ch.sbb.timetable.field.number.enumaration.Status;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,9 +29,11 @@ public interface TimetableFieldNumberApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  TimetableFieldNumberContainer getOverview(@Parameter(hidden = true) Pageable pageable,
+  TimetableFieldNumberContainer getOverview(
+      @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
-      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate validOn);
+      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate validOn,
+      @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
   @GetMapping("/{id}")
   VersionModel getVersion(@PathVariable Long id);

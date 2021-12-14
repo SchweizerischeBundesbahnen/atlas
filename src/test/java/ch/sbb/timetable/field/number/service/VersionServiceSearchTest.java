@@ -50,7 +50,9 @@ public class VersionServiceSearchTest {
     List<TimetableFieldNumber> versionsSearched = versionService.getVersionsSearched(
             Pageable.ofSize(5).withPage(0),
             List.of("2"),
-            null)
+            null,
+            null
+        )
         .toList();
     // Then
     assertThat(versionsSearched).hasSize(1);
