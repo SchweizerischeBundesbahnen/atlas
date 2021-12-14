@@ -4,10 +4,13 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
 import ch.sbb.line.directory.entity.Line;
+import ch.sbb.line.directory.entity.LineSearchSpecification;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +28,9 @@ public class LineService {
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
 
-  public Page<Line> findAll(Pageable pageable, Optional<String> swissLineNumber) {
-    if (swissLineNumber.isPresent()) {
-      return lineRepository.findAllBySwissLineNumberLike(pageable,
-          swissLineNumber.map(i -> "%" + i + "%").orElseThrow());
-    }
-    return lineRepository.findAll(pageable);
+  public Page<Line> findAll(LineSearchRestrictions lineSearchRestrictions) {
+    return lineRepository.findAll(
+        LineSearchSpecification.build(lineSearchRestrictions), lineSearchRestrictions.getPageable());
   }
 
   public Optional<Line> findLine(String slnid) {

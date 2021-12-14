@@ -32,10 +32,10 @@ public interface SublinenApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<SublineModel> getSublines(@Parameter(hidden = true) Pageable pageable,
-      @Parameter @RequestParam(required = false, defaultValue = "") List<String> searchCriteria,
-      @Parameter @RequestParam(required = false, defaultValue = "") List<Status> statusRestrictions,
-      @Parameter @RequestParam(required = false, defaultValue = "") List<SublineType> typeRestrictions,
-      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> validOn);
+      @RequestParam(required = false, defaultValue = "") List<String> searchCriteria,
+      @RequestParam(required = false, defaultValue = "") List<Status> statusRestrictions,
+      @RequestParam(required = false, defaultValue = "") List<SublineType> typeRestrictions,
+      @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> validOn);
 
   @DeleteMapping("{slnid}")
   void deleteSublines(@PathVariable String slnid);
