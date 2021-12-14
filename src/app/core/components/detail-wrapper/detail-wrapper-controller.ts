@@ -162,6 +162,9 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     return records.filter((record) => {
       const currentValidFrom = moment(record.validFrom);
       const currentValidTo = moment(record.validTo);
+      if (currentValidFrom.isSame(currentValidTo, 'day') && now.isSame(currentValidFrom, 'day')) {
+        return true;
+      }
       return now.isBetween(currentValidFrom, currentValidTo);
     });
   }
