@@ -61,10 +61,9 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
       page: pageIndex,
       size: pageSize,
       sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
-      searchCriteria: this.tableSearchComponent.searchStrings.concat(
-        this.tableSearchComponent.activeStatuses
-      ),
+      searchCriteria: this.tableSearchComponent.searchStrings,
       validOn: this.tableSearchComponent.searchDate,
+      statusChoices: this.tableSearchComponent.activeStatuses,
     });
   }
 
@@ -76,10 +75,9 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
         page: 0,
         size: this.paginator.pageSize,
         sort: `${sort.active},${sort.direction.toUpperCase()}`,
-        searchCriteria: this.tableSearchComponent.searchStrings.concat(
-          this.tableSearchComponent.activeStatuses
-        ),
+        searchCriteria: this.tableSearchComponent.searchStrings,
         validOn: this.tableSearchComponent.searchDate,
+        statusChoices: this.tableSearchComponent.activeStatuses,
       });
     }
   }
@@ -94,6 +92,7 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
         sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
         searchCriteria: search.searchCriteria,
         validOn: search.validOn,
+        statusChoices: search.statusChoices,
       });
     }
   }

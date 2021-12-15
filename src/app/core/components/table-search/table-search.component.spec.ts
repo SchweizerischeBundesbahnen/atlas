@@ -11,6 +11,7 @@ import {
 } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import moment from 'moment/moment';
+import { Version } from '../../../api';
 
 describe('TableSearchComponent', () => {
   let component: TableSearchComponent;
@@ -40,29 +41,23 @@ describe('TableSearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add activeStatuses on Checkbox check', () => {
+  it('should change activeStatuses on selection changes', () => {
     spyOn(component.searchEvent, 'emit');
-    const debugElement = fixture.debugElement.query(By.css('.mat-checkbox .mat-checkbox-label'));
-    debugElement.nativeElement.click();
-
+    const statusSelectTrigger = fixture.debugElement.query(By.css('.mat-select-trigger'));
+    statusSelectTrigger.nativeElement.click();
     fixture.detectChanges();
 
-    expect(component.activeStatuses).toEqual(['ACTIVE']);
+    const statusOption = fixture.debugElement.query(By.css('mat-option'));
+    statusOption.nativeElement.click();
+    fixture.detectChanges();
+    expect(component.activeStatuses).toEqual([Version.StatusEnum.Active]);
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith({
-      searchCriteria: ['ACTIVE'],
+      searchCriteria: [],
       validOn: undefined,
+      statusChoices: [Version.StatusEnum.Active],
     });
-  });
 
-  it('should remove from activeStatuses on Checkbox uncheck', () => {
-    spyOn(component.searchEvent, 'emit');
-    const debugElement = fixture.debugElement.query(By.css('.mat-checkbox .mat-checkbox-label'));
-    debugElement.nativeElement.click();
-
-    fixture.detectChanges();
-
-    expect(component.activeStatuses).toEqual(['ACTIVE']);
-    debugElement.nativeElement.click();
+    statusOption.nativeElement.click();
     fixture.detectChanges();
     expect(component.activeStatuses).toEqual([]);
     expect(component.searchEvent.emit).toHaveBeenCalledTimes(2);
@@ -80,6 +75,7 @@ describe('TableSearchComponent', () => {
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith({
       searchCriteria: [],
       validOn: moment('31.12.2021', 'DD.MM.yyyy').toDate(),
+      statusChoices: [],
     });
   });
 
@@ -108,6 +104,7 @@ describe('TableSearchComponent', () => {
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith({
       searchCriteria: ['Test'],
       validOn: undefined,
+      statusChoices: [],
     });
   });
 
@@ -132,6 +129,7 @@ describe('TableSearchComponent', () => {
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith({
       searchCriteria: ['Test2'],
       validOn: undefined,
+      statusChoices: [],
     });
   });
 });

@@ -42,7 +42,10 @@ describe('Fahrplanfeldnummer', () => {
     cy.get('[data-cy=ttfn-search-chip-input]')
       .clear()
       .type(`${firstVersion.swissTimetableFieldNumber}{enter}`);
-    cy.wait(500);
+    cy.get('.loading-spinner-animation').should('be.undefined');
+    cy.get('table tbody tr').each(($el) => {
+      cy.wrap($el).should('contain.text', firstVersion.swissTimetableFieldNumber);
+    });
     cy.get('table').get('tbody tr').contains(firstVersion.swissTimetableFieldNumber).click();
     cy.contains(firstVersion.swissTimetableFieldNumber);
   });

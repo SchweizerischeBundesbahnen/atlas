@@ -118,7 +118,7 @@ describe('TableComponent', () => {
     paginator.nativeNode.setAttribute('ng-reflect-page-size-oprions', [5, 10, 20]);
     fixture.detectChanges();
 
-    const matSelector = fixture.debugElement.query(By.css('.mat-select-trigger'));
+    const matSelector = fixture.debugElement.queryAll(By.css('.mat-select-trigger'))[1];
     matSelector.nativeElement.click();
     fixture.detectChanges();
 
@@ -128,7 +128,14 @@ describe('TableComponent', () => {
 
     expect(matSelector).toBeDefined();
     expect(component.getTableElementsEvent.emit).toHaveBeenCalledWith(
-      Object({ page: 0, size: 5, sort: 'validFrom,ASC', searchCriteria: [], validOn: undefined })
+      Object({
+        page: 0,
+        size: 5,
+        sort: 'validFrom,ASC',
+        searchCriteria: [],
+        validOn: undefined,
+        statusChoices: [],
+      })
     );
   });
 
@@ -141,7 +148,14 @@ describe('TableComponent', () => {
 
     expect(buttonSortHeaderName).toBeDefined();
     expect(component.getTableElementsEvent.emit).toHaveBeenCalledWith(
-      Object({ page: 0, size: 10, sort: 'validFrom,DESC', searchCriteria: [], validOn: undefined })
+      Object({
+        page: 0,
+        size: 10,
+        sort: 'validFrom,DESC',
+        searchCriteria: [],
+        validOn: undefined,
+        statusChoices: [],
+      })
     );
   });
 });
