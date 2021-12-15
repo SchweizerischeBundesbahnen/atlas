@@ -1,15 +1,15 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
 import CommonUtils from '../../support/util/common-utils';
 
-// Szenario 3: Update, dass über Versionsgrenze geht
-// NEU:                      |______________|
-// IST:      |----------------------|--------------------|
-// Version:        1                          2
-//
-//
-// RESULTAT: |----------------|______|______|-------------     NEUE VERSION EINGEFÜGT
-// Version:        1              3     4         2
-
+/**
+ * Szenario 3: Update, dass über Versionsgrenze geht
+ * NEU:                      |______________|
+ * IST:      |----------------------|--------------------|
+ * Version:        1                          2
+ *
+ * RESULTAT: |----------------|______|______|-------------     NEUE VERSION EINGEFÜGT
+ * Version:        1              3     4         2
+ */
 describe('Versioning: scenario 3', () => {
   const firstVersion = TtfnUtils.getFirstVersion();
 
