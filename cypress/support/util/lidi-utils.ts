@@ -50,10 +50,10 @@ export default class LidiUtils {
   static selectItemFromDropDown(selector: string, value: string) {
     cy.get(selector).first().click();
     // simulate click event on the drop down item (mat-option)
-    cy.get('.mat-option-text').then((option) => {
-      for (let i = 0; i < option.length; i++) {
-        if (option[i].innerText === value) {
-          option[i].click(); // this is jquery click() not cypress click()
+    cy.get('.mat-option-text').then((options) => {
+      for (const option of options) {
+        if (option.innerText === value) {
+          option.click(); // this is jquery click() not cypress click()
         }
       }
     });
@@ -109,6 +109,17 @@ export default class LidiUtils {
       .eq(columnHeaderNumber)
       .get('div')
       .contains(columnHeaderContent);
+  }
+
+  static addMainLine() {
+    const mainline = LidiUtils.getFirstLineVersion();
+    LidiUtils.navigateToLidi();
+    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.fillLineVersionForm(mainline);
+    CommonUtils.saveLine();
+    LidiUtils.assertContainsLineVersion(mainline);
+    CommonUtils.navigateToHome();
+    return mainline;
   }
 
   static getFirstLineVersion() {
