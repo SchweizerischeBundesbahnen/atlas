@@ -60,7 +60,7 @@ export default class LidiUtils {
   }
 
   static typeAndSelectItemFromDropDown(selector: string, value: string) {
-    cy.get(selector).type(value).type('Cypress.io{enter}');
+    cy.get(selector).type(value).wait(500).type('{enter}');
   }
 
   static assertContainsLineVersion(version: any) {
