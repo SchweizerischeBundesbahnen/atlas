@@ -1,4 +1,5 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
+import CommonUtils from '../../support/util/common-utils';
 
 describe('Fahrplanfeldnummer', () => {
   const firstVersion = TtfnUtils.getFirstVersion();
@@ -30,7 +31,7 @@ describe('Fahrplanfeldnummer', () => {
   it('Step-4: Go to page Add new Version', () => {
     TtfnUtils.clickOnAddNewVersion();
     TtfnUtils.fillVersionForm(firstVersion);
-    TtfnUtils.saveVersion();
+    CommonUtils.saveTtfn();
   });
 
   it('Step-5: Navigate to the Fahrplanfeldnummer', () => {
@@ -48,7 +49,7 @@ describe('Fahrplanfeldnummer', () => {
   });
 
   it('Step-7: Delete the item aa.AAA ', () => {
-    TtfnUtils.deleteItems();
+    CommonUtils.deleteItems();
     cy.contains(headerTitle);
   });
 });
