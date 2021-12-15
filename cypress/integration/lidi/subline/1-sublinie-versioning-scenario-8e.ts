@@ -25,7 +25,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.navigateToLidi();
     LidiUtils.clickOnAddNewLinieVersion();
     LidiUtils.fillLineVersionForm(mainline);
-    CommonUtils.saveVersion();
+    CommonUtils.saveLine();
     LidiUtils.assertContainsLineVersion(mainline);
     CommonUtils.navigateToHome();
   });
@@ -51,13 +51,13 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   it('Step-5: Add first Subline Version', () => {
     LidiUtils.clickOnAddNewSublinesLinieVersion();
     LidiUtils.fillSublineVersionForm(firstSublineVersion);
-    CommonUtils.saveVersion();
+    CommonUtils.saveSubline();
   });
 
   it('Step-6: Add second Sibline Version (with gap)', () => {
     CommonUtils.clickOnEdit();
     LidiUtils.fillSublineVersionForm(secondSublineVersion);
-    CommonUtils.saveVersion();
+    CommonUtils.saveSubline();
   });
 
   it('Step-6: update first Sibline Version', () => {
@@ -67,7 +67,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     cy.get('[data-cy=validTo]').clear().type(editedFirstSublineVersion.validTo);
     cy.get('[data-cy=number]').clear().type(editedFirstSublineVersion.number);
     cy.get('[data-cy=longName]').clear().type(editedFirstSublineVersion.longName);
-    CommonUtils.saveVersion();
+    CommonUtils.saveSubline();
   });
 
   it('Step-7: Check version display', () => {

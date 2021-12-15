@@ -15,7 +15,7 @@ describe('Teillinie', () => {
     LidiUtils.navigateToLidi();
     LidiUtils.clickOnAddNewLinieVersion();
     LidiUtils.fillLineVersionForm(mainline);
-    CommonUtils.saveVersion();
+    CommonUtils.saveLine();
     LidiUtils.assertContainsLineVersion(mainline);
     CommonUtils.navigateToHome();
   });
@@ -41,7 +41,7 @@ describe('Teillinie', () => {
   it('Step-5: Go to page Add new Version', () => {
     LidiUtils.clickOnAddNewSublinesLinieVersion();
     LidiUtils.fillSublineVersionForm(sublineVersion);
-    CommonUtils.saveVersion();
+    CommonUtils.saveSubline();
   });
 
   it('Step-6: Navigate to Linienverzeichnis', () => {

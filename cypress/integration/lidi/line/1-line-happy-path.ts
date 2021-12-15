@@ -29,7 +29,7 @@ describe('Linie', () => {
   it('Step-4: Go to page Add new Version', () => {
     LidiUtils.clickOnAddNewLinieVersion();
     LidiUtils.fillLineVersionForm(line);
-    CommonUtils.saveVersion();
+    CommonUtils.saveLine();
   });
 
   it('Step-5: Navigate to Linienverzeichnis', () => {

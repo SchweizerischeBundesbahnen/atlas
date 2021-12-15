@@ -31,7 +31,7 @@ describe('Fahrplanfeldnummer', () => {
   it('Step-4: Go to page Add new Version', () => {
     TtfnUtils.clickOnAddNewVersion();
     TtfnUtils.fillVersionForm(firstVersion);
-    CommonUtils.saveVersion();
+    CommonUtils.saveTtfn();
   });
 
   it('Step-5: Navigate to the Fahrplanfeldnummer', () => {
