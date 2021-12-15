@@ -93,7 +93,8 @@
       "EDIT_ERROR": "Une erreur s'est produite durant l'édition du numéro de tableau-horaire.",
       "DELETE_SUCCESS": "Numéro de tableau-horaire supprimé avec succès.",
       "DELETE_ERROR": "Une erreur s'est produite durant la suppression du numéro de tableau-horaire.",
-      "FETCH_ERROR": "Une erreur s'est produite durant le chargement du numéro de tableau-horaire."
+      "FETCH_ERROR": "Une erreur s'est produite durant le chargement du numéro de tableau-horaire.",
+      "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
     }
   },
   "PAGINATOR": {

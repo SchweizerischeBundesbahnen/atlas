@@ -41,7 +41,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     //if is a version/s already persist get switched or actual version and fill the Form
     if (Array.isArray(records) && records.length > 0) {
       this.records = records;
-
+      this.records.sort((x, y) => +new Date(x.validFrom!) - +new Date(y.validFrom!));
       if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
         this.record = this.records[this.switchedIndex];
       } else {
@@ -78,7 +78,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
-      this.init();
+      this.ngOnInit();
     }
   }
 

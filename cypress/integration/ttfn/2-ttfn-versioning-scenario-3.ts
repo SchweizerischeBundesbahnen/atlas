@@ -1,14 +1,15 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
+import CommonUtils from '../../support/util/common-utils';
 
-// Szenario 3: Update, dass über Versionsgrenze geht
-// NEU:                      |______________|
-// IST:      |----------------------|--------------------|
-// Version:        1                          2
-//
-//
-// RESULTAT: |----------------|______|______|-------------     NEUE VERSION EINGEFÜGT
-// Version:        1              3     4         2
-
+/**
+ * Szenario 3: Update, dass über Versionsgrenze geht
+ * NEU:                      |______________|
+ * IST:      |----------------------|--------------------|
+ * Version:        1                          2
+ *
+ * RESULTAT: |----------------|______|______|-------------     NEUE VERSION EINGEFÜGT
+ * Version:        1              3     4         2
+ */
 describe('Versioning: scenario 3', () => {
   const firstVersion = TtfnUtils.getFirstVersion();
 
@@ -38,19 +39,19 @@ describe('Versioning: scenario 3', () => {
   it('Step-3: Add first Version', () => {
     TtfnUtils.clickOnAddNewVersion();
     TtfnUtils.fillVersionForm(firstVersion);
-    TtfnUtils.saveVersion();
+    CommonUtils.saveTtfn();
   });
 
   it('Step-4: Add second Version', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(secondVersion);
-    TtfnUtils.saveVersion();
+    CommonUtils.saveTtfn();
   });
 
   it('Step-5: Add third Version', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(versionUpdate);
-    TtfnUtils.saveVersion();
+    CommonUtils.saveTtfn();
   });
 
   it('Step-6: Check version display', () => {
@@ -77,7 +78,7 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    TtfnUtils.switchLeft();
+    CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('3 / 4');
     cy.get('[data-cy=switch-version-current-range]').contains('01.06.2001 bis 01.06.2002');
 
@@ -90,7 +91,7 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    TtfnUtils.switchLeft();
+    CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('2 / 4');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2001 bis 31.05.2001');
 
@@ -103,7 +104,7 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    TtfnUtils.switchLeft();
+    CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('1 / 4');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2000 bis 31.12.2000');
 
@@ -113,7 +114,7 @@ describe('Versioning: scenario 3', () => {
   });
 
   it('Step-11: Delete versions', () => {
-    TtfnUtils.deleteItems();
+    CommonUtils.deleteItems();
     cy.contains(headerTitle);
   });
 });
