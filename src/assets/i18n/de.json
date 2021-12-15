@@ -89,7 +89,8 @@
       "EDIT_ERROR": "Beim Editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "DELETE_SUCCESS": "Fahrplanfeldnummer erfolgreich gelöscht.",
       "DELETE_ERROR": "Beim Löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
-      "FETCH_ERROR": "Beim Laden der Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten."
+      "FETCH_ERROR": "Beim Laden der Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten.",
+      "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
     }
   },
   "PAGINATOR": {
