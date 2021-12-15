@@ -16,6 +16,7 @@
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<spring-cloud.version>2020.0.4</spring-cloud.version>
+		<log4j2.version>2.16.0</log4j2.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
