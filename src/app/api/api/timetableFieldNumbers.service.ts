@@ -1,6 +1,6 @@
 /**
  * Atlas API
- * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.29.0-SNAPSHOT<br/>timetable-field-number:0.70.0-SNAPSHOT<br/>
+ * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.31.0-SNAPSHOT<br/>timetable-field-number:0.73.0-SNAPSHOT<br/>
  *
  * The version of the OpenAPI document: 0.13.0-SNAPSHOT
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -306,6 +306,7 @@ export class TimetableFieldNumbersService {
   /**
    * @param searchCriteria
    * @param validOn
+   * @param statusChoices
    * @param page Zero-based page index (0..N)
    * @param size The size of the page to be returned
    * @param sort Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -315,6 +316,7 @@ export class TimetableFieldNumbersService {
   public getOverview(
     searchCriteria?: Array<string>,
     validOn?: Date,
+    statusChoices?: Array<'ACTIVE' | 'INACTIVE' | 'NEEDS_REVIEW' | 'IN_REVIEW' | 'REVIEWED'>,
     page?: number,
     size?: number,
     sort?: Array<string>,
@@ -325,6 +327,7 @@ export class TimetableFieldNumbersService {
   public getOverview(
     searchCriteria?: Array<string>,
     validOn?: Date,
+    statusChoices?: Array<'ACTIVE' | 'INACTIVE' | 'NEEDS_REVIEW' | 'IN_REVIEW' | 'REVIEWED'>,
     page?: number,
     size?: number,
     sort?: Array<string>,
@@ -335,6 +338,7 @@ export class TimetableFieldNumbersService {
   public getOverview(
     searchCriteria?: Array<string>,
     validOn?: Date,
+    statusChoices?: Array<'ACTIVE' | 'INACTIVE' | 'NEEDS_REVIEW' | 'IN_REVIEW' | 'REVIEWED'>,
     page?: number,
     size?: number,
     sort?: Array<string>,
@@ -345,6 +349,7 @@ export class TimetableFieldNumbersService {
   public getOverview(
     searchCriteria?: Array<string>,
     validOn?: Date,
+    statusChoices?: Array<'ACTIVE' | 'INACTIVE' | 'NEEDS_REVIEW' | 'IN_REVIEW' | 'REVIEWED'>,
     page?: number,
     size?: number,
     sort?: Array<string>,
@@ -360,6 +365,11 @@ export class TimetableFieldNumbersService {
     }
     if (validOn !== undefined && validOn !== null) {
       queryParameters = this.addToHttpParams(queryParameters, <any>validOn, 'validOn');
+    }
+    if (statusChoices) {
+      statusChoices.forEach((element) => {
+        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'statusChoices');
+      });
     }
     if (page !== undefined && page !== null) {
       queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');

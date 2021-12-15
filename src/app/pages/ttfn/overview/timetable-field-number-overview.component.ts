@@ -49,6 +49,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
       .getOverview(
         $paginationAndSearch.searchCriteria,
         $paginationAndSearch.validOn,
+        $paginationAndSearch.statusChoices,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
         [$paginationAndSearch.sort!]

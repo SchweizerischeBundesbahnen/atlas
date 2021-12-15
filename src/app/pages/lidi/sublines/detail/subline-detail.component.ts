@@ -201,7 +201,9 @@ export class SublineDetailComponent
       .pipe(
         distinctUntilChanged(),
         switchMap((term) =>
-          this.linesService.getLines(term, undefined, undefined, ['swissLineNumber,ASC'])
+          this.linesService.getLines(term, [], [], [], undefined, undefined, undefined, [
+            'swissLineNumber,ASC',
+          ])
         )
       )
       .subscribe((lines) => (this.mainlines = lines.objects!));

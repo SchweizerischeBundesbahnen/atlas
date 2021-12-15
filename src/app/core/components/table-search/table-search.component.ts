@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { TableSearch } from './table-search';
+import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DATE_PATTERN, MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormControl, ValidationErrors } from '@angular/forms';
@@ -21,7 +21,12 @@ export class TableSearchComponent {
   readonly STATUS_OPTIONS = Object.values(Version.StatusEnum);
   searchStrings: string[] = [];
   searchDate?: Date;
-  activeStatuses: string[] = [];
+  activeStatuses: statusChoice = [];
+  activeSearch: TableSearch = {
+    searchCriteria: this.searchStrings,
+    validOn: this.searchDate,
+    statusChoices: this.activeStatuses,
+  };
 
   dateControl = new FormControl();
 
@@ -39,13 +44,7 @@ export class TableSearchComponent {
     if (validationErrors.max) return validationErrors.max.format(DATE_PATTERN);
   }
 
-  checkboxChanged(checked: boolean, status: string): void {
-    if (checked) {
-      this.activeStatuses.push(status);
-    } else {
-      const index = this.activeStatuses.indexOf(status);
-      this.activeStatuses.splice(index, 1);
-    }
+  statusSelectionChange(): void {
     this.emitSearch();
   }
 
@@ -78,9 +77,11 @@ export class TableSearchComponent {
   }
 
   private emitSearch(): void {
-    this.searchEvent.emit({
-      searchCriteria: this.searchStrings.concat(this.activeStatuses),
+    this.activeSearch = {
+      searchCriteria: this.searchStrings,
       validOn: this.searchDate,
-    });
+      statusChoices: this.activeStatuses,
+    };
+    this.searchEvent.emit(this.activeSearch);
   }
 }
