@@ -39,19 +39,19 @@ describe('Versioning: scenario 3', () => {
   it('Step-3: Add first Version', () => {
     TtfnUtils.clickOnAddNewVersion();
     TtfnUtils.fillVersionForm(firstVersion);
-    CommonUtils.saveVersion();
+    CommonUtils.saveTtfn();
   });
 
   it('Step-4: Add second Version', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(secondVersion);
-    CommonUtils.saveVersion();
+    CommonUtils.saveTtfn();
   });
 
   it('Step-5: Add third Version', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(versionUpdate);
-    CommonUtils.saveVersion();
+    CommonUtils.saveTtfn();
   });
 
   it('Step-6: Check version display', () => {
