@@ -3,11 +3,24 @@ export default class CommonUtils {
     cy.get('#home').click();
   }
 
-  static saveVersion() {
+  static saveTtfn() {
+    this.saveVersionWithWait('/timetable-field-number/v1/field-numbers/versions/*');
+  }
+
+  static saveLine() {
+    this.saveVersionWithWait('line-directory/v1/lines/versions/*');
+  }
+
+  static saveSubline() {
+    this.saveVersionWithWait('line-directory/v1/sublines/versions/*');
+  }
+
+  static saveVersionWithWait(urlToIntercept: string) {
+    cy.intercept(urlToIntercept).as('saveVersion');
     cy.get('[data-cy=save-item]').click();
+    cy.wait('@saveVersion');
     cy.get('[data-cy=edit-item]').should('be.visible');
     cy.get('[data-cy=delete-item]').should('be.visible');
-    cy.wait(1000);
   }
 
   static assertItemValue(selector: string, value: string) {

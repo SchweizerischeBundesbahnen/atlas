@@ -29,19 +29,19 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   it('Step-3: Add first Linie Version', () => {
     LidiUtils.clickOnAddNewLinieVersion();
     LidiUtils.fillLineVersionForm(firstLinieVersion);
-    CommonUtils.saveVersion();
+    CommonUtils.saveLine();
   });
 
   it('Step-4: Add second Linie Version', () => {
     CommonUtils.clickOnEdit();
     LidiUtils.fillLineVersionForm(secondLineVersion);
-    CommonUtils.saveVersion();
+    CommonUtils.saveLine();
   });
 
   it('Step-5: Add third Linie Version', () => {
     CommonUtils.clickOnEdit();
     LidiUtils.fillLineVersionForm(thirdLineVersion);
-    CommonUtils.saveVersion();
+    CommonUtils.saveLine();
   });
 
   it('Step-6: Add edited Linie Version to trigger versioning Scenario 4', () => {
@@ -50,7 +50,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     cy.get('[data-cy=validTo]').clear().type(editedLineVersion.validTo);
     cy.get('[data-cy=alternativeName]').clear().type(editedLineVersion.alternativeName);
 
-    CommonUtils.saveVersion();
+    CommonUtils.saveLine();
   });
 
   it('Step-7: Check version display', () => {
