@@ -69,7 +69,9 @@ i.bi {
 }
 
 .mat-snack-bar-container {
+  margin: unset !important;
   margin-top: 4.5rem !important;
+  margin-right: 24px !important;
 }
 
 snack-bar-container.success {
