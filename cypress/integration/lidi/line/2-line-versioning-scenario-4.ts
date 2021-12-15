@@ -1,14 +1,16 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
 
-// Szenario 4: Update, das über eine ganze Version hinausragt
-// NEU:             |___________________________________|
-// IST:      |-----------|----------------------|--------------------
-// Version:        1                 2                  3
-//
-//
-// RESULTAT: |------|_____|______________________|______|------------     NEUE VERSION EINGEFÜGT
-// Version:      1     4              2              5        3
+/**
+ * Szenario 4: Update, das über eine ganze Version hinausragt
+ * NEU:             |___________________________________|
+ * IST:      |-----------|----------------------|--------------------
+ * Version:        1                 2                  3
+ *
+ *
+ * RESULTAT: |------|_____|______________________|______|------------     NEUE VERSION EINGEFÜGT
+ * Version:      1     4              2              5        3
+ */
 
 describe('LiDi: Versioning Linie Scenario 4', () => {
   const firstLinieVersion = LidiUtils.getFirstLineVersion();
