@@ -21,4 +21,12 @@
       padding-top: 10px;
     }
   }
+
+  mat-form-field .mat-select-trigger {
+    height: 1.7em;
+
+    .mat-select-value {
+      padding: 3.9px 0;
+    }
+  }
 }
