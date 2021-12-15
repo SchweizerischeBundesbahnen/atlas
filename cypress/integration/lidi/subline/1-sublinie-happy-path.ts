@@ -3,7 +3,7 @@ import CommonUtils from '../../../support/util/common-utils';
 
 describe('Teillinie', () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
-  const mainline = LidiUtils.getFirstLineVersion();
+  let mainline: any;
 
   const breadcrumbTitle = 'Linienverzeichnis';
 
@@ -12,12 +12,7 @@ describe('Teillinie', () => {
   });
 
   it('Step-2: Add mainline', () => {
-    LidiUtils.navigateToLidi();
-    LidiUtils.clickOnAddNewLinieVersion();
-    LidiUtils.fillLineVersionForm(mainline);
-    CommonUtils.saveLine();
-    LidiUtils.assertContainsLineVersion(mainline);
-    CommonUtils.navigateToHome();
+    mainline = LidiUtils.addMainLine();
   });
 
   it('Step-3: Navigate to Linienverzeichnis', () => {
