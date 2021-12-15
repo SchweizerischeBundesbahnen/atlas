@@ -74,7 +74,11 @@ export class TimetableFieldNumberDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('TTFN.NOTIFICATION.EDIT_ERROR');
+          const errorMessage =
+            err.status == 409
+              ? 'TTFN.NOTIFICATION.SWISSNUMBER_NOT_UNIQUE'
+              : 'TTFN.NOTIFICATION.EDIT_ERROR';
+          this.notificationService.error(errorMessage);
           console.log(err);
           return EMPTY;
         })
@@ -91,7 +95,11 @@ export class TimetableFieldNumberDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          this.notificationService.error('TTFN.NOTIFICATION.ADD_ERROR');
+          const errorMessage =
+            err.status == 409
+              ? 'TTFN.NOTIFICATION.SWISSNUMBER_NOT_UNIQUE'
+              : 'TTFN.NOTIFICATION.ADD_ERROR';
+          this.notificationService.error(errorMessage);
           console.log(err);
           return EMPTY;
         })
