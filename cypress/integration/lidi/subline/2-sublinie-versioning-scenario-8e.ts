@@ -1,14 +1,14 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
 
-//Szenario 8e: Letzte Version validTo und props updated
-// NEU:      |_______________________________________|
-// IST:      |----------------------|       |-------------------------|
-// Version:             1                                 2
-//
-// RESULTAT: |______________________________|________|----------------|
-// Version:             1                        2            3
-
+/** Szenario 8e: Letzte Version validTo und props updated
+ *  NEU:      |_______________________________________|
+ *  IST:      |----------------------|       |-------------------------|
+ *  Version:             1                                 2
+ *
+ *  RESULTAT: |______________________________|________|----------------|
+ *  Version:             1                        2            3
+ */
 describe('LiDi: Versioning Teillinie Scenario 4', () => {
   const firstSublineVersion = LidiUtils.getFirstSublineVersion();
   const secondSublineVersion = LidiUtils.getSecondSublineVersion();
