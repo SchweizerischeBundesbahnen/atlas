@@ -89,7 +89,8 @@
       "EDIT_ERROR": "Si è verificato un errore durante il salvataggio del numero piano orario..",
       "DELETE_SUCCESS": "Numero piano orario cancellato con successo..",
       "DELETE_ERROR": "Si è verificato un errore durante la cancellazione del numero piano orario.",
-      "FETCH_ERROR": "Si è verificato un errore durante il caricamento dei dati."
+      "FETCH_ERROR": "Si è verificato un errore durante il caricamento dei dati.",
+      "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
     }
   },
   "PAGINATOR": {
