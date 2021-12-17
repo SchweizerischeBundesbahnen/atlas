@@ -10,7 +10,7 @@
         </button>
       </mat-chip>
       <input
-        data-cy="ttfn-search-chip-input"
+        data-cy="table-search-chip-input"
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
         (matChipInputTokenEnd)="addSearch($event)"
@@ -25,7 +25,7 @@
       }}</mat-option>
     </mat-select>
   </mat-form-field>
-  <ng-content></ng-content>
+  <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
   <mat-form-field class="col">
     <mat-label>{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
     <input

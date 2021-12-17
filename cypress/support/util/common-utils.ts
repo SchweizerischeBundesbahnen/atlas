@@ -43,12 +43,29 @@ export default class CommonUtils {
     cy.get('[data-cy=switch-version-left]').click();
   }
 
-  static assertTableHeader(columnHeaderNumber: number, columnHeaderContent: string) {
+  static assertTableHeader(
+    tableNumber: number,
+    columnHeaderNumber: number,
+    columnHeaderContent: string
+  ) {
     cy.get('table')
-      .get('thead tr th')
+      .eq(tableNumber)
+      .find('thead tr th')
       .eq(columnHeaderNumber)
-      .get('div')
+      .find('div')
       .contains(columnHeaderContent);
+  }
+
+  static assertTableSearch(
+    tableNumber: number,
+    fieldNumber: number,
+    fieldLabelExpectation: string
+  ) {
+    cy.get('app-table')
+      .eq(tableNumber)
+      .find('mat-form-field')
+      .eq(fieldNumber)
+      .contains(fieldLabelExpectation);
   }
 
   static clickOnEdit() {

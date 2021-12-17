@@ -6,6 +6,12 @@ export default class TtfnUtils {
     cy.url().should('contain', '/timetable-field-number');
   }
 
+  static readTtfnidFromForm(element: { ttfnid: string }) {
+    cy.get('[data-cy=ttfnid]')
+      .invoke('val')
+      .then((ttfnid) => (element.ttfnid = ttfnid ? ttfnid.toString() : ''));
+  }
+
   static clickOnAddNewVersion() {
     cy.get('[data-cy=new-item]').click();
     cy.get('[data-cy=save-item]').should('be.disabled');
@@ -36,6 +42,7 @@ export default class TtfnUtils {
 
   static getFirstVersion() {
     return {
+      ttfnid: '',
       swissTimetableFieldNumber: '00.AAA',
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
