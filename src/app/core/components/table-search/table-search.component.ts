@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { statusChoice, TableSearch } from './table-search';
@@ -15,6 +15,7 @@ import { ValidationService } from '../../validation/validation.service';
   styleUrls: ['./table-search.component.scss'],
 })
 export class TableSearchComponent {
+  @Input() additionalFieldTemplate!: TemplateRef<any>;
   @Output() searchEvent: EventEmitter<TableSearch> = new EventEmitter<TableSearch>();
 
   readonly separatorKeyCodes = [ENTER, COMMA] as const;

@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,6 +28,7 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
   @Input() canEdit = true;
   @Input() isLoading = false;
   @Input() totalCount!: number;
+  @Input() tableSearchFieldTemplate!: TemplateRef<any>;
 
   @Output() newElementEvent = new EventEmitter<DATATYPE>();
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
