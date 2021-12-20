@@ -4,9 +4,11 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
 import ch.sbb.line.directory.entity.Subline;
-import ch.sbb.line.directory.entity.SublineSearchSpecification;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.exception.ConflictExcpetion;
+import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.util.List;
@@ -27,9 +29,19 @@ public class SublineService {
   private final SublineRepository sublineRepository;
   private final VersionableService versionableService;
   private final LineService lineService;
+  private final SpecificationBuilderService<Subline> specificationBuilderService = new SpecificationBuilderService<Subline>(
+      List.of(Subline_.swissSublineNumber, Subline_.description, Subline_.swissLineNumber, Subline_.businessOrganisation, Subline_.slnid),
+      Subline_.validFrom,
+      Subline_.validTo,
+      null
+  );
 
   public Page<Subline> findAll(SublineSearchRestrictions sublineSearchRestrictions) {
-    return sublineRepository.findAll(SublineSearchSpecification.build(sublineSearchRestrictions),
+    return sublineRepository.findAll(
+        specificationBuilderService.buildSearchCriteriaSpecification(sublineSearchRestrictions.getSearchCriteria())
+            .and(specificationBuilderService.buildValidOnSpecification(sublineSearchRestrictions.getValidOn()))
+            .and(specificationBuilderService.buildEnumSpecification(sublineSearchRestrictions.getStatusRestrictions(), Subline_.status))
+            .and(specificationBuilderService.buildEnumSpecification(sublineSearchRestrictions.getTypeRestrictions(), Subline_.type)),
         sublineSearchRestrictions.getPageable());
   }
 
@@ -79,6 +91,5 @@ public class SublineService {
     versionableService.applyVersioning(SublineVersion.class, versionedObjects, this::save,
         this::deleteById);
   }
-
 
 }
