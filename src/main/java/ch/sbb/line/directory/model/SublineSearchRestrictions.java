@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.service;
+package ch.sbb.line.directory.model;
 
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
