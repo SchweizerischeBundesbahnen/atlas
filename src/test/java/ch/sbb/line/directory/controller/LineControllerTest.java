@@ -17,7 +17,7 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
-import ch.sbb.line.directory.service.LineSearchRestrictions;
+import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.LineService;
 import java.time.LocalDate;
 import java.util.Collections;
