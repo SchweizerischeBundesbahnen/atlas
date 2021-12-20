@@ -4,18 +4,17 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
 import ch.sbb.line.directory.entity.Line;
-import ch.sbb.line.directory.entity.LineSearchSpecification;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.entity.Line_;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.exception.ConflictExcpetion;
+import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,10 +26,21 @@ public class LineService {
   private final LineVersionRepository lineVersionRepository;
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
+  private final SpecificationBuilderService<Line> specificationBuilderService = new SpecificationBuilderService<Line>(
+      List.of(Line_.swissLineNumber, Line_.number, Line_.description, Line_.businessOrganisation, Line_.slnid),
+      Line_.validFrom,
+      Line_.validTo,
+      Line_.swissLineNumber
+  );
 
   public Page<Line> findAll(LineSearchRestrictions lineSearchRestrictions) {
     return lineRepository.findAll(
-        LineSearchSpecification.build(lineSearchRestrictions), lineSearchRestrictions.getPageable());
+        specificationBuilderService.buildSearchCriteriaSpecification(lineSearchRestrictions.getSearchCriteria())
+            .and(specificationBuilderService.buildValidOnSpecification(lineSearchRestrictions.getValidOn()))
+            .and(specificationBuilderService.buildEnumSpecification(lineSearchRestrictions.getStatusRestrictions(), Line_.status))
+            .and(specificationBuilderService.buildEnumSpecification(lineSearchRestrictions.getTypeRestrictions(), Line_.type))
+            .and(specificationBuilderService.buildSingleStringSpecification(lineSearchRestrictions.getSwissLineNumber())),
+        lineSearchRestrictions.getPageable());
   }
 
   public Optional<Line> findLine(String slnid) {
@@ -59,7 +69,6 @@ public class LineService {
     }
     lineVersionRepository.deleteById(id);
   }
-
 
   public void deleteAll(String slnid) {
     List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
