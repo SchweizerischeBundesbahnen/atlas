@@ -7,7 +7,9 @@ import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.exceptions.BadRequestException;
 import ch.sbb.timetable.field.number.service.VersionService;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -15,7 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -34,14 +39,25 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   }
 
   @Override
-  public TimetableFieldNumberContainer getOverview(Pageable pageable) {
-    log.info("Load TimetableFieldNumbers using pageable={}", pageable);
-    Page<TimetableFieldNumber> timetableFieldNumbers = versionService.getOverview(pageable);
-    List<TimetableFieldNumberModel> versions = timetableFieldNumbers.stream().map(this::toModel)
+  public TimetableFieldNumberContainer getOverview(Pageable pageable, List<String> searchCriteria,
+      LocalDate validOn, List<Status> statusChoices) {
+    log.info("Load TimetableFieldNumbers using pageable={}, searchCriteria={}, validOn={} and statusChoices={}",
+        pageable, searchCriteria, validOn, statusChoices);
+    Page<TimetableFieldNumber> timetableFieldNumberPage = versionService.getVersionsSearched(pageable,
+        searchCriteria,
+        validOn, statusChoices);
+    List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(this::toModel)
         .collect(Collectors.toList());
     return TimetableFieldNumberContainer.builder()
         .fieldNumbers(versions)
-        .totalCount(timetableFieldNumbers.getTotalElements()).build();
+        .totalCount(timetableFieldNumberPage.getTotalElements())
+        .build();
+  }
+
+  @ExceptionHandler(PropertyReferenceException.class)
+  public ResponseEntity<BadRequestException> handleInvalidSort(PropertyReferenceException exception) {
+    log.warn("Pageable sort parameter is not valid.", exception);
+    return ResponseEntity.badRequest().body(new BadRequestException("Pageable sort parameter is not valid."));
   }
 
   private TimetableFieldNumberModel toModel(TimetableFieldNumber version) {

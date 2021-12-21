@@ -8,6 +8,7 @@ import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.exceptions.ConflictException;
 import ch.sbb.timetable.field.number.repository.TimetableFieldNumberRepository;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -51,20 +52,15 @@ public class VersionService {
     return versionRepository.save(newVersion);
   }
 
-  public boolean existsById(Long id) {
-    return versionRepository.existsById(id);
+  public Page<TimetableFieldNumber> getVersionsSearched(Pageable pageable,
+      List<String> searchCriteria,
+      LocalDate validOn,
+      List<Status> statusChoices) {
+    return timetableFieldNumberRepository.searchVersions(pageable, searchCriteria, validOn, statusChoices);
   }
 
   public void deleteById(Long id) {
     versionRepository.deleteById(id);
-  }
-
-  public Page<TimetableFieldNumber> getOverview(Pageable pageable) {
-    return timetableFieldNumberRepository.findAll(pageable);
-  }
-
-  public long count() {
-    return versionRepository.count();
   }
 
   public List<VersionedObject> updateVersion(Version currentVersion, Version editedVersion) {
