@@ -63,7 +63,7 @@ describe('Linie', () => {
           .should('contain.text', line.swissLineNumber)
           .should('contain.text', line.slnid);
       });
-    cy.get('table').eq(0).find('tbody tr').first().click();
+    cy.get('table').eq(0).find('tbody tr').should('have.length', 1).click();
     cy.contains(line.swissLineNumber);
     LidiUtils.assertContainsLineVersion(line);
   });
