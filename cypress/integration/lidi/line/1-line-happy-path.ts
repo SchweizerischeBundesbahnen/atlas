@@ -49,9 +49,10 @@ describe('Linie', () => {
       .eq(0)
       .clear()
       .type(line.swissLineNumber)
-      .type('{enter}')
-      .type(line.slnid)
       .type('{enter}');
+    cy.wait('@searchLines');
+    cy.get('[data-cy=table-search-chip-input]').eq(0).type(line.slnid).type('{enter}');
+    cy.wait('@searchLines');
     cy.get('table').get('thead tr th').eq(6).click();
     cy.wait('@searchLines');
     cy.get('table')
