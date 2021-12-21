@@ -1,0 +1,47 @@
+<div class="col-12 ps-3 pe-3 d-flex">
+  <mat-form-field class="col-4 pe-3">
+    <mat-label>{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
+    <mat-chip-list #chipList>
+      <em class="bi bi-search me-2"></em>
+      <mat-chip *ngFor="let search of searchStrings" (removed)="removeSearch(search)">
+        {{ search }}
+        <button matChipRemove>
+          <em class="bi bi-x-circle-fill"></em>
+        </button>
+      </mat-chip>
+      <input
+        data-cy="table-search-chip-input"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
+        (matChipInputTokenEnd)="addSearch($event)"
+      />
+    </mat-chip-list>
+  </mat-form-field>
+  <mat-form-field class="col pe-3">
+    <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
+    <mat-select (selectionChange)="statusSelectionChange()" [(value)]="activeStatuses" multiple>
+      <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">{{
+        'COMMON.STATUS_TYPES.' + status | translate
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
+  <mat-form-field class="col">
+    <mat-label>{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
+    <input
+      matInput
+      [formControl]="dateControl"
+      [matDatepicker]="picker"
+      (dateChange)="onDateChanged($event)"
+      [min]="MIN_DATE"
+      [max]="MAX_DATE"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngFor="let validationError of getDateControlValidation()">
+      {{
+        validationError.error | translate: { date: getMinOrMaxDateDisplay(validationError.value) }
+      }}
+    </mat-error>
+  </mat-form-field>
+</div>

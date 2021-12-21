@@ -11,6 +11,7 @@ import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { TableSearchComponent } from '../table-search/table-search.component';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -20,7 +21,7 @@ describe('TableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TableComponent, LoadingSpinnerComponent],
+      declarations: [TableComponent, LoadingSpinnerComponent, TableSearchComponent],
       imports: [
         MaterialModule,
         BrowserAnimationsModule,
@@ -117,7 +118,7 @@ describe('TableComponent', () => {
     paginator.nativeNode.setAttribute('ng-reflect-page-size-oprions', [5, 10, 20]);
     fixture.detectChanges();
 
-    const matSelector = fixture.debugElement.query(By.css('.mat-select-trigger'));
+    const matSelector = fixture.debugElement.queryAll(By.css('.mat-select-trigger'))[1];
     matSelector.nativeElement.click();
     fixture.detectChanges();
 
@@ -126,7 +127,16 @@ describe('TableComponent', () => {
     fixture.detectChanges();
 
     expect(matSelector).toBeDefined();
-    expect(component.getTableElementsEvent.emit).toHaveBeenCalledWith(Object({ page: 0, size: 5 }));
+    expect(component.getTableElementsEvent.emit).toHaveBeenCalledWith(
+      Object({
+        page: 0,
+        size: 5,
+        sort: 'validFrom,ASC',
+        searchCriteria: [],
+        validOn: undefined,
+        statusChoices: [],
+      })
+    );
   });
 
   it('should click on sort name', () => {
@@ -138,7 +148,14 @@ describe('TableComponent', () => {
 
     expect(buttonSortHeaderName).toBeDefined();
     expect(component.getTableElementsEvent.emit).toHaveBeenCalledWith(
-      Object({ page: 0, size: 10, sort: 'validFrom,ASC' })
+      Object({
+        page: 0,
+        size: 10,
+        sort: 'validFrom,DESC',
+        searchCriteria: [],
+        validOn: undefined,
+        statusChoices: [],
+      })
     );
   });
 });
