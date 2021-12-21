@@ -4,23 +4,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.server.ResponseStatusException;
 
 class SublineServiceTest {
@@ -54,10 +59,10 @@ class SublineServiceTest {
     Pageable pageable = Pageable.unpaged();
 
     // When
-    sublineService.findAll(pageable);
+    sublineService.findAll(SublineSearchRestrictions.builder().pageable(pageable).build() );
 
     // Then
-    verify(sublineRepository).findAll(pageable);
+    verify(sublineRepository).findAll(ArgumentMatchers.<Specification<Subline>>any(), eq(pageable));
   }
 
 
