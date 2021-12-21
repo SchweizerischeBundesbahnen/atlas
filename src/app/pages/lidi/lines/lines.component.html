@@ -1,4 +1,5 @@
 <app-table
+  [tableSearchFieldTemplate]="lineTypeSelection"
   [tableData]="lineVersions"
   [totalCount]="totalCount$"
   [tableColumns]="linesTableColumns"
@@ -7,4 +8,19 @@
   (newElementEvent)="newVersion()"
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
-></app-table>
+>
+</app-table>
+<ng-template #lineTypeSelection>
+  <mat-form-field class="col pe-3">
+    <mat-label>{{ 'LIDI.TYPE' | translate }}</mat-label>
+    <mat-select
+      (selectionChange)="onLineTypeSelectionChange()"
+      [(value)]="activeLineTypes"
+      multiple
+    >
+      <mat-option *ngFor="let lineType of LINE_TYPES" [value]="lineType">{{
+        'LIDI.LINE.TYPES.' + lineType | translate
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-template>

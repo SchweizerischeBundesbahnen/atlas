@@ -3,7 +3,6 @@ import CommonUtils from '../../support/util/common-utils';
 
 describe('Fahrplanfeldnummer', () => {
   const firstVersion = TtfnUtils.getFirstVersion();
-
   const headerTitle = 'Fahrplanfeldnummer';
 
   it('Step-1: Login on ATLAS', () => {
@@ -16,22 +15,22 @@ describe('Fahrplanfeldnummer', () => {
 
   it('Step-3: Check the Fahrplanfeldnummer Table is visible', () => {
     cy.contains(headerTitle);
-    cy.get('table').get('thead tr th').eq(1).get('div').contains('CH-Fahrplanfeldnummer');
-    cy.get('table')
-      .get('thead tr th')
-      .eq(2)
-      .get('div')
-      .contains('CH-Fahrplanfeldnummer Bezeichnung');
-    cy.get('table').get('thead tr th').eq(3).get('div').contains('Status');
-    cy.get('table').get('thead tr th').eq(4).get('div').contains('Fahrplanfeldnummer-ID');
-    cy.get('table').get('thead tr th').eq(4).get('div').contains('Gültig von');
-    cy.get('table').get('thead tr th').eq(4).get('div').contains('Gültig bis');
+    CommonUtils.assertTableSearch(0, 0, 'Suche');
+    CommonUtils.assertTableSearch(0, 1, 'Status');
+    CommonUtils.assertTableSearch(0, 2, 'Gültig am');
+    CommonUtils.assertTableHeader(0, 0, 'CH-Fahrplanfeldnummer');
+    CommonUtils.assertTableHeader(0, 1, 'CH-Fahrplanfeldnummer Bezeichnung');
+    CommonUtils.assertTableHeader(0, 2, 'Status');
+    CommonUtils.assertTableHeader(0, 3, 'Fahrplanfeldnummer-ID');
+    CommonUtils.assertTableHeader(0, 4, 'Gültig von');
+    CommonUtils.assertTableHeader(0, 5, 'Gültig bis');
   });
 
   it('Step-4: Go to page Add new Version', () => {
     TtfnUtils.clickOnAddNewVersion();
     TtfnUtils.fillVersionForm(firstVersion);
     CommonUtils.saveTtfn();
+    TtfnUtils.readTtfnidFromForm(firstVersion);
   });
 
   it('Step-5: Navigate to the Fahrplanfeldnummer', () => {
@@ -39,8 +38,23 @@ describe('Fahrplanfeldnummer', () => {
     cy.contains(headerTitle);
   });
 
-  it('Step-6: Check the item aa.AAA is present on the table result and navigate to it ', () => {
-    cy.contains(firstVersion.swissTimetableFieldNumber).parents('tr').click();
+  it('Step-6: search for added item in table and select it', () => {
+    cy.intercept('GET', '/timetable-field-number/v1/field-numbers?**').as('searchTtFieldNumbers');
+    cy.get('[data-cy=table-search-chip-input]')
+      .clear()
+      .type(firstVersion.swissTimetableFieldNumber)
+      .type('{enter}');
+    cy.wait('@searchTtFieldNumbers');
+    cy.get('[data-cy=table-search-chip-input]').type(firstVersion.ttfnid).type('{enter}');
+    cy.wait('@searchTtFieldNumbers');
+    cy.get('table thead tr th').contains('Fahrplanfeldnummer-ID').click();
+    cy.wait('@searchTtFieldNumbers');
+    cy.get('table tbody tr').each(($el) => {
+      cy.wrap($el)
+        .should('contain.text', firstVersion.swissTimetableFieldNumber)
+        .should('contain.text', firstVersion.ttfnid);
+    });
+    cy.get('table tbody tr').first().click();
     cy.contains(firstVersion.swissTimetableFieldNumber);
     cy.get('[data-cy=swissTimetableFieldNumber]')
       .invoke('val')
@@ -48,7 +62,7 @@ describe('Fahrplanfeldnummer', () => {
     TtfnUtils.assertContainsVersion(firstVersion);
   });
 
-  it('Step-7: Delete the item aa.AAA ', () => {
+  it('Step-7: Delete added item', () => {
     CommonUtils.deleteItems();
     cy.contains(headerTitle);
   });

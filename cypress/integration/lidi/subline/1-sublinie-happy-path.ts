@@ -4,7 +4,6 @@ import CommonUtils from '../../../support/util/common-utils';
 describe('Teillinie', () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
   let mainline: any;
-
   const breadcrumbTitle = 'Linienverzeichnis';
 
   it('Step-1: Login on ATLAS', () => {
@@ -22,21 +21,27 @@ describe('Teillinie', () => {
   });
 
   it('Step-4: Check the Linienverzeichnis Line Table is visible', () => {
-    CommonUtils.assertTableHeader(1, 'CH-Teilliniennummer');
-    CommonUtils.assertTableHeader(2, 'Teillinienbezeichnung');
-    CommonUtils.assertTableHeader(3, 'CH-Liniennummer (CHLNR)');
-    CommonUtils.assertTableHeader(4, 'Status');
-    CommonUtils.assertTableHeader(5, 'Teillinientyp');
-    CommonUtils.assertTableHeader(6, 'Geschäftsorganisation Konzessionär');
-    CommonUtils.assertTableHeader(7, 'SLNID');
-    CommonUtils.assertTableHeader(8, 'Gültig von');
-    CommonUtils.assertTableHeader(9, 'Gültig bis');
+    cy.contains('Teillinien');
+    CommonUtils.assertTableSearch(1, 0, 'Suche');
+    CommonUtils.assertTableSearch(1, 1, 'Status');
+    CommonUtils.assertTableSearch(1, 2, 'Teillinientyp');
+    CommonUtils.assertTableSearch(1, 3, 'Gültig am');
+    CommonUtils.assertTableHeader(1, 0, 'CH-Teilliniennummer');
+    CommonUtils.assertTableHeader(1, 1, 'Teillinienbezeichnung');
+    CommonUtils.assertTableHeader(1, 2, 'CH-Liniennummer (CHLNR)');
+    CommonUtils.assertTableHeader(1, 3, 'Status');
+    CommonUtils.assertTableHeader(1, 4, 'Teillinientyp');
+    CommonUtils.assertTableHeader(1, 5, 'Geschäftsorganisation Konzessionär');
+    CommonUtils.assertTableHeader(1, 6, 'SLNID');
+    CommonUtils.assertTableHeader(1, 7, 'Gültig von');
+    CommonUtils.assertTableHeader(1, 8, 'Gültig bis');
   });
 
   it('Step-5: Go to page Add new Version', () => {
     LidiUtils.clickOnAddNewSublinesLinieVersion();
     LidiUtils.fillSublineVersionForm(sublineVersion);
     CommonUtils.saveSubline();
+    LidiUtils.readSlnidFromForm(sublineVersion);
   });
 
   it('Step-6: Navigate to Linienverzeichnis', () => {
@@ -45,19 +50,47 @@ describe('Teillinie', () => {
     cy.contains(breadcrumbTitle);
   });
 
-  it('Step-7: Check the added is present on the table result and navigate to it ', () => {
-    cy.contains(sublineVersion.swissSublineNumber).parents('tr').click();
+  it('Step-7: Search for added element on the table and navigate to it', () => {
+    cy.intercept('GET', '/line-directory/v1/sublines?**').as('searchSublines');
+    cy.get('[data-cy=table-search-chip-input]')
+      .eq(1)
+      .clear()
+      .type(sublineVersion.swissSublineNumber)
+      .type('{enter}')
+      .type(sublineVersion.slnid)
+      .type('{enter}');
+    cy.get('table').eq(1).find('thead tr th').eq(6).click();
+    cy.wait('@searchSublines');
+    cy.get('table')
+      .eq(1)
+      .find('tbody tr')
+      .each(($el) => {
+        cy.wrap($el)
+          .should('contain.text', sublineVersion.swissSublineNumber)
+          .should('contain.text', sublineVersion.slnid);
+      });
+    cy.get('table').eq(1).find('tbody tr').first().click();
     cy.contains(sublineVersion.swissSublineNumber);
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
 
-  it('Step-8: Delete the subline item ', () => {
+  it('Step-8: Delete the subline item', () => {
     CommonUtils.deleteItems();
     cy.contains(breadcrumbTitle);
   });
 
-  it('Step-9: Delete the mainline item ', () => {
-    cy.get('[data-cy=lidi-lines]').contains(mainline.swissLineNumber).parents('tr').click();
+  it('Step-9: Delete the mainline item', () => {
+    cy.intercept('GET', '/line-directory/v1/lines?**').as('searchLines');
+    cy.get('[data-cy=table-search-chip-input]')
+      .eq(0)
+      .clear()
+      .type(mainline.swissLineNumber)
+      .type('{enter}')
+      .type(mainline.slnid)
+      .type('{enter}');
+    cy.get('table').eq(0).find('thead tr th').eq(6).click();
+    cy.wait('@searchLines');
+    cy.get('table').eq(0).find('tbody tr').first().click();
     cy.contains(mainline.swissLineNumber);
     CommonUtils.deleteItems();
     cy.contains(breadcrumbTitle);

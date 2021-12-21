@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,8 @@ import { TablePagination } from '../../../core/components/table/table-pagination
 import { NotificationService } from '../../../core/notification/notification.service';
 import { SublinesService, Subline } from '../../../api';
 import { Pages } from '../../pages';
+import { TableSearch } from '../../../core/components/table-search/table-search';
+import { TableComponent } from '../../../core/components/table/table.component';
 
 @Component({
   selector: 'app-lidi-sublines',
@@ -14,6 +16,8 @@ import { Pages } from '../../pages';
   styleUrls: ['./sublines.component.scss'],
 })
 export class SublinesComponent implements OnInit, OnDestroy {
+  @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<Subline>;
+
   sublinesTableColumns: TableColumn<Subline>[] = [
     { headerTitle: 'LIDI.SWISS_SUBLINE_NUMBER', value: 'swissSublineNumber' },
     { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },
@@ -34,6 +38,8 @@ export class SublinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
+  readonly SUBLINE_TYPES: Subline.TypeEnum[] = Object.values(Subline.TypeEnum);
+  activeSublineTypes: Subline.TypeEnum[] = [];
   sublines: Subline[] = [];
   totalCount$ = 0;
   isLoading = false;
@@ -50,10 +56,18 @@ export class SublinesComponent implements OnInit, OnDestroy {
     this.getOverview({ page: 0, size: 10, sort: 'swissSublineNumber,ASC' });
   }
 
-  getOverview($pagination: TablePagination) {
+  getOverview($paginationAndSearch: TablePagination & TableSearch) {
     this.isLoading = true;
     this.sublineVersionsSubscription = this.sublinesService
-      .getSublines($pagination.page, $pagination.size, [$pagination.sort!])
+      .getSublines(
+        $paginationAndSearch.searchCriteria,
+        $paginationAndSearch.statusChoices,
+        this.activeSublineTypes,
+        $paginationAndSearch.validOn,
+        $paginationAndSearch.page,
+        $paginationAndSearch.size,
+        [$paginationAndSearch.sort!]
+      )
       .pipe(
         catchError((err) => {
           this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.FETCH_ERROR');
@@ -66,6 +80,10 @@ export class SublinesComponent implements OnInit, OnDestroy {
         this.totalCount$ = sublineContainer.totalCount!;
         this.isLoading = false;
       });
+  }
+
+  onSublineTypeSelectionChange(): void {
+    this.tableComponent.searchData(this.tableComponent.tableSearchComponent.activeSearch);
   }
 
   newVersion() {
