@@ -70,7 +70,12 @@ describe('Teillinie', () => {
           .should('contain.text', sublineVersion.swissSublineNumber)
           .should('contain.text', sublineVersion.slnid);
       });
-    cy.get('table').eq(1).find('tbody tr').should('have.length', 1).click();
+    cy.get('table')
+      .eq(1)
+      .find('tbody tr')
+      .should('have.length', 1)
+      .contains(sublineVersion.slnid)
+      .click();
     cy.contains(sublineVersion.swissSublineNumber);
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
@@ -92,7 +97,12 @@ describe('Teillinie', () => {
     cy.wait('@searchLines');
     cy.get('table').eq(0).find('thead tr th').eq(6).click();
     cy.wait('@searchLines');
-    cy.get('table').eq(0).find('tbody tr').should('have.length', 1).click();
+    cy.get('table')
+      .eq(0)
+      .find('tbody tr')
+      .should('have.length', 1)
+      .contains(mainline.slnid)
+      .click();
     cy.contains(mainline.swissLineNumber);
     CommonUtils.deleteItems();
     cy.contains(breadcrumbTitle);

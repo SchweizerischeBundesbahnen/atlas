@@ -54,7 +54,7 @@ describe('Fahrplanfeldnummer', () => {
         .should('contain.text', firstVersion.swissTimetableFieldNumber)
         .should('contain.text', firstVersion.ttfnid);
     });
-    cy.get('table tbody tr').first().click();
+    cy.get('table tbody tr').should('have.length', 1).contains(firstVersion.ttfnid).click();
     cy.contains(firstVersion.swissTimetableFieldNumber);
     cy.get('[data-cy=swissTimetableFieldNumber]')
       .invoke('val')
