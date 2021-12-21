@@ -56,8 +56,15 @@ describe('SublinesComponent', () => {
   });
 
   it('should create', () => {
-    expect(sublinesService.getSublines).toHaveBeenCalled();
-
+    expect(sublinesService.getSublines).toHaveBeenCalledOnceWith(
+      undefined,
+      undefined,
+      [],
+      undefined,
+      0,
+      10,
+      ['swissSublineNumber,ASC']
+    );
     expect(component.sublines.length).toBe(1);
     expect(component.totalCount$).toBe(1);
   });
