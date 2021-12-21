@@ -8,8 +8,11 @@ import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.LineService;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,13 +30,19 @@ public class LineController implements LineApiV1 {
   private final LineService lineService;
 
   @Override
-  public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber) {
+  public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
+      List<String> searchCriteria, List<Status> statusRestrictions, List<LineType> typeRestrictions,
+      Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
-    Page<Line> lines = lineService.findAll(pageable, swissLineNumber);
-    List<LineModel> lineModels = lines
-        .stream()
-        .map(this::toModel)
-        .collect(Collectors.toList());
+    Page<Line> lines = lineService.findAll(LineSearchRestrictions.builder().pageable(pageable)
+                                                                 .swissLineNumber(swissLineNumber)
+                                                                 .searchCriteria(searchCriteria)
+                                                                 .statusRestrictions(
+                                                                     statusRestrictions)
+                                                                 .typeRestrictions(typeRestrictions)
+                                                                 .validOn(validOn)
+                                                                 .build());
+    List<LineModel> lineModels = lines.stream().map(this::toModel).collect(Collectors.toList());
     return Container.<LineModel>builder()
                     .objects(lineModels)
                     .totalCount(lines.getTotalElements()).build();
@@ -77,7 +86,8 @@ public class LineController implements LineApiV1 {
 
   @Override
   public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
-    LineVersion versionToUpdate = lineService.findById(id).orElseThrow(NotFoundExcpetion.getInstance());
+    LineVersion versionToUpdate = lineService.findById(id)
+                                             .orElseThrow(NotFoundExcpetion.getInstance());
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
                       .collect(Collectors.toList());
