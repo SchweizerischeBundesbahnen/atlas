@@ -18,6 +18,7 @@ import { environment } from '../../../environments/environment';
 import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
+import { TableSearchComponent } from '../components/table-search/table-search.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { SwitchVersionComponent } from '../components/switch-version/switch-vers
     UserComponent,
     EmptyToNullDirective,
     TrimInputDirective,
+    TableSearchComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +69,7 @@ import { SwitchVersionComponent } from '../components/switch-version/switch-vers
     TranslateModule,
     EmptyToNullDirective,
     TrimInputDirective,
+    TableSearchComponent,
   ],
   providers: [TranslatePipe],
 })

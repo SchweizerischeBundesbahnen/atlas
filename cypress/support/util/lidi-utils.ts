@@ -6,6 +6,12 @@ export default class LidiUtils {
     cy.url().should('contain', '/line-directory');
   }
 
+  static readSlnidFromForm(element: { slnid: string }) {
+    cy.get('[data-cy=slnid]')
+      .invoke('val')
+      .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
+  }
+
   static clickOnAddNewLinieVersion() {
     cy.get('[data-cy=lidi-lines] [data-cy=new-item]').click();
     cy.get('[data-cy=save-item]').should('be.disabled');
@@ -117,6 +123,7 @@ export default class LidiUtils {
     LidiUtils.clickOnAddNewLinieVersion();
     LidiUtils.fillLineVersionForm(mainline);
     CommonUtils.saveLine();
+    LidiUtils.readSlnidFromForm(mainline);
     LidiUtils.assertContainsLineVersion(mainline);
     CommonUtils.navigateToHome();
     return mainline;
@@ -124,6 +131,7 @@ export default class LidiUtils {
 
   static getFirstLineVersion() {
     return {
+      slnid: '',
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
       swissLineNumber: 'b0.IC2',
@@ -236,6 +244,7 @@ export default class LidiUtils {
 
   static getFirstSublineVersion() {
     return {
+      slnid: '',
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
       swissSublineNumber: 'b0.IC233',
