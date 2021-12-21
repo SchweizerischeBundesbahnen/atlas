@@ -4,12 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
@@ -17,9 +20,11 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.server.ResponseStatusException;
 
 class LineServiceTest {
@@ -40,7 +45,7 @@ class LineServiceTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineService = new LineService(lineVersionRepository,lineRepository, versionableService);
+    lineService = new LineService(lineVersionRepository, lineRepository, versionableService);
   }
 
   @Test
@@ -49,22 +54,10 @@ class LineServiceTest {
     Pageable pageable = Pageable.unpaged();
 
     // When
-    lineService.findAll(pageable, Optional.empty());
+    lineService.findAll(LineSearchRestrictions.builder().pageable(pageable).build());
 
     // Then
-    verify(lineRepository).findAll(pageable);
-  }
-
-  @Test
-  void shouldGetPagableLinesFromRepositoryWithSwissLineNumberFiltering() {
-    // Given
-    Pageable pageable = Pageable.unpaged();
-
-    // When
-    lineService.findAll(pageable, Optional.of("b0"));
-
-    // Then
-    verify(lineRepository).findAllBySwissLineNumberLike(pageable, "%b0%");
+    verify(lineRepository).findAll(ArgumentMatchers.<Specification<Line>>any(), eq(pageable));
   }
 
   @Test
@@ -126,7 +119,7 @@ class LineServiceTest {
 
     //When & Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-        () -> lineService.deleteAll(slnid));;
+        () -> lineService.deleteAll(slnid));
   }
 
   @Test
@@ -134,10 +127,10 @@ class LineServiceTest {
     // Given
     String slnid = "ch:1:ttfnid:1000083";
     LineVersion lineVersion = LineVersion.builder()
-                                  .validFrom(LocalDate.of(2000, 1, 1))
-                                  .validTo(LocalDate.of(2001, 12, 31))
-                                  .description("desc")
-                                  .build();
+                                         .validFrom(LocalDate.of(2000, 1, 1))
+                                         .validTo(LocalDate.of(2001, 12, 31))
+                                         .description("desc")
+                                         .build();
     List<LineVersion> lineVersions = List.of(lineVersion);
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(lineVersions);
 
@@ -167,7 +160,8 @@ class LineServiceTest {
     when(lineVersionRepository.existsById(ID)).thenReturn(false);
 
     // When
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(()->lineService.deleteById(ID));
+    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+        () -> lineService.deleteById(ID));
 
     // Then
     verify(lineVersionRepository).existsById(ID);

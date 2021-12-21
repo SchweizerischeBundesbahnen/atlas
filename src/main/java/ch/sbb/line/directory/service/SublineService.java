@@ -5,14 +5,16 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.controller.NotFoundExcpetion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.exception.ConflictExcpetion;
+import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +29,20 @@ public class SublineService {
   private final SublineRepository sublineRepository;
   private final VersionableService versionableService;
   private final LineService lineService;
+  private final SpecificationBuilderService<Subline> specificationBuilderService = new SpecificationBuilderService<Subline>(
+      List.of(Subline_.swissSublineNumber, Subline_.description, Subline_.swissLineNumber, Subline_.businessOrganisation, Subline_.slnid),
+      Subline_.validFrom,
+      Subline_.validTo,
+      null
+  );
 
-  public Page<Subline> findAll(Pageable pageable) {
-    return sublineRepository.findAll(pageable);
+  public Page<Subline> findAll(SublineSearchRestrictions sublineSearchRestrictions) {
+    return sublineRepository.findAll(
+        specificationBuilderService.buildSearchCriteriaSpecification(sublineSearchRestrictions.getSearchCriteria())
+            .and(specificationBuilderService.buildValidOnSpecification(sublineSearchRestrictions.getValidOn()))
+            .and(specificationBuilderService.buildEnumSpecification(sublineSearchRestrictions.getStatusRestrictions(), Subline_.status))
+            .and(specificationBuilderService.buildEnumSpecification(sublineSearchRestrictions.getTypeRestrictions(), Subline_.type)),
+        sublineSearchRestrictions.getPageable());
   }
 
   public List<SublineVersion> findSubline(String slnid) {
@@ -60,7 +73,8 @@ public class SublineService {
   }
 
   public void deleteAll(String slnid) {
-    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
+    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
+        slnid);
     if (sublineVersions.isEmpty()) {
       throw NotFoundExcpetion.getInstance().get();
     }
@@ -77,6 +91,5 @@ public class SublineService {
     versionableService.applyVersioning(SublineVersion.class, versionedObjects, this::save,
         this::deleteById);
   }
-
 
 }
