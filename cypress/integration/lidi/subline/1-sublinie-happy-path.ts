@@ -56,9 +56,10 @@ describe('Teillinie', () => {
       .eq(1)
       .clear()
       .type(sublineVersion.swissSublineNumber)
-      .type('{enter}')
-      .type(sublineVersion.slnid)
       .type('{enter}');
+    cy.wait('@searchSublines');
+    cy.get('[data-cy=table-search-chip-input]').eq(1).type(sublineVersion.slnid).type('{enter}');
+    cy.wait('@searchSublines');
     cy.get('table').eq(1).find('thead tr th').eq(6).click();
     cy.wait('@searchSublines');
     cy.get('table')
@@ -85,9 +86,10 @@ describe('Teillinie', () => {
       .eq(0)
       .clear()
       .type(mainline.swissLineNumber)
-      .type('{enter}')
-      .type(mainline.slnid)
       .type('{enter}');
+    cy.wait('@searchLines');
+    cy.get('[data-cy=table-search-chip-input]').eq(0).type(mainline.slnid).type('{enter}');
+    cy.wait('@searchLines');
     cy.get('table').eq(0).find('thead tr th').eq(6).click();
     cy.wait('@searchLines');
     cy.get('table').eq(0).find('tbody tr').first().click();
