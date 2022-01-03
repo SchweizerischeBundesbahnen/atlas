@@ -52,16 +52,15 @@ describe('Teillinie', () => {
 
   it('Step-7: Search for added element on the table and navigate to it', () => {
     cy.intercept('GET', '/line-directory/v1/sublines?**').as('searchSublines');
-    cy.get('[data-cy=table-search-chip-input]')
-      .eq(1)
+    cy.get('[data-cy="lidi-sublines"] [data-cy=table-search-chip-input]')
       .clear()
       .type(sublineVersion.swissSublineNumber)
       .type('{enter}');
     cy.wait('@searchSublines');
+
     cy.get('[data-cy=table-search-chip-input]').eq(1).type(sublineVersion.slnid).type('{enter}');
     cy.wait('@searchSublines');
-    cy.get('table').eq(1).find('thead tr th').eq(6).click();
-    cy.wait('@searchSublines');
+
     cy.get('table')
       .eq(1)
       .find('tbody tr')
@@ -87,16 +86,15 @@ describe('Teillinie', () => {
 
   it('Step-9: Delete the mainline item', () => {
     cy.intercept('GET', '/line-directory/v1/lines?**').as('searchLines');
-    cy.get('[data-cy=table-search-chip-input]')
-      .eq(0)
+    cy.get('[data-cy="lidi-lines"] [data-cy=table-search-chip-input]')
       .clear()
       .type(mainline.swissLineNumber)
       .type('{enter}');
     cy.wait('@searchLines');
+
     cy.get('[data-cy=table-search-chip-input]').eq(0).type(mainline.slnid).type('{enter}');
     cy.wait('@searchLines');
-    cy.get('table').eq(0).find('thead tr th').eq(6).click();
-    cy.wait('@searchLines');
+
     cy.get('table')
       .eq(0)
       .find('tbody tr')
