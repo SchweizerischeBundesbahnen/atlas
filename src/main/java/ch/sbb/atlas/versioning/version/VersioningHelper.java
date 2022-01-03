@@ -54,7 +54,7 @@ public final class VersioningHelper {
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
     return toVersioningList.size() > 1
         &&
-        editedValidFrom.isAfter(toVersioningList.get(0).getValidFrom())
+        !editedValidFrom.isBefore(toVersioningList.get(0).getValidFrom())
         &&
         editedValidTo.isBefore(
             toVersioningList.get(toVersioningList.size() - 1).getValidTo());

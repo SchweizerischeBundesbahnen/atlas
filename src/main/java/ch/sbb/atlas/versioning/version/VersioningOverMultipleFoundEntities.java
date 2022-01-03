@@ -117,8 +117,17 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
       VersioningData vd, List<ToVersioning> toVersioningList) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
     log.info("Matched multiple versions over the borders.");
-    applyVersioningOnLeftBorderWhenValidFromIsAfterCurrentValidFrom(vd, toVersioningList,
-        versionedObjects);
+    ToVersioning firstVersion = toVersioningList.get(0);
+    if (firstVersion.getValidFrom().equals(vd.getEditedValidFrom())) {
+      log.info("Starts on first validFrom (Szenario 13c)");
+      versionedObjects.add(
+          shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(firstVersion.getValidFrom(),
+              firstVersion.getValidTo(), firstVersion, vd.getEditedEntity()));
+    } else {
+      log.info("Starts within version");
+      applyVersioningOnLeftBorderWhenValidFromIsAfterCurrentValidFrom(vd, toVersioningList,
+          versionedObjects);
+    }
     applyVersioningOnTheLeftBorderWhenValidToIsBeforeCurrentValidTo(vd, toVersioningList,
         versionedObjects);
     applyVersioningBetweenLeftAndRightBorder(vd, toVersioningList, versionedObjects);
