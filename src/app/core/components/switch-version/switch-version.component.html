@@ -34,9 +34,9 @@
   </div>
 </div>
 <div class="row switch-version-subtitle-row">
-  <div class="col total-rage" data-cy="switch-version-total-range">
-    <span>
-      {{ this.pageType.title | translate }}
+  <div class="col total-rage">
+    <span data-cy="switch-version-total-range">
+      {{ this.displayPageTypeTitle() | translate }}
       {{ 'COMMON.FROM' | translate }}
       <strong>{{ this.getInitialDataRage() }}</strong>
       {{ 'COMMON.TO' | translate }}
