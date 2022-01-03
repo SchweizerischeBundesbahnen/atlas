@@ -45,16 +45,14 @@ describe('Linie', () => {
 
   it('Step-6: Search added item in table and navigate to it', () => {
     cy.intercept('GET', '/line-directory/v1/lines?**').as('searchLines');
-    cy.get('[data-cy=table-search-chip-input]')
-      .eq(0)
+    cy.get('[data-cy="lidi-lines"] [data-cy=table-search-chip-input]')
       .clear()
       .type(line.swissLineNumber)
       .type('{enter}');
     cy.wait('@searchLines');
     cy.get('[data-cy=table-search-chip-input]').eq(0).type(line.slnid).type('{enter}');
     cy.wait('@searchLines');
-    cy.get('table').get('thead tr th').eq(6).click();
-    cy.wait('@searchLines');
+
     cy.get('table')
       .eq(0)
       .find('tbody tr')
