@@ -57,7 +57,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
 
   it('Step-7: Check version display', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
-      'Details von 01.01.2000 bis 31.12.2002'
+      'Linienverzeichnis von 01.01.2000 bis 31.12.2002'
     );
   });
 
