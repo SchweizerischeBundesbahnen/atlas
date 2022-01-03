@@ -96,6 +96,17 @@ public final class VersioningHelper {
             toVersioning.getValidTo()));
   }
 
+  /**
+   *                                             |_____|
+   * |----------|----------|----------|----------|----------|
+   */
+  public static boolean isOnBeginningOfVersionAndEndingWithin(
+      VersioningData vd, ToVersioning toVersioning) {
+    return vd.getEditedValidFrom() != null
+        && vd.getEditedValidFrom().equals(toVersioning.getValidFrom())
+        && vd.getEditedValidTo().isBefore(toVersioning.getValidTo());
+  }
+
   public static boolean isEditedValidToAfterTheRightBorderAndValidFromNotEdited(VersioningData vd,
       ToVersioning toVersioning) {
     return vd.getEditedValidTo().isAfter(toVersioning.getValidTo()) && vd.isOnlyValidToEdited();

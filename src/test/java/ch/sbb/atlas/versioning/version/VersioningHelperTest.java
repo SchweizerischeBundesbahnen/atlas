@@ -792,6 +792,36 @@ public class VersioningHelperTest {
   }
 
   @Test
+  public void shouldReturnTrueWhenVersionIsOnBeginningOfVersionAndEndingWithin() {
+    //given
+    VersionableObject editedVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 7, 31))
+        .build();
+    VersionableObject currentVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    Property property = Property.builder().value("CiaoCiao").key("property").build();
+    Entity entity = Entity.builder().id(1L).properties(List.of(property)).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
+    List<ToVersioning> toVersioningList = new ArrayList<>();
+    toVersioningList.add(toVersioningCurrent);
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
+        toVersioningList);
+    //when
+    boolean result = VersioningHelper.isOnBeginningOfVersionAndEndingWithin(
+        versioningData, toVersioningCurrent);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
   public void shouldReturnToVersioningObjectWhenEntityIsOnAGapBetweenTwoVersions() {
     //given
     VersionableObject versionableObject1 = VersionableObject
