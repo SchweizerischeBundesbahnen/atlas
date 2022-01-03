@@ -114,7 +114,7 @@
     "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}"
   },
   "LIDI": {
-    "LINES": "Linienverzeichnis",
+    "LINES": "Linien",
     "SUBLINES": "Teillinien",
     "SWISS_LINE_NUMBER": "CH-Liniennummer (CHLNR)",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
