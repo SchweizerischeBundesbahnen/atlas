@@ -98,10 +98,12 @@ describe('Teillinie', () => {
     cy.get('table')
       .eq(0)
       .find('tbody tr')
-      .should('have.length', 1)
-      .contains(mainline.slnid)
+      .each(($el) => {
+        cy.wrap($el)
+          .should('contain.text', mainline.swissLineNumber)
+          .should('contain.text', mainline.slnid);
+      })
       .click();
-    cy.contains(mainline.swissLineNumber);
     CommonUtils.deleteItems();
     cy.contains(breadcrumbTitle);
   });
