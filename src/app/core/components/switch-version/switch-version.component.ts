@@ -3,6 +3,7 @@ import { Record } from '../detail-wrapper/record';
 import moment from 'moment';
 import { DATE_PATTERN } from '../../date/date.service';
 import { Page } from '../../model/page';
+import { Pages } from '../../../pages/pages';
 
 @Component({
   selector: 'app-switch-version',
@@ -29,6 +30,19 @@ export class SwitchVersionComponent implements OnInit {
   displayVersionsItems() {
     this.getCurrentIndex();
     return this.currentIndex + 1 + ' / ' + this.records.length;
+  }
+
+  displayPageTypeTitle() {
+    if (this.pageType === Pages.TTFN) {
+      return Pages.TTFN.title;
+    }
+    if (this.pageType === Pages.LINES) {
+      return 'LIDI.LINES';
+    }
+    if (this.pageType === Pages.SUBLINES) {
+      return 'LIDI.SUBLINES';
+    }
+    return '';
   }
 
   switchLeft() {
