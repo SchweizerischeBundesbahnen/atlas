@@ -51,8 +51,7 @@ describe('Teillinie', () => {
   });
 
   it('Step-7: Search for added element on the table and navigate to it', () => {
-    const itemToDeleteUrl = '/line-directory/sublines/' + sublineVersion.slnid;
-    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+    LidiUtils.navigateToSubline(sublineVersion);
     cy.contains(mainline.swissLineNumber);
     cy.contains(sublineVersion.swissSublineNumber);
     LidiUtils.assertContainsSublineVersion(sublineVersion);
@@ -64,8 +63,7 @@ describe('Teillinie', () => {
   });
 
   it('Step-9: Navigate to the mainline item', () => {
-    const itemToDeleteUrl = '/line-directory/lines/' + mainline.slnid;
-    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+    LidiUtils.navigateToLine(mainline);
     cy.contains(mainline.swissLineNumber);
     LidiUtils.assertContainsLineVersion(mainline);
   });
