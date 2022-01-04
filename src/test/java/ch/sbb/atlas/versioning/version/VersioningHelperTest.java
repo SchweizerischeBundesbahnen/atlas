@@ -685,6 +685,43 @@ public class VersioningHelperTest {
   }
 
   @Test
+  public void shouldReturnTrueWhenEditedVersionEndsOnVersionAndOverTheBorders() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    VersionableObject versionableObject3 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning3 = ToVersioning.builder().versionable(versionableObject3).build();
+    LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
+    LocalDate editedValidTo = versionableObject2.getValidTo();
+    //when
+    boolean result = VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders(editedValidFrom,
+        editedValidTo, List.of(toVersioning1, toVersioning2, toVersioning3));
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
   public void shouldReturnFalseWhenEditedVersionIsOverOneVersionAndOverTheBorders() {
     //given
     VersionableObject versionableObject1 = VersionableObject

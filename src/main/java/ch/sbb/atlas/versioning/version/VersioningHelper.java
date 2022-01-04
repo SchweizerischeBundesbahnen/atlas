@@ -56,7 +56,7 @@ public final class VersioningHelper {
         &&
         !editedValidFrom.isBefore(toVersioningList.get(0).getValidFrom())
         &&
-        editedValidTo.isBefore(
+        !editedValidTo.isAfter(
             toVersioningList.get(toVersioningList.size() - 1).getValidTo());
   }
 

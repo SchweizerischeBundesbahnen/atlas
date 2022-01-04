@@ -119,7 +119,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     log.info("Matched multiple versions over the borders.");
     ToVersioning firstVersion = toVersioningList.get(0);
     if (firstVersion.getValidFrom().equals(vd.getEditedValidFrom())) {
-      log.info("Starts on first validFrom (Szenario 13c)");
+      log.info("Starts on validFrom (Szenario 13c)");
       versionedObjects.add(
           shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(firstVersion.getValidFrom(),
               firstVersion.getValidTo(), firstVersion, vd.getEditedEntity()));
@@ -128,8 +128,16 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
       applyVersioningOnLeftBorderWhenValidFromIsAfterCurrentValidFrom(vd, toVersioningList,
           versionedObjects);
     }
-    applyVersioningOnTheLeftBorderWhenValidToIsBeforeCurrentValidTo(vd, toVersioningList,
-        versionedObjects);
+    ToVersioning lastVersion = toVersioningList.get(toVersioningList.size()-1);
+    if (lastVersion.getValidTo().equals(vd.getEditedValidTo())) {
+      log.info("Ends on validTo (Szenario 13d)");
+      versionedObjects.add(
+          shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(lastVersion.getValidFrom(),
+              lastVersion.getValidTo(), lastVersion, vd.getEditedEntity()));
+    }else {
+      applyVersioningOnTheLeftBorderWhenValidToIsBeforeCurrentValidTo(vd, toVersioningList,
+          versionedObjects);
+    }
     applyVersioningBetweenLeftAndRightBorder(vd, toVersioningList, versionedObjects);
     return versionedObjects;
   }
