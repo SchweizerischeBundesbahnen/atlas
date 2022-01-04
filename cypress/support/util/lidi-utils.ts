@@ -73,7 +73,7 @@ export default class LidiUtils {
   }
 
   static typeAndSelectItemFromDropDown(selector: string, value: string) {
-    cy.get(selector).type(value).wait(500).type('{enter}');
+    cy.get(selector).type(value).wait(1000).type('{enter}');
   }
 
   static assertContainsLineVersion(version: any) {
