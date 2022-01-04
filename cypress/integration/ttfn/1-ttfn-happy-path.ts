@@ -39,31 +39,14 @@ describe('Fahrplanfeldnummer', () => {
   });
 
   it('Step-6: search for added item in table and select it', () => {
-    cy.intercept('GET', '/timetable-field-number/v1/field-numbers?**').as('searchTtFieldNumbers');
-    cy.get('[data-cy=table-search-chip-input]')
-      .clear()
-      .type(firstVersion.swissTimetableFieldNumber)
-      .type('{enter}');
-    cy.wait('@searchTtFieldNumbers');
-    cy.get('[data-cy=table-search-chip-input]').type(firstVersion.ttfnid).type('{enter}');
-    cy.wait('@searchTtFieldNumbers');
-    cy.get('table thead tr th').contains('Fahrplanfeldnummer-ID').click();
-    cy.wait('@searchTtFieldNumbers');
-    cy.get('table tbody tr').each(($el) => {
-      cy.wrap($el)
-        .should('contain.text', firstVersion.swissTimetableFieldNumber)
-        .should('contain.text', firstVersion.ttfnid);
-    });
-    cy.get('table tbody tr').should('have.length', 1).contains(firstVersion.ttfnid).click();
-    cy.contains(firstVersion.swissTimetableFieldNumber);
-    cy.get('[data-cy=swissTimetableFieldNumber]')
-      .invoke('val')
-      .should('eq', firstVersion.swissTimetableFieldNumber);
+    const itemToDeleteUrl = '/timetable-field-number/' + firstVersion.ttfnid;
+    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
     TtfnUtils.assertContainsVersion(firstVersion);
   });
 
   it('Step-7: Delete added item', () => {
     CommonUtils.deleteItems();
+    cy.url().should('contain', '/timetable-field-number');
     cy.contains(headerTitle);
   });
 });
