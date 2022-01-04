@@ -101,20 +101,13 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-12: Check the added is present on the table result and navigate to it ', () => {
     cy.intercept('GET', '/line-directory/v1/sublines?**').as('searchSublines');
+    //Type swissSublineNumber into Search field
     cy.get('[data-cy="lidi-sublines"] [data-cy=table-search-chip-input]')
       .clear()
       .type(firstSublineVersion.swissSublineNumber)
       .type('{enter}');
     cy.wait('@searchSublines');
 
-    cy.get('table')
-      .eq(1)
-      .find('tbody tr')
-      .each(($el) => {
-        cy.wrap($el)
-          .should('contain.text', firstSublineVersion.swissSublineNumber)
-          .should('contain.text', firstSublineVersion.slnid);
-      });
     cy.get('table')
       .eq(1)
       .find('tbody tr')
@@ -127,20 +120,19 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-13: Delete the subline item ', () => {
     CommonUtils.deleteItems();
-    cy.url().should('contain', '/line-directory');
-    cy.get('[data-cy="lidi-lines"]').should('exist');
-    cy.get('[data-cy="lidi-sublines"]').should('exist');
-    cy.contains('Teillinien');
+    LidiUtils.assertIsOnLiDiHome();
   });
 
   it('Step-14: Search and Navigate to the mainline item ', () => {
     cy.intercept('GET', '/line-directory/v1/lines?**').as('searchLines');
+    //Type swissSublineNumber into Search field
     cy.get('[data-cy="lidi-lines"] [data-cy=table-search-chip-input]')
       .clear()
       .type(mainline.swissLineNumber)
       .type('{enter}');
     cy.wait('@searchLines');
 
+    //Type slnid into Search field
     cy.get('[data-cy=table-search-chip-input]').eq(0).type(mainline.slnid).type('{enter}');
     cy.wait('@searchLines');
 
@@ -158,9 +150,6 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
   it('Step-15: Delete the mainline item ', () => {
     CommonUtils.deleteItems();
-    cy.url().should('contain', '/line-directory');
-    cy.get('[data-cy="lidi-lines"]').should('exist');
-    cy.get('[data-cy="lidi-sublines"]').should('exist');
-    cy.contains(breadcrumbTitle);
+    LidiUtils.assertIsOnLiDiHome();
   });
 });
