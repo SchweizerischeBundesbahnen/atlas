@@ -35,6 +35,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.clickOnAddNewSublinesLinieVersion();
     LidiUtils.fillSublineVersionForm(firstSublineVersion);
     CommonUtils.saveSubline();
+    LidiUtils.readSlnidFromForm(firstSublineVersion);
   });
 
   it('Step-5: Add second Sibline Version (with gap)', () => {
@@ -99,19 +100,67 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-12: Check the added is present on the table result and navigate to it ', () => {
-    cy.contains(firstSublineVersion.swissSublineNumber).parents('tr').click();
+    cy.intercept('GET', '/line-directory/v1/sublines?**').as('searchSublines');
+    cy.get('[data-cy="lidi-sublines"] [data-cy=table-search-chip-input]')
+      .clear()
+      .type(firstSublineVersion.swissSublineNumber)
+      .type('{enter}');
+    cy.wait('@searchSublines');
+
+    cy.get('table')
+      .eq(1)
+      .find('tbody tr')
+      .each(($el) => {
+        cy.wrap($el)
+          .should('contain.text', firstSublineVersion.swissSublineNumber)
+          .should('contain.text', firstSublineVersion.slnid);
+      });
+    cy.get('table')
+      .eq(1)
+      .find('tbody tr')
+      .should('have.length', 1)
+      .contains(firstSublineVersion.slnid)
+      .click();
+    cy.contains(mainline.swissLineNumber);
     cy.contains(firstSublineVersion.swissSublineNumber);
   });
 
   it('Step-13: Delete the subline item ', () => {
     CommonUtils.deleteItems();
-    cy.contains(breadcrumbTitle);
+    cy.url().should('contain', '/line-directory');
+    cy.get('[data-cy="lidi-lines"]').should('exist');
+    cy.get('[data-cy="lidi-sublines"]').should('exist');
+    cy.contains('Teillinien');
   });
 
-  it('Step-14: Delete the mainline item ', () => {
-    cy.get('[data-cy=lidi-lines]').contains(mainline.swissLineNumber).parents('tr').click();
+  it('Step-14: Search and Navigate to the mainline item ', () => {
+    cy.intercept('GET', '/line-directory/v1/lines?**').as('searchLines');
+    cy.get('[data-cy="lidi-lines"] [data-cy=table-search-chip-input]')
+      .clear()
+      .type(mainline.swissLineNumber)
+      .type('{enter}');
+    cy.wait('@searchLines');
+
+    cy.get('[data-cy=table-search-chip-input]').eq(0).type(mainline.slnid).type('{enter}');
+    cy.wait('@searchLines');
+
+    cy.get('table')
+      .eq(0)
+      .find('tbody tr')
+      .each(($el) => {
+        cy.wrap($el)
+          .should('contain.text', mainline.swissLineNumber)
+          .should('contain.text', mainline.slnid);
+      })
+      .click();
     cy.contains(mainline.swissLineNumber);
+    LidiUtils.assertContainsLineVersion(mainline);
+  });
+  it('Step-15: Delete the mainline item ', () => {
     CommonUtils.deleteItems();
+    cy.url().should('contain', '/line-directory');
+    cy.get('[data-cy="lidi-lines"]').should('exist');
+    cy.get('[data-cy="lidi-sublines"]').should('exist');
     cy.contains(breadcrumbTitle);
   });
 });
