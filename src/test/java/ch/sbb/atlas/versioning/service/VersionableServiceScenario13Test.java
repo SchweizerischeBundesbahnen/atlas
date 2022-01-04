@@ -19,11 +19,11 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
    * Scenario 13a: Update startet auf einer Version und endet in der nächsten Version
    *
    * Änderung                          |_____|
-   * |-----------------|-------------|
-   * Version 1       Version 2
+   *                 |-----------------|-------------|
+   *                     Version 1       Version 2
    *
    * Ergebnis:       |-----------------|_____|-------|
-   * 1          3      2
+   *                           1          3      2
    */
   @Test
   public void scenario13a() {
@@ -105,11 +105,11 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
    * Scenario 13b: Update startet auf einer Version und endet in der nächsten Version
    *
    * Änderung                  |_____|
-   * |-----------------|-------------|
-   * Version 1       Version 2
+   *               |-----------------|-------------|
+   *                    Version 1       Version 2
    *
    * Ergebnis:     |-----------|_____|-------------|
-   * 1          3        2
+   *                   1          3        2
    */
   @Test
   public void scenario13b() {
