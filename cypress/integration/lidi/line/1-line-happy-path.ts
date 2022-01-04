@@ -44,30 +44,13 @@ describe('Linie', () => {
   });
 
   it('Step-6: Search added item in table and navigate to it', () => {
-    cy.intercept('GET', '/line-directory/v1/lines?**').as('searchLines');
-    cy.get('[data-cy="lidi-lines"] [data-cy=table-search-chip-input]')
-      .clear()
-      .type(line.swissLineNumber)
-      .type('{enter}');
-    cy.wait('@searchLines');
-    cy.get('[data-cy=table-search-chip-input]').eq(0).type(line.slnid).type('{enter}');
-    cy.wait('@searchLines');
-
-    cy.get('table')
-      .eq(0)
-      .find('tbody tr')
-      .each(($el) => {
-        cy.wrap($el)
-          .should('contain.text', line.swissLineNumber)
-          .should('contain.text', line.slnid);
-      });
-    cy.get('table').eq(0).find('tbody tr').should('have.length', 1).contains(line.slnid).click();
-    cy.contains(line.swissLineNumber);
+    LidiUtils.navigateToLine(line);
     LidiUtils.assertContainsLineVersion(line);
   });
 
   it('Step-7: Delete the item', () => {
     CommonUtils.deleteItems();
+    LidiUtils.assertIsOnLiDiHome();
     cy.contains(headerTitle);
   });
 });
