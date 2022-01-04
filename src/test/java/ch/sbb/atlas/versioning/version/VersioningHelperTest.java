@@ -677,7 +677,7 @@ public class VersioningHelperTest {
     LocalDate editedValidFrom = versionableObject1.getValidFrom();
     LocalDate editedValidTo = LocalDate.of(2022, 6, 1);
     //when
-    boolean result = VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders(editedValidFrom,
+    boolean result = VersioningHelper.isBetweenMultipleVersionsAndStartsOnABorder(editedValidFrom,
         editedValidTo, List.of(toVersioning1, toVersioning2, toVersioning3));
 
     //then
@@ -712,9 +712,9 @@ public class VersioningHelperTest {
         .build();
     ToVersioning toVersioning3 = ToVersioning.builder().versionable(versionableObject3).build();
     LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
-    LocalDate editedValidTo = versionableObject2.getValidTo();
+    LocalDate editedValidTo = versionableObject3.getValidTo();
     //when
-    boolean result = VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders(editedValidFrom,
+    boolean result = VersioningHelper.isBetweenMultipleVersionsAndEndsOnABorder(editedValidFrom,
         editedValidTo, List.of(toVersioning1, toVersioning2, toVersioning3));
 
     //then

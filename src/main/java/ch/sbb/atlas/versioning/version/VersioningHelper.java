@@ -54,10 +54,35 @@ public final class VersioningHelper {
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
     return toVersioningList.size() > 1
         &&
-        !editedValidFrom.isBefore(toVersioningList.get(0).getValidFrom())
+        editedValidFrom.isAfter(toVersioningList.get(0).getValidFrom())
         &&
-        !editedValidTo.isAfter(
-            toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+        editedValidTo.isBefore(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+  }
+
+  /**
+   * |___________________________|
+   * |----------|----------|----------|----------|----------|
+   */
+  public static boolean isBetweenMultipleVersionsAndStartsOnABorder(
+      LocalDate editedValidFrom,LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+    return toVersioningList.size() > 1
+        &&
+        editedValidFrom.equals(toVersioningList.get(0).getValidFrom())
+    &&
+    editedValidTo.isBefore(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+  }
+
+  /**
+   *                            |___________________________|
+   * |----------|----------|----------|----------|----------|
+   */
+  public static boolean isBetweenMultipleVersionsAndEndsOnABorder(
+      LocalDate editedValidFrom,LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+    return toVersioningList.size() > 1
+        &&
+        editedValidFrom.isAfter(toVersioningList.get(0).getValidFrom())
+        &&
+        editedValidTo.equals(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
   }
 
   /**
