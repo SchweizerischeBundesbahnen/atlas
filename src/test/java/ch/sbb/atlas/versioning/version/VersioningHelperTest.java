@@ -648,6 +648,80 @@ public class VersioningHelperTest {
   }
 
   @Test
+  public void shouldReturnTrueWhenEditedVersionStartsOnVersionAndOverTheBorders() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    VersionableObject versionableObject3 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning3 = ToVersioning.builder().versionable(versionableObject3).build();
+    LocalDate editedValidFrom = versionableObject1.getValidFrom();
+    LocalDate editedValidTo = LocalDate.of(2022, 6, 1);
+    //when
+    boolean result = VersioningHelper.isBetweenMultipleVersionsAndStartsOnABorder(editedValidFrom,
+        editedValidTo, List.of(toVersioning1, toVersioning2, toVersioning3));
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenEditedVersionEndsOnVersionAndOverTheBorders() {
+    //given
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning1 = ToVersioning.builder().versionable(versionableObject1).build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder().versionable(versionableObject2).build();
+    VersionableObject versionableObject3 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .property("Ciao1")
+        .build();
+    ToVersioning toVersioning3 = ToVersioning.builder().versionable(versionableObject3).build();
+    LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
+    LocalDate editedValidTo = versionableObject3.getValidTo();
+    //when
+    boolean result = VersioningHelper.isBetweenMultipleVersionsAndEndsOnABorder(editedValidFrom,
+        editedValidTo, List.of(toVersioning1, toVersioning2, toVersioning3));
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
   public void shouldReturnFalseWhenEditedVersionIsOverOneVersionAndOverTheBorders() {
     //given
     VersionableObject versionableObject1 = VersionableObject
@@ -785,6 +859,36 @@ public class VersioningHelperTest {
         toVersioningList);
     //when
     boolean result = VersioningHelper.isOnTheRightBorderAndValidToIsOnOrOverTheBorder(
+        versioningData, toVersioningCurrent);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenVersionIsOnBeginningOfVersionAndEndingWithin() {
+    //given
+    VersionableObject editedVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 7, 31))
+        .build();
+    VersionableObject currentVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    Property property = Property.builder().value("CiaoCiao").key("property").build();
+    Entity entity = Entity.builder().id(1L).properties(List.of(property)).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
+    List<ToVersioning> toVersioningList = new ArrayList<>();
+    toVersioningList.add(toVersioningCurrent);
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
+        toVersioningList);
+    //when
+    boolean result = VersioningHelper.isOnBeginningOfVersionAndEndingWithin(
         versioningData, toVersioningCurrent);
 
     //then

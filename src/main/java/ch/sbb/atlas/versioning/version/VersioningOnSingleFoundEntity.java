@@ -5,6 +5,7 @@ import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObject
 import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObjectToUpdate;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorderAndValidFromNotEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity;
+import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnBeginningOfVersionAndEndingWithin;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheRightBorderAndValidToIsOnOrOverTheBorder;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreEdited;
@@ -105,6 +106,9 @@ public class VersioningOnSingleFoundEntity implements Versioning {
     if (isOnTheRightBorderAndValidToIsOnOrOverTheBorder(vd, toVersioning)) {
       return applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(vd, toVersioning);
     }
+    if (isOnBeginningOfVersionAndEndingWithin(vd, toVersioning)) {
+      return applyVersioningOnBeginningOfVersionAndEndingWithin(vd, toVersioning);
+    }
     throw new VersioningException();
   }
 
@@ -159,6 +163,26 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       return versionedObjects;
     }
     throw new VersioningException();
+  }
+
+  private List<VersionedObject> applyVersioningOnBeginningOfVersionAndEndingWithin(
+      VersioningData vd, ToVersioning toVersioning) {
+    log.info(
+        "Found version on the beginning of a version and ending within, validTo and properties edited.");
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+
+    // Add Version on edited part
+    versionedObjects.add(
+        buildVersionedObjectToCreate(vd.getEditedValidFrom(), vd.getEditedValidTo(),
+            replaceEditedPropertiesWithCurrentProperties(
+                vd.getEditedEntity(),
+                toVersioning.getEntity())));
+
+    // Shorten existing on left side
+    versionedObjects.add(buildVersionedObjectToUpdate(vd.getEditedValidTo().plusDays(1),
+        toVersioning.getValidTo(),
+        toVersioning.getEntity()));
+    return versionedObjects;
   }
 
   private VersionedObject addNewVersionAfterTheRightBorder(VersioningData vd,

@@ -18,19 +18,33 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     log.info("Apply versioning over multiple found entities.");
     List<ToVersioning> toVersioningList = vd.getObjectToVersioningFound();
 
-    if (VersioningHelper.isEditedVersionExactMatchingMultipleEntities(vd.getEditedValidFrom(), vd.getEditedValidTo(),
+    if (VersioningHelper.isEditedVersionExactMatchingMultipleEntities(vd.getEditedValidFrom(),
+        vd.getEditedValidTo(),
         toVersioningList)) {
       return applyVersioningExactMatchingMultipleVersions(vd, toVersioningList);
     }
     if (VersioningHelper.isThereGapBetweenVersions(toVersioningList)) {
       return applyVersioningWhenThereIsGapBetweenMultipleEntities(vd, toVersioningList);
     }
-    if (VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders(vd.getEditedValidFrom(), vd.getEditedValidTo(),
+    if (VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders(vd.getEditedValidFrom(),
+        vd.getEditedValidTo(),
         toVersioningList)) {
       return applyVersioningBetweenMultipleEntitiesOverTheBorders(vd, toVersioningList);
     }
-    if (VersioningHelper.isEditedValidFromOverTheLeftBorder(vd.getEditedValidFrom(), toVersioningList)
-        || VersioningHelper.isEditedValidToOverTheRightBorder(vd.getEditedValidTo(), toVersioningList)) {
+    if (VersioningHelper.isBetweenMultipleVersionsAndStartsOnABorder(vd.getEditedValidFrom(),
+        vd.getEditedValidTo(),
+        toVersioningList)) {
+      return applyVersioningBetweenMultipleEntitiesAndStartsOnABorder(vd, toVersioningList);
+    }
+    if (VersioningHelper.isBetweenMultipleVersionsAndEndsOnABorder(vd.getEditedValidFrom(),
+        vd.getEditedValidTo(),
+        toVersioningList)) {
+      return applyVersioningBetweenMultipleEntitiesAndEndsOnABorder(vd, toVersioningList);
+    }
+    if (VersioningHelper.isEditedValidFromOverTheLeftBorder(vd.getEditedValidFrom(),
+        toVersioningList)
+        || VersioningHelper.isEditedValidToOverTheRightBorder(vd.getEditedValidTo(),
+        toVersioningList)) {
       return applyVersioningOverTheBorders(vd, toVersioningList);
     }
     throw new VersioningException();
@@ -121,6 +135,34 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
         versionedObjects);
     applyVersioningOnTheLeftBorderWhenValidToIsBeforeCurrentValidTo(vd, toVersioningList,
         versionedObjects);
+    applyVersioningBetweenLeftAndRightBorder(vd, toVersioningList, versionedObjects);
+    return versionedObjects;
+  }
+
+  private List<VersionedObject> applyVersioningBetweenMultipleEntitiesAndStartsOnABorder(
+      VersioningData vd, List<ToVersioning> toVersioningList) {
+    log.info("Starts on validFrom (Szenario 13c)");
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+    ToVersioning firstVersion = toVersioningList.get(0);
+    versionedObjects.add(
+        shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(firstVersion.getValidFrom(),
+            firstVersion.getValidTo(), firstVersion, vd.getEditedEntity()));
+    applyVersioningOnTheLeftBorderWhenValidToIsBeforeCurrentValidTo(vd, toVersioningList,
+        versionedObjects);
+    applyVersioningBetweenLeftAndRightBorder(vd, toVersioningList, versionedObjects);
+    return versionedObjects;
+  }
+
+  private List<VersionedObject> applyVersioningBetweenMultipleEntitiesAndEndsOnABorder(
+      VersioningData vd, List<ToVersioning> toVersioningList) {
+    log.info("Ends on validTo (Szenario 13d)");
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+    applyVersioningOnLeftBorderWhenValidFromIsAfterCurrentValidFrom(vd, toVersioningList,
+        versionedObjects);
+    ToVersioning lastVersion = toVersioningList.get(toVersioningList.size() - 1);
+    versionedObjects.add(
+        shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(lastVersion.getValidFrom(),
+            lastVersion.getValidTo(), lastVersion, vd.getEditedEntity()));
     applyVersioningBetweenLeftAndRightBorder(vd, toVersioningList, versionedObjects);
     return versionedObjects;
   }

@@ -56,8 +56,33 @@ public final class VersioningHelper {
         &&
         editedValidFrom.isAfter(toVersioningList.get(0).getValidFrom())
         &&
-        editedValidTo.isBefore(
-            toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+        editedValidTo.isBefore(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+  }
+
+  /**
+   * |___________________________|
+   * |----------|----------|----------|----------|----------|
+   */
+  public static boolean isBetweenMultipleVersionsAndStartsOnABorder(
+      LocalDate editedValidFrom,LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+    return toVersioningList.size() > 1
+        &&
+        editedValidFrom.equals(toVersioningList.get(0).getValidFrom())
+    &&
+    editedValidTo.isBefore(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+  }
+
+  /**
+   *                            |___________________________|
+   * |----------|----------|----------|----------|----------|
+   */
+  public static boolean isBetweenMultipleVersionsAndEndsOnABorder(
+      LocalDate editedValidFrom,LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+    return toVersioningList.size() > 1
+        &&
+        editedValidFrom.isAfter(toVersioningList.get(0).getValidFrom())
+        &&
+        editedValidTo.equals(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
   }
 
   /**
@@ -94,6 +119,17 @@ public final class VersioningHelper {
     return vd.getEditedValidFrom() != null &&
         (vd.getEditedValidTo().equals(toVersioning.getValidTo()) || vd.getEditedValidTo().isAfter(
             toVersioning.getValidTo()));
+  }
+
+  /**
+   *                                             |_____|
+   * |----------|----------|----------|----------|----------|
+   */
+  public static boolean isOnBeginningOfVersionAndEndingWithin(
+      VersioningData vd, ToVersioning toVersioning) {
+    return vd.getEditedValidFrom() != null
+        && vd.getEditedValidFrom().equals(toVersioning.getValidFrom())
+        && vd.getEditedValidTo().isBefore(toVersioning.getValidTo());
   }
 
   public static boolean isEditedValidToAfterTheRightBorderAndValidFromNotEdited(VersioningData vd,
