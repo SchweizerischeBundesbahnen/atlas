@@ -75,16 +75,22 @@ describe('Teillinie', () => {
       .should('have.length', 1)
       .contains(sublineVersion.slnid)
       .click();
+    // const itemToDeleteUrl = '/line-directory/sublines/' + sublineVersion.slnid
+    // cy.visit({url:itemToDeleteUrl, method: 'GET'})
+    cy.contains(mainline.swissLineNumber);
     cy.contains(sublineVersion.swissSublineNumber);
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
 
   it('Step-8: Delete the subline item', () => {
     CommonUtils.deleteItems();
-    cy.contains(breadcrumbTitle);
+    cy.url().should('contain', '/line-directory');
+    cy.get('[data-cy="lidi-lines"]').should('exist');
+    cy.get('[data-cy="lidi-sublines"]').should('exist');
+    cy.contains('Teillinien');
   });
 
-  it('Step-9: Delete the mainline item', () => {
+  it('Step-9: Navigate to the mainline item', () => {
     cy.intercept('GET', '/line-directory/v1/lines?**').as('searchLines');
     cy.get('[data-cy="lidi-lines"] [data-cy=table-search-chip-input]')
       .clear()
@@ -104,7 +110,17 @@ describe('Teillinie', () => {
           .should('contain.text', mainline.slnid);
       })
       .click();
+    // const itemToDeleteUrl = '/line-directory/lines/' + mainline.slnid
+    // cy.visit({url:itemToDeleteUrl, method: 'GET'})
+    cy.contains(mainline.swissLineNumber);
+    LidiUtils.assertContainsLineVersion(mainline);
+  });
+
+  it('Step-10: Delete the mainline item', () => {
     CommonUtils.deleteItems();
+    cy.url().should('contain', '/line-directory');
+    cy.get('[data-cy="lidi-lines"]').should('exist');
+    cy.get('[data-cy="lidi-sublines"]').should('exist');
     cy.contains(breadcrumbTitle);
   });
 });
