@@ -75,7 +75,7 @@
 		<dependency>
 			<groupId>ch.sbb</groupId>
 			<artifactId>atlas-versioning</artifactId>
-			<version>0.18.0</version>
+			<version>0.19.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
