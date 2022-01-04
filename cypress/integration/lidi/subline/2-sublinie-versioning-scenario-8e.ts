@@ -100,8 +100,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-12: Check the added is present on the table result and navigate to it ', () => {
-    const itemToDeleteUrl = '/line-directory/sublines/' + firstSublineVersion.slnid;
-    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+    LidiUtils.navigateToSubline(firstSublineVersion);
     cy.contains(mainline.swissLineNumber);
     cy.contains(firstSublineVersion.swissSublineNumber);
   });
@@ -112,8 +111,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-14: Search and Navigate to the mainline item ', () => {
-    const itemToDeleteUrl = '/line-directory/lines/' + mainline.slnid;
-    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+    LidiUtils.navigateToLine(mainline);
     cy.contains(mainline.swissLineNumber);
     LidiUtils.assertContainsLineVersion(mainline);
   });

@@ -35,6 +35,16 @@ export default class LidiUtils {
     cy.contains('Teillinien');
   }
 
+  static navigateToSubline(sublineVersion: any) {
+    const itemToDeleteUrl = '/line-directory/sublines/' + sublineVersion.slnid;
+    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+  }
+
+  static navigateToLine(mainline: any) {
+    const itemToDeleteUrl = '/line-directory/lines/' + mainline.slnid;
+    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+  }
+
   static fillLineVersionForm(version: any) {
     cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
     cy.get('[data-cy=validTo]').clear().type(version.validTo);
