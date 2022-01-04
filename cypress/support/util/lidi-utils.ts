@@ -28,6 +28,13 @@ export default class LidiUtils {
     cy.contains('Neue Teillinie');
   }
 
+  static assertIsOnLiDiHome() {
+    cy.url().should('contain', '/line-directory');
+    cy.get('[data-cy="lidi-lines"]').should('exist');
+    cy.get('[data-cy="lidi-sublines"]').should('exist');
+    cy.contains('Teillinien');
+  }
+
   static fillLineVersionForm(version: any) {
     cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
     cy.get('[data-cy=validTo]').clear().type(version.validTo);
