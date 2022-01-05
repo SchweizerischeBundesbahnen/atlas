@@ -39,8 +39,33 @@ describe('Fahrplanfeldnummer', () => {
   });
 
   it('Step-6: search for added item in table and select it', () => {
-    const itemToDeleteUrl = '/timetable-field-number/' + firstVersion.ttfnid;
-    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+    const pathToIntercept = '/timetable-field-number/v1/field-numbers?**';
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      '[data-cy=table-search-chip-input]',
+      firstVersion.swissTimetableFieldNumber
+    );
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      '[data-cy=table-search-chip-input]',
+      firstVersion.ttfnid
+    );
+
+    CommonUtils.selectSearchStatus('[data-cy=table-search-status-input]', 'Aktiv');
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      '[data-cy=table-search-date-input]',
+      firstVersion.validTo
+    );
+
+    // Check that the table contains 1 result
+    cy.get('[data-cy="ttfn"] table tbody tr').should('have.length', 1);
+    // Click on the item
+    cy.contains('td', firstVersion.swissTimetableFieldNumber).parents('tr').click();
+
     TtfnUtils.assertContainsVersion(firstVersion);
   });
 
