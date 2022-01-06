@@ -53,7 +53,7 @@ describe('Fahrplanfeldnummer', () => {
       firstVersion.ttfnid
     );
 
-    CommonUtils.selectSearchStatus('[data-cy=table-search-status-input]', 'Aktiv');
+    CommonUtils.selectItemFromDropdownSearchItem('[data-cy=table-search-status-input]', 'Aktiv');
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
