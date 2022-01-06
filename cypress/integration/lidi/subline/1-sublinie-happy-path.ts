@@ -83,7 +83,7 @@ describe('Teillinie', () => {
     // Check that the table contains 1 result
     cy.get('[data-cy="lidi-sublines"] table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', sublineVersion.swissSublineNumber).parents('tr').click();
+    cy.contains('td', sublineVersion.swissSublineNumber).parents('tr').click({ force: true });
 
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
