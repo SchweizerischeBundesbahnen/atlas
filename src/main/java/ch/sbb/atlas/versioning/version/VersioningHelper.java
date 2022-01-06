@@ -138,12 +138,23 @@ public final class VersioningHelper {
   }
 
   public static boolean isOnlyValidToEditedAndPropertiesAreNotEdited(VersioningData vd) {
-    return vd.isOnlyValidToEdited() && vd.getEditedEntity().getProperties().isEmpty();
+    return vd.isOnlyValidToEdited() && !arePropertiesEdited(vd);
+  }
+
+  public static boolean isOnlyValidFromEditedIsEditedAndPropertiesAreNotEdited(VersioningData vd) {
+    return vd.isOnlyValidFromEdited() && !arePropertiesEdited(vd);
   }
 
   public static boolean isOnlyValidToEditedAndPropertiesAreEdited(VersioningData vd) {
-    return vd.isOnlyValidToEdited()
-        && !vd.getEditedEntity().getProperties().isEmpty();
+    return vd.isOnlyValidToEdited() && arePropertiesEdited(vd);
+  }
+
+  public static boolean arePropertiesEdited(VersioningData vd) {
+    return !vd.getEditedEntity().getProperties().isEmpty();
+  }
+
+  public static boolean isSingularVersionAndPropertiesAreNotEdited(VersioningData vd) {
+    return vd.getObjectsToVersioning().size() == 1 && !arePropertiesEdited(vd);
   }
 
   public static boolean isVersionOverTheRightBorder(ToVersioning rightBorderVersion,

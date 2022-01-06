@@ -78,6 +78,10 @@ public class VersioningData {
                                                                      currentVersion.getValidFrom()));
   }
 
+  public boolean isCurrentVersionFirstVersion(){
+    return currentVersion.getValidFrom().equals(objectsToVersioning.get(0).getValidFrom());
+  }
+
   private void populateValidFromAndValidTo(Versionable editedVersion) {
     this.editedValidFrom = editedVersion.getValidFrom();
     if (this.editedValidFrom == null) {

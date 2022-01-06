@@ -7,32 +7,32 @@ import ch.sbb.atlas.versioning.BaseTest.VersionableObject;
 import ch.sbb.atlas.versioning.exception.DateValidationException;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class VersioningDataTest {
 
-  private VersionableObject editedVersion = VersionableObject
+  private final VersionableObject editedVersion = VersionableObject
       .builder()
       .id(1L)
       .validFrom(LocalDate.of(2020, 1, 1))
       .validTo(LocalDate.of(2020, 12, 31))
       .build();
 
-  private VersionableObject currentVersion = VersionableObject
+  private final VersionableObject currentVersion = VersionableObject
       .builder()
       .id(1L)
       .validFrom(LocalDate.of(2020, 1, 1))
       .validTo(LocalDate.of(2020, 12, 31))
       .build();
 
-  private Property property = Property.builder().value("CiaoCiao").key("property").build();
-  private Entity editedEntity = Entity.builder().id(1L).properties(List.of(property)).build();
-  private ToVersioning toVersioningCurrent = ToVersioning.builder()
-                                                         .versionable(currentVersion)
-                                                         .build();
-  private List<ToVersioning> toVersioningList = Arrays.asList(toVersioningCurrent);
+  private final Property property = Property.builder().value("CiaoCiao").key("property").build();
+  private final Entity editedEntity = Entity.builder().id(1L).properties(List.of(property)).build();
+  private final ToVersioning toVersioningCurrent = ToVersioning.builder()
+                                                               .versionable(currentVersion)
+                                                               .build();
+  private final List<ToVersioning> toVersioningList = new ArrayList<>(List.of(toVersioningCurrent));
 
 
   @Test
@@ -106,8 +106,7 @@ public class VersioningDataTest {
     ToVersioning result = versioningData.getSingleFoundObjectToVersioning();
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(toVersioningCurrent);
+    assertThat(result).isNotNull().isEqualTo(toVersioningCurrent);
   }
 
   @Test
@@ -233,4 +232,43 @@ public class VersioningDataTest {
           "ValidFrom cannot be before 1.1.1900.");
   }
 
+  @Test
+  public void shouldReturnTrueWhenVersionIsFirstInList() {
+    //given
+    VersionableObject firstVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2010, 12, 31))
+        .build();
+    VersioningData versioningData = new VersioningData(editedVersion, firstVersion, editedEntity,
+        new ArrayList<>(List.of(ToVersioning.builder().versionable(firstVersion).build(),
+            toVersioningCurrent)));
+
+    //when
+    boolean result = versioningData.isCurrentVersionFirstVersion();
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenVersionIsLaterInList() {
+    //given
+    VersionableObject firstVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2030, 1, 1))
+        .validTo(LocalDate.of(2040, 12, 31))
+        .build();
+    VersioningData versioningData = new VersioningData(editedVersion, firstVersion, editedEntity,
+        new ArrayList<>(List.of(ToVersioning.builder().versionable(firstVersion).build(),
+            toVersioningCurrent)));
+
+    //when
+    boolean result = versioningData.isCurrentVersionFirstVersion();
+
+    //then
+    assertThat(result).isFalse();
+  }
 }
