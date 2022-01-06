@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.sbb</groupId>
   <artifactId>atlas-versioning</artifactId>
-  <version>0.20.0</version>
+  <version>0.21.0-SNAPSHOT</version>
   <name>Atlas versioning</name>
   <description>Atlas versioning</description>
   <properties>
