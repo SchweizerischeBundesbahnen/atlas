@@ -44,8 +44,7 @@ describe('Linie', () => {
   });
 
   it('Step-6: Search added item in table and navigate to it', () => {
-    LidiUtils.navigateToLine(line);
-    LidiUtils.assertContainsLineVersion(line);
+    LidiUtils.searchAndNavigateToLine(line);
   });
 
   it('Step-7: Delete the item', () => {

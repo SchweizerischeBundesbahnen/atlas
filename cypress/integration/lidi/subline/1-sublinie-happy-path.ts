@@ -51,9 +51,40 @@ describe('Teillinie', () => {
   });
 
   it('Step-7: Search for added element on the table and navigate to it', () => {
-    LidiUtils.navigateToSubline(sublineVersion);
-    cy.contains(mainline.swissLineNumber);
-    cy.contains(sublineVersion.swissSublineNumber);
+    const pathToIntercept = '/line-directory/v1/sublines?**';
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      '[data-cy="lidi-sublines"] [data-cy=table-search-chip-input]',
+      sublineVersion.swissSublineNumber
+    );
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      '[data-cy="lidi-sublines"] [data-cy=table-search-chip-input]',
+      sublineVersion.slnid
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      '[data-cy="lidi-sublines"] [data-cy=table-search-status-input]',
+      'Aktiv'
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      '[data-cy="lidi-sublines"] [data-cy="table-search-subline-type"]',
+      sublineVersion.type
+    );
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      '[data-cy="lidi-sublines"] [data-cy=table-search-date-input]',
+      sublineVersion.validTo
+    );
+    // Check that the table contains 1 result
+    cy.get('[data-cy="lidi-sublines"] table tbody tr').should('have.length', 1);
+    // Click on the item
+    cy.contains('td', sublineVersion.swissSublineNumber).parents('tr').click();
+
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
 
@@ -63,9 +94,7 @@ describe('Teillinie', () => {
   });
 
   it('Step-9: Navigate to the mainline item', () => {
-    LidiUtils.navigateToLine(mainline);
-    cy.contains(mainline.swissLineNumber);
-    LidiUtils.assertContainsLineVersion(mainline);
+    LidiUtils.searchAndNavigateToLine(mainline);
   });
 
   it('Step-10: Delete the mainline item', () => {

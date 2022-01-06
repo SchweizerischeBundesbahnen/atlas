@@ -17,6 +17,7 @@
       (selectionChange)="onSublineTypeSelectionChange()"
       [(value)]="activeSublineTypes"
       multiple
+      data-cy="table-search-subline-type"
     >
       <mat-option *ngFor="let sublineType of SUBLINE_TYPES" [value]="sublineType">{{
         'LIDI.SUBLINE.TYPES.' + sublineType | translate

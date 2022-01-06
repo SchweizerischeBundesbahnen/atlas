@@ -19,7 +19,12 @@
   </mat-form-field>
   <mat-form-field class="col pe-3">
     <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
-    <mat-select (selectionChange)="statusSelectionChange()" [(value)]="activeStatuses" multiple>
+    <mat-select
+      data-cy="table-search-status-input"
+      (selectionChange)="statusSelectionChange()"
+      [(value)]="activeStatuses"
+      multiple
+    >
       <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">{{
         'COMMON.STATUS_TYPES.' + status | translate
       }}</mat-option>
@@ -29,6 +34,7 @@
   <mat-form-field class="col">
     <mat-label>{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
     <input
+      data-cy="table-search-date-input"
       matInput
       [formControl]="dateControl"
       [matDatepicker]="picker"
