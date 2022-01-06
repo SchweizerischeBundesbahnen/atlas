@@ -64,7 +64,7 @@ describe('Fahrplanfeldnummer', () => {
     // Check that the table contains 1 result
     cy.get('[data-cy="ttfn"] table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', firstVersion.swissTimetableFieldNumber).parents('tr').click();
+    cy.contains('td', firstVersion.swissTimetableFieldNumber).parents('tr').click({ force: true });
 
     TtfnUtils.assertContainsVersion(firstVersion);
   });
