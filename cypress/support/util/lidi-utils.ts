@@ -79,24 +79,29 @@ export default class LidiUtils {
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-lines"] [data-cy=table-search-chip-input]',
+      '[data-cy="lidi-lines"] [data-cy="table-search-chip-input"]',
       line.swissLineNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-lines"] [data-cy=table-search-chip-input]',
+      '[data-cy="lidi-lines"] [data-cy="table-search-chip-input"]',
       line.slnid
     );
 
-    CommonUtils.selectSearchStatus(
-      '[data-cy="lidi-lines"] [data-cy=table-search-status-input]',
+    CommonUtils.selectItemFromDropdownSearchItem(
+      '[data-cy="lidi-lines"] [data-cy="table-search-status-input"]',
       'Aktiv'
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      '[data-cy="lidi-lines"] [data-cy="table-search-line-type"]',
+      line.type
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-lines"] [data-cy=table-search-date-input]',
+      '[data-cy="lidi-lines"] [data-cy="table-search-date-input"]',
       line.validTo
     );
     // Check that the table contains 1 result

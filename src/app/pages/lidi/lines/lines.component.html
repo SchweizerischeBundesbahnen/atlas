@@ -17,6 +17,7 @@
       (selectionChange)="onLineTypeSelectionChange()"
       [(value)]="activeLineTypes"
       multiple
+      data-cy="table-search-line-type"
     >
       <mat-option *ngFor="let lineType of LINE_TYPES" [value]="lineType">{{
         'LIDI.LINE.TYPES.' + lineType | translate

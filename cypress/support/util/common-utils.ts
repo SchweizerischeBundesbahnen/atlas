@@ -90,7 +90,7 @@ export default class CommonUtils {
     cy.get(searchSelector).clear().type(value).type('{enter}').wait('@searchItemUlrIntercept');
   }
 
-  static selectSearchStatus(searchStatusSelector: string, value: string) {
+  static selectItemFromDropdownSearchItem(searchStatusSelector: string, value: string) {
     //Select status to search
     CommonUtils.selectItemFromDropDown(searchStatusSelector, value);
     cy.get('body').type('{esc}');
