@@ -50,8 +50,8 @@ export default class LidiUtils {
     cy.get('[data-cy=validTo]').clear().type(version.validTo);
     cy.get('[data-cy=swissLineNumber]').clear().type(version.swissLineNumber);
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
-    this.selectItemFromDropDown('[data-cy=type]', version.type);
-    this.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
+    CommonUtils.selectItemFromDropDown('[data-cy=type]', version.type);
+    CommonUtils.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
     cy.get('[data-cy=colorFontRgb] [data-cy=rgb-picker-input]').clear().type(version.colorFontRgb);
     cy.get('[data-cy=colorBackRgb] [data-cy=rgb-picker-input]').clear().type(version.colorBackRgb);
     cy.get('[data-cy=colorFontCmyk] [data-cy=cmyk-picker-input]')
@@ -70,20 +70,45 @@ export default class LidiUtils {
     cy.get('[data-cy=save-item]').should('not.be.disabled');
   }
 
-  static selectItemFromDropDown(selector: string, value: string) {
-    cy.get(selector).first().click();
-    // simulate click event on the drop down item (mat-option)
-    cy.get('.mat-option-text').then((options) => {
-      for (const option of options) {
-        if (option.innerText === value) {
-          option.click(); // this is jquery click() not cypress click()
-        }
-      }
-    });
-  }
-
   static typeAndSelectItemFromDropDown(selector: string, value: string) {
     cy.get(selector).type(value).wait(1000).type('{enter}');
+  }
+
+  static searchAndNavigateToLine(line: any) {
+    const pathToIntercept = '/line-directory/v1/lines?**';
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      '[data-cy="lidi-lines"] [data-cy="table-search-chip-input"]',
+      line.swissLineNumber
+    );
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      '[data-cy="lidi-lines"] [data-cy="table-search-chip-input"]',
+      line.slnid
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      '[data-cy="lidi-lines"] [data-cy="table-search-status-input"]',
+      'Aktiv'
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      '[data-cy="lidi-lines"] [data-cy="table-search-line-type"]',
+      line.type
+    );
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      '[data-cy="lidi-lines"] [data-cy="table-search-date-input"]',
+      line.validTo
+    );
+    // Check that the table contains 1 result
+    cy.get('[data-cy="lidi-lines"] table tbody tr').should('have.length', 1);
+    // Click on the item
+    cy.contains('td', line.swissLineNumber).parents('tr').click();
+    this.assertContainsLineVersion(line);
   }
 
   static assertContainsLineVersion(version: any) {
@@ -230,8 +255,8 @@ export default class LidiUtils {
     cy.get('[data-cy=swissSublineNumber]').clear().type(version.swissSublineNumber);
     this.typeAndSelectItemFromDropDown('[data-cy=mainlineSlnid]', version.mainlineSlnid);
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
-    this.selectItemFromDropDown('[data-cy=type]', version.type);
-    this.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
+    CommonUtils.selectItemFromDropDown('[data-cy=type]', version.type);
+    CommonUtils.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
     cy.get('[data-cy=description]').clear().type(version.description);
     cy.get('[data-cy=number]').clear().type(version.number);
     cy.get('[data-cy=longName]').clear().type(version.longName);
