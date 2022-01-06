@@ -65,9 +65,14 @@ describe('Teillinie', () => {
       sublineVersion.slnid
     );
 
-    CommonUtils.selectSearchStatus(
+    CommonUtils.selectItemFromDropdownSearchItem(
       '[data-cy="lidi-sublines"] [data-cy=table-search-status-input]',
       'Aktiv'
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      '[data-cy="lidi-sublines"] [data-cy="table-search-subline-type"]',
+      sublineVersion.type
     );
 
     CommonUtils.typeSearchInput(
