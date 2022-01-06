@@ -107,7 +107,7 @@ export default class LidiUtils {
     // Check that the table contains 1 result
     cy.get('[data-cy="lidi-lines"] table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', line.swissLineNumber).parents('tr').click();
+    cy.contains('td', line.swissLineNumber).parents('tr').click({ force: true });
     this.assertContainsLineVersion(line);
   }
 
