@@ -11,10 +11,32 @@ import ch.sbb.atlas.versioning.model.ToVersioning;
 import ch.sbb.atlas.versioning.model.VersioningData;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class VersioningHelperTest {
+
+  private final VersionableObject editedVersion = VersionableObject
+      .builder()
+      .id(1L)
+      .validFrom(LocalDate.of(2020, 1, 1))
+      .validTo(LocalDate.of(2020, 12, 31))
+      .build();
+
+  private final VersionableObject currentVersion = VersionableObject
+      .builder()
+      .id(1L)
+      .validFrom(LocalDate.of(2020, 1, 1))
+      .validTo(LocalDate.of(2020, 12, 31))
+      .build();
+
+  private final Property property = Property.builder().value("CiaoCiao").key("property").build();
+  private final Entity editedEntity = Entity.builder().id(1L).properties(List.of(property)).build();
+  private final ToVersioning toVersioningCurrent = ToVersioning.builder()
+                                                               .versionable(currentVersion)
+                                                               .build();
+  private final List<ToVersioning> toVersioningList = new ArrayList<>(List.of(toVersioningCurrent));
 
   @Test
   public void shouldReturnTrueIfEditedVersionIsInTheMiddleOfACurrentVersion() {
@@ -531,15 +553,14 @@ public class VersioningHelperTest {
         .property("Ciao1")
         .build();
     ToVersioning toVersioning = ToVersioning.builder().versionable(versionableObject1).build();
-    LocalDate editedValidTo = LocalDate.of(2019, 12, 31);
+    LocalDate editedValidTo = LocalDate.of(2022, 12, 31);
 
     //when
     boolean result = VersioningHelper.isVersionOverTheRightBorder(
         toVersioning, editedValidTo);
 
     //then
-    assertThat(result).isNotNull();
-
+    assertThat(result).isTrue();
   }
 
 
@@ -921,8 +942,7 @@ public class VersioningHelperTest {
         editedValidFrom, editedValidTo, List.of(toVersioning1, toVersioning2));
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(toVersioning1);
+    assertThat(result).isNotNull().isEqualTo(toVersioning1);
   }
 
   @Test
@@ -1295,7 +1315,7 @@ public class VersioningHelperTest {
         toVersioningList);
     //when
     boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(
-        versioningData,toVersioningCurrent);
+        versioningData, toVersioningCurrent);
 
     //then
     assertThat(result).isFalse();
@@ -1324,7 +1344,7 @@ public class VersioningHelperTest {
         toVersioningList);
     //when
     boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(
-        versioningData,toVersioningCurrent);
+        versioningData, toVersioningCurrent);
 
     //then
     assertThat(result).isFalse();
@@ -1465,13 +1485,13 @@ public class VersioningHelperTest {
         .validFrom(LocalDate.of(2021, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    List<ToVersioning> toVersioningList = List.of(
+        ToVersioning.builder().versionable(first).build());
     LocalDate editedValidFrom = LocalDate.of(2021, 1, 1);
 
     //when
     assertThatThrownBy(() -> {
-      VersioningHelper.isEditedValidFromOverTheLeftBorder(editedValidFrom,
-          List.of(toVersioningFirst));
+      VersioningHelper.isEditedValidFromOverTheLeftBorder(editedValidFrom, toVersioningList);
 
       //then
     }).isInstanceOf(VersioningException.class)
@@ -1540,13 +1560,13 @@ public class VersioningHelperTest {
         .validFrom(LocalDate.of(2021, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-    ToVersioning toVersioningFirst = ToVersioning.builder().versionable(first).build();
+    List<ToVersioning> toVersioningList = List.of(
+        ToVersioning.builder().versionable(first).build());
     LocalDate editedValidFrom = LocalDate.of(2021, 1, 1);
 
     //when
     assertThatThrownBy(() -> {
-      VersioningHelper.isEditedValidToOverTheRightBorder(editedValidFrom,
-          List.of(toVersioningFirst));
+      VersioningHelper.isEditedValidToOverTheRightBorder(editedValidFrom, toVersioningList);
 
       //then
     }).isInstanceOf(VersioningException.class)
@@ -1676,8 +1696,7 @@ public class VersioningHelperTest {
         List.of(toVersioningFirst, toVersioningSecond));
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(toVersioningFirst);
+    assertThat(result).isNotNull().isEqualTo(toVersioningFirst);
   }
 
   @Test
@@ -1722,4 +1741,185 @@ public class VersioningHelperTest {
     assertThat(result).isNull();
   }
 
+  @Test
+  public void shouldReturnTrueOnNoPropertiesEditedAndOnlySingleVersion() {
+    //given
+    VersionableObject version = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    Entity entity = Entity.builder().id(1L).properties(Collections.emptyList()).build();
+    ToVersioning toVersioning = ToVersioning.builder()
+                                            .versionable(version)
+                                            .entity(entity)
+                                            .build();
+
+    //when
+    boolean result = VersioningHelper.isSingularVersionAndPropertiesAreNotEdited(
+        new VersioningData(version, version, entity, new ArrayList<>(List.of(toVersioning))));
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenObjectToVersioningNotFound() {
+    //given
+    editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isNoObjectToVersioningFound(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenObjectToVersioningFound() {
+    //given
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isNoObjectToVersioningFound(versioningData);
+
+    //then
+    assertThat(result).isFalse();
+    assertThat(versioningData.getObjectToVersioningFound().isEmpty()).isFalse();
+    assertThat(versioningData.getObjectToVersioningFound().size()).isEqualTo(1);
+  }
+
+  @Test
+  public void shouldReturnTrueWhenJustOneObjectToVersioningFound() {
+    //given
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isJustOneObjectToVersioningFound(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+    assertThat(versioningData.getObjectToVersioningFound().isEmpty()).isFalse();
+    assertThat(versioningData.getObjectToVersioningFound().size()).isEqualTo(1);
+  }
+
+  @Test
+  public void shouldReturnFalseWhenNoObjectToVersioningFound() {
+    //given
+    editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isJustOneObjectToVersioningFound(versioningData);
+
+    //then
+    assertThat(result).isFalse();
+    assertThat(versioningData.getObjectToVersioningFound().isEmpty()).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenOnlyValidFromIsEdited() {
+    //given
+    editedVersion.setValidFrom(LocalDate.of(2020, 1, 2));
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isOnlyValidFromEdited(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenValidFromIsEditedEndEditedValidToIsEqualTOCurrentValidTo() {
+    //given
+    editedVersion.setValidFrom(LocalDate.of(2020, 1, 2));
+    editedVersion.setValidTo(currentVersion.getValidTo());
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isOnlyValidFromEdited(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenOnlyValidToIsEdited() {
+    //given
+    editedVersion.setValidTo(LocalDate.of(2020, 1, 2));
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isOnlyValidToEdited(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenValidToIsEditedEndEditedValidFromIsEqualToCurrentValidFrom() {
+    //given
+    editedVersion.setValidTo(LocalDate.of(2020, 1, 2));
+    editedVersion.setValidFrom(currentVersion.getValidFrom());
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isOnlyValidToEdited(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenVersionIsFirstInList() {
+    //given
+    VersionableObject firstVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2010, 12, 31))
+        .build();
+    VersioningData versioningData = new VersioningData(editedVersion, firstVersion, editedEntity,
+        new ArrayList<>(List.of(ToVersioning.builder().versionable(firstVersion).build(),
+            toVersioningCurrent)));
+
+    //when
+    boolean result = VersioningHelper.isCurrentVersionFirstVersion(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenVersionIsLaterInList() {
+    //given
+    VersionableObject firstVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2030, 1, 1))
+        .validTo(LocalDate.of(2040, 12, 31))
+        .build();
+    VersioningData versioningData = new VersioningData(editedVersion, firstVersion, editedEntity,
+        new ArrayList<>(List.of(ToVersioning.builder().versionable(firstVersion).build(),
+            toVersioningCurrent)));
+
+    //when
+    boolean result = VersioningHelper.isCurrentVersionFirstVersion(versioningData);
+
+    //then
+    assertThat(result).isFalse();
+  }
 }

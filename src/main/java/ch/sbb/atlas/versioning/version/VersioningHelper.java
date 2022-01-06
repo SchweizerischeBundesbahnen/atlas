@@ -43,7 +43,7 @@ public final class VersioningHelper {
    */
   public static boolean isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(
       VersioningData vd, ToVersioning toVersioning) {
-    return vd.isOnlyValidFromEdited() && vd.getEditedValidFrom().isBefore(toVersioning.getValidFrom());
+    return isOnlyValidFromEdited(vd) && vd.getEditedValidFrom().isBefore(toVersioning.getValidFrom());
   }
 
   /**
@@ -134,16 +134,28 @@ public final class VersioningHelper {
 
   public static boolean isEditedValidToAfterTheRightBorderAndValidFromNotEdited(VersioningData vd,
       ToVersioning toVersioning) {
-    return vd.getEditedValidTo().isAfter(toVersioning.getValidTo()) && vd.isOnlyValidToEdited();
+    return vd.getEditedValidTo().isAfter(toVersioning.getValidTo()) && isOnlyValidToEdited(
+        vd);
   }
 
   public static boolean isOnlyValidToEditedAndPropertiesAreNotEdited(VersioningData vd) {
-    return vd.isOnlyValidToEdited() && vd.getEditedEntity().getProperties().isEmpty();
+    return isOnlyValidToEdited(vd) && !arePropertiesEdited(vd);
+  }
+
+  public static boolean isOnlyValidFromEditedAndPropertiesAreNotEdited(VersioningData vd) {
+    return isOnlyValidFromEdited(vd) && !arePropertiesEdited(vd);
   }
 
   public static boolean isOnlyValidToEditedAndPropertiesAreEdited(VersioningData vd) {
-    return vd.isOnlyValidToEdited()
-        && !vd.getEditedEntity().getProperties().isEmpty();
+    return isOnlyValidToEdited(vd) && arePropertiesEdited(vd);
+  }
+
+  public static boolean arePropertiesEdited(VersioningData vd) {
+    return !vd.getEditedEntity().getProperties().isEmpty();
+  }
+
+  public static boolean isSingularVersionAndPropertiesAreNotEdited(VersioningData vd) {
+    return vd.getObjectsToVersioning().size() == 1 && !arePropertiesEdited(vd);
   }
 
   public static boolean isVersionOverTheRightBorder(ToVersioning rightBorderVersion,
@@ -201,11 +213,11 @@ public final class VersioningHelper {
   }
 
   public static boolean isOnlyValidToChanged(VersioningData vd) {
-    return vd.isOnlyValidToEdited();
+    return isOnlyValidToEdited(vd);
   }
 
   public static boolean areBothValidToAndValidFromChanged(VersioningData vd) {
-    return !vd.isOnlyValidToEdited() && !vd.isOnlyValidFromEdited();
+    return !isOnlyValidToEdited(vd) && !isOnlyValidFromEdited(vd);
   }
 
   //  editedValidFrom is before current valid from
@@ -260,4 +272,31 @@ public final class VersioningHelper {
                                   Collectors.toList());
   }
 
+  public static boolean isNoObjectToVersioningFound(VersioningData versioningData) {
+    return versioningData.getObjectToVersioningFound().isEmpty();
+  }
+
+  public static boolean isJustOneObjectToVersioningFound(VersioningData versioningData) {
+    return versioningData.getObjectToVersioningFound().size() == 1;
+  }
+
+  public static boolean isOnlyValidFromEdited(VersioningData versioningData) {
+    return versioningData.getEditedVersion().getValidFrom() != null
+        && (!versioningData.getEditedVersion().getValidFrom().equals(versioningData.getCurrentVersion().getValidFrom()))
+        && (versioningData.getEditedVersion().getValidTo() == null || versioningData.getEditedVersion().getValidTo()
+                                                                                             .equals(
+                                                                   versioningData.getCurrentVersion().getValidTo()));
+  }
+
+  public static boolean isOnlyValidToEdited(VersioningData versioningData) {
+    return versioningData.getEditedVersion().getValidTo() != null
+        && (!versioningData.getEditedVersion().getValidTo().equals(versioningData.getCurrentVersion().getValidTo()))
+        && (versioningData.getEditedVersion().getValidFrom() == null || versioningData.getEditedVersion().getValidFrom()
+                                                                                               .equals(
+                                                                     versioningData.getCurrentVersion().getValidFrom()));
+  }
+
+  public static boolean isCurrentVersionFirstVersion(VersioningData versioningData){
+    return versioningData.getCurrentVersion().getValidFrom().equals(versioningData.getObjectsToVersioning().get(0).getValidFrom());
+  }
 }

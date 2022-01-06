@@ -47,35 +47,11 @@ public class VersioningData {
         VersionedObject.fillNotTouchedVersionedObject(this.objectsToVersioning, this.objectToVersioningFound));
   }
 
-  public boolean isNoObjectToVersioningFound() {
-    return this.objectToVersioningFound.isEmpty();
-  }
-
-  public boolean isJustOneObjectToVersioningFound() {
-    return this.objectToVersioningFound.size() == 1;
-  }
-
   public ToVersioning getSingleFoundObjectToVersioning() {
-    if (isJustOneObjectToVersioningFound()) {
+    if (VersioningHelper.isJustOneObjectToVersioningFound(this)) {
       return this.objectToVersioningFound.get(0);
     }
     throw new VersioningException("Found more or less than one object to versioning.");
-  }
-
-  public boolean isOnlyValidFromEdited() {
-    return editedVersion.getValidFrom() != null
-        && (!editedVersion.getValidFrom().equals(this.currentVersion.getValidFrom()))
-        && (editedVersion.getValidTo() == null || editedVersion.getValidTo()
-                                                               .equals(
-                                                                   currentVersion.getValidTo()));
-  }
-
-  public boolean isOnlyValidToEdited() {
-    return editedVersion.getValidTo() != null
-        && (!editedVersion.getValidTo().equals(this.currentVersion.getValidTo()))
-        && (editedVersion.getValidFrom() == null || editedVersion.getValidFrom()
-                                                                 .equals(
-                                                                     currentVersion.getValidFrom()));
   }
 
   private void populateValidFromAndValidTo(Versionable editedVersion) {

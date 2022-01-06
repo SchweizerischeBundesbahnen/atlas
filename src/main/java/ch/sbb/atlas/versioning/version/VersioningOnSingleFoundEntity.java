@@ -8,8 +8,10 @@ import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedVersionIn
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnBeginningOfVersionAndEndingWithin;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheRightBorderAndValidToIsOnOrOverTheBorder;
+import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidFromEditedAndPropertiesAreNotEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreNotEdited;
+import static ch.sbb.atlas.versioning.version.VersioningHelper.isSingularVersionAndPropertiesAreNotEdited;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
@@ -18,6 +20,7 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningData;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,18 +32,20 @@ public class VersioningOnSingleFoundEntity implements Versioning {
     log.info("Apply versioning on single found entity.");
     ToVersioning toVersioning = vd.getSingleFoundObjectToVersioning();
     List<VersionedObject> versionedObjects = new ArrayList<>();
+    if (isSingularVersionAndPropertiesAreNotEdited(vd)) {
+      return applyVersioningOnSingularVersionAndPropertiesAreNotEdited(vd, toVersioning);
+    }
     if (isEditedVersionInTheMiddleOfCurrentEntity(vd.getEditedValidFrom(), vd.getEditedValidTo(),
         toVersioning)) {
       List<VersionedObject> versionedObjectsInTheMiddleOfAnExistingEntity =
           applyVersioningInTheMiddleOfAnExistingEntity(vd, toVersioning);
       versionedObjects.addAll(versionedObjectsInTheMiddleOfAnExistingEntity);
       return versionedObjects;
-    } else {
-      List<VersionedObject> versionedObjectsOnTheBorder =
-          applyVersioningOnTheBorderOfSingleFoundEntity(vd, toVersioning);
-      versionedObjects.addAll(versionedObjectsOnTheBorder);
-      return versionedObjects;
     }
+    List<VersionedObject> versionedObjectsOnTheBorder =
+        applyVersioningOnTheBorderOfSingleFoundEntity(vd, toVersioning);
+    versionedObjects.addAll(versionedObjectsOnTheBorder);
+    return versionedObjects;
   }
 
   private List<VersionedObject> applyVersioningInTheMiddleOfAnExistingEntity(VersioningData vd,
@@ -103,6 +108,9 @@ public class VersioningOnSingleFoundEntity implements Versioning {
     if (isOnlyValidToEditedAndPropertiesAreEdited(vd)) {
       return applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(vd, toVersioning);
     }
+    if (isOnlyValidFromEditedAndPropertiesAreNotEdited(vd)) {
+      return applyVersioningOnTheRightBorderWhenValidFromIsEditedAndPropertiesAreNotEdited(vd, toVersioning);
+    }
     if (isOnTheRightBorderAndValidToIsOnOrOverTheBorder(vd, toVersioning)) {
       return applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(vd, toVersioning);
     }
@@ -110,6 +118,23 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       return applyVersioningOnBeginningOfVersionAndEndingWithin(vd, toVersioning);
     }
     throw new VersioningException();
+  }
+
+  private List<VersionedObject> applyVersioningOnTheRightBorderWhenValidFromIsEditedAndPropertiesAreNotEdited(
+      VersioningData vd, ToVersioning toVersioning) {
+    if (VersioningHelper.isCurrentVersionFirstVersion(vd)) {
+      log.info("Found on the right border, validFrom is edited, properties are not edited.");
+      return Collections.singletonList(
+          shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd, toVersioning));
+    }
+    throw new VersioningException();
+  }
+
+  private List<VersionedObject> applyVersioningOnSingularVersionAndPropertiesAreNotEdited(
+      VersioningData vd, ToVersioning toVersioning) {
+    log.info("Found single version, properties are not edited.");
+    return Collections.singletonList(
+        shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd, toVersioning));
   }
 
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(
