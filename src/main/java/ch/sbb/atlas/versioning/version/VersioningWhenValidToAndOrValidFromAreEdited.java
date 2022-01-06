@@ -13,9 +13,9 @@ public class VersioningWhenValidToAndOrValidFromAreEdited implements Versioning 
     log.info("Apply versioning when validFrom and/or validTo are edited.");
 
     Versioning versioning;
-    if (vd.isNoObjectToVersioningFound()) {
+    if (VersioningHelper.isNoObjectToVersioningFound(vd)) {
       versioning = new VersioningWhenNoEntityFound();
-    } else if (vd.isJustOneObjectToVersioningFound()) {
+    } else if (VersioningHelper.isJustOneObjectToVersioningFound(vd)) {
       versioning = new VersioningOnSingleFoundEntity();
     } else {
       versioning = new VersioningOverMultipleFoundEntities();

@@ -17,12 +17,12 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
    * Scenario 14a: Linke Grenze ("Gültig von") auf gleichen Tag setzen, wie rechte Grenze ("Gültig bis")
    *
    * Änderung                          |
-   * |-----------------|
-   * Version 1
+   *                 |-----------------|
+   *                      Version 1
    *
    * Ergebnis: Das "Gültig von"-Datum wird auf das gleiche Datum, wie das "Gültig bis"-Datum gesetzt.
-   * |
-   * 1
+   *                                   |
+   *                                   1
    */
   @Test
   public void scenario14a() {

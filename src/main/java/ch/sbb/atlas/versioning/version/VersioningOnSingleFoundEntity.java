@@ -8,7 +8,7 @@ import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedVersionIn
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnBeginningOfVersionAndEndingWithin;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheRightBorderAndValidToIsOnOrOverTheBorder;
-import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidFromEditedIsEditedAndPropertiesAreNotEdited;
+import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidFromEditedAndPropertiesAreNotEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreNotEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isSingularVersionAndPropertiesAreNotEdited;
@@ -108,7 +108,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
     if (isOnlyValidToEditedAndPropertiesAreEdited(vd)) {
       return applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(vd, toVersioning);
     }
-    if (isOnlyValidFromEditedIsEditedAndPropertiesAreNotEdited(vd)) {
+    if (isOnlyValidFromEditedAndPropertiesAreNotEdited(vd)) {
       return applyVersioningOnTheRightBorderWhenValidFromIsEditedAndPropertiesAreNotEdited(vd, toVersioning);
     }
     if (isOnTheRightBorderAndValidToIsOnOrOverTheBorder(vd, toVersioning)) {
@@ -122,7 +122,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
 
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenValidFromIsEditedAndPropertiesAreNotEdited(
       VersioningData vd, ToVersioning toVersioning) {
-    if (vd.isCurrentVersionFirstVersion()) {
+    if (VersioningHelper.isCurrentVersionFirstVersion(vd)) {
       log.info("Found on the right border, validFrom is edited, properties are not edited.");
       return Collections.singletonList(
           shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd, toVersioning));
