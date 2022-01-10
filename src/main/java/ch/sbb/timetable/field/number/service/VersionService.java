@@ -47,7 +47,7 @@ public class VersionService {
   public Version save(Version newVersion) {
     newVersion.setStatus(Status.ACTIVE);
     if (!areNumberAndSttfnUnique(newVersion)) {
-      throw new ConflictException("Number or SwissTimeTableFieldNumber are already taken");
+      throw new ConflictException();
     }
     return versionRepository.save(newVersion);
   }

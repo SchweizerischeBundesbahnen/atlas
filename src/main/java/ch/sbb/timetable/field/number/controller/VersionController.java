@@ -1,5 +1,6 @@
 package ch.sbb.timetable.field.number.controller;
 
+import ch.sbb.timetable.field.number.api.ErrorResponseModel;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberApiV1;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberModel;
@@ -7,7 +8,9 @@ import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.enumaration.Status;
+import ch.sbb.timetable.field.number.exceptions.AtlasException;
 import ch.sbb.timetable.field.number.exceptions.BadRequestException;
+import ch.sbb.timetable.field.number.exceptions.ConflictException;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
 import java.util.List;
@@ -52,12 +55,6 @@ public class VersionController implements TimetableFieldNumberApiV1 {
         .fieldNumbers(versions)
         .totalCount(timetableFieldNumberPage.getTotalElements())
         .build();
-  }
-
-  @ExceptionHandler(PropertyReferenceException.class)
-  public ResponseEntity<BadRequestException> handleInvalidSort(PropertyReferenceException exception) {
-    log.warn("Pageable sort parameter is not valid.", exception);
-    return ResponseEntity.badRequest().body(new BadRequestException("Pageable sort parameter is not valid."));
   }
 
   private TimetableFieldNumberModel toModel(TimetableFieldNumber version) {
@@ -149,5 +146,16 @@ public class VersionController implements TimetableFieldNumberApiV1 {
         .businessOrganisation(versionModel.getBusinessOrganisation())
         .comment(versionModel.getComment())
         .build();
+  }
+
+  @ExceptionHandler(PropertyReferenceException.class)
+  public ResponseEntity<BadRequestException> handleInvalidSort(PropertyReferenceException exception) {
+    log.warn("Pageable sort parameter is not valid.", exception);
+    return ResponseEntity.badRequest().body(new BadRequestException("Pageable sort parameter is not valid."));
+  }
+
+  @ExceptionHandler(AtlasException.class)
+  public ResponseEntity<ErrorResponseModel> handleConflict(AtlasException exception) {
+    return ResponseEntity.status(exception.getExceptionCause().getHttpStatusCode()).body(exception.toErrorResponse());
   }
 }

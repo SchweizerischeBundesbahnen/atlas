@@ -1,12 +1,11 @@
 package ch.sbb.timetable.field.number.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import java.util.List;
 
-public class ConflictException extends ResponseStatusException {
+public class ConflictException extends AtlasException {
 
-  public ConflictException(String message) {
-    super(HttpStatus.CONFLICT, message);
+  public ConflictException() {
+    super(ExceptionCause.CONFLICT, List.of(""));
   }
 
 }
