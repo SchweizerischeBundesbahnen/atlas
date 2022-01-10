@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,8 @@ import { TablePagination } from '../../../core/components/table/table-pagination
 import { NotificationService } from '../../../core/notification/notification.service';
 import { Line, LinesService } from '../../../api';
 import { Pages } from '../../pages';
+import { TableSearch } from '../../../core/components/table-search/table-search';
+import { TableComponent } from '../../../core/components/table/table.component';
 
 @Component({
   selector: 'app-lidi-lines',
@@ -14,6 +16,8 @@ import { Pages } from '../../pages';
   styleUrls: ['./lines.component.scss'],
 })
 export class LinesComponent implements OnInit, OnDestroy {
+  @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<Line>;
+
   linesTableColumns: TableColumn<Line>[] = [
     { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
     { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
@@ -30,6 +34,8 @@ export class LinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
+  readonly LINE_TYPES: Line.TypeEnum[] = Object.values(Line.TypeEnum);
+  activeLineTypes: Line.TypeEnum[] = [];
   lineVersions: Line[] = [];
   totalCount$ = 0;
   isLoading = false;
@@ -46,10 +52,19 @@ export class LinesComponent implements OnInit, OnDestroy {
     this.getOverview({ page: 0, size: 10, sort: 'swissLineNumber,ASC' });
   }
 
-  getOverview($pagination: TablePagination) {
+  getOverview($paginationAndSearch: TablePagination & TableSearch) {
     this.isLoading = true;
     this.lineVersionsSubscription = this.linesService
-      .getLines(undefined, $pagination.page, $pagination.size, [$pagination.sort!])
+      .getLines(
+        undefined,
+        $paginationAndSearch.searchCriteria,
+        $paginationAndSearch.statusChoices,
+        this.activeLineTypes,
+        $paginationAndSearch.validOn,
+        $paginationAndSearch.page,
+        $paginationAndSearch.size,
+        [$paginationAndSearch.sort!]
+      )
       .pipe(
         catchError((err) => {
           this.notificationService.error('LIDI.LINE.NOTIFICATION.FETCH_ERROR');
@@ -62,6 +77,10 @@ export class LinesComponent implements OnInit, OnDestroy {
         this.totalCount$ = lineContainer.totalCount!;
         this.isLoading = false;
       });
+  }
+
+  onLineTypeSelectionChange(): void {
+    this.tableComponent.searchData(this.tableComponent.tableSearchComponent.activeSearch);
   }
 
   newVersion() {

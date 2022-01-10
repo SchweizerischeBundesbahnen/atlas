@@ -6,12 +6,17 @@
       <em class="bi bi-plus fs-2"></em>
     </button>
   </div>
+  <app-table-search
+    [additionalFieldTemplate]="tableSearchFieldTemplate"
+    (searchEvent)="searchData($event)"
+  >
+  </app-table-search>
   <table
     mat-table
     [dataSource]="tableData"
     matSort
     (matSortChange)="sortData($event)"
-    matSortActive="TTFN.SWISS_TIMETABLE_FIELD_NUMBER"
+    [matSortActive]="tableColumns[0].value"
     matSortDirection="asc"
   >
     <ng-container *ngFor="let column of tableColumns">
@@ -30,7 +35,7 @@
 
     <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">{{ 'COMMON.NODATAFOUND' | translate }}</td>
+      <td class="mat-cell" colspan="100">{{ 'COMMON.NODATAFOUND' | translate }}</td>
     </tr>
   </table>
 

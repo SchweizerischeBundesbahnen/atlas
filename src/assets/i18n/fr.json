@@ -40,6 +40,10 @@
     "ROLES": {
       "lidi-writer": "LiDi Writer",
       "lidi-admin": "LiDi Admin"
+    },
+    "SEARCH": {
+      "VALIDITY": "__fr__Gültig am",
+      "SEARCH_CRITERIA": "__fr__Suche"
     }
   },
   "DIALOG": {
@@ -110,7 +114,7 @@
     "PATTERN": "__fr__Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}"
   },
   "LIDI": {
-    "LINES": "Linienverzeichnis",
+    "LINES": "Linien",
     "SUBLINES": "Teillinien",
     "SWISS_LINE_NUMBER": "CH-Liniennummer",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
