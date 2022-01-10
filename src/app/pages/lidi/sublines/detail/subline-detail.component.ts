@@ -87,6 +87,7 @@ export class SublineDetailComponent
               : 'LIDI.SUBLINE.NOTIFICATION.EDIT_ERROR';
           this.notificationService.error(errorMessage);
           console.log(err);
+          this.form.enable();
           return EMPTY;
         })
       )
@@ -110,6 +111,7 @@ export class SublineDetailComponent
               : 'LIDI.SUBLINE.NOTIFICATION.ADD_ERROR';
           this.notificationService.error(errorMessage);
           console.log(err);
+          this.form.enable();
           return EMPTY;
         })
       )
