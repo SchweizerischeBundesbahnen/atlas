@@ -20,7 +20,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas-frontend.git"
   },
-  "version": "0.124.0",
+  "version": "0.139.0",
   "files": [
     "dist/*"
   ],
@@ -76,7 +76,7 @@
     "@types/node": "^16.9.6",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
-    "cypress": "^8.7.0",
+    "cypress": "^9.2.0",
     "cypress-failed-log": "^2.9.2",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",

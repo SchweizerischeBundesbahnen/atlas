@@ -4,6 +4,7 @@
   "hotfixBranch": "hotfix",
   "keepReleaseBuildLogsOnJenkins": true,
   "sendBuildStatusMail": false,
+  "checkHumanCommits": false,
   "docker": {
     "dockerFile": "docker/Dockerfile",
     "artifactoryDockerRepo": "atlas.docker",

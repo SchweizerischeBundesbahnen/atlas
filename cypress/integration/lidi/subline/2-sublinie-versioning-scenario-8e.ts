@@ -35,6 +35,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.clickOnAddNewSublinesLinieVersion();
     LidiUtils.fillSublineVersionForm(firstSublineVersion);
     CommonUtils.saveSubline();
+    LidiUtils.readSlnidFromForm(firstSublineVersion);
   });
 
   it('Step-5: Add second Sibline Version (with gap)', () => {
@@ -55,7 +56,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-7: Check version display', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
-      'Details von 01.01.2000 bis 31.12.2002'
+      'Teillinien von 01.01.2000 bis 31.12.2002'
     );
   });
 
@@ -99,19 +100,23 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-12: Check the added is present on the table result and navigate to it ', () => {
-    cy.contains(firstSublineVersion.swissSublineNumber).parents('tr').click();
+    LidiUtils.navigateToSubline(firstSublineVersion);
+    cy.contains(mainline.swissLineNumber);
     cy.contains(firstSublineVersion.swissSublineNumber);
   });
 
   it('Step-13: Delete the subline item ', () => {
     CommonUtils.deleteItems();
-    cy.contains(breadcrumbTitle);
+    LidiUtils.assertIsOnLiDiHome();
   });
 
-  it('Step-14: Delete the mainline item ', () => {
-    cy.get('[data-cy=lidi-lines]').contains(mainline.swissLineNumber).parents('tr').click();
+  it('Step-14: Search and Navigate to the mainline item ', () => {
+    LidiUtils.navigateToLine(mainline);
     cy.contains(mainline.swissLineNumber);
+    LidiUtils.assertContainsLineVersion(mainline);
+  });
+  it('Step-15: Delete the mainline item ', () => {
     CommonUtils.deleteItems();
-    cy.contains(breadcrumbTitle);
+    LidiUtils.assertIsOnLiDiHome();
   });
 });

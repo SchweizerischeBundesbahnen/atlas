@@ -1,4 +1,5 @@
 <app-table
+  [tableSearchFieldTemplate]="sublineTypeSelection"
   [tableData]="sublines"
   [totalCount]="totalCount$"
   [tableColumns]="sublinesTableColumns"
@@ -7,4 +8,20 @@
   (newElementEvent)="newVersion()"
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
-></app-table>
+>
+</app-table>
+<ng-template #sublineTypeSelection>
+  <mat-form-field class="col pe-3">
+    <mat-label>{{ 'LIDI.SUBLINE_TYPE' | translate }}</mat-label>
+    <mat-select
+      (selectionChange)="onSublineTypeSelectionChange()"
+      [(value)]="activeSublineTypes"
+      multiple
+      data-cy="table-search-subline-type"
+    >
+      <mat-option *ngFor="let sublineType of SUBLINE_TYPES" [value]="sublineType">{{
+        'LIDI.SUBLINE.TYPES.' + sublineType | translate
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-template>
