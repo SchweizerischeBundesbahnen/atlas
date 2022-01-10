@@ -43,15 +43,56 @@ export default class CommonUtils {
     cy.get('[data-cy=switch-version-left]').click();
   }
 
-  static assertTableHeader(columnHeaderNumber: number, columnHeaderContent: string) {
+  static assertTableHeader(
+    tableNumber: number,
+    columnHeaderNumber: number,
+    columnHeaderContent: string
+  ) {
     cy.get('table')
-      .get('thead tr th')
+      .eq(tableNumber)
+      .find('thead tr th')
       .eq(columnHeaderNumber)
-      .get('div')
+      .find('div')
       .contains(columnHeaderContent);
+  }
+
+  static assertTableSearch(
+    tableNumber: number,
+    fieldNumber: number,
+    fieldLabelExpectation: string
+  ) {
+    cy.get('app-table')
+      .eq(tableNumber)
+      .find('mat-form-field')
+      .eq(fieldNumber)
+      .contains(fieldLabelExpectation);
   }
 
   static clickOnEdit() {
     cy.get('[data-cy=edit-item]').click();
+  }
+
+  static selectItemFromDropDown(selector: string, value: string) {
+    cy.get(selector).first().click();
+    // simulate click event on the drop down item (mat-option)
+    cy.get('.mat-option-text').then((options) => {
+      for (const option of options) {
+        if (option.innerText === value) {
+          option.click(); // this is jquery click() not cypress click()
+        }
+      }
+    });
+  }
+
+  static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
+    cy.intercept('GET', pathToIntercept).as('searchItemUlrIntercept');
+
+    cy.get(searchSelector).clear().type(value).type('{enter}').wait('@searchItemUlrIntercept');
+  }
+
+  static selectItemFromDropdownSearchItem(searchStatusSelector: string, value: string) {
+    //Select status to search
+    CommonUtils.selectItemFromDropDown(searchStatusSelector, value);
+    cy.get('body').type('{esc}');
   }
 }

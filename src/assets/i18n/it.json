@@ -40,6 +40,10 @@
     "ROLES": {
       "lidi-writer": "LiDi Writer",
       "lidi-admin": "LiDi Admin"
+    },
+    "SEARCH": {
+      "VALIDITY": "__it__Gültig am",
+      "SEARCH_CRITERIA": "__it__Suche"
     }
   },
   "DIALOG": {
@@ -69,7 +73,7 @@
       "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas."
     },
     "LIDI": {
-      "TITLE": "Linienverzeichnis",
+      "TITLE": "Linien",
       "DESCRIPTION": "Vitae et leo duis ut diam quam nulla porttitor. Dui faucibus in ornare quam viverra orci. Luctus venenatis lectus magna fringilla urna porttitor rhoncus. Dictum sit amet justo donec enim diam vulputate."
     },
     "DETAILS": "Dettagli"

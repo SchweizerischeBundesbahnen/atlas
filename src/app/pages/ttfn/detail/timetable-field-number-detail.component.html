@@ -59,6 +59,7 @@
       <mat-form-field class="col">
         <mat-label>{{ 'TTFN.TTFNID' | translate }}</mat-label>
         <input
+          data-cy="ttfnid"
           matInput
           [value]="form.value.ttfnid || ''"
           placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
