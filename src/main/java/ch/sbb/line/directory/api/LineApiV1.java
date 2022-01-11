@@ -34,8 +34,8 @@ public interface LineApiV1 {
   Container<LineModel> getLines(@Parameter(hidden = true) Pageable pageable,
       @RequestParam(required = false) Optional<String> swissLineNumber,
       @RequestParam(required = false, defaultValue = "") List<String> searchCriteria,
-      @RequestParam(required = false, defaultValue = "") List<Status> statusRestrictions,
-      @RequestParam(required = false, defaultValue = "") List<LineType> typeRestrictions,
+      @RequestParam(required = false) List<Status> statusRestrictions,
+      @RequestParam(required = false) List<LineType> typeRestrictions,
       @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> validOn);
 
   @GetMapping("{slnid}")

@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.domain.Pageable;
 
-@RequiredArgsConstructor
 @Getter
 @ToString
 @Builder
@@ -20,14 +18,27 @@ public class LineSearchRestrictions {
 
   private final Pageable pageable;
   @Builder.Default
-  private final Optional<String> swissLineNumber = Optional.empty();
+  private Optional<String> swissLineNumber = Optional.empty();
   @Builder.Default
-  private final List<String> searchCriteria = new ArrayList<>();
+  private List<String> searchCriteria = new ArrayList<>();
   @Builder.Default
-  private final List<Status> statusRestrictions = new ArrayList<>();
+  private List<Status> statusRestrictions = new ArrayList<>();
   @Builder.Default
-  private final List<LineType> typeRestrictions = new ArrayList<>();
+  private List<LineType> typeRestrictions = new ArrayList<>();
   @Builder.Default
-  private final Optional<LocalDate> validOn = Optional.empty();
+  private Optional<LocalDate> validOn = Optional.empty();
 
+  public LineSearchRestrictions(Pageable pageable,
+      Optional<String> swissLineNumber,
+      List<String> searchCriteria,
+      List<Status> statusRestrictions,
+      List<LineType> typeRestrictions,
+      Optional<LocalDate> validOn) {
+    this.pageable = pageable;
+    this.swissLineNumber = swissLineNumber;
+    this.searchCriteria = searchCriteria;
+    this.statusRestrictions = statusRestrictions == null ? new ArrayList<>() : statusRestrictions;
+    this.typeRestrictions = typeRestrictions == null ? new ArrayList<>() : typeRestrictions;
+    this.validOn = validOn;
+  }
 }
