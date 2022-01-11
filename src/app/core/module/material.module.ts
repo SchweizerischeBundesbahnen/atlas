@@ -26,9 +26,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
 import { MatSelectModule } from '@angular/material/select';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MatChipsModule } from '@angular/material/chips';
+import { MAT_CHIPS_DEFAULT_OPTIONS, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ENTER } from '@angular/cdk/keycodes';
 
 export const FORMAT = {
   parse: {
@@ -72,12 +73,17 @@ export const FORMAT = {
       provide: MatPaginatorIntl,
       useClass: TranslatedPaginator,
     },
-
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: FORMAT },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { floatLabel: 'always' },
+    },
+    {
+      provide: MAT_CHIPS_DEFAULT_OPTIONS,
+      useValue: {
+        separatorKeyCodes: [ENTER],
+      },
     },
   ],
 })
