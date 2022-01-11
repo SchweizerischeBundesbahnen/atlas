@@ -52,20 +52,12 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(versionUpdate);
     CommonUtils.saveTtfn();
-  });
-
-  it('Step-6: Check version display', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    cy.get('[data-cy=switch-version-navigation-items]').contains('4 / 4');
-    cy.get('[data-cy=switch-version-current-range]').contains('02.06.2002 bis 31.12.2002');
   });
 
-  it('Step-7: Assert fourth version (actual version)', () => {
-    cy.get('[data-cy=switch-version-total-range]').contains(
-      'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
-    );
+  it('Step-6: Assert fourth version (actual version)', () => {
     cy.get('[data-cy=switch-version-navigation-items]').contains('4 / 4');
     cy.get('[data-cy=switch-version-current-range]').contains('02.06.2002 bis 31.12.2002');
 
@@ -74,7 +66,7 @@ describe('Versioning: scenario 3', () => {
     TtfnUtils.assertContainsVersion(secondVersion);
   });
 
-  it('Step-8: Assert third version', () => {
+  it('Step-7: Assert third version', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -87,7 +79,7 @@ describe('Versioning: scenario 3', () => {
     TtfnUtils.assertContainsVersion(versionUpdate);
   });
 
-  it('Step-9: Assert second version', () => {
+  it('Step-8: Assert second version', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -100,7 +92,7 @@ describe('Versioning: scenario 3', () => {
     TtfnUtils.assertContainsVersion(secondVersion);
   });
 
-  it('Step-10: Assert first version', () => {
+  it('Step-9: Assert first version', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
@@ -113,7 +105,7 @@ describe('Versioning: scenario 3', () => {
     TtfnUtils.assertContainsVersion(firstVersion);
   });
 
-  it('Step-11: Delete versions', () => {
+  it('Step-10: Delete versions', () => {
     CommonUtils.deleteItems();
     cy.contains(headerTitle);
   });
