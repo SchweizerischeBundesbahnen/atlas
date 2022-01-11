@@ -53,13 +53,10 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     cy.get('[data-cy=alternativeName]').clear().type(editedLineVersion.alternativeName);
 
     CommonUtils.saveLine();
-  });
-
-  it('Step-7: Check version display', () => {
     cy.get('[data-cy=switch-version-total-range]').contains('Linien von 01.01.2000 bis 31.12.2002');
   });
 
-  it('Step-8: Assert fifth version (actual version)', () => {
+  it('Step-7: Assert fifth version (actual version)', () => {
     cy.get('[data-cy=switch-version-navigation-items]').contains('5 / 5');
     cy.get('[data-cy=switch-version-current-range]').contains('02.06.2002 bis 31.12.2002');
 
@@ -68,7 +65,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     LidiUtils.assertContainsLineVersion(thirdLineVersion);
   });
 
-  it('Step-9: Assert fourth version', () => {
+  it('Step-8: Assert fourth version', () => {
     CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('4 / 5');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2002 bis 01.06.2002');
