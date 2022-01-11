@@ -1,5 +1,8 @@
 :host::ng-deep {
   mat-form-field mat-chip-list .mat-chip-list-wrapper {
+    margin-right: unset !important;
+    padding-left: 0.3rem;
+
     mat-chip {
       min-height: 20px;
       padding: 0 7px;
@@ -10,9 +13,5 @@
     height: unset !important;
     word-break: break-all;
     max-width: 90%;
-  }
-  .me-2 {
-    margin-right: unset !important;
-    padding-left: 0.3rem;
   }
 }
