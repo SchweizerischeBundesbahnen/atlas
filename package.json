@@ -13,6 +13,9 @@
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
+    "cypress:run-e2e-line": "cypress run --spec cypress/integration/lidi/line/**/*.ts",
+    "cypress:run-e2e-subline": "cypress run --spec cypress/integration/lidi/subline/**/*.ts",
+    "cypress:run-e2e-ttfn": "cypress run --spec cypress/integration/ttfn/**/*.ts",
     "generate-api": "openapi-generator-cli generate -g typescript-angular -i http://localhost:8888/v3/api-docs -o src/app/api --type-mappings=date=Date --additional-properties apiModulePrefix=Atlas"
   },
   "name": "atlas-frontend",
@@ -76,7 +79,7 @@
     "@types/node": "^16.9.6",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
-    "cypress": "^9.2.0",
+    "cypress": "^9.2.1",
     "cypress-failed-log": "^2.9.2",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
