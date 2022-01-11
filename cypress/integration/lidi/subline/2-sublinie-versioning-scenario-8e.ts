@@ -52,15 +52,12 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     cy.get('[data-cy=number]').clear().type(editedFirstSublineVersion.number);
     cy.get('[data-cy=longName]').clear().type(editedFirstSublineVersion.longName);
     CommonUtils.saveSubline();
-  });
-
-  it('Step-7: Check version display', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Teillinien von 01.01.2000 bis 31.12.2002'
     );
   });
 
-  it('Step-8: Assert third version (actual version)', () => {
+  it('Step-7: Assert third version (actual version)', () => {
     cy.get('[data-cy=switch-version-navigation-items]').contains('3 / 3');
     cy.get('[data-cy=switch-version-current-range]').contains('02.06.2002 bis 31.12.2002');
 
@@ -69,7 +66,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.assertContainsSublineVersion(secondSublineVersion);
   });
 
-  it('Step-9: Assert second version', () => {
+  it('Step-8: Assert second version', () => {
     CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('2 / 3');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2002 bis 01.06.2002');
@@ -81,7 +78,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.assertContainsSublineVersion(secondSublineVersion);
   });
 
-  it('Step-10: Assert first version', () => {
+  it('Step-9: Assert first version', () => {
     CommonUtils.switchLeft();
     cy.get('[data-cy=switch-version-navigation-items]').contains('1 / 3');
     cy.get('[data-cy=switch-version-current-range]').contains('01.01.2000 bis 31.12.2001');
@@ -93,29 +90,29 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.assertContainsSublineVersion(firstSublineVersion);
   });
 
-  it('Step-11: Navigate to Linienverzeichnis', () => {
+  it('Step-10: Navigate to Linienverzeichnis', () => {
     CommonUtils.navigateToHome();
     LidiUtils.navigateToLidi();
     cy.contains(breadcrumbTitle);
   });
 
-  it('Step-12: Check the added is present on the table result and navigate to it ', () => {
+  it('Step-11: Check the added is present on the table result and navigate to it ', () => {
     LidiUtils.navigateToSubline(firstSublineVersion);
     cy.contains(mainline.swissLineNumber);
     cy.contains(firstSublineVersion.swissSublineNumber);
   });
 
-  it('Step-13: Delete the subline item ', () => {
+  it('Step-12: Delete the subline item ', () => {
     CommonUtils.deleteItems();
     LidiUtils.assertIsOnLiDiHome();
   });
 
-  it('Step-14: Search and Navigate to the mainline item ', () => {
+  it('Step-13: Search and Navigate to the mainline item ', () => {
     LidiUtils.navigateToLine(mainline);
     cy.contains(mainline.swissLineNumber);
     LidiUtils.assertContainsLineVersion(mainline);
   });
-  it('Step-15: Delete the mainline item ', () => {
+  it('Step-14: Delete the mainline item ', () => {
     CommonUtils.deleteItems();
     LidiUtils.assertIsOnLiDiHome();
   });
