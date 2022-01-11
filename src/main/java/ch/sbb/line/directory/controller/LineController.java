@@ -10,7 +10,7 @@ import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.model.LineSearchRestrictions;
+import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.service.LineService;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,7 +35,7 @@ public class LineController implements LineApiV1 {
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
     Page<Line> lines = lineService.findAll(
-        new LineSearchRestrictions(pageable, swissLineNumber, searchCriteria, statusRestrictions, typeRestrictions, validOn)
+        new SearchRestrictions<LineType>(pageable, swissLineNumber, searchCriteria, statusRestrictions, typeRestrictions, validOn)
     );
     List<LineModel> lineModels = lines.stream().map(this::toModel).collect(Collectors.toList());
     return Container.<LineModel>builder()
