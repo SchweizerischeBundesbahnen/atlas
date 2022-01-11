@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -18,7 +17,6 @@ export class TableSearchComponent {
   @Input() additionalFieldTemplate!: TemplateRef<any>;
   @Output() searchEvent: EventEmitter<TableSearch> = new EventEmitter<TableSearch>();
 
-  readonly separatorKeyCodes = [ENTER, COMMA] as const;
   readonly STATUS_OPTIONS = Object.values(Version.StatusEnum);
   searchStrings: string[] = [];
   searchDate?: Date;
