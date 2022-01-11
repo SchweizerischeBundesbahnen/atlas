@@ -44,7 +44,12 @@ pipeline {
         branch 'master'
       }
       steps {
-        sh 'npm run cypress:run'
+        echo 'Run E2E tests Lidi - Line'
+        sh 'npm run cypress:run-e2e-line'
+        echo 'Run E2E tests Lidi - Subline'
+        sh 'npm run cypress:run-e2e-subline'
+        echo 'Run E2E tests Ttfn'
+        sh 'npm run cypress:run-e2e-ttfn'
       }
     }
   }
