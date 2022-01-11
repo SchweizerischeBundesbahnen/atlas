@@ -12,37 +12,39 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public class AtlasException extends RuntimeException {
+public abstract class AtlasException extends RuntimeException {
 
-  private final ExceptionCause exceptionCause;
-  private final List<String> messageParameters;
+  public abstract List<String> getMessageParameters();
+  public abstract ExceptionCause getExceptionCause();
 
   @Getter
   @RequiredArgsConstructor
   public enum ExceptionCause {
-    CONFLICT(HttpStatus.CONFLICT.value(), Fields.number, "Number already taken from {} to {}"),
+    SWISS_NUMBER_CONFLICT(HttpStatus.CONFLICT.value(), Fields.swissTimetableFieldNumber, "SwissTimetableFieldNumber {} already taken from {} to {}"),
+    NUMBER_CONFLICT(HttpStatus.CONFLICT.value(), Fields.number, "Number {} already taken from {} to {}"),
+
 
     ;
 
     private final int httpStatusCode;
-
     private final String errorField;
+
     private final String message;
 
   }
 
   public ErrorResponseModel toErrorResponse() {
     return ErrorResponseModel.builder()
-                             .httpStatusCode(exceptionCause.getHttpStatusCode())
+                             .httpStatusCode(getExceptionCause().getHttpStatusCode())
                              .errorMessages(Collections.singletonList(ErrorMessage.builder()
                                                                                   .message(
                                                                                       MessageFormat.format(
-                                                                                          exceptionCause.getMessage(),
-                                                                                          messageParameters))
+                                                                                          getExceptionCause().getMessage(),
+                                                                                          getMessageParameters()))
                                                                                   .errorCode(
                                                                                       "LIDI.TTFN."
-                                                                                          + exceptionCause.name())
-                                                                                  .messageParameters(messageParameters)
+                                                                                          + getExceptionCause().name())
+                                                                                  .messageParameters(getMessageParameters())
                                                                                   .build()))
                              .build();
   }
