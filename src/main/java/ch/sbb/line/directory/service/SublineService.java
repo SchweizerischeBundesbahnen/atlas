@@ -7,8 +7,9 @@ import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.exception.ConflictExcpetion;
-import ch.sbb.line.directory.model.SublineSearchRestrictions;
+import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.util.List;
@@ -36,13 +37,13 @@ public class SublineService {
       null
   );
 
-  public Page<Subline> findAll(SublineSearchRestrictions sublineSearchRestrictions) {
+  public Page<Subline> findAll(SearchRestrictions<SublineType> searchRestrictions) {
     return sublineRepository.findAll(
-        specificationBuilderService.buildSearchCriteriaSpecification(sublineSearchRestrictions.getSearchCriteria())
-            .and(specificationBuilderService.buildValidOnSpecification(sublineSearchRestrictions.getValidOn()))
-            .and(specificationBuilderService.buildEnumSpecification(sublineSearchRestrictions.getStatusRestrictions(), Subline_.status))
-            .and(specificationBuilderService.buildEnumSpecification(sublineSearchRestrictions.getTypeRestrictions(), Subline_.type)),
-        sublineSearchRestrictions.getPageable());
+        specificationBuilderService.buildSearchCriteriaSpecification(searchRestrictions.getSearchCriteria())
+            .and(specificationBuilderService.buildValidOnSpecification(searchRestrictions.getValidOn()))
+            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getStatusRestrictions(), Subline_.status))
+            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getTypeRestrictions(), Subline_.type)),
+        searchRestrictions.getPageable());
   }
 
   public List<SublineVersion> findSubline(String slnid) {

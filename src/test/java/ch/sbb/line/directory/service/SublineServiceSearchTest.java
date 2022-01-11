@@ -9,7 +9,7 @@ import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.model.SublineSearchRestrictions;
+import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
@@ -79,7 +79,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version2);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                Pageable.unpaged())
                                                                            .validOn(Optional.of(
@@ -99,7 +99,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version3);
     // When
     Page<Subline> result = sublineService.findAll(
-        SublineSearchRestrictions.builder().pageable(Pageable.unpaged()).validOn(
+        SearchRestrictions.<SublineType>builder().pageable(Pageable.unpaged()).validOn(
             Optional.of(LocalDate.of(2019, 1, 1))).build());
 
     // Then
@@ -114,7 +114,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version3);
     // When
     Page<Subline> result = sublineService.findAll(
-        SublineSearchRestrictions.builder().pageable(Pageable.unpaged()).build());
+        SearchRestrictions.<SublineType>builder().pageable(Pageable.unpaged()).build());
 
     // Then
     assertThat(result.getContent()).hasSize(3);
@@ -126,7 +126,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version1);
     // When
     Page<Subline> result = sublineService.findAll(
-        SublineSearchRestrictions.builder().pageable(Pageable.unpaged()).build());
+        SearchRestrictions.<SublineType>builder().pageable(Pageable.unpaged()).build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -138,7 +138,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version1);
     sublineVersionRepository.saveAndFlush(version2);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                PageRequest.of(0, 20,
                                                                                    Sort.by(
@@ -157,7 +157,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version1);
     sublineVersionRepository.saveAndFlush(version2);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                PageRequest.of(0, 20,
                                                                                    Sort.by(
@@ -175,7 +175,7 @@ public class SublineServiceSearchTest {
     // Given
     sublineVersionRepository.saveAndFlush(version1);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                Pageable.unpaged())
                                                                            .searchCriteria(
@@ -194,7 +194,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version2);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                Pageable.unpaged())
                                                                            .searchCriteria(
@@ -212,7 +212,7 @@ public class SublineServiceSearchTest {
     // Given
     sublineVersionRepository.saveAndFlush(version1);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                Pageable.unpaged())
                                                                            .searchCriteria(
@@ -231,7 +231,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version2);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                Pageable.unpaged())
                                                                            .searchCriteria(
@@ -258,7 +258,7 @@ public class SublineServiceSearchTest {
     version3.setStatus(Status.REVIEWED);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                Pageable.unpaged())
                                                                            .statusRestrictions(
@@ -280,7 +280,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version2);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                Pageable.unpaged())
                                                                            .searchCriteria(
@@ -305,7 +305,7 @@ public class SublineServiceSearchTest {
     version3.setType(SublineType.COMPENSATION);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
+    Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
                                                                            .pageable(
                                                                                Pageable.unpaged())
                                                                            .typeRestrictions(
