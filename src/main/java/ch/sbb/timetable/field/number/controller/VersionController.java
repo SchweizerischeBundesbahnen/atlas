@@ -10,7 +10,6 @@ import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.exceptions.BadRequestException;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -19,22 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @RestController
 @Slf4j
-public class VersionController implements TimetableFieldNumberApiV1, WebMvcConfigurer {
-
-  @Override
-  public void addFormatters(FormatterRegistry registry) {
-    registry.removeConvertible(String.class, Collection.class);
-  }
+public class VersionController implements TimetableFieldNumberApiV1 {
 
   private static final Supplier<ResponseStatusException> NOT_FOUND_EXCEPTION = () -> new ResponseStatusException(
       HttpStatus.NOT_FOUND);
