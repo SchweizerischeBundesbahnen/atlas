@@ -46,10 +46,16 @@ pipeline {
       steps {
         echo 'Run E2E tests Lidi - Line'
         sh 'npm run cypress:run-e2e-line'
+        echo 'Archive cypress line tests videos'
+        archiveArtifacts 'cypress/videos/lidi/line/**/*.mp4'
         echo 'Run E2E tests Lidi - Subline'
         sh 'npm run cypress:run-e2e-subline'
+        echo 'Archive cypress subline tests videos'
+        archiveArtifacts 'cypress/videos/lidi/subline/**/*.mp4'
         echo 'Run E2E tests Ttfn'
         sh 'npm run cypress:run-e2e-ttfn'
+        echo 'Archive cypress ttfn tests videos'
+        archiveArtifacts 'cypress/videos/ttfn/**/*.mp4'
       }
     }
   }
