@@ -17,7 +17,7 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
-import ch.sbb.line.directory.model.LineSearchRestrictions;
+import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.service.LineService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -73,7 +73,7 @@ public class LineControllerTest {
   void shouldGetLines() {
     // Given
     Line line = LineTestData.line();
-    when(lineService.findAll(any(LineSearchRestrictions.class))).thenReturn(
+    when(lineService.findAll(any(SearchRestrictions.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(line)));
 
     // When

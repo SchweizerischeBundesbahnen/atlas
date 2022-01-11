@@ -8,7 +8,7 @@ import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.model.SublineSearchRestrictions;
+import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.service.SublineService;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,7 +32,7 @@ public class SublineController implements SublinenApiV1 {
       List<Status> statusRestrictions, List<SublineType> typeRestrictions,
       Optional<LocalDate> validOn) {
     Page<Subline> sublines = sublineService.findAll(
-        new SublineSearchRestrictions(pageable, Optional.empty(), searchCriteria, statusRestrictions, typeRestrictions, validOn)
+        new SearchRestrictions<SublineType>(pageable, Optional.empty(), searchCriteria, statusRestrictions, typeRestrictions, validOn)
     );
     return Container.<SublineModel>builder()
         .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))

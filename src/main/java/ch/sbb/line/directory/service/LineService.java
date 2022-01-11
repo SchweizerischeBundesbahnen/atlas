@@ -6,9 +6,10 @@ import ch.sbb.line.directory.controller.NotFoundExcpetion;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Line_;
+import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.exception.ConflictExcpetion;
-import ch.sbb.line.directory.model.LineSearchRestrictions;
+import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.util.List;
@@ -33,14 +34,14 @@ public class LineService {
       Line_.swissLineNumber
   );
 
-  public Page<Line> findAll(LineSearchRestrictions lineSearchRestrictions) {
+  public Page<Line> findAll(SearchRestrictions<LineType> searchRestrictions) {
     return lineRepository.findAll(
-        specificationBuilderService.buildSearchCriteriaSpecification(lineSearchRestrictions.getSearchCriteria())
-            .and(specificationBuilderService.buildValidOnSpecification(lineSearchRestrictions.getValidOn()))
-            .and(specificationBuilderService.buildEnumSpecification(lineSearchRestrictions.getStatusRestrictions(), Line_.status))
-            .and(specificationBuilderService.buildEnumSpecification(lineSearchRestrictions.getTypeRestrictions(), Line_.type))
-            .and(specificationBuilderService.buildSingleStringSpecification(lineSearchRestrictions.getSwissLineNumber())),
-        lineSearchRestrictions.getPageable());
+        specificationBuilderService.buildSearchCriteriaSpecification(searchRestrictions.getSearchCriteria())
+            .and(specificationBuilderService.buildValidOnSpecification(searchRestrictions.getValidOn()))
+            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getStatusRestrictions(), Line_.status))
+            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getTypeRestrictions(), Line_.type))
+            .and(specificationBuilderService.buildSingleStringSpecification(searchRestrictions.getSwissLineNumber())),
+        searchRestrictions.getPageable());
   }
 
   public Optional<Line> findLine(String slnid) {
