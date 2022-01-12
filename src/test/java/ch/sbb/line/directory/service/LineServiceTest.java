@@ -12,7 +12,8 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.model.LineSearchRestrictions;
+import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
@@ -54,7 +55,7 @@ class LineServiceTest {
     Pageable pageable = Pageable.unpaged();
 
     // When
-    lineService.findAll(LineSearchRestrictions.builder().pageable(pageable).build());
+    lineService.findAll(SearchRestrictions.<LineType>builder().pageable(pageable).build());
 
     // Then
     verify(lineRepository).findAll(ArgumentMatchers.<Specification<Line>>any(), eq(pageable));
