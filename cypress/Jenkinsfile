@@ -31,15 +31,17 @@ pipeline {
   }
 
   stages {
-    stage ('Deploy int environment (Temporary...) '){
-      script {
-        echo 'As soon as we found a solution to make the E2E tests stable, we deploy on INT without waiting for the tests results! '
-        echo 'Parameters: '
-        params.each { param ->
-          echo "${param.key} -> ${param.value} "
-        }
-
-        if (!params.successJob.isEmpty() && !params.releaseVersion.isEmpty()) {
+    stage('Deploy int environment (Temporary...) '){
+      when {
+        branch 'master'
+      }
+      steps{
+        script {
+          echo 'As soon as we found a solution to make the E2E tests stable, we deploy on INT without waiting for the tests results! '
+          echo 'Parameters: '
+          params.each { param ->
+            echo "${param.key} -> ${param.value} "
+          }
           echo 'Executing successJob ...'
           build job: params.successJob,
             parameters: [
