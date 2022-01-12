@@ -13,7 +13,8 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.model.SublineSearchRestrictions;
+import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.util.Collections;
@@ -59,7 +60,7 @@ class SublineServiceTest {
     Pageable pageable = Pageable.unpaged();
 
     // When
-    sublineService.findAll(SublineSearchRestrictions.builder().pageable(pageable).build() );
+    sublineService.findAll(SearchRestrictions.<SublineType>builder().pageable(pageable).build() );
 
     // Then
     verify(sublineRepository).findAll(ArgumentMatchers.<Specification<Subline>>any(), eq(pageable));
