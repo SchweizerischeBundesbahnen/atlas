@@ -75,24 +75,6 @@ pipeline {
       echo 'Archive cypress videos'
       archiveArtifacts 'cypress/videos/**/*.mp4'
     }
-    success {
-      script {
-        echo 'Parameters: '
-        params.each { param ->
-          echo "${param.key} -> ${param.value} "
-        }
-
-        if (!params.successJob.isEmpty() && !params.releaseVersion.isEmpty()) {
-          echo 'Executing successJob ...'
-          build job: params.successJob,
-            parameters: [
-              string(name: "manualstartcause", value: "deploy:simple,stage:int"),
-              string(name: "version", value: params.releaseVersion),
-            ],
-            wait: false
-        }
-      }
-    }
     failure {
       echo 'Failure...'
       echo 'Archive logs'
