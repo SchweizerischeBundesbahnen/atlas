@@ -1,6 +1,5 @@
 package ch.sbb.timetable.field.number.controller;
 
-import ch.sbb.timetable.field.number.api.ErrorResponseModel;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberApiV1;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
 import ch.sbb.timetable.field.number.api.TimetableFieldNumberModel;
@@ -8,9 +7,7 @@ import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.enumaration.Status;
-import ch.sbb.timetable.field.number.exceptions.AtlasException;
 import ch.sbb.timetable.field.number.exceptions.BadRequestException;
-import ch.sbb.timetable.field.number.exceptions.ConflictException;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
 import java.util.List;
@@ -83,7 +80,12 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   public VersionModel createVersion(VersionModel newVersion) {
     newVersion.setStatus(Status.ACTIVE);
     Version version = toEntity(newVersion);
+//    List<Version> overlappingVersions = versionService.getOverlapsOnNumberAndSttfn(version);
+//    if (!overlappingVersions.isEmpty()) {
+//      throw new ConflictException(version, overlappingVersions);
+//    }
     Version createdVersion = versionService.save(version);
+
     return toModel(createdVersion);
   }
 
@@ -154,8 +156,8 @@ public class VersionController implements TimetableFieldNumberApiV1 {
     return ResponseEntity.badRequest().body(new BadRequestException("Pageable sort parameter is not valid."));
   }
 
-  @ExceptionHandler(AtlasException.class)
-  public ResponseEntity<ErrorResponseModel> handleConflict(AtlasException exception) {
-    return ResponseEntity.status(exception.getExceptionCause().getHttpStatusCode()).body(exception.toErrorResponse());
-  }
+//  @ExceptionHandler(AtlasException.class)
+//  public ResponseEntity<ErrorResponseModel> handleConflict(AtlasException exception) {
+//    return ResponseEntity.status(exception.getExceptionCause().getHttpStatusCode()).body(exception.toErrorResponse());
+//  }
 }
