@@ -157,7 +157,7 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   }
 
 //  @ExceptionHandler(AtlasException.class)
-//  public ResponseEntity<ErrorResponseModel> handleConflict(AtlasException exception) {
+//  public ResponseEntity<ErrorResponse> handleConflict(AtlasException exception) {
 //    return ResponseEntity.status(exception.getExceptionCause().getHttpStatusCode()).body(exception.toErrorResponse());
 //  }
 }

@@ -45,7 +45,7 @@ public interface TimetableFieldNumberApiV1 {
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponseModel.class)))
+      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   List<VersionModel> updateVersionWithVersioning(@PathVariable Long id, @RequestBody @Valid VersionModel newVersion);
 
@@ -53,14 +53,14 @@ public interface TimetableFieldNumberApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
-      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponseModel.class)))
+      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   VersionModel createVersion(@RequestBody @Valid VersionModel newVersion);
 
   @PutMapping({"/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponseModel.class)))
+      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   VersionModel updateVersion(@PathVariable Long id, @RequestBody @Valid VersionModel newVersion);
 
