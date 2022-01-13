@@ -48,7 +48,7 @@ public class VersionService {
     newVersion.setStatus(Status.ACTIVE);
     List<Version> overlappingVersions = getOverlapsOnNumberAndSttfn(newVersion);
     if (!overlappingVersions.isEmpty()) {
-      new ConflictException(newVersion, overlappingVersions);
+      throw new ConflictException(newVersion, overlappingVersions);
     }
     return versionRepository.save(newVersion);
   }
@@ -75,7 +75,7 @@ public class VersionService {
     return versionedObjects;
   }
 
-  private List<Version> getOverlapsOnNumberAndSttfn(Version version) {
+  public List<Version> getOverlapsOnNumberAndSttfn(Version version) {
     String ttfnid = version.getTtfnid() == null ? "" : version.getTtfnid();
     return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber(),
         version.getValidFrom(), version.getValidTo(), ttfnid);
