@@ -149,15 +149,4 @@ public class VersionController implements TimetableFieldNumberApiV1 {
         .comment(versionModel.getComment())
         .build();
   }
-
-  @ExceptionHandler(PropertyReferenceException.class)
-  public ResponseEntity<BadRequestException> handleInvalidSort(PropertyReferenceException exception) {
-    log.warn("Pageable sort parameter is not valid.", exception);
-    return ResponseEntity.badRequest().body(new BadRequestException("Pageable sort parameter is not valid."));
-  }
-
-//  @ExceptionHandler(AtlasException.class)
-//  public ResponseEntity<ErrorResponse> handleConflict(AtlasException exception) {
-//    return ResponseEntity.status(exception.getExceptionCause().getHttpStatusCode()).body(exception.toErrorResponse());
-//  }
 }
