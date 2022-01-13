@@ -1,7 +1,7 @@
 package ch.sbb.timetable.field.number.exceptions;
 
 import ch.sbb.timetable.field.number.entity.Version;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +14,12 @@ public class ConflictException extends AtlasException {
   @Override
   public List<String> getMessageParameters() {
     // TODO: Parameter und Message finalisieren
-    return Collections.emptyList();
+    ArrayList<String> list = new ArrayList<>();
+    list.add(newVersion.getNumber());
+    list.add(newVersion.getValidFrom().toString());
+    list.add(newVersion.getValidTo().toString());
+    return list;
+//    return Collections.emptyList();
   }
 
   public ExceptionCause getExceptionCause(){
