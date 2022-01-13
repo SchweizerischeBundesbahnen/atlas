@@ -28,6 +28,17 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr:'15'))
     timeout(time: 15, unit: 'MINUTES')
     timestamps()
+    office365ConnectorWebhooks([[
+      name: "Office 365",
+      url: "https://sbb.webhook.office.com/webhookb2/e262e9dc-5836-4c36-b3e5-0e827f2a2787@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/JenkinsCI/1d957b31eb2c46aeac8003d5a70e1926/8231c64b-bcb4-497e-93bf-0213ebdac9e4",
+      message: "${env.JOB_NAME}",
+      status: "${currentBuild.status}",
+      notifyBackToNormal: true,
+      notifyFailure: true,
+      notifyRepeatedFailure: true,
+      notifySuccess: true,
+      notifyAborted: true ]]
+    )
   }
 
   stages {
@@ -37,18 +48,20 @@ pipeline {
       }
       steps{
         script {
-          echo 'As soon as we found a solution to make the E2E tests stable, we deploy on INT without waiting for the tests results! '
-          echo 'Parameters: '
-          params.each { param ->
-            echo "${param.key} -> ${param.value} "
+          if(!param.key?.trim() && !param.value?.trim()){
+            echo 'As soon as we found a solution to make the E2E tests stable, we deploy on INT without waiting for the tests results! '
+            echo 'Parameters: '
+            params.each { param ->
+              echo "${param.key} -> ${param.value} "
+            }
+            echo 'Executing successJob ...'
+            build job: params.successJob,
+              parameters: [
+                string(name: "manualstartcause", value: "deploy:simple,stage:int"),
+                string(name: "version", value: params.releaseVersion),
+              ],
+            wait: false
           }
-          echo 'Executing successJob ...'
-          build job: params.successJob,
-            parameters: [
-              string(name: "manualstartcause", value: "deploy:simple,stage:int"),
-              string(name: "version", value: params.releaseVersion),
-            ],
-          wait: false
         }
       }
     }
@@ -74,6 +87,7 @@ pipeline {
     always {
       echo 'Archive cypress videos'
       archiveArtifacts 'cypress/videos/**/*.mp4'
+
     }
     failure {
       echo 'Failure...'
