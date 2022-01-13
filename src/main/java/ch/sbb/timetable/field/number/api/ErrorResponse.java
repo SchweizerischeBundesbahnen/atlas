@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.api;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.text.MessageFormat;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,20 +14,23 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Schema(name = "ErrorResponse")
-public class ErrorResponseModel {
+public class ErrorResponse {
 
   @Schema(description = "HTTP Status Code", example = "400")
-  private int httpStatusCode;
+  private int httpStatus;
 
-  @Schema(description = "List of messages")
-  private List<ErrorMessage> errorMessages;
+  @Schema(description = "Summary of error", example = "Validation error")
+  private String message;
+
+  @Schema(description = "List of error details")
+  private List<Detail> details;
 
   @AllArgsConstructor
   @NoArgsConstructor
   @Data
   @Builder
-  @Schema(name = "ErrorMessage")
-  public static class ErrorMessage {
+  @Schema(name = "ErrorDetail")
+  public static class Detail {
 
     @Schema(description = "Field on which to display the error", example = "validFrom")
     @NotNull
@@ -34,7 +38,7 @@ public class ErrorResponseModel {
 
     @Schema(description = "Errorcode for UI", example = "LIDI.LINE.CONFLICT")
     @NotNull
-    private String errorCode;
+    private String code;
 
     @Schema(description = "Errormessage in english for API purposes", example = "Resource not found")
     @NotNull
@@ -42,7 +46,11 @@ public class ErrorResponseModel {
 
     @Schema(description = "Parameters for messages")
     @NotNull
-    private List<String> messageParameters;
+    private List<String> parameters;
+
+    public String getMessage() {
+      return MessageFormat.format(message, parameters.toArray());
+    }
   }
 
 }
