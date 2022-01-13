@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.repository;
 
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.enumaration.LineType;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,6 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
   List<LineVersion> findAllBySlnidOrderByValidFrom(String slnid);
+
+  List<LineVersion> findAllBySlnidAndTypeAndIdNot(String slnid, LineType type, Long id);
 }
