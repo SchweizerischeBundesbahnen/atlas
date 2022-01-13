@@ -7,7 +7,6 @@ import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.enumaration.Status;
-import ch.sbb.timetable.field.number.exceptions.BadRequestException;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,10 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -79,13 +75,7 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   @Override
   public VersionModel createVersion(VersionModel newVersion) {
     newVersion.setStatus(Status.ACTIVE);
-    Version version = toEntity(newVersion);
-//    List<Version> overlappingVersions = versionService.getOverlapsOnNumberAndSttfn(version);
-//    if (!overlappingVersions.isEmpty()) {
-//      throw new ConflictException(version, overlappingVersions);
-//    }
-    Version createdVersion = versionService.save(version);
-
+    Version createdVersion = versionService.save(toEntity(newVersion));
     return toModel(createdVersion);
   }
 
