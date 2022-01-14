@@ -12,12 +12,9 @@ import ch.sbb.line.directory.exception.ConflictExcpetion;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
+import ch.sbb.line.directory.validation.LineValidation;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -31,6 +28,7 @@ public class LineService {
   private final LineVersionRepository lineVersionRepository;
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
+  private final LineValidation lineValidation;
   private final SpecificationBuilderService<Line> specificationBuilderService = new SpecificationBuilderService<Line>(
       List.of(Line_.swissLineNumber, Line_.number, Line_.description, Line_.businessOrganisation, Line_.slnid),
       Line_.validFrom,
@@ -63,70 +61,12 @@ public class LineService {
   public LineVersion save(LineVersion lineVersion) {
     lineVersion.setStatus(Status.ACTIVE);
     if (!lineVersionRepository.hasUniqueSwissLineNumber(lineVersion)) {
-      throw new ConflictExcpetion();
+      throw new ConflictExcpetion(ConflictExcpetion.SWISS_NUMBER_NOT_UNIQUE_MESSAGE);
     }
-    if (lineVersion.getType().equals(LineType.TEMPORARY)) {
-      validateTemporaryLinesValidity(lineVersion);
+    if (LineType.TEMPORARY.equals(lineVersion.getType())) {
+      lineValidation.validateTemporaryLines(lineVersion, lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid()));
     }
     return lineVersionRepository.save(lineVersion);
-  }
-
-  public void validateTemporaryLinesValidity(LineVersion lineVersion) {
-    // check incoming version to not exceed 12 months
-    if (isValidityLongerThan12Months(lineVersion.getValidFrom(), lineVersion.getValidTo())) {
-      throw new ConflictExcpetion();
-    }
-    if (lineVersion.getSlnid() == null) {
-      return;
-    }
-    // check affecting temporary versions with incoming to not exceed 12 months
-    List<LineVersion> allBySlnidAndType = lineVersionRepository.findAllBySlnidAndTypeAndIdNot(
-        lineVersion.getSlnid(), LineType.TEMPORARY, lineVersion.getId() == null ? 0 : lineVersion.getId());
-    List<LineVersion> versionsWhichAffectCurrentLineVersion = allBySlnidAndType.stream()
-        .filter(version -> doesItAffect(version.getValidTo(), lineVersion.getValidFrom()) || doesItAffect(version.getValidFrom(), lineVersion.getValidTo()))
-        .collect(Collectors.toList());
-    if (versionsWhichAffectCurrentLineVersion.isEmpty()) {
-      return;
-    }
-    versionsWhichAffectCurrentLineVersion.add(lineVersion);
-    sortLineVersionsOnValidity(versionsWhichAffectCurrentLineVersion);
-
-    int affectiveVersionsSize;
-    do {
-      affectiveVersionsSize = versionsWhichAffectCurrentLineVersion.size();
-      expandVersionChain(allBySlnidAndType, versionsWhichAffectCurrentLineVersion);
-      sortLineVersionsOnValidity(versionsWhichAffectCurrentLineVersion);
-    }
-    while (versionsWhichAffectCurrentLineVersion.size() != affectiveVersionsSize);
-
-    if (isValidityLongerThan12Months(versionsWhichAffectCurrentLineVersion.get(0).getValidFrom(),
-        versionsWhichAffectCurrentLineVersion.get(versionsWhichAffectCurrentLineVersion.size() - 1).getValidTo())) {
-      throw new ConflictExcpetion();
-    }
-  }
-
-  // TODO: exceptions and encapsulate validation to seperate class
-
-  private boolean isValidityLongerThan12Months(LocalDate date1, LocalDate date2) {
-    return date1.until(date2, ChronoUnit.MONTHS) > 12 || date2.until(date1, ChronoUnit.MONTHS) > 12;
-  }
-
-  private boolean doesItAffect(LocalDate date1, LocalDate date2) {
-    long dayDiff = date1.until(date2, ChronoUnit.DAYS);
-    return dayDiff == 1 || dayDiff == -1;
-  }
-
-  private void sortLineVersionsOnValidity(List<LineVersion> versions) {
-    versions.sort(Comparator.comparing(LineVersion::getValidFrom));
-  }
-
-  private void expandVersionChain(List<LineVersion> allBySlnidAndType, List<LineVersion> versionsWhichAffectCurrentLineVersion) {
-    allBySlnidAndType.stream()
-        .filter(version -> doesItAffect(version.getValidTo(), versionsWhichAffectCurrentLineVersion.get(0).getValidFrom()))
-        .findFirst().ifPresent(versionsWhichAffectCurrentLineVersion::add);
-    allBySlnidAndType.stream()
-        .filter(version -> doesItAffect(version.getValidFrom(), versionsWhichAffectCurrentLineVersion.get(versionsWhichAffectCurrentLineVersion.size() - 1).getValidTo()))
-        .findFirst().ifPresent(versionsWhichAffectCurrentLineVersion::add);
   }
 
   public void deleteById(Long id) {
