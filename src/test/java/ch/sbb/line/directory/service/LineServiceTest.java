@@ -8,10 +8,8 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.exception.ConflictExcpetion;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
@@ -138,101 +136,9 @@ class LineServiceTest {
         () -> lineService.deleteById(1L));
   }
 
-  @Test
-  void shouldNotSaveTemporaryLineWithValidityGreaterThan12Months() {
-    // Given
-    LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 10, 1))
-        .validTo(LocalDate.of(2022, 11, 2)).build();
-    // When
-    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineService.save(lineVersion));
-  }
-
-  @Test
-  void shouldSaveTemporaryLine() {
-    // Given
-    LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 10, 1))
-        .validTo(LocalDate.of(2022, 9, 1)).build();
-    // When
-    LineVersion saved = lineService.save(lineVersion);
-    // Then
-    assertThat(saved).usingRecursiveComparison().isEqualTo(lineVersion);
-  }
-
-  @Test
-  void shouldNotSaveWith2ExistentTemporaryVersionsWhichAffectIncomingVersionWhenValidityLongerThan12() {
-    // Given
-    LineVersion lineVersion1 = lineVersionRepository.save(LineTestData.lineVersionBuilder().type(LineType.TEMPORARY)
-        .validFrom(LocalDate.of(2021, 1, 1))
-        .validTo(LocalDate.of(2021, 3, 31)).build());
-    lineVersionRepository.save(LineTestData.lineVersionBuilder().type(LineType.TEMPORARY)
-        .validFrom(LocalDate.of(2021, 9, 1))
-        .validTo(LocalDate.of(2022, 2, 1)).slnid(lineVersion1.getSlnid()).build());
-    LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 4, 1))
-        .validTo(LocalDate.of(2021, 8, 31)).slnid(lineVersion1.getSlnid()).build();
-    // When
-    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineService.save(lineVersion));
-  }
-
-  @Test
-  void shouldSaveTemporaryLineWith1ExistentTemporaryVersionWhichAffectsWhenValidityIsLessThan12() {
-    // Given
-    LineVersion lineVersion1 = lineVersionRepository.save(LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 1, 1))
-        .validTo(LocalDate.of(2021, 3, 31)).build());
-    LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 4, 1))
-        .validTo(LocalDate.of(2021, 7, 31)).slnid(lineVersion1.getSlnid()).build();
-    // When
-    LineVersion saved = lineService.save(lineVersion);
-    // Then
-    assertThat(saved).usingRecursiveComparison().isEqualTo(lineVersion);
-  }
-
-  @Test
-  void shouldThrowExceptionOn2TemporaryNew1NotTemporary() {
-    // Given
-    LineVersion lineVersion1 = lineVersionRepository.save(LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 1, 1))
-        .validTo(LocalDate.of(2021, 3, 31)).build());
-    lineVersionRepository.save(LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 4, 1))
-        .validTo(LocalDate.of(2021, 8, 31)).slnid(lineVersion1.getSlnid()).build());
-    lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2022, 3, 1))
-        .validTo(LocalDate.of(2022, 3, 31)).slnid(lineVersion1.getSlnid()).build());
-    LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 9, 1))
-        .validTo(LocalDate.of(2022, 2, 28)).slnid(lineVersion1.getSlnid()).build();
-    // When
-    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineService.save(lineVersion));
-  }
-
-  @Test
-  void shouldSaveOn2TemporaryNew1NotTemporary() {
-    // Given
-    LineVersion lineVersion1 = lineVersionRepository.save(LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 1, 1))
-        .validTo(LocalDate.of(2021, 3, 31)).build());
-    lineVersionRepository.save(LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 4, 1))
-        .validTo(LocalDate.of(2021, 8, 31)).slnid(lineVersion1.getSlnid()).build());
-    lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2021, 10, 1))
-        .validTo(LocalDate.of(2022, 3, 31)).slnid(lineVersion1.getSlnid()).build());
-    LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 9, 1))
-        .validTo(LocalDate.of(2021, 9, 30)).slnid(lineVersion1.getSlnid()).build();
-    // When
-    LineVersion saved = lineService.save(lineVersion);
-    // Then
-    assertThat(saved).usingRecursiveComparison().isEqualTo(lineVersion);
-  }
-
-  @Test
-  void shouldWorkOn1TemporaryNewWithGap() {
-    // Given
-    LineVersion lineVersion1 = lineVersionRepository.save(LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 1, 1))
-        .validTo(LocalDate.of(2021, 3, 31)).build());
-    LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 4, 2))
-        .validTo(LocalDate.of(2021, 8, 31)).slnid(lineVersion1.getSlnid()).build();
-    // When
-    LineVersion saved = lineService.save(lineVersion);
-    // Then
-    assertThat(saved).usingRecursiveComparison().isEqualTo(lineVersion);
-  }
-
   @AfterEach
   void clanupDb() {
     lineVersionRepository.deleteAll();
   }
 }
+// TODO: take old state

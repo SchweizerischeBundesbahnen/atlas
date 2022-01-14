@@ -35,8 +35,8 @@ public class LineVersionRepositoryTest {
 
     //then
     assertThat(result).usingRecursiveComparison()
-                      .ignoringActualNullFields()
-                      .isEqualTo(LINE_VERSION);
+        .ignoringActualNullFields()
+        .isEqualTo(LINE_VERSION);
     assertThat(result.getSlnid()).startsWith("ch:1:slnid:");
 
     assertThat(result.getCreationDate()).isNotNull();
@@ -85,18 +85,17 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:                  |_________1___________|
-   * Current: |-----1-----|                       |-----------1---------|
+   * New:                  |_________1___________| Current: |-----1-----|                       |-----------1---------|
    */
   @Test
   void shouldAllowSwissNumberOnDifferentSwissIds() {
     // Given
     lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
-                                           .validTo(LocalDate.of(2019, 12, 31))
-                                           .build());
+        .validTo(LocalDate.of(2019, 12, 31))
+        .build());
     lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2021, 1, 1))
-                                           .validTo(LocalDate.of(2021, 12, 31))
-                                           .build());
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build());
     // When
     assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isTrue();
 
@@ -104,15 +103,14 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:           |____1____|
-   * Current:   |--------1--------|
+   * New:           |____1____| Current:   |--------1--------|
    */
   @Test
   void shouldNotAllowSwissNumberOnOverlapBetween() {
     // Given
     lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
-                                           .validTo(LocalDate.of(2099, 12, 31))
-                                           .build());
+        .validTo(LocalDate.of(2099, 12, 31))
+        .build());
     // When
     assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
 
@@ -120,16 +118,15 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:         |____1____|
-   * Current:         |--------1--------|
+   * New:         |____1____| Current:         |--------1--------|
    */
   @Test
   void shouldNotAllowSwissNumberOnOverlapBeginning() {
     // Given
     lineVersionRepository.save(
         LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2020, 10, 1))
-                    .validTo(LocalDate.of(2099, 12, 31))
-                    .build());
+            .validTo(LocalDate.of(2099, 12, 31))
+            .build());
     // When
     assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
 
@@ -137,15 +134,14 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:                   |____1____|
-   * Current: |--------1--------|
+   * New:                   |____1____| Current: |--------1--------|
    */
   @Test
   void shouldNotAllowSwissNumberOnOverlapEnd() {
     // Given
     lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2000, 1, 1))
-                                           .validTo(LocalDate.of(2020, 10, 31))
-                                           .build());
+        .validTo(LocalDate.of(2020, 10, 31))
+        .build());
     // When
     assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
 
@@ -153,8 +149,7 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:     |____1____|
-   * Current: |----1----|
+   * New:     |____1____| Current: |----1----|
    */
   @Test
   void shouldAllowUpdateOnSameLineVersion() {
