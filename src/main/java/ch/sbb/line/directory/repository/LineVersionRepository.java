@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.repository;
 
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.enumaration.LineType;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,8 +13,8 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
     return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumber(
         lineVersion.getValidFrom(), lineVersion.getValidTo(),
         lineVersion.getSwissLineNumber()).stream()
-                                         .allMatch(
-                                             i -> i.getSlnid().equals(lineVersion.getSlnid()));
+        .allMatch(
+            i -> i.getSlnid().equals(lineVersion.getSlnid()));
   }
 
   List<LineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumber(
@@ -23,5 +22,4 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
 
   List<LineVersion> findAllBySlnidOrderByValidFrom(String slnid);
 
-  List<LineVersion> findAllBySlnidAndTypeAndIdNot(String slnid, LineType type, Long id);
 }

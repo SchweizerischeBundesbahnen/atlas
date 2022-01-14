@@ -57,7 +57,7 @@ public class SublineService {
   public SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.ACTIVE);
     if (!sublineVersionRepository.hasUniqueSwissSublineNumber(sublineVersion)) {
-      throw new ConflictExcpetion();
+      throw new ConflictExcpetion(ConflictExcpetion.SWISS_NUMBER_NOT_UNIQUE_MESSAGE);
     }
     if (lineService.findLineVersions(sublineVersion.getMainlineSlnid()).isEmpty()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
