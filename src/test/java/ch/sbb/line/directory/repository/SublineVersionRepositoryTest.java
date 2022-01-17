@@ -98,7 +98,7 @@ public class SublineVersionRepositoryTest {
                                            .validTo(LocalDate.of(2021, 12, 31))
                                            .build());
     // When
-    assertThat(sublineVersionRepository.hasUniqueSwissSublineNumber(SUBLINE_VERSION)).isTrue();
+    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isTrue();
 
     // Then
   }
@@ -116,7 +116,7 @@ public class SublineVersionRepositoryTest {
         .swissSublineNumber("SWISSSublineNUMBER")
         .build());
     // When
-    assertThat(sublineVersionRepository.hasUniqueSwissSublineNumber(SUBLINE_VERSION)).isFalse();
+    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
 
     // Then
   }
@@ -133,7 +133,7 @@ public class SublineVersionRepositoryTest {
                     .validTo(LocalDate.of(2099, 12, 31))
                     .build());
     // When
-    assertThat(sublineVersionRepository.hasUniqueSwissSublineNumber(SUBLINE_VERSION)).isFalse();
+    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
 
     // Then
   }
@@ -149,7 +149,7 @@ public class SublineVersionRepositoryTest {
                                            .validTo(LocalDate.of(2020, 10, 31))
                                            .build());
     // When
-    assertThat(sublineVersionRepository.hasUniqueSwissSublineNumber(SUBLINE_VERSION)).isFalse();
+    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
 
     // Then
   }
@@ -163,7 +163,7 @@ public class SublineVersionRepositoryTest {
     // Given
     SublineVersion entity = sublineVersionRepository.save(SUBLINE_VERSION);
     // When
-    assertThat(sublineVersionRepository.hasUniqueSwissSublineNumber(entity)).isTrue();
+    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isTrue();
 
     // Then
   }
