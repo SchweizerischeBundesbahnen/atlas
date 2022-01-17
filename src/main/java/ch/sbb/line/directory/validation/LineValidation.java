@@ -55,7 +55,7 @@ public class LineValidation {
   }
 
   private boolean areDatesRelated(LocalDate date1, LocalDate date2) {
-    return Math.abs(ChronoUnit.DAYS.between(date1, date2)) == 1;
+    return getDaysBetween(date1, date2) == 1;
   }
 
 }
