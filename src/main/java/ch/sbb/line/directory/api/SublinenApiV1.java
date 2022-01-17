@@ -4,6 +4,7 @@ import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,7 +45,7 @@ public interface SublinenApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   SublineVersionModel createSublineVersion(@RequestBody SublineVersionModel newSublineVersion);
 
@@ -54,7 +55,7 @@ public interface SublinenApiV1 {
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   List<SublineVersionModel> updateSublineVersion(@PathVariable Long id,
       @RequestBody @Valid SublineVersionModel newVersion);

@@ -98,7 +98,7 @@ public class LineVersionRepositoryTest {
                                            .validTo(LocalDate.of(2021, 12, 31))
                                            .build());
     // When
-    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isTrue();
+    assertThat(lineVersionRepository.findSwissLineNumberOverlaps(LINE_VERSION).isEmpty()).isTrue();
 
     // Then
   }
@@ -114,7 +114,7 @@ public class LineVersionRepositoryTest {
                                            .validTo(LocalDate.of(2099, 12, 31))
                                            .build());
     // When
-    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
+    assertThat(lineVersionRepository.findSwissLineNumberOverlaps(LINE_VERSION).isEmpty()).isFalse();
 
     // Then
   }
@@ -131,7 +131,7 @@ public class LineVersionRepositoryTest {
                     .validTo(LocalDate.of(2099, 12, 31))
                     .build());
     // When
-    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
+    assertThat(lineVersionRepository.findSwissLineNumberOverlaps(LINE_VERSION).isEmpty()).isFalse();
 
     // Then
   }
@@ -147,7 +147,7 @@ public class LineVersionRepositoryTest {
                                            .validTo(LocalDate.of(2020, 10, 31))
                                            .build());
     // When
-    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
+    assertThat(lineVersionRepository.findSwissLineNumberOverlaps(LINE_VERSION).isEmpty()).isFalse();
 
     // Then
   }
@@ -161,7 +161,7 @@ public class LineVersionRepositoryTest {
     // Given
     LineVersion entity = lineVersionRepository.save(LINE_VERSION);
     // When
-    assertThat(lineVersionRepository.hasUniqueSwissLineNumber(entity)).isTrue();
+    assertThat(lineVersionRepository.findSwissLineNumberOverlaps(entity).isEmpty()).isTrue();
 
     // Then
   }

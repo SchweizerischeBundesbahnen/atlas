@@ -4,6 +4,7 @@ import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -48,7 +49,7 @@ public interface LineApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
@@ -58,7 +59,7 @@ public interface LineApiV1 {
   @PutMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content)
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   List<LineVersionModel> updateLineVersion(@PathVariable Long id,
       @RequestBody @Valid LineVersionModel newVersion);

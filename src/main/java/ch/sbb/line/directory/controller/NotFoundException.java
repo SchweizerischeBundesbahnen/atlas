@@ -4,9 +4,9 @@ import java.util.function.Supplier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-public final class NotFoundExcpetion {
+public final class NotFoundException {
 
-  private NotFoundExcpetion() {
+  private NotFoundException() {
     // nop
   }
 
