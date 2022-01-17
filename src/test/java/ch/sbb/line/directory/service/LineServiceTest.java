@@ -18,6 +18,7 @@ import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.validation.LineValidation;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -119,13 +120,13 @@ class LineServiceTest {
   void shouldSaveLineWithValidation() {
     // Given
     when(lineVersionRepository.save(any())).thenAnswer(i -> i.getArgument(0, LineVersion.class));
-    when(lineVersionRepository.hasUniqueSwissLineNumber(any())).thenReturn(true);
+    when(lineVersionRepository.findSwissLineNumberOverlaps(any())).thenReturn(Collections.emptyList());
     LineVersion lineVersion = LineTestData.lineVersion();
     // When
     LineVersion result = lineService.save(lineVersion);
 
     // Then
-    verify(lineVersionRepository).hasUniqueSwissLineNumber(lineVersion);
+    verify(lineVersionRepository).findSwissLineNumberOverlaps(lineVersion);
     verify(lineVersionRepository).save(lineVersion);
     assertThat(result).isEqualTo(lineVersion);
   }
