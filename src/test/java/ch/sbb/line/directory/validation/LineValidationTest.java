@@ -115,11 +115,32 @@ public class LineValidationTest {
         LineTestData.lineVersionBuilder().id(1L).type(LineType.TEMPORARY)
             .validFrom(LocalDate.of(2021, 1, 1))
             .validTo(LocalDate.of(2021, 3, 31)).build(),
-        LineTestData.lineVersionBuilder().id(2L).type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 8, 1))
+        LineTestData.lineVersionBuilder().id(2L).type(LineType.TEMPORARY)
+            .validFrom(LocalDate.of(2021, 8, 1))
             .validTo(LocalDate.of(2021, 8, 31)).build());
     LineVersion lineVersion = versions.get(1);
     lineVersion.setValidFrom(LocalDate.of(2021, 4, 1));
     lineVersion.setValidTo(LocalDate.of(2022, 2, 1));
+    // When
+    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLinesDuration(lineVersion, versions));
+  }
+
+  @Test
+  void shouldThrowExceptionOn2VersionsGap1VersionAndNewVersion() {
+    // Given
+    List<LineVersion> versions = List.of(
+        LineTestData.lineVersionBuilder().id(1L).type(LineType.TEMPORARY)
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 4, 1)).build(),
+        LineTestData.lineVersionBuilder().id(2L).type(LineType.TEMPORARY)
+            .validFrom(LocalDate.of(2021, 4, 2))
+            .validTo(LocalDate.of(2021, 9, 2)).build(),
+        LineTestData.lineVersionBuilder().id(3L).type(LineType.TEMPORARY)
+            .validFrom(LocalDate.of(2021, 10, 2))
+            .validTo(LocalDate.of(2022, 2, 2)).build());
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY)
+        .validFrom(LocalDate.of(2022, 2, 3))
+        .validTo(LocalDate.of(2022, 11, 3)).build();
     // When
     assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLinesDuration(lineVersion, versions));
   }
