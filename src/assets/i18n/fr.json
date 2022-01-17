@@ -106,6 +106,7 @@
   },
   "VALIDATION": {
     "REQUIRED": "Ce champ est obligatoire.",
+    "NOTBLANK": "Ce champ ne peut pas être vide.",
     "MAXLENGTH": "Maximum {{length}} caractères autorisés.",
     "MATDATEPICKERMIN": "La date doit être plus récente ou égale à {{date}}",
     "MATDATEPICKERMAX": "La date doit être plus anciente ou égale à {{date}}",
