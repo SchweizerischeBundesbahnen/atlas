@@ -3,18 +3,22 @@ package ch.sbb.line.directory.repository;
 import ch.sbb.line.directory.entity.SublineVersion;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SublineVersionRepository extends JpaRepository<SublineVersion, Long> {
 
-  default boolean hasUniqueSwissSublineNumber(SublineVersion sublineVersion) {
+  default List<SublineVersion> findSwissLineNumberOverlaps(SublineVersion sublineVersion) {
     return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumber(
         sublineVersion.getValidFrom(), sublineVersion.getValidTo(),
         sublineVersion.getSwissSublineNumber()).stream()
-                                               .allMatch(
-                                                   i -> i.getSlnid().equals(sublineVersion.getSlnid()));
+                                               .filter(
+                                                   i -> !i.getSlnid()
+                                                         .equals(sublineVersion.getSlnid()))
+                                               .collect(
+                                                   Collectors.toList());
   }
 
   List<SublineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumber(
