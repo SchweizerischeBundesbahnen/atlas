@@ -45,27 +45,40 @@ class SublineServiceTest {
   @Mock
   private VersionableService versionableService;
 
+  @Mock
+  private SpecificationBuilderProvider specificationBuilderProvider;
+
+  @Mock
+  private SpecificationBuilderService<Subline> specificationBuilderService;
+
+  @Mock
+  private Specification<Subline> sublineSpecification;
+
   private SublineService sublineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService, lineService);
+        versionableService, lineService, specificationBuilderProvider);
   }
 
   @Test
   void shouldGetPagableSublinesFromRepository() {
     // Given
+    when(specificationBuilderService.buildSearchCriteriaSpecification(any())).thenReturn(sublineSpecification);
+    when(sublineSpecification.and(any())).thenReturn(sublineSpecification);
+    when(specificationBuilderProvider.getSublineSpecificationBuilderService()).thenReturn(specificationBuilderService);
     Pageable pageable = Pageable.unpaged();
 
     // When
-    sublineService.findAll(SearchRestrictions.<SublineType>builder().pageable(pageable).build() );
+    sublineService.findAll(SearchRestrictions.<SublineType>builder().pageable(pageable).build());
 
     // Then
     verify(sublineRepository).findAll(ArgumentMatchers.<Specification<Subline>>any(), eq(pageable));
+    verify(specificationBuilderProvider).getSublineSpecificationBuilderService();
+    verify(specificationBuilderService).buildSearchCriteriaSpecification(List.of());
   }
-
 
   @Test
   void shouldGetSubline() {
@@ -115,7 +128,7 @@ class SublineServiceTest {
     when(sublineVersionRepository.save(any())).thenAnswer(
         i -> i.getArgument(0, SublineVersion.class));
     when(sublineVersionRepository.hasUniqueSwissSublineNumber(any())).thenReturn(true);
-    when(lineService.findLineVersions(any())).thenReturn(        Collections.emptyList());
+    when(lineService.findLineVersions(any())).thenReturn(Collections.emptyList());
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
     // When
 
