@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import org.springframework.data.jpa.domain.Specification;
 
-public final class SpecificationBuilderService<EntityType> {
+public class SpecificationBuilderService<EntityType> {
 
   private final List<SingularAttribute<EntityType, String>> stringAttributes;
   private final SingularAttribute<EntityType, LocalDate> validFromAttribute;

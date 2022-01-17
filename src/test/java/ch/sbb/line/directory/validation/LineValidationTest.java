@@ -20,7 +20,7 @@ public class LineValidationTest {
     LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 10, 15))
         .validTo(LocalDate.of(2022, 10, 16)).build();
     // When
-    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLines(lineVersion, List.of()));
+    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLinesDuration(lineVersion, List.of()));
   }
 
   @Test
@@ -29,12 +29,12 @@ public class LineValidationTest {
     LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 10, 1))
         .validTo(LocalDate.of(2022, 10, 1)).build();
     // When
-    lineValidation.validateTemporaryLines(lineVersion, List.of());
+    lineValidation.validateTemporaryLinesDuration(lineVersion, List.of());
     // Then
   }
 
   @Test
-  void shouldNotSaveWith2ExistentTemporaryVersionsWhichAffectIncomingVersionWhenValidityLongerThan12() {
+  void shouldNotSaveWith2ExistentTemporaryVersionsWhichRelateIncomingVersionWhenValidityLongerThan12() {
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).id(1L)
@@ -46,24 +46,24 @@ public class LineValidationTest {
     LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 4, 1))
         .validTo(LocalDate.of(2021, 8, 31)).build();
     // When
-    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLines(lineVersion, versions));
+    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLinesDuration(lineVersion, versions));
   }
 
   @Test
-  void shouldSaveTemporaryLineWith1ExistentTemporaryVersionWhichAffectsWhenValidityIsLessThan12() {
+  void shouldSaveTemporaryLineWith1ExistentTemporaryVersionWhichRelatesWhenValidityIsLessThan12() {
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder().id(1L).type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 1, 1))
-        .validTo(LocalDate.of(2021, 3, 31)).build());
+            .validTo(LocalDate.of(2021, 3, 31)).build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 4, 1))
         .validTo(LocalDate.of(2021, 7, 31)).build();
     // When
-    lineValidation.validateTemporaryLines(lineVersion, versions);
+    lineValidation.validateTemporaryLinesDuration(lineVersion, versions);
     // Then
   }
 
   @Test
-  void shouldThrowExceptionOn2TemporaryNew1NotTemporary() {
+  void shouldThrowExceptionOn2RelatingTemporaryAnd1RelatingNotTemporary() {
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).id(1L).validFrom(LocalDate.of(2021, 1, 1))
@@ -75,11 +75,11 @@ public class LineValidationTest {
     LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 9, 1))
         .validTo(LocalDate.of(2022, 2, 28)).build();
     // When
-    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLines(lineVersion, versions));
+    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLinesDuration(lineVersion, versions));
   }
 
   @Test
-  void shouldSaveOn2TemporaryNew1NotTemporary() {
+  void shouldSaveOn2RelatingTemporaryAnd1RelatingNotTemporary() {
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder().id(1L).type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 1, 1))
@@ -91,25 +91,25 @@ public class LineValidationTest {
     LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 9, 1))
         .validTo(LocalDate.of(2021, 9, 30)).build();
     // When
-    lineValidation.validateTemporaryLines(lineVersion, versions);
+    lineValidation.validateTemporaryLinesDuration(lineVersion, versions);
     // Then
   }
 
   @Test
-  void shouldWorkOn1TemporaryNewWithGap() {
+  void shouldSaveOn1ExistingTemporaryWithGap() {
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder().id(1L).type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 1, 1))
-        .validTo(LocalDate.of(2021, 3, 31)).build());
+            .validTo(LocalDate.of(2021, 3, 31)).build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).validFrom(LocalDate.of(2021, 4, 2))
         .validTo(LocalDate.of(2021, 8, 31)).build();
     // When
-    lineValidation.validateTemporaryLines(lineVersion, versions);
+    lineValidation.validateTemporaryLinesDuration(lineVersion, versions);
     // Then
   }
 
   @Test
-  void shouldThrowExceptionOnUpdateWhenTemporaryVersionLongerThan12Months() {
+  void shouldThrowExceptionOnUpdateWhenRelatingTemporaryVersionsLongerThan12Months() {
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder().id(1L).type(LineType.TEMPORARY)
@@ -121,7 +121,7 @@ public class LineValidationTest {
     lineVersion.setValidFrom(LocalDate.of(2021, 4, 1));
     lineVersion.setValidTo(LocalDate.of(2022, 2, 1));
     // When
-    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLines(lineVersion, versions));
+    assertThatExceptionOfType(ConflictExcpetion.class).isThrownBy(() -> lineValidation.validateTemporaryLinesDuration(lineVersion, versions));
   }
 
 }
