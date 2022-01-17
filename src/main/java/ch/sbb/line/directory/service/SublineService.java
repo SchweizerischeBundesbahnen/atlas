@@ -2,13 +2,13 @@ package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import ch.sbb.line.directory.controller.NotFoundExcpetion;
+import ch.sbb.line.directory.controller.NotFoundException;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.exception.ConflictExcpetion;
+import ch.sbb.line.directory.exception.SublineConflictException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -52,8 +52,10 @@ public class SublineService {
 
   public SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.ACTIVE);
-    if (!sublineVersionRepository.hasUniqueSwissSublineNumber(sublineVersion)) {
-      throw new ConflictExcpetion(ConflictExcpetion.SWISS_NUMBER_NOT_UNIQUE_MESSAGE);
+    List<SublineVersion> swissLineNumberOverlaps = sublineVersionRepository.findSwissLineNumberOverlaps(
+        sublineVersion);
+    if (!swissLineNumberOverlaps.isEmpty()) {
+      throw new SublineConflictException(sublineVersion, swissLineNumberOverlaps);
     }
     if (lineService.findLineVersions(sublineVersion.getMainlineSlnid()).isEmpty()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -64,7 +66,7 @@ public class SublineService {
 
   public void deleteById(Long id) {
     if (!sublineVersionRepository.existsById(id)) {
-      throw NotFoundExcpetion.getInstance().get();
+      throw NotFoundException.getInstance().get();
     }
     sublineVersionRepository.deleteById(id);
   }
@@ -73,7 +75,7 @@ public class SublineService {
     List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         slnid);
     if (sublineVersions.isEmpty()) {
-      throw NotFoundExcpetion.getInstance().get();
+      throw NotFoundException.getInstance().get();
     }
     sublineVersionRepository.deleteAll(sublineVersions);
   }
