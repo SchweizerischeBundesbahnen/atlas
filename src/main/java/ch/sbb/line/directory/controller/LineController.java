@@ -35,7 +35,7 @@ public class LineController implements LineApiV1 {
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
     Page<Line> lines = lineService.findAll(
-        new SearchRestrictions<LineType>(pageable, swissLineNumber, searchCriteria, statusRestrictions, typeRestrictions, validOn)
+        new SearchRestrictions<>(pageable, swissLineNumber, searchCriteria, statusRestrictions, typeRestrictions, validOn)
     );
     List<LineModel> lineModels = lines.stream().map(this::toModel).collect(Collectors.toList());
     return Container.<LineModel>builder()
@@ -47,7 +47,7 @@ public class LineController implements LineApiV1 {
   public LineModel getLine(String slnid) {
     return lineService.findLine(slnid)
         .map(this::toModel)
-        .orElseThrow(NotFoundExcpetion.getInstance());
+        .orElseThrow(NotFoundException.getInstance());
   }
 
   @Override
@@ -82,7 +82,7 @@ public class LineController implements LineApiV1 {
   @Override
   public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id)
-        .orElseThrow(NotFoundExcpetion.getInstance());
+        .orElseThrow(NotFoundException.getInstance());
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .collect(Collectors.toList());

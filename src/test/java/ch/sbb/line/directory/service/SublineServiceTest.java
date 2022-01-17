@@ -109,7 +109,8 @@ class SublineServiceTest {
     // Given
     when(sublineVersionRepository.save(any())).thenAnswer(
         i -> i.getArgument(0, SublineVersion.class));
-    when(sublineVersionRepository.hasUniqueSwissSublineNumber(any())).thenReturn(true);
+    when(sublineVersionRepository.findSwissLineNumberOverlaps(any())).thenReturn(
+        Collections.emptyList());
     when(lineService.findLineVersions(any())).thenReturn(
         Collections.singletonList(LineTestData.lineVersion()));
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
@@ -117,7 +118,7 @@ class SublineServiceTest {
     SublineVersion result = sublineService.save(sublineVersion);
 
     // Then
-    verify(sublineVersionRepository).hasUniqueSwissSublineNumber(sublineVersion);
+    verify(sublineVersionRepository).findSwissLineNumberOverlaps(sublineVersion);
     verify(sublineVersionRepository).save(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
   }
@@ -127,13 +128,16 @@ class SublineServiceTest {
     // Given
     when(sublineVersionRepository.save(any())).thenAnswer(
         i -> i.getArgument(0, SublineVersion.class));
-    when(sublineVersionRepository.hasUniqueSwissSublineNumber(any())).thenReturn(true);
+    when(sublineVersionRepository.findSwissLineNumberOverlaps(any())).thenReturn(
+        Collections.emptyList());
     when(lineService.findLineVersions(any())).thenReturn(Collections.emptyList());
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
     // When
 
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-        () -> sublineService.save(sublineVersion)).withMessage("400 BAD_REQUEST \"Main line with SLNID mainlineSlnid does not exist\"");
+                                                                () -> sublineService.save(sublineVersion))
+                                                            .withMessage(
+                                                                "400 BAD_REQUEST \"Main line with SLNID mainlineSlnid does not exist\"");
 
     // Then
   }
@@ -168,7 +172,8 @@ class SublineServiceTest {
     String slnid = "ch:1:ttfnid:1000083";
     SublineVersion sublineVersion = SublineTestData.sublineVersionBuilder().build();
     List<SublineVersion> sublineVersions = List.of(sublineVersion);
-    when(sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(sublineVersions);
+    when(sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(
+        sublineVersions);
 
     //When
     sublineService.deleteAll(slnid);
