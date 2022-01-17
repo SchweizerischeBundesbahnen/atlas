@@ -29,14 +29,10 @@ public class LineService {
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
   private final LineValidation lineValidation;
-  private final SpecificationBuilderService<Line> specificationBuilderService = new SpecificationBuilderService<Line>(
-      List.of(Line_.swissLineNumber, Line_.number, Line_.description, Line_.businessOrganisation, Line_.slnid),
-      Line_.validFrom,
-      Line_.validTo,
-      Line_.swissLineNumber
-  );
+  private final SpecificationBuilderProvider specificationBuilderProvider;
 
   public Page<Line> findAll(SearchRestrictions<LineType> searchRestrictions) {
+    SpecificationBuilderService<Line> specificationBuilderService = specificationBuilderProvider.getLineSpecificationBuilderService();
     return lineRepository.findAll(
         specificationBuilderService.buildSearchCriteriaSpecification(searchRestrictions.getSearchCriteria())
             .and(specificationBuilderService.buildValidOnSpecification(searchRestrictions.getValidOn()))
@@ -64,7 +60,7 @@ public class LineService {
       throw new ConflictExcpetion(ConflictExcpetion.SWISS_NUMBER_NOT_UNIQUE_MESSAGE);
     }
     if (LineType.TEMPORARY.equals(lineVersion.getType())) {
-      lineValidation.validateTemporaryLines(lineVersion, lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid()));
+      lineValidation.validateTemporaryLinesDuration(lineVersion, lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid()));
     }
     return lineVersionRepository.save(lineVersion);
   }

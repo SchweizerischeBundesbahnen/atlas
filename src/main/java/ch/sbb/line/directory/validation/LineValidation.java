@@ -16,8 +16,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class LineValidation {
 
-  public void validateTemporaryLines(LineVersion lineVersion, List<LineVersion> allVersions) {
-    if (getDaysBetween(lineVersion.getValidFrom(), lineVersion.getValidTo()) > 365) {
+  private static final int DAYS_OF_YEAR = 365;
+
+  public void validateTemporaryLinesDuration(LineVersion lineVersion, List<LineVersion> allVersions) {
+    if (getDaysBetween(lineVersion.getValidFrom(), lineVersion.getValidTo()) > DAYS_OF_YEAR) {
       throw new ConflictExcpetion(ConflictExcpetion.TEMPORARY_LINE_VALIDITY_TOO_LONG_MESSAGE);
     }
     if (allVersions.isEmpty()) {
@@ -26,25 +28,25 @@ public class LineValidation {
     allVersions = allVersions.stream().filter(version -> LineType.TEMPORARY.equals(version.getType()) && !Objects.equals(lineVersion.getId(), version.getId()))
         .collect(Collectors.toList());
 
-    SortedSet<LineVersion> contiguousVersions = new TreeSet<>(Comparator.comparing(LineVersion::getValidFrom));
-    contiguousVersions.add(lineVersion);
+    SortedSet<LineVersion> relatedVersions = new TreeSet<>(Comparator.comparing(LineVersion::getValidFrom));
+    relatedVersions.add(lineVersion);
 
-    List<LineVersion> versionsWhichContiguou;
+    List<LineVersion> versionsWhichRelate;
     do {
-      versionsWhichContiguou = getContiguousVersions(contiguousVersions, allVersions);
-      contiguousVersions.addAll(versionsWhichContiguou);
-      allVersions.removeAll(versionsWhichContiguou);
-    } while (!versionsWhichContiguou.isEmpty());
+      versionsWhichRelate = getRelatedVersions(relatedVersions, allVersions);
+      relatedVersions.addAll(versionsWhichRelate);
+      allVersions.removeAll(versionsWhichRelate);
+    } while (!versionsWhichRelate.isEmpty());
 
-    if (getDaysBetween(contiguousVersions.first().getValidFrom(),
-        contiguousVersions.last().getValidTo()) > 365) {
+    if (getDaysBetween(relatedVersions.first().getValidFrom(),
+        relatedVersions.last().getValidTo()) > DAYS_OF_YEAR) {
       throw new ConflictExcpetion(ConflictExcpetion.TEMPORARY_LINE_VALIDITY_TOO_LONG_MESSAGE);
     }
   }
 
-  private List<LineVersion> getContiguousVersions(SortedSet<LineVersion> contiguousVersions, List<LineVersion> allTemporaryVersions) {
-    return allTemporaryVersions.stream().filter(version -> areDatesContiguous(version.getValidTo(), contiguousVersions.first().getValidFrom())
-            || areDatesContiguous(version.getValidFrom(), contiguousVersions.last().getValidTo()))
+  private List<LineVersion> getRelatedVersions(SortedSet<LineVersion> relatedVersions, List<LineVersion> allTemporaryVersions) {
+    return allTemporaryVersions.stream().filter(version -> areDatesRelated(version.getValidTo(), relatedVersions.first().getValidFrom())
+            || areDatesRelated(version.getValidFrom(), relatedVersions.last().getValidTo()))
         .collect(Collectors.toList());
   }
 
@@ -52,7 +54,7 @@ public class LineValidation {
     return Math.abs(ChronoUnit.DAYS.between(date1, date2));
   }
 
-  private boolean areDatesContiguous(LocalDate date1, LocalDate date2) {
+  private boolean areDatesRelated(LocalDate date1, LocalDate date2) {
     return Math.abs(ChronoUnit.DAYS.between(date1, date2)) == 1;
   }
 
