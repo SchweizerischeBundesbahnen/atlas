@@ -32,7 +32,7 @@ public class SublineController implements SublinenApiV1 {
       List<Status> statusRestrictions, List<SublineType> typeRestrictions,
       Optional<LocalDate> validOn) {
     Page<Subline> sublines = sublineService.findAll(
-        new SearchRestrictions<SublineType>(pageable, Optional.empty(), searchCriteria, statusRestrictions, typeRestrictions, validOn)
+        new SearchRestrictions<>(pageable, Optional.empty(), searchCriteria, statusRestrictions, typeRestrictions, validOn)
     );
     return Container.<SublineModel>builder()
         .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
@@ -73,7 +73,7 @@ public class SublineController implements SublinenApiV1 {
   @Override
   public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id)
-        .orElseThrow(NotFoundExcpetion.getInstance());
+        .orElseThrow(NotFoundException.getInstance());
     sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .collect(Collectors.toList());
