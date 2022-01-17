@@ -19,6 +19,7 @@ import {
   MIN_DATE,
 } from 'src/app/core/date/date.service';
 import { Page } from 'src/app/core/model/page';
+import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -141,14 +142,17 @@ export class LineDetailComponent
   getFormGroup(version: LineVersion): FormGroup {
     return this.formBuilder.group(
       {
-        swissLineNumber: [version.swissLineNumber, [Validators.required, Validators.maxLength(50)]],
+        swissLineNumber: [
+          version.swissLineNumber,
+          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
+        ],
         slnid: [version.slnid],
         type: [version.type, [Validators.required]],
         status: [version.status],
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(50)],
+          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
         ],
         number: [version.number, [Validators.maxLength(50)]],
         alternativeName: [version.alternativeName, [Validators.maxLength(50)]],

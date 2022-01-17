@@ -19,6 +19,7 @@ import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { ValidationError } from '../../../../core/validation/validation-error';
 import { switchMap } from 'rxjs/operators';
+import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -152,7 +153,7 @@ export class SublineDetailComponent
       {
         swissSublineNumber: [
           version.swissSublineNumber,
-          [Validators.required, Validators.maxLength(50)],
+          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
         ],
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
@@ -161,7 +162,7 @@ export class SublineDetailComponent
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(50)],
+          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
         ],
         number: [version.number, [Validators.maxLength(50)]],
         longName: [version.longName, [Validators.maxLength(255)]],
