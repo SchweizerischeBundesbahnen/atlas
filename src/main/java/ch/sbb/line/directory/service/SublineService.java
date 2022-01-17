@@ -30,14 +30,10 @@ public class SublineService {
   private final SublineRepository sublineRepository;
   private final VersionableService versionableService;
   private final LineService lineService;
-  private final SpecificationBuilderService<Subline> specificationBuilderService = new SpecificationBuilderService<Subline>(
-      List.of(Subline_.swissSublineNumber, Subline_.description, Subline_.swissLineNumber, Subline_.businessOrganisation, Subline_.slnid),
-      Subline_.validFrom,
-      Subline_.validTo,
-      null
-  );
+  private final SpecificationBuilderProvider specificationBuilderProvider;
 
   public Page<Subline> findAll(SearchRestrictions<SublineType> searchRestrictions) {
+    SpecificationBuilderService<Subline> specificationBuilderService = specificationBuilderProvider.getSublineSpecificationBuilderService();
     return sublineRepository.findAll(
         specificationBuilderService.buildSearchCriteriaSpecification(searchRestrictions.getSearchCriteria())
             .and(specificationBuilderService.buildValidOnSpecification(searchRestrictions.getValidOn()))
