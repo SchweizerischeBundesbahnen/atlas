@@ -86,6 +86,9 @@
     "NUMBER": "Fahrplanfeldnummer",
     "TTFNID": "Fahrplanfeldnummer-ID",
     "COMMENT": "Kommentar",
+    "CONFLICT": {
+      "NUMBER": "Fahrplanfeldnummer {{number}} ist schon gebraucht von {{validFrom}} bis {{validTo}} von {{ttfnid}} "
+    },
     "NOTIFICATION": {
       "ADD_SUCCESS": "Fahrplanfeldnummer erfolgreich hinzugefügt.",
       "ADD_ERROR": "Beim Erfassen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
