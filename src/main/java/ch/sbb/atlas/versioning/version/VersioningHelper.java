@@ -224,10 +224,9 @@ public final class VersioningHelper {
   //              editedValidFrom
   //  edited             |--------------|
   //  current |--------------|    |---------------|
-  public static boolean isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(
+  public static boolean isEditedValidFromAfterCurrentValidFromAndBeforeOrEqualCurrentValidTo(
       VersioningData vd, ToVersioning current) {
-    return vd.getEditedValidFrom().isBefore(current.getValidTo())
-        && !vd.getEditedValidFrom().equals(current.getValidFrom())
+    return !vd.getEditedValidFrom().isAfter(current.getValidTo())
         && vd.getEditedValidFrom().isAfter(current.getValidFrom());
   }
 

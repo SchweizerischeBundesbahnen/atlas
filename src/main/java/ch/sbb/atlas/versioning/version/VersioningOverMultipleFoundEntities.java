@@ -203,7 +203,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     log.info("Matched gap {} - {}", current.getValidTo(), next.getValidFrom());
     log.info("{}\n{}", current, next);
 
-    if (VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(vd, current)) {
+    if (VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeOrEqualCurrentValidTo(vd, current)) {
       // update current version: validTo=editedValidTo-1
       VersionedObject versionedObjectToUpdate = updateCurrentVersion(current,
           current.getValidFrom(), vd.getEditedValidFrom().minusDays(1));

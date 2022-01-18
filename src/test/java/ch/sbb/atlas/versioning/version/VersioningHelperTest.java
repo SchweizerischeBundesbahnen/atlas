@@ -1285,7 +1285,7 @@ public class VersioningHelperTest {
     VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
         toVersioningList);
     //when
-    boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(
+    boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeOrEqualCurrentValidTo(
         versioningData, toVersioningCurrent);
 
     //then
@@ -1314,7 +1314,7 @@ public class VersioningHelperTest {
     VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
         toVersioningList);
     //when
-    boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(
+    boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeOrEqualCurrentValidTo(
         versioningData, toVersioningCurrent);
 
     //then
@@ -1343,7 +1343,7 @@ public class VersioningHelperTest {
     VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
         toVersioningList);
     //when
-    boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeCurrentValidTo(
+    boolean result = VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeOrEqualCurrentValidTo(
         versioningData, toVersioningCurrent);
 
     //then
