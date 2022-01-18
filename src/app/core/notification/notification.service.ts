@@ -5,7 +5,7 @@ import { NotificationParamMessage } from './notification-param-message';
 import { catchError, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ErrorNotificationComponent } from './error-notification.component';
-import { DisplayInfo, Parameter } from '../../api';
+import { DisplayInfo } from '../../api';
 import { NavigationStart, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -51,27 +51,11 @@ export class NotificationService implements OnDestroy {
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          console.log(err);
           throw err;
         })
       )
       .subscribe(() => {
         errorSnackBar.dismiss();
-      });
-  }
-
-  translateErrorDetail(displayInfo: DisplayInfo) {
-    this.translateService
-      .get(displayInfo.code, displayInfo.parameters)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          console.log(err);
-          throw err;
-        })
-      )
-      .subscribe((value) => {
-        console.log(value);
       });
   }
 
@@ -97,14 +81,8 @@ export class NotificationService implements OnDestroy {
       });
   }
 
-  extracted(displayInfo: DisplayInfo) {
-    if (!displayInfo) {
-      return {};
-    }
-    const err = {};
-    // @ts-ignore
-    displayInfo.parameters.forEach((param: Parameter) => (err[param.key] = param.value));
-    return err;
+  arrayParametersToObject(displayInfo: DisplayInfo) {
+    return Object.fromEntries(displayInfo.parameters.map((e) => [e.key, e.value]));
   }
 
   ngOnDestroy() {
