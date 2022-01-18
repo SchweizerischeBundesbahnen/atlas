@@ -2,7 +2,7 @@ package ch.sbb.line.directory.validation;
 
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.exception.TemporaryLineConflictException;
+import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class LineValidation {
 
   public void validateTemporaryLinesDuration(LineVersion lineVersion, List<LineVersion> allVersions) {
     if (getDaysBetween(lineVersion.getValidFrom(), lineVersion.getValidTo()) > DAYS_OF_YEAR) {
-      throw new TemporaryLineConflictException(List.of(lineVersion));
+      throw new TemporaryLineValidationException(List.of(lineVersion));
     }
     if (allVersions.isEmpty()) {
       return;
@@ -41,7 +41,7 @@ public class LineValidation {
 
     if (getDaysBetween(relatedVersions.first().getValidFrom(),
         relatedVersions.last().getValidTo()) > DAYS_OF_YEAR) {
-      throw new TemporaryLineConflictException(new ArrayList<>(relatedVersions));
+      throw new TemporaryLineValidationException(new ArrayList<>(relatedVersions));
     }
   }
 
