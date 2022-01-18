@@ -52,7 +52,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
         $paginationAndSearch.statusChoices,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
-        [$paginationAndSearch.sort!]
+        [$paginationAndSearch.sort!, 'ttfnid,ASC']
       )
       .pipe(
         catchError((err) => {
