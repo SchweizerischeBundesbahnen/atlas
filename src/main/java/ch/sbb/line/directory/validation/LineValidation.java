@@ -2,9 +2,10 @@ package ch.sbb.line.directory.validation;
 
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.exception.ConflictExcpetion;
+import ch.sbb.line.directory.exception.TemporaryLineConflictException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class LineValidation {
 
   public void validateTemporaryLinesDuration(LineVersion lineVersion, List<LineVersion> allVersions) {
     if (getDaysBetween(lineVersion.getValidFrom(), lineVersion.getValidTo()) > DAYS_OF_YEAR) {
-      throw new ConflictExcpetion(ConflictExcpetion.TEMPORARY_LINE_VALIDITY_TOO_LONG_MESSAGE);
+      throw new TemporaryLineConflictException(List.of(lineVersion));
     }
     if (allVersions.isEmpty()) {
       return;
@@ -40,7 +41,7 @@ public class LineValidation {
 
     if (getDaysBetween(relatedVersions.first().getValidFrom(),
         relatedVersions.last().getValidTo()) > DAYS_OF_YEAR) {
-      throw new ConflictExcpetion(ConflictExcpetion.TEMPORARY_LINE_VALIDITY_TOO_LONG_MESSAGE);
+      throw new TemporaryLineConflictException(new ArrayList<>(relatedVersions));
     }
   }
 
