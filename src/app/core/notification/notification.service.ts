@@ -14,7 +14,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class NotificationService implements OnDestroy {
   private ngUnsubscribe = new Subject<void>();
-
+  showOnlyCode: boolean = false;
+  displayCode: string = '';
   SNACK_BAR_CONFIG: MatSnackBarConfig = {
     horizontalPosition: 'right',
     verticalPosition: 'top',
@@ -34,9 +35,11 @@ export class NotificationService implements OnDestroy {
     this.SNACK_BAR_CONFIG['duration'] = undefined;
     this.SNACK_BAR_CONFIG['panelClass'] = ['error', 'notification'];
     if (code) {
-      this.SNACK_BAR_CONFIG['data'] = code;
+      this.showOnlyCode = true;
+      this.displayCode = code;
     } else if (errorResponse.status < 100 || errorResponse.status >= 500) {
-      this.SNACK_BAR_CONFIG['data'] = 'ERROR.GENERIC';
+      this.showOnlyCode = true;
+      this.displayCode = 'ERROR.GENERIC';
     } else {
       this.SNACK_BAR_CONFIG['data'] = errorResponse.error;
     }
