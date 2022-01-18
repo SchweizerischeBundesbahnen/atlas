@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class TemporaryLineConflictException extends AtlasException {
+public class TemporaryLineValidationException extends AtlasException {
 
   private static final String CODE_PREFIX = "LIDI.LINE.";
   private static final String MESSAGE_NO_RELATING_VERSIONS = "Temporary version from {0} to {1} exceeds maximum validity of 12 months";
@@ -24,8 +24,8 @@ public class TemporaryLineConflictException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-        .httpStatus(HttpStatus.CONFLICT.value())
-        .message("A conflict occurred due to a business rule")
+        .httpStatus(HttpStatus.UNPROCESSABLE_ENTITY.value())
+        .message("Business rule validation failed")
         .details(getErrorDetails())
         .build();
   }
