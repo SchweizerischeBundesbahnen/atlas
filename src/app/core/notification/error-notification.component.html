@@ -1,7 +1,7 @@
 <div class="snack-bar-error-container">
-  <div class="snack-bar-error-container-text">
-    <div class="data" *ngFor="let detail of data.details">
-      <ul>
+  <div class="snack-bar-error-container-text" *ngIf="!notificationService.showOnlyCode">
+    <div class="data">
+      <ul *ngFor="let detail of data.details">
         <li>
           {{
             detail.displayInfo.code
@@ -10,6 +10,9 @@
         </li>
       </ul>
     </div>
+  </div>
+  <div class="snack-bar-error-generic-text" *ngIf="notificationService.showOnlyCode">
+    {{ this.notificationService.displayCode | translate }}
   </div>
   <div class="dismiss">
     <i class="bi bi-x-circle" (click)="this.snackBarRef.dismiss()"></i>
