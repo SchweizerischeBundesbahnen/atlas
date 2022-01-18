@@ -31,7 +31,7 @@ describe('Teillinie', () => {
     CommonUtils.assertTableHeader(1, 2, 'CH-Liniennummer (CHLNR)');
     CommonUtils.assertTableHeader(1, 3, 'Status');
     CommonUtils.assertTableHeader(1, 4, 'Teillinientyp');
-    CommonUtils.assertTableHeader(1, 5, 'Geschäftsorganisation Konzessionär');
+    CommonUtils.assertTableHeader(1, 5, 'Geschäftsorganisation');
     CommonUtils.assertTableHeader(1, 6, 'SLNID');
     CommonUtils.assertTableHeader(1, 7, 'Gültig von');
     CommonUtils.assertTableHeader(1, 8, 'Gültig bis');
