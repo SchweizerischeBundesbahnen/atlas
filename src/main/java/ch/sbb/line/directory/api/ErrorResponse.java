@@ -103,7 +103,6 @@ public class ErrorResponse {
   @RequiredArgsConstructor
   @Getter
   public static class Parameter {
-
     private final String key;
     private final String value;
   }
