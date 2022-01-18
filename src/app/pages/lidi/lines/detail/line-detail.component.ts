@@ -122,8 +122,7 @@ export class LineDetailComponent
         .pipe(
           takeUntil(this.ngUnsubscribe),
           catchError((err) => {
-            this.notificationService.error(err);
-            console.log(err);
+            this.notificationService.error(err, 'LIDI.LINE.NOTIFICATION.DELETE_ERROR');
             return EMPTY;
           })
         )
