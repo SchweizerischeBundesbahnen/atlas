@@ -63,7 +63,7 @@ export class LinesComponent implements OnInit, OnDestroy {
         $paginationAndSearch.validOn,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
-        [$paginationAndSearch.sort!]
+        [$paginationAndSearch.sort!, 'slnid,ASC']
       )
       .pipe(
         catchError((err) => {
