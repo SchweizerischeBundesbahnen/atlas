@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationParamMessage } from './notification-param-message';
-import { catchError, forkJoin, of, Subject } from 'rxjs';
+import { catchError, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ErrorNotificationComponent } from './error-notification.component';
 import { DisplayInfo, Parameter } from '../../api';
