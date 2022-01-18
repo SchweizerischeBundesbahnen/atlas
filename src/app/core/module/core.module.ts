@@ -19,6 +19,7 @@ import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
 import { TableSearchComponent } from '../components/table-search/table-search.component';
+import { ErrorNotificationComponent } from '../notification/error-notification.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { TableSearchComponent } from '../components/table-search/table-search.co
     EmptyToNullDirective,
     TrimInputDirective,
     TableSearchComponent,
+    ErrorNotificationComponent,
   ],
   imports: [
     CommonModule,
@@ -70,6 +72,7 @@ import { TableSearchComponent } from '../components/table-search/table-search.co
     EmptyToNullDirective,
     TrimInputDirective,
     TableSearchComponent,
+    ErrorNotificationComponent,
   ],
   providers: [TranslatePipe],
 })
