@@ -30,11 +30,13 @@ export class NotificationService implements OnDestroy {
     this.notify(msg, 'success', param);
   }
 
-  error(errorResponse: HttpErrorResponse) {
+  error(errorResponse: HttpErrorResponse, code?: string) {
     this.SNACK_BAR_CONFIG['duration'] = undefined;
     this.SNACK_BAR_CONFIG['panelClass'] = ['error', 'notification'];
-    if (errorResponse.status.toString().startsWith('5')) {
-      this.SNACK_BAR_CONFIG['data'] = 'NOTIFICATION.COMMON_ERROR';
+    if (code) {
+      this.SNACK_BAR_CONFIG['data'] = code;
+    } else if (errorResponse.status < 100 || errorResponse.status >= 500) {
+      this.SNACK_BAR_CONFIG['data'] = 'ERROR.GENERIC';
     } else {
       this.SNACK_BAR_CONFIG['data'] = errorResponse.error;
     }
