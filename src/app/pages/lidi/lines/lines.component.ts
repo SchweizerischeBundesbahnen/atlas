@@ -67,7 +67,7 @@ export class LinesComponent implements OnInit, OnDestroy {
       )
       .pipe(
         catchError((err) => {
-          this.notificationService.error('LIDI.LINE.NOTIFICATION.FETCH_ERROR');
+          this.notificationService.error(err);
           this.isLoading = false;
           throw err;
         })

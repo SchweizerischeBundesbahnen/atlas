@@ -1,0 +1,10 @@
+<div class="error-container">
+  <div>
+    <div class="data" *ngFor="let detail of data.details">
+      {{ detail.displayInfo.code | translate: notificationService.extracted(detail.displayInfo) }}
+    </div>
+  </div>
+  <div class="dismiss">
+    <i class="bi bi-x-circle" (click)="this.snackBarRef.dismiss()"></i>
+  </div>
+</div>

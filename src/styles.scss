@@ -48,6 +48,7 @@
 .error {
   background-color: hsl(0, 100%, 50%);
   color: hsl(0, 0%, 100%);
+  white-space: pre-wrap;
 }
 
 a {
@@ -83,5 +84,16 @@ snack-bar-container.error {
 }
 
 snack-bar-container.notification {
+  color: white;
+}
+
+.error-container {
+  display: flex;
+}
+
+.mat-simple-snackbar-action {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
   color: white;
 }

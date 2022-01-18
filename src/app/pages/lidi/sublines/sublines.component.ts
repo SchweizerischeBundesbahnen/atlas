@@ -70,7 +70,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
       )
       .pipe(
         catchError((err) => {
-          this.notificationService.error('LIDI.SUBLINE.NOTIFICATION.FETCH_ERROR');
+          this.notificationService.error(err);
           this.isLoading = false;
           throw err;
         })
