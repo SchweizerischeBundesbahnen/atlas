@@ -6,11 +6,17 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { MaterialModule } from '../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('NotificationService', () => {
   let service: NotificationService;
   const matSnackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
 
+  const errorResponse = new HttpErrorResponse({
+    error: '404 error',
+    status: 404,
+    statusText: 'Not Found',
+  });
   const translateServiceStub = {
     get() {
       return of('Notification with value');
@@ -53,7 +59,7 @@ describe('NotificationService', () => {
   });
 
   it('should be error', () => {
-    service.error('msg');
+    service.error(errorResponse);
     expect(service).toBeTruthy();
     expect(matSnackBarSpy.open).toHaveBeenCalledWith(
       'Notification with value',
