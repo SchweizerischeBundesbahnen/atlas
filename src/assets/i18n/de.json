@@ -106,6 +106,7 @@
   },
   "VALIDATION": {
     "REQUIRED": "Dies ist ein Pflichtfeld.",
+    "NOTBLANK": "Dieses Feld darf nicht leer sein.",
     "MAXLENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
     "MATDATEPICKERMIN": "Datum muss grösser oder gleich als {{date}} sein",
     "MATDATEPICKERMAX": "Datum muss kleiner oder gleich als {{date}} sein",
