@@ -1,6 +1,6 @@
 /**
  * Atlas API
- * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.31.0-SNAPSHOT<br/>timetable-field-number:0.73.0-SNAPSHOT<br/>
+ * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.38.0-SNAPSHOT<br/>timetable-field-number:0.81.0-SNAPSHOT<br/>
  *
  * The version of the OpenAPI document: 0.13.0-SNAPSHOT
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -23,6 +23,7 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
+import { ErrorResponse } from '../model/models';
 import { TimetableFieldNumberContainer } from '../model/models';
 import { Version } from '../model/models';
 
