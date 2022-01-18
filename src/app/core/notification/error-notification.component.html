@@ -1,7 +1,13 @@
-<div class="error-container">
-  <div>
+<div class="snack-bar-error-container">
+  <div class="snack-bar-error-container-text">
     <div class="data" *ngFor="let detail of data.details">
-      {{ detail.displayInfo.code | translate: notificationService.extracted(detail.displayInfo) }}
+      <ul>
+        <li>
+          {{
+            detail.displayInfo.code | translate: notificationService.extracted(detail.displayInfo)
+          }}
+        </li>
+      </ul>
     </div>
   </div>
   <div class="dismiss">
