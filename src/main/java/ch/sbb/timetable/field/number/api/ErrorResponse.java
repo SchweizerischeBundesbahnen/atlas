@@ -89,8 +89,8 @@ public class ErrorResponse {
       }
 
       public DisplayInfoBuilder with(String key, LocalDate value) {
-        // TODO: should we format it to DD.MM.YYYY prematurely for frontend?
-        this.parameters.add(new Parameter(key, value.format(DateTimeFormatter.ISO_DATE)));
+        this.parameters.add(
+            new Parameter(key, value.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
         return this;
       }
 

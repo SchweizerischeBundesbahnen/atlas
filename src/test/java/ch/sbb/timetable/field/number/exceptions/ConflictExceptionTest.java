@@ -24,8 +24,8 @@ class ConflictExceptionTest {
     assertThat(errorResponse.getMessage()).isEqualTo("A conflict occurred due to a business rule");
     assertThat(errorResponse.getDetails()).hasSize(2);
 
-    assertThat(errorResponse.getDetails().get(0).getMessage()).isEqualTo("Number BEX already taken from 2020-12-12 to 2099-12-12 by ch:1:ttfnid:100000");
-    assertThat(errorResponse.getDetails().get(1).getMessage()).isEqualTo("SwissTimetableFieldNumber b0.BEX already taken from 2020-12-12 to 2099-12-12 by ch:1:ttfnid:100000");
+    assertThat(errorResponse.getDetails().get(0).getMessage()).isEqualTo("Number BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
+    assertThat(errorResponse.getDetails().get(1).getMessage()).isEqualTo("SwissTimetableFieldNumber b0.BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
   }
 
   private static Version version() {
