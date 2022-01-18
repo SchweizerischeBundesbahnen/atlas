@@ -91,10 +91,12 @@ snack-bar-container.notification {
 .snack-bar-error-container {
   display: flex;
   .snack-bar-error-container-text {
-    padding-top: 1.2rem;
     ul {
       margin-bottom: 0.2rem !important;
     }
+  }
+  .snack-bar-error-generic-text {
+    padding-right: 1.5rem;
   }
 }
 
