@@ -87,8 +87,14 @@ snack-bar-container.notification {
   color: white;
 }
 
-.error-container {
+.snack-bar-error-container {
   display: flex;
+  .snack-bar-error-container-text {
+    padding-top: 1.2rem;
+    ul {
+      margin-bottom: 0.2rem !important;
+    }
+  }
 }
 
 .mat-simple-snackbar-action {
