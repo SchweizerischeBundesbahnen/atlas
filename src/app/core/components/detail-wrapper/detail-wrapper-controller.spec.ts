@@ -1,12 +1,19 @@
 import { DetailWrapperController } from './detail-wrapper-controller';
 import { OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import moment from 'moment';
 import { Page } from '../../model/page';
+import { NotificationService } from '../../notification/notification.service';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MaterialModule } from '../../module/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 describe('DetailWrapperController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
@@ -19,7 +26,7 @@ describe('DetailWrapperController', () => {
 
   class DummyWrapperController extends DetailWrapperController<Record> implements OnInit {
     constructor() {
-      super(dialogService);
+      super(dialogService, notificationService);
     }
 
     getPageType(): Page {
@@ -60,12 +67,28 @@ describe('DetailWrapperController', () => {
   let controller: DummyWrapperController;
   const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
   let dialogService: DialogService;
+  let notificationService: NotificationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: DialogService, useValue: dialogServiceSpy }],
+      imports: [
+        RouterModule.forRoot([]),
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+      ],
+      providers: [
+        { provide: DialogService, useValue: dialogServiceSpy },
+        { provide: MatSnackBarRef, useValue: {} },
+        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+      ],
     });
     dialogService = TestBed.inject(DialogService);
+    notificationService = TestBed.inject(NotificationService);
   });
 
   describe('existing record', () => {
@@ -168,9 +191,21 @@ describe('Get actual versioned record', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        RouterModule.forRoot([]),
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+      ],
       providers: [
         { provide: DetailWrapperController },
         { provide: DialogService, useValue: dialogServiceSpy },
+        { provide: MatSnackBarRef, useValue: {} },
+        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
       ],
     });
     controller = TestBed.inject(DetailWrapperController);

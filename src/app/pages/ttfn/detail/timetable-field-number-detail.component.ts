@@ -48,12 +48,12 @@ export class TimetableFieldNumberDetailComponent
     private router: Router,
     private timetableFieldNumberService: TimetableFieldNumbersService,
     private formBuilder: FormBuilder,
-    private notificationService: NotificationService,
+    protected notificationService: NotificationService,
     protected dialogService: DialogService,
     private validationService: ValidationService,
     private dateService: DateService
   ) {
-    super(dialogService);
+    super(dialogService, notificationService);
   }
 
   ngOnInit() {
@@ -71,19 +71,7 @@ export class TimetableFieldNumberDetailComponent
   updateRecord(): void {
     this.timetableFieldNumberService
       .updateVersionWithVersioning(this.getId(), this.form.value)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          const errorMessage =
-            err.status == 409
-              ? 'TTFN.NOTIFICATION.SWISSNUMBER_NOT_UNIQUE'
-              : 'TTFN.NOTIFICATION.EDIT_ERROR';
-          this.notificationService.error(errorMessage);
-          console.log(err);
-          this.form.enable();
-          return EMPTY;
-        })
-      )
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
         this.router.navigate([Pages.TTFN.path, this.record.ttfnid]).then(() => this.ngOnInit());
@@ -93,19 +81,7 @@ export class TimetableFieldNumberDetailComponent
   createRecord(): void {
     this.timetableFieldNumberService
       .createVersion(this.form.value)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          const errorMessage =
-            err.status == 409
-              ? 'TTFN.NOTIFICATION.SWISSNUMBER_NOT_UNIQUE'
-              : 'TTFN.NOTIFICATION.ADD_ERROR';
-          this.notificationService.error(errorMessage);
-          console.log(err);
-          this.form.enable();
-          return EMPTY;
-        })
-      )
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
         this.router.navigate([Pages.TTFN.path, version.ttfnid]).then(() => this.ngOnInit());
@@ -120,8 +96,7 @@ export class TimetableFieldNumberDetailComponent
         .pipe(
           takeUntil(this.ngUnsubscribe),
           catchError((err) => {
-            this.notificationService.error('TTFN.NOTIFICATION.DELETE_ERROR');
-            console.log(err);
+            this.notificationService.error(err, 'TTFN.NOTIFICATION.DELETE_ERROR');
             return EMPTY;
           })
         )
