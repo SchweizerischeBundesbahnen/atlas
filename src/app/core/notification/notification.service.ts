@@ -32,6 +32,7 @@ export class NotificationService implements OnDestroy {
   }
 
   error(errorResponse: HttpErrorResponse, code?: string) {
+    this.SNACK_BAR_CONFIG['duration'] = undefined;
     this.SNACK_BAR_CONFIG['panelClass'] = ['error', 'notification'];
     if (code) {
       this.showOnlyCode = true;

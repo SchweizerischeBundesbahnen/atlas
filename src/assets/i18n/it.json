@@ -142,6 +142,9 @@
       "NONE": "Keine"
     },
     "LINE": {
+      "CONFLICT": {
+        "SWISS_NUMBER": "CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+      },
       "NUMBER": "Liniennummer",
       "DESCRIPTION": "Linienbezeichnung",
       "FONT_RGB": "Schriftfarbe RGB",
@@ -165,6 +168,9 @@
       }
     },
     "SUBLINE": {
+      "CONFLICT": {
+        "SWISS_NUMBER": "CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+      },
       "NUMBER": "Teilliniennummer",
       "MAINLINE": "Linea principale",
       "DESCRIPTION": "Teillinienbezeichnung",

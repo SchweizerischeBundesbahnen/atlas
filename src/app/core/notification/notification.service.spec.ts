@@ -97,6 +97,7 @@ describe('NotificationService', () => {
       Object({
         horizontalPosition: 'right',
         verticalPosition: 'top',
+        duration: undefined,
         panelClass: ['error', 'notification'],
         data: Object({
           message: 'Not found',
