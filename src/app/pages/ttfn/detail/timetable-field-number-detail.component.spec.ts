@@ -157,7 +157,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     const snackBarContainer =
       fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
     expect(snackBarContainer.classList).toContain('error');
   });
 
@@ -184,7 +183,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     const snackBarContainer =
       fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toContain('TTFN.NOTIFICATION.DELETE_ERROR');
     expect(snackBarContainer.classList).toContain('error');
   });
 });
@@ -406,7 +404,6 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       const snackBarContainer =
         fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
       expect(snackBarContainer.classList).toContain('error');
     });
   });
