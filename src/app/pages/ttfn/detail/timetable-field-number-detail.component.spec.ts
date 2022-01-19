@@ -14,6 +14,7 @@ import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CoreModule } from '../../../core/module/core.module';
 
 const version: Version = {
   id: 1,
@@ -89,12 +90,11 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   ]);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimetableFieldNumberDetailComponent, DetailWrapperComponent],
+      declarations: [TimetableFieldNumberDetailComponent],
       imports: [
+        CoreModule,
         RouterModule.forRoot([]),
         HttpClientTestingModule,
-        ReactiveFormsModule,
-        MaterialModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
@@ -108,7 +108,9 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
           useValue: routeSnapshotVersionReadMock,
         },
       ],
-    }).compileComponents();
+    })
+      .compileComponents()
+      .then();
   });
 
   beforeEach(() => {
