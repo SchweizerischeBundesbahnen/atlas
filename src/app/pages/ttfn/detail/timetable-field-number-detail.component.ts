@@ -19,6 +19,7 @@ import {
   MIN_DATE,
 } from '../../../core/date/date.service';
 import { Page } from '../../../core/model/page';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -74,12 +75,7 @@ export class TimetableFieldNumberDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          const errorMessage =
-            err.status == 409
-              ? 'TTFN.NOTIFICATION.SWISSNUMBER_NOT_UNIQUE'
-              : 'TTFN.NOTIFICATION.EDIT_ERROR';
           this.notificationService.error(err);
-          console.log(err);
           this.form.enable();
           return EMPTY;
         })
@@ -96,12 +92,7 @@ export class TimetableFieldNumberDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          const errorMessage =
-            err.status == 409
-              ? 'TTFN.NOTIFICATION.SWISSNUMBER_NOT_UNIQUE'
-              : 'TTFN.NOTIFICATION.ADD_ERROR';
           this.notificationService.error(err);
-          console.log(err);
           this.form.enable();
           return EMPTY;
         })
@@ -121,7 +112,6 @@ export class TimetableFieldNumberDetailComponent
           takeUntil(this.ngUnsubscribe),
           catchError((err) => {
             this.notificationService.error(err, 'TTFN.NOTIFICATION.DELETE_ERROR');
-            console.log(err);
             return EMPTY;
           })
         )
