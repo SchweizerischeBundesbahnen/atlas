@@ -76,7 +76,7 @@ public class VersionService {
 
   private boolean areNumberAndSttfnUnique(Version version) {
     String ttfnid = version.getTtfnid() == null ? "" : version.getTtfnid();
-    return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber(),
+    return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber().toLowerCase(),
         version.getValidFrom(), version.getValidTo(), ttfnid).size() == 0;
   }
 
