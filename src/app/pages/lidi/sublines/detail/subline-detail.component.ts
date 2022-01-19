@@ -131,7 +131,7 @@ export class SublineDetailComponent
         .pipe(
           takeUntil(this.ngUnsubscribe),
           catchError((err) => {
-            this.notificationService.error(err);
+            this.notificationService.error(err, 'LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
             console.log(err);
             return EMPTY;
           })

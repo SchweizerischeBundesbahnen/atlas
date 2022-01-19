@@ -11,6 +11,7 @@ import { SublineDetailComponent } from './subline-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
 import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;
 import TypeEnum = SublineVersion.TypeEnum;
+import { HttpErrorResponse } from '@angular/common/http';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -26,6 +27,40 @@ const sublineVersion: SublineVersion = {
   type: TypeEnum.Technical,
   mainlineSlnid: 'ch:1:slnid:1000',
 };
+
+const error = new HttpErrorResponse({
+  status: 404,
+  error: {
+    message: 'Not found',
+    details: [
+      {
+        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        field: 'number',
+        displayInfo: {
+          code: 'TTFN.CONFLICT.NUMBER',
+          parameters: [
+            {
+              key: 'number',
+              value: '111',
+            },
+            {
+              key: 'validFrom',
+              value: '2020-12-12',
+            },
+            {
+              key: 'validTo',
+              value: '2026-12-12',
+            },
+            {
+              key: 'ttfnid',
+              value: 'ch:1:ttfnid:1001720',
+            },
+          ],
+        },
+      },
+    ],
+  },
+});
 
 let component: SublineDetailComponent;
 let fixture: ComponentFixture<SublineDetailComponent>;
@@ -72,7 +107,6 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should not update Version', () => {
-    const error = new Error('404');
     mockSublinesService.updateSublineVersion.and.returnValue(throwError(() => error));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
@@ -80,7 +114,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     const snackBarContainer =
       fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('LIDI.SUBLINE.NOTIFICATION.EDIT_ERROR');
+    expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
     expect(snackBarContainer.classList).toContain('error');
   });
 
@@ -107,7 +141,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     const snackBarContainer =
       fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
+    expect(snackBarContainer.textContent).toContain('LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
     expect(snackBarContainer.classList).toContain('error');
   });
 });
@@ -151,15 +185,14 @@ describe('SublineDetailComponent for new sublineVersion', () => {
     });
 
     it('displaying error', () => {
-      const err = new Error('404');
-      mockSublinesService.createSublineVersion.and.returnValue(throwError(() => err));
+      mockSublinesService.createSublineVersion.and.returnValue(throwError(() => error));
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
       const snackBarContainer =
         fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent).toBe('LIDI.SUBLINE.NOTIFICATION.ADD_ERROR');
+      expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
       expect(snackBarContainer.classList).toContain('error');
     });
   });
