@@ -84,7 +84,7 @@ public class VersionServiceCustomUniqueValidationTest {
         .name("FPFN Name")
         .number("10.101")
         .status(Status.ACTIVE)
-        .swissTimetableFieldNumber("b0.100")
+        .swissTimetableFieldNumber("B0.100")
         .validFrom(LocalDate.of(2019, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31)).build();
     // When
