@@ -56,7 +56,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
       )
       .pipe(
         catchError((err) => {
-          this.notificationService.error(err);
+          this.notificationService.error(err, 'TTFN.NOTIFICATION.FETCH_ERROR');
           this.isLoading = false;
           throw err;
         })
