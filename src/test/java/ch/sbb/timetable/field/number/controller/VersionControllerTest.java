@@ -182,7 +182,7 @@ public class VersionControllerTest {
     Version versionEntity = createEntity();
     overlappingVersions.add(versionEntity);
     doReturn(overlappingVersions).when(versionService).getOverlapsOnNumberAndSttfn(any());
-//    when(versionService.getOverlapsOnNumberAndSttfn(versionEntity)).thenReturn(overlappingVersions);
+    when(versionService.getOverlapsOnNumberAndSttfn(versionEntity)).thenReturn(overlappingVersions);
 
     // When
     VersionModel result = versionController.createVersion(versionModel);
