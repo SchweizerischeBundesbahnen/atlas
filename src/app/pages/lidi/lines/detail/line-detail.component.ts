@@ -19,7 +19,6 @@ import {
   MIN_DATE,
 } from 'src/app/core/date/date.service';
 import { Page } from 'src/app/core/model/page';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   templateUrl: './line-detail.component.html',
