@@ -13,6 +13,7 @@ import moment from 'moment/moment';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from '../../home/home.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const version: Version = {
   id: 1,
@@ -25,6 +26,40 @@ const version: Version = {
   number: '1.1',
   businessOrganisation: 'sbb',
 };
+
+const error = new HttpErrorResponse({
+  status: 404,
+  error: {
+    message: 'Not found',
+    details: [
+      {
+        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        field: 'number',
+        displayInfo: {
+          code: 'TTFN.CONFLICT.NUMBER',
+          parameters: [
+            {
+              key: 'number',
+              value: '111',
+            },
+            {
+              key: 'validFrom',
+              value: '2020-12-12',
+            },
+            {
+              key: 'validTo',
+              value: '2026-12-12',
+            },
+            {
+              key: 'ttfnid',
+              value: 'ch:1:ttfnid:1001720',
+            },
+          ],
+        },
+      },
+    ],
+  },
+});
 
 const routeSnapshotVersionReadMock = {
   snapshot: {
@@ -111,7 +146,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should not update Version', () => {
-    const error = new Error('404');
     mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(
       throwError(() => error)
     );
@@ -121,7 +155,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     const snackBarContainer =
       fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.EDIT_ERROR');
+    expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
     expect(snackBarContainer.classList).toContain('error');
   });
 
@@ -148,7 +182,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     const snackBarContainer =
       fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.DELETE_ERROR');
+    expect(snackBarContainer.textContent).toContain('TTFN.NOTIFICATION.DELETE_ERROR');
     expect(snackBarContainer.classList).toContain('error');
   });
 });
@@ -363,15 +397,14 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
 
     it('should not create a new record', () => {
-      const err = new Error('404');
-      mockTimetableFieldNumbersService.createVersion.and.returnValue(throwError(() => err));
+      mockTimetableFieldNumbersService.createVersion.and.returnValue(throwError(() => error));
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
       const snackBarContainer =
         fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.ADD_ERROR');
+      expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
       expect(snackBarContainer.classList).toContain('error');
     });
   });

@@ -84,6 +84,11 @@ snack-bar-container.error {
   white-space: unset !important;
 }
 
+snack-bar-container.warning {
+  background-color: orange;
+  white-space: unset !important;
+}
+
 snack-bar-container.notification {
   color: white;
 }

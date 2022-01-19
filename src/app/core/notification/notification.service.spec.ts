@@ -7,15 +7,45 @@ import { of } from 'rxjs';
 import { MaterialModule } from '../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { ErrorNotificationComponent } from './error-notification.component';
 
 describe('NotificationService', () => {
   let service: NotificationService;
-  const matSnackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
+  const matSnackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
   const errorResponse = new HttpErrorResponse({
-    error: '404 error',
     status: 404,
-    statusText: 'Not Found',
+    error: {
+      message: 'Not found',
+      details: [
+        {
+          message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+          field: 'number',
+          displayInfo: {
+            code: 'TTFN.CONFLICT.NUMBER',
+            parameters: [
+              {
+                key: 'number',
+                value: '111',
+              },
+              {
+                key: 'validFrom',
+                value: '2020-12-12',
+              },
+              {
+                key: 'validTo',
+                value: '2026-12-12',
+              },
+              {
+                key: 'ttfnid',
+                value: 'ch:1:ttfnid:1001720',
+              },
+            ],
+          },
+        },
+      ],
+    },
   });
   const translateServiceStub = {
     get() {
@@ -28,6 +58,7 @@ describe('NotificationService', () => {
       imports: [
         MatSnackBarModule,
         TranslateModule.forRoot(),
+        RouterModule.forRoot([]),
         MaterialModule,
         BrowserAnimationsModule,
       ],
@@ -61,14 +92,38 @@ describe('NotificationService', () => {
   it('should be error', () => {
     service.error(errorResponse);
     expect(service).toBeTruthy();
-    expect(matSnackBarSpy.open).toHaveBeenCalledWith(
-      'Notification with value',
-      '',
+    expect(matSnackBarSpy.openFromComponent).toHaveBeenCalledWith(
+      ErrorNotificationComponent,
       Object({
-        duration: 5000,
         horizontalPosition: 'right',
         verticalPosition: 'top',
+        duration: undefined,
         panelClass: ['error', 'notification'],
+        data: Object({
+          message: 'Not found',
+          details: [
+            Object({
+              message:
+                'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+              field: 'number',
+              displayInfo: Object({
+                code: 'TTFN.CONFLICT.NUMBER',
+                parameters: [
+                  Object({ key: 'number', value: '111' }),
+                  Object({
+                    key: 'validFrom',
+                    value: '2020-12-12',
+                  }),
+                  Object({ key: 'validTo', value: '2026-12-12' }),
+                  Object({
+                    key: 'ttfnid',
+                    value: 'ch:1:ttfnid:1001720',
+                  }),
+                ],
+              }),
+            }),
+          ],
+        }),
       })
     );
   });
