@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository;
 public interface LineVersionRepository extends JpaRepository<LineVersion, Long> {
 
   default boolean hasUniqueSwissLineNumber(LineVersion lineVersion) {
-    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumber(
+    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(
         lineVersion.getValidFrom(), lineVersion.getValidTo(),
         lineVersion.getSwissLineNumber()).stream()
-                                         .allMatch(
-                                             i -> i.getSlnid().equals(lineVersion.getSlnid()));
+        .allMatch(
+            i -> i.getSlnid().equals(lineVersion.getSlnid()));
   }
 
-  List<LineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumber(
+  List<LineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
   List<LineVersion> findAllBySlnidOrderByValidFrom(String slnid);
