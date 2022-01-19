@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +14,7 @@ import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -164,6 +166,26 @@ public class VersionControllerTest {
 
     // When
     VersionModel versionModel = createModel();
+
+    // Then
+    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+            () -> versionController.updateVersion(1L, versionModel))
+        .withMessage(
+            HttpStatus.NOT_FOUND.toString());
+  }
+
+  @Test
+  void shouldThrowConflictException() {
+    // Given
+    List<Version> overlappingVersions = new ArrayList<>();
+    VersionModel versionModel = createModel();
+    Version versionEntity = createEntity();
+    overlappingVersions.add(versionEntity);
+    doReturn(overlappingVersions).when(versionService).getOverlapsOnNumberAndSttfn(any());
+    when(versionService.getOverlapsOnNumberAndSttfn(versionEntity)).thenReturn(overlappingVersions);
+
+    // When
+    VersionModel result = versionController.createVersion(versionModel);
 
     // Then
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(

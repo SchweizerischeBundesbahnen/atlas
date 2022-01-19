@@ -46,8 +46,9 @@ public class VersionService {
 
   public Version save(Version newVersion) {
     newVersion.setStatus(Status.ACTIVE);
-    if (!areNumberAndSttfnUnique(newVersion)) {
-      throw new ConflictException("Number or SwissTimeTableFieldNumber are already taken");
+    List<Version> overlappingVersions = getOverlapsOnNumberAndSttfn(newVersion);
+    if (!overlappingVersions.isEmpty()) {
+      throw new ConflictException(newVersion, overlappingVersions);
     }
     return versionRepository.save(newVersion);
   }
@@ -74,10 +75,10 @@ public class VersionService {
     return versionedObjects;
   }
 
-  private boolean areNumberAndSttfnUnique(Version version) {
+  public List<Version> getOverlapsOnNumberAndSttfn(Version version) {
     String ttfnid = version.getTtfnid() == null ? "" : version.getTtfnid();
     return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber(),
-        version.getValidFrom(), version.getValidTo(), ttfnid).size() == 0;
+        version.getValidFrom(), version.getValidTo(), ttfnid);
   }
 
   public void deleteAll(List<Version> allVersionsVersioned) {
