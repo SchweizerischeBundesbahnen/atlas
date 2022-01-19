@@ -22,12 +22,14 @@ pipeline {
     LOCAL_PROXY_PORT = '8090'
 
     LOCAL_PROXY_FORCED = 'true'
+    // App URL for ZAP is the same as the base URL
     APP_URL = "$CYPRESS_BASE_URL"
 
     START_UP_TIMEOUT = 2 // Maximum time given for ZAP to start up
     ZAP_ACTIVE_SCAN_TIMEOUT = 10
     // Maximum duration of active scan in minutes (must be adjusted adequately)
     ZAP_URL = "http://$LOCAL_PROXY_HOST:$LOCAL_PROXY_PORT"
+    // Set Cypress HTTP Proxy to ZAP for passive scanning
     CYPRESS_HTTP_PROXY = "$ZAP_URL"
 
     ZAP_ACTIVE_POLICY_LEVEL = '50' // Lowest: 10 - Highest: 50
