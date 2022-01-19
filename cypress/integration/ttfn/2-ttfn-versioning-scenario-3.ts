@@ -110,4 +110,3 @@ describe('Versioning: scenario 3', () => {
     cy.contains(headerTitle);
   });
 });
-
