@@ -2,13 +2,13 @@ package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import ch.sbb.line.directory.controller.NotFoundExcpetion;
+import ch.sbb.line.directory.controller.NotFoundException;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Line_;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.exception.ConflictExcpetion;
+import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -58,15 +58,17 @@ public class LineService {
 
   public LineVersion save(LineVersion lineVersion) {
     lineVersion.setStatus(Status.ACTIVE);
-    if (!lineVersionRepository.hasUniqueSwissLineNumber(lineVersion)) {
-      throw new ConflictExcpetion();
+    List<LineVersion> swissLineNumberOverlaps = lineVersionRepository.findSwissLineNumberOverlaps(
+        lineVersion);
+    if (!swissLineNumberOverlaps.isEmpty()) {
+      throw new LineConflictException(lineVersion, swissLineNumberOverlaps);
     }
     return lineVersionRepository.save(lineVersion);
   }
 
   public void deleteById(Long id) {
     if (!lineVersionRepository.existsById(id)) {
-      throw NotFoundExcpetion.getInstance().get();
+      throw NotFoundException.getInstance().get();
     }
     lineVersionRepository.deleteById(id);
   }
@@ -74,7 +76,7 @@ public class LineService {
   public void deleteAll(String slnid) {
     List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
     if (currentVersions.isEmpty()) {
-      throw NotFoundExcpetion.getInstance().get();
+      throw NotFoundException.getInstance().get();
     }
     lineVersionRepository.deleteAll(currentVersions);
   }
