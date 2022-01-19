@@ -91,6 +91,7 @@ snack-bar-container.notification {
 .snack-bar-error-container {
   display: flex;
   .snack-bar-error-container-text {
+    padding-top: 1.5rem;
     ul {
       margin-bottom: 0.2rem !important;
     }
