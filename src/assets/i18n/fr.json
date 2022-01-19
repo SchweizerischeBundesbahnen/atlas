@@ -1,5 +1,6 @@
 {
   "ERROR": {
+    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Droits insuffisants pour voir ce contenu",
     "SERVER_REQUEST_FEHLER": "La base de données n’est pas accessible actuellement. Veuillez vérifier la connexion Internet, fermer le navigateur et réouvrir l'application."
   },
@@ -86,6 +87,10 @@
     "NUMBER": "Nr.",
     "TTFNID": "Identifcateur numéro de tableau-horaire",
     "COMMENT": "Commentaire",
+    "CONFLICT": {
+      "NUMBER": "Fahrplanfeldnummer {{number}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben",
+      "SWISS_NUMBER": "CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben"
+    },
     "NOTIFICATION": {
       "ADD_SUCCESS": "Numéro de tableau-horaire ajouté avec succès.",
       "ADD_ERROR": "Une erreur s'est prduite durant la création du numéro de tableau-horaire.",
@@ -138,6 +143,9 @@
       "NONE": "Keine"
     },
     "LINE": {
+      "CONFLICT": {
+        "SWISS_NUMBER": "CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+      },
       "NUMBER": "Liniennummer",
       "DESCRIPTION": "Beschreibung",
       "FONT_RGB": "Schriftfarbe RGB",
@@ -161,6 +169,9 @@
       }
     },
     "SUBLINE": {
+      "CONFLICT": {
+        "SWISS_NUMBER": "CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+      },
       "NUMBER": "Teilliniennummer",
       "MAINLINE": "Ligne principale",
       "DESCRIPTION": "Teillinienbezeichnung",

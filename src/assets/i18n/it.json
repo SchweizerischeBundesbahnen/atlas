@@ -1,5 +1,6 @@
 {
   "ERROR": {
+    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Nessuna autorizzazione per visualizzare questo contenuto ",
     "SERVER_REQUEST_FEHLER": "Al momento la connessione alla banca dati non è disponibile. Verificare la connessione Internet, chiudere il browser e riavviare DiDok."
   },
@@ -86,6 +87,10 @@
     "NUMBER": "Numero piano",
     "TTFNID": "Numero piano orario",
     "COMMENT": "Commento",
+    "CONFLICT": {
+      "NUMBER": "Fahrplanfeldnummer {{number}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben",
+      "SWISS_NUMBER": "CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben"
+    },
     "NOTIFICATION": {
       "ADD_SUCCESS": "Numero piano orario aggiunto con successo.",
       "ADD_ERROR": "Si è verificato un errore durante il salvataggio del numero piano orario.",
@@ -138,6 +143,9 @@
       "NONE": "Keine"
     },
     "LINE": {
+      "CONFLICT": {
+        "SWISS_NUMBER": "CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+      },
       "NUMBER": "Liniennummer",
       "DESCRIPTION": "Linienbezeichnung",
       "FONT_RGB": "Schriftfarbe RGB",
@@ -161,6 +169,9 @@
       }
     },
     "SUBLINE": {
+      "CONFLICT": {
+        "SWISS_NUMBER": "CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+      },
       "NUMBER": "Teilliniennummer",
       "MAINLINE": "Linea principale",
       "DESCRIPTION": "Teillinienbezeichnung",

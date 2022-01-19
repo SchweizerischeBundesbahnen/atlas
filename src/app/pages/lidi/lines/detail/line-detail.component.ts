@@ -43,12 +43,12 @@ export class LineDetailComponent
     private router: Router,
     private linesService: LinesService,
     private formBuilder: FormBuilder,
-    private notificationService: NotificationService,
+    protected notificationService: NotificationService,
     protected dialogService: DialogService,
     private validationService: ValidationService,
     private dateService: DateService
   ) {
-    super(dialogService);
+    super(dialogService, notificationService);
   }
 
   ngOnInit() {
@@ -70,19 +70,7 @@ export class LineDetailComponent
   updateRecord(): void {
     this.linesService
       .updateLineVersion(this.getId(), this.form.value)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          const errorMessage =
-            err.status == 409
-              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
-              : 'LIDI.LINE.NOTIFICATION.EDIT_ERROR';
-          this.notificationService.error(errorMessage);
-          console.log(err);
-          this.form.enable();
-          return EMPTY;
-        })
-      )
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -94,19 +82,7 @@ export class LineDetailComponent
   createRecord(): void {
     this.linesService
       .createLineVersion(this.form.value)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          const errorMessage =
-            err.status == 409
-              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
-              : 'LIDI.LINE.NOTIFICATION.ADD_ERROR';
-          this.notificationService.error(errorMessage);
-          console.log(err);
-          this.form.enable();
-          return EMPTY;
-        })
-      )
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -123,8 +99,7 @@ export class LineDetailComponent
         .pipe(
           takeUntil(this.ngUnsubscribe),
           catchError((err) => {
-            this.notificationService.error('LIDI.LINE.NOTIFICATION.DELETE_ERROR');
-            console.log(err);
+            this.notificationService.error(err, 'LIDI.LINE.NOTIFICATION.DELETE_ERROR');
             return EMPTY;
           })
         )

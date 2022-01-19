@@ -11,9 +11,13 @@ git_push.sh
 index.ts
 model/containerLine.ts
 model/containerSubline.ts
+model/displayInfo.ts
+model/errorDetail.ts
+model/errorResponse.ts
 model/line.ts
 model/lineVersion.ts
 model/models.ts
+model/parameter.ts
 model/subline.ts
 model/sublineVersion.ts
 model/timetableFieldNumber.ts
