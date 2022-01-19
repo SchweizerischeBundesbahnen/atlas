@@ -81,12 +81,7 @@ export class SublineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          const errorMessage =
-            err.status == 409
-              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
-              : 'LIDI.SUBLINE.NOTIFICATION.EDIT_ERROR';
           this.notificationService.error(err);
-          console.log(err);
           this.form.enable();
           return EMPTY;
         })
@@ -105,12 +100,7 @@ export class SublineDetailComponent
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError((err) => {
-          const errorMessage =
-            err.status == 409
-              ? 'COMMON.SWISSNUMBER_NOT_UNIQUE'
-              : 'LIDI.SUBLINE.NOTIFICATION.ADD_ERROR';
           this.notificationService.error(err);
-          console.log(err);
           this.form.enable();
           return EMPTY;
         })
@@ -132,7 +122,6 @@ export class SublineDetailComponent
           takeUntil(this.ngUnsubscribe),
           catchError((err) => {
             this.notificationService.error(err, 'LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
-            console.log(err);
             return EMPTY;
           })
         )
