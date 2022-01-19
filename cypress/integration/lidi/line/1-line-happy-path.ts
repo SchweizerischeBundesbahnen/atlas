@@ -24,7 +24,7 @@ describe('Linie', () => {
     CommonUtils.assertTableHeader(0, 2, 'Linienbezeichnung');
     CommonUtils.assertTableHeader(0, 3, 'Status');
     CommonUtils.assertTableHeader(0, 4, 'Linientyp');
-    CommonUtils.assertTableHeader(0, 5, 'Geschäftsorganisation Konzessionär');
+    CommonUtils.assertTableHeader(0, 5, 'Geschäftsorganisation');
     CommonUtils.assertTableHeader(0, 6, 'SLNID');
     CommonUtils.assertTableHeader(0, 7, 'Gültig von');
     CommonUtils.assertTableHeader(0, 8, 'Gültig bis');
