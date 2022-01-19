@@ -44,13 +44,13 @@ export class SublineDetailComponent
     private router: Router,
     private sublinesService: SublinesService,
     private formBuilder: FormBuilder,
-    private notificationService: NotificationService,
+    protected notificationService: NotificationService,
     protected dialogService: DialogService,
     private validationService: ValidationService,
     private dateService: DateService,
     private linesService: LinesService
   ) {
-    super(dialogService);
+    super(dialogService, notificationService);
   }
 
   ngOnInit() {
@@ -78,14 +78,7 @@ export class SublineDetailComponent
   updateRecord(): void {
     this.sublinesService
       .updateSublineVersion(this.getId(), this.form.value)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          this.notificationService.error(err);
-          this.form.enable();
-          return EMPTY;
-        })
-      )
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -97,14 +90,7 @@ export class SublineDetailComponent
   createRecord(): void {
     this.sublinesService
       .createSublineVersion(this.form.value)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          this.notificationService.error(err);
-          this.form.enable();
-          return EMPTY;
-        })
-      )
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
         this.router

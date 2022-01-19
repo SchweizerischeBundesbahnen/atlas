@@ -19,6 +19,7 @@ import {
   MIN_DATE,
 } from 'src/app/core/date/date.service';
 import { Page } from 'src/app/core/model/page';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -42,12 +43,12 @@ export class LineDetailComponent
     private router: Router,
     private linesService: LinesService,
     private formBuilder: FormBuilder,
-    private notificationService: NotificationService,
+    protected notificationService: NotificationService,
     protected dialogService: DialogService,
     private validationService: ValidationService,
     private dateService: DateService
   ) {
-    super(dialogService);
+    super(dialogService, notificationService);
   }
 
   ngOnInit() {
@@ -69,14 +70,7 @@ export class LineDetailComponent
   updateRecord(): void {
     this.linesService
       .updateLineVersion(this.getId(), this.form.value)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          this.notificationService.error(err);
-          this.form.enable();
-          return EMPTY;
-        })
-      )
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -88,14 +82,7 @@ export class LineDetailComponent
   createRecord(): void {
     this.linesService
       .createLineVersion(this.form.value)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          this.notificationService.error(err);
-          this.form.enable();
-          return EMPTY;
-        })
-      )
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
         this.router
