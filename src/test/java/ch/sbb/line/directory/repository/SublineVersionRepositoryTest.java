@@ -110,9 +110,11 @@ public class SublineVersionRepositoryTest {
   @Test
   void shouldNotAllowSwissNumberOnOverlapBetween() {
     // Given
-    sublineVersionRepository.save(SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
-                                           .validTo(LocalDate.of(2099, 12, 31))
-                                           .build());
+    sublineVersionRepository.save(SublineTestData.sublineVersionBuilder()
+        .validFrom(LocalDate.of(2019, 1, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .swissSublineNumber("SWISSSublineNUMBER")
+        .build());
     // When
     assertThat(sublineVersionRepository.hasUniqueSwissSublineNumber(SUBLINE_VERSION)).isFalse();
 

@@ -110,9 +110,11 @@ public class LineVersionRepositoryTest {
   @Test
   void shouldNotAllowSwissNumberOnOverlapBetween() {
     // Given
-    lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
-                                           .validTo(LocalDate.of(2099, 12, 31))
-                                           .build());
+    lineVersionRepository.save(LineTestData.lineVersionBuilder()
+        .validFrom(LocalDate.of(2019, 1, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .swissLineNumber("SWISSLineNUMBER")
+        .build());
     // When
     assertThat(lineVersionRepository.hasUniqueSwissLineNumber(LINE_VERSION)).isFalse();
 

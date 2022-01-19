@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository;
 public interface SublineVersionRepository extends JpaRepository<SublineVersion, Long> {
 
   default boolean hasUniqueSwissSublineNumber(SublineVersion sublineVersion) {
-    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumber(
+    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumberIgnoreCase(
         sublineVersion.getValidFrom(), sublineVersion.getValidTo(),
         sublineVersion.getSwissSublineNumber()).stream()
-                                               .allMatch(
-                                                   i -> i.getSlnid().equals(sublineVersion.getSlnid()));
+        .allMatch(
+            i -> i.getSlnid().equals(sublineVersion.getSlnid()));
   }
 
-  List<SublineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumber(
+  List<SublineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumberIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
   List<SublineVersion> findAllBySlnidOrderByValidFrom(String slnid);
