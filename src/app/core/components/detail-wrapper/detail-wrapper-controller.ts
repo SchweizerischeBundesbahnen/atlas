@@ -2,9 +2,11 @@ import { Directive, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import moment from 'moment/moment';
 import { Page } from '../../model/page';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationService } from '../../notification/notification.service';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
@@ -17,7 +19,10 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   //Temporary hack
   showSwitch: boolean | undefined;
 
-  protected constructor(protected dialogService: DialogService) {}
+  protected constructor(
+    protected dialogService: DialogService,
+    protected notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.init();
@@ -219,5 +224,13 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
         this.validateAllFormFields(control);
       }
     });
+  }
+
+  protected handleError() {
+    return (err: HttpErrorResponse) => {
+      this.notificationService.error(err);
+      this.form.enable();
+      return EMPTY;
+    };
   }
 }
