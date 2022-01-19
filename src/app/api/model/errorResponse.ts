@@ -9,9 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Subline } from './subline';
+import { ErrorDetail } from './errorDetail';
 
-export interface ContainerSubline {
-  objects?: Array<Subline>;
-  totalCount?: number;
+export interface ErrorResponse {
+  /**
+   * HTTP Status Code
+   */
+  httpStatus?: number;
+  /**
+   * Summary of error
+   */
+  message?: string;
+  /**
+   * List of error details
+   */
+  details: Array<ErrorDetail>;
 }

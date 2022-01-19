@@ -11,6 +11,7 @@ import { LineDetailComponent } from './line-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
 import PaymentTypeEnum = LineVersion.PaymentTypeEnum;
 import TypeEnum = LineVersion.TypeEnum;
+import { HttpErrorResponse } from '@angular/common/http';
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -25,6 +26,40 @@ const lineVersion: LineVersion = {
   swissLineNumber: 'L1',
   type: TypeEnum.Orderly,
 };
+
+const error = new HttpErrorResponse({
+  status: 404,
+  error: {
+    message: 'Not found',
+    details: [
+      {
+        message: 'Number 111 already taken from 2020-12-12 to 2026-12-12 by ch:1:ttfnid:1001720',
+        field: 'number',
+        displayInfo: {
+          code: 'TTFN.CONFLICT.NUMBER',
+          parameters: [
+            {
+              key: 'number',
+              value: '111',
+            },
+            {
+              key: 'validFrom',
+              value: '2020-12-12',
+            },
+            {
+              key: 'validTo',
+              value: '2026-12-12',
+            },
+            {
+              key: 'ttfnid',
+              value: 'ch:1:ttfnid:1001720',
+            },
+          ],
+        },
+      },
+    ],
+  },
+});
 
 let component: LineDetailComponent;
 let fixture: ComponentFixture<LineDetailComponent>;
@@ -71,7 +106,6 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should not update Version', () => {
-    const error = new Error('404');
     mockLinesService.updateLineVersion.and.returnValue(throwError(() => error));
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
@@ -79,7 +113,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     const snackBarContainer =
       fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('LIDI.LINE.NOTIFICATION.EDIT_ERROR');
+    expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
     expect(snackBarContainer.classList).toContain('error');
   });
 
@@ -106,7 +140,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     const snackBarContainer =
       fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('LIDI.LINE.NOTIFICATION.DELETE_ERROR');
+    expect(snackBarContainer.textContent).toContain('LIDI.LINE.NOTIFICATION.DELETE_ERROR');
     expect(snackBarContainer.classList).toContain('error');
   });
 });
@@ -150,15 +184,14 @@ describe('LineDetailComponent for new lineVersion', () => {
     });
 
     it('displaying error', () => {
-      const err = new Error('404');
-      mockLinesService.createLineVersion.and.returnValue(throwError(() => err));
+      mockLinesService.createLineVersion.and.returnValue(throwError(() => error));
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
       const snackBarContainer =
         fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent).toBe('LIDI.LINE.NOTIFICATION.ADD_ERROR');
+      expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
       expect(snackBarContainer.classList).toContain('error');
     });
   });

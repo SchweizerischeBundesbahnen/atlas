@@ -48,6 +48,7 @@
 .error {
   background-color: hsl(0, 100%, 50%);
   color: hsl(0, 0%, 100%);
+  white-space: pre-wrap;
 }
 
 a {
@@ -80,8 +81,34 @@ snack-bar-container.success {
 
 snack-bar-container.error {
   background-color: #d71414e0;
+  white-space: unset !important;
+}
+
+snack-bar-container.warning {
+  background-color: orange;
+  white-space: unset !important;
 }
 
 snack-bar-container.notification {
+  color: white;
+}
+
+.snack-bar-error-container {
+  display: flex;
+  .snack-bar-error-container-text {
+    padding-top: 1.5rem;
+    ul {
+      margin-bottom: 0.2rem !important;
+    }
+  }
+  .snack-bar-error-generic-text {
+    padding-right: 1.5rem;
+  }
+}
+
+.mat-simple-snackbar-action {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
   color: white;
 }

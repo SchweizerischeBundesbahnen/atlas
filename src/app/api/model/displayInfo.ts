@@ -9,9 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Subline } from './subline';
+import { Parameter } from './parameter';
 
-export interface ContainerSubline {
-  objects?: Array<Subline>;
-  totalCount?: number;
+/**
+ * DisplayInfo for messages
+ */
+export interface DisplayInfo {
+  /**
+   * Errorcode for UI
+   */
+  code: string;
+  /**
+   * Parameters for messages
+   */
+  parameters: Array<Parameter>;
 }

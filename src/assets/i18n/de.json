@@ -1,5 +1,6 @@
 {
   "ERROR": {
+    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Keine Berechtigung für diesen Inhalt",
     "SERVER_REQUEST_FEHLER": "Momentan ist die Verbindung zur Datenbank nicht verfügbar. Bitte überprüfen Sie die Internetverbindung, schliessen den Browser und starten ATLAS erneut."
   },
@@ -86,6 +87,10 @@
     "NUMBER": "Fahrplanfeldnummer",
     "TTFNID": "Fahrplanfeldnummer-ID",
     "COMMENT": "Kommentar",
+    "CONFLICT": {
+      "NUMBER": "Fahrplanfeldnummer {{number}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben",
+      "SWISS_NUMBER": "CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben"
+    },
     "NOTIFICATION": {
       "ADD_SUCCESS": "Fahrplanfeldnummer erfolgreich hinzugefügt.",
       "ADD_ERROR": "Beim Erfassen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
@@ -138,6 +143,9 @@
       "NONE": "Keine"
     },
     "LINE": {
+      "CONFLICT": {
+        "SWISS_NUMBER": "CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+      },
       "NUMBER": "Liniennummer",
       "DESCRIPTION": "Linienbezeichnung",
       "FONT_RGB": "Schriftfarbe RGB",
@@ -161,6 +169,9 @@
       }
     },
     "SUBLINE": {
+      "CONFLICT": {
+        "SWISS_NUMBER": "CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+      },
       "NUMBER": "Teilliniennummer",
       "MAINLINE": "Hauptlinie",
       "DESCRIPTION": "Teillinienbezeichnung",
