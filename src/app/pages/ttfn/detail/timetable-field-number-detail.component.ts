@@ -70,7 +70,10 @@ export class TimetableFieldNumberDetailComponent
 
   updateRecord(): void {
     this.timetableFieldNumberService
-      .updateVersionWithVersioning(this.getId(), this.form.value)
+      .updateVersionWithVersioning(this.getId(), {
+        ...this.form.value,
+        version: this.getVersion(),
+      })
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
