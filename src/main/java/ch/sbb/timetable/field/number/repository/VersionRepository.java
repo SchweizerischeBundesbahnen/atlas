@@ -15,7 +15,7 @@ public interface VersionRepository extends JpaRepository<Version, Long> {
   List<Version> getAllVersionsVersioned(@Param("ttfnid") String ttfnid);
 
   @Query(value = "select v from timetable_field_number_version v "
-      + "where (v.number = :number or v.swissTimetableFieldNumber = :sttfn) "
+      + "where (v.number = :number or lower(v.swissTimetableFieldNumber) = :sttfn) "
       + "and (((v.validFrom <= :validFrom and v.validTo >= :validFrom) or "
       + "(v.validFrom <= :validTo and v.validTo >= :validTo)) "
       + "or (v.validFrom > :validFrom and v.validTo < :validTo)) "
