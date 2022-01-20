@@ -16,6 +16,7 @@ import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.validation.LineValidation;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -42,17 +43,32 @@ class LineServiceTest {
   @Mock
   private VersionableService versionableService;
 
+  @Mock
+  private LineValidation lineValidation;
+
+  @Mock
+  private SpecificationBuilderProvider specificationBuilderProvider;
+
+  @Mock
+  private SpecificationBuilderService<Line> specificationBuilderService;
+
+  @Mock
+  private Specification<Line> lineSpecification;
+
   private LineService lineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineService = new LineService(lineVersionRepository, lineRepository, versionableService);
+    lineService = new LineService(lineVersionRepository, lineRepository, versionableService, lineValidation, specificationBuilderProvider);
   }
 
   @Test
   void shouldGetPagableLinesFromRepository() {
     // Given
+    when(lineSpecification.and(any())).thenReturn(lineSpecification);
+    when(specificationBuilderService.buildSearchCriteriaSpecification(any())).thenReturn(lineSpecification);
+    when(specificationBuilderProvider.getLineSpecificationBuilderService()).thenReturn(specificationBuilderService);
     Pageable pageable = Pageable.unpaged();
 
     // When
@@ -60,6 +76,8 @@ class LineServiceTest {
 
     // Then
     verify(lineRepository).findAll(ArgumentMatchers.<Specification<Line>>any(), eq(pageable));
+    verify(specificationBuilderProvider).getLineSpecificationBuilderService();
+    verify(specificationBuilderService).buildSearchCriteriaSpecification(List.of());
   }
 
   @Test
@@ -129,10 +147,10 @@ class LineServiceTest {
     // Given
     String slnid = "ch:1:ttfnid:1000083";
     LineVersion lineVersion = LineVersion.builder()
-                                         .validFrom(LocalDate.of(2000, 1, 1))
-                                         .validTo(LocalDate.of(2001, 12, 31))
-                                         .description("desc")
-                                         .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .description("desc")
+        .build();
     List<LineVersion> lineVersions = List.of(lineVersion);
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(lineVersions);
 
@@ -141,7 +159,6 @@ class LineServiceTest {
     //Then
     verify(lineVersionRepository).deleteAll(lineVersions);
   }
-
 
   @Test
   void shouldDeleteLine() {
