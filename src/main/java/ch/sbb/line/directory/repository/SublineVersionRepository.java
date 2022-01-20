@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface SublineVersionRepository extends JpaRepository<SublineVersion, Long> {
 
   default List<SublineVersion> findSwissLineNumberOverlaps(SublineVersion sublineVersion) {
-    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumber(
+    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumberIgnoreCase(
         sublineVersion.getValidFrom(), sublineVersion.getValidTo(),
         sublineVersion.getSwissSublineNumber()).stream()
                                                .filter(
@@ -21,7 +21,7 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
                                                    Collectors.toList());
   }
 
-  List<SublineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumber(
+  List<SublineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumberIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
   List<SublineVersion> findAllBySlnidOrderByValidFrom(String slnid);
