@@ -85,7 +85,8 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:                  |_________1___________| Current: |-----1-----|                       |-----------1---------|
+   * New:                  |_________1___________|
+   * Current: |-----1-----|                       |-----------1---------|
    */
   @Test
   void shouldAllowSwissNumberOnDifferentSwissIds() {
@@ -103,13 +104,16 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:           |____1____| Current:   |--------1--------|
+   * New:           |____1____|
+   * Current:   |--------1--------|
    */
   @Test
   void shouldNotAllowSwissNumberOnOverlapBetween() {
     // Given
-    lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
+    lineVersionRepository.save(LineTestData.lineVersionBuilder()
+        .validFrom(LocalDate.of(2019, 1, 1))
         .validTo(LocalDate.of(2099, 12, 31))
+        .swissLineNumber("SWISSLineNUMBER")
         .build());
     // When
     assertThat(lineVersionRepository.findSwissLineNumberOverlaps(LINE_VERSION).isEmpty()).isFalse();
@@ -118,7 +122,8 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:         |____1____| Current:         |--------1--------|
+   * New:         |____1____|
+   * Current:         |--------1--------|
    */
   @Test
   void shouldNotAllowSwissNumberOnOverlapBeginning() {
@@ -134,7 +139,8 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:                   |____1____| Current: |--------1--------|
+   * New:                   |____1____|
+   * Current: |--------1--------|
    */
   @Test
   void shouldNotAllowSwissNumberOnOverlapEnd() {
@@ -149,7 +155,8 @@ public class LineVersionRepositoryTest {
   }
 
   /**
-   * New:     |____1____| Current: |----1----|
+   * New:     |____1____|
+   * Current: |----1----|
    */
   @Test
   void shouldAllowUpdateOnSameLineVersion() {

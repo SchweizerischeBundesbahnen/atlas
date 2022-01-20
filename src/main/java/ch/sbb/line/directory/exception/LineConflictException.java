@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class LineConflictException extends AtlasException {
 
-  private static final String CODE_PREFIX = "LIDI.LINE.";
+  private static final String CODE_PREFIX = "LIDI.LINE.CONFLICT.";
 
   private final LineVersion newVersion;
   private final List<LineVersion> overlappingVersions;
