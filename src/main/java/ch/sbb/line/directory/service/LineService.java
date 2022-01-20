@@ -12,6 +12,7 @@ import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.validation.LineValidation;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,11 @@ public class LineService {
   private final LineVersionRepository lineVersionRepository;
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
-  private final SpecificationBuilderService<Line> specificationBuilderService = new SpecificationBuilderService<Line>(
-      List.of(Line_.swissLineNumber, Line_.number, Line_.description, Line_.businessOrganisation, Line_.slnid),
-      Line_.validFrom,
-      Line_.validTo,
-      Line_.swissLineNumber
-  );
+  private final LineValidation lineValidation;
+  private final SpecificationBuilderProvider specificationBuilderProvider;
 
   public Page<Line> findAll(SearchRestrictions<LineType> searchRestrictions) {
+    SpecificationBuilderService<Line> specificationBuilderService = specificationBuilderProvider.getLineSpecificationBuilderService();
     return lineRepository.findAll(
         specificationBuilderService.buildSearchCriteriaSpecification(searchRestrictions.getSearchCriteria())
             .and(specificationBuilderService.buildValidOnSpecification(searchRestrictions.getValidOn()))
@@ -62,6 +60,9 @@ public class LineService {
         lineVersion);
     if (!swissLineNumberOverlaps.isEmpty()) {
       throw new LineConflictException(lineVersion, swissLineNumberOverlaps);
+    }
+    if (LineType.TEMPORARY.equals(lineVersion.getType())) {
+      lineValidation.validateTemporaryLinesDuration(lineVersion, lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid()));
     }
     return lineVersionRepository.save(lineVersion);
   }
