@@ -28,7 +28,7 @@ public class TemporaryLineValidationExceptionTest {
       assertThat(exception.getErrorResponse().getDetails().get(0).getField()).isEqualTo("validTo");
       assertThat(exception.getErrorResponse().getDetails().get(0).getMessage()).isEqualTo(
           "Temporary version from 01.01.2021 to 01.05.2021 is a part of relating temporary versions, which together exceed maximum validity of 12 months");
-      assertThat(exception.getErrorResponse().getDetails().get(0).getDisplayInfo().getCode()).isEqualTo("LIDI.LINE.TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY");
+      assertThat(exception.getErrorResponse().getDetails().get(0).getDisplayInfo().getCode()).isEqualTo("LIDI.LINE.RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY");
       assertThat(exception.getErrorResponse().getDetails().get(0).getDisplayInfo().getParameters()).usingRecursiveComparison().isEqualTo(
           List.of(
               new Parameter("validFrom", LocalDate.of(2021, 1, 1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))),
