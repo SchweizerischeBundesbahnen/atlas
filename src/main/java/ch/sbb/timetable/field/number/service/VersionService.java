@@ -77,7 +77,7 @@ public class VersionService {
 
   public List<Version> getOverlapsOnNumberAndSttfn(Version version) {
     String ttfnid = version.getTtfnid() == null ? "" : version.getTtfnid();
-    return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber(),
+    return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber().toLowerCase(),
         version.getValidFrom(), version.getValidTo(), ttfnid);
   }
 
