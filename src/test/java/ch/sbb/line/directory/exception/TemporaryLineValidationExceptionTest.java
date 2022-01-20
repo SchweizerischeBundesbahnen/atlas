@@ -27,12 +27,12 @@ public class TemporaryLineValidationExceptionTest {
       assertThat(exception.getErrorResponse().getDetails().size()).isEqualTo(3);
       assertThat(exception.getErrorResponse().getDetails().get(0).getField()).isEqualTo("validTo");
       assertThat(exception.getErrorResponse().getDetails().get(0).getMessage()).isEqualTo(
-          "Temporary version from 2021-01-01 to 2021-05-01 is a part of relating temporary versions, which together exceed maximum validity of 12 months");
+          "Temporary version from 01.01.2021 to 01.05.2021 is a part of relating temporary versions, which together exceed maximum validity of 12 months");
       assertThat(exception.getErrorResponse().getDetails().get(0).getDisplayInfo().getCode()).isEqualTo("LIDI.LINE.TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY");
       assertThat(exception.getErrorResponse().getDetails().get(0).getDisplayInfo().getParameters()).usingRecursiveComparison().isEqualTo(
           List.of(
-              new Parameter("validFrom", LocalDate.of(2021, 1, 1).format(DateTimeFormatter.ISO_DATE)),
-              new Parameter("validTo", LocalDate.of(2021, 5, 1).format(DateTimeFormatter.ISO_DATE))
+              new Parameter("validFrom", LocalDate.of(2021, 1, 1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))),
+              new Parameter("validTo", LocalDate.of(2021, 5, 1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
           )
       );
     }
@@ -53,12 +53,12 @@ public class TemporaryLineValidationExceptionTest {
       assertThat(exception.getErrorResponse().getDetails().size()).isEqualTo(1);
       assertThat(exception.getErrorResponse().getDetails().get(0).getField()).isEqualTo("validTo");
       assertThat(exception.getErrorResponse().getDetails().get(0).getMessage()).isEqualTo(
-          "Temporary version from 2021-01-01 to 2022-05-01 exceeds maximum validity of 12 months");
+          "Temporary version from 01.01.2021 to 01.05.2022 exceeds maximum validity of 12 months");
       assertThat(exception.getErrorResponse().getDetails().get(0).getDisplayInfo().getCode()).isEqualTo("LIDI.LINE.TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY");
       assertThat(exception.getErrorResponse().getDetails().get(0).getDisplayInfo().getParameters()).usingRecursiveComparison().isEqualTo(
           List.of(
-              new Parameter("validFrom", LocalDate.of(2021, 1, 1).format(DateTimeFormatter.ISO_DATE)),
-              new Parameter("validTo", LocalDate.of(2022, 5, 1).format(DateTimeFormatter.ISO_DATE))
+              new Parameter("validFrom", LocalDate.of(2021, 1, 1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))),
+              new Parameter("validTo", LocalDate.of(2022, 5, 1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
           )
       );
     }
