@@ -18,6 +18,8 @@ public class TemporaryLineValidationException extends AtlasException {
   private static final String MESSAGE_NO_RELATING_VERSIONS = "Temporary version from {0} to {1} exceeds maximum validity of 12 months";
   private static final String MESSAGE_WITH_RELATING_VERSIONS = "Temporary version from {0} to {1} "
       + "is a part of relating temporary versions, which together exceed maximum validity of 12 months";
+  private static final String CODE_NO_RELATING_VERSIONS = "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY";
+  private static final String CODE_WITH_RELATING_VERSIONS = "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY";
 
   private final List<LineVersion> relatingVersions;
 
@@ -31,16 +33,21 @@ public class TemporaryLineValidationException extends AtlasException {
   }
 
   private List<Detail> getErrorDetails() {
-    String message = relatingVersions.size() == 1 ? MESSAGE_NO_RELATING_VERSIONS : MESSAGE_WITH_RELATING_VERSIONS;
-    return relatingVersions.stream().map(toErrorDetail(message)).collect(Collectors.toList());
+    String message = MESSAGE_WITH_RELATING_VERSIONS;
+    String code = CODE_WITH_RELATING_VERSIONS;
+    if (relatingVersions.size() == 1) {
+      message = MESSAGE_NO_RELATING_VERSIONS;
+      code = CODE_NO_RELATING_VERSIONS;
+    }
+    return relatingVersions.stream().map(toErrorDetail(message, code)).collect(Collectors.toList());
   }
 
-  private Function<LineVersion, Detail> toErrorDetail(String message) {
+  private Function<LineVersion, Detail> toErrorDetail(String message, String code) {
     return lineVersion -> Detail.builder()
         .field(Fields.validTo)
         .message(message)
         .displayInfo(DisplayInfo.builder()
-            .code(CODE_PREFIX + "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY")
+            .code(CODE_PREFIX + code)
             .with(Fields.validFrom,
                 lineVersion.getValidFrom())
             .with(Fields.validTo,
