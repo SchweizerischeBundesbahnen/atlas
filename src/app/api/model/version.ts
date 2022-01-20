@@ -1,6 +1,10 @@
 /**
  * Atlas API
+<<<<<<< HEAD
  * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.46.0-SNAPSHOT<br/>timetable-field-number:0.88.0-SNAPSHOT<br/>
+=======
+ * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.40.0-SNAPSHOT<br/>timetable-field-number:0.83.0-SNAPSHOT<br/>
+>>>>>>> optimistic locking test ttfn
  *
  * The version of the OpenAPI document: 0.17.0-SNAPSHOT
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -51,6 +55,10 @@ export interface Version {
    * Additional comment
    */
   comment?: string;
+  /**
+   * Optimistic locking version
+   */
+  version?: number;
 }
 export namespace Version {
   export type StatusEnum = 'ACTIVE' | 'INACTIVE' | 'NEEDS_REVIEW' | 'IN_REVIEW' | 'REVIEWED';
