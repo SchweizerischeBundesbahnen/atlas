@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface LineVersionRepository extends JpaRepository<LineVersion, Long> {
 
   default List<LineVersion> findSwissLineNumberOverlaps(LineVersion lineVersion) {
-    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumber(
+    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(
         lineVersion.getValidFrom(), lineVersion.getValidTo(),
         lineVersion.getSwissLineNumber()).stream()
                                          .filter(
@@ -20,7 +20,7 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
                                              Collectors.toList());
   }
 
-  List<LineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumber(
+  List<LineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
   List<LineVersion> findAllBySlnidOrderByValidFrom(String slnid);
