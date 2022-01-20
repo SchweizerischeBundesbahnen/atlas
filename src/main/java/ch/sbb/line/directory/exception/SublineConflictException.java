@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class SublineConflictException extends AtlasException {
 
-  private static final String CODE_PREFIX = "LIDI.SUBLINE.";
+  private static final String CODE_PREFIX = "LIDI.SUBLINE.CONFLICT.";
 
   private final SublineVersion newVersion;
   private final List<SublineVersion> overlappingVersions;
