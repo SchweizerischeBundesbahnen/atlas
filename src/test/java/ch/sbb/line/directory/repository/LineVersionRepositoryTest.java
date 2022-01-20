@@ -35,8 +35,8 @@ public class LineVersionRepositoryTest {
 
     //then
     assertThat(result).usingRecursiveComparison()
-                      .ignoringActualNullFields()
-                      .isEqualTo(LINE_VERSION);
+        .ignoringActualNullFields()
+        .isEqualTo(LINE_VERSION);
     assertThat(result.getSlnid()).startsWith("ch:1:slnid:");
 
     assertThat(result.getCreationDate()).isNotNull();
@@ -92,11 +92,11 @@ public class LineVersionRepositoryTest {
   void shouldAllowSwissNumberOnDifferentSwissIds() {
     // Given
     lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
-                                           .validTo(LocalDate.of(2019, 12, 31))
-                                           .build());
+        .validTo(LocalDate.of(2019, 12, 31))
+        .build());
     lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2021, 1, 1))
-                                           .validTo(LocalDate.of(2021, 12, 31))
-                                           .build());
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build());
     // When
     assertThat(lineVersionRepository.findSwissLineNumberOverlaps(LINE_VERSION).isEmpty()).isTrue();
 
@@ -130,8 +130,8 @@ public class LineVersionRepositoryTest {
     // Given
     lineVersionRepository.save(
         LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2020, 10, 1))
-                    .validTo(LocalDate.of(2099, 12, 31))
-                    .build());
+            .validTo(LocalDate.of(2099, 12, 31))
+            .build());
     // When
     assertThat(lineVersionRepository.findSwissLineNumberOverlaps(LINE_VERSION).isEmpty()).isFalse();
 
@@ -146,8 +146,8 @@ public class LineVersionRepositoryTest {
   void shouldNotAllowSwissNumberOnOverlapEnd() {
     // Given
     lineVersionRepository.save(LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2000, 1, 1))
-                                           .validTo(LocalDate.of(2020, 10, 31))
-                                           .build());
+        .validTo(LocalDate.of(2020, 10, 31))
+        .build());
     // When
     assertThat(lineVersionRepository.findSwissLineNumberOverlaps(LINE_VERSION).isEmpty()).isFalse();
 
