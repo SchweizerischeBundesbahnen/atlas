@@ -1,6 +1,6 @@
-routeHost: 'atlas-frontend-int.apps.maggie.sbb-aws.net'
+routeHost: 'atlas.int.sbb-cloud.net'
 environmentLabel: 'int'
-atlasApiUrl: 'https://atlas-gateway-int.apps.maggie.sbb-aws.net'
+atlasApiUrl: 'https://atlas-int.api.sbb.ch:443'
 splunkIndex: 'sbb_applications_internal_int_events'
 apiClientId: 'cdb8ebf2-b69a-4b24-ae98-acef067eea20'
 apiScope: 'openid profile email offline_access api://733b361e-a067-4882-bb00-6bbaf36a007f/.default'

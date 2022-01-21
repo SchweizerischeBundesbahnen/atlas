@@ -3,6 +3,7 @@ apiVersion: route.openshift.io/v1
 metadata:
   annotations:
     openshift.io/host.generated: 'true'
+    clew.sbb.ch/cluster-independent-dns: 'true'
   name: {{ .Chart.Name }}
 spec:
   host: '{{ .Values.routeHost }}'
