@@ -45,6 +45,9 @@
     "SEARCH": {
       "VALIDITY": "__it__Gültig am",
       "SEARCH_CRITERIA": "__it__Suche"
+    },
+    "NOTIFICATION": {
+      "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu."
     }
   },
   "DIALOG": {
