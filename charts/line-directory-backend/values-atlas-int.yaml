@@ -2,4 +2,3 @@
 splunkIndex: "sbb_applications_internal_int_events"
 # spring profile for the environment
 springProfilesActive: "int"
-clusterApplicationsUrl: "apps.maggie.sbb-aws.net"
