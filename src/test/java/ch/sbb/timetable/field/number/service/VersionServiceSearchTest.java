@@ -22,7 +22,7 @@ public class VersionServiceSearchTest {
   private final VersionService versionService;
   private final Version.VersionBuilder versionBuilder = Version.builder()
       .ttfnid("ch:1:ttfnid:100000")
-      .name("Version 1")
+      .description("Version 1")
       .swissTimetableFieldNumber("a.1")
       .status(Status.ACTIVE)
       .number("1.0")
@@ -30,7 +30,7 @@ public class VersionServiceSearchTest {
       .validTo(LocalDate.of(2021, 12, 31))
       .businessOrganisation("sbb");
   private final Version version1 = versionBuilder.build();
-  private final Version version2 = versionBuilder.ttfnid("ch:1:ttfnid:100001").name("Version 2").build();
+  private final Version version2 = versionBuilder.ttfnid("ch:1:ttfnid:100001").description("Version 2").build();
 
   @Autowired
   public VersionServiceSearchTest(VersionRepository versionRepository, VersionService versionService) {

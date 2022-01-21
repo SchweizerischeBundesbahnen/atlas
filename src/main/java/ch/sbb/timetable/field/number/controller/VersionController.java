@@ -52,7 +52,7 @@ public class VersionController implements TimetableFieldNumberApiV1 {
 
   private TimetableFieldNumberModel toModel(TimetableFieldNumber version) {
     return TimetableFieldNumberModel.builder()
-        .name(version.getName())
+        .description(version.getDescription())
         .ttfnid(version.getTtfnid())
         .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
         .status(version.getStatus())
@@ -83,7 +83,7 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   public VersionModel updateVersion(Long id, VersionModel newVersion) {
     Version versionToUpdate = versionService.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
 
-    versionToUpdate.setName(newVersion.getName());
+    versionToUpdate.setDescription(newVersion.getDescription());
     versionToUpdate.setNumber(newVersion.getNumber());
     versionToUpdate.setSwissTimetableFieldNumber(newVersion.getSwissTimetableFieldNumber());
     versionToUpdate.setValidFrom(newVersion.getValidFrom());
@@ -114,7 +114,7 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   private VersionModel toModel(Version version) {
     return VersionModel.builder()
         .id(version.getId())
-        .name(version.getName())
+        .description(version.getDescription())
         .number(version.getNumber())
         .ttfnid(version.getTtfnid())
         .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
@@ -129,7 +129,7 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   private Version toEntity(VersionModel versionModel) {
     return Version.builder()
         .id(versionModel.getId())
-        .name(versionModel.getName())
+        .description(versionModel.getDescription())
         .number(versionModel.getNumber())
         .swissTimetableFieldNumber(versionModel.getSwissTimetableFieldNumber())
         .status(versionModel.getStatus())
