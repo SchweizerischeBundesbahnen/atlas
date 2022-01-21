@@ -32,13 +32,13 @@ gateway:
 ## Links
 
 ### Development
-* Swagger UI: https://dev.atlas-gateway.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-* API as Json: https://dev.atlas-gateway.sbb-cloud.net/v3/api-docs
+* Swagger UI: https://atlas-gateway.dev.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://atlas-gateway.dev.sbb-cloud.net/v3/api-docs
 
 ### Test
-* Swagger UI: https://test.atlas-gateway.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-* API as Json: https://test.atlas-gateway.sbb-cloud.net/v3/api-docs
+* Swagger UI: https://atlas-gateway.test.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://atlas-gateway.test.sbb-cloud.net/v3/api-docs
 
 ### Integration
-* Swagger UI: https://int.atlas-gateway-int.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-* API as Json: https://int.atlas-gateway-int.sbb-cloud.net/v3/api-docs
+* Swagger UI: https://atlas-gateway.int.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://atlas-gateway.int.sbb-cloud.net/v3/api-docs
