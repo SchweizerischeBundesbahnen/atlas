@@ -30,9 +30,9 @@ public class TimetableFieldNumberModel {
   @NotNull
   private String ttfnid;
 
-  @Schema(description = "Name", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
+  @Schema(description = "Description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
   @Size(max = 255)
-  private String name;
+  private String description;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
   @Enumerated(EnumType.STRING)

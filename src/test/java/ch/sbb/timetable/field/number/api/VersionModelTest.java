@@ -198,20 +198,20 @@ public class VersionModelTest {
   }
 
   @Test
-  void nameShouldNotHaveMoreThan255Chars() {
+  void descriptionShouldNotHaveMoreThan255Chars() {
     // Given
-    StringBuilder name = new StringBuilder("test");
-    while (name.length() < 255) {
-      name.append("test");
+    StringBuilder description = new StringBuilder("test");
+    while (description.length() < 255) {
+      description.append("test");
     }
-    VersionModel version = versionModel().name(name.toString()).build();
+    VersionModel version = versionModel().description(description.toString()).build();
     // When
     Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
     assertThat(constraintViolations.iterator().next().getPropertyPath())
-        .hasToString("name");
+        .hasToString("description");
   }
 
   @Test

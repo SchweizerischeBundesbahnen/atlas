@@ -41,7 +41,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
     Version editedVersion = new Version();
-    editedVersion.setName("FPFN Name <changed>");
+    editedVersion.setDescription("FPFN Description <changed>");
     editedVersion.setComment("Scenario 7a");
     editedVersion.setValidFrom(LocalDate.of(2025, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2025, 12, 31));
@@ -62,7 +62,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
@@ -74,7 +74,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
-    assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX2");
@@ -86,7 +86,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
-    assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(thirdTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(thirdTemporalVersion.getComment()).isNull();
     Set<LineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
     assertThat(lineRelationsThirdVersion).isEmpty();
@@ -99,7 +99,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 1, 1));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
-    assertThat(fourthTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
+    assertThat(fourthTemporalVersion.getDescription()).isEqualTo("FPFN Description <changed>");
     assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 7a");
     Set<LineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isNotEmpty();
@@ -131,7 +131,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
     Version editedVersion = new Version();
-    editedVersion.setName("FPFN Name <changed>");
+    editedVersion.setDescription("FPFN Description <changed>");
     editedVersion.setComment("Scenario 7b");
     editedVersion.setValidFrom(LocalDate.of(2019, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2019, 12, 31));
@@ -151,7 +151,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2019, 12, 31));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("FPFN Description <changed>");
     assertThat(firstTemporalVersion.getComment()).isEqualTo("Scenario 7b");
     Set<LineRelation> lineRelationsFirstVersion = firstTemporalVersion.getLineRelations();
     assertThat(lineRelationsFirstVersion).isNotEmpty();
@@ -168,7 +168,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
-    assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX1");
@@ -180,7 +180,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
-    assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(thirdTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(thirdTemporalVersion.getComment()).isNull();
     assertThat(thirdTemporalVersion.getLineRelations()).isEmpty();
     assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX2");
@@ -192,7 +192,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
-    assertThat(fourthTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(fourthTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(fourthTemporalVersion.getComment()).isNull();
     Set<LineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isEmpty();
@@ -220,7 +220,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
     Version editedVersion = new Version();
-    editedVersion.setName("FPFN Name <changed>");
+    editedVersion.setDescription("FPFN Description <changed>");
     editedVersion.setComment("Scenario 7c");
     editedVersion.setValidFrom(LocalDate.of(2025, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2025, 12, 31));
@@ -241,7 +241,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
@@ -253,7 +253,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
-    assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX2");
@@ -265,7 +265,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
-    assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(thirdTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(thirdTemporalVersion.getComment()).isNull();
     Set<LineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
     assertThat(lineRelationsThirdVersion).isEmpty();
@@ -278,7 +278,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 6, 1));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
-    assertThat(fourthTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
+    assertThat(fourthTemporalVersion.getDescription()).isEqualTo("FPFN Description <changed>");
     assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 7c");
     Set<LineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isNotEmpty();
@@ -310,7 +310,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
     Version editedVersion = new Version();
-    editedVersion.setName("FPFN Name <changed>");
+    editedVersion.setDescription("FPFN Description <changed>");
     editedVersion.setComment("Scenario 7d");
     editedVersion.setValidFrom(LocalDate.of(2019, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2019, 5, 31));
@@ -330,7 +330,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2019, 5, 31));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("FPFN Name <changed>");
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("FPFN Description <changed>");
     assertThat(firstTemporalVersion.getComment()).isEqualTo("Scenario 7d");
     Set<LineRelation> lineRelationsFirstVersion = firstTemporalVersion.getLineRelations();
     assertThat(lineRelationsFirstVersion).isNotEmpty();
@@ -347,7 +347,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
-    assertThat(secondTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX1");
@@ -359,7 +359,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
-    assertThat(thirdTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(thirdTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(thirdTemporalVersion.getComment()).isNull();
     assertThat(thirdTemporalVersion.getLineRelations()).isEmpty();
     assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX2");
@@ -371,7 +371,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     Version fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
-    assertThat(fourthTemporalVersion.getName()).isEqualTo("FPFN Name");
+    assertThat(fourthTemporalVersion.getDescription()).isEqualTo("FPFN Description");
     assertThat(fourthTemporalVersion.getComment()).isNull();
     Set<LineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isEmpty();
@@ -392,7 +392,7 @@ public class VersionServiceScenario7Test extends BaseVersionServiceTest {
     version1.setValidTo(LocalDate.of(2029, 12, 8));
     version1 = versionRepository.save(version1);
     Version editedVersion = new Version();
-    editedVersion.setName("FPFN Name Frederic");
+    editedVersion.setDescription("FPFN Description Frederic");
     editedVersion.setComment("Frederic");
     editedVersion.setValidFrom(LocalDate.of(2029, 12, 9));
     editedVersion.setValidTo(version1.getValidTo());

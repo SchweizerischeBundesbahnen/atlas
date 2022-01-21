@@ -44,7 +44,7 @@ public class TimetableFieldNumberRepositorySearchTest {
   void initialData() {
     VersionBuilder versionBuilder = Version.builder()
                                            .ttfnid("ch:1:ttfnid:100000")
-                                           .name("Version 1")
+                                           .description("Version 1")
                                            .swissTimetableFieldNumber("a.1")
                                            .status(Status.ACTIVE)
                                            .number("1.0")
@@ -53,24 +53,24 @@ public class TimetableFieldNumberRepositorySearchTest {
                                            .validTo(END_OF_MONTH_AT_SEARCH_DATE)
                                            .businessOrganisation("sbb");
     Version version1 = versionBuilder.build();
-    Version version2 = versionBuilder.name("Version 2")
+    Version version2 = versionBuilder.description("Version 2")
                                      .comment("Valid in future")
                                      .validFrom(START_OF_MONTH_AT_SEARCH_DATE.plusMonths(1))
                                      .validTo(START_OF_MONTH_AT_SEARCH_DATE.plusMonths(6))
                                      .build();
     Version version3 = versionBuilder.ttfnid("ch:1:ttfnid:100001")
-                                     .name("Version 3")
+                                     .description("Version 3")
                                      .swissTimetableFieldNumber("a.2")
                                      .comment("Valid this month")
                                      .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
                                      .validTo(END_OF_MONTH_AT_SEARCH_DATE)
                                      .build();
     Version version4 = versionBuilder.ttfnid("ch:1:ttfnid:100002")
-                                     .name("Version 4")
+                                     .description("Version 4")
                                      .swissTimetableFieldNumber("a.3")
                                      .build();
     Version version5 = versionBuilder.ttfnid("ch:1:ttfnid:100003")
-                                     .name("Version 5")
+                                     .description("Version 5")
                                      .swissTimetableFieldNumber("a.1")
                                      .status(Status.IN_REVIEW)
                                      .build();
@@ -107,7 +107,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(4);
-    assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
+    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
   }
 
   @Test
@@ -115,7 +115,7 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Given initial dataset
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
-                                                                                PageRequest.of(0, 20, Sort.by("name")),
+                                                                                PageRequest.of(0, 20, Sort.by("description")),
                                                                                 null,
                                                                                 SEARCH_DATE,
                                                                                 null
@@ -123,7 +123,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(4);
-    assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
+    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
     assertThat(searchResult.get(3)).usingRecursiveComparison().isEqualTo(versionList.get(4));
@@ -150,7 +150,7 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Given initial dataset
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
-                                                                                PageRequest.of(0, 20, Sort.by("name")),
+                                                                                PageRequest.of(0, 20, Sort.by("description")),
                                                                                 List.of("Version"),
                                                                                 SEARCH_DATE,
                                                                                 List.of(Status.ACTIVE)
@@ -158,7 +158,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(3);
-    assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
+    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
   }
@@ -201,7 +201,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(1);
-    assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
+    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
   }
 
   @Test
@@ -209,7 +209,7 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Given initial dataset
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
-                                                                                PageRequest.of(0, 3, Sort.by("name")),
+                                                                                PageRequest.of(0, 3, Sort.by("description")),
                                                                                 List.of("version"),
                                                                                 null,
                                                                                 null
@@ -217,7 +217,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(3);
-    assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
+    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
   }
@@ -227,7 +227,7 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Given initial dataset
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
-                                                                                PageRequest.of(1, 2, Sort.by("name")),
+                                                                                PageRequest.of(1, 2, Sort.by("description")),
                                                                                 List.of("version"),
                                                                                 null,
                                                                                 null
@@ -240,11 +240,11 @@ public class TimetableFieldNumberRepositorySearchTest {
   }
 
   @Test
-  void searchWithSortingNameDesc() {
+  void searchWithSortingDescriptionDesc() {
     // Given initial dataset
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
-                                                                                PageRequest.of(0, 10, Sort.by(Direction.DESC, "name")),
+                                                                                PageRequest.of(0, 10, Sort.by(Direction.DESC, "description")),
                                                                                 List.of("a.1"),
                                                                                 null,
                                                                                 null
@@ -253,7 +253,7 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Then
     assertThat(searchResult.size()).isEqualTo(2);
     assertThat(searchResult.get(0)).usingRecursiveComparison().isEqualTo(versionList.get(4));
-    assertThat(searchResult.get(1).getName()).isEqualTo(versionList.get(0).getName());
+    assertThat(searchResult.get(1).getDescription()).isEqualTo(versionList.get(0).getDescription());
   }
 
   @Test
@@ -269,7 +269,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(4);
-    assertThat(searchResult.get(0).getName()).isEqualTo(versionList.get(0).getName());
+    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(4));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(3)).usingRecursiveComparison().isEqualTo(versionList.get(3));

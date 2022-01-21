@@ -35,7 +35,7 @@ class ConflictExceptionTest {
   private static Version.VersionBuilder versionBuilder() {
     return Version.builder()
                   .ttfnid("ch:1:ttfnid:100000")
-                  .name("FPFN Name")
+                  .description("FPFN Description")
                   .number("BEX")
                   .swissTimetableFieldNumber("b0.BEX")
                   .validFrom(LocalDate.of(2020, 12, 12))
