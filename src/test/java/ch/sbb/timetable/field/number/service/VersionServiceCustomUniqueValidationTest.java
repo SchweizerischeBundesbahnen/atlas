@@ -19,7 +19,7 @@ public class VersionServiceCustomUniqueValidationTest {
   private final VersionService versionService;
   private final VersionRepository versionRepository;
   private final Version version = Version.builder().ttfnid("ch:1:ttfnid:100000")
-      .name("FPFN Name")
+      .description("FPFN Description")
       .number("10.100")
       .status(Status.ACTIVE)
       .swissTimetableFieldNumber("b0.100")
@@ -45,7 +45,7 @@ public class VersionServiceCustomUniqueValidationTest {
     // Given
     Version version = Version.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("10.100")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.100")
@@ -64,7 +64,7 @@ public class VersionServiceCustomUniqueValidationTest {
     // Given
     Version version = Version.builder()
         .ttfnid("ch:1:ttfnid:100001")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("10.100")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.101")
@@ -81,7 +81,7 @@ public class VersionServiceCustomUniqueValidationTest {
     // Given
     Version version = Version.builder()
         .ttfnid("ch:1:ttfnid:100001")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("10.101")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("B0.100")
@@ -97,7 +97,7 @@ public class VersionServiceCustomUniqueValidationTest {
   void shouldThrowConflictExceptionIfBothNotUnique() {
     // Given
     versionRepository.save(Version.builder().ttfnid("ch:1:ttfnid:100000")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("10.100")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.100")
@@ -107,7 +107,7 @@ public class VersionServiceCustomUniqueValidationTest {
         .build());
     Version version = Version.builder()
         .ttfnid("ch:1:ttfnid:100001")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("10.100")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.100")
@@ -124,7 +124,7 @@ public class VersionServiceCustomUniqueValidationTest {
     // Given
     Version version = Version.builder()
         .ttfnid("ch:1:ttfnid:100001")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("10.100")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.101")

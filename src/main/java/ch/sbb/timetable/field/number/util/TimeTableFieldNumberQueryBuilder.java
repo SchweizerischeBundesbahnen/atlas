@@ -64,7 +64,7 @@ public class TimeTableFieldNumberQueryBuilder {
     }
     List<Path<String>> stringPaths = List.of(
         timetableFieldNumberRoot.get(TimetableFieldNumber_.swissTimetableFieldNumber),
-        timetableFieldNumberRoot.get(TimetableFieldNumber_.name),
+        timetableFieldNumberRoot.get(TimetableFieldNumber_.description),
         timetableFieldNumberRoot.get(TimetableFieldNumber_.ttfnid)
     );
     Predicate[] stringPredicates = searchStrings.stream().map(searchString -> criteriaBuilder.or(

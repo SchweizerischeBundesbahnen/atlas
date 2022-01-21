@@ -26,9 +26,9 @@ public class VersionModel implements DatesValidator {
   @Schema(description = "Timetable field number identifier", example = "ch:1:ttfnid:100000", accessMode = AccessMode.READ_ONLY)
   private String ttfnid;
 
-  @Schema(description = "Name", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
+  @Schema(description = "Description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
   @Size(max = 255)
-  private String name;
+  private String description;
 
   @Schema(description = "Number", example = "100; 80.099; 2700")
   @Size(min = 1, max = 50)

@@ -35,7 +35,7 @@ public abstract class BaseVersionServiceTest {
   @BeforeEach
   void init() {
     version1 = Version.builder().ttfnid(TTFNID)
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("BEX1")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.BEX")
@@ -44,7 +44,7 @@ public abstract class BaseVersionServiceTest {
         .businessOrganisation("sbb")
         .build();
     version2 = Version.builder().ttfnid(TTFNID)
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("BEX2")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.BEX")
@@ -53,7 +53,7 @@ public abstract class BaseVersionServiceTest {
         .businessOrganisation("sbb")
         .build();
     version3 = Version.builder().ttfnid(TTFNID)
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("BEX3")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.BEX")
@@ -62,7 +62,7 @@ public abstract class BaseVersionServiceTest {
         .businessOrganisation("sbb")
         .build();
     version4 = Version.builder().ttfnid(TTFNID)
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("BEX4")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.BEX")
@@ -71,7 +71,7 @@ public abstract class BaseVersionServiceTest {
         .businessOrganisation("sbb")
         .build();
     version5 = Version.builder().ttfnid(TTFNID)
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("BEX5")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.BEX")
