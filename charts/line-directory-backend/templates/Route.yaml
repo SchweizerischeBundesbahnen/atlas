@@ -6,7 +6,7 @@ metadata:
     clew.sbb.ch/cluster-independent-dns: 'true'
   name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
 spec:
-  host: '{{ .Values.springProfilesActive }}.{{ .Values.product }}.sbb-cloud.net'
+  host: '{{ .Values.product }}.{{ .Values.springProfilesActive }}.sbb-cloud.net'
   port:
     targetPort: '{{ .Values.port }}-tcp'
   to:
