@@ -96,14 +96,14 @@
 
     <div class="row mb-3">
       <mat-form-field>
-        <mat-label>{{ 'TTFN.NAME' | translate }}</mat-label>
+        <mat-label>{{ 'TTFN.DESCRIPTION' | translate }}</mat-label>
         <input
-          data-cy="name"
+          data-cy="description"
           matInput
-          formControlName="name"
-          placeholder="{{ NAME_PLACEHOLDER }}"
+          formControlName="description"
+          placeholder="{{ DESCRIPTION_PLACEHOLDER }}"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('name')">
+        <mat-error *ngFor="let validationError of this.getValidation('description')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
           }}

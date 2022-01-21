@@ -82,7 +82,7 @@
   "TTFN": {
     "NEW": "Nuovo numero piano orario",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numero piano",
-    "NAME": "Nome",
+    "DESCRIPTION": "Nome",
     "BUSINESS_ORGANISATION": "Azienda",
     "NUMBER": "Numero piano",
     "TTFNID": "Numero piano orario",
