@@ -1,6 +1,6 @@
-routeHost: 'atlas-frontend-dev.apps.aws01t.sbb-aws-test.net'
+routeHost: 'atlas.dev.sbb-cloud.net'
 environmentLabel: 'dev'
-atlasApiUrl: 'https://atlas-gateway-dev.apps.aws01t.sbb-aws-test.net'
+atlasApiUrl: 'https://atlas-dev-int.api.sbb.ch:443'
 splunkIndex: 'sbb_applications_internal_dev_events'
 apiClientId: '18746f30-7978-48b5-b19b-0f871fb12e67'
 apiScope: 'openid profile email offline_access api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default'
