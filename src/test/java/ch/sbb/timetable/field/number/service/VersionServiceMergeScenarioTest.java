@@ -26,32 +26,32 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
    * Merge zwei versionen
    *
    * NEU:                            |__________|
-   *                                  name=SBB3
+   *                                  description=SBB3
    * IST:      |----------|----------|----------|----------|
    * Version:        1          2          3           4
-   * Änderung:  name=SBB1  name=SBB2  name=SBB3  name=SBB4
+   * Änderung:  description=SBB1  description=SBB2  description=SBB3  description=SBB4
    *
    * RESULTAT: |----------|---------------------|----------|
    * Version:        1               2               4
-   * Änderung:  name=SBB1       name=SBB2        name=SBB4
+   * Änderung:  description=SBB1  description=SBB2  description=SBB4
    */
   @Test
   public void scenarioMergeTwoVersions() {
     //given
-    version1.setName("SBB1");
+    version1.setDescription("SBB1");
     version1.setNumber("BEX");
     version1 = versionRepository.save(version1);
-    version2.setName("SBB2");
+    version2.setDescription("SBB2");
     version2.setNumber("BEX");
     version2 = versionRepository.save(version2);
-    version3.setName("SBB3");
+    version3.setDescription("SBB3");
     version3.setNumber("BEX");
     version3 = versionRepository.save(version3);
-    version4.setName("SBB4");
+    version4.setDescription("SBB4");
     version4.setNumber("BEX");
     version4 = versionRepository.save(version4);
     Version editedVersion = new Version();
-    editedVersion.setName("SBB2");
+    editedVersion.setDescription("SBB2");
 
     //when
     versionService.updateVersion(version3, editedVersion);
@@ -67,7 +67,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     Version firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("SBB1");
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("SBB1");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX");
@@ -79,7 +79,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
-    assertThat(secondTemporalVersion.getName()).isEqualTo("SBB2");
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo("SBB2");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX");
@@ -91,7 +91,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     Version thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
-    assertThat(thirdTemporalVersion.getName()).isEqualTo("SBB4");
+    assertThat(thirdTemporalVersion.getDescription()).isEqualTo("SBB4");
     Set<LineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
     assertThat(lineRelationsThirdVersion).isEmpty();
     assertThat(thirdTemporalVersion.getComment()).isNull();
@@ -106,29 +106,29 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
    * Merge drei versionen
    *
    * NEU:                 |__________|
-   *                       name=SBB1
+   *                       description=SBB1
    * IST:      |----------|----------|----------|
    * Version:        1          2          3
-   * Änderung:  name=SBB1  name=SBB2  name=SBB1
+   * Änderung:  description=SBB1  description=SBB2  description=SBB1
    *
    * RESULTAT: |--------------------------------|
    * Version:                 1
-   * Änderung:            name=SBB1
+   * Änderung:            description=SBB1
    */
   @Test
   public void scenarioMergeAllVersions() {
     //given
-    version1.setName("SBB1");
+    version1.setDescription("SBB1");
     version1.setNumber("BEX");
     version1 = versionRepository.save(version1);
-    version2.setName("SBB2");
+    version2.setDescription("SBB2");
     version2.setNumber("BEX");
     version2 = versionRepository.save(version2);
-    version3.setName("SBB1");
+    version3.setDescription("SBB1");
     version3.setNumber("BEX");
     version3 = versionRepository.save(version3);
     Version editedVersion = new Version();
-    editedVersion.setName("SBB1");
+    editedVersion.setDescription("SBB1");
 
     //when
     versionService.updateVersion(version2, editedVersion);
@@ -144,7 +144,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     Version firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("SBB1");
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("SBB1");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX");
@@ -158,35 +158,35 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
    * Merge über mehrere versionen
    *
    * NEU:                 |______________________|
-   *                              name=SBB1
+   *                              description=SBB1
    * IST:      |----------|----------|----------|----------|----------|
    * Version:        1          2          3          4         5
-   * Änderung:  name=SBB1  name=SBB2  name=SBB3  name=SBB1  name=SBB4
+   * Änderung:  description=SBB1  description=SBB2  description=SBB3  description=SBB1  description=SBB4
    *
    * RESULTAT: |-------------------------------------------|----------|
    * Version:                 1                                 2
-   * Änderung:            name=SBB1                         name=SBB4
+   * Änderung:            description=SBB1                         description=SBB4
    */
   @Test
   public void scenarioMergeThroughMultipleVersions() {
     //given
-    version1.setName("SBB1");
+    version1.setDescription("SBB1");
     version1.setNumber("BEX");
     version1 = versionRepository.save(version1);
-    version2.setName("SBB2");
+    version2.setDescription("SBB2");
     version2.setNumber("BEX");
     version2 = versionRepository.save(version2);
-    version3.setName("SBB3");
+    version3.setDescription("SBB3");
     version3.setNumber("BEX");
     version3 = versionRepository.save(version3);
-    version4.setName("SBB1");
+    version4.setDescription("SBB1");
     version4.setNumber("BEX");
     version4 = versionRepository.save(version4);
     version5.setNumber("BEX");
-    version5.setName("SBB4");
+    version5.setDescription("SBB4");
     version5 = versionRepository.save(version5);
     Version editedVersion = new Version();
-    editedVersion.setName("SBB1");
+    editedVersion.setDescription("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
 
@@ -203,7 +203,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     Version firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("SBB1");
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("SBB1");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX");
@@ -215,7 +215,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2026, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
-    assertThat(secondTemporalVersion.getName()).isEqualTo("SBB4");
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo("SBB4");
     assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX");
@@ -229,36 +229,36 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
    * Merge über mehrere versionen
    *
    * NEU:                 |_____________________|
-   *                              name=SBB1
+   *                              description=SBB1
    * IST:      |----------|----------|----------|  |----------|----------|
    * Version:        1          2         3              4         5
-   * Änderung:  name=SBB1  name=SBB2  name=SBB3     name=SBB1  name=SBB4
+   * Änderung:  description=SBB1  description=SBB2  description=SBB3     description=SBB1  description=SBB4
    *
    * RESULTAT: |--------------------------------|  |---------|----------|
    * Version:                 1                         2        3
-   * Änderung:            name=SBB1                 name=SBB1  name=SBB4
+   * Änderung:            description=SBB1                 description=SBB1  description=SBB4
    */
   @Test
   public void scenarioMergeThroughMultipleVersionsWithInterruption() {
     //given
-    version1.setName("SBB1");
+    version1.setDescription("SBB1");
     version1.setNumber("BEX");
     version1 = versionRepository.save(version1);
-    version2.setName("SBB2");
+    version2.setDescription("SBB2");
     version2.setNumber("BEX");
     version2 = versionRepository.save(version2);
-    version3.setName("SBB3");
+    version3.setDescription("SBB3");
     version3.setNumber("BEX");
     version3.setValidTo(LocalDate.of(2024, 6, 1));
     version3 = versionRepository.save(version3);
-    version4.setName("SBB1");
+    version4.setDescription("SBB1");
     version4.setNumber("BEX");
     version4 = versionRepository.save(version4);
     version5.setNumber("BEX");
-    version5.setName("SBB4");
+    version5.setDescription("SBB4");
     version5 = versionRepository.save(version5);
     Version editedVersion = new Version();
-    editedVersion.setName("SBB1");
+    editedVersion.setDescription("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
 
@@ -275,7 +275,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     Version firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
-    assertThat(firstTemporalVersion.getName()).isEqualTo("SBB1");
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("SBB1");
     assertThat(firstTemporalVersion.getComment()).isNull();
     assertThat(firstTemporalVersion.getLineRelations()).isEmpty();
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX");
@@ -287,7 +287,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     Version secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
-    assertThat(secondTemporalVersion.getName()).isEqualTo("SBB1");
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo("SBB1");
     assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX");
@@ -299,7 +299,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     Version thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2026, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
-    assertThat(thirdTemporalVersion.getName()).isEqualTo("SBB4");
+    assertThat(thirdTemporalVersion.getDescription()).isEqualTo("SBB4");
     assertThat(thirdTemporalVersion.getComment()).isNull();
     assertThat(thirdTemporalVersion.getLineRelations()).isEmpty();
     assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX");

@@ -145,7 +145,7 @@ public class VersionControllerTest {
     // Given
     Version version = createEntity();
     VersionModel versionModel = createModel();
-    versionModel.setName("New name");
+    versionModel.setDescription("New description");
 
     when(versionService.findById(anyLong())).thenReturn(Optional.of(version));
 
@@ -197,7 +197,7 @@ public class VersionControllerTest {
   private static TimetableFieldNumber createOverviewEntity() {
     return TimetableFieldNumber.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2020, 12, 12))
         .validTo(LocalDate.of(2099, 12, 12))
@@ -207,7 +207,7 @@ public class VersionControllerTest {
   private static Version createEntity() {
     return Version.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("BEX")
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2020, 12, 12))
@@ -218,7 +218,7 @@ public class VersionControllerTest {
   private static VersionModel createModel() {
     return VersionModel.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("BEX")
         .swissTimetableFieldNumber("b0.BEX")
         .validFrom(LocalDate.of(2020, 12, 12))

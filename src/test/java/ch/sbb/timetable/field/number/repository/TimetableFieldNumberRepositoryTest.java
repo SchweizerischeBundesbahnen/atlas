@@ -36,7 +36,7 @@ public class TimetableFieldNumberRepositoryTest {
     // Given
     Version validLastYear = Version.builder()
         .ttfnid(TTFNID)
-        .name("Last Year")
+        .description("Last Year")
         .swissTimetableFieldNumber("a.100")
         .status(Status.ACTIVE)
         .number("10.100")
@@ -48,7 +48,7 @@ public class TimetableFieldNumberRepositoryTest {
 
     Version validToday = Version.builder()
         .ttfnid(TTFNID)
-        .name("Today")
+        .description("Today")
         .swissTimetableFieldNumber("a.100")
         .status(Status.ACTIVE)
         .number("10.100")
@@ -60,7 +60,7 @@ public class TimetableFieldNumberRepositoryTest {
 
     Version validNextYear = Version.builder()
         .ttfnid(TTFNID)
-        .name("Next Year")
+        .description("Next Year")
         .swissTimetableFieldNumber("a.100")
         .status(Status.ACTIVE)
         .number("10.100")
@@ -93,7 +93,7 @@ public class TimetableFieldNumberRepositoryTest {
     // Given
     Version validLastYear = Version.builder()
         .ttfnid(TTFNID)
-        .name("Last Year")
+        .description("Last Year")
         .swissTimetableFieldNumber("a.100")
         .status(Status.ACTIVE)
         .number("10.100")
@@ -105,7 +105,7 @@ public class TimetableFieldNumberRepositoryTest {
 
     Version validNextYear = Version.builder()
         .ttfnid(TTFNID)
-        .name("Next Year")
+        .description("Next Year")
         .swissTimetableFieldNumber("a.100")
         .status(Status.ACTIVE)
         .number("10.100")
@@ -117,7 +117,7 @@ public class TimetableFieldNumberRepositoryTest {
 
     Version validInTwoYears = Version.builder()
         .ttfnid(TTFNID)
-        .name("Later")
+        .description("Later")
         .swissTimetableFieldNumber("a.100")
         .status(Status.ACTIVE)
         .number("10.100")
@@ -150,7 +150,7 @@ public class TimetableFieldNumberRepositoryTest {
     // Given
     Version validEarlier = Version.builder()
         .ttfnid(TTFNID)
-        .name("Earlier")
+        .description("Earlier")
         .swissTimetableFieldNumber("a.100")
         .status(Status.ACTIVE)
         .number("10.100")
@@ -162,7 +162,7 @@ public class TimetableFieldNumberRepositoryTest {
 
     Version validLastYear = Version.builder()
         .ttfnid(TTFNID)
-        .name("Last Year")
+        .description("Last Year")
         .swissTimetableFieldNumber("a.100")
         .status(Status.ACTIVE)
         .number("10.100")
