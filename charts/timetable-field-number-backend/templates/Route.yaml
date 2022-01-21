@@ -3,9 +3,10 @@ apiVersion: route.openshift.io/v1
 metadata:
   annotations:
     openshift.io/host.generated: 'true'
+    clew.sbb.ch/cluster-independent-dns: 'true'
   name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
 spec:
-  host: '{{ .Values.product }}-{{ .Values.springProfilesActive }}.{{ .Values.clusterApplicationsUrl }}'
+  host: '{{ .Values.springProfilesActive }}.{{ .Values.product }}.sbb-cloud.net'
   port:
     targetPort: '{{ .Values.port }}-tcp'
   to:
