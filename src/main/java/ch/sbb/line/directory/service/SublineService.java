@@ -8,6 +8,7 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
 import ch.sbb.line.directory.exception.SublineConflictException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
@@ -35,10 +36,14 @@ public class SublineService {
   public Page<Subline> findAll(SearchRestrictions<SublineType> searchRestrictions) {
     SpecificationBuilderService<Subline> specificationBuilderService = specificationBuilderProvider.getSublineSpecificationBuilderService();
     return sublineRepository.findAll(
-        specificationBuilderService.buildSearchCriteriaSpecification(searchRestrictions.getSearchCriteria())
-            .and(specificationBuilderService.buildValidOnSpecification(searchRestrictions.getValidOn()))
-            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getStatusRestrictions(), Subline_.status))
-            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getTypeRestrictions(), Subline_.type)),
+        specificationBuilderService.buildSearchCriteriaSpecification(
+                                       searchRestrictions.getSearchCriteria())
+                                   .and(specificationBuilderService.buildValidOnSpecification(
+                                       searchRestrictions.getValidOn()))
+                                   .and(specificationBuilderService.buildEnumSpecification(
+                                       searchRestrictions.getStatusRestrictions(), Subline_.status))
+                                   .and(specificationBuilderService.buildEnumSpecification(
+                                       searchRestrictions.getTypeRestrictions(), Subline_.type)),
         searchRestrictions.getPageable());
   }
 
@@ -52,7 +57,7 @@ public class SublineService {
 
   public SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.ACTIVE);
-    List<SublineVersion> swissLineNumberOverlaps = sublineVersionRepository.findSwissLineNumberOverlaps(
+       List<SublineVersion> swissLineNumberOverlaps = sublineVersionRepository.findSwissLineNumberOverlaps(
         sublineVersion);
     if (!swissLineNumberOverlaps.isEmpty()) {
       throw new SublineConflictException(sublineVersion, swissLineNumberOverlaps);
@@ -61,7 +66,21 @@ public class SublineService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
           "Main line with SLNID " + sublineVersion.getMainlineSlnid() + " does not exist");
     }
+    if(sublineVersion.getId() != null){
+      validateDifferentMainLineAssign(sublineVersion);
+    }
     return sublineVersionRepository.save(sublineVersion);
+  }
+
+  private void validateDifferentMainLineAssign(SublineVersion sublineVersion) {
+    SublineVersion sublineVersionActual =
+        sublineVersionRepository.findById(sublineVersion.getId())
+                                .orElse(null);
+    if (sublineVersionActual != null &&
+        !sublineVersionActual.getMainlineSlnid()
+                             .equals(sublineVersion.getMainlineSlnid())) {
+      throw new SubLineAssignToLineConflictException(sublineVersion);
+    }
   }
 
   public void deleteById(Long id) {
