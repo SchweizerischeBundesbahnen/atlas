@@ -45,19 +45,19 @@ result_sql_file = open("../src/main/resources/db/scripts/initial_data.sql", mode
 
 fpnfid = 100000
 for index, row in data.iterrows():
-	name = row[1] if isinstance(row[1], str) else row[2]
-	name = cleanhtml(name).replace("'", "''").replace('\n', ' ')
+	description = row[1] if isinstance(row[1], str) else row[2]
+	description = cleanhtml(description).replace("'", "''").replace('\n', ' ')
 
-	if len(name) > 255:
-		name = name[:255]
+	if len(description) > 255:
+		description = description[:255]
 
 	result_sql_file.write(
 			"INSERT INTO timetable_field_number_version "
-			"(id, ttfnid, name, number, swiss_timetable_field_number, creation_date, creator, edition_date, editor, valid_from, valid_to, comment, status, business_organisation, version) "
+			"(id, ttfnid, description, number, swiss_timetable_field_number, creation_date, creator, edition_date, editor, valid_from, valid_to, comment, status, business_organisation, version) "
 			"VALUES "
 			"(nextval('timetable_field_number_version_seq'), 'ch:1:ttfnid:' || nextval('ttfnid_seq'), '{}', '{}', '{}', current_timestamp, 'xlsx', current_timestamp, 'xlsx', '2020-12-12', '{}', '{}', 'ACTIVE', '-', 0);"
 				.format(
-					name,  # name
+					description,  # description
 					row[3],  # number
 					row[0],  # swiss_timetable_field_number
 					reformat_date(row[4]),  # valid_to

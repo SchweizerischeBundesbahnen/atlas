@@ -32,7 +32,7 @@ public class VersionRepositoryTest {
   void setUpVersionWithTwoLineRelations() {
     version = Version.builder()
         .ttfnid("ch:1:ttfnid:100000")
-        .name("FPFN Name")
+        .description("FPFN Description")
         .number("BEX")
         .status(Status.ACTIVE)
         .swissTimetableFieldNumber("b0.BEX")
@@ -126,7 +126,7 @@ public class VersionRepositoryTest {
     String ttfnid = "ch:1:ttfnid:100000";
     Version secondVersion = Version.builder()
                      .ttfnid("ch:1:ttfnid:100000")
-                     .name("FPFN Name2")
+                     .description("FPFN Description2")
                      .number("BEX2")
                      .status(Status.ACTIVE)
                      .swissTimetableFieldNumber("b0.BEX2")

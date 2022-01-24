@@ -28,7 +28,7 @@ public class TimetableFieldNumber {
   @Id
   private String ttfnid;
 
-  private String name;
+  private String description;
 
   @Enumerated(EnumType.STRING)
   private Status status;

@@ -69,7 +69,7 @@ public class Version implements Versionable, DatesValidator {
 
   @AtlasVersionableProperty
   @Size(max = 255)
-  private String name;
+  private String description;
 
   @AtlasVersionableProperty
   @NotNull
