@@ -26,7 +26,7 @@ export default class TtfnUtils {
     cy.get('[data-cy=validTo]').clear().type(version.validTo);
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
     cy.get('[data-cy=number]').clear().type(version.number);
-    cy.get('[data-cy=name]').clear().type(version.name);
+    cy.get('[data-cy=description]').clear().type(version.description);
     cy.get('[data-cy=comment]').clear().type(version.comment);
     cy.get('[data-cy=save-item]').should('not.be.disabled');
   }
@@ -36,7 +36,7 @@ export default class TtfnUtils {
     CommonUtils.assertItemValue('[data-cy=validTo]', version.validTo);
     CommonUtils.assertItemValue('[data-cy=businessOrganisation]', version.businessOrganisation);
     CommonUtils.assertItemValue('[data-cy=number]', version.number);
-    CommonUtils.assertItemValue('[data-cy=name]', version.name);
+    CommonUtils.assertItemValue('[data-cy=description]', version.description);
     CommonUtils.assertItemValue('[data-cy=comment]', version.comment);
   }
 
@@ -48,7 +48,8 @@ export default class TtfnUtils {
       validTo: '31.12.2000',
       businessOrganisation: 'SBB',
       number: '1.1',
-      name: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      description:
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       comment: 'This is a comment',
     };
   }
@@ -60,7 +61,8 @@ export default class TtfnUtils {
       validTo: '31.12.2002',
       businessOrganisation: 'SBB1',
       number: '1.1',
-      name: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      description:
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       comment: 'A new comment',
     };
   }

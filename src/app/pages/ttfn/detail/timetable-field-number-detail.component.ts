@@ -31,7 +31,7 @@ export class TimetableFieldNumberDetailComponent
 {
   SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
-  NAME_PLACEHOLDER = 'Grenze - Bad, Bahnhof - Basel SBB - Zürich HB - Chur';
+  DESCRIPTION_PLACEHOLDER = 'Grenze - Bad, Bahnhof - Basel SBB - Zürich HB - Chur';
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
@@ -139,7 +139,7 @@ export class TimetableFieldNumberDetailComponent
             Validators.pattern('^[.0-9]+$'),
           ],
         ],
-        name: [version.name, Validators.maxLength(this.MAX_LENGTH_255)],
+        description: [version.description, Validators.maxLength(this.MAX_LENGTH_255)],
         comment: [version.comment, Validators.maxLength(this.MAX_LENGTH_250)],
         status: version.status,
       },

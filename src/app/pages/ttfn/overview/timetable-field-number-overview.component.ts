@@ -16,7 +16,7 @@ import { TableSearch } from '../../../core/components/table-search/table-search'
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
-    { headerTitle: 'TTFN.NAME', value: 'name' },
+    { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
     {
       headerTitle: 'COMMON.STATUS',
       value: 'status',

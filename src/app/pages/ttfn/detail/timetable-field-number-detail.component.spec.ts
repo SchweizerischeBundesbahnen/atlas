@@ -19,7 +19,7 @@ import { CoreModule } from '../../../core/module/core.module';
 const version: Version = {
   id: 1,
   ttfnid: 'ttfnid',
-  name: 'name',
+  description: 'description',
   swissTimetableFieldNumber: 'asdf',
   status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),
@@ -322,13 +322,13 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
   });
 
-  describe('Validation name ', () => {
+  describe('Validation description', () => {
     it('should not be greater then 255', () => {
-      const name: AbstractControl = fixture.componentInstance.form.controls['name'];
-      name.setValue(loremIpsum256Chars);
-      name.markAsTouched();
+      const description: AbstractControl = fixture.componentInstance.form.controls['description'];
+      description.setValue(loremIpsum256Chars);
+      description.markAsTouched();
 
-      const validationErrors = name.errors;
+      const validationErrors = description.errors;
 
       expect(validationErrors).toBeDefined();
       expect(validationErrors?.maxlength).toBeDefined();

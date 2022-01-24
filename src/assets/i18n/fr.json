@@ -82,7 +82,7 @@
   "TTFN": {
     "NEW": "Nouveau numéro de tableau-horaire",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numéro de tableau-horaire",
-    "NAME": "Description",
+    "DESCRIPTION": "Description",
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "NUMBER": "Nr.",
     "TTFNID": "Identifcateur numéro de tableau-horaire",
