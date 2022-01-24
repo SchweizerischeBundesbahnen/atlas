@@ -5,15 +5,19 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.line.directory.entity.Line;
+import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -140,6 +144,24 @@ class SublineServiceTest {
                                                                 "400 BAD_REQUEST \"Main line with SLNID mainlineSlnid does not exist\"");
 
     // Then
+  }
+
+  @Test
+  void shouldNotSaveTryToAssignDifferentMainlineToALine(){
+    //given
+    LineVersion lineVersion = LineTestData.lineVersion();
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setId(123L);
+    sublineVersion.setMainlineSlnid(lineVersion.getSwissLineNumber());
+    when(lineService.findLineVersions(any())).thenReturn(List.of(lineVersion));
+    SublineVersion sublineVersionMainLineChanged = SublineTestData.sublineVersion();
+    sublineVersionMainLineChanged.setMainlineSlnid("changed");
+    sublineVersionMainLineChanged.setId(123L);
+    when(sublineVersionRepository.findById(anyLong())).thenReturn(Optional.of(sublineVersionMainLineChanged));
+    //when
+
+    assertThatExceptionOfType(SubLineAssignToLineConflictException.class).isThrownBy(
+                                                                () -> sublineService.save(sublineVersion));
   }
 
   @Test
