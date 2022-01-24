@@ -82,7 +82,7 @@
   "TTFN": {
     "NEW": "Neue Fahrplanfeldnummer",
     "SWISS_TIMETABLE_FIELD_NUMBER": "CH-Fahrplanfeldnummer",
-    "NAME": "CH-Fahrplanfeldnummer Bezeichnung",
+    "DESCRIPTION": "CH-Fahrplanfeldnummer Bezeichnung",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "NUMBER": "Fahrplanfeldnummer",
     "TTFNID": "Fahrplanfeldnummer-ID",
