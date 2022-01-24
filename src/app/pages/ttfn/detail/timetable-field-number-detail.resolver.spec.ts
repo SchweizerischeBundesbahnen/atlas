@@ -8,7 +8,7 @@ import StatusEnum = Version.StatusEnum;
 const version: Version = {
   id: 1234,
   ttfnid: 'ttfnid',
-  name: 'name',
+  description: 'description',
   swissTimetableFieldNumber: 'asdf',
   status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),

@@ -21,7 +21,8 @@ describe('Versioning: scenario 3', () => {
     validTo: '01.06.2002',
     businessOrganisation: 'SBB3',
     number: '1.1',
-    name: 'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+    description:
+      'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
     comment: 'A new comment',
   };
 
