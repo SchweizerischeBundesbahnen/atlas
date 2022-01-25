@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -43,23 +44,27 @@ public class SublineServiceVersioningTest {
 
   @BeforeEach
   void init() {
-    lineVersionRepository.save(
-        LineTestData.lineVersionBuilder().slnid(SublineTestData.MAINLINE_SLNID).build());
+    LineVersion lineVersion = LineTestData.lineVersionBuilder()
+                                    .slnid(SublineTestData.MAINLINE_SLNID)
+                                    .validFrom(LocalDate.of(2020, 1, 1))
+                                    .validTo(LocalDate.of(2025, 12, 31))
+                                    .build();
+    lineVersionRepository.save(lineVersion);
     version1 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
-                           .swissSublineNumber("1")
-                           .validFrom(LocalDate.of(2020, 1, 1))
-                           .validTo(LocalDate.of(2021, 12, 31))
-                           .build();
+                              .swissSublineNumber("1")
+                              .validFrom(LocalDate.of(2020, 1, 1))
+                              .validTo(LocalDate.of(2021, 12, 31))
+                              .build();
     version2 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
-                           .swissSublineNumber("2")
-                           .validFrom(LocalDate.of(2022, 1, 1))
-                           .validTo(LocalDate.of(2023, 12, 31))
-                           .build();
+                              .swissSublineNumber("2")
+                              .validFrom(LocalDate.of(2022, 1, 1))
+                              .validTo(LocalDate.of(2023, 12, 31))
+                              .build();
     version3 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
-                           .swissSublineNumber("3")
-                           .validFrom(LocalDate.of(2024, 1, 1))
-                           .validTo(LocalDate.of(2024, 12, 31))
-                           .build();
+                              .swissSublineNumber("3")
+                              .validFrom(LocalDate.of(2024, 1, 1))
+                              .validTo(LocalDate.of(2024, 12, 31))
+                              .build();
   }
 
   @AfterEach
@@ -68,11 +73,10 @@ public class SublineServiceVersioningTest {
   }
 
   /**
-   * Szenario 2: Update innerhalb existierender Version
-   * NEU:                       |___________|
-   * IST:      |-----------|----------------------|--------------------
-   * Version:        1                 2                  3
-   *
+   * Szenario 2: Update innerhalb existierender Version NEU:                       |___________|
+   * IST:      |-----------|----------------------|-------------------- Version:        1
+   * 2                  3
+   * <p>
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
    * Version:        1       2         4       5          3
    */
@@ -89,7 +93,8 @@ public class SublineServiceVersioningTest {
 
     //when
     sublineService.updateVersion(version2, editedVersion);
-    List<SublineVersion> result = sublineVersionRepository.findAllBySlnidOrderByValidFrom(version1.getSlnid());
+    List<SublineVersion> result = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
+        version1.getSlnid());
 
     //then
 
@@ -131,16 +136,12 @@ public class SublineServiceVersioningTest {
 
   /**
    * Merge zwei versionen
-   *
-   * NEU:                 |__________|
-   *                        number=2
-   * IST:      |----------|----------|----------|
-   * Version:        1          2          3
-   * Änderung:  number=1   number=3  number=2
-   *
-   * RESULTAT: |----------|--------------------|
-   * Version:        1               2
-   * Änderung:  name=SBB1       number=2
+   * <p>
+   * NEU:                 |__________| number=2 IST:      |----------|----------|----------|
+   * Version:        1          2          3 Änderung:  number=1   number=3  number=2
+   * <p>
+   * RESULTAT: |----------|--------------------| Version:        1               2 Änderung:
+   * name=SBB1       number=2
    */
   @Test
   public void scenarioMergeTwoVersions() {
@@ -156,7 +157,8 @@ public class SublineServiceVersioningTest {
 
     //when
     sublineService.updateVersion(version2, editedVersion);
-    List<SublineVersion> result = sublineVersionRepository.findAllBySlnidOrderByValidFrom(version1.getSlnid());
+    List<SublineVersion> result = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
+        version1.getSlnid());
 
     //then
     assertThat(result).isNotNull();
