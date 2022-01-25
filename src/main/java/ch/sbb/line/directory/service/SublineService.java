@@ -80,13 +80,16 @@ public class SublineService {
 
   private void validateLineRangeRule(SublineVersion sublineVersion,
       List<LineVersion> lineVersions) {
-    lineVersions.sort(Comparator.comparing(LineVersion::getValidFrom));
-    LineVersion firstLineVersion = lineVersions.get(0);
-    LineVersion lastLineVersion = lineVersions.get(lineVersions.size() - 1);
-    if (sublineVersion.getValidFrom().isBefore(firstLineVersion.getValidFrom())
-        || sublineVersion.getValidTo().isAfter(lastLineVersion.getValidTo())) {
-      throw new SublineOutsideOfLineRangeException(sublineVersion, firstLineVersion.getSwissLineNumber(),firstLineVersion.getValidFrom(),
-          lastLineVersion.getValidTo());
+    if (!lineVersions.isEmpty()) {
+      lineVersions.sort(Comparator.comparing(LineVersion::getValidFrom));
+      LineVersion firstLineVersion = lineVersions.get(0);
+      LineVersion lastLineVersion = lineVersions.get(lineVersions.size() - 1);
+      if (sublineVersion.getValidFrom().isBefore(firstLineVersion.getValidFrom())
+          || sublineVersion.getValidTo().isAfter(lastLineVersion.getValidTo())) {
+        throw new SublineOutsideOfLineRangeException(sublineVersion,
+            firstLineVersion.getSwissLineNumber(), firstLineVersion.getValidFrom(),
+            lastLineVersion.getValidTo());
+      }
     }
   }
 
