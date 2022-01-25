@@ -10,14 +10,19 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineValidation;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +49,9 @@ class LineServiceTest {
   private VersionableService versionableService;
 
   @Mock
+  private SublineVersionRepository sublineVersionRepository;
+
+  @Mock
   private LineValidation lineValidation;
 
   @Mock
@@ -60,15 +68,18 @@ class LineServiceTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineService = new LineService(lineVersionRepository, lineRepository, versionableService, lineValidation, specificationBuilderProvider);
+    lineService = new LineService(lineVersionRepository, lineRepository, versionableService,
+        sublineVersionRepository, lineValidation, specificationBuilderProvider);
   }
 
   @Test
   void shouldGetPagableLinesFromRepository() {
     // Given
     when(lineSpecification.and(any())).thenReturn(lineSpecification);
-    when(specificationBuilderService.buildSearchCriteriaSpecification(any())).thenReturn(lineSpecification);
-    when(specificationBuilderProvider.getLineSpecificationBuilderService()).thenReturn(specificationBuilderService);
+    when(specificationBuilderService.buildSearchCriteriaSpecification(any())).thenReturn(
+        lineSpecification);
+    when(specificationBuilderProvider.getLineSpecificationBuilderService()).thenReturn(
+        specificationBuilderService);
     Pageable pageable = Pageable.unpaged();
 
     // When
@@ -120,7 +131,8 @@ class LineServiceTest {
   void shouldSaveLineWithValidation() {
     // Given
     when(lineVersionRepository.save(any())).thenAnswer(i -> i.getArgument(0, LineVersion.class));
-    when(lineVersionRepository.findSwissLineNumberOverlaps(any())).thenReturn(Collections.emptyList());
+    when(lineVersionRepository.findSwissLineNumberOverlaps(any())).thenReturn(
+        Collections.emptyList());
     LineVersion lineVersion = LineTestData.lineVersion();
     // When
     LineVersion result = lineService.save(lineVersion);
@@ -147,10 +159,10 @@ class LineServiceTest {
     // Given
     String slnid = "ch:1:ttfnid:1000083";
     LineVersion lineVersion = LineVersion.builder()
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2001, 12, 31))
-        .description("desc")
-        .build();
+                                         .validFrom(LocalDate.of(2000, 1, 1))
+                                         .validTo(LocalDate.of(2001, 12, 31))
+                                         .description("desc")
+                                         .build();
     List<LineVersion> lineVersions = List.of(lineVersion);
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(lineVersions);
 
@@ -184,5 +196,74 @@ class LineServiceTest {
 
     // Then
     verify(lineVersionRepository).existsById(ID);
+  }
+
+  @Test
+  void shouldNotSaveWhenLineRangeIsLeftSmallerThenSublineRange() {
+    // Given
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setValidFrom(LocalDate.of(2000,1,1));
+    sublineVersion.setValidTo(LocalDate.of(2000,12,31));
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+    sublineVersions.add(sublineVersion);
+
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(sublineVersions);
+
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setValidFrom(LocalDate.of(2000,1,2));
+    lineVersion.setValidTo(LocalDate.of(2000,12,31));
+
+
+
+    // When
+    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
+        () -> lineService.save(lineVersion));
+
+  }
+
+  @Test
+  void shouldNotSaveWhenLineRangeIsRightSmallerThenSublineRange() {
+    // Given
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setValidFrom(LocalDate.of(2000,1,1));
+    sublineVersion.setValidTo(LocalDate.of(2000,12,31));
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+    sublineVersions.add(sublineVersion);
+
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(sublineVersions);
+
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setValidFrom(LocalDate.of(2000,1,1));
+    lineVersion.setValidTo(LocalDate.of(2000,12,30));
+
+
+
+    // When
+    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
+        () -> lineService.save(lineVersion));
+
+  }
+
+  @Test
+  void shouldNotSaveWhenLineRangeIsSmallerThenSublineRange() {
+    // Given
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setValidFrom(LocalDate.of(2000,1,1));
+    sublineVersion.setValidTo(LocalDate.of(2000,12,31));
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+    sublineVersions.add(sublineVersion);
+
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(sublineVersions);
+
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setValidFrom(LocalDate.of(2000,1,2));
+    lineVersion.setValidTo(LocalDate.of(2000,12,30));
+
+
+
+    // When
+    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
+        () -> lineService.save(lineVersion));
+
   }
 }
