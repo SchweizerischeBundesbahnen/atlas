@@ -11,17 +11,13 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
-import ch.sbb.line.directory.exception.SublineOutsideOfLineRangeException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import ch.sbb.line.directory.validation.SublineValidationService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -59,13 +55,16 @@ class SublineServiceTest {
   @Mock
   private Specification<Subline> sublineSpecification;
 
+  @Mock
+  private SublineValidationService sublineValidationService;
+
   private SublineService sublineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService, lineService, specificationBuilderProvider);
+        versionableService, lineService, sublineValidationService, specificationBuilderProvider);
   }
 
   @Test
@@ -125,7 +124,7 @@ class SublineServiceTest {
     SublineVersion result = sublineService.save(sublineVersion);
 
     // Then
-    verify(sublineVersionRepository).findSwissLineNumberOverlaps(sublineVersion);
+    verify(sublineValidationService).validateSublineBusinessRules(sublineVersion);
     verify(sublineVersionRepository).save(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
   }
@@ -149,99 +148,6 @@ class SublineServiceTest {
     // Then
   }
 
-  @Test
-  void shouldNotSaveWhenTryToAssignDifferentMainlineToALine() {
-    //given
-    LineVersion lineVersion = LineTestData.lineVersion();
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setId(123L);
-    sublineVersion.setMainlineSlnid(lineVersion.getSwissLineNumber());
-    when(lineService.findLineVersions(any())).thenReturn(List.of(lineVersion));
-    SublineVersion sublineVersionMainLineChanged = SublineTestData.sublineVersion();
-    sublineVersionMainLineChanged.setMainlineSlnid("changed");
-    sublineVersionMainLineChanged.setId(123L);
-    when(sublineVersionRepository.findById(anyLong())).thenReturn(
-        Optional.of(sublineVersionMainLineChanged));
-    //when
-
-    assertThatExceptionOfType(SubLineAssignToLineConflictException.class).isThrownBy(
-        () -> sublineService.save(sublineVersion));
-  }
-
-  @Test
-  void shouldNotSaveWhenSublineRangeIsLeftOutsideOfTheMainLine() {
-    //given
-    LineVersion firstLineVersion = LineTestData.lineVersion();
-    firstLineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
-    firstLineVersion.setValidTo(LocalDate.of(2000, 12, 31));
-    LineVersion secondLineVersion = LineTestData.lineVersion();
-    secondLineVersion.setValidFrom(LocalDate.of(2001, 1, 1));
-    secondLineVersion.setValidTo(LocalDate.of(2001, 12, 31));
-    List<LineVersion> lineVersions = new ArrayList<>();
-    lineVersions.add(firstLineVersion);
-    lineVersions.add(secondLineVersion);
-
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(1999, 12, 31));
-    sublineVersion.setValidTo(LocalDate.of(2001, 12, 31));
-
-    when(lineService.findLineVersions(any())).thenReturn(lineVersions);
-
-    //when
-
-    assertThatExceptionOfType(SublineOutsideOfLineRangeException.class).isThrownBy(
-        () -> sublineService.save(sublineVersion));
-  }
-
-  @Test
-  void shouldNotSaveWhenSublineRangeIsRightOutsideOfTheMainLine() {
-    //given
-    LineVersion firstLineVersion = LineTestData.lineVersion();
-    firstLineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
-    firstLineVersion.setValidTo(LocalDate.of(2000, 12, 31));
-    LineVersion secondLineVersion = LineTestData.lineVersion();
-    secondLineVersion.setValidFrom(LocalDate.of(2001, 1, 1));
-    secondLineVersion.setValidTo(LocalDate.of(2001, 12, 31));
-    List<LineVersion> lineVersions = new ArrayList<>();
-    lineVersions.add(firstLineVersion);
-    lineVersions.add(secondLineVersion);
-
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
-    sublineVersion.setValidTo(LocalDate.of(2002, 1, 1));
-
-    when(lineService.findLineVersions(any())).thenReturn(lineVersions);
-
-    //when
-
-    assertThatExceptionOfType(SublineOutsideOfLineRangeException.class).isThrownBy(
-        () -> sublineService.save(sublineVersion));
-  }
-
-  @Test
-  void shouldNotSaveWhenSublineRangeIsOutsideOfTheMainLine() {
-    //given
-    LineVersion firstLineVersion = LineTestData.lineVersion();
-    firstLineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
-    firstLineVersion.setValidTo(LocalDate.of(2000, 12, 31));
-    LineVersion secondLineVersion = LineTestData.lineVersion();
-    secondLineVersion.setValidFrom(LocalDate.of(2001, 1, 1));
-    secondLineVersion.setValidTo(LocalDate.of(2001, 12, 31));
-    List<LineVersion> lineVersions = new ArrayList<>();
-    lineVersions.add(firstLineVersion);
-    lineVersions.add(secondLineVersion);
-
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(1999, 12, 31));
-    sublineVersion.setValidTo(LocalDate.of(2002, 1, 1));
-
-    when(lineService.findLineVersions(any())).thenReturn(lineVersions);
-
-    //when
-
-    assertThatExceptionOfType(SublineOutsideOfLineRangeException.class).isThrownBy(
-        () -> sublineService.save(sublineVersion));
-  }
 
   @Test
   void shouldDeleteSubline() {
