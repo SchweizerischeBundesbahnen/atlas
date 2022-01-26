@@ -58,14 +58,6 @@ public interface TimetableFieldNumberApiV1 {
   })
   VersionModel createVersion(@RequestBody @Valid VersionModel newVersion);
 
-  @PutMapping({"/{id}"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-  })
-  VersionModel updateVersion(@PathVariable Long id, @RequestBody @Valid VersionModel newVersion);
-
   @DeleteMapping({"/{ttfnid}"})
   void deleteVersions(@PathVariable String ttfnid);
 }

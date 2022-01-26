@@ -80,22 +80,6 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   }
 
   @Override
-  public VersionModel updateVersion(Long id, VersionModel newVersion) {
-    Version versionToUpdate = versionService.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
-
-    versionToUpdate.setDescription(newVersion.getDescription());
-    versionToUpdate.setNumber(newVersion.getNumber());
-    versionToUpdate.setSwissTimetableFieldNumber(newVersion.getSwissTimetableFieldNumber());
-    versionToUpdate.setValidFrom(newVersion.getValidFrom());
-    versionToUpdate.setValidTo(newVersion.getValidTo());
-    versionToUpdate.setComment(newVersion.getComment());
-    versionToUpdate.setBusinessOrganisation(newVersion.getBusinessOrganisation());
-    versionService.save(versionToUpdate);
-
-    return toModel(versionToUpdate);
-  }
-
-  @Override
   public List<VersionModel> updateVersionWithVersioning(Long id, VersionModel newVersion) {
     Version versionToUpdate = versionService.findById(id).orElseThrow(NOT_FOUND_EXCEPTION);
     versionService.updateVersion(versionToUpdate, toEntity(newVersion));
