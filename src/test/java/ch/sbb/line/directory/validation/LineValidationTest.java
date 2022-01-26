@@ -2,6 +2,8 @@ package ch.sbb.line.directory.validation;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.LineTestData;
@@ -9,6 +11,7 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -16,6 +19,7 @@ import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -36,6 +40,17 @@ public class LineValidationTest {
     MockitoAnnotations.openMocks(this);
     lineValidation = new LineValidation(sublineVersionRepository, lineVersionRepository);
   }
+
+  @Test
+  public void shouldThrowLineConflictExceptionWhenFoundSwissLineNumberOverlaps(){
+    //given
+    LineVersion lineVersion = LineTestData.lineVersion();
+    when(lineVersionRepository.findSwissLineNumberOverlaps(lineVersion)).thenReturn(List.of(lineVersion));
+
+    //when
+    assertThatExceptionOfType(LineConflictException.class).isThrownBy(
+        () -> lineValidation.validateLineBusinessRule(lineVersion));
+   }
 
   @Test
   void shouldNotSaveTemporaryLineWithValidityGreaterThan12Months() {
