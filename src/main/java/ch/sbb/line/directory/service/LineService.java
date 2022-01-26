@@ -64,13 +64,7 @@ public class LineService {
 
   public LineVersion save(LineVersion lineVersion) {
     lineVersion.setStatus(Status.ACTIVE);
-    List<LineVersion> swissLineNumberOverlaps = lineVersionRepository.findSwissLineNumberOverlaps(
-        lineVersion);
-    if (!swissLineNumberOverlaps.isEmpty()) {
-      throw new LineConflictException(lineVersion, swissLineNumberOverlaps);
-    }
-    lineValidation.validateTemporaryLinesDuration(lineVersion);
-    lineValidation.validateLineRangeOutsideOfLineRange(lineVersion);
+    lineValidation.validateLineBusinessRule(lineVersion);
     return lineVersionRepository.save(lineVersion);
   }
 
