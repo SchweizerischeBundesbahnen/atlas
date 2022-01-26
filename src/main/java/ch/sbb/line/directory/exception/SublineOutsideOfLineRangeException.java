@@ -38,11 +38,11 @@ public class SublineOutsideOfLineRangeException extends AtlasException {
                               "The subline range {0}-{1} is outside of the line {2} range {3}-{4}")
                           .displayInfo(builder()
                               .code(CODE_PREFIX + "SUBLINE_OUTSIDE_OF_LINE_RANGE")
-                              .with("mainline.validFrom", newVersion.getValidFrom())
-                              .with("mainline.validTo", newVersion.getValidTo())
-                              .with(LineVersion.Fields.swissLineNumber, swissLineNumber)
-                              .with(LineVersion.Fields.validFrom, lineValidFrom)
-                              .with(LineVersion.Fields.validTo, lineValidTo)
+                              .with(SublineVersion.Fields.validFrom, newVersion.getValidFrom())
+                              .with(SublineVersion.Fields.validTo, newVersion.getValidTo())
+                              .with("mainline.swissLineNumber", swissLineNumber)
+                              .with("mainline.validFrom", lineValidFrom)
+                              .with("mainline.validTo", lineValidTo)
                               .build())
                           .build();
     return List.of(detail);
