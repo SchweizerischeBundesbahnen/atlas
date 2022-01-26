@@ -39,9 +39,9 @@ public class LineRangeSmallerThenSublineRangeException extends AtlasException {
                               .code(CODE_PREFIX + "LINE_OUTSIDE_OF_LINE_RANGE")
                               .with(LineVersion.Fields.validFrom, newVersion.getValidFrom())
                               .with(LineVersion.Fields.validTo, newVersion.getValidTo())
-                              .with(Fields.swissSublineNumber, swissSubLineNumber)
-                              .with(Fields.validFrom, sublineVersionValidFrom)
-                              .with(Fields.validTo, sublineVersionValidTo)
+                              .with("sublinie.swissSublineNumber", swissSubLineNumber)
+                              .with("sublinie.validFrom", sublineVersionValidFrom)
+                              .with("sublinie.validTo", sublineVersionValidTo)
                               .build())
                           .build();
     return List.of(detail);

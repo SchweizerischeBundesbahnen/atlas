@@ -249,15 +249,15 @@ public class SublineControllerApiTest {
            is("The subline range 01.01.2000-01.01.2001 is outside of the line b0.IC2-libne range 01.01.2000-31.12.2000")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.code",is("LIDI.SUBLINE.PRECONDITION.SUBLINE_OUTSIDE_OF_LINE_RANGE")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("mainline.validFrom")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("validFrom")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("01.01.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("mainline.validTo")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validTo")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("01.01.2001")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key", is("swissLineNumber")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key", is("mainline.swissLineNumber")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].value", is("b0.IC2-libne")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("validFrom")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("mainline.validFrom")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value", is("01.01.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].key", is("validTo")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].key", is("mainline.validTo")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].value", is("31.12.2000")));
   }
 }
