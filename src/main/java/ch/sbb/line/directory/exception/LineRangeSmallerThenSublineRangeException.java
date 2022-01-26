@@ -5,7 +5,6 @@ import static ch.sbb.line.directory.api.ErrorResponse.DisplayInfo.builder;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.Fields;
 import java.time.LocalDate;
 import java.util.List;
