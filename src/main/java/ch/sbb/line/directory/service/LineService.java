@@ -69,11 +69,7 @@ public class LineService {
     if (!swissLineNumberOverlaps.isEmpty()) {
       throw new LineConflictException(lineVersion, swissLineNumberOverlaps);
     }
-    if (LineType.TEMPORARY.equals(lineVersion.getType())) {
-      lineValidation.validateTemporaryLinesDuration(lineVersion,
-          lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid()));
-    }
-
+    lineValidation.validateTemporaryLinesDuration(lineVersion);
     lineValidation.validateLineRangeOutsideOfLineRange(lineVersion);
     return lineVersionRepository.save(lineVersion);
   }
