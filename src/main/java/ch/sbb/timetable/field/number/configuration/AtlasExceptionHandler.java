@@ -43,20 +43,22 @@ public class AtlasExceptionHandler {
   }
 
   @ExceptionHandler(StaleObjectStateException.class)
-  public ResponseEntity<ErrorResponse> staleObjectStateException(StaleObjectStateException exception) {
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(
-        ErrorResponse.builder()
-            .httpStatus(HttpStatus.CONFLICT.value())
-            .message(exception.getMessage())
-            .details(List.of(Detail.builder()
-                .message(exception.getMessage())
-                .field("")
-                .displayInfo(DisplayInfo.builder()
-                    .with("entityName", exception.getEntityName())
-                    .code("COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR")
-                    .build())
-                .build()))
-            .build()
+  public ResponseEntity<ErrorResponse> staleObjectStateException(
+      StaleObjectStateException exception) {
+    List<Detail> details = List.of(Detail.builder().message(exception.getMessage())
+                                         .field("etagVersion")
+                                         .displayInfo(DisplayInfo.builder()
+                                                                 .code(
+                                                                     "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR")
+                                                                 .build())
+                                         .build());
+    return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(ErrorResponse.builder()
+                                                                                   .httpStatus(
+                                                                                       HttpStatus.PRECONDITION_FAILED.value())
+                                                                                   .message(
+                                                                                       exception.getMessage())
+                                                                                   .details(details)
+                                                                                   .build()
     );
   }
 
