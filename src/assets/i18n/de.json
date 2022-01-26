@@ -146,6 +146,9 @@
       "CONFLICT": {
         "SWISS_NUMBER": "CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
       },
+      "PRECONDITION": {
+        "LINE_OUTSIDE_OF_LINE_RANGE": "Die Gültigkeit der Line {{validFrom}}-{{validTo}} ist ausserhalb der Teillinie {{sublinie.swissSublineNumber}} Gültigkeit {{sublinie.validFrom}}-{{sublinie.validTo}}"
+      },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Temporäre Linie von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen, welche zusammen die maximale Gültigkeit von 12 Monaten überschreiten",
       "NUMBER": "Liniennummer",
@@ -172,7 +175,11 @@
     },
     "SUBLINE": {
       "CONFLICT": {
-        "SWISS_NUMBER": "CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+        "SWISS_NUMBER": "CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben",
+        "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline kann nicht geändert werden"
+      },
+      "PRECONDITION": {
+        "SUBLINE_OUTSIDE_OF_LINE_RANGE": "Die Gültigkeit der Teillinie {{validFrom}}-{{validTo}} ist ausserhalb der Linie {{mainline.swissLineNumber}} Gültigkeit {{mainline.validFrom}}-{{mainline.validTo}}"
       },
       "NUMBER": "Teilliniennummer",
       "MAINLINE": "Hauptlinie",
