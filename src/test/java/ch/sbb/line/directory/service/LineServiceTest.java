@@ -12,10 +12,8 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
@@ -24,9 +22,8 @@ import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.validation.LineValidation;
+import ch.sbb.line.directory.validation.LineValidationService;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +53,7 @@ class LineServiceTest {
   private SublineVersionRepository sublineVersionRepository;
 
   @Mock
-  private LineValidation lineValidation;
+  private LineValidationService lineValidationService;
 
   @Mock
   private SpecificationBuilderProvider specificationBuilderProvider;
@@ -73,7 +70,7 @@ class LineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, lineRepository, versionableService,
-        sublineVersionRepository, lineValidation, specificationBuilderProvider);
+        sublineVersionRepository, lineValidationService, specificationBuilderProvider);
   }
 
   @Test
@@ -142,7 +139,7 @@ class LineServiceTest {
     LineVersion result = lineService.save(lineVersion);
 
     // Then
-    verify(lineValidation).validateLineBusinessRule(lineVersion);
+    verify(lineValidationService).validateLineBusinessRule(lineVersion);
     verify(lineVersionRepository).save(lineVersion);
     assertThat(result).isEqualTo(lineVersion);
   }
@@ -206,7 +203,7 @@ class LineServiceTest {
   void shouldNotSaveWhenThrowLineRangeSmallerThenSublineRangeException() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
-    doThrow(LineRangeSmallerThenSublineRangeException.class).when(lineValidation)
+    doThrow(LineRangeSmallerThenSublineRangeException.class).when(lineValidationService)
                                                             .validateLineBusinessRule(
                                                                 lineVersion);
 
@@ -222,7 +219,7 @@ class LineServiceTest {
   void shouldNotSaveWhenThrowLineConflictException() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
-    doThrow(LineConflictException.class).when(lineValidation)
+    doThrow(LineConflictException.class).when(lineValidationService)
                                                             .validateLineBusinessRule(
                                                                 lineVersion);
 
@@ -238,7 +235,7 @@ class LineServiceTest {
   void shouldNotSaveWhenThrowTemporaryLineValidationException() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
-    doThrow(TemporaryLineValidationException.class).when(lineValidation)
+    doThrow(TemporaryLineValidationException.class).when(lineValidationService)
                                                    .validateLineBusinessRule(
                                                                 lineVersion);
 
