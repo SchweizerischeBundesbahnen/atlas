@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.line.directory.WithMockJwtAuthentication;
+import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -31,12 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
-@WithMockJwtAuthentication
-@ActiveProfiles("integration-test")
+@IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
 public class LineControllerApiTest {
 
@@ -61,10 +59,6 @@ public class LineControllerApiTest {
   private final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
       MediaType.APPLICATION_JSON.getSubtype(),
       StandardCharsets.UTF_8);
-
-  @BeforeEach
-  public void setUp() {
-  }
 
   @AfterEach
   public void tearDown() {
@@ -154,7 +148,7 @@ public class LineControllerApiTest {
                            .paymentType(PaymentType.LOCAL)
                            .mainlineSlnid(lineVersionSaved.getSlnid())
                            .build();
-   sublineController.createSublineVersion(sublineVersionModel);
+    sublineController.createSublineVersion(sublineVersionModel);
 
     //when
     lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 2));
@@ -207,9 +201,10 @@ public class LineControllerApiTest {
        .andExpect(jsonPath("$.httpStatus", is(409)))
        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
        .andExpect(jsonPath("$.details[0].message",
-           is("SwissLineNumber b0.IC2-libne already taken from 01.01.2000 to 31.12.2000 by "+ lineVersionSaved.getSlnid())))
+           is("SwissLineNumber b0.IC2-libne already taken from 01.01.2000 to 31.12.2000 by "
+               + lineVersionSaved.getSlnid())))
        .andExpect(jsonPath("$.details[0].field", is("swissLineNumber")))
-       .andExpect(jsonPath("$.details[0].displayInfo.code",is("LIDI.LINE.CONFLICT.SWISS_NUMBER")))
+       .andExpect(jsonPath("$.details[0].displayInfo.code", is("LIDI.LINE.CONFLICT.SWISS_NUMBER")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("swissLineNumber")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("b0.IC2-libne")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validFrom")))
@@ -217,6 +212,7 @@ public class LineControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key", is("validTo")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].value", is("31.12.2000")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("slnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value", is(lineVersionSaved.getSlnid())));
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value",
+           is(lineVersionSaved.getSlnid())));
   }
 }
