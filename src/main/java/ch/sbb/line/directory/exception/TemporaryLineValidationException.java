@@ -1,8 +1,10 @@
 package ch.sbb.line.directory.exception;
 
+import static ch.sbb.line.directory.api.ErrorResponse.DisplayInfo.builder;
+import static java.util.stream.Collectors.toList;
+
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
-import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersion.Fields;
 import java.util.List;
@@ -26,10 +28,10 @@ public class TemporaryLineValidationException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-        .httpStatus(HttpStatus.UNPROCESSABLE_ENTITY.value())
-        .message("Business rule validation failed")
-        .details(getErrorDetails())
-        .build();
+                        .httpStatus(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                        .message("Business rule validation failed")
+                        .details(getErrorDetails())
+                        .build();
   }
 
   private List<Detail> getErrorDetails() {
@@ -39,20 +41,18 @@ public class TemporaryLineValidationException extends AtlasException {
       message = MESSAGE_NO_RELATING_VERSIONS;
       code = CODE_NO_RELATING_VERSIONS;
     }
-    return relatingVersions.stream().map(toErrorDetail(message, code)).collect(Collectors.toList());
+    return relatingVersions.stream().map(toErrorDetail(message, code)).collect(toList());
   }
 
   private Function<LineVersion, Detail> toErrorDetail(String message, String code) {
     return lineVersion -> Detail.builder()
-        .field(Fields.validTo)
-        .message(message)
-        .displayInfo(DisplayInfo.builder()
-            .code(CODE_PREFIX + code)
-            .with(Fields.validFrom,
-                lineVersion.getValidFrom())
-            .with(Fields.validTo,
-                lineVersion.getValidTo())
-            .build()).build();
+                                .field(Fields.validTo)
+                                .message(message)
+                                .displayInfo(builder()
+                                    .code(CODE_PREFIX + code)
+                                    .with(Fields.validFrom, lineVersion.getValidFrom())
+                                    .with(Fields.validTo, lineVersion.getValidTo())
+                                    .build()).build();
   }
 
 }

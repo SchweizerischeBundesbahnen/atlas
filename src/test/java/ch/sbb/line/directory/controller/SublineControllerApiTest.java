@@ -204,11 +204,11 @@ public class SublineControllerApiTest {
        .andExpect(jsonPath("$.httpStatus", is(409)))
        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
        .andExpect(jsonPath("$.details[0].message",
-           is("The mainline "+ sublineVersionModel.getMainlineSlnid() +" cannot be changed")))
+           is("The mainline "+ sublineVersionSaved.getMainlineSlnid() +" cannot be changed")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.code",is("LIDI.SUBLINE.CONFLICT.ASSIGN_DIFFERENT_LINE_CONFLICT")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("mainlineSlnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is(sublineVersionModel.getMainlineSlnid())));
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is(sublineVersionSaved.getMainlineSlnid())));
   }
 
   @Test
@@ -246,7 +246,7 @@ public class SublineControllerApiTest {
        .andExpect(jsonPath("$.httpStatus", is(412)))
        .andExpect(jsonPath("$.message", is("A precondition fail occurred due to a business rule")))
        .andExpect(jsonPath("$.details[0].message",
-           is("The subline range 01.01.2000-01.01.2001 is bigger then the line b0.IC2-libne range 01.01.2000-31.12.2000")))
+           is("The subline range 01.01.2000-01.01.2001 is outside of the line b0.IC2-libne range 01.01.2000-31.12.2000")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.code",is("LIDI.SUBLINE.PRECONDITION.SUBLINE_OUTSIDE_OF_LINE_RANGE")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("mainline.validFrom")))
