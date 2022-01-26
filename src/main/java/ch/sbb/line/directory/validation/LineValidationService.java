@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class LineValidation {
+public class LineValidationService {
 
   private static final int DAYS_OF_YEAR = 365;
 
