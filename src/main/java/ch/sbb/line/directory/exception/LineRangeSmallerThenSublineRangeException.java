@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class LineRangeSmallerThenSublineRangeException extends AtlasException {
 
-  private static final String CODE_PREFIX = "LIDI.SUBLINE.PRECONDITION.";
+  private static final String CODE_PREFIX = "LIDI.LINE.PRECONDITION.";
 
   private final LineVersion newVersion;
   private final String swissSubLineNumber;
