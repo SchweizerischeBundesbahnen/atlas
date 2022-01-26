@@ -17,7 +17,9 @@ import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
+import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -140,7 +142,7 @@ class LineServiceTest {
     LineVersion result = lineService.save(lineVersion);
 
     // Then
-    verify(lineVersionRepository).findSwissLineNumberOverlaps(lineVersion);
+    verify(lineValidation).validateLineBusinessRule(lineVersion);
     verify(lineVersionRepository).save(lineVersion);
     assertThat(result).isEqualTo(lineVersion);
   }
@@ -203,24 +205,45 @@ class LineServiceTest {
   @Test
   void shouldNotSaveWhenThrowLineRangeSmallerThenSublineRangeException() {
     // Given
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
-    sublineVersion.setValidTo(LocalDate.of(2000, 12, 31));
-    List<SublineVersion> sublineVersions = new ArrayList<>();
-    sublineVersions.add(sublineVersion);
-
-    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(
-        sublineVersions);
-
     LineVersion lineVersion = LineTestData.lineVersion();
-    lineVersion.setValidFrom(LocalDate.of(2000, 1, 2));
-    lineVersion.setValidTo(LocalDate.of(2000, 12, 31));
     doThrow(LineRangeSmallerThenSublineRangeException.class).when(lineValidation)
-                                                            .validateLineRangeOutsideOfLineRange(
+                                                            .validateLineBusinessRule(
                                                                 lineVersion);
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
+        () -> lineService.save(lineVersion));
+
+    verify(lineVersionRepository, never()).save(lineVersion);
+
+  }
+
+  @Test
+  void shouldNotSaveWhenThrowLineConflictException() {
+    // Given
+    LineVersion lineVersion = LineTestData.lineVersion();
+    doThrow(LineConflictException.class).when(lineValidation)
+                                                            .validateLineBusinessRule(
+                                                                lineVersion);
+
+    // When
+    assertThatExceptionOfType(LineConflictException.class).isThrownBy(
+        () -> lineService.save(lineVersion));
+
+    verify(lineVersionRepository, never()).save(lineVersion);
+
+  }
+
+  @Test
+  void shouldNotSaveWhenThrowTemporaryLineValidationException() {
+    // Given
+    LineVersion lineVersion = LineTestData.lineVersion();
+    doThrow(TemporaryLineValidationException.class).when(lineValidation)
+                                                   .validateLineBusinessRule(
+                                                                lineVersion);
+
+    // When
+    assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
         () -> lineService.save(lineVersion));
 
     verify(lineVersionRepository, never()).save(lineVersion);
