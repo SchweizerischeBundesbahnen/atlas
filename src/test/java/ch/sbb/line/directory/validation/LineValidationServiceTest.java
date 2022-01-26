@@ -2,8 +2,6 @@ package ch.sbb.line.directory.validation;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.LineTestData;
@@ -19,13 +17,12 @@ import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class LineValidationTest {
+public class LineValidationServiceTest {
 
   @Mock
   private SublineVersionRepository sublineVersionRepository;
@@ -33,24 +30,26 @@ public class LineValidationTest {
   @Mock
   private LineVersionRepository lineVersionRepository;
 
-  private LineValidation lineValidation;
+  private LineValidationService lineValidationService;
 
   @BeforeEach()
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineValidation = new LineValidation(sublineVersionRepository, lineVersionRepository);
+    lineValidationService = new LineValidationService(sublineVersionRepository,
+        lineVersionRepository);
   }
 
   @Test
-  public void shouldThrowLineConflictExceptionWhenFoundSwissLineNumberOverlaps(){
+  public void shouldThrowLineConflictExceptionWhenFoundSwissLineNumberOverlaps() {
     //given
     LineVersion lineVersion = LineTestData.lineVersion();
-    when(lineVersionRepository.findSwissLineNumberOverlaps(lineVersion)).thenReturn(List.of(lineVersion));
+    when(lineVersionRepository.findSwissLineNumberOverlaps(lineVersion)).thenReturn(
+        List.of(lineVersion));
 
     //when
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
-        () -> lineValidation.validateLineBusinessRule(lineVersion));
-   }
+        () -> lineValidationService.validateLineBusinessRule(lineVersion));
+  }
 
   @Test
   void shouldNotSaveTemporaryLineWithValidityGreaterThan12Months() {
@@ -60,10 +59,11 @@ public class LineValidationTest {
                                           .validFrom(LocalDate.of(2021, 10, 15))
                                           .validTo(LocalDate.of(2022, 10, 16))
                                           .build();
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(List.of());
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        List.of());
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineValidation.validateTemporaryLinesDuration(lineVersion));
+        () -> lineValidationService.validateTemporaryLinesDuration(lineVersion));
   }
 
   @Test
@@ -74,9 +74,10 @@ public class LineValidationTest {
                                           .validFrom(LocalDate.of(2021, 10, 1))
                                           .validTo(LocalDate.of(2022, 10, 1))
                                           .build();
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(List.of());
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        List.of());
     // When
-    lineValidation.validateTemporaryLinesDuration(lineVersion);
+    lineValidationService.validateTemporaryLinesDuration(lineVersion);
     // Then
   }
 
@@ -95,10 +96,11 @@ public class LineValidationTest {
                                           .validFrom(LocalDate.of(2021, 4, 1))
                                           .validTo(LocalDate.of(2021, 8, 31))
                                           .build();
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(versions);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        versions);
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineValidation.validateTemporaryLinesDuration(lineVersion));
+        () -> lineValidationService.validateTemporaryLinesDuration(lineVersion));
   }
 
   @Test
@@ -116,9 +118,10 @@ public class LineValidationTest {
                                           .validFrom(LocalDate.of(2021, 4, 1))
                                           .validTo(LocalDate.of(2021, 7, 31))
                                           .build();
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(versions);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        versions);
     // When
-    lineValidation.validateTemporaryLinesDuration(lineVersion);
+    lineValidationService.validateTemporaryLinesDuration(lineVersion);
     // Then
   }
 
@@ -145,10 +148,11 @@ public class LineValidationTest {
                                           .validFrom(LocalDate.of(2021, 9, 1))
                                           .validTo(LocalDate.of(2022, 2, 28))
                                           .build();
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(versions);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        versions);
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineValidation.validateTemporaryLinesDuration(lineVersion));
+        () -> lineValidationService.validateTemporaryLinesDuration(lineVersion));
   }
 
   @Test
@@ -174,9 +178,10 @@ public class LineValidationTest {
                                           .validFrom(LocalDate.of(2021, 9, 1))
                                           .validTo(LocalDate.of(2021, 9, 30))
                                           .build();
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(versions);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        versions);
     // When
-    lineValidation.validateTemporaryLinesDuration(lineVersion);
+    lineValidationService.validateTemporaryLinesDuration(lineVersion);
     // Then
   }
 
@@ -195,9 +200,10 @@ public class LineValidationTest {
                                           .validFrom(LocalDate.of(2021, 4, 2))
                                           .validTo(LocalDate.of(2021, 8, 31))
                                           .build();
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(versions);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        versions);
     // When
-    lineValidation.validateTemporaryLinesDuration(lineVersion);
+    lineValidationService.validateTemporaryLinesDuration(lineVersion);
     // Then
   }
 
@@ -214,10 +220,11 @@ public class LineValidationTest {
     LineVersion lineVersion = versions.get(1);
     lineVersion.setValidFrom(LocalDate.of(2021, 4, 1));
     lineVersion.setValidTo(LocalDate.of(2022, 2, 1));
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(versions);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        versions);
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineValidation.validateTemporaryLinesDuration(lineVersion));
+        () -> lineValidationService.validateTemporaryLinesDuration(lineVersion));
   }
 
   @Test
@@ -236,10 +243,11 @@ public class LineValidationTest {
     LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY)
                                           .validFrom(LocalDate.of(2022, 2, 3))
                                           .validTo(LocalDate.of(2022, 11, 3)).build();
-    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(versions);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        versions);
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineValidation.validateTemporaryLinesDuration(lineVersion));
+        () -> lineValidationService.validateTemporaryLinesDuration(lineVersion));
   }
 
   @Test
@@ -260,7 +268,7 @@ public class LineValidationTest {
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineValidation.validateLineRangeOutsideOfLineRange(lineVersion));
+        () -> lineValidationService.validateLineRangeOutsideOfLineRange(lineVersion));
   }
 
   @Test
@@ -281,7 +289,7 @@ public class LineValidationTest {
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineValidation.validateLineRangeOutsideOfLineRange(lineVersion));
+        () -> lineValidationService.validateLineRangeOutsideOfLineRange(lineVersion));
   }
 
   @Test
@@ -302,7 +310,7 @@ public class LineValidationTest {
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineValidation.validateLineRangeOutsideOfLineRange(lineVersion));
+        () -> lineValidationService.validateLineRangeOutsideOfLineRange(lineVersion));
   }
 
 
