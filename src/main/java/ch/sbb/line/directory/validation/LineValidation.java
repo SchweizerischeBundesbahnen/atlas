@@ -3,6 +3,7 @@ package ch.sbb.line.directory.validation;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -28,7 +29,21 @@ public class LineValidation {
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
 
-  public void validateTemporaryLinesDuration(LineVersion lineVersion){
+  public void validateLineBusinessRule(LineVersion lineVersion){
+    validateLineConflict(lineVersion);
+    validateTemporaryLinesDuration(lineVersion);
+    validateLineRangeOutsideOfLineRange(lineVersion);
+  }
+
+  void validateLineConflict(LineVersion lineVersion){
+    List<LineVersion> swissLineNumberOverlaps = lineVersionRepository.findSwissLineNumberOverlaps(
+        lineVersion);
+    if (!swissLineNumberOverlaps.isEmpty()) {
+      throw new LineConflictException(lineVersion, swissLineNumberOverlaps);
+    }
+  }
+
+  void validateTemporaryLinesDuration(LineVersion lineVersion){
     if (LineType.TEMPORARY.equals(lineVersion.getType())) {
       List<LineVersion> allBySlnidOrderByValidFrom = lineVersionRepository.findAllBySlnidOrderByValidFrom(
           lineVersion.getSlnid());
