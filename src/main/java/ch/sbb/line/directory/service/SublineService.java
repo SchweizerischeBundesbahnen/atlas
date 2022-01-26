@@ -9,13 +9,10 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
-import ch.sbb.line.directory.exception.SublineConflictException;
-import ch.sbb.line.directory.exception.SublineOutsideOfLineRangeException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import java.util.Comparator;
+import ch.sbb.line.directory.validation.SublineValidationService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +31,7 @@ public class SublineService {
   private final SublineRepository sublineRepository;
   private final VersionableService versionableService;
   private final LineService lineService;
+  private final SublineValidationService sublineValidationService;
   private final SpecificationBuilderProvider specificationBuilderProvider;
 
   public Page<Subline> findAll(SearchRestrictions<SublineType> searchRestrictions) {
@@ -60,48 +58,14 @@ public class SublineService {
 
   public SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.ACTIVE);
-    List<SublineVersion> swissLineNumberOverlaps = sublineVersionRepository.findSwissLineNumberOverlaps(
-        sublineVersion);
-    if (!swissLineNumberOverlaps.isEmpty()) {
-      throw new SublineConflictException(sublineVersion, swissLineNumberOverlaps);
-    }
     List<LineVersion> lineVersions = lineService.findLineVersions(
         sublineVersion.getMainlineSlnid());
     if (lineVersions.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
           "Main line with SLNID " + sublineVersion.getMainlineSlnid() + " does not exist");
     }
-    if (sublineVersion.getId() != null) {
-      validateDifferentMainLineAssignRule(sublineVersion);
-    }
-    validateLineRangeRule(sublineVersion, lineVersions);
+    sublineValidationService.validateSublineBusinessRules(sublineVersion);
     return sublineVersionRepository.save(sublineVersion);
-  }
-
-  private void validateLineRangeRule(SublineVersion sublineVersion,
-      List<LineVersion> lineVersions) {
-    if (!lineVersions.isEmpty()) {
-      lineVersions.sort(Comparator.comparing(LineVersion::getValidFrom));
-      LineVersion firstLineVersion = lineVersions.get(0);
-      LineVersion lastLineVersion = lineVersions.get(lineVersions.size() - 1);
-      if (sublineVersion.getValidFrom().isBefore(firstLineVersion.getValidFrom())
-          || sublineVersion.getValidTo().isAfter(lastLineVersion.getValidTo())) {
-        throw new SublineOutsideOfLineRangeException(sublineVersion,
-            firstLineVersion.getSwissLineNumber(), firstLineVersion.getValidFrom(),
-            lastLineVersion.getValidTo());
-      }
-    }
-  }
-
-  private void validateDifferentMainLineAssignRule(SublineVersion sublineVersion) {
-    SublineVersion sublineVersionActual =
-        sublineVersionRepository.findById(sublineVersion.getId())
-                                .orElse(null);
-    if (sublineVersionActual != null &&
-        !sublineVersionActual.getMainlineSlnid()
-                             .equals(sublineVersion.getMainlineSlnid())) {
-      throw new SubLineAssignToLineConflictException(sublineVersion);
-    }
   }
 
   public void deleteById(Long id) {
