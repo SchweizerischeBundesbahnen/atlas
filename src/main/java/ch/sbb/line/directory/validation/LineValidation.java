@@ -5,6 +5,7 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
+import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -25,8 +26,17 @@ public class LineValidation {
   private static final int DAYS_OF_YEAR = 365;
 
   private final SublineVersionRepository sublineVersionRepository;
+  private final LineVersionRepository lineVersionRepository;
 
-  public void validateTemporaryLinesDuration(LineVersion lineVersion,
+  public void validateTemporaryLinesDuration(LineVersion lineVersion){
+    if (LineType.TEMPORARY.equals(lineVersion.getType())) {
+      List<LineVersion> allBySlnidOrderByValidFrom = lineVersionRepository.findAllBySlnidOrderByValidFrom(
+          lineVersion.getSlnid());
+      doValidateTemporaryLinesDuration(lineVersion,allBySlnidOrderByValidFrom);
+    }
+  }
+
+  void doValidateTemporaryLinesDuration(LineVersion lineVersion,
       List<LineVersion> allVersions) {
     if (getDaysBetween(lineVersion.getValidFrom(), lineVersion.getValidTo()) > DAYS_OF_YEAR) {
       throw new TemporaryLineValidationException(List.of(lineVersion));
