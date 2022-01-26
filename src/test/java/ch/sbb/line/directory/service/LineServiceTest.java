@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -199,71 +201,30 @@ class LineServiceTest {
   }
 
   @Test
-  void shouldNotSaveWhenLineRangeIsLeftSmallerThenSublineRange() {
+  void shouldNotSaveWhenThrowLineRangeSmallerThenSublineRangeException() {
     // Given
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(2000,1,1));
-    sublineVersion.setValidTo(LocalDate.of(2000,12,31));
+    sublineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
+    sublineVersion.setValidTo(LocalDate.of(2000, 12, 31));
     List<SublineVersion> sublineVersions = new ArrayList<>();
     sublineVersions.add(sublineVersion);
 
-    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(sublineVersions);
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(
+        sublineVersions);
 
     LineVersion lineVersion = LineTestData.lineVersion();
-    lineVersion.setValidFrom(LocalDate.of(2000,1,2));
-    lineVersion.setValidTo(LocalDate.of(2000,12,31));
-
-
+    lineVersion.setValidFrom(LocalDate.of(2000, 1, 2));
+    lineVersion.setValidTo(LocalDate.of(2000, 12, 31));
+    doThrow(LineRangeSmallerThenSublineRangeException.class).when(lineValidation)
+                                                            .validateLineRangeOutsideOfLineRange(
+                                                                lineVersion);
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
         () -> lineService.save(lineVersion));
 
-  }
-
-  @Test
-  void shouldNotSaveWhenLineRangeIsRightSmallerThenSublineRange() {
-    // Given
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(2000,1,1));
-    sublineVersion.setValidTo(LocalDate.of(2000,12,31));
-    List<SublineVersion> sublineVersions = new ArrayList<>();
-    sublineVersions.add(sublineVersion);
-
-    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(sublineVersions);
-
-    LineVersion lineVersion = LineTestData.lineVersion();
-    lineVersion.setValidFrom(LocalDate.of(2000,1,1));
-    lineVersion.setValidTo(LocalDate.of(2000,12,30));
-
-
-
-    // When
-    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineService.save(lineVersion));
+    verify(lineVersionRepository, never()).save(lineVersion);
 
   }
 
-  @Test
-  void shouldNotSaveWhenLineRangeIsSmallerThenSublineRange() {
-    // Given
-    SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setValidFrom(LocalDate.of(2000,1,1));
-    sublineVersion.setValidTo(LocalDate.of(2000,12,31));
-    List<SublineVersion> sublineVersions = new ArrayList<>();
-    sublineVersions.add(sublineVersion);
-
-    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(sublineVersions);
-
-    LineVersion lineVersion = LineTestData.lineVersion();
-    lineVersion.setValidFrom(LocalDate.of(2000,1,2));
-    lineVersion.setValidTo(LocalDate.of(2000,12,30));
-
-
-
-    // When
-    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineService.save(lineVersion));
-
-  }
 }
