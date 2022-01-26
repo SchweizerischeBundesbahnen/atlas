@@ -162,7 +162,7 @@ public class LineControllerApiTest {
            is("The line range 02.01.2000-31.12.2000 is outside of the subline b0.Ic2-sibline range 01.01.2000-31.12.2000")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.code",
-           is("LIDI.SUBLINE.PRECONDITION.LINE_OUTSIDE_OF_LINE_RANGE")))
+           is("LIDI.LINE.PRECONDITION.LINE_OUTSIDE_OF_LINE_RANGE")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("validFrom")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("02.01.2000")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validTo")))
