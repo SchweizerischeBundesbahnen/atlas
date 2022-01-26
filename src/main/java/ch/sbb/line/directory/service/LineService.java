@@ -8,12 +8,11 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Line_;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.validation.LineValidation;
+import ch.sbb.line.directory.validation.LineValidationService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class LineService {
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
   private final SublineVersionRepository sublineVersionRepository;
-  private final LineValidation lineValidation;
+  private final LineValidationService lineValidationService;
   private final SpecificationBuilderProvider specificationBuilderProvider;
 
 
@@ -64,7 +63,7 @@ public class LineService {
 
   public LineVersion save(LineVersion lineVersion) {
     lineVersion.setStatus(Status.ACTIVE);
-    lineValidation.validateLineBusinessRule(lineVersion);
+    lineValidationService.validateLineBusinessRule(lineVersion);
     return lineVersionRepository.save(lineVersion);
   }
 
