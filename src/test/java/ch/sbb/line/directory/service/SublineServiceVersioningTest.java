@@ -73,10 +73,11 @@ public class SublineServiceVersioningTest {
   }
 
   /**
-   * Szenario 2: Update innerhalb existierender Version NEU:                       |___________|
-   * IST:      |-----------|----------------------|-------------------- Version:        1
-   * 2                  3
-   * <p>
+   * Szenario 2: Update innerhalb existierender Version
+   * NEU:                       |___________|
+   * IST:      |-----------|----------------------|--------------------
+   * Version:        1                 2                  3
+   *
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
    * Version:        1       2         4       5          3
    */
@@ -136,12 +137,16 @@ public class SublineServiceVersioningTest {
 
   /**
    * Merge zwei versionen
-   * <p>
-   * NEU:                 |__________| number=2 IST:      |----------|----------|----------|
-   * Version:        1          2          3 Änderung:  number=1   number=3  number=2
-   * <p>
-   * RESULTAT: |----------|--------------------| Version:        1               2 Änderung:
-   * name=SBB1       number=2
+   *
+   * NEU:                 |__________|
+   *                        number=2
+   * IST:      |----------|----------|----------|
+   * Version:        1          2          3
+   * Änderung:  number=1   number=3  number=2
+   *
+   * RESULTAT: |----------|--------------------|
+   * Version:        1               2
+   * Änderung:  name=SBB1       number=2
    */
   @Test
   public void scenarioMergeTwoVersions() {

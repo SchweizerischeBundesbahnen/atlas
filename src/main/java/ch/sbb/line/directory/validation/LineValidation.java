@@ -1,8 +1,11 @@
 package ch.sbb.line.directory.validation;
 
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
+import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -12,24 +15,32 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class LineValidation {
 
   private static final int DAYS_OF_YEAR = 365;
 
-  public void validateTemporaryLinesDuration(LineVersion lineVersion, List<LineVersion> allVersions) {
+  private final SublineVersionRepository sublineVersionRepository;
+
+  public void validateTemporaryLinesDuration(LineVersion lineVersion,
+      List<LineVersion> allVersions) {
     if (getDaysBetween(lineVersion.getValidFrom(), lineVersion.getValidTo()) > DAYS_OF_YEAR) {
       throw new TemporaryLineValidationException(List.of(lineVersion));
     }
     if (allVersions.isEmpty()) {
       return;
     }
-    allVersions = allVersions.stream().filter(version -> LineType.TEMPORARY.equals(version.getType()) && !Objects.equals(lineVersion.getId(), version.getId()))
-        .collect(Collectors.toList());
+    allVersions = allVersions.stream()
+                             .filter(version -> LineType.TEMPORARY.equals(version.getType())
+                                 && !Objects.equals(lineVersion.getId(), version.getId()))
+                             .collect(Collectors.toList());
 
-    SortedSet<LineVersion> relatedVersions = new TreeSet<>(Comparator.comparing(LineVersion::getValidFrom));
+    SortedSet<LineVersion> relatedVersions = new TreeSet<>(
+        Comparator.comparing(LineVersion::getValidFrom));
     relatedVersions.add(lineVersion);
 
     List<LineVersion> versionsWhichRelate;
@@ -45,10 +56,31 @@ public class LineValidation {
     }
   }
 
-  private List<LineVersion> getRelatedVersions(SortedSet<LineVersion> relatedVersions, List<LineVersion> allTemporaryVersions) {
-    return allTemporaryVersions.stream().filter(version -> areDatesRelated(version.getValidTo(), relatedVersions.first().getValidFrom())
-            || areDatesRelated(version.getValidFrom(), relatedVersions.last().getValidTo()))
-        .collect(Collectors.toList());
+  public void validateLineRangeOutsideOfLineRange(LineVersion lineVersion) {
+
+    List<SublineVersion> sublineVersions = sublineVersionRepository.getSublineVersionByMainlineSlnid(
+        lineVersion.getSlnid());
+    if (!sublineVersions.isEmpty()) {
+      sublineVersions.sort(Comparator.comparing(SublineVersion::getValidFrom));
+      SublineVersion firstSublineVersion = sublineVersions.get(0);
+      SublineVersion lastSublineVersion = sublineVersions.get(sublineVersions.size() - 1);
+      if (lineVersion.getValidFrom().isAfter(firstSublineVersion.getValidFrom())
+          || lineVersion.getValidTo().isBefore(lastSublineVersion.getValidTo())) {
+        throw new LineRangeSmallerThenSublineRangeException(lineVersion,
+            firstSublineVersion.getSwissSublineNumber(), firstSublineVersion.getValidFrom(),
+            lastSublineVersion.getValidTo());
+      }
+    }
+  }
+
+  private List<LineVersion> getRelatedVersions(SortedSet<LineVersion> relatedVersions,
+      List<LineVersion> allTemporaryVersions) {
+    return allTemporaryVersions.stream()
+                               .filter(version -> areDatesRelated(version.getValidTo(),
+                                   relatedVersions.first().getValidFrom())
+                                   || areDatesRelated(version.getValidFrom(),
+                                   relatedVersions.last().getValidTo()))
+                               .collect(Collectors.toList());
   }
 
   private long getDaysBetween(LocalDate date1, LocalDate date2) {
