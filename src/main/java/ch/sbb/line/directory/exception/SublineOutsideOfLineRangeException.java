@@ -35,7 +35,7 @@ public class SublineOutsideOfLineRangeException extends AtlasException {
     Detail detail = Detail.builder()
                           .field(Fields.mainlineSlnid)
                           .message(
-                              "The subline range {0}-{1} is bigger then the line {2} range {3}-{4}")
+                              "The subline range {0}-{1} is outside of the line {2} range {3}-{4}")
                           .displayInfo(builder()
                               .code(CODE_PREFIX + "SUBLINE_OUTSIDE_OF_LINE_RANGE")
                               .with("mainline.validFrom", newVersion.getValidFrom())
