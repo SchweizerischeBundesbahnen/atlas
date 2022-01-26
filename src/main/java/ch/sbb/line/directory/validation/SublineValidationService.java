@@ -41,7 +41,7 @@ public class SublineValidationService {
       if (sublineVersionActual != null &&
           !sublineVersionActual.getMainlineSlnid()
                                .equals(sublineVersion.getMainlineSlnid())) {
-        throw new SubLineAssignToLineConflictException(sublineVersion);
+        throw new SubLineAssignToLineConflictException(sublineVersionActual);
       }
     }
   }
