@@ -167,11 +167,11 @@ public class LineControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("02.01.2000")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validTo")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("31.12.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key", is("swissSublineNumber")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key", is("sublinie.swissSublineNumber")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].value", is("b0.Ic2-sibline")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("validFrom")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("sublinie.validFrom")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value", is("01.01.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].key", is("validTo")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].key", is("sublinie.validTo")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].value", is("31.12.2000")));
   }
 
