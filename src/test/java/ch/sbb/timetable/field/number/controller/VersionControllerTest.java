@@ -140,60 +140,6 @@ public class VersionControllerTest {
         () -> versionController.deleteVersions(ttfnid)).withMessage(HttpStatus.NOT_FOUND.toString());
   }
 
-  @Test
-  void shouldUpdateVersion() {
-    // Given
-    Version version = createEntity();
-    VersionModel versionModel = createModel();
-    versionModel.setDescription("New description");
-
-    when(versionService.findById(anyLong())).thenReturn(Optional.of(version));
-
-    // When
-    VersionModel result = versionController.updateVersion(1L, versionModel);
-
-    // Then
-    assertThat(result).usingRecursiveComparison()
-        .ignoringFields("editor", "creator", "editionDate", "creationDate",
-            "lineRelations")
-        .isEqualTo(versionModel);
-  }
-
-  @Test
-  void shouldReturnNotFoundOnUnexistingUpdateVersion() {
-    // Given
-    when(versionService.findById(anyLong())).thenReturn(Optional.empty());
-
-    // When
-    VersionModel versionModel = createModel();
-
-    // Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-            () -> versionController.updateVersion(1L, versionModel))
-        .withMessage(
-            HttpStatus.NOT_FOUND.toString());
-  }
-
-  @Test
-  void shouldThrowConflictException() {
-    // Given
-    List<Version> overlappingVersions = new ArrayList<>();
-    VersionModel versionModel = createModel();
-    Version versionEntity = createEntity();
-    overlappingVersions.add(versionEntity);
-    doReturn(overlappingVersions).when(versionService).getOverlapsOnNumberAndSttfn(any());
-    when(versionService.getOverlapsOnNumberAndSttfn(versionEntity)).thenReturn(overlappingVersions);
-
-    // When
-    VersionModel result = versionController.createVersion(versionModel);
-
-    // Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-            () -> versionController.updateVersion(1L, versionModel))
-        .withMessage(
-            HttpStatus.NOT_FOUND.toString());
-  }
-
   private static TimetableFieldNumber createOverviewEntity() {
     return TimetableFieldNumber.builder()
         .ttfnid("ch:1:ttfnid:100000")
