@@ -82,6 +82,7 @@ public class SublineControllerTest {
     assertThat(subline).hasSize(1)
                        .first()
                        .usingRecursiveComparison()
+                       .ignoringFields("etagVersion")
                        .isEqualTo(sublineVersion);
   }
 

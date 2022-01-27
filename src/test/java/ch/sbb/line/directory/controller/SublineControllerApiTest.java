@@ -1,11 +1,12 @@
 package ch.sbb.line.directory.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -17,6 +18,8 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
 
 public class SublineControllerApiTest extends BaseControllerApiTest {
 
@@ -171,7 +174,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
 
     //when
     sublineVersionModel.setMainlineSlnid(changedlineVersionSaved.getSlnid());
-    mvc.perform(put("/v1/sublines/versions/" + sublineVersionSaved.getId())
+    mvc.perform(post("/v1/sublines/versions/" + sublineVersionSaved.getId())
            .contentType(contentType)
            .content(mapper.writeValueAsString(sublineVersionModel)))
        .andExpect(status().isConflict())
@@ -237,5 +240,56 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value", is("01.01.2000")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].key", is("mainline.validTo")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].value", is("31.12.2000")));
+  }
+
+  @Test
+  void shouldReturnOptimisticLockingErrorResponse() throws Exception {
+    //given
+    LineVersionModel lineVersionModel =
+        LineVersionModel.builder()
+                        .validTo(LocalDate.of(2000, 12, 31))
+                        .validFrom(LocalDate.of(2000, 1, 1))
+                        .businessOrganisation("sbb")
+                        .alternativeName("alternative")
+                        .combinationName("combination")
+                        .longName("long name")
+                        .type(LineType.TEMPORARY)
+                        .paymentType(PaymentType.LOCAL)
+                        .swissLineNumber("b0.IC2-libne")
+                        .build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
+                           .validFrom(LocalDate.of(2000, 1, 1))
+                           .validTo(LocalDate.of(2000, 12, 31))
+                           .businessOrganisation("sbb")
+                           .swissSublineNumber("b0.Ic2-sibline")
+                           .type(SublineType.TECHNICAL)
+                           .paymentType(PaymentType.LOCAL)
+                           .mainlineSlnid(lineVersionModel.getSlnid())
+                           .build();
+    sublineVersionModel = sublineController.createSublineVersion(sublineVersionModel);
+
+    // When first update it is ok
+    sublineVersionModel.setDescription("Kinky subline, ready to roll");
+    mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(sublineVersionModel)))
+       .andExpect(status().isOk());
+
+    // Then on a second update it has to return error for optimistic lock
+    sublineVersionModel.setDescription("Kinky subline, ready to rock");
+    MvcResult mvcResult = mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
+                                 .contentType(contentType)
+                                 .content(mapper.writeValueAsString(sublineVersionModel)))
+                             .andExpect(status().isPreconditionFailed()).andReturn();
+
+    ErrorResponse errorResponse = mapper.readValue(
+        mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+
+    assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
+    assertThat(errorResponse.getDetails()).size().isEqualTo(1);
+    assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
+        "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
   }
 }
