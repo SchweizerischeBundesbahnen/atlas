@@ -105,4 +105,6 @@ public class LineVersionModel implements DatesValidator {
   @Size(max = 1500)
   private String comment;
 
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  private Integer etagVersion;
 }
