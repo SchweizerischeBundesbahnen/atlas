@@ -3,6 +3,7 @@ package ch.sbb.timetable.field.number;
 import ch.sbb.timetable.field.number.WithMockJwtAuthentication.MockJwtAuthenticationFactory;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Collections;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -26,11 +27,18 @@ public @interface WithMockJwtAuthentication {
     @Override
     public SecurityContext createSecurityContext(WithMockJwtAuthentication annotation) {
       SecurityContext context = SecurityContextHolder.createEmptyContext();
-      context.setAuthentication(new JwtAuthenticationToken(Jwt.withTokenValue("token")
-                                                              .header("header", "value")
-                                                              .claim("sbbuid", annotation.sbbuid())
-                                                              .build()));
+      context.setAuthentication(new JwtAuthenticationToken(createJwt(annotation.sbbuid())));
       return context;
+    }
+
+    private static Jwt createJwt(String sbbuid) {
+      return Jwt.withTokenValue("token")
+                .header("header", "value")
+                .claim("sbbuid", sbbuid)
+                .audience(Collections.singletonList("87e6e634-6ba1-4e7a-869d-3348b4c3eafc"))
+                .issuer(
+                    "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0")
+                .build();
     }
   }
 }
