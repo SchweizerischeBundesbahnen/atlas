@@ -14,6 +14,7 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -169,7 +170,7 @@ class SublineServiceTest {
     when(sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(List.of());
 
     //When & Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+    assertThatExceptionOfType(NotFoundException.class).isThrownBy(
         () -> sublineService.deleteAll(slnid));
   }
 
@@ -194,7 +195,7 @@ class SublineServiceTest {
     when(sublineVersionRepository.existsById(ID)).thenReturn(false);
 
     // When
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+    assertThatExceptionOfType(NotFoundException.class).isThrownBy(
         () -> sublineService.deleteById(ID));
 
     // Then
