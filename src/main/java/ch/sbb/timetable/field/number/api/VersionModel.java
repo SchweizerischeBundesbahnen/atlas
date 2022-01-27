@@ -60,4 +60,7 @@ public class VersionModel implements DatesValidator {
   @Schema(description = "Additional comment", example = "Hier kann für interne Zwecke ein Kommentar welcher das Fahrplanfeld betrifft erfasst werden.")
   @Size(max = 250)
   private String comment;
+
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  private Integer etagVersion;
 }
