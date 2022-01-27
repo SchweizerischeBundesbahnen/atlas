@@ -16,7 +16,7 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
         sublineVersion.getSwissSublineNumber()).stream()
                                                .filter(
                                                    i -> !i.getSlnid()
-                                                         .equals(sublineVersion.getSlnid()))
+                                                          .equals(sublineVersion.getSlnid()))
                                                .collect(
                                                    Collectors.toList());
   }
@@ -25,4 +25,8 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
   List<SublineVersion> findAllBySlnidOrderByValidFrom(String slnid);
+
+  List<SublineVersion> getSublineVersionByMainlineSlnid(String mainlineSlnid);
+
+
 }

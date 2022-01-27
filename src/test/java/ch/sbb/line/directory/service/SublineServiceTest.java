@@ -17,6 +17,7 @@ import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.validation.SublineValidationService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -54,21 +55,26 @@ class SublineServiceTest {
   @Mock
   private Specification<Subline> sublineSpecification;
 
+  @Mock
+  private SublineValidationService sublineValidationService;
+
   private SublineService sublineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService, lineService, specificationBuilderProvider);
+        versionableService, lineService, sublineValidationService, specificationBuilderProvider);
   }
 
   @Test
   void shouldGetPagableSublinesFromRepository() {
     // Given
-    when(specificationBuilderService.buildSearchCriteriaSpecification(any())).thenReturn(sublineSpecification);
+    when(specificationBuilderService.buildSearchCriteriaSpecification(any())).thenReturn(
+        sublineSpecification);
     when(sublineSpecification.and(any())).thenReturn(sublineSpecification);
-    when(specificationBuilderProvider.getSublineSpecificationBuilderService()).thenReturn(specificationBuilderService);
+    when(specificationBuilderProvider.getSublineSpecificationBuilderService()).thenReturn(
+        specificationBuilderService);
     Pageable pageable = Pageable.unpaged();
 
     // When
@@ -118,7 +124,7 @@ class SublineServiceTest {
     SublineVersion result = sublineService.save(sublineVersion);
 
     // Then
-    verify(sublineVersionRepository).findSwissLineNumberOverlaps(sublineVersion);
+    verify(sublineValidationService).validateSublineBusinessRules(sublineVersion);
     verify(sublineVersionRepository).save(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
   }
@@ -141,6 +147,7 @@ class SublineServiceTest {
 
     // Then
   }
+
 
   @Test
   void shouldDeleteSubline() {
