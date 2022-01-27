@@ -2,7 +2,7 @@ package ch.sbb.timetable.field.number.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -105,7 +105,7 @@ public class VersionControllerOptimisticLockingTest {
 
   private MockHttpServletRequestBuilder createUpdateRequest(VersionModel versionModel)
       throws JsonProcessingException {
-    return put("/v1/field-numbers/versions/" + versionModel.getId())
+    return post("/v1/field-numbers/versions/" + versionModel.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(versionModel));
   }
