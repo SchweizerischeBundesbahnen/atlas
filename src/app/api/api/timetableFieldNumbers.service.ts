@@ -1,10 +1,6 @@
 /**
  * Atlas API
-<<<<<<< HEAD
- * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.46.0-SNAPSHOT<br/>timetable-field-number:0.88.0-SNAPSHOT<br/>
-=======
- * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.40.0-SNAPSHOT<br/>timetable-field-number:0.83.0-SNAPSHOT<br/>
->>>>>>> optimistic locking test ttfn
+ * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.47.0-SNAPSHOT<br/>timetable-field-number:0.90.0-SNAPSHOT<br/>
  *
  * The version of the OpenAPI document: 0.17.0-SNAPSHOT
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -488,89 +484,6 @@ export class TimetableFieldNumbersService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public updateVersion(
-    id: number,
-    version: Version,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<Version>;
-  public updateVersion(
-    id: number,
-    version: Version,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<Version>>;
-  public updateVersion(
-    id: number,
-    version: Version,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<Version>>;
-  public updateVersion(
-    id: number,
-    version: Version,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling updateVersion.');
-    }
-    if (version === null || version === undefined) {
-      throw new Error(
-        'Required parameter version was null or undefined when calling updateVersion.'
-      );
-    }
-
-    let headers = this.defaultHeaders;
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    // to determine the Content-Type header
-    const consumes: string[] = ['application/json'];
-    const httpContentTypeSelected: string | undefined =
-      this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected !== undefined) {
-      headers = headers.set('Content-Type', httpContentTypeSelected);
-    }
-
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
-
-    return this.httpClient.put<Version>(
-      `${this.configuration.basePath}/timetable-field-number/v1/field-numbers/${encodeURIComponent(
-        String(id)
-      )}`,
-      version,
-      {
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
-
-  /**
-   * @param id
-   * @param version
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
   public updateVersionWithVersioning(
     id: number,
     version: Version,
@@ -635,7 +548,7 @@ export class TimetableFieldNumbersService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.put<Array<Version>>(
+    return this.httpClient.post<Array<Version>>(
       `${
         this.configuration.basePath
       }/timetable-field-number/v1/field-numbers/versions/${encodeURIComponent(String(id))}`,

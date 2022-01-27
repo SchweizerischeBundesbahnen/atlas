@@ -66,10 +66,6 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     return this.record.id!;
   }
 
-  getVersion(): number {
-    return this.record.version!;
-  }
-
   getSelectedRecord(): TYPE {
     return this.record;
   }
