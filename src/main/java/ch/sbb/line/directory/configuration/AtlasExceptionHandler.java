@@ -1,8 +1,5 @@
 package ch.sbb.line.directory.configuration;
 
-import static ch.sbb.line.directory.api.ErrorResponse.builder;
-import static java.lang.String.valueOf;
-
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
@@ -32,7 +29,7 @@ public class AtlasExceptionHandler {
       PropertyReferenceException exception) {
     log.warn("Pageable sort parameter is not valid.", exception);
     return ResponseEntity.badRequest()
-                         .body(builder()
+                         .body(ErrorResponse.builder()
                              .httpStatus(HttpStatus.BAD_REQUEST.value())
                              .message("Supplied sort field " + exception.getPropertyName()
                                  + " not found on " + exception.getType()
@@ -54,13 +51,13 @@ public class AtlasExceptionHandler {
                            .displayInfo(DisplayInfo.builder()
                                                    .code("LIDI.CONSTRAINT")
                                                    .with("rejectedValue",
-                                                       valueOf(fieldError.getRejectedValue()))
+                                                       String.valueOf(fieldError.getRejectedValue()))
                                                    .with("cause", fieldError.getDefaultMessage())
                                                    .build())
                            .build())
                  .collect(Collectors.toList());
     return ResponseEntity.badRequest()
-                         .body(builder()
+                         .body(ErrorResponse.builder()
                              .httpStatus(HttpStatus.BAD_REQUEST.value())
                              .message("Constraint for requestbody was violated")
                              .details(details)
