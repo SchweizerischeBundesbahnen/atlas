@@ -4,6 +4,7 @@ import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
 import ch.sbb.line.directory.exception.AtlasException;
+import ch.sbb.line.directory.exception.NotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,12 @@ public class AtlasExceptionHandler {
   public ResponseEntity<ErrorResponse> atlasException(AtlasException conflictException) {
     return new ResponseEntity<>(conflictException.getErrorResponse(),
         HttpStatus.valueOf(conflictException.getErrorResponse().getHttpStatus()));
+  }
+
+  @ExceptionHandler(value = {NotFoundException.class})
+  public ResponseEntity<ErrorResponse> notFoundException(NotFoundException notFoundException) {
+    return new ResponseEntity<>(notFoundException.getErrorResponse(),
+        HttpStatus.valueOf(notFoundException.getErrorResponse().getHttpStatus()));
   }
 
   @ExceptionHandler(PropertyReferenceException.class)
