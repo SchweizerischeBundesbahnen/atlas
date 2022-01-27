@@ -7,6 +7,7 @@ import ch.sbb.line.directory.exception.AtlasException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,26 @@ public class AtlasExceptionHandler {
                                                                .getType()
                                                                .getSimpleName())
                              .build());
+  }
+
+  @ExceptionHandler(StaleObjectStateException.class)
+  public ResponseEntity<ErrorResponse> staleObjectStateException(
+      StaleObjectStateException exception) {
+    List<Detail> details = List.of(Detail.builder().message(exception.getMessage())
+                                         .field("etagVersion")
+                                         .displayInfo(DisplayInfo.builder()
+                                                                 .code(
+                                                                     "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR")
+                                                                 .build())
+                                         .build());
+    return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(ErrorResponse.builder()
+                                                                                   .httpStatus(
+                                                                                       HttpStatus.PRECONDITION_FAILED.value())
+                                                                                   .message(
+                                                                                       exception.getMessage())
+                                                                                   .details(details)
+                                                                                   .build()
+    );
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
