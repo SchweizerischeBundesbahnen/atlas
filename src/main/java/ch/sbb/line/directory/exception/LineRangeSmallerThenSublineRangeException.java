@@ -36,7 +36,7 @@ public class LineRangeSmallerThenSublineRangeException extends AtlasException {
                           .message(
                               "The line range {0}-{1} is outside of the subline {2} range {3}-{4}")
                           .displayInfo(builder()
-                              .code(CODE_PREFIX + "LINE_OUTSIDE_OF_LINE_RANGE")
+                              .code(CODE_PREFIX + "LINE_OUTSIDE_OF_SUBLINE_RANGE")
                               .with(LineVersion.Fields.validFrom, newVersion.getValidFrom())
                               .with(LineVersion.Fields.validTo, newVersion.getValidTo())
                               .with("sublinie.swissSublineNumber", swissSubLineNumber)

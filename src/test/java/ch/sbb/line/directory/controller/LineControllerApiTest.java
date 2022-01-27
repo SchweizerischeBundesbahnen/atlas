@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -21,25 +20,12 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
-@IntegrationTest
-@AutoConfigureMockMvc(addFilters = false)
-public class LineControllerApiTest {
-
-  @Autowired
-  private MockMvc mvc;
+public class LineControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private LineController lineController;
@@ -52,13 +38,6 @@ public class LineControllerApiTest {
 
   @Autowired
   private SublineVersionRepository sublineVersionRepository;
-
-  @Autowired
-  private ObjectMapper mapper;
-
-  private final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-      MediaType.APPLICATION_JSON.getSubtype(),
-      StandardCharsets.UTF_8);
 
   @AfterEach
   public void tearDown() {
@@ -162,12 +141,13 @@ public class LineControllerApiTest {
            is("The line range 02.01.2000-31.12.2000 is outside of the subline b0.Ic2-sibline range 01.01.2000-31.12.2000")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.code",
-           is("LIDI.LINE.PRECONDITION.LINE_OUTSIDE_OF_LINE_RANGE")))
+           is("LIDI.LINE.PRECONDITION.LINE_OUTSIDE_OF_SUBLINE_RANGE")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("validFrom")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("02.01.2000")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validTo")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("31.12.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key", is("sublinie.swissSublineNumber")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key",
+           is("sublinie.swissSublineNumber")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].value", is("b0.Ic2-sibline")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("sublinie.validFrom")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value", is("01.01.2000")))
