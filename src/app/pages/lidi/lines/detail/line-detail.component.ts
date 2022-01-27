@@ -148,6 +148,7 @@ export class LineDetailComponent
           [Validators.required],
         ],
         comment: [version.comment, [Validators.maxLength(1500)]],
+        etagVersion: version.etagVersion,
       },
       {
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
