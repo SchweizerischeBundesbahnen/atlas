@@ -1,6 +1,6 @@
 /**
  * Atlas API
- * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.46.0-SNAPSHOT<br/>timetable-field-number:0.88.0-SNAPSHOT<br/>
+ * This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.47.0-SNAPSHOT<br/>timetable-field-number:0.90.0-SNAPSHOT<br/>
  *
  * The version of the OpenAPI document: 0.17.0-SNAPSHOT
  * Contact: TechSupport-ATLAS@sbb.ch
@@ -494,7 +494,7 @@ export class SublinesService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.put<Array<SublineVersion>>(
+    return this.httpClient.post<Array<SublineVersion>>(
       `${this.configuration.basePath}/line-directory/v1/sublines/versions/${encodeURIComponent(
         String(id)
       )}`,
