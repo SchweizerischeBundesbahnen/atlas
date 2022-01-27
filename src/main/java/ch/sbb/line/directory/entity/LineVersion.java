@@ -30,6 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GeneratorType;
 
@@ -38,7 +39,7 @@ import org.hibernate.annotations.GeneratorType;
 @Getter
 @Setter
 @ToString
-@Builder
+@SuperBuilder
 @FieldNameConstants
 @Entity(name = "line_version")
 @AtlasVersionable

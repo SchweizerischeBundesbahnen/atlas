@@ -117,6 +117,7 @@ public class LineController implements LineApiV1 {
         .businessOrganisation(lineVersion.getBusinessOrganisation())
         .comment(lineVersion.getComment())
         .swissLineNumber(lineVersion.getSwissLineNumber())
+        .etagVersion(lineVersion.getVersion())
         .build();
   }
 
@@ -143,6 +144,7 @@ public class LineController implements LineApiV1 {
         .businessOrganisation(lineVersionModel.getBusinessOrganisation())
         .comment(lineVersionModel.getComment())
         .swissLineNumber(lineVersionModel.getSwissLineNumber())
+        .version(lineVersionModel.getEtagVersion())
         .build();
   }
 

@@ -74,4 +74,6 @@ public class SublineVersionModel implements DatesValidator {
   @Size(min = 1, max = 50)
   private String businessOrganisation;
 
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  private Integer etagVersion;
 }

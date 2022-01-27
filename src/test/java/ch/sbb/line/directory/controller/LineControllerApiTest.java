@@ -7,12 +7,13 @@ import static ch.sbb.line.directory.entity.LineVersion.Fields.longName;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.paymentType;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.swissLineNumber;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.type;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -24,6 +25,8 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
 
 public class LineControllerApiTest extends BaseControllerApiTest {
 
@@ -63,7 +66,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     //when
     lineVersionModel.setBusinessOrganisation("PostAuto");
-    mvc.perform(put("/v1/lines/versions/" + lineVersionSaved.getId().toString())
+    mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString())
            .contentType(contentType)
            .content(mapper.writeValueAsString(lineVersionModel))
        ).andExpect(status().isOk())
@@ -131,7 +134,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
 
     //when
     lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 2));
-    mvc.perform(put("/v1/lines/versions/" + lineVersionSaved.getId().toString())
+    mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString())
            .contentType(contentType)
            .content(mapper.writeValueAsString(lineVersionModel)))
        .andExpect(status().isPreconditionFailed())
@@ -194,5 +197,45 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("slnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value",
            is(lineVersionSaved.getSlnid())));
+  }
+
+  @Test
+  void shouldReturnOptimisticLockingErrorResponse() throws Exception {
+    //given
+    LineVersionModel lineVersionModel =
+        LineVersionModel.builder()
+                        .validTo(LocalDate.of(2000, 12, 31))
+                        .validFrom(LocalDate.of(2000, 1, 1))
+                        .businessOrganisation("sbb")
+                        .alternativeName("alternative")
+                        .combinationName("combination")
+                        .longName("long name")
+                        .type(LineType.TEMPORARY)
+                        .paymentType(PaymentType.LOCAL)
+                        .swissLineNumber("b0.IC2-libne")
+                        .build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+
+    // When first update it is ok
+    lineVersionModel.setComment("New and hot line, ready to roll");
+    mvc.perform(post("/v1/lines/versions/" + lineVersionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(lineVersionModel)))
+       .andExpect(status().isOk());
+
+    // Then on a second update it has to return error for optimistic lock
+    lineVersionModel.setComment("New and hot line, ready to rock");
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/versions/" + lineVersionModel.getId())
+                                 .contentType(contentType)
+                                 .content(mapper.writeValueAsString(lineVersionModel)))
+                             .andExpect(status().isPreconditionFailed()).andReturn();
+
+    ErrorResponse errorResponse = mapper.readValue(
+        mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+
+    assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
+    assertThat(errorResponse.getDetails()).size().isEqualTo(1);
+    assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
+        "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
   }
 }
