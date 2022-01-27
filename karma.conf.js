@@ -58,15 +58,12 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_ERROR,
     autoWatch: true,
-    browsers: ['Chrome'],
+    // https://flow.sbb.ch/browse/CLEW-13224
+    browsers: ['ChromeHeadlessNoSandbox'],
     customLaunchers: {
-      // See https://www.browserstack.com/automate/capabilities
-      // To use these browsers add the key to angular.json under test => browsers
-      // (Look for ChromeHeadless for an example)
-      BsChrome: {
-        base: 'BrowserStack',
-        browser: 'chrome',
-        os: 'OS X',
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
     },
     singleRun: false,
