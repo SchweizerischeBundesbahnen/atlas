@@ -1,20 +1,11 @@
 package ch.sbb.line.directory.controller;
 
-import static ch.sbb.line.directory.entity.LineVersion.Fields.alternativeName;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.businessOrganisation;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.combinationName;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.longName;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.paymentType;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.swissLineNumber;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.type;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.line.directory.IntegrationTest;
-import ch.sbb.line.directory.WithMockJwtAuthentication;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -22,26 +13,12 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
-@IntegrationTest
-@AutoConfigureMockMvc(addFilters = false)
-public class SublineControllerApiTest {
-
-  @Autowired
-  private MockMvc mvc;
+public class SublineControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private LineController lineController;
@@ -54,13 +31,6 @@ public class SublineControllerApiTest {
 
   @Autowired
   private SublineVersionRepository sublineVersionRepository;
-
-  @Autowired
-  private ObjectMapper mapper;
-
-  private final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-      MediaType.APPLICATION_JSON.getSubtype(),
-      StandardCharsets.UTF_8);
 
   @AfterEach
   public void tearDown() {
@@ -97,7 +67,7 @@ public class SublineControllerApiTest {
                            .build();
     //when
     lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 2));
-    mvc.perform(post("/v1/sublines/versions/" )
+    mvc.perform(post("/v1/sublines/versions/")
            .contentType(contentType)
            .content(mapper.writeValueAsString(sublineVersionModel)))
        .andExpect(status().isCreated());
@@ -140,9 +110,11 @@ public class SublineControllerApiTest {
        .andExpect(jsonPath("$.httpStatus", is(409)))
        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
        .andExpect(jsonPath("$.details[0].message",
-           is("SwissSublineNumber b0.Ic2-sibline already taken from 01.01.2000 to 31.12.2000 by "+ sublineVersionSaved.getSlnid())))
+           is("SwissSublineNumber b0.Ic2-sibline already taken from 01.01.2000 to 31.12.2000 by "
+               + sublineVersionSaved.getSlnid())))
        .andExpect(jsonPath("$.details[0].field", is("swissSublineNumber")))
-       .andExpect(jsonPath("$.details[0].displayInfo.code",is("LIDI.SUBLINE.CONFLICT.SWISS_NUMBER")))
+       .andExpect(
+           jsonPath("$.details[0].displayInfo.code", is("LIDI.SUBLINE.CONFLICT.SWISS_NUMBER")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("swissSublineNumber")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("b0.Ic2-sibline")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validFrom")))
@@ -150,7 +122,8 @@ public class SublineControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key", is("validTo")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].value", is("31.12.2000")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("slnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value", is(sublineVersionSaved.getSlnid())));
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value",
+           is(sublineVersionSaved.getSlnid())));
   }
 
   @Test
@@ -181,7 +154,8 @@ public class SublineControllerApiTest {
                         .paymentType(PaymentType.LOCAL)
                         .swissLineNumber("b0.IC2-libne-changed")
                         .build();
-    LineVersionModel changedlineVersionSaved = lineController.createLineVersion(changedLineVersionModel);
+    LineVersionModel changedlineVersionSaved = lineController.createLineVersion(
+        changedLineVersionModel);
     SublineVersionModel sublineVersionModel =
         SublineVersionModel.builder()
                            .validFrom(LocalDate.of(2000, 1, 1))
@@ -197,18 +171,20 @@ public class SublineControllerApiTest {
 
     //when
     sublineVersionModel.setMainlineSlnid(changedlineVersionSaved.getSlnid());
-    mvc.perform(put("/v1/sublines/versions/" + sublineVersionSaved.getId() )
+    mvc.perform(put("/v1/sublines/versions/" + sublineVersionSaved.getId())
            .contentType(contentType)
            .content(mapper.writeValueAsString(sublineVersionModel)))
        .andExpect(status().isConflict())
        .andExpect(jsonPath("$.httpStatus", is(409)))
        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
        .andExpect(jsonPath("$.details[0].message",
-           is("The mainline "+ sublineVersionSaved.getMainlineSlnid() +" cannot be changed")))
+           is("The mainline " + sublineVersionSaved.getMainlineSlnid() + " cannot be changed")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.code",is("LIDI.SUBLINE.CONFLICT.ASSIGN_DIFFERENT_LINE_CONFLICT")))
+       .andExpect(jsonPath("$.details[0].displayInfo.code",
+           is("LIDI.SUBLINE.CONFLICT.ASSIGN_DIFFERENT_LINE_CONFLICT")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("mainlineSlnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is(sublineVersionSaved.getMainlineSlnid())));
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value",
+           is(sublineVersionSaved.getMainlineSlnid())));
   }
 
   @Test
@@ -248,12 +224,14 @@ public class SublineControllerApiTest {
        .andExpect(jsonPath("$.details[0].message",
            is("The subline range 01.01.2000-01.01.2001 is outside of the line b0.IC2-libne range 01.01.2000-31.12.2000")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.code",is("LIDI.SUBLINE.PRECONDITION.SUBLINE_OUTSIDE_OF_LINE_RANGE")))
+       .andExpect(jsonPath("$.details[0].displayInfo.code",
+           is("LIDI.SUBLINE.PRECONDITION.SUBLINE_OUTSIDE_OF_LINE_RANGE")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("validFrom")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("01.01.2000")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validTo")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("01.01.2001")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key", is("mainline.swissLineNumber")))
+       .andExpect(
+           jsonPath("$.details[0].displayInfo.parameters[2].key", is("mainline.swissLineNumber")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].value", is("b0.IC2-libne")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("mainline.validFrom")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value", is("01.01.2000")))
