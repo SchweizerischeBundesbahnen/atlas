@@ -150,6 +150,7 @@ export class SublineDetailComponent
           version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required],
         ],
+        etagVersion: version.etagVersion,
       },
       {
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
