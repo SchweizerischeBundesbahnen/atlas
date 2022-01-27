@@ -147,7 +147,7 @@
         "SWISS_NUMBER": "CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
       },
       "PRECONDITION": {
-        "LINE_OUTSIDE_OF_LINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Teillinie {{sublinie.swissSublineNumber}} Gültigkeit {{sublinie.validFrom}}-{{sublinie.validTo}}"
+        "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Teillinie {{sublinie.swissSublineNumber}} mit Gültigkeit {{sublinie.validFrom}}-{{sublinie.validTo}}"
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Temporäre Linie von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen, welche zusammen die maximale Gültigkeit von 12 Monaten überschreiten",
