@@ -70,10 +70,7 @@ export class TimetableFieldNumberDetailComponent
 
   updateRecord(): void {
     this.timetableFieldNumberService
-      .updateVersionWithVersioning(this.getId(), {
-        ...this.form.value,
-        version: this.getVersion(),
-      })
+      .updateVersionWithVersioning(this.getId(), this.form.value)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
@@ -145,6 +142,7 @@ export class TimetableFieldNumberDetailComponent
         description: [version.description, Validators.maxLength(this.MAX_LENGTH_255)],
         comment: [version.comment, Validators.maxLength(this.MAX_LENGTH_250)],
         status: version.status,
+        etagVersion: version.etagVersion,
       },
       {
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
