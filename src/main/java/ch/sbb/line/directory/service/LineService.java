@@ -69,7 +69,7 @@ public class LineService {
 
   public void deleteById(Long id) {
     if (!lineVersionRepository.existsById(id)) {
-      throw new NotFoundException("id",id.toString());
+      throw new NotFoundException("id",String.valueOf(id));
     }
     lineVersionRepository.deleteById(id);
   }
