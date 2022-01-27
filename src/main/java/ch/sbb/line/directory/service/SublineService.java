@@ -3,15 +3,16 @@ package ch.sbb.line.directory.service;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.controller.NotFoundException;
+import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.exception.SublineConflictException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.validation.SublineValidationService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -30,15 +31,20 @@ public class SublineService {
   private final SublineRepository sublineRepository;
   private final VersionableService versionableService;
   private final LineService lineService;
+  private final SublineValidationService sublineValidationService;
   private final SpecificationBuilderProvider specificationBuilderProvider;
 
   public Page<Subline> findAll(SearchRestrictions<SublineType> searchRestrictions) {
     SpecificationBuilderService<Subline> specificationBuilderService = specificationBuilderProvider.getSublineSpecificationBuilderService();
     return sublineRepository.findAll(
-        specificationBuilderService.buildSearchCriteriaSpecification(searchRestrictions.getSearchCriteria())
-            .and(specificationBuilderService.buildValidOnSpecification(searchRestrictions.getValidOn()))
-            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getStatusRestrictions(), Subline_.status))
-            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getTypeRestrictions(), Subline_.type)),
+        specificationBuilderService.buildSearchCriteriaSpecification(
+                                       searchRestrictions.getSearchCriteria())
+                                   .and(specificationBuilderService.buildValidOnSpecification(
+                                       searchRestrictions.getValidOn()))
+                                   .and(specificationBuilderService.buildEnumSpecification(
+                                       searchRestrictions.getStatusRestrictions(), Subline_.status))
+                                   .and(specificationBuilderService.buildEnumSpecification(
+                                       searchRestrictions.getTypeRestrictions(), Subline_.type)),
         searchRestrictions.getPageable());
   }
 
@@ -52,15 +58,13 @@ public class SublineService {
 
   public SublineVersion save(SublineVersion sublineVersion) {
     sublineVersion.setStatus(Status.ACTIVE);
-    List<SublineVersion> swissLineNumberOverlaps = sublineVersionRepository.findSwissLineNumberOverlaps(
-        sublineVersion);
-    if (!swissLineNumberOverlaps.isEmpty()) {
-      throw new SublineConflictException(sublineVersion, swissLineNumberOverlaps);
-    }
-    if (lineService.findLineVersions(sublineVersion.getMainlineSlnid()).isEmpty()) {
+    List<LineVersion> lineVersions = lineService.findLineVersions(
+        sublineVersion.getMainlineSlnid());
+    if (lineVersions.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
           "Main line with SLNID " + sublineVersion.getMainlineSlnid() + " does not exist");
     }
+    sublineValidationService.validateSublineBusinessRules(sublineVersion);
     return sublineVersionRepository.save(sublineVersion);
   }
 

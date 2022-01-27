@@ -1,8 +1,9 @@
 package ch.sbb.line.directory.exception;
 
+import static ch.sbb.line.directory.api.ErrorResponse.DisplayInfo.builder;
+
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
-import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.Fields;
 import java.util.List;
@@ -35,17 +36,16 @@ public class SublineConflictException extends AtlasException {
   private Function<SublineVersion, Detail> toErrorDetail() {
     return lineVersion -> Detail.builder()
                                 .field(Fields.swissSublineNumber)
-                                .message("SwissSublineNumber {0} already taken from {1} to {2} by {3}")
-                                .displayInfo(DisplayInfo.builder()
-                                                        .code(CODE_PREFIX + "SWISS_NUMBER")
-                                                        .with(Fields.swissSublineNumber,
-                                                            newVersion.getSwissSublineNumber())
-                                                        .with(Fields.validFrom,
-                                                            lineVersion.getValidFrom())
-                                                        .with(Fields.validTo,
-                                                            lineVersion.getValidTo())
-                                                        .with(Fields.slnid, lineVersion.getSlnid())
-                                                        .build()).build();
+                                .message(
+                                    "SwissSublineNumber {0} already taken from {1} to {2} by {3}")
+                                .displayInfo(builder()
+                                    .code(CODE_PREFIX + "SWISS_NUMBER")
+                                    .with(Fields.swissSublineNumber,
+                                        newVersion.getSwissSublineNumber())
+                                    .with(Fields.validFrom, lineVersion.getValidFrom())
+                                    .with(Fields.validTo, lineVersion.getValidTo())
+                                    .with(Fields.slnid, lineVersion.getSlnid())
+                                    .build()).build();
   }
 
 }

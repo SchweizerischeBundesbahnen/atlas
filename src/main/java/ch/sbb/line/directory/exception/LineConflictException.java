@@ -1,8 +1,9 @@
 package ch.sbb.line.directory.exception;
 
+import static ch.sbb.line.directory.api.ErrorResponse.DisplayInfo.builder;
+
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
-import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersion.Fields;
 import java.util.List;
@@ -36,16 +37,13 @@ public class LineConflictException extends AtlasException {
     return lineVersion -> Detail.builder()
                                 .field(Fields.swissLineNumber)
                                 .message("SwissLineNumber {0} already taken from {1} to {2} by {3}")
-                                .displayInfo(DisplayInfo.builder()
-                                                        .code(CODE_PREFIX + "SWISS_NUMBER")
-                                                        .with(Fields.swissLineNumber,
-                                                            newVersion.getSwissLineNumber())
-                                                        .with(Fields.validFrom,
-                                                            lineVersion.getValidFrom())
-                                                        .with(Fields.validTo,
-                                                            lineVersion.getValidTo())
-                                                        .with(Fields.slnid, lineVersion.getSlnid())
-                                                        .build()).build();
+                                .displayInfo(builder()
+                                    .code(CODE_PREFIX + "SWISS_NUMBER")
+                                    .with(Fields.swissLineNumber, newVersion.getSwissLineNumber())
+                                    .with(Fields.validFrom, lineVersion.getValidFrom())
+                                    .with(Fields.validTo, lineVersion.getValidTo())
+                                    .with(Fields.slnid, lineVersion.getSlnid())
+                                    .build()).build();
   }
 
 }
