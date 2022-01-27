@@ -125,7 +125,7 @@ public class LineControllerTest {
                     .ignoringFields("editor", "creator",
                         "editionDate",
                         "creationDate")
-                    .ignoringFieldsMatchingRegexes("color.*")
+                    .ignoringFieldsMatchingRegexes("color.*", "etagVersion")
                     .isEqualTo(lineVersion);
   }
 
