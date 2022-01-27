@@ -160,7 +160,7 @@ export default class LidiUtils {
   }
 
   static addMainLine() {
-    const mainline = LidiUtils.getFirstLineVersion();
+    const mainline = LidiUtils.getMainLineVersion();
     LidiUtils.navigateToLidi();
     LidiUtils.clickOnAddNewLinieVersion();
     LidiUtils.fillLineVersionForm(mainline);
@@ -169,6 +169,30 @@ export default class LidiUtils {
     LidiUtils.assertContainsLineVersion(mainline);
     CommonUtils.navigateToHome();
     return mainline;
+  }
+
+  static getMainLineVersion() {
+    return {
+      slnid: '',
+      validFrom: '01.01.2000',
+      validTo: '31.12.2002',
+      swissLineNumber: 'b0.IC2',
+      businessOrganisation: 'SBB',
+      type: 'Betrieblich',
+      paymentType: 'International',
+      colorFontRgb: '#FFFFFF',
+      colorBackRgb: '#FFFFFF',
+      colorFontCmyk: '10,10,0,100',
+      colorBackCmyk: '10,10,0,100',
+      description: 'Mainline for sublines',
+      number: 'IC2',
+      alternativeName: 'IC2 alt',
+      combinationName: 'IC2 comb',
+      longName:
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
+      comment: 'Kommentar',
+    };
   }
 
   static getFirstLineVersion() {
