@@ -8,11 +8,11 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Line_;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.validation.LineValidation;
+import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.validation.LineValidationService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -28,17 +28,24 @@ public class LineService {
   private final LineVersionRepository lineVersionRepository;
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
-  private final LineValidation lineValidation;
+  private final SublineVersionRepository sublineVersionRepository;
+  private final LineValidationService lineValidationService;
   private final SpecificationBuilderProvider specificationBuilderProvider;
+
 
   public Page<Line> findAll(SearchRestrictions<LineType> searchRestrictions) {
     SpecificationBuilderService<Line> specificationBuilderService = specificationBuilderProvider.getLineSpecificationBuilderService();
     return lineRepository.findAll(
-        specificationBuilderService.buildSearchCriteriaSpecification(searchRestrictions.getSearchCriteria())
-            .and(specificationBuilderService.buildValidOnSpecification(searchRestrictions.getValidOn()))
-            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getStatusRestrictions(), Line_.status))
-            .and(specificationBuilderService.buildEnumSpecification(searchRestrictions.getTypeRestrictions(), Line_.type))
-            .and(specificationBuilderService.buildSingleStringSpecification(searchRestrictions.getSwissLineNumber())),
+        specificationBuilderService.buildSearchCriteriaSpecification(
+                                       searchRestrictions.getSearchCriteria())
+                                   .and(specificationBuilderService.buildValidOnSpecification(
+                                       searchRestrictions.getValidOn()))
+                                   .and(specificationBuilderService.buildEnumSpecification(
+                                       searchRestrictions.getStatusRestrictions(), Line_.status))
+                                   .and(specificationBuilderService.buildEnumSpecification(
+                                       searchRestrictions.getTypeRestrictions(), Line_.type))
+                                   .and(specificationBuilderService.buildSingleStringSpecification(
+                                       searchRestrictions.getSwissLineNumber())),
         searchRestrictions.getPageable());
   }
 
@@ -56,14 +63,7 @@ public class LineService {
 
   public LineVersion save(LineVersion lineVersion) {
     lineVersion.setStatus(Status.ACTIVE);
-    List<LineVersion> swissLineNumberOverlaps = lineVersionRepository.findSwissLineNumberOverlaps(
-        lineVersion);
-    if (!swissLineNumberOverlaps.isEmpty()) {
-      throw new LineConflictException(lineVersion, swissLineNumberOverlaps);
-    }
-    if (LineType.TEMPORARY.equals(lineVersion.getType())) {
-      lineValidation.validateTemporaryLinesDuration(lineVersion, lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid()));
-    }
+    lineValidationService.validateLineBusinessRule(lineVersion);
     return lineVersionRepository.save(lineVersion);
   }
 
