@@ -74,7 +74,7 @@ public class SublineController implements SublinenApiV1 {
   @Override
   public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id)
-        .orElseThrow(()-> new NotFoundException("id",id.toString()));
+        .orElseThrow(()-> new NotFoundException("id",String.valueOf(id)));
     sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .collect(Collectors.toList());
