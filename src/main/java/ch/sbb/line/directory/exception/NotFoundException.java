@@ -11,10 +11,10 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class NotFoundException extends AtlasException {
 
-  private static final String CODE_PREFIX = "ERROR.ENITIY_NOT_FOUND.";
+  private static final String CODE = "ERROR.ENTITY_NOT_FOUND";
 
-  private final String id;
   private final String field;
+  private final String value;
 
   @Override
   public ErrorResponse getErrorResponse() {
@@ -29,11 +29,10 @@ public class NotFoundException extends AtlasException {
     Detail detail = Detail.builder()
                           .field(field)
                           .message(
-                              "{0} {1} not found")
+                              field + " {0} not found")
                           .displayInfo(builder()
-                              .code(CODE_PREFIX)
-                              .with(field, field)
-                              .with("id", id)
+                              .code(CODE)
+                              .with(field, value)
                               .build())
                           .build();
     return List.of(detail);

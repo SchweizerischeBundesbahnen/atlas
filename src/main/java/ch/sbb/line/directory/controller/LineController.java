@@ -83,7 +83,7 @@ public class LineController implements LineApiV1 {
   @Override
   public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id)
-        .orElseThrow(()-> new NotFoundException("id",id.toString()));
+        .orElseThrow(()-> new NotFoundException("id",String.valueOf(id)));
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .collect(Collectors.toList());
