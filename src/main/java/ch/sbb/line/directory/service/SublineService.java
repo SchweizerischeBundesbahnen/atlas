@@ -70,7 +70,7 @@ public class SublineService {
 
   public void deleteById(Long id) {
     if (!sublineVersionRepository.existsById(id)) {
-      throw new NotFoundException("id",id.toString());
+      throw new NotFoundException("id",String.valueOf(id));
     }
     sublineVersionRepository.deleteById(id);
   }
