@@ -37,11 +37,11 @@ export class NotificationService implements OnDestroy {
     if (code) {
       this.showOnlyCode = true;
       this.displayCode = code;
-    } else if (errorResponse.status < 100 || errorResponse.status >= 500) {
+    } else if (errorResponse.error) {
+      this.SNACK_BAR_CONFIG['data'] = errorResponse.error;
+    } else {
       this.showOnlyCode = true;
       this.displayCode = 'ERROR.GENERIC';
-    } else {
-      this.SNACK_BAR_CONFIG['data'] = errorResponse.error;
     }
     const errorSnackBar = this.snackBar.openFromComponent(
       ErrorNotificationComponent,
