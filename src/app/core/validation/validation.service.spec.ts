@@ -43,6 +43,35 @@ describe('ValidationService', () => {
     expect(result.length).toBe(0);
   });
 
+  it('should only add parse error and ignore required', () => {
+    //given
+    const error = {
+      matDatepickerParse: { text: '00001900' },
+      required: true,
+    };
+    //when
+    const result = service.getValidation(error);
+    //then
+    expect(result).toBeDefined();
+    expect(result.length).toBe(1);
+    expect(result[0].error).toBe('VALIDATION.MATDATEPICKERPARSE');
+    expect(result[0].value).toBeDefined();
+  });
+
+  it('should add required error', () => {
+    //given
+    const error = {
+      required: true,
+    };
+    //when
+    const result = service.getValidation(error);
+    //then
+    expect(result).toBeDefined();
+    expect(result.length).toBe(1);
+    expect(result[0].error).toBe('VALIDATION.REQUIRED');
+    expect(result[0].value).toBeDefined();
+  });
+
   it('should return validationError with validFrom and validTo', () => {
     ///given
     const error: ValidationError = {
