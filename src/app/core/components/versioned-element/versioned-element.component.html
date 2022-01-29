@@ -1,0 +1,46 @@
+<div class="detail-header mb-2">
+  <div class="title">
+    <h1>
+      <strong>{{ this.recordTitle }}</strong>
+    </h1>
+    <span data-cy="switch-version-total-range">
+      {{ this.displayPageTypeTitle() | translate }}
+      {{ 'COMMON.FROM' | translate }}
+      <strong>{{ this.getInitialDataRage() }}</strong>
+      {{ 'COMMON.TO' | translate }}
+      <strong>{{ this.getEndDataRage() }}</strong>
+    </span>
+  </div>
+  <div class="versionedElements">
+    <div *ngFor="let record of records">
+      <div class="versionContainer">
+        <a
+          (click)="setCurrentRecord(record)"
+          [id]="'version' + (getIndexOfRecord(record) + 1)"
+          class="versionedElement"
+          [ngClass]="isCurrentRecord(record) ? 'currentVersion' : ''"
+        >
+          <div class="row upper-row">
+            <div class="col left-cell">
+              {{ formatDate(record.validFrom) }}
+            </div>
+            <div class="col right-cell">
+              {{ formatDate(record.validTo) }}
+            </div>
+          </div>
+          <div class="row lower-row">
+            <div class="col lower-cell">
+              {{ 'COMMON.VERSION' | translate }} {{ getIndexOfRecord(record) + 1 }}
+            </div>
+          </div>
+        </a>
+        <div class="versionGap" *ngIf="hasGapToNextRecord(record)">
+          <div class="row upper-row">
+            <div class="col left-cell"></div>
+            <div class="col right-cell"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
