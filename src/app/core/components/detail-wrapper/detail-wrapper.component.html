@@ -3,14 +3,14 @@
     <strong>{{ controller.heading || (headingNew | translate) }}</strong>
   </h1>
 </div>
-<app-switch-version
+<app-versions-display
   *ngIf="controller.showSwitch"
   [records]="controller.records"
   [currentRecord]="controller.record"
   [pageType]="controller.getPageType()"
   [recordTitle]="controller.heading"
   (switchVersion)="controller.switchVersion($event)"
-></app-switch-version>
+></app-versions-display>
 <div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section mb-2">
   <div class="edit-buttons">
     <button
