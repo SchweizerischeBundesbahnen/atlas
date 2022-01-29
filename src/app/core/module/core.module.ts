@@ -20,12 +20,14 @@ import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
 import { TableSearchComponent } from '../components/table-search/table-search.component';
 import { ErrorNotificationComponent } from '../notification/error-notification.component';
+import { VersionedElementComponent } from '../components/versioned-element/versioned-element.component';
 
 @NgModule({
   declarations: [
     BreadcrumbComponent,
     DetailWrapperComponent,
     SwitchVersionComponent,
+    VersionedElementComponent,
     DialogComponent,
     HeaderComponent,
     LanguageSwitcherComponent,
