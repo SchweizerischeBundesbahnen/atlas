@@ -6,6 +6,10 @@ import StatusEnum = SublineVersion.StatusEnum;
 import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;
 import TypeEnum = SublineVersion.TypeEnum;
 import { SublineDetailResolver } from './subline-detail.resolver';
+import { CoreModule } from '../../../../core/module/core.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const version: SublineVersion = {
   id: 1234,
@@ -30,7 +34,15 @@ describe('SublineDetailResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterModule.forRoot([])],
+      imports: [
+        CoreModule,
+        RouterModule.forRoot([]),
+        HttpClientTestingModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+      ],
       providers: [
         SublineDetailResolver,
         { provide: SublinesService, useValue: sublinesServiceSpy },
