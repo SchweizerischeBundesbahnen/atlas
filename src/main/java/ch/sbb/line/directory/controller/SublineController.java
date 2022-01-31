@@ -57,10 +57,15 @@ public class SublineController implements SublinenApiV1 {
 
   @Override
   public List<SublineVersionModel> getSublineVersion(String slnid) {
-    return sublineService.findSubline(slnid)
-        .stream()
-        .map(this::toModel)
-        .collect(Collectors.toList());
+
+    List<SublineVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
+                                                      .stream()
+                                                      .map(this::toModel)
+                                                      .collect(Collectors.toList());
+    if(sublineVersionModels.isEmpty()){
+      throw new NotFoundException("slnid",slnid);
+    }
+    return sublineVersionModels;
   }
 
   @Override

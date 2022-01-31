@@ -53,9 +53,13 @@ public class LineController implements LineApiV1 {
 
   @Override
   public List<LineVersionModel> getLineVersions(String slnid) {
-    return lineService.findLineVersions(slnid).stream()
-        .map(this::toModel)
-        .collect(Collectors.toList());
+    List<LineVersionModel> lineVersionModels = lineService.findLineVersions(slnid).stream()
+                                                .map(this::toModel)
+                                                .collect(Collectors.toList());
+    if(lineVersionModels.isEmpty()){
+      throw new NotFoundException("slnid",slnid);
+    }
+    return lineVersionModels;
   }
 
   private LineModel toModel(Line lineVersion) {
