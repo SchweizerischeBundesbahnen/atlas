@@ -16,7 +16,11 @@ export class DateService {
     return moment().format(DATE_PATTERN);
   }
 
-  getDateFormatted(date: Date) {
+  static getDateFormatted(date: Date | undefined) {
     return moment(date).format(DATE_PATTERN);
+  }
+
+  static differenceInDays(first: Date, second: Date): number {
+    return moment(second).diff(moment(first), 'days');
   }
 }

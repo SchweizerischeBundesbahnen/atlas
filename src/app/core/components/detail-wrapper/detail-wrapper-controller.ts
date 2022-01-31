@@ -16,7 +16,6 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   heading!: string | undefined;
   switchedIndex!: number | undefined;
 
-  //Temporary hack
   showSwitch: boolean | undefined;
 
   protected constructor(
