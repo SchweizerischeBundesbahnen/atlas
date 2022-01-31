@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Record } from '../detail-wrapper/record';
-import moment from 'moment';
-import { DATE_PATTERN } from '../../date/date.service';
+import { DateService } from '../../date/date.service';
 import { Page } from '../../model/page';
 import { Pages } from '../../../pages/pages';
 
@@ -10,7 +9,7 @@ import { Pages } from '../../../pages/pages';
   templateUrl: './switch-version.component.html',
   styleUrls: ['./switch-version.component.scss'],
 })
-export class SwitchVersionComponent implements OnInit {
+export class SwitchVersionComponent {
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
   @Input() pageType!: Page;
@@ -23,16 +22,9 @@ export class SwitchVersionComponent implements OnInit {
     this.currentIndex = 0;
   }
 
-  ngOnInit(): void {
-    this.getCurrentIndex();
-  }
-
-  displayVersionsItems() {
-    this.getCurrentIndex();
-    return this.currentIndex + 1 + ' / ' + this.records.length;
-  }
-
   displayPageTypeTitle() {
+    this.getCurrentIndex();
+
     if (this.pageType === Pages.TTFN) {
       return Pages.TTFN.title;
     }
@@ -45,46 +37,37 @@ export class SwitchVersionComponent implements OnInit {
     return '';
   }
 
-  switchLeft() {
-    this.currentIndex = this.currentIndex - 1;
-    this.changeSelected(this.currentIndex);
-  }
-
-  switchRight() {
-    this.currentIndex = this.currentIndex + 1;
-    this.changeSelected(this.currentIndex);
-  }
-
-  changeSelected(number: number) {
-    this.switchVersion.emit(number);
-  }
-
-  isLeftSwitchDisabled() {
-    return this.currentIndex === 0;
-  }
-
-  isRightSwitchDisabled() {
-    return this.currentIndex === this.records.length - 1;
-  }
-
-  getInitialDataRage() {
+  getStartDate() {
     return this.formatDate(this.records[0].validFrom);
   }
 
-  getEndDataRage() {
+  getEndDate() {
     return this.formatDate(this.records[this.records.length - 1].validTo);
   }
 
-  getInitialCurrentDataRage() {
-    return this.formatDate(this.currentRecord.validFrom);
+  formatDate(date: Date | undefined) {
+    return DateService.getDateFormatted(date);
   }
 
-  getEndCurrentDataRage() {
-    return this.formatDate(this.currentRecord.validTo);
+  setCurrentRecord(clickedRecord: Record) {
+    this.currentIndex = this.getIndexOfRecord(clickedRecord);
+    this.switchVersion.emit(this.currentIndex);
   }
 
-  private formatDate(date: Date | undefined) {
-    return moment(date).format(DATE_PATTERN);
+  isCurrentRecord(record: Record): boolean {
+    return this.currentIndex == this.getIndexOfRecord(record);
+  }
+
+  getIndexOfRecord(record: Record) {
+    return this.records.findIndex((element) => element === record);
+  }
+
+  hasGapToNextRecord(record: Record): boolean {
+    const nextRecord = this.records[this.getIndexOfRecord(record) + 1];
+    if (nextRecord) {
+      return DateService.differenceInDays(record.validTo!, nextRecord.validFrom!) > 1;
+    }
+    return false;
   }
 
   getCurrentIndex() {

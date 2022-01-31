@@ -59,8 +59,8 @@ describe('Versioning: scenario 3', () => {
   });
 
   it('Step-6: Assert fourth version (actual version)', () => {
-    cy.get('[data-cy=switch-version-navigation-items]').contains('4 / 4');
-    cy.get('[data-cy=switch-version-current-range]').contains('02.06.2002 bis 31.12.2002');
+    cy.get('#version4').should('have.class', 'currentVersion');
+    CommonUtils.assertVersionRange(4, '02.06.2002', '31.12.2002');
 
     secondVersion.validFrom = '02.06.2002';
     secondVersion.validTo = '31.12.2002';
@@ -71,9 +71,8 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    CommonUtils.switchLeft();
-    cy.get('[data-cy=switch-version-navigation-items]').contains('3 / 4');
-    cy.get('[data-cy=switch-version-current-range]').contains('01.06.2001 bis 01.06.2002');
+    CommonUtils.switchToVersion(3);
+    CommonUtils.assertVersionRange(3, '01.06.2001', '01.06.2002');
 
     versionUpdate.validFrom = '01.06.2001';
     versionUpdate.validTo = '01.06.2002';
@@ -84,9 +83,8 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    CommonUtils.switchLeft();
-    cy.get('[data-cy=switch-version-navigation-items]').contains('2 / 4');
-    cy.get('[data-cy=switch-version-current-range]').contains('01.01.2001 bis 31.05.2001');
+    CommonUtils.switchToVersion(2);
+    CommonUtils.assertVersionRange(2, '01.01.2001', '31.05.2001');
 
     secondVersion.validFrom = '01.01.2001';
     secondVersion.validTo = '31.05.2001';
@@ -97,9 +95,8 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=switch-version-total-range]').contains(
       'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
     );
-    CommonUtils.switchLeft();
-    cy.get('[data-cy=switch-version-navigation-items]').contains('1 / 4');
-    cy.get('[data-cy=switch-version-current-range]').contains('01.01.2000 bis 31.12.2000');
+    CommonUtils.switchToVersion(1);
+    CommonUtils.assertVersionRange(1, '01.01.2000', '31.12.2000');
 
     firstVersion.validFrom = '01.01.2000';
     firstVersion.validTo = '31.12.2000';
