@@ -57,8 +57,8 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-7: Assert fifth version (actual version)', () => {
-    cy.get('[data-cy=switch-version-navigation-items]').contains('5 / 5');
-    cy.get('[data-cy=switch-version-current-range]').contains('02.06.2002 bis 31.12.2002');
+    cy.get('#version5').should('have.class', 'currentVersion');
+    CommonUtils.assertVersionRange(5, '02.06.2002', '31.12.2002');
 
     thirdLineVersion.validFrom = '02.06.2002';
     thirdLineVersion.validTo = '31.12.2002';
@@ -66,9 +66,8 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-8: Assert fourth version', () => {
-    CommonUtils.switchLeft();
-    cy.get('[data-cy=switch-version-navigation-items]').contains('4 / 5');
-    cy.get('[data-cy=switch-version-current-range]').contains('01.01.2002 bis 01.06.2002');
+    CommonUtils.switchToVersion(4);
+    CommonUtils.assertVersionRange(4, '01.01.2002', '01.06.2002');
 
     thirdLineVersion.validFrom = '01.01.2002';
     thirdLineVersion.validTo = '01.06.2002';
@@ -77,9 +76,8 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-9: Assert third version', () => {
-    CommonUtils.switchLeft();
-    cy.get('[data-cy=switch-version-navigation-items]').contains('3 / 5');
-    cy.get('[data-cy=switch-version-current-range]').contains('01.01.2001 bis 31.12.2001');
+    CommonUtils.switchToVersion(3);
+    CommonUtils.assertVersionRange(3, '01.01.2001', '31.12.2001');
 
     thirdLineVersion.validFrom = '01.01.2001';
     thirdLineVersion.validTo = '31.12.2001';
@@ -90,9 +88,8 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-10: Assert second version', () => {
-    CommonUtils.switchLeft();
-    cy.get('[data-cy=switch-version-navigation-items]').contains('2 / 5');
-    cy.get('[data-cy=switch-version-current-range]').contains('01.06.2000 bis 31.12.2000');
+    CommonUtils.switchToVersion(2);
+    CommonUtils.assertVersionRange(2, '01.06.2000', '31.12.2000');
 
     secondLineVersion.validFrom = '01.06.2000';
     secondLineVersion.validTo = '31.12.2000';
@@ -103,9 +100,8 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-11: Assert first version', () => {
-    CommonUtils.switchLeft();
-    cy.get('[data-cy=switch-version-navigation-items]').contains('1 / 5');
-    cy.get('[data-cy=switch-version-current-range]').contains('01.01.2000 bis 31.05.2000');
+    CommonUtils.switchToVersion(1);
+    CommonUtils.assertVersionRange(1, '01.01.2000', '31.05.2000');
 
     firstLinieVersion.validTo = '31.05.2000';
     LidiUtils.assertContainsLineVersion(firstLinieVersion);
