@@ -6,6 +6,10 @@ import { LineDetailResolver } from './line-detail.resolver';
 import StatusEnum = LineVersion.StatusEnum;
 import PaymentTypeEnum = LineVersion.PaymentTypeEnum;
 import TypeEnum = LineVersion.TypeEnum;
+import { CoreModule } from '../../../../core/module/core.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const version: LineVersion = {
   id: 1234,
@@ -29,7 +33,15 @@ describe('LineDetailResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterModule.forRoot([])],
+      imports: [
+        CoreModule,
+        RouterModule.forRoot([]),
+        HttpClientTestingModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+      ],
       providers: [LineDetailResolver, { provide: LinesService, useValue: linesServiceSpy }],
     });
     resolver = TestBed.inject(LineDetailResolver);
