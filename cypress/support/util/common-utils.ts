@@ -39,8 +39,15 @@ export default class CommonUtils {
     cy.get('[data-cy=dialog-confirm-button]').click();
   }
 
-  static switchLeft() {
-    cy.get('[data-cy=switch-version-left]').click();
+  static switchToVersion(versionNumber: number) {
+    cy.get('#version' + versionNumber).click();
+    cy.get('#version' + versionNumber).should('have.class', 'currentVersion');
+  }
+
+  static assertVersionRange(versionNumber: number, validFrom: string, validTo: string) {
+    cy.get('#version' + versionNumber + ' > [data-cy="dateRange"]')
+      .should('contain.text', validFrom)
+      .should('contain.text', validTo);
   }
 
   static assertTableHeader(

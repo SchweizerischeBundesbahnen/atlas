@@ -36,7 +36,7 @@ describe('SwitchVersionComponent', () => {
     };
     const thirdRecord: Record = {
       id: 3,
-      validFrom: moment('1.1.2002', 'DD.MM.YYYY').toDate(),
+      validFrom: moment('1.6.2002', 'DD.MM.YYYY').toDate(),
       validTo: moment('31.12.2002', 'DD.MM.YYYY').toDate(),
     };
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
@@ -50,66 +50,53 @@ describe('SwitchVersionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should switch right', () => {
+  it('should switch to second version', () => {
     //given
+    expect(component.isCurrentRecord(component.records[0])).toBeTrue();
+    expect(component.getIndexOfRecord(component.records[0])).toBe(0);
     spyOn(component.switchVersion, 'emit');
     //when
-    component.switchRight();
+    component.setCurrentRecord(component.records[1]);
     //then
     expect(component.currentIndex).toBe(1);
     expect(component.switchVersion.emit).toHaveBeenCalledWith(1);
   });
 
-  it('should switch left', () => {
+  it('should switch to first version', () => {
     //given
-    component.switchRight();
+    component.setCurrentRecord(component.records[1]);
     spyOn(component.switchVersion, 'emit');
     //when
-    component.switchLeft();
+    component.setCurrentRecord(component.records[0]);
     //then
     expect(component.currentIndex).toBe(0);
     expect(component.switchVersion.emit).toHaveBeenCalledWith(0);
   });
 
-  it('should get current index', () => {
-    //when
-    component.getCurrentIndex();
-    //then
-    expect(component.currentIndex).toBe(0);
-  });
-
-  it('should display versions items', () => {
-    //when
-    const result = component.displayVersionsItems();
-    //then
-    expect(result).toBe('1 / 3');
-  });
-
-  it('should get initial current data range', () => {
-    //when
-    const result = component.getInitialCurrentDataRage();
-    //then
-    expect(result).toBe('01.01.2000');
-  });
-
-  it('should get end current data range', () => {
-    //when
-    const result = component.getEndCurrentDataRage();
-    //then
-    expect(result).toBe('31.12.2000');
-  });
-
   it('should get initial data range', () => {
     //when
-    const result = component.getInitialDataRage();
+    const result = component.getStartDate();
     //then
     expect(result).toBe('01.01.2000');
   });
 
   it('should get end data range', () => {
     //when
-    const result = component.getEndDataRage();
+    const result = component.getEndDate();
     //then
     expect(result).toBe('31.12.2002');
+  });
+
+  it('should get end data range', () => {
+    //when
+    const result = component.getEndDate();
+    //then
+    expect(result).toBe('31.12.2002');
+  });
+
+  it('should evaluate gaps', () => {
+    expect(component.hasGapToNextRecord(component.records[0])).toBeFalse();
+    expect(component.hasGapToNextRecord(component.records[1])).toBeTrue();
+    expect(component.hasGapToNextRecord(component.records[2])).toBeFalse();
   });
 });
