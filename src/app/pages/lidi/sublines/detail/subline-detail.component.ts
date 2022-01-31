@@ -78,7 +78,7 @@ export class SublineDetailComponent
 
   updateRecord(): void {
     this.sublinesService
-      .updateSublineVersion(this.getId(), this.form.value)
+      .updateSublineVersion(123, this.form.value)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
