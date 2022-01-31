@@ -28,11 +28,11 @@ public class NotFoundException extends AtlasException {
   private List<Detail> getErrorDetails() {
     Detail detail = Detail.builder()
                           .field(field)
-                          .message(
-                              field + " {0} not found")
+                          .message("Object with {0} {1} not found")
                           .displayInfo(builder()
                               .code(CODE)
-                              .with(field, value)
+                              .with("field", field)
+                              .with("value", value)
                               .build())
                           .build();
     return List.of(detail);
