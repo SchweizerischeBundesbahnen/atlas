@@ -45,7 +45,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-6: update first Sibline Version', () => {
-    CommonUtils.switchLeft();
+    CommonUtils.switchToVersion(1);
     CommonUtils.clickOnEdit();
     cy.get('[data-cy=validFrom]').clear().type(editedFirstSublineVersion.validFrom);
     cy.get('[data-cy=validTo]').clear().type(editedFirstSublineVersion.validTo);
@@ -58,8 +58,8 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-7: Assert third version (actual version)', () => {
-    cy.get('[data-cy=switch-version-navigation-items]').contains('3 / 3');
-    cy.get('[data-cy=switch-version-current-range]').contains('02.06.2002 bis 31.12.2002');
+    cy.get('#version3').should('have.class', 'currentVersion');
+    CommonUtils.assertVersionRange(3, '02.06.2002', '31.12.2002');
 
     secondSublineVersion.validFrom = '02.06.2002';
     secondSublineVersion.validTo = '31.12.2002';
@@ -67,9 +67,8 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-8: Assert second version', () => {
-    CommonUtils.switchLeft();
-    cy.get('[data-cy=switch-version-navigation-items]').contains('2 / 3');
-    cy.get('[data-cy=switch-version-current-range]').contains('01.01.2002 bis 01.06.2002');
+    CommonUtils.switchToVersion(2);
+    CommonUtils.assertVersionRange(2, '01.01.2002', '01.06.2002');
 
     secondSublineVersion.validFrom = '01.01.2002';
     secondSublineVersion.validTo = '01.06.2002';
@@ -79,9 +78,8 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-9: Assert first version', () => {
-    CommonUtils.switchLeft();
-    cy.get('[data-cy=switch-version-navigation-items]').contains('1 / 3');
-    cy.get('[data-cy=switch-version-current-range]').contains('01.01.2000 bis 31.12.2001');
+    CommonUtils.switchToVersion(1);
+    CommonUtils.assertVersionRange(1, '01.01.2000', '31.12.2001');
 
     firstSublineVersion.validFrom = '01.01.2000';
     firstSublineVersion.validTo = '31.12.2001';

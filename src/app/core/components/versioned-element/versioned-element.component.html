@@ -6,9 +6,9 @@
     <span data-cy="switch-version-total-range">
       {{ this.displayPageTypeTitle() | translate }}
       {{ 'COMMON.FROM' | translate }}
-      <strong>{{ this.getInitialDataRage() }}</strong>
+      <strong>{{ this.getStartDate() }}</strong>
       {{ 'COMMON.TO' | translate }}
-      <strong>{{ this.getEndDataRage() }}</strong>
+      <strong>{{ this.getEndDate() }}</strong>
     </span>
   </div>
   <div class="versionedElements">
@@ -20,7 +20,7 @@
           class="versionedElement"
           [ngClass]="isCurrentRecord(record) ? 'currentVersion' : ''"
         >
-          <div class="row upper-row">
+          <div class="row upper-row" data-cy="dateRange">
             <div class="col left-cell">
               {{ formatDate(record.validFrom) }}
             </div>
