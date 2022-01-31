@@ -37,7 +37,7 @@ export class NotificationService implements OnDestroy {
     if (code) {
       this.showOnlyCode = true;
       this.displayCode = code;
-    } else if (errorResponse.error) {
+    } else if (errorResponse.error?.details) {
       this.SNACK_BAR_CONFIG['data'] = errorResponse.error;
     } else {
       this.showOnlyCode = true;
