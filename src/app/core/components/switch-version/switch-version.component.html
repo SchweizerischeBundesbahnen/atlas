@@ -1,51 +1,46 @@
-<div class="row">
-  <div class="col">
+<div class="detail-header mb-2">
+  <div class="title">
     <h1>
       <strong>{{ this.recordTitle }}</strong>
     </h1>
-  </div>
-  <div class="col">
-    <div *ngIf="records.length > 0" class="d-flex align-items-center">
-      <strong>
-        <span>{{ 'COMMON.VERSION' | translate }}</span>
-      </strong>
-      <div>
-        <button
-          mat-icon-button
-          (click)="switchLeft()"
-          [disabled]="isLeftSwitchDisabled()"
-          data-cy="switch-version-left"
-        >
-          <i class="bi bi-chevron-left"></i>
-        </button>
-        <span>
-          <b data-cy="switch-version-navigation-items">{{ this.displayVersionsItems() }}</b>
-        </span>
-        <button
-          mat-icon-button
-          (click)="switchRight()"
-          [disabled]="isRightSwitchDisabled()"
-          data-cy="switch-version-right"
-        >
-          <i class="bi bi-chevron-right"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row switch-version-subtitle-row">
-  <div class="col total-rage">
     <span data-cy="switch-version-total-range">
       {{ this.displayPageTypeTitle() | translate }}
       {{ 'COMMON.FROM' | translate }}
-      <strong>{{ this.getInitialDataRage() }}</strong>
+      <strong>{{ this.getStartDate() }}</strong>
       {{ 'COMMON.TO' | translate }}
-      <strong>{{ this.getEndDataRage() }}</strong>
+      <strong>{{ this.getEndDate() }}</strong>
     </span>
   </div>
-  <div class="col current-date-range" data-cy="switch-version-current-range">
-    <strong>{{ this.getInitialCurrentDataRage() }}</strong>
-    {{ 'COMMON.TO' | translate }}
-    <strong>{{ this.getEndCurrentDataRage() }}</strong>
+  <div class="versionedElements">
+    <div *ngFor="let record of records">
+      <div class="versionContainer">
+        <a
+          (click)="setCurrentRecord(record)"
+          [id]="'version' + (getIndexOfRecord(record) + 1)"
+          class="versionedElement"
+          [ngClass]="isCurrentRecord(record) ? 'currentVersion' : ''"
+        >
+          <div class="row upper-row" data-cy="dateRange">
+            <div class="col left-cell">
+              {{ formatDate(record.validFrom) }}
+            </div>
+            <div class="col right-cell">
+              {{ formatDate(record.validTo) }}
+            </div>
+          </div>
+          <div class="row lower-row">
+            <div class="col lower-cell">
+              {{ 'COMMON.VERSION' | translate }} {{ getIndexOfRecord(record) + 1 }}
+            </div>
+          </div>
+        </a>
+        <div class="versionGap" *ngIf="hasGapToNextRecord(record)">
+          <div class="row upper-row">
+            <div class="col left-cell"></div>
+            <div class="col right-cell"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
