@@ -2,6 +2,7 @@
   "ERROR": {
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Droits insuffisants pour voir ce contenu",
+    "ENTITY_NOT_FOUND": "Objekt mit id {{id}} nicht gefunden",
     "SERVER_REQUEST_FEHLER": "La base de données n’est pas accessible actuellement. Veuillez vérifier la connexion Internet, fermer le navigateur et réouvrir l'application."
   },
   "COMMON": {
