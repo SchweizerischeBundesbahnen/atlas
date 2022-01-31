@@ -17,6 +17,15 @@ export class ValidationService {
         });
       });
     }
+
+    // On a date parsing error, we only need that error and can ignore required etc.
+    const matDatePickerParseErrors = result.filter(
+      (errors) => errors.error === 'VALIDATION.MATDATEPICKERPARSE'
+    );
+    if (matDatePickerParseErrors.length > 0) {
+      return matDatePickerParseErrors;
+    }
+
     return result;
   }
 
