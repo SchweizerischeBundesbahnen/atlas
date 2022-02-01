@@ -250,7 +250,7 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
    *                 |------------|         |-------------|
    *                   Version 1               Version 2
    *
-   * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 3)
+   * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 1)
    */
   @Test
   public void scenario10c() {
@@ -346,4 +346,121 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
 
   }
 
+
+  /**
+   * ATLAS-409
+   * Szenario 10c (Spezialfall 6): Update, welches über die Lücke zwischen zwei Versionen hinaus geht
+   * Spezialfall: Versionen sind je 1 Tag gültig und sonst gleich (merge zu einer Version)
+   *
+   * Änderung                 |_________________|
+   *                          |                 |
+   *                   Version 1               Version 2
+   *
+   * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 1)
+   */
+  @Test
+  public void scenario10cVersionOnlyOneDay() {
+    //given
+    versionableObject1.setValidTo(versionableObject1.getValidFrom());
+    versionableObject3.setValidTo(versionableObject3.getValidFrom());
+    versionableObject3.setProperty(versionableObject1.getProperty());
+    versionableObject3.setAnotherProperty(versionableObject1.getAnotherProperty());
+    LocalDate editedValidFrom = versionableObject1.getValidFrom();
+    LocalDate editedValidTo = versionableObject3.getValidTo();
+
+    VersionableObject editedVersion = VersionableObject.builder()
+                                                       .validFrom(editedValidFrom)
+                                                       .validTo(editedValidTo)
+                                                       .property("Ciao-Ciao")
+                                                       .build();
+
+    //when
+    List<VersionedObject> result = versionableService.versioningObjects(
+        versionableObject1,
+        editedVersion,
+        List.of(versionableObject1,versionableObject3));
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(2);
+    List<VersionedObject> sortedVersionedObjects =
+        result.stream().sorted(comparing(VersionedObject::getValidFrom)).collect(toList());
+
+    VersionedObject firstVersionedObject = sortedVersionedObjects.get(0);
+    assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.DELETE);
+
+    VersionedObject secondVersionedObject = sortedVersionedObjects.get(1);
+    assertThat(secondVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
+    assertThat(secondVersionedObject).isNotNull();
+    assertThat(secondVersionedObject.getValidFrom()).isEqualTo(editedValidFrom);
+    assertThat(secondVersionedObject.getValidTo()).isEqualTo(editedValidTo);
+    Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
+    assertThat(secondVersionedObjectEntity).isNotNull();
+    assertThat(secondVersionedObjectEntity.getProperties()).isNotEmpty();
+    Property propertySecondVersionedObjectEntity = filterProperty(
+        secondVersionedObjectEntity.getProperties(), Fields.property);
+    assertThat(propertySecondVersionedObjectEntity).isNotNull();
+    assertThat(propertySecondVersionedObjectEntity.getValue()).isEqualTo("Ciao-Ciao");
+    Property oneToManyRelationSecondVersionedObjectEntity = filterProperty(
+        secondVersionedObjectEntity.getProperties(), Fields.oneToManyRelation);
+    assertThat(oneToManyRelationSecondVersionedObjectEntity.hasOneToManyRelation()).isTrue();
+    assertThat(oneToManyRelationSecondVersionedObjectEntity.getOneToMany()).isEmpty();
+  }
+
+  /**
+   * ATLAS-410
+   * Szenario 10d: Verlängere Version 1 oder Version 2 auf den ganzen Zahlenstrahl. Props sind bei Version1&2&Änderung gleich
+   *
+   * Änderung          |________________________________|
+   *                   |--------|              |--------|
+   *                   Version 1               Version 2
+   *
+   * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 1)
+   */
+  @Test
+  public void scenario10d() {
+    //given
+    versionableObject3.setProperty(versionableObject1.getProperty());
+    versionableObject3.setAnotherProperty(versionableObject1.getAnotherProperty());
+    LocalDate editedValidFrom = versionableObject1.getValidFrom();
+    LocalDate editedValidTo = versionableObject3.getValidTo();
+
+    VersionableObject editedVersion = VersionableObject.builder()
+                                                       .validFrom(editedValidFrom)
+                                                       .validTo(editedValidTo)
+                                                       .property("Ciao-Ciao")
+                                                       .build();
+
+    //when
+    List<VersionedObject> result = versionableService.versioningObjects(
+        versionableObject1,
+        editedVersion,
+        List.of(versionableObject1,versionableObject3));
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(2);
+    List<VersionedObject> sortedVersionedObjects =
+        result.stream().sorted(comparing(VersionedObject::getValidFrom)).collect(toList());
+
+    VersionedObject firstVersionedObject = sortedVersionedObjects.get(0);
+    assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.DELETE);
+
+    VersionedObject secondVersionedObject = sortedVersionedObjects.get(1);
+    assertThat(secondVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
+    assertThat(secondVersionedObject).isNotNull();
+    assertThat(secondVersionedObject.getValidFrom()).isEqualTo(editedValidFrom);
+    assertThat(secondVersionedObject.getValidTo()).isEqualTo(editedValidTo);
+    Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
+    assertThat(secondVersionedObjectEntity).isNotNull();
+    assertThat(secondVersionedObjectEntity.getProperties()).isNotEmpty();
+    Property propertySecondVersionedObjectEntity = filterProperty(
+        secondVersionedObjectEntity.getProperties(), Fields.property);
+    assertThat(propertySecondVersionedObjectEntity).isNotNull();
+    assertThat(propertySecondVersionedObjectEntity.getValue()).isEqualTo("Ciao-Ciao");
+    Property oneToManyRelationSecondVersionedObjectEntity = filterProperty(
+        secondVersionedObjectEntity.getProperties(), Fields.oneToManyRelation);
+    assertThat(oneToManyRelationSecondVersionedObjectEntity.hasOneToManyRelation()).isTrue();
+    assertThat(oneToManyRelationSecondVersionedObjectEntity.getOneToMany()).isEmpty();
+  }
 }

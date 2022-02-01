@@ -63,4 +63,25 @@ class DateHelperTest {
 
   }
 
+
+  @Test
+  public void shouldReturnMinimumOfTwoEqualsDates() {
+    LocalDate date1 = LocalDate.of(2020, 1, 1);
+    LocalDate date2 = LocalDate.of(2020, 1, 1);
+
+    LocalDate result = DateHelper.min(date1, date2);
+    assertThat(result).isEqualTo(date1);
+  }
+
+  @Test
+  public void shouldReturnMinimumOfTwoDates() {
+    LocalDate date1 = LocalDate.of(2020, 1, 2);
+    LocalDate date2 = LocalDate.of(2020, 1, 1);
+
+    LocalDate result = DateHelper.min(date1, date2);
+    assertThat(result).isEqualTo(date2);
+
+    result = DateHelper.min(date2, date1);
+    assertThat(result).isEqualTo(date2);
+  }
 }

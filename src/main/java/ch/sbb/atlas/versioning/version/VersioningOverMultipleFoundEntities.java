@@ -1,5 +1,6 @@
 package ch.sbb.atlas.versioning.version;
 
+import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.ToVersioning;
@@ -18,13 +19,13 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     log.info("Apply versioning over multiple found entities.");
     List<ToVersioning> toVersioningList = vd.getObjectToVersioningFound();
 
+    if (VersioningHelper.isThereGapBetweenVersions(toVersioningList)) {
+      fillGapsInVersions(vd);
+    }
     if (VersioningHelper.isEditedVersionExactMatchingMultipleEntities(vd.getEditedValidFrom(),
         vd.getEditedValidTo(),
         toVersioningList)) {
       return applyVersioningExactMatchingMultipleVersions(vd, toVersioningList);
-    }
-    if (VersioningHelper.isThereGapBetweenVersions(toVersioningList)) {
-      return applyVersioningWhenThereIsGapBetweenMultipleEntities(vd, toVersioningList);
     }
     if (VersioningHelper.isBetweenMultipleVersionsAndOverTheBorders(vd.getEditedValidFrom(),
         vd.getEditedValidTo(),
@@ -167,77 +168,15 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     return versionedObjects;
   }
 
-  private List<VersionedObject> applyVersioningWhenThereIsGapBetweenMultipleEntities(VersioningData vd,
-      List<ToVersioning> toVersioningList) {
-    log.info("Matched multiple versions with gap");
-    if (VersioningHelper.isOnlyValidToChanged(vd) || VersioningHelper.areBothValidToAndValidFromChanged(vd)) {
-      List<VersionedObject> versionedObjects = new ArrayList<>();
-      for (int i = 0; i < toVersioningList.size(); i++) {
-        ToVersioning current = toVersioningList.get(i);
+  private void fillGapsInVersions(VersioningData versioningData) {
+    for (int i = 0; i < versioningData.getObjectsToVersioning().size() - 1; i++) {
+      ToVersioning current = versioningData.getObjectsToVersioning().get(i);
+      ToVersioning next = versioningData.getObjectsToVersioning().get(i + 1);
 
-        if (VersioningHelper.hasNextVersion(toVersioningList, i)) {
-          ToVersioning next = toVersioningList.get(i + 1);
-          if (!VersioningHelper.areVersionsSequential(current, next)) {
-            applyVersioningWhenVersionsAreNotSequential(vd, versionedObjects, current, next);
-          } else if (VersioningHelper.areVersionsSequential(current, next)) {
-            applyVersioningWhenThereIsGapNearToTheVersion(vd.getEditedValidTo(),
-                vd.getEditedEntity(), current, versionedObjects);
-          } else {
-            throw new VersioningException();
-          }
-        } else if (!VersioningHelper.hasNextVersion(toVersioningList, i)) {
-          applyVersioningWhenThereIsGapNearToTheVersion(vd.getEditedValidTo(), vd.getEditedEntity(),
-              current, versionedObjects);
-        } else {
-          throw new VersioningException();
-        }
+      if (!VersioningHelper.areVersionsSequential(current, next)) {
+        current.getVersionable().setValidTo(DateHelper.min(next.getValidFrom().minusDays(1), versioningData.getEditedValidTo()));
       }
-      return versionedObjects;
     }
-    throw new VersioningException();
-  }
-
-  private void applyVersioningWhenVersionsAreNotSequential(VersioningData vd,
-      List<VersionedObject> versionedObjects,
-      ToVersioning current, ToVersioning next) {
-    log.info("Matched gap {} - {}", current.getValidTo(), next.getValidFrom());
-    log.info("{}\n{}", current, next);
-
-    if (VersioningHelper.isEditedValidFromAfterCurrentValidFromAndBeforeOrEqualCurrentValidTo(vd, current)) {
-      // update current version: validTo=editedValidTo-1
-      VersionedObject versionedObjectToUpdate = updateCurrentVersion(current,
-          current.getValidFrom(), vd.getEditedValidFrom().minusDays(1));
-      versionedObjects.add(versionedObjectToUpdate);
-      // create new version: validFrom=editedValidFom, validTo=next.validFrom-1, update properties
-      VersionedObject versionedObjectFillGap =
-          createNewVersionToFillTheGap(vd, current, next);
-      versionedObjects.add(versionedObjectFillGap);
-    }
-    //1.case: perfect match editedValidFrom == current.validFrom
-    //2.case: we are in the middle of multiple versions with gap
-    // and we are matching the second item (e.g.) where:
-    // editValidFrom < 2.validFrom && editedValidTo > 2.validTo
-    // edited  |-------------------------------------------------|
-    // current |--------------|    |---------------|    |---------------|
-    //                1                     2                   3
-    else if (VersioningHelper.isEditedValidFromExactOnTheLeftBorder(vd.getEditedValidFrom(), current) ||
-        VersioningHelper.isCurrentVersionBetweenEditedValidFromAndEditedValidTo(vd.getEditedValidFrom(),
-            vd.getEditedValidTo(), current)) {
-      // update current version: validTo=editedValidFrom-1, update properties
-      VersionedObject versionedObjectFillGap = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(
-          current.getValidFrom(), next.getValidFrom().minusDays(1), current, vd.getEditedEntity());
-      versionedObjects.add(versionedObjectFillGap);
-    } else {
-      throw new VersioningException();
-    }
-  }
-
-  private VersionedObject createNewVersionToFillTheGap(VersioningData vd, ToVersioning current,
-      ToVersioning next) {
-    Entity currentEntityToCreate = Entity.replaceEditedPropertiesWithCurrentProperties(
-        vd.getEditedEntity(), current.getEntity());
-    return VersionedObject.buildVersionedObjectToCreate(vd.getEditedValidFrom(), next.getValidFrom().minusDays(1),
-        currentEntityToCreate);
   }
 
   private void applyVersioningOnLeftBorderWhenValidFromIsAfterCurrentValidFrom(VersioningData vd,
@@ -254,28 +193,6 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     versionedObjects.add(versionedObjectAfterLeftBorder);
   }
 
-  private void applyVersioningWhenThereIsGapNearToTheVersion(LocalDate editedValidTo,
-      Entity editedEntity,
-      ToVersioning current, List<VersionedObject> versionedObjects) {
-    if (editedValidTo.isAfter(current.getValidTo())) {
-      //just update properties
-      VersionedObject updatePropertiesCurrentVersion = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(
-          current.getValidFrom(), current.getValidTo(), current, editedEntity);
-      versionedObjects.add(updatePropertiesCurrentVersion);
-    }
-    if (editedValidTo.isBefore(current.getValidTo())) {
-      //split versions
-      //create new version: validFrom=current.validFrom, validTo=editedValidTo and update properties
-      VersionedObject versionedObject = addNewVersionBeforeCurrentVersion(editedValidTo,
-          editedEntity, current);
-      versionedObjects.add(versionedObject);
-
-      // update version: validFrom = editedValidTo +1 update properties
-      VersionedObject nextVersionedObject = updateCurrentVersion(current, editedValidTo.plusDays(1),
-          current.getValidTo());
-      versionedObjects.add(nextVersionedObject);
-    }
-  }
 
   private void applyVersioningBetweenLeftAndRightBorder(VersioningData vd,
       List<ToVersioning> toVersioningList,
