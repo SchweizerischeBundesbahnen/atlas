@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 public class NotFoundException extends AtlasException {
 
   private static final String CODE = "ERROR.ENTITY_NOT_FOUND";
+  private static final String ERROR = "Not found";
 
   private final String field;
   private final String value;
@@ -19,8 +20,9 @@ public class NotFoundException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .httpStatus(HttpStatus.NOT_FOUND.value())
+                        .status(HttpStatus.NOT_FOUND.value())
                         .message("Entity not found")
+                        .error(ERROR)
                         .details(getErrorDetails())
                         .build();
   }

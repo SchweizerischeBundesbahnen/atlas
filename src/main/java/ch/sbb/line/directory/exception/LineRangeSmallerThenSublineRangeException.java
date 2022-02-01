@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 public class LineRangeSmallerThenSublineRangeException extends AtlasException {
 
   private static final String CODE_PREFIX = "LIDI.LINE.PRECONDITION.";
+  private static final String ERROR = "Line smaller then subline";
 
   private final LineVersion newVersion;
   private final String swissSubLineNumber;
@@ -24,8 +25,9 @@ public class LineRangeSmallerThenSublineRangeException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .httpStatus(HttpStatus.PRECONDITION_FAILED.value())
+                        .status(HttpStatus.PRECONDITION_FAILED.value())
                         .message("A precondition fail occurred due to a business rule")
+                        .error(ERROR)
                         .details(getErrorDetails())
                         .build();
   }

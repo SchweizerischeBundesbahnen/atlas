@@ -139,8 +139,9 @@ public class LineControllerApiTest extends BaseControllerApiTest {
            .contentType(contentType)
            .content(mapper.writeValueAsString(lineVersionModel)))
        .andExpect(status().isPreconditionFailed())
-       .andExpect(jsonPath("$.httpStatus", is(412)))
+       .andExpect(jsonPath("$.status", is(412)))
        .andExpect(jsonPath("$.message", is("A precondition fail occurred due to a business rule")))
+       .andExpect(jsonPath("$.error", is("Line smaller then subline")))
        .andExpect(jsonPath("$.details[0].message",
            is("The line range 02.01.2000-31.12.2000 is outside of the subline b0.Ic2-sibline range 01.01.2000-31.12.2000")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
@@ -182,8 +183,9 @@ public class LineControllerApiTest extends BaseControllerApiTest {
            .contentType(contentType)
            .content(mapper.writeValueAsString(lineVersionModel)))
        .andExpect(status().isConflict())
-       .andExpect(jsonPath("$.httpStatus", is(409)))
+       .andExpect(jsonPath("$.status", is(409)))
        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
+       .andExpect(jsonPath("$.error", is("Line conflict")))
        .andExpect(jsonPath("$.details[0].message",
            is("SwissLineNumber b0.IC2-libne already taken from 01.01.2000 to 31.12.2000 by "
                + lineVersionSaved.getSlnid())))
@@ -234,7 +236,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     ErrorResponse errorResponse = mapper.readValue(
         mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
-    assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
     assertThat(errorResponse.getDetails()).size().isEqualTo(1);
     assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
@@ -261,8 +263,9 @@ public class LineControllerApiTest extends BaseControllerApiTest {
            .contentType(contentType)
            .content(mapper.writeValueAsString(lineVersionModel)))
        .andExpect(status().isNotFound())
-       .andExpect(jsonPath("$.httpStatus", is(404)))
+       .andExpect(jsonPath("$.status", is(404)))
        .andExpect(jsonPath("$.message", is("Entity not found")))
+       .andExpect(jsonPath("$.error", is("Not found")))
        .andExpect(jsonPath("$.details[0].message", is("Object with id 123 not found")))
        .andExpect(jsonPath("$.details[0].field", is("id")))
        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
@@ -278,8 +281,9 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/lines/versions/123")
            .contentType(contentType))
        .andExpect(status().isNotFound())
-       .andExpect(jsonPath("$.httpStatus", is(404)))
+       .andExpect(jsonPath("$.status", is(404)))
        .andExpect(jsonPath("$.message", is("Entity not found")))
+       .andExpect(jsonPath("$.error", is("Not found")))
        .andExpect(jsonPath("$.details[0].message", is("Object with slnid 123 not found")))
        .andExpect(jsonPath("$.details[0].field", is("slnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
