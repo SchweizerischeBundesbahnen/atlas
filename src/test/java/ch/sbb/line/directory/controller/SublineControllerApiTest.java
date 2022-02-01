@@ -111,8 +111,9 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
            .contentType(contentType)
            .content(mapper.writeValueAsString(sublineVersionModel)))
        .andExpect(status().isConflict())
-       .andExpect(jsonPath("$.httpStatus", is(409)))
+       .andExpect(jsonPath("$.status", is(409)))
        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
+       .andExpect(jsonPath("$.error", is("Subline conflict")))
        .andExpect(jsonPath("$.details[0].message",
            is("SwissSublineNumber b0.Ic2-sibline already taken from 01.01.2000 to 31.12.2000 by "
                + sublineVersionSaved.getSlnid())))
@@ -179,8 +180,9 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
            .contentType(contentType)
            .content(mapper.writeValueAsString(sublineVersionModel)))
        .andExpect(status().isConflict())
-       .andExpect(jsonPath("$.httpStatus", is(409)))
+       .andExpect(jsonPath("$.status", is(409)))
        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
+       .andExpect(jsonPath("$.error", is("Subline conflict")))
        .andExpect(jsonPath("$.details[0].message",
            is("The mainline " + sublineVersionSaved.getMainlineSlnid() + " cannot be changed")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
@@ -223,8 +225,9 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
            .contentType(contentType)
            .content(mapper.writeValueAsString(sublineVersionModel)))
        .andExpect(status().isPreconditionFailed())
-       .andExpect(jsonPath("$.httpStatus", is(412)))
+       .andExpect(jsonPath("$.status", is(412)))
        .andExpect(jsonPath("$.message", is("A precondition fail occurred due to a business rule")))
+       .andExpect(jsonPath("$.error", is("Subline outside of the line range")))
        .andExpect(jsonPath("$.details[0].message",
            is("The subline range 01.01.2000-01.01.2001 is outside of the line b0.IC2-libne range 01.01.2000-31.12.2000")))
        .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
@@ -288,7 +291,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
     ErrorResponse errorResponse = mapper.readValue(
         mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
-    assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
     assertThat(errorResponse.getDetails()).size().isEqualTo(1);
     assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
@@ -301,8 +304,9 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/sublines/versions/123")
            .contentType(contentType))
        .andExpect(status().isNotFound())
-       .andExpect(jsonPath("$.httpStatus", is(404)))
+       .andExpect(jsonPath("$.status", is(404)))
        .andExpect(jsonPath("$.message", is("Entity not found")))
+       .andExpect(jsonPath("$.error", is("Not found")))
        .andExpect(jsonPath("$.details[0].message", is("Object with slnid 123 not found")))
        .andExpect(jsonPath("$.details[0].field", is("slnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))

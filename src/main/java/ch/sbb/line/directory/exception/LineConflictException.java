@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 public class LineConflictException extends AtlasException {
 
   private static final String CODE_PREFIX = "LIDI.LINE.CONFLICT.";
+  private static final String ERROR = "Line conflict";
 
   private final LineVersion newVersion;
   private final List<LineVersion> overlappingVersions;
@@ -23,8 +24,9 @@ public class LineConflictException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .httpStatus(HttpStatus.CONFLICT.value())
+                        .status(HttpStatus.CONFLICT.value())
                         .message("A conflict occurred due to a business rule")
+                        .error(ERROR)
                         .details(getErrorDetails())
                         .build();
   }
