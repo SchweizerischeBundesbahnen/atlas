@@ -1,0 +1,44 @@
+= ATLAS - LiDi API Guide
+:doctype: book
+:compat-mode:
+:page-layout!:
+:toc: left
+:toclevels: 2
+:sectanchors:
+:sectlinks:
+:linkattrs:
+:icons: font
+:table-caption!:
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:revnumber: {version}
+
+[[abstract]]
+
+== Overview
+
+=== Project information
+[width="60%" cols="18%,35%" ]
+|=================================
+|Application Name | {name}
+|Version | {version}
+|Build-Time| {buildTime}
+|=================================
+
+== Line
+
+include::{snippets}/line-controller-api-test/should-create-line-version/auto-section.adoc[]
+include::{snippets}/line-controller-api-test/should-update-line-version/auto-section.adoc[]
+include::{snippets}/line-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
+include::{snippets}/line-controller-api-test/should-return-line-range-smaller-than-subline-range-error-response/auto-section.adoc[]
+include::{snippets}/line-controller-api-test/should-return-not-found-error-response/auto-section.adoc[]
+include::{snippets}/line-controller-api-test/should-return-not-found-error-response-when-no-found-lines/auto-section.adoc[]
+
+== Subline
+
+include::{snippets}/subline-controller-api-test/should-create-subline/auto-section.adoc[]
+include::{snippets}/subline-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
+include::{snippets}/subline-controller-api-test/should-return-not-found-error-response-when-no-found-lines/auto-section.adoc[]
+include::{snippets}/subline-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
+include::{snippets}/subline-controller-api-test/should-return-sub-line-assign-to-line-conflict-error-response/auto-section.adoc[]
+include::{snippets}/subline-controller-api-test/should-return-subline-outside-of-line-range/auto-section.adoc[]
