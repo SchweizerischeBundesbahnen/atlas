@@ -14,14 +14,16 @@ import org.springframework.http.HttpStatus;
 public class SubLineAssignToLineConflictException extends AtlasException {
 
   private static final String CODE_PREFIX = "LIDI.SUBLINE.CONFLICT.";
+  private static final String ERROR = "Subline conflict";
 
   private final SublineVersion actualSubline;
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .httpStatus(HttpStatus.CONFLICT.value())
+                        .status(HttpStatus.CONFLICT.value())
                         .message("A conflict occurred due to a business rule")
+                        .error(ERROR)
                         .details(getErrorDetails())
                         .build();
   }
