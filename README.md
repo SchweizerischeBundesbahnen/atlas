@@ -24,6 +24,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 * Swagger UI: http://localhost:8082/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 * Api Docs as JSON: http://localhost:8082/v3/api-docs/
 * Api Docs as YAML: http://localhost:8082/v3/api-docs.yaml
+* Rest-api generated doc: http://localhost:8082/static/rest-api.html
 
 ### Development
 * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-dev
