@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 public class SublineOutsideOfLineRangeException extends AtlasException {
 
   private static final String CODE_PREFIX = "LIDI.SUBLINE.PRECONDITION.";
+  private static final String ERROR = "Subline outside of the line range";
 
   private final SublineVersion newVersion;
   private final String swissLineNumber;
@@ -24,8 +25,9 @@ public class SublineOutsideOfLineRangeException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .httpStatus(HttpStatus.PRECONDITION_FAILED.value())
+                        .status(HttpStatus.PRECONDITION_FAILED.value())
                         .message("A precondition fail occurred due to a business rule")
+                        .error(ERROR)
                         .details(getErrorDetails())
                         .build();
   }
