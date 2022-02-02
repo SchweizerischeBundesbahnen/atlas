@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 public class ConflictException extends AtlasException {
 
   private static final String CODE_PREFIX = "TTFN.CONFLICT.";
+  private static final String ERROR = "TimeTableFieldNumber conflict";
 
   private final Version newVersion;
   private final List<Version> overlappingVersions;
@@ -22,7 +23,8 @@ public class ConflictException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-        .httpStatus(HttpStatus.CONFLICT.value())
+        .status(HttpStatus.CONFLICT.value())
+        .error(ERROR)
         .message("A conflict occurred due to a business rule")
         .details(getErrorDetails())
         .build();
