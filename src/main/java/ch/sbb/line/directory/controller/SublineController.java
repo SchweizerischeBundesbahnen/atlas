@@ -63,7 +63,7 @@ public class SublineController implements SublinenApiV1 {
                                                       .map(this::toModel)
                                                       .collect(Collectors.toList());
     if(sublineVersionModels.isEmpty()){
-      throw new NotFoundException(NotFoundException.slnid,slnid);
+      throw new NotFoundException(NotFoundException.SLNID,slnid);
     }
     return sublineVersionModels;
   }
@@ -79,7 +79,7 @@ public class SublineController implements SublinenApiV1 {
   @Override
   public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id)
-        .orElseThrow(()-> new NotFoundException(NotFoundException.id,String.valueOf(id)));
+        .orElseThrow(()-> new NotFoundException(NotFoundException.ID,String.valueOf(id)));
     sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .collect(Collectors.toList());
