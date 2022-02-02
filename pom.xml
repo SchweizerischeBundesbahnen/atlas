@@ -140,7 +140,7 @@
 								<buildTime>${maven.build.timestamp}</buildTime>
 							</attributes>
 							<sourceDirectory>src/docs/asciidocs</sourceDirectory>
-							<outputDirectory>src/main/resources/static</outputDirectory>
+							<outputDirectory>target/classes/static</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
