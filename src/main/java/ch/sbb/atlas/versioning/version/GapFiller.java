@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class GapFiller {
 
   private GapFiller() {
-    // Helper class to fill gaps between Versionables
+    throw new IllegalStateException("Utility class");
   }
 
   public static void fillGapsInToVersioning(VersioningData vd) {

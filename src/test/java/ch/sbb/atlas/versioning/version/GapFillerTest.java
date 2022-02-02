@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 class GapFillerTest {
 
-
   private VersionableObject editedVersion;
   private VersionableObject currentVersion;
   private VersionableObject futureVersion;
@@ -49,6 +48,12 @@ class GapFillerTest {
     editedEntity = Entity.builder().id(1L).properties(List.of(property)).build();
   }
 
+  /**
+   * ToVersioning: |----------------------|-------------------------------|
+   * Version:                 1                          2
+   *
+   * Resultat: No Gap -> Nothing to do
+   */
   @Test
   void shouldDoNothingWhenNoGapsPresent() {
     // Given
@@ -62,6 +67,13 @@ class GapFillerTest {
     assertThat(versioningData.getObjectsToVersioning()).isEqualTo(initalToVersioning);
   }
 
+  /**
+   * ToVersioning: |---------------|         |------------------|
+   * Version:             1                          2
+   *
+   * Resultat: ToVersioning von Version 1 wird verlängert
+   *               |------------------------||------------------|
+   */
   @Test
   void shouldDoFillGapByProlongingPreviousVersion() {
     // Given
