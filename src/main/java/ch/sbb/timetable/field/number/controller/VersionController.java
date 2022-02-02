@@ -70,8 +70,14 @@ public class VersionController implements TimetableFieldNumberApiV1 {
 
   @Override
   public List<VersionModel> getAllVersionsVersioned(String ttfnId) {
-    return versionService.getAllVersionsVersioned(ttfnId).stream().map(this::toModel)
-                         .collect(Collectors.toList());
+    List<VersionModel> versionModels = versionService.getAllVersionsVersioned(ttfnId)
+                                               .stream()
+                                               .map(this::toModel)
+                                               .collect(Collectors.toList());
+    if (versionModels.isEmpty()){
+      throw new NotFoundException("ttfnId", ttfnId);
+    }
+    return versionModels;
   }
 
   @Override
