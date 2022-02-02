@@ -1,7 +1,6 @@
 package ch.sbb.timetable.field.number.controller;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,7 +41,7 @@ public class VersionControllerExceptionHandlingTest {
             .queryParam("size", "5")
             .queryParam("sort", "nam,asc"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.httpStatus").value(400))
+        .andExpect(jsonPath("$.status").value(400))
         .andExpect(jsonPath("$.message").value("Supplied sort field nam not found on TimetableFieldNumber"));
   }
 
