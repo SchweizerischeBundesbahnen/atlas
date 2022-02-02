@@ -2,6 +2,7 @@
   "ERROR": {
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Keine Berechtigung für diesen Inhalt",
+    "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}",
     "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden",
     "SERVER_REQUEST_FEHLER": "Momentan ist die Verbindung zur Datenbank nicht verfügbar. Bitte überprüfen Sie die Internetverbindung, schliessen den Browser und starten ATLAS erneut."
   },
