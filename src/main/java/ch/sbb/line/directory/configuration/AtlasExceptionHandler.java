@@ -6,11 +6,13 @@ import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
 import ch.sbb.line.directory.exception.AtlasException;
 import ch.sbb.line.directory.exception.NotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -37,6 +39,7 @@ public class AtlasExceptionHandler {
     return ResponseEntity.badRequest()
                          .body(ErrorResponse.builder()
                                             .status(HttpStatus.BAD_REQUEST.value())
+                                            .error("Property reference error")
                                             .message(
                                                 "Supplied sort field " + exception.getPropertyName()
                                                     + " not found on " + exception.getType()
@@ -59,11 +62,40 @@ public class AtlasExceptionHandler {
                          .body(ErrorResponse.builder()
                                             .status(
                                                 HttpStatus.PRECONDITION_FAILED.value())
+                                            .error("Stale object state error")
                                             .message(
                                                 exception.getMessage())
                                             .details(details)
                                             .build()
                          );
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ErrorResponse> methodArgumentNotValidException(
+      MethodArgumentNotValidException exception) {
+    List<Detail> details =
+        exception.getFieldErrors()
+                 .stream()
+                 .map(fieldError ->
+                     Detail.builder()
+                           .field(fieldError.getField())
+                           .message("Value {0} rejected due to {1}")
+                           .displayInfo(DisplayInfo.builder()
+                                                   .code("LIDI.CONSTRAINT")
+                                                   .with("rejectedValue",
+                                                       String.valueOf(
+                                                           fieldError.getRejectedValue()))
+                                                   .with("cause", fieldError.getDefaultMessage())
+                                                   .build())
+                           .build())
+                 .collect(Collectors.toList());
+    return ResponseEntity.badRequest()
+                         .body(ErrorResponse.builder()
+                                            .status(HttpStatus.BAD_REQUEST.value())
+                                            .error("Method argument not valid error")
+                                            .message("Constraint for requestbody was violated")
+                                            .details(details)
+                                            .build());
   }
 
 
