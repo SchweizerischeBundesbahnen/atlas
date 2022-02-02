@@ -70,7 +70,7 @@ public class SublineService {
 
   public void deleteById(Long id) {
     if (!sublineVersionRepository.existsById(id)) {
-      throw new NotFoundException(NotFoundException.id,String.valueOf(id));
+      throw new NotFoundException(NotFoundException.ID,String.valueOf(id));
     }
     sublineVersionRepository.deleteById(id);
   }
@@ -79,7 +79,7 @@ public class SublineService {
     List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         slnid);
     if (sublineVersions.isEmpty()) {
-      throw new NotFoundException(NotFoundException.slnid,slnid);
+      throw new NotFoundException(NotFoundException.SLNID,slnid);
     }
     sublineVersionRepository.deleteAll(sublineVersions);
   }
