@@ -65,7 +65,7 @@ public class VersionController implements TimetableFieldNumberApiV1 {
     return versionService.findById(id)
                          .map(this::toModel)
                          .orElseThrow(() ->
-                             new NotFoundException(NotFoundException.id, String.valueOf(id)));
+                             new NotFoundException(NotFoundException.ID, String.valueOf(id)));
   }
 
   @Override
@@ -84,7 +84,7 @@ public class VersionController implements TimetableFieldNumberApiV1 {
   @Override
   public List<VersionModel> updateVersionWithVersioning(Long id, VersionModel newVersion) {
     Version versionToUpdate = versionService.findById(id).orElseThrow(() ->
-        new NotFoundException(NotFoundException.id, String.valueOf(id)));
+        new NotFoundException(NotFoundException.ID, String.valueOf(id)));
     versionService.updateVersion(versionToUpdate, toEntity(newVersion));
     return getAllVersionsVersioned(versionToUpdate.getTtfnid());
   }
