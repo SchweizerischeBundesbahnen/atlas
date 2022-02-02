@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .mvcMatchers("/swagger-ui/**").permitAll()
                 .mvcMatchers("/v3/api-docs/**").permitAll()
+                .mvcMatchers("/static/rest-api.html").permitAll()
 
                 // Method security may also be configured using the annotations <code>@PreAuthorize</code> and <code>@PostAuthorize</code>
                 // that permit to set fine grained control using the Spring Expression Language:
