@@ -15,7 +15,7 @@ public final class GapFiller {
 
   public static void fillGapsInToVersioning(VersioningData vd) {
     if (VersioningHelper.isThereGapBetweenVersions(vd.getObjectsToVersioning())) {
-      log.info("Found a gap(s) in the update period ... hold on we will patch them");
+      log.info("Found a gap(s) in the update period ... hold on, we will patch them");
       fillGapsInVersions(vd);
     } else {
       log.info("No gap(s) present in the update period, excellent ...");
@@ -30,7 +30,10 @@ public final class GapFiller {
       if (!VersioningHelper.areVersionsSequential(current, next)) {
         LocalDate prolongToDate = DateHelper.min(next.getValidFrom().minusDays(1),
             versioningData.getEditedValidTo());
-        log.info("Found a gap from {} to {}. Prolonging to {}", current.getValidTo(),
+        log.info(
+            "Found a gap from version {} (validTo: {}) to version {} (validFrom: {}). Prolonging to {}",
+            i,
+            current.getValidTo(), i + 1,
             next.getValidFrom(), prolongToDate);
         current.setValidTo(prolongToDate);
       }
