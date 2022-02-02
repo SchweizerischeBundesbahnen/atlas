@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.timetable.field.number.IntegrationTest;
 import ch.sbb.timetable.field.number.api.ErrorResponse;
 import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.Version;
@@ -21,22 +20,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-
-@IntegrationTest
-@AutoConfigureMockMvc(addFilters = false)
-public class VersionControllerOptimisticLockingTest {
-
-  @Autowired
-  private MockMvc mockMvc;
-
-  @Autowired
-  private VersionController versionController;
+public class VersionControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private VersionRepository versionRepository;
@@ -61,7 +49,7 @@ public class VersionControllerOptimisticLockingTest {
 
   @Test
   void shouldReturnOneTimetableFieldNumber() throws Exception {
-    mockMvc.perform(get("/v1/field-numbers")
+    mvc.perform(get("/v1/field-numbers")
                .queryParam("page", "0")
                .queryParam("size", "5")
                .queryParam("sort", "swissTimetableFieldNumber,asc"))
@@ -72,7 +60,7 @@ public class VersionControllerOptimisticLockingTest {
   @Test
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     // Given
-    String responseBody = mockMvc.perform(
+    String responseBody = mvc.perform(
                                      get("/v1/field-numbers/versions/" + version.getTtfnid()))
                                  .andExpect(status().isOk())
                                  .andReturn()
@@ -87,11 +75,11 @@ public class VersionControllerOptimisticLockingTest {
 
     // When first update it is ok
     versionModel.setComment("Neuer Kommentar");
-    mockMvc.perform(createUpdateRequest(versionModel)).andExpect(status().isOk());
+    mvc.perform(createUpdateRequest(versionModel)).andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
     versionModel.setComment("Neuer Kommentar wurde erfasst");
-    MvcResult mvcResult = mockMvc.perform(createUpdateRequest(versionModel))
+    MvcResult mvcResult = mvc.perform(createUpdateRequest(versionModel))
                                  .andExpect(status().isPreconditionFailed())
                                  .andReturn();
     ErrorResponse errorResponse = objectMapper.readValue(
