@@ -34,7 +34,7 @@ class AtlasExceptionHandlerTest {
     // Then
     assertThat(errorResponseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     assertThat(errorResponseResponseEntity.getBody()).isNotNull();
-    assertThat(errorResponseResponseEntity.getBody().getHttpStatus()).isEqualTo(
+    assertThat(errorResponseResponseEntity.getBody().getStatus()).isEqualTo(
         HttpStatus.BAD_REQUEST.value());
     assertThat(errorResponseResponseEntity.getBody().getMessage()).isEqualTo(
         "Constraint for requestbody was violated");
@@ -45,6 +45,6 @@ class AtlasExceptionHandlerTest {
                                           .getDetails()
                                           .get(0)
                                           .getDisplayInfo()
-                                          .getCode()).isEqualTo("TTFN.CONSTRAINT");
+                                          .getCode()).isEqualTo("ERROR.CONSTRAINT");
   }
 }

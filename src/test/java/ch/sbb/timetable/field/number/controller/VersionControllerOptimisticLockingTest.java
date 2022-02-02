@@ -97,7 +97,7 @@ public class VersionControllerOptimisticLockingTest {
     ErrorResponse errorResponse = objectMapper.readValue(
         mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
-    assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
     assertThat(errorResponse.getDetails()).size().isEqualTo(1);
     assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");

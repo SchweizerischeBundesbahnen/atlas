@@ -20,7 +20,7 @@ class ConflictExceptionTest {
     ErrorResponse errorResponse = conflictException.getErrorResponse();
 
     // Then
-    assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.CONFLICT.value());
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
     assertThat(errorResponse.getMessage()).isEqualTo("A conflict occurred due to a business rule");
     assertThat(errorResponse.getDetails()).hasSize(2);
 
