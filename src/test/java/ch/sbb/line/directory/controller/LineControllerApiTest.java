@@ -240,6 +240,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getDetails()).size().isEqualTo(1);
     assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
+    assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
   }
 
   @Test
