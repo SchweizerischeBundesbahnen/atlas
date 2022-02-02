@@ -17,6 +17,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
+import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
@@ -151,7 +152,7 @@ class LineServiceTest {
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(List.of());
 
     //When & Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+    assertThatExceptionOfType(NotFoundException.class).isThrownBy(
         () -> lineService.deleteAll(slnid));
   }
 
@@ -192,7 +193,7 @@ class LineServiceTest {
     when(lineVersionRepository.existsById(ID)).thenReturn(false);
 
     // When
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
+    assertThatExceptionOfType(NotFoundException.class).isThrownBy(
         () -> lineService.deleteById(ID));
 
     // Then

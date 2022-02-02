@@ -10,6 +10,7 @@ import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.service.LineService;
 import java.time.LocalDate;
@@ -47,14 +48,18 @@ public class LineController implements LineApiV1 {
   public LineModel getLine(String slnid) {
     return lineService.findLine(slnid)
         .map(this::toModel)
-        .orElseThrow(NotFoundException.getInstance());
+        .orElseThrow(() -> new NotFoundException(NotFoundException.SLNID,slnid));
   }
 
   @Override
   public List<LineVersionModel> getLineVersions(String slnid) {
-    return lineService.findLineVersions(slnid).stream()
-        .map(this::toModel)
-        .collect(Collectors.toList());
+    List<LineVersionModel> lineVersionModels = lineService.findLineVersions(slnid).stream()
+                                                .map(this::toModel)
+                                                .collect(Collectors.toList());
+    if(lineVersionModels.isEmpty()){
+      throw new NotFoundException(NotFoundException.SLNID,slnid);
+    }
+    return lineVersionModels;
   }
 
   private LineModel toModel(Line lineVersion) {
@@ -82,7 +87,7 @@ public class LineController implements LineApiV1 {
   @Override
   public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id)
-        .orElseThrow(NotFoundException.getInstance());
+        .orElseThrow(()-> new NotFoundException(NotFoundException.ID,String.valueOf(id)));
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .collect(Collectors.toList());

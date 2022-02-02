@@ -22,7 +22,7 @@ public class TemporaryLineValidationExceptionTest {
           )
       );
     } catch (TemporaryLineValidationException exception) {
-      assertThat(exception.getErrorResponse().getHttpStatus()).isEqualTo(422);
+      assertThat(exception.getErrorResponse().getStatus()).isEqualTo(422);
       assertThat(exception.getErrorResponse().getMessage()).isEqualTo("Business rule validation failed");
       assertThat(exception.getErrorResponse().getDetails().size()).isEqualTo(3);
       assertThat(exception.getErrorResponse().getDetails().get(0).getField()).isEqualTo("validTo");
@@ -48,7 +48,7 @@ public class TemporaryLineValidationExceptionTest {
           )
       );
     } catch (TemporaryLineValidationException exception) {
-      assertThat(exception.getErrorResponse().getHttpStatus()).isEqualTo(422);
+      assertThat(exception.getErrorResponse().getStatus()).isEqualTo(422);
       assertThat(exception.getErrorResponse().getMessage()).isEqualTo("Business rule validation failed");
       assertThat(exception.getErrorResponse().getDetails().size()).isEqualTo(1);
       assertThat(exception.getErrorResponse().getDetails().get(0).getField()).isEqualTo("validTo");
