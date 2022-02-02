@@ -81,7 +81,7 @@ public class AtlasExceptionHandler {
                            .field(fieldError.getField())
                            .message("Value {0} rejected due to {1}")
                            .displayInfo(DisplayInfo.builder()
-                                                   .code("LIDI.CONSTRAINT")
+                                                   .code("ERROR.CONSTRAINT")
                                                    .with("rejectedValue",
                                                        String.valueOf(
                                                            fieldError.getRejectedValue()))
