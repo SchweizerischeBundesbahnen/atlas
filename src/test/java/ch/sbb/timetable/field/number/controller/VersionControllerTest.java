@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -12,9 +11,9 @@ import ch.sbb.timetable.field.number.api.TimetableFieldNumberContainer;
 import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.TimetableFieldNumber;
 import ch.sbb.timetable.field.number.entity.Version;
+import ch.sbb.timetable.field.number.exceptions.NotFoundException;
 import ch.sbb.timetable.field.number.service.VersionService;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +26,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 public class VersionControllerTest {
 
@@ -106,8 +103,8 @@ public class VersionControllerTest {
     // When
 
     // Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-        () -> versionController.getVersion(1L)).withMessage(HttpStatus.NOT_FOUND.toString());
+    assertThatExceptionOfType(NotFoundException.class).isThrownBy(
+        () -> versionController.getVersion(1L));
   }
 
   @Test
@@ -136,8 +133,8 @@ public class VersionControllerTest {
     // When
 
     // Then
-    assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-        () -> versionController.deleteVersions(ttfnid)).withMessage(HttpStatus.NOT_FOUND.toString());
+    assertThatExceptionOfType(NotFoundException.class).isThrownBy(
+        () -> versionController.deleteVersions(ttfnid));
   }
 
   private static TimetableFieldNumber createOverviewEntity() {
