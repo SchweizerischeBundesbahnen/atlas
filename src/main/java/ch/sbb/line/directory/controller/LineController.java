@@ -48,7 +48,7 @@ public class LineController implements LineApiV1 {
   public LineModel getLine(String slnid) {
     return lineService.findLine(slnid)
         .map(this::toModel)
-        .orElseThrow(() -> new NotFoundException("slnid",slnid));
+        .orElseThrow(() -> new NotFoundException(NotFoundException.slnid,slnid));
   }
 
   @Override
@@ -57,7 +57,7 @@ public class LineController implements LineApiV1 {
                                                 .map(this::toModel)
                                                 .collect(Collectors.toList());
     if(lineVersionModels.isEmpty()){
-      throw new NotFoundException("slnid",slnid);
+      throw new NotFoundException(NotFoundException.slnid,slnid);
     }
     return lineVersionModels;
   }
@@ -87,7 +87,7 @@ public class LineController implements LineApiV1 {
   @Override
   public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id)
-        .orElseThrow(()-> new NotFoundException("id",String.valueOf(id)));
+        .orElseThrow(()-> new NotFoundException(NotFoundException.id,String.valueOf(id)));
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .collect(Collectors.toList());

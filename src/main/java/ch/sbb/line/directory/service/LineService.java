@@ -69,7 +69,7 @@ public class LineService {
 
   public void deleteById(Long id) {
     if (!lineVersionRepository.existsById(id)) {
-      throw new NotFoundException("id",String.valueOf(id));
+      throw new NotFoundException(NotFoundException.id,String.valueOf(id));
     }
     lineVersionRepository.deleteById(id);
   }
@@ -77,7 +77,7 @@ public class LineService {
   public void deleteAll(String slnid) {
     List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
     if (currentVersions.isEmpty()) {
-      throw new NotFoundException("slnid", slnid);
+      throw new NotFoundException(NotFoundException.slnid, slnid);
     }
     lineVersionRepository.deleteAll(currentVersions);
   }
