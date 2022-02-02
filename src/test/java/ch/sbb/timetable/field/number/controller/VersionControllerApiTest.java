@@ -1,12 +1,12 @@
 package ch.sbb.timetable.field.number.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.timetable.field.number.IntegrationTest;
 import ch.sbb.timetable.field.number.api.ErrorResponse;
 import ch.sbb.timetable.field.number.api.VersionModel;
 import ch.sbb.timetable.field.number.entity.Version;
@@ -21,22 +21,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-@IntegrationTest
-@AutoConfigureMockMvc(addFilters = false)
-public class VersionControllerOptimisticLockingTest {
-
-  @Autowired
-  private MockMvc mockMvc;
-
-  @Autowired
-  private VersionController versionController;
+public class VersionControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private VersionRepository versionRepository;
@@ -61,23 +51,23 @@ public class VersionControllerOptimisticLockingTest {
 
   @Test
   void shouldReturnOneTimetableFieldNumber() throws Exception {
-    mockMvc.perform(get("/v1/field-numbers")
-               .queryParam("page", "0")
-               .queryParam("size", "5")
-               .queryParam("sort", "swissTimetableFieldNumber,asc"))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.totalCount").value(1));
+    mvc.perform(get("/v1/field-numbers")
+           .queryParam("page", "0")
+           .queryParam("size", "5")
+           .queryParam("sort", "swissTimetableFieldNumber,asc"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$.totalCount").value(1));
   }
 
   @Test
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     // Given
-    String responseBody = mockMvc.perform(
-                                     get("/v1/field-numbers/versions/" + version.getTtfnid()))
-                                 .andExpect(status().isOk())
-                                 .andReturn()
-                                 .getResponse()
-                                 .getContentAsString();
+    String responseBody = mvc.perform(
+                                 get("/v1/field-numbers/versions/" + version.getTtfnid()))
+                             .andExpect(status().isOk())
+                             .andReturn()
+                             .getResponse()
+                             .getContentAsString();
     List<VersionModel> response = objectMapper.readValue(responseBody,
         new TypeReference<>() {
         });
@@ -87,20 +77,56 @@ public class VersionControllerOptimisticLockingTest {
 
     // When first update it is ok
     versionModel.setComment("Neuer Kommentar");
-    mockMvc.perform(createUpdateRequest(versionModel)).andExpect(status().isOk());
+    mvc.perform(createUpdateRequest(versionModel)).andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
     versionModel.setComment("Neuer Kommentar wurde erfasst");
-    MvcResult mvcResult = mockMvc.perform(createUpdateRequest(versionModel))
-                                 .andExpect(status().isPreconditionFailed())
-                                 .andReturn();
+    MvcResult mvcResult = mvc.perform(createUpdateRequest(versionModel))
+                             .andExpect(status().isPreconditionFailed())
+                             .andReturn();
     ErrorResponse errorResponse = objectMapper.readValue(
         mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
-    assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
     assertThat(errorResponse.getDetails()).size().isEqualTo(1);
     assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
+  }
+
+  @Test
+  void shouldReturnNotFoundErrorResponse() throws Exception {
+    // Given
+    mvc.perform(get("/v1/field-numbers/" + 123)
+           .contentType(contentType))
+       .andExpect(status().isNotFound())
+       .andExpect(jsonPath("$.status", is(404)))
+       .andExpect(jsonPath("$.message", is("Entity not found")))
+       .andExpect(jsonPath("$.error", is("Not found")))
+       .andExpect(jsonPath("$.details[0].message", is("Object with id 123 not found")))
+       .andExpect(jsonPath("$.details[0].field", is("id")))
+       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("id")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
+  }
+
+  @Test
+  void shouldReturnNotFoundErrorResponseWhenSearchItemNotFound() throws Exception {
+    // Given
+    mvc.perform(get("/v1/field-numbers/versions/" + 123)
+           .contentType(contentType))
+       .andExpect(status().isNotFound())
+       .andExpect(jsonPath("$.status", is(404)))
+       .andExpect(jsonPath("$.message", is("Entity not found")))
+       .andExpect(jsonPath("$.error", is("Not found")))
+       .andExpect(jsonPath("$.details[0].message", is("Object with ttfnId 123 not found")))
+       .andExpect(jsonPath("$.details[0].field", is("ttfnId")))
+       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("ttfnId")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
   }
 
   private MockHttpServletRequestBuilder createUpdateRequest(VersionModel versionModel)

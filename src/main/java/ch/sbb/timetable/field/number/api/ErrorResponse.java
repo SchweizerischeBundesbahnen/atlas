@@ -23,14 +23,15 @@ import lombok.RequiredArgsConstructor;
 public class ErrorResponse {
 
   @Schema(description = "HTTP Status Code", example = "400")
-  private int httpStatus;
+  private int status;
 
   @Schema(description = "Summary of error", example = "Validation error")
   private String message;
 
-  @Schema(description = "List of error details")
-  @NotNull
-  @Builder.Default
+  @Schema(description = "Error", example = "Method Not Allowed", nullable = true)
+  private String error;
+
+  @Schema(description = "List of error details", nullable = true)
   private List<Detail> details = new ArrayList<>();
 
   @AllArgsConstructor
@@ -103,7 +104,6 @@ public class ErrorResponse {
   @RequiredArgsConstructor
   @Getter
   public static class Parameter {
-
     private final String key;
     private final String value;
   }
