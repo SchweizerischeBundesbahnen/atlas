@@ -1,6 +1,6 @@
 <div class="snack-bar-error-container">
   <div class="snack-bar-error-container-text" *ngIf="!notificationService.showOnlyCode">
-    <div class="data" *ngIf="data?.details?.length > 1">
+    <div class="data">
       <ul *ngFor="let detail of data.details">
         <li>
           {{
@@ -10,12 +10,6 @@
         </li>
       </ul>
     </div>
-  </div>
-  <div class="snack-bar-error-generic-text" *ngIf="data?.details?.length === 1">
-    {{
-      data.details[0].displayInfo.code
-        | translate: notificationService.arrayParametersToObject(data.details[0].displayInfo)
-    }}
   </div>
   <div class="snack-bar-error-generic-text" *ngIf="notificationService.showOnlyCode">
     {{ this.notificationService.displayCode | translate }}
