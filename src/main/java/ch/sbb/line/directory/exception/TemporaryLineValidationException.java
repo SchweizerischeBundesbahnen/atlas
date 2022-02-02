@@ -22,13 +22,16 @@ public class TemporaryLineValidationException extends AtlasException {
   private static final String CODE_NO_RELATING_VERSIONS = "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY";
   private static final String CODE_WITH_RELATING_VERSIONS = "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY";
 
+  private static final String ERROR = "Temporary line validation";
+
   private final List<LineVersion> relatingVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .httpStatus(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                        .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
                         .message("Business rule validation failed")
+                        .error(ERROR)
                         .details(getErrorDetails())
                         .build();
   }

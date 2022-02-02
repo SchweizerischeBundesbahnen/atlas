@@ -2,13 +2,13 @@ package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import ch.sbb.line.directory.controller.NotFoundException;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -70,7 +70,7 @@ public class SublineService {
 
   public void deleteById(Long id) {
     if (!sublineVersionRepository.existsById(id)) {
-      throw NotFoundException.getInstance().get();
+      throw new NotFoundException(NotFoundException.ID,String.valueOf(id));
     }
     sublineVersionRepository.deleteById(id);
   }
@@ -79,7 +79,7 @@ public class SublineService {
     List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         slnid);
     if (sublineVersions.isEmpty()) {
-      throw NotFoundException.getInstance().get();
+      throw new NotFoundException(NotFoundException.SLNID,slnid);
     }
     sublineVersionRepository.deleteAll(sublineVersions);
   }

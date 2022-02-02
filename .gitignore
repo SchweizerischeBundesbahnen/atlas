@@ -36,3 +36,5 @@ build/
 \!.idea/codeStyles/codeStyleConfig.xml
 /scripts/~$*
 http-requests/http-client.private.env.json
+/src/main/resources/static/docs/
+/src/main/resources/static/

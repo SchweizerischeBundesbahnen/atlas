@@ -1,0 +1,65 @@
+= ATLAS - LiDi API Guide
+:doctype: book
+:compat-mode:
+:page-layout!:
+:toc: left
+:toclevels: 1
+:sectanchors:
+:sectlinks:
+:linkattrs:
+:icons: font
+:table-caption!:
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:revnumber: {version}
+
+[[abstract]]
+
+= Overview
+
+=== Project information
+[width="60%" cols="18%,35%" ]
+|=================================
+|Application Name | {name}
+|Version | {version}
+|Build-Time| {buildTime}
+|=================================
+
+= Line
+
+== Create Line - Successfully
+include::{snippets}/line-controller-api-test/should-create-line-version/auto-section.adoc[]
+
+== Update Line - Successfully
+include::{snippets}/line-controller-api-test/should-update-line-version/auto-section.adoc[]
+
+== Update Line with conflict error
+include::{snippets}/line-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
+
+== Create Line with subline range error
+include::{snippets}/line-controller-api-test/should-return-line-range-smaller-than-subline-range-error-response/auto-section.adoc[]
+
+== Update Line with not found error
+include::{snippets}/line-controller-api-test/should-return-not-found-error-response/auto-section.adoc[]
+
+== Get Line with not found error
+include::{snippets}/line-controller-api-test/should-return-not-found-error-response-when-no-found-lines/auto-section.adoc[]
+
+= Subline
+== Create Subline - Successfully
+include::{snippets}/subline-controller-api-test/should-create-subline/auto-section.adoc[]
+
+== Create Subline with conflict error
+include::{snippets}/subline-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
+
+== Get Subline with not found error
+include::{snippets}/subline-controller-api-test/should-return-not-found-error-response-when-no-found-lines/auto-section.adoc[]
+
+== Update Subline with optimistic locking error
+include::{snippets}/subline-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
+
+== Update Subline with conflict error
+include::{snippets}/subline-controller-api-test/should-return-sub-line-assign-to-line-conflict-error-response/auto-section.adoc[]
+
+== Create Subline with line range error
+include::{snippets}/subline-controller-api-test/should-return-subline-outside-of-line-range/auto-section.adoc[]
