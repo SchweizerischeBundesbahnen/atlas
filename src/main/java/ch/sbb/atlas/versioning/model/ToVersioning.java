@@ -2,31 +2,35 @@ package ch.sbb.atlas.versioning.model;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import java.time.LocalDate;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-@Data
-@AllArgsConstructor
 @Builder
+@Data
 public class ToVersioning {
+
+  private LocalDate validFrom;
+
+  private LocalDate validTo;
 
   private Versionable versionable;
 
   private Entity entity;
 
-  public LocalDate getValidFrom() {
-    if (this.versionable == null) {
+  public ToVersioning(Versionable versionable, Entity entity) {
+    if (versionable == null) {
       throw new VersioningException("Versionable object is null.");
     }
-    return this.versionable.getValidFrom();
+    this.versionable = versionable;
+    this.entity = entity;
+    this.validFrom = versionable.getValidFrom();
+    this.validTo = versionable.getValidTo();
   }
 
-  public LocalDate getValidTo() {
-    if (this.versionable == null) {
-      throw new VersioningException("Versionable object is null.");
+  public static class ToVersioningBuilder {
+
+    public ToVersioning build() {
+      return new ToVersioning(this.versionable, this.entity);
     }
-    return this.versionable.getValidTo();
   }
-
 }

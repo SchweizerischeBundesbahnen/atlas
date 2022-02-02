@@ -1,6 +1,5 @@
 package ch.sbb.atlas.versioning.version;
 
-import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.ToVersioning;
@@ -19,9 +18,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     log.info("Apply versioning over multiple found entities.");
     List<ToVersioning> toVersioningList = vd.getObjectToVersioningFound();
 
-    if (VersioningHelper.isThereGapBetweenVersions(toVersioningList)) {
-      fillGapsInVersions(vd);
-    }
+    GapFiller.fillGapsInToVersioning(vd);
     if (VersioningHelper.isEditedVersionExactMatchingMultipleEntities(vd.getEditedValidFrom(),
         vd.getEditedValidTo(),
         toVersioningList)) {
@@ -166,17 +163,6 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
             lastVersion.getValidTo(), lastVersion, vd.getEditedEntity()));
     applyVersioningBetweenLeftAndRightBorder(vd, toVersioningList, versionedObjects);
     return versionedObjects;
-  }
-
-  private void fillGapsInVersions(VersioningData versioningData) {
-    for (int i = 0; i < versioningData.getObjectsToVersioning().size() - 1; i++) {
-      ToVersioning current = versioningData.getObjectsToVersioning().get(i);
-      ToVersioning next = versioningData.getObjectsToVersioning().get(i + 1);
-
-      if (!VersioningHelper.areVersionsSequential(current, next)) {
-        current.getVersionable().setValidTo(DateHelper.min(next.getValidFrom().minusDays(1), versioningData.getEditedValidTo()));
-      }
-    }
   }
 
   private void applyVersioningOnLeftBorderWhenValidFromIsAfterCurrentValidFrom(VersioningData vd,
