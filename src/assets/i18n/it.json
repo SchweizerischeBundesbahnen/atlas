@@ -2,6 +2,7 @@
   "ERROR": {
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Nessuna autorizzazione per visualizzare questo contenuto ",
+    "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}",
     "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden",
     "SERVER_REQUEST_FEHLER": "Al momento la connessione alla banca dati non è disponibile. Verificare la connessione Internet, chiudere il browser e riavviare DiDok."
   },
