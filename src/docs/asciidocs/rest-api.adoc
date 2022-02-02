@@ -28,8 +28,14 @@
 = Timetable field number
 
 == Search versions - Successfully
-include::{snippets}/version-controller-optimistic-locking-test/should-return-one-timetable-field-number/auto-section.adoc[]
+include::{snippets}/version-controller-api-test/should-return-one-timetable-field-number/auto-section.adoc[]
 
-== Update version with rest optimistic locking exception
-include::{snippets}/version-controller-optimistic-locking-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
+== Update version with rest optimistic locking error
+include::{snippets}/version-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
+
+== Get version with not found error
+include::{snippets}/version-controller-api-test/should-return-not-found-error-response/auto-section.adoc[]
+
+== Get versions with not found error
+include::{snippets}/version-controller-api-test/should-return-not-found-error-response-when-search-item-not-found/auto-section.adoc[]
 
