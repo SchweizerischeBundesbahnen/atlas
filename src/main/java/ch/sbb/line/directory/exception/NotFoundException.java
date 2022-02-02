@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class NotFoundException extends AtlasException {
 
-  public static final String id = "id";
-  public static final String slnid = "slnid";
+  public static final String ID = "id";
+  public static final String SLNID = "slnid";
 
   private static final String CODE = "ERROR.ENTITY_NOT_FOUND";
   private static final String ERROR = "Not found";
