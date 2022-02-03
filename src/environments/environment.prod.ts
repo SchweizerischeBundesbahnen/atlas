@@ -25,8 +25,7 @@ const authConfig: AuthConfig = {
   // This is required, since Azure AD uses different domains in their issuer configuration
   strictDiscoveryDocumentValidation: false,
   clientId: process.env.API_CLIENT_ID!,
-  redirectUri:
-    location.origin + location.pathname.substring(0, location.pathname.indexOf('/', 1) + 1),
+  redirectUri: location.origin,
   responseType: 'code',
   scope: process.env.API_SCOPE!,
 };
