@@ -1,4 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { RGB_HEX_COLOR_REGEX } from '../color.service';
 
@@ -7,7 +15,8 @@ import { RGB_HEX_COLOR_REGEX } from '../color.service';
   templateUrl: './rgb-picker.component.html',
   styleUrls: ['./rgb-picker.component.scss', '../color-indicator.scss'],
 })
-export class RgbPickerComponent implements OnInit {
+export class RgbPickerComponent implements OnInit, OnChanges {
+  @ViewChild('input') someInput!: ElementRef;
   @Input() attributeName!: string;
   @Input() label!: string;
   @Input() formGroup!: FormGroup;
@@ -18,9 +27,13 @@ export class RgbPickerComponent implements OnInit {
     this.color = this.formControl?.value;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.color = changes.formGroup.currentValue.value[this.attributeName];
+  }
+
   onChangeColor(color: string) {
     if (color) {
-      this.formControl.patchValue(color);
+      this.formControl.patchValue(color.toUpperCase());
     } else {
       this.formControl.patchValue(null);
     }
