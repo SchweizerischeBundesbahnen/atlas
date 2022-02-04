@@ -10,9 +10,9 @@ https://confluence.sbb.ch/display/MON/Splunk
 
 | Index                                       | Umgebung                       |
 | ------------------------------------------- | ------------------------------ |
-| index=sbb_applications_internal_dev_events  | Index für Dev Umgebung         |
-| index=sbb_applications_internal_test_events | Index für Test Umgebung        |
-| index=sbb_applications_internal_int_events  | Index für Integration Umgebung |
+| index=sbb_atlas_internal_dev_events         | Index für Dev Umgebung         |
+| index=sbb_atlas_internal_test_events        | Index für Test Umgebung        |
+| index=sbb_atlas_internal_int_events         | Index für Integration Umgebung |
 | index=sbb_applications_internal_prod_events | Index für Produktion Umgebung  |
 
 ## More filter possibilities
@@ -38,7 +38,7 @@ template:
 with values-dev containing the environment-specific value:
 
 ```yaml
-splunkIndex: 'sbb_applications_internal_dev_events'
+splunkIndex: 'sbb_atlas_internal_dev_events'
 ```
 
 ## Logging Pattern
