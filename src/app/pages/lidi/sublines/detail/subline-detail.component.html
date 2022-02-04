@@ -159,7 +159,6 @@
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.SUBLINE.DESCRIPTION' | translate }}</mat-label>
         <input
-          required
           matInput
           formControlName="description"
           data-cy="description"
@@ -176,7 +175,7 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.SUBLINE.NUMBER' | translate }}</mat-label>
-        <input required matInput formControlName="number" data-cy="number" placeholder="IC2" />
+        <input matInput formControlName="number" data-cy="number" placeholder="IC2" />
         <mat-error *ngFor="let validationError of this.getValidation('number')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -189,7 +188,6 @@
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.LONG_NAME' | translate }}</mat-label>
         <input
-          required
           matInput
           formControlName="longName"
           data-cy="longName"

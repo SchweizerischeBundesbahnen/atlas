@@ -181,7 +181,7 @@
     <div class="row mb-3">
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.LINE.NUMBER' | translate }}</mat-label>
-        <input equired matInput formControlName="number" data-cy="number" placeholder="IC2" />
+        <input matInput formControlName="number" data-cy="number" placeholder="IC2" />
         <mat-error *ngFor="let validationError of this.getValidation('number')">
           {{
             validationError.error | translate: { length: validationError.value['requiredLength'] }
@@ -192,7 +192,6 @@
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.ALTERNATIVE_NAME' | translate }}</mat-label>
         <input
-          required
           matInput
           formControlName="alternativeName"
           data-cy="alternativeName"
@@ -208,7 +207,6 @@
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.COMBINATION_NAME' | translate }}</mat-label>
         <input
-          required
           matInput
           formControlName="combinationName"
           data-cy="combinationName"
