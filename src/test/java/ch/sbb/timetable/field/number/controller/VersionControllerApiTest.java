@@ -2,6 +2,7 @@ package ch.sbb.timetable.field.number.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -105,6 +106,46 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("id")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
+  }
+
+  @Test
+  void shouldReturnValidationNoChangesErrorResponse() throws Exception {
+    // Given
+    Version secondVersion = Version.builder().ttfnid("ch:1:ttfnid:100000")
+                                   .description("FPFN Description")
+                                   .number("10.100")
+                                   .status(Status.ACTIVE)
+                                   .swissTimetableFieldNumber("b0.100")
+                                   .validFrom(LocalDate.of(2021, 1, 1))
+                                   .validTo(LocalDate.of(2021, 12, 31))
+                                   .businessOrganisation("BLS")
+                                   .build();
+    versionRepository.save(secondVersion);
+    //When
+    VersionModel versionModel = VersionModel.builder()
+                                            .validFrom(version.getValidFrom())
+                                            .validTo(version.getValidTo())
+                                            .id(version.getId())
+                                            .ttfnid(version.getTtfnid())
+                                            .description(version.getDescription())
+                                            .number(version.getNumber())
+                                            .status(version.getStatus())
+                                            .swissTimetableFieldNumber(
+                                                version.getSwissTimetableFieldNumber())
+                                            .businessOrganisation(version.getBusinessOrganisation())
+                                            .build();
+
+    //Then
+
+    mvc.perform(post("/v1/field-numbers/versions/" + versionModel.getId())
+           .contentType(MediaType.APPLICATION_JSON)
+           .content(mapper.writeValueAsString(versionModel)))
+       .andExpect(jsonPath("$.status", is(520)))
+       .andExpect(jsonPath("$.message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.error", is("No changes after versioning")))
+       .andExpect(jsonPath("$.details[0].message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.details[0].field", is(nullValue())))
+       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
   }
 
   @Test

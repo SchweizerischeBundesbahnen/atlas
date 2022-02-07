@@ -33,6 +33,9 @@ include::{snippets}/version-controller-api-test/should-return-one-timetable-fiel
 == Update version with rest optimistic locking error
 include::{snippets}/version-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
 
+== Update version with no changes after versioning error
+include::{snippets}/version-controller-api-test/should-return-validation-no-changes-error-response/auto-section.adoc[]
+
 == Get version with not found error
 include::{snippets}/version-controller-api-test/should-return-not-found-error-response/auto-section.adoc[]
 
