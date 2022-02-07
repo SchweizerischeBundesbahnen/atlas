@@ -8,6 +8,7 @@ import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.ToVersioning;
+import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningData;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -1918,6 +1919,183 @@ public class VersioningHelperTest {
 
     //when
     boolean result = VersioningHelper.isCurrentVersionFirstVersion(versioningData);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenThereIsAtLeastOneNewEntity() {
+    //given
+    VersionedObject versionedObject1 =
+        VersionedObject.builder()
+                       .validFrom(LocalDate.of(2022, 1, 1))
+                       .validTo(LocalDate.of(2023, 12, 31))
+                       .entity(Entity.builder()
+                                     .id(2L)
+                                     .properties(List.of(
+                                         Property.builder()
+                                                 .key("property")
+                                                 .value("Ciao1")
+                                                 .build()))
+                                     .build())
+                       .build();
+    VersionedObject versionedObject2 =
+        VersionedObject.builder()
+                       .validFrom(LocalDate.of(2023, 1, 1))
+                       .validTo(LocalDate.of(2024, 12, 31))
+                       .entity(Entity.builder()
+                                     .properties(List.of(
+                                         Property.builder()
+                                                 .key("property")
+                                                 .value("Ciao12")
+                                                 .build()))
+                                     .build())
+                       .build();
+
+    VersioningData versioningData = VersioningData.builder().build();
+
+    //when
+    boolean result = VersioningHelper.checkChangesAfterVersioning(versioningData,
+        List.of(versionedObject1, versionedObject2));
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnTrueWhenThereIsAPropertyChange() {
+    //given
+    Entity entity1 = Entity.builder()
+                           .id(2L)
+                           .properties(List.of(
+                               Property.builder()
+                                       .key("property")
+                                       .value("Ciao1")
+                                       .build()))
+                           .build();
+    VersionedObject versionedObject1 =
+        VersionedObject.builder()
+                       .validFrom(LocalDate.of(2022, 1, 1))
+                       .validTo(LocalDate.of(2023, 12, 31))
+                       .entity(entity1)
+                       .build();
+
+    Entity entity2 = Entity.builder()
+                           .id(3L)
+                           .properties(List.of(
+                               Property.builder()
+                                       .key("property")
+                                       .value("Ciao12")
+                                       .build()))
+                           .build();
+    VersionedObject versionedObject2 =
+        VersionedObject.builder()
+                       .validFrom(LocalDate.of(2024, 1, 1))
+                       .validTo(LocalDate.of(2025, 12, 31))
+                       .entity(entity2)
+                       .build();
+    VersionableObject versionableObject1 = VersionableObject.builder()
+                                                            .validFrom(LocalDate.of(2022, 1, 1))
+                                                            .validTo(LocalDate.of(2023, 12, 31))
+                                                            .id(2L)
+                                                            .build();
+
+    VersionableObject versionableObject2 = VersionableObject.builder()
+                                                            .validFrom(LocalDate.of(2024, 1, 1))
+                                                            .validTo(LocalDate.of(2025, 12, 31))
+                                                            .id(3L)
+                                                            .build();
+
+    ToVersioning toVersioning1 = ToVersioning.builder()
+                                             .versionable(versionableObject1)
+                                             .entity(entity1)
+                                             .build();
+    Entity entityEdited = Entity.builder().id(3L).properties(
+                                    List.of(
+                                        Property.builder()
+                                                .key("property")
+                                                .value("Ciao12-edited")
+                                                .build()))
+                                .build();
+    ToVersioning toVersioning2 = ToVersioning.builder()
+                                             .versionable(versionableObject2)
+                                             .entity(entityEdited)
+                                             .build();
+
+    VersioningData versioningData = VersioningData.builder()
+                                                  .objectsToVersioning(
+                                                      List.of(toVersioning1, toVersioning2))
+                                                  .build();
+
+    //when
+    boolean result = VersioningHelper.checkChangesAfterVersioning(versioningData,
+        List.of(versionedObject1, versionedObject2));
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseWhenNoPropertyChange() {
+    //given
+    Entity entity1 = Entity.builder()
+                           .id(2L)
+                           .properties(List.of(
+                               Property.builder()
+                                       .key("property")
+                                       .value("Ciao1")
+                                       .build()))
+                           .build();
+    VersionedObject versionedObject1 =
+        VersionedObject.builder()
+                       .validFrom(LocalDate.of(2022, 1, 1))
+                       .validTo(LocalDate.of(2023, 12, 31))
+                       .entity(entity1)
+                       .build();
+
+    Entity entity2 = Entity.builder()
+                           .id(3L)
+                           .properties(List.of(Property.builder()
+                                                       .key("property")
+                                                       .value("Ciao12")
+                                                       .build()))
+                           .build();
+    VersionedObject versionedObject2 =
+        VersionedObject.builder()
+                       .validFrom(LocalDate.of(2024, 1, 1))
+                       .validTo(LocalDate.of(2025, 12, 31))
+                       .entity(entity2)
+                       .build();
+    VersionableObject versionableObject1 = VersionableObject.builder()
+                                                            .validFrom(LocalDate.of(2022, 1, 1))
+                                                            .validTo(LocalDate.of(2023, 12, 31))
+                                                            .id(2L)
+                                                            .build();
+
+    VersionableObject versionableObject2 = VersionableObject.builder()
+                                                            .validFrom(LocalDate.of(2024, 1, 1))
+                                                            .validTo(LocalDate.of(2025, 12, 31))
+                                                            .id(3L)
+                                                            .build();
+
+    ToVersioning toVersioning1 = ToVersioning.builder()
+                                             .versionable(versionableObject1)
+                                             .entity(entity1)
+                                             .build();
+    ToVersioning toVersioning2 = ToVersioning.builder()
+                                             .versionable(versionableObject2)
+                                             .entity(entity2)
+                                             .build();
+
+    VersioningData versioningData = VersioningData.builder()
+                                                  .objectsToVersioning(
+                                                      List.of(toVersioning1, toVersioning2))
+                                                  .build();
+
+    //when
+    boolean result = VersioningHelper.checkChangesAfterVersioning(versioningData,
+        List.of(versionedObject1, versionedObject2));
 
     //then
     assertThat(result).isFalse();
