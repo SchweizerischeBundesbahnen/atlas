@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.configuration;
 
+import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
@@ -19,6 +20,26 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @ControllerAdvice
 public class AtlasExceptionHandler {
+
+  @ExceptionHandler(value = VersioningException.class)
+  public ResponseEntity<ErrorResponse> versioningException(
+      VersioningException versioningException) {
+    List<Detail> details = List.of(
+        Detail.builder()
+              .message(versioningException.getMessage())
+              .displayInfo(DisplayInfo.builder()
+                                      .code("ERROR.VERSIONING")
+                                      .build())
+              .build());
+
+    ErrorResponse errorResponse = ErrorResponse.builder()
+                                               .message(versioningException.getMessage())
+                                               .status(HttpStatus.NOT_IMPLEMENTED.value())
+                                               .error("Versioning scenario not implemented")
+                                               .details(details)
+                                               .build();
+    return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
+  }
 
   @ExceptionHandler(value = {AtlasException.class})
   public ResponseEntity<ErrorResponse> atlasException(AtlasException conflictException) {
