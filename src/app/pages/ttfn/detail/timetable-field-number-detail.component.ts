@@ -5,7 +5,6 @@ import { DetailWrapperController } from '../../../core/components/detail-wrapper
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { catchError, EMPTY, Subject } from 'rxjs';
-import { ValidationError } from '../../../core/validation/validation-error';
 import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import { takeUntil } from 'rxjs/operators';
@@ -19,6 +18,7 @@ import {
   MIN_DATE,
 } from '../../../core/date/date.service';
 import { Page } from '../../../core/model/page';
+import { CharsetsValidator } from '../../../core/validation/charsets/charsets-validator';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -116,7 +116,7 @@ export class TimetableFieldNumberDetailComponent
       {
         swissTimetableFieldNumber: [
           version.swissTimetableFieldNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH_50)],
+          [Validators.required, Validators.maxLength(this.MAX_LENGTH_50), CharsetsValidator.sid4pt],
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
@@ -129,18 +129,28 @@ export class TimetableFieldNumberDetailComponent
         ttfnid: version.ttfnid,
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH_50)],
+          [
+            Validators.required,
+            Validators.maxLength(this.MAX_LENGTH_50),
+            CharsetsValidator.iso88591,
+          ],
         ],
         number: [
           version.number,
           [
             Validators.required,
             Validators.maxLength(this.MAX_LENGTH_50),
-            Validators.pattern('^[.0-9]+$'),
+            CharsetsValidator.numericWithDot,
           ],
         ],
-        description: [version.description, Validators.maxLength(this.MAX_LENGTH_255)],
-        comment: [version.comment, Validators.maxLength(this.MAX_LENGTH_250)],
+        description: [
+          version.description,
+          [Validators.maxLength(this.MAX_LENGTH_255), CharsetsValidator.iso88591],
+        ],
+        comment: [
+          version.comment,
+          [Validators.maxLength(this.MAX_LENGTH_250), CharsetsValidator.iso88591],
+        ],
         status: version.status,
         etagVersion: version.etagVersion,
       },
@@ -156,10 +166,6 @@ export class TimetableFieldNumberDetailComponent
 
   getValidation(inputForm: string) {
     return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
-  }
-
-  displayDate(validationError: ValidationError) {
-    return this.validationService.displayDate(validationError);
   }
 
   ngOnDestroy() {
