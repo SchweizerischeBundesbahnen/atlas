@@ -16,7 +16,7 @@
         <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
         <mat-datepicker #validFromPicker></mat-datepicker>
         <mat-error *ngFor="let validationError of this.getValidation('validFrom')">
-          {{ validationError.error | translate: { date: displayDate(validationError) } }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
 
@@ -35,7 +35,7 @@
         <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
         <mat-datepicker #validToPicker></mat-datepicker>
         <mat-error *ngFor="let validationError of this.getValidation('validTo')">
-          {{ validationError.error | translate: { date: displayDate(validationError) } }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -51,9 +51,7 @@
           placeholder="{{ SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER }}"
         />
         <mat-error *ngFor="let validationError of this.getValidation('swissTimetableFieldNumber')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
       <mat-form-field class="col">
@@ -86,10 +84,7 @@
         <mat-label>{{ 'TTFN.NUMBER' | translate }}</mat-label>
         <input data-cy="number" required matInput formControlName="number" />
         <mat-error *ngFor="let validationError of this.getValidation('number')">
-          {{
-            validationError.error
-              | translate: { length: validationError.value['requiredLength'], allowedChars: '.0-9' }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -104,9 +99,7 @@
           placeholder="{{ DESCRIPTION_PLACEHOLDER }}"
         />
         <mat-error *ngFor="let validationError of this.getValidation('description')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -121,9 +114,7 @@
           formControlName="businessOrganisation"
         />
         <mat-error *ngFor="let validationError of this.getValidation('businessOrganisation')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -133,9 +124,7 @@
         <mat-label>{{ 'TTFN.COMMENT' | translate }}</mat-label>
         <input data-cy="comment" matInput formControlName="comment" />
         <mat-error *ngFor="let validationError of this.getValidation('comment')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
