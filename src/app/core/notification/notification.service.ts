@@ -38,6 +38,9 @@ export class NotificationService implements OnDestroy {
       this.showOnlyCode = true;
       this.displayCode = code;
     } else if (errorResponse.error?.details) {
+      if (errorResponse.status === 520) {
+        this.SNACK_BAR_CONFIG['panelClass'] = ['warning', 'notification'];
+      }
       this.SNACK_BAR_CONFIG['data'] = errorResponse.error;
     } else {
       this.showOnlyCode = true;

@@ -122,4 +122,32 @@ describe('Error Notification component', () => {
     expect(snackBarContainer.textContent).toContain('GENERIC_ERROR');
     expect(snackBarContainer.classList).toContain('error');
   });
+
+  it('should show warning ', () => {
+    // given
+    const errorResponse = new HttpErrorResponse({
+      status: 520,
+      error: {
+        details: [
+          {
+            message: 'No entities were modified after versioning execution.',
+            field: null,
+            displayInfo: {
+              code: 'ERROR.WARNING.VERSIONING_NO_CHANGES',
+              parameters: [],
+            },
+          },
+        ],
+      },
+    });
+    //when
+    component.notificationService.error(errorResponse);
+
+    //then
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toContain('ERROR.WARNING.VERSIONING_NO_CHANGES');
+    expect(snackBarContainer.classList).toContain('warning');
+  });
 });
