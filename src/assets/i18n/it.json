@@ -1,5 +1,8 @@
 {
   "ERROR": {
+    "WARNING": {
+      "VERSIONING_NO_CHANGES": "Beim Speicher keine Daten sind geändert"
+    },
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Nessuna autorizzazione per visualizzare questo contenuto ",
     "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}",
