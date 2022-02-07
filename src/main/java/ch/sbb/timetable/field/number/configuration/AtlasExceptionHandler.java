@@ -1,6 +1,7 @@
 package ch.sbb.timetable.field.number.configuration;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
+import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.timetable.field.number.api.ErrorResponse;
 import ch.sbb.timetable.field.number.api.ErrorResponse.Detail;
 import ch.sbb.timetable.field.number.api.ErrorResponse.DisplayInfo;
@@ -21,20 +22,33 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class AtlasExceptionHandler {
 
-  @ExceptionHandler(value = VersioningException.class)
-  public ResponseEntity<ErrorResponse> versioningException(
-      VersioningException versioningException) {
+  @ExceptionHandler(value = VersioningNoChangesException.class)
+  public ResponseEntity<ErrorResponse> versioningNoChangesException(VersioningNoChangesException ex){
     List<Detail> details = List.of(
         Detail.builder()
-              .message(versioningException.getMessage())
-              .displayInfo(
-                  DisplayInfo.builder()
-                             .code("ERROR.VERSIONING")
-                             .build())
+              .message(ex.getMessage())
+              .displayInfo(DisplayInfo.builder().code("ERROR.WARNING.VERSIONING_NO_CHANGES").build())
               .build());
 
     ErrorResponse errorResponse = ErrorResponse.builder()
-                                               .message(versioningException.getMessage())
+                                               .message(ex.getMessage())
+                                               .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
+                                               .error("No changes after versioning")
+                                               .details(details)
+                                               .build();
+    return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+  }
+
+  @ExceptionHandler(value = VersioningException.class)
+  public ResponseEntity<ErrorResponse> versioningException(VersioningException ex) {
+    List<Detail> details = List.of(
+        Detail.builder()
+              .message(ex.getMessage())
+              .displayInfo(DisplayInfo.builder().code("ERROR.VERSIONING").build())
+              .build());
+
+    ErrorResponse errorResponse = ErrorResponse.builder()
+                                               .message(ex.getMessage())
                                                .status(HttpStatus.NOT_IMPLEMENTED.value())
                                                .error("Versioning scenario not implemented")
                                                .details(details)
