@@ -312,6 +312,9 @@ public final class VersioningHelper {
     for (VersionedObject versionedObject : mergedVersionedObjects) {
       ToVersioning toVersioningToCompare = getToVersioningToCompare(vd.getObjectsToVersioning(),
           versionedObject.getEntity().getId());
+      if(toVersioningToCompare == null){
+        throw new IllegalStateException("At this point toVersioning cannot be null!");
+      }
       if (!areEquals(versionedObject, toVersioningToCompare)) {
         return true;
       }
