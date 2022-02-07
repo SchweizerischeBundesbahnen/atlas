@@ -14,7 +14,6 @@ import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -30,9 +29,6 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private VersionRepository versionRepository;
-
-  @Autowired
-  private ObjectMapper objectMapper;
 
   private final Version version = Version.builder().ttfnid("ch:1:ttfnid:100000")
                                          .description("FPFN Description")
@@ -68,7 +64,7 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
                              .andReturn()
                              .getResponse()
                              .getContentAsString();
-    List<VersionModel> response = objectMapper.readValue(responseBody,
+    List<VersionModel> response = mapper.readValue(responseBody,
         new TypeReference<>() {
         });
 
@@ -84,7 +80,7 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
     MvcResult mvcResult = mvc.perform(createUpdateRequest(versionModel))
                              .andExpect(status().isPreconditionFailed())
                              .andReturn();
-    ErrorResponse errorResponse = objectMapper.readValue(
+    ErrorResponse errorResponse = mapper.readValue(
         mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
@@ -133,7 +129,7 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
       throws JsonProcessingException {
     return post("/v1/field-numbers/versions/" + versionModel.getId())
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(versionModel));
+        .content(mapper.writeValueAsString(versionModel));
   }
 
   @AfterEach
