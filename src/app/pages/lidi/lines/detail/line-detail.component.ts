@@ -11,7 +11,6 @@ import { catchError, EMPTY, Subject } from 'rxjs';
 import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
-import { ValidationError } from '../../../../core/validation/validation-error';
 import {
   DateService,
   MAX_DATE,
