@@ -42,6 +42,9 @@ include::{snippets}/line-controller-api-test/should-return-line-range-smaller-th
 == Update Line with not found error
 include::{snippets}/line-controller-api-test/should-return-not-found-error-response/auto-section.adoc[]
 
+== Update Line with no changes after versioning error
+include::{snippets}/line-controller-api-test/should-return-validation-no-changes-error-response/auto-section.adoc[]
+
 == Get Line with not found error
 include::{snippets}/line-controller-api-test/should-return-not-found-error-response-when-no-found-lines/auto-section.adoc[]
 
@@ -57,6 +60,9 @@ include::{snippets}/subline-controller-api-test/should-return-not-found-error-re
 
 == Update Subline with optimistic locking error
 include::{snippets}/subline-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
+
+== Update Subline with no changes after versioning error
+include::{snippets}/subline-controller-api-test/should-return-validation-no-changes-error-response/auto-section.adoc[]
 
 == Update Subline with conflict error
 include::{snippets}/subline-controller-api-test/should-return-sub-line-assign-to-line-conflict-error-response/auto-section.adoc[]
