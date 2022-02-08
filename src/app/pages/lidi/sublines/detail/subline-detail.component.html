@@ -15,9 +15,7 @@
         />
         <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
         <mat-datepicker #validFromPicker></mat-datepicker>
-        <mat-error *ngFor="let validationError of this.getValidation('validFrom')">
-          {{ validationError.error | translate: validationError.params }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -34,9 +32,7 @@
         />
         <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
         <mat-datepicker #validToPicker></mat-datepicker>
-        <mat-error *ngFor="let validationError of this.getValidation('validTo')">
-          {{ validationError.error | translate: validationError.params }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -50,9 +46,7 @@
           data-cy="swissSublineNumber"
           placeholder="b0.IC2"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('swissSublineNumber')">
-          {{ validationError.error | translate: validationError.params }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <div class="col">
@@ -75,12 +69,7 @@
           </ng-template>
         </ng-select>
         <div *ngIf="form.get('mainlineSlnid')?.touched">
-          <mat-error
-            *ngFor="let validationError of this.getValidation('mainlineSlnid')"
-            class="fs-75p"
-          >
-            {{ validationError.error | translate: validationError.params }}
-          </mat-error>
+          <mat-error fieldErrors class="fs-75p"></mat-error>
         </div>
       </div>
 
@@ -121,9 +110,7 @@
           data-cy="businessOrganisation"
           placeholder="SBB"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('businessOrganisation')">
-          {{ validationError.error | translate: validationError.params }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -133,9 +120,7 @@
             {{ 'LIDI.SUBLINE.TYPES.' + type | translate }}
           </mat-option>
         </mat-select>
-        <mat-error *ngFor="let validationError of this.getValidation('type')">
-          {{ validationError.error | translate: validationError.params }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -145,9 +130,7 @@
             {{ 'LIDI.PAYMENT.' + type | translate }}
           </mat-option>
         </mat-select>
-        <mat-error *ngFor="let validationError of this.getValidation('paymentType')">
-          {{ validationError.error | translate: validationError.params }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -160,9 +143,7 @@
           data-cy="description"
           placeholder="Lorem Ipsum Linie"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('description')">
-          {{ validationError.error | translate: validationError.params }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -170,9 +151,7 @@
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.SUBLINE.NUMBER' | translate }}</mat-label>
         <input matInput formControlName="number" data-cy="number" placeholder="IC2" />
-        <mat-error *ngFor="let validationError of this.getValidation('number')">
-          {{ validationError.error | translate: validationError.params }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -185,9 +164,7 @@
           data-cy="longName"
           placeholder="Zürich HB - Arth-Goldau - Lugano -  Chiasso - Grenze"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('longName')">
-          {{ validationError.error | translate: validationError.params }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
   </form>

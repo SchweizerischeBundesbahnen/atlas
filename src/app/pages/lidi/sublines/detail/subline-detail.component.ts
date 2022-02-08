@@ -8,7 +8,6 @@ import {
 } from 'src/app/core/date/date.service';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { catchError, distinctUntilChanged, EMPTY, Subject, takeUntil } from 'rxjs';
-import { ValidationService } from '../../../../core/validation/validation.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -47,7 +46,6 @@ export class SublineDetailComponent
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    private validationService: ValidationService,
     private dateService: DateService,
     private linesService: LinesService
   ) {
@@ -166,10 +164,6 @@ export class SublineDetailComponent
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
-  }
-
-  getValidation(inputForm: string) {
-    return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
   getValidFromPlaceHolder() {
