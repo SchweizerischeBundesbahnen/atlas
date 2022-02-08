@@ -30,9 +30,9 @@ import { MAT_CHIPS_DEFAULT_OPTIONS, MatChipsModule } from '@angular/material/chi
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ENTER } from '@angular/cdk/keycodes';
-import { GlobalErrorHandler } from '../notification/global-error-handler';
+import { GlobalErrorHandler } from '../configuration/global-error-handler';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ServerErrorInterceptor } from '../notification/server-error-interceptor';
+import { ServerErrorInterceptor } from '../configuration/server-error-interceptor';
 
 export const FORMAT = {
   parse: {
