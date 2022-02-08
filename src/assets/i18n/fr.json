@@ -1,7 +1,7 @@
 {
   "ERROR": {
     "WARNING": {
-      "VERSIONING_NO_CHANGES": "Beim Speicher keine Daten sind geändert"
+      "VERSIONING_NO_CHANGES": "Beim Speichern wurden keine Daten geändert."
     },
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Droits insuffisants pour voir ce contenu",
