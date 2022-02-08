@@ -5,11 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
-class CharacterSetsTest {
+class AtlasCharacterSetsRegexTest {
 
   @Test
   void shouldValidateISO88591Correctly() {
-    Pattern pattern = Pattern.compile(CharacterSets.ISO_8859_1);
+    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.ISO_8859_1);
 
     assertThat(pattern.matcher("abcÂÃ").matches()).isTrue();
     assertThat(pattern.matcher("abc").matches()).isTrue();
@@ -35,19 +35,8 @@ class CharacterSetsTest {
   }
 
   @Test
-  void shouldValidateNumericCorrectly() {
-    Pattern pattern = Pattern.compile(CharacterSets.NUMERIC);
-
-    assertThat(pattern.matcher("00124").matches()).isTrue();
-
-    assertThat(pattern.matcher("abcÂÃ").matches()).isFalse();
-    assertThat(pattern.matcher("x").matches()).isFalse();
-    assertThat(pattern.matcher("23.23").matches()).isFalse();
-  }
-
-  @Test
   void shouldValidateNumericWithDotCorrectly() {
-    Pattern pattern = Pattern.compile(CharacterSets.NUMERIC_WITH_DOT);
+    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.NUMERIC_WITH_DOT);
 
     assertThat(pattern.matcher("23.23").matches()).isTrue();
     assertThat(pattern.matcher("00124").matches()).isTrue();
@@ -58,7 +47,7 @@ class CharacterSetsTest {
 
   @Test
   void shouldValidateSID4PTCorrectly() {
-    Pattern pattern = Pattern.compile(CharacterSets.SID4PT);
+    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.SID4PT);
 
     assertThat(pattern.matcher("aE2._:78-B").matches()).isTrue();
     assertThat(pattern.matcher("duper.-:_234").matches()).isTrue();
