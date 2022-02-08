@@ -8,7 +8,7 @@ import { MaterialModule } from '../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { ErrorNotificationComponent } from './error-notification.component';
+import { ErrorNotificationComponent } from './error/error-notification.component';
 
 describe('NotificationService', () => {
   let service: NotificationService;
