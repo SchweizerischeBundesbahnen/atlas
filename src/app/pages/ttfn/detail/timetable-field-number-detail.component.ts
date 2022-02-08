@@ -9,7 +9,6 @@ import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../../core/validation/validation.service';
 import { Pages } from '../../pages';
 import {
   DateService,
@@ -50,7 +49,6 @@ export class TimetableFieldNumberDetailComponent
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    private validationService: ValidationService,
     private dateService: DateService
   ) {
     super(dialogService, notificationService);
@@ -162,10 +160,6 @@ export class TimetableFieldNumberDetailComponent
 
   getValidFromPlaceHolder() {
     return this.dateService.getCurrentDateFormatted();
-  }
-
-  getValidation(inputForm: string) {
-    return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
   ngOnDestroy() {

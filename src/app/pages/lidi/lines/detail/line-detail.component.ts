@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { catchError, EMPTY, Subject } from 'rxjs';
 import moment from 'moment/moment';
@@ -45,7 +44,6 @@ export class LineDetailComponent
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    private validationService: ValidationService,
     private dateService: DateService
   ) {
     super(dialogService, notificationService);
@@ -165,10 +163,6 @@ export class LineDetailComponent
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
-  }
-
-  getValidation(inputForm: string) {
-    return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
   getValidFromPlaceHolder() {
