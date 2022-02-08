@@ -4,7 +4,7 @@ import { ErrorNotificationComponent } from './error-notification.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '../module/material.module';
+import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
