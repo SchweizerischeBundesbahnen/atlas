@@ -4,15 +4,15 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
-import { FieldErrorDirective } from './field-error.directive';
+import { FieldErrorComponent } from './field-error.component';
 
-describe('FieldErrorDirective', () => {
-  let component: FieldErrorDirective;
-  let fixture: ComponentFixture<FieldErrorDirective>;
+describe('FieldErrorComponent', () => {
+  let component: FieldErrorComponent;
+  let fixture: ComponentFixture<FieldErrorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FieldErrorDirective],
+      declarations: [FieldErrorComponent],
       imports: [
         MatFormFieldModule,
         MaterialModule,
@@ -26,7 +26,7 @@ describe('FieldErrorDirective', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FieldErrorDirective);
+    fixture = TestBed.createComponent(FieldErrorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
