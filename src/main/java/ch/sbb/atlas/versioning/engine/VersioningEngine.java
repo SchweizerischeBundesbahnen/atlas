@@ -1,6 +1,9 @@
 package ch.sbb.atlas.versioning.engine;
 
+import static ch.sbb.atlas.versioning.version.VersioningHelper.checkChangesAfterVersioning;
+
 import ch.sbb.atlas.versioning.convert.ConverterHelper;
+import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.merge.MergeHelper;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.ToVersioning;
@@ -41,7 +44,14 @@ public class VersioningEngine {
       versioning = new VersioningWhenValidToAndOrValidFromAreEdited();
     }
     List<VersionedObject> versionedObjects = new ArrayList<>(versioning.applyVersioning(vd));
-    return MergeHelper.mergeVersionedObject(versionedObjects);
+    List<VersionedObject> mergedVersionedObjects = MergeHelper.mergeVersionedObject(
+        versionedObjects);
+
+    boolean hasChanges = checkChangesAfterVersioning(vd, mergedVersionedObjects);
+    if (!hasChanges) {
+      throw new VersioningNoChangesException();
+    }
+    return mergedVersionedObjects;
   }
 
 }

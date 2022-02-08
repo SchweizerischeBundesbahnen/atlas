@@ -4,6 +4,7 @@ import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.ToVersioning;
 import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningData;
 import java.time.LocalDate;
 import java.util.List;
@@ -64,12 +65,12 @@ public final class VersioningHelper {
    * |----------|----------|----------|----------|----------|
    */
   public static boolean isBetweenMultipleVersionsAndStartsOnABorder(
-      LocalDate editedValidFrom,LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+      LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
     return toVersioningList.size() > 1
         &&
         editedValidFrom.equals(toVersioningList.get(0).getValidFrom())
-    &&
-    editedValidTo.isBefore(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
+        &&
+        editedValidTo.isBefore(toVersioningList.get(toVersioningList.size() - 1).getValidTo());
   }
 
   /**
@@ -77,7 +78,7 @@ public final class VersioningHelper {
    * |----------|----------|----------|----------|----------|
    */
   public static boolean isBetweenMultipleVersionsAndEndsOnABorder(
-      LocalDate editedValidFrom,LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
+      LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
     return toVersioningList.size() > 1
         &&
         editedValidFrom.isAfter(toVersioningList.get(0).getValidFrom())
@@ -249,11 +250,7 @@ public final class VersioningHelper {
 
   public static ToVersioning findObjectToVersioning(Versionable currentVersion,
       List<ToVersioning> objectsToVersioning) {
-    return objectsToVersioning
-        .stream()
-        .filter(versioning -> versioning.getEntity().getId().equals(currentVersion.getId()))
-        .findFirst()
-        .orElse(null);
+    return getToVersioningToCompare(objectsToVersioning, currentVersion.getId());
   }
 
   public static List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
@@ -281,21 +278,70 @@ public final class VersioningHelper {
 
   public static boolean isOnlyValidFromEdited(VersioningData versioningData) {
     return versioningData.getEditedVersion().getValidFrom() != null
-        && (!versioningData.getEditedVersion().getValidFrom().equals(versioningData.getCurrentVersion().getValidFrom()))
-        && (versioningData.getEditedVersion().getValidTo() == null || versioningData.getEditedVersion().getValidTo()
-                                                                                             .equals(
-                                                                   versioningData.getCurrentVersion().getValidTo()));
+        && (!versioningData.getEditedVersion()
+                           .getValidFrom()
+                           .equals(versioningData.getCurrentVersion().getValidFrom()))
+        && (versioningData.getEditedVersion().getValidTo() == null
+        || versioningData.getEditedVersion().getValidTo()
+                         .equals(
+                             versioningData.getCurrentVersion().getValidTo()));
   }
 
   public static boolean isOnlyValidToEdited(VersioningData versioningData) {
     return versioningData.getEditedVersion().getValidTo() != null
-        && (!versioningData.getEditedVersion().getValidTo().equals(versioningData.getCurrentVersion().getValidTo()))
-        && (versioningData.getEditedVersion().getValidFrom() == null || versioningData.getEditedVersion().getValidFrom()
-                                                                                               .equals(
-                                                                     versioningData.getCurrentVersion().getValidFrom()));
+        && (!versioningData.getEditedVersion()
+                           .getValidTo()
+                           .equals(versioningData.getCurrentVersion().getValidTo()))
+        && (versioningData.getEditedVersion().getValidFrom() == null
+        || versioningData.getEditedVersion().getValidFrom()
+                         .equals(
+                             versioningData.getCurrentVersion().getValidFrom()));
   }
 
-  public static boolean isCurrentVersionFirstVersion(VersioningData versioningData){
-    return versioningData.getCurrentVersion().getValidFrom().equals(versioningData.getObjectsToVersioning().get(0).getValidFrom());
+  public static boolean isCurrentVersionFirstVersion(VersioningData versioningData) {
+    return versioningData.getCurrentVersion()
+                         .getValidFrom()
+                         .equals(versioningData.getObjectsToVersioning().get(0).getValidFrom());
+  }
+
+  public static boolean checkChangesAfterVersioning(VersioningData vd,
+      List<VersionedObject> mergedVersionedObjects) {
+    if (getNewVersionsCount(mergedVersionedObjects) > 0) {
+      return true;
+    }
+    for (VersionedObject versionedObject : mergedVersionedObjects) {
+      ToVersioning toVersioningToCompare = getToVersioningToCompare(vd.getObjectsToVersioning(),
+          versionedObject.getEntity().getId());
+      if(toVersioningToCompare == null){
+        throw new IllegalStateException("At this point toVersioning cannot be null!");
+      }
+      if (!areEquals(versionedObject, toVersioningToCompare)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static ToVersioning getToVersioningToCompare(List<ToVersioning> objectsToVersioning,
+      Long id) {
+    return objectsToVersioning
+        .stream()
+        .filter(toVersioning -> toVersioning.getEntity().getId().equals(id))
+        .findFirst()
+        .orElse(null);
+  }
+
+  private static long getNewVersionsCount(List<VersionedObject> mergedVersionedObjects) {
+    return mergedVersionedObjects.stream()
+                                 .filter(
+                                     versionedObject -> versionedObject.getEntity().getId() == null)
+                                 .count();
+  }
+
+  private static boolean areEquals(VersionedObject versionedObject,
+      ToVersioning toVersioningToCompare) {
+    return toVersioningToCompare.getEntity().equals(versionedObject.getEntity())
+        && toVersioningToCompare.getValidFrom().equals(versionedObject.getValidFrom())
+        && toVersioningToCompare.getValidTo().equals(versionedObject.getValidTo());
   }
 }
