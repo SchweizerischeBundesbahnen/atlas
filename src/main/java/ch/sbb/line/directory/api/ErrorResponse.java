@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 @Schema(name = "ErrorResponse")
 public class ErrorResponse {
 
+  public static final  int VERSIONING_NO_CHANGES_HTTP_STATUS = 520;
+
   @Schema(description = "HTTP Status Code", example = "400")
   private int status;
 
@@ -54,7 +56,8 @@ public class ErrorResponse {
     private DisplayInfo displayInfo;
 
     public String getMessage() {
-      return MessageFormat.format(message, displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
+      return MessageFormat.format(message,
+          displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
     }
   }
 
@@ -104,8 +107,8 @@ public class ErrorResponse {
   @RequiredArgsConstructor
   @Getter
   public static class Parameter {
+
     private final String key;
     private final String value;
   }
-
 }

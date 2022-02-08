@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.configuration;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
+import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
@@ -20,6 +21,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @ControllerAdvice
 public class AtlasExceptionHandler {
+
+  @ExceptionHandler(value = VersioningNoChangesException.class)
+  public ResponseEntity<ErrorResponse> versioningNoChangesException(VersioningNoChangesException ex){
+    List<Detail> details = List.of(
+        Detail.builder()
+              .message(ex.getMessage())
+              .displayInfo(DisplayInfo.builder().code("ERROR.WARNING.VERSIONING_NO_CHANGES").build())
+              .build());
+
+    ErrorResponse errorResponse = ErrorResponse.builder()
+                                               .message(ex.getMessage())
+                                               .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
+                                               .error("No changes after versioning")
+                                               .details(details)
+                                               .build();
+    return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+  }
 
   @ExceptionHandler(value = VersioningException.class)
   public ResponseEntity<ErrorResponse> versioningException(

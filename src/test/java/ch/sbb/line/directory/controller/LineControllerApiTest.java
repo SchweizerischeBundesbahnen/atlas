@@ -9,6 +9,7 @@ import static ch.sbb.line.directory.entity.LineVersion.Fields.swissLineNumber;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.type;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -22,6 +23,7 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -241,6 +243,48 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
+  }
+
+  @Test
+  void shouldReturnValidationNoChangesErrorResponse() throws Exception {
+    //given
+    LineVersionModel firstLineVersionModel =
+        LineVersionModel.builder()
+                        .validTo(LocalDate.of(2000, 12, 31))
+                        .validFrom(LocalDate.of(2000, 1, 1))
+                        .businessOrganisation("sbb")
+                        .alternativeName("alternative")
+                        .combinationName("combination")
+                        .longName("long name")
+                        .type(LineType.TEMPORARY)
+                        .paymentType(PaymentType.LOCAL)
+                        .swissLineNumber("b0.IC2-libne")
+                        .build();
+    firstLineVersionModel = lineController.createLineVersion(firstLineVersionModel);
+    LineVersionModel secondLineVersionModel =
+        LineVersionModel.builder()
+                        .validTo(LocalDate.of(2001, 12, 31))
+                        .validFrom(LocalDate.of(2001, 1, 1))
+                        .businessOrganisation("BLS")
+                        .alternativeName("alternative")
+                        .combinationName("combination")
+                        .longName("long name")
+                        .type(LineType.TEMPORARY)
+                        .paymentType(PaymentType.LOCAL)
+                        .swissLineNumber("b0.IC2-libne")
+                        .build();
+    lineController.createLineVersion(secondLineVersionModel);
+
+    //when & then
+    mvc.perform(post("/v1/lines/versions/" + firstLineVersionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(firstLineVersionModel)))
+       .andExpect(jsonPath("$.status", is(520)))
+       .andExpect(jsonPath("$.message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.error", is("No changes after versioning")))
+       .andExpect(jsonPath("$.details[0].message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.details[0].field", is(nullValue())))
+       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
   }
 
   @Test
