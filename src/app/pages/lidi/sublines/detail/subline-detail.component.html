@@ -16,7 +16,7 @@
         <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
         <mat-datepicker #validFromPicker></mat-datepicker>
         <mat-error *ngFor="let validationError of this.getValidation('validFrom')">
-          {{ validationError.error | translate: { date: displayDate(validationError) } }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
 
@@ -35,7 +35,7 @@
         <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
         <mat-datepicker #validToPicker></mat-datepicker>
         <mat-error *ngFor="let validationError of this.getValidation('validTo')">
-          {{ validationError.error | translate: { date: displayDate(validationError) } }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -51,9 +51,7 @@
           placeholder="b0.IC2"
         />
         <mat-error *ngFor="let validationError of this.getValidation('swissSublineNumber')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
 
@@ -81,7 +79,7 @@
             *ngFor="let validationError of this.getValidation('mainlineSlnid')"
             class="fs-75p"
           >
-            {{ validationError.error | translate }}
+            {{ validationError.error | translate: validationError.params }}
           </mat-error>
         </div>
       </div>
@@ -124,9 +122,7 @@
           placeholder="SBB"
         />
         <mat-error *ngFor="let validationError of this.getValidation('businessOrganisation')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
 
@@ -138,7 +134,7 @@
           </mat-option>
         </mat-select>
         <mat-error *ngFor="let validationError of this.getValidation('type')">
-          {{ validationError.error | translate }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
 
@@ -150,7 +146,7 @@
           </mat-option>
         </mat-select>
         <mat-error *ngFor="let validationError of this.getValidation('paymentType')">
-          {{ validationError.error | translate }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -165,9 +161,7 @@
           placeholder="Lorem Ipsum Linie"
         />
         <mat-error *ngFor="let validationError of this.getValidation('description')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -177,9 +171,7 @@
         <mat-label>{{ 'LIDI.SUBLINE.NUMBER' | translate }}</mat-label>
         <input matInput formControlName="number" data-cy="number" placeholder="IC2" />
         <mat-error *ngFor="let validationError of this.getValidation('number')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -194,9 +186,7 @@
           placeholder="Zürich HB - Arth-Goldau - Lugano -  Chiasso - Grenze"
         />
         <mat-error *ngFor="let validationError of this.getValidation('longName')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
+          {{ validationError.error | translate: validationError.params }}
         </mat-error>
       </mat-form-field>
     </div>
