@@ -43,6 +43,49 @@ export class NotificationService implements OnDestroy {
     this.dismissOnNavigation(errorSnackBar);
   }
 
+  info(msg: string, param?: NotificationParamMessage) {
+    this.notify(msg, 'info', param);
+  }
+
+  showOnlyCode() {
+    return !this.displayCode || this.displayCode.length === 0;
+  }
+
+  notify(msg: string, type: string, param?: NotificationParamMessage) {
+    this.translateService
+      .get(msg, param)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((err) => {
+          console.log(err);
+          throw err;
+        })
+      )
+      .subscribe((value) => {
+        this.SNACK_BAR_CONFIG['duration'] = 5000;
+        this.SNACK_BAR_CONFIG['panelClass'] = [type, 'notification'];
+        this.snackBar.open(value, '', this.SNACK_BAR_CONFIG);
+      });
+  }
+
+  arrayParametersToObject(displayInfo: DisplayInfo) {
+    return Object.fromEntries(displayInfo.parameters.map((e) => [e.key, e.value]));
+  }
+
+  private dismissOnNavigation(errorSnackBar: MatSnackBarRef<ErrorNotificationComponent>) {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationStart))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((err) => {
+          throw err;
+        })
+      )
+      .subscribe(() => {
+        errorSnackBar.dismiss();
+      });
+  }
+
   private configureNotification(code: string | undefined, errorResponse: HttpErrorResponse) {
     if (code) {
       this.configureErrorCodeNotification(code);
@@ -72,49 +115,6 @@ export class NotificationService implements OnDestroy {
   private configureWarningNotification(errorResponse: HttpErrorResponse) {
     this.SNACK_BAR_CONFIG['panelClass'] = ['warning', 'notification'];
     this.displayCode = errorResponse.error.details[0].displayInfo.code;
-  }
-
-  showOnlyCode() {
-    return !this.displayCode || this.displayCode.length === 0;
-  }
-
-  private dismissOnNavigation(errorSnackBar: MatSnackBarRef<ErrorNotificationComponent>) {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationStart))
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          throw err;
-        })
-      )
-      .subscribe(() => {
-        errorSnackBar.dismiss();
-      });
-  }
-
-  info(msg: string, param?: NotificationParamMessage) {
-    this.notify(msg, 'info', param);
-  }
-
-  notify(msg: string, type: string, param?: NotificationParamMessage) {
-    this.translateService
-      .get(msg, param)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          console.log(err);
-          throw err;
-        })
-      )
-      .subscribe((value) => {
-        this.SNACK_BAR_CONFIG['duration'] = 5000;
-        this.SNACK_BAR_CONFIG['panelClass'] = [type, 'notification'];
-        this.snackBar.open(value, '', this.SNACK_BAR_CONFIG);
-      });
-  }
-
-  arrayParametersToObject(displayInfo: DisplayInfo) {
-    return Object.fromEntries(displayInfo.parameters.map((e) => [e.key, e.value]));
   }
 
   ngOnDestroy() {
