@@ -17,9 +17,9 @@ import { Page } from '../../../../core/model/page';
 import { Pages } from '../../../pages';
 import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { ValidationError } from '../../../../core/validation/validation-error';
 import { switchMap } from 'rxjs/operators';
 import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
+import { CharsetsValidator } from '../../../../core/validation/charsets/charsets-validator';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -128,7 +128,12 @@ export class SublineDetailComponent
       {
         swissSublineNumber: [
           version.swissSublineNumber,
-          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
+          [
+            Validators.required,
+            Validators.maxLength(50),
+            NotBlankValidator.notBlank,
+            CharsetsValidator.sid4pt,
+          ],
         ],
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
@@ -137,11 +142,16 @@ export class SublineDetailComponent
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
+          [
+            Validators.required,
+            Validators.maxLength(50),
+            NotBlankValidator.notBlank,
+            CharsetsValidator.iso88591,
+          ],
         ],
-        number: [version.number, [Validators.maxLength(50)]],
-        longName: [version.longName, [Validators.maxLength(255)]],
-        description: [version.description, [Validators.maxLength(255)]],
+        number: [version.number, [Validators.maxLength(50), CharsetsValidator.iso88591]],
+        longName: [version.longName, [Validators.maxLength(255), CharsetsValidator.iso88591]],
+        description: [version.description, [Validators.maxLength(255), CharsetsValidator.iso88591]],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -160,10 +170,6 @@ export class SublineDetailComponent
 
   getValidation(inputForm: string) {
     return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
-  }
-
-  displayDate(validationError: ValidationError) {
-    return this.validationService.displayDate(validationError);
   }
 
   getValidFromPlaceHolder() {
