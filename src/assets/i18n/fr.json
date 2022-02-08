@@ -1,5 +1,8 @@
 {
   "ERROR": {
+    "CLIENT": {
+      "GENERIC": "Ein clientseitiger Fehler ist aufgetreten, bitte aktualisieren Sie die Seite oder klicken Sie auf F5. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Atlas-Support."
+    },
     "WARNING": {
       "VERSIONING_NO_CHANGES": "Beim Speichern wurden keine Daten geändert."
     },

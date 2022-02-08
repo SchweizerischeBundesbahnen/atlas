@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotificationParamMessage } from './notification-param-message';
 import { catchError, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { ErrorNotificationComponent } from './error-notification.component';
+import { ErrorNotificationComponent } from './error/error-notification.component';
 import { DisplayInfo } from '../../api';
 import { NavigationStart, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -32,10 +32,14 @@ export class NotificationService implements OnDestroy {
     this.notify(msg, 'success', param);
   }
 
-  error(errorResponse: HttpErrorResponse, code?: string) {
+  error(error: HttpErrorResponse | Error, code?: string) {
     this.SNACK_BAR_CONFIG['duration'] = undefined;
     this.SNACK_BAR_CONFIG['panelClass'] = ['error', 'notification'];
-    this.configureNotification(code, errorResponse);
+    if (error instanceof HttpErrorResponse) {
+      this.configureNotification(code, error);
+    } else {
+      this.configureGenericClientErrorNotification(error);
+    }
     const errorSnackBar = this.snackBar.openFromComponent(
       ErrorNotificationComponent,
       this.SNACK_BAR_CONFIG
@@ -102,6 +106,11 @@ export class NotificationService implements OnDestroy {
 
   private configureGenericErrorNotification() {
     this.displayCode = 'ERROR.GENERIC';
+  }
+
+  private configureGenericClientErrorNotification(error: Error) {
+    console.error('Client error: ' + error);
+    this.displayCode = 'ERROR.CLIENT.GENERIC';
   }
 
   private configureErrorCodeNotification(code: string) {
