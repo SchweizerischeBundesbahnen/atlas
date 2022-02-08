@@ -4,14 +4,14 @@ import { ValidationService } from '../../validation/validation.service';
 
 @Component({
   selector: '[fieldErrors]',
-  templateUrl: './field-error.directive.html',
-  styleUrls: ['./field-error.directive.scss'],
+  templateUrl: './field-error.component.html',
+  styleUrls: ['./field-error.component.scss'],
 })
-export class FieldErrorDirective {
+export class FieldErrorComponent {
   constructor(private injector: Injector, private validationService: ValidationService) {}
 
   get errors() {
     const matFormField = this.injector.get(MatFormField);
-    return this.validationService.getValidation(matFormField._control.ngControl?.errors!);
+    return this.validationService.getValidation(matFormField._control.ngControl?.errors || null);
   }
 }

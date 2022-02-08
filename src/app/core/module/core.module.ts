@@ -20,7 +20,7 @@ import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
 import { TableSearchComponent } from '../components/table-search/table-search.component';
 import { ErrorNotificationComponent } from '../notification/error-notification.component';
-import { FieldErrorDirective } from '../components/field-error/field-error.directive';
+import { FieldErrorComponent } from '../components/field-error/field-error.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import { FieldErrorDirective } from '../components/field-error/field-error.direc
     DetailWrapperComponent,
     SwitchVersionComponent,
     DialogComponent,
-    FieldErrorDirective,
+    FieldErrorComponent,
     HeaderComponent,
     LanguageSwitcherComponent,
     LoadingSpinnerComponent,
@@ -60,7 +60,7 @@ import { FieldErrorDirective } from '../components/field-error/field-error.direc
   exports: [
     BreadcrumbComponent,
     DetailWrapperComponent,
-    FieldErrorDirective,
+    FieldErrorComponent,
     SwitchVersionComponent,
     DialogComponent,
     HeaderComponent,
