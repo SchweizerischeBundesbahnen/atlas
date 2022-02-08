@@ -57,9 +57,9 @@ public class AtlasExceptionHandler {
   }
 
   @ExceptionHandler(value = {AtlasException.class})
-  public ResponseEntity<ErrorResponse> atlasException(AtlasException conflictException) {
-    return new ResponseEntity<>(conflictException.getErrorResponse(),
-        HttpStatus.valueOf(conflictException.getErrorResponse().getStatus()));
+  public ResponseEntity<ErrorResponse> atlasException(AtlasException atlasException) {
+    return new ResponseEntity<>(atlasException.getErrorResponse(),
+        HttpStatus.valueOf(atlasException.getErrorResponse().getStatus()));
   }
 
   @ExceptionHandler(value = {NotFoundException.class})
