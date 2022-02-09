@@ -2,6 +2,7 @@ package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -298,6 +299,58 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
   }
 
+  @Test
+  void shouldReturnValidationNoChangesErrorResponse() throws Exception {
+    //given
+    LineVersionModel lineVersionModel =
+        LineVersionModel.builder()
+                        .validFrom(LocalDate.of(2000, 1, 1))
+                        .validTo(LocalDate.of(2001, 12, 31))
+                        .businessOrganisation("sbb")
+                        .alternativeName("alternative")
+                        .combinationName("combination")
+                        .longName("long name")
+                        .type(LineType.ORDERLY)
+                        .paymentType(PaymentType.LOCAL)
+                        .swissLineNumber("b0.IC2-libne")
+                        .build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel firstSublineVersionModel =
+        SublineVersionModel.builder()
+                           .validFrom(LocalDate.of(2000, 1, 1))
+                           .validTo(LocalDate.of(2000, 12, 31))
+                           .businessOrganisation("sbb")
+                           .swissSublineNumber("b0.Ic2-sibline")
+                           .type(SublineType.TECHNICAL)
+                           .paymentType(PaymentType.LOCAL)
+                           .mainlineSlnid(lineVersionModel.getSlnid())
+                           .build();
+    firstSublineVersionModel = sublineController.createSublineVersion(firstSublineVersionModel);
+
+    SublineVersionModel secondSublineVersionModel =
+        SublineVersionModel.builder()
+                           .validFrom(LocalDate.of(2001, 1, 1))
+                           .validTo(LocalDate.of(2001, 12, 31))
+                           .businessOrganisation("bls")
+                           .swissSublineNumber("b0.Ic2-sibline")
+                           .type(SublineType.TECHNICAL)
+                           .paymentType(PaymentType.LOCAL)
+                           .mainlineSlnid(lineVersionModel.getSlnid())
+                           .build();
+    sublineController.createSublineVersion(secondSublineVersionModel);
+
+
+    //when & then
+    mvc.perform(post("/v1/sublines/versions/" + firstSublineVersionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(firstSublineVersionModel)))
+       .andExpect(jsonPath("$.status", is(520)))
+       .andExpect(jsonPath("$.message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.error", is("No changes after versioning")))
+       .andExpect(jsonPath("$.details[0].message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.details[0].field", is(nullValue())))
+       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
+  }
 
   @Test
   void shouldReturnNotFoundErrorResponseWhenNoFoundLines() throws Exception {
