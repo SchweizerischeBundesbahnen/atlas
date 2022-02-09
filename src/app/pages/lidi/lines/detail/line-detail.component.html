@@ -15,9 +15,7 @@
         />
         <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
         <mat-datepicker #validFromPicker></mat-datepicker>
-        <mat-error *ngFor="let validationError of this.getValidation('validFrom')">
-          {{ validationError.error | translate: { date: displayDate(validationError) } }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -34,9 +32,7 @@
         />
         <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
         <mat-datepicker #validToPicker></mat-datepicker>
-        <mat-error *ngFor="let validationError of this.getValidation('validTo')">
-          {{ validationError.error | translate: { date: displayDate(validationError) } }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -50,11 +46,7 @@
           data-cy="swissLineNumber"
           placeholder="b0.IC2"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('swissLineNumber')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -94,11 +86,7 @@
           data-cy="businessOrganisation"
           placeholder="SBB"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('businessOrganisation')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -108,9 +96,7 @@
             {{ 'LIDI.LINE.TYPES.' + type | translate }}
           </mat-option>
         </mat-select>
-        <mat-error *ngFor="let validationError of this.getValidation('type')">
-          {{ validationError.error | translate }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -120,9 +106,7 @@
             {{ 'LIDI.PAYMENT.' + type | translate }}
           </mat-option>
         </mat-select>
-        <mat-error *ngFor="let validationError of this.getValidation('paymentType')">
-          {{ validationError.error | translate }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -170,11 +154,7 @@
           data-cy="description"
           placeholder="Lorem Ipsum Linie"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('description')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -182,11 +162,7 @@
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.LINE.NUMBER' | translate }}</mat-label>
         <input matInput formControlName="number" data-cy="number" placeholder="IC2" />
-        <mat-error *ngFor="let validationError of this.getValidation('number')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -197,11 +173,7 @@
           data-cy="alternativeName"
           placeholder="IC2 alt"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('alternativeName')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col">
@@ -212,11 +184,7 @@
           data-cy="combinationName"
           placeholder="IC2 comb"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('combinationName')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -230,11 +198,7 @@
           data-cy="longName"
           placeholder="Zürich HB - Arth-Goldau - Lugano -  Chiasso - Grenze"
         />
-        <mat-error *ngFor="let validationError of this.getValidation('longName')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -250,11 +214,7 @@
         <a matSuffix target="_blank" [attr.href]="form.value.icon"
           ><em class="bi bi-box-arrow-in-up-right"></em
         ></a>
-        <mat-error *ngFor="let validationError of this.getValidation('icon')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
 
@@ -262,11 +222,7 @@
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.COMMENT' | translate }}</mat-label>
         <input matInput formControlName="comment" data-cy="comment" placeholder="Kommentar" />
-        <mat-error *ngFor="let validationError of this.getValidation('comment')">
-          {{
-            validationError.error | translate: { length: validationError.value['requiredLength'] }
-          }}
-        </mat-error>
+        <mat-error fieldErrors></mat-error>
       </mat-form-field>
     </div>
   </form>

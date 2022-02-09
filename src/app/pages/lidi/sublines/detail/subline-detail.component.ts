@@ -8,7 +8,6 @@ import {
 } from 'src/app/core/date/date.service';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { catchError, distinctUntilChanged, EMPTY, Subject, takeUntil } from 'rxjs';
-import { ValidationService } from '../../../../core/validation/validation.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -17,9 +16,9 @@ import { Page } from '../../../../core/model/page';
 import { Pages } from '../../../pages';
 import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { ValidationError } from '../../../../core/validation/validation-error';
 import { switchMap } from 'rxjs/operators';
 import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
+import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -47,7 +46,6 @@ export class SublineDetailComponent
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    private validationService: ValidationService,
     private dateService: DateService,
     private linesService: LinesService
   ) {
@@ -128,7 +126,12 @@ export class SublineDetailComponent
       {
         swissSublineNumber: [
           version.swissSublineNumber,
-          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
+          [
+            Validators.required,
+            Validators.maxLength(50),
+            NotBlankValidator.notBlank,
+            AtlasCharsetsValidator.sid4pt,
+          ],
         ],
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
@@ -137,11 +140,19 @@ export class SublineDetailComponent
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
+          [
+            Validators.required,
+            Validators.maxLength(50),
+            NotBlankValidator.notBlank,
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
-        number: [version.number, [Validators.maxLength(50)]],
-        longName: [version.longName, [Validators.maxLength(255)]],
-        description: [version.description, [Validators.maxLength(255)]],
+        number: [version.number, [Validators.maxLength(50), AtlasCharsetsValidator.iso88591]],
+        longName: [version.longName, [Validators.maxLength(255), AtlasCharsetsValidator.iso88591]],
+        description: [
+          version.description,
+          [Validators.maxLength(255), AtlasCharsetsValidator.iso88591],
+        ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -156,14 +167,6 @@ export class SublineDetailComponent
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
-  }
-
-  getValidation(inputForm: string) {
-    return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
-  }
-
-  displayDate(validationError: ValidationError) {
-    return this.validationService.displayDate(validationError);
   }
 
   getValidFromPlaceHolder() {
