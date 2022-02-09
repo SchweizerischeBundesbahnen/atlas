@@ -1,1 +1,3 @@
 routeHost: 'atlas.sbb-cloud.net'
+publicRoute: 'atlas.app.sbb.ch'
+clusterLoadBalancer: 'public-maggie.app.sbb.ch'
