@@ -132,8 +132,10 @@ describe('LineDetailComponent for existing lineVersion', () => {
   });
 
   it('should not delete Version', () => {
-    const error = new Error('404');
-    mockLinesService.deleteLines.and.returnValue(throwError(() => error));
+    const httpResponseError = new HttpErrorResponse({
+      status: 404,
+    });
+    mockLinesService.deleteLines.and.returnValue(throwError(() => httpResponseError));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 

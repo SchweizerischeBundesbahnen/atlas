@@ -133,8 +133,10 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
   });
 
   it('should not delete Version', () => {
-    const error = new Error('404');
-    mockSublinesService.deleteSublines.and.returnValue(throwError(() => error));
+    const httpResponseError = new HttpErrorResponse({
+      status: 404,
+    });
+    mockSublinesService.deleteSublines.and.returnValue(throwError(() => httpResponseError));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 

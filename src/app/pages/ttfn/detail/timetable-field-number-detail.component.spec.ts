@@ -175,8 +175,12 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   });
 
   it('should not delete Version', () => {
-    const error = new Error('404');
-    mockTimetableFieldNumbersService.deleteVersions.and.returnValue(throwError(() => error));
+    const httpResponseError = new HttpErrorResponse({
+      status: 404,
+    });
+    mockTimetableFieldNumbersService.deleteVersions.and.returnValue(
+      throwError(() => httpResponseError)
+    );
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 

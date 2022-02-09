@@ -4,7 +4,7 @@ import { ErrorNotificationComponent } from './error-notification.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '../module/material.module';
+import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -121,5 +121,33 @@ describe('Error Notification component', () => {
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent).toContain('GENERIC_ERROR');
     expect(snackBarContainer.classList).toContain('error');
+  });
+
+  it('should show warning ', () => {
+    // given
+    const errorResponse = new HttpErrorResponse({
+      status: 520,
+      error: {
+        details: [
+          {
+            message: 'No entities were modified after versioning execution.',
+            field: null,
+            displayInfo: {
+              code: 'ERROR.WARNING.VERSIONING_NO_CHANGES',
+              parameters: [],
+            },
+          },
+        ],
+      },
+    });
+    //when
+    component.notificationService.error(errorResponse);
+
+    //then
+    const snackBarContainer =
+      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+    expect(snackBarContainer).toBeDefined();
+    expect(snackBarContainer.textContent).toContain('ERROR.WARNING.VERSIONING_NO_CHANGES');
+    expect(snackBarContainer.classList).toContain('warning');
   });
 });
