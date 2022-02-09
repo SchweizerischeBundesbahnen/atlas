@@ -19,6 +19,7 @@ import { DateRangeValidator } from '../../../../core/validation/date-range/date-
 import { switchMap } from 'rxjs/operators';
 import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
+import { ValidationService } from '../../../../core/validation/validation.service';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -47,6 +48,7 @@ export class SublineDetailComponent
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     private dateService: DateService,
+    private validationService: ValidationService,
     private linesService: LinesService
   ) {
     super(dialogService, notificationService);
@@ -167,6 +169,10 @@ export class SublineDetailComponent
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
+  }
+
+  getValidation(inputForm: string) {
+    return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
   getValidFromPlaceHolder() {
