@@ -12,7 +12,7 @@
   },
   "servers": [
     {
-      "url": "/"
+      "url": null
     }
   ],
   "paths": {
