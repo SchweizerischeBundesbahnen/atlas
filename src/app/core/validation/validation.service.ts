@@ -14,6 +14,11 @@ export class ValidationService {
         result.push({
           error: 'VALIDATION.' + keyError.toUpperCase(),
           value: controlErrors[keyError],
+          params: {
+            date: this.displayDate(controlErrors[keyError]),
+            length: controlErrors[keyError]['requiredLength'],
+            allowedChars: controlErrors[keyError]['allowedCharacters'],
+          },
         });
       });
     }
@@ -30,15 +35,15 @@ export class ValidationService {
   }
 
   displayDate(validationError: ValidationError) {
-    if (validationError?.value.date) {
+    if (validationError?.value?.date) {
       const validFrom = validationError.value.date.validFrom;
       const validTo = validationError.value.date.validTo;
       return validFrom.format(DATE_PATTERN) + ' - ' + validTo.format(DATE_PATTERN);
     }
-    if (validationError?.value.min) {
+    if (validationError?.value?.min) {
       return validationError.value.min.format(DATE_PATTERN);
     }
-    if (validationError?.value.max) {
+    if (validationError?.value?.max) {
       return validationError.value.max.format(DATE_PATTERN);
     }
   }
