@@ -69,7 +69,12 @@
           </ng-template>
         </ng-select>
         <div *ngIf="form.get('mainlineSlnid')?.touched">
-          <mat-error fieldErrors class="fs-75p"></mat-error>
+          <mat-error
+            *ngFor="let validationError of this.getValidation('mainlineSlnid')"
+            class="fs-75p"
+          >
+            {{ validationError.error | translate }}
+          </mat-error>
         </div>
       </div>
 
