@@ -64,7 +64,7 @@ public class OpenApiConfig {
                                                   .append(api.getInfo().getVersion())
                                                   .append(NEWLINE));
     return new OpenAPI()
-        .addServersItem(new Server())
+        .addServersItem(new Server().url("/"))
         .info(new Info()
             .title("Atlas API")
             .description(description.toString())
