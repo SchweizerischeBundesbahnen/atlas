@@ -5,13 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { catchError, EMPTY, Subject } from 'rxjs';
 import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
-import { ValidationError } from '../../../../core/validation/validation-error';
 import {
   DateService,
   MAX_DATE,
@@ -20,6 +18,7 @@ import {
 } from 'src/app/core/date/date.service';
 import { Page } from 'src/app/core/model/page';
 import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
+import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -45,7 +44,6 @@ export class LineDetailComponent
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    private validationService: ValidationService,
     private dateService: DateService
   ) {
     super(dialogService, notificationService);
@@ -119,7 +117,12 @@ export class LineDetailComponent
       {
         swissLineNumber: [
           version.swissLineNumber,
-          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
+          [
+            Validators.required,
+            Validators.maxLength(50),
+            NotBlankValidator.notBlank,
+            AtlasCharsetsValidator.sid4pt,
+          ],
         ],
         slnid: [version.slnid],
         type: [version.type, [Validators.required]],
@@ -129,16 +132,25 @@ export class LineDetailComponent
           version.businessOrganisation,
           [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
         ],
-        number: [version.number, [Validators.maxLength(50)]],
-        alternativeName: [version.alternativeName, [Validators.maxLength(50)]],
-        combinationName: [version.combinationName, [Validators.maxLength(50)]],
-        longName: [version.longName, [Validators.maxLength(255)]],
-        icon: [version.icon, [Validators.maxLength(255)]],
+        number: [version.number, [Validators.maxLength(50), AtlasCharsetsValidator.iso88591]],
+        alternativeName: [
+          version.alternativeName,
+          [Validators.maxLength(50), AtlasCharsetsValidator.iso88591],
+        ],
+        combinationName: [
+          version.combinationName,
+          [Validators.maxLength(50), AtlasCharsetsValidator.iso88591],
+        ],
+        longName: [version.longName, [Validators.maxLength(255), AtlasCharsetsValidator.iso88591]],
+        icon: [version.icon, [Validators.maxLength(255), AtlasCharsetsValidator.iso88591]],
         colorFontRgb: [version.colorFontRgb],
         colorBackRgb: [version.colorBackRgb],
         colorFontCmyk: [version.colorFontCmyk],
         colorBackCmyk: [version.colorBackCmyk],
-        description: [version.description, [Validators.maxLength(255)]],
+        description: [
+          version.description,
+          [Validators.maxLength(255), AtlasCharsetsValidator.iso88591],
+        ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -147,21 +159,13 @@ export class LineDetailComponent
           version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required],
         ],
-        comment: [version.comment, [Validators.maxLength(1500)]],
+        comment: [version.comment, [Validators.maxLength(1500), AtlasCharsetsValidator.iso88591]],
         etagVersion: version.etagVersion,
       },
       {
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
-  }
-
-  getValidation(inputForm: string) {
-    return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
-  }
-
-  displayDate(validationError: ValidationError) {
-    return this.validationService.displayDate(validationError);
   }
 
   getValidFromPlaceHolder() {
