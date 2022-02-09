@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 @Schema(name = "ErrorResponse")
 public class ErrorResponse {
 
+  public static final  int VERSIONING_NO_CHANGES_HTTP_STATUS = 520;
+
   @Schema(description = "HTTP Status Code", example = "400")
   private int status;
 

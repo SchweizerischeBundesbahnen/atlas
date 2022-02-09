@@ -2,6 +2,7 @@ package ch.sbb.timetable.field.number.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -14,7 +15,6 @@ import ch.sbb.timetable.field.number.enumaration.Status;
 import ch.sbb.timetable.field.number.repository.VersionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -30,9 +30,6 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private VersionRepository versionRepository;
-
-  @Autowired
-  private ObjectMapper objectMapper;
 
   private final Version version = Version.builder().ttfnid("ch:1:ttfnid:100000")
                                          .description("FPFN Description")
@@ -68,7 +65,7 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
                              .andReturn()
                              .getResponse()
                              .getContentAsString();
-    List<VersionModel> response = objectMapper.readValue(responseBody,
+    List<VersionModel> response = mapper.readValue(responseBody,
         new TypeReference<>() {
         });
 
@@ -84,7 +81,7 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
     MvcResult mvcResult = mvc.perform(createUpdateRequest(versionModel))
                              .andExpect(status().isPreconditionFailed())
                              .andReturn();
-    ErrorResponse errorResponse = objectMapper.readValue(
+    ErrorResponse errorResponse = mapper.readValue(
         mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
@@ -112,6 +109,46 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldReturnValidationNoChangesErrorResponse() throws Exception {
+    // Given
+    Version secondVersion = Version.builder().ttfnid("ch:1:ttfnid:100000")
+                                   .description("FPFN Description")
+                                   .number("10.100")
+                                   .status(Status.ACTIVE)
+                                   .swissTimetableFieldNumber("b0.100")
+                                   .validFrom(LocalDate.of(2021, 1, 1))
+                                   .validTo(LocalDate.of(2021, 12, 31))
+                                   .businessOrganisation("BLS")
+                                   .build();
+    versionRepository.save(secondVersion);
+    //When
+    VersionModel versionModel = VersionModel.builder()
+                                            .validFrom(version.getValidFrom())
+                                            .validTo(version.getValidTo())
+                                            .id(version.getId())
+                                            .ttfnid(version.getTtfnid())
+                                            .description(version.getDescription())
+                                            .number(version.getNumber())
+                                            .status(version.getStatus())
+                                            .swissTimetableFieldNumber(
+                                                version.getSwissTimetableFieldNumber())
+                                            .businessOrganisation(version.getBusinessOrganisation())
+                                            .build();
+
+    //Then
+
+    mvc.perform(post("/v1/field-numbers/versions/" + versionModel.getId())
+           .contentType(MediaType.APPLICATION_JSON)
+           .content(mapper.writeValueAsString(versionModel)))
+       .andExpect(jsonPath("$.status", is(520)))
+       .andExpect(jsonPath("$.message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.error", is("No changes after versioning")))
+       .andExpect(jsonPath("$.details[0].message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.details[0].field", is(nullValue())))
+       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
+  }
+
+  @Test
   void shouldReturnNotFoundErrorResponseWhenSearchItemNotFound() throws Exception {
     // Given
     mvc.perform(get("/v1/field-numbers/versions/" + 123)
@@ -133,7 +170,7 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
       throws JsonProcessingException {
     return post("/v1/field-numbers/versions/" + versionModel.getId())
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(versionModel));
+        .content(mapper.writeValueAsString(versionModel));
   }
 
   @AfterEach
