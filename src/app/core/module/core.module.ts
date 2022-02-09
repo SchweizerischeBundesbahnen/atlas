@@ -19,8 +19,8 @@ import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
 import { TableSearchComponent } from '../components/table-search/table-search.component';
-import { ErrorNotificationComponent } from '../notification/error-notification.component';
 import { FieldErrorComponent } from '../components/field-error/field-error.component';
+import { ErrorNotificationComponent } from '../notification/error/error-notification.component';
 
 @NgModule({
   declarations: [

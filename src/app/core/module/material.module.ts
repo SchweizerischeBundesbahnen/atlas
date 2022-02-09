@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -30,6 +30,9 @@ import { MAT_CHIPS_DEFAULT_OPTIONS, MatChipsModule } from '@angular/material/chi
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ENTER } from '@angular/cdk/keycodes';
+import { GlobalErrorHandler } from '../configuration/global-error-handler';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ServerErrorInterceptor } from '../configuration/server-error-interceptor';
 
 export const FORMAT = {
   parse: {
@@ -69,10 +72,9 @@ export const FORMAT = {
     MatCheckboxModule,
   ],
   providers: [
-    {
-      provide: MatPaginatorIntl,
-      useClass: TranslatedPaginator,
-    },
+    { provide: MatPaginatorIntl, useClass: TranslatedPaginator },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
+    { provide: HTTP_INTERCEPTORS, useClass: ServerErrorInterceptor, multi: true },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: FORMAT },
     {
