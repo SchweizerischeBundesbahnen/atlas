@@ -18,7 +18,7 @@ import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { switchMap } from 'rxjs/operators';
 import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
-import { CharsetsValidator } from '../../../../core/validation/charsets/charsets-validator';
+import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -130,7 +130,7 @@ export class SublineDetailComponent
             Validators.required,
             Validators.maxLength(50),
             NotBlankValidator.notBlank,
-            CharsetsValidator.sid4pt,
+            AtlasCharsetsValidator.sid4pt,
           ],
         ],
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
@@ -144,12 +144,15 @@ export class SublineDetailComponent
             Validators.required,
             Validators.maxLength(50),
             NotBlankValidator.notBlank,
-            CharsetsValidator.iso88591,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
-        number: [version.number, [Validators.maxLength(50), CharsetsValidator.iso88591]],
-        longName: [version.longName, [Validators.maxLength(255), CharsetsValidator.iso88591]],
-        description: [version.description, [Validators.maxLength(255), CharsetsValidator.iso88591]],
+        number: [version.number, [Validators.maxLength(50), AtlasCharsetsValidator.iso88591]],
+        longName: [version.longName, [Validators.maxLength(255), AtlasCharsetsValidator.iso88591]],
+        description: [
+          version.description,
+          [Validators.maxLength(255), AtlasCharsetsValidator.iso88591],
+        ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
