@@ -7,5 +7,9 @@
   "fixturesFolder": "cypress/fixtures",
   "baseUrl": "http://localhost:4200",
   "viewportWidth": 1920,
-  "viewportHeight": 1080
+  "viewportHeight": 1080,
+  "videoCompression": false,
+  "env": {
+    "resolution": "high"
+  }
 }

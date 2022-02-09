@@ -1,10 +1,17 @@
 {
   "ERROR": {
+    "CLIENT": {
+      "GENERIC": "Ein clientseitiger Fehler ist aufgetreten, bitte aktualisieren Sie die Seite oder klicken Sie auf F5. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Atlas-Support."
+    },
+    "WARNING": {
+      "VERSIONING_NO_CHANGES": "Beim Speichern wurden keine Daten geändert."
+    },
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Droits insuffisants pour voir ce contenu",
     "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}",
     "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden",
-    "SERVER_REQUEST_FEHLER": "La base de données n’est pas accessible actuellement. Veuillez vérifier la connexion Internet, fermer le navigateur et réouvrir l'application."
+    "SERVER_REQUEST_FEHLER": "La base de données n’est pas accessible actuellement. Veuillez vérifier la connexion Internet, fermer le navigateur et réouvrir l'application.",
+    "VERSIONING": "Beim Speichern ist ein Fehler in der Versionierung aufgetreten"
   },
   "COMMON": {
     "SAVE": "Enregistrer",
