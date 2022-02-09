@@ -51,6 +51,7 @@ declare namespace Cypress {
      * cy.login()
      */
     login(): Chainable<Subject>;
+
     atlasLogin(): Chainable<Subject>;
   }
 }
