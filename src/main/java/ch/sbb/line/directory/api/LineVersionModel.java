@@ -32,6 +32,7 @@ public class LineVersionModel implements DatesValidator {
   @Schema(description = "SwissLineNumber", example = "b1.L1")
   @NotBlank
   @Size(min = 1, max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   private String swissLineNumber;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
@@ -50,18 +51,22 @@ public class LineVersionModel implements DatesValidator {
 
   @Schema(description = "Number", example = "L1")
   @Size(max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String number;
 
   @Schema(description = "AlternativeName", example = "L1")
   @Size(max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String alternativeName;
 
   @Schema(description = "CombinationName", example = "S L1")
   @Size(max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String combinationName;
 
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus")
   @Size(max = 255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String longName;
 
   @Schema(description = "Color of the font in RGB", example = "#FF0000")
@@ -82,10 +87,12 @@ public class LineVersionModel implements DatesValidator {
 
   @Schema(description = "Icon", example = "https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg")
   @Size(max = 255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String icon;
 
   @Schema(description = "Description", example = "Meiringen - Innertkirchen")
   @Size(max = 255)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
 
   @Schema(description = "Valid from")
@@ -99,10 +106,12 @@ public class LineVersionModel implements DatesValidator {
   @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
   @NotBlank
   @Size(min = 1, max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String businessOrganisation;
 
   @Schema(description = "Comment", example = "Comment regarding the line")
   @Size(max = 1500)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
