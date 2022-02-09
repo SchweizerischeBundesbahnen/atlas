@@ -18,7 +18,7 @@ import {
 } from 'src/app/core/date/date.service';
 import { Page } from 'src/app/core/model/page';
 import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
-import { CharsetsValidator } from '../../../../core/validation/charsets/charsets-validator';
+import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -121,7 +121,7 @@ export class LineDetailComponent
             Validators.required,
             Validators.maxLength(50),
             NotBlankValidator.notBlank,
-            CharsetsValidator.sid4pt,
+            AtlasCharsetsValidator.sid4pt,
           ],
         ],
         slnid: [version.slnid],
@@ -132,22 +132,25 @@ export class LineDetailComponent
           version.businessOrganisation,
           [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
         ],
-        number: [version.number, [Validators.maxLength(50), CharsetsValidator.iso88591]],
+        number: [version.number, [Validators.maxLength(50), AtlasCharsetsValidator.iso88591]],
         alternativeName: [
           version.alternativeName,
-          [Validators.maxLength(50), CharsetsValidator.iso88591],
+          [Validators.maxLength(50), AtlasCharsetsValidator.iso88591],
         ],
         combinationName: [
           version.combinationName,
-          [Validators.maxLength(50), CharsetsValidator.iso88591],
+          [Validators.maxLength(50), AtlasCharsetsValidator.iso88591],
         ],
-        longName: [version.longName, [Validators.maxLength(255), CharsetsValidator.iso88591]],
-        icon: [version.icon, [Validators.maxLength(255), CharsetsValidator.iso88591]],
+        longName: [version.longName, [Validators.maxLength(255), AtlasCharsetsValidator.iso88591]],
+        icon: [version.icon, [Validators.maxLength(255), AtlasCharsetsValidator.iso88591]],
         colorFontRgb: [version.colorFontRgb],
         colorBackRgb: [version.colorBackRgb],
         colorFontCmyk: [version.colorFontCmyk],
         colorBackCmyk: [version.colorBackCmyk],
-        description: [version.description, [Validators.maxLength(255), CharsetsValidator.iso88591]],
+        description: [
+          version.description,
+          [Validators.maxLength(255), AtlasCharsetsValidator.iso88591],
+        ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -156,7 +159,7 @@ export class LineDetailComponent
           version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required],
         ],
-        comment: [version.comment, [Validators.maxLength(1500), CharsetsValidator.iso88591]],
+        comment: [version.comment, [Validators.maxLength(1500), AtlasCharsetsValidator.iso88591]],
         etagVersion: version.etagVersion,
       },
       {

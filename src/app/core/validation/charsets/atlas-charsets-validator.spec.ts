@@ -1,9 +1,9 @@
 import { FormControl } from '@angular/forms';
-import { CharsetsValidator } from './charsets-validator';
+import { AtlasCharsetsValidator } from './atlas-charsets-validator';
 
-describe('Charsets Validator', () => {
+describe('Atlas Charsets Validator', () => {
   it('should allow numbers and dots', () => {
-    const numericWithDot = CharsetsValidator.numericWithDot;
+    const numericWithDot = AtlasCharsetsValidator.numericWithDot;
 
     expect(numericWithDot(new FormControl('0'))).toBeNull();
     expect(numericWithDot(new FormControl('0.9'))).toBeNull();
@@ -13,7 +13,7 @@ describe('Charsets Validator', () => {
   });
 
   it('should allow SID4PT charset', () => {
-    const sid4pt = CharsetsValidator.sid4pt;
+    const sid4pt = AtlasCharsetsValidator.sid4pt;
 
     expect(sid4pt(new FormControl('aE2._:78-B'))).toBeNull();
     expect(sid4pt(new FormControl('duper.-:_234'))).toBeNull();
@@ -24,7 +24,7 @@ describe('Charsets Validator', () => {
   });
 
   it('should allow ISO-8859-1 charset', () => {
-    const iso88591 = CharsetsValidator.iso88591;
+    const iso88591 = AtlasCharsetsValidator.iso88591;
 
     expect(iso88591(new FormControl('abcÂÃ'))).toBeNull();
     expect(iso88591(new FormControl('abc'))).toBeNull();

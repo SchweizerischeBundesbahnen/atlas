@@ -17,7 +17,7 @@ import {
   MIN_DATE,
 } from '../../../core/date/date.service';
 import { Page } from '../../../core/model/page';
-import { CharsetsValidator } from '../../../core/validation/charsets/charsets-validator';
+import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -114,7 +114,11 @@ export class TimetableFieldNumberDetailComponent
       {
         swissTimetableFieldNumber: [
           version.swissTimetableFieldNumber,
-          [Validators.required, Validators.maxLength(this.MAX_LENGTH_50), CharsetsValidator.sid4pt],
+          [
+            Validators.required,
+            Validators.maxLength(this.MAX_LENGTH_50),
+            AtlasCharsetsValidator.sid4pt,
+          ],
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
@@ -130,7 +134,7 @@ export class TimetableFieldNumberDetailComponent
           [
             Validators.required,
             Validators.maxLength(this.MAX_LENGTH_50),
-            CharsetsValidator.iso88591,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
         number: [
@@ -138,16 +142,16 @@ export class TimetableFieldNumberDetailComponent
           [
             Validators.required,
             Validators.maxLength(this.MAX_LENGTH_50),
-            CharsetsValidator.numericWithDot,
+            AtlasCharsetsValidator.numericWithDot,
           ],
         ],
         description: [
           version.description,
-          [Validators.maxLength(this.MAX_LENGTH_255), CharsetsValidator.iso88591],
+          [Validators.maxLength(this.MAX_LENGTH_255), AtlasCharsetsValidator.iso88591],
         ],
         comment: [
           version.comment,
-          [Validators.maxLength(this.MAX_LENGTH_250), CharsetsValidator.iso88591],
+          [Validators.maxLength(this.MAX_LENGTH_250), AtlasCharsetsValidator.iso88591],
         ],
         status: version.status,
         etagVersion: version.etagVersion,
