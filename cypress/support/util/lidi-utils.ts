@@ -52,13 +52,17 @@ export default class LidiUtils {
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
     CommonUtils.selectItemFromDropDown('[data-cy=type]', version.type);
     CommonUtils.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
-    cy.get('[data-cy=colorFontRgb] [data-cy=rgb-picker-input]').clear().type(version.colorFontRgb);
-    cy.get('[data-cy=colorBackRgb] [data-cy=rgb-picker-input]').clear().type(version.colorBackRgb);
+    cy.get('[data-cy=colorFontRgb] [data-cy=rgb-picker-input]')
+      .type('{selectall}' + version.colorFontRgb)
+      .type('{selectall}' + version.colorFontRgb);
+    cy.get('[data-cy=colorBackRgb] [data-cy=rgb-picker-input]')
+      .type('{selectall}' + version.colorBackRgb)
+      .type('{selectall}' + version.colorBackRgb);
     cy.get('[data-cy=colorFontCmyk] [data-cy=cmyk-picker-input]')
-      .clear()
+      .type('{selectall}')
       .type(version.colorFontCmyk);
     cy.get('[data-cy=colorBackCmyk] [data-cy=cmyk-picker-input]')
-      .clear()
+      .type('{selectall}')
       .type(version.colorBackCmyk);
     cy.get('[data-cy=description]').clear().type(version.description);
     cy.get('[data-cy=number]').clear().type(version.number);
@@ -149,14 +153,6 @@ export default class LidiUtils {
     CommonUtils.assertItemValue('[data-cy=comment]', version.comment);
 
     cy.get('[data-cy=edit-item]').should('not.be.disabled');
-  }
-
-  static assertTableHeader(columnHeaderNumber: number, columnHeaderContent: string) {
-    cy.get('table')
-      .get('thead tr th')
-      .eq(columnHeaderNumber)
-      .get('div')
-      .contains(columnHeaderContent);
   }
 
   static addMainLine() {
