@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
@@ -48,17 +49,17 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
   void shouldCreateSubline() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
-                        .validTo(LocalDate.of(2000, 12, 31))
-                        .validFrom(LocalDate.of(2000, 1, 1))
-                        .businessOrganisation("sbb")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC2-libne")
-                        .build();
+        LineTestData.lineVersionModelBuilder()
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2-libne")
+                    .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     SublineVersionModel sublineVersionModel =
         SublineVersionModel.builder()
@@ -82,7 +83,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnConflictErrorResponse() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -136,7 +137,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnSubLineAssignToLineConflictErrorResponse() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -149,7 +150,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                         .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     LineVersionModel changedLineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -198,7 +199,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnSublineOutsideOfLineRange() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -251,7 +252,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -303,7 +304,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnValidationNoChangesErrorResponse() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .validTo(LocalDate.of(2001, 12, 31))
                         .businessOrganisation("sbb")
