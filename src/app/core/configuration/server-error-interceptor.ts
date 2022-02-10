@@ -13,6 +13,7 @@ import { NotificationService } from '../notification/notification.service';
 export class ServerErrorInterceptor implements HttpInterceptor {
   constructor(private notificationService: NotificationService) {}
 
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       retry(0),

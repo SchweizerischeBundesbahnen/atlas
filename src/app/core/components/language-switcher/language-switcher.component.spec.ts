@@ -68,6 +68,7 @@ describe('LanguageSwitcherComponent', () => {
       expect(itProperties).toEqual(deProperties);
     });
 
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const propertiesOf = (obj: any, results: string[] = []) => {
       const r = results;
       Object.keys(obj).forEach((key) => {

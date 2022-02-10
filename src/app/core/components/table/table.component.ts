@@ -28,6 +28,7 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
   @Input() canEdit = true;
   @Input() isLoading = false;
   @Input() totalCount!: number;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() tableSearchFieldTemplate!: TemplateRef<any>;
 
   @Output() newElementEvent = new EventEmitter<DATATYPE>();

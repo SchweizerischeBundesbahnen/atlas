@@ -34,17 +34,18 @@ export class ValidationService {
     return result;
   }
 
-  displayDate(validationError: ValidationError) {
-    if (validationError?.value?.date) {
-      const validFrom = validationError.value.date.validFrom;
-      const validTo = validationError.value.date.validTo;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  displayDate(validationError: any) {
+    if (validationError?.date) {
+      const validFrom = validationError.date.validFrom;
+      const validTo = validationError.date.validTo;
       return validFrom.format(DATE_PATTERN) + ' - ' + validTo.format(DATE_PATTERN);
     }
-    if (validationError?.value?.min) {
-      return validationError.value.min.format(DATE_PATTERN);
+    if (validationError?.min) {
+      return validationError.min.format(DATE_PATTERN);
     }
-    if (validationError?.value?.max) {
-      return validationError.value.max.format(DATE_PATTERN);
+    if (validationError?.max) {
+      return validationError.max.format(DATE_PATTERN);
     }
   }
 }

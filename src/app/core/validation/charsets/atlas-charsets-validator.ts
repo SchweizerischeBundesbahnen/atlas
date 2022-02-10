@@ -21,7 +21,7 @@ export class AtlasCharsetsValidator {
     return AtlasCharsetsValidator.validateAllowedCharacters(
       control,
       '[\\u0000-\\u00ff]*',
-      'ISO-5589-1'
+      'ISO-8859-1'
     );
   }
 
