@@ -4,7 +4,7 @@
       "GENERIC": "Ein clientseitiger Fehler ist aufgetreten, bitte aktualisieren Sie die Seite oder klicken Sie auf F5. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Atlas-Support."
     },
     "WARNING": {
-      "VERSIONING_NO_CHANGES": "Beim Speichern wurden keine Daten geändert."
+      "VERSIONING_NO_CHANGES": "Die von ihnen eingegeben Daten wurden überprüft. Es wurde festgestellt, dass die Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat."
     },
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
     "NOTALLOWED": "Keine Berechtigung für diesen Inhalt",
