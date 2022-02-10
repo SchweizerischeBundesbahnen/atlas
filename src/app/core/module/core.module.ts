@@ -21,6 +21,7 @@ import { SwitchVersionComponent } from '../components/switch-version/switch-vers
 import { TableSearchComponent } from '../components/table-search/table-search.component';
 import { FieldErrorComponent } from '../components/field-error/field-error.component';
 import { ErrorNotificationComponent } from '../notification/error/error-notification.component';
+import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ErrorNotificationComponent } from '../notification/error/error-notifica
     UserComponent,
     EmptyToNullDirective,
     TrimInputDirective,
+    WithDefaultValueDirective,
     TableSearchComponent,
     ErrorNotificationComponent,
   ],
@@ -74,6 +76,7 @@ import { ErrorNotificationComponent } from '../notification/error/error-notifica
     TranslateModule,
     EmptyToNullDirective,
     TrimInputDirective,
+    WithDefaultValueDirective,
     TableSearchComponent,
     ErrorNotificationComponent,
   ],
