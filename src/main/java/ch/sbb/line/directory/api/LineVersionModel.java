@@ -71,18 +71,22 @@ public class LineVersionModel implements DatesValidator {
 
   @Schema(description = "Color of the font in RGB", example = "#FF0000")
   @Pattern(regexp = HEX_COLOR_PATTERN)
+  @NotNull
   private String colorFontRgb;
 
   @Schema(description = "Color of the background in RGB", example = "#FF0000")
   @Pattern(regexp = HEX_COLOR_PATTERN)
+  @NotNull
   private String colorBackRgb;
 
   @Schema(description = "Color of the font in CMYK", example = "10,100,0,50")
   @Pattern(regexp = CMYK_COLOR_PATTERN)
+  @NotNull
   private String colorFontCmyk;
 
   @Schema(description = "Color of the background in CMYK", example = "10,100,0,50")
   @Pattern(regexp = CMYK_COLOR_PATTERN)
+  @NotNull
   private String colorBackCmyk;
 
   @Schema(description = "Icon", example = "https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg")
