@@ -1,13 +1,19 @@
-import { Directive, HostListener, Self } from '@angular/core';
+import { Directive, HostListener, Input, Self } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
-@Directive({ selector: '[emptyToNull]' })
-export class EmptyToNullDirective {
+@Directive({ selector: '[withDefaultValue]' })
+export class WithDefaultValueDirective {
+  @Input() withDefaultValue!: string;
+
   constructor(@Self() private ngControl: NgControl) {}
 
   @HostListener('keyup') onKeyUp() {
-    if (this.ngControl.value?.trim() === '') {
-      this.ngControl.reset(null);
+    this.fillWithDefaultValue();
+  }
+
+  fillWithDefaultValue() {
+    if (!this.ngControl.value?.trim()) {
+      this.ngControl.reset(this.withDefaultValue);
       this.ngControl.control?.markAsDirty();
     }
   }
