@@ -14,6 +14,7 @@ import { ValidationService } from '../../validation/validation.service';
   styleUrls: ['./table-search.component.scss'],
 })
 export class TableSearchComponent {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() additionalFieldTemplate!: TemplateRef<any>;
   @Output() searchEvent: EventEmitter<TableSearch> = new EventEmitter<TableSearch>();
 
