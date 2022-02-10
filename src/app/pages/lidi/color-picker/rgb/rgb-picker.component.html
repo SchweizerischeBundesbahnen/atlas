@@ -17,6 +17,7 @@
     [cpDisableInput]="true"
     (change)="onChangeColor(input.value)"
     trim
+    (focusout)="colorPickerDirective.closeDialog()"
   />
   <mat-error *ngIf="formControl.hasError('pattern')">{{
     'COMMON.COLOR_INVALID' | translate
