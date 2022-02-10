@@ -2,6 +2,7 @@ package ch.sbb.line.directory.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
@@ -210,24 +211,24 @@ class LineVersionModelTest {
   }
 
   private static LineVersionModelBuilder lineVersionModel() {
-    return LineVersionModel.builder()
-                           .status(Status.ACTIVE)
-                           .type(LineType.ORDERLY)
-                           .slnid("slnid")
-                           .paymentType(PaymentType.INTERNATIONAL)
-                           .number("number")
-                           .alternativeName("alternativeName")
-                           .combinationName("combinationName")
-                           .longName("longName")
-                           .colorFontRgb("#FFFFFF")
-                           .colorBackRgb("#FFFFFF")
-                           .colorFontCmyk("10,0,100,7")
-                           .colorBackCmyk("10,0,100,7")
-                           .description("description")
-                           .validFrom(LocalDate.of(2020, 12, 12))
-                           .validTo(LocalDate.of(2099, 12, 12))
-                           .businessOrganisation("businessOrganisation")
-                           .comment("comment")
-                           .swissLineNumber("swissLineNumber");
+    return LineTestData.lineVersionModelBuilder()
+                       .status(Status.ACTIVE)
+                       .type(LineType.ORDERLY)
+                       .slnid("slnid")
+                       .paymentType(PaymentType.INTERNATIONAL)
+                       .number("number")
+                       .alternativeName("alternativeName")
+                       .combinationName("combinationName")
+                       .longName("longName")
+                       .colorFontRgb("#FFFFFF")
+                       .colorBackRgb("#FFFFFF")
+                       .colorFontCmyk("10,0,100,7")
+                       .colorBackCmyk("10,0,100,7")
+                       .description("description")
+                       .validFrom(LocalDate.of(2020, 12, 12))
+                       .validTo(LocalDate.of(2099, 12, 12))
+                       .businessOrganisation("businessOrganisation")
+                       .comment("comment")
+                       .swissLineNumber("swissLineNumber");
   }
 }
