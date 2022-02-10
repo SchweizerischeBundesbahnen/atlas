@@ -62,7 +62,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
   }
 
   /**
-   * Scenario 14a: "Gültig von" und "Gültig bis" einer einzigen Version nach innen verkürzen
+   * Scenario 14b: "Gültig von" und "Gültig bis" einer einzigen Version nach innen verkürzen
    *
    * NEU:       |_|
    * IST:      |---|
@@ -110,5 +110,110 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
         firstVersionedObjectEntity.getProperties(), Fields.oneToManyRelation);
     assertThat(oneToManyRelationFirstVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     assertThat(oneToManyRelationFirstVersionedObjectEntity.getOneToMany()).isEmpty();
+  }
+
+  /**
+   * Szenario 14d: Verlängerung von erster Version in die Vergangenheit
+   *
+   * NEU:      |________________________________|
+   * IST:                      |----------------| |---------|
+   * Version:                           1              2
+   *
+   * RESULTAT: |________________________________| |---------|
+   * Version:                  1                       2
+   */
+  @Test
+  public void scenario14d() {
+    //given
+    LocalDate editedValidFrom = versionableObject1.getValidFrom().minusMonths(3);
+    LocalDate editedValidTo = versionableObject1.getValidTo();
+
+    VersionableObject editedVersion = VersionableObject.builder()
+                                                       .validFrom(editedValidFrom)
+                                                       .validTo(editedValidTo)
+                                                       .build();
+
+    //when
+    List<VersionedObject> result = versionableService.versioningObjects(
+        versionableObject1,
+        editedVersion,
+        List.of(versionableObject1, versionableObject3));
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(2);
+
+    VersionedObject firstVersionedObject = result.get(0);
+    assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
+    assertThat(firstVersionedObject).isNotNull();
+    assertThat(firstVersionedObject.getValidFrom()).isEqualTo(editedValidFrom);
+    assertThat(firstVersionedObject.getValidTo()).isEqualTo(editedValidTo);
+    Entity firstVersionedObjectEntity = firstVersionedObject.getEntity();
+    assertThat(firstVersionedObjectEntity).isNotNull();
+    assertThat(firstVersionedObjectEntity.getProperties()).isNotEmpty();
+    Property propertyFirstVersionedObjectEntity = filterProperty(
+        firstVersionedObjectEntity.getProperties(), Fields.property);
+    assertThat(propertyFirstVersionedObjectEntity).isNotNull();
+    assertThat(propertyFirstVersionedObjectEntity.getValue()).isEqualTo("Ciao1");
+    Property oneToManyRelationFirstVersionedObjectEntity = filterProperty(
+        firstVersionedObjectEntity.getProperties(), Fields.oneToManyRelation);
+    assertThat(oneToManyRelationFirstVersionedObjectEntity.hasOneToManyRelation()).isTrue();
+    assertThat(oneToManyRelationFirstVersionedObjectEntity.getOneToMany()).isEmpty();
+
+    VersionedObject secondVersionedObject = result.get(1);
+    assertThat(secondVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
+  }
+
+  /**
+   * Szenario 14e: Verlängerung von letzter Version in die Zukunft
+   *
+   * NEU:                         |________________________________|
+   * IST:      |----------------| |---------|
+   * Version:           1              2     
+   *
+   * RESULTAT: |----------------| |________________________________|
+   * Version:          1                       2         
+   */
+  @Test
+  public void scenario14e() {
+    //given
+    LocalDate editedValidFrom = versionableObject3.getValidFrom();
+    LocalDate editedValidTo = versionableObject3.getValidTo().plusMonths(5);
+
+    VersionableObject editedVersion = VersionableObject.builder()
+                                                       .validFrom(editedValidFrom)
+                                                       .validTo(editedValidTo)
+                                                       .build();
+
+    //when
+    List<VersionedObject> result = versionableService.versioningObjects(
+        versionableObject1,
+        editedVersion,
+        List.of(versionableObject1, versionableObject3));
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(2);
+
+    VersionedObject firstVersionedObject = result.get(0);
+    assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
+
+
+    VersionedObject secondVersionedObject = result.get(1);
+    assertThat(secondVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
+    assertThat(secondVersionedObject).isNotNull();
+    assertThat(secondVersionedObject.getValidFrom()).isEqualTo(editedValidFrom);
+    assertThat(secondVersionedObject.getValidTo()).isEqualTo(editedValidTo);
+    Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
+    assertThat(secondVersionedObjectEntity).isNotNull();
+    assertThat(secondVersionedObjectEntity.getProperties()).isNotEmpty();
+    Property propertysecondVersionedObjectEntity = filterProperty(
+        secondVersionedObjectEntity.getProperties(), Fields.property);
+    assertThat(propertysecondVersionedObjectEntity).isNotNull();
+    assertThat(propertysecondVersionedObjectEntity.getValue()).isEqualTo("Ciao3");
+    Property oneToManyRelationsecondVersionedObjectEntity = filterProperty(
+        secondVersionedObjectEntity.getProperties(), Fields.oneToManyRelation);
+    assertThat(oneToManyRelationsecondVersionedObjectEntity.hasOneToManyRelation()).isTrue();
+    assertThat(oneToManyRelationsecondVersionedObjectEntity.getOneToMany()).isEmpty();
   }
 }
