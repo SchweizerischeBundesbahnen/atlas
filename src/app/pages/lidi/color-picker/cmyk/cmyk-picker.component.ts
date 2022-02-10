@@ -11,6 +11,7 @@ export class CmykPickerComponent {
   @Input() attributeName!: string;
   @Input() label!: string;
   @Input() formGroup!: FormGroup;
+  @Input() defaultColor!: string;
 
   constructor(private colorService: ColorService) {}
 
