@@ -7,9 +7,8 @@
   <input
     matInput
     formControlName="{{ attributeName }}"
-    trim
-    emptyToNull
     data-cy="cmyk-picker-input"
+    [withDefaultValue]="defaultColor"
   />
   <mat-error *ngIf="formControl.hasError('pattern')">{{
     'COMMON.CMYK_INVALID' | translate

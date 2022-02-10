@@ -1,14 +1,7 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { RGB_HEX_COLOR_REGEX } from '../color.service';
+import { ColorPickerDirective } from 'ngx-color-picker';
 
 @Component({
   selector: 'app-rgb-picker [attributeName]',
@@ -16,10 +9,12 @@ import { RGB_HEX_COLOR_REGEX } from '../color.service';
   styleUrls: ['./rgb-picker.component.scss', '../color-indicator.scss'],
 })
 export class RgbPickerComponent implements OnInit, OnChanges {
-  @ViewChild('input') someInput!: ElementRef;
+  @ViewChild('input', { read: ColorPickerDirective }) colorPickerDirective!: ColorPickerDirective;
+
   @Input() attributeName!: string;
   @Input() label!: string;
   @Input() formGroup!: FormGroup;
+  @Input() defaultColor!: string;
 
   color = '#FFFFFF';
 
@@ -35,7 +30,7 @@ export class RgbPickerComponent implements OnInit, OnChanges {
     if (color) {
       this.formControl.patchValue(color.toUpperCase());
     } else {
-      this.formControl.patchValue(null);
+      this.formControl.patchValue(this.defaultColor);
     }
     this.color = this.formControl?.value;
     this.formGroup.markAsDirty();
