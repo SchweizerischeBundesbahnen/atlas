@@ -158,7 +158,7 @@ public class LineControllerTest {
 
 
   private static LineVersionModel createModel() {
-    return LineVersionModel.builder()
+    return LineTestData.lineVersionModelBuilder()
                            .status(Status.ACTIVE)
                            .type(LineType.ORDERLY)
                            .slnid("slnid")
