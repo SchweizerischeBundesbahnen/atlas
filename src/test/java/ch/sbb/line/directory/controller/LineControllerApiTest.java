@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
@@ -23,7 +24,6 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +55,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   void shouldUpdateLineVersion() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -87,7 +87,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   void shouldCreateLineVersion() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -111,7 +111,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnLineRangeSmallerThanSublineRangeErrorResponse() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -166,7 +166,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnConflictErrorResponse() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -208,7 +208,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -249,7 +249,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnValidationNoChangesErrorResponse() throws Exception {
     //given
     LineVersionModel firstLineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
@@ -262,7 +262,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                         .build();
     firstLineVersionModel = lineController.createLineVersion(firstLineVersionModel);
     LineVersionModel secondLineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2001, 12, 31))
                         .validFrom(LocalDate.of(2001, 1, 1))
                         .businessOrganisation("BLS")
@@ -291,7 +291,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   void shouldReturnNotFoundErrorResponse() throws Exception {
     //given
     LineVersionModel lineVersionModel =
-        LineVersionModel.builder()
+        LineTestData.lineVersionModelBuilder()
                         .validTo(LocalDate.of(2000, 12, 31))
                         .validFrom(LocalDate.of(2000, 1, 1))
                         .businessOrganisation("sbb")
