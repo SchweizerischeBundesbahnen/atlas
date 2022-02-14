@@ -18,7 +18,6 @@ import { ColorPickerDirective } from 'ngx-color-picker';
 })
 export class RgbPickerComponent implements OnInit, OnChanges {
   @ViewChild('input', { read: ColorPickerDirective }) colorPickerDirective!: ColorPickerDirective;
-  @ViewChild('input') inputElementRef!: ElementRef;
 
   @Input() attributeName!: string;
   @Input() label!: string;
@@ -26,6 +25,8 @@ export class RgbPickerComponent implements OnInit, OnChanges {
   @Input() defaultColor!: string;
 
   color = '#FFFFFF';
+
+  constructor(private readonly element: ElementRef) {}
 
   ngOnInit(): void {
     this.color = this.formControl?.value;
@@ -36,10 +37,11 @@ export class RgbPickerComponent implements OnInit, OnChanges {
   }
 
   onChangeColor(color: string) {
-    const colorPickerComponentRef =
-      this.inputElementRef.nativeElement.parentElement.querySelector('.color-picker');
-    colorPickerComponentRef.tabIndex = 0;
-    colorPickerComponentRef.addEventListener('keydown', this.closeColorPickerDialog.bind(this));
+    const colorPickerComponentRef = this.element.nativeElement.querySelector('.color-picker');
+    if (colorPickerComponentRef) {
+      colorPickerComponentRef.tabIndex = 0;
+      colorPickerComponentRef.addEventListener('keydown', this.closeColorPickerDialog.bind(this));
+    }
 
     if (color) {
       this.formControl.patchValue(color.toUpperCase());
