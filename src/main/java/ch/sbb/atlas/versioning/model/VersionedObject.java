@@ -66,7 +66,7 @@ public class VersionedObject {
     return versionedObjects;
   }
 
-  private static VersionedObject buildVersionedObject(LocalDate validFrom, LocalDate validTo,
+  static VersionedObject buildVersionedObject(LocalDate validFrom, LocalDate validTo,
       Entity entity,
       VersioningAction action) {
     if (NEW == action && entity.getId() != null) {
