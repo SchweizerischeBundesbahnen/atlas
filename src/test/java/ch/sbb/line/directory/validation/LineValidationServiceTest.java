@@ -48,7 +48,7 @@ public class LineValidationServiceTest {
 
     //when
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
-        () -> lineValidationService.validateLineBusinessRule(lineVersion));
+        () -> lineValidationService.validateLinePreconditionBusinessRule(lineVersion));
   }
 
   @Test
@@ -265,6 +265,11 @@ public class LineValidationServiceTest {
     LineVersion lineVersion = LineTestData.lineVersion();
     lineVersion.setValidFrom(LocalDate.of(2000, 1, 2));
     lineVersion.setValidTo(LocalDate.of(2000, 12, 31));
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersion);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        lineVersions);
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
@@ -286,6 +291,11 @@ public class LineValidationServiceTest {
     LineVersion lineVersion = LineTestData.lineVersion();
     lineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
     lineVersion.setValidTo(LocalDate.of(2000, 12, 30));
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersion);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        lineVersions);
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
@@ -307,6 +317,11 @@ public class LineValidationServiceTest {
     LineVersion lineVersion = LineTestData.lineVersion();
     lineVersion.setValidFrom(LocalDate.of(2000, 1, 2));
     lineVersion.setValidTo(LocalDate.of(2000, 12, 30));
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersion);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        lineVersions);
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
