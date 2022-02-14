@@ -113,6 +113,57 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
   }
 
   /**
+   * Szenario 14c: Verlängerung von validFrom&validTo, ohne eine Property zu verändern.
+   *
+   * NEU:      |________|
+   * IST:        |---|
+   * Version:      1
+   *
+   * RESULTAT: |________|
+   * Version:      1
+   *
+   */
+  @Test
+  public void scenario14c() {
+    //given
+    LocalDate editedValidFrom = versionableObject1.getValidFrom().minusMonths(1);
+    LocalDate editedValidTo = versionableObject1.getValidTo().plusMonths(1);
+
+    VersionableObject editedVersion = VersionableObject.builder()
+                                                       .property("stretch")
+                                                       .validFrom(editedValidFrom)
+                                                       .validTo(editedValidTo)
+                                                       .build();
+
+    //when
+    List<VersionedObject> result = versionableService.versioningObjects(
+        versionableObject1,
+        editedVersion,
+        List.of(versionableObject1));
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.size()).isEqualTo(1);
+
+    VersionedObject firstVersionedObject = result.get(0);
+    assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
+    assertThat(firstVersionedObject).isNotNull();
+    assertThat(firstVersionedObject.getValidFrom()).isEqualTo(editedValidFrom);
+    assertThat(firstVersionedObject.getValidTo()).isEqualTo(editedValidTo);
+    Entity firstVersionedObjectEntity = firstVersionedObject.getEntity();
+    assertThat(firstVersionedObjectEntity).isNotNull();
+    assertThat(firstVersionedObjectEntity.getProperties()).isNotEmpty();
+    Property propertyFirstVersionedObjectEntity = filterProperty(
+        firstVersionedObjectEntity.getProperties(), Fields.property);
+    assertThat(propertyFirstVersionedObjectEntity).isNotNull();
+    assertThat(propertyFirstVersionedObjectEntity.getValue()).isEqualTo("stretch");
+    Property oneToManyRelationFirstVersionedObjectEntity = filterProperty(
+        firstVersionedObjectEntity.getProperties(), Fields.oneToManyRelation);
+    assertThat(oneToManyRelationFirstVersionedObjectEntity.hasOneToManyRelation()).isTrue();
+    assertThat(oneToManyRelationFirstVersionedObjectEntity.getOneToMany()).isEmpty();
+  }
+
+  /**
    * Szenario 14d: Verlängerung von erster Version in die Vergangenheit
    *
    * NEU:      |________________________________|
@@ -169,10 +220,10 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
    *
    * NEU:                         |________________________________|
    * IST:      |----------------| |---------|
-   * Version:           1              2     
+   * Version:           1              2
    *
    * RESULTAT: |----------------| |________________________________|
-   * Version:          1                       2         
+   * Version:          1                       2
    */
   @Test
   public void scenario14e() {

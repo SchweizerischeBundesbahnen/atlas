@@ -2100,4 +2100,36 @@ public class VersioningHelperTest {
     //then
     assertThat(result).isFalse();
   }
+
+  @Test
+  public void shouldReturnTrueWhenEditedVersionIsOverTheLeftAndTheRightBorder() {
+    //given
+    VersionableObject version = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    VersionableObject edited = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .build();
+
+    Entity entity = Entity.builder().id(1L).properties(Collections.emptyList()).build();
+    ToVersioning toVersioning = ToVersioning.builder()
+                                            .versionable(version)
+                                            .entity(entity)
+                                            .build();
+    VersioningData versioningData = new VersioningData(edited, version, entity,
+        new ArrayList<>(List.of(toVersioning)));
+
+    //when
+    boolean result = VersioningHelper.isVersionOverTheLeftAndTheRightBorder(
+        versioningData);
+    //then
+    assertThat(result).isTrue();
+  }
 }
