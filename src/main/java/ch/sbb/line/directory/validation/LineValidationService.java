@@ -29,13 +29,15 @@ public class LineValidationService {
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
 
-  public void validateLineBusinessRule(LineVersion lineVersion){
+  public void validateLinePreconditionBusinessRule(LineVersion lineVersion) {
     validateLineConflict(lineVersion);
+  }
+  public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {
     validateTemporaryLinesDuration(lineVersion);
     validateLineRangeOutsideOfLineRange(lineVersion);
   }
 
-  void validateLineConflict(LineVersion lineVersion){
+  void validateLineConflict(LineVersion lineVersion) {
     List<LineVersion> swissLineNumberOverlaps = lineVersionRepository.findSwissLineNumberOverlaps(
         lineVersion);
     if (!swissLineNumberOverlaps.isEmpty()) {
@@ -43,11 +45,11 @@ public class LineValidationService {
     }
   }
 
-  void validateTemporaryLinesDuration(LineVersion lineVersion){
+  void validateTemporaryLinesDuration(LineVersion lineVersion) {
     if (LineType.TEMPORARY.equals(lineVersion.getType())) {
       List<LineVersion> allBySlnidOrderByValidFrom = lineVersionRepository.findAllBySlnidOrderByValidFrom(
           lineVersion.getSlnid());
-      doValidateTemporaryLinesDuration(lineVersion,allBySlnidOrderByValidFrom);
+      doValidateTemporaryLinesDuration(lineVersion, allBySlnidOrderByValidFrom);
     }
   }
 
@@ -85,12 +87,21 @@ public class LineValidationService {
 
     List<SublineVersion> sublineVersions = sublineVersionRepository.getSublineVersionByMainlineSlnid(
         lineVersion.getSlnid());
+    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
+        lineVersion.getSlnid());
+    LocalDate lineValidFrom = lineVersion.getValidFrom();
+    LocalDate lineValidTo = lineVersion.getValidTo();
+    if(!lineVersions.isEmpty()){
+      lineValidFrom = lineVersions.get(0).getValidFrom();
+      lineValidTo = lineVersions.get(lineVersions.size() - 1).getValidTo();
+    }
+
     if (!sublineVersions.isEmpty()) {
       sublineVersions.sort(Comparator.comparing(SublineVersion::getValidFrom));
       SublineVersion firstSublineVersion = sublineVersions.get(0);
       SublineVersion lastSublineVersion = sublineVersions.get(sublineVersions.size() - 1);
-      if (lineVersion.getValidFrom().isAfter(firstSublineVersion.getValidFrom())
-          || lineVersion.getValidTo().isBefore(lastSublineVersion.getValidTo())) {
+      if (lineValidFrom.isAfter(firstSublineVersion.getValidFrom())
+          || lineValidTo.isBefore(lastSublineVersion.getValidTo())) {
         throw new LineRangeSmallerThenSublineRangeException(lineVersion,
             firstSublineVersion.getSwissSublineNumber(), firstSublineVersion.getValidFrom(),
             lastSublineVersion.getValidTo());
