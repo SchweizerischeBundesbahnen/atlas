@@ -58,7 +58,7 @@ export class RgbPickerComponent implements OnInit, OnChanges {
     return attributeControl;
   }
 
-  closeColorPickerDialog($event: any) {
+  closeColorPickerDialog($event: KeyboardEvent) {
     if ($event.key === 'Tab') {
       this.colorPickerDirective.closeDialog();
     }
