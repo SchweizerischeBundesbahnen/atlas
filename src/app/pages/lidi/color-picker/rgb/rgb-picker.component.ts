@@ -1,4 +1,12 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { RGB_HEX_COLOR_REGEX } from '../color.service';
 import { ColorPickerDirective } from 'ngx-color-picker';
@@ -10,6 +18,7 @@ import { ColorPickerDirective } from 'ngx-color-picker';
 })
 export class RgbPickerComponent implements OnInit, OnChanges {
   @ViewChild('input', { read: ColorPickerDirective }) colorPickerDirective!: ColorPickerDirective;
+  @ViewChild('input') inputElementRef!: ElementRef;
 
   @Input() attributeName!: string;
   @Input() label!: string;
@@ -27,6 +36,11 @@ export class RgbPickerComponent implements OnInit, OnChanges {
   }
 
   onChangeColor(color: string) {
+    const colorPickerComponentRef =
+      this.inputElementRef.nativeElement.parentElement.querySelector('.color-picker');
+    colorPickerComponentRef.tabIndex = 0;
+    colorPickerComponentRef.addEventListener('keydown', this.closeColorPickerDialog.bind(this));
+
     if (color) {
       this.formControl.patchValue(color.toUpperCase());
     } else {
@@ -40,5 +54,11 @@ export class RgbPickerComponent implements OnInit, OnChanges {
     const attributeControl = this.formGroup.get([this.attributeName])!;
     attributeControl.addValidators(Validators.pattern(RGB_HEX_COLOR_REGEX));
     return attributeControl;
+  }
+
+  closeColorPickerDialog($event: any) {
+    if ($event.key === 'Tab') {
+      this.colorPickerDirective.closeDialog();
+    }
   }
 }
