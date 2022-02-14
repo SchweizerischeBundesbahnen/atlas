@@ -63,8 +63,10 @@ public class LineService {
 
   public LineVersion save(LineVersion lineVersion) {
     lineVersion.setStatus(Status.ACTIVE);
-    lineValidationService.validateLineBusinessRule(lineVersion);
-    return lineVersionRepository.save(lineVersion);
+    lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
+    LineVersion updatedVersion = lineVersionRepository.save(lineVersion);
+    lineValidationService.validateLineAfterVersioningBusinessRule(updatedVersion);
+    return updatedVersion;
   }
 
   public void deleteById(Long id) {
@@ -92,6 +94,8 @@ public class LineService {
 
     versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save,
         this::deleteById);
+//    //validate here
+//    lineValidationService.validateLineRangeOutsideOfLineRange(currentVersion);
   }
 
 }
