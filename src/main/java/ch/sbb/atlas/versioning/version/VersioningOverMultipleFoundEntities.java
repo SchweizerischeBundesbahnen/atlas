@@ -76,7 +76,8 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
   private void applyVersioningToTheLeftBorder(VersioningData vd,
       List<ToVersioning> toVersioningList, List<VersionedObject> versionedObjects) {
     ToVersioning leftBorderToVersioning = toVersioningList.get(0);
-    if (VersioningHelper.isEditedValidFromOverTheLeftBorder(vd.getEditedValidFrom(), toVersioningList)) {
+    if (VersioningHelper.isEditedValidFromOverTheLeftBorder(vd.getEditedValidFrom(),
+        toVersioningList)) {
       //update validTo and merge props
       VersionedObject versionedLeftBorder = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(
           vd.getEditedValidFrom(), leftBorderToVersioning.getValidTo(), leftBorderToVersioning,
@@ -89,7 +90,8 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
           leftBorderToVersioning.getValidFrom(), leftBorderToVersioning.getValidTo(),
           leftBorderToVersioning, vd.getEditedEntity());
       versionedObjects.add(versionedLeftBorder);
-    } else if (!VersioningHelper.isEditedValidFromOverTheLeftBorder(vd.getEditedValidFrom(), toVersioningList)
+    } else if (!VersioningHelper.isEditedValidFromOverTheLeftBorder(vd.getEditedValidFrom(),
+        toVersioningList)
         && !VersioningHelper.isEditedValidFromExactOnTheLeftBorder(vd.getEditedValidFrom(),
         leftBorderToVersioning)) {
       applyVersioningOnLeftBorderWhenValidFromIsAfterCurrentValidFrom(vd, toVersioningList,
@@ -103,7 +105,8 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
       List<ToVersioning> toVersioningList, List<VersionedObject> versionedObjects) {
     ToVersioning rightBorderToVersioning = toVersioningList.get(
         toVersioningList.size() - 1);
-    if (VersioningHelper.isEditedValidToOverTheRightBorder(vd.getEditedValidTo(), toVersioningList)) {
+    if (VersioningHelper.isEditedValidToOverTheRightBorder(vd.getEditedValidTo(),
+        toVersioningList)) {
       //update validTo and merge props
       VersionedObject versionedRightBorder = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(
           rightBorderToVersioning.getValidFrom(), vd.getEditedValidTo(),
@@ -116,8 +119,10 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
           rightBorderToVersioning.getValidFrom(), rightBorderToVersioning.getValidTo(),
           rightBorderToVersioning, vd.getEditedEntity());
       versionedObjects.add(versionedRightBorder);
-    } else if (!VersioningHelper.isEditedValidToOverTheRightBorder(vd.getEditedValidTo(), toVersioningList)
-        && !VersioningHelper.isEditedValidToExactOnTheRightBorder(vd.getEditedValidTo(), rightBorderToVersioning)) {
+    } else if (
+        !VersioningHelper.isEditedValidToOverTheRightBorder(vd.getEditedValidTo(), toVersioningList)
+            && !VersioningHelper.isEditedValidToExactOnTheRightBorder(vd.getEditedValidTo(),
+            rightBorderToVersioning)) {
       applyVersioningOnTheLeftBorderWhenValidToIsBeforeCurrentValidTo(vd, toVersioningList,
           versionedObjects);
     } else {
@@ -217,14 +222,16 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
       Entity editedEntity) {
     Entity entityLeftBorderToUpdate = Entity.replaceEditedPropertiesWithCurrentProperties(
         editedEntity, toVersioning.getEntity());
-    return VersionedObject.buildVersionedObjectToUpdate(editedValidFrom, validTo, entityLeftBorderToUpdate);
+    return VersionedObject.buildVersionedObjectToUpdate(editedValidFrom, validTo,
+        entityLeftBorderToUpdate);
   }
 
   private VersionedObject addNewVersionAfterLeftBorder(VersioningData vd,
       ToVersioning leftBorderVersioning) {
     Entity entityToAddAfterLeftBorder = Entity.replaceEditedPropertiesWithCurrentProperties(
         vd.getEditedEntity(), leftBorderVersioning.getEntity());
-    return VersionedObject.buildVersionedObjectToCreate(vd.getEditedValidFrom(), leftBorderVersioning.getValidTo(),
+    return VersionedObject.buildVersionedObjectToCreate(vd.getEditedValidFrom(),
+        leftBorderVersioning.getValidTo(),
         entityToAddAfterLeftBorder);
   }
 
@@ -240,7 +247,8 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
       ToVersioning current) {
     Entity entityToAdd = Entity.replaceEditedPropertiesWithCurrentProperties(editedEntity,
         current.getEntity());
-    return VersionedObject.buildVersionedObjectToCreate(current.getValidFrom(), editedValidTo, entityToAdd);
+    return VersionedObject.buildVersionedObjectToCreate(current.getValidFrom(), editedValidTo,
+        entityToAdd);
   }
 
   private VersionedObject updateCurrentVersion(ToVersioning current, LocalDate localDate,

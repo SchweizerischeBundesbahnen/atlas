@@ -44,7 +44,8 @@ public class VersioningData {
     this.objectToVersioningFound = VersioningHelper.findObjectToVersioningInValidFromValidToRange(
         this.editedValidFrom, this.editedValidTo, this.objectsToVersioning);
     this.versionedObjects = new ArrayList<>(
-        VersionedObject.fillNotTouchedVersionedObject(this.objectsToVersioning, this.objectToVersioningFound));
+        VersionedObject.fillNotTouchedVersionedObject(this.objectsToVersioning,
+            this.objectToVersioningFound));
   }
 
   public ToVersioning getSingleFoundObjectToVersioning() {
@@ -82,13 +83,13 @@ public class VersioningData {
   }
 
   private void validateValidTo(LocalDate validTo) {
-    if (validTo.isAfter(MAX_DATE)){
+    if (validTo.isAfter(MAX_DATE)) {
       throw new DateValidationException("ValidTo cannot be after 31.12.2099.");
     }
   }
 
   private void validateValidFrom(LocalDate validFrom) {
-    if (validFrom.isBefore(MIN_DATE)){
+    if (validFrom.isBefore(MIN_DATE)) {
       throw new DateValidationException("ValidFrom cannot be before 1.1.1900.");
     }
   }

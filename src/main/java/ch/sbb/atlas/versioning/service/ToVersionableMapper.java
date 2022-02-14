@@ -14,7 +14,7 @@ import java.util.Collection;
 
 final class ToVersionableMapper {
 
-  private ToVersionableMapper(){
+  private ToVersionableMapper() {
     throw new VersioningException();
   }
 
@@ -58,7 +58,8 @@ final class ToVersionableMapper {
             relationField.set(relationElement, propertyRelation.getValue());
           }
 
-          Field versionableReference = ReflectionHelper.getFieldAccessible(relationElement.getClass(),
+          Field versionableReference = ReflectionHelper.getFieldAccessible(
+              relationElement.getClass(),
               getPropertyName(versionableClass));
           versionableReference.set(relationElement, versionable);
 

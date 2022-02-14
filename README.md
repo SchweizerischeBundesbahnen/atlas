@@ -117,15 +117,15 @@ List<Version> currentVersions=versionRepository.getAllVersionsVersioned(currentV
 E.g.
 
 ````java
-public List<VersionedObject> updateVersion(Version currentVersion, Version editedVersion) {
-    List<Version> currentVersions = versionRepository.getAllVersionsVersioned(
+public List<VersionedObject> updateVersion(Version currentVersion,Version editedVersion){
+    List<Version> currentVersions=versionRepository.getAllVersionsVersioned(
     currentVersion.getTtfnid());
 
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
-    editedVersion, currentVersions);
+    List<VersionedObject> versionedObjects=versionableService.versioningObjects(currentVersion,
+    editedVersion,currentVersions);
 
-    versionableService.applyVersioning(Version.class, versionedObjects, this::save,
+    versionableService.applyVersioning(Version.class,versionedObjects,this::save,
     this::deleteById);
     return versionedObjects;
-}
+    }
 ````
