@@ -49,6 +49,7 @@ public class VersioningEngine {
 
     boolean hasChanges = checkChangesAfterVersioning(vd, mergedVersionedObjects);
     if (!hasChanges) {
+      log.info("No changes made after performing versioning.");
       throw new VersioningNoChangesException();
     }
     return mergedVersionedObjects;

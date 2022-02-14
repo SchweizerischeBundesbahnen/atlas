@@ -169,6 +169,11 @@ public final class VersioningHelper {
     return editedValidTo.isBefore(leftBorderVersion.getValidFrom());
   }
 
+  public static boolean isVersionOverTheLeftAndTheRightBorder(VersioningData vd) {
+    return vd.getEditedValidFrom().isBefore(vd.getCurrentVersion().getValidFrom())
+        && vd.getEditedValidTo().isAfter(vd.getCurrentVersion().getValidTo());
+  }
+
   public static boolean areVersionsSequential(ToVersioning current, ToVersioning next) {
     return DateHelper.areDatesSequential(current.getValidTo(), next.getValidFrom());
   }

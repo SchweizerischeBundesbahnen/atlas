@@ -3,6 +3,8 @@ package ch.sbb.atlas.versioning.version;
 import static ch.sbb.atlas.versioning.model.Entity.replaceEditedPropertiesWithCurrentProperties;
 import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObjectToCreate;
 import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObjectToUpdate;
+import static ch.sbb.atlas.versioning.version.VersioningHelper.arePropertiesEdited;
+import static ch.sbb.atlas.versioning.version.VersioningHelper.isCurrentVersionFirstVersion;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorderAndValidFromNotEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnBeginningOfVersionAndEndingWithin;
@@ -12,6 +14,7 @@ import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidFromEd
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnlyValidToEditedAndPropertiesAreNotEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isSingularVersionAndPropertiesAreNotEdited;
+import static ch.sbb.atlas.versioning.version.VersioningHelper.isVersionOverTheLeftAndTheRightBorder;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
@@ -40,6 +43,11 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       List<VersionedObject> versionedObjectsInTheMiddleOfAnExistingEntity =
           applyVersioningInTheMiddleOfAnExistingEntity(vd, toVersioning);
       versionedObjects.addAll(versionedObjectsInTheMiddleOfAnExistingEntity);
+      return versionedObjects;
+    }
+    if (isVersionOverTheLeftAndTheRightBorder(vd) && arePropertiesEdited(vd)) {
+      VersionedObject versionedObject = stretchVersion(vd, toVersioning);
+      versionedObjects.add(versionedObject);
       return versionedObjects;
     }
     List<VersionedObject> versionedObjectsOnTheBorder =
@@ -88,7 +96,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       ToVersioning toVersioning) {
     List<VersionedObject> versionedObjects = new ArrayList<>();
 
-    if (isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(vd,toVersioning)) {
+    if (isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(vd, toVersioning)) {
       log.info("Found on the left border, "
           + "editedValidFrom is before current validFrom and validTo is not edited.");
       // update validFrom=editedValidFrom and merge properties
@@ -109,7 +117,8 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       return applyVersioningOnTheRightBorderWhenValidToAndPropertiesAreEdited(vd, toVersioning);
     }
     if (isOnlyValidFromEditedAndPropertiesAreNotEdited(vd)) {
-      return applyVersioningOnTheRightBorderWhenValidFromIsEditedAndPropertiesAreNotEdited(vd, toVersioning);
+      return applyVersioningOnTheRightBorderWhenValidFromIsEditedAndPropertiesAreNotEdited(vd,
+          toVersioning);
     }
     if (isOnTheRightBorderAndValidToIsOnOrOverTheBorder(vd, toVersioning)) {
       return applyVersioningOnTheRightBorderWhenEditedEntityIsOnOrOverTheBorder(vd, toVersioning);
@@ -122,7 +131,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
 
   private List<VersionedObject> applyVersioningOnTheRightBorderWhenValidFromIsEditedAndPropertiesAreNotEdited(
       VersioningData vd, ToVersioning toVersioning) {
-    if (VersioningHelper.isCurrentVersionFirstVersion(vd)) {
+    if (isCurrentVersionFirstVersion(vd)) {
       log.info("Found on the right border, validFrom is edited, properties are not edited.");
       return Collections.singletonList(
           shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd, toVersioning));
@@ -170,13 +179,14 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       VersioningData vd, ToVersioning toVersioning) {
     log.info("Found version to split on or over the right border, validTo and properties edited.");
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    if(vd.getEditedValidFrom().equals(toVersioning.getValidFrom())){
+    if (vd.getEditedValidFrom().equals(toVersioning.getValidFrom())) {
       // update current version: validTo = editedValidTo and update properties
-      VersionedObject shortenOrLengthenVersion = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd,
+      VersionedObject shortenOrLengthenVersion = shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(
+          vd,
           toVersioning);
       versionedObjects.add(shortenOrLengthenVersion);
       return versionedObjects;
-    }else if(vd.getEditedValidFrom().isAfter(toVersioning.getValidFrom())){
+    } else if (vd.getEditedValidFrom().isAfter(toVersioning.getValidFrom())) {
       // update current version: validTo = editedValidFrom.minusDay(1),do not update properties
       VersionedObject shortenRightVersion = shortenRightVersion(vd, toVersioning);
       versionedObjects.add(shortenRightVersion);
@@ -224,6 +234,13 @@ public class VersioningOnSingleFoundEntity implements Versioning {
     return buildVersionedObjectToUpdate(toVersioning.getValidFrom(),
         vd.getEditedValidFrom().minusDays(1),
         toVersioning.getEntity());
+  }
+
+  private VersionedObject stretchVersion(VersioningData vd, ToVersioning toVersioning) {
+    Entity entity = replaceEditedPropertiesWithCurrentProperties(vd.getEditedEntity(),
+        toVersioning.getEntity());
+    return buildVersionedObjectToUpdate(vd.getEditedValidFrom(),
+        vd.getEditedValidTo(), entity);
   }
 
   private VersionedObject shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(VersioningData vd,
