@@ -16,7 +16,6 @@
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<spring-cloud.version>2021.0.0</spring-cloud.version>
-		<log4j2.version>2.17.1</log4j2.version>
 		<asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
 		<snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
 	</properties>
