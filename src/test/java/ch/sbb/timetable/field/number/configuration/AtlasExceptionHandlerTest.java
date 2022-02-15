@@ -14,7 +14,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-class AtlasExceptionHandlerTest {
+public class AtlasExceptionHandlerTest {
 
   private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler();
 
