@@ -1,7 +1,16 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { RGB_HEX_COLOR_REGEX } from '../color.service';
 import { ColorPickerDirective } from 'ngx-color-picker';
+import { Keys } from '../../../../core/constants/keys';
 
 @Component({
   selector: 'app-rgb-picker [attributeName]',
@@ -18,6 +27,8 @@ export class RgbPickerComponent implements OnInit, OnChanges {
 
   color = '#FFFFFF';
 
+  constructor(private readonly element: ElementRef) {}
+
   ngOnInit(): void {
     this.color = this.formControl?.value;
   }
@@ -27,6 +38,8 @@ export class RgbPickerComponent implements OnInit, OnChanges {
   }
 
   onChangeColor(color: string) {
+    this.addKeydownEventToColorPicker();
+
     if (color) {
       this.formControl.patchValue(color.toUpperCase());
     } else {
@@ -40,5 +53,19 @@ export class RgbPickerComponent implements OnInit, OnChanges {
     const attributeControl = this.formGroup.get([this.attributeName])!;
     attributeControl.addValidators(Validators.pattern(RGB_HEX_COLOR_REGEX));
     return attributeControl;
+  }
+
+  private addKeydownEventToColorPicker() {
+    const colorPickerComponentRef = this.element.nativeElement.querySelector('color-picker');
+    if (colorPickerComponentRef) {
+      colorPickerComponentRef.tabIndex = 0;
+      colorPickerComponentRef.addEventListener('keydown', this.closeColorPickerDialog.bind(this));
+    }
+  }
+
+  closeColorPickerDialog($event: KeyboardEvent) {
+    if ($event.key === Keys.TAB) {
+      this.colorPickerDirective.closeDialog();
+    }
   }
 }
