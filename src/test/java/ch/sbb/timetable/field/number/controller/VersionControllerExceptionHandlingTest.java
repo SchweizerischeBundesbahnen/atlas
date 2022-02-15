@@ -17,9 +17,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.data.util.ClassTypeInformation;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(VersionController.class)
+@ActiveProfiles("integration-test")
 public class VersionControllerExceptionHandlingTest {
 
   @Autowired
