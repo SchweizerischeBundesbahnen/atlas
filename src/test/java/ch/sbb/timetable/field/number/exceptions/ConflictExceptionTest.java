@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-class ConflictExceptionTest {
+public class ConflictExceptionTest {
 
   @Test
   void shouldConvertToErrorMessageCorrectly() {
