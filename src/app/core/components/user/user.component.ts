@@ -41,9 +41,12 @@ export class UserComponent implements OnInit {
 
   extractRoles() {
     if (this.authService.accessToken) {
-      const decodedToken = jwtDecode(this.authService.accessToken) as User;
-      this.roles = decodedToken.roles.filter((role) => role !== 'apim-default-role');
+      this.roles = this.decodeAccessToken().roles.filter((role) => role !== 'apim-default-role');
     }
+  }
+
+  private decodeAccessToken(): User {
+    return jwtDecode(this.authService.accessToken);
   }
 
   authenticate() {
