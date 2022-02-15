@@ -11,7 +11,6 @@ import { TableSearch } from '../../../core/components/table-search/table-search'
 @Component({
   selector: 'app-timetable-field-number-overview',
   templateUrl: './timetable-field-number-overview.component.html',
-  styleUrls: ['./timetable-field-number-overview.component.scss'],
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<TimetableFieldNumber>[] = [

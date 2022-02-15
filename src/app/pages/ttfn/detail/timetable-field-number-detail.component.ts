@@ -22,7 +22,6 @@ import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-
 @Component({
   selector: 'app-timetable-field-number-detail',
   templateUrl: './timetable-field-number-detail.component.html',
-  styleUrls: ['./timetable-field-number-detail.component.scss'],
 })
 export class TimetableFieldNumberDetailComponent
   extends DetailWrapperController<Version>
