@@ -94,8 +94,6 @@ public class LineService {
 
     versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save,
         this::deleteById);
-//    //validate here
-//    lineValidationService.validateLineRangeOutsideOfLineRange(currentVersion);
   }
 
 }
