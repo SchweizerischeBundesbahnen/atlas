@@ -83,10 +83,7 @@ public class LineValidationService {
     }
   }
 
-  public void validateLineRangeOutsideOfLineRange(LineVersion lineVersion) {
-
-    List<SublineVersion> sublineVersions = sublineVersionRepository.getSublineVersionByMainlineSlnid(
-        lineVersion.getSlnid());
+  void validateLineRangeOutsideOfLineRange(LineVersion lineVersion) {
     List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
         lineVersion.getSlnid());
     LocalDate lineValidFrom = lineVersion.getValidFrom();
@@ -96,8 +93,10 @@ public class LineValidationService {
       lineValidTo = lineVersions.get(lineVersions.size() - 1).getValidTo();
     }
 
+    List<SublineVersion> sublineVersions = sublineVersionRepository.getSublineVersionByMainlineSlnid(
+        lineVersion.getSlnid());
+    sublineVersions.sort(Comparator.comparing(SublineVersion::getValidFrom));
     if (!sublineVersions.isEmpty()) {
-      sublineVersions.sort(Comparator.comparing(SublineVersion::getValidFrom));
       SublineVersion firstSublineVersion = sublineVersions.get(0);
       SublineVersion lastSublineVersion = sublineVersions.get(sublineVersions.size() - 1);
       if (lineValidFrom.isAfter(firstSublineVersion.getValidFrom())
