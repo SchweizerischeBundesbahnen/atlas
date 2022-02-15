@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.validation;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -48,7 +49,7 @@ public class LineValidationServiceTest {
 
     //when
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
-        () -> lineValidationService.validateLineBusinessRule(lineVersion));
+        () -> lineValidationService.validateLinePreconditionBusinessRule(lineVersion));
   }
 
   @Test
@@ -251,6 +252,54 @@ public class LineValidationServiceTest {
   }
 
   @Test
+  void shouldNotThrowLineRangeSmallerThenSublineRangeExceptionWhenLineRangeIsTheSAmeAsTheSublineRange() {
+    // Given
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
+    sublineVersion.setValidTo(LocalDate.of(2000, 12, 31));
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+    sublineVersions.add(sublineVersion);
+
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(
+        sublineVersions);
+
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
+    lineVersion.setValidTo(LocalDate.of(2000, 12, 31));
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersion);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        lineVersions);
+
+    // When
+    assertDoesNotThrow(
+        () -> lineValidationService.validateLineRangeOutsideOfLineRange(lineVersion));
+  }
+
+  @Test
+  void shouldNotThrowLineRangeSmallerThenSublineRangeExceptionWhenNoSublineIsRelated() {
+    // Given
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(any())).thenReturn(
+        sublineVersions);
+
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
+    lineVersion.setValidTo(LocalDate.of(2000, 12, 31));
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersion);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        lineVersions);
+
+    // When
+    assertDoesNotThrow(
+        () -> lineValidationService.validateLineRangeOutsideOfLineRange(lineVersion));
+  }
+
+  @Test
   void shouldThrowLineRangeSmallerThenSublineRangeExceptionWhenLineRangeIsLeftSmallerThenSublineRange() {
     // Given
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
@@ -265,6 +314,11 @@ public class LineValidationServiceTest {
     LineVersion lineVersion = LineTestData.lineVersion();
     lineVersion.setValidFrom(LocalDate.of(2000, 1, 2));
     lineVersion.setValidTo(LocalDate.of(2000, 12, 31));
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersion);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        lineVersions);
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
@@ -286,6 +340,11 @@ public class LineValidationServiceTest {
     LineVersion lineVersion = LineTestData.lineVersion();
     lineVersion.setValidFrom(LocalDate.of(2000, 1, 1));
     lineVersion.setValidTo(LocalDate.of(2000, 12, 30));
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersion);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        lineVersions);
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
@@ -307,6 +366,11 @@ public class LineValidationServiceTest {
     LineVersion lineVersion = LineTestData.lineVersion();
     lineVersion.setValidFrom(LocalDate.of(2000, 1, 2));
     lineVersion.setValidTo(LocalDate.of(2000, 12, 30));
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersion);
+
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
+        lineVersions);
 
     // When
     assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
