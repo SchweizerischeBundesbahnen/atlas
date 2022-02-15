@@ -139,7 +139,7 @@ class LineServiceTest {
     LineVersion result = lineService.save(lineVersion);
 
     // Then
-    verify(lineValidationService).validateLineBusinessRule(lineVersion);
+    verify(lineValidationService).validateLinePreconditionBusinessRule(lineVersion);
     verify(lineVersionRepository).save(lineVersion);
     assertThat(result).isEqualTo(lineVersion);
   }
@@ -204,7 +204,7 @@ class LineServiceTest {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
     doThrow(LineRangeSmallerThenSublineRangeException.class).when(lineValidationService)
-                                                            .validateLineBusinessRule(
+                                                            .validateLinePreconditionBusinessRule(
                                                                 lineVersion);
 
     // When
@@ -220,7 +220,7 @@ class LineServiceTest {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
     doThrow(LineConflictException.class).when(lineValidationService)
-                                                            .validateLineBusinessRule(
+                                                            .validateLinePreconditionBusinessRule(
                                                                 lineVersion);
 
     // When
@@ -236,7 +236,7 @@ class LineServiceTest {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
     doThrow(TemporaryLineValidationException.class).when(lineValidationService)
-                                                   .validateLineBusinessRule(
+                                                   .validateLinePreconditionBusinessRule(
                                                                 lineVersion);
 
     // When
