@@ -58,7 +58,6 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_ERROR,
     autoWatch: true,
-    // https://flow.sbb.ch/browse/CLEW-13224
     browsers: ['Chrome'],
     singleRun: false,
     restartOnFileChange: true,
