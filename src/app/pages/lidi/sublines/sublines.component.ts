@@ -13,7 +13,6 @@ import { TableComponent } from '../../../core/components/table/table.component';
 @Component({
   selector: 'app-lidi-sublines',
   templateUrl: './sublines.component.html',
-  styleUrls: ['./sublines.component.scss'],
 })
 export class SublinesComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<Subline>;
