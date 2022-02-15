@@ -41,7 +41,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 ### Node.js
 
-This project requires Node.js Version **14.6.1**. It has to be a LTS version.
+This project requires Node.js Version **16.13.2**. It has to be a LTS version.
 
 Use Node Version Manager to easily switch the NodeJS version between your angular projects.
 
@@ -53,15 +53,7 @@ You should have a NVM_DIR environment variable, which points to a directory (lik
 To install new Node.js version and set it as active using nvm, type this in the console:
 
 ```bash
-% nvm install 14.6.1
-...
-
-% nvn use 14
-Now using node v14.16.1 (npm v6.14.12)
-
-% nvm list
-->     v14.16.1
-       ...
+% nvm install 16.13.2
 ```
 
 Now you should be ready to install all required angular packages for this project. Just type:
