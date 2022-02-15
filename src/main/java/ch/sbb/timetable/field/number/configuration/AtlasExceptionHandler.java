@@ -71,7 +71,6 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(PropertyReferenceException.class)
   public ResponseEntity<ErrorResponse> propertyReferenceException(
       PropertyReferenceException exception) {
-    log.warn("Pageable sort parameter is not valid.", exception);
     return ResponseEntity.badRequest()
                          .body(ErrorResponse.builder()
                                             .status(HttpStatus.BAD_REQUEST.value())
