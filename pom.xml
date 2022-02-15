@@ -18,7 +18,6 @@
 		<spring-cloud.version>2021.0.0</spring-cloud.version>
 		<asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
 		<snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
-		<log4j2.version>2.17.1</log4j2.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
