@@ -22,7 +22,6 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 
 @Component({
   templateUrl: './line-detail.component.html',
-  styleUrls: ['./line-detail.component.scss'],
 })
 export class LineDetailComponent
   extends DetailWrapperController<LineVersion>

@@ -13,7 +13,6 @@ import { TableComponent } from '../../../core/components/table/table.component';
 @Component({
   selector: 'app-lidi-lines',
   templateUrl: './lines.component.html',
-  styleUrls: ['./lines.component.scss'],
 })
 export class LinesComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<Line>;
