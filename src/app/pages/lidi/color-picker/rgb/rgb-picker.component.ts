@@ -56,7 +56,7 @@ export class RgbPickerComponent implements OnInit, OnChanges {
   }
 
   private addKeydownEventToColorPicker() {
-    const colorPickerComponentRef = this.element.nativeElement.querySelector('.color-picker');
+    const colorPickerComponentRef = this.element.nativeElement.querySelector('color-picker');
     if (colorPickerComponentRef) {
       colorPickerComponentRef.tabIndex = 0;
       colorPickerComponentRef.addEventListener('keydown', this.closeColorPickerDialog.bind(this));
