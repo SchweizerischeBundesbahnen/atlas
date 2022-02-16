@@ -39,6 +39,7 @@ pipeline {
   parameters {
     string(name: 'successJob', defaultValue: '', description: 'The job triggered on success')
     string(name: 'releaseVersion', defaultValue: '', description: 'Version of triggering release, passed down by EstaCloudPipeline')
+    choice(name: 'E2ETests', choices: ['integration', 'release'], description: 'Choose which E2E-Tests to run')
   }
 
   options {
@@ -111,7 +112,11 @@ pipeline {
         branch 'master'
       }
       steps {
-        sh 'npm run cypress:run'
+        if(params.E2ETests.equals('release')){
+            sh 'npm run cypress:run-e2e-release'
+        } else {
+            sh 'npm run cypress:run'
+        }
       }
     }
 
