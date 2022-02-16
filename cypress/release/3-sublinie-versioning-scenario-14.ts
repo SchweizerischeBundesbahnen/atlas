@@ -81,7 +81,8 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
       '[data-cy="lidi-lines"] [data-cy=table-search-chip-input]',
       mainline.slnid
     );
-    cy.get('[data-cy=lidi-lines] tr').contains(mainline.swissLineNumber).click();
+    cy.get('[data-cy=lidi-lines] tbody tr').should('have.length', 1);
+    cy.contains('td', mainline.swissLineNumber).parents('tr').click({ force: true });
     cy.contains(mainline.swissLineNumber);
     CommonUtils.deleteItems();
     cy.contains(breadcrumbTitle);
