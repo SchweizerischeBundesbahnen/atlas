@@ -112,10 +112,12 @@ pipeline {
         branch 'master'
       }
       steps {
-        if(params.E2ETests.equals('release')){
-            sh 'npm run cypress:run-e2e-release'
-        } else {
-            sh 'npm run cypress:run'
+        script {
+            if ('release'.equals(params.E2ETests)) {
+                sh 'npm run cypress:run-e2e-release'
+            } else {
+                sh 'npm run cypress:run'
+            }
         }
       }
     }
