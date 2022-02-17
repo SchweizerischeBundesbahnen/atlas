@@ -11,10 +11,11 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 - [Links](#links)
 - [Development](#development)
-  - [Node.js](#node-js)
+  - [Node.js](#nodejs)
   - [Cypress E2E](#cypress-e2e)
-    - [Run cypress test](#run-cypress-test)
+    - [Run cypress test locally](#run-cypress-test-locally)
     - [Cypress E2E CI-Jenkins](#cypress-e2e-ci-jenkins)
+      - [Release-Tests](#release-tests)
       - [Cypress Tests results for troubleshooting](#cypress-tests-results-for-troubleshooting)
   - [Set SBB Artifactory as npm registry](#set-sbb-artifactory-as-npm-registry)
   - [Azure AD App Registration](#azure-ad-app-registration)
@@ -81,6 +82,18 @@ This job is executed only when is triggered by **postCiDeploymentJob** defined i
 see the [Jenkinsfile](Jenkinsfile). On this job the commit push notification is disabled.
 
 The Jenkinsfile is stored in [cypress/Jenkinsfile](cypress/Jenkinsfile)
+
+##### Release-Tests
+
+E2E Release-Tests are not automatically executed within the standard pipeline.
+They are located in the cypress/release folder.
+To run the Release-Tests separately, you can choose the "release" option in the E2ETests-choice on this page
+[ATLAS_Cypress_E2E/atlas-frontend/master/build](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/job/master/build/).
+
+To start the Release-Tests locally:
+
+- Headless (Only console): run `npm run cypress:run-e2e-release`
+- With Browser-View: run `npm run cypress:open-e2e-release`
 
 ##### Cypress Tests results for troubleshooting
 
