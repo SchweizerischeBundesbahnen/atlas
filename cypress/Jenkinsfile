@@ -84,29 +84,33 @@ pipeline {
         }
       }
     }
+    stage('Prepare') {
+      parallel {
+        stage('Install ZAP and start it up') {
+          steps {
+            // Installing ZAP on Jenkins Agent
+            sh 'git clone ssh://git@codessh.sbb.ch:7999/kd_security/owasp-zap-jenkins-helper.git'
+            sh 'sudo sh ./owasp-zap-jenkins-helper/zap-install.sh'
 
-    stage('Install ZAP and start it up') {
-      steps {
-        // Installing ZAP on Jenkins Agent
-        sh 'git clone ssh://git@codessh.sbb.ch:7999/kd_security/owasp-zap-jenkins-helper.git'
-        sh 'sudo sh ./owasp-zap-jenkins-helper/zap-install.sh'
+            // Start ZAP in the background
+            sh 'sudo sh ./owasp-zap-jenkins-helper/zap-run.sh ${BUILD_TAG} ${LOCAL_PROXY_PORT} ${ZAP_API_KEY} &'
+          }
+        }
 
-        // Start ZAP in the background
-        sh 'sudo sh ./owasp-zap-jenkins-helper/zap-run.sh ${BUILD_TAG} ${LOCAL_PROXY_PORT} ${ZAP_API_KEY} &'
+        stage('Build npm dependencies') {
+          when {
+            branch 'master'
+          }
+          steps {
+            sh 'npm -v'
+            sh 'node -v'
+            sh 'npm ci'
+          }
+        }
+    		    
       }
     }
-
-    stage('Build npm dependencies') {
-      when {
-        branch 'master'
-      }
-      steps {
-        sh 'npm -v'
-        sh 'node -v'
-        sh 'npm ci'
-      }
-    }
-
+    
     stage('Run Cypress E2E Tests') {
       when {
         branch 'master'
