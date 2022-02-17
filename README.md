@@ -89,6 +89,11 @@ They are located in the cypress/release folder.
 To run the Release-Tests separately, you can choose the "release" option in the E2ETests-choice on this page
 [ATLAS_Cypress_E2E/atlas-frontend/master/build](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/job/master/build/).
 
+To start the Release-Tests locally:
+
+- Headless (Only console): run `npm run cypress:run-e2e-release`
+- With Browser-View: run `npm run cypress:open-e2e-release`
+
 ##### Cypress Tests results for troubleshooting
 
 After each job execution a cypress video is captured and stored as **Build Artifacts**.
