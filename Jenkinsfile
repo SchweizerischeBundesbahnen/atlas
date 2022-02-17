@@ -2,4 +2,4 @@
 
 @Library(['pipeline-helper@release', 'esta-cloud-pipeline@release']) _
 
-estaCloudPipeline()
+estaCloudPipeline([pipelineConfigFile: "estaCloudPipeline.json", nodeLabel: "nodejs"])
