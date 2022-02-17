@@ -2,7 +2,7 @@
 pipeline {
 
   agent {
-    label 'java-small'
+    label 'nodejs'
   }
 
   environment {
