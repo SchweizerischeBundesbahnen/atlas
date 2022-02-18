@@ -36,10 +36,10 @@ public interface TimetableFieldNumberApiV1 {
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
   @GetMapping("/{id}")
-  VersionModel getVersion(@PathVariable Long id);
+  TimetableFieldNumberVersionModel getVersion(@PathVariable Long id);
 
   @GetMapping("versions/{ttfnId}")
-  List<VersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
+  List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
 
   @PostMapping({"versions/{id}"})
   @ApiResponses(value = {
@@ -47,8 +47,8 @@ public interface TimetableFieldNumberApiV1 {
       @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  List<VersionModel> updateVersionWithVersioning(@PathVariable Long id,
-      @RequestBody @Valid VersionModel newVersion);
+  List<TimetableFieldNumberVersionModel> updateVersionWithVersioning(@PathVariable Long id,
+      @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -56,7 +56,7 @@ public interface TimetableFieldNumberApiV1 {
       @ApiResponse(responseCode = "201"),
       @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  VersionModel createVersion(@RequestBody @Valid VersionModel newVersion);
+  TimetableFieldNumberVersionModel createVersion(@RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
   @DeleteMapping({"/{ttfnid}"})
   void deleteVersions(@PathVariable String ttfnid);

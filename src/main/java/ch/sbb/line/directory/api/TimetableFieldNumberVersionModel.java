@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Schema(name = "Version")
-public class VersionModel implements DatesValidator {
+@Schema(name = "TimetableFieldNumberVersion")
+public class TimetableFieldNumberVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier")
   private Long id;

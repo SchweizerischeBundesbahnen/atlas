@@ -2,11 +2,10 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.line.directory.repository.VersionRepository;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
-import ch.sbb.line.directory.entity.Version;
-import ch.sbb.line.directory.entity.Version.VersionBuilder;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
 import ch.sbb.line.directory.enumaration.Status;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,52 +28,61 @@ public class TimetableFieldNumberRepositorySearchTest {
       .withDayOfMonth(
           SEARCH_DATE.lengthOfMonth());
 
-  private final VersionRepository versionRepository;
+  private final TimetableFieldNumberVersionRepository versionRepository;
   private final TimetableFieldNumberRepository timetableFieldNumberRepository;
-  private final List<Version> versionList = new ArrayList<>();
+  private final List<TimetableFieldNumberVersion> versionList = new ArrayList<>();
 
   @Autowired
   public TimetableFieldNumberRepositorySearchTest(
       TimetableFieldNumberRepository timetableFieldNumberRepository,
-      VersionRepository versionRepository) {
+      TimetableFieldNumberVersionRepository versionRepository) {
     this.versionRepository = versionRepository;
     this.timetableFieldNumberRepository = timetableFieldNumberRepository;
   }
 
   @BeforeEach
   void initialData() {
-    VersionBuilder versionBuilder = Version.builder()
-                                           .ttfnid("ch:1:ttfnid:100000")
-                                           .description("Version 1")
-                                           .swissTimetableFieldNumber("a.1")
-                                           .status(Status.ACTIVE)
-                                           .number("1.0")
-                                           .comment("Valid this month")
-                                           .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
-                                           .validTo(END_OF_MONTH_AT_SEARCH_DATE)
-                                           .businessOrganisation("sbb");
-    Version version1 = versionBuilder.build();
-    Version version2 = versionBuilder.description("Version 2")
-                                     .comment("Valid in future")
-                                     .validFrom(START_OF_MONTH_AT_SEARCH_DATE.plusMonths(1))
-                                     .validTo(START_OF_MONTH_AT_SEARCH_DATE.plusMonths(6))
-                                     .build();
-    Version version3 = versionBuilder.ttfnid("ch:1:ttfnid:100001")
-                                     .description("Version 3")
-                                     .swissTimetableFieldNumber("a.2")
-                                     .comment("Valid this month")
-                                     .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
-                                     .validTo(END_OF_MONTH_AT_SEARCH_DATE)
-                                     .build();
-    Version version4 = versionBuilder.ttfnid("ch:1:ttfnid:100002")
-                                     .description("Version 4")
-                                     .swissTimetableFieldNumber("a.3")
-                                     .build();
-    Version version5 = versionBuilder.ttfnid("ch:1:ttfnid:100003")
-                                     .description("Version 5")
-                                     .swissTimetableFieldNumber("a.1")
-                                     .status(Status.IN_REVIEW)
-                                     .build();
+    TimetableFieldNumberVersionBuilder versionBuilder = TimetableFieldNumberVersion.builder()
+                                                                                                               .ttfnid(
+                                                                                                                   "ch:1:ttfnid:100000")
+                                                                                                               .description(
+                                                                                                                   "TimetableFieldNumberVersion 1")
+                                                                                                               .swissTimetableFieldNumber(
+                                                                                                                   "a.1")
+                                                                                                               .status(
+                                                                                                                   Status.ACTIVE)
+                                                                                                               .number(
+                                                                                                                   "1.0")
+                                                                                                               .comment(
+                                                                                                                   "Valid this month")
+                                                                                                               .validFrom(
+                                                                                                                   START_OF_MONTH_AT_SEARCH_DATE)
+                                                                                                               .validTo(
+                                                                                                                   END_OF_MONTH_AT_SEARCH_DATE)
+                                                                                                               .businessOrganisation(
+                                                                                                                   "sbb");
+    TimetableFieldNumberVersion version1 = versionBuilder.build();
+    TimetableFieldNumberVersion version2 = versionBuilder.description("TimetableFieldNumberVersion 2")
+                                                         .comment("Valid in future")
+                                                         .validFrom(START_OF_MONTH_AT_SEARCH_DATE.plusMonths(1))
+                                                         .validTo(START_OF_MONTH_AT_SEARCH_DATE.plusMonths(6))
+                                                         .build();
+    TimetableFieldNumberVersion version3 = versionBuilder.ttfnid("ch:1:ttfnid:100001")
+                                                         .description("TimetableFieldNumberVersion 3")
+                                                         .swissTimetableFieldNumber("a.2")
+                                                         .comment("Valid this month")
+                                                         .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
+                                                         .validTo(END_OF_MONTH_AT_SEARCH_DATE)
+                                                         .build();
+    TimetableFieldNumberVersion version4 = versionBuilder.ttfnid("ch:1:ttfnid:100002")
+                                                         .description("TimetableFieldNumberVersion 4")
+                                                         .swissTimetableFieldNumber("a.3")
+                                                         .build();
+    TimetableFieldNumberVersion version5 = versionBuilder.ttfnid("ch:1:ttfnid:100003")
+                                                         .description("TimetableFieldNumberVersion 5")
+                                                         .swissTimetableFieldNumber("a.1")
+                                                         .status(Status.IN_REVIEW)
+                                                         .build();
     versionList.addAll(List.of(version1, version2, version3, version4, version5));
     versionRepository.saveAll(versionList);
   }
@@ -152,7 +160,7 @@ public class TimetableFieldNumberRepositorySearchTest {
     // When
     List<TimetableFieldNumber> searchResult = timetableFieldNumberRepository.searchVersions(
                                                                                 PageRequest.of(0, 20, Sort.by("description")),
-                                                                                List.of("Version"),
+                                                                                List.of("TimetableFieldNumberVersion"),
                                                                                 SEARCH_DATE,
                                                                                 List.of(Status.ACTIVE)
                                                                             )
