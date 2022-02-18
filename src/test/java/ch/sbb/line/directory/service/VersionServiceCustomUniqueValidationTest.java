@@ -3,7 +3,7 @@ package ch.sbb.line.directory.service;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.entity.Version;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.exceptions.ConflictException;
+import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
 import ch.sbb.line.directory.repository.VersionRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
@@ -73,7 +73,7 @@ public class VersionServiceCustomUniqueValidationTest {
     // When
     Executable saveExecutable = () -> versionService.save(version);
     // Then
-    Assertions.assertThrows(ConflictException.class, saveExecutable);
+    Assertions.assertThrows(TimetableFieldNumberConflictException.class, saveExecutable);
   }
 
   @Test
@@ -90,7 +90,7 @@ public class VersionServiceCustomUniqueValidationTest {
     // When
     Executable saveExecutable = () -> versionService.save(version);
     // Then
-    Assertions.assertThrows(ConflictException.class, saveExecutable);
+    Assertions.assertThrows(TimetableFieldNumberConflictException.class, saveExecutable);
   }
 
   @Test
@@ -116,7 +116,7 @@ public class VersionServiceCustomUniqueValidationTest {
     // When
     Executable saveExecutable = () -> versionService.save(version);
     // Then
-    Assertions.assertThrows(ConflictException.class, saveExecutable);
+    Assertions.assertThrows(TimetableFieldNumberConflictException.class, saveExecutable);
   }
 
   @Test
@@ -133,7 +133,7 @@ public class VersionServiceCustomUniqueValidationTest {
     // When
     Executable saveExecutable = () -> versionService.save(version);
     // Then
-    Assertions.assertThrows(ConflictException.class, saveExecutable);
+    Assertions.assertThrows(TimetableFieldNumberConflictException.class, saveExecutable);
   }
 
   @AfterEach

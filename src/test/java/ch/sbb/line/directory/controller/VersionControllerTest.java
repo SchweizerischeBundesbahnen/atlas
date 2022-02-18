@@ -13,7 +13,7 @@ import ch.sbb.line.directory.controller.VersionController;
 import ch.sbb.line.directory.api.VersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.Version;
-import ch.sbb.line.directory.exceptions.NotFoundException;
+import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.service.VersionService;
 import java.time.LocalDate;
 import java.util.Collections;

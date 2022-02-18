@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.exceptions;
+package ch.sbb.line.directory.exception;
 
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class ConflictException extends AtlasException {
+public class TimetableFieldNumberConflictException extends AtlasException {
 
   private static final String CODE_PREFIX = "TTFN.CONFLICT.";
   private static final String ERROR = "TimeTableFieldNumber conflict";
