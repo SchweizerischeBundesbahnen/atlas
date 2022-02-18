@@ -3,7 +3,8 @@ package ch.sbb.line.directory.exception;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.line.directory.api.ErrorResponse;
-import ch.sbb.line.directory.entity.Version;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -28,17 +29,17 @@ public class TimetableFieldNumberConflictExceptionTest {
     assertThat(errorResponse.getDetails().get(1).getMessage()).isEqualTo("SwissTimetableFieldNumber b0.BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
   }
 
-  private static Version version() {
+  private static TimetableFieldNumberVersion version() {
     return versionBuilder().build();
   }
 
-  private static Version.VersionBuilder versionBuilder() {
-    return Version.builder()
-                  .ttfnid("ch:1:ttfnid:100000")
-                  .description("FPFN Description")
-                  .number("BEX")
-                  .swissTimetableFieldNumber("b0.BEX")
-                  .validFrom(LocalDate.of(2020, 12, 12))
-                  .validTo(LocalDate.of(2099, 12, 12));
+  private static TimetableFieldNumberVersionBuilder versionBuilder() {
+    return TimetableFieldNumberVersion.builder()
+                                      .ttfnid("ch:1:ttfnid:100000")
+                                      .description("FPFN Description")
+                                      .number("BEX")
+                                      .swissTimetableFieldNumber("b0.BEX")
+                                      .validFrom(LocalDate.of(2020, 12, 12))
+                                      .validTo(LocalDate.of(2099, 12, 12));
   }
 }

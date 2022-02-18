@@ -2,8 +2,7 @@ package ch.sbb.line.directory.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.line.directory.api.VersionModel;
-import ch.sbb.line.directory.api.VersionModel.VersionModelBuilder;
+import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel.TimetableFieldNumberVersionModelBuilder;
 import ch.sbb.line.directory.enumaration.Status;
 import java.time.LocalDate;
 import java.util.List;
@@ -14,22 +13,21 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import org.junit.jupiter.api.Test;
 
-public class VersionModelTest {
+public class TimetableFieldNumberVersionModelTest {
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
   public void shouldHaveDateValidationExceptionWhenValidFromIsBefore1900_1_1() {
     //given
-    VersionModel lineVersion = versionModel()
+    TimetableFieldNumberVersionModel lineVersion = versionModel()
         .validFrom(LocalDate.of(1899, 12, 31))
         .build();
     //when
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         lineVersion);
 
     //then
-    assertThat(constraintViolations).isNotEmpty();
     assertThat(constraintViolations).hasSize(1);
     assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(
         "validFromValid");
@@ -38,15 +36,14 @@ public class VersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidFromIsAfter2099_12_31() {
     //given
-    VersionModel lineVersion = versionModel()
+    TimetableFieldNumberVersionModel lineVersion = versionModel()
         .validFrom(LocalDate.of(2100, 1, 1))
         .build();
     //when
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         lineVersion);
 
     //then
-    assertThat(constraintViolations).isNotEmpty();
     assertThat(constraintViolations).hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
@@ -59,15 +56,14 @@ public class VersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidToIsBefore1900_1_1() {
     //given
-    VersionModel lineVersion = versionModel()
+    TimetableFieldNumberVersionModel lineVersion = versionModel()
         .validTo(LocalDate.of(1899, 12, 31))
         .build();
     //when
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         lineVersion);
 
     //then
-    assertThat(constraintViolations).isNotEmpty();
     assertThat(constraintViolations).hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
@@ -80,15 +76,14 @@ public class VersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidToIsAfter2099_12_31() {
     //given
-    VersionModel lineVersion = versionModel()
+    TimetableFieldNumberVersionModel lineVersion = versionModel()
         .validTo(LocalDate.of(2100, 1, 1))
         .build();
     //when
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         lineVersion);
 
     //then
-    assertThat(constraintViolations).isNotEmpty();
     assertThat(constraintViolations).hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
         .map(ConstraintViolation::getMessage)
@@ -99,9 +94,9 @@ public class VersionModelTest {
   @Test
   void shouldBuildValidVersion() {
     // Given
-    VersionModel version = versionModel().build();
+    TimetableFieldNumberVersionModel version = versionModel().build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).isEmpty();
@@ -114,9 +109,9 @@ public class VersionModelTest {
     while (comment.length() < 250) {
       comment.append("test");
     }
-    VersionModel version = versionModel().comment(comment.toString()).build();
+    TimetableFieldNumberVersionModel version = versionModel().comment(comment.toString()).build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -126,9 +121,9 @@ public class VersionModelTest {
   @Test
   void swissTimetableFieldNumberShouldNotBeNull() {
     // Given
-    VersionModel version = versionModel().swissTimetableFieldNumber(null).build();
+    TimetableFieldNumberVersionModel version = versionModel().swissTimetableFieldNumber(null).build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -143,9 +138,9 @@ public class VersionModelTest {
     while (sttfn.length() < 50) {
       sttfn.append("test");
     }
-    VersionModel version = versionModel().swissTimetableFieldNumber(sttfn.toString()).build();
+    TimetableFieldNumberVersionModel version = versionModel().swissTimetableFieldNumber(sttfn.toString()).build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -156,9 +151,9 @@ public class VersionModelTest {
   @Test
   void numberShouldNotBeNull() {
     // Given
-    VersionModel version = versionModel().number(null).build();
+    TimetableFieldNumberVersionModel version = versionModel().number(null).build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -173,9 +168,9 @@ public class VersionModelTest {
     while (number.length() < 50) {
       number.append("10");
     }
-    VersionModel version = versionModel().number(number.toString()).build();
+    TimetableFieldNumberVersionModel version = versionModel().number(number.toString()).build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -185,9 +180,9 @@ public class VersionModelTest {
   @Test
   void numberShouldMatchPattern() {
     // Given
-    VersionModel version = versionModel().number("10?500").build();
+    TimetableFieldNumberVersionModel version = versionModel().number("10?500").build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -202,9 +197,9 @@ public class VersionModelTest {
     while (description.length() < 255) {
       description.append("test");
     }
-    VersionModel version = versionModel().description(description.toString()).build();
+    TimetableFieldNumberVersionModel version = versionModel().description(description.toString()).build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -219,9 +214,9 @@ public class VersionModelTest {
     while (businessOrganisation.length() < 50) {
       businessOrganisation.append("test");
     }
-    VersionModel version = versionModel().businessOrganisation(businessOrganisation.toString()).build();
+    TimetableFieldNumberVersionModel version = versionModel().businessOrganisation(businessOrganisation.toString()).build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -232,9 +227,9 @@ public class VersionModelTest {
   @Test
   void businessOrganisationShouldNotBeNull() {
     // Given
-    VersionModel version = versionModel().businessOrganisation(null).build();
+    TimetableFieldNumberVersionModel version = versionModel().businessOrganisation(null).build();
     // When
-    Set<ConstraintViolation<VersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<TimetableFieldNumberVersionModel>> constraintViolations = validator.validate(
         version);
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -242,13 +237,13 @@ public class VersionModelTest {
         .hasToString("businessOrganisation");
   }
 
-  private static VersionModelBuilder versionModel() {
-    return VersionModel.builder()
-        .status(Status.ACTIVE)
-        .swissTimetableFieldNumber("a.90")
-        .number("10.100")
-        .validFrom(LocalDate.of(2021, 12, 1))
-        .validTo(LocalDate.of(2022, 12, 1))
-        .businessOrganisation("sbb");
+  private static TimetableFieldNumberVersionModelBuilder versionModel() {
+    return TimetableFieldNumberVersionModel.builder()
+                                           .status(Status.ACTIVE)
+                                           .swissTimetableFieldNumber("a.90")
+                                           .number("10.100")
+                                           .validFrom(LocalDate.of(2021, 12, 1))
+                                           .validTo(LocalDate.of(2022, 12, 1))
+                                           .businessOrganisation("sbb");
   }
 }

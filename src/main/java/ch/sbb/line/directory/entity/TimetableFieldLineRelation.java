@@ -24,7 +24,7 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @FieldNameConstants
 @Entity(name = "timetable_field_line_relation")
-public class LineRelation {
+public class TimetableFieldLineRelation {
 
   private static final String LINE_RELATION_SEQ = "timetable_field_line_relation_seq";
 
@@ -38,5 +38,5 @@ public class LineRelation {
   @ToString.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "timetable_field_version_id")
-  private Version version;
+  private TimetableFieldNumberVersion timetableFieldNumberVersion;
 }

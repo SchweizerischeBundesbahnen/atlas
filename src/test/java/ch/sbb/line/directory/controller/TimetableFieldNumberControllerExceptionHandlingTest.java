@@ -6,9 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.line.directory.controller.VersionController;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
-import ch.sbb.line.directory.service.VersionService;
+import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +20,21 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(VersionController.class)
+@WebMvcTest(TimetableFieldNumberController.class)
 @ActiveProfiles("integration-test")
-public class VersionControllerExceptionHandlingTest {
+public class TimetableFieldNumberControllerExceptionHandlingTest {
 
   @Autowired
   private MockMvc mockMvc;
 
   @MockBean
-  private VersionService versionService;
+  private TimetableFieldNumberService timetableFieldNumberService;
 
   @WithMockUser
   @Test
   void shouldReturnBadRequestExceptionOnInvalidSortParam() throws Exception {
     // Given
-    when(versionService.getVersionsSearched(any(Pageable.class), any(), any(), any())).thenThrow(new PropertyReferenceException( "nam",
+    when(timetableFieldNumberService.getVersionsSearched(any(Pageable.class), any(), any(), any())).thenThrow(new PropertyReferenceException( "nam",
         ClassTypeInformation.from(TimetableFieldNumber.class), Collections.emptyList()));
     // When
     // Then
