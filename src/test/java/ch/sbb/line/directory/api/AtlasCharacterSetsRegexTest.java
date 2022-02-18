@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
-class AtlasCharacterSetsRegexTest {
+public class AtlasCharacterSetsRegexTest {
 
   @Test
   void shouldValidateISO88591Correctly() {
