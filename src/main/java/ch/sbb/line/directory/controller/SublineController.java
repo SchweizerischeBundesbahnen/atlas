@@ -8,7 +8,8 @@ import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.exception.NotFoundException;
+import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.service.SublineService;
 import java.time.LocalDate;
@@ -63,7 +64,7 @@ public class SublineController implements SublinenApiV1 {
                                                       .map(this::toModel)
                                                       .collect(Collectors.toList());
     if(sublineVersionModels.isEmpty()){
-      throw new NotFoundException(NotFoundException.SLNID,slnid);
+      throw new SlnidNotFoundException(slnid);
     }
     return sublineVersionModels;
   }
@@ -79,7 +80,7 @@ public class SublineController implements SublinenApiV1 {
   @Override
   public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id)
-        .orElseThrow(()-> new NotFoundException(NotFoundException.ID,String.valueOf(id)));
+        .orElseThrow(()-> new IdNotFoundException(id));
     sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .collect(Collectors.toList());

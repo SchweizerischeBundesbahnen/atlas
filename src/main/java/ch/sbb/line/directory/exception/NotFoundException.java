@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class NotFoundException extends AtlasException {
-
-  public static final String ID = "id";
-  public static final String SLNID = "slnid";
+public abstract class NotFoundException extends AtlasException {
 
   private static final String CODE = "ERROR.ENTITY_NOT_FOUND";
   private static final String ERROR = "Not found";
@@ -43,4 +40,24 @@ public class NotFoundException extends AtlasException {
     return List.of(detail);
   }
 
+  public static class IdNotFoundException extends NotFoundException {
+
+    public IdNotFoundException(Long value) {
+      super("id", String.valueOf(value));
+    }
+  }
+
+  public static class SlnidNotFoundException extends NotFoundException {
+
+    public SlnidNotFoundException(String value) {
+      super("slnid", value);
+    }
+  }
+
+  public static class TtfnidNotFoundException extends NotFoundException {
+
+    public TtfnidNotFoundException(String value) {
+      super("ttfnid", value);
+    }
+  }
 }
