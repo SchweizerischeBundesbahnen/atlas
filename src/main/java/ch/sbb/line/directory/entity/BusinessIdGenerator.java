@@ -6,10 +6,17 @@ import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.tuple.ValueGenerator;
 
-public abstract class BusinessIdGenerator implements ValueGenerator<String> {
+abstract class BusinessIdGenerator implements ValueGenerator<String> {
 
-  private static final String PREFIX = "ch:1:slnid:";
-  private static final String SEQUENCE = "slnid_seq";
+  private final String dbSequence;
+  private final String businessIdPrefix;
+  private final String dbField;
+
+  BusinessIdGenerator(String dbSequence, String businessIdPrefix, String dbField) {
+    this.dbSequence = dbSequence;
+    this.businessIdPrefix = businessIdPrefix;
+    this.dbField = dbField;
+  }
 
   @Override
   public String generateValue(Session session, Object entity) {
@@ -19,17 +26,17 @@ public abstract class BusinessIdGenerator implements ValueGenerator<String> {
     }
 
     long result = Long.parseLong(
-        session.createNativeQuery("SELECT nextval('" + SEQUENCE + "') as nextval")
+        session.createNativeQuery("SELECT nextval('" + dbSequence + "') as nextval")
                .setFlushMode(FlushMode.COMMIT)
                .getSingleResult().toString());
-    return PREFIX + result;
+    return businessIdPrefix + result;
   }
 
-  private static Optional<String> getPresetSlnid(Object entity) {
+  private Optional<String> getPresetSlnid(Object entity) {
     try {
-      Field slnid = entity.getClass().getDeclaredField("slnid");
-      slnid.trySetAccessible();
-      String slnidValue = (String) slnid.get(entity);
+      Field businessIdField = entity.getClass().getDeclaredField(dbField);
+      businessIdField.trySetAccessible();
+      String slnidValue = (String) businessIdField.get(entity);
       return Optional.ofNullable(slnidValue);
     } catch (IllegalAccessException | NoSuchFieldException e) {
       throw new IllegalStateException(e);
