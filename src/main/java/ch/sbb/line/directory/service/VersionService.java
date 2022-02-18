@@ -6,7 +6,7 @@ import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.entity.Version;
 import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
-import ch.sbb.line.directory.exceptions.ConflictException;
+import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
 import ch.sbb.line.directory.repository.VersionRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -48,7 +48,7 @@ public class VersionService {
     newVersion.setStatus(Status.ACTIVE);
     List<Version> overlappingVersions = getOverlapsOnNumberAndSttfn(newVersion);
     if (!overlappingVersions.isEmpty()) {
-      throw new ConflictException(newVersion, overlappingVersions);
+      throw new TimetableFieldNumberConflictException(newVersion, overlappingVersions);
     }
     return versionRepository.save(newVersion);
   }
