@@ -5,10 +5,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.validation.DatesValidator;
-import ch.sbb.line.directory.service.UserService;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -21,8 +18,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -33,7 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GeneratorType;
 
@@ -42,11 +37,11 @@ import org.hibernate.annotations.GeneratorType;
 @Getter
 @Setter
 @ToString
-@Builder
+@SuperBuilder
 @Entity(name = "timetable_field_number_version")
 @FieldNameConstants
 @AtlasVersionable
-public class TimetableFieldNumberVersion implements Versionable, DatesValidator {
+public class TimetableFieldNumberVersion extends BaseVersion implements Versionable {
 
   private static final String VERSION_SEQ = "timetable_field_number_version_seq";
 
@@ -85,30 +80,6 @@ public class TimetableFieldNumberVersion implements Versionable, DatesValidator 
   @NotNull
   private Status status;
 
-  @AtlasVersionableProperty(ignoreDiff = true)
-  @CreationTimestamp
-  @Column(columnDefinition = "TIMESTAMP", updatable = false)
-  private LocalDateTime creationDate;
-
-  @AtlasVersionableProperty(ignoreDiff = true)
-  @Column(updatable = false)
-  @NotNull
-  private String creator;
-
-  @AtlasVersionableProperty(ignoreDiff = true)
-  @javax.persistence.Version
-  @NotNull
-  private Integer version;
-
-  @AtlasVersionableProperty(ignoreDiff = true)
-  @Column(columnDefinition = "TIMESTAMP")
-  @NotNull
-  private LocalDateTime editionDate;
-
-  @AtlasVersionableProperty(ignoreDiff = true)
-  @NotNull
-  private String editor;
-
   @Column(columnDefinition = "TIMESTAMP")
   @NotNull
   private LocalDate validFrom;
@@ -126,17 +97,4 @@ public class TimetableFieldNumberVersion implements Versionable, DatesValidator 
   @Size(max = 250)
   private String comment;
 
-  @PrePersist
-  public void onPrePersist() {
-    String sbbUid = UserService.getSbbUid();
-    setCreator(sbbUid);
-    setEditor(sbbUid);
-    setEditionDate(LocalDateTime.now());
-  }
-
-  @PreUpdate
-  public void onPreUpdate() {
-    setEditor(UserService.getSbbUid());
-    setEditionDate(LocalDateTime.now());
-  }
 }
