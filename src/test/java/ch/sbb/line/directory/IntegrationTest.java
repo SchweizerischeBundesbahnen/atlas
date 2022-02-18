@@ -1,5 +1,6 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.line.directory.WithMockJwtAuthentication;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -12,8 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-@WithMockJwtAuthentication
 @SpringBootTest
+@WithMockJwtAuthentication
 @ActiveProfiles("integration-test")
 public @interface IntegrationTest {
 
