@@ -22,6 +22,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 ## Links
 
 ### Localhost
+<<<<<<< HEAD
 * Swagger UI: http://localhost:8082/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 * Api Docs as JSON: http://localhost:8082/v3/api-docs/
 * Api Docs as YAML: http://localhost:8082/v3/api-docs.yaml
@@ -49,6 +50,33 @@ This project uses [Semantic Versioning](https://semver.org/).
 ### Project Infrastructure
 * Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/
 * Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aline-directory-backend
+=======
+* Swagger UI: http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Api Docs as JSON: http://localhost:8080/v3/api-docs/
+* Api Docs as YAML: http://localhost:8080/v3/api-docs.yaml
+
+### Development
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=timetable-field-number-dev
+* Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
+* Project deploy: https://dev.timetable-field-number-backend.sbb-cloud.net
+* Swagger UI: https://dev.timetable-field-number-backend.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+
+### Test
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=timetable-field-number-test
+* Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
+* Project deploy: https://test.timetable-field-number-backend.sbb-cloud.net
+* Swagger UI: https://test.timetable-field-number-backend.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+
+### Integration
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=timetable-field-number-int
+* Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
+* Project deploy: https://int.timetable-field-number-backend.sbb-cloud.net
+* Swagger UI: https://int.timetable-field-number-backend.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+
+### Project Infrastructure
+* Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/timetable-field-number-backend/
+* Sonarqube: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Atimetable-field-number
+>>>>>>> ccfc078291af1676727ada7013b5666e52a08a63
 * JFrog / Artifactory
   * Maven repository: https://bin.sbb.ch/ui/repos/tree/General/atlas.mvn
   * Docker registry: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker

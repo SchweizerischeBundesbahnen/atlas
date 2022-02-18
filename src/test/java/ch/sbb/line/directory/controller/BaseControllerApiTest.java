@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.controller;
 
+
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -82,4 +83,3 @@ public abstract class BaseControllerApiTest {
   }
 
 }
-

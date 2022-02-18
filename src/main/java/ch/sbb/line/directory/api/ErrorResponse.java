@@ -56,8 +56,7 @@ public class ErrorResponse {
     private DisplayInfo displayInfo;
 
     public String getMessage() {
-      return MessageFormat.format(message,
-          displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
+      return MessageFormat.format(message, displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
     }
   }
 
@@ -107,8 +106,8 @@ public class ErrorResponse {
   @RequiredArgsConstructor
   @Getter
   public static class Parameter {
-
     private final String key;
     private final String value;
   }
+
 }
