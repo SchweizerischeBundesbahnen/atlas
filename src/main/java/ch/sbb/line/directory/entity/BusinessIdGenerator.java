@@ -6,7 +6,7 @@ import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.tuple.ValueGenerator;
 
-public class SlnidGenerator implements ValueGenerator<String> {
+public abstract class BusinessIdGenerator implements ValueGenerator<String> {
 
   private static final String PREFIX = "ch:1:slnid:";
   private static final String SEQUENCE = "slnid_seq";
