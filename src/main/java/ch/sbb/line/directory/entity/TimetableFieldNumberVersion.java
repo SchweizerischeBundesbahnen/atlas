@@ -6,7 +6,6 @@ import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.validation.DatesValidator;
-import ch.sbb.line.directory.entity.TtfnidGenerator;
 import ch.sbb.line.directory.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,7 +46,7 @@ import org.hibernate.annotations.GeneratorType;
 @Entity(name = "timetable_field_number_version")
 @FieldNameConstants
 @AtlasVersionable
-public class Version implements Versionable, DatesValidator {
+public class TimetableFieldNumberVersion implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "timetable_field_number_version_seq";
 
@@ -57,11 +56,11 @@ public class Version implements Versionable, DatesValidator {
   private Long id;
 
   @Builder.Default
-  @OneToMany(mappedBy = "version", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "timetableFieldNumberVersion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @AtlasVersionableProperty(relationType = RelationType.ONE_TO_MANY,
-      relationsFields = {LineRelation.Fields.slnid}
+      relationsFields = {TimetableFieldLineRelation.Fields.slnid}
   )
-  private Set<LineRelation> lineRelations = new HashSet<>();
+  private Set<TimetableFieldLineRelation> lineRelations = new HashSet<>();
 
   @AtlasVersionableProperty
   @GeneratorType(type = TtfnidGenerator.class, when = GenerationTime.INSERT)

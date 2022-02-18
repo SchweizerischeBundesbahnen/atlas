@@ -9,10 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.line.directory.api.ErrorResponse;
-import ch.sbb.line.directory.api.VersionModel;
-import ch.sbb.line.directory.entity.Version;
+import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.repository.VersionRepository;
+import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.time.LocalDate;
@@ -26,20 +26,20 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-public class VersionControllerApiTest extends BaseControllerApiTest {
+public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
-  private VersionRepository versionRepository;
+  private TimetableFieldNumberVersionRepository versionRepository;
 
-  private final Version version = Version.builder().ttfnid("ch:1:ttfnid:100000")
-                                         .description("FPFN Description")
-                                         .number("10.100")
-                                         .status(Status.ACTIVE)
-                                         .swissTimetableFieldNumber("b0.100")
-                                         .validFrom(LocalDate.of(2020, 1, 1))
-                                         .validTo(LocalDate.of(2020, 12, 31))
-                                         .businessOrganisation("sbb")
-                                         .build();
+  private final TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder().ttfnid("ch:1:ttfnid:100000")
+                                                                                 .description("FPFN Description")
+                                                                                 .number("10.100")
+                                                                                 .status(Status.ACTIVE)
+                                                                                 .swissTimetableFieldNumber("b0.100")
+                                                                                 .validFrom(LocalDate.of(2020, 1, 1))
+                                                                                 .validTo(LocalDate.of(2020, 12, 31))
+                                                                                 .businessOrganisation("sbb")
+                                                                                 .build();
 
   @BeforeEach
   void createDefaultVersion() {
@@ -65,20 +65,20 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
                              .andReturn()
                              .getResponse()
                              .getContentAsString();
-    List<VersionModel> response = mapper.readValue(responseBody,
+    List<TimetableFieldNumberVersionModel> response = mapper.readValue(responseBody,
         new TypeReference<>() {
         });
 
     assertThat(response).size().isEqualTo(1);
-    VersionModel versionModel = response.get(0);
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = response.get(0);
 
     // When first update it is ok
-    versionModel.setComment("Neuer Kommentar");
-    mvc.perform(createUpdateRequest(versionModel)).andExpect(status().isOk());
+    timetableFieldNumberVersionModel.setComment("Neuer Kommentar");
+    mvc.perform(createUpdateRequest(timetableFieldNumberVersionModel)).andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
-    versionModel.setComment("Neuer Kommentar wurde erfasst");
-    MvcResult mvcResult = mvc.perform(createUpdateRequest(versionModel))
+    timetableFieldNumberVersionModel.setComment("Neuer Kommentar wurde erfasst");
+    MvcResult mvcResult = mvc.perform(createUpdateRequest(timetableFieldNumberVersionModel))
                              .andExpect(status().isPreconditionFailed())
                              .andReturn();
     ErrorResponse errorResponse = mapper.readValue(
@@ -111,35 +111,35 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldReturnValidationNoChangesErrorResponse() throws Exception {
     // Given
-    Version secondVersion = Version.builder().ttfnid("ch:1:ttfnid:100000")
-                                   .description("FPFN Description")
-                                   .number("10.100")
-                                   .status(Status.ACTIVE)
-                                   .swissTimetableFieldNumber("b0.100")
-                                   .validFrom(LocalDate.of(2021, 1, 1))
-                                   .validTo(LocalDate.of(2021, 12, 31))
-                                   .businessOrganisation("BLS")
-                                   .build();
+    TimetableFieldNumberVersion secondVersion = TimetableFieldNumberVersion.builder().ttfnid("ch:1:ttfnid:100000")
+                                                                           .description("FPFN Description")
+                                                                           .number("10.100")
+                                                                           .status(Status.ACTIVE)
+                                                                           .swissTimetableFieldNumber("b0.100")
+                                                                           .validFrom(LocalDate.of(2021, 1, 1))
+                                                                           .validTo(LocalDate.of(2021, 12, 31))
+                                                                           .businessOrganisation("BLS")
+                                                                           .build();
     versionRepository.save(secondVersion);
     //When
-    VersionModel versionModel = VersionModel.builder()
-                                            .validFrom(version.getValidFrom())
-                                            .validTo(version.getValidTo())
-                                            .id(version.getId())
-                                            .ttfnid(version.getTtfnid())
-                                            .description(version.getDescription())
-                                            .number(version.getNumber())
-                                            .status(version.getStatus())
-                                            .swissTimetableFieldNumber(
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = TimetableFieldNumberVersionModel.builder()
+                                                                                                        .validFrom(version.getValidFrom())
+                                                                                                        .validTo(version.getValidTo())
+                                                                                                        .id(version.getId())
+                                                                                                        .ttfnid(version.getTtfnid())
+                                                                                                        .description(version.getDescription())
+                                                                                                        .number(version.getNumber())
+                                                                                                        .status(version.getStatus())
+                                                                                                        .swissTimetableFieldNumber(
                                                 version.getSwissTimetableFieldNumber())
-                                            .businessOrganisation(version.getBusinessOrganisation())
-                                            .build();
+                                                                                                        .businessOrganisation(version.getBusinessOrganisation())
+                                                                                                        .build();
 
     //Then
 
-    mvc.perform(post("/v1/field-numbers/versions/" + versionModel.getId())
+    mvc.perform(post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
            .contentType(MediaType.APPLICATION_JSON)
-           .content(mapper.writeValueAsString(versionModel)))
+           .content(mapper.writeValueAsString(timetableFieldNumberVersionModel)))
        .andExpect(jsonPath("$.status", is(520)))
        .andExpect(jsonPath("$.message", is("No entities were modified after versioning execution.")))
        .andExpect(jsonPath("$.error", is("No changes after versioning")))
@@ -166,11 +166,12 @@ public class VersionControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
   }
 
-  private MockHttpServletRequestBuilder createUpdateRequest(VersionModel versionModel)
+  private MockHttpServletRequestBuilder createUpdateRequest(
+      TimetableFieldNumberVersionModel timetableFieldNumberVersionModel)
       throws JsonProcessingException {
-    return post("/v1/field-numbers/versions/" + versionModel.getId())
+    return post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
         .contentType(MediaType.APPLICATION_JSON)
-        .content(mapper.writeValueAsString(versionModel));
+        .content(mapper.writeValueAsString(timetableFieldNumberVersionModel));
   }
 
   @AfterEach

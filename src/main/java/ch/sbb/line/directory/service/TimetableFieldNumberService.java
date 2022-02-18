@@ -3,11 +3,11 @@ package ch.sbb.line.directory.service;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.entity.Version;
 import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
-import ch.sbb.line.directory.repository.VersionRepository;
+import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -21,14 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @Transactional
-public class VersionService {
+public class TimetableFieldNumberService {
 
-  private final VersionRepository versionRepository;
+  private final TimetableFieldNumberVersionRepository versionRepository;
   private final TimetableFieldNumberRepository timetableFieldNumberRepository;
   private final VersionableService versionableService;
 
   @Autowired
-  public VersionService(VersionRepository versionRepository,
+  public TimetableFieldNumberService(TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberRepository timetableFieldNumberRepository,
       VersionableService versionableService) {
     this.versionRepository = versionRepository;
@@ -36,17 +36,17 @@ public class VersionService {
     this.versionableService = versionableService;
   }
 
-  public List<Version> getAllVersionsVersioned(String ttfnId) {
+  public List<TimetableFieldNumberVersion> getAllVersionsVersioned(String ttfnId) {
     return versionRepository.getAllVersionsVersioned(ttfnId);
   }
 
-  public Optional<Version> findById(Long id) {
+  public Optional<TimetableFieldNumberVersion> findById(Long id) {
     return versionRepository.findById(id);
   }
 
-  public Version save(Version newVersion) {
+  public TimetableFieldNumberVersion save(TimetableFieldNumberVersion newVersion) {
     newVersion.setStatus(Status.ACTIVE);
-    List<Version> overlappingVersions = getOverlapsOnNumberAndSttfn(newVersion);
+    List<TimetableFieldNumberVersion> overlappingVersions = getOverlapsOnNumberAndSttfn(newVersion);
     if (!overlappingVersions.isEmpty()) {
       throw new TimetableFieldNumberConflictException(newVersion, overlappingVersions);
     }
@@ -64,24 +64,25 @@ public class VersionService {
     versionRepository.deleteById(id);
   }
 
-  public List<VersionedObject> updateVersion(Version currentVersion, Version editedVersion) {
-    List<Version> currentVersions = getAllVersionsVersioned(currentVersion.getTtfnid());
+  public List<VersionedObject> updateVersion(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion) {
+    List<TimetableFieldNumberVersion> currentVersions = getAllVersionsVersioned(currentVersion.getTtfnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
 
-    versionableService.applyVersioning(Version.class, versionedObjects, this::save,
+    versionableService.applyVersioning(TimetableFieldNumberVersion.class, versionedObjects, this::save,
         this::deleteById);
     return versionedObjects;
   }
 
-  public List<Version> getOverlapsOnNumberAndSttfn(Version version) {
+  public List<TimetableFieldNumberVersion> getOverlapsOnNumberAndSttfn(
+      TimetableFieldNumberVersion version) {
     String ttfnid = version.getTtfnid() == null ? "" : version.getTtfnid();
     return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(version.getNumber(), version.getSwissTimetableFieldNumber().toLowerCase(),
         version.getValidFrom(), version.getValidTo(), ttfnid);
   }
 
-  public void deleteAll(List<Version> allVersionsVersioned) {
+  public void deleteAll(List<TimetableFieldNumberVersion> allVersionsVersioned) {
     versionRepository.deleteAll(allVersionsVersioned);
   }
 }

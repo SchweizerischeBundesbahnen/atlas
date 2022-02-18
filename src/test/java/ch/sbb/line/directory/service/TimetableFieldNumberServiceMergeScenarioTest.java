@@ -2,10 +2,10 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.line.directory.entity.LineRelation;
-import ch.sbb.line.directory.entity.Version;
+import ch.sbb.line.directory.entity.TimetableFieldLineRelation;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.repository.VersionRepository;
+import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -13,13 +13,14 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
+public class TimetableFieldNumberServiceMergeScenarioTest extends
+    BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public VersionServiceMergeScenarioTest(
-      VersionRepository versionRepository,
-      VersionService versionService) {
-    super(versionRepository, versionService);
+  public TimetableFieldNumberServiceMergeScenarioTest(
+      TimetableFieldNumberVersionRepository versionRepository,
+      TimetableFieldNumberService timetableFieldNumberService) {
+    super(versionRepository, timetableFieldNumberService);
   }
 
   /**
@@ -28,11 +29,11 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
    * NEU:                            |__________|
    *                                  description=SBB3
    * IST:      |----------|----------|----------|----------|
-   * Version:        1          2          3           4
+   * TimetableFieldNumberVersion:        1          2          3           4
    * Änderung:  description=SBB1  description=SBB2  description=SBB3  description=SBB4
    *
    * RESULTAT: |----------|---------------------|----------|
-   * Version:        1               2               4
+   * TimetableFieldNumberVersion:        1               2               4
    * Änderung:  description=SBB1  description=SBB2  description=SBB4
    */
   @Test
@@ -50,21 +51,21 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     version4.setDescription("SBB4");
     version4.setNumber("BEX");
     version4 = versionRepository.save(version4);
-    Version editedVersion = new Version();
+    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
     editedVersion.setDescription("SBB2");
 
     //when
-    versionService.updateVersion(version3, editedVersion);
-    List<Version> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+    timetableFieldNumberService.updateVersion(version3, editedVersion);
+    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
     assertThat(result).isNotNull();
     assertThat(result.size()).isEqualTo(3);
-    result.sort(Comparator.comparing(Version::getValidFrom));
+    result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
     assertThat(result.get(0)).isNotNull();
-    Version firstTemporalVersion = result.get(0);
+    TimetableFieldNumberVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(firstTemporalVersion.getDescription()).isEqualTo("SBB1");
@@ -76,7 +77,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
 
     // second merged with third
-    Version secondTemporalVersion = result.get(1);
+    TimetableFieldNumberVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(secondTemporalVersion.getDescription()).isEqualTo("SBB2");
@@ -88,11 +89,11 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
 
     // third version no changes
-    Version thirdTemporalVersion = result.get(2);
+    TimetableFieldNumberVersion thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     assertThat(thirdTemporalVersion.getDescription()).isEqualTo("SBB4");
-    Set<LineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
+    Set<TimetableFieldLineRelation> lineRelationsThirdVersion = thirdTemporalVersion.getLineRelations();
     assertThat(lineRelationsThirdVersion).isEmpty();
     assertThat(thirdTemporalVersion.getComment()).isNull();
     assertThat(thirdTemporalVersion.getNumber()).isEqualTo("BEX");
@@ -108,11 +109,11 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
    * NEU:                 |__________|
    *                       description=SBB1
    * IST:      |----------|----------|----------|
-   * Version:        1          2          3
+   * TimetableFieldNumberVersion:        1          2          3
    * Änderung:  description=SBB1  description=SBB2  description=SBB1
    *
    * RESULTAT: |--------------------------------|
-   * Version:                 1
+   * TimetableFieldNumberVersion:                 1
    * Änderung:            description=SBB1
    */
   @Test
@@ -127,21 +128,21 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     version3.setDescription("SBB1");
     version3.setNumber("BEX");
     version3 = versionRepository.save(version3);
-    Version editedVersion = new Version();
+    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
     editedVersion.setDescription("SBB1");
 
     //when
-    versionService.updateVersion(version2, editedVersion);
-    List<Version> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+    timetableFieldNumberService.updateVersion(version2, editedVersion);
+    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
     assertThat(result).isNotNull();
     assertThat(result.size()).isEqualTo(1);
-    result.sort(Comparator.comparing(Version::getValidFrom));
+    result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // result version merging version1, version2 and version3
     assertThat(result.get(0)).isNotNull();
-    Version firstTemporalVersion = result.get(0);
+    TimetableFieldNumberVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(firstTemporalVersion.getDescription()).isEqualTo("SBB1");
@@ -160,11 +161,11 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
    * NEU:                 |______________________|
    *                              description=SBB1
    * IST:      |----------|----------|----------|----------|----------|
-   * Version:        1          2          3          4         5
+   * TimetableFieldNumberVersion:        1          2          3          4         5
    * Änderung:  description=SBB1  description=SBB2  description=SBB3  description=SBB1  description=SBB4
    *
    * RESULTAT: |-------------------------------------------|----------|
-   * Version:                 1                                 2
+   * TimetableFieldNumberVersion:                 1                                 2
    * Änderung:            description=SBB1                         description=SBB4
    */
   @Test
@@ -185,22 +186,22 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     version5.setNumber("BEX");
     version5.setDescription("SBB4");
     version5 = versionRepository.save(version5);
-    Version editedVersion = new Version();
+    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
     editedVersion.setDescription("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
 
     //when
-    versionService.updateVersion(version2, editedVersion);
-    List<Version> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+    timetableFieldNumberService.updateVersion(version2, editedVersion);
+    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
     assertThat(result).isNotNull();
     assertThat(result.size()).isEqualTo(2);
-    result.sort(Comparator.comparing(Version::getValidFrom));
+    result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // result version merging version1, version2, version3 and version4
-    Version firstTemporalVersion = result.get(0);
+    TimetableFieldNumberVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     assertThat(firstTemporalVersion.getDescription()).isEqualTo("SBB1");
@@ -212,7 +213,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
 
     //second not touched
-    Version secondTemporalVersion = result.get(1);
+    TimetableFieldNumberVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2026, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
     assertThat(secondTemporalVersion.getDescription()).isEqualTo("SBB4");
@@ -231,11 +232,11 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
    * NEU:                 |_____________________|
    *                              description=SBB1
    * IST:      |----------|----------|----------|  |----------|----------|
-   * Version:        1          2         3              4         5
+   * TimetableFieldNumberVersion:        1          2         3              4         5
    * Änderung:  description=SBB1  description=SBB2  description=SBB3     description=SBB1  description=SBB4
    *
    * RESULTAT: |--------------------------------|  |---------|----------|
-   * Version:                 1                         2        3
+   * TimetableFieldNumberVersion:                 1                         2        3
    * Änderung:            description=SBB1                 description=SBB1  description=SBB4
    */
   @Test
@@ -257,22 +258,22 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     version5.setNumber("BEX");
     version5.setDescription("SBB4");
     version5 = versionRepository.save(version5);
-    Version editedVersion = new Version();
+    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
     editedVersion.setDescription("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
 
     //when
-    versionService.updateVersion(version2, editedVersion);
-    List<Version> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+    timetableFieldNumberService.updateVersion(version2, editedVersion);
+    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
     assertThat(result).isNotNull();
     assertThat(result.size()).isEqualTo(3);
-    result.sort(Comparator.comparing(Version::getValidFrom));
+    result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // result version merging version1, version2, version3 and version4
-    Version firstTemporalVersion = result.get(0);
+    TimetableFieldNumberVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
     assertThat(firstTemporalVersion.getDescription()).isEqualTo("SBB1");
@@ -284,7 +285,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     assertThat(firstTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
 
     //second not touched
-    Version secondTemporalVersion = result.get(1);
+    TimetableFieldNumberVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     assertThat(secondTemporalVersion.getDescription()).isEqualTo("SBB1");
@@ -296,7 +297,7 @@ public class VersionServiceMergeScenarioTest extends BaseVersionServiceTest {
     assertThat(secondTemporalVersion.getSwissTimetableFieldNumber()).isEqualTo("b0.BEX");
 
     //third not touched
-    Version thirdTemporalVersion = result.get(2);
+    TimetableFieldNumberVersion thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2026, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
     assertThat(thirdTemporalVersion.getDescription()).isEqualTo("SBB4");

@@ -3,8 +3,8 @@ package ch.sbb.line.directory.exception;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
-import ch.sbb.line.directory.entity.Version;
-import ch.sbb.line.directory.entity.Version.Fields;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion.Fields;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,8 +17,8 @@ public class TimetableFieldNumberConflictException extends AtlasException {
   private static final String CODE_PREFIX = "TTFN.CONFLICT.";
   private static final String ERROR = "TimeTableFieldNumber conflict";
 
-  private final Version newVersion;
-  private final List<Version> overlappingVersions;
+  private final TimetableFieldNumberVersion newVersion;
+  private final List<TimetableFieldNumberVersion> overlappingVersions;
 
   @Override
   public ErrorResponse getErrorResponse() {
@@ -47,7 +47,7 @@ public class TimetableFieldNumberConflictException extends AtlasException {
     return details;
   }
 
-  private Detail toSwissTimetableFieldNumberOverlapDetail(Version version) {
+  private Detail toSwissTimetableFieldNumberOverlapDetail(TimetableFieldNumberVersion version) {
     return Detail.builder()
         .field(Fields.swissTimetableFieldNumber)
         .message("SwissTimetableFieldNumber {0} already taken from {1} to {2} by {3}")
@@ -60,7 +60,7 @@ public class TimetableFieldNumberConflictException extends AtlasException {
                                 .build()).build();
   }
 
-  private Detail toNumberOverlapDetail(Version version) {
+  private Detail toNumberOverlapDetail(TimetableFieldNumberVersion version) {
     return Detail.builder()
         .field(Fields.number)
         .message("Number {0} already taken from {1} to {2} by {3}")
