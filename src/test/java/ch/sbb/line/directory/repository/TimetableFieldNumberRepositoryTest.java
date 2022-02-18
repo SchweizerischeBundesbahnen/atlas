@@ -2,10 +2,9 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.line.directory.repository.VersionRepository;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
-import ch.sbb.line.directory.entity.Version;
 import ch.sbb.line.directory.enumaration.Status;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
@@ -19,11 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class TimetableFieldNumberRepositoryTest {
 
   private static final String TTFNID = "ttfnid";
-  private final VersionRepository versionRepository;
+  private final TimetableFieldNumberVersionRepository versionRepository;
   private final TimetableFieldNumberRepository timetableFieldNumberRepository;
 
   @Autowired
-  public TimetableFieldNumberRepositoryTest(VersionRepository versionRepository,
+  public TimetableFieldNumberRepositoryTest(TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberRepository timetableFieldNumberRepository) {
     this.versionRepository = versionRepository;
     this.timetableFieldNumberRepository = timetableFieldNumberRepository;
@@ -35,40 +34,40 @@ public class TimetableFieldNumberRepositoryTest {
   @Test
   void shouldDisplayNameOfCurrentDay() {
     // Given
-    Version validLastYear = Version.builder()
-        .ttfnid(TTFNID)
-        .description("Last Year")
-        .swissTimetableFieldNumber("a.100")
-        .status(Status.ACTIVE)
-        .number("10.100")
-        .validFrom(LocalDate.now().minusYears(2))
-        .validTo(LocalDate.now().minusYears(1))
-        .businessOrganisation("sbb")
-        .build();
+    TimetableFieldNumberVersion validLastYear = TimetableFieldNumberVersion.builder()
+                                                                           .ttfnid(TTFNID)
+                                                                           .description("Last Year")
+                                                                           .swissTimetableFieldNumber("a.100")
+                                                                           .status(Status.ACTIVE)
+                                                                           .number("10.100")
+                                                                           .validFrom(LocalDate.now().minusYears(2))
+                                                                           .validTo(LocalDate.now().minusYears(1))
+                                                                           .businessOrganisation("sbb")
+                                                                           .build();
     versionRepository.saveAndFlush(validLastYear);
 
-    Version validToday = Version.builder()
-        .ttfnid(TTFNID)
-        .description("Today")
-        .swissTimetableFieldNumber("a.100")
-        .status(Status.ACTIVE)
-        .number("10.100")
-        .validFrom(LocalDate.now().minusDays(1))
-        .validTo(LocalDate.now().plusDays(1))
-        .businessOrganisation("sbb")
-        .build();
+    TimetableFieldNumberVersion validToday = TimetableFieldNumberVersion.builder()
+                                                                        .ttfnid(TTFNID)
+                                                                        .description("Today")
+                                                                        .swissTimetableFieldNumber("a.100")
+                                                                        .status(Status.ACTIVE)
+                                                                        .number("10.100")
+                                                                        .validFrom(LocalDate.now().minusDays(1))
+                                                                        .validTo(LocalDate.now().plusDays(1))
+                                                                        .businessOrganisation("sbb")
+                                                                        .build();
     versionRepository.saveAndFlush(validToday);
 
-    Version validNextYear = Version.builder()
-        .ttfnid(TTFNID)
-        .description("Next Year")
-        .swissTimetableFieldNumber("a.100")
-        .status(Status.ACTIVE)
-        .number("10.100")
-        .validFrom(LocalDate.now().plusYears(1))
-        .validTo(LocalDate.now().plusYears(2))
-        .businessOrganisation("sbb")
-        .build();
+    TimetableFieldNumberVersion validNextYear = TimetableFieldNumberVersion.builder()
+                                                                           .ttfnid(TTFNID)
+                                                                           .description("Next Year")
+                                                                           .swissTimetableFieldNumber("a.100")
+                                                                           .status(Status.ACTIVE)
+                                                                           .number("10.100")
+                                                                           .validFrom(LocalDate.now().plusYears(1))
+                                                                           .validTo(LocalDate.now().plusYears(2))
+                                                                           .businessOrganisation("sbb")
+                                                                           .build();
     versionRepository.saveAndFlush(validNextYear);
 
     // When
@@ -92,40 +91,40 @@ public class TimetableFieldNumberRepositoryTest {
   @Test
   void shouldDisplayNameOfNextYear() {
     // Given
-    Version validLastYear = Version.builder()
-        .ttfnid(TTFNID)
-        .description("Last Year")
-        .swissTimetableFieldNumber("a.100")
-        .status(Status.ACTIVE)
-        .number("10.100")
-        .validFrom(LocalDate.now().minusYears(2))
-        .validTo(LocalDate.now().minusYears(1))
-        .businessOrganisation("sbb")
-        .build();
+    TimetableFieldNumberVersion validLastYear = TimetableFieldNumberVersion.builder()
+                                                                           .ttfnid(TTFNID)
+                                                                           .description("Last Year")
+                                                                           .swissTimetableFieldNumber("a.100")
+                                                                           .status(Status.ACTIVE)
+                                                                           .number("10.100")
+                                                                           .validFrom(LocalDate.now().minusYears(2))
+                                                                           .validTo(LocalDate.now().minusYears(1))
+                                                                           .businessOrganisation("sbb")
+                                                                           .build();
     versionRepository.saveAndFlush(validLastYear);
 
-    Version validNextYear = Version.builder()
-        .ttfnid(TTFNID)
-        .description("Next Year")
-        .swissTimetableFieldNumber("a.100")
-        .status(Status.ACTIVE)
-        .number("10.100")
-        .validFrom(LocalDate.now().plusYears(1))
-        .validTo(LocalDate.now().plusYears(2))
-        .businessOrganisation("sbb")
-        .build();
+    TimetableFieldNumberVersion validNextYear = TimetableFieldNumberVersion.builder()
+                                                                           .ttfnid(TTFNID)
+                                                                           .description("Next Year")
+                                                                           .swissTimetableFieldNumber("a.100")
+                                                                           .status(Status.ACTIVE)
+                                                                           .number("10.100")
+                                                                           .validFrom(LocalDate.now().plusYears(1))
+                                                                           .validTo(LocalDate.now().plusYears(2))
+                                                                           .businessOrganisation("sbb")
+                                                                           .build();
     versionRepository.saveAndFlush(validNextYear);
 
-    Version validInTwoYears = Version.builder()
-        .ttfnid(TTFNID)
-        .description("Later")
-        .swissTimetableFieldNumber("a.100")
-        .status(Status.ACTIVE)
-        .number("10.100")
-        .validFrom(LocalDate.now().plusYears(3))
-        .validTo(LocalDate.now().plusYears(4))
-        .businessOrganisation("sbb")
-        .build();
+    TimetableFieldNumberVersion validInTwoYears = TimetableFieldNumberVersion.builder()
+                                                                             .ttfnid(TTFNID)
+                                                                             .description("Later")
+                                                                             .swissTimetableFieldNumber("a.100")
+                                                                             .status(Status.ACTIVE)
+                                                                             .number("10.100")
+                                                                             .validFrom(LocalDate.now().plusYears(3))
+                                                                             .validTo(LocalDate.now().plusYears(4))
+                                                                             .businessOrganisation("sbb")
+                                                                             .build();
     versionRepository.saveAndFlush(validInTwoYears);
 
     // When
@@ -149,28 +148,28 @@ public class TimetableFieldNumberRepositoryTest {
   @Test
   void shouldDisplayNameOfLastYear() {
     // Given
-    Version validEarlier = Version.builder()
-        .ttfnid(TTFNID)
-        .description("Earlier")
-        .swissTimetableFieldNumber("a.100")
-        .status(Status.ACTIVE)
-        .number("10.100")
-        .validFrom(LocalDate.now().minusYears(4))
-        .validTo(LocalDate.now().minusYears(3))
-        .businessOrganisation("sbb")
-        .build();
+    TimetableFieldNumberVersion validEarlier = TimetableFieldNumberVersion.builder()
+                                                                          .ttfnid(TTFNID)
+                                                                          .description("Earlier")
+                                                                          .swissTimetableFieldNumber("a.100")
+                                                                          .status(Status.ACTIVE)
+                                                                          .number("10.100")
+                                                                          .validFrom(LocalDate.now().minusYears(4))
+                                                                          .validTo(LocalDate.now().minusYears(3))
+                                                                          .businessOrganisation("sbb")
+                                                                          .build();
     versionRepository.saveAndFlush(validEarlier);
 
-    Version validLastYear = Version.builder()
-        .ttfnid(TTFNID)
-        .description("Last Year")
-        .swissTimetableFieldNumber("a.100")
-        .status(Status.ACTIVE)
-        .number("10.100")
-        .validFrom(LocalDate.now().minusYears(2))
-        .validTo(LocalDate.now().minusYears(1))
-        .businessOrganisation("sbb")
-        .build();
+    TimetableFieldNumberVersion validLastYear = TimetableFieldNumberVersion.builder()
+                                                                           .ttfnid(TTFNID)
+                                                                           .description("Last Year")
+                                                                           .swissTimetableFieldNumber("a.100")
+                                                                           .status(Status.ACTIVE)
+                                                                           .number("10.100")
+                                                                           .validFrom(LocalDate.now().minusYears(2))
+                                                                           .validTo(LocalDate.now().minusYears(1))
+                                                                           .businessOrganisation("sbb")
+                                                                           .build();
     versionRepository.saveAndFlush(validLastYear);
 
     // When
