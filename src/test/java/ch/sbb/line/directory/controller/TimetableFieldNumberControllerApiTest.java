@@ -157,11 +157,11 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$.status", is(404)))
        .andExpect(jsonPath("$.message", is("Entity not found")))
        .andExpect(jsonPath("$.error", is("Not found")))
-       .andExpect(jsonPath("$.details[0].message", is("Object with ttfnId 123 not found")))
-       .andExpect(jsonPath("$.details[0].field", is("ttfnId")))
+       .andExpect(jsonPath("$.details[0].message", is("Object with ttfnid 123 not found")))
+       .andExpect(jsonPath("$.details[0].field", is("ttfnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("ttfnId")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("ttfnid")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
   }
