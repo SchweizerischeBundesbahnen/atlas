@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.exceptions;
+package ch.sbb.line.directory.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,12 +9,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-public class ConflictExceptionTest {
+public class TimetableFieldNumberConflictExceptionTest {
 
   @Test
   void shouldConvertToErrorMessageCorrectly() {
     // Given
-    ConflictException conflictException = new ConflictException(version(), List.of(version()));
+    TimetableFieldNumberConflictException conflictException = new TimetableFieldNumberConflictException(version(), List.of(version()));
 
     // When
     ErrorResponse errorResponse = conflictException.getErrorResponse();

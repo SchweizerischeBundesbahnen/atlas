@@ -8,7 +8,7 @@ import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.service.VersionService;
 import ch.sbb.line.directory.entity.Version;
-import ch.sbb.line.directory.exceptions.NotFoundException;
+import ch.sbb.line.directory.exception.NotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
