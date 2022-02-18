@@ -8,7 +8,8 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.exception.NotFoundException;
+import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -70,7 +71,7 @@ public class SublineService {
 
   public void deleteById(Long id) {
     if (!sublineVersionRepository.existsById(id)) {
-      throw new NotFoundException(NotFoundException.ID,String.valueOf(id));
+      throw new IdNotFoundException(id);
     }
     sublineVersionRepository.deleteById(id);
   }
@@ -79,7 +80,7 @@ public class SublineService {
     List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         slnid);
     if (sublineVersions.isEmpty()) {
-      throw new NotFoundException(NotFoundException.SLNID,slnid);
+      throw new SlnidNotFoundException(slnid);
     }
     sublineVersionRepository.deleteAll(sublineVersions);
   }

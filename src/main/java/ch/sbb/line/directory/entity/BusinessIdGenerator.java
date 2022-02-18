@@ -1,18 +1,19 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.line.directory.entity.LineVersion.Fields;
 import java.lang.reflect.Field;
 import java.util.Optional;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.tuple.ValueGenerator;
 
-abstract class BusinessIdGenerator implements ValueGenerator<String> {
+public abstract class BusinessIdGenerator implements ValueGenerator<String> {
 
   private final String dbSequence;
   private final String businessIdPrefix;
   private final String dbField;
 
-  BusinessIdGenerator(String dbSequence, String businessIdPrefix, String dbField) {
+  private BusinessIdGenerator(String dbSequence, String businessIdPrefix, String dbField) {
     this.dbSequence = dbSequence;
     this.businessIdPrefix = businessIdPrefix;
     this.dbField = dbField;
@@ -42,4 +43,19 @@ abstract class BusinessIdGenerator implements ValueGenerator<String> {
       throw new IllegalStateException(e);
     }
   }
+
+  static class SlnidGenerator extends BusinessIdGenerator {
+
+    public SlnidGenerator() {
+      super("slnid_seq", "ch:1:slnid:", Fields.slnid);
+    }
+  }
+
+  static class TtfnidGenerator extends BusinessIdGenerator {
+
+    public TtfnidGenerator() {
+      super("ttfnid_seq", "ch:1:ttfnid:", TimetableFieldNumberVersion.Fields.ttfnid);
+    }
+  }
+
 }

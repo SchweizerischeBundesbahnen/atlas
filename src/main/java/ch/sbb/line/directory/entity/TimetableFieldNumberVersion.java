@@ -4,6 +4,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
+import ch.sbb.line.directory.entity.BusinessIdGenerator.TtfnidGenerator;
 import ch.sbb.line.directory.enumaration.Status;
 import java.time.LocalDate;
 import java.util.HashSet;
