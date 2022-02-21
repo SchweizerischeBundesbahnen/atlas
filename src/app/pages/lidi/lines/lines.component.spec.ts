@@ -7,9 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { LinesComponent } from './lines.component';
-import { ContainerLine, LinesService, LineVersion } from '../../../api';
+import { ContainerLine, LinesService, LineType } from '../../../api';
 import { CoreModule } from '../../../core/module/core.module';
-import TypeEnum = LineVersion.TypeEnum;
 
 const versionContainer: ContainerLine = {
   objects: [
@@ -21,7 +20,7 @@ const versionContainer: ContainerLine = {
       validTo: new Date('2029-06-01'),
       businessOrganisation: 'SBB',
       swissLineNumber: 'L1',
-      type: TypeEnum.Orderly,
+      type: LineType.Orderly,
     },
   ],
   totalCount: 1,

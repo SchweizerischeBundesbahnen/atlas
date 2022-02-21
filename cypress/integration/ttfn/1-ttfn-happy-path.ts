@@ -39,7 +39,7 @@ describe('Fahrplanfeldnummer', () => {
   });
 
   it('Step-6: search for added item in table and select it', () => {
-    const pathToIntercept = '/timetable-field-number/v1/field-numbers?**';
+    const pathToIntercept = '/line-directory/v1/field-numbers?**';
 
     CommonUtils.typeSearchInput(
       pathToIntercept,

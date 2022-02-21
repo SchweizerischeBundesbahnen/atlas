@@ -11,9 +11,21 @@
  */
 
 /**
- * Parameters for messages
+ * PaymentType
  */
-export interface Parameter {
-  key?: string;
-  value?: string;
-}
+export type PaymentType =
+  | 'INTERNATIONAL'
+  | 'REGIONAL'
+  | 'REGIONALWITHOUT'
+  | 'LOCAL'
+  | 'OTHER'
+  | 'NONE';
+
+export const PaymentType = {
+  International: 'INTERNATIONAL' as PaymentType,
+  Regional: 'REGIONAL' as PaymentType,
+  Regionalwithout: 'REGIONALWITHOUT' as PaymentType,
+  Local: 'LOCAL' as PaymentType,
+  Other: 'OTHER' as PaymentType,
+  None: 'NONE' as PaymentType,
+};

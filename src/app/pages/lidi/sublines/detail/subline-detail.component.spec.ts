@@ -6,11 +6,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
-import { SublinesService, SublineVersion } from '../../../../api';
+import { PaymentType, SublinesService, SublineType, SublineVersion } from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
-import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;
-import TypeEnum = SublineVersion.TypeEnum;
 import { HttpErrorResponse } from '@angular/common/http';
 
 const sublineVersion: SublineVersion = {
@@ -22,9 +20,9 @@ const sublineVersion: SublineVersion = {
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
-  paymentType: PaymentTypeEnum.None,
+  paymentType: PaymentType.None,
   swissSublineNumber: 'L1:2',
-  type: TypeEnum.Technical,
+  type: SublineType.Technical,
   mainlineSlnid: 'ch:1:slnid:1000',
 };
 

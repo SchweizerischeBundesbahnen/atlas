@@ -11,9 +11,12 @@
  */
 
 /**
- * Parameters for messages
+ * LineType
  */
-export interface Parameter {
-  key?: string;
-  value?: string;
-}
+export type LineType = 'ORDERLY' | 'TEMPORARY' | 'OPERATIONAL';
+
+export const LineType = {
+  Orderly: 'ORDERLY' as LineType,
+  Temporary: 'TEMPORARY' as LineType,
+  Operational: 'OPERATIONAL' as LineType,
+};

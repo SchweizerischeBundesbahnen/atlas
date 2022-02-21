@@ -4,7 +4,7 @@ import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DATE_PATTERN, MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormControl, ValidationErrors } from '@angular/forms';
-import { Version } from '../../../api';
+import { Status } from '../../../api';
 import moment from 'moment/moment';
 import { ValidationService } from '../../validation/validation.service';
 
@@ -18,7 +18,7 @@ export class TableSearchComponent {
   @Input() additionalFieldTemplate!: TemplateRef<any>;
   @Output() searchEvent: EventEmitter<TableSearch> = new EventEmitter<TableSearch>();
 
-  readonly STATUS_OPTIONS = Object.values(Version.StatusEnum);
+  readonly STATUS_OPTIONS = Object.values(Status);
   searchStrings: string[] = [];
   searchDate?: Date;
   activeStatuses: statusChoice = [];
