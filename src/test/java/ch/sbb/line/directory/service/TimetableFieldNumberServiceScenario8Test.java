@@ -23,12 +23,12 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 8a: Letzte TimetableFieldNumberVersion terminieren wenn nur validTo ist updated
+   * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
    *
-   * RESULTAT: |----------------------| TimetableFieldNumberVersion wird per xx aufgehoben
+   * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */
   @Test
@@ -91,7 +91,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 8b: Letzte TimetableFieldNumberVersion validTo und props updated
+   * Szenario 8b: Letzte Version validTo und props updated
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
@@ -173,7 +173,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 8c: Letzte TimetableFieldNumberVersion nur validTo
+   * Szenario 8c: Letzte Version nur validTo
    * NEU:      |__________________________|
    * IST:      |----------------------|       |-------------------------|
    * Version:             1                             2
@@ -256,7 +256,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 8d: Letzte TimetableFieldNumberVersion validTo und props updated
+   * Szenario 8d: Letzte Version validTo und props updated
    * NEU:      |__________________________|
    * IST:      |----------------------|       |-------------------------|
    * Version:             1                             2
@@ -340,7 +340,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 8e: Letzte TimetableFieldNumberVersion validTo und props updated
+   * Szenario 8e: Letzte Version validTo und props updated
    * NEU:      |________________________________________|
    * IST:      |----------------------|       |-------------------------|
    * Version:             1                                 2
@@ -437,7 +437,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 8f: Letzte TimetableFieldNumberVersion validTo und props updated
+   * Szenario 8f: Letzte Version validTo und props updated
    * NEU:      |________________________________________________________________|
    * IST:      |----------------------|       |---------|----------------|----------------|
    * Version:             1                        2            3               4
@@ -534,7 +534,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
   }
 
  /**
-   * Szenario 8g: Letzte TimetableFieldNumberVersion validTo und props updated
+   * Szenario 8g: Letzte Version validTo und props updated
    * NEU:      |________________________________________________________________|
    * IST:      |----------------------|       |----------------|         |----------------|
    * Version:             1                           2                          3
