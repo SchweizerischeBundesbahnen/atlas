@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
-import { SublinesService, SublineVersion } from '../../../../api';
-import StatusEnum = SublineVersion.StatusEnum;
+import { Status, SublinesService, SublineVersion } from '../../../../api';
 import PaymentTypeEnum = SublineVersion.PaymentTypeEnum;
 import TypeEnum = SublineVersion.TypeEnum;
 import { SublineDetailResolver } from './subline-detail.resolver';
@@ -63,7 +62,7 @@ describe('SublineDetailResolver', () => {
     resolvedVersion.subscribe((versions) => {
       expect(versions.length).toBe(1);
       expect(versions[0].id).toBe(1234);
-      expect(versions[0].status).toBe(StatusEnum.Active);
+      expect(versions[0].status).toBe(Status.Active);
       expect(versions[0].slnid).toBe('slnid');
     });
   });
