@@ -26,6 +26,7 @@ import { Observable } from 'rxjs';
 import { ContainerSubline } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { Status } from '../model/models';
+import { SublineType } from '../model/models';
 import { SublineVersion } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -319,7 +320,7 @@ export class SublinesService {
   public getSublines(
     searchCriteria?: Array<string>,
     statusRestrictions?: Array<Status>,
-    typeRestrictions?: Array<'TECHNICAL' | 'COMPENSATION'>,
+    typeRestrictions?: Array<SublineType>,
     validOn?: Date,
     page?: number,
     size?: number,
@@ -331,7 +332,7 @@ export class SublinesService {
   public getSublines(
     searchCriteria?: Array<string>,
     statusRestrictions?: Array<Status>,
-    typeRestrictions?: Array<'TECHNICAL' | 'COMPENSATION'>,
+    typeRestrictions?: Array<SublineType>,
     validOn?: Date,
     page?: number,
     size?: number,
@@ -343,7 +344,7 @@ export class SublinesService {
   public getSublines(
     searchCriteria?: Array<string>,
     statusRestrictions?: Array<Status>,
-    typeRestrictions?: Array<'TECHNICAL' | 'COMPENSATION'>,
+    typeRestrictions?: Array<SublineType>,
     validOn?: Date,
     page?: number,
     size?: number,
@@ -355,7 +356,7 @@ export class SublinesService {
   public getSublines(
     searchCriteria?: Array<string>,
     statusRestrictions?: Array<Status>,
-    typeRestrictions?: Array<'TECHNICAL' | 'COMPENSATION'>,
+    typeRestrictions?: Array<SublineType>,
     validOn?: Date,
     page?: number,
     size?: number,

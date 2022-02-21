@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { SublinesService, Subline } from '../../../api';
+import { SublinesService, Subline, SublineType } from '../../../api';
 import { Pages } from '../../pages';
 import { TableSearch } from '../../../core/components/table-search/table-search';
 import { TableComponent } from '../../../core/components/table/table.component';
@@ -37,8 +37,8 @@ export class SublinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  readonly SUBLINE_TYPES: Subline.TypeEnum[] = Object.values(Subline.TypeEnum);
-  activeSublineTypes: Subline.TypeEnum[] = [];
+  readonly SUBLINE_TYPES: SublineType[] = Object.values(SublineType);
+  activeSublineTypes: SublineType[] = [];
   sublines: Subline[] = [];
   totalCount$ = 0;
   isLoading = false;

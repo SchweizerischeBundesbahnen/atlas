@@ -6,10 +6,9 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
-import { ContainerSubline, Status, SublinesService, SublineVersion } from '../../../api';
+import { ContainerSubline, Status, SublinesService, SublineType } from '../../../api';
 import { SublinesComponent } from './sublines.component';
 import { CoreModule } from '../../../core/module/core.module';
-import TypeEnum = SublineVersion.TypeEnum;
 
 const versionContainer: ContainerSubline = {
   objects: [
@@ -21,7 +20,7 @@ const versionContainer: ContainerSubline = {
       status: Status.Active,
       businessOrganisation: 'SBB',
       swissSublineNumber: 'L1:2',
-      type: TypeEnum.Technical,
+      type: SublineType.Technical,
     },
   ],
   totalCount: 1,

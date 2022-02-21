@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
+import { LineType } from './lineType';
 
 export interface Line {
   /**
@@ -17,10 +18,7 @@ export interface Line {
    */
   swissLineNumber: string;
   status?: Status;
-  /**
-   * LineType
-   */
-  type: Line.TypeEnum;
+  type: LineType;
   /**
    * SLNID
    */
@@ -45,12 +43,4 @@ export interface Line {
    * BusinessOrganisation
    */
   businessOrganisation: string;
-}
-export namespace Line {
-  export type TypeEnum = 'ORDERLY' | 'TEMPORARY' | 'OPERATIONAL';
-  export const TypeEnum = {
-    Orderly: 'ORDERLY' as TypeEnum,
-    Temporary: 'TEMPORARY' as TypeEnum,
-    Operational: 'OPERATIONAL' as TypeEnum,
-  };
 }
