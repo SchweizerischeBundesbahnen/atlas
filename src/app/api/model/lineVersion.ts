@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
+import { PaymentType } from './paymentType';
+import { LineType } from './lineType';
 
 export interface LineVersion {
   /**
@@ -21,18 +23,12 @@ export interface LineVersion {
    */
   swissLineNumber: string;
   status?: Status;
-  /**
-   * LineType
-   */
-  type: LineVersion.TypeEnum;
+  type: LineType;
   /**
    * SLNID
    */
   readonly slnid?: string;
-  /**
-   * PaymentType
-   */
-  paymentType: LineVersion.PaymentTypeEnum;
+  paymentType: PaymentType;
   /**
    * Number
    */
@@ -93,27 +89,4 @@ export interface LineVersion {
    * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
    */
   etagVersion?: number;
-}
-export namespace LineVersion {
-  export type TypeEnum = 'ORDERLY' | 'TEMPORARY' | 'OPERATIONAL';
-  export const TypeEnum = {
-    Orderly: 'ORDERLY' as TypeEnum,
-    Temporary: 'TEMPORARY' as TypeEnum,
-    Operational: 'OPERATIONAL' as TypeEnum,
-  };
-  export type PaymentTypeEnum =
-    | 'INTERNATIONAL'
-    | 'REGIONAL'
-    | 'REGIONALWITHOUT'
-    | 'LOCAL'
-    | 'OTHER'
-    | 'NONE';
-  export const PaymentTypeEnum = {
-    International: 'INTERNATIONAL' as PaymentTypeEnum,
-    Regional: 'REGIONAL' as PaymentTypeEnum,
-    Regionalwithout: 'REGIONALWITHOUT' as PaymentTypeEnum,
-    Local: 'LOCAL' as PaymentTypeEnum,
-    Other: 'OTHER' as PaymentTypeEnum,
-    None: 'NONE' as PaymentTypeEnum,
-  };
 }

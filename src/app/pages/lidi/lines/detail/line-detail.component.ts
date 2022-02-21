@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LinesService, LineVersion, Status } from '../../../../api';
+import { LinesService, LineType, LineVersion, PaymentType, Status } from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -27,8 +27,8 @@ export class LineDetailComponent
   extends DetailWrapperController<LineVersion>
   implements OnInit, OnDestroy
 {
-  TYPE_OPTIONS = Object.values(LineVersion.TypeEnum);
-  PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
+  TYPE_OPTIONS = Object.values(LineType);
+  PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   STATUS_OPTIONS = Object.values(Status);
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;

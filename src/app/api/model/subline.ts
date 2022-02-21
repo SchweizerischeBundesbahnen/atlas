@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
+import { SublineType } from './sublineType';
 
 export interface Subline {
   /**
@@ -21,10 +22,7 @@ export interface Subline {
    */
   swissLineNumber?: string;
   status?: Status;
-  /**
-   * Subline Type
-   */
-  type: Subline.TypeEnum;
+  type: SublineType;
   /**
    * SLNID
    */
@@ -45,11 +43,4 @@ export interface Subline {
    * BusinessOrganisation
    */
   businessOrganisation: string;
-}
-export namespace Subline {
-  export type TypeEnum = 'TECHNICAL' | 'COMPENSATION';
-  export const TypeEnum = {
-    Technical: 'TECHNICAL' as TypeEnum,
-    Compensation: 'COMPENSATION' as TypeEnum,
-  };
 }

@@ -17,11 +17,14 @@ model/displayInfo.ts
 model/errorDetail.ts
 model/errorResponse.ts
 model/line.ts
+model/lineType.ts
 model/lineVersion.ts
 model/models.ts
 model/parameter.ts
+model/paymentType.ts
 model/status.ts
 model/subline.ts
+model/sublineType.ts
 model/sublineVersion.ts
 model/timetableFieldNumber.ts
 model/timetableFieldNumberVersion.ts
