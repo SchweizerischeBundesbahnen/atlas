@@ -25,6 +25,10 @@ const lineVersion: LineVersion = {
   paymentType: PaymentTypeEnum.None,
   swissLineNumber: 'L1',
   type: TypeEnum.Orderly,
+  colorBackCmyk: '',
+  colorBackRgb: '',
+  colorFontCmyk: '',
+  colorFontRgb: '',
 };
 
 const error = new HttpErrorResponse({

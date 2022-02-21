@@ -11,7 +11,7 @@ import {
 } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import moment from 'moment/moment';
-import { Version } from '../../../api';
+import { Status } from '../../../api';
 
 describe('TableSearchComponent', () => {
   let component: TableSearchComponent;
@@ -50,11 +50,11 @@ describe('TableSearchComponent', () => {
     const statusOption = fixture.debugElement.query(By.css('mat-option'));
     statusOption.nativeElement.click();
     fixture.detectChanges();
-    expect(component.activeStatuses).toEqual([Version.StatusEnum.Active]);
+    expect(component.activeStatuses).toEqual([Status.Active]);
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith({
       searchCriteria: [],
       validOn: undefined,
-      statusChoices: [Version.StatusEnum.Active],
+      statusChoices: [Status.Active],
     });
 
     statusOption.nativeElement.click();
