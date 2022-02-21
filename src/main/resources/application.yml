@@ -31,5 +31,4 @@ logging:
           gateway: DEBUG
 gateway:
   routes:
-    timetable-field-number: http://localhost:8080
     line-directory: http://localhost:8082
