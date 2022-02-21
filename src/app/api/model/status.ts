@@ -11,9 +11,14 @@
  */
 
 /**
- * Parameters for messages
+ * Status
  */
-export interface Parameter {
-  key?: string;
-  value?: string;
-}
+export type Status = 'ACTIVE' | 'INACTIVE' | 'NEEDS_REVIEW' | 'IN_REVIEW' | 'REVIEWED';
+
+export const Status = {
+  Active: 'ACTIVE' as Status,
+  Inactive: 'INACTIVE' as Status,
+  NeedsReview: 'NEEDS_REVIEW' as Status,
+  InReview: 'IN_REVIEW' as Status,
+  Reviewed: 'REVIEWED' as Status,
+};

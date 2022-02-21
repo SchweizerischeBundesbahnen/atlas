@@ -6,11 +6,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
-import { LinesService, LineVersion } from '../../../../api';
+import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
-import PaymentTypeEnum = LineVersion.PaymentTypeEnum;
-import TypeEnum = LineVersion.TypeEnum;
 import { HttpErrorResponse } from '@angular/common/http';
 
 const lineVersion: LineVersion = {
@@ -22,9 +20,13 @@ const lineVersion: LineVersion = {
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
-  paymentType: PaymentTypeEnum.None,
+  paymentType: PaymentType.None,
   swissLineNumber: 'L1',
-  type: TypeEnum.Orderly,
+  type: LineType.Orderly,
+  colorBackCmyk: '',
+  colorBackRgb: '',
+  colorFontCmyk: '',
+  colorFontRgb: '',
 };
 
 const error = new HttpErrorResponse({

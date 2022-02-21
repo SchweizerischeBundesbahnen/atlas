@@ -61,7 +61,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
         })
       )
       .subscribe((container) => {
-        this.timetableFieldNumbers = container.fieldNumbers!;
+        this.timetableFieldNumbers = container.objects!;
         this.totalCount$ = container.totalCount!;
         this.isLoading = false;
       });

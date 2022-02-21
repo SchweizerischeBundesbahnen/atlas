@@ -11,9 +11,11 @@
  */
 
 /**
- * Parameters for messages
+ * Subline Type
  */
-export interface Parameter {
-  key?: string;
-  value?: string;
-}
+export type SublineType = 'TECHNICAL' | 'COMPENSATION';
+
+export const SublineType = {
+  Technical: 'TECHNICAL' as SublineType,
+  Compensation: 'COMPENSATION' as SublineType,
+};
