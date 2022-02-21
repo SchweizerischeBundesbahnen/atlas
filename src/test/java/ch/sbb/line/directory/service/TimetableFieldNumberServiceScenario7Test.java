@@ -29,10 +29,10 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
    *
    * NEU:                       |________________________________
    * IST:      |----------------|
-   * TimetableFieldNumberVersion:           1
+   * Version:           1
    *
    * RESULTAT: |----------------|________________________________     NEUE VERSION EINGEFÜGT
-   * TimetableFieldNumberVersion:          1                         2
+   * Version:          1                         2
    */
   @Test
   public void scenario7a() {
@@ -119,10 +119,10 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
    *
    * NEU:      |________________________________|
    * IST:                                       |----------------|
-   * TimetableFieldNumberVersion:                                           1
+   * Version:                                           1
    *
    * RESULTAT: |________________________________|----------------|     NEUE VERSION EINGEFÜGT
-   * TimetableFieldNumberVersion:                 2                         1
+   * Version:                 2                         1
    */
   @Test
   public void scenario7b() {
@@ -208,10 +208,10 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
    *
    * NEU:                             |________________________________
    * IST:      |----------------|
-   * TimetableFieldNumberVersion:           1
+   * Version:           1
    *
    * RESULTAT: |----------------|     |________________________________     NEUE VERSION EINGEFÜGT
-   * TimetableFieldNumberVersion:          1                               2
+   * Version:          1                               2
    */
   @Test
   public void scenario7c() {
@@ -298,10 +298,10 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
    *
    * NEU:      |________________________________|
    * IST:                                            |----------------|
-   * TimetableFieldNumberVersion:                                                1
+   * Version:                                                1
    *
    * RESULTAT: |________________________________|    |----------------|     NEUE VERSION EINGEFÜGT
-   * TimetableFieldNumberVersion:                 2                              1
+   * Version:                 2                              1
    */
   @Test
   public void scenario7d() {

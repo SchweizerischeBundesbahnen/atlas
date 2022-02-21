@@ -24,10 +24,10 @@ public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableField
    * Szenario 9a (Fall 5): Update ausserhalb der existierenden version
    *
    * Änderung 1     |_____|
-   * TimetableFieldNumberVersion                 |--------------------|
+   * Version                 |--------------------|
    *
    * Ergebnis                |--------------------|
-   *     TimetableFieldNumberVersion ist vom update nicht betroffen
+   * Version ist vom update nicht betroffen
    */
   @Test
   public void scenario9a() {
@@ -75,13 +75,13 @@ public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 9b (Spezialfall 5): Update vor erster existierender TimetableFieldNumberVersion
+   * Szenario 9b (Spezialfall 5): Update vor erster existierender Version
    *
    * Änderung  |___|
    *                 |-----------------|----------------|-----------|         |-------------|
-   *                     TimetableFieldNumberVersion 1          TimetableFieldNumberVersion 2     TimetableFieldNumberVersion 3               TimetableFieldNumberVersion 4
+   *                     Version 1          Version 2     Version 3               Version 4
    *
-   * Ergebnis: Neue TimetableFieldNumberVersion wird erstellt (mit Inhalt von Änderung und TimetableFieldNumberVersion 1)
+   * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 1)
    */
   @Test
   public void scenario9b() {
@@ -142,12 +142,12 @@ public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 9c (Spezialfall 1): Update vor und während erster TimetableFieldNumberVersion
+   * Szenario 9c (Spezialfall 1): Update vor und während erster Version
    * Änderung    |_____________________|
    *                 |-----------------|----------------|-----------|         |-------------|
-   *                     TimetableFieldNumberVersion 1          TimetableFieldNumberVersion 2     TimetableFieldNumberVersion 3               TimetableFieldNumberVersion 4
+   *                     Version 1          Version 2     Version 3               Version 4
    *
-   * Ergebnis: TimetableFieldNumberVersion 1 wird verlängert
+   * Ergebnis: Version 1 wird verlängert
    */
   @Test
   public void scenario9c() {

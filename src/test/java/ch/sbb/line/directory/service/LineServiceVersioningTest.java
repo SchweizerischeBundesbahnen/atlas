@@ -68,10 +68,10 @@ public class LineServiceVersioningTest {
    * Szenario 2: Update innerhalb existierender TimetableFieldNumberVersion
    * NEU:                       |___________|
    * IST:      |-----------|----------------------|--------------------
-   * TimetableFieldNumberVersion:        1                 2                  3
+   * Version:        1                 2                  3
    *
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
-   * TimetableFieldNumberVersion:        1       2         4       5          3
+   * Version:        1       2         4       5          3
    */
   @Test
   public void scenario2() {
@@ -139,11 +139,11 @@ public class LineServiceVersioningTest {
    * NEU:                 |__________|
    * number=2
    * IST:      |----------|----------|----------|
-   * TimetableFieldNumberVersion:        1          2          3
+   * Version:        1          2          3
    * Änderung:  number=1   number=3  number=2
    *
    * RESULTAT: |----------|--------------------|
-   * TimetableFieldNumberVersion:        1               2
+   * Version:        1               2
    * Änderung:  name=SBB1       number=2
    */
   @Test
@@ -188,11 +188,11 @@ public class LineServiceVersioningTest {
    * Szenario 4: Update, das über eine ganze TimetableFieldNumberVersion hinausragt
    * NEU:             |___________________________________|
    * IST:      |-----------|----------------------|--------------------
-   * TimetableFieldNumberVersion:        1                 2                  3
+   * Version:        1                 2                  3
    *
    *
    * RESULTAT: |------|_____|______________________|______|------------     NEUE VERSION EINGEFÜGT
-   * TimetableFieldNumberVersion:      1     4              2              5        3
+   * Version:      1     4              2              5        3
    */
   @Test
   public void scenario4() {
