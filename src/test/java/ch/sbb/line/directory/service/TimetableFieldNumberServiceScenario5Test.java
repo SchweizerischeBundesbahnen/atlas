@@ -27,10 +27,10 @@ public class TimetableFieldNumberServiceScenario5Test extends BaseTimetableField
    *
    * NEU:             |___________________________________|
    * IST:      |-----------|-----------|-----------|-------------------
-   * TimetableFieldNumberVersion:        1           2          3               4
+   * Version:        1           2          3               4
    *
    * RESULTAT: |------|_____|__________|____________|_____|------------     NEUE VERSION EINGEFÜGT
-   * TimetableFieldNumberVersion:      1     5       2           3         6      4
+   * Version:      1     5       2           3         6      4
    */
   @Test
   public void scenario5() {

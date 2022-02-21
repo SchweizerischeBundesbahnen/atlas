@@ -25,9 +25,9 @@ public class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFiel
    *
    * Änderung                     |_________|
    *                 |-----------|           |-------------|
-   *                   TimetableFieldNumberVersion 1                TimetableFieldNumberVersion 2
+   *                   Version 1                Version 2
    *
-   * Ergebnis: Neue TimetableFieldNumberVersion wird erstellt (mit Inhalt von Änderung und TimetableFieldNumberVersion 3)
+   * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 3)
    */
   @Test
   public void scenario10a() {
@@ -91,9 +91,9 @@ public class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFiel
    *
    * Änderung                     |_________|
    *                 |-----------|           |-------------|
-   *                   TimetableFieldNumberVersion 1                TimetableFieldNumberVersion 2
+   *                   Version 1                Version 2
    *
-   * Ergebnis: Neue TimetableFieldNumberVersion wird erstellt (mit Inhalt von Änderung und TimetableFieldNumberVersion 3)
+   * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 3)
    */
   @Test
   public void scenario10aMergeWhenNoPropertiesChanged() {
@@ -145,9 +145,9 @@ public class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFiel
    *
    * Änderung                 |_________________|
    *                 |------------|         |-------------|
-   *                   TimetableFieldNumberVersion 1               TimetableFieldNumberVersion 2
+   *                   Version 1               Version 2
    *
-   * Ergebnis: In der Lücke wird eine neue TimetableFieldNumberVersion erstellt (mit Inhalt von Änderung und TimetableFieldNumberVersion 3)
+   * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 3)
    */
   @Test
   public void scenario10b() {

@@ -26,10 +26,10 @@ public class TimetableFieldNumberServiceScenario3Test extends BaseTimetableField
    * Szenario 3: Update, dass über Versionsgrenze geht
    * NEU:                                   |___________|
    * IST:      |-----------|----------------------|--------------------
-   * TimetableFieldNumberVersion:        1                 2                  3
+   * Version:        1                 2                  3
    *
    * RESULTAT: |-----------|----------------|______|_____|-------------     NEUE VERSION EINGEFÜGT
-   * TimetableFieldNumberVersion:        1                 2        4     5          3
+   * Version:        1                 2        4     5          3
    */
   @Test
   public void scenario3UpdateVersion2() {
@@ -134,10 +134,10 @@ public class TimetableFieldNumberServiceScenario3Test extends BaseTimetableField
    * Szenario 3: Update, dass über Versionsgrenze geht
    * NEU:                                   |___________|
    * IST:      |-----------|----------------------|--------------------
-   * TimetableFieldNumberVersion:        1                 2                  3
+   * Version:        1                 2                  3
    *
    * RESULTAT: |-----------|----------------|______|_____|-------------     NEUE VERSION EINGEFÜGT
-   * TimetableFieldNumberVersion:        1                 2        4     5          3
+   * Version:        1                 2        4     5          3
    */
   @Test
   public void scenario3UpdateVersion3() {
