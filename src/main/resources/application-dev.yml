@@ -10,5 +10,4 @@ spring:
             allowed-origins: http://localhost:4200,https://atlas.dev.sbb-cloud.net,https://atlas.dev.app.sbb.ch,https://developer-int.sbb.ch
 gateway:
   routes:
-    timetable-field-number: http://timetable-field-number-backend:8080
     line-directory: http://line-directory-backend:8082
