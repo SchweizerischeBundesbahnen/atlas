@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of } from 'rxjs';
-import { TimetableFieldNumbersService, Version } from '../../../api';
+import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { Pages } from '../../pages';
 import { NotificationService } from '../../../core/notification/notification.service';
 
 @Injectable({ providedIn: 'root' })
-export class TimetableFieldNumberDetailResolver implements Resolve<Array<Version>> {
-  resolve(route: ActivatedRouteSnapshot): Observable<Array<Version>> {
+export class TimetableFieldNumberDetailResolver
+  implements Resolve<Array<TimetableFieldNumberVersion>>
+{
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<TimetableFieldNumberVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
