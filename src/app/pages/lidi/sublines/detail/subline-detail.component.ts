@@ -1,5 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Line, LinesService, LineVersion, SublinesService, SublineVersion } from '../../../../api';
+import {
+  Line,
+  LinesService,
+  LineVersion,
+  Status,
+  SublinesService,
+  SublineVersion,
+} from '../../../../api';
 import {
   DateService,
   MAX_DATE,
@@ -31,7 +38,7 @@ export class SublineDetailComponent
 {
   TYPE_OPTIONS = Object.values(SublineVersion.TypeEnum);
   PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
-  STATUS_OPTIONS = Object.values(LineVersion.StatusEnum);
+  STATUS_OPTIONS = Object.values(Status);
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;

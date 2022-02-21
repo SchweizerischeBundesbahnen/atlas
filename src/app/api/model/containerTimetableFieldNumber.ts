@@ -9,11 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TimetableFieldNumber } from './timetableFieldNumber';
 
-/**
- * Parameters for messages
- */
-export interface Parameter {
-  key?: string;
-  value?: string;
+export interface ContainerTimetableFieldNumber {
+  objects?: Array<TimetableFieldNumber>;
+  totalCount?: number;
 }

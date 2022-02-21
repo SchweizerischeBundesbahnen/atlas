@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
-import { TimetableFieldNumbersService, Version } from '../../../api';
+import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { TimetableFieldNumberDetailResolver } from './timetable-field-number-detail.resolver';
 import { of } from 'rxjs';
-import StatusEnum = Version.StatusEnum;
+import StatusEnum = TimetableFieldNumberVersion.StatusEnum;
 import { CoreModule } from '../../../core/module/core.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
-const version: Version = {
+const version: TimetableFieldNumberVersion = {
   id: 1234,
   ttfnid: 'ttfnid',
   description: 'description',

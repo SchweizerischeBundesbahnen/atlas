@@ -1,4 +1,4 @@
-import { Line, Subline, Version } from '../../../api';
+import { Status } from '../../../api';
 
 export interface TableSearch {
   searchCriteria?: string[];
@@ -6,4 +6,4 @@ export interface TableSearch {
   statusChoices?: statusChoice;
 }
 
-export type statusChoice = Version.StatusEnum[] | Subline.StatusEnum[] | Line.StatusEnum[];
+export type statusChoice = Status[];
