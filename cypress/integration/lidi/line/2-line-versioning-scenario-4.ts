@@ -51,7 +51,6 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     cy.get('[data-cy=validFrom]').clear().type(editedLineVersion.validFrom);
     cy.get('[data-cy=validTo]').clear().type(editedLineVersion.validTo);
     cy.get('[data-cy=alternativeName]').clear().type(editedLineVersion.alternativeName);
-
     CommonUtils.saveLine();
     cy.get('[data-cy=switch-version-total-range]').contains('Linien von 01.01.2000 bis 31.12.2002');
   });
