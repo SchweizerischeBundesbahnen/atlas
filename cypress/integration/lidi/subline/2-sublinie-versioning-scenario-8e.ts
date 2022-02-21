@@ -38,13 +38,13 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.readSlnidFromForm(firstSublineVersion);
   });
 
-  it('Step-5: Add second Sibline Version (with gap)', () => {
+  it('Step-5: Add second Subline Version (with gap)', () => {
     CommonUtils.clickOnEdit();
     LidiUtils.fillSublineVersionForm(secondSublineVersion);
     CommonUtils.saveSubline();
   });
 
-  it('Step-6: update first Sibline Version', () => {
+  it('Step-6: update first Subline Version', () => {
     CommonUtils.switchToVersion(1);
     CommonUtils.clickOnEdit();
     cy.get('[data-cy=validFrom]').clear().type(editedFirstSublineVersion.validFrom);
