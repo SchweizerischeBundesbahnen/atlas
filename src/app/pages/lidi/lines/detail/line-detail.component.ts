@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LinesService, LineVersion } from '../../../../api';
+import { LinesService, LineVersion, Status } from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -29,7 +29,7 @@ export class LineDetailComponent
 {
   TYPE_OPTIONS = Object.values(LineVersion.TypeEnum);
   PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
-  STATUS_OPTIONS = Object.values(LineVersion.StatusEnum);
+  STATUS_OPTIONS = Object.values(Status);
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TimetableFieldNumbersService, Version } from '../../../api';
+import { Status, TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { DetailWrapperController } from '../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
@@ -24,7 +24,7 @@ import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-
   templateUrl: './timetable-field-number-detail.component.html',
 })
 export class TimetableFieldNumberDetailComponent
-  extends DetailWrapperController<Version>
+  extends DetailWrapperController<TimetableFieldNumberVersion>
   implements OnInit, OnDestroy
 {
   SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
@@ -37,7 +37,7 @@ export class TimetableFieldNumberDetailComponent
   MAX_LENGTH_250 = 250;
   MAX_LENGTH_50 = 50;
 
-  readonly STATUS_OPTIONS = Object.values(Version.StatusEnum);
+  readonly STATUS_OPTIONS = Object.values(Status);
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -57,11 +57,11 @@ export class TimetableFieldNumberDetailComponent
     super.ngOnInit();
   }
 
-  readRecord(): Version {
+  readRecord(): TimetableFieldNumberVersion {
     return this.activatedRoute.snapshot.data.timetableFieldNumberDetail;
   }
 
-  getTitle(record: Version): string | undefined {
+  getTitle(record: TimetableFieldNumberVersion): string | undefined {
     return record.swissTimetableFieldNumber;
   }
 
@@ -86,7 +86,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   deleteRecord(): void {
-    const selectedRecord: Version = this.getSelectedRecord();
+    const selectedRecord: TimetableFieldNumberVersion = this.getSelectedRecord();
     if (selectedRecord.ttfnid != null) {
       this.timetableFieldNumberService
         .deleteVersions(selectedRecord.ttfnid)
@@ -108,7 +108,7 @@ export class TimetableFieldNumberDetailComponent
     this.router.navigate([Pages.TTFN.path]).then();
   }
 
-  getFormGroup(version: Version): FormGroup {
+  getFormGroup(version: TimetableFieldNumberVersion): FormGroup {
     return this.formBuilder.group(
       {
         swissTimetableFieldNumber: [

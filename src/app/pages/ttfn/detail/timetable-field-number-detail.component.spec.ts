@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TimetableFieldNumbersService, Version } from '../../../api';
+import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { MaterialModule } from '../../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DetailWrapperComponent } from '../../../core/components/detail-wrapper/detail-wrapper.component';
@@ -16,7 +16,7 @@ import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CoreModule } from '../../../core/module/core.module';
 
-const version: Version = {
+const version: TimetableFieldNumberVersion = {
   id: 1,
   ttfnid: 'ttfnid',
   description: 'description',
