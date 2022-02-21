@@ -67,7 +67,7 @@ pipeline {
       }
       steps {
         script {
-          if (!params.key?.trim() && !params.value?.trim()) {
+          if (params.successJob) {
             echo 'As soon as we found a solution to make the E2E tests stable, we deploy on INT without waiting for the tests results! '
             echo 'Parameters: '
             params.each { param ->
