@@ -16,9 +16,9 @@ export default class CommonUtils {
   }
 
   static saveVersionWithWait(urlToIntercept: string) {
-    cy.intercept(urlToIntercept).as('saveVersion');
+    cy.intercept('GET', urlToIntercept).as('saveAndGetVersion');
     cy.get('[data-cy=save-item]').click();
-    cy.wait('@saveVersion');
+    cy.wait('@saveAndGetVersion').its('response.statusCode').should('eq', 200);
     cy.get('[data-cy=edit-item]').should('be.visible');
     cy.get('[data-cy=delete-item]').should('be.visible');
   }
