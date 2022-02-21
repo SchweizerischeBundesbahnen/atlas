@@ -23,7 +23,7 @@ public class TimetableFieldNumberServiceScenario6Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 6: Neue TimetableFieldNumberVersion in der Zukunft, die letzte TimetableFieldNumberVersion überschneidet
+   * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
    *
    * NEU:                             |________________________________
    * IST:      |-------------------------------------------------------
@@ -114,7 +114,7 @@ public class TimetableFieldNumberServiceScenario6Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 6: Neue TimetableFieldNumberVersion in der Zukunft, die letzte TimetableFieldNumberVersion überschneidet
+   * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
    *
    * NEU:                             |________________________________
    * IST:      |-------------------------------------------------------
@@ -178,7 +178,7 @@ public class TimetableFieldNumberServiceScenario6Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 6: Neue TimetableFieldNumberVersion in der Zukunft, die letzte TimetableFieldNumberVersion überschneidet
+   * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
    *
    * NEU:                             |________________________________
    * IST:      |-------------------------------------------------------
@@ -242,7 +242,7 @@ public class TimetableFieldNumberServiceScenario6Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 6: Neue TimetableFieldNumberVersion in der Zukunft, die letzte TimetableFieldNumberVersion überschneidet
+   * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
    *
    * NEU:                             |____________________________________
    * IST:      |-------------------------------------------------------

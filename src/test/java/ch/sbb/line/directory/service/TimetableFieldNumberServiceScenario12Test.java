@@ -21,7 +21,7 @@ public class TimetableFieldNumberServiceScenario12Test extends BaseTimetableFiel
   }
 
   /**
-   * Scenario 12 (Spezialfall 2): Update während und nach letzter TimetableFieldNumberVersion
+   * Scenario 12 (Spezialfall 2): Update während und nach letzter Version
    *
    * Änderung                          |_____________________|
    *                 |-----------------|-------------|
