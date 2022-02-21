@@ -212,7 +212,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
   }
 
   /**
-   * Szenario 11d: Update über mehrere Versionen über die recht Grenze
+   * Szenario 11d: Update über mehrere Versionen über die rechte Grenze
    *
    * Änderung        |__________________________________________|
    *                 |-----------|------------|------------|
