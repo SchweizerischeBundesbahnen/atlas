@@ -24,7 +24,7 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 1a: Update einer bestehenden TimetableFieldNumberVersion am Ende
+   * Szenario 1a: Update einer bestehenden Version am Ende
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
    * Version:        1                                2
@@ -83,7 +83,7 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 1a: Update einer bestehenden TimetableFieldNumberVersion am Ende
+   * Szenario 1a: Update einer bestehenden Version am Ende
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
    * Version:        1                                2
@@ -144,7 +144,7 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 1b: Update einer bestehenden TimetableFieldNumberVersion in der Mitte
+   * Szenario 1b: Update einer bestehenden Version in der Mitte
    * NEU:                  |______________________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
@@ -204,7 +204,7 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
   }
 
   /**
-   * Szenario 1c: Update einer bestehenden TimetableFieldNumberVersion am Anfang
+   * Szenario 1c: Update einer bestehenden Version am Anfang
    *
    * NEU:       |___________|
    * IST:       |-----------|----------------------|--------------------
