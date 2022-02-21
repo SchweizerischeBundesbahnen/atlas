@@ -4,7 +4,7 @@ export default class CommonUtils {
   }
 
   static saveTtfn() {
-    this.saveVersionWithWait('/timetable-field-number/v1/field-numbers/versions/*');
+    this.saveVersionWithWait('/line-directory/v1/field-numbers/versions/*');
   }
 
   static saveLine() {

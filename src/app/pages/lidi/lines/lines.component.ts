@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { Line, LinesService } from '../../../api';
+import { Line, LinesService, LineType } from '../../../api';
 import { Pages } from '../../pages';
 import { TableSearch } from '../../../core/components/table-search/table-search';
 import { TableComponent } from '../../../core/components/table/table.component';
@@ -33,8 +33,8 @@ export class LinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  readonly LINE_TYPES: Line.TypeEnum[] = Object.values(Line.TypeEnum);
-  activeLineTypes: Line.TypeEnum[] = [];
+  readonly LINE_TYPES: LineType[] = Object.values(LineType);
+  activeLineTypes: LineType[] = [];
   lineVersions: Line[] = [];
   totalCount$ = 0;
   isLoading = false;
