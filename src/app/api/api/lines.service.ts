@@ -26,6 +26,7 @@ import { Observable } from 'rxjs';
 import { ContainerLine } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { Line } from '../model/models';
+import { LineType } from '../model/models';
 import { LineVersion } from '../model/models';
 import { Status } from '../model/models';
 
@@ -380,7 +381,7 @@ export class LinesService {
     swissLineNumber?: string,
     searchCriteria?: Array<string>,
     statusRestrictions?: Array<Status>,
-    typeRestrictions?: Array<'ORDERLY' | 'TEMPORARY' | 'OPERATIONAL'>,
+    typeRestrictions?: Array<LineType>,
     validOn?: Date,
     page?: number,
     size?: number,
@@ -393,7 +394,7 @@ export class LinesService {
     swissLineNumber?: string,
     searchCriteria?: Array<string>,
     statusRestrictions?: Array<Status>,
-    typeRestrictions?: Array<'ORDERLY' | 'TEMPORARY' | 'OPERATIONAL'>,
+    typeRestrictions?: Array<LineType>,
     validOn?: Date,
     page?: number,
     size?: number,
@@ -406,7 +407,7 @@ export class LinesService {
     swissLineNumber?: string,
     searchCriteria?: Array<string>,
     statusRestrictions?: Array<Status>,
-    typeRestrictions?: Array<'ORDERLY' | 'TEMPORARY' | 'OPERATIONAL'>,
+    typeRestrictions?: Array<LineType>,
     validOn?: Date,
     page?: number,
     size?: number,
@@ -419,7 +420,7 @@ export class LinesService {
     swissLineNumber?: string,
     searchCriteria?: Array<string>,
     statusRestrictions?: Array<Status>,
-    typeRestrictions?: Array<'ORDERLY' | 'TEMPORARY' | 'OPERATIONAL'>,
+    typeRestrictions?: Array<LineType>,
     validOn?: Date,
     page?: number,
     size?: number,

@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   Line,
   LinesService,
-  LineVersion,
+  PaymentType,
   Status,
   SublinesService,
+  SublineType,
   SublineVersion,
 } from '../../../../api';
 import {
@@ -36,8 +37,8 @@ export class SublineDetailComponent
   extends DetailWrapperController<SublineVersion>
   implements OnInit, OnDestroy
 {
-  TYPE_OPTIONS = Object.values(SublineVersion.TypeEnum);
-  PAYMENT_TYPE_OPTIONS = Object.values(LineVersion.PaymentTypeEnum);
+  TYPE_OPTIONS = Object.values(SublineType);
+  PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   STATUS_OPTIONS = Object.values(Status);
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;

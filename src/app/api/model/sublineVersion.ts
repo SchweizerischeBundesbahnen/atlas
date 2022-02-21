@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
+import { PaymentType } from './paymentType';
+import { SublineType } from './sublineType';
 
 export interface SublineVersion {
   /**
@@ -25,10 +27,7 @@ export interface SublineVersion {
    */
   mainlineSlnid: string;
   status?: Status;
-  /**
-   * Subline Type
-   */
-  type: SublineVersion.TypeEnum;
+  type: SublineType;
   /**
    * SLNID
    */
@@ -45,10 +44,7 @@ export interface SublineVersion {
    * LongName
    */
   longName?: string;
-  /**
-   * PaymentType
-   */
-  paymentType: SublineVersion.PaymentTypeEnum;
+  paymentType: PaymentType;
   /**
    * Valid from
    */
@@ -65,26 +61,4 @@ export interface SublineVersion {
    * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
    */
   etagVersion?: number;
-}
-export namespace SublineVersion {
-  export type TypeEnum = 'TECHNICAL' | 'COMPENSATION';
-  export const TypeEnum = {
-    Technical: 'TECHNICAL' as TypeEnum,
-    Compensation: 'COMPENSATION' as TypeEnum,
-  };
-  export type PaymentTypeEnum =
-    | 'INTERNATIONAL'
-    | 'REGIONAL'
-    | 'REGIONALWITHOUT'
-    | 'LOCAL'
-    | 'OTHER'
-    | 'NONE';
-  export const PaymentTypeEnum = {
-    International: 'INTERNATIONAL' as PaymentTypeEnum,
-    Regional: 'REGIONAL' as PaymentTypeEnum,
-    Regionalwithout: 'REGIONALWITHOUT' as PaymentTypeEnum,
-    Local: 'LOCAL' as PaymentTypeEnum,
-    Other: 'OTHER' as PaymentTypeEnum,
-    None: 'NONE' as PaymentTypeEnum,
-  };
 }

@@ -1,10 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
-import { LinesService, LineVersion, Status } from '../../../../api';
+import { LinesService, LineType, LineVersion, PaymentType, Status } from '../../../../api';
 import { LineDetailResolver } from './line-detail.resolver';
-import PaymentTypeEnum = LineVersion.PaymentTypeEnum;
-import TypeEnum = LineVersion.TypeEnum;
 import { CoreModule } from '../../../../core/module/core.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,9 +17,9 @@ const version: LineVersion = {
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
-  paymentType: PaymentTypeEnum.None,
+  paymentType: PaymentType.None,
   swissLineNumber: 'L1',
-  type: TypeEnum.Orderly,
+  type: LineType.Orderly,
   colorBackCmyk: '',
   colorBackRgb: '',
   colorFontCmyk: '',
