@@ -26,10 +26,10 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Szenario 8a: Letzte TimetableFieldNumberVersion terminieren wenn nur validTo ist updated
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
-   * TimetableFieldNumberVersion:                            1
+   * Version:                            1
    *
    * RESULTAT: |----------------------| TimetableFieldNumberVersion wird per xx aufgehoben
-   * TimetableFieldNumberVersion:         1
+   * Version:         1
    */
   @Test
   public void scenario8() {
@@ -94,10 +94,10 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Szenario 8b: Letzte TimetableFieldNumberVersion validTo und props updated
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
-   * TimetableFieldNumberVersion:                            1
+   * Version:                            1
    *
    * RESULTAT: |----------------------|--------------------------------|
-   * TimetableFieldNumberVersion:         1                             2
+   * Version:         1                             2
    */
   @Test
   public void scenario8b() {
@@ -176,10 +176,10 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Szenario 8c: Letzte TimetableFieldNumberVersion nur validTo
    * NEU:      |__________________________|
    * IST:      |----------------------|       |-------------------------|
-   * TimetableFieldNumberVersion:             1                             2
+   * Version:             1                             2
    *
    * RESULTAT: |-------------------------|    |------------------------|
-   * TimetableFieldNumberVersion:             1                             2
+   * Version:             1                             2
    */
   @Test
   public void scenario8c() {
@@ -259,10 +259,10 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Szenario 8d: Letzte TimetableFieldNumberVersion validTo und props updated
    * NEU:      |__________________________|
    * IST:      |----------------------|       |-------------------------|
-   * TimetableFieldNumberVersion:             1                             2
+   * Version:             1                             2
    *
    * RESULTAT: |--------------------------|    |------------------------|
-   * TimetableFieldNumberVersion:             1                             2
+   * Version:             1                             2
    */
   @Test
   public void scenario8d() {
@@ -343,10 +343,10 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Szenario 8e: Letzte TimetableFieldNumberVersion validTo und props updated
    * NEU:      |________________________________________|
    * IST:      |----------------------|       |-------------------------|
-   * TimetableFieldNumberVersion:             1                                 2
+   * Version:             1                                 2
    *
    * RESULTAT: |------------------------------|--------|----------------|
-   * TimetableFieldNumberVersion:             1                        2            3
+   * Version:             1                        2            3
    */
   @Test
   public void scenario8e() {
@@ -440,10 +440,10 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Szenario 8f: Letzte TimetableFieldNumberVersion validTo und props updated
    * NEU:      |________________________________________________________________|
    * IST:      |----------------------|       |---------|----------------|----------------|
-   * TimetableFieldNumberVersion:             1                        2            3               4
+   * Version:             1                        2            3               4
    *
    * RESULTAT: |------------------------------|--------|----------------|------|----------|
-   * TimetableFieldNumberVersion:             1                        2            3           4       5
+   * Version:             1                        2            3           4       5
    */
   @Test
   public void scenario8f() {
@@ -537,10 +537,10 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Szenario 8g: Letzte TimetableFieldNumberVersion validTo und props updated
    * NEU:      |________________________________________________________________|
    * IST:      |----------------------|       |----------------|         |----------------|
-   * TimetableFieldNumberVersion:             1                           2                          3
+   * Version:             1                           2                          3
    *
    * RESULTAT: |------------------------------|-------------------------|------|----------|
-   * TimetableFieldNumberVersion:             1                           2                    3       4
+   * Version:             1                           2                    3       4
    */
   @Test
   public void scenario8g() {

@@ -29,11 +29,11 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
    * NEU:                            |__________|
    *                                  description=SBB3
    * IST:      |----------|----------|----------|----------|
-   * TimetableFieldNumberVersion:        1          2          3           4
+   * Version:        1          2          3           4
    * Änderung:  description=SBB1  description=SBB2  description=SBB3  description=SBB4
    *
    * RESULTAT: |----------|---------------------|----------|
-   * TimetableFieldNumberVersion:        1               2               4
+   * Version:        1               2               4
    * Änderung:  description=SBB1  description=SBB2  description=SBB4
    */
   @Test
@@ -109,11 +109,11 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
    * NEU:                 |__________|
    *                       description=SBB1
    * IST:      |----------|----------|----------|
-   * TimetableFieldNumberVersion:        1          2          3
+   * Version:        1          2          3
    * Änderung:  description=SBB1  description=SBB2  description=SBB1
    *
    * RESULTAT: |--------------------------------|
-   * TimetableFieldNumberVersion:                 1
+   * Version:                 1
    * Änderung:            description=SBB1
    */
   @Test
@@ -161,11 +161,11 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
    * NEU:                 |______________________|
    *                              description=SBB1
    * IST:      |----------|----------|----------|----------|----------|
-   * TimetableFieldNumberVersion:        1          2          3          4         5
+   * Version:        1          2          3          4         5
    * Änderung:  description=SBB1  description=SBB2  description=SBB3  description=SBB1  description=SBB4
    *
    * RESULTAT: |-------------------------------------------|----------|
-   * TimetableFieldNumberVersion:                 1                                 2
+   * Version:                 1                                 2
    * Änderung:            description=SBB1                         description=SBB4
    */
   @Test
@@ -232,11 +232,11 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
    * NEU:                 |_____________________|
    *                              description=SBB1
    * IST:      |----------|----------|----------|  |----------|----------|
-   * TimetableFieldNumberVersion:        1          2         3              4         5
+   * Version:        1          2         3              4         5
    * Änderung:  description=SBB1  description=SBB2  description=SBB3     description=SBB1  description=SBB4
    *
    * RESULTAT: |--------------------------------|  |---------|----------|
-   * TimetableFieldNumberVersion:                 1                         2        3
+   * Version:                 1                         2        3
    * Änderung:            description=SBB1                 description=SBB1  description=SBB4
    */
   @Test

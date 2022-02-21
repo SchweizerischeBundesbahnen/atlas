@@ -25,7 +25,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
    *
    * Änderung   |___________________________________|
    *                 |-----------|------------|
-   *                   TimetableFieldNumberVersion 1   TimetableFieldNumberVersion 2
+   *                   Version 1   Version 2
    *
    * Ergebnis: Versionen an der Grenze werden verlängert
    */
@@ -80,7 +80,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
    *
    * Änderung   |_________________________________________________|
    *                 |-----------|------------|------------|
-   *                   TimetableFieldNumberVersion 1   TimetableFieldNumberVersion 2    TimetableFieldNumberVersion 3
+   *                   Version 1   Version 2    Version 3
    *
    * Ergebnis: Versionen an der Grenze werden verlängert in der mitte nur properties updated
    */
@@ -148,7 +148,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
    *
    * Änderung   |__________________________________________|
    *                 |-----------|------------|------------|
-   *                   TimetableFieldNumberVersion 1   TimetableFieldNumberVersion 2    TimetableFieldNumberVersion 3
+   *                   Version 1   Version 2    Version 3
    *
    * Ergebnis: Versionen an der Grenze werden verlängert in der mitte nur properties updated
    */
@@ -216,7 +216,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
    *
    * Änderung        |__________________________________________|
    *                 |-----------|------------|------------|
-   *                   TimetableFieldNumberVersion 1   TimetableFieldNumberVersion 2    TimetableFieldNumberVersion 3
+   *                   Version 1   Version 2    Version 3
    *
    * Ergebnis: Versionen an der Grenze werden verlängert in der mitte nur properties updated
    */

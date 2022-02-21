@@ -27,10 +27,10 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    * Szenario 1a: Update einer bestehenden TimetableFieldNumberVersion am Ende
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
-   * TimetableFieldNumberVersion:        1                                2
+   * Version:        1                                2
    *
    * RESULTAT: |----------------------|________________________________
-   * TimetableFieldNumberVersion:        1                                2
+   * Version:        1                                2
    */
   @Test
   public void scenario1a() {
@@ -86,10 +86,10 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    * Szenario 1a: Update einer bestehenden TimetableFieldNumberVersion am Ende
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
-   * TimetableFieldNumberVersion:        1                                2
+   * Version:        1                                2
    *
    * RESULTAT: |----------------------|________________________________
-   * TimetableFieldNumberVersion:        1                                2
+   * Version:        1                                2
    */
   @Test
   public void scenario1aEditedValidFromAndEditedValidToAreEqualsToCurrentValidFromAndCurrentValidTo() {
@@ -147,10 +147,10 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    * Szenario 1b: Update einer bestehenden TimetableFieldNumberVersion in der Mitte
    * NEU:                  |______________________|
    * IST:      |-----------|----------------------|--------------------
-   * TimetableFieldNumberVersion:        1                 2                  3
+   * Version:        1                 2                  3
    *
    * RESULTAT: |-----------|______________________|--------------------
-   * TimetableFieldNumberVersion:        1                 2                  3
+   * Version:        1                 2                  3
    */
   @Test
   public void scenario1b() {
@@ -208,10 +208,10 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    *
    * NEU:       |___________|
    * IST:       |-----------|----------------------|--------------------
-   * TimetableFieldNumberVersion:         1                 2                   3
+   * Version:         1                 2                   3
    *
    * RESULTAT: |___________|----------------------|--------------------
-   * TimetableFieldNumberVersion:        1                 2                  3
+   * Version:        1                 2                  3
    */
   @Test
   public void scenario1c() {
@@ -270,10 +270,10 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    *
    * NEU:                 |______________________|
    * IST:      |----------|----------|----------|----------|----------|
-   * TimetableFieldNumberVersion:        1          2          3          4         5
+   * Version:        1          2          3          4         5
    *
    * RESULTAT: |----------|----------|----------|----------|----------|
-   * TimetableFieldNumberVersion:        1          2          3          4         5         version 2 und 3 werden nur UPDATED
+   * Version:        1          2          3          4         5         version 2 und 3 werden nur UPDATED
    */
   @Test
   public void scenario1d() {
