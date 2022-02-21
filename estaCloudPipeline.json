@@ -5,6 +5,7 @@
   "jdkLabel": "OpenJDK 11 64-Bit",
   "keepReleaseBuildLogsOnJenkins": true,
   "sendBuildStatusMail": false,
+  "checkHumanCommits": false,
   "docker": {
     "artifactoryDockerRepo": "atlas.docker",
     "openshiftAppName": "line-directory-api",
@@ -72,22 +73,6 @@
       "additionalBuildParams": "",
       "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
-    },
-    {
-      "stepType": "integrationBuild",
-      "isBuildEnabled": true,
-      "xrayScanEnabled": true,
-      "failOnXrayScan": true,
-      "sonarScanEnabled": true,
-      "staging": {
-        "stagingType": "simple",
-        "stages": [
-          "dev"
-        ]
-      },
-      "junitTestReportPath": "**/target/surefire-reports/*.xml",
-      "additionalBuildParams": "-DskipITs",
-      "triggerBuildOnCommitEnabled": false
     },
     {
       "stepType": "release",

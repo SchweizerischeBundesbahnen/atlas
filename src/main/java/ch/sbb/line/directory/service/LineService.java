@@ -7,7 +7,8 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Line_;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.exception.NotFoundException;
+import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -71,7 +72,7 @@ public class LineService {
 
   public void deleteById(Long id) {
     if (!lineVersionRepository.existsById(id)) {
-      throw new NotFoundException(NotFoundException.ID,String.valueOf(id));
+      throw new IdNotFoundException(id);
     }
     lineVersionRepository.deleteById(id);
   }
@@ -79,7 +80,7 @@ public class LineService {
   public void deleteAll(String slnid) {
     List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
     if (currentVersions.isEmpty()) {
-      throw new NotFoundException(NotFoundException.SLNID, slnid);
+      throw new SlnidNotFoundException(slnid);
     }
     lineVersionRepository.deleteAll(currentVersions);
   }
