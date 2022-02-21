@@ -25,9 +25,9 @@ public class TimetableFieldNumberServiceScenario12Test extends BaseTimetableFiel
    *
    * Änderung                          |_____________________|
    *                 |-----------------|-------------|
-   *                     TimetableFieldNumberVersion 1       TimetableFieldNumberVersion 2
+   *                     Version 1       Version 2
    *
-   * Ergebnis: TimetableFieldNumberVersion 2 wird verlängert
+   * Ergebnis: Version 2 wird verlängert
    */
   @Test
   public void scenario12() {
