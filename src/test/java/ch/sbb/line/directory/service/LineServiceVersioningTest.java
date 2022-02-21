@@ -65,7 +65,7 @@ public class LineServiceVersioningTest {
   }
 
   /**
-   * Szenario 2: Update innerhalb existierender TimetableFieldNumberVersion
+   * Szenario 2: Update innerhalb existierender Version
    * NEU:                       |___________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
@@ -185,7 +185,7 @@ public class LineServiceVersioningTest {
   }
 
   /**
-   * Szenario 4: Update, das über eine ganze TimetableFieldNumberVersion hinausragt
+   * Szenario 4: Update, das über eine ganze Version hinausragt
    * NEU:             |___________________________________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
