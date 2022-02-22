@@ -12,6 +12,7 @@ import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineCoverageRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.service.SublineCoverageService;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class LineValidationService {
 
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
-  private final SublineCoverageRepository sublineCoverageRepository;
+  private final SublineCoverageService sublineCoverageService;
 
   public void validateLinePreconditionBusinessRule(LineVersion lineVersion) {
     validateLineConflict(lineVersion);
@@ -40,7 +41,8 @@ public class LineValidationService {
 
   public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {
     validateTemporaryLinesDuration(lineVersion);
-    validateLineRangeOutsideOfLineRange(lineVersion);
+    boolean validationIssueResult = validateLineRangeOutsideOfLineRange(lineVersion);
+    sublineCoverageService.updateSublineCoverage(validationIssueResult, lineVersion);
   }
 
   void validateLineConflict(LineVersion lineVersion) {
@@ -89,8 +91,7 @@ public class LineValidationService {
     }
   }
 
-  void validateLineRangeOutsideOfLineRange(LineVersion lineVersion) {
-    SublineCoverage sublineCoverageBySlnid = sublineCoverageRepository.findSublineCoverageBySlnid(lineVersion.getSlnid());
+  boolean validateLineRangeOutsideOfLineRange(LineVersion lineVersion) {
     List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
         lineVersion.getSlnid());
     LocalDate lineValidFrom = lineVersion.getValidFrom();
@@ -108,31 +109,10 @@ public class LineValidationService {
       SublineVersion lastSublineVersion = sublineVersions.get(sublineVersions.size() - 1);
       if (lineValidFrom.isAfter(firstSublineVersion.getValidFrom())
           || lineValidTo.isBefore(lastSublineVersion.getValidTo())) {
-        if(sublineCoverageBySlnid == null){
-          SublineCoverage sublineCoverage = buildLineRangeSmallerThenSublineRange(lineVersion);
-          sublineCoverageRepository.save(sublineCoverage);
-        }else{
-          sublineCoverageRepository.save(sublineCoverageBySlnid);
-        }
-      }
-      else{
-        if(sublineCoverageBySlnid != null){
-          sublineCoverageBySlnid.setSublineCoverageType(SublineCoverageType.COMPLETE);
-          sublineCoverageBySlnid.setValidationErrorType(null);
-          sublineCoverageRepository.save(sublineCoverageBySlnid);
-        }
+        return true;
       }
     }
-  }
-
-  private SublineCoverage buildLineRangeSmallerThenSublineRange(LineVersion lineVersion) {
-    return SublineCoverage.builder()
-                          .modelType(ModelType.LINE)
-                          .validationErrorType(
-                              ValidationErrorType.LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE)
-                          .sublineCoverageType(SublineCoverageType.INCOMPLETE)
-                          .slnid(lineVersion.getSlnid())
-                          .build();
+    return false;
   }
 
   private List<LineVersion> getRelatedVersions(SortedSet<LineVersion> relatedVersions,
