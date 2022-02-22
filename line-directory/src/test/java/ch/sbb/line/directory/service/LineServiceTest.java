@@ -16,7 +16,6 @@ import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
-import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.model.SearchRestrictions;
@@ -193,22 +192,6 @@ class LineServiceTest {
 
     // Then
     verify(lineVersionRepository).existsById(ID);
-  }
-
-  @Test
-  void shouldNotSaveWhenThrowLineRangeSmallerThenSublineRangeException() {
-    // Given
-    LineVersion lineVersion = LineTestData.lineVersion();
-    doThrow(LineRangeSmallerThenSublineRangeException.class).when(lineValidationService)
-                                                            .validateLinePreconditionBusinessRule(
-                                                                lineVersion);
-
-    // When
-    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineService.save(lineVersion));
-
-    verify(lineVersionRepository, never()).save(lineVersion);
-
   }
 
   @Test

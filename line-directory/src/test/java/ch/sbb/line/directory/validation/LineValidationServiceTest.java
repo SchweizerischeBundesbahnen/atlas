@@ -3,6 +3,8 @@ package ch.sbb.line.directory.validation;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.LineTestData;
@@ -11,7 +13,6 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
-import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -325,8 +326,14 @@ public class LineValidationServiceTest {
         lineVersions);
 
     // When
-    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineValidationService.validateLineRangeOutsideOfLineRange(lineVersion));
+    lineValidationService.validateLineRangeOutsideOfLineRange(lineVersion);
+
+
+    // When
+    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
+
+    // then
+    verify(sublineCoverageService, times(1)).updateSublineCoverage(true,lineVersion);
   }
 
   @Test
@@ -351,8 +358,10 @@ public class LineValidationServiceTest {
         lineVersions);
 
     // When
-    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineValidationService.validateLineRangeOutsideOfLineRange(lineVersion));
+    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
+
+    // then
+    verify(sublineCoverageService, times(1)).updateSublineCoverage(true,lineVersion);
   }
 
   @Test
@@ -377,8 +386,10 @@ public class LineValidationServiceTest {
         lineVersions);
 
     // When
-    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineValidationService.validateLineRangeOutsideOfLineRange(lineVersion));
+    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
+
+    //then
+    verify(sublineCoverageService, times(1)).updateSublineCoverage(true,lineVersion);
   }
 
 
