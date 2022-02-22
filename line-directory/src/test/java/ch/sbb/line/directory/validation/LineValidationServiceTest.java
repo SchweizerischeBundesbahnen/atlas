@@ -13,6 +13,7 @@ import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
+import ch.sbb.line.directory.repository.SublineCoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
@@ -31,13 +32,16 @@ public class LineValidationServiceTest {
   @Mock
   private LineVersionRepository lineVersionRepository;
 
+  @Mock
+  private SublineCoverageRepository sublineCoverageRepository;
+
   private LineValidationService lineValidationService;
 
   @BeforeEach()
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     lineValidationService = new LineValidationService(sublineVersionRepository,
-        lineVersionRepository);
+        lineVersionRepository, sublineCoverageRepository);
   }
 
   @Test
