@@ -44,6 +44,12 @@ This project uses [Semantic Versioning](https://semver.org/).
 * Project deploy: https://line-directory-backend.int.sbb-cloud.net
 * Swagger UI: https://line-directory-backend.int.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
+### Production
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-prod
+* Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
+* Project deploy: https://line-directory-backend.prod.sbb-cloud.net
+* Swagger UI:  
+
 
 ### Project Infrastructure
 * Jenkins: https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/
