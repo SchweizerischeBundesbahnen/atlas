@@ -133,61 +133,6 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldReturnLineRangeSmallerThanSublineRangeErrorResponse() throws Exception {
-    //given
-    LineVersionModel lineVersionModel =
-        LineTestData.lineVersionModelBuilder()
-                        .validTo(LocalDate.of(2000, 12, 31))
-                        .validFrom(LocalDate.of(2000, 1, 1))
-                        .businessOrganisation("sbb")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC2-libne")
-                        .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
-                           .validFrom(LocalDate.of(2000, 1, 1))
-                           .validTo(LocalDate.of(2000, 12, 31))
-                           .businessOrganisation("sbb")
-                           .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
-                           .paymentType(PaymentType.LOCAL)
-                           .mainlineSlnid(lineVersionSaved.getSlnid())
-                           .build();
-    sublineController.createSublineVersion(sublineVersionModel);
-
-    //when
-    lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 2));
-    mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString())
-           .contentType(contentType)
-           .content(mapper.writeValueAsString(lineVersionModel)))
-       .andExpect(status().isPreconditionFailed())
-       .andExpect(jsonPath("$.status", is(412)))
-       .andExpect(jsonPath("$.message", is("A precondition fail occurred due to a business rule")))
-       .andExpect(jsonPath("$.error", is("Line smaller then subline")))
-       .andExpect(jsonPath("$.details[0].message",
-           is("The line range 02.01.2000-31.12.2000 is outside of the subline b0.Ic2-sibline range 01.01.2000-31.12.2000")))
-       .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.code",
-           is("LIDI.LINE.PRECONDITION.LINE_OUTSIDE_OF_SUBLINE_RANGE")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("validFrom")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("02.01.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validTo")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("31.12.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key",
-           is("sublinie.swissSublineNumber")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].value", is("b0.Ic2-sibline")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("sublinie.validFrom")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value", is("01.01.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].key", is("sublinie.validTo")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].value", is("31.12.2000")));
-  }
-
-  @Test
   void shouldReturnConflictErrorResponse() throws Exception {
     //given
     LineVersionModel lineVersionModel =
