@@ -11,11 +11,13 @@ import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.entity.Subline;
+import ch.sbb.line.directory.entity.SublineCoverage;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.model.SearchRestrictions;
+import ch.sbb.line.directory.service.SublineCoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -35,6 +37,9 @@ public class SublineControllerTest {
   @Mock
   private SublineService sublineService;
 
+  @Mock
+  private SublineCoverageService sublineCoverageService;
+
   private SublineController sublineController;
 
   @Captor
@@ -43,7 +48,7 @@ public class SublineControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sublineController = new SublineController(sublineService);
+    sublineController = new SublineController(sublineService,sublineCoverageService);
     when(sublineService.save(any())).then(i -> i.getArgument(0, SublineVersion.class));
   }
 

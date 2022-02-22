@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.controller;
 
+import static ch.sbb.line.directory.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -14,10 +15,14 @@ import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
+import ch.sbb.line.directory.enumaration.SublineCoverageType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.SublineCoverageRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.service.SublineCoverageService;
 import java.time.LocalDate;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +43,15 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
   @Autowired
   private SublineVersionRepository sublineVersionRepository;
 
+  @Autowired
+  private SublineCoverageRepository sublineCoverageRepository;
+
   @AfterEach
   public void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
+    sublineCoverageRepository.deleteAll();
   }
-
 
   @Test
   void shouldCreateSubline() throws Exception {
@@ -77,6 +85,40 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
            .contentType(contentType)
            .content(mapper.writeValueAsString(sublineVersionModel)))
        .andExpect(status().isCreated());
+  }
+
+  @Test
+  void shouldGetSublineCoverage() throws Exception {
+    //given
+    LineVersionModel lineVersionModel =
+        LineTestData.lineVersionModelBuilder()
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2-libne")
+                    .build();
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
+                           .validFrom(LocalDate.of(2000, 1, 1))
+                           .validTo(LocalDate.of(2000, 12, 31))
+                           .businessOrganisation("sbb")
+                           .swissSublineNumber("b0.Ic2-sibline")
+                           .type(SublineType.TECHNICAL)
+                           .paymentType(PaymentType.LOCAL)
+                           .mainlineSlnid(lineVersionSaved.getSlnid())
+                           .build();
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+        sublineVersionModel);
+    //when
+    mvc.perform(get("/v1/sublines/subline-coverage/" + sublineVersionSaved.getSlnid())
+           .contentType(contentType)
+       ).andExpect(status().isNotFound());
   }
 
   @Test

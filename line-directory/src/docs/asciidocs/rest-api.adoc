@@ -36,9 +36,6 @@ include::{snippets}/line-controller-api-test/should-update-line-version/auto-sec
 == Update Line with conflict error
 include::{snippets}/line-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
 
-== Create Line with subline range error
-include::{snippets}/line-controller-api-test/should-return-line-range-smaller-than-subline-range-error-response/auto-section.adoc[]
-
 == Update Line with not found error
 include::{snippets}/line-controller-api-test/should-return-not-found-error-response/auto-section.adoc[]
 
@@ -47,6 +44,9 @@ include::{snippets}/line-controller-api-test/should-return-validation-no-changes
 
 == Get Line with not found error
 include::{snippets}/line-controller-api-test/should-return-not-found-error-response-when-no-found-lines/auto-section.adoc[]
+
+== Get Subline Coverage
+include::{snippets}/line-controller-api-test/should-get-subline-coverage/auto-section.adoc[]
 
 = Subline
 == Create Subline - Successfully
@@ -69,6 +69,9 @@ include::{snippets}/subline-controller-api-test/should-return-sub-line-assign-to
 
 == Create Subline with line range error
 include::{snippets}/subline-controller-api-test/should-return-subline-outside-of-line-range/auto-section.adoc[]
+
+== Get Subline Coverage
+include::{snippets}/subline-controller-api-test/should-get-subline-coverage/auto-section.adoc[]
 
 = Timetable field number
 
