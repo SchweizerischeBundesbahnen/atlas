@@ -5,12 +5,14 @@ import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.api.SublinenApiV1;
 import ch.sbb.line.directory.entity.Subline;
+import ch.sbb.line.directory.entity.SublineCoverage;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
+import ch.sbb.line.directory.service.SublineCoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,42 +30,44 @@ import org.springframework.web.bind.annotation.RestController;
 public class SublineController implements SublinenApiV1 {
 
   private final SublineService sublineService;
+  private final SublineCoverageService sublineCoverageService;
 
   @Override
   public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
       List<Status> statusRestrictions, List<SublineType> typeRestrictions,
       Optional<LocalDate> validOn) {
     Page<Subline> sublines = sublineService.findAll(
-        new SearchRestrictions<>(pageable, Optional.empty(), searchCriteria, statusRestrictions, typeRestrictions, validOn)
+        new SearchRestrictions<>(pageable, Optional.empty(), searchCriteria, statusRestrictions,
+            typeRestrictions, validOn)
     );
     return Container.<SublineModel>builder()
-        .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
-        .totalCount(sublines.getTotalElements())
-        .build();
+                    .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
+                    .totalCount(sublines.getTotalElements())
+                    .build();
   }
 
   private SublineModel toModel(Subline sublineVersion) {
     return SublineModel.builder()
-        .swissSublineNumber(sublineVersion.getSwissSublineNumber())
-        .swissLineNumber(sublineVersion.getSwissLineNumber())
-        .status(sublineVersion.getStatus())
-        .type(sublineVersion.getType())
-        .slnid(sublineVersion.getSlnid())
-        .description(sublineVersion.getDescription())
-        .validFrom(sublineVersion.getValidFrom())
-        .validTo(sublineVersion.getValidTo())
-        .businessOrganisation(sublineVersion.getBusinessOrganisation())
-        .build();
+                       .swissSublineNumber(sublineVersion.getSwissSublineNumber())
+                       .swissLineNumber(sublineVersion.getSwissLineNumber())
+                       .status(sublineVersion.getStatus())
+                       .type(sublineVersion.getType())
+                       .slnid(sublineVersion.getSlnid())
+                       .description(sublineVersion.getDescription())
+                       .validFrom(sublineVersion.getValidFrom())
+                       .validTo(sublineVersion.getValidTo())
+                       .businessOrganisation(sublineVersion.getBusinessOrganisation())
+                       .build();
   }
 
   @Override
   public List<SublineVersionModel> getSublineVersion(String slnid) {
 
     List<SublineVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
-                                                      .stream()
-                                                      .map(this::toModel)
-                                                      .collect(Collectors.toList());
-    if(sublineVersionModels.isEmpty()){
+                                                                   .stream()
+                                                                   .map(this::toModel)
+                                                                   .collect(Collectors.toList());
+    if (sublineVersionModels.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
     return sublineVersionModels;
@@ -80,10 +84,15 @@ public class SublineController implements SublinenApiV1 {
   @Override
   public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id)
-        .orElseThrow(()-> new IdNotFoundException(id));
+                                                   .orElseThrow(() -> new IdNotFoundException(id));
     sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
-        .collect(Collectors.toList());
+                         .collect(Collectors.toList());
+  }
+
+  @Override
+  public SublineCoverage getSublineCoverage(String slnid) {
+    return sublineCoverageService.getSublineCoverageBySlnidAndSublineModelType(slnid);
   }
 
   @Override

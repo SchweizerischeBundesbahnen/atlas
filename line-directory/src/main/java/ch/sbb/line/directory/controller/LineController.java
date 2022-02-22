@@ -8,12 +8,15 @@ import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.SublineCoverage;
 import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.service.LineService;
+import ch.sbb.line.directory.service.SublineCoverageService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineController implements LineApiV1 {
 
   private final LineService lineService;
+  private final SublineCoverageService sublineCoverageService;
 
   @Override
   public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
@@ -92,6 +96,11 @@ public class LineController implements LineApiV1 {
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public SublineCoverage getSublineCoverage(String slnid) {
+    return sublineCoverageService.getSublineCoverageBySlnidAndLineModelType(slnid);
   }
 
   @Override
