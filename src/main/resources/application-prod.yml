@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://line-directory-prod.czdfgxj0x1zx.eu-central-1.rds.amazonaws.com/line_directory
+    username: ${DB_USER}
+    password: ${DB_PWD}
+auth:
+  audience:
+    service-name: todo-deploy-api
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n
