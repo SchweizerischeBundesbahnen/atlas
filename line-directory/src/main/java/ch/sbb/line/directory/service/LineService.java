@@ -29,7 +29,6 @@ public class LineService {
   private final LineVersionRepository lineVersionRepository;
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
-  private final SublineVersionRepository sublineVersionRepository;
   private final LineValidationService lineValidationService;
   private final SpecificationBuilderProvider specificationBuilderProvider;
 
