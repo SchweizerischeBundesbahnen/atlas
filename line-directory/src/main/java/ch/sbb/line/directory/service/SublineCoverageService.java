@@ -41,7 +41,6 @@ public class SublineCoverageService {
     }
   }
 
-
   private SublineCoverage buildIncompleteLineRangeSmallerThenSublineRange(LineVersion lineVersion) {
     return SublineCoverage.builder()
                           .modelType(LINE)

@@ -107,10 +107,8 @@ public class LineValidationService {
     if (!sublineVersions.isEmpty()) {
       SublineVersion firstSublineVersion = sublineVersions.get(0);
       SublineVersion lastSublineVersion = sublineVersions.get(sublineVersions.size() - 1);
-      if (lineValidFrom.isAfter(firstSublineVersion.getValidFrom())
-          || lineValidTo.isBefore(lastSublineVersion.getValidTo())) {
-        return true;
-      }
+      return lineValidFrom.isAfter(firstSublineVersion.getValidFrom())
+          || lineValidTo.isBefore(lastSublineVersion.getValidTo());
     }
     return false;
   }
