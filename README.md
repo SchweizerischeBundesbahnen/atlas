@@ -42,3 +42,7 @@ gateway:
 ### Integration
 * Swagger UI: https://atlas-gateway.int.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 * API as Json: https://atlas-gateway.int.sbb-cloud.net/v3/api-docs
+
+### Production
+* Swagger UI: https://atlas-gateway.prod.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://atlas-gateway.prod.sbb-cloud.net/v3/api-docs
