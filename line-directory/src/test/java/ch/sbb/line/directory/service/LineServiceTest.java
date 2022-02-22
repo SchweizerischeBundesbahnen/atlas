@@ -22,7 +22,6 @@ import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineValidationService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -50,9 +49,6 @@ class LineServiceTest {
   private VersionableService versionableService;
 
   @Mock
-  private SublineVersionRepository sublineVersionRepository;
-
-  @Mock
   private LineValidationService lineValidationService;
 
   @Mock
@@ -70,7 +66,7 @@ class LineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, lineRepository, versionableService,
-        sublineVersionRepository, lineValidationService, specificationBuilderProvider);
+        lineValidationService, specificationBuilderProvider);
   }
 
   @Test
@@ -220,8 +216,8 @@ class LineServiceTest {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
     doThrow(LineConflictException.class).when(lineValidationService)
-                                                            .validateLinePreconditionBusinessRule(
-                                                                lineVersion);
+                                        .validateLinePreconditionBusinessRule(
+                                            lineVersion);
 
     // When
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
@@ -237,7 +233,7 @@ class LineServiceTest {
     LineVersion lineVersion = LineTestData.lineVersion();
     doThrow(TemporaryLineValidationException.class).when(lineValidationService)
                                                    .validateLinePreconditionBusinessRule(
-                                                                lineVersion);
+                                                       lineVersion);
 
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(

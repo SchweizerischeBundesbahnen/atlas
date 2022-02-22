@@ -13,9 +13,9 @@ import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
-import ch.sbb.line.directory.repository.SublineCoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.service.SublineCoverageService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class LineValidationServiceTest {
   private LineVersionRepository lineVersionRepository;
 
   @Mock
-  private SublineCoverageRepository sublineCoverageRepository;
+  private SublineCoverageService sublineCoverageService;
 
   private LineValidationService lineValidationService;
 
@@ -41,7 +41,7 @@ public class LineValidationServiceTest {
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     lineValidationService = new LineValidationService(sublineVersionRepository,
-        lineVersionRepository, sublineCoverageRepository);
+        lineVersionRepository, sublineCoverageService);
   }
 
   @Test
