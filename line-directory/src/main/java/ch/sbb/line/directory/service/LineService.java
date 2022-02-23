@@ -64,9 +64,9 @@ public class LineService {
   public LineVersion save(LineVersion lineVersion) {
     lineVersion.setStatus(Status.ACTIVE);
     lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
-    LineVersion updatedVersion = lineVersionRepository.save(lineVersion);
-    lineValidationService.validateLineAfterVersioningBusinessRule(updatedVersion);
-    return updatedVersion;
+    lineVersionRepository.saveAndFlush(lineVersion);
+    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
+    return lineVersion;
   }
 
   public void deleteById(Long id) {
