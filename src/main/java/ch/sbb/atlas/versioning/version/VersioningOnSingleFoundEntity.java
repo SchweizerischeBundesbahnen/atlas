@@ -87,7 +87,7 @@ public class VersioningOnSingleFoundEntity implements Versioning {
   private VersionedObject createNewVersionInTheMiddle(VersioningData vd,
       ToVersioning toVersioning) {
     LocalDate toAddAtEndValidFrom = vd.getEditedValidTo().plusDays(1);
-    LocalDate toAddAtEndValidTo = vd.getCurrentVersion().getValidTo();
+    LocalDate toAddAtEndValidTo = toVersioning.getValidTo();
     return buildVersionedObjectToCreate(toAddAtEndValidFrom, toAddAtEndValidTo,
         toVersioning.getEntity());
   }
