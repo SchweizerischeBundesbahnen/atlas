@@ -333,7 +333,7 @@ public class LineValidationServiceTest {
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
 
     // then
-    verify(sublineCoverageService, times(1)).updateSublineCoverage(true,lineVersion);
+    verify(sublineCoverageService, times(1)).updateSublineCoverageByLine(true,lineVersion);
   }
 
   @Test
@@ -361,7 +361,7 @@ public class LineValidationServiceTest {
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
 
     // then
-    verify(sublineCoverageService, times(1)).updateSublineCoverage(true,lineVersion);
+    verify(sublineCoverageService, times(1)).updateSublineCoverageByLine(true,lineVersion);
   }
 
   @Test
@@ -389,7 +389,7 @@ public class LineValidationServiceTest {
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
 
     //then
-    verify(sublineCoverageService, times(1)).updateSublineCoverage(true,lineVersion);
+    verify(sublineCoverageService, times(1)).updateSublineCoverageByLine(true,lineVersion);
   }
 
 

@@ -135,7 +135,7 @@ class LineServiceTest {
 
     // Then
     verify(lineValidationService).validateLinePreconditionBusinessRule(lineVersion);
-    verify(lineVersionRepository).save(lineVersion);
+    verify(lineVersionRepository).saveAndFlush(lineVersion);
     assertThat(result).isEqualTo(lineVersion);
   }
 

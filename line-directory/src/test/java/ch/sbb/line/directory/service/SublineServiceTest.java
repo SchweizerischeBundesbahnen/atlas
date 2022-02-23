@@ -125,8 +125,9 @@ class SublineServiceTest {
     SublineVersion result = sublineService.save(sublineVersion);
 
     // Then
-    verify(sublineValidationService).validateSublineBusinessRules(sublineVersion);
-    verify(sublineVersionRepository).save(sublineVersion);
+    verify(sublineValidationService).validatePreconditionSublineBusinessRules(sublineVersion);
+    verify(sublineVersionRepository).saveAndFlush(sublineVersion);
+    verify(sublineValidationService).validateSublineAfterVersioningBusinessRule(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
   }
 
