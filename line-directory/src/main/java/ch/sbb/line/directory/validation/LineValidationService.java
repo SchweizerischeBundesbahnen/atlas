@@ -1,16 +1,11 @@
 package ch.sbb.line.directory.validation;
 
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.SublineCoverage;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.ModelType;
-import ch.sbb.line.directory.enumaration.SublineCoverageType;
-import ch.sbb.line.directory.enumaration.ValidationErrorType;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.repository.SublineCoverageRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.SublineCoverageService;
 import java.time.LocalDate;
@@ -42,7 +37,7 @@ public class LineValidationService {
   public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {
     validateTemporaryLinesDuration(lineVersion);
     boolean validationIssueResult = validateLineRangeOutsideOfLineRange(lineVersion);
-    sublineCoverageService.updateSublineCoverage(validationIssueResult, lineVersion);
+    sublineCoverageService.updateSublineCoverageByLine(validationIssueResult, lineVersion);
   }
 
   void validateLineConflict(LineVersion lineVersion) {

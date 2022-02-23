@@ -8,6 +8,7 @@ import static ch.sbb.line.directory.enumaration.ValidationErrorType.LINE_RANGE_S
 
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineCoverage;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.repository.SublineCoverageRepository;
@@ -20,29 +21,40 @@ public class SublineCoverageService {
 
   private final SublineCoverageRepository sublineCoverageRepository;
 
-  public SublineCoverage getSublineCoverageBySlnidAndLineModelType(String slnid){
+  public SublineCoverage getSublineCoverageBySlnidAndLineModelType(String slnid) {
     return getSublineCoverageBySlnidAndModelType(slnid, LINE);
   }
 
-  public SublineCoverage getSublineCoverageBySlnidAndSublineModelType(String slnid){
+  public SublineCoverage getSublineCoverageBySlnidAndSublineModelType(String slnid) {
     return getSublineCoverageBySlnidAndModelType(slnid, SUBLINE);
   }
 
-  private SublineCoverage getSublineCoverageBySlnidAndModelType(String slnid, ModelType modelType){
-    SublineCoverage sublineCoverage = sublineCoverageRepository.findSublineCoverageBySlnidAndModelType(slnid, modelType);
+  private SublineCoverage getSublineCoverageBySlnidAndModelType(String slnid, ModelType modelType) {
+    SublineCoverage sublineCoverage = sublineCoverageRepository.findSublineCoverageBySlnidAndModelType(
+        slnid, modelType);
     if (sublineCoverage == null) {
       throw new SlnidNotFoundException(slnid);
     }
     return sublineCoverage;
   }
 
-  public void updateSublineCoverage(boolean validationIssueResult, LineVersion lineVersion) {
-    SublineCoverage sublineCoverageBySlnid = sublineCoverageRepository.findSublineCoverageBySlnid(
-        lineVersion.getSlnid());
+  public void updateSublineCoverageByLine(boolean validationIssueResult, LineVersion lineVersion) {
+    updateSublineCoverage(validationIssueResult, lineVersion.getSlnid(), LINE);
+  }
+
+  public void updateSublineCoverageBySubline(boolean validationIssueResult,
+      SublineVersion sublineVersion) {
+    updateSublineCoverage(validationIssueResult, sublineVersion.getSlnid(), SUBLINE);
+  }
+
+  private void updateSublineCoverage(boolean validationIssueResult, String slnid,
+      ModelType modelType) {
+    SublineCoverage sublineCoverageBySlnid = sublineCoverageRepository.findSublineCoverageBySlnidAndModelType(
+        slnid, modelType);
 
     if (validationIssueResult) {
       SublineCoverage sublineCoverageIncomplete = buildIncompleteLineRangeSmallerThenSublineRange(
-          lineVersion);
+          slnid, modelType);
       if (sublineCoverageBySlnid != null) {
         sublineCoverageIncomplete.setId(sublineCoverageBySlnid.getId());
       }
@@ -54,26 +66,30 @@ public class SublineCoverageService {
         sublineCoverageRepository.save(sublineCoverageBySlnid);
       } else {
         SublineCoverage sublineCoverageComplete = buildCompleteLineRangeSmallerThenSublineRange(
-            lineVersion);
+            slnid,
+            modelType);
         sublineCoverageRepository.save(sublineCoverageComplete);
       }
     }
   }
 
-  private SublineCoverage buildIncompleteLineRangeSmallerThenSublineRange(LineVersion lineVersion) {
+  private SublineCoverage buildIncompleteLineRangeSmallerThenSublineRange(String slnid,
+      ModelType modelType) {
     return SublineCoverage.builder()
-                          .modelType(LINE)
+                          .modelType(modelType)
                           .validationErrorType(LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE)
                           .sublineCoverageType(INCOMPLETE)
-                          .slnid(lineVersion.getSlnid())
+                          .slnid(slnid)
                           .build();
   }
 
-  private SublineCoverage buildCompleteLineRangeSmallerThenSublineRange(LineVersion lineVersion) {
+  private SublineCoverage buildCompleteLineRangeSmallerThenSublineRange(String slnid,
+      ModelType modelType) {
     return SublineCoverage.builder()
-                          .modelType(LINE)
+                          .modelType(modelType)
                           .sublineCoverageType(COMPLETE)
-                          .slnid(lineVersion.getSlnid())
+                          .slnid(slnid)
                           .build();
   }
+
 }

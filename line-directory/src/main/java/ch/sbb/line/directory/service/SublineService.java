@@ -65,8 +65,11 @@ public class SublineService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
           "Main line with SLNID " + sublineVersion.getMainlineSlnid() + " does not exist");
     }
-    sublineValidationService.validateSublineBusinessRules(sublineVersion);
-    return sublineVersionRepository.save(sublineVersion);
+
+    sublineValidationService.validatePreconditionSublineBusinessRules(sublineVersion);
+    sublineVersionRepository.saveAndFlush(sublineVersion);
+    sublineValidationService.validateSublineAfterVersioningBusinessRule(sublineVersion);
+    return sublineVersion;
   }
 
   public void deleteById(Long id) {
