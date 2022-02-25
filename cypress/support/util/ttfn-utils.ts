@@ -2,8 +2,12 @@ import CommonUtils from './common-utils';
 
 export default class TtfnUtils {
   static navigateToTimetableFieldNumber() {
+    cy.intercept('GET', '/line-directory/v1/field-numbers?**').as('getFieldnumbers');
     cy.get('#\\timetable-field-number').click();
-    cy.url().should('contain', '/timetable-field-number');
+    cy.wait('@getFieldnumbers').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/timetable-field-number');
+    });
   }
 
   static readTtfnidFromForm(element: { ttfnid: string }) {
@@ -21,9 +25,12 @@ export default class TtfnUtils {
   }
 
   static fillVersionForm(version: any) {
-    cy.get('[data-cy=swissTimetableFieldNumber]').clear().type(version.swissTimetableFieldNumber);
+    // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
-    cy.get('[data-cy=validTo]').clear().type(version.validTo);
+    cy.get('[data-cy=validTo]').clear().type(version.validTo, { force: true });
+    cy.get('[data-cy=swissTimetableFieldNumber]')
+      .clear()
+      .type(version.swissTimetableFieldNumber, { force: true });
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
     cy.get('[data-cy=number]').clear().type(version.number);
     cy.get('[data-cy=description]').clear().type(version.description);
