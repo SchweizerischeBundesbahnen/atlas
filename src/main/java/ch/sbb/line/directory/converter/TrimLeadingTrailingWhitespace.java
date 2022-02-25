@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrimLeadingTrailingWhitespace extends SimpleModule {
 
-  public TrimLeadingTrailingWhitespace() {
+  TrimLeadingTrailingWhitespace() {
     addDeserializer(String.class, new StdScalarDeserializer<>(String.class) {
       @Override
       public String deserialize(JsonParser jsonParser, DeserializationContext ctx)
