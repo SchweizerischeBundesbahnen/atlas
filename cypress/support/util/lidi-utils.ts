@@ -2,8 +2,14 @@ import CommonUtils from './common-utils';
 
 export default class LidiUtils {
   static navigateToLidi() {
+    cy.intercept('GET', '/line-directory/v1/lines?**').as('getLines');
+    cy.intercept('GET', '/line-directory/v1/sublines?**').as('getSublines');
     cy.get('#line-directory').click();
-    cy.url().should('contain', '/line-directory');
+    cy.wait(['@getLines', '@getSublines']).then((interceptions) => {
+      cy.wrap(interceptions[0].response?.statusCode).should('eq', 200);
+      cy.wrap(interceptions[1].response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/line-directory');
+    });
   }
 
   static readSlnidFromForm(element: { slnid: string }) {
@@ -46,24 +52,25 @@ export default class LidiUtils {
   }
 
   static fillLineVersionForm(version: any) {
+    // workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
     cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
-    cy.get('[data-cy=validTo]').clear().type(version.validTo);
-    cy.get('[data-cy=swissLineNumber]').clear().type(version.swissLineNumber);
+    cy.get('[data-cy=validTo]').clear().type(version.validTo, { force: true });
+    cy.get('[data-cy=swissLineNumber]').clear().type(version.swissLineNumber, { force: true });
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
     CommonUtils.selectItemFromDropDown('[data-cy=type]', version.type);
     CommonUtils.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
     cy.get('[data-cy=colorFontRgb] [data-cy=rgb-picker-input]')
-      .type('{selectall}' + version.colorFontRgb)
+      .type('{selectall}' + version.colorFontRgb, { force: true })
       .type('{selectall}' + version.colorFontRgb);
-    cy.get('[data-cy=colorBackRgb] [data-cy=rgb-picker-input]')
-      .type('{selectall}' + version.colorBackRgb)
-      .type('{selectall}' + version.colorBackRgb);
-    cy.get('[data-cy=colorFontCmyk] [data-cy=cmyk-picker-input]')
-      .type('{selectall}')
-      .type(version.colorFontCmyk);
-    cy.get('[data-cy=colorBackCmyk] [data-cy=cmyk-picker-input]')
-      .type('{selectall}')
-      .type(version.colorBackCmyk);
+    cy.get('[data-cy=colorBackRgb] [data-cy=rgb-picker-input]').type(
+      '{selectall}' + version.colorBackRgb
+    );
+    cy.get('[data-cy=colorFontCmyk] [data-cy=cmyk-picker-input]').type(
+      '{selectall}' + version.colorFontCmyk
+    );
+    cy.get('[data-cy=colorBackCmyk] [data-cy=cmyk-picker-input]').type(
+      '{selectall}' + version.colorBackCmyk
+    );
     cy.get('[data-cy=description]').clear().type(version.description);
     cy.get('[data-cy=number]').clear().type(version.number);
     cy.get('[data-cy=alternativeName]').clear().type(version.alternativeName);
@@ -270,14 +277,17 @@ export default class LidiUtils {
   }
 
   static fillSublineVersionForm(version: any) {
+    // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
-    cy.get('[data-cy=validTo]').clear().type(version.validTo);
-    cy.get('[data-cy=swissSublineNumber]').clear().type(version.swissSublineNumber);
+    cy.get('[data-cy=validTo]').clear().type(version.validTo, { force: true });
+    cy.get('[data-cy=swissSublineNumber]')
+      .clear()
+      .type(version.swissSublineNumber, { force: true });
     this.typeAndSelectItemFromDropDown('[data-cy=mainlineSlnid]', version.mainlineSlnid);
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
     CommonUtils.selectItemFromDropDown('[data-cy=type]', version.type);
     CommonUtils.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
-    cy.get('[data-cy=description]').clear().type(version.description);
+    cy.get('[data-cy=description]').clear().type(version.description, { force: true });
     cy.get('[data-cy=number]').clear().type(version.number);
     cy.get('[data-cy=longName]').clear().type(version.longName);
     cy.get('[data-cy=save-item]').should('not.be.disabled');
