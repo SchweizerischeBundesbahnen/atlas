@@ -83,6 +83,31 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
   }
 
+
+  @Test
+  void shouldTrimAllWhiteSpacesInLineVersion() throws Exception {
+    //given
+    LineVersionModel lineVersionModel =
+        LineTestData.lineVersionModelBuilder()
+                    .businessOrganisation(" sbb")
+                    .alternativeName("alternative ")
+                    .combinationName(" combination ")
+                    .longName("  long name  ")
+                    .swissLineNumber("  b0.IC2       ")
+                    .build();
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    //when
+    mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(lineVersionModel))
+       ).andExpect(status().isOk())
+       .andExpect(jsonPath("$[0]." + businessOrganisation, is("sbb")))
+       .andExpect(jsonPath("$[0]." + alternativeName, is("alternative")))
+       .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
+       .andExpect(jsonPath("$[0]." + longName, is("long name")))
+       .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC2")));
+  }
+
   @Test
   void shouldCreateLineVersion() throws Exception {
     //given
