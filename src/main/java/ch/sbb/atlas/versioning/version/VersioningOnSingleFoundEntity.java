@@ -5,6 +5,7 @@ import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObject
 import static ch.sbb.atlas.versioning.model.VersionedObject.buildVersionedObjectToUpdate;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.arePropertiesEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isCurrentVersionFirstVersion;
+import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedValidFromOverTheLeftBorderAndEndsWithin;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorderAndValidFromNotEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnBeginningOfVersionAndEndingWithin;
@@ -126,6 +127,9 @@ public class VersioningOnSingleFoundEntity implements Versioning {
     if (isOnBeginningOfVersionAndEndingWithin(vd, toVersioning)) {
       return applyVersioningOnBeginningOfVersionAndEndingWithin(vd, toVersioning);
     }
+    if (isEditedValidFromOverTheLeftBorderAndEndsWithin(vd)) {
+      return applyVersioningOnTheLeftBorderWhenEditedEntityIsOnOrOverTheBorder(vd, toVersioning);
+    }
     throw new VersioningException();
   }
 
@@ -198,6 +202,22 @@ public class VersioningOnSingleFoundEntity implements Versioning {
       return versionedObjects;
     }
     throw new VersioningException();
+  }
+
+  private List<VersionedObject> applyVersioningOnTheLeftBorderWhenEditedEntityIsOnOrOverTheBorder(
+      VersioningData vd, ToVersioning toVersioning) {
+    log.info("Found version to split on or over the left border, validFrom and properties edited.");
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+    VersionedObject shortenedVersion = buildVersionedObjectToUpdate(
+        vd.getEditedValidTo().plusDays(1),
+        toVersioning.getValidTo(),
+        toVersioning.getEntity());
+    versionedObjects.add(shortenedVersion);
+
+    VersionedObject newVersionBeforeTheLeftBorder = addNewVersionAfterTheRightBorder(vd,
+        toVersioning);
+    versionedObjects.add(newVersionBeforeTheLeftBorder);
+    return versionedObjects;
   }
 
   private List<VersionedObject> applyVersioningOnBeginningOfVersionAndEndingWithin(
