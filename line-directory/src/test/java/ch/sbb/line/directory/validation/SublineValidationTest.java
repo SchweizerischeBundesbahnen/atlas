@@ -13,7 +13,6 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.service.SublineCoverageService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class SublineValidationTest {
   private LineVersionRepository lineVersionRepository;
 
   @Mock
-  private SublineCoverageService sublineCoverageService;
+  private CoverageValidationService coverageValidationService;
 
   private SublineValidationService sublineValidationService;
 
@@ -40,7 +39,7 @@ public class SublineValidationTest {
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineValidationService = new SublineValidationService(sublineVersionRepository,
-        lineVersionRepository, sublineCoverageService);
+        lineVersionRepository, coverageValidationService);
   }
 
   @Test
