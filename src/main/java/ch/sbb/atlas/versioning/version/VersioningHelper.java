@@ -99,6 +99,21 @@ public final class VersioningHelper {
   }
 
   /**
+   *       |______________|
+   *            |----------|
+   */
+  public static boolean isEditedValidFromOverTheLeftBorderAndEndsWithin(
+      VersioningData versioningData) {
+    if (versioningData.getObjectsToVersioning().size() != 1) {
+      throw new VersioningException("toVersioningList size must be 1.");
+    }
+    return versioningData.getEditedValidFrom()
+                         .isBefore(versioningData.getObjectsToVersioning().get(0).getValidFrom())
+        && versioningData.getEditedValidTo()
+                         .isBefore(versioningData.getObjectsToVersioning().get(0).getValidTo());
+  }
+
+  /**
    *                                            ______________________________|
    *            |----------|----------|----------|----------|----------|
    */
