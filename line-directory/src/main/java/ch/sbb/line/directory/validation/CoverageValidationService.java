@@ -28,18 +28,18 @@ public class CoverageValidationService {
   private final LineVersionRepository lineVersionRepository;
 
   public void validateLineSublineCoverage(LineVersion lineVersion) {
+    List<LineVersion> lineVersions = getSortedLineVersions(lineVersion);
+    List<SublineVersion> sublineVersions = getSortedSublineVersions(lineVersion);
     boolean areLinesAndSublinesCompletelyCovered = areLinesAndSublinesCompletelyCovered(
-        lineVersion);
+        lineVersions, sublineVersions);
     if (areLinesAndSublinesCompletelyCovered) {
-      validationComplete(lineVersion);
+      coverageService.coverageComplete(lineVersion, sublineVersions);
     } else {
-      validationIncomplete(lineVersion);
+      coverageService.coverageIncomplete(lineVersion, sublineVersions);
     }
   }
 
-  boolean areLinesAndSublinesCompletelyCovered(LineVersion lineVersion) {
-    List<LineVersion> lineVersions = getSortedLineVersions(lineVersion);
-    List<SublineVersion> sublineVersions = getSortedSublineVersions(lineVersion);
+  boolean areLinesAndSublinesCompletelyCovered(List<LineVersion> lineVersions, List<SublineVersion> sublineVersions) {
 
     boolean lineCompletelyCoverSublines =
         lineCompletelyCoverSublines(lineVersions, sublineVersions);
@@ -151,23 +151,6 @@ public class CoverageValidationService {
                .filter(gap -> !gap.getFrom().isAfter(versionable.getValidTo()))
                .filter(gap -> !gap.getTo().isBefore(versionable.getValidFrom()))
                .collect(toList());
-  }
-
-  private void validationComplete(LineVersion lineVersion) {
-    updateLineSublineCoverage(lineVersion, true);
-  }
-
-  private void validationIncomplete(LineVersion lineVersion) {
-    updateLineSublineCoverage(lineVersion, false);
-  }
-
-  private void updateLineSublineCoverage(LineVersion lineVersion, boolean isCompletelyCovered) {
-    coverageService.updateSublineCoverageByLine(isCompletelyCovered, lineVersion);
-    List<SublineVersion> sublineVersionByMainlineSlnid = sublineVersionRepository.getSublineVersionByMainlineSlnid(
-        lineVersion.getSlnid());
-    for (SublineVersion sublineVersion : sublineVersionByMainlineSlnid) {
-      coverageService.updateSublineCoverageBySubline(isCompletelyCovered, sublineVersion);
-    }
   }
 
   private List<SublineVersion> getSortedSublineVersions(LineVersion lineVersion) {

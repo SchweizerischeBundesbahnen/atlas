@@ -50,10 +50,8 @@ public class CoverageValidationServiceTest {
     LineVersion lineVersion = LineTestData.lineVersionBuilder().slnid("ch:1000").build();
     List<LineVersion> lineVersions = new ArrayList<>();
     lineVersions.add(lineVersion);
-    doReturn(lineVersions).when(lineVersionRepository)
-                              .findAllBySlnidOrderByValidFrom(lineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions, new ArrayList<>());
     //then
     assertThat(result).isTrue();
   }
@@ -88,7 +86,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                               .getSublineVersionByMainlineSlnid(lineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isTrue();
   }
@@ -141,7 +139,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                               .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(firstLineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isTrue();
   }
@@ -176,7 +174,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                              .getSublineVersionByMainlineSlnid(lineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isFalse();
   }
@@ -211,7 +209,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                              .getSublineVersionByMainlineSlnid(lineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isFalse();
   }
@@ -249,7 +247,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                              .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(firstLineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isFalse();
   }
@@ -263,33 +261,33 @@ public class CoverageValidationServiceTest {
   @Test
   public void shouldReturnFalseWhenSubLineGapNotCoversLine() {
     //given
-    LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
-                                          .validFrom(LocalDate.of(2000, 1, 2))
+    LineVersion lineVersion = LineTestData.lineVersionBuilder()
+                                          .validFrom(LocalDate.of(2000, 1, 1))
                                           .validTo(LocalDate.of(2000, 12, 31))
                                           .slnid("ch:1000").build();
     List<LineVersion> lineVersions = new ArrayList<>();
-    lineVersions.add(firstLineVersion);
+    lineVersions.add(lineVersion);
     SublineVersion firtsSublineVersion = SublineTestData.sublineVersionBuilder()
-                                                        .validFrom(LocalDate.of(2000, 1, 2))
+                                                        .validFrom(LocalDate.of(2000, 1, 1))
                                                         .validTo(LocalDate.of(2000, 5, 30))
-                                                   .mainlineSlnid(firstLineVersion.getSlnid())
+                                                   .mainlineSlnid(lineVersion.getSlnid())
                                                    .slnid("ch:1000")
                                                    .build();
     SublineVersion secondSublineVersion = SublineTestData.sublineVersionBuilder()
-                                                         .validFrom(LocalDate.of(2000, 1, 1))
+                                                         .validFrom(LocalDate.of(2000, 7, 1))
                                                          .validTo(LocalDate.of(2000, 12, 31))
-                                                   .mainlineSlnid(firstLineVersion.getSlnid())
+                                                   .mainlineSlnid(lineVersion.getSlnid())
                                                    .slnid("ch:1000")
                                                    .build();
     List<SublineVersion> sublineVersions = new ArrayList<>();
     sublineVersions.add(firtsSublineVersion);
     sublineVersions.add(secondSublineVersion);
     doReturn(lineVersions).when(lineVersionRepository)
-                          .findAllBySlnidOrderByValidFrom(firstLineVersion.getSlnid());
+                          .findAllBySlnidOrderByValidFrom(lineVersion.getSlnid());
     doReturn(sublineVersions).when(sublineVersionRepository)
-                             .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
+                             .getSublineVersionByMainlineSlnid(lineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(firstLineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isFalse();
   }
@@ -322,7 +320,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                              .getSublineVersionByMainlineSlnid(lineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isFalse();
   }
@@ -368,7 +366,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                              .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(firstLineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isFalse();
   }
@@ -416,7 +414,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                              .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(firstLineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isTrue();
   }
@@ -460,7 +458,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                              .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(firstLineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isTrue();
   }
@@ -504,7 +502,7 @@ public class CoverageValidationServiceTest {
     doReturn(sublineVersions).when(sublineVersionRepository)
                              .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
     //when
-    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(firstLineVersion);
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
     //then
     assertThat(result).isFalse();
   }
