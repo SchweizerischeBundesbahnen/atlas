@@ -27,7 +27,7 @@ public class SublineValidationService {
 
   public void validateSublineAfterVersioningBusinessRule(SublineVersion sublineVersion) {
     LineVersion lineVersion = lineVersionRepository.findAllBySlnidOrderByValidFrom(
-                                                       sublineVersion.getSlnid())
+                                                       sublineVersion.getMainlineSlnid())
                                                    .stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException(
