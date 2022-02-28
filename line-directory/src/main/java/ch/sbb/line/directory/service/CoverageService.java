@@ -2,13 +2,13 @@ package ch.sbb.line.directory.service;
 
 import static ch.sbb.line.directory.enumaration.ModelType.LINE;
 import static ch.sbb.line.directory.enumaration.ModelType.SUBLINE;
-import static ch.sbb.line.directory.enumaration.SublineCoverageType.COMPLETE;
-import static ch.sbb.line.directory.enumaration.SublineCoverageType.INCOMPLETE;
+import static ch.sbb.line.directory.enumaration.CoverageType.COMPLETE;
+import static ch.sbb.line.directory.enumaration.CoverageType.INCOMPLETE;
 import static ch.sbb.line.directory.enumaration.ValidationErrorType.LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
 import static ch.sbb.line.directory.enumaration.ValidationErrorType.SUBLINE_RANGE_OUTSIDE;
 
+import ch.sbb.line.directory.entity.Coverage;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.SublineCoverage;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.ValidationErrorType;
@@ -24,11 +24,11 @@ public class CoverageService {
 
   private final CoverageRepository coverageRepository;
 
-  public SublineCoverage getSublineCoverageBySlnidAndLineModelType(String slnid) {
+  public Coverage getSublineCoverageBySlnidAndLineModelType(String slnid) {
     return getSublineCoverageBySlnidAndModelType(slnid, LINE);
   }
 
-  public SublineCoverage getSublineCoverageBySlnidAndSublineModelType(String slnid) {
+  public Coverage getSublineCoverageBySlnidAndSublineModelType(String slnid) {
     return getSublineCoverageBySlnidAndModelType(slnid, SUBLINE);
   }
 
@@ -48,13 +48,13 @@ public class CoverageService {
     }
   }
 
-  private SublineCoverage getSublineCoverageBySlnidAndModelType(String slnid, ModelType modelType) {
-    SublineCoverage sublineCoverage = coverageRepository.findSublineCoverageBySlnidAndModelType(
+  private Coverage getSublineCoverageBySlnidAndModelType(String slnid, ModelType modelType) {
+    Coverage coverage = coverageRepository.findSublineCoverageBySlnidAndModelType(
         slnid, modelType);
-    if (sublineCoverage == null) {
+    if (coverage == null) {
       throw new SlnidNotFoundException(slnid);
     }
-    return sublineCoverage;
+    return coverage;
   }
 
   private void updateSublineCoverageByLine(boolean isCompletelyCovered, LineVersion lineVersion) {
@@ -69,27 +69,27 @@ public class CoverageService {
   //TODO: refactor
   private void updateSublineCoverage(boolean isCompletelyCovered, String slnid,
       ModelType modelType) {
-    SublineCoverage sublineCoverageBySlnid = coverageRepository.findSublineCoverageBySlnidAndModelType(
+    Coverage coverageBySlnid = coverageRepository.findSublineCoverageBySlnidAndModelType(
         slnid, modelType);
-    if (sublineCoverageBySlnid != null) {
+    if (coverageBySlnid != null) {
       if (isCompletelyCovered) {
-        sublineCoverageBySlnid.setSublineCoverageType(COMPLETE);
-        sublineCoverageBySlnid.setValidationErrorType(null);
+        coverageBySlnid.setCoverageType(COMPLETE);
+        coverageBySlnid.setValidationErrorType(null);
       } else {
-        sublineCoverageBySlnid.setSublineCoverageType(INCOMPLETE);
+        coverageBySlnid.setCoverageType(INCOMPLETE);
         if (LINE == modelType) {
-          sublineCoverageBySlnid.setValidationErrorType(LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE);
+          coverageBySlnid.setValidationErrorType(LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE);
         } else {
-          sublineCoverageBySlnid.setValidationErrorType(SUBLINE_RANGE_OUTSIDE);
+          coverageBySlnid.setValidationErrorType(SUBLINE_RANGE_OUTSIDE);
         }
       }
-      coverageRepository.save(sublineCoverageBySlnid);
+      coverageRepository.save(coverageBySlnid);
     } else {
       if (isCompletelyCovered) {
-        SublineCoverage sublineCoverageComplete = buildCompleteLineRangeSmallerThenSublineRange(
+        Coverage coverageComplete = buildCompleteLineRangeSmallerThenSublineRange(
             slnid,
             modelType);
-        coverageRepository.save(sublineCoverageComplete);
+        coverageRepository.save(coverageComplete);
       } else {
         ValidationErrorType validationErrorType;
         if (LINE == modelType) {
@@ -97,31 +97,31 @@ public class CoverageService {
         } else {
           validationErrorType = SUBLINE_RANGE_OUTSIDE;
         }
-        SublineCoverage sublineCoverageIncomplete = buildIncompleteLineRangeSmallerThenSublineRange(
+        Coverage coverageIncomplete = buildIncompleteLineRangeSmallerThenSublineRange(
             slnid, modelType);
-        sublineCoverageIncomplete.setValidationErrorType(validationErrorType);
-        coverageRepository.save(sublineCoverageIncomplete);
+        coverageIncomplete.setValidationErrorType(validationErrorType);
+        coverageRepository.save(coverageIncomplete);
       }
     }
   }
 
-  private SublineCoverage buildIncompleteLineRangeSmallerThenSublineRange(String slnid,
+  private Coverage buildIncompleteLineRangeSmallerThenSublineRange(String slnid,
       ModelType modelType) {
-    return SublineCoverage.builder()
-                          .modelType(modelType)
-                          .validationErrorType(LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE)
-                          .sublineCoverageType(INCOMPLETE)
-                          .slnid(slnid)
-                          .build();
+    return Coverage.builder()
+                   .modelType(modelType)
+                   .validationErrorType(LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE)
+                   .coverageType(INCOMPLETE)
+                   .slnid(slnid)
+                   .build();
   }
 
-  private SublineCoverage buildCompleteLineRangeSmallerThenSublineRange(String slnid,
+  private Coverage buildCompleteLineRangeSmallerThenSublineRange(String slnid,
       ModelType modelType) {
-    return SublineCoverage.builder()
-                          .modelType(modelType)
-                          .sublineCoverageType(COMPLETE)
-                          .slnid(slnid)
-                          .build();
+    return Coverage.builder()
+                   .modelType(modelType)
+                   .coverageType(COMPLETE)
+                   .slnid(slnid)
+                   .build();
   }
 
 }

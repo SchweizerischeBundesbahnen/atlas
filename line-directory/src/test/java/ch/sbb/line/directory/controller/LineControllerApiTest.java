@@ -19,9 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.SublineCoverageType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -157,7 +157,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     ).andExpect(status().isOk())
        .andExpect(jsonPath("$.slnid", is(lineVersion.getSlnid())))
        .andExpect(jsonPath("$.modelType", is(LINE.toString())))
-       .andExpect(jsonPath("$.sublineCoverageType", is(SublineCoverageType.COMPLETE.toString())))
+       .andExpect(jsonPath("$.sublineCoverageType", is(CoverageType.COMPLETE.toString())))
        .andExpect(jsonPath("$.validationErrorType", is(nullValue())));
   }
 

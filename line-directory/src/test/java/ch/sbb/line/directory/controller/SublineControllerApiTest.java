@@ -15,7 +15,7 @@ import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.SublineCoverageType;
+import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.CoverageRepository;
@@ -119,7 +119,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
        ).andExpect(status().isOk())
        .andExpect(jsonPath("$.slnid", is(sublineVersionSaved.getSlnid())))
        .andExpect(jsonPath("$.modelType", is(ModelType.SUBLINE.toString())))
-       .andExpect(jsonPath("$.sublineCoverageType", is(SublineCoverageType.COMPLETE.toString())))
+       .andExpect(jsonPath("$.sublineCoverageType", is(CoverageType.COMPLETE.toString())))
        .andExpect(jsonPath("$.validationErrorType", is(nullValue())));
   }
 

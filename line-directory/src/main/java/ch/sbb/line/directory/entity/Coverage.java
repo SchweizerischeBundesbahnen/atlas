@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.entity;
 
 import ch.sbb.line.directory.enumaration.ModelType;
-import ch.sbb.line.directory.enumaration.SublineCoverageType;
+import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.ValidationErrorType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,14 +24,14 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-@Entity(name = "subline_coverage")
-public class SublineCoverage {
+@Entity(name = "coverage")
+public class Coverage {
 
-  private static final String SUBLINE_COVERAGE_SEQ = "subline_coverage_seq";
+  private static final String COVERAGE_SEQ = "coverage_seq";
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SUBLINE_COVERAGE_SEQ)
-  @SequenceGenerator(name = SUBLINE_COVERAGE_SEQ, sequenceName = SUBLINE_COVERAGE_SEQ, allocationSize = 1, initialValue = 1000)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = COVERAGE_SEQ)
+  @SequenceGenerator(name = COVERAGE_SEQ, sequenceName = COVERAGE_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
   @NotNull
@@ -43,7 +43,7 @@ public class SublineCoverage {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private SublineCoverageType sublineCoverageType;
+  private CoverageType coverageType;
 
   @Enumerated(EnumType.STRING)
   private ValidationErrorType validationErrorType;
