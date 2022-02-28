@@ -116,7 +116,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(4);
-    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
+    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
   }
 
   @Test
@@ -132,7 +132,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(4);
-    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
+    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
     assertThat(searchResult.get(3)).usingRecursiveComparison().isEqualTo(versionList.get(4));
@@ -167,7 +167,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(3);
-    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
+    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
   }
@@ -210,7 +210,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(1);
-    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
+    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
   }
 
   @Test
@@ -226,7 +226,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(3);
-    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
+    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(3));
   }
@@ -262,7 +262,7 @@ public class TimetableFieldNumberRepositorySearchTest {
     // Then
     assertThat(searchResult.size()).isEqualTo(2);
     assertThat(searchResult.get(0)).usingRecursiveComparison().isEqualTo(versionList.get(4));
-    assertThat(searchResult.get(1).getDescription()).isEqualTo(versionList.get(0).getDescription());
+    assertThat(searchResult.get(1).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
   }
 
   @Test
@@ -278,7 +278,7 @@ public class TimetableFieldNumberRepositorySearchTest {
                                                                             .toList();
     // Then
     assertThat(searchResult.size()).isEqualTo(4);
-    assertThat(searchResult.get(0).getDescription()).isEqualTo(versionList.get(0).getDescription());
+    assertThat(searchResult.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(4));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(3)).usingRecursiveComparison().isEqualTo(versionList.get(3));
