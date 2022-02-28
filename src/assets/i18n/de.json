@@ -4,21 +4,21 @@
       "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte aktualisieren Sie die Seite indem Sie F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas."
     },
     "WARNING": {
-      "VERSIONING_NO_CHANGES": "Die von ihnen eingegeben Daten wurden überprüft. Es wurde festgestellt, dass die Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat."
+      "VERSIONING_NO_CHANGES": "Die von Ihnen eingegeben Daten wurden überprüft. Es wurde festgestellt, dass Ihre Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat. Bitte ändern Sie die Daten oder beenden Sie das editieren."
     },
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
-    "NOTALLOWED": "Keine Berechtigung für diesen Inhalt",
-    "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}",
-    "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden",
+    "NOTALLOWED": "Sie besitzen keine Berechtigung für die Bearbeitung dieses Inhalts.",
+    "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}".,
+    "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden.",
     "SERVER_REQUEST_FEHLER": "Momentan ist die Verbindung zur Datenbank nicht verfügbar. Bitte überprüfen Sie die Internetverbindung, schliessen den Browser und starten ATLAS erneut.",
-    "VERSIONING": "Beim Speichern ist ein Fehler in der Versionierung aufgetreten"
+    "VERSIONING": "Beim Speichern ist ein Fehler in der Versionierung aufgetreten."
   },
   "COMMON": {
     "SAVE": "Speichern",
     "EDIT": "Editieren",
     "CANCEL": "Abbrechen",
     "NODATAFOUND": "Es wurden keine Daten gefunden",
-    "TYPE_TO_SEARCH": "Tippen um zu Suchen",
+    "TYPE_TO_SEARCH": "Tippen Sie einen Text ein um die Suche zu beginnen.",
     "NEWFILTER": "Neuer Filter...",
     "FILTER": "Filter",
     "JA": "Ja",
@@ -56,7 +56,7 @@
       "SEARCH_CRITERIA": "Suche"
     },
     "NOTIFICATION": {
-      "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu."
+      "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu (F5)."
     }
   },
   "DIALOG": {
@@ -65,34 +65,34 @@
     "WARNING": "Warnung!",
     "DELETE": "Wollen Sie diesen Datensatz unwiderruflich löschen?",
     "DISCARD_CHANGES_TITLE": "Änderungen verwerfen?",
-    "LEAVE_SITE": "Wenn du die Seite verlässt, werden deine Daten nicht gespeichert.",
-    "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlierst du alle editierten Daten."
+    "LEAVE_SITE": "Wenn Sie die Seite verlassen werden Ihre Daten nicht gespeichert.",
+    "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlieren Sie alle angepassten Daten."
   },
   "PROFILE": {
     "HELLO": "Hallo",
-    "YOUR_ROLES": "Deine Rollen:",
+    "YOUR_ROLES": "Ihre Rollen:",
     "LOGIN": "Login",
     "LOGOUT": "Logout"
   },
   "HOME": {
-    "HEADER": "ATLAS - die SKI Business Plattform",
-    "TITLE": "Willkommen! Ich bin ATLAS, was darf ich heute für Dich tun?",
-    "DESCRIPTION": "Wähle eine der unzähligen (momentan 2) Möglichkeiten aus und verwalten Ihre businessrelevanten Daten mit Leichtigkeit."
+    "HEADER": "ATLAS - die SKI Business Applikation",
+    "TITLE": "Herzlich Willkommen!",
+    "DESCRIPTION": "Was möchten Sie tun?"
   },
   "PAGES": {
-    "HOME": "Home",
+    "HOME": "Übersichtsseite",
     "TTFN": {
-      "TITLE": "Fahrplanfeldnummer",
-      "DESCRIPTION": "CH-Fahrplanfeld, Fahrplanfeldnummer-ID, Feld-Nr. usw. sind keine Fremdwörter für dich? Dann trage doch hier alle Fahrplanfeldnummern ein und gestalte ein neues öV-Erlebnis."
+      "TITLE": "Fahrplanfeldverzeichnis",
+      "DESCRIPTION": "Erfassen und Verwalten von Farhplanfelddaten."
     },
     "LIDI": {
       "TITLE": "Linienverzeichnis",
-      "DESCRIPTION": "Wenn Linien und Teillinien gestaltet werden sollen, so komme doch ins Linienverzeichnis und lass uns etwas Spass haben."
+      "DESCRIPTION": "Erfassen und Verwalten von Liniendaten."
     },
     "DETAILS": "Details"
   },
   "TTFN": {
-    "NEW": "Neue Fahrplanfeldnummer",
+    "NEW": "Neue Fahrplanfeldnummer erfassen",
     "SWISS_TIMETABLE_FIELD_NUMBER": "CH-Fahrplanfeldnummer",
     "DESCRIPTION": "CH-Fahrplanfeldnummer Bezeichnung",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
@@ -100,8 +100,8 @@
     "TTFNID": "Fahrplanfeldnummer-ID",
     "COMMENT": "Kommentar",
     "CONFLICT": {
-      "NUMBER": "Fahrplanfeldnummer {{number}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben",
-      "SWISS_NUMBER": "CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben"
+      "NUMBER": "Die Fahrplanfeldnummer {{number}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben",
+      "SWISS_NUMBER": "Die CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben"
     },
     "NOTIFICATION": {
       "ADD_SUCCESS": "Fahrplanfeldnummer erfolgreich hinzugefügt.",
@@ -156,13 +156,13 @@
     },
     "LINE": {
       "CONFLICT": {
-        "SWISS_NUMBER": "CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+        "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Teillinie {{sublinie.swissSublineNumber}} mit Gültigkeit {{sublinie.validFrom}}-{{sublinie.validTo}}"
       },
-      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Temporäre Linie von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten",
-      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen, welche zusammen die maximale Gültigkeit von 12 Monaten überschreiten",
+      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Die Temporäre Linie von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten",
+      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Die Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen, welche zusammen die maximale Gültigkeit von 12 Monaten überschreiten",
       "NUMBER": "Liniennummer",
       "DESCRIPTION": "Linienbezeichnung",
       "FONT_RGB": "Schriftfarbe RGB",
@@ -187,7 +187,7 @@
     },
     "SUBLINE": {
       "CONFLICT": {
-        "SWISS_NUMBER": "CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben",
+        "SWISS_NUMBER": "Die CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben",
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline kann nicht geändert werden"
       },
       "PRECONDITION": {
