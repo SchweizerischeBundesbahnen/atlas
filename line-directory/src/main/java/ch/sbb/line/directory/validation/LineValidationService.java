@@ -35,7 +35,7 @@ public class LineValidationService {
 
   public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {
     validateTemporaryLinesDuration(lineVersion);
-    coverageValidationService.validateSublineRangeOutsideOfLineRange(lineVersion);
+    coverageValidationService.validateLineSublineCoverage(lineVersion);
 //    boolean validationIssueResult = validateLineRangeOutsideOfLineRange(lineVersion);
 //    sublineCoverageService.updateSublineCoverageByLine(validationIssueResult, lineVersion);
   }
