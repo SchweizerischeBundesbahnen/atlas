@@ -11,7 +11,7 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.service.SublineCoverageService;
+import ch.sbb.line.directory.service.CoverageService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import org.mockito.MockitoAnnotations;
 public class CoverageValidationServiceTest {
 
   @Mock
-  private SublineCoverageService sublineCoverageService;
+  private CoverageService coverageService;
   @Mock
   private SublineVersionRepository sublineVersionRepository;
   @Mock
@@ -34,7 +34,7 @@ public class CoverageValidationServiceTest {
   @BeforeEach()
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    coverageValidationService = new CoverageValidationService(sublineCoverageService,
+    coverageValidationService = new CoverageValidationService(coverageService,
         sublineVersionRepository, lineVersionRepository);
   }
 
@@ -48,7 +48,9 @@ public class CoverageValidationServiceTest {
   public void shouldReturnTrueWhenLineHasNoSublineRelated() {
     //given
     LineVersion lineVersion = LineTestData.lineVersionBuilder().slnid("ch:1000").build();
-    doReturn(List.of(lineVersion)).when(lineVersionRepository)
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(lineVersion);
+    doReturn(lineVersions).when(lineVersionRepository)
                               .findAllBySlnidOrderByValidFrom(lineVersion.getSlnid());
     //when
     boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersion);
@@ -438,7 +440,7 @@ public class CoverageValidationServiceTest {
     lineVersions.add(firstLineVersion);
     SublineVersion firtsSublineVersion = SublineTestData.sublineVersionBuilder()
                                                         .validFrom(LocalDate.of(2000, 1, 2))
-                                                        .validTo(LocalDate.of(2000, 5, 30))
+                                                        .validTo(LocalDate.of(2000, 5, 31))
                                                         .type(SublineType.TECHNICAL)
                                                         .mainlineSlnid(firstLineVersion.getSlnid())
                                                         .slnid("ch:1000")

@@ -5,20 +5,21 @@ import static ch.sbb.line.directory.enumaration.ModelType.SUBLINE;
 import static ch.sbb.line.directory.enumaration.SublineCoverageType.COMPLETE;
 import static ch.sbb.line.directory.enumaration.SublineCoverageType.INCOMPLETE;
 import static ch.sbb.line.directory.enumaration.ValidationErrorType.LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
+import static ch.sbb.line.directory.enumaration.ValidationErrorType.SUBLINE_RANGE_OUTSIDE;
 
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineCoverage;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.ModelType;
+import ch.sbb.line.directory.enumaration.ValidationErrorType;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.repository.SublineCoverageRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class SublineCoverageService {
+public class CoverageService {
 
   private final SublineCoverageRepository sublineCoverageRepository;
 
@@ -39,37 +40,49 @@ public class SublineCoverageService {
     return sublineCoverage;
   }
 
-  public void updateSublineCoverageByLine(boolean validationIssueResult, LineVersion lineVersion) {
-    updateSublineCoverage(validationIssueResult, lineVersion.getSlnid(), LINE);
+  public void updateSublineCoverageByLine(boolean isCompletelyCovered, LineVersion lineVersion) {
+    updateSublineCoverage(isCompletelyCovered, lineVersion.getSlnid(), LINE);
   }
 
-  public void updateSublineCoverageBySubline(boolean validationIssueResult,
+  public void updateSublineCoverageBySubline(boolean isCompletelyCovered,
       SublineVersion sublineVersion) {
-    updateSublineCoverage(validationIssueResult, sublineVersion.getSlnid(), SUBLINE);
+    updateSublineCoverage(isCompletelyCovered, sublineVersion.getSlnid(), SUBLINE);
   }
 
-  private void updateSublineCoverage(boolean validationIssueResult, String slnid,
+  private void updateSublineCoverage(boolean isCompletelyCovered, String slnid,
       ModelType modelType) {
     SublineCoverage sublineCoverageBySlnid = sublineCoverageRepository.findSublineCoverageBySlnidAndModelType(
         slnid, modelType);
-
-    if (validationIssueResult) {
-      SublineCoverage sublineCoverageIncomplete = buildIncompleteLineRangeSmallerThenSublineRange(
-          slnid, modelType);
-      if (sublineCoverageBySlnid != null) {
-        sublineCoverageIncomplete.setId(sublineCoverageBySlnid.getId());
-      }
-      sublineCoverageRepository.save(sublineCoverageIncomplete);
-    } else {
-      if (sublineCoverageBySlnid != null) {
+    if (sublineCoverageBySlnid != null) {
+      if (isCompletelyCovered) {
         sublineCoverageBySlnid.setSublineCoverageType(COMPLETE);
         sublineCoverageBySlnid.setValidationErrorType(null);
-        sublineCoverageRepository.save(sublineCoverageBySlnid);
       } else {
+        sublineCoverageBySlnid.setSublineCoverageType(INCOMPLETE);
+        if (LINE == modelType) {
+          sublineCoverageBySlnid.setValidationErrorType(LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE);
+        } else {
+          sublineCoverageBySlnid.setValidationErrorType(SUBLINE_RANGE_OUTSIDE);
+        }
+      }
+      sublineCoverageRepository.save(sublineCoverageBySlnid);
+    }else{
+      if(isCompletelyCovered){
         SublineCoverage sublineCoverageComplete = buildCompleteLineRangeSmallerThenSublineRange(
             slnid,
             modelType);
         sublineCoverageRepository.save(sublineCoverageComplete);
+      } else {
+        ValidationErrorType validationErrorType;
+        if (LINE == modelType) {
+          validationErrorType = LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
+        } else {
+          validationErrorType = SUBLINE_RANGE_OUTSIDE;
+        }
+        SublineCoverage sublineCoverageIncomplete = buildIncompleteLineRangeSmallerThenSublineRange(
+            slnid, modelType);
+        sublineCoverageIncomplete.setValidationErrorType(validationErrorType);
+        sublineCoverageRepository.save(sublineCoverageIncomplete);
       }
     }
   }
