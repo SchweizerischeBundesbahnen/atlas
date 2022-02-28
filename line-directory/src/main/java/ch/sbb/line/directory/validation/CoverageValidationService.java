@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class SublineCoverageValidationService {
+public class CoverageValidationService {
 
   private final SublineCoverageService sublineCoverageService;
   private final SublineVersionRepository sublineVersionRepository;
@@ -26,14 +26,18 @@ public class SublineCoverageValidationService {
 
   //LINE VALIDATION
   public void validateSublineRangeOutsideOfLineRange(LineVersion lineVersion){
-    boolean lineCompletelyCoverSublines = lineCompletelyCoverSublines(lineVersion);
-    boolean sublineCompletelyCoverLine = sublineCompletelyCoverLine(lineVersion);
-
-    if(!sublineCompletelyCoverLine && !lineCompletelyCoverSublines){
+    boolean isLineCompletelyCovered = isLineCompletelyCovered(lineVersion);
+    if(isLineCompletelyCovered){
       validationComplete(lineVersion);
     } else {
       validationIncomplete(lineVersion);
     }
+  }
+
+  boolean isLineCompletelyCovered(LineVersion lineVersion){
+    boolean lineCompletelyCoverSublines = lineCompletelyCoverSublines(lineVersion);
+    boolean sublineCompletelyCoverLine = sublineCompletelyCoverLine(lineVersion);
+    return sublineCompletelyCoverLine && lineCompletelyCoverSublines;
   }
 
   private boolean sublineCompletelyCoverLine(LineVersion lineVersion) {
@@ -71,8 +75,8 @@ public class SublineCoverageValidationService {
     if (!sublineVersions.isEmpty()) {
       SublineVersion firstSublineVersion = sublineVersions.get(0);
       SublineVersion lastSublineVersion = sublineVersions.get(sublineVersions.size() - 1);
-      return lineValidFrom.isAfter(firstSublineVersion.getValidFrom())
-          || lineValidTo.isBefore(lastSublineVersion.getValidTo());
+      return !lineValidFrom.isEqual(firstSublineVersion.getValidFrom())
+          || !lineValidTo.isEqual(lastSublineVersion.getValidTo());
     }
     return false;
   }
