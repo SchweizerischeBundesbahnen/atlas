@@ -26,13 +26,13 @@ export class SwitchVersionComponent {
     this.getCurrentIndex();
 
     if (this.pageType === Pages.TTFN) {
-      return Pages.TTFN.title;
+      return 'TTFN.TTFN';
     }
     if (this.pageType === Pages.LINES) {
-      return 'LIDI.LINES';
+      return 'LIDI.LINE.LINE';
     }
     if (this.pageType === Pages.SUBLINES) {
-      return 'LIDI.SUBLINES';
+      return 'LIDI.SUBLINE.SUBLINE';
     }
     return '';
   }

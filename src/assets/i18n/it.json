@@ -19,8 +19,6 @@
     "CANCEL": "Annullare",
     "NODATAFOUND": "Nessun dato trovato",
     "TYPE_TO_SEARCH": "Tippen um zu Suchen",
-    "NEWFILTER": "nuovo filtro",
-    "FILTER": "Filtri",
     "JA": "Sì",
     "NEIN": "No",
     "ACHTUNG": "Attenzione!",
@@ -31,7 +29,6 @@
     "TO": "a",
     "VERSION": "Versione",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
-    "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Nummer ist zu diesem Zeitraum bereits vergeben.",
     "VALID_FROM": "Valido da",
     "VALID_TO": "Valido a",
     "STATUS": "Stato",
@@ -92,6 +89,7 @@
     "DETAILS": "Dettagli"
   },
   "TTFN": {
+    "TTFN": "Fahrplanfeldnummer",
     "NEW": "Nuovo numero piano orario",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numero piano",
     "DESCRIPTION": "Nome",
@@ -132,8 +130,6 @@
     "PATTERN": "__it__Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}"
   },
   "LIDI": {
-    "LINES": "Linienverzeichnis",
-    "SUBLINES": "Teillinien",
     "SWISS_LINE_NUMBER": "CH-Liniennummer",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
     "ALTERNATIVE_NAME": "Alternativbezeichnung",
@@ -155,6 +151,8 @@
       "NONE": "Keine"
     },
     "LINE": {
+      "LINE": "Linie",
+      "LINES": "Linien",
       "CONFLICT": {
         "SWISS_NUMBER": "CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
       },
@@ -186,6 +184,8 @@
       }
     },
     "SUBLINE": {
+      "SUBLINE": "Teillinie",
+      "SUBLINES": "Teillinien",
       "CONFLICT": {
         "SWISS_NUMBER": "CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben",
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline kann nicht geändert werden"
