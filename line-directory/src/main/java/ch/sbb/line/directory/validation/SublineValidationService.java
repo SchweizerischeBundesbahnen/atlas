@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.validation;
 
+import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
@@ -7,9 +8,14 @@ import ch.sbb.line.directory.exception.SublineConflictException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.SublineCoverageService;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -20,14 +26,15 @@ public class SublineValidationService {
   private final LineVersionRepository lineVersionRepository;
   private final SublineCoverageService sublineCoverageService;
 
-  public void validatePreconditionSublineBusinessRules(SublineVersion sublineVersion){
+  public void validatePreconditionSublineBusinessRules(SublineVersion sublineVersion) {
     validateSublineConflict(sublineVersion);
     validateDifferentMainLineAssignRule(sublineVersion);
   }
 
-  public void validateSublineAfterVersioningBusinessRule(SublineVersion sublineVersion){
+  public void validateSublineAfterVersioningBusinessRule(SublineVersion sublineVersion) {
     boolean validationLineRangeRuleResult = validateLineRangeRule(sublineVersion);
-    sublineCoverageService.updateSublineCoverageBySubline(validationLineRangeRuleResult, sublineVersion);
+    sublineCoverageService.updateSublineCoverageBySubline(validationLineRangeRuleResult,
+        sublineVersion);
   }
 
   void validateSublineConflict(SublineVersion sublineVersion) {
