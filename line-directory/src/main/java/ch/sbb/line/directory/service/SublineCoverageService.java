@@ -12,6 +12,7 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.repository.SublineCoverageRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

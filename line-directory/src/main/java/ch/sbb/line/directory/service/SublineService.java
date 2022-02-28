@@ -99,4 +99,8 @@ public class SublineService {
         this::deleteById);
   }
 
+  public List<SublineVersion> getSublineVersionByMainlineSlnid(String mainlineSlnid){
+    return getSublineVersionByMainlineSlnid(mainlineSlnid);
+  }
+
 }
