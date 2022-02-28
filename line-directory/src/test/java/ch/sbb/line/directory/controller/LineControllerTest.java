@@ -19,7 +19,7 @@ import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.service.LineService;
-import ch.sbb.line.directory.service.SublineCoverageService;
+import ch.sbb.line.directory.service.CoverageService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +42,7 @@ public class LineControllerTest {
   private LineService lineService;
 
   @Mock
-  private SublineCoverageService sublineCoverageService;
+  private CoverageService coverageService;
 
   private LineController lineController;
 
@@ -52,7 +52,7 @@ public class LineControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineController = new LineController(lineService, sublineCoverageService);
+    lineController = new LineController(lineService, coverageService);
     when(lineService.save(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
 

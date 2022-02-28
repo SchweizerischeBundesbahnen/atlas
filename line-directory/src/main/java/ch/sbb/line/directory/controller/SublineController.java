@@ -12,7 +12,7 @@ import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
-import ch.sbb.line.directory.service.SublineCoverageService;
+import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SublineController implements SublinenApiV1 {
 
   private final SublineService sublineService;
-  private final SublineCoverageService sublineCoverageService;
+  private final CoverageService coverageService;
 
   @Override
   public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
@@ -92,7 +92,7 @@ public class SublineController implements SublinenApiV1 {
 
   @Override
   public SublineCoverage getSublineCoverage(String slnid) {
-    return sublineCoverageService.getSublineCoverageBySlnidAndSublineModelType(slnid);
+    return coverageService.getSublineCoverageBySlnidAndSublineModelType(slnid);
   }
 
   @Override
