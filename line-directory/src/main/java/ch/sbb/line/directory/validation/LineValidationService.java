@@ -27,7 +27,7 @@ public class LineValidationService {
 
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
-  private final SublineCoverageValidationService sublineCoverageValidationService;
+  private final CoverageValidationService coverageValidationService;
 
   public void validateLinePreconditionBusinessRule(LineVersion lineVersion) {
     validateLineConflict(lineVersion);
@@ -35,7 +35,7 @@ public class LineValidationService {
 
   public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {
     validateTemporaryLinesDuration(lineVersion);
-    sublineCoverageValidationService.validateSublineRangeOutsideOfLineRange(lineVersion);
+    coverageValidationService.validateSublineRangeOutsideOfLineRange(lineVersion);
 //    boolean validationIssueResult = validateLineRangeOutsideOfLineRange(lineVersion);
 //    sublineCoverageService.updateSublineCoverageByLine(validationIssueResult, lineVersion);
   }
