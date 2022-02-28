@@ -3,6 +3,7 @@ package ch.sbb.line.directory.validation;
 import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.SublineCoverageService;
@@ -53,13 +54,13 @@ public class CoverageValidationService {
 
   private boolean lineCompletelyCoverSublines(LineVersion lineVersion) {
     //The Line range must cover the entire sublines range
-    boolean areSublinesOutsideOfLineRange = areSublinesOutsideOfLineRange(lineVersion);
+    boolean areSublinesInsideOfLineRange = areSublinesInsideOfLineRange(lineVersion);
     //The Line cannot have any gap that is not covered by sublines
     boolean hasLineGapsUncoveredBySublines = hasLineGapsUncoveredBySublines(lineVersion);
-    return !areSublinesOutsideOfLineRange && !hasLineGapsUncoveredBySublines;
+    return areSublinesInsideOfLineRange && !hasLineGapsUncoveredBySublines;
   }
 
-  boolean areSublinesOutsideOfLineRange(LineVersion lineVersion) {
+  boolean areSublinesInsideOfLineRange(LineVersion lineVersion) {
     List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
         lineVersion.getSlnid());
     LocalDate lineValidFrom = lineVersion.getValidFrom();
@@ -72,13 +73,33 @@ public class CoverageValidationService {
     List<SublineVersion> sublineVersions = sublineVersionRepository.getSublineVersionByMainlineSlnid(
         lineVersion.getSlnid());
     sublineVersions.sort(Comparator.comparing(SublineVersion::getValidFrom));
+
     if (!sublineVersions.isEmpty()) {
-      SublineVersion firstSublineVersion = sublineVersions.get(0);
-      SublineVersion lastSublineVersion = sublineVersions.get(sublineVersions.size() - 1);
-      return !lineValidFrom.isEqual(firstSublineVersion.getValidFrom())
-          || !lineValidTo.isEqual(lastSublineVersion.getValidTo());
+      LocalDate firstSublineVersionValidFrom = sublineVersions.get(0).getValidFrom();
+      LocalDate lastSublineVersionValidTo = sublineVersions.get(sublineVersions.size() - 1).getValidTo();
+      if(lineValidFrom.isEqual(firstSublineVersionValidFrom) && lineValidTo.isEqual(lastSublineVersionValidTo) && haveSublineTheSameType(sublineVersions)){
+        return true;
+      }
+      return false;
     }
-    return false;
+    return true;
+  }
+
+  boolean haveSublineTheSameType(List<SublineVersion> sublineVersions){
+    long technicalSublineCount = sublineVersions.stream()
+                                .filter(
+                                    sublineVersion -> SublineType.TECHNICAL
+                                        == sublineVersion.getType())
+                                .count();
+    long compensationSublineCount = sublineVersions.stream()
+                                .filter(
+                                    sublineVersion -> SublineType.COMPENSATION
+                                        == sublineVersion.getType())
+                                .count();
+    if(technicalSublineCount > 0 && compensationSublineCount > 0){
+      return false;
+    }
+    return true;
   }
 
   boolean hasLineGapsUncoveredBySublines(LineVersion lineVersion) {
