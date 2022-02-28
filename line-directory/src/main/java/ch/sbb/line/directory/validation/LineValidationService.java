@@ -7,7 +7,6 @@ import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.service.SublineCoverageService;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class LineValidationService {
 
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
-  private final SublineCoverageService sublineCoverageService;
+  private final SublineCoverageValidationService sublineCoverageValidationService;
 
   public void validateLinePreconditionBusinessRule(LineVersion lineVersion) {
     validateLineConflict(lineVersion);
@@ -36,8 +35,9 @@ public class LineValidationService {
 
   public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {
     validateTemporaryLinesDuration(lineVersion);
-    boolean validationIssueResult = validateLineRangeOutsideOfLineRange(lineVersion);
-    sublineCoverageService.updateSublineCoverageByLine(validationIssueResult, lineVersion);
+    sublineCoverageValidationService.validateSublineRangeOutsideOfLineRange(lineVersion);
+//    boolean validationIssueResult = validateLineRangeOutsideOfLineRange(lineVersion);
+//    sublineCoverageService.updateSublineCoverageByLine(validationIssueResult, lineVersion);
   }
 
   void validateLineConflict(LineVersion lineVersion) {
