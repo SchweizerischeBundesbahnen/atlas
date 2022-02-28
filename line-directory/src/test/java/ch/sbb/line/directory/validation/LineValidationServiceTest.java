@@ -3,7 +3,6 @@ package ch.sbb.line.directory.validation;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +32,7 @@ public class LineValidationServiceTest {
   private LineVersionRepository lineVersionRepository;
 
   @Mock
-  private SublineCoverageValidationService sublineCoverageValidationService;
+  private CoverageValidationService coverageValidationService;
 
   private LineValidationService lineValidationService;
 
@@ -41,7 +40,7 @@ public class LineValidationServiceTest {
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     lineValidationService = new LineValidationService(sublineVersionRepository,
-        lineVersionRepository, sublineCoverageValidationService);
+        lineVersionRepository, coverageValidationService);
   }
 
   @Test
