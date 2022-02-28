@@ -1,12 +1,10 @@
 package ch.sbb.line.directory.validation;
 
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -25,7 +23,6 @@ public class LineValidationService {
 
   private static final int DAYS_OF_YEAR = 365;
 
-  private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
   private final CoverageValidationService coverageValidationService;
 
@@ -36,8 +33,6 @@ public class LineValidationService {
   public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {
     validateTemporaryLinesDuration(lineVersion);
     coverageValidationService.validateLineSublineCoverage(lineVersion);
-//    boolean validationIssueResult = validateLineRangeOutsideOfLineRange(lineVersion);
-//    sublineCoverageService.updateSublineCoverageByLine(validationIssueResult, lineVersion);
   }
 
   void validateLineConflict(LineVersion lineVersion) {
@@ -84,28 +79,6 @@ public class LineValidationService {
         relatedVersions.last().getValidTo()) > DAYS_OF_YEAR) {
       throw new TemporaryLineValidationException(new ArrayList<>(relatedVersions));
     }
-  }
-
-  boolean validateLineRangeOutsideOfLineRange(LineVersion lineVersion) {
-    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
-        lineVersion.getSlnid());
-    LocalDate lineValidFrom = lineVersion.getValidFrom();
-    LocalDate lineValidTo = lineVersion.getValidTo();
-    if (!lineVersions.isEmpty()) {
-      lineValidFrom = lineVersions.get(0).getValidFrom();
-      lineValidTo = lineVersions.get(lineVersions.size() - 1).getValidTo();
-    }
-
-    List<SublineVersion> sublineVersions = sublineVersionRepository.getSublineVersionByMainlineSlnid(
-        lineVersion.getSlnid());
-    sublineVersions.sort(Comparator.comparing(SublineVersion::getValidFrom));
-    if (!sublineVersions.isEmpty()) {
-      SublineVersion firstSublineVersion = sublineVersions.get(0);
-      SublineVersion lastSublineVersion = sublineVersions.get(sublineVersions.size() - 1);
-      return lineValidFrom.isAfter(firstSublineVersion.getValidFrom())
-          || lineValidTo.isBefore(lastSublineVersion.getValidTo());
-    }
-    return false;
   }
 
   private List<LineVersion> getRelatedVersions(SortedSet<LineVersion> relatedVersions,
