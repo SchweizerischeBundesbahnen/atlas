@@ -6,7 +6,6 @@ import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
 import ch.sbb.line.directory.exception.SublineConflictException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.service.SublineCoverageService;
 import java.util.Comparator;
 import java.util.List;
 import lombok.AllArgsConstructor;
