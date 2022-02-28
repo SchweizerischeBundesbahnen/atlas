@@ -8,7 +8,7 @@ import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.SublineCoverage;
+import ch.sbb.line.directory.entity.Coverage;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
@@ -99,7 +99,7 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public SublineCoverage getSublineCoverage(String slnid) {
+  public Coverage getSublineCoverage(String slnid) {
     return coverageService.getSublineCoverageBySlnidAndLineModelType(slnid);
   }
 

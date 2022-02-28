@@ -4,8 +4,8 @@ import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.api.SublinenApiV1;
+import ch.sbb.line.directory.entity.Coverage;
 import ch.sbb.line.directory.entity.Subline;
-import ch.sbb.line.directory.entity.SublineCoverage;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
@@ -91,7 +91,7 @@ public class SublineController implements SublinenApiV1 {
   }
 
   @Override
-  public SublineCoverage getSublineCoverage(String slnid) {
+  public Coverage getSublineCoverage(String slnid) {
     return coverageService.getSublineCoverageBySlnidAndSublineModelType(slnid);
   }
 
