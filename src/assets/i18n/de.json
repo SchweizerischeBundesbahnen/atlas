@@ -6,12 +6,12 @@
     "WARNING": {
       "VERSIONING_NO_CHANGES": "Die von Ihnen eingegeben Daten wurden überprüft. Es wurde festgestellt, dass Ihre Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat. Bitte ändern Sie die Daten oder beenden Sie das editieren."
     },
-    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
+    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten! Bitte aktualisieren Sie die Seite indem Sie F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas.",
     "NOTALLOWED": "Sie besitzen keine Berechtigung für die Bearbeitung dieses Inhalts.",
     "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}".,
     "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden.",
     "SERVER_REQUEST_FEHLER": "Momentan ist die Verbindung zur Datenbank nicht verfügbar. Bitte überprüfen Sie die Internetverbindung, schliessen den Browser und starten ATLAS erneut.",
-    "VERSIONING": "Beim Speichern ist ein Fehler in der Versionierung aufgetreten."
+    "VERSIONING": "Beim Speichern Ihrer Daten ist ein Fehler in der Versionierung aufgetreten. Wenden Sie sich bitte an die Fachstelle Atlas."
   },
   "COMMON": {
     "SAVE": "Speichern",
