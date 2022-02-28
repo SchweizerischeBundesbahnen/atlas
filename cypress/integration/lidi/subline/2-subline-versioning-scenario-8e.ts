@@ -53,7 +53,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     cy.get('[data-cy=longName]').clear().type(editedFirstSublineVersion.longName);
     CommonUtils.saveSubline();
     cy.get('[data-cy=switch-version-total-range]').contains(
-      'Teillinien von 01.01.2000 bis 31.12.2002'
+      'Teillinie von 01.01.2000 bis 31.12.2002'
     );
   });
 
