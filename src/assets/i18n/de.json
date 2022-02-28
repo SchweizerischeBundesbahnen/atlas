@@ -8,7 +8,7 @@
     },
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten! Bitte aktualisieren Sie die Seite indem Sie F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas.",
     "NOTALLOWED": "Sie besitzen keine Berechtigung für die Bearbeitung dieses Inhalts.",
-    "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}".,
+    "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}.",
     "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden.",
     "SERVER_REQUEST_FEHLER": "Momentan ist die Verbindung zur Datenbank nicht verfügbar. Bitte überprüfen Sie die Internetverbindung, schliessen den Browser und starten ATLAS erneut.",
     "VERSIONING": "Beim Speichern Ihrer Daten ist ein Fehler in der Versionierung aufgetreten. Wenden Sie sich bitte an die Fachstelle Atlas."
@@ -19,8 +19,6 @@
     "CANCEL": "Abbrechen",
     "NODATAFOUND": "Es wurden keine Daten gefunden",
     "TYPE_TO_SEARCH": "Tippen Sie einen Text ein um die Suche zu beginnen.",
-    "NEWFILTER": "Neuer Filter...",
-    "FILTER": "Filter",
     "JA": "Ja",
     "NEIN": "Nein",
     "ACHTUNG": "Achtung!",
@@ -31,7 +29,6 @@
     "TO": "bis",
     "VERSION": "Version",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
-    "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Nummer ist zu diesem Zeitraum bereits vergeben.",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "STATUS": "Status",
@@ -92,6 +89,7 @@
     "DETAILS": "Details"
   },
   "TTFN": {
+    "TTFN": "Fahrplanfeldnummer",
     "NEW": "Neue Fahrplanfeldnummer erfassen",
     "SWISS_TIMETABLE_FIELD_NUMBER": "CH-Fahrplanfeldnummer",
     "DESCRIPTION": "CH-Fahrplanfeldnummer Bezeichnung",
@@ -132,8 +130,6 @@
     "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}"
   },
   "LIDI": {
-    "LINES": "Linien",
-    "SUBLINES": "Teillinien",
     "SWISS_LINE_NUMBER": "CH-Liniennummer (CHLNR)",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
     "ALTERNATIVE_NAME": "Alternativbezeichnung",
@@ -155,6 +151,8 @@
       "NONE": "Keine"
     },
     "LINE": {
+      "LINE": "Linie",
+      "LINES": "Linien",
       "CONFLICT": {
         "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
       },
@@ -186,6 +184,8 @@
       }
     },
     "SUBLINE": {
+      "SUBLINE": "Teillinie",
+      "SUBLINES": "Teillinien",
       "CONFLICT": {
         "SWISS_NUMBER": "Die CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben",
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline kann nicht geändert werden"
