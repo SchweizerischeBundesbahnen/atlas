@@ -18,7 +18,7 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineCoverageType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.repository.SublineCoverageRepository;
+import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
@@ -42,13 +42,13 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
   private SublineVersionRepository sublineVersionRepository;
 
   @Autowired
-  private SublineCoverageRepository sublineCoverageRepository;
+  private CoverageRepository coverageRepository;
 
   @AfterEach
   public void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
-    sublineCoverageRepository.deleteAll();
+    coverageRepository.deleteAll();
   }
 
   @Test

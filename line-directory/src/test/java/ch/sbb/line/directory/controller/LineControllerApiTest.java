@@ -8,8 +8,6 @@ import static ch.sbb.line.directory.entity.LineVersion.Fields.paymentType;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.swissLineNumber;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.type;
 import static ch.sbb.line.directory.enumaration.ModelType.LINE;
-import static ch.sbb.line.directory.enumaration.SublineCoverageType.COMPLETE;
-import static ch.sbb.line.directory.enumaration.ValidationErrorType.LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -21,17 +19,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.entity.SublineCoverage;
 import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineCoverageType;
-import ch.sbb.line.directory.enumaration.ValidationErrorType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.repository.SublineCoverageRepository;
+import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
-import javax.validation.Validation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +44,13 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   private SublineVersionRepository sublineVersionRepository;
 
   @Autowired
-  private SublineCoverageRepository sublineCoverageRepository;
+  private CoverageRepository coverageRepository;
 
   @AfterEach
   public void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
-    sublineCoverageRepository.deleteAll();
+    coverageRepository.deleteAll();
   }
 
   @Test
