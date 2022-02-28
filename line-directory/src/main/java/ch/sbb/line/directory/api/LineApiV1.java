@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.api;
 
-import ch.sbb.line.directory.entity.SublineCoverage;
+import ch.sbb.line.directory.entity.Coverage;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -66,5 +66,5 @@ public interface LineApiV1 {
       @RequestBody @Valid LineVersionModel newVersion);
 
   @GetMapping("subline-coverage/{slnid}")
-  SublineCoverage getSublineCoverage(@PathVariable String slnid);
+  Coverage getSublineCoverage(@PathVariable String slnid);
 }
