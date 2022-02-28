@@ -162,7 +162,7 @@ public class CoverageValidationService {
   }
 
   private void updateLineSublineCoverage(LineVersion lineVersion, boolean isCompletelyCovered) {
-    coverageService.updateSublineCoverageByLine(isCompletelyCovered, lineVersion); //complete
+    coverageService.updateSublineCoverageByLine(isCompletelyCovered, lineVersion);
     List<SublineVersion> sublineVersionByMainlineSlnid = sublineVersionRepository.getSublineVersionByMainlineSlnid(
         lineVersion.getSlnid());
     for (SublineVersion sublineVersion : sublineVersionByMainlineSlnid) {
