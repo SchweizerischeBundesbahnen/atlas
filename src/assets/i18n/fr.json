@@ -10,7 +10,6 @@
     "NOTALLOWED": "Droits insuffisants pour voir ce contenu",
     "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}",
     "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden",
-    "SERVER_REQUEST_FEHLER": "La base de données n’est pas accessible actuellement. Veuillez vérifier la connexion Internet, fermer le navigateur et réouvrir l'application.",
     "VERSIONING": "Beim Speichern ist ein Fehler in der Versionierung aufgetreten"
   },
   "COMMON": {
