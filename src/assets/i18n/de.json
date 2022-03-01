@@ -1,24 +1,23 @@
 {
   "ERROR": {
     "CLIENT": {
-      "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte aktualisieren Sie die Seite indem Sie F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas."
+      "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas."
     },
     "WARNING": {
-      "VERSIONING_NO_CHANGES": "Die von Ihnen eingegeben Daten wurden überprüft. Es wurde festgestellt, dass Ihre Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat. Bitte ändern Sie die Daten oder beenden Sie das editieren."
+      "VERSIONING_NO_CHANGES": "Die von Ihnen eingegebenen Daten wurden überprüft. Es wurde festgestellt, dass Ihre Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat. Bitte ändern Sie die Daten oder beenden Sie das Editieren."
     },
-    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten! Bitte aktualisieren Sie die Seite indem Sie F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas.",
-    "NOTALLOWED": "Sie besitzen keine Berechtigung für die Bearbeitung dieses Inhalts.",
+    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten! Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas.",
+    "NOTALLOWED": "Sie besitzen keine Berechtigung, um diesen Inhalt zu bearbeiten.",
     "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}.",
-    "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden.",
-    "SERVER_REQUEST_FEHLER": "Momentan ist die Verbindung zur Datenbank nicht verfügbar. Bitte überprüfen Sie die Internetverbindung, schliessen den Browser und starten ATLAS erneut.",
-    "VERSIONING": "Beim Speichern Ihrer Daten ist ein Fehler in der Versionierung aufgetreten. Wenden Sie sich bitte an die Fachstelle Atlas."
+    "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} wurde nicht gefunden.",
+    "VERSIONING": "Diese Versionierungs-Änderung ist vom System nicht unterstützt. Wenden Sie sich bitte an die Fachstelle Atlas."
   },
   "COMMON": {
     "SAVE": "Speichern",
     "EDIT": "Editieren",
     "CANCEL": "Abbrechen",
-    "NODATAFOUND": "Es wurden keine Daten gefunden",
-    "TYPE_TO_SEARCH": "Tippen Sie einen Text ein um die Suche zu beginnen.",
+    "NODATAFOUND": "Es wurden keine Daten gefunden.",
+    "TYPE_TO_SEARCH": "Tippen Sie einen Text ein, um die Suche zu beginnen.",
     "JA": "Ja",
     "NEIN": "Nein",
     "ACHTUNG": "Achtung!",
@@ -53,7 +52,7 @@
       "SEARCH_CRITERIA": "Suche"
     },
     "NOTIFICATION": {
-      "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu (F5)."
+      "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken."
     }
   },
   "DIALOG": {
@@ -80,7 +79,7 @@
     "HOME": "Übersichtsseite",
     "TTFN": {
       "TITLE": "Fahrplanfeldverzeichnis",
-      "DESCRIPTION": "Erfassen und Verwalten von Farhplanfelddaten."
+      "DESCRIPTION": "Erfassen und Verwalten von Fahrplanfelddaten."
     },
     "LIDI": {
       "TITLE": "Linienverzeichnis",
@@ -98,15 +97,15 @@
     "TTFNID": "Fahrplanfeldnummer-ID",
     "COMMENT": "Kommentar",
     "CONFLICT": {
-      "NUMBER": "Die Fahrplanfeldnummer {{number}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben",
-      "SWISS_NUMBER": "Die CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben"
+      "NUMBER": "Die Fahrplanfeldnummer {{number}} ist bereits von {{validFrom}} bis {{validTo}} durch {{ttfnid}} vergeben.",
+      "SWISS_NUMBER": "Die CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{ttfnid}} vergeben."
     },
     "NOTIFICATION": {
-      "ADD_SUCCESS": "Fahrplanfeldnummer erfolgreich hinzugefügt.",
+      "ADD_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich hinzugefügt.",
       "ADD_ERROR": "Beim Erfassen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
-      "EDIT_SUCCESS": "Fahrplanfeldnummer erfolgreich gespeichert.",
+      "EDIT_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich gespeichert.",
       "EDIT_ERROR": "Beim Editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
-      "DELETE_SUCCESS": "Fahrplanfeldnummer erfolgreich gelöscht.",
+      "DELETE_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich gelöscht.",
       "DELETE_ERROR": "Beim Löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "FETCH_ERROR": "Beim Laden der Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten.",
       "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
@@ -123,10 +122,10 @@
     "REQUIRED": "Dies ist ein Pflichtfeld.",
     "NOTBLANK": "Dieses Feld darf nicht leer sein.",
     "MAXLENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
-    "MATDATEPICKERMIN": "Datum muss grösser oder gleich als {{date}} sein",
-    "MATDATEPICKERMAX": "Datum muss kleiner oder gleich als {{date}} sein",
-    "MATDATEPICKERPARSE": "Ungültiges Datumformat (muss TT.MM.YYYY sein)",
-    "DATE_RANGE_ERROR": "Gültig von Datum darf nicht grösser als Gültig bis sein: {{date}}",
+    "MATDATEPICKERMIN": "Das Datum muss grösser als oder gleich dem {{date}} sein.",
+    "MATDATEPICKERMAX": "Das Datum muss kleiner als oder gleich dem {{date}} sein.",
+    "MATDATEPICKERPARSE": "Das Datumsformat ist ungültig. (Gültige Format: TT.MM.YYYY)",
+    "DATE_RANGE_ERROR": "Das Gültig-von Datum darf nicht grösser als das Gültig-bis Datum sein: {{date}}",
     "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}"
   },
   "LIDI": {
@@ -154,13 +153,13 @@
       "LINE": "Linie",
       "LINES": "Linien",
       "CONFLICT": {
-        "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+        "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben."
       },
       "PRECONDITION": {
-        "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Teillinie {{sublinie.swissSublineNumber}} mit Gültigkeit {{sublinie.validFrom}}-{{sublinie.validTo}}"
+        "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Teillinie {{sublinie.swissSublineNumber}}. Diese ist {{sublinie.validFrom}}-{{sublinie.validTo}}."
       },
-      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Die Temporäre Linie von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten",
-      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Die Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen, welche zusammen die maximale Gültigkeit von 12 Monaten überschreiten",
+      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Die temporäre Linie mit der Gültigkeit von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten.",
+      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Die Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen. Diese überschreiten zusammen die maximale Gültigkeit von 12 Monaten.",
       "NUMBER": "Liniennummer",
       "DESCRIPTION": "Linienbezeichnung",
       "FONT_RGB": "Schriftfarbe RGB",
@@ -174,11 +173,11 @@
         "OPERATIONAL": "Betrieblich"
       },
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Linie erfolgreich hinzugefügt.",
+        "ADD_SUCCESS": "Die Linie wurde erfolgreich hinzugefügt.",
         "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
-        "EDIT_SUCCESS": "Linie erfolgreich gespeichert.",
+        "EDIT_SUCCESS": "Die Linie wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
-        "DELETE_SUCCESS": "Linie erfolgreich gelöscht.",
+        "DELETE_SUCCESS": "Die Linie wurde erfolgreich gelöscht.",
         "DELETE_ERROR": "Beim Löschen der Linie ist ein Fehler aufgetreten.",
         "FETCH_ERROR": "Beim Laden der Linie ist ein unbekannter Fehler aufgetreten."
       }
@@ -187,11 +186,11 @@
       "SUBLINE": "Teillinie",
       "SUBLINES": "Teillinien",
       "CONFLICT": {
-        "SWISS_NUMBER": "Die CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben",
-        "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline kann nicht geändert werden"
+        "SWISS_NUMBER": "Die CH-Teilliniennummer {{swissSublineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben.",
+        "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline darf nicht geändert werden."
       },
       "PRECONDITION": {
-        "SUBLINE_OUTSIDE_OF_LINE_RANGE": "Die Gültigkeit der Teillinie {{validFrom}}-{{validTo}} ist ausserhalb der Linie {{mainline.swissLineNumber}} mit Gültigkeit {{mainline.validFrom}}-{{mainline.validTo}}"
+        "SUBLINE_OUTSIDE_OF_LINE_RANGE": "Die Gültigkeit der Teillinie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Linie {{mainline.swissLineNumber}}. Diese ist {{mainline.validFrom}}-{{mainline.validTo}}."
       },
       "NUMBER": "Teilliniennummer",
       "MAINLINE": "Hauptlinie",
@@ -202,11 +201,11 @@
         "TECHNICAL": "Technisch"
       },
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Teillinie erfolgreich hinzugefügt.",
+        "ADD_SUCCESS": "Die Teillinie wurde erfolgreich hinzugefügt.",
         "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",
-        "EDIT_SUCCESS": "Teillinie erfolgreich gespeichert.",
+        "EDIT_SUCCESS": "Die Teillinie wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Teillinie ist ein Fehler aufgetreten.",
-        "DELETE_SUCCESS": "Teillinie erfolgreich gelöscht.",
+        "DELETE_SUCCESS": "Die Teillinie wurde erfolgreich gelöscht.",
         "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten.",
         "FETCH_ERROR": "Beim Laden der Teillinie ist ein unbekannter Fehler aufgetreten."
       }
