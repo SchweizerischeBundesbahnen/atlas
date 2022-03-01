@@ -46,7 +46,7 @@ public interface SublinenApiV1 {
       @ApiResponse(responseCode = "201"),
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  SublineVersionModel createSublineVersion(@RequestBody SublineVersionModel newSublineVersion);
+  SublineVersionModel createSublineVersion(@RequestBody @Valid SublineVersionModel newSublineVersion);
 
   @GetMapping("versions/{slnid}")
   List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
