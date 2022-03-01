@@ -40,7 +40,7 @@ public class CoverageService {
     updateLineSublineCoverage(lineVersion, sublineVersions, false);
   }
 
-  private void updateLineSublineCoverage(LineVersion lineVersion,
+  void updateLineSublineCoverage(LineVersion lineVersion,
       List<SublineVersion> sublineVersions, boolean isCompletelyCovered) {
     updateSublineCoverageByLine(isCompletelyCovered, lineVersion);
     for (SublineVersion sublineVersion : sublineVersions) {
@@ -58,51 +58,61 @@ public class CoverageService {
   }
 
   private void updateSublineCoverageByLine(boolean isCompletelyCovered, LineVersion lineVersion) {
-    updateSublineCoverage(isCompletelyCovered, lineVersion.getSlnid(), LINE);
+    updateLineSublineCoverage(isCompletelyCovered, lineVersion.getSlnid(), LINE);
   }
 
   private void updateSublineCoverageBySubline(boolean isCompletelyCovered,
       SublineVersion sublineVersion) {
-    updateSublineCoverage(isCompletelyCovered, sublineVersion.getSlnid(), SUBLINE);
+    updateLineSublineCoverage(isCompletelyCovered, sublineVersion.getSlnid(), SUBLINE);
   }
 
-  //TODO: refactor
-  private void updateSublineCoverage(boolean isCompletelyCovered, String slnid,
+  private void updateLineSublineCoverage(boolean isCompletelyCovered, String slnid,
       ModelType modelType) {
-    Coverage coverageBySlnid = coverageRepository.findSublineCoverageBySlnidAndModelType(
+    Coverage alreadyPersistedCoverage = coverageRepository.findSublineCoverageBySlnidAndModelType(
         slnid, modelType);
-    if (coverageBySlnid != null) {
-      if (isCompletelyCovered) {
-        coverageBySlnid.setCoverageType(COMPLETE);
-        coverageBySlnid.setValidationErrorType(null);
-      } else {
-        coverageBySlnid.setCoverageType(INCOMPLETE);
-        if (LINE == modelType) {
-          coverageBySlnid.setValidationErrorType(LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE);
-        } else {
-          coverageBySlnid.setValidationErrorType(SUBLINE_RANGE_OUTSIDE);
-        }
-      }
-      coverageRepository.save(coverageBySlnid);
+    if (alreadyPersistedCoverage != null) {
+      updateAlreadyPersistedCoverage(isCompletelyCovered, modelType, alreadyPersistedCoverage);
     } else {
-      if (isCompletelyCovered) {
-        Coverage coverageComplete = buildCompleteLineRangeSmallerThenSublineRange(
-            slnid,
-            modelType);
-        coverageRepository.save(coverageComplete);
-      } else {
-        ValidationErrorType validationErrorType;
-        if (LINE == modelType) {
-          validationErrorType = LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
-        } else {
-          validationErrorType = SUBLINE_RANGE_OUTSIDE;
-        }
-        Coverage coverageIncomplete = buildIncompleteLineRangeSmallerThenSublineRange(
-            slnid, modelType);
-        coverageIncomplete.setValidationErrorType(validationErrorType);
-        coverageRepository.save(coverageIncomplete);
-      }
+      addCoverage(isCompletelyCovered, slnid, modelType);
     }
+  }
+
+  private void addCoverage(boolean isCompletelyCovered, String slnid, ModelType modelType) {
+    if (isCompletelyCovered) {
+      Coverage coverageComplete = buildCompleteLineRangeSmallerThenSublineRange(
+          slnid,
+          modelType);
+      coverageRepository.save(coverageComplete);
+    } else {
+      Coverage coverageIncomplete = buildIncompleteLineRangeSmallerThenSublineRange(
+          slnid, modelType);
+      ValidationErrorType validationErrorType = getValidationErrorType(modelType);
+      coverageIncomplete.setValidationErrorType(validationErrorType);
+      coverageRepository.save(coverageIncomplete);
+    }
+  }
+
+  private void updateAlreadyPersistedCoverage(boolean isCompletelyCovered, ModelType modelType,
+      Coverage alreadyPersistedCoverage) {
+    if (isCompletelyCovered) {
+      alreadyPersistedCoverage.setCoverageType(COMPLETE);
+      alreadyPersistedCoverage.setValidationErrorType(null);
+    } else {
+      alreadyPersistedCoverage.setCoverageType(INCOMPLETE);
+      ValidationErrorType validationErrorType = getValidationErrorType(modelType);
+      alreadyPersistedCoverage.setValidationErrorType(validationErrorType);
+    }
+    coverageRepository.save(alreadyPersistedCoverage);
+  }
+
+  private ValidationErrorType getValidationErrorType(ModelType modelType) {
+    ValidationErrorType validationErrorType;
+    if (LINE == modelType) {
+      validationErrorType = LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
+    } else {
+      validationErrorType = SUBLINE_RANGE_OUTSIDE;
+    }
+    return validationErrorType;
   }
 
   private Coverage buildIncompleteLineRangeSmallerThenSublineRange(String slnid,
