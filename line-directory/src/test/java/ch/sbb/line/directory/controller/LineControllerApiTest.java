@@ -157,7 +157,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     ).andExpect(status().isOk())
        .andExpect(jsonPath("$.slnid", is(lineVersion.getSlnid())))
        .andExpect(jsonPath("$.modelType", is(LINE.toString())))
-       .andExpect(jsonPath("$.sublineCoverageType", is(CoverageType.COMPLETE.toString())))
+       .andExpect(jsonPath("$.coverageType", is(CoverageType.COMPLETE.toString())))
        .andExpect(jsonPath("$.validationErrorType", is(nullValue())));
   }
 
