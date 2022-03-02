@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.validation;
 
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -85,8 +84,8 @@ public class CoverageValidationService {
     return differentSublineTypeCount == 0;
   }
 
-  boolean hasVersionsUncoveredUncoveredGaps(List<LineVersion> lineVersions,
-      List<SublineVersion> sublineVersions) {
+  boolean hasVersionsUncoveredUncoveredGaps(List<? extends Versionable> lineVersions,
+      List<? extends Versionable> sublineVersions) {
     List<Gap> gapBetweenLineVersions = getGapBetweenSublineVersionable(lineVersions);
     List<Gap> gapBetweenSublineVersions = getGapBetweenSublineVersionable(sublineVersions);
     return !gapBetweenLineVersions.equals(gapBetweenSublineVersions);
@@ -138,11 +137,11 @@ public class CoverageValidationService {
   }
 
   //Move to DateHelper
-  boolean isRangeEqual(List<LineVersion> firstList, List<SublineVersion> secondList){
-    LocalDate startRangeFirstList = this.getStartRange(firstList);
-    LocalDate startRangeSecondList = this.getStartRange(secondList);
-    LocalDate endRangeFirstList = this.getEndRange(firstList);
-    LocalDate endRangeSecondList = this.getEndRange(secondList);
+  boolean isRangeEqual(List<? extends Versionable> firstList, List<? extends Versionable> secondList){
+    LocalDate startRangeFirstList = getStartRange(firstList);
+    LocalDate startRangeSecondList = getStartRange(secondList);
+    LocalDate endRangeFirstList = getEndRange(firstList);
+    LocalDate endRangeSecondList = getEndRange(secondList);
     return startRangeFirstList.equals(startRangeSecondList) && endRangeFirstList.equals(
         endRangeSecondList);
   }
