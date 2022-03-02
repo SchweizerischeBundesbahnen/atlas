@@ -22,6 +22,7 @@ import { TableSearchComponent } from '../components/table-search/table-search.co
 import { FieldErrorComponent } from '../components/field-error/field-error.component';
 import { ErrorNotificationComponent } from '../notification/error/error-notification.component';
 import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
+import { CoverageComponent } from '../components/coverage/coverage.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { WithDefaultValueDirective } from '../text-input/with-default-value.dire
     WithDefaultValueDirective,
     TableSearchComponent,
     ErrorNotificationComponent,
+    CoverageComponent,
   ],
   imports: [
     CommonModule,
@@ -79,6 +81,7 @@ import { WithDefaultValueDirective } from '../text-input/with-default-value.dire
     WithDefaultValueDirective,
     TableSearchComponent,
     ErrorNotificationComponent,
+    CoverageComponent,
   ],
   providers: [TranslatePipe],
 })

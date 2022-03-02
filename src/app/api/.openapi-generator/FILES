@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -13,6 +12,8 @@ index.ts
 model/containerLine.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
+model/coverage.ts
+model/coverageType.ts
 model/displayInfo.ts
 model/errorDetail.ts
 model/errorResponse.ts
