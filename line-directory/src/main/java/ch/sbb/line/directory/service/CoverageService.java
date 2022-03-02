@@ -1,9 +1,9 @@
 package ch.sbb.line.directory.service;
 
-import static ch.sbb.line.directory.enumaration.ModelType.LINE;
-import static ch.sbb.line.directory.enumaration.ModelType.SUBLINE;
 import static ch.sbb.line.directory.enumaration.CoverageType.COMPLETE;
 import static ch.sbb.line.directory.enumaration.CoverageType.INCOMPLETE;
+import static ch.sbb.line.directory.enumaration.ModelType.LINE;
+import static ch.sbb.line.directory.enumaration.ModelType.SUBLINE;
 import static ch.sbb.line.directory.enumaration.ValidationErrorType.LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
 import static ch.sbb.line.directory.enumaration.ValidationErrorType.SUBLINE_RANGE_OUTSIDE;
 
@@ -14,7 +14,9 @@ import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.ValidationErrorType;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.repository.CoverageRepository;
+import java.time.LocalDate;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -58,34 +60,37 @@ public class CoverageService {
   }
 
   private void updateSublineCoverageByLine(boolean isCompletelyCovered, LineVersion lineVersion) {
-    updateLineSublineCoverage(isCompletelyCovered, lineVersion.getSlnid(), LINE);
+    updateLineSublineCoverage(isCompletelyCovered, lineVersion.getSlnid(), LINE,
+        lineVersion.getValidFrom(), lineVersion.getValidTo());
   }
 
   private void updateSublineCoverageBySubline(boolean isCompletelyCovered,
       SublineVersion sublineVersion) {
-    updateLineSublineCoverage(isCompletelyCovered, sublineVersion.getSlnid(), SUBLINE);
+    updateLineSublineCoverage(isCompletelyCovered, sublineVersion.getSlnid(), SUBLINE,
+        sublineVersion.getValidFrom(), sublineVersion.getValidTo());
   }
 
   private void updateLineSublineCoverage(boolean isCompletelyCovered, String slnid,
-      ModelType modelType) {
+      ModelType modelType, @NotNull LocalDate validFrom, @NotNull LocalDate validTo) {
     Coverage alreadyPersistedCoverage = coverageRepository.findSublineCoverageBySlnidAndModelType(
         slnid, modelType);
     if (alreadyPersistedCoverage != null) {
-      updateAlreadyPersistedCoverage(isCompletelyCovered, modelType, alreadyPersistedCoverage);
+      updateAlreadyPersistedCoverage(isCompletelyCovered, modelType, alreadyPersistedCoverage,
+          validFrom, validTo);
     } else {
-      addCoverage(isCompletelyCovered, slnid, modelType);
+      addCoverage(isCompletelyCovered, slnid, modelType, validFrom, validTo);
     }
   }
 
-  private void addCoverage(boolean isCompletelyCovered, String slnid, ModelType modelType) {
+  private void addCoverage(boolean isCompletelyCovered, String slnid, ModelType modelType,
+      @NotNull LocalDate validFrom, @NotNull LocalDate validTo) {
     if (isCompletelyCovered) {
       Coverage coverageComplete = buildCompleteLineRangeSmallerThenSublineRange(
-          slnid,
-          modelType);
+          slnid, modelType, validFrom, validTo);
       coverageRepository.save(coverageComplete);
     } else {
       Coverage coverageIncomplete = buildIncompleteLineRangeSmallerThenSublineRange(
-          slnid, modelType);
+          slnid, modelType, validFrom, validTo);
       ValidationErrorType validationErrorType = getValidationErrorType(modelType);
       coverageIncomplete.setValidationErrorType(validationErrorType);
       coverageRepository.save(coverageIncomplete);
@@ -93,7 +98,9 @@ public class CoverageService {
   }
 
   private void updateAlreadyPersistedCoverage(boolean isCompletelyCovered, ModelType modelType,
-      Coverage alreadyPersistedCoverage) {
+      Coverage alreadyPersistedCoverage, @NotNull LocalDate validFrom, @NotNull LocalDate validTo) {
+    alreadyPersistedCoverage.setValidFrom(validFrom);
+    alreadyPersistedCoverage.setValidTo(validTo);
     if (isCompletelyCovered) {
       alreadyPersistedCoverage.setCoverageType(COMPLETE);
       alreadyPersistedCoverage.setValidationErrorType(null);
@@ -116,9 +123,11 @@ public class CoverageService {
   }
 
   private Coverage buildIncompleteLineRangeSmallerThenSublineRange(String slnid,
-      ModelType modelType) {
+      ModelType modelType, @NotNull LocalDate validFrom, @NotNull LocalDate validTo) {
     return Coverage.builder()
                    .modelType(modelType)
+                   .validFrom(validFrom)
+                   .validTo(validTo)
                    .validationErrorType(LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE)
                    .coverageType(INCOMPLETE)
                    .slnid(slnid)
@@ -126,9 +135,11 @@ public class CoverageService {
   }
 
   private Coverage buildCompleteLineRangeSmallerThenSublineRange(String slnid,
-      ModelType modelType) {
+      ModelType modelType, @NotNull LocalDate validFrom, @NotNull LocalDate validTo) {
     return Coverage.builder()
                    .modelType(modelType)
+                   .validFrom(validFrom)
+                   .validTo(validTo)
                    .coverageType(COMPLETE)
                    .slnid(slnid)
                    .build();
