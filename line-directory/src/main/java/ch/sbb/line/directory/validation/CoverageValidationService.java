@@ -55,8 +55,8 @@ public class CoverageValidationService {
     }
     boolean isSublineRangeEqualToLineRange = isSublineRangeEqualToLineRange(sublineVersions,
         lineVersions);
-    boolean hasSublineGapsUncoveredByLines = hasSublineGapsUncoveredByLines(sublineVersions);
-    return !hasSublineGapsUncoveredByLines && isSublineRangeEqualToLineRange;
+    boolean hasVersionsUncoveredUncoveredGaps = hasVersionsUncoveredUncoveredGaps(lineVersions,sublineVersions);
+    return !hasVersionsUncoveredUncoveredGaps && isSublineRangeEqualToLineRange;
   }
 
   private boolean lineCompletelyCoverSublines(List<LineVersion> lineVersions,
@@ -65,7 +65,7 @@ public class CoverageValidationService {
     boolean areSublinesInsideOfLineRange =
         areSublinesInsideOfLineRange(lineVersions, sublineVersions);
     boolean hasLineGapsUncoveredBySublines =
-        hasLineGapsUncoveredBySublines(lineVersions, sublineVersions);
+        hasVersionsUncoveredUncoveredGaps(lineVersions, sublineVersions);
     return areSublinesInsideOfLineRange && !hasLineGapsUncoveredBySublines;
   }
 
@@ -85,24 +85,11 @@ public class CoverageValidationService {
     return differentSublineTypeCount == 0;
   }
 
-  boolean hasLineGapsUncoveredBySublines(List<LineVersion> lineVersions,
+  boolean hasVersionsUncoveredUncoveredGaps(List<LineVersion> lineVersions,
       List<SublineVersion> sublineVersions) {
-    List<Gap> gapBetweenVersions = getGapBetweenSublineVersionable(lineVersions);
-    List<Gap> gapsBetweenLinesAndSublines = new ArrayList<>();
-    for (SublineVersion sublineVersion : sublineVersions) {
-      gapsBetweenLinesAndSublines.addAll(
-          getLineGapsBetweenVersionable(sublineVersion, gapBetweenVersions));
-    }
-    return !gapsBetweenLinesAndSublines.isEmpty();
-  }
-
-  boolean hasSublineGapsUncoveredByLines(List<SublineVersion> sublineVersions) {
-    List<LineVersion> lineVersions = getSortedLineVersionsBySublines(sublineVersions);
-
-    List<Gap> gapBetweenVersions = getGapBetweenSublineVersionable(sublineVersions);
-    List<Gap> lineGapsBetweenLines = getLineGapsBetweenVersionable(lineVersions.get(0),
-        gapBetweenVersions);
-    return !lineGapsBetweenLines.isEmpty();
+    List<Gap> gapBetweenLineVersions = getGapBetweenSublineVersionable(lineVersions);
+    List<Gap> gapBetweenSublineVersions = getGapBetweenSublineVersionable(sublineVersions);
+    return !gapBetweenLineVersions.equals(gapBetweenSublineVersions);
   }
 
   private boolean isSublineRangeEqualToLineRange(List<SublineVersion> sublineVersions,
@@ -133,14 +120,6 @@ public class CoverageValidationService {
     return linesGap;
   }
 
-  static <T extends Versionable> List<Gap> getLineGapsBetweenVersionable(T versionable,
-      List<Gap> gaps) {
-    return gaps.stream()
-               .filter(gap -> !gap.getFrom().isAfter(versionable.getValidTo()))
-               .filter(gap -> !gap.getTo().isBefore(versionable.getValidFrom()))
-               .collect(toList());
-  }
-
   private List<SublineVersion> getSortedSublineVersions(LineVersion lineVersion) {
     List<SublineVersion> sublineVersions =
         sublineVersionRepository.getSublineVersionByMainlineSlnid(lineVersion.getSlnid());
@@ -154,16 +133,6 @@ public class CoverageValidationService {
     if (lineVersions == null || lineVersions.isEmpty()) {
       throw new IllegalStateException("At this point we must have at least one lineVersion");
     }
-    lineVersions.sort(comparing(LineVersion::getValidFrom));
-    return lineVersions;
-  }
-
-  private List<LineVersion> getSortedLineVersionsBySublines(List<SublineVersion> sublineVersions) {
-    if (sublineVersions.isEmpty()) {
-      throw new IllegalStateException("At this point we must have at least one sublineVersion");
-    }
-    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
-        sublineVersions.get(0).getMainlineSlnid());
     lineVersions.sort(comparing(LineVersion::getValidFrom));
     return lineVersions;
   }
