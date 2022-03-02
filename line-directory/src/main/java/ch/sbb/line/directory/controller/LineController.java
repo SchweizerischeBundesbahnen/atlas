@@ -99,7 +99,7 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public Coverage getSublineCoverage(String slnid) {
+  public Coverage getLineCoverage(String slnid) {
     return coverageService.getSublineCoverageBySlnidAndLineModelType(slnid);
   }
 
