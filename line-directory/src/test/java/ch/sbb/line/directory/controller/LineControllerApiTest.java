@@ -152,7 +152,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     LineVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
 
     //when
-    mvc.perform(get("/v1/lines/subline-coverage/" + lineVersion.getSlnid())
+    mvc.perform(get("/v1/lines/line-coverage/" + lineVersion.getSlnid())
         .contentType(contentType)
     ).andExpect(status().isOk())
        .andExpect(jsonPath("$.slnid", is(lineVersion.getSlnid())))
