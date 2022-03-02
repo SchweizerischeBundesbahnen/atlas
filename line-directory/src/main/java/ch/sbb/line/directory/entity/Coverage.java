@@ -3,6 +3,8 @@ package ch.sbb.line.directory.entity;
 import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.ValidationErrorType;
+import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -40,6 +42,14 @@ public class Coverage {
   @NotNull
   @Enumerated(EnumType.STRING)
   private ModelType modelType;
+
+  @NotNull
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDate validFrom;
+
+  @NotNull
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDate validTo;
 
   @NotNull
   @Enumerated(EnumType.STRING)
