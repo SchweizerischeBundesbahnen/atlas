@@ -10,12 +10,9 @@
  * Do not edit the class manually.
  */
 
-/**
- * Subline Type
- */
-export type SublineType = 'TECHNICAL' | 'COMPENSATION';
+export type CoverageType = 'COMPLETE' | 'INCOMPLETE';
 
-export const SublineType = {
-  Technical: 'TECHNICAL' as SublineType,
-  Compensation: 'COMPENSATION' as SublineType,
+export const CoverageType = {
+  Complete: 'COMPLETE' as CoverageType,
+  Incomplete: 'INCOMPLETE' as CoverageType,
 };

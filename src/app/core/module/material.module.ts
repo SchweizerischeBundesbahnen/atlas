@@ -33,6 +33,7 @@ import { ENTER } from '@angular/cdk/keycodes';
 import { GlobalErrorHandler } from '../configuration/global-error-handler';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ServerErrorInterceptor } from '../configuration/server-error-interceptor';
+import { MatCardModule } from '@angular/material/card';
 
 export const FORMAT = {
   parse: {
@@ -70,6 +71,7 @@ export const FORMAT = {
     MatChipsModule,
     MatIconModule,
     MatCheckboxModule,
+    MatCardModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: TranslatedPaginator },

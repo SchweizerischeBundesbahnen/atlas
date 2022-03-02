@@ -5,6 +5,8 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { Record } from '../detail-wrapper/record';
 import moment from 'moment';
 import { Pages } from '../../../pages/pages';
+import { CoverageComponent } from '../coverage/coverage.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SwitchVersionComponent', () => {
   let component: SwitchVersionComponent;
@@ -12,8 +14,9 @@ describe('SwitchVersionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SwitchVersionComponent],
+      declarations: [SwitchVersionComponent, CoverageComponent],
       imports: [
+        HttpClientTestingModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
