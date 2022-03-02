@@ -65,6 +65,6 @@ public interface LineApiV1 {
   List<LineVersionModel> updateLineVersion(@PathVariable Long id,
       @RequestBody @Valid LineVersionModel newVersion);
 
-  @GetMapping("subline-coverage/{slnid}")
-  Coverage getSublineCoverage(@PathVariable String slnid);
+  @GetMapping("line-coverage/{slnid}")
+  Coverage getLineCoverage(@PathVariable String slnid);
 }
