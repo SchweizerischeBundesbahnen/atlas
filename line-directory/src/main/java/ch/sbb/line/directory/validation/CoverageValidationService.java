@@ -31,7 +31,9 @@ public class CoverageValidationService {
     List<SublineVersion> sublineVersions = getSortedSublineVersions(lineVersion);
     boolean areLinesAndSublinesCompletelyCovered = areLinesAndSublinesCompletelyCovered(
         lineVersions, sublineVersions);
-    if (areLinesAndSublinesCompletelyCovered) {
+    if (sublineVersions.isEmpty()){
+      coverageService.coverageComplete(lineVersion, sublineVersions);
+    }else if (areLinesAndSublinesCompletelyCovered) {
       coverageService.coverageComplete(lineVersion, sublineVersions);
     } else {
       coverageService.coverageIncomplete(lineVersion, sublineVersions);

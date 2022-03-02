@@ -507,5 +507,38 @@ public class CoverageValidationServiceTest {
     assertThat(result).isFalse();
   }
 
+  /**
+   * 8. Case: Lines with gap without sublines
+   *	           01.01.2000          31.12.2000		      01.01.2001         31.12.2001
+   * Line	      |-----------------------------|        |-----------------------------|
+   * Result OK
+   */
+  @Test
+  public void shouldReturnTruWhenLineAreWithGapWithoutSublines() {
+    //given
+    LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
+                                               .validFrom(LocalDate.of(2000, 1, 1))
+                                               .validTo(LocalDate.of(2000, 12, 31))
+                                               .slnid("ch:1000").build();
+    LineVersion secondLineVersion = LineTestData.lineVersionBuilder()
+                                                .validFrom(LocalDate.of(2001, 1, 1))
+                                                .validTo(LocalDate.of(2001, 12, 31))
+                                                .slnid("ch:1000").build();
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(firstLineVersion);
+    lineVersions.add(secondLineVersion);
+
+
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+    doReturn(lineVersions).when(lineVersionRepository)
+                          .findAllBySlnidOrderByValidFrom(firstLineVersion.getSlnid());
+    doReturn(sublineVersions).when(sublineVersionRepository)
+                             .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
+    //when
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
+    //then
+    assertThat(result).isTrue();
+  }
+
 
 }
