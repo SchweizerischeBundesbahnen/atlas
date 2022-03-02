@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Coverage, CoverageType, LinesService, SublinesService } from '../../../api';
 import { Pages } from '../../../pages/pages';
 import { Record } from '../detail-wrapper/record';
@@ -24,18 +24,20 @@ export class CoverageComponent implements OnInit, OnChanges {
 
   displayCoverage() {
     if (this.pageType === Pages.LINES) {
-      // @ts-ignore
-      this.linesService.getLineCoverage(this.currentRecord.slnid).subscribe(value => {
-        console.log(value);
-        this.coverage = value;
-      });
+      if (this.currentRecord.slnid != null) {
+        this.linesService.getLineCoverage(this.currentRecord.slnid).subscribe(value => {
+          console.log(value);
+          this.coverage = value;
+        });
+      }
     }
     if (this.pageType === Pages.SUBLINES) {
-      // @ts-ignore
-      this.sublineService.getSublineCoverage(this.currentRecord.slnid).subscribe(value => {
-        console.log(value);
-        this.coverage = value;
-      });
+      if (this.currentRecord.slnid != null) {
+        this.sublineService.getSublineCoverage(this.currentRecord.slnid).subscribe(value => {
+          console.log(value);
+          this.coverage = value;
+        });
+      }
     }
   }
 
