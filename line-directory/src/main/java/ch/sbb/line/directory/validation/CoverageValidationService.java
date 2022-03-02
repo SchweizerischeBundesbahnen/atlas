@@ -39,7 +39,8 @@ public class CoverageValidationService {
     }
   }
 
-  boolean areLinesAndSublinesCompletelyCovered(List<LineVersion> lineVersions, List<SublineVersion> sublineVersions) {
+  boolean areLinesAndSublinesCompletelyCovered(List<LineVersion> lineVersions,
+      List<SublineVersion> sublineVersions) {
 
     boolean lineCompletelyCoverSublines =
         lineCompletelyCoverSublines(lineVersions, sublineVersions);
@@ -68,15 +69,10 @@ public class CoverageValidationService {
     return areSublinesInsideOfLineRange && !hasLineGapsUncoveredBySublines;
   }
 
-  boolean areSublinesInsideOfLineRange(List<LineVersion> lineVersions, List<SublineVersion> sublineVersions) {
-    LocalDate lineValidFrom = lineVersions.get(0).getValidFrom();
-    LocalDate lineValidTo = lineVersions.get(lineVersions.size() - 1).getValidTo();
+  boolean areSublinesInsideOfLineRange(List<LineVersion> lineVersions,List<SublineVersion> sublineVersions) {
     if (!sublineVersions.isEmpty()) {
-      LocalDate sublineValidFrom = sublineVersions.get(0).getValidFrom();
-      LocalDate sublineValidTo = sublineVersions.get(sublineVersions.size() - 1).getValidTo();
-      return lineValidFrom.isEqual(sublineValidFrom)
-          && lineValidTo.isEqual(sublineValidTo)
-          && haveSublineTheSameType(sublineVersions);
+      boolean isRangeEqual = isRangeEqual(lineVersions, sublineVersions);
+      return isRangeEqual && haveSublineTheSameType(sublineVersions);
     }
     return true;
   }
@@ -115,16 +111,8 @@ public class CoverageValidationService {
     if (!lineVersions.isEmpty() && sublineVersions.isEmpty()) {
       return true;
     }
-    if (!lineVersions.isEmpty() && !sublineVersions.isEmpty()) {
-      LocalDate lineVersionsValidFrom = lineVersions.get(0).getValidFrom();
-      LocalDate lineVersionsValidTo = lineVersions.get(lineVersions.size() - 1).getValidTo();
-
-      LocalDate sublineVersionsValidFrom = sublineVersions.get(0).getValidFrom();
-      LocalDate sublineVersionValidTo = sublineVersions.get(sublineVersions.size() - 1)
-                                                       .getValidTo();
-
-      return sublineVersionsValidFrom.isEqual(lineVersionsValidFrom)
-          && sublineVersionValidTo.isEqual(lineVersionsValidTo);
+    if (!lineVersions.isEmpty()) {
+      return isRangeEqual(lineVersions, sublineVersions);
     }
     return false;
   }
@@ -163,7 +151,7 @@ public class CoverageValidationService {
   private List<LineVersion> getSortedLineVersions(LineVersion lineVersion) {
     List<LineVersion> lineVersions =
         lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid());
-    if(lineVersions == null || lineVersions.isEmpty()){
+    if (lineVersions == null || lineVersions.isEmpty()) {
       throw new IllegalStateException("At this point we must have at least one lineVersion");
     }
     lineVersions.sort(comparing(LineVersion::getValidFrom));
@@ -171,13 +159,41 @@ public class CoverageValidationService {
   }
 
   private List<LineVersion> getSortedLineVersionsBySublines(List<SublineVersion> sublineVersions) {
-    if(sublineVersions.isEmpty()){
+    if (sublineVersions.isEmpty()) {
       throw new IllegalStateException("At this point we must have at least one sublineVersion");
     }
     List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
         sublineVersions.get(0).getMainlineSlnid());
     lineVersions.sort(comparing(LineVersion::getValidFrom));
     return lineVersions;
+  }
+
+  //Move to DateHelper
+  boolean isRangeEqual(List<LineVersion> firstList, List<SublineVersion> secondList){
+    LocalDate startRangeFirstList = this.getStartRange(firstList);
+    LocalDate startRangeSecondList = this.getStartRange(secondList);
+    LocalDate endRangeFirstList = this.getEndRange(firstList);
+    LocalDate endRangeSecondList = this.getEndRange(secondList);
+    return startRangeFirstList.equals(startRangeSecondList) && endRangeFirstList.equals(
+        endRangeSecondList);
+  }
+
+  //Move to DateHelper
+  private <T extends Versionable> LocalDate getStartRange(List<T> versionableList) {
+    if (versionableList.isEmpty()) {
+      throw new IllegalStateException(
+          "At this point we must have at least one item in the versionableList");
+    }
+    return versionableList.get(0).getValidFrom();
+  }
+
+  //Move to DateHelper
+  private <T extends Versionable> LocalDate getEndRange(List<T> versionableList) {
+    if (versionableList.isEmpty()) {
+      throw new IllegalStateException(
+          "At this point we must have at least one item in the versionableList");
+    }
+    return versionableList.get(versionableList.size() - 1).getValidTo();
   }
 
   @Data
@@ -187,4 +203,5 @@ public class CoverageValidationService {
     private LocalDate from;
     private LocalDate to;
   }
+
 }

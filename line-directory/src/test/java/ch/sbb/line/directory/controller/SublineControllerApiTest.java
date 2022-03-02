@@ -120,6 +120,8 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$.slnid", is(sublineVersionSaved.getSlnid())))
        .andExpect(jsonPath("$.modelType", is(ModelType.SUBLINE.toString())))
        .andExpect(jsonPath("$.coverageType", is(CoverageType.COMPLETE.toString())))
+       .andExpect(jsonPath("$.validFrom", is("2000-01-01")))
+       .andExpect(jsonPath("$.validTo", is("2000-12-31")))
        .andExpect(jsonPath("$.validationErrorType", is(nullValue())));
   }
 
