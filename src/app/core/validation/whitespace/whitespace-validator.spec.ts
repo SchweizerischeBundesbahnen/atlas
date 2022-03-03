@@ -2,6 +2,17 @@ import { FormControl } from '@angular/forms';
 import { WhitespaceValidator } from './whitespace-validator';
 
 describe('Whitespace Validator', () => {
+
+  it('should return validation error when blank', () => {
+    //given
+    const formControl = new FormControl('    ');
+    //when
+    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
+    //then
+    expect(errors).toBeDefined();
+    expect(errors?.blank).toBeDefined();
+  });
+  
   it('should return validation error when leading whitespaces', () => {
     //given
     const formControl = new FormControl(' leading');
@@ -66,16 +77,6 @@ describe('Whitespace Validator', () => {
     const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
     //then
     expect(errors).toBeNull();
-  });
-
-  it('should return validation error when blank', () => {
-    //given
-    const formControl = new FormControl('    ');
-    //when
-    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
-    //then
-    expect(errors).toBeDefined();
-    expect(errors?.blank).toBeDefined();
   });
 
 });
