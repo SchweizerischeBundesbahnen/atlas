@@ -6,13 +6,13 @@ import {
   Status,
   SublinesService,
   SublineType,
-  SublineVersion,
+  SublineVersion
 } from '../../../../api';
 import {
   DateService,
   MAX_DATE,
   MAX_DATE_FORMATTED,
-  MIN_DATE,
+  MIN_DATE
 } from 'src/app/core/date/date.service';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { catchError, distinctUntilChanged, EMPTY, Subject, takeUntil } from 'rxjs';
@@ -25,18 +25,17 @@ import { Pages } from '../../../pages';
 import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { switchMap } from 'rxjs/operators';
-import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { ValidationService } from '../../../../core/validation/validation.service';
+import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 
 @Component({
   templateUrl: './subline-detail.component.html',
-  styleUrls: ['./subline-detail.component.scss'],
+  styleUrls: ['./subline-detail.component.scss']
 })
 export class SublineDetailComponent
   extends DetailWrapperController<SublineVersion>
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   TYPE_OPTIONS = Object.values(SublineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   STATUS_OPTIONS = Object.values(Status);
@@ -139,9 +138,9 @@ export class SublineDetailComponent
           [
             Validators.required,
             Validators.maxLength(50),
-            NotBlankValidator.notBlank,
-            AtlasCharsetsValidator.sid4pt,
-          ],
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.sid4pt
+          ]
         ],
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
@@ -153,28 +152,32 @@ export class SublineDetailComponent
           [
             Validators.required,
             Validators.maxLength(50),
-            NotBlankValidator.notBlank,
-            AtlasCharsetsValidator.iso88591,
-          ],
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591
+          ]
         ],
-        number: [version.number, [Validators.maxLength(50), AtlasCharsetsValidator.iso88591]],
-        longName: [version.longName, [Validators.maxLength(255), AtlasCharsetsValidator.iso88591]],
+        number: [
+          version.number,
+          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]],
+        longName: [
+          version.longName,
+          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]],
         description: [
           version.description,
-          [Validators.maxLength(255), AtlasCharsetsValidator.iso88591],
+          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
+          [Validators.required]
         ],
         validTo: [
           version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required],
+          [Validators.required]
         ],
-        etagVersion: version.etagVersion,
+        etagVersion: version.etagVersion
       },
       {
-        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
       }
     );
   }
@@ -198,7 +201,7 @@ export class SublineDetailComponent
         distinctUntilChanged(),
         switchMap((term) =>
           this.linesService.getLines(term, [], [], [], undefined, undefined, undefined, [
-            'swissLineNumber,ASC',
+            'swissLineNumber,ASC'
           ])
         )
       )
