@@ -132,23 +132,23 @@ export class LineDetailComponent
         ],
         number: [
           version.number,
-          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         alternativeName: [
           version.alternativeName,
-          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         combinationName: [
           version.combinationName,
-          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         longName: [
           version.longName,
-          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         icon: [
           version.icon,
-          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         colorFontRgb: [version.colorFontRgb || '#000000', [Validators.required]],
         colorBackRgb: [version.colorBackRgb || '#FFFFFF', [Validators.required]],
@@ -156,7 +156,7 @@ export class LineDetailComponent
         colorBackCmyk: [version.colorBackCmyk || '0,0,0,0', [Validators.required]],
         description: [
           version.description,
-          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
@@ -168,7 +168,7 @@ export class LineDetailComponent
         ],
         comment: [
           version.comment,
-          [Validators.maxLength(1500), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(1500), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         etagVersion: version.etagVersion
       },
