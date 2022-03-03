@@ -1,5 +1,7 @@
 HELP.md
 target/
+**/target/
+**/__pycache__/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -30,7 +32,7 @@ build/
 
 ### VS Code ###
 .vscode/
-.idea/*
+.idea/codeStyles
 !.idea/codeStyles/
 !.idea/fileTemplates/
 \!.idea/codeStyles/codeStyleConfig.xml
