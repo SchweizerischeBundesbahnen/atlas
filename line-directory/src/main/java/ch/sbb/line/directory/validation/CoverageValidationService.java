@@ -6,13 +6,14 @@ import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.CoverageService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,9 +32,9 @@ public class CoverageValidationService {
     List<SublineVersion> sublineVersions = getSortedSublineVersions(lineVersion);
     boolean areLinesAndSublinesCompletelyCovered = areLinesAndSublinesCompletelyCovered(
         lineVersions, sublineVersions);
-    if (sublineVersions.isEmpty()){
+    if (sublineVersions.isEmpty()) {
       coverageService.coverageComplete(lineVersion, sublineVersions);
-    }else if (areLinesAndSublinesCompletelyCovered) {
+    } else if (areLinesAndSublinesCompletelyCovered) {
       coverageService.coverageComplete(lineVersion, sublineVersions);
     } else {
       coverageService.coverageIncomplete(lineVersion, sublineVersions);
@@ -42,70 +43,52 @@ public class CoverageValidationService {
 
   boolean areLinesAndSublinesCompletelyCovered(List<LineVersion> lineVersions,
       List<SublineVersion> sublineVersions) {
-
-    boolean lineCompletelyCoverSublines =
-        lineCompletelyCoverSublines(lineVersions, sublineVersions);
-    boolean sublineCompletelyCoverLine = sublineCompletelyCoverLine(lineVersions, sublineVersions);
-    return sublineCompletelyCoverLine && lineCompletelyCoverSublines;
-  }
-
-  private boolean sublineCompletelyCoverLine(List<LineVersion> lineVersions,
-      List<SublineVersion> sublineVersions) {
-    if (sublineVersions.isEmpty()) {
+    if(sublineVersions.isEmpty()){
       return true;
     }
-    boolean isSublineRangeEqualToLineRange = isSublineRangeEqualToLineRange(sublineVersions,
-        lineVersions);
-    boolean hasVersionsUncoveredUncoveredGaps = hasVersionsUncoveredUncoveredGaps(lineVersions,sublineVersions);
-    return !hasVersionsUncoveredUncoveredGaps && isSublineRangeEqualToLineRange;
+    List<SublineVersion> technincalSublines = getSublinesByType(sublineVersions,
+        SublineType.TECHNICAL);
+    List<SublineVersion> compensationSublines = getSublinesByType(sublineVersions,
+        SublineType.COMPENSATION);
+
+    boolean lineCompletelyCoverByTechnicalSublines = false;
+    if (!technincalSublines.isEmpty()) {
+      lineCompletelyCoverByTechnicalSublines = lineCompletelyCoverSublines(lineVersions,
+          technincalSublines);
+    }
+    boolean lineCompletelyCoverByCompensationSublines = false;
+    if (!compensationSublines.isEmpty()) {
+      lineCompletelyCoverByCompensationSublines = lineCompletelyCoverSublines(lineVersions,
+          compensationSublines);
+    }
+
+    return lineCompletelyCoverByCompensationSublines || lineCompletelyCoverByTechnicalSublines;
+  }
+
+  private List<SublineVersion> getSublinesByType(List<SublineVersion> sublineVersions,
+      SublineType compensation) {
+    return sublineVersions.stream()
+                          .filter(s -> s.getType()
+                              == compensation)
+                          .collect(Collectors.toList());
   }
 
   private boolean lineCompletelyCoverSublines(List<LineVersion> lineVersions,
       List<SublineVersion> sublineVersions) {
 
-    boolean areSublinesInsideOfLineRange =
-        areSublinesInsideOfLineRange(lineVersions, sublineVersions);
-    boolean hasLineGapsUncoveredBySublines =
-        hasVersionsUncoveredUncoveredGaps(lineVersions, sublineVersions);
+    boolean areSublinesInsideOfLineRange = isRangeEqual(lineVersions, sublineVersions);
+    boolean hasLineGapsUncoveredBySublines = hasVersionsUncoveredUncoveredGaps(lineVersions, sublineVersions);
     return areSublinesInsideOfLineRange && !hasLineGapsUncoveredBySublines;
   }
 
-  boolean areSublinesInsideOfLineRange(List<LineVersion> lineVersions,List<SublineVersion> sublineVersions) {
-    if (!sublineVersions.isEmpty()) {
-      boolean isRangeEqual = isRangeEqual(lineVersions, sublineVersions);
-      return isRangeEqual && haveSublineTheSameType(sublineVersions);
-    }
-    return true;
-  }
-
-  boolean haveSublineTheSameType(List<SublineVersion> sublineVersions) {
-    long differentSublineTypeCount = IntStream
-        .range(0, sublineVersions.size() - 1)
-        .filter(i -> sublineVersions.get(i).getType() != sublineVersions.get(i + 1).getType())
-        .count();
-    return differentSublineTypeCount == 0;
-  }
-
-  boolean hasVersionsUncoveredUncoveredGaps(List<? extends Versionable> lineVersions,
+ boolean hasVersionsUncoveredUncoveredGaps(List<? extends Versionable> lineVersions,
       List<? extends Versionable> sublineVersions) {
     List<Gap> gapBetweenLineVersions = getGapBetweenSublineVersionable(lineVersions);
     List<Gap> gapBetweenSublineVersions = getGapBetweenSublineVersionable(sublineVersions);
     return !gapBetweenLineVersions.equals(gapBetweenSublineVersions);
   }
 
-  private boolean isSublineRangeEqualToLineRange(List<SublineVersion> sublineVersions,
-      List<LineVersion> lineVersions) {
-    //No sublines no range error validation
-    if (!lineVersions.isEmpty() && sublineVersions.isEmpty()) {
-      return true;
-    }
-    if (!lineVersions.isEmpty()) {
-      return isRangeEqual(lineVersions, sublineVersions);
-    }
-    return false;
-  }
-
-  <T extends Versionable> List<Gap> getGapBetweenSublineVersionable(List<T> versionableList) {
+ <T extends Versionable> List<Gap> getGapBetweenSublineVersionable(List<T> versionableList) {
     List<Gap> linesGap = new ArrayList<>();
     for (int i = 1; i < versionableList.size(); i++) {
       T current = versionableList.get(i - 1);
@@ -139,7 +122,8 @@ public class CoverageValidationService {
   }
 
   //Move to DateHelper
-  boolean isRangeEqual(List<? extends Versionable> firstList, List<? extends Versionable> secondList){
+  boolean isRangeEqual(List<? extends Versionable> firstList,
+      List<? extends Versionable> secondList) {
     LocalDate startRangeFirstList = getStartRange(firstList);
     LocalDate startRangeSecondList = getStartRange(secondList);
     LocalDate endRangeFirstList = getEndRange(firstList);
