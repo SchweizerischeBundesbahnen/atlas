@@ -14,19 +14,18 @@ import {
   DateService,
   MAX_DATE,
   MAX_DATE_FORMATTED,
-  MIN_DATE,
+  MIN_DATE
 } from 'src/app/core/date/date.service';
 import { Page } from 'src/app/core/model/page';
-import { NotBlankValidator } from '../../../../core/validation/not-blank/not-blank-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
+import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 
 @Component({
-  templateUrl: './line-detail.component.html',
+  templateUrl: './line-detail.component.html'
 })
 export class LineDetailComponent
   extends DetailWrapperController<LineVersion>
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   TYPE_OPTIONS = Object.values(LineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   STATUS_OPTIONS = Object.values(Status);
@@ -119,9 +118,9 @@ export class LineDetailComponent
           [
             Validators.required,
             Validators.maxLength(50),
-            NotBlankValidator.notBlank,
-            AtlasCharsetsValidator.sid4pt,
-          ],
+            WhitespaceValidator.notBlankNorLeadingOrTrailing,
+            AtlasCharsetsValidator.sid4pt
+          ]
         ],
         slnid: [version.slnid],
         type: [version.type, [Validators.required]],
@@ -129,40 +128,52 @@ export class LineDetailComponent
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(50), NotBlankValidator.notBlank],
+          [Validators.required, Validators.maxLength(50), WhitespaceValidator.notBlankNorLeadingOrTrailing]
         ],
-        number: [version.number, [Validators.maxLength(50), AtlasCharsetsValidator.iso88591]],
+        number: [
+          version.number,
+          [Validators.maxLength(50), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]
+        ],
         alternativeName: [
           version.alternativeName,
-          [Validators.maxLength(50), AtlasCharsetsValidator.iso88591],
+          [Validators.maxLength(50), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]
         ],
         combinationName: [
           version.combinationName,
-          [Validators.maxLength(50), AtlasCharsetsValidator.iso88591],
+          [Validators.maxLength(50), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]
         ],
-        longName: [version.longName, [Validators.maxLength(255), AtlasCharsetsValidator.iso88591]],
-        icon: [version.icon, [Validators.maxLength(255), AtlasCharsetsValidator.iso88591]],
+        longName: [
+          version.longName,
+          [Validators.maxLength(255), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]
+        ],
+        icon: [
+          version.icon,
+          [Validators.maxLength(255), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]
+        ],
         colorFontRgb: [version.colorFontRgb || '#000000', [Validators.required]],
         colorBackRgb: [version.colorBackRgb || '#FFFFFF', [Validators.required]],
         colorFontCmyk: [version.colorFontCmyk || '100,100,100,100', [Validators.required]],
         colorBackCmyk: [version.colorBackCmyk || '0,0,0,0', [Validators.required]],
         description: [
           version.description,
-          [Validators.maxLength(255), AtlasCharsetsValidator.iso88591],
+          [Validators.maxLength(255), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
+          [Validators.required]
         ],
         validTo: [
           version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required],
+          [Validators.required]
         ],
-        comment: [version.comment, [Validators.maxLength(1500), AtlasCharsetsValidator.iso88591]],
-        etagVersion: version.etagVersion,
+        comment: [
+          version.comment,
+          [Validators.maxLength(1500), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]
+        ],
+        etagVersion: version.etagVersion
       },
       {
-        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
       }
     );
   }
