@@ -138,7 +138,7 @@ export class SublineDetailComponent
           [
             Validators.required,
             Validators.maxLength(50),
-            WhitespaceValidator.notBlankNorLeadingOrTrailing,
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.sid4pt
           ]
         ],
@@ -152,19 +152,19 @@ export class SublineDetailComponent
           [
             Validators.required,
             Validators.maxLength(50),
-            WhitespaceValidator.notBlankNorLeadingOrTrailing,
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591
           ]
         ],
         number: [
           version.number,
-          [Validators.maxLength(50), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]],
+          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]],
         longName: [
           version.longName,
-          [Validators.maxLength(255), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]],
+          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]],
         description: [
           version.description,
-          [Validators.maxLength(255), WhitespaceValidator.notBlankNorLeadingOrTrailing,AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding,AtlasCharsetsValidator.iso88591]
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
