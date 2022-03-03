@@ -14,19 +14,19 @@ import {
   DateService,
   MAX_DATE,
   MAX_DATE_FORMATTED,
-  MIN_DATE,
+  MIN_DATE
 } from '../../../core/date/date.service';
 import { Page } from '../../../core/model/page';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
+import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
-  templateUrl: './timetable-field-number-detail.component.html',
+  templateUrl: './timetable-field-number-detail.component.html'
 })
 export class TimetableFieldNumberDetailComponent
   extends DetailWrapperController<TimetableFieldNumberVersion>
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
   DESCRIPTION_PLACEHOLDER = 'Grenze - Bad, Bahnhof - Basel SBB - Zürich HB - Chur';
@@ -116,16 +116,17 @@ export class TimetableFieldNumberDetailComponent
           [
             Validators.required,
             Validators.maxLength(this.MAX_LENGTH_50),
-            AtlasCharsetsValidator.sid4pt,
-          ],
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.sid4pt
+          ]
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
+          [Validators.required]
         ],
         validTo: [
           version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required],
+          [Validators.required]
         ],
         ttfnid: version.ttfnid,
         businessOrganisation: [
@@ -133,30 +134,31 @@ export class TimetableFieldNumberDetailComponent
           [
             Validators.required,
             Validators.maxLength(this.MAX_LENGTH_50),
-            AtlasCharsetsValidator.iso88591,
-          ],
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591
+          ]
         ],
         number: [
           version.number,
           [
             Validators.required,
             Validators.maxLength(this.MAX_LENGTH_50),
-            AtlasCharsetsValidator.numericWithDot,
-          ],
+            AtlasCharsetsValidator.numericWithDot
+          ]
         ],
         description: [
           version.description,
-          [Validators.maxLength(this.MAX_LENGTH_255), AtlasCharsetsValidator.iso88591],
+          [Validators.maxLength(this.MAX_LENGTH_255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         comment: [
           version.comment,
-          [Validators.maxLength(this.MAX_LENGTH_250), AtlasCharsetsValidator.iso88591],
+          [Validators.maxLength(this.MAX_LENGTH_250), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         status: version.status,
-        etagVersion: version.etagVersion,
+        etagVersion: version.etagVersion
       },
       {
-        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
       }
     );
   }
