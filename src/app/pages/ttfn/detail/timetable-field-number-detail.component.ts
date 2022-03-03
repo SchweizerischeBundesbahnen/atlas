@@ -116,7 +116,7 @@ export class TimetableFieldNumberDetailComponent
           [
             Validators.required,
             Validators.maxLength(this.MAX_LENGTH_50),
-            WhitespaceValidator.notBlankNorLeadingOrTrailing,
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.sid4pt
           ]
         ],
@@ -134,7 +134,7 @@ export class TimetableFieldNumberDetailComponent
           [
             Validators.required,
             Validators.maxLength(this.MAX_LENGTH_50),
-            WhitespaceValidator.notBlankNorLeadingOrTrailing,
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591
           ]
         ],
@@ -148,11 +148,11 @@ export class TimetableFieldNumberDetailComponent
         ],
         description: [
           version.description,
-          [Validators.maxLength(this.MAX_LENGTH_255), WhitespaceValidator.notBlankNorLeadingOrTrailing, AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(this.MAX_LENGTH_255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         comment: [
           version.comment,
-          [Validators.maxLength(this.MAX_LENGTH_250), WhitespaceValidator.notBlankNorLeadingOrTrailing, AtlasCharsetsValidator.iso88591]
+          [Validators.maxLength(this.MAX_LENGTH_250), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
         ],
         status: version.status,
         etagVersion: version.etagVersion
