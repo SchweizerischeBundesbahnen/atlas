@@ -7,17 +7,17 @@ describe('Whitespace Validator', () => {
     //given
     const formControl = new FormControl('    ');
     //when
-    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
+    const errors = WhitespaceValidator.blankOrEmptySpaceSurrounding(formControl);
     //then
     expect(errors).toBeDefined();
     expect(errors?.blank).toBeDefined();
   });
-  
+
   it('should return validation error when leading whitespaces', () => {
     //given
     const formControl = new FormControl(' leading');
     //when
-    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
+    const errors = WhitespaceValidator.blankOrEmptySpaceSurrounding(formControl);
     //then
     expect(errors).toBeDefined();
     expect(errors?.whitespaces).toBeDefined();
@@ -27,7 +27,7 @@ describe('Whitespace Validator', () => {
     //given
     const formControl = new FormControl('trailing ');
     //when
-    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
+    const errors = WhitespaceValidator.blankOrEmptySpaceSurrounding(formControl);
     //then
     expect(errors).toBeDefined();
     expect(errors?.whitespaces).toBeDefined();
@@ -37,7 +37,7 @@ describe('Whitespace Validator', () => {
     //given
     const formControl = new FormControl('  both ');
     //when
-    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
+    const errors = WhitespaceValidator.blankOrEmptySpaceSurrounding(formControl);
     //then
     expect(errors).toBeDefined();
     expect(errors?.whitespaces).toBeDefined();
@@ -47,7 +47,7 @@ describe('Whitespace Validator', () => {
     //given
     const formControl = new FormControl(null);
     //when
-    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
+    const errors = WhitespaceValidator.blankOrEmptySpaceSurrounding(formControl);
     //then
     expect(errors).toBeNull();
   });
@@ -56,7 +56,7 @@ describe('Whitespace Validator', () => {
     //given
     const formControl = new FormControl('');
     //when
-    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
+    const errors = WhitespaceValidator.blankOrEmptySpaceSurrounding(formControl);
     //then
     expect(errors).toBeNull();
   });
@@ -65,7 +65,7 @@ describe('Whitespace Validator', () => {
     //given
     const formControl = new FormControl('ok');
     //when
-    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
+    const errors = WhitespaceValidator.blankOrEmptySpaceSurrounding(formControl);
     //then
     expect(errors).toBeNull();
   });
@@ -74,7 +74,7 @@ describe('Whitespace Validator', () => {
     //given
     const formControl = new FormControl('ok ok');
     //when
-    const errors = WhitespaceValidator.notBlankNorLeadingOrTrailing(formControl);
+    const errors = WhitespaceValidator.blankOrEmptySpaceSurrounding(formControl);
     //then
     expect(errors).toBeNull();
   });
