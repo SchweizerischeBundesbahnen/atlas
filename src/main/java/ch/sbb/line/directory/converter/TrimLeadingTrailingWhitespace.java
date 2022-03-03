@@ -14,13 +14,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrimLeadingTrailingWhitespace extends SimpleModule {
 
+  private final StdScalarDeserializer<String> jsonStringDeserializer = new StdScalarDeserializer<>(
+      String.class) {
+    @Override
+    public String deserialize(JsonParser jsonParser, DeserializationContext ctx)
+        throws IOException {
+      return jsonParser.getValueAsString().trim();
+    }
+  };
+
   TrimLeadingTrailingWhitespace() {
-    addDeserializer(String.class, new StdScalarDeserializer<>(String.class) {
-      @Override
-      public String deserialize(JsonParser jsonParser, DeserializationContext ctx)
-          throws IOException {
-        return jsonParser.getValueAsString().trim();
-      }
-    });
+    addDeserializer(String.class, jsonStringDeserializer);
   }
+
 }
