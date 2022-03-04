@@ -1,14 +1,15 @@
 @import "src/styles/variables";
 
 a {
-  color: hsl(216, 19%, 67%);
+  color: $foreground;
   text-decoration: none;
   font-weight: normal;
   font-size: small;
   cursor: pointer;
+  padding-right: 12px;
 }
 
 .isSelected {
-  color: $white;
-  border-bottom: $white solid 1px;
+  color: $navigationDisabled;
+  border-bottom: $navigationDisabled solid 1px;
 }
