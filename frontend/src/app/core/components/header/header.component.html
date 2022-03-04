@@ -1,16 +1,9 @@
-<mat-toolbar class="home-header" color="primary">
-  <button type="button" class="btn btn-primary me-3" (click)="toggle()">
-    <i class="bi bi-list"></i>
-  </button>
-  <div>
-    <img
-      width="250px"
-      src="assets/images/header-icons.svg"
-      alt="{{ 'HOME.HEADER' | translate }} icons"
-    />
+<mat-toolbar class="home-header">
+  <div class="logo-placeholder">
+    <div class="logo">&nbsp;</div>
   </div>
-  <div class="d-flex ms-3">
-    <span id="header">{{ 'HOME.HEADER' | translate }}</span>
+  <div class="d-flex ms-3 header-container">
+    <span class="header-title">{{ 'HOME.HEADER' | translate }}</span>
     <div class="header-subheader">
       <span>Version {{ version }}</span>
       <span *ngIf="showLabel()" [ngClass]="getEnvLabelClass()">
