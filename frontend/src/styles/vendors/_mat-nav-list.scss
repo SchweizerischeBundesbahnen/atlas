@@ -1,5 +1,17 @@
 @import "src/styles/variables";
 
+.mat-sidenav {
+  background: #DEDDDD;
+}
+
+.nav-list {
+  width: 239px;
+  background: #E9E9E9;
+  font-weight: bold;
+}
+
 .mat-list-base .mat-list-item {
   color: $foreground;
+  font-size: 13px;
 }
+
