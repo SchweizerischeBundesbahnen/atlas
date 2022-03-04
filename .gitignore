@@ -47,3 +47,4 @@ http-requests/http-client.private.env.json
 /src/main/resources/static/docs/
 /src/main/resources/static/
 /scripts/__pycache__/
+/.idea/uiDesigner.xml
