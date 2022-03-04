@@ -2,6 +2,7 @@
 
 i.bi {
   font-size: $navigationItemFontSize;
+  color: $foreground;
 }
 
 .app-body {
@@ -13,7 +14,7 @@ i.bi {
 
 .mat-drawer-container,
 .mat-drawer-content {
-  background: $appBackgroundColor;
+  background: $background;
 }
 
 
