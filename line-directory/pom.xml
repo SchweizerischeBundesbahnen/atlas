@@ -55,7 +55,7 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>ch.sbb</groupId>
+            <groupId>ch.sbb.atlas</groupId>
             <artifactId>versioning</artifactId>
         </dependency>
         <dependency>
