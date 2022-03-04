@@ -2,6 +2,8 @@
 
 $headerHeight: 121px;
 $logoWidth: 139px;
+$logoMarginLeft: 45px;
+$appHeaderColor: #e8e8e8;
 
 .logo-placeholder {
   background: $white;
@@ -9,17 +11,24 @@ $logoWidth: 139px;
   height: $headerHeight;
   text-align: center;
   vertical-align: middle;
-}
 
-.logo {
-  position: absolute;
-  top: 35px;
-  left: 45px;
-  width: 45px;
-  height: 45px;
-  background: #06348b url('/assets/images/a-logo.svg') no-repeat 12px 12px;
-  border-radius: 9.57px;
-  background-size: 23px 23px;
+  .logo {
+    position: absolute;
+    top: 35px;
+    left: $logoMarginLeft;
+    width: 45px;
+    height: 45px;
+    background: $accentColor url('/assets/images/a-logo.svg') no-repeat 12px 12px;
+    border-radius: 9.57px;
+    background-size: 23px 23px;
+  }
+
+  .title {
+    color: $accentColor;
+    position: absolute;
+    top: 80px;
+    left: $logoMarginLeft;
+  }
 }
 
 .spacer {
@@ -28,7 +37,7 @@ $logoWidth: 139px;
 
 .header-container {
   padding-left: 181px;
-  color: $defaultFontColor;
+  color: $navigationDisabled;
 }
 
 .home-header {
