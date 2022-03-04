@@ -560,7 +560,6 @@ public class CoverageValidationServiceTest {
     assertThat(result).isTrue();
   }
 
-
   /**
    * 11. Case: Line fully covered by 3 different sublines with the same Type
    *
@@ -604,6 +603,77 @@ public class CoverageValidationServiceTest {
     sublineVersions.add(firtsSublineVersion);
     sublineVersions.add(secondSublineVersion);
     sublineVersions.add(thirdSublineVersion);
+    doReturn(lineVersions).when(lineVersionRepository)
+                          .findAllBySlnidOrderByValidFrom(firstLineVersion.getSlnid());
+    doReturn(sublineVersions).when(sublineVersionRepository)
+                             .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
+    //when
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
+    //then
+    assertThat(result).isTrue();
+  }
+
+  /**
+   * 11. Case: Line fully covered by 5 different sublines with the same Type
+   *
+   * Line	          |-----------------------------|
+   * Subline A1_1   |--------------|                 (Technical)
+   * Subline A1_2		  |----|                         (Technical)
+   * Subline A1_3		    |-------|                    (Technical)
+   * Subline A1_4		               |--------------|  (Technical)
+   * Subline A1_5		                 |----------|    (Technical)
+   * Result OK
+   */
+  @Test
+  public void shouldReturnTrueWhenDifferentSubLineWithTheSameTypesCoverAndMultipleOverlappingALineDifferent() {
+    //given
+    LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
+                                               .validFrom(LocalDate.of(2000, 1, 2))
+                                               .validTo(LocalDate.of(2000, 12, 31))
+                                               .slnid("ch:1000").build();
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(firstLineVersion);
+    SublineVersion firtsSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                        .validFrom(LocalDate.of(2000, 1, 2))
+                                                        .validTo(LocalDate.of(2000, 5, 31))
+                                                        .type(SublineType.TECHNICAL)
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1000")
+                                                        .build();
+    SublineVersion fourthSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                         .validFrom(LocalDate.of(2000, 2, 1))
+                                                         .validTo(LocalDate.of(2000, 2, 28))
+                                                         .type(SublineType.TECHNICAL)
+                                                         .mainlineSlnid(firstLineVersion.getSlnid())
+                                                         .slnid("ch:1001")
+                                                         .build();
+    SublineVersion secondSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                         .validFrom(LocalDate.of(2000, 3, 1))
+                                                         .validTo(LocalDate.of(2000, 4, 30))
+                                                         .type(SublineType.TECHNICAL)
+                                                         .mainlineSlnid(firstLineVersion.getSlnid())
+                                                         .slnid("ch:1001")
+                                                         .build();
+    SublineVersion thirdSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                        .validFrom(LocalDate.of(2000, 6, 1))
+                                                        .validTo(LocalDate.of(2000, 12, 31))
+                                                        .type(SublineType.TECHNICAL)
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1002")
+                                                        .build();
+    SublineVersion fifthSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                        .validFrom(LocalDate.of(2000, 7, 1))
+                                                        .validTo(LocalDate.of(2000, 11, 30))
+                                                        .type(SublineType.TECHNICAL)
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1002")
+                                                        .build();
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+    sublineVersions.add(firtsSublineVersion);
+    sublineVersions.add(secondSublineVersion);
+    sublineVersions.add(thirdSublineVersion);
+    sublineVersions.add(fourthSublineVersion);
+    sublineVersions.add(fifthSublineVersion);
     doReturn(lineVersions).when(lineVersionRepository)
                           .findAllBySlnidOrderByValidFrom(firstLineVersion.getSlnid());
     doReturn(sublineVersions).when(sublineVersionRepository)

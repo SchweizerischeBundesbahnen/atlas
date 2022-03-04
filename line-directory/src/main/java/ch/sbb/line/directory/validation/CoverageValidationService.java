@@ -45,6 +45,7 @@ public class CoverageValidationService {
     if (sublineVersions.isEmpty()) {
       return true;
     }
+
     List<SublineVersion> technincalSublines = getSublinesByType(sublineVersions,
         SublineType.TECHNICAL);
     List<SublineVersion> compensationSublines = getSublinesByType(sublineVersions,
@@ -74,17 +75,23 @@ public class CoverageValidationService {
 
   private boolean lineCompletelyCoverSublines(List<LineVersion> lineVersions,
       List<SublineVersion> sublineVersions) {
+    //Make sure the lists are sorted!!
+    lineVersions.sort(comparing(LineVersion::getValidFrom));
+    sublineVersions.sort(comparing(SublineVersion::getValidFrom));
+    //Remove overlapping version to get the right Ranges
+    List<LineVersion> overlappingLineVersion = filterOverlappingVersion(lineVersions);
+    List<SublineVersion> overlappingSublineVersion = filterOverlappingVersion(sublineVersions);
 
-    boolean areSublinesInsideOfLineRange = isRangeEqual(lineVersions, sublineVersions);
-    boolean hasLineGapsUncoveredBySublines = hasVersionsUncoveredUncoveredGaps(lineVersions,
-        sublineVersions);
+    boolean areSublinesInsideOfLineRange = isRangeEqual(overlappingLineVersion, overlappingSublineVersion);
+    boolean hasLineGapsUncoveredBySublines = hasVersionsUncoveredUncoveredGaps(overlappingLineVersion,
+        overlappingSublineVersion);
     return areSublinesInsideOfLineRange && !hasLineGapsUncoveredBySublines;
   }
 
   boolean hasVersionsUncoveredUncoveredGaps(List<? extends Versionable> lineVersions,
       List<? extends Versionable> sublineVersions) {
-    List<DataRange> firstListDataRange = getCoveredDataRanges(filterOverlappingVersion(lineVersions));
-    List<DataRange> secondListDataRange = getCoveredDataRanges(filterOverlappingVersion(sublineVersions));
+    List<DataRange> firstListDataRange = getCoveredDataRanges(lineVersions);
+    List<DataRange> secondListDataRange = getCoveredDataRanges(sublineVersions);
     return !firstListDataRange.equals(secondListDataRange);
   }
 
