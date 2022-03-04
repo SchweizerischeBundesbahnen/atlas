@@ -2,6 +2,7 @@
 
 i.bi {
   font-size: $navigationItemFontSize;
+  color: $foreground;
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
