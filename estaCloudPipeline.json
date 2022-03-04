@@ -12,9 +12,9 @@
     "artifactorySupressProjectSubfolderCreation": true
   },
   "helm" : {
-    "chart": "line-directory-backend",
+    "chart": "line-directory-backend/line-directory",
     "repository": "atlas.helm",
-    "release": "line-directory-backend"
+    "release": "line-directory"
   },
   "mvn": {
     "parentPom": "pom.xml",
@@ -92,7 +92,7 @@
       "staging": {
         "stagingType": "simple",
         "stages": [
-          "dev", "test"
+          "dev"
         ]
       },
       "dependencyCheckEnabled": true,
