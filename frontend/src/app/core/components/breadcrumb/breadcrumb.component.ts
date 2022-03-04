@@ -4,7 +4,7 @@ import {
   ActivatedRouteSnapshot,
   NavigationEnd,
   Router,
-  UrlSegment,
+  UrlSegment
 } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { Pages } from '../../../pages/pages';
   selector: 'app-breadcrumb',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.component.scss']
 })
 export class BreadcrumbComponent implements OnDestroy {
   public isHome = false;
@@ -44,7 +45,7 @@ export class BreadcrumbComponent implements OnDestroy {
 
         this.breadcrumbs.push({
           name: node.data.breadcrumb,
-          url: '/' + url,
+          url: '/' + url
         });
       }
     }
