@@ -1,0 +1,17 @@
+// STAM: app variables colors, size, etc. (split file when to many)
+// see https://sass-lang.com/documentation/variables
+
+/* COLOR */
+$gray-lighter: hsl(0, 0%, 93%);
+$black: hsl(0, 0%, 0%);
+$white: hsl(0, 0%, 100%);
+
+$successColor: hsl(120, 100%, 25%);
+$errorColor: hsl(0, 83%, 46%);
+$warningColor: hsl(39, 100%, 50%);
+
+/* SIZE */
+$flexSpaceSize: 1 1 auto;
+$navigationItemFontSize: 16px;
+
+/* OTHER */
