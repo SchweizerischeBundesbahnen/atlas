@@ -11,6 +11,12 @@ i.bi {
   width: 100%;
 }
 
+.mat-drawer-container,
+.mat-drawer-content {
+  background: $appBackgroundColor;
+}
+
+
 .sidenavBtn {
   position: absolute;
   z-index: 2;
@@ -22,11 +28,6 @@ i.bi {
 
 .nav-list {
   padding-top: 40px;
-}
-
-.mat-drawer-container,
-.mat-drawer-content {
-  background: $appBackgroundColor;
 }
 
 .main-container {

@@ -3,17 +3,20 @@
 
 /* COLOR */
 
-$appHeaderColor: hsl(0, 0%, 91%);
-$appBackgroundColor: hsl(0, 0%, 95%);
-$defaultFontColor: hsl(0, 0%, 17%);
+$primaryColor: #dfdfdf;
+$accentColor: #06348b;
 
-$gray-lighter: hsl(0, 0%, 93%);
-$black: hsl(0, 0%, 0%);
-$white: hsl(0, 0%, 100%);
+$appHeaderColor: #e8e8e8;
+$appBackgroundColor: #f2f2f2;
+$defaultFontColor: #2b2b2b;
 
-$successColor: hsl(120, 100%, 25%);
-$errorColor: hsl(0, 83%, 46%);
-$warningColor: hsl(39, 100%, 50%);
+$gray-lighter: #ededed;
+$black: #000000;
+$white: #ffffff;
+
+$successColor: #008000;
+$errorColor: #d71414;
+$warnColor: #ff0000;
 
 /* SIZE */
 $flexSpaceSize: 1 1 auto;

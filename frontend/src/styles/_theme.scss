@@ -5,14 +5,14 @@
 @include mat-core();
 
 // Define the default theme (same as the example above).
-$app-primary: mat-palette($atlas-secondary, 500);
-$app-accent: mat-palette($atlas-primary, 500, 400, 600);
-$app-warn: mat-palette($atlas-red, 700);
+$app-primary: mat-palette($atlas-primary, default);
+$app-accent: mat-palette($atlas-accent, default);
+$app-warn: mat-palette($atlas-red, default);
 
 $app-theme: mat-light-theme((
         color: (
                 primary: $app-primary,
-                accent: $app-accent,
+                accent:$app-accent,
                 warn: $app-warn
         ),
 ));
@@ -20,6 +20,8 @@ $app-theme: mat-light-theme((
 // Include the default theme styles (color and default density)
 @include angular-material-theme($app-theme);
 
+
+// TODO: move to vendor/_<control-name>.scss
 .mat-form-field-type-mat-date-range-input .mat-form-field-infix {
   width: fit-content !important;
 }
