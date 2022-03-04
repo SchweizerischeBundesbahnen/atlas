@@ -39,10 +39,6 @@ describe('HeaderComponent', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
-
-    it('should render header', () => {
-      expect(fixture.nativeElement.querySelector('#header').textContent).toContain('HOME.HEADER');
-    });
   });
 
   describe('Component logic', () => {
