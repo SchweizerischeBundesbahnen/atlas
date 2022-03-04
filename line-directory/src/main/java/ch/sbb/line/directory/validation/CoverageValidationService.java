@@ -1,6 +1,9 @@
 package ch.sbb.line.directory.validation;
 
+import static ch.sbb.line.directory.enumaration.SublineType.COMPENSATION;
+import static ch.sbb.line.directory.enumaration.SublineType.TECHNICAL;
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -12,7 +15,6 @@ import ch.sbb.line.directory.service.CoverageService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +31,8 @@ public class CoverageValidationService {
   public void validateLineSublineCoverage(LineVersion lineVersion) {
     List<LineVersion> lineVersions = getSortedLineVersions(lineVersion);
     List<SublineVersion> sublineVersions = getSortedSublineVersions(lineVersion);
-    boolean areLinesAndSublinesCompletelyCovered = areLinesAndSublinesCompletelyCovered(
-        lineVersions, sublineVersions);
+    boolean areLinesAndSublinesCompletelyCovered =
+        areLinesAndSublinesCompletelyCovered(lineVersions, sublineVersions);
     if (sublineVersions.isEmpty()) {
       coverageService.coverageComplete(lineVersion, sublineVersions);
     } else if (areLinesAndSublinesCompletelyCovered) {
@@ -45,46 +47,43 @@ public class CoverageValidationService {
     if (sublineVersions.isEmpty()) {
       return true;
     }
+    List<SublineVersion> technincalSublines = getSublinesByType(sublineVersions, TECHNICAL);
+    List<SublineVersion> compensationSublines = getSublinesByType(sublineVersions, COMPENSATION);
 
-    List<SublineVersion> technincalSublines = getSublinesByType(sublineVersions,
-        SublineType.TECHNICAL);
-    List<SublineVersion> compensationSublines = getSublinesByType(sublineVersions,
-        SublineType.COMPENSATION);
-
-    boolean lineCompletelyCoverByTechnicalSublines = false;
-    if (!technincalSublines.isEmpty()) {
-      lineCompletelyCoverByTechnicalSublines = lineCompletelyCoverSublines(lineVersions,
-          technincalSublines);
-    }
-    boolean lineCompletelyCoverByCompensationSublines = false;
-    if (!compensationSublines.isEmpty()) {
-      lineCompletelyCoverByCompensationSublines = lineCompletelyCoverSublines(lineVersions,
-          compensationSublines);
-    }
+    boolean lineCompletelyCoverByTechnicalSublines =
+        isLineCompletelyCoveredBySublines(lineVersions, technincalSublines);
+    boolean lineCompletelyCoverByCompensationSublines =
+        isLineCompletelyCoveredBySublines(lineVersions, compensationSublines);
 
     return lineCompletelyCoverByCompensationSublines || lineCompletelyCoverByTechnicalSublines;
   }
 
+  private boolean isLineCompletelyCoveredBySublines(List<LineVersion> lineVersions,
+      List<SublineVersion> sublinesVersions) {
+    boolean lineCompletelyCoverByTechnicalSublines = false;
+    if (!sublinesVersions.isEmpty()) {
+      lineCompletelyCoverByTechnicalSublines = lineCompletelyCoverSublines(lineVersions,
+          sublinesVersions);
+    }
+    return lineCompletelyCoverByTechnicalSublines;
+  }
+
   private List<SublineVersion> getSublinesByType(List<SublineVersion> sublineVersions,
-      SublineType compensation) {
-    return sublineVersions.stream()
-                          .filter(s -> s.getType()
-                              == compensation)
-                          .collect(Collectors.toList());
+      SublineType sublineType) {
+    return sublineVersions.stream().filter(s -> s.getType() == sublineType).collect(toList());
   }
 
   private boolean lineCompletelyCoverSublines(List<LineVersion> lineVersions,
       List<SublineVersion> sublineVersions) {
-    //Make sure the lists are sorted!!
-    lineVersions.sort(comparing(LineVersion::getValidFrom));
-    sublineVersions.sort(comparing(SublineVersion::getValidFrom));
-    //Remove overlapping version to get the right Ranges
-    List<LineVersion> overlappingLineVersion = filterOverlappingVersion(lineVersions);
-    List<SublineVersion> overlappingSublineVersion = filterOverlappingVersion(sublineVersions);
 
-    boolean areSublinesInsideOfLineRange = isRangeEqual(overlappingLineVersion, overlappingSublineVersion);
-    boolean hasLineGapsUncoveredBySublines = hasVersionsUncoveredUncoveredGaps(overlappingLineVersion,
-        overlappingSublineVersion);
+    //Remove overlapped versions to get the right Ranges
+    List<LineVersion> filteredLineVersions = removeOverlappedVersion(lineVersions);
+    List<SublineVersion> filteredSublineVersions = removeOverlappedVersion(sublineVersions);
+
+    boolean areSublinesInsideOfLineRange =
+        isRangeEqual(filteredLineVersions, filteredSublineVersions);
+    boolean hasLineGapsUncoveredBySublines =
+        hasVersionsUncoveredUncoveredGaps(filteredLineVersions, filteredSublineVersions);
     return areSublinesInsideOfLineRange && !hasLineGapsUncoveredBySublines;
   }
 
@@ -95,51 +94,12 @@ public class CoverageValidationService {
     return !firstListDataRange.equals(secondListDataRange);
   }
 
-  <T extends Versionable> List<T> filterOverlappingVersion(List<T> versionableList) {
-    if(versionableList.size() == 1){
-      return versionableList;
-    }
-    List<T> result = new ArrayList<>();
-    LocalDate currentValidTo = versionableList.get(0).getValidTo();
-    result.add(versionableList.get(0));
-    for (int i = 1; i < versionableList.size(); i++) {
-      if(versionableList.get(i).getValidTo().isEqual(currentValidTo) || versionableList.get(i).getValidTo().isAfter(currentValidTo)){
-        currentValidTo = versionableList.get(i).getValidTo();
-        result.add(versionableList.get(i));
-      }
-    }
-    return result;
-  }
-
-  <T extends Versionable> List<DataRange> getCoveredDataRanges(List<T> versionableList) {
-    List<DataRange> coveredDataRages = new ArrayList<>();
-    if (versionableList.size() == 1) {
-      T firstVersionable = versionableList.get(0);
-      DataRange currentDataRange = new DataRange(firstVersionable.getValidFrom(),
-          firstVersionable.getValidTo());
-      coveredDataRages.add(currentDataRange);
-      return coveredDataRages;
-    }
-    if (versionableList.size() >= 1) {
-      T firstVersionable = versionableList.get(0);
-      DataRange currentDataRange = new DataRange(firstVersionable.getValidFrom(),
-          firstVersionable.getValidTo());
-      for (int i = 1; i < versionableList.size(); i++) {
-        T current = versionableList.get(i - 1);
-        T next = versionableList.get(i);
-        if ((next.getValidFrom().isBefore(current.getValidTo().plusDays(1))
-            || next.getValidFrom().isEqual(current.getValidTo().plusDays(1)))) {
-          currentDataRange.setTo(next.getValidTo());
-          if ((versionableList.size() - 1) == i) {
-            coveredDataRages.add(currentDataRange);
-            return coveredDataRages;
-          }
-        } else {
-          coveredDataRages.add(currentDataRange);
-          currentDataRange = new DataRange(next.getValidFrom(), next.getValidTo());
-        }
-      }
-    }
+  private <T extends Versionable> List<DataRange> getDataRangeFromSingleVersion(
+      List<T> versionableList, List<DataRange> coveredDataRages) {
+    T firstVersionable = versionableList.get(0);
+    DataRange currentDataRange = new DataRange(firstVersionable.getValidFrom(),
+        firstVersionable.getValidTo());
+    coveredDataRages.add(currentDataRange);
     return coveredDataRages;
   }
 
@@ -158,6 +118,52 @@ public class CoverageValidationService {
     }
     lineVersions.sort(comparing(LineVersion::getValidFrom));
     return lineVersions;
+  }
+
+  <T extends Versionable> List<T> removeOverlappedVersion(List<T> versionableList) {
+    if (versionableList.size() == 1) {
+      return versionableList;
+    }
+    versionableList.sort(comparing(T::getValidFrom)); //Make sure the list is sorted!!
+    List<T> result = new ArrayList<>();
+    LocalDate currentValidTo = versionableList.get(0).getValidTo();
+    result.add(versionableList.get(0));
+    for (int i = 1; i < versionableList.size(); i++) {
+      T actual = versionableList.get(i);
+      if (actual.getValidTo().isEqual(currentValidTo)
+          || actual.getValidTo().isAfter(currentValidTo)) {
+        currentValidTo = actual.getValidTo();
+        result.add(actual);
+      }
+    }
+    return result;
+  }
+
+  <T extends Versionable> List<DataRange> getCoveredDataRanges(List<T> versionableList) {
+    List<DataRange> coveredDataRages = new ArrayList<>();
+    if (versionableList.size() == 1) {
+      return getDataRangeFromSingleVersion(versionableList, coveredDataRages);
+    }
+    if (versionableList.size() > 1) {
+      T firstItem = versionableList.get(0);
+      DataRange currentDataRange = new DataRange(firstItem.getValidFrom(), firstItem.getValidTo());
+      for (int i = 1; i < versionableList.size(); i++) {
+        T current = versionableList.get(i - 1);
+        T next = versionableList.get(i);
+        if ((next.getValidFrom().isBefore(current.getValidTo().plusDays(1))
+            || next.getValidFrom().isEqual(current.getValidTo().plusDays(1)))) {
+          currentDataRange.setTo(next.getValidTo());
+          if ((versionableList.size() - 1) == i) {
+            coveredDataRages.add(currentDataRange);
+            return coveredDataRages;
+          }
+        } else {
+          coveredDataRages.add(currentDataRange);
+          currentDataRange = new DataRange(next.getValidFrom(), next.getValidTo());
+        }
+      }
+    }
+    return coveredDataRages;
   }
 
   //Move to DateHelper
