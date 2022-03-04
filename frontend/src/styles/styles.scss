@@ -1,0 +1,18 @@
+// app variables (color, size, etc.)
+@import 'variables';
+
+// Presentation framework
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-icons/font/bootstrap-icons.css';
+
+// Theme (based on Material)
+@import 'theme';
+
+// Vendors
+@import 'vendors/material';
+
+// App 3rd party components
+@import 'other-components/components';
+
+// mixin expressions and functions
+@import 'mixin-expressions/expressions';
