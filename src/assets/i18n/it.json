@@ -127,7 +127,7 @@
     "MATDATEPICKERPARSE": "Formato della fate non valido (deve essere TT.MM.YYYY)",
     "DATE_RANGE_ERROR": "Valido da non può essere maggiore die valido a: {{date}}",
     "PATTERN": "__it__Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
-    "WHITESPACES": "__it__Darf nicht mit einem Leerzeichen starten oder enden."
+    "WHITESPACES": "Non può iniziare o terminare con uno spazio."
   },
   "LIDI": {
     "SWISS_LINE_NUMBER": "CH-Liniennummer",
