@@ -28,7 +28,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>ch.sbb</groupId>
+                <groupId>ch.sbb.atlas</groupId>
                 <artifactId>versioning</artifactId>
                 <version>${project.version}</version>
             </dependency>
