@@ -1,0 +1,104 @@
+{
+  "$schema": "https://esta-nginx-prod-release-code.app.obelix.otc.sbb.ch/code/projects/KD_ESTA/repos/esta-cloud-pipeline/raw/resources/estaCloudPipelineSchema.json?at=refs%2Ftags%2Frelease",
+  "mainBranch": "master",
+  "hotfixBranch": "hotfix",
+  "jdkLabel": "OpenJDK 11 64-Bit",
+  "keepReleaseBuildLogsOnJenkins": true,
+  "sendBuildStatusMail": false,
+  "docker": {
+    "artifactoryDockerRepo": "atlas.docker",
+    "openshiftAppName": "atlas-gateway-api",
+    "artifactorySupressProjectSubfolderCreation": true
+  },
+  "helm" : {
+    "chart": "atlas-gateway",
+    "repository": "atlas.helm",
+  	"release": "atlas-gateway"
+  },
+  "mvn": {
+    "parentPom": "pom.xml",
+    "deployableArtifactsPom": "pom.xml",
+    "artifactoryMavenRepo": "atlas.mvn",
+    "mavenLabel": "Apache Maven 3.6"
+  },
+  "stages": [
+    {
+      "stageName": "dev",
+      "isOpenshiftDeploymentEnabled": true,
+      "openshiftProject": "atlas-dev",
+      "openshiftCluster": "aws_aws01t",
+      "openshiftJenkinsCredentialsId": "e499fd92-711c-469b-9bc3-a67c748341d9",
+      "preCiDeploymentJob": "",
+      "postCiDeploymentJob": "KI_ATLAS/atlas-apim-configuration/master"
+    },
+    {
+      "stageName": "test",
+      "isOpenshiftDeploymentEnabled": true,
+      "openshiftProject": "atlas-test",
+      "openshiftCluster": "aws_aws01t",
+      "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
+      "preCiDeploymentJob": "",
+      "postCiDeploymentJob": "KI_ATLAS/atlas-apim-configuration/master"
+    },
+    {
+      "stageName": "int",
+      "isOpenshiftDeploymentEnabled": true,
+      "openshiftProject": "atlas-int",
+      "openshiftCluster": "aws_maggie",
+      "openshiftJenkinsCredentialsId": "3a6d45b4-ab76-467a-a970-44038a0120fd",
+      "preCiDeploymentJob": "",
+      "postCiDeploymentJob": "KI_ATLAS/atlas-apim-configuration/master"
+    },
+    {
+      "stageName": "prod",
+      "isOpenshiftDeploymentEnabled": true,
+      "openshiftProject": "atlas-prod",
+      "openshiftCluster": "aws_maggie",
+      "openshiftJenkinsCredentialsId": "ssp-p9d3z05co-ccn4-44b3-y824-1ut86c5e693",
+      "preCiDeploymentJob": "",
+      "postCiDeploymentJob": "KI_ATLAS/atlas-apim-configuration/master"
+    }
+  ],
+  "teamsNotifications": {
+    "url": "https://sbb.webhook.office.com/webhookb2/e262e9dc-5836-4c36-b3e5-0e827f2a2787@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/JenkinsCI/1d957b31eb2c46aeac8003d5a70e1926/8231c64b-bcb4-497e-93bf-0213ebdac9e4",
+    "startNotification": false,
+    "notifySuccess": true,
+    "notifyAborted": true,
+    "notifyNotBuilt": true,
+    "notifyUnstable": true,
+    "notifyFailure": true,
+    "notifyBackToNormal": true,
+    "notifyRepeatedFailure": true
+  },
+  "steps": [
+    {
+      "stepType": "continuous",
+      "isBuildEnabled": true,
+      "branchNamePrefixes": [
+        "feature",
+        "bugfix"
+      ],
+      "additionalBuildParams": "",
+      "sonarScanEnabled": true,
+      "junitTestReportPath": "**/target/surefire-reports/*.xml"
+    },
+    {
+      "stepType": "release",
+      "isBuildEnabled": true,
+      "failOnXrayScan": true,
+      "sonarScanEnabled": true,
+      "staging": {
+        "stagingType": "simple",
+        "stages": [
+          "dev", "test", "int"
+        ]
+      },
+      "dependencyCheckEnabled": true,
+      "failOnQualityGateFailure": true,
+      "junitTestReportPath": "**/target/surefire-reports/*.xml",
+      "additionalBuildParams": "-DskipITs",
+      "triggerBuildOnCommitEnabled": true,
+      "hotfixCreationEnabled": false
+    }
+  ]
+}
