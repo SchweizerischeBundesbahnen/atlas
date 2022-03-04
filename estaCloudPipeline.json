@@ -12,8 +12,9 @@
     "artifactorySupressProjectSubfolderCreation": true
   },
   "helm" : {
-    "chart": "line-directory-backend/line-directory",
     "repository": "atlas.helm",
+    "chartRootFolder": "./line-directory/charts",
+    "chart": "line-directory",
     "release": "line-directory"
   },
   "mvn": {
