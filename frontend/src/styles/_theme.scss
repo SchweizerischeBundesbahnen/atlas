@@ -1,30 +1,24 @@
 @import 'node_modules/@angular/material/theming';
-@import 'palette/atlas-mat-palette';
-// Plus imports for other components in your app.
+@import 'palette/atlas-palette';
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
 // **Be sure that you only ever include this mixin once!**
 @include mat-core();
 
 // Define the default theme (same as the example above).
-$app-primary: mat-palette($mat-indigo, 800);
-$app-accent: mat-palette($mat-amber, A200, A100, A400);
-$app-warn: mat-palette($mat-red, 700);
+$app-primary: mat-palette($atlas-secondary, 500);
+$app-accent: mat-palette($atlas-primary, 500, 400, 600);
+$app-warn: mat-palette($atlas-red, 700);
 
-$app-theme: mat-light-theme(
-                (
-                        color: (
-                                primary: $app-primary,
-                                accent: $app-accent,
-                                warn: $app-warn,
-                        ),
-                )
-);
+$app-theme: mat-light-theme((
+        color: (
+                primary: $app-primary,
+                accent: $app-accent,
+                warn: $app-warn
+        ),
+));
 
 // Include the default theme styles (color and default density)
 @include angular-material-theme($app-theme);
-
 
 .mat-form-field-type-mat-date-range-input .mat-form-field-infix {
   width: fit-content !important;
