@@ -17,12 +17,13 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <spring-cloud.version>2021.0.1</spring-cloud.version>
         <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
     </properties>
     <modules>
         <module>versioning</module>
         <module>line-directory</module>
+        <module>gateway</module>
     </modules>
     <dependencyManagement>
         <dependencies>
