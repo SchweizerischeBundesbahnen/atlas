@@ -2,7 +2,6 @@ package ch.sbb.line.directory.validation;
 
 import static java.util.Comparator.comparing;
 
-import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -43,7 +42,7 @@ public class CoverageValidationService {
 
   boolean areLinesAndSublinesCompletelyCovered(List<LineVersion> lineVersions,
       List<SublineVersion> sublineVersions) {
-    if(sublineVersions.isEmpty()){
+    if (sublineVersions.isEmpty()) {
       return true;
     }
     List<SublineVersion> technincalSublines = getSublinesByType(sublineVersions,
@@ -77,31 +76,64 @@ public class CoverageValidationService {
       List<SublineVersion> sublineVersions) {
 
     boolean areSublinesInsideOfLineRange = isRangeEqual(lineVersions, sublineVersions);
-    boolean hasLineGapsUncoveredBySublines = hasVersionsUncoveredUncoveredGaps(lineVersions, sublineVersions);
+    boolean hasLineGapsUncoveredBySublines = hasVersionsUncoveredUncoveredGaps(lineVersions,
+        sublineVersions);
     return areSublinesInsideOfLineRange && !hasLineGapsUncoveredBySublines;
   }
 
- boolean hasVersionsUncoveredUncoveredGaps(List<? extends Versionable> lineVersions,
+  boolean hasVersionsUncoveredUncoveredGaps(List<? extends Versionable> lineVersions,
       List<? extends Versionable> sublineVersions) {
-    List<Gap> gapBetweenLineVersions = getGapBetweenSublineVersionable(lineVersions);
-    List<Gap> gapBetweenSublineVersions = getGapBetweenSublineVersionable(sublineVersions);
-    return !gapBetweenLineVersions.equals(gapBetweenSublineVersions);
+    List<DataRange> firstListDataRange = getCoveredDataRanges(filterOverlappingVersion(lineVersions));
+    List<DataRange> secondListDataRange = getCoveredDataRanges(filterOverlappingVersion(sublineVersions));
+    return !firstListDataRange.equals(secondListDataRange);
   }
 
- <T extends Versionable> List<Gap> getGapBetweenSublineVersionable(List<T> versionableList) {
-    List<Gap> linesGap = new ArrayList<>();
+  <T extends Versionable> List<T> filterOverlappingVersion(List<T> versionableList) {
+    if(versionableList.size() == 1){
+      return versionableList;
+    }
+    List<T> result = new ArrayList<>();
+    LocalDate currentValidTo = versionableList.get(0).getValidTo();
+    result.add(versionableList.get(0));
     for (int i = 1; i < versionableList.size(); i++) {
-      T current = versionableList.get(i - 1);
-      T next = versionableList.get(i);
-      if (!DateHelper.areDatesSequential(current.getValidTo(), next.getValidFrom())) {
-        Gap gap = Gap.builder()
-                     .from(current.getValidTo().plusDays(1))
-                     .to(next.getValidFrom().minusDays(1))
-                     .build();
-        linesGap.add(gap);
+      if(versionableList.get(i).getValidTo().isEqual(currentValidTo) || versionableList.get(i).getValidTo().isAfter(currentValidTo)){
+        currentValidTo = versionableList.get(i).getValidTo();
+        result.add(versionableList.get(i));
       }
     }
-    return linesGap;
+    return result;
+  }
+
+  <T extends Versionable> List<DataRange> getCoveredDataRanges(List<T> versionableList) {
+    List<DataRange> coveredDataRages = new ArrayList<>();
+    if (versionableList.size() == 1) {
+      T firstVersionable = versionableList.get(0);
+      DataRange currentDataRange = new DataRange(firstVersionable.getValidFrom(),
+          firstVersionable.getValidTo());
+      coveredDataRages.add(currentDataRange);
+      return coveredDataRages;
+    }
+    if (versionableList.size() >= 1) {
+      T firstVersionable = versionableList.get(0);
+      DataRange currentDataRange = new DataRange(firstVersionable.getValidFrom(),
+          firstVersionable.getValidTo());
+      for (int i = 1; i < versionableList.size(); i++) {
+        T current = versionableList.get(i - 1);
+        T next = versionableList.get(i);
+        if ((next.getValidFrom().isBefore(current.getValidTo().plusDays(1))
+            || next.getValidFrom().isEqual(current.getValidTo().plusDays(1)))) {
+          currentDataRange.setTo(next.getValidTo());
+          if ((versionableList.size() - 1) == i) {
+            coveredDataRages.add(currentDataRange);
+            return coveredDataRages;
+          }
+        } else {
+          coveredDataRages.add(currentDataRange);
+          currentDataRange = new DataRange(next.getValidFrom(), next.getValidTo());
+        }
+      }
+    }
+    return coveredDataRages;
   }
 
   private List<SublineVersion> getSortedSublineVersions(LineVersion lineVersion) {
@@ -152,7 +184,7 @@ public class CoverageValidationService {
 
   @Data
   @Builder
-  static class Gap {
+  static class DataRange {
 
     private LocalDate from;
     private LocalDate to;
