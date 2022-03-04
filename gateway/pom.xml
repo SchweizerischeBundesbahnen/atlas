@@ -2,34 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.3</version>
+		<groupId>ch.sbb.atlas</groupId>
+		<artifactId>atlas</artifactId>
+		<version>0.71.0-SNAPSHOT</version>
 	</parent>
-	<groupId>ch.sbb</groupId>
-	<artifactId>atlas-gateway</artifactId>
-	<version>0.24.0-SNAPSHOT</version>
+	<artifactId>gateway</artifactId>
+
 	<name>Atlas Gateway</name>
-	<description>Atlas Gateway</description>
-	<properties>
-		<java.version>11</java.version>
-		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-		<timestamp>${maven.build.timestamp}</timestamp>
-		<spring-cloud.version>2021.0.0</spring-cloud.version>
-		<!--		2.0.46.Final override for security issue -->
-		<netty-tcnative.version>2.0.47.Final</netty-tcnative.version>
-	</properties>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<description>Atlas Gateway for unified API</description>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -73,40 +54,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.7</version>
-				<executions>
-					<execution>
-						<id>prepare-jacoco-agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report-jacoco-post-unit-test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
