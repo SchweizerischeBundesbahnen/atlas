@@ -1,7 +1,18 @@
+@import "src/styles/variables";
+
+i.bi {
+  font-size: $navigationItemFontSize;
+}
+
+.spacer {
+  flex: $flexSpaceSize;
+}
+
 .home-header {
   overflow-x: hidden;
   height: 4rem;
 }
+
 i.bi-list {
   font-size: 24px;
 }

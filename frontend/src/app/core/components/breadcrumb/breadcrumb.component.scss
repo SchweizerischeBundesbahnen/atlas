@@ -1,0 +1,27 @@
+@import "src/styles/variables";
+
+i.bi {
+  font-size: $navigationItemFontSize;
+}
+
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iY3VycmVudENvbG9yIi8+PC9zdmc+);
+}
+
+.breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+a {
+  color: hsl(233, 57%, 37%);
+  text-decoration: none;
+}
+
+a:hover {
+  color: hsl(235, 66%, 30%);
+  text-decoration: underline;
+}

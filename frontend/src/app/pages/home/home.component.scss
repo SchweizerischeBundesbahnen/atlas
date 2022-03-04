@@ -1,5 +1,12 @@
+@import "src/styles/variables";
+
+.background-grey {
+  background-color: $gray-lighter;
+}
+
 .card {
   border: none;
+
   a {
     cursor: pointer;
     border: none;
@@ -10,13 +17,14 @@
 
   :hover {
     text-decoration: none;
-    background-color: #e5e5e5;
+    background-color: hsl(0, 0%, 90%);
   }
 
   .card-body:hover {
     background-color: transparent;
   }
 }
+
 em {
   text-align: center;
 }
