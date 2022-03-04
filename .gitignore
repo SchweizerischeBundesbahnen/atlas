@@ -19,6 +19,8 @@ target/
 *.iws
 *.iml
 *.ipr
+.idea/sonarlint/issuestore/index.pb
+.idea/kubernetes-settings.xml
 
 ### NetBeans ###
 /nbproject/private/
