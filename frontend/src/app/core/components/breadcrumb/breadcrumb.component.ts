@@ -12,7 +12,6 @@ import { Pages } from '../../../pages/pages';
 
 @Component({
   selector: 'app-breadcrumb',
-  encapsulation: ViewEncapsulation.None,
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss']
 })
