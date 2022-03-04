@@ -1,8 +1,0 @@
-/.idea/libraries/*
-.clover/
-.idea/*
-*.iml
-src/main/resources/static/
-src/main/resources/templates/
-target/
-/src/main/resources/*/spec.yaml

@@ -1,21 +1,22 @@
-package ch.sbb.atlas.gateway;
-
-import static org.assertj.core.api.Assertions.assertThat;
+package ch.sbb.atlas.apim.configuration;
 
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 @ActiveProfiles("integration-test")
-class OpenApiConfigTest {
+public class OpenApiMergerTest {
 
   @Value("classpath:apis/lidiApi.json")
   private Resource lidiApi;
@@ -25,8 +26,6 @@ class OpenApiConfigTest {
 
   @Value("classpath:apis/combinedApi.json")
   private Resource combinedApi;
-
-  private final OpenApiConfig openApiConfig = new OpenApiConfig();
 
   @Test
   void shouldCombineOpenApis() throws IOException {
@@ -38,7 +37,7 @@ class OpenApiConfigTest {
     OpenAPI expected = getOpenApiFromResource(combinedApi);
 
     // When
-    OpenAPI combinedApi = openApiConfig.getCombinedApi(openApis);
+    OpenAPI combinedApi = new OpenApiMerger(null).getCombinedApi(openApis);
 
     // Then
     assertThat(combinedApi).isEqualTo(expected);
