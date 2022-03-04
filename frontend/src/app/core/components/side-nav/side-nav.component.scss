@@ -1,15 +1,13 @@
 @import "src/styles/variables";
 
-i.bi {
-  font-size: $navigationItemFontSize;
-}
 
 .spacer {
   flex: $flexSpaceSize;
 }
 
 .route-active {
-  font-weight: bold;
+  color: $navigationDisabled;
+  background: $white;
 }
 
 .link-border {
