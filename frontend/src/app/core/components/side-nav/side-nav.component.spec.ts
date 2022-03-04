@@ -18,9 +18,9 @@ describe('SideNavComponent', () => {
         BrowserAnimationsModule,
         AppRoutingModule,
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
+        })
+      ]
     }).compileComponents();
   });
 
@@ -44,8 +44,6 @@ describe('SideNavComponent', () => {
     const firstSideNavItem = result[0].querySelector('div.mat-list-item-content');
     const secondSideNavItem = result[1].querySelector('div.mat-list-item-content');
     expect(firstSideNavItem.textContent.trim()).toBe(component.pages[0].title);
-    expect(firstSideNavItem.querySelector('i').className).toContain(component.pages[0].icon);
     expect(secondSideNavItem.textContent.trim()).toBe(component.pages[1].title);
-    expect(secondSideNavItem.querySelector('i').className).toContain(component.pages[1].icon);
   });
 });
