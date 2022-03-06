@@ -30,6 +30,12 @@
 == Create Line - Successfully
 include::{snippets}/line-controller-api-test/should-create-line-version/auto-section.adoc[]
 
+== Covered Line - Successfully
+include::{snippets}/line-controller-api-test/should-get-covered-lines/auto-section.adoc[]
+
+== Covered LineVersion - Successfully
+include::{snippets}/line-controller-api-test/should-get-covered-line-versions/auto-section.adoc[]
+
 == Update Line - Successfully
 include::{snippets}/line-controller-api-test/should-update-line-version/auto-section.adoc[]
 
