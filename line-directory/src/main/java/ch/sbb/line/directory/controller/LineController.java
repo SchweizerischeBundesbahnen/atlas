@@ -1,5 +1,7 @@
 package ch.sbb.line.directory.controller;
 
+import static java.util.stream.Collectors.toList;
+
 import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.LineApiV1;
 import ch.sbb.line.directory.api.LineModel;
@@ -43,7 +45,7 @@ public class LineController implements LineApiV1 {
         new SearchRestrictions<>(pageable, swissLineNumber, searchCriteria, statusRestrictions,
             typeRestrictions, validOn)
     );
-    List<LineModel> lineModels = lines.stream().map(this::toModel).collect(Collectors.toList());
+    List<LineModel> lineModels = lines.stream().map(this::toModel).collect(toList());
     return Container.<LineModel>builder()
                     .objects(lineModels)
                     .totalCount(lines.getTotalElements()).build();
@@ -57,10 +59,20 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
+  public List<LineModel> getCoveredLines() {
+    return lineService.getAllCoveredLines().stream().map(this::toModel).collect(toList());
+  }
+
+  @Override
+  public List<LineVersionModel> getCoveredVersionLines() {
+    return lineService.getAllCoveredLineVersions().stream().map(this::toModel).collect(toList());
+  }
+
+  @Override
   public List<LineVersionModel> getLineVersions(String slnid) {
     List<LineVersionModel> lineVersionModels = lineService.findLineVersions(slnid).stream()
                                                           .map(this::toModel)
-                                                          .collect(Collectors.toList());
+                                                          .collect(toList());
     if (lineVersionModels.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
@@ -95,7 +107,7 @@ public class LineController implements LineApiV1 {
                                              .orElseThrow(() -> new IdNotFoundException(id));
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
-                      .collect(Collectors.toList());
+                      .collect(toList());
   }
 
   @Override
