@@ -42,6 +42,12 @@ public interface LineApiV1 {
   @GetMapping("{slnid}")
   LineModel getLine(@PathVariable String slnid);
 
+  @GetMapping("/covered")
+  List<LineModel> getCoveredLines();
+
+  @GetMapping("/versions/covered")
+  List<LineVersionModel> getCoveredVersionLines();
+
   @DeleteMapping("{slnid}")
   void deleteLines(@PathVariable String slnid);
 

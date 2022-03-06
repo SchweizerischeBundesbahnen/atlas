@@ -12,7 +12,6 @@ import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineValidationService;
 import java.util.List;
 import java.util.Optional;
@@ -96,4 +95,11 @@ public class LineService {
         this::deleteById);
   }
 
+  public List<Line> getAllCoveredLines() {
+    return lineRepository.getAllCoveredLines();
+  }
+
+  public List<LineVersion> getAllCoveredLineVersions() {
+    return lineVersionRepository.getAllCoveredLineVersions();
+  }
 }
