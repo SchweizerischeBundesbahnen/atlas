@@ -6,9 +6,9 @@ ARG ARTIFACTORY_USER
 ARG ARTIFACTORY_PW
 
 RUN mkdir /deploy
-ADD "https://${ARTIFACTORY_USER}:${ARTIFACTORY_PW}@bin.sbb.ch/artifactory/atlas.mvn/ch/sbb/atlas/line-directory/${VERSION}/line-directory-${VERSION}.jar" deploy/app.jar
+ADD "https://${ARTIFACTORY_USER}:${ARTIFACTORY_PW}@bin.sbb.ch/artifactory/atlas.mvn/ch/sbb/atlas/gateway/${VERSION}/gateway-${VERSION}.jar" deploy/app.jar
 RUN chmod 777 /deploy/app.jar
 
 ENV JAVA_APP_JAR="deploy/app.jar"
 
-EXPOSE 8082
+EXPOSE 8888
