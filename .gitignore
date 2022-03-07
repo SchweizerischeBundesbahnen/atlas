@@ -6,6 +6,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Generated Files
+/apim-configuration/src/main/resources/**/spec.yaml
+/apim-configuration/src/main/resources/apis
+
 ### STS ###
 .apt_generated
 .classpath
@@ -19,8 +23,6 @@ target/
 *.iws
 *.iml
 *.ipr
-.idea/sonarlint/issuestore/index.pb
-.idea/kubernetes-settings.xml
 
 ### NetBeans ###
 /nbproject/private/
@@ -38,8 +40,11 @@ build/
 !.idea/codeStyles/
 !.idea/fileTemplates/
 \!.idea/codeStyles/codeStyleConfig.xml
+.idea/sonarlint
+.idea/kubernetes-settings.xml
 /scripts/~$*
 http-requests/http-client.private.env.json
 /src/main/resources/static/docs/
 /src/main/resources/static/
 /scripts/__pycache__/
+/.idea/uiDesigner.xml

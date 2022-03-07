@@ -1,0 +1,13 @@
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: http://localhost:4200,https://atlas.dev.sbb-cloud.net,https://atlas.dev.app.sbb.ch,https://developer-int.sbb.ch
+gateway:
+  routes:
+    line-directory: http://line-directory:8082
