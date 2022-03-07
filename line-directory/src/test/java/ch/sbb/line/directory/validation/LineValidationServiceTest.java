@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.validation;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,6 +15,7 @@ import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.service.CoverageService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,8 @@ public class LineValidationServiceTest {
   @BeforeEach()
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineValidationService = new LineValidationService(lineVersionRepository, coverageValidationService);
+    lineValidationService = new LineValidationService(lineVersionRepository,
+        coverageValidationService);
   }
 
   @Test
@@ -79,9 +81,9 @@ public class LineValidationServiceTest {
                                           .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         List.of());
-    // When
-    lineValidationService.validateTemporaryLinesDuration(lineVersion);
-    // Then
+    // When & Then
+    assertThatNoException().isThrownBy(
+        () -> lineValidationService.validateTemporaryLinesDuration(lineVersion));
   }
 
   @Test
@@ -123,9 +125,9 @@ public class LineValidationServiceTest {
                                           .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         versions);
-    // When
-    lineValidationService.validateTemporaryLinesDuration(lineVersion);
-    // Then
+    // When & Then
+    assertThatNoException().isThrownBy(
+        () -> lineValidationService.validateTemporaryLinesDuration(lineVersion));
   }
 
   @Test
@@ -183,9 +185,9 @@ public class LineValidationServiceTest {
                                           .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         versions);
-    // When
-    lineValidationService.validateTemporaryLinesDuration(lineVersion);
-    // Then
+    // When & Then
+    assertThatNoException().isThrownBy(
+        () -> lineValidationService.validateTemporaryLinesDuration(lineVersion));
   }
 
   @Test
@@ -205,9 +207,9 @@ public class LineValidationServiceTest {
                                           .build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(
         versions);
-    // When
-    lineValidationService.validateTemporaryLinesDuration(lineVersion);
-    // Then
+    // When & Then
+    assertThatNoException().isThrownBy(
+        () -> lineValidationService.validateTemporaryLinesDuration(lineVersion));
   }
 
   @Test
@@ -278,7 +280,7 @@ public class LineValidationServiceTest {
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
 
     // then
-//    verify(sublineCoverageService, times(1)).updateSublineCoverageByLine(true, lineVersion);
+    verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
   }
 
   @Test
@@ -306,7 +308,7 @@ public class LineValidationServiceTest {
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
 
     //then
-//    verify(sublineCoverageService, times(1)).updateSublineCoverageByLine(true, lineVersion);
+  verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
   }
 
 
