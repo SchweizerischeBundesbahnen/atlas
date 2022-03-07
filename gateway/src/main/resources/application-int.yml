@@ -10,4 +10,4 @@ spring:
             allowed-origins: https://atlas.int.sbb-cloud.net,https://atlas.int.app.sbb.ch,https://developer-int.sbb.ch
 gateway:
   routes:
-    line-directory: http://line-directory-backend:8082
+    line-directory: http://line-directory:8082
