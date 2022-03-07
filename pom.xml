@@ -17,20 +17,23 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <spring-cloud.version>2021.0.1</spring-cloud.version>
+        <springdoc-openapi.version>1.6.6</springdoc-openapi.version>
         <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
     </properties>
     <modules>
+        <!-- Order is important here-->
+        <!-- Libs first-->
         <module>versioning</module>
+        <!--  Services-->
         <module>line-directory</module>
+        <!-- Combine APIs-->
+        <module>apim-configuration</module>
+        <module>gateway</module>
     </modules>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>ch.sbb.atlas</groupId>
-                <artifactId>versioning</artifactId>
-                <version>0.71.0-SNAPSHOT</version>
-            </dependency>
+            <!-- Imported Poms -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -40,8 +43,24 @@
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi</artifactId>
+                <version>${springdoc-openapi.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Atlas Dependencies-->
+            <dependency>
+                <groupId>ch.sbb.atlas</groupId>
+                <artifactId>versioning</artifactId>
+                <version>0.71.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- Third Party-->
+            <dependency>
+                <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
-                <version>1.5.10</version>
+                <version>${springdoc-openapi.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.flywaydb</groupId>
