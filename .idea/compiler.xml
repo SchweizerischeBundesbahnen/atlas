@@ -9,11 +9,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="line-directory" />
         <module name="versioning" />
+        <module name="apim-configuration" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="apim-configuration" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="line-directory" options="-parameters" />
       <module name="versioning" options="-parameters" />
     </option>

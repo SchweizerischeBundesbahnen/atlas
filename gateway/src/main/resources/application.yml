@@ -1,0 +1,34 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: http://localhost:4200,https://developer-int.sbb.ch
+            allowed-methods: GET,PUT,POST,DELETE
+            allowed-headers: "*"
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+info:
+  app:
+    name: atlas-gateway
+    version: @version@
+    buildtime: @timestamp@
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: DEBUG
+gateway:
+  routes:
+    line-directory: http://localhost:8082

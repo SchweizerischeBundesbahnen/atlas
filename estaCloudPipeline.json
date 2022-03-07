@@ -6,12 +6,20 @@
   "keepReleaseBuildLogsOnJenkins": true,
   "sendBuildStatusMail": false,
   "checkHumanCommits": false,
-  "docker": {
-    "artifactoryDockerRepo": "atlas.docker",
-    "openshiftAppName": "line-directory",
-    "dockerFile": "line-directory/docker/Dockerfile",
-    "artifactorySupressProjectSubfolderCreation": true
-  },
+  "docker": [
+    {
+      "artifactoryDockerRepo": "atlas.docker",
+      "openshiftAppName": "line-directory",
+      "dockerFile": "line-directory/docker/Dockerfile",
+      "artifactorySupressProjectSubfolderCreation": true
+    },
+    {
+      "artifactoryDockerRepo": "atlas.docker",
+      "openshiftAppName": "gateway",
+      "dockerFile": "gateway/docker/Dockerfile",
+      "artifactorySupressProjectSubfolderCreation": true
+    }
+  ],
   "helm" : {
     "repository": "atlas.helm",
     "chartRootFolder": "./line-directory/charts",
@@ -32,7 +40,14 @@
       "openshiftCluster": "aws_aws01t",
       "openshiftJenkinsCredentialsId": "e499fd92-711c-469b-9bc3-a67c748341d9",
       "preCiDeploymentJob": "",
-      "postCiDeploymentJob": ""
+      "postCiDeploymentJob": "",
+      "api": {
+        "artifactId": "apim-configuration",
+        "instance": "int",
+        "clientJenkinsId": "791ceebb-e433-4c6c-b2eb-dac031ba3fe2",
+        "clientId": "client-atlas-jenkins-dev",
+        "classifier": "dev"
+      }
     },
     {
       "stageName": "test",
@@ -41,7 +56,14 @@
       "openshiftCluster": "aws_aws01t",
       "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
       "preCiDeploymentJob": "",
-      "postCiDeploymentJob": "KI_ATLAS_E2E/atlas-frontend/master?successJob=KI_ATLAS/line-directory-backend/master"
+      "postCiDeploymentJob": "KI_ATLAS_E2E/atlas-frontend/master?successJob=KI_ATLAS/line-directory-backend/master",
+      "api": {
+        "artifactId": "apim-configuration",
+        "instance": "int",
+        "clientJenkinsId": "bcdd6468-861d-45ca-ac92-1823e09800b6",
+        "clientId": "client-atlas-jenkins-test",
+        "classifier": "test"
+      }
     },
     {
       "stageName": "int",
@@ -50,7 +72,14 @@
       "openshiftCluster": "aws_maggie",
       "openshiftJenkinsCredentialsId": "3a6d45b4-ab76-467a-a970-44038a0120fd",
       "preCiDeploymentJob": "",
-      "postCiDeploymentJob": ""
+      "postCiDeploymentJob": "",
+      "api": {
+        "artifactId": "apim-configuration",
+        "instance": "int",
+        "clientJenkinsId": "0dd7901b-1bd9-4b96-af99-9c81143bd987",
+        "clientId": "client-atlas-jenkins-int",
+        "classifier": "int"
+      }
     },
     {
       "stageName": "prod",
@@ -59,7 +88,13 @@
       "openshiftCluster": "aws_maggie",
       "openshiftJenkinsCredentialsId": "ssp-p9d3z05co-ccn4-44b3-y824-1ut86c5e693",
       "preCiDeploymentJob": "",
-      "postCiDeploymentJob": ""
+      "postCiDeploymentJob": "",
+      "api": {
+        "artifactId": "apim-configuration",
+        "instance": "prod",
+        "clientJenkinsId": "ssp-ijzyow7em-c2c6-cd77-kwoi-7vt28p07a93",
+        "clientId": "client-atlas-jenkins-prod"
+      }
     }
   ],
   "teamsNotifications": {
