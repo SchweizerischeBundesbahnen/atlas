@@ -26,7 +26,6 @@ export class CoverageComponent implements OnInit, OnChanges {
     if (this.pageType === Pages.LINES) {
       if (this.currentRecord.slnid != null) {
         this.linesService.getLineCoverage(this.currentRecord.slnid).subscribe(value => {
-          console.log(value);
           this.coverage = value;
         });
       }
@@ -34,7 +33,6 @@ export class CoverageComponent implements OnInit, OnChanges {
     if (this.pageType === Pages.SUBLINES) {
       if (this.currentRecord.slnid != null) {
         this.sublineService.getSublineCoverage(this.currentRecord.slnid).subscribe(value => {
-          console.log(value);
           this.coverage = value;
         });
       }
