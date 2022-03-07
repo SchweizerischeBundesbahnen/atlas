@@ -127,7 +127,7 @@
     "MATDATEPICKERPARSE": "Format de date invalide (doit être JJ.MM.AAAA)",
     "DATE_RANGE_ERROR": "La date de début de validité ne peut pas être plus récente que la date de fin de validité: {{date}}",
     "PATTERN": "__fr__Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
-    "WHITESPACES": "__fr__Darf nicht mit einem Leerzeichen starten oder enden."
+    "WHITESPACES": "Ne peut pas commencer ou finir avec un espace."
   },
   "LIDI": {
     "SWISS_LINE_NUMBER": "CH-Liniennummer",
