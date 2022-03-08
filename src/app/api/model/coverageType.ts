@@ -9,18 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Parameter } from './parameter';
 
-/**
- * DisplayInfo for messages
- */
-export interface DisplayInfo {
-  /**
-   * Errorcode for UI
-   */
-  code: string;
-  /**
-   * Parameters for messages
-   */
-  parameters: Array<Parameter>;
-}
+export type CoverageType = 'COMPLETE' | 'INCOMPLETE';
+
+export const CoverageType = {
+  Complete: 'COMPLETE' as CoverageType,
+  Incomplete: 'INCOMPLETE' as CoverageType,
+};

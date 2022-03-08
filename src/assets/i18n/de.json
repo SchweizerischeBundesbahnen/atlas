@@ -16,6 +16,10 @@
     "SAVE": "Speichern",
     "EDIT": "Editieren",
     "CANCEL": "Abbrechen",
+    "COVERAGE": {
+      "COMPLETE": "Vollständig",
+      "INCOMPLETE": "Lückenhaft"
+    },
     "NODATAFOUND": "Es wurden keine Daten gefunden.",
     "TYPE_TO_SEARCH": "Tippen Sie einen Text ein, um die Suche zu beginnen.",
     "JA": "Ja",
