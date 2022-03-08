@@ -1,14 +1,19 @@
 # LiDi Backend
 
-[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/job/master/)
-[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Aline-directory-backend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aline-directory-backend)
-
 <!-- toc -->
 
 - [ATLAS](#atlas)
 - [Versioning](#versioning)
 - [Links](#links)
-- [Development](#development)
+  * [Localhost](#localhost)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
+  * [Project Infrastructure](#project-infrastructure)
+- [Development](#development-1)
+  * [Test RESTful Web services](#test-restful-web-services)
+  * [PostgreSQL Docker](#postgresql-docker)
 
 <!-- tocstop -->
 
@@ -29,26 +34,26 @@ This project uses [Semantic Versioning](https://semver.org/).
 ### Development
 * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-dev
 * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-* Project deploy: https://line-directory-backend.dev.sbb-cloud.net
-* Swagger UI: https://line-directory-backend.dev.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Project deploy: https://line-directory.dev.sbb-cloud.net
+* Swagger UI: https://line-directory.dev.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
 ### Test
 * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-test
 * Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
-* Project deploy: https://line-directory-backend.test.sbb-cloud.net
-* Swagger UI: https://line-directory-backend.test.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Project deploy: https://line-directory.test.sbb-cloud.net
+* Swagger UI: https://line-directory.test.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
 ### Integration
 * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-int
 * Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
-* Project deploy: https://line-directory-backend.int.sbb-cloud.net
-* Swagger UI: https://line-directory-backend.int.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Project deploy: https://line-directory.int.sbb-cloud.net
+* Swagger UI: https://line-directory.int.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
 ### Production
 * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=line-directory-prod
 * Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
-* Project deploy: https://line-directory-backend.prod.sbb-cloud.net
-* Swagger UI:  
+* Project deploy: https://line-directory.prod.sbb-cloud.net
+* Swagger UI:  https://line-directory.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
 
 ### Project Infrastructure
