@@ -30,7 +30,7 @@ public class LineService {
   private final VersionableService versionableService;
   private final LineValidationService lineValidationService;
   private final SpecificationBuilderProvider specificationBuilderProvider;
-
+  private final CoverageService coverageService;
 
   public Page<Line> findAll(SearchRestrictions<LineType> searchRestrictions) {
     SpecificationBuilderService<Line> specificationBuilderService = specificationBuilderProvider.getLineSpecificationBuilderService();
@@ -69,9 +69,9 @@ public class LineService {
   }
 
   public void deleteById(Long id) {
-    if (!lineVersionRepository.existsById(id)) {
-      throw new IdNotFoundException(id);
-    }
+    LineVersion lineVersion = lineVersionRepository.findById(id).orElseThrow(
+        () -> new IdNotFoundException(id));
+    coverageService.deleteCoverageLine(lineVersion.getSlnid());
     lineVersionRepository.deleteById(id);
   }
 

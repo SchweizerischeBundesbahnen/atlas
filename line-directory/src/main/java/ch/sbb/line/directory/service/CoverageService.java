@@ -26,6 +26,22 @@ public class CoverageService {
 
   private final CoverageRepository coverageRepository;
 
+  public void deleteCoverageLine(String slnid) {
+    deleteCoverage(slnid, ModelType.LINE);
+  }
+
+  public void deleteCoverageSubline(String slnid) {
+    deleteCoverage(slnid, SUBLINE);
+  }
+
+  private void deleteCoverage(String slnid, ModelType subline) {
+    Coverage coverageLine = coverageRepository.findSublineCoverageBySlnidAndModelType(
+        slnid, subline);
+    if (coverageLine != null) {
+      coverageRepository.deleteById(coverageLine.getId());
+    }
+  }
+
   public Coverage getSublineCoverageBySlnidAndLineModelType(String slnid) {
     return getSublineCoverageBySlnidAndModelType(slnid, LINE);
   }

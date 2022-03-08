@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface CoverageRepository extends JpaRepository<Coverage, Long> {
 
   Coverage findSublineCoverageBySlnidAndModelType(String slnId, ModelType modelType);
+
+  void deleteById(Long aLong);
 }
