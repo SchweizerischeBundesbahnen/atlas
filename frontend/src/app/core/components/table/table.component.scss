@@ -1,0 +1,13 @@
+table {
+  width: 100%;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mat-row:hover {
+  background-color: #ececec;
+  cursor: pointer;
+}
