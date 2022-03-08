@@ -1,0 +1,102 @@
+{
+  "scripts": {
+    "postinstall": "ngcc",
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test -c ci",
+    "lint": "ng lint",
+    "prepare": "husky install",
+    "format": "prettier --write .",
+    "build:ngssc": "ng run atlas-frontend:ngsscbuild:production",
+    "e2e": "ng e2e",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:run-e2e-line": "cypress run --spec cypress/integration/lidi/line/**/*.ts",
+    "cypress:run-e2e-subline": "cypress run --spec cypress/integration/lidi/subline/**/*.ts",
+    "cypress:run-e2e-ttfn": "cypress run --spec cypress/integration/ttfn/**/*.ts",
+    "cypress:run-e2e-release": "cypress run --config integrationFolder=cypress/release",
+    "cypress:open-e2e-release": "cypress open --config integrationFolder=cypress/release",
+    "generate-api": "openapi-generator-cli generate -g typescript-angular -i {GO TO LIDI-DIRECTORY (antil this project is not in Monorepo) to point to the file -> ../apim-configuration/src/main/resources/api-dev/spec.yml } -o src/app/api --type-mappings=date=Date --additional-properties apiModulePrefix=Atlas"
+  },
+  "name": "atlas-frontend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas-frontend.git"
+  },
+  "version": "0.193.0",
+  "files": [
+    "dist/*"
+  ],
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 100
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "dependencies": {
+    "@angular/animations": "^13.0.0",
+    "@angular/cdk": "^13.0.0",
+    "@angular/common": "~13.0.0",
+    "@angular/compiler": "~13.0.0",
+    "@angular/core": "~13.0.0",
+    "@angular/forms": "~13.0.0",
+    "@angular/material": "^13.0.0",
+    "@angular/material-moment-adapter": "^13.0.0",
+    "@angular/platform-browser": "~13.0.0",
+    "@angular/platform-browser-dynamic": "~13.0.0",
+    "@angular/router": "~13.0.0",
+    "@ng-select/ng-select": "^8.1.1",
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
+    "angular-oauth2-oidc": "^12.1.0",
+    "angular-server-side-configuration": "^12.0.0",
+    "bootstrap": "^5.1.3",
+    "bootstrap-icons": "^1.7.0",
+    "jwt-decode": "^3.1.2",
+    "moment": "^2.29.1",
+    "ngx-color-picker": "^11.0.0",
+    "rxjs": "~7.4.0",
+    "tslib": "^2.3.1",
+    "zone.js": "~0.11.4"
+  },
+  "optionalDependencies": {
+    "puppeteer": "^13.3.2"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^13.2.2",
+    "@angular-eslint/builder": "12.7.0",
+    "@angular-eslint/eslint-plugin": "12.7.0",
+    "@angular-eslint/eslint-plugin-template": "12.7.0",
+    "@angular-eslint/schematics": "12.7.0",
+    "@angular-eslint/template-parser": "12.7.0",
+    "@angular/cli": "^13.1.3",
+    "@angular/compiler-cli": "~13.0.0",
+    "@angular/localize": "^13.1.2",
+    "@cypress/schematic": "^1.6.0",
+    "@openapitools/openapi-generator-cli": "^2.4.25",
+    "@types/jasmine": "~3.10.3",
+    "@types/node": "^16.9.6",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "cypress": "^9.4.1",
+    "cypress-failed-log": "^2.9.2",
+    "cypress-high-resolution": "^1.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": "^7.0.4",
+    "jasmine-core": "~3.10.1",
+    "karma": "~6.3.11",
+    "karma-browserstack-launcher": "^1.6.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.1.0",
+    "karma-jasmine": "~4.0.1",
+    "karma-jasmine-html-reporter": "^1.7.0",
+    "karma-sonarqube-reporter": "^1.4.0",
+    "lint-staged": "^11.2.6",
+    "prettier": "^2.4.1",
+    "typescript": "~4.4.4"
+  }
+}

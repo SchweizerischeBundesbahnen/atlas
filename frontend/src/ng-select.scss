@@ -1,0 +1,29 @@
+@import '~@ng-select/ng-select/themes/material.theme.css';
+
+.ng-placeholder {
+  color: inherit !important;
+}
+
+.ng-select {
+  padding-bottom: inherit;
+
+  .ng-select-container {
+    min-height: 40px;
+
+    .ng-value-container {
+      padding-bottom: 0.3em;
+    }
+  }
+
+  .ng-select-container:after {
+    bottom: 0.05em;
+  }
+
+  .ng-select-container.ng-has-value:after {
+    bottom: 0.2em;
+  }
+
+  .ng-placeholder {
+    transform: translateY(-1.28125em) scale(0.75) perspective(100px) translateZ(0.001px);
+  }
+}
