@@ -16,13 +16,11 @@ import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
-import ch.sbb.line.directory.exception.LineRangeSmallerThenSublineRangeException;
 import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineValidationService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -50,9 +48,6 @@ class LineServiceTest {
   private VersionableService versionableService;
 
   @Mock
-  private SublineVersionRepository sublineVersionRepository;
-
-  @Mock
   private LineValidationService lineValidationService;
 
   @Mock
@@ -64,13 +59,16 @@ class LineServiceTest {
   @Mock
   private Specification<Line> lineSpecification;
 
+  @Mock
+  private CoverageService coverageService;
+
   private LineService lineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, lineRepository, versionableService,
-        sublineVersionRepository, lineValidationService, specificationBuilderProvider);
+        lineValidationService, specificationBuilderProvider, coverageService);
   }
 
   @Test
@@ -140,7 +138,7 @@ class LineServiceTest {
 
     // Then
     verify(lineValidationService).validateLinePreconditionBusinessRule(lineVersion);
-    verify(lineVersionRepository).save(lineVersion);
+    verify(lineVersionRepository).saveAndFlush(lineVersion);
     assertThat(result).isEqualTo(lineVersion);
   }
 
@@ -176,43 +174,25 @@ class LineServiceTest {
   @Test
   void shouldDeleteLine() {
     // Given
-    when(lineVersionRepository.existsById(ID)).thenReturn(true);
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setId(1l);
+    when(lineVersionRepository.findById(1l)).thenReturn(Optional.ofNullable(lineVersion));
 
     // When
-    lineService.deleteById(ID);
+    lineService.deleteById(1l);
 
     // Then
-    verify(lineVersionRepository).existsById(ID);
-    verify(lineVersionRepository).deleteById(ID);
+    verify(lineVersionRepository).deleteById(1l);
   }
 
   @Test
   void shouldNotDeleteLineWhenNotFound() {
     // Given
-    when(lineVersionRepository.existsById(ID)).thenReturn(false);
+    when(lineVersionRepository.findById(ID)).thenReturn(Optional.empty());
 
     // When
     assertThatExceptionOfType(NotFoundException.class).isThrownBy(
         () -> lineService.deleteById(ID));
-
-    // Then
-    verify(lineVersionRepository).existsById(ID);
-  }
-
-  @Test
-  void shouldNotSaveWhenThrowLineRangeSmallerThenSublineRangeException() {
-    // Given
-    LineVersion lineVersion = LineTestData.lineVersion();
-    doThrow(LineRangeSmallerThenSublineRangeException.class).when(lineValidationService)
-                                                            .validateLinePreconditionBusinessRule(
-                                                                lineVersion);
-
-    // When
-    assertThatExceptionOfType(LineRangeSmallerThenSublineRangeException.class).isThrownBy(
-        () -> lineService.save(lineVersion));
-
-    verify(lineVersionRepository, never()).save(lineVersion);
-
   }
 
   @Test
@@ -220,8 +200,8 @@ class LineServiceTest {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
     doThrow(LineConflictException.class).when(lineValidationService)
-                                                            .validateLinePreconditionBusinessRule(
-                                                                lineVersion);
+                                        .validateLinePreconditionBusinessRule(
+                                            lineVersion);
 
     // When
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
@@ -237,7 +217,7 @@ class LineServiceTest {
     LineVersion lineVersion = LineTestData.lineVersion();
     doThrow(TemporaryLineValidationException.class).when(lineValidationService)
                                                    .validateLinePreconditionBusinessRule(
-                                                                lineVersion);
+                                                       lineVersion);
 
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(

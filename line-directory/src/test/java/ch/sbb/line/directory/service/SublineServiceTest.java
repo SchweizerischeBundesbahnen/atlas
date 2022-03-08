@@ -59,13 +59,17 @@ class SublineServiceTest {
   @Mock
   private SublineValidationService sublineValidationService;
 
+  @Mock
+  private CoverageService coverageService;
+
   private SublineService sublineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService, lineService, sublineValidationService, specificationBuilderProvider);
+        versionableService, lineService, sublineValidationService, specificationBuilderProvider,
+        coverageService);
   }
 
   @Test
@@ -125,8 +129,9 @@ class SublineServiceTest {
     SublineVersion result = sublineService.save(sublineVersion);
 
     // Then
-    verify(sublineValidationService).validateSublineBusinessRules(sublineVersion);
-    verify(sublineVersionRepository).save(sublineVersion);
+    verify(sublineValidationService).validatePreconditionSublineBusinessRules(sublineVersion);
+    verify(sublineVersionRepository).saveAndFlush(sublineVersion);
+    verify(sublineValidationService).validateSublineAfterVersioningBusinessRule(sublineVersion);
     assertThat(result).isEqualTo(sublineVersion);
   }
 
@@ -153,14 +158,15 @@ class SublineServiceTest {
   @Test
   void shouldDeleteSubline() {
     // Given
-    when(sublineVersionRepository.existsById(ID)).thenReturn(true);
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setId(1l);
+    when(sublineVersionRepository.findById(1l)).thenReturn(Optional.ofNullable(sublineVersion));
 
     // When
-    sublineService.deleteById(ID);
+    sublineService.deleteById(1l);
 
     // Then
-    verify(sublineVersionRepository).existsById(ID);
-    verify(sublineVersionRepository).deleteById(ID);
+    verify(sublineVersionRepository).deleteById(1l);
   }
 
   @Test
@@ -192,13 +198,11 @@ class SublineServiceTest {
   @Test
   void shouldNotDeleteSublineWhenNotFound() {
     // Given
-    when(sublineVersionRepository.existsById(ID)).thenReturn(false);
+    when(sublineVersionRepository.findById(ID)).thenReturn(Optional.empty());
 
     // When
     assertThatExceptionOfType(NotFoundException.class).isThrownBy(
         () -> sublineService.deleteById(ID));
 
-    // Then
-    verify(sublineVersionRepository).existsById(ID);
   }
 }

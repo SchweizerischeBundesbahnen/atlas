@@ -12,7 +12,6 @@ import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineValidationService;
 import java.util.List;
 import java.util.Optional;
@@ -29,10 +28,9 @@ public class LineService {
   private final LineVersionRepository lineVersionRepository;
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
-  private final SublineVersionRepository sublineVersionRepository;
   private final LineValidationService lineValidationService;
   private final SpecificationBuilderProvider specificationBuilderProvider;
-
+  private final CoverageService coverageService;
 
   public Page<Line> findAll(SearchRestrictions<LineType> searchRestrictions) {
     SpecificationBuilderService<Line> specificationBuilderService = specificationBuilderProvider.getLineSpecificationBuilderService();
@@ -65,15 +63,15 @@ public class LineService {
   public LineVersion save(LineVersion lineVersion) {
     lineVersion.setStatus(Status.ACTIVE);
     lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
-    LineVersion updatedVersion = lineVersionRepository.save(lineVersion);
-    lineValidationService.validateLineAfterVersioningBusinessRule(updatedVersion);
-    return updatedVersion;
+    lineVersionRepository.saveAndFlush(lineVersion);
+    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
+    return lineVersion;
   }
 
   public void deleteById(Long id) {
-    if (!lineVersionRepository.existsById(id)) {
-      throw new IdNotFoundException(id);
-    }
+    LineVersion lineVersion = lineVersionRepository.findById(id).orElseThrow(
+        () -> new IdNotFoundException(id));
+    coverageService.deleteCoverageLine(lineVersion.getSlnid());
     lineVersionRepository.deleteById(id);
   }
 
@@ -97,4 +95,11 @@ public class LineService {
         this::deleteById);
   }
 
+  public List<Line> getAllCoveredLines() {
+    return lineRepository.getAllCoveredLines();
+  }
+
+  public List<LineVersion> getAllCoveredLineVersions() {
+    return lineVersionRepository.getAllCoveredLineVersions();
+  }
 }
