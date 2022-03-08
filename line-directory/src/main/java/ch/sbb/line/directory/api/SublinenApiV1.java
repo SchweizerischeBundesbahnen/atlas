@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.api;
 
-import ch.sbb.line.directory.entity.Coverage;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,7 +46,8 @@ public interface SublinenApiV1 {
       @ApiResponse(responseCode = "201"),
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  SublineVersionModel createSublineVersion(@RequestBody @Valid SublineVersionModel newSublineVersion);
+  SublineVersionModel createSublineVersion(
+      @RequestBody @Valid SublineVersionModel newSublineVersion);
 
   @GetMapping("versions/{slnid}")
   List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
