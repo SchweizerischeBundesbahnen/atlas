@@ -16,6 +16,10 @@
     "SAVE": "Salvare",
     "EDIT": "Modificare",
     "CANCEL": "Annullare",
+    "COVERAGE": {
+      "COMPLETE": "Vollständig",
+      "INCOMPLETE": "Lückenhaft"
+    },
     "NODATAFOUND": "Nessun dato trovato",
     "TYPE_TO_SEARCH": "Tippen um zu Suchen",
     "JA": "Sì",
