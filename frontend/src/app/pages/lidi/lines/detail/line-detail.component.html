@@ -1,0 +1,232 @@
+<app-detail-wrapper [controller]="this" headingNew="LIDI.LINE.NEW">
+  <form [formGroup]="form">
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'COMMON.VALID_FROM' | translate }}</mat-label>
+        <input
+          required
+          matInput
+          formControlName="validFrom"
+          data-cy="validFrom"
+          [matDatepicker]="validFromPicker"
+          [min]="MIN_DATE"
+          [max]="MAX_DATE"
+          placeholder="{{ getValidFromPlaceHolder() }}"
+        />
+        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #validFromPicker></mat-datepicker>
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'COMMON.VALID_TO' | translate }}</mat-label>
+        <input
+          required
+          matInput
+          formControlName="validTo"
+          data-cy="validTo"
+          [matDatepicker]="validToPicker"
+          [min]="MIN_DATE"
+          [max]="MAX_DATE"
+          placeholder="{{ VALID_TO_PLACEHOLDER }}"
+        />
+        <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
+        <mat-datepicker #validToPicker></mat-datepicker>
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}</mat-label>
+        <input
+          required
+          matInput
+          formControlName="swissLineNumber"
+          data-cy="swissLineNumber"
+          placeholder="b0.IC2"
+        />
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.SLNID' | translate }}</mat-label>
+        <input
+          required
+          matInput
+          data-cy="slnid"
+          [value]="form.value.slnid || ''"
+          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
+          [disabled]="true"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
+        <mat-select
+          [value]="form.value.status"
+          [disabled]="true"
+          data-cy="status"
+          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
+        >
+          <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
+            {{ 'COMMON.STATUS_TYPES.' + status | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}</mat-label>
+        <input
+          required
+          matInput
+          formControlName="businessOrganisation"
+          data-cy="businessOrganisation"
+          placeholder="SBB"
+        />
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.TYPE' | translate }}</mat-label>
+        <mat-select required formControlName="type" data-cy="type">
+          <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
+            {{ 'LIDI.LINE.TYPES.' + type | translate }}
+          </mat-option>
+        </mat-select>
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.PAYMENT.TYPE' | translate }}</mat-label>
+        <mat-select required formControlName="paymentType" data-cy="paymentType">
+          <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
+            {{ 'LIDI.PAYMENT.' + type | translate }}
+          </mat-option>
+        </mat-select>
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <app-rgb-picker
+        [formGroup]="form"
+        label="LIDI.LINE.FONT_RGB"
+        attributeName="colorFontRgb"
+        data-cy="colorFontRgb"
+        class="col"
+        defaultColor="#000000"
+      ></app-rgb-picker>
+      <app-rgb-picker
+        [formGroup]="form"
+        label="LIDI.LINE.BACKGROUND_RGB"
+        attributeName="colorBackRgb"
+        data-cy="colorBackRgb"
+        class="col"
+        defaultColor="#FFFFFF"
+      ></app-rgb-picker>
+    </div>
+
+    <div class="row mb-3">
+      <app-cmyk-picker
+        [formGroup]="form"
+        label="LIDI.LINE.FONT_CMYK"
+        attributeName="colorFontCmyk"
+        data-cy="colorFontCmyk"
+        class="col"
+        defaultColor="100,100,100,100"
+      ></app-cmyk-picker>
+      <app-cmyk-picker
+        [formGroup]="form"
+        label="LIDI.LINE.BACKGROUND_CMYK"
+        attributeName="colorBackCmyk"
+        data-cy="colorBackCmyk"
+        class="col"
+        defaultColor="0,0,0,0"
+      ></app-cmyk-picker>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.LINE.DESCRIPTION' | translate }}</mat-label>
+        <input
+          required
+          matInput
+          formControlName="description"
+          data-cy="description"
+          placeholder="Lorem Ipsum Linie"
+        />
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.LINE.NUMBER' | translate }}</mat-label>
+        <input matInput formControlName="number" data-cy="number" placeholder="IC2" />
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.ALTERNATIVE_NAME' | translate }}</mat-label>
+        <input
+          matInput
+          formControlName="alternativeName"
+          data-cy="alternativeName"
+          placeholder="IC2 alt"
+        />
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.COMBINATION_NAME' | translate }}</mat-label>
+        <input
+          matInput
+          formControlName="combinationName"
+          data-cy="combinationName"
+          placeholder="IC2 comb"
+        />
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.LONG_NAME' | translate }}</mat-label>
+        <input
+          matInput
+          formControlName="longName"
+          data-cy="longName"
+          placeholder="Zürich HB - Arth-Goldau - Lugano -  Chiasso - Grenze"
+        />
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.ICON' | translate }}</mat-label>
+        <input
+          matInput
+          formControlName="icon"
+          data-cy="icon"
+          placeholder="https://en.wikipedia.org/wiki/File:Icon_train.svg"
+        />
+        <a matSuffix target="_blank" [attr.href]="form.value.icon"
+          ><em class="bi bi-box-arrow-in-up-right"></em
+        ></a>
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row mb-3">
+      <mat-form-field class="col">
+        <mat-label>{{ 'LIDI.COMMENT' | translate }}</mat-label>
+        <input matInput formControlName="comment" data-cy="comment" placeholder="Kommentar" />
+        <mat-error fieldErrors></mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</app-detail-wrapper>
