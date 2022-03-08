@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrimLeadingTrailingWhitespace extends SimpleModule {
 
+  private static final long serialVersionUID = 1L;
+
   @PostConstruct
   final void registerDeserializer() {
     addDeserializer(String.class, new StdScalarDeserializer<>(

@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.api;
 
-import ch.sbb.line.directory.entity.Coverage;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
 import io.swagger.v3.oas.annotations.Parameter;
