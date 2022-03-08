@@ -2,6 +2,19 @@
 
 This is the main repository for business relevant services for ATLAS.
 
+<!-- toc -->
+
+- [Build Status](#build-status)
+- [Run locally](#run-locally)
+- [Structure](#structure)
+  * [apim-configuration](#apim-configuration)
+  * [charts](#charts)
+  * [gateway](#gateway)
+  * [line-directory](#line-directory)
+  * [versioning](#versioning)
+
+<!-- tocstop -->
+
 ## Build Status
 
 [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/job/master/)
