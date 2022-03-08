@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.validation;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -10,7 +11,6 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
-import ch.sbb.line.directory.exception.SublineOutsideOfLineRangeException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
@@ -30,13 +30,16 @@ public class SublineValidationTest {
   @Mock
   private LineVersionRepository lineVersionRepository;
 
+  @Mock
+  private CoverageValidationService coverageValidationService;
+
   private SublineValidationService sublineValidationService;
 
   @BeforeEach()
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineValidationService = new SublineValidationService(sublineVersionRepository,
-        lineVersionRepository);
+        lineVersionRepository, coverageValidationService);
   }
 
   @Test
@@ -76,8 +79,10 @@ public class SublineValidationTest {
     sublineVersion.setValidTo(LocalDate.of(2001, 12, 31));
 
     //when
-    assertThatExceptionOfType(SublineOutsideOfLineRangeException.class).isThrownBy(
-        () -> sublineValidationService.validateLineRangeRule(sublineVersion));
+    boolean result = sublineValidationService.validateLineRangeRule(sublineVersion);
+
+    //then
+    assertThat(result).isTrue();
   }
 
   @Test
@@ -99,8 +104,10 @@ public class SublineValidationTest {
     sublineVersion.setValidTo(LocalDate.of(2002, 1, 1));
 
     //when
-    assertThatExceptionOfType(SublineOutsideOfLineRangeException.class).isThrownBy(
-        () -> sublineValidationService.validateLineRangeRule(sublineVersion));
+    boolean result = sublineValidationService.validateLineRangeRule(sublineVersion);
+
+    //then
+    assertThat(result).isTrue();
   }
 
 
@@ -123,8 +130,10 @@ public class SublineValidationTest {
     sublineVersion.setValidTo(LocalDate.of(2002, 1, 1));
 
     //when
-    assertThatExceptionOfType(SublineOutsideOfLineRangeException.class).isThrownBy(
-        () -> sublineValidationService.validateLineRangeRule(sublineVersion));
+    boolean result = sublineValidationService.validateLineRangeRule(sublineVersion);
+
+    //then
+    assertThat(result).isTrue();
   }
 
 }

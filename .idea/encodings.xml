@@ -6,8 +6,6 @@
     <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/line-directory/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/line-directory/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/versioning/src/main/java" charset="UTF-8" />
   </component>
 </project>

@@ -5,8 +5,10 @@ import static ch.sbb.line.directory.entity.LineVersion.Fields.businessOrganisati
 import static ch.sbb.line.directory.entity.LineVersion.Fields.combinationName;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.longName;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.paymentType;
+import static ch.sbb.line.directory.entity.LineVersion.Fields.slnid;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.swissLineNumber;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.type;
+import static ch.sbb.line.directory.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -18,11 +20,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.SublineVersionModel;
+import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
@@ -37,18 +40,19 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   private LineController lineController;
 
   @Autowired
-  private SublineController sublineController;
-
-  @Autowired
   private LineVersionRepository lineVersionRepository;
 
   @Autowired
   private SublineVersionRepository sublineVersionRepository;
 
+  @Autowired
+  private CoverageRepository coverageRepository;
+
   @AfterEach
   public void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
+    coverageRepository.deleteAll();
   }
 
   @Test
@@ -56,16 +60,16 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     //given
     LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
-                        .validTo(LocalDate.of(2000, 12, 31))
-                        .validFrom(LocalDate.of(2000, 1, 1))
-                        .businessOrganisation("sbb")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC2")
-                        .build();
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2")
+                    .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     //when
     lineVersionModel.setBusinessOrganisation("PostAuto");
@@ -113,16 +117,16 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     //given
     LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
-                        .validTo(LocalDate.of(2000, 12, 31))
-                        .validFrom(LocalDate.of(2000, 1, 1))
-                        .businessOrganisation("sbb")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC5")
-                        .build();
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC5")
+                    .build();
     lineController.createLineVersion(lineVersionModel);
     //when
     lineVersionModel.setSwissLineNumber("b0.IC3");
@@ -133,58 +137,94 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldReturnLineRangeSmallerThanSublineRangeErrorResponse() throws Exception {
+  void shouldGetSublineCoverage() throws Exception {
     //given
     LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
-                        .validTo(LocalDate.of(2000, 12, 31))
-                        .validFrom(LocalDate.of(2000, 1, 1))
-                        .businessOrganisation("sbb")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC2-libne")
-                        .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
-                           .validFrom(LocalDate.of(2000, 1, 1))
-                           .validTo(LocalDate.of(2000, 12, 31))
-                           .businessOrganisation("sbb")
-                           .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
-                           .paymentType(PaymentType.LOCAL)
-                           .mainlineSlnid(lineVersionSaved.getSlnid())
-                           .build();
-    sublineController.createSublineVersion(sublineVersionModel);
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC5")
+                    .build();
+    LineVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
 
     //when
-    lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 2));
-    mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString())
-           .contentType(contentType)
-           .content(mapper.writeValueAsString(lineVersionModel)))
-       .andExpect(status().isPreconditionFailed())
-       .andExpect(jsonPath("$.status", is(412)))
-       .andExpect(jsonPath("$.message", is("A precondition fail occurred due to a business rule")))
-       .andExpect(jsonPath("$.error", is("Line smaller then subline")))
-       .andExpect(jsonPath("$.details[0].message",
-           is("The line range 02.01.2000-31.12.2000 is outside of the subline b0.Ic2-sibline range 01.01.2000-31.12.2000")))
-       .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.code",
-           is("LIDI.LINE.PRECONDITION.LINE_OUTSIDE_OF_SUBLINE_RANGE")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("validFrom")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("02.01.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("validTo")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("31.12.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].key",
-           is("sublinie.swissSublineNumber")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[2].value", is("b0.Ic2-sibline")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].key", is("sublinie.validFrom")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[3].value", is("01.01.2000")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].key", is("sublinie.validTo")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[4].value", is("31.12.2000")));
+    mvc.perform(get("/v1/lines/line-coverage/" + lineVersion.getSlnid())
+        .contentType(contentType)
+    ).andExpect(status().isOk())
+       .andExpect(jsonPath("$.slnid", is(lineVersion.getSlnid())))
+       .andExpect(jsonPath("$.modelType", is(LINE.toString())))
+       .andExpect(jsonPath("$.coverageType", is(CoverageType.COMPLETE.toString())))
+       .andExpect(jsonPath("$.validFrom", is("2000-01-01")))
+       .andExpect(jsonPath("$.validTo", is("2000-12-31")))
+       .andExpect(jsonPath("$.validationErrorType", is(nullValue())));
+  }
+
+  @Test
+  void shouldGetCoveredLines() throws Exception {
+    //given
+    LineVersionModel lineVersionModel =
+        LineTestData.lineVersionModelBuilder()
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC5")
+                    .build();
+    LineVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
+
+    //when
+    mvc.perform(get("/v1/lines/covered")
+        .contentType(contentType)
+    ).andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].businessOrganisation", is("sbb")))
+        .andExpect(jsonPath("$[0].type", is(LineType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0].status" , is(Status.ACTIVE.toString())))
+        .andExpect(jsonPath("$[0].slnid" , is(lineVersion.getSlnid())))
+        .andExpect(jsonPath("$[0].validFrom" , is("2000-01-01")))
+        .andExpect(jsonPath("$[0].validTo" , is("2000-12-31")));
+  }
+
+  @Test
+  void shouldGetCoveredLineVersions() throws Exception {
+    //given
+    LineVersionModel lineVersionModel =
+        LineTestData.lineVersionModelBuilder()
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC5")
+                    .build();
+    LineVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
+
+    //when
+    mvc.perform(get("/v1/lines/versions/covered")
+        .contentType(contentType)
+    ).andExpect(status().isOk())
+       .andExpect(jsonPath("$[0]." + alternativeName, is("alternative")))
+       .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
+       .andExpect(jsonPath("$[0]." + longName, is("long name")))
+       .andExpect(jsonPath("$[0]." + slnid, is(lineVersion.getSlnid())))
+       .andExpect(jsonPath("$[0]." + type, is(LineType.TEMPORARY.toString())))
+       .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
+       .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC5")))
+       .andExpect(jsonPath("$[0]." + businessOrganisation, is("sbb")))
+       .andExpect(jsonPath("$[0].validFrom" , is("2000-01-01")))
+       .andExpect(jsonPath("$[0].validTo" , is("2000-12-31")));
   }
 
   @Test
@@ -192,16 +232,16 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     //given
     LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
-                        .validTo(LocalDate.of(2000, 12, 31))
-                        .validFrom(LocalDate.of(2000, 1, 1))
-                        .businessOrganisation("sbb")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC2-libne")
-                        .build();
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2-libne")
+                    .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
 
     //when
@@ -234,16 +274,16 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     //given
     LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
-                        .validTo(LocalDate.of(2000, 12, 31))
-                        .validFrom(LocalDate.of(2000, 1, 1))
-                        .businessOrganisation("sbb")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC2-libne")
-                        .build();
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2-libne")
+                    .build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
 
     // When first update it is ok
@@ -275,29 +315,29 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     //given
     LineVersionModel firstLineVersionModel =
         LineTestData.lineVersionModelBuilder()
-                        .validTo(LocalDate.of(2000, 12, 31))
-                        .validFrom(LocalDate.of(2000, 1, 1))
-                        .businessOrganisation("sbb")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC2-libne")
-                        .build();
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2-libne")
+                    .build();
     firstLineVersionModel = lineController.createLineVersion(firstLineVersionModel);
     LineVersionModel secondLineVersionModel =
         LineTestData.lineVersionModelBuilder()
-                        .validTo(LocalDate.of(2001, 12, 31))
-                        .validFrom(LocalDate.of(2001, 1, 1))
-                        .businessOrganisation("BLS")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC2-libne")
-                        .build();
+                    .validTo(LocalDate.of(2001, 12, 31))
+                    .validFrom(LocalDate.of(2001, 1, 1))
+                    .businessOrganisation("BLS")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2-libne")
+                    .build();
     lineController.createLineVersion(secondLineVersionModel);
 
     //when & then
@@ -305,11 +345,14 @@ public class LineControllerApiTest extends BaseControllerApiTest {
            .contentType(contentType)
            .content(mapper.writeValueAsString(firstLineVersionModel)))
        .andExpect(jsonPath("$.status", is(520)))
-       .andExpect(jsonPath("$.message", is("No entities were modified after versioning execution.")))
+       .andExpect(
+           jsonPath("$.message", is("No entities were modified after versioning execution.")))
        .andExpect(jsonPath("$.error", is("No changes after versioning")))
-       .andExpect(jsonPath("$.details[0].message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.details[0].message",
+           is("No entities were modified after versioning execution.")))
        .andExpect(jsonPath("$.details[0].field", is(nullValue())))
-       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
+       .andExpect(
+           jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
   }
 
   @Test
@@ -317,16 +360,16 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     //given
     LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
-                        .validTo(LocalDate.of(2000, 12, 31))
-                        .validFrom(LocalDate.of(2000, 1, 1))
-                        .businessOrganisation("sbb")
-                        .alternativeName("alternative")
-                        .combinationName("combination")
-                        .longName("long name")
-                        .type(LineType.TEMPORARY)
-                        .paymentType(PaymentType.LOCAL)
-                        .swissLineNumber("b0.IC2-libne")
-                        .build();
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .type(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2-libne")
+                    .build();
 
     //when
     mvc.perform(post("/v1/lines/versions/123")
