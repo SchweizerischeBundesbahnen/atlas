@@ -49,21 +49,22 @@ public class CoverageValidationService {
     }
     List<SublineVersion> technincalSublines = getSublinesByType(sublineVersions, TECHNICAL);
     List<SublineVersion> compensationSublines = getSublinesByType(sublineVersions, COMPENSATION);
-
     boolean lineCompletelyCoverByTechnicalSublines =
         isLineCompletelyCoveredBySublines(lineVersions, technincalSublines);
     boolean lineCompletelyCoverByCompensationSublines =
         isLineCompletelyCoveredBySublines(lineVersions, compensationSublines);
 
-    return lineCompletelyCoverByCompensationSublines || lineCompletelyCoverByTechnicalSublines;
+    return lineCompletelyCoverByCompensationSublines && lineCompletelyCoverByTechnicalSublines;
   }
 
   private boolean isLineCompletelyCoveredBySublines(List<LineVersion> lineVersions,
       List<SublineVersion> sublinesVersions) {
-    boolean lineCompletelyCoverByTechnicalSublines = false;
+    boolean lineCompletelyCoverByTechnicalSublines;
     if (!sublinesVersions.isEmpty()) {
       lineCompletelyCoverByTechnicalSublines = lineCompletelyCoverSublines(lineVersions,
           sublinesVersions);
+    }else {
+      return true;
     }
     return lineCompletelyCoverByTechnicalSublines;
   }
