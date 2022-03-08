@@ -1,0 +1,219 @@
+{
+  "ERROR": {
+    "CLIENT": {
+      "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas."
+    },
+    "WARNING": {
+      "VERSIONING_NO_CHANGES": "Die von Ihnen eingegebenen Daten wurden überprüft. Es wurde festgestellt, dass Ihre Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat. Bitte ändern Sie die Daten oder beenden Sie das Editieren."
+    },
+    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten! Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas.",
+    "NOTALLOWED": "Sie besitzen keine Berechtigung, um diesen Inhalt zu bearbeiten.",
+    "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}.",
+    "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} wurde nicht gefunden.",
+    "VERSIONING": "Diese Versionierungs-Änderung ist vom System nicht unterstützt. Wenden Sie sich bitte an die Fachstelle Atlas."
+  },
+  "COMMON": {
+    "SAVE": "Speichern",
+    "EDIT": "Editieren",
+    "CANCEL": "Abbrechen",
+    "COVERAGE": {
+      "COMPLETE": "Vollständig",
+      "INCOMPLETE": "Lückenhaft"
+    },
+    "NODATAFOUND": "Es wurden keine Daten gefunden.",
+    "TYPE_TO_SEARCH": "Tippen Sie einen Text ein, um die Suche zu beginnen.",
+    "JA": "Ja",
+    "NEIN": "Nein",
+    "ACHTUNG": "Achtung!",
+    "DATE": {
+      "SELECT_DATERANGE": "Datumsbereich*"
+    },
+    "FROM": "von",
+    "TO": "bis",
+    "VERSION": "Version",
+    "FILLED_AUTOMATICALLY": "Automatisch befüllt",
+    "VALID_FROM": "Gültig von",
+    "VALID_TO": "Gültig bis",
+    "STATUS": "Status",
+    "STATUS_TYPES": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv",
+      "NEEDS_REVIEW": "Benötigt Prüfung",
+      "IN_REVIEW": "In Prüfung",
+      "REVIEWED": "Prüfung abgeschlossen"
+    },
+    "OK": "Ok",
+    "EDIT_VERSION": "Version editieren",
+    "CREATE_VERSION": "Version hinzufügen",
+    "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
+    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
+    "ROLES": {
+      "lidi-writer": "LiDi Writer",
+      "lidi-admin": "LiDi Admin"
+    },
+    "SEARCH": {
+      "VALIDITY": "Gültig am",
+      "SEARCH_CRITERIA": "Suche"
+    },
+    "NOTIFICATION": {
+      "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken."
+    }
+  },
+  "DIALOG": {
+    "OK": "Weiter",
+    "CANCEL": "Abbrechen",
+    "WARNING": "Warnung!",
+    "DELETE": "Wollen Sie diesen Datensatz unwiderruflich löschen?",
+    "DISCARD_CHANGES_TITLE": "Änderungen verwerfen?",
+    "LEAVE_SITE": "Wenn Sie die Seite verlassen werden Ihre Daten nicht gespeichert.",
+    "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlieren Sie alle angepassten Daten."
+  },
+  "PROFILE": {
+    "HELLO": "Hallo",
+    "YOUR_ROLES": "Ihre Rollen:",
+    "LOGIN": "Login",
+    "LOGOUT": "Logout"
+  },
+  "HOME": {
+    "HEADER": "ATLAS - die SKI Business Applikation",
+    "TITLE": "Herzlich Willkommen!",
+    "DESCRIPTION": "Was möchten Sie tun?"
+  },
+  "PAGES": {
+    "HOME": "Übersichtsseite",
+    "TTFN": {
+      "TITLE": "Fahrplanfeldverzeichnis",
+      "DESCRIPTION": "Erfassen und Verwalten von Fahrplanfelddaten."
+    },
+    "LIDI": {
+      "TITLE": "Linienverzeichnis",
+      "DESCRIPTION": "Erfassen und Verwalten von Liniendaten."
+    },
+    "DETAILS": "Details"
+  },
+  "TTFN": {
+    "TTFN": "Fahrplanfeldnummer",
+    "NEW": "Neue Fahrplanfeldnummer erfassen",
+    "SWISS_TIMETABLE_FIELD_NUMBER": "CH-Fahrplanfeldnummer",
+    "DESCRIPTION": "CH-Fahrplanfeldnummer Bezeichnung",
+    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "NUMBER": "Fahrplanfeldnummer",
+    "TTFNID": "Fahrplanfeldnummer-ID",
+    "COMMENT": "Kommentar",
+    "CONFLICT": {
+      "NUMBER": "Die Fahrplanfeldnummer {{number}} ist bereits von {{validFrom}} bis {{validTo}} durch {{ttfnid}} vergeben.",
+      "SWISS_NUMBER": "Die CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{ttfnid}} vergeben."
+    },
+    "NOTIFICATION": {
+      "ADD_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich hinzugefügt.",
+      "ADD_ERROR": "Beim Erfassen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "EDIT_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich gespeichert.",
+      "EDIT_ERROR": "Beim Editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "DELETE_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich gelöscht.",
+      "DELETE_ERROR": "Beim Löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "FETCH_ERROR": "Beim Laden der Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten.",
+      "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
+    }
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Objekte pro Seite",
+    "NEXT_PAGE": "Nächste Seite",
+    "PREVIOUS_PAGE": "Vorherige Seite",
+    "RANGE_LABEL1": "0 von {{length}}",
+    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} von {{length}}"
+  },
+  "VALIDATION": {
+    "REQUIRED": "Dies ist ein Pflichtfeld.",
+    "BLANK": "Dieses Feld darf nicht leer sein.",
+    "MAXLENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
+    "MATDATEPICKERMIN": "Das Datum muss grösser als oder gleich dem {{date}} sein.",
+    "MATDATEPICKERMAX": "Das Datum muss kleiner als oder gleich dem {{date}} sein.",
+    "MATDATEPICKERPARSE": "Das Datumsformat ist ungültig. (Gültige Format: TT.MM.YYYY)",
+    "DATE_RANGE_ERROR": "Das Gültig-von Datum darf nicht grösser als das Gültig-bis Datum sein: {{date}}",
+    "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
+    "WHITESPACES": "Darf nicht mit einem Leerzeichen starten oder enden."
+  },
+  "LIDI": {
+    "SWISS_LINE_NUMBER": "CH-Liniennummer (CHLNR)",
+    "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
+    "ALTERNATIVE_NAME": "Alternativbezeichnung",
+    "COMBINATION_NAME": "Kombinationsbezeichnung",
+    "LONG_NAME": "Langbezeichnung",
+    "ICON": "URL für Linien-Logo",
+    "TYPE": "Linientyp",
+    "SUBLINE_TYPE": "Teillinientyp",
+    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "SLNID": "SLNID",
+    "COMMENT": "Kommentar",
+    "PAYMENT": {
+      "TYPE": "Bezahlungsart",
+      "INTERNATIONAL": "International",
+      "REGIONAL": "Regional",
+      "REGIONALWITHOUT": "Nicht Regional",
+      "LOCAL": "Lokal",
+      "OTHER": "Andere",
+      "NONE": "Keine"
+    },
+    "LINE": {
+      "LINE": "Linie",
+      "LINES": "Linien",
+      "CONFLICT": {
+        "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben."
+      },
+      "PRECONDITION": {
+        "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Teillinie {{sublinie.swissSublineNumber}}. Diese ist {{sublinie.validFrom}}-{{sublinie.validTo}}."
+      },
+      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Die temporäre Linie mit der Gültigkeit von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten.",
+      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Die Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen. Diese überschreiten zusammen die maximale Gültigkeit von 12 Monaten.",
+      "NUMBER": "Liniennummer",
+      "DESCRIPTION": "Linienbezeichnung",
+      "FONT_RGB": "Schriftfarbe RGB",
+      "BACKGROUND_RGB": "Schrifthintergrundfarbe RGB",
+      "FONT_CMYK": "Schriftfarbe CMYK",
+      "BACKGROUND_CMYK": "Schrifthintergrundfarbe CMYK",
+      "NEW": "Neue Linie",
+      "TYPES": {
+        "ORDERLY": "Ordentlich",
+        "TEMPORARY": "Temporär",
+        "OPERATIONAL": "Betrieblich"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Linie wurde erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Die Linie wurde erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Die Linie wurde erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Linie ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Linie ist ein unbekannter Fehler aufgetreten."
+      }
+    },
+    "SUBLINE": {
+      "SUBLINE": "Teillinie",
+      "SUBLINES": "Teillinien",
+      "CONFLICT": {
+        "SWISS_NUMBER": "Die CH-Teilliniennummer {{swissSublineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben.",
+        "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline darf nicht geändert werden."
+      },
+      "PRECONDITION": {
+        "SUBLINE_OUTSIDE_OF_LINE_RANGE": "Die Gültigkeit der Teillinie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Linie {{mainline.swissLineNumber}}. Diese ist {{mainline.validFrom}}-{{mainline.validTo}}."
+      },
+      "NUMBER": "Teilliniennummer",
+      "MAINLINE": "Hauptlinie",
+      "DESCRIPTION": "Teillinienbezeichnung",
+      "NEW": "Neue Teillinie",
+      "TYPES": {
+        "COMPENSATION": "Kompensation",
+        "TECHNICAL": "Technisch"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Teillinie wurde erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Die Teillinie wurde erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Teillinie ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Die Teillinie wurde erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Teillinie ist ein unbekannter Fehler aufgetreten."
+      }
+    }
+  }
+}
