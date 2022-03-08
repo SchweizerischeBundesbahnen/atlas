@@ -4,7 +4,6 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
 import ch.sbb.line.directory.exception.SublineConflictException;
-import ch.sbb.line.directory.exception.SublineOutsideOfLineRangeException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.util.Comparator;
@@ -18,11 +17,21 @@ public class SublineValidationService {
 
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
+  private final CoverageValidationService coverageValidationService;
 
-  public void validateSublineBusinessRules(SublineVersion sublineVersion) {
+  public void validatePreconditionSublineBusinessRules(SublineVersion sublineVersion) {
     validateSublineConflict(sublineVersion);
-    validateLineRangeRule(sublineVersion);
     validateDifferentMainLineAssignRule(sublineVersion);
+  }
+
+  public void validateSublineAfterVersioningBusinessRule(SublineVersion sublineVersion) {
+    LineVersion lineVersion = lineVersionRepository.findAllBySlnidOrderByValidFrom(
+                                                       sublineVersion.getMainlineSlnid())
+                                                   .stream()
+                                                   .findFirst()
+                                                   .orElseThrow(() -> new IllegalStateException(
+                                                       "No Line found for the given subline!"));
+    coverageValidationService.validateLineSublineCoverage(lineVersion);
   }
 
   void validateSublineConflict(SublineVersion sublineVersion) {
@@ -46,20 +55,17 @@ public class SublineValidationService {
     }
   }
 
-  void validateLineRangeRule(SublineVersion sublineVersion) {
+  boolean validateLineRangeRule(SublineVersion sublineVersion) {
     List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
         sublineVersion.getMainlineSlnid());
     if (!lineVersions.isEmpty()) {
       lineVersions.sort(Comparator.comparing(LineVersion::getValidFrom));
       LineVersion firstLineVersion = lineVersions.get(0);
       LineVersion lastLineVersion = lineVersions.get(lineVersions.size() - 1);
-      if (sublineVersion.getValidFrom().isBefore(firstLineVersion.getValidFrom())
-          || sublineVersion.getValidTo().isAfter(lastLineVersion.getValidTo())) {
-        throw new SublineOutsideOfLineRangeException(sublineVersion,
-            firstLineVersion.getSwissLineNumber(), firstLineVersion.getValidFrom(),
-            lastLineVersion.getValidTo());
-      }
+      return sublineVersion.getValidFrom().isBefore(firstLineVersion.getValidFrom())
+          || sublineVersion.getValidTo().isAfter(lastLineVersion.getValidTo());
     }
+    return false;
   }
 
 }

@@ -4,7 +4,6 @@ import static ch.sbb.line.directory.api.ErrorResponse.DisplayInfo.builder;
 
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
-import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersion.Fields;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import java.util.List;
