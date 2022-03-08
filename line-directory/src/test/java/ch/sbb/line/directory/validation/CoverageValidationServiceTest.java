@@ -757,7 +757,7 @@ public class CoverageValidationServiceTest {
   }
 
   /**
-   * 11-c. Case: Line fully covered by different sublines
+   * 11-b. Case: Line fully covered by different sublines
    *
    * Line	          |-----------------------------|
    * Subline A1_1   |----|                           (Technical)
@@ -828,7 +828,7 @@ public class CoverageValidationServiceTest {
   }
 
   /**
-   * 11-b. Case: Line fully covered by 3 different sublines with different Type
+   * 11-c. Case: Line fully covered by 3 different sublines with different Type
    *
    * Line	          |-----------------------------|
    * Subline A1_1   |--------------|                 (Technical)
@@ -837,7 +837,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTrueWhenDifferentSubLineWithDifferentTypesCoverALine() {
+  public void shouldReturnFalseWhenDifferentSubLineWithDifferentTypesCoverLine() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 2))
@@ -870,6 +870,68 @@ public class CoverageValidationServiceTest {
     sublineVersions.add(firtsSublineVersion);
     sublineVersions.add(secondSublineVersion);
     sublineVersions.add(thirdSublineVersion);
+    doReturn(lineVersions).when(lineVersionRepository)
+                          .findAllBySlnidOrderByValidFrom(firstLineVersion.getSlnid());
+    doReturn(sublineVersions).when(sublineVersionRepository)
+                             .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
+    //when
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
+    //then
+    assertThat(result).isFalse();
+  }
+
+  /**
+   * 11-d. Case: Line fully covered by 3 different sublines with different Type
+   *
+   * Line	          |-----------------------------|
+   * Subline A1_1   |--------------|                 (Technical)
+   * Subline A2_1		               |--------------|  (Technical)
+   * Subline A3_1		|--------------|                 (Compensation)
+   * Subline A4_1		               |--------------|  (Compensation)
+   * Result OK
+   */
+  @Test
+  public void shouldReturnFalseWhenDifferentSubLineWithDifferentTypesCoverLine11d() {
+    //given
+    LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
+                                               .validFrom(LocalDate.of(2000, 1, 2))
+                                               .validTo(LocalDate.of(2000, 12, 31))
+                                               .slnid("ch:1000").build();
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(firstLineVersion);
+    SublineVersion firtsSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                        .validFrom(LocalDate.of(2000, 1, 2))
+                                                        .validTo(LocalDate.of(2000, 5, 31))
+                                                        .type(TECHNICAL)
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1000")
+                                                        .build();
+    SublineVersion secondSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                         .validFrom(LocalDate.of(2000, 6, 1))
+                                                         .validTo(LocalDate.of(2000, 12, 31))
+                                                         .type(TECHNICAL)
+                                                         .mainlineSlnid(firstLineVersion.getSlnid())
+                                                         .slnid("ch:1001")
+                                                         .build();
+    SublineVersion thirdSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                        .validFrom(LocalDate.of(2000, 1, 2))
+                                                        .validTo(LocalDate.of(2000, 5, 31))
+                                                         .type(COMPENSATION)
+                                                         .mainlineSlnid(firstLineVersion.getSlnid())
+                                                         .slnid("ch:1002")
+                                                         .build();
+    SublineVersion fourthSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                         .validFrom(LocalDate.of(2000, 6, 1))
+                                                         .validTo(LocalDate.of(2000, 12, 31))
+                                                         .type(COMPENSATION)
+                                                         .mainlineSlnid(firstLineVersion.getSlnid())
+                                                         .slnid("ch:1002")
+                                                         .build();
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+    sublineVersions.add(firtsSublineVersion);
+    sublineVersions.add(secondSublineVersion);
+    sublineVersions.add(thirdSublineVersion);
+    sublineVersions.add(fourthSublineVersion);
     doReturn(lineVersions).when(lineVersionRepository)
                           .findAllBySlnidOrderByValidFrom(firstLineVersion.getSlnid());
     doReturn(sublineVersions).when(sublineVersionRepository)
