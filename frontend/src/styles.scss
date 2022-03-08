@@ -1,0 +1,146 @@
+@import './theme.scss';
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-icons/font/bootstrap-icons.css';
+@import 'ng-select';
+/* You can add global styles to this file, and also import other style files */
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iY3VycmVudENvbG9yIi8+PC9zdmc+);
+}
+
+.breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.white {
+  color: white;
+}
+
+.gray-1 {
+  color: hsl(0, 0%, 40%);
+  font-size: 1.1rem;
+}
+
+.background-grey {
+  background-color: hsl(0, 0%, 93%);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.route-active {
+  font-weight: bold;
+}
+
+/* Notification styling*/
+.success {
+  background-color: hsl(120, 100%, 25%);
+}
+
+.info {
+  background-color: hsl(203, 100%, 75%);
+}
+
+.error {
+  background-color: hsl(0, 100%, 50%);
+  color: hsl(0, 0%, 100%);
+  white-space: pre-wrap;
+}
+
+a {
+  color: hsl(233, 57%, 37%);
+  text-decoration: none;
+}
+
+a:hover {
+  color: hsl(235, 66%, 30%);
+  text-decoration: underline;
+}
+
+.has-overlay {
+  position: relative;
+}
+
+i.bi {
+  font-size: 16px;
+}
+
+.mat-snack-bar-container {
+  margin: unset !important;
+  margin-top: 4.5rem !important;
+  margin-right: 24px !important;
+}
+
+snack-bar-container.success {
+  background-color: #008000c9;
+}
+
+snack-bar-container.error {
+  background-color: #d71414e0;
+  white-space: unset !important;
+}
+
+snack-bar-container.warning {
+  background-color: orange;
+  white-space: unset !important;
+}
+
+snack-bar-container.notification {
+  color: white;
+}
+
+.snack-bar-error-container {
+  display: flex;
+  .snack-bar-error-container-text {
+    padding-top: 1rem;
+    padding-right: 1rem;
+
+    ul {
+      margin-bottom: 0.2rem !important;
+    }
+  }
+  .snack-bar-error-generic-text {
+    padding-right: 1.5rem;
+  }
+  .dismiss {
+    position: absolute;
+    right: 1rem;
+  }
+  .data {
+    float: left;
+    overflow: auto;
+    max-height: 70vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px white;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f3d1d1;
+  }
+}
+
+.mat-simple-snackbar-action {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  color: white;
+}

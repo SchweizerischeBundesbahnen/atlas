@@ -1,0 +1,38 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  annotations:
+    openshift.io/host.generated: 'true'
+    clew.sbb.ch/cluster-independent-dns: 'true'
+  name: {{ .Chart.Name }}
+spec:
+  host: '{{ .Values.routeHost }}'
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: '{{ .Chart.Name }}'
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    router.clew.sbb.ch/type: sbb-aws-alb-public
+  annotations:
+    clew.sbb.ch/cluster-independent-dns: 'true'
+    external-dns.alpha.kubernetes.io/alias: 'true'
+    external-dns.alpha.kubernetes.io/target: '{{ .Values.clusterLoadBalancer }}'
+  name: {{ .Chart.Name }}-public
+spec:
+  host: '{{ .Values.publicRoute }}'
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: '{{ .Chart.Name }}'
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
