@@ -4,14 +4,14 @@ metadata:
   annotations:
     openshift.io/host.generated: 'true'
     clew.sbb.ch/cluster-independent-dns: 'true'
-  name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+  name: '{{ .Values.product }}{{ .Values.global.separator }}{{ .Values.global.variant }}'
 spec:
-  host: '{{ .Values.product }}.{{ .Values.springProfilesActive }}.sbb-cloud.net'
+  host: '{{ .Values.product }}.{{ .Values.global.springProfilesActive }}.sbb-cloud.net'
   port:
     targetPort: '{{ .Values.port }}-tcp'
   to:
     kind: Service
-    name: '{{ .Values.product }}{{ .Values.separator }}{{ .Values.variant }}'
+    name: '{{ .Values.product }}{{ .Values.global.separator }}{{ .Values.global.variant }}'
     weight: 100
   tls:
     termination: edge
