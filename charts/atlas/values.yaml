@@ -1,4 +1,4 @@
-global:
+common:
   # Maximal CPU ie 1 for 1 Core
   cpuMax: "1"
   # Minimal CPU ie. 1m for 1 Milicore
@@ -11,9 +11,23 @@ global:
   memoryMin: "256M"
   # Pod Instances Count
   replicas: 1
-  # SEPARATOR is an option to put an variation to the deploymentconfig name.
-  separator: ""
-  # VARIANT is an option to put an variation to the deploymentconfig name.
-  variant: ""
-  # Selector-Tag for Artifactory
-  versiontag: ""
+
+gateway:
+  # Name of the Dockerimge in bin.sbb.ch/dockerrepo
+  name: "gateway"
+  # LIVENESS_PROBE
+  livenessProbe: "actuator/health"
+  # READYNESS_PROBE
+  readynessProbe: "actuator/health"
+  # Application Port
+  port: 8888
+
+lineDirectory:
+  # Name of the Dockerimge in bin.sbb.ch/dockerrepo
+  name: "line-directory"
+  # LIVENESS_PROBE
+  livenessProbe: "actuator/health"
+  # READYNESS_PROBE
+  readynessProbe: "actuator/health"
+  # Application Port
+  port: 8082
