@@ -5,7 +5,15 @@
 - [ATLAS](#atlas)
 - [Versioning](#versioning)
 - [Links](#links)
-- [Development](#development)
+  * [Localhost](#localhost)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
+  * [Project Infrastructure](#project-infrastructure)
+- [Development](#development-1)
+  * [Test RESTful Web services](#test-restful-web-services)
+  * [PostgreSQL Docker](#postgresql-docker)
 
 <!-- tocstop -->
 

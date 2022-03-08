@@ -4,11 +4,11 @@
 
 - [ATLAS](#atlas)
 - [Atlas Versioning Library](#atlas-versioning-library)
-    * [How to](#how-to)
-    * [Add atlas-library to the pom.xml](#add-atlas-library-to-the-pomxml)
-    * [Integrate atlas-library](#integrate-atlas-library)
-    * [Define VersionableService as Bean for SpringBoot](#define-versionableservice-as-bean-for-springboot)
-    * [How to use VersionableService](#how-to-use-versionableservice)
+  * [How to](#how-to)
+  * [Add atlas-library to the pom.xml](#add-atlas-library-to-the-pomxml)
+  * [Integrate versioning-library](#integrate-versioning-library)
+  * [Define VersionableService as Bean for SpringBoot](#define-versionableservice-as-bean-for-springboot)
+  * [How to use VersionableService](#how-to-use-versionableservice)
 
 <!-- tocstop -->
 
