@@ -3,12 +3,12 @@ package ch.sbb.line.directory.controller;
 import static java.util.stream.Collectors.toList;
 
 import ch.sbb.line.directory.api.Container;
+import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
 import ch.sbb.line.directory.api.LineModel;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
-import ch.sbb.line.directory.entity.Coverage;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -110,8 +110,8 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public Coverage getLineCoverage(String slnid) {
-    return coverageService.getSublineCoverageBySlnidAndLineModelType(slnid);
+  public CoverageModel getLineCoverage(String slnid) {
+    return CoverageModel.toModel(coverageService.getSublineCoverageBySlnidAndLineModelType(slnid));
   }
 
   @Override

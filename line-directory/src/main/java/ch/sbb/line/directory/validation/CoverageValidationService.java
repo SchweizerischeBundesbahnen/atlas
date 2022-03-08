@@ -89,17 +89,17 @@ public class CoverageValidationService {
 
   boolean hasVersionsUncoveredUncoveredGaps(List<? extends Versionable> lineVersions,
       List<? extends Versionable> sublineVersions) {
-    List<DataRange> firstListDataRange = getCoveredDataRanges(lineVersions);
-    List<DataRange> secondListDataRange = getCoveredDataRanges(sublineVersions);
-    return !firstListDataRange.equals(secondListDataRange);
+    List<DateRange> firstListDateRange = getCoveredDataRanges(lineVersions);
+    List<DateRange> secondListDateRange = getCoveredDataRanges(sublineVersions);
+    return !firstListDateRange.equals(secondListDateRange);
   }
 
-  private <T extends Versionable> List<DataRange> getDataRangeFromSingleVersion(
-      List<T> versionableList, List<DataRange> coveredDataRages) {
+  private <T extends Versionable> List<DateRange> getDataRangeFromSingleVersion(
+      List<T> versionableList, List<DateRange> coveredDataRages) {
     T firstVersionable = versionableList.get(0);
-    DataRange currentDataRange = new DataRange(firstVersionable.getValidFrom(),
+    DateRange currentDateRange = new DateRange(firstVersionable.getValidFrom(),
         firstVersionable.getValidTo());
-    coveredDataRages.add(currentDataRange);
+    coveredDataRages.add(currentDateRange);
     return coveredDataRages;
   }
 
@@ -139,27 +139,27 @@ public class CoverageValidationService {
     return result;
   }
 
-  <T extends Versionable> List<DataRange> getCoveredDataRanges(List<T> versionableList) {
-    List<DataRange> coveredDataRages = new ArrayList<>();
+  <T extends Versionable> List<DateRange> getCoveredDataRanges(List<T> versionableList) {
+    List<DateRange> coveredDataRages = new ArrayList<>();
     if (versionableList.size() == 1) {
       return getDataRangeFromSingleVersion(versionableList, coveredDataRages);
     }
     if (versionableList.size() > 1) {
       T firstItem = versionableList.get(0);
-      DataRange currentDataRange = new DataRange(firstItem.getValidFrom(), firstItem.getValidTo());
+      DateRange currentDateRange = new DateRange(firstItem.getValidFrom(), firstItem.getValidTo());
       for (int i = 1; i < versionableList.size(); i++) {
         T current = versionableList.get(i - 1);
         T next = versionableList.get(i);
         if ((next.getValidFrom().isBefore(current.getValidTo().plusDays(1))
             || next.getValidFrom().isEqual(current.getValidTo().plusDays(1)))) {
-          currentDataRange.setTo(next.getValidTo());
+          currentDateRange.setTo(next.getValidTo());
           if ((versionableList.size() - 1) == i) {
-            coveredDataRages.add(currentDataRange);
+            coveredDataRages.add(currentDateRange);
             return coveredDataRages;
           }
         } else {
-          coveredDataRages.add(currentDataRange);
-          currentDataRange = new DataRange(next.getValidFrom(), next.getValidTo());
+          coveredDataRages.add(currentDateRange);
+          currentDateRange = new DateRange(next.getValidFrom(), next.getValidTo());
         }
       }
     }
@@ -197,7 +197,7 @@ public class CoverageValidationService {
 
   @Data
   @Builder
-  static class DataRange {
+  static class DateRange {
 
     private LocalDate from;
     private LocalDate to;
