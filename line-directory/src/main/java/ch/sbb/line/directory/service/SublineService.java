@@ -34,6 +34,7 @@ public class SublineService {
   private final LineService lineService;
   private final SublineValidationService sublineValidationService;
   private final SpecificationBuilderProvider specificationBuilderProvider;
+  private final CoverageService coverageService;
 
   public Page<Subline> findAll(SearchRestrictions<SublineType> searchRestrictions) {
     SpecificationBuilderService<Subline> specificationBuilderService = specificationBuilderProvider.getSublineSpecificationBuilderService();
@@ -73,9 +74,10 @@ public class SublineService {
   }
 
   public void deleteById(Long id) {
-    if (!sublineVersionRepository.existsById(id)) {
-      throw new IdNotFoundException(id);
-    }
+    SublineVersion sublineVersion = sublineVersionRepository.findById(id)
+                                                            .orElseThrow(
+                                                                () -> new IdNotFoundException(id));
+    coverageService.deleteCoverageSubline(sublineVersion.getSlnid());
     sublineVersionRepository.deleteById(id);
   }
 

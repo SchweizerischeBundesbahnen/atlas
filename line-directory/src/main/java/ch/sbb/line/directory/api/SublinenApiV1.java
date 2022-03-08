@@ -62,5 +62,5 @@ public interface SublinenApiV1 {
       @RequestBody @Valid SublineVersionModel newVersion);
 
   @GetMapping("subline-coverage/{slnid}")
-  Coverage getSublineCoverage(@PathVariable String slnid);
+  CoverageModel getSublineCoverage(@PathVariable String slnid);
 }
