@@ -59,13 +59,16 @@ class LineServiceTest {
   @Mock
   private Specification<Line> lineSpecification;
 
+  @Mock
+  private CoverageService coverageService;
+
   private LineService lineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, lineRepository, versionableService,
-        lineValidationService, specificationBuilderProvider);
+        lineValidationService, specificationBuilderProvider, coverageService);
   }
 
   @Test
@@ -171,27 +174,25 @@ class LineServiceTest {
   @Test
   void shouldDeleteLine() {
     // Given
-    when(lineVersionRepository.existsById(ID)).thenReturn(true);
+    LineVersion lineVersion = LineTestData.lineVersion();
+    lineVersion.setId(1l);
+    when(lineVersionRepository.findById(1l)).thenReturn(Optional.ofNullable(lineVersion));
 
     // When
-    lineService.deleteById(ID);
+    lineService.deleteById(1l);
 
     // Then
-    verify(lineVersionRepository).existsById(ID);
-    verify(lineVersionRepository).deleteById(ID);
+    verify(lineVersionRepository).deleteById(1l);
   }
 
   @Test
   void shouldNotDeleteLineWhenNotFound() {
     // Given
-    when(lineVersionRepository.existsById(ID)).thenReturn(false);
+    when(lineVersionRepository.findById(ID)).thenReturn(Optional.empty());
 
     // When
     assertThatExceptionOfType(NotFoundException.class).isThrownBy(
         () -> lineService.deleteById(ID));
-
-    // Then
-    verify(lineVersionRepository).existsById(ID);
   }
 
   @Test
