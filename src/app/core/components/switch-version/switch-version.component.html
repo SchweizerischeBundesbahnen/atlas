@@ -1,8 +1,11 @@
 <div class="detail-header mb-2">
   <div class="title">
-    <h1>
-      <strong>{{ this.recordTitle }}</strong>
-    </h1>
+    <div class="d-flex justify-content-between">
+      <h1 class="title-string">
+        <strong>{{ this.recordTitle }}</strong>
+      </h1>
+      <app-coverage [currentRecord]="this.currentRecord" [pageType]="this.pageType"></app-coverage>
+    </div>
     <span data-cy="switch-version-total-range">
       {{ this.displayPageTypeTitle() | translate }}
       {{ 'COMMON.FROM' | translate }}
