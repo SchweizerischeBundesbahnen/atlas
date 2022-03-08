@@ -1,7 +1,4 @@
-# Atlas versioning library
-
-[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-versioning/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-versioning/job/master/)
-[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Aatlas-versioning&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aatlas-versioning)
+# Atlas Versioning Library
 
 <!-- toc -->
 
@@ -25,7 +22,7 @@ available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/brows
 
 This library tries to generify the versioning of certain entity for ATLAS projects. The versioning
 is based on the following
-document: [Versionirung](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
+document: [Versioning](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
 .
 
 :warning: **Please note that this library implements only the scenarios
@@ -49,7 +46,7 @@ Add in the **pom.xml**:
 <dependencies>
 ```
 
-### Integrate atlas-library
+### Integrate versioning-library
 
 1. Implement the
    interface [Versionable](src/main/java/ch/sbb/atlas/versioning/model/Versionable.java):

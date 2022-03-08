@@ -1,8 +1,5 @@
 # Atlas Gateway
 
-[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-gateway/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-gateway/job/master/)
-[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Aatlas-gateway&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aatlas-gateway)
-
 <!-- toc -->
 
 - [ATLAS](#atlas)
@@ -32,17 +29,17 @@ gateway:
 ## Links
 
 ### Development
-* Swagger UI: https://atlas-gateway.dev.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-* API as Json: https://atlas-gateway.dev.sbb-cloud.net/v3/api-docs
+* Swagger UI: https://gateway.dev.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://gateway.dev.sbb-cloud.net/v3/api-docs
 
 ### Test
-* Swagger UI: https://atlas-gateway.test.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-* API as Json: https://atlas-gateway.test.sbb-cloud.net/v3/api-docs
+* Swagger UI: https://gateway.test.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://gateway.test.sbb-cloud.net/v3/api-docs
 
 ### Integration
-* Swagger UI: https://atlas-gateway.int.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-* API as Json: https://atlas-gateway.int.sbb-cloud.net/v3/api-docs
+* Swagger UI: https://gateway.int.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://gateway.int.sbb-cloud.net/v3/api-docs
 
 ### Production
-* Swagger UI: https://atlas-gateway.prod.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-* API as Json: https://atlas-gateway.prod.sbb-cloud.net/v3/api-docs
+* Swagger UI: https://gateway.prod.sbb-cloud.net/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* API as Json: https://gateway.prod.sbb-cloud.net/v3/api-docs

@@ -9,9 +9,29 @@
   - https://developer-int.sbb.ch/apis/atlas-int/information
   - https://developer.sbb.ch/apis/atlas/information
 
+## The ATLAS Way
+We are using a gateway for our microservices. Each of them may come with its own OpenAPI specification.
+On compilation the various specifications are published into `apim-configuration/src/main/resources/api/${artifactId}`.
+
+In this project we use the `OpenApiMerger` class to combine the services APIs in one API served by the gateway.
+This merged API will then be used by our frontend to generate a client.
+
+## Deployment
+
+This module will get deployed on staging. See `estaCloudPipeline.json`
+```json
+"api": {
+        "artifactId": "apim-configuration",
+        "instance": "int",
+        "clientJenkinsId": "791ceebb-e433-4c6c-b2eb-dac031ba3fe2",
+        "clientId": "client-atlas-jenkins-dev",
+        "classifier": "dev"
+      }
+```
+
 ## HowTo Update
 https://api-deploy.int.app.ose.sbb-aws.net/swagger-ui.html#/API/updateServiceUsingPUT mit folgenden Parameter
-- artifactId: timetable-field-number-apim-configuration
+- artifactId: apim-configuration
 - classifier: dev
 - groupId: ch.sbb.atlas
 - version 0.x.0 (siehe Jenkins Job)
