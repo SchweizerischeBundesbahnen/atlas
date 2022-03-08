@@ -1,4 +1,4 @@
-global:
+common:
   # Splunk index to write to
   splunkIndex: "sbb_atlas_internal_dev_events"
   # spring profile for the environment
