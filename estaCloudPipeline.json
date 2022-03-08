@@ -22,9 +22,9 @@
   ],
   "helm" : {
     "repository": "atlas.helm",
-    "chartRootFolder": "./line-directory/charts",
-    "chart": "line-directory",
-    "release": "line-directory"
+    "chartRootFolder": "./charts",
+    "chart": "atlas",
+    "release": "atlas"
   },
   "mvn": {
     "parentPom": "pom.xml",
