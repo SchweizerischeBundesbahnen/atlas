@@ -1,4 +1,4 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
 i.bi {
   font-size: $navigationItemFontSize;
@@ -10,13 +10,13 @@ i.bi {
   padding: 0;
   border: 0;
   width: 100%;
+  flex-grow: 1;
 }
 
 .mat-drawer-container,
 .mat-drawer-content {
   background: $background;
 }
-
 
 .sidenavBtn {
   position: absolute;
@@ -31,10 +31,7 @@ i.bi {
   padding-top: 40px;
 }
 
-.main-container {
-  height: calc(100vh - 4rem);
-}
-
 .full-height {
   height: 100%;
+  overflow: auto;
 }

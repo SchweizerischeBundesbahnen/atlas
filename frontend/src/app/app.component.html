@@ -1,21 +1,23 @@
-<app-header></app-header>
-<div class="app-body">
-  <button type="button" class="btn me-3 sidenavBtn" (click)="sidenav.toggle()">
-    <i class="bi bi-list"></i>
-  </button>
-  <mat-sidenav-container>
-    <mat-sidenav #sidenav>
-      <mat-nav-list class="nav-list">
-        <app-side-nav (showSideNav)="sidenav.toggle()"></app-side-nav>
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content class="main-container container-fluid ms-3 sidenav-content">
-      <div class="full-height">
-        <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
-        </app-loading-spinner>
-        <app-breadcrumb></app-breadcrumb>
-        <router-outlet></router-outlet>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+<div class="d-flex flex-column full-height">
+  <app-header></app-header>
+  <div class="app-body">
+    <button type="button" class="btn me-3 sidenavBtn" (click)="sidenav.toggle()">
+      <i class="bi bi-list"></i>
+    </button>
+    <mat-sidenav-container class="full-height">
+      <mat-sidenav #sidenav>
+        <mat-nav-list class="nav-list">
+          <app-side-nav (showSideNav)="sidenav.toggle()"></app-side-nav>
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content class="ms-3 sidenav-content">
+        <div class="full-height">
+          <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
+          </app-loading-spinner>
+          <app-breadcrumb></app-breadcrumb>
+          <router-outlet></router-outlet>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
 </div>

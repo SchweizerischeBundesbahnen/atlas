@@ -2,7 +2,8 @@
 
 $headerHeight: 121px;
 $logoWidth: 139px;
-$logoMarginLeft: 47px;
+$logoMarginLeft: 45px;
+$appHeaderColor: #e8e8e8;
 
 .logo-placeholder {
   background: $white;
@@ -17,8 +18,8 @@ $logoMarginLeft: 47px;
     left: $logoMarginLeft;
     width: 45px;
     height: 45px;
-    background: $accentColor url('/assets/images/a-logo.svg') no-repeat 12px 12px;
-    border-radius: 9.47368px;
+    background: $accentColor url('~src/assets/images/a-logo.svg') no-repeat 12px 12px;
+    border-radius: 9.57px;
     background-size: 23px 23px;
   }
 
@@ -27,9 +28,6 @@ $logoMarginLeft: 47px;
     position: absolute;
     top: 80px;
     left: $logoMarginLeft;
-    width: 45px;
-    height: 20px;
-    line-height: 20px;
   }
 }
 
@@ -39,12 +37,19 @@ $logoMarginLeft: 47px;
 
 .header-container {
   padding-left: 181px;
+  color: $navigationDisabled;
 }
 
 .home-header {
-  overflow-x: hidden;
+  /*overflow-x: hidden;*/
   height: $headerHeight;
   padding: 0 16px 0 0;
+  background: $appHeaderColor;
+}
+
+.header-title {
+  font-size: 36px;
+  line-height: 45px;
 }
 
 i.bi-list {
@@ -60,6 +65,12 @@ button.btn.btn-primary:focus {
   border-color: inherit;
   -webkit-box-shadow: none;
   box-shadow: none;
+}
+
+.header-subheader {
+  font-size: 14px;
+  line-height: 17.5px;
+  font-weight: normal;
 }
 
 div.d-flex {
