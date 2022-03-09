@@ -30,7 +30,7 @@
     "parentPom": "pom.xml",
     "deployableArtifactsPom": "pom.xml",
     "artifactoryMavenRepo": "atlas.mvn",
-    "mavenLabel": "Apache Maven 3.6"
+    "mavenLabel": "Apache Maven 3.8"
   },
   "stages": [
     {
