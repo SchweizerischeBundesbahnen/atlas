@@ -1,7 +1,5 @@
 // app variables (color, size, etc.)
 @import 'variables';
-@import 'color-classes';
-@import 'font-classes';
 
 // Presentation framework
 @import '~bootstrap/scss/bootstrap';
@@ -15,3 +13,7 @@
 
 // App 3rd party components
 @import 'other-components/components';
+
+// ATLAS Colors and Fonts
+@import 'color-classes';
+@import 'font-classes';
