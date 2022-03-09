@@ -10,6 +10,7 @@
         <module name="line-directory" />
         <module name="versioning" />
         <module name="apim-configuration" />
+        <module name="fronted" />
         <module name="gateway" />
       </profile>
     </annotationProcessing>
@@ -17,6 +18,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="apim-configuration" options="-parameters" />
+      <module name="fronted" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="line-directory" options="-parameters" />
       <module name="versioning" options="-parameters" />
