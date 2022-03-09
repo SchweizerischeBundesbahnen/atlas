@@ -30,6 +30,7 @@
         <!-- Combine APIs-->
         <module>apim-configuration</module>
         <module>gateway</module>
+        <module>frontend</module>
     </modules>
     <dependencyManagement>
         <dependencies>

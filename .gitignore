@@ -104,3 +104,7 @@ Thumbs.db
 /cypress/logs/
 /.angular/
 /cypress.env.json
+/frontend/dist/
+/frontend/node_modules/
+/frontend/.angular/
+/frontend/coverage/
