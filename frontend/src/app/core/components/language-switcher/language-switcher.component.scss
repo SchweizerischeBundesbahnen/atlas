@@ -1,15 +1,15 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
 a {
-  color: $foreground;
   text-decoration: none;
   font-weight: normal;
-  font-size: small;
+  font-size: 13px;
   cursor: pointer;
-  padding-right: 12px;
+  margin-right: 12px;
+  padding: 3px;
 }
 
 .isSelected {
-  color: $navigationDisabled;
-  border-bottom: $navigationDisabled solid 1px;
+  border: 1px solid $gray-900;
+  border-radius: 2px;
 }
