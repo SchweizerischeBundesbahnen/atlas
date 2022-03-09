@@ -1,8 +1,8 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
 $headerHeight: 121px;
 $logoWidth: 139px;
-$logoMarginLeft: 45px;
+$logoMarginLeft: 47px;
 $appHeaderColor: #e8e8e8;
 
 .logo-placeholder {
@@ -19,7 +19,7 @@ $appHeaderColor: #e8e8e8;
     width: 45px;
     height: 45px;
     background: $accentColor url('/assets/images/a-logo.svg') no-repeat 12px 12px;
-    border-radius: 9.57px;
+    border-radius: 9.47368px;
     background-size: 23px 23px;
   }
 
@@ -28,6 +28,9 @@ $appHeaderColor: #e8e8e8;
     position: absolute;
     top: 80px;
     left: $logoMarginLeft;
+    width: 45px;
+    height: 20px;
+    line-height: 20px;
   }
 }
 
@@ -45,7 +48,6 @@ $appHeaderColor: #e8e8e8;
   height: $headerHeight;
   padding: 0 16px 0 0;
   background: $appHeaderColor;
-
 }
 
 .header-title {
