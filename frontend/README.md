@@ -83,7 +83,7 @@ see the [Jenkinsfile](Jenkinsfile). On this job the commit push notification is 
 
 The Jenkinsfile is stored in [cypress/Jenkinsfile](cypress/Jenkinsfile)
 
-##### Release-Tests
+##### Release-Tests (Used by Tester)
 
 E2E Release-Tests are not automatically executed within the standard pipeline.
 They are located in the cypress/release folder.
