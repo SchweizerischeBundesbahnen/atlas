@@ -75,19 +75,19 @@
     "LOGOUT": "Logout"
   },
   "HOME": {
-    "HEADER": "Home",
-    "TITLE": "Herzlich Willkommen!",
-    "DESCRIPTION": "Was möchten Sie tun?"
+    "HEADER": "Home"
   },
   "PAGES": {
     "HOME": "Übersichtsseite",
     "TTFN": {
-      "TITLE": "Fahrplanfeldverzeichnis",
-      "DESCRIPTION": "Erfassen und Verwalten von Fahrplanfelddaten."
+      "TITLE": "Fahrplanfeld-Nummern verwalten",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Fahrplanfeldern.",
+      "PATH_TEXT": "Zu den Fahrplanfeldern"
     },
     "LIDI": {
-      "TITLE": "Linienverzeichnis",
-      "DESCRIPTION": "Erfassen und Verwalten von Liniendaten."
+      "TITLE": "Linien und Teillinien bearbeiten und erstellen",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Linien und Teillinien.",
+      "PATH_TEXT": "Zum Linienverzeichnis"
     },
     "DETAILS": "Details"
   },

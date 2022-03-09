@@ -7,44 +7,40 @@
       "VERSIONING_NO_CHANGES": "Die von ihnen eingegeben Daten wurden überprüft. Es wurde festgestellt, dass die Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat."
     },
     "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
-    "NOTALLOWED": "Droits insuffisants pour voir ce contenu",
+    "NOTALLOWED": "Nessuna autorizzazione per visualizzare questo contenuto ",
     "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}",
     "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden",
     "VERSIONING": "Beim Speichern ist ein Fehler in der Versionierung aufgetreten"
   },
   "COMMON": {
-    "SAVE": "Enregistrer",
-    "EDIT": "Éditer",
-    "CANCEL": "Annuler",
-    "COVERAGE": {
-      "COMPLETE": "Vollständig",
-      "INCOMPLETE": "Lückenhaft"
-    },
-    "NODATAFOUND": "Aucunes données trouvées",
+    "SAVE": "Salvare",
+    "EDIT": "Modificare",
+    "CANCEL": "Annullare",
+    "NODATAFOUND": "Nessun dato trovato",
     "TYPE_TO_SEARCH": "Tippen um zu Suchen",
-    "JA": "oui",
-    "NEIN": "non",
-    "ACHTUNG": "Attention!",
+    "JA": "Sì",
+    "NEIN": "No",
+    "ACHTUNG": "Attenzione!",
     "DATE": {
-      "SELECT_DATERANGE": "Plage de validité*"
+      "SELECT_DATERANGE": "Intervallo date*"
     },
-    "FROM": "de",
-    "TO": "à",
-    "VERSION": "Version",
+    "FROM": "da",
+    "TO": "a",
+    "VERSION": "Versione",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
-    "VALID_FROM": "Valide du",
-    "VALID_TO": "Valide jusqu'au",
-    "STATUS": "Statut",
+    "VALID_FROM": "Valido da",
+    "VALID_TO": "Valido a",
+    "STATUS": "Stato",
     "STATUS_TYPES": {
-      "ACTIVE": "Actif",
-      "INACTIVE": "Inactif",
-      "NEEDS_REVIEW": "Nécessite un examen",
-      "IN_REVIEW": "En cours d'examen",
-      "REVIEWED": "Examen terminé"
+      "ACTIVE": "Attivo",
+      "INACTIVE": "Inaattivo",
+      "NEEDS_REVIEW": "Richiede esame",
+      "IN_REVIEW": "In esame",
+      "REVIEWED": "Esame completto"
     },
-    "OK": "OK",
-    "EDIT_VERSION": "Éditer la version",
-    "CREATE_VERSION": "Ajouter la version",
+    "OK": "Ok",
+    "EDIT_VERSION": "Modificare versione",
+    "CREATE_VERSION": "Aggiungere versione",
     "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
     "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
     "ROLES": {
@@ -52,25 +48,25 @@
       "lidi-admin": "LiDi Admin"
     },
     "SEARCH": {
-      "VALIDITY": "__fr__Gültig am",
-      "SEARCH_CRITERIA": "__fr__Suche"
+      "VALIDITY": "__it__Gültig am",
+      "SEARCH_CRITERIA": "__it__Suche"
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu."
     }
   },
   "DIALOG": {
-    "OK": "Continuer",
-    "CANCEL": "Annuler",
-    "WARNING": "Attention!",
-    "DELETE": "Voulez-vous supprimer définitivement cet enregistrement de données ?",
-    "DISCARD_CHANGES_TITLE": "Annuler les modifications?",
-    "LEAVE_SITE": "Si la page est quittée, les données ne seront pas sauvegardées.",
-    "CANCEL_EDITMODE": "Sortir du mode d'édition annulera toutes les modifications."
+    "OK": "OK",
+    "CANCEL": "Annullare",
+    "WARNING": "Attenzione!",
+    "DELETE": "Vuole eliminare questo record di dati irrevocabilmente?",
+    "DISCARD_CHANGES_TITLE": "Non salvare le modifiche?",
+    "LEAVE_SITE": "Lasciando la pagina i tuoi dati non verranno salvati.",
+    "CANCEL_EDITMODE": "Uscendo dalla modalità di modifica perderai tutti i tuoi dati."
   },
   "PROFILE": {
-    "HELLO": "Bonjour",
-    "YOUR_ROLES": "Tes rôles:",
+    "HELLO": "Ciao",
+    "YOUR_ROLES": "I tuoi ruoli:",
     "LOGIN": "Login",
     "LOGOUT": "Logout"
   },
@@ -80,56 +76,56 @@
   "PAGES": {
     "HOME": "Home",
     "TTFN": {
-      "TITLE": "Fahrplanfeldnummer",
+      "TITLE": "Numero piano orario",
       "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas."
     },
     "LIDI": {
-      "TITLE": "Linienverzeichnis",
+      "TITLE": "Linien",
       "DESCRIPTION": "Vitae et leo duis ut diam quam nulla porttitor. Dui faucibus in ornare quam viverra orci. Luctus venenatis lectus magna fringilla urna porttitor rhoncus. Dictum sit amet justo donec enim diam vulputate."
     },
-    "DETAILS": "Détails"
+    "DETAILS": "Dettagli"
   },
   "TTFN": {
     "TTFN": "Fahrplanfeldnummer",
-    "NEW": "Nouveau numéro de tableau-horaire",
-    "SWISS_TIMETABLE_FIELD_NUMBER": "Numéro de tableau-horaire",
-    "DESCRIPTION": "Description",
-    "BUSINESS_ORGANISATION": "Organisation commerciale",
-    "NUMBER": "Nr.",
-    "TTFNID": "Identifcateur numéro de tableau-horaire",
-    "COMMENT": "Commentaire",
+    "NEW": "Nuovo numero piano orario",
+    "SWISS_TIMETABLE_FIELD_NUMBER": "Numero piano",
+    "DESCRIPTION": "Nome",
+    "BUSINESS_ORGANISATION": "Azienda",
+    "NUMBER": "Numero piano",
+    "TTFNID": "Numero piano orario",
+    "COMMENT": "Commento",
     "CONFLICT": {
       "NUMBER": "Fahrplanfeldnummer {{number}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben",
       "SWISS_NUMBER": "CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben"
     },
     "NOTIFICATION": {
-      "ADD_SUCCESS": "Numéro de tableau-horaire ajouté avec succès.",
-      "ADD_ERROR": "Une erreur s'est prduite durant la création du numéro de tableau-horaire.",
-      "EDIT_SUCCESS": "Numéro de tableau-horaire sauvegardé avec succès.",
-      "EDIT_ERROR": "Une erreur s'est produite durant l'édition du numéro de tableau-horaire.",
-      "DELETE_SUCCESS": "Numéro de tableau-horaire supprimé avec succès.",
-      "DELETE_ERROR": "Une erreur s'est produite durant la suppression du numéro de tableau-horaire.",
-      "FETCH_ERROR": "Une erreur s'est produite durant le chargement du numéro de tableau-horaire.",
+      "ADD_SUCCESS": "Numero piano orario aggiunto con successo.",
+      "ADD_ERROR": "Si è verificato un errore durante il salvataggio del numero piano orario.",
+      "EDIT_SUCCESS": "Numero piano orario salvato con successo.",
+      "EDIT_ERROR": "Si è verificato un errore durante il salvataggio del numero piano orario..",
+      "DELETE_SUCCESS": "Numero piano orario cancellato con successo..",
+      "DELETE_ERROR": "Si è verificato un errore durante la cancellazione del numero piano orario.",
+      "FETCH_ERROR": "Si è verificato un errore durante il caricamento dei dati.",
       "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
     }
   },
   "PAGINATOR": {
-    "ITEMS_PER_PAGE": "éléments par page",
-    "NEXT_PAGE": "page suivante",
-    "PREVIOUS_PAGE": "page précédente",
-    "RANGE_LABEL1": "0 sur {{length}}",
-    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} sur {{length}}"
+    "ITEMS_PER_PAGE": "Oggetti per pagina",
+    "NEXT_PAGE": "successiva",
+    "PREVIOUS_PAGE": "precedente",
+    "RANGE_LABEL1": "0 di {{length}}",
+    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} di {{length}}"
   },
   "VALIDATION": {
-    "REQUIRED": "Ce champ est obligatoire.",
-    "BLANK": "Ce champ ne peut pas être vide.",
-    "MAXLENGTH": "Maximum {{length}} caractères autorisés.",
-    "MATDATEPICKERMIN": "La date doit être plus récente ou égale à {{date}}",
-    "MATDATEPICKERMAX": "La date doit être plus anciente ou égale à {{date}}",
-    "MATDATEPICKERPARSE": "Format de date invalide (doit être JJ.MM.AAAA)",
-    "DATE_RANGE_ERROR": "La date de début de validité ne peut pas être plus récente que la date de fin de validité: {{date}}",
-    "PATTERN": "__fr__Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
-    "WHITESPACES": "Ne peut pas commencer ou finir avec un espace."
+    "REQUIRED": "Questo è un campo obbligatorio.",
+    "BLANK": "Questo campo non può essere vuoto.",
+    "MAXLENGTH": "Sono consentiti al massimo {{length}} caratteri.",
+    "MATDATEPICKERMIN": "La date deve essere maggiore o uguale di {{date}}.",
+    "MATDATEPICKERMAX": "La data deve essere minore o uguale di {{date}}.",
+    "MATDATEPICKERPARSE": "Formato della fate non valido (deve essere TT.MM.YYYY)",
+    "DATE_RANGE_ERROR": "Valido da non può essere maggiore die valido a: {{date}}",
+    "PATTERN": "__it__Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
+    "WHITESPACES": "Non può iniziare o terminare con uno spazio."
   },
   "LIDI": {
     "SWISS_LINE_NUMBER": "CH-Liniennummer",
@@ -164,7 +160,7 @@
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Temporäre Linie von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen, welche zusammen die maximale Gültigkeit von 12 Monaten überschreiten",
       "NUMBER": "Liniennummer",
-      "DESCRIPTION": "Beschreibung",
+      "DESCRIPTION": "Linienbezeichnung",
       "FONT_RGB": "Schriftfarbe RGB",
       "BACKGROUND_RGB": "Schrifthintergrundfarbe RGB",
       "FONT_CMYK": "Schriftfarbe CMYK",
@@ -196,7 +192,7 @@
         "SUBLINE_OUTSIDE_OF_LINE_RANGE": "Die Gültigkeit der Teillinie {{validFrom}}-{{validTo}} ist ausserhalb der Linie {{mainline.swissLineNumber}} Gültigkeit {{mainline.validFrom}}-{{mainline.validTo}}"
       },
       "NUMBER": "Teilliniennummer",
-      "MAINLINE": "Ligne principale",
+      "MAINLINE": "Linea principale",
       "DESCRIPTION": "Teillinienbezeichnung",
       "NEW": "Neue Teillinie",
       "TYPES": {

@@ -14,6 +14,8 @@
 // App 3rd party components
 @import 'other-components/components';
 
-// ATLAS Colors and Fonts
-@import 'color-classes';
-@import 'font-classes';
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
