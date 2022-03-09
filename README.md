@@ -52,8 +52,7 @@ helm template . -n atlas-dev -f values-atlas-dev.yaml
 
 ### gateway
 
-Module to handle routing of API endpoints to the respective business applications.
-Start this locally, if you want to run the angular UI.
+Module to handle routing of API endpoints to the respective business applications. Start this locally, if you want to run the angular UI.
 
 ### line-directory
 
