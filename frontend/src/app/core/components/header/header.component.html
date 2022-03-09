@@ -1,11 +1,11 @@
-<mat-toolbar class="home-header">
+<mat-toolbar class="home-header bg-color-gray-100">
   <div class="logo-placeholder">
     <div class="logo"></div>
     <div class="title">atlas</div>
   </div>
-  <div class="d-flex ms-3 header-container">
-    <span class="header-title">{{ 'HOME.HEADER' | translate }}</span>
-    <div class="header-subheader">
+  <div class="d-flex ms-3 header-container color-gray-900">
+    <span class="font-bold-4xl">{{ 'HOME.HEADER' | translate }}</span>
+    <div class="font-regular-sm">
       <span>Version {{ version }}</span>
       <span *ngIf="showLabel()" [ngClass]="getEnvLabelClass()">
         {{ environmentLabel }}

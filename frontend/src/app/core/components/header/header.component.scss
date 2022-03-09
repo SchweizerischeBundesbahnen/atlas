@@ -3,7 +3,6 @@
 $headerHeight: 121px;
 $logoWidth: 139px;
 $logoMarginLeft: 47px;
-$appHeaderColor: #e8e8e8;
 
 .logo-placeholder {
   background: $white;
@@ -40,19 +39,12 @@ $appHeaderColor: #e8e8e8;
 
 .header-container {
   padding-left: 181px;
-  color: $navigationDisabled;
 }
 
 .home-header {
   overflow-x: hidden;
   height: $headerHeight;
   padding: 0 16px 0 0;
-  background: $appHeaderColor;
-}
-
-.header-title {
-  font-size: 36px;
-  line-height: 45px;
 }
 
 i.bi-list {
@@ -68,12 +60,6 @@ button.btn.btn-primary:focus {
   border-color: inherit;
   -webkit-box-shadow: none;
   box-shadow: none;
-}
-
-.header-subheader {
-  font-size: 14px;
-  line-height: 17.5px;
-  font-weight: normal;
 }
 
 div.d-flex {
