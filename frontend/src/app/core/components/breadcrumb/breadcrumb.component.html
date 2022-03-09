@@ -1,6 +1,6 @@
-<nav aria-label="breadcrumb">
+<nav *ngIf="!isHome" aria-label="breadcrumb">
   <ol class="breadcrumb mb-4 mt-3">
-    <li *ngIf="!isHome" class="breadcrumb-item">
+    <li class="breadcrumb-item">
       <i class="bi bi-house-fill"></i>
       <a class="ms-1" id="home" routerLink="">{{ 'PAGES.HOME' | translate }} </a>
     </li>
