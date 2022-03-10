@@ -9,16 +9,16 @@ $app-primary: mat-palette($atlas-primary, default);
 $app-accent: mat-palette($atlas-accent, default);
 $app-warn: mat-palette($atlas-red, default);
 $app-theme: mat-light-theme(
-  (
-    color: (
-      primary: $app-primary,
-      accent: $app-accent,
-      warn: $app-warn,
-    ),
-  )
+                (
+                        color: (
+                                primary: $app-primary,
+                                accent: $app-accent,
+                                warn: $app-warn,
+                        ),
+                )
 );
 $typography: mat-typography-config(
-  $font-family: 'IBM Plex Sans',
+        $font-family: 'IBM Plex Sans',
 );
 
 // Include the default theme styles (color and default density)
