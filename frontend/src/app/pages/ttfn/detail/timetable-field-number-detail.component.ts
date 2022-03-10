@@ -116,7 +116,6 @@ export class TimetableFieldNumberDetailComponent
           [
             Validators.required,
             Validators.maxLength(this.MAX_LENGTH_50),
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.sid4pt
           ]
         ],
