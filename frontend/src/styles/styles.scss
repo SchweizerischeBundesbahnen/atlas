@@ -4,6 +4,8 @@
 
 @import 'variables';
 
+@import 'core/atlas-core';
+
 // Presentation framework
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-icons/font/bootstrap-icons.css';
@@ -16,5 +18,3 @@
 
 // App 3rd party components
 @import 'other-components/components';
-
-@import 'html_body';
