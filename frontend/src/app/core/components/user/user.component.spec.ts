@@ -67,14 +67,13 @@ describe('UserComponent', () => {
       fixture.componentInstance.isAuthenticated = true;
       fixture.componentInstance.authenticate();
       fixture.detectChanges();
-      const userMenuOpenButton = fixture.debugElement.query(By.css('#user-menu-button'));
-      userMenuOpenButton.nativeElement.click();
+
+      const usernameModal = fixture.debugElement.query(By.css('.user-name')).nativeElement;
+      expect(usernameModal.textContent).toContain(expectedUserName);
       fixture.detectChanges();
 
-      const usernameModal = fixture.debugElement.query(By.css('.user-info-modal')).nativeElement;
-      expect(usernameModal.querySelector('.user-name-modal').textContent).toContain(
-        expectedUserName
-      );
+      const userMenuOpenButton = fixture.debugElement.query(By.css('#user-menu-button'));
+      userMenuOpenButton.nativeElement.click();
       fixture.detectChanges();
 
       const userRolesModal = fixture.debugElement.query(By.css('#user-roles-modal')).nativeElement;
