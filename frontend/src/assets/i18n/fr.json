@@ -81,11 +81,13 @@
     "HOME": "Home",
     "TTFN": {
       "TITLE": "Fahrplanfeldnummer",
-      "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas."
+      "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas.",
+      "PATH_TEXT": "Zu den Fahrplanfeldern"
     },
     "LIDI": {
       "TITLE": "Linienverzeichnis",
-      "DESCRIPTION": "Vitae et leo duis ut diam quam nulla porttitor. Dui faucibus in ornare quam viverra orci. Luctus venenatis lectus magna fringilla urna porttitor rhoncus. Dictum sit amet justo donec enim diam vulputate."
+      "DESCRIPTION": "Vitae et leo duis ut diam quam nulla porttitor. Dui faucibus in ornare quam viverra orci. Luctus venenatis lectus magna fringilla urna porttitor rhoncus. Dictum sit amet justo donec enim diam vulputate.",
+      "PATH_TEXT": "Zu den Fahrplanfeldern"
     },
     "DETAILS": "Détails"
   },
