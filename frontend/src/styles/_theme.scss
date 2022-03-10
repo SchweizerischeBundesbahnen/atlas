@@ -1,9 +1,6 @@
 @import 'node_modules/@angular/material/theming';
 @import 'palette/atlas-palette';
 
-// **Be sure that you only ever include this mixin once!**
-@include mat-core();
-
 // Define the default theme (same as the example above).
 $app-primary: mat-palette($atlas-primary, default);
 $app-accent: mat-palette($atlas-accent, default);
@@ -19,11 +16,15 @@ $app-theme: mat-light-theme(
 );
 $typography: mat-typography-config(
         $font-family: 'IBM Plex Sans',
+          // see levels: https://material.angular.io/guide/typography#typography-levels
+          // mat-typography-level(font-size, line-height, font-weight)
+        $subheading-2: mat-typography-level(20px, 160%, 400)
 );
 
+// **Be sure that you only ever include this mixin once!**
 // Include the default theme styles (color and default density)
+@include mat-core($typography);
 @include angular-material-theme($app-theme);
-@include angular-material-typography($typography);
 
 // TODO: move to vendor/_<control-name>.scss
 .mat-form-field-type-mat-date-range-input .mat-form-field-infix {
