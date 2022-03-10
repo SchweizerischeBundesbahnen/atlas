@@ -1,4 +1,4 @@
-@import 'variables';
+@import "src/styles/variables";
 
 @mixin regular-font($font-size, $line-height) {
   font-style: normal !important;
