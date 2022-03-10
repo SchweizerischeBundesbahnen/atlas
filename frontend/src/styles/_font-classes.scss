@@ -1,17 +1,17 @@
 @import 'variables';
 
 @mixin regular-font($font-size, $line-height) {
-  font-style: normal;
-  font-weight: normal;
-  font-size: $font-size;
-  line-height: $line-height;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: $font-size !important;
+  line-height: $line-height !important;
 }
 
 @mixin bold-font($font-size, $line-height) {
-  font-style: normal;
-  font-weight: bold;
-  font-size: $font-size;
-  line-height: $line-height;
+  font-style: normal !important;
+  font-weight: bold !important;
+  font-size: $font-size !important;
+  line-height: $line-height !important;
 }
 
 $font-sizes: (

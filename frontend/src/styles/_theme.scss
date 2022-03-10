@@ -8,7 +8,6 @@
 $app-primary: mat-palette($atlas-primary, default);
 $app-accent: mat-palette($atlas-accent, default);
 $app-warn: mat-palette($atlas-red, default);
-
 $app-theme: mat-light-theme(
   (
     color: (
@@ -18,14 +17,12 @@ $app-theme: mat-light-theme(
     ),
   )
 );
-
-// Include the default theme styles (color and default density)
-@include angular-material-theme($app-theme);
-
 $typography: mat-typography-config(
   $font-family: 'IBM Plex Sans',
 );
 
+// Include the default theme styles (color and default density)
+@include angular-material-theme($app-theme);
 @include angular-material-typography($typography);
 
 // TODO: move to vendor/_<control-name>.scss
@@ -42,10 +39,10 @@ mat-form-field {
     color: $black;
   }
 
-  &.override-material-error-messages-space.mat-form-field.mat-form-field-type-mat-date-range-input.mat-form-field-invalid
-    .mat-form-field-underline,
-  &.override-material-error-messages-space.mat-form-field.mat-form-field-type-mat-date-range-input.mat-form-field-invalid
-    .mat-form-field-subscript-wrapper {
+  &.override-material-error-messages-space.mat-form-field.mat-form-field-type-mat-date-range-input.mat-form-field-invalid,
+  .mat-form-field-underline,
+  &.override-material-error-messages-space.mat-form-field.mat-form-field-type-mat-date-range-input.mat-form-field-invalid,
+  .mat-form-field-subscript-wrapper {
     position: unset;
   }
 }
