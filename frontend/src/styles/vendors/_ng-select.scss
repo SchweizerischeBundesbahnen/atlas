@@ -1,4 +1,11 @@
 @import '~@ng-select/ng-select/themes/material.theme.css';
+@import "src/styles/variables";
+
+mat-select {
+  &.mat-select-disabled .mat-select-value {
+    color: $black;
+  }
+}
 
 .ng-placeholder {
   color: inherit !important;
