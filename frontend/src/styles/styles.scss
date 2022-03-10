@@ -17,8 +17,4 @@
 // App 3rd party components
 @import 'other-components/components';
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-}
+@import 'html_body';
