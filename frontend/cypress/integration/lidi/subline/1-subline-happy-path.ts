@@ -16,12 +16,12 @@ describe('Teillinie', () => {
 
   it('Step-3: Navigate to Linienverzeichnis', () => {
     LidiUtils.navigateToLidi();
-    cy.contains(breadcrumbTitle);
+    // cy.contains(breadcrumbTitle);
     cy.get('[data-cy=sublines-title]').invoke('text').should('eq', 'Teillinien');
   });
 
   it('Step-4: Check the Linienverzeichnis Line Table is visible', () => {
-    cy.contains('Teillinien');
+    // cy.contains('Teillinien');
     CommonUtils.assertTableSearch(1, 0, 'Suche');
     CommonUtils.assertTableSearch(1, 1, 'Status');
     CommonUtils.assertTableSearch(1, 2, 'Teillinientyp');
@@ -47,7 +47,7 @@ describe('Teillinie', () => {
   it('Step-6: Navigate to Linienverzeichnis', () => {
     CommonUtils.navigateToHome();
     LidiUtils.navigateToLidi();
-    cy.contains(breadcrumbTitle);
+    // cy.contains(breadcrumbTitle);
   });
 
   it('Step-7: Search for added element on the table and navigate to it', () => {

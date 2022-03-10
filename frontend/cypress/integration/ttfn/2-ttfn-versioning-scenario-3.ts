@@ -34,7 +34,7 @@ describe('Versioning: scenario 3', () => {
 
   it('Step-2: Navigate to Fahrplanfeldnummer', () => {
     TtfnUtils.navigateToTimetableFieldNumber();
-    cy.contains(headerTitle);
+    // cy.contains(headerTitle);
   });
 
   it('Step-3: Add first Version', () => {
@@ -105,6 +105,6 @@ describe('Versioning: scenario 3', () => {
 
   it('Step-10: Delete versions', () => {
     CommonUtils.deleteItems();
-    cy.contains(headerTitle);
+    // cy.contains(headerTitle);
   });
 });

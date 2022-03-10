@@ -27,7 +27,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-3: Navigate to Linienverzeichnis', () => {
     LidiUtils.navigateToLidi();
-    cy.contains(breadcrumbTitle);
+    // cy.contains(breadcrumbTitle);
     cy.get('[data-cy=sublines-title]').invoke('text').should('eq', 'Teillinien');
   });
 
@@ -91,7 +91,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   it('Step-10: Navigate to Linienverzeichnis', () => {
     CommonUtils.navigateToHome();
     LidiUtils.navigateToLidi();
-    cy.contains(breadcrumbTitle);
+    // cy.contains(breadcrumbTitle);
   });
 
   it('Step-11: Check the added is present on the table result and navigate to it ', () => {

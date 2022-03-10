@@ -108,6 +108,6 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
 
   it('Step-12: Delete the item ', () => {
     CommonUtils.deleteItems();
-    cy.contains(headerTitle);
+    // cy.contains(headerTitle);
   });
 });
