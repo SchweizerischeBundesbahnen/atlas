@@ -1,9 +1,9 @@
 $atlas-typography: mat-typography-config(
         $font-family: 'IBM Plex Sans',
-          // see levels: https://material.angular.io/guide/typography#typography-levels
           // mat-typography-level(font-size, line-height, font-weight)
         $subheading-2: mat-typography-level(20px, 160%, 400)
   /*
+   // see levels: https://material.angular.io/guide/typography#typography-levels
   display-4	112px, one-off header, usually at the top of the page (e.g. a hero header).
   display-3	56px, one-off header, usually at the top of the page (e.g. a hero header).
   display-2	45px, one-off header, usually at the top of the page (e.g. a hero header).

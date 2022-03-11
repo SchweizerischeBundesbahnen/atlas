@@ -1,16 +1,21 @@
 <div class="d-flex flex-column full-height">
   <app-header></app-header>
   <div class="app-body">
-    <button type="button" class="btn me-3 sidenavBtn" (click)="sidenav.toggle()">
+    <div *ngIf="!sidenav.opened" class="sidenav-menu-btn btn me-3" (click)="sidenav.toggle()">
       <i class="bi bi-list"></i>
-    </button>
+      <span>Menü</span>
+    </div>
+    <div *ngIf="sidenav.opened" class="sidenav-menu-btn menu-opened btn me-3" (click)="sidenav.toggle()">
+      <span class="bi-arrow-left"> Menu schliessen</span>
+    </div>
     <mat-sidenav-container class="full-height">
-      <mat-sidenav #sidenav>
-        <mat-nav-list class="nav-list">
+      <mat-sidenav #sidenav mode="side" opened="true">
+        <mat-nav-list>
+          <div class="nav-list-spacer" (click)="sidenav.toggle()">&nbsp;</div>
           <app-side-nav (showSideNav)="sidenav.toggle()"></app-side-nav>
         </mat-nav-list>
       </mat-sidenav>
-      <mat-sidenav-content class="ms-3 sidenav-content">
+      <mat-sidenav-content>
         <div class="full-height">
           <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
           </app-loading-spinner>
