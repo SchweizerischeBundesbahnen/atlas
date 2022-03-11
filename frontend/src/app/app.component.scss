@@ -52,3 +52,10 @@ i.bi {
   height: 100%;
   overflow: auto;
 }
+
+@include large-screen() {
+  .sidenav-menu-btn {
+    width: $navigationLargeSize;
+    padding: 25px 0 0 54px !important;
+  }
+}
