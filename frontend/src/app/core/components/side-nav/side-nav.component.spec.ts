@@ -43,7 +43,7 @@ describe('SideNavComponent', () => {
     expect(result).toBeDefined();
     const firstSideNavItem = result[0].querySelector('div.mat-list-item-content');
     const secondSideNavItem = result[1].querySelector('div.mat-list-item-content');
-    expect(firstSideNavItem.textContent.trim()).toBe(component.pages[0].title);
-    expect(secondSideNavItem.textContent.trim()).toBe(component.pages[1].title);
+    expect(firstSideNavItem.textContent.trim()).toBe(component.pages[0].titleMenu);
+    expect(secondSideNavItem.textContent.trim()).toBe(component.pages[1].titleMenu);
   });
 });
