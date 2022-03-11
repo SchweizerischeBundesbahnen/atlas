@@ -2,6 +2,9 @@
 
 $navMenuBtnHeight: 79px;
 
+$navMenuBtnDefaultLeft: 32.5px;
+$navMenuBtnLargeLeft: 56.5px;
+
 i.bi {
   font-size: $navigationItemFontSize;
   color: $foreground;
@@ -23,7 +26,9 @@ i.bi {
   height: $navMenuBtnHeight;
   vertical-align: middle;
   z-index: 2;
-  padding: 25px 0 0 43px !important;
+  padding: 0 !important;
+  padding-top: 25px !important;
+  padding-left: $navMenuBtnDefaultLeft !important;
   margin: 0 !important;
   font-weight: bold;
   text-align: left;
@@ -32,11 +37,11 @@ i.bi {
 }
 
 .menu-opened {
-  padding-left: 37px !important;
+  padding-left: $navMenuBtnDefaultLeft !important;
 }
 
 .sidenav-menu-btn span {
-  padding-left: 7.5px;
+  padding-left: 0;
   white-space: nowrap;
 }
 
@@ -56,6 +61,9 @@ i.bi {
 @include large-screen() {
   .sidenav-menu-btn {
     width: $navigationLargeSize;
-    padding: 25px 0 0 54px !important;
+    padding: 25px 0 0 $navMenuBtnLargeLeft !important;
+  }
+  .menu-opened {
+    padding-left: $navMenuBtnLargeLeft !important;
   }
 }

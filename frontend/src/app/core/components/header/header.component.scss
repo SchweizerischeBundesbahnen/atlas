@@ -2,7 +2,7 @@
 
 $headerHeight: 121px;
 $logoMarginLeft: 47px;
-$logoMarginLeftLarge: 63px;
+$logoMarginLeftLarge: 63.5px;
 $navigationDefaultSize: 139px;
 
 .logo-placeholder {
@@ -14,7 +14,7 @@ $navigationDefaultSize: 139px;
 
   .logo {
     position: absolute;
-    top: 35px;
+    top: 32px;
     left: $logoMarginLeft;
     width: 45px;
     height: 45px;
@@ -26,7 +26,7 @@ $navigationDefaultSize: 139px;
   .title {
     color: $accentColor;
     position: absolute;
-    top: 80px;
+    top: 83px;
     left: $logoMarginLeft;
     width: 45px;
     height: 20px;
