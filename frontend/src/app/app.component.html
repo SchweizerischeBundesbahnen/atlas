@@ -1,7 +1,7 @@
 <div class="d-flex flex-column full-height">
   <app-header></app-header>
   <div class="app-body">
-    <div *ngIf="!sidenav.opened" class="sidenav-menu-btn btn me-3" (click)="sidenav.toggle()">
+    <div [@fadeInOut] *ngIf="!sidenav.opened" class="sidenav-menu-btn btn me-3" (click)="sidenav.toggle()">
       <i class="bi bi-list"></i>
       <span>{{ 'MENU.TITLE' | translate }}</span>
     </div>
