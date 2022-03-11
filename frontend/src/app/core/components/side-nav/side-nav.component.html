@@ -7,7 +7,7 @@
     routerLinkActive="route-active"
     [routerLinkActiveOptions]="{ exact: true }"
   >
-    {{ page.title | translate }}
+    {{ page.titleMenu ?? '' | translate }}
     <span class="spacer"></span>
     <i class="bi bi-arrow-right ms-5"></i>
   </a>
