@@ -3,10 +3,10 @@
   <div class="app-body">
     <div *ngIf="!sidenav.opened" class="sidenav-menu-btn btn me-3" (click)="sidenav.toggle()">
       <i class="bi bi-list"></i>
-      <span>Menü</span>
+      <span>{{ 'MENU.TITLE' | translate }}</span>
     </div>
     <div *ngIf="sidenav.opened" class="sidenav-menu-btn menu-opened btn me-3" (click)="sidenav.toggle()">
-      <span class="bi-arrow-left"> Menu schliessen</span>
+      <span class="bi-arrow-left"> {{ 'MENU.TITLE_OPENED' | translate }}</span>
     </div>
     <mat-sidenav-container class="full-height">
       <mat-sidenav #sidenav mode="side" opened="true">
