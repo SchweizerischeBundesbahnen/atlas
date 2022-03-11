@@ -79,15 +79,18 @@
   },
   "PAGES": {
     "HOME": "Home",
+    "HOME_MENU": "__fr__Start",
     "TTFN": {
-      "TITLE": "Fahrplanfeldnummer",
+      "TITLE": "__fr__Fahrplanfeld-Nummern verwalten",
+      "TITLE_MENU": "__fr__Fahrplanfeld-Nummern",
       "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas.",
-      "PATH_TEXT": "Zu den Fahrplanfeldern"
+      "PATH_TEXT": "__fr__Zu den Fahrplanfeldern"
     },
     "LIDI": {
-      "TITLE": "Linienverzeichnis",
+      "TITLE": "_fr_Linien und Teillinien bearbeiten und erstellen",
+      "TITLE_MENU": "__fr__Linien und Teillinien",
       "DESCRIPTION": "Vitae et leo duis ut diam quam nulla porttitor. Dui faucibus in ornare quam viverra orci. Luctus venenatis lectus magna fringilla urna porttitor rhoncus. Dictum sit amet justo donec enim diam vulputate.",
-      "PATH_TEXT": "Zu den Fahrplanfeldern"
+      "PATH_TEXT": "__fr__Zu den Fahrplanfeldern"
     },
     "DETAILS": "Détails"
   },
