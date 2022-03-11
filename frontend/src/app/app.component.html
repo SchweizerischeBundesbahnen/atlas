@@ -5,7 +5,7 @@
       <i class="bi bi-list"></i>
       <span>{{ 'MENU.TITLE' | translate }}</span>
     </div>
-    <div *ngIf="sidenav.opened" class="sidenav-menu-btn menu-opened btn me-3" (click)="sidenav.toggle()">
+    <div [@fadeInOut] *ngIf="sidenav.opened" class="sidenav-menu-btn menu-opened btn me-3" (click)="sidenav.toggle()">
       <span class="bi-arrow-left"> {{ 'MENU.TITLE_OPENED' | translate }}</span>
     </div>
     <mat-sidenav-container class="full-height">

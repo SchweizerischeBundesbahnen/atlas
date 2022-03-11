@@ -37,9 +37,16 @@ i.bi {
 }
 
 .menu-opened {
-  padding-left: $navMenuBtnDefaultLeft !important;
+  padding-left: 30px !important;
 }
 
+i.bi {
+  padding-right: 9px;
+}
+
+.bi-arrow-left::before {
+  padding-right: 8px;
+}
 .sidenav-menu-btn span {
   padding-left: 0;
   white-space: nowrap;
