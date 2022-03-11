@@ -79,13 +79,16 @@
   },
   "PAGES": {
     "HOME": "Homepage",
+    "HOME_MENU": "__it__Start",
     "TTFN": {
       "TITLE": "Cartella del quadro d’orario",
+      "TITLE_MENU": "Cartella del quadro d’orario",
       "DESCRIPTION": "Registrazione e gestione dei dati del quadro d’orario.",
       "PATH_TEXT": "Dai quadri d’orario"
     },
     "LIDI": {
       "TITLE": "Cartella delle linee",
+      "TITLE_MENU": "Cartella delle linee",
       "DESCRIPTION": "Registrazione e gestione dei dati delle linee.",
       "PATH_TEXT": "Dalla cartella delle linee"
     },
