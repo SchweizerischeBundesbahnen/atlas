@@ -77,6 +77,10 @@
   "HOME": {
     "HEADER": "ATLAS - l’applicazione business SIC"
   },
+  "MENU": {
+    "TITLE": "__it__Menü",
+    "TITLE_OPENED": "__it__Menü schliessen"
+  },
   "PAGES": {
     "HOME": "Homepage",
     "HOME_MENU": "__it__Start",

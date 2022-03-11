@@ -77,6 +77,10 @@
   "HOME": {
     "HEADER": "Home"
   },
+  "MENU": {
+    "TITLE": "__it__Menü",
+    "TITLE_OPENED": "__it__Menü schliessen"
+  },
   "PAGES": {
     "HOME": "Home",
     "HOME_MENU": "__fr__Start",
