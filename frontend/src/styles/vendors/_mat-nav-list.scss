@@ -1,7 +1,7 @@
 @import "src/styles/variables";
 
-$defaultScreenWidth:239px;
-$largeScreenWidth:400px;
+$defaultScreenWidth: 239px;
+$largeScreenWidth: 400px;
 
 .mat-drawer {
   background-color: $navigationBackground;
@@ -30,7 +30,7 @@ mat-sidenav-content {
 }
 
 .mat-list-item-content {
-  padding: 16px 30px 16px 30px !important;
+  padding: 16px 22px 16px $navigationPaddingLeftDefault !important;
 }
 
 @include large-screen() {
@@ -39,6 +39,9 @@ mat-sidenav-content {
   }
   mat-sidenav-content {
     margin-left: $largeScreenWidth !important;
+  }
+  .mat-list-item-content {
+    padding-left: $navigationPaddingLeftLarge !important;
   }
 }
 
