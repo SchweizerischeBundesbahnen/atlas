@@ -1,17 +1,33 @@
 @import "src/styles/variables";
 
-.mat-sidenav {
-  background: #DEDDDD;
-}
-
-.nav-list {
+.mat-drawer {
+  background-color: $navigationBackground;
   width: 239px;
-  background: #E9E9E9;
-  font-weight: bold;
+  border: 0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.mat-list-base .mat-list-item {
-  color: $foreground;
-  font-size: 13px;
+
+.mat-drawer-container,
+.mat-drawer-content {
+  background: $background;
+}
+
+mat-sidenav-content {
+  margin-left: 239px !important;
+}
+
+.mat-nav-list {
+  padding: 0 !important;
+  background-color: $gray-100;
+}
+
+.mat-list-item {
+  min-height: 56px;
+  height: auto !important;
+}
+
+.mat-list-item-content {
+  padding: 16px 30px 16px 30px !important;
 }
 

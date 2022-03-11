@@ -1,5 +1,7 @@
 @import 'src/styles/variables';
 
+$navMenuBtnHeight: 79px;
+
 i.bi {
   font-size: $navigationItemFontSize;
   color: $foreground;
@@ -10,25 +12,40 @@ i.bi {
   padding: 0;
   border: 0;
   width: 100%;
+  height: 100%;
   flex-grow: 1;
 }
 
-.mat-drawer-container,
-.mat-drawer-content {
-  background: $background;
-}
-
-.sidenavBtn {
+.sidenav-menu-btn {
+  background-color: $navigationBackground;
   position: absolute;
+  width: $navigationDefaultSize;
+  height: $navMenuBtnHeight;
+  vertical-align: middle;
   z-index: 2;
+  padding: 25px 0 0 45px !important;
+  margin: 0 !important;
+  font-weight: bold;
+  text-align: left;
+  color: $primary-400;
+  border-radius: 0;
 }
 
-.sidenav-content {
-  padding-left: 20px;
+.menu-opened {
+  padding-left: 37px !important;
 }
 
-.nav-list {
-  padding-top: 40px;
+.sidenav-menu-btn span {
+  padding-left: 7.5px;
+  white-space: nowrap;
+}
+
+.nav-list-spacer {
+  height: $navMenuBtnHeight !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: $navigationBackground;
+  cursor: pointer;
 }
 
 .full-height {

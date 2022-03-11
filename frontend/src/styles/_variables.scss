@@ -25,6 +25,7 @@ $accentColor: $primary-500;
 
 $background: #f2f2f2;
 $foreground: $primary-400;
+$navigationBackground: #dedddd;
 
 $navigationDisabled: $gray-900;
 
@@ -39,5 +40,5 @@ $warnColor: #ff0000;
 /* SIZE */
 $flexSpaceSize: 1 1 auto;
 $navigationItemFontSize: 16px;
-
+$navigationDefaultSize: 170px;
 /* OTHER */
