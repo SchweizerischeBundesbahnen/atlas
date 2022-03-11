@@ -37,8 +37,21 @@ $logoMarginLeft: 47px;
 }
 
 .header-container {
-  padding-left: 177px;
   margin-left: 0 !important;
+}
+
+@include default-screen() {
+  .header-container {
+    padding-left: 177px;
+    margin-left: 0 !important;
+  }
+}
+
+@include large-screen() {
+  .header-container {
+    padding-left: 244px;
+    margin-left: 0 !important;
+  }
 }
 
 .home-header {

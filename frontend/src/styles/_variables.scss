@@ -1,6 +1,25 @@
 // STAM: app variables colors, size, etc. (split file when to many)
 // see https://sass-lang.com/documentation/variables
 
+$media-screen-limit: 1920px;
+$media-types: ['screen','print'];
+
+@mixin default-screen() {
+  @each $type in $media-types {
+    @media #{$type} and (max-width: $media-screen-limit) {
+      @content();
+    }
+  }
+}
+
+@mixin large-screen() {
+  @each $type in $media-types {
+    @media #{$type} and (min-width: $media-screen-limit+1) {
+      @content();
+    }
+  }
+}
+
 /* SKI Colors */
 $primary-600: #1d2869;
 $primary-500: #06348b;
