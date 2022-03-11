@@ -2,6 +2,8 @@
 
 $headerHeight: 121px;
 $logoMarginLeft: 47px;
+$logoMarginLeftLarge: 63px;
+$navigationDefaultSize: 139px;
 
 .logo-placeholder {
   background: $white;
@@ -32,6 +34,17 @@ $logoMarginLeft: 47px;
   }
 }
 
+
+@include large-screen() {
+  .logo-placeholder {
+    width: $navigationLargeSize;
+
+    .logo, .title {
+      left: $logoMarginLeftLarge;
+    }
+  }
+}
+
 .spacer {
   flex: $flexSpaceSize;
 }
@@ -49,7 +62,7 @@ $logoMarginLeft: 47px;
 
 @include large-screen() {
   .header-container {
-    padding-left: 244px;
+    padding-left: 467px;
     margin-left: 0 !important;
   }
 }
