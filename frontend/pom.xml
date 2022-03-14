@@ -34,6 +34,20 @@
             </configuration>
           </execution>
           <execution>
+            <id>npm lint</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>run</argument>
+                <argument>lint</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
             <id>npm run build</id>
             <goals>
               <goal>exec</goal>
@@ -61,28 +75,7 @@
               </arguments>
             </configuration>
           </execution>
-<!--          <execution>-->
-<!--            <id>npm clean</id>-->
-<!--            <goals>-->
-<!--              <goal>exec</goal>-->
-<!--            </goals>-->
-<!--            <phase>clean</phase>-->
-<!--            <configuration>-->
-<!--              <executable>npm</executable>-->
-<!--              <arguments>-->
-<!--                <argument>run</argument>-->
-<!--                <argument>clean</argument>-->
-<!--              </arguments>-->
-<!--            </configuration>-->
-<!--          </execution>-->
         </executions>
-        <configuration>
-          <environmentVariables>
-            <!-- The following parameters create an NPM sandbox for CI -->
-            <!-- <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX> -->
-            <!--  <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP> -->
-          </environmentVariables>
-        </configuration>
       </plugin>
     </plugins>
   </build>
