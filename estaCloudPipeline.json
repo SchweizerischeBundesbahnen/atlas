@@ -44,7 +44,7 @@
     "parentPom": "pom.xml",
     "deployableArtifactsPom": "pom.xml",
     "artifactoryMavenRepo": "atlas.mvn",
-    "mavenLabel": "Apache Maven 3.8"
+    "mavenLabel": "Apache Maven 3.8",
   },
   "npm": {
     "targetRepo": "atlas.npm",
@@ -135,7 +135,7 @@
         "feature",
         "bugfix"
       ],
-      "additionalBuildParams": "",
+      "additionalBuildParams": "-X",
       "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
     },
