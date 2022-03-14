@@ -10,13 +10,13 @@ ADD https://github.com/kyubisation/angular-server-side-configuration/releases/do
 RUN chmod +x /usr/sbin/ngssc
 
 # Add ngssc script
-ADD frontend/docker/ngssc.sh ./nginx-start/
+ADD ngssc.sh ./nginx-start/
 
 # Download sources from Repository
 #ADD https://${ARTIFACTORY_USER}:${ARTIFACTORY_PW}@bin.sbb.ch/artifactory/api/npm/atlas.npm/atlas-frontend/-/atlas-frontend-${VERSION}.tgz app.tar.gz
 #RUN chmod +r app.tar.gz
 
-ADD frontend/docker/package ./package
+ADD package ./package
 
 # Extract and move to nginx html folder
 #RUN tar -xzf app.tar.gz && \
@@ -39,7 +39,7 @@ RUN chmod -R +r ./package && \
 RUN sed -i '/^\s*location \/ {$/{N;d;}' /etc/opt/rh/rh-nginx116/nginx/nginx.conf
 
 # Add nested nginx configuration
-ADD frontend/docker/nginx-location.conf "${NGINX_DEFAULT_CONF_PATH}/"
+ADD nginx-location.conf "${NGINX_DEFAULT_CONF_PATH}/"
 
 # Validate the nginx configuration
 RUN nginx -t
