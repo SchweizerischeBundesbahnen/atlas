@@ -419,6 +419,120 @@ public class CoverageValidationServiceTest {
     //then
     assertThat(result).isTrue();
   }
+  /**
+   * 8. Case: Line and subline have the same gaps, sublines with same Type
+   *	           01.01.1900          01.01.1900		      31.12.2000         31.12.2000     31.12.2000         31.12.2000
+   * Line	      |-----------------------------|        |-----------------------------|    |-----------------------------|
+   * 	           01.01.1900          01.01.1900		      30.12.2000         31.12.2000     30.12.2000         31.12.2000
+   * Subline	  |-----------------------------|       |------------------------------|   |------------------------------|
+   * Result NOK
+   */
+  @Test
+  public void shouldReturnFalseWhenSublineAndLineAreCompletelyCoveredWithTheSameGaps() {
+    //given
+    LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
+                                               .validFrom(LocalDate.of(1900, 1, 1))
+                                               .validTo(LocalDate.of(1900, 1, 1))
+                                               .slnid("ch:1000").build();
+    LineVersion secondLineVersion = LineTestData.lineVersionBuilder()
+                                                .validFrom(LocalDate.of(2000, 12, 31))
+                                                .validTo(LocalDate.of(2000, 12, 31))
+                                                .slnid("ch:1000").build();
+    LineVersion thirdLineVersion = LineTestData.lineVersionBuilder()
+                                                .validFrom(LocalDate.of(2099, 12, 31))
+                                                .validTo(LocalDate.of(2099, 12, 31))
+                                                .slnid("ch:1000").build();
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(firstLineVersion);
+    lineVersions.add(secondLineVersion);
+    lineVersions.add(thirdLineVersion);
+    SublineVersion firstSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                        .validFrom(LocalDate.of(1900, 1, 1))
+                                                        .validTo(LocalDate.of(1900, 1, 1))
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1000")
+                                                        .build();
+    SublineVersion secondSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                         .validFrom(LocalDate.of(2000, 12, 30))
+                                                         .validTo(LocalDate.of(2000,12, 31))
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1000")
+                                                        .build();
+    SublineVersion thirdSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                         .validFrom(LocalDate.of(2099, 12, 30))
+                                                         .validTo(LocalDate.of(2099, 12, 31))
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1000")
+                                                        .build();
+
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+    sublineVersions.add(firstSublineVersion);
+    sublineVersions.add(secondSublineVersion);
+    sublineVersions.add(thirdSublineVersion);
+    doReturn(lineVersions).when(lineVersionRepository)
+                          .findAllBySlnidOrderByValidFrom(firstLineVersion.getSlnid());
+    doReturn(sublineVersions).when(sublineVersionRepository)
+                             .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
+    //when
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
+    //then
+    assertThat(result).isFalse();
+  }
+
+  /**
+   * 8. Case: Line and subline have the same gaps, sublines with same Type
+   *	           01.01.1900          01.01.1900		      30.12.2000         31.12.2000
+   * Line	      |-----------------------------|        |-----------------------------|
+   * 	           01.01.1900          01.01.1900		      30.12.2000         30.12.2000 31.12.2000         31.12.2000
+   * Subline	  |-----------------------------|       |------------------------------|------------------------------|
+   * Result NOK
+   */
+  @Test
+  public void shouldReturnTrueWhenSublineAndLineAreCompletelyCoveredWithTheSameGap() {
+    //given
+    LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
+                                               .validFrom(LocalDate.of(1900, 1, 1))
+                                               .validTo(LocalDate.of(1900, 1, 1))
+                                               .slnid("ch:1000").build();
+    LineVersion secondLineVersion = LineTestData.lineVersionBuilder()
+                                                .validFrom(LocalDate.of(2000, 12, 30))
+                                                .validTo(LocalDate.of(2000, 12, 31))
+                                                .slnid("ch:1000").build();;
+    List<LineVersion> lineVersions = new ArrayList<>();
+    lineVersions.add(firstLineVersion);
+    lineVersions.add(secondLineVersion);
+    SublineVersion firstSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                        .validFrom(LocalDate.of(1900, 1, 1))
+                                                        .validTo(LocalDate.of(1900, 1, 1))
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1000")
+                                                        .build();
+    SublineVersion secondSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                         .validFrom(LocalDate.of(2000, 12, 30))
+                                                         .validTo(LocalDate.of(2000,12, 30))
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1000")
+                                                        .build();
+    SublineVersion thirdSublineVersion = SublineTestData.sublineVersionBuilder()
+                                                         .validFrom(LocalDate.of(2000, 12, 31))
+                                                         .validTo(LocalDate.of(2000, 12, 31))
+                                                        .mainlineSlnid(firstLineVersion.getSlnid())
+                                                        .slnid("ch:1000")
+                                                        .build();
+
+    List<SublineVersion> sublineVersions = new ArrayList<>();
+    sublineVersions.add(firstSublineVersion);
+    sublineVersions.add(secondSublineVersion);
+    sublineVersions.add(thirdSublineVersion);
+    doReturn(lineVersions).when(lineVersionRepository)
+                          .findAllBySlnidOrderByValidFrom(firstLineVersion.getSlnid());
+    doReturn(sublineVersions).when(sublineVersionRepository)
+                             .getSublineVersionByMainlineSlnid(firstLineVersion.getSlnid());
+    //when
+    boolean result = coverageValidationService.areLinesAndSublinesCompletelyCovered(lineVersions,sublineVersions);
+    //then
+    assertThat(result).isTrue();
+  }
 
   /**
    * 9. Case: Line fully covered by 2 different sublines with the same Type
