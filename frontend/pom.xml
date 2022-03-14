@@ -76,15 +76,16 @@
             </configuration>
           </execution>
           <execution>
-            <id>npm publish</id>
+            <id>npm prepare docker</id>
             <goals>
               <goal>exec</goal>
             </goals>
-            <phase>install</phase>
+            <phase>package</phase>
             <configuration>
               <executable>npm</executable>
               <arguments>
-                <argument>publish</argument>
+                <argument>run</argument>
+                <argument>docker</argument>
               </arguments>
             </configuration>
           </execution>
