@@ -18,6 +18,12 @@
       "openshiftAppName": "gateway",
       "dockerFile": "gateway/docker/Dockerfile",
       "artifactorySupressProjectSubfolderCreation": true
+    },
+    {
+      "artifactoryDockerRepo": "atlas.docker",
+      "openshiftAppName": "frontend",
+      "dockerFile": "frontend/docker/Dockerfile",
+      "artifactorySupressProjectSubfolderCreation": true
     }
   ],
   "helm" : {

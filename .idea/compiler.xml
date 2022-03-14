@@ -10,7 +10,6 @@
         <module name="line-directory" />
         <module name="versioning" />
         <module name="apim-configuration" />
-        <module name="fronted" />
         <module name="gateway" />
       </profile>
     </annotationProcessing>
