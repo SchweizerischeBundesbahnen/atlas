@@ -31,3 +31,11 @@ lineDirectory:
   readynessProbe: "actuator/health"
   # Application Port
   port: 8082
+
+frontend:
+  # Name of the Dockerimge in bin.sbb.ch/dockerrepoted"
+  name: "frontend"
+  # Pod Instances Count
+  replicas: 1
+  # Used to deploy the Angular with production flag
+  production: true
