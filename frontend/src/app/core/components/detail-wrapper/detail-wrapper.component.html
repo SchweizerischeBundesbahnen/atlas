@@ -1,0 +1,59 @@
+<div *ngIf="!controller.showSwitch" class="title-section mt-3 mb-3">
+  <h1>
+    <strong>{{ controller.heading || (headingNew | translate) }}</strong>
+  </h1>
+</div>
+<app-switch-version
+  *ngIf="controller.showSwitch"
+  [records]="controller.records"
+  [currentRecord]="controller.record"
+  [pageType]="controller.getPageType()"
+  [recordTitle]="controller.heading"
+  (switchVersion)="controller.switchVersion($event)"
+></app-switch-version>
+<div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section mb-2">
+  <div class="edit-buttons">
+    <button
+      data-cy="edit-item"
+      mat-mini-fab
+      class="me-3"
+      (click)="controller.toggleEdit()"
+      [color]="controller.form.enabled ? 'primary' : 'white'"
+    >
+      <em class="bi bi-pencil-fill"></em>
+    </button>
+    <button
+      data-cy="delete-item"
+      mat-mini-fab
+      color="white"
+      (click)="controller.delete()"
+      [disabled]="controller.form.enabled"
+    >
+      <em class="bi bi-trash-fill"></em>
+    </button>
+  </div>
+</div>
+
+<div class="detail-content">
+  <ng-content></ng-content>
+</div>
+
+<div
+  class="footer fixed-bottom d-flex align-items-center justify-content-end background-grey"
+  *ngIf="controller.form.enabled"
+>
+  <button mat-raised-button class="me-3" (click)="controller.toggleEdit()">
+    {{ 'COMMON.CANCEL' | translate }}
+  </button>
+  <button
+    data-cy="save-item"
+    mat-raised-button
+    type="submit"
+    class="me-3"
+    color="primary"
+    (click)="controller.save()"
+    [disabled]="!controller.form.dirty"
+  >
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
+</div>

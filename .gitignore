@@ -51,3 +51,60 @@ http-requests/http-client.private.env.json
 **/Chart.lock
 /charts/charts/
 /charts/atlas/charts/
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
+
+# dependencies
+/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.iml
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+/src/app/api/git_push.sh
+/src/app/api/README.md
+/cypress/videos/
+/cypress/screenshots/
+/cypress/logs/
+/.angular/
+/cypress.env.json
+/frontend/dist/
+/frontend/node_modules/
+/frontend/.angular/
+/frontend/coverage/
