@@ -48,7 +48,8 @@
   },
   "npm": {
     "targetRepo": "atlas.npm",
-    "packageJson": "frontned/package.json"
+    "packageJson": "frontend/package.json",
+    "additionalNpmScripts": "lint,build:ngssc,test"
   },
   "stages": [
     {
