@@ -6,4 +6,6 @@ cp -r ./dist ./docker/package
 cp ./package.json ./docker/package
 cp ./CHANGELOG.md ./docker/package
 cp ./README.md ./docker/package
+ls -l ./docker
+ls -l ./docker/package
 echo "Files copied!"
