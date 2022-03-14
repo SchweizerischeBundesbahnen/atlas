@@ -137,13 +137,12 @@
     {
       "stepType": "release",
       "isBuildEnabled": true,
-      "xrayScanEnabled": true,
       "failOnXrayScan": true,
       "sonarScanEnabled": true,
       "staging": {
         "stagingType": "simple",
         "stages": [
-          "dev", "test"
+          "dev"
         ]
       },
       "dependencyCheckEnabled": true,
