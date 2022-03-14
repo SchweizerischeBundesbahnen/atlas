@@ -75,6 +75,19 @@
               </arguments>
             </configuration>
           </execution>
+          <execution>
+            <id>npm publish</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>install</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>publish</argument>
+              </arguments>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
