@@ -40,16 +40,16 @@
       "passwordVariable": "BROWSERSTACK_ACCESS_KEY"
     }
   ],
-  "mvn": {
-    "parentPom": "pom.xml",
-    "deployableArtifactsPom": "pom.xml",
-    "artifactoryMavenRepo": "atlas.mvn",
-    "mavenLabel": "Apache Maven 3.8",
-  },
   "npm": {
     "targetRepo": "atlas.npm",
     "packageJson": "frontend/package.json",
     "additionalNpmScripts": "lint,build:ngssc,test"
+  },
+  "mvn": {
+    "parentPom": "pom.xml",
+    "deployableArtifactsPom": "pom.xml",
+    "artifactoryMavenRepo": "atlas.mvn",
+    "mavenLabel": "Apache Maven 3.8"
   },
   "stages": [
     {
