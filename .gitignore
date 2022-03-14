@@ -109,3 +109,4 @@ Thumbs.db
 /frontend/.angular/
 /frontend/coverage/
 /.idea/misc.xml
+/frontend/docker/package/
