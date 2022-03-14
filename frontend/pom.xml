@@ -80,7 +80,7 @@
             <goals>
               <goal>exec</goal>
             </goals>
-            <phase>package</phase>
+            <phase>install</phase>
             <configuration>
               <executable>npm</executable>
               <arguments>
