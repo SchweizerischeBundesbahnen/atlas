@@ -1,0 +1,16 @@
+<app-header (showSidebar)="sidenav.toggle()"></app-header>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+      <app-side-nav (showSideNav)="sidenav.toggle()"></app-side-nav>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="main-container container-fluid ms-3">
+    <div class="full-height">
+      <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
+      </app-loading-spinner>
+      <app-breadcrumb></app-breadcrumb>
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
