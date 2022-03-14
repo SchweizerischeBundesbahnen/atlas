@@ -4,7 +4,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "ci": "./build.sh",
     "watch": "ng build --watch --configuration development",
     "test": "ng test -c ci",
     "lint": "ng lint",
