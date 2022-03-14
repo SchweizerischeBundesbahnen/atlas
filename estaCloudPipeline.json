@@ -32,6 +32,14 @@
     "chart": "atlas",
     "release": "atlas"
   },
+  "credentials": [
+    {
+      "id": "browserstack",
+      "type": "usernamePassword",
+      "usernameVariable": "BROWSERSTACK_USERNAME",
+      "passwordVariable": "BROWSERSTACK_ACCESS_KEY"
+    }
+  ],
   "mvn": {
     "parentPom": "pom.xml",
     "deployableArtifactsPom": "pom.xml",
