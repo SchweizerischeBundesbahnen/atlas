@@ -46,6 +46,10 @@
     "artifactoryMavenRepo": "atlas.mvn",
     "mavenLabel": "Apache Maven 3.8"
   },
+  "npm": {
+    "targetRepo": "atlas.npm",
+    "packageJson": "frontned/package.json"
+  },
   "stages": [
     {
       "stageName": "dev",
