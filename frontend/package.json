@@ -8,7 +8,7 @@
     "test": "ng test -c ci",
     "lint": "ng lint",
     "prepare": "cd .. && husky install frontend/.husky",
-    "format": "prettier --write app/**/*.ts",
+    "format": "prettier --write src/**/*.ts",
     "build:ngssc": "ng run atlas-frontend:ngsscbuild:production",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
@@ -34,7 +34,7 @@
     "printWidth": 100
   },
   "lint-staged": {
-    "app/**/*": "prettier --write --ignore-unknown"
+    "src/**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@angular/animations": "^13.0.0",
