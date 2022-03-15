@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
-#echo "Prepare atlas-frontend version..."
-#echo ${VERSION}
-#npm version ${VERSION}
-#echo "atlas-frontend-${VERSION} successfully prepared"
+echo "Prepare atlas-frontend version..."
+echo ${releaseVersion}
+#npm version ${releaseVersion}
+#echo "atlas-frontend-${releaseVersion} successfully prepared"
 
-echo "npm publish atlas-frontend-${VERSION}"
+echo "npm publish atlas-frontend-${releaseVersion}"
 touch .npmrc
-#echo "registry=https://bin.sbb.ch/artifactory/api/npm/atlas.npm/" >> .npmrc
-#echo "registry=https://bin.sbb.ch/artifactory/api/npm/npm/" >> .npmrc
 echo ${NPM_AUTH}
 echo _auth = ${NPM_AUTH} >> .npmrc
 echo  email = antonio.romano@sbb.ch >> .npmrc
@@ -19,4 +17,4 @@ cat .npmrc
 
 npm publish --userconfig=.npmrc --registry=https://bin.sbb.ch/artifactory/api/npm/atlas.npm/ --loglevel verbose
 
-echo "atlas-frontend-${VERSION} successfully published"
+echo "atlas-frontend-${releaseVersion} successfully published"
