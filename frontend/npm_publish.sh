@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 echo "Prepare atlas-frontend version..."
-echo ${releaseVersion}
-#npm version ${releaseVersion}
-#echo "atlas-frontend-${releaseVersion} successfully prepared"
+releaseVersion=$(git describe --tags $(git rev-list --tags --max-count=1))
+echo "Version to publish: ${releaseVersion}"
+npm version "${releaseVersion}"
+echo "atlas-frontend-${releaseVersion} successfully prepared"
 
 echo "npm publish atlas-frontend-${releaseVersion}"
 touch .npmrc
