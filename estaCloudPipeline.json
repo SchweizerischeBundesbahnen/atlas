@@ -35,10 +35,9 @@
   },
   "credentials": [
     {
-      "id": "browserstack",
-      "type": "usernamePassword",
-      "usernameVariable": "BROWSERSTACK_USERNAME",
-      "passwordVariable": "BROWSERSTACK_ACCESS_KEY"
+      "id": "ssp-5y1zc40dv-j2u5-5cp4-9305-7bd11uoh6ch",
+      "type": "string",
+      "variable": "NPM_AUTH"
     },
     {
       "id": "bin.sbb.ch",
