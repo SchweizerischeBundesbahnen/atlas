@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-echo "npm publish"
+echo "npm registry login"
 touch .npmrc
-curl -u ${ARTIFACTORY_USER}:${ARTIFACTORY_PWD} https://bin.sbb.ch/artifactory/api/npm/auth >> .npmrc
+echo "registry=https://bin.sbb.ch/artifactory/api/npm/atlas.npm/" >> .npmrc
+echo ${NPM_AUTH}
+echo _auth = ${NPM_AUTH} >> .npmrc
+echo  email = antonio.romano@sbb.ch >> .npmrc
+echo always-auth = true >> .npmrc
 
 npm publish
