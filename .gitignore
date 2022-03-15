@@ -110,3 +110,4 @@ Thumbs.db
 /frontend/coverage/
 /.idea/misc.xml
 /frontend/docker/package/
+/frontend/.npmrc
