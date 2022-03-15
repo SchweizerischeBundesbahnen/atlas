@@ -5,7 +5,7 @@
     "start": "ng serve",
     "build": "ng build",
     "docker": "sh ./prepare-docker.sh",
-    "publish": "sh ./npm_publish.sh",
+    "publish-frontend": "sh ./npm_publish.sh",
     "watch": "ng build --watch --configuration development",
     "test": "ng test -c ci",
     "lint": "ng lint",
@@ -27,7 +27,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas-frontend.git"
   },
-  "version": "0.193.1",
+  "version": "0.193.7",
   "files": [
     "dist/*"
   ],
