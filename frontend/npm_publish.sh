@@ -2,10 +2,10 @@
 
 echo "Prepare atlas-frontend version..."
 echo ${VERSION}
-npm version ${VERSION}
-echo "atlas-frontend-${VERSION} successfully prepared"
+#npm version ${VERSION}
+#echo "atlas-frontend-${VERSION} successfully prepared"
 
-echo "npm publish atlas-frontend-${VERSION}"
+#echo "npm publish atlas-frontend-${VERSION}"
 touch .npmrc
 echo "registry=https://bin.sbb.ch/artifactory/api/npm/atlas.npm/" >> .npmrc
 echo ${NPM_AUTH}
