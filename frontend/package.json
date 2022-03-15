@@ -31,9 +31,6 @@
   "files": [
     "dist/*"
   ],
-  "publishConfig": {
-    "registry": "https://bin.sbb.ch/artifactory/api/npm/atlas.npm/"
-  },
   "prettier": {
     "singleQuote": true,
     "printWidth": 100
