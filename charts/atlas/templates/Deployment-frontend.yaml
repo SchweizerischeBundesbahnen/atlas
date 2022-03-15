@@ -1,9 +1,9 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: {{ .Values.fronted.name }}
+  name: {{ .Values.frontend.name }}
 spec:
-  replicas: {{ .Values.fronted.replicas }}
+  replicas: {{ .Values.frontend.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.fronted.name }}
@@ -19,11 +19,11 @@ spec:
         collectord.io/logs-index: '{{ .Values.common.splunkIndex }}'
         collectord.io/logs-output: splunk::prod
       labels:
-        app: '{{ .Values.fronted.name }}'
-        deploymentconfig: '{{ .Values.fronted.name }}'
+        app: '{{ .Values.frontend.name }}'
+        deploymentconfig: '{{ .Values.frontend.name }}'
     spec:
       containers:
-        - image: "atlas.docker.bin.sbb.ch/atlas-frontend:{{ .Values.frontend.name}}:{{ .Chart.AppVersion }}"
+        - image: "atlas.docker.bin.sbb.ch/frontend:{{ .Values.frontend.name}}:{{ .Chart.AppVersion }}"
           imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
           name: '{{ .Values.frontend.name }}'
           env:

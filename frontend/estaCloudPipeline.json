@@ -8,7 +8,7 @@
   "docker": {
     "dockerFile": "docker/Dockerfile",
     "artifactoryDockerRepo": "atlas.docker",
-    "openshiftAppName": "atlas-frontend",
+    "openshiftAppName": "frontend",
     "artifactorySupressProjectSubfolderCreation": true
   },
   "npm": {
