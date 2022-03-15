@@ -7,7 +7,7 @@ echo ${VERSION}
 
 #echo "npm publish atlas-frontend-${VERSION}"
 touch .npmrc
-echo "registry=https://bin.sbb.ch/artifactory/api/npm/atlas.npm/" >> .npmrc
+#echo "registry=https://bin.sbb.ch/artifactory/api/npm/atlas.npm/" >> .npmrc
 echo ${NPM_AUTH}
 echo _auth = ${NPM_AUTH} >> .npmrc
 echo  email = antonio.romano@sbb.ch >> .npmrc
