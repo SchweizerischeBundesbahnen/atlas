@@ -5,6 +5,7 @@
     "start": "ng serve",
     "build": "ng build",
     "docker": "sh ./prepare-docker.sh",
+    "publish": "sh ./npm_publish.sh",
     "watch": "ng build --watch --configuration development",
     "test": "ng test -c ci",
     "lint": "ng lint",
@@ -30,6 +31,9 @@
   "files": [
     "dist/*"
   ],
+  "publishConfig": {
+    "registry": "https://bin.sbb.ch/artifactory/api/npm/atlas.npm/"
+  },
   "prettier": {
     "singleQuote": true,
     "printWidth": 100
