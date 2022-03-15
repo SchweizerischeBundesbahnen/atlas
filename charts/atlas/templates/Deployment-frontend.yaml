@@ -6,7 +6,7 @@ spec:
   replicas: {{ .Values.frontend.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.fronted.name }}
+      app: {{ .Values.frontend.name }}
       deploymentconfig: {{ .Values.frontend.name }}
   strategy:
     type: RollingUpdate
