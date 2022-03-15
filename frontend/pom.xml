@@ -80,12 +80,12 @@
             <goals>
               <goal>exec</goal>
             </goals>
-            <phase>package</phase>
+            <phase>install</phase>
             <configuration>
               <executable>npm</executable>
               <arguments>
                 <argument>run</argument>
-                <argument>publish</argument>
+                <argument>publish-frontend</argument>
               </arguments>
             </configuration>
           </execution>
