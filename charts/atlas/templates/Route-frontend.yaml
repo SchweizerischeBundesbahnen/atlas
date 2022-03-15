@@ -4,7 +4,7 @@ metadata:
   annotations:
     openshift.io/host.generated: 'true'
     clew.sbb.ch/cluster-independent-dns: 'true'
-  name: {{ .Values.frontend.Name }}
+  name: {{ .Values.frontend.name }}
 spec:
   host: '{{ .Values.frontend.routeHost }}'
   port:
