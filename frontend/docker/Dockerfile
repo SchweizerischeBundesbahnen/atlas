@@ -13,14 +13,12 @@ RUN chmod +x /usr/sbin/ngssc
 ADD ngssc.sh ./nginx-start/
 
 # Download sources from Repository
-#ADD https://${ARTIFACTORY_USER}:${ARTIFACTORY_PW}@bin.sbb.ch/artifactory/api/npm/atlas.npm/atlas-frontend/-/atlas-frontend-${VERSION}.tgz app.tar.gz
-#RUN chmod +r app.tar.gz
-
-ADD package ./package
+ADD https://${ARTIFACTORY_USER}:${ARTIFACTORY_PW}@bin.sbb.ch/artifactory/api/npm/atlas.npm/atlas-frontend/-/atlas-frontend-${VERSION}.tgz app.tar.gz
+RUN chmod +r app.tar.gz
 
 # Extract and move to nginx html folder
-#RUN tar -xzf app.tar.gz && \
-RUN chmod -R +r ./package && \
+RUN tar -xzf app.tar.gz && \
+    chmod -R +r ./package && \
     # Don't abort on empty matches
     shopt -s nullglob && \
     # ngssc requires write permission for html and ngsw.json files
