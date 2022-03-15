@@ -38,6 +38,12 @@
       "type": "usernamePassword",
       "usernameVariable": "BROWSERSTACK_USERNAME",
       "passwordVariable": "BROWSERSTACK_ACCESS_KEY"
+    },
+    {
+      "id": "bin.sbb.ch",
+      "type": "usernamePassword",
+      "usernameVariable": "ARTIFACTORY_USER",
+      "passwordVariable": "ARTIFACTORY_PW"
     }
   ],
   "npm": {
