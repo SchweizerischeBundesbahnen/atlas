@@ -74,15 +74,12 @@
     "LOGIN": "Login",
     "LOGOUT": "Logout"
   },
-  "HOME": {
-    "HEADER": "ATLAS - l’applicazione business SIC"
-  },
   "MENU": {
     "TITLE": "Menu",
     "TITLE_OPENED": "Chiudi menu"
   },
   "PAGES": {
-    "HOME": "Homepage",
+    "HOME": "Home",
     "HOME_MENU": "Inizio",
     "TTFN": {
       "TITLE": "Cartella del quadro d’orario",

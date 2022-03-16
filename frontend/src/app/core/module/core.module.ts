@@ -10,7 +10,6 @@ import { UserComponent } from '../components/user/user.component';
 import { TableComponent } from '../components/table/table.component';
 import { DetailWrapperComponent } from '../components/detail-wrapper/detail-wrapper.component';
 import { SideNavComponent } from '../components/side-nav/side-nav.component';
-import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
 import { OAuthModule } from 'angular-oauth2-oidc';
@@ -26,7 +25,6 @@ import { CoverageComponent } from '../components/coverage/coverage.component';
 
 @NgModule({
   declarations: [
-    BreadcrumbComponent,
     DetailWrapperComponent,
     SwitchVersionComponent,
     DialogComponent,
@@ -62,7 +60,6 @@ import { CoverageComponent } from '../components/coverage/coverage.component';
     }),
   ],
   exports: [
-    BreadcrumbComponent,
     DetailWrapperComponent,
     FieldErrorComponent,
     SwitchVersionComponent,

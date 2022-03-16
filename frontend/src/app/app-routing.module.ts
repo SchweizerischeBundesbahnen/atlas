@@ -7,18 +7,18 @@ const routes: Routes = [
   {
     path: Pages.TTFN.path,
     loadChildren: () => import('./pages/ttfn/ttfn.module').then((m) => m.TtfnModule),
-    data: { breadcrumb: Pages.TTFN.title },
+    data: { headerTitle: Pages.TTFN.headerTitle },
   },
   {
     path: Pages.LIDI.path,
     loadChildren: () => import('./pages/lidi/lidi.module').then((m) => m.LidiModule),
-    data: { breadcrumb: Pages.LIDI.title },
+    data: { headerTitle: Pages.LIDI.headerTitle },
   },
   {
     path: Pages.HOME.path,
     component: HomeComponent,
     data: {
-      breadcrumb: Pages.HOME.title,
+      headerTitle: Pages.HOME.headerTitle,
     },
   },
   { path: '**', redirectTo: Pages.HOME.path },
