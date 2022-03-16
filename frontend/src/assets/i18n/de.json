@@ -74,15 +74,12 @@
     "LOGIN": "Login",
     "LOGOUT": "Logout"
   },
-  "HOME": {
-    "HEADER": "Home"
-  },
   "MENU": {
     "TITLE": "Menü",
     "TITLE_OPENED": "Menü schliessen"
   },
   "PAGES": {
-    "HOME": "Übersichtsseite",
+    "HOME": "Home",
     "HOME_MENU": "Start",
     "TTFN": {
       "TITLE": "Fahrplanfeld-Nummern verwalten",

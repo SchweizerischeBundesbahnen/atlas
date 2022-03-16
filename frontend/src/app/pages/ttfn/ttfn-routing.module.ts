@@ -13,7 +13,6 @@ const routes: Routes = [
   {
     path: Pages.TTFN_DETAIL.path,
     component: TimetableFieldNumberDetailComponent,
-    data: { breadcrumb: Pages.TTFN_DETAIL.title },
     resolve: {
       timetableFieldNumberDetail: TimetableFieldNumberDetailResolver,
     },
