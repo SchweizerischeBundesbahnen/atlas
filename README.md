@@ -12,6 +12,7 @@ This is the main repository for business relevant services for ATLAS.
   * [gateway](#gateway)
   * [line-directory](#line-directory)
   * [versioning](#versioning)
+  * [Frontend](#frontend)
 
 <!-- tocstop -->
 
@@ -61,3 +62,6 @@ Business service for lines, sublines and timetable field numbers. All of these b
 ### versioning
 
 Library used to perform business object versioning according to the [documentation](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
+
+### Frontend
+ATLAS Angular App
