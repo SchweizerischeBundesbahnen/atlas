@@ -74,15 +74,12 @@
     "LOGIN": "Connexion",
     "LOGOUT": "Déconnexion"
   },
-  "HOME": {
-    "HEADER": "Home"
-  },
   "MENU": {
     "TITLE": "Menu",
     "TITLE_OPENED": "Fermer le menu"
   },
   "PAGES": {
-    "HOME": "Vue d'ensemble",
+    "HOME": "Home",
     "HOME_MENU": "Démarrer",
     "TTFN": {
       "TITLE": "Liste des tableaux-horaires",
