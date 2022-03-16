@@ -4,6 +4,7 @@ export class Pages {
   public static HOME: Page = {
     title: 'PAGES.HOME',
     titleMenu: 'PAGES.HOME_MENU',
+    headerTitle: 'PAGES.HOME',
     path: '',
     pathText: '',
     description: '',
@@ -12,6 +13,7 @@ export class Pages {
   public static TTFN: Page = {
     title: 'PAGES.TTFN.TITLE',
     titleMenu: 'PAGES.TTFN.TITLE_MENU',
+    headerTitle: 'PAGES.TTFN.TITLE_MENU',
     path: 'timetable-field-number',
     pathText: 'PAGES.TTFN.PATH_TEXT',
     description: 'PAGES.TTFN.DESCRIPTION',
@@ -27,6 +29,7 @@ export class Pages {
   public static LIDI: Page = {
     title: 'PAGES.LIDI.TITLE',
     titleMenu: 'PAGES.LIDI.TITLE_MENU',
+    headerTitle: 'PAGES.LIDI.TITLE_MENU',
     path: 'line-directory',
     pathText: 'PAGES.LIDI.PATH_TEXT',
     description: 'PAGES.LIDI.DESCRIPTION',

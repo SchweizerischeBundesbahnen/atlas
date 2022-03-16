@@ -4,7 +4,9 @@
     <div class="title">atlas</div>
   </div>
   <div class="d-flex ms-3 header-container color-gray-900">
-    <span class="font-bold-4xl">{{ 'HOME.HEADER' | translate }}</span>
+    <span class="font-bold-4xl" *ngIf="headerTitle$ | async as translationKey">{{
+      translationKey | translate
+    }}</span>
     <div class="font-regular-sm">
       <span>Version {{ version }}</span>
       <span *ngIf="showLabel()" [ngClass]="getEnvLabelClass()">
