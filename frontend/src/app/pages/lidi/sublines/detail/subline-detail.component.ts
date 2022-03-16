@@ -138,7 +138,6 @@ export class SublineDetailComponent
           [
             Validators.required,
             Validators.maxLength(50),
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.sid4pt
           ]
         ],
