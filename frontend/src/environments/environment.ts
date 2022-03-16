@@ -20,7 +20,7 @@ const authConfig: AuthConfig = {
 export const environment: Environment = {
   production: false,
   label: 'dev',
-  atlasApiUrl: 'https://atlas-gateway.dev.sbb-cloud.net',
+  atlasApiUrl: 'http://localhost:8888',
   authConfig,
 };
 

@@ -16,6 +16,10 @@
     "SAVE": "Salva",
     "EDIT": "Modifica",
     "CANCEL": "Annulla",
+    "COVERAGE": {
+      "COMPLETE": "Completo",
+      "INCOMPLETE": "Incompleto"
+    },
     "NODATAFOUND": "Nessun dato trovato.",
     "TYPE_TO_SEARCH": "Digitare un testo per iniziare la ricerca.",
     "JA": "Sì",
@@ -70,20 +74,24 @@
     "LOGIN": "Login",
     "LOGOUT": "Logout"
   },
-  "HOME": {
-    "HEADER": "ATLAS - l’applicazione business SIC",
-    "TITLE": "Benvenuti!",
-    "DESCRIPTION": "Che cosa si vuole fare?"
+  "MENU": {
+    "TITLE": "Menu",
+    "TITLE_OPENED": "Chiudi menu"
   },
   "PAGES": {
-    "HOME": "Homepage",
+    "HOME": "Home",
+    "HOME_MENU": "Inizio",
     "TTFN": {
-      "TITLE": "Directory del quadro d’orario",
-      "DESCRIPTION": "Registrazione e gestione dei dati del quadro d’orario."
+      "TITLE": "Cartella del quadro d’orario",
+      "TITLE_MENU": "Cartella del quadro d’orario",
+      "DESCRIPTION": "Registrazione e gestione dei dati del quadro d’orario.",
+      "PATH_TEXT": "Dai quadri d’orario"
     },
     "LIDI": {
-      "TITLE": "Directory delle linee",
-      "DESCRIPTION": "Registrazione e gestione dei dati delle linee."
+      "TITLE": "Cartella delle linee",
+      "TITLE_MENU": "Cartella delle linee",
+      "DESCRIPTION": "Registrazione e gestione dei dati delle linee.",
+      "PATH_TEXT": "Dalla cartella delle linee"
     },
     "DETAILS": "Precisazioni"
   },
