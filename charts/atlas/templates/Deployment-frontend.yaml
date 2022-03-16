@@ -23,7 +23,7 @@ spec:
         deploymentconfig: '{{ .Values.frontend.name }}'
     spec:
       containers:
-        - image: "atlas.docker.bin.sbb.ch/frontend:{{ .Values.frontend.name}}:{{ .Chart.AppVersion }}"
+        - image: "atlas.docker.bin.sbb.ch/atlas-frontend:{{ .Values.frontend.name}}:{{ .Chart.AppVersion }}"
           imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
           name: '{{ .Values.frontend.name }}'
           env:
