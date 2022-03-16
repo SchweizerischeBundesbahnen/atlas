@@ -11,14 +11,14 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 - [Links](#links)
 - [Development](#development)
-  - [Node.js](#nodejs)
-  - [Cypress E2E](#cypress-e2e)
-    - [Run cypress test locally](#run-cypress-test-locally)
-    - [Cypress E2E CI-Jenkins](#cypress-e2e-ci-jenkins)
+  * [Node.js](#nodejs)
+  * [Cypress E2E](#cypress-e2e)
+    + [Run cypress test locally](#run-cypress-test-locally)
+    + [Cypress E2E CI-Jenkins](#cypress-e2e-ci-jenkins)
       - [Release-Tests](#release-tests)
       - [Cypress Tests results for troubleshooting](#cypress-tests-results-for-troubleshooting)
-  - [Set SBB Artifactory as npm registry](#set-sbb-artifactory-as-npm-registry)
-  - [Azure AD App Registration](#azure-ad-app-registration)
+  * [Set SBB Artifactory as npm registry](#set-sbb-artifactory-as-npm-registry)
+  * [Azure AD App Registration](#azure-ad-app-registration)
 - [Monitoring and Logging](#monitoring-and-logging)
 
 <!-- tocstop -->
