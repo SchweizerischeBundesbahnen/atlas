@@ -24,6 +24,9 @@
     <sonar.ts.coverage.lcovReportPath>coverage/atlas-frontend/lcov.info</sonar.ts.coverage.lcovReportPath>
     <jenkins.build-javascript.reportsDirectory>reports/</jenkins.build-javascript.reportsDirectory>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <skip.npm.exec.ci>true</skip.npm.exec.ci>
+    <skip.npm.exec.build>true</skip.npm.exec.build>
+    <skip.npm.exec.publish>true</skip.npm.exec.publish>
   </properties>
   <build>
     <plugins>
@@ -39,6 +42,7 @@
             </goals>
             <phase>generate-sources</phase>
             <configuration>
+              <skip>${skip.npm.exec.ci}</skip>
               <executable>npm</executable>
               <arguments>
                 <argument>ci</argument>
@@ -66,6 +70,7 @@
             </goals>
             <phase>generate-sources</phase>
             <configuration>
+              <skip>${skip.npm.exec.build}</skip>
               <executable>npm</executable>
               <arguments>
                 <argument>run</argument>
@@ -94,6 +99,7 @@
             </goals>
             <phase>install</phase>
             <configuration>
+              <skip>${skip.npm.exec.publish}</skip>
               <executable>npm</executable>
               <arguments>
                 <argument>run</argument>
