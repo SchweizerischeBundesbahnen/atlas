@@ -141,7 +141,8 @@
         "feature",
         "bugfix"
       ],
-      "additionalBuildParams": "-X",
+      "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
+      "additionalBuildParamsForSonarScan": "-P sonar-scan-without-build",
       "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
     },
@@ -150,6 +151,7 @@
       "isBuildEnabled": true,
       "failOnXrayScan": true,
       "sonarScanEnabled": true,
+      "additionalBuildParamsForSonarScan": "-P sonar-scan-without-build",
       "staging": {
         "stagingType": "simple",
         "stages": [
@@ -159,7 +161,7 @@
       "dependencyCheckEnabled": true,
       "failOnQualityGateFailure": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml",
-      "additionalBuildParams": "-DskipITs",
+      "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
       "triggerBuildOnCommitEnabled": true,
       "hotfixCreationEnabled": false
     }
