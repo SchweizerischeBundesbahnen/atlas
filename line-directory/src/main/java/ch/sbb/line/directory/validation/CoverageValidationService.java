@@ -148,8 +148,16 @@ public class CoverageValidationService {
     if (versionableList.size() > 1) {
       T firstItem = versionableList.get(0);
       DateRange currentDateRange = new DateRange(firstItem.getValidFrom(), firstItem.getValidTo());
-      for (int i = 1; i < versionableList.size(); i++) {
+      for (int i = 1; i <= versionableList.size(); i++) {
         T current = versionableList.get(i - 1);
+        if ((versionableList.size()) == i) {
+          if(coveredDataRages.get(coveredDataRages.size()-1).getTo().plusDays(1).isEqual(current.getValidFrom())){
+            coveredDataRages.get(coveredDataRages.size()-1).setTo(current.getValidTo());
+            return coveredDataRages;
+          }
+          coveredDataRages.add(currentDateRange);
+          return coveredDataRages;
+        }
         T next = versionableList.get(i);
         if ((next.getValidFrom().isBefore(current.getValidTo().plusDays(1))
             || next.getValidFrom().isEqual(current.getValidTo().plusDays(1)))) {
