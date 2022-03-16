@@ -21,7 +21,7 @@
     <sonar.exclusions>**/node_modules/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts</sonar.exclusions>
     <sonar.test.inclusion>**/*.spec.ts</sonar.test.inclusion>
     <sonar.ts.tslint.configPath>tslint.json</sonar.ts.tslint.configPath>
-    <sonar.ts.coverage.lcovReportPath>reports/coverage/lcov.info</sonar.ts.coverage.lcovReportPath>
+    <sonar.ts.coverage.lcovReportPath>coverage/atlas-frontend/lcov.info</sonar.ts.coverage.lcovReportPath>
     <jenkins.build-javascript.reportsDirectory>reports/</jenkins.build-javascript.reportsDirectory>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

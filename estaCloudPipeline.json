@@ -22,7 +22,7 @@
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
-      "openshiftAppName": "frontend",
+      "openshiftAppName": "atlas-frontend",
       "dockerFile": "frontend/docker/Dockerfile",
       "artifactorySupressProjectSubfolderCreation": true
     }
