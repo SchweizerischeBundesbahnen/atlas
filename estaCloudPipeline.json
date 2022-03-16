@@ -151,7 +151,7 @@
       "isBuildEnabled": true,
       "failOnXrayScan": true,
       "sonarScanEnabled": true,
-      "additionalBuildParamsForSonarScan": "-P sonar-scan-without-build",
+      "additionalBuildParamsForSonarScan": "-P sonar-scan-without-build -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true",
       "staging": {
         "stagingType": "simple",
         "stages": [
