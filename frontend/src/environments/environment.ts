@@ -4,6 +4,7 @@
 
 import { AuthConfig } from 'angular-oauth2-oidc';
 import { Environment } from './environment.model';
+import packageJson from '../../package.json';
 
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
 const authConfig: AuthConfig = {
@@ -20,6 +21,7 @@ const authConfig: AuthConfig = {
 export const environment: Environment = {
   production: false,
   label: 'dev',
+  appVersion: packageJson.version,
   atlasApiUrl: 'http://localhost:8888',
   authConfig,
 };
