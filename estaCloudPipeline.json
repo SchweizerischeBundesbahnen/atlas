@@ -141,7 +141,7 @@
         "feature",
         "bugfix"
       ],
-      "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
+      "additionalBuildParams": "-DskipTests -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
       "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
     },
