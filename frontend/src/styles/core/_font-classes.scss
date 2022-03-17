@@ -1,0 +1,79 @@
+@import "src/styles/variables";
+
+@mixin regular-font($font-size, $line-height) {
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: $font-size !important;
+  line-height: $line-height !important;
+}
+
+@mixin bold-font($font-size, $line-height) {
+  font-style: normal !important;
+  font-weight: bold !important;
+  font-size: $font-size !important;
+  line-height: $line-height !important;
+}
+
+$font-sizes: (
+  xs: (
+    12px,
+    120%,
+  ),
+  sm: (
+    14px,
+    125%,
+  ),
+  base: (
+    16px,
+    150%,
+  ),
+  lg: (
+    18px,
+    150%,
+  ),
+  xl: (
+    20px,
+    160%,
+  ),
+  2xl: (
+    24px,
+    170%,
+  ),
+  3xl: (
+    30px,
+    155%,
+  ),
+  4xl: (
+    36px,
+    125%,
+  ),
+  5xl: (
+    48px,
+    115%,
+  ),
+  6xl: (
+    60px,
+    110%,
+  ),
+  7xl: (
+    72px,
+    100%,
+  ),
+  8xl: (
+    96px,
+    100%,
+  ),
+  9xl: (
+    128px,
+    100%,
+  ),
+);
+
+@each $class, $value in $font-sizes {
+  .font-regular-#{$class} {
+    @include regular-font(#{nth($value, 1)}, #{nth($value, 2)});
+  }
+  .font-bold-#{$class} {
+    @include bold-font(#{nth($value, 1)}, #{nth($value, 2)});
+  }
+}

@@ -1,218 +1,222 @@
 {
   "ERROR": {
     "CLIENT": {
-      "GENERIC": "Ein clientseitiger Fehler ist aufgetreten, bitte aktualisieren Sie die Seite oder klicken Sie auf F5. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Atlas-Support."
+      "GENERIC": "Une erreur s’est produite sur le site Web, veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé Atlas."
     },
     "WARNING": {
-      "VERSIONING_NO_CHANGES": "Die von ihnen eingegeben Daten wurden überprüft. Es wurde festgestellt, dass die Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat."
+      "VERSIONING_NO_CHANGES": "Les données que vous avez saisies ont été vérifiées. Il a été constaté que votre saisie n’entraîne aucune modification des données déjà enregistrées. Veuillez modifier les données ou terminer l’édition."
     },
-    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten!",
-    "NOTALLOWED": "Droits insuffisants pour voir ce contenu",
-    "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}",
-    "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} nicht gefunden",
-    "VERSIONING": "Beim Speichern ist ein Fehler in der Versionierung aufgetreten"
+    "GENERIC": "Une erreur générale est survenue! Veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé Atlas.",
+    "NOTALLOWED": "Vous n’avez pas l’autorisation de modifier ce contenu.",
+    "CONSTRAINT": "La demande n’a pas été réalisée dans le bon format. La valeur {{rejectedValue}} n’est pas autorisée en raison de {{cause}}.",
+    "ENTITY_NOT_FOUND": "L’objet avec {{field}} {{value}} n’a pas été trouvé.",
+    "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé Atlas."
   },
   "COMMON": {
-    "SAVE": "Enregistrer",
-    "EDIT": "Éditer",
+    "SAVE": "Sauvegarder",
+    "EDIT": "Modifier",
     "CANCEL": "Annuler",
     "COVERAGE": {
-      "COMPLETE": "Vollständig",
-      "INCOMPLETE": "Lückenhaft"
+      "COMPLETE": "Complet",
+      "INCOMPLETE": "Incomplet"
     },
-    "NODATAFOUND": "Aucunes données trouvées",
-    "TYPE_TO_SEARCH": "Tippen um zu Suchen",
-    "JA": "oui",
-    "NEIN": "non",
+    "NODATAFOUND": "Aucune donnée n’a été trouvée.",
+    "TYPE_TO_SEARCH": "Entrez un texte pour commencer la recherche.",
+    "JA": "Oui",
+    "NEIN": "Non",
     "ACHTUNG": "Attention!",
     "DATE": {
-      "SELECT_DATERANGE": "Plage de validité*"
+      "SELECT_DATERANGE": "Date de... à...*"
     },
     "FROM": "de",
     "TO": "à",
     "VERSION": "Version",
-    "FILLED_AUTOMATICALLY": "Automatisch befüllt",
-    "VALID_FROM": "Valide du",
-    "VALID_TO": "Valide jusqu'au",
+    "FILLED_AUTOMATICALLY": "Remplissage automatique",
+    "VALID_FROM": "Valable du",
+    "VALID_TO": "Valable au",
     "STATUS": "Statut",
     "STATUS_TYPES": {
       "ACTIVE": "Actif",
       "INACTIVE": "Inactif",
-      "NEEDS_REVIEW": "Nécessite un examen",
-      "IN_REVIEW": "En cours d'examen",
+      "NEEDS_REVIEW": "Nécessite un contrôle",
+      "IN_REVIEW": "En cours d’étude",
       "REVIEWED": "Examen terminé"
     },
     "OK": "OK",
     "EDIT_VERSION": "Éditer la version",
     "CREATE_VERSION": "Ajouter la version",
-    "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
-    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
+    "COLOR_INVALID": "Couleur attendue au format #FFFFFF",
+    "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100",
     "ROLES": {
       "lidi-writer": "LiDi Writer",
       "lidi-admin": "LiDi Admin"
     },
     "SEARCH": {
-      "VALIDITY": "__fr__Gültig am",
-      "SEARCH_CRITERIA": "__fr__Suche"
+      "VALIDITY": "Valable le",
+      "SEARCH_CRITERIA": "Recherche"
     },
     "NOTIFICATION": {
-      "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu."
+      "OPTIMISTIC_LOCK_ERROR": "Soit l’objet a déjà été supprimé, soit il a été traité entre-temps. Veuillez recharger la page en appuyant sur la touche F5."
     }
   },
   "DIALOG": {
-    "OK": "Continuer",
+    "OK": "Suivant",
     "CANCEL": "Annuler",
-    "WARNING": "Attention!",
-    "DELETE": "Voulez-vous supprimer définitivement cet enregistrement de données ?",
+    "WARNING": "Avertissement!",
+    "DELETE": "Voulez-vous supprimer définitivement ce bloc de données?",
     "DISCARD_CHANGES_TITLE": "Annuler les modifications?",
-    "LEAVE_SITE": "Si la page est quittée, les données ne seront pas sauvegardées.",
-    "CANCEL_EDITMODE": "Sortir du mode d'édition annulera toutes les modifications."
+    "LEAVE_SITE": "Si vous quittez le site, vos données ne sont pas enregistrées.",
+    "CANCEL_EDITMODE": "Si vous quittez le mode d’édition, vous perdez toutes les données adaptées."
   },
   "PROFILE": {
-    "HELLO": "Bonjour",
-    "YOUR_ROLES": "Tes rôles:",
-    "LOGIN": "Login",
-    "LOGOUT": "Logout"
+    "HELLO": "Bonjour,",
+    "YOUR_ROLES": "Vos rôles:",
+    "LOGIN": "Connexion",
+    "LOGOUT": "Déconnexion"
   },
-  "HOME": {
-    "HEADER": "Documentation des services TP suisses",
-    "TITLE": "Bienvenue sur ATLAS",
-    "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas. Eget mauris pharetra et ultrices. Mi eget mauris pharetra et ultrices neque. Adipiscing commodo elit at imperdiet dui. Arcu dictum varius duis at consectetur lorem donec massa. Est ullamcorper eget nulla facilisi. Sed adipiscing diam donec adipiscing tristique risus nec. Ullamcorper dignissim cras tincidunt lobortis feugiat. Massa enim nec dui nunc mattis enim. Quis imperdiet massa tincidunt nunc pulvinar sapien et. Tellus at urna condimentum mattis pellentesque id nibh tortor id. Ultricies leo integer malesuada nunc."
+  "MENU": {
+    "TITLE": "Menu",
+    "TITLE_OPENED": "Fermer le menu"
   },
   "PAGES": {
     "HOME": "Home",
+    "HOME_MENU": "Démarrer",
     "TTFN": {
-      "TITLE": "Fahrplanfeldnummer",
-      "DESCRIPTION": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum. Lacus vel facilisis volutpat est velit egestas."
+      "TITLE": "Liste des tableaux-horaires",
+      "TITLE_MENU": "Tableaux-horaires",
+      "DESCRIPTION": "Saisie et gestion des données des tableaux-horaires.",
+      "PATH_TEXT": "Vers tableaux-horaires"
     },
     "LIDI": {
-      "TITLE": "Linienverzeichnis",
-      "DESCRIPTION": "Vitae et leo duis ut diam quam nulla porttitor. Dui faucibus in ornare quam viverra orci. Luctus venenatis lectus magna fringilla urna porttitor rhoncus. Dictum sit amet justo donec enim diam vulputate."
+      "TITLE": "Liste des lignes",
+      "TITLE_MENU": "Lignes et lignes partielles",
+      "DESCRIPTION": "Saisie et gestion des données des lignes.",
+      "PATH_TEXT": "Vers liste des lignes"
     },
-    "DETAILS": "Détails"
+    "DETAILS": "Précisions"
   },
   "TTFN": {
-    "TTFN": "Fahrplanfeldnummer",
-    "NEW": "Nouveau numéro de tableau-horaire",
-    "SWISS_TIMETABLE_FIELD_NUMBER": "Numéro de tableau-horaire",
-    "DESCRIPTION": "Description",
+    "TTFN": "Numéro du tableau-horaire",
+    "NEW": "Saisir un nouveau numéro de tableau-horaire",
+    "SWISS_TIMETABLE_FIELD_NUMBER": "Numéro de tableau-horaire CH",
+    "DESCRIPTION": "Désignation numéro de tableau-horaire CH",
     "BUSINESS_ORGANISATION": "Organisation commerciale",
-    "NUMBER": "Nr.",
-    "TTFNID": "Identifcateur numéro de tableau-horaire",
+    "NUMBER": "Numéro du tableau-horaire",
+    "TTFNID": "ID du tableau-horaire",
     "COMMENT": "Commentaire",
     "CONFLICT": {
-      "NUMBER": "Fahrplanfeldnummer {{number}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben",
-      "SWISS_NUMBER": "CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist von {{validFrom}} bis {{validTo}} durch {{ttfnid}} bereits vergeben"
+      "NUMBER": "Le numéro de tableau-horaire {{number}} est déjà attribué de {{validFrom}} à {{validTo}} par {{ttfnid}}.",
+      "SWISS_NUMBER": "Le numéro de tableau-horaire CH {{swissTimetableFieldNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{ttfnid}}."
     },
     "NOTIFICATION": {
-      "ADD_SUCCESS": "Numéro de tableau-horaire ajouté avec succès.",
-      "ADD_ERROR": "Une erreur s'est prduite durant la création du numéro de tableau-horaire.",
-      "EDIT_SUCCESS": "Numéro de tableau-horaire sauvegardé avec succès.",
-      "EDIT_ERROR": "Une erreur s'est produite durant l'édition du numéro de tableau-horaire.",
-      "DELETE_SUCCESS": "Numéro de tableau-horaire supprimé avec succès.",
-      "DELETE_ERROR": "Une erreur s'est produite durant la suppression du numéro de tableau-horaire.",
-      "FETCH_ERROR": "Une erreur s'est produite durant le chargement du numéro de tableau-horaire.",
-      "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
+      "ADD_SUCCESS": "Le numéro de tableau-horaire a été ajouté avec succès.",
+      "ADD_ERROR": "Une erreur est survenue lors de la saisie du tableau-horaire.",
+      "EDIT_SUCCESS": "Le numéro de tableau-horaire a été enregistré avec succès.",
+      "EDIT_ERROR": "Une erreur est survenue lors de l’édition du tableau-horaire.",
+      "DELETE_SUCCESS": "Le numéro de tableau-horaire a été supprimé avec succès.",
+      "DELETE_ERROR": "Une erreur est survenue lors de la suppression du tableau-horaire.",
+      "FETCH_ERROR": "Une erreur inconnue est survenue lors du chargement du tableau-horaire.",
+      "SWISSNUMBER_NOT_UNIQUE": "Le numéro de tableau-horaire CH ou de tableau-horaire sélectionné est déjà attribué à cette période."
     }
   },
   "PAGINATOR": {
-    "ITEMS_PER_PAGE": "éléments par page",
-    "NEXT_PAGE": "page suivante",
-    "PREVIOUS_PAGE": "page précédente",
-    "RANGE_LABEL1": "0 sur {{length}}",
-    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} sur {{length}}"
+    "ITEMS_PER_PAGE": "Objets par page",
+    "NEXT_PAGE": "Page suivante",
+    "PREVIOUS_PAGE": "Page précédente",
+    "RANGE_LABEL1": "0 de {{longueur}}",
+    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} de {{length}}"
   },
   "VALIDATION": {
     "REQUIRED": "Ce champ est obligatoire.",
     "BLANK": "Ce champ ne peut pas être vide.",
-    "MAXLENGTH": "Maximum {{length}} caractères autorisés.",
-    "MATDATEPICKERMIN": "La date doit être plus récente ou égale à {{date}}",
-    "MATDATEPICKERMAX": "La date doit être plus anciente ou égale à {{date}}",
-    "MATDATEPICKERPARSE": "Format de date invalide (doit être JJ.MM.AAAA)",
-    "DATE_RANGE_ERROR": "La date de début de validité ne peut pas être plus récente que la date de fin de validité: {{date}}",
-    "PATTERN": "__fr__Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
-    "WHITESPACES": "Ne peut pas commencer ou finir avec un espace."
+    "MAXLENGTH": "Le nombre maximum de caractères autorisés est {{length}}.",
+    "MATDATEPICKERMIN": "La date doit être supérieure ou égale à {{date}}.",
+    "MATDATEPICKERMAX": "La date doit être inférieure ou égale à {{date}}.",
+    "MATDATEPICKERPARSE": "Le format de date n’est pas valable. (Format valide: JJ.MM.AAAA)",
+    "DATE_RANGE_ERROR": "La date «Valide du» ne doit pas être postérieure à la date «Valide au»: {{date}}",
+    "PATTERN": "Format non valide. Caractères autorisés: {{allowedChars}}",
+    "WHITESPACES": "Ne peut pas commencer ou se terminer par un espace."
   },
   "LIDI": {
-    "SWISS_LINE_NUMBER": "CH-Liniennummer",
-    "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
-    "ALTERNATIVE_NAME": "Alternativbezeichnung",
-    "COMBINATION_NAME": "Kombinationsbezeichnung",
-    "LONG_NAME": "Langbezeichnung",
-    "ICON": "Grafik",
-    "TYPE": "Linientyp",
-    "SUBLINE_TYPE": "Teillinientyp",
-    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "SWISS_LINE_NUMBER": "Numéro de ligne CH (CHLNR)",
+    "SWISS_SUBLINE_NUMBER": "Numéro de ligne partielle CH",
+    "ALTERNATIVE_NAME": "Désignation alternative",
+    "COMBINATION_NAME": "Nom de la combinaison",
+    "LONG_NAME": "Désignation longue",
+    "ICON": "URL pour le logo de la ligne",
+    "TYPE": "Type de ligne",
+    "SUBLINE_TYPE": "Type de ligne partielle",
+    "BUSINESS_ORGANISATION": "Organisation commerciale",
     "SLNID": "SLNID",
-    "COMMENT": "Kommentar",
+    "COMMENT": "Commentaire",
     "PAYMENT": {
-      "TYPE": "Bezahlungsart",
+      "TYPE": "Mode de paiement",
       "INTERNATIONAL": "International",
-      "REGIONAL": "Regional",
-      "REGIONALWITHOUT": "Nicht Regional",
-      "LOCAL": "Lokal",
-      "OTHER": "Andere",
-      "NONE": "Keine"
+      "REGIONAL": "Régional",
+      "REGIONALWITHOUT": "Pas régional",
+      "LOCAL": "Local",
+      "OTHER": "Autres",
+      "NONE": "Aucune"
     },
     "LINE": {
-      "LINE": "Linie",
-      "LINES": "Linien",
+      "LINE": "Ligne",
+      "LINES": "Lignes",
       "CONFLICT": {
-        "SWISS_NUMBER": "CH-Liniennummer (CHLNR) {{swissLineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben"
+        "SWISS_NUMBER": "Le numéro de ligne CH (CHLNR) {{swissLineNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{slnid}}."
       },
       "PRECONDITION": {
-        "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Teillinie {{sublinie.swissSublineNumber}} mit Gültigkeit {{sublinie.validFrom}}-{{sublinie.validTo}}"
+        "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validité de la ligne {{validFrom}}-{validTo}} est en dehors de la validité de la ligne partielle {{sublinie.swissSublineNumber}}. Celle-ci est {{sublinie.validFrom}}-{sublinie.validTo}}."
       },
-      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Temporäre Linie von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten",
-      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen, welche zusammen die maximale Gültigkeit von 12 Monaten überschreiten",
-      "NUMBER": "Liniennummer",
-      "DESCRIPTION": "Beschreibung",
-      "FONT_RGB": "Schriftfarbe RGB",
-      "BACKGROUND_RGB": "Schrifthintergrundfarbe RGB",
-      "FONT_CMYK": "Schriftfarbe CMYK",
-      "BACKGROUND_CMYK": "Schrifthintergrundfarbe CMYK",
-      "NEW": "Neue Linie",
+      "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La ligne temporaire valide de {{validFrom}} à {{validTo}} dépasse la validité maximale de 12 mois.",
+      "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La version de {{validFrom}} à {{validTo}} fait partie de versions temporaires connexes. Ensemble, elles dépassent la validité maximale de 12 mois.",
+      "NUMBER": "Numéro de ligne",
+      "DESCRIPTION": "Désignation de la ligne",
+      "FONT_RGB": "Couleur de la police RVB",
+      "BACKGROUND_RGB": "Couleur de fond de la police RVB",
+      "FONT_CMYK": "Couleur de la police CMJN",
+      "BACKGROUND_CMYK": "Couleur de fond de la police CMJN",
+      "NEW": "Nouvelle ligne",
       "TYPES": {
-        "ORDERLY": "Ordentlich",
-        "TEMPORARY": "Temporär",
-        "OPERATIONAL": "Betrieblich"
+        "ORDERLY": "Ordinaire",
+        "TEMPORARY": "Temporaire",
+        "OPERATIONAL": "Lié à l’exploitation"
       },
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Linie erfolgreich hinzugefügt.",
-        "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
-        "EDIT_SUCCESS": "Linie erfolgreich gespeichert.",
-        "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
-        "DELETE_SUCCESS": "Linie erfolgreich gelöscht.",
-        "DELETE_ERROR": "Beim Löschen der Linie ist ein Fehler aufgetreten.",
-        "FETCH_ERROR": "Beim Laden der Linie ist ein unbekannter Fehler aufgetreten."
+        "ADD_SUCCESS": "La ligne a été ajoutée avec succès.",
+        "ADD_ERROR": "Une erreur est survenue lors de la saisie de la ligne.",
+        "EDIT_SUCCESS": "La ligne a été enregistrée avec succès.",
+        "EDIT_ERROR": "Une erreur est survenue lors de l’édition de la ligne.",
+        "DELETE_SUCCESS": "La ligne a été supprimée avec succès.",
+        "DELETE_ERROR": "Une erreur est survenue lors de la suppression de la ligne.",
+        "FETCH_ERROR": "Une erreur inconnue est survenue lors du chargement de la ligne."
       }
     },
     "SUBLINE": {
-      "SUBLINE": "Teillinie",
-      "SUBLINES": "Teillinien",
+      "SUBLINE": "Ligne partielle",
+      "SUBLINES": "Lignes partielles",
       "CONFLICT": {
-        "SWISS_NUMBER": "CH-Teilliniennummer {{swissSublineNumber}} ist von {{validFrom}} bis {{validTo}} durch {{slnid}} bereits vergeben",
-        "ASSIGN_DIFFERENT_LINE_CONFLICT": "Die Hauptline kann nicht geändert werden"
+        "SWISS_NUMBER": "Le numéro de ligne partielle CH {{swissSublineNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{slnid}}.",
+        "ASSIGN_DIFFERENT_LINE_CONFLICT": "La ligne principale ne peut pas être modifiée."
       },
       "PRECONDITION": {
-        "SUBLINE_OUTSIDE_OF_LINE_RANGE": "Die Gültigkeit der Teillinie {{validFrom}}-{{validTo}} ist ausserhalb der Linie {{mainline.swissLineNumber}} Gültigkeit {{mainline.validFrom}}-{{mainline.validTo}}"
+        "SUBLINE_OUTSIDE_OF_LINE_RANGE": "La validité de la ligne partielle {{validFrom}}-{validTo}} est en dehors de la validité de la ligne {{sublinie.swissSublineNumber}}. Celle-ci est {{mainline.validFrom}}-{mainline.validTo}}."
       },
-      "NUMBER": "Teilliniennummer",
+      "NUMBER": "Numéro de ligne partielle",
       "MAINLINE": "Ligne principale",
-      "DESCRIPTION": "Teillinienbezeichnung",
-      "NEW": "Neue Teillinie",
+      "DESCRIPTION": "Description de la ligne partielle",
+      "NEW": "Nouvelle ligne partielle",
       "TYPES": {
-        "COMPENSATION": "Kompensation",
-        "TECHNICAL": "Technisch"
+        "COMPENSATION": "Compensation",
+        "TECHNICAL": "Technique"
       },
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Teillinie erfolgreich hinzugefügt.",
-        "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",
-        "EDIT_SUCCESS": "Teillinie erfolgreich gespeichert.",
-        "EDIT_ERROR": "Beim Editieren der Teillinie ist ein Fehler aufgetreten.",
-        "DELETE_SUCCESS": "Teillinie erfolgreich gelöscht.",
-        "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten.",
-        "FETCH_ERROR": "Beim Laden der Teillinie ist ein unbekannter Fehler aufgetreten."
+        "ADD_SUCCESS": "Le ligne partielle a été ajoutée avec succès.",
+        "ADD_ERROR": "Une erreur est survenue lors de la saisie de la ligne partielle.",
+        "EDIT_SUCCESS": "Le ligne partielle a été enregistrée avec succès.",
+        "EDIT_ERROR": "Une erreur est survenue lors de l’édition de la ligne partielle.",
+        "DELETE_SUCCESS": "Le ligne partielle a été supprimée avec succès.",
+        "DELETE_ERROR": "Une erreur est survenue lors de la suppression de la ligne partielle.",
+        "FETCH_ERROR": "Une erreur inconnue est survenue lors du chargement de la ligne partielle."
       }
     }
   }
