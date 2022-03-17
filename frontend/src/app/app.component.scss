@@ -47,6 +47,7 @@ i.bi {
 .bi-arrow-left::before {
   padding-right: 8px;
 }
+
 .sidenav-menu-btn span {
   padding-left: 0;
   white-space: nowrap;
@@ -63,6 +64,11 @@ i.bi {
 .full-height {
   height: 100%;
   overflow: auto;
+}
+
+.full-height-no-scroll {
+  height: 100%;
+  overflow: hidden;
 }
 
 @include large-screen() {
