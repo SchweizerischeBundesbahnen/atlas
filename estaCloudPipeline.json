@@ -142,7 +142,6 @@
         "bugfix"
       ],
       "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
-      "additionalBuildParamsForSonarScan": "-P sonar-scan-without-build",
       "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
     },
@@ -151,7 +150,7 @@
       "isBuildEnabled": true,
       "failOnXrayScan": true,
       "sonarScanEnabled": true,
-      "additionalBuildParamsForSonarScan": "-P sonar-scan-without-build -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true",
+      "additionalBuildParamsForSonarScan": "-Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true",
       "staging": {
         "stagingType": "simple",
         "stages": [
