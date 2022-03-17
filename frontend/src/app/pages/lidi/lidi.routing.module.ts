@@ -15,7 +15,6 @@ const routes: Routes = [
   {
     path: Pages.LINES.path + '/:id',
     component: LineDetailComponent,
-    data: { breadcrumb: Pages.LINES.title },
     resolve: {
       lineDetail: LineDetailResolver,
     },
@@ -24,7 +23,6 @@ const routes: Routes = [
   {
     path: Pages.SUBLINES.path + '/:id',
     component: SublineDetailComponent,
-    data: { breadcrumb: Pages.SUBLINES.title },
     resolve: {
       sublineDetail: SublineDetailResolver,
     },

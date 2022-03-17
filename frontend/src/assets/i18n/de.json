@@ -74,20 +74,24 @@
     "LOGIN": "Login",
     "LOGOUT": "Logout"
   },
-  "HOME": {
-    "HEADER": "ATLAS - die SKI Business Applikation",
-    "TITLE": "Herzlich Willkommen!",
-    "DESCRIPTION": "Was möchten Sie tun?"
+  "MENU": {
+    "TITLE": "Menü",
+    "TITLE_OPENED": "Menü schliessen"
   },
   "PAGES": {
-    "HOME": "Übersichtsseite",
+    "HOME": "Home",
+    "HOME_MENU": "Start",
     "TTFN": {
-      "TITLE": "Fahrplanfeldverzeichnis",
-      "DESCRIPTION": "Erfassen und Verwalten von Fahrplanfelddaten."
+      "TITLE": "Fahrplanfeld-Nummern verwalten",
+      "TITLE_MENU": "Fahrplanfeld-Nummern",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Fahrplanfeldern.",
+      "PATH_TEXT": "Zu den Fahrplanfeldern"
     },
     "LIDI": {
-      "TITLE": "Linienverzeichnis",
-      "DESCRIPTION": "Erfassen und Verwalten von Liniendaten."
+      "TITLE": "Linien und Teillinien bearbeiten und erstellen",
+      "TITLE_MENU": "Linien und Teillinien",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Linien und Teillinien.",
+      "PATH_TEXT": "Zum Linienverzeichnis"
     },
     "DETAILS": "Details"
   },
