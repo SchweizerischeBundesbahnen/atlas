@@ -1,21 +1,16 @@
 # Timetable field number Frontend
 
-[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/job/master/)
-[![E2E Tests](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/job/master/)
-[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Aatlas-frontend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aatlas-frontend)
-
 This project was generated from [esta-cloud-angular](https://code.sbb.ch/projects/KD_ESTA_BLUEPRINTS/repos/esta-cloud-angular/browse).
 See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 <!-- toc -->
 
-- [Links](#links)
 - [Development](#development)
   * [Node.js](#nodejs)
   * [Cypress E2E](#cypress-e2e)
     + [Run cypress test locally](#run-cypress-test-locally)
     + [Cypress E2E CI-Jenkins](#cypress-e2e-ci-jenkins)
-      - [Release-Tests](#release-tests)
+      - [Release-Tests (Used by Tester)](#release-tests-used-by-tester)
       - [Cypress Tests results for troubleshooting](#cypress-tests-results-for-troubleshooting)
   * [Set SBB Artifactory as npm registry](#set-sbb-artifactory-as-npm-registry)
   * [Azure AD App Registration](#azure-ad-app-registration)
@@ -23,23 +18,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 <!-- tocstop -->
 
-## Links
-
-- **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/
-- **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/
-- **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aatlas-frontend
-- **JFrog Artifactory**:
-  - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Fatlas-frontend
-  - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker%2Fatlas-frontend
-- **Openshift**:
-  - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-  - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
-- **Deployment**:
-  - **Dev**: https://atlas-frontend-dev.apps.aws01t.sbb-aws-test.net
-  - **Test**: https://atlas-frontend-test.apps.aws01t.sbb-aws-test.net
-
 ## Development
-
 ### Node.js
 
 This project requires Node.js Version **16.13.2**. It has to be a LTS version.

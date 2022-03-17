@@ -3,7 +3,7 @@
 <!-- toc -->
 
 - [ATLAS](#atlas)
-- [Versioning](#versioning)
+- [Project Versioning](#project-versioning)
 - [Links](#links)
   * [Localhost](#localhost)
   * [Development](#development)
@@ -12,6 +12,7 @@
   * [Production](#production)
   * [Project Infrastructure](#project-infrastructure)
 - [Development](#development-1)
+  * [Tech Stack](#tech-stack)
   * [Test RESTful Web services](#test-restful-web-services)
   * [PostgreSQL Docker](#postgresql-docker)
 
@@ -20,7 +21,7 @@
 ## ATLAS
 This application is part of ATLAS. General documentation is available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture).
 
-## Versioning
+## Project Versioning
 This project uses [Semantic Versioning](https://semver.org/).
 
 ## Links
@@ -66,6 +67,19 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ## Development
 For an easy local development setup, we provide a `docker-compose.yml`, which can be used to start dependent infrastructure.
+
+### Tech Stack
+| Layer     |  Technologie    |  Link     |
+|-----------|------------|-----------|
+|Frontend   | Angular9 + | [ESTA-Web](https://confluence.sbb.ch/display/CLEW/ESTA-Web) |
+|Backend    |Java Spring Boot 2.5 | [ESTA-Backend (Spring-Boot)](https://confluence.sbb.ch/pages/viewpage.action?pageId=1306395091) |
+|           |Lombok | https://projectlombok.org/ |
+|           |OpenAPI | https://swagger.io/specification/ |
+|Database	|PostgreSQL| [Service PostgreSQL](https://confluence.sbb.ch/display/PLA/Service+PostgreSQL)|
+|Messaging	|Apache Kafka| [KAFKA Home](https://confluence.sbb.ch/display/KAFKA/KAFKA+Home)|
+|Infrastructure|	Openshift AWS 4.0| [ESTA-Cloud](https://confluence.sbb.ch/display/CLEW/ESTA-Cloud)|
+|Deployment	|ESTA Cloud Pipeline| [Esta Cloud Pipeline](https://confluence.sbb.ch/display/CLEW/Esta+Cloud+Pipeline)|
+|Interface|  API Management oder ähnliches Tool nach Entscheid KISPF-198 <br> REST & Json| [KISPF-198](https://flow.sbb.ch/browse/KISPF-198) - SKI/SKI+ API Strategie|
 
 ### Test RESTful Web services
 We use InteliJ HTTP Client for testing: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html.
