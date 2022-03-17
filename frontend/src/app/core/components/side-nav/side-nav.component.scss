@@ -1,3 +1,14 @@
+@import "src/styles/variables";
+
+.spacer {
+  flex: $flexSpaceSize;
+}
+
+.route-active {
+  color: $navigationDisabled;
+  background: $white;
+}
+
 .link-border {
   border-top: lightgray solid 1px;
 }

@@ -1,26 +1,16 @@
-<div>
-  <div class="mt-5 container">
-    <h1>{{ 'HOME.TITLE' | translate }}</h1>
-    <p>{{ 'HOME.DESCRIPTION' | translate }}</p>
-    <div class="row mt-5 d-flex justify-content-center">
-      <div *ngFor="let page of pages" class="col-12 col-md-6 col-lg-6 pb-6">
-        <div class="card background-grey" id="{{ page.path }}">
-          <a [routerLink]="page.path">
-            <ng-container *ngTemplateOutlet="cardContent"></ng-container>
-          </a>
-          <ng-template #cardContent>
-            <div class="d-flex flex-column">
-              <em class="bi {{ page.icon }} mt-3 mb-3 fs-2 mb-3"></em>
-              <div class="card-body">
-                <div class="text-center">
-                  <h3>{{ page.title | translate }}</h3>
-                </div>
-                <p>{{ page.description | translate }}</p>
-              </div>
-            </div>
-          </ng-template>
-        </div>
-      </div>
-    </div>
+<div class="card-container">
+  <div class="d-flex flex-column align-items-center justify-content-center logo-container">
+    <img src="assets/images/logo-atlas.svg" alt="Atlas Logo" />
+    <span class="title color-primary-500">atlas</span>
+    <p class="font-regular-lg m-0">Die SKI Business Plattform</p>
   </div>
+  <a *ngFor="let page of pages" id="{{ page.path }}" class="card" [routerLink]="page.path">
+    <div class="d-flex flex-column justify-content-between card-content-box">
+      <h3 class="color-gray-900 font-bold-xl m-0">{{ page.title | translate }}</h3>
+      <p class="font-regular-base color-gray-900 m-0">{{ page.description | translate }}</p>
+      <span class="d-flex color-primary-400 font-bold-base"
+        >{{ page.pathText | translate }}<i class="bi bi-arrow-right-short color-primary-400"></i
+      ></span>
+    </div>
+  </a>
 </div>

@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import packageJson from '../../../../../package.json';
 import { environment } from '../../../../environments/environment';
+import { NavigationEnd, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -15,11 +18,20 @@ export class HeaderComponent {
 
   version: string = packageJson.version;
   environmentLabel: string = environment.label;
+  headerTitle$: Observable<string>;
 
-  @Output() showSidebar = new EventEmitter<void>();
+  constructor(private readonly router: Router) {
+    this.headerTitle$ = router.events.pipe(
+      filter((e) => e instanceof NavigationEnd),
+      map(() => this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root))
+    );
+  }
 
-  toggle(): void {
-    this.showSidebar.emit();
+  private getHeaderTitleForCurrentRoute(node: ActivatedRouteSnapshot): string {
+    if (!node.firstChild?.data.headerTitle) {
+      return node.data.headerTitle;
+    }
+    return this.getHeaderTitleForCurrentRoute(node.firstChild);
   }
 
   showLabel() {

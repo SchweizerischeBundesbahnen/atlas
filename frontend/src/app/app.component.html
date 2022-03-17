@@ -1,16 +1,37 @@
-<app-header (showSidebar)="sidenav.toggle()"></app-header>
-<mat-sidenav-container>
-  <mat-sidenav #sidenav>
-    <mat-nav-list>
-      <app-side-nav (showSideNav)="sidenav.toggle()"></app-side-nav>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content class="main-container container-fluid ms-3">
-    <div class="full-height">
-      <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
-      </app-loading-spinner>
-      <app-breadcrumb></app-breadcrumb>
-      <router-outlet></router-outlet>
+<div class="d-flex flex-column full-height">
+  <app-header></app-header>
+  <div class="app-body">
+    <div
+      [@fadeInOut]
+      *ngIf="!sidenav.opened"
+      class="sidenav-menu-btn btn me-3"
+      (click)="sidenav.toggle()"
+    >
+      <i class="bi bi-list"></i>
+      <span>{{ 'MENU.TITLE' | translate }}</span>
     </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    <div
+      [@fadeInOut]
+      *ngIf="sidenav.opened"
+      class="sidenav-menu-btn menu-opened btn me-3"
+      (click)="sidenav.toggle()"
+    >
+      <span class="bi-arrow-left"> {{ 'MENU.TITLE_OPENED' | translate }}</span>
+    </div>
+    <mat-sidenav-container class="full-height">
+      <mat-sidenav #sidenav mode="side" opened="true">
+        <mat-nav-list>
+          <div class="nav-list-spacer" (click)="sidenav.toggle()">&nbsp;</div>
+          <app-side-nav (showSideNav)="sidenav.toggle()"></app-side-nav>
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <div class="full-height">
+          <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
+          </app-loading-spinner>
+          <router-outlet></router-outlet>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+</div>

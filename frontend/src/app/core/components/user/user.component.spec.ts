@@ -67,14 +67,13 @@ describe('UserComponent', () => {
       fixture.componentInstance.isAuthenticated = true;
       fixture.componentInstance.authenticate();
       fixture.detectChanges();
-      const userMenuOpenButton = fixture.debugElement.query(By.css('#user-menu-button'));
-      userMenuOpenButton.nativeElement.click();
+
+      const usernameModal = fixture.debugElement.query(By.css('.user-name')).nativeElement;
+      expect(usernameModal.textContent).toContain(expectedUserName);
       fixture.detectChanges();
 
-      const usernameModal = fixture.debugElement.query(By.css('.user-info-modal')).nativeElement;
-      expect(usernameModal.querySelector('.user-name-modal').textContent).toContain(
-        expectedUserName
-      );
+      const userMenuOpenButton = fixture.debugElement.query(By.css('#user-menu-button'));
+      userMenuOpenButton.nativeElement.click();
       fixture.detectChanges();
 
       const userRolesModal = fixture.debugElement.query(By.css('#user-roles-modal')).nativeElement;
@@ -83,7 +82,7 @@ describe('UserComponent', () => {
       );
       fixture.detectChanges();
 
-      const userRoles = userRolesModal.querySelectorAll('mat-list>mat-list-item.mat-list-item');
+      const userRoles = userRolesModal.querySelectorAll('.user-role-item');
       expect(userRoles[0].textContent).toContain(user.roles[0]);
       expect(userRoles[1].textContent).toContain(user.roles[1]);
       expect(userRoles[2].textContent).toContain(user.roles[2]);

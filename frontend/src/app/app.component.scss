@@ -1,7 +1,76 @@
-.main-container {
-  height: calc(100vh - 4rem);
+@import 'src/styles/variables';
+
+$navMenuBtnHeight: 79px;
+
+$navMenuBtnDefaultLeft: 32.5px;
+$navMenuBtnLargeLeft: 56.5px;
+
+i.bi {
+  font-size: $navigationItemFontSize;
+  color: $foreground;
+}
+
+.app-body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+}
+
+.sidenav-menu-btn {
+  background-color: $navigationBackground;
+  position: absolute;
+  width: $navigationDefaultSize;
+  height: $navMenuBtnHeight;
+  vertical-align: middle;
+  z-index: 2;
+  padding: 0 !important;
+  padding-top: 25px !important;
+  padding-left: $navMenuBtnDefaultLeft !important;
+  margin: 0 !important;
+  font-weight: bold;
+  text-align: left;
+  color: $primary-400;
+  border-radius: 0;
+}
+
+.menu-opened {
+  padding-left: 30px !important;
+}
+
+i.bi {
+  padding-right: 9px;
+}
+
+.bi-arrow-left::before {
+  padding-right: 8px;
+}
+.sidenav-menu-btn span {
+  padding-left: 0;
+  white-space: nowrap;
+}
+
+.nav-list-spacer {
+  height: $navMenuBtnHeight !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: $navigationBackground;
+  cursor: pointer;
 }
 
 .full-height {
   height: 100%;
+  overflow: auto;
+}
+
+@include large-screen() {
+  .sidenav-menu-btn {
+    width: $navigationLargeSize;
+    padding: 25px 0 0 $navMenuBtnLargeLeft !important;
+  }
+  .menu-opened {
+    padding-left: $navMenuBtnLargeLeft !important;
+  }
 }
