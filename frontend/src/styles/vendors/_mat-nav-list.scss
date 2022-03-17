@@ -15,8 +15,12 @@ $largeScreenWidth: 400px;
   background: $background;
 }
 
-mat-sidenav-content {
+mat-sidenav-content.menu-opened {
   margin-left: $defaultScreenWidth !important;
+}
+
+mat-sidenav-content.menu-closed {
+  margin-left: 139px !important;
 }
 
 .mat-nav-list {
