@@ -56,6 +56,14 @@ It's applications share the following architectural goal:
 - Make sure your needed business services are up
 - Start the gateway (the frontend Angular application uses it as a target for API calls)
 
+### Monorepo
+
+ATLAS has a Monorepo project structure. The CI/CD is execute on each module. For each push event on master
+a Jenkins pipiline is executed. The modules are versionied and deployed with the same version number.
+
+![ATLAS Monorepo](documentation/ATLAS-Mono-Repo-Migration.png)
+
+
 ## Structure
 
 Quick overview of the modules. There are more detailed `README`s available within each module.
