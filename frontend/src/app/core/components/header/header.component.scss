@@ -6,8 +6,10 @@ $logoMarginLeftLarge: 63.5px;
 $navigationDefaultSize: 139px;
 
 .logo-placeholder {
+  cursor: pointer;
   background: $white;
   width: $navigationDefaultSize;
+  min-width: $navigationDefaultSize;
   height: $headerHeight;
   text-align: center;
   vertical-align: middle;
@@ -38,6 +40,7 @@ $navigationDefaultSize: 139px;
 @include large-screen() {
   .logo-placeholder {
     width: $navigationLargeSize;
+    min-width: $navigationLargeSize;
 
     .logo, .title {
       left: $logoMarginLeftLarge;
