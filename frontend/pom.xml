@@ -8,7 +8,7 @@
     <version>0.97.0-SNAPSHOT</version>
   </parent>
   <packaging>pom</packaging>
-  <artifactId>fronted</artifactId>
+  <artifactId>frontend</artifactId>
 
   <name>Frontend</name>
   <description>ATLAS-Frontend</description>

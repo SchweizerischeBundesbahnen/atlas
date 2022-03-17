@@ -16,14 +16,12 @@
         <div class="d-inline-block">
           <span class="mb-0 user-info-modal">{{ 'PROFILE.YOUR_ROLES' | translate }}</span>
         </div>
-        <mat-list>
-          <mat-list-item class="mat-list-item" *ngFor="let role of roles">
-            <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
-            {{ 'COMMON.ROLES.' + role | translate }}
-          </mat-list-item>
-        </mat-list>
+        <div class="user-role-item" *ngFor="let role of roles">
+          <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
+          {{ 'COMMON.ROLES.' + role | translate }}
+        </div>
       </div>
-      <hr />
+      <hr/>
       <button mat-button (click)="logout()" id="logout" class="w-100">
         <em class="bi bi-box-arrow-right"></em>
         {{ 'PROFILE.LOGOUT' | translate }}
