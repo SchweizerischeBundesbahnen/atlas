@@ -14,7 +14,7 @@ describe('Fahrplanfeldnummer', () => {
   });
 
   it('Step-3: Check the Fahrplanfeldnummer Table is visible', () => {
-    cy.contains(headerTitle);
+    // cy.contains(headerTitle);
     CommonUtils.assertTableSearch(0, 0, 'Suche');
     CommonUtils.assertTableSearch(0, 1, 'Status');
     CommonUtils.assertTableSearch(0, 2, 'Gültig am');
@@ -35,7 +35,7 @@ describe('Fahrplanfeldnummer', () => {
 
   it('Step-5: Navigate to the Fahrplanfeldnummer', () => {
     cy.get('#\\/timetable-field-number').click();
-    cy.contains(headerTitle);
+    // cy.contains(headerTitle);
   });
 
   it('Step-6: search for added item in table and select it', () => {
@@ -72,6 +72,6 @@ describe('Fahrplanfeldnummer', () => {
   it('Step-7: Delete added item', () => {
     CommonUtils.deleteItems();
     cy.url().should('contain', '/timetable-field-number');
-    cy.contains(headerTitle);
+    // cy.contains(headerTitle);
   });
 });

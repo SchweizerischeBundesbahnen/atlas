@@ -1,11 +1,20 @@
 import { Component } from '@angular/core';
 
 import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [   // :enter is alias to 'void => *'
+        style({ opacity: 0 }),
+        animate(650, style({ opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class AppComponent {
   constructor(public loadingSpinnerService: LoadingSpinnerService) {
@@ -14,7 +23,7 @@ export class AppComponent {
   }
 }
 
-Date.prototype.toISOString = function () {
+Date.prototype.toISOString = function() {
   return (
     this.getFullYear() +
     '-' +
