@@ -18,4 +18,15 @@ mat-form-field {
   .mat-form-field-subscript-wrapper {
     position: unset;
   }
+
+  .mat-form-field-infix{
+    border-top: 5px solid transparent;
+  }
+}
+
+// Form Field with appearance="outline"
+.mat-form-field-appearance-outline, .mat-form-field-appearance-outline.mat-focused {
+  .mat-form-field-outline, .mat-form-field-outline-thick {
+    color: $primary-400;
+  }
 }

@@ -1,11 +1,5 @@
-<div class="mat-elevation-z8">
+<div class="overview-table">
   <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
-  <div class="space-between" *ngIf="canEdit">
-    <div>&nbsp;</div>
-    <button data-cy="new-item" mat-icon-button class="me-3" (click)="new()">
-      <em class="bi bi-plus fs-2"></em>
-    </button>
-  </div>
   <app-table-search
     [additionalFieldTemplate]="tableSearchFieldTemplate"
     (searchEvent)="searchData($event)"
@@ -21,10 +15,10 @@
   >
     <ng-container *ngFor="let column of tableColumns">
       <ng-container matColumnDef="{{ column.value }}">
-        <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header>
+        <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header class="font-bold-base color-primary-400">
           {{ column.headerTitle | translate }}
         </th>
-        <td mat-cell *matCellDef="let value">
+        <td mat-cell *matCellDef="let value" >
           {{ format(column, value[column.value]) }}
         </td>
       </ng-container>
@@ -44,6 +38,7 @@
     [pageSize]="10"
     [pageSizeOptions]="[5, 10, 25, 100]"
     (page)="pageChanged($event)"
+    class="font-regular-base"
   >
   </mat-paginator>
 </div>
