@@ -1,7 +1,77 @@
-.home-header {
-  overflow-x: hidden;
-  height: 4rem;
+@import 'src/styles/variables';
+
+$headerHeight: 121px;
+$logoMarginLeft: 47px;
+$logoMarginLeftLarge: 63.5px;
+$navigationDefaultSize: 139px;
+
+.logo-placeholder {
+  background: $white;
+  width: $navigationDefaultSize;
+  height: $headerHeight;
+  text-align: center;
+  vertical-align: middle;
+
+  .logo {
+    position: absolute;
+    top: 32px;
+    left: $logoMarginLeft;
+    width: 45px;
+    height: 45px;
+    background: $accentColor url('~src/assets/images/a-logo.svg') no-repeat 12px 12px;
+    border-radius: 9.47368px;
+    background-size: 23px 23px;
+  }
+
+  .title {
+    color: $accentColor;
+    position: absolute;
+    top: 83px;
+    left: $logoMarginLeft;
+    width: 45px;
+    height: 20px;
+    line-height: 20px;
+  }
 }
+
+
+@include large-screen() {
+  .logo-placeholder {
+    width: $navigationLargeSize;
+
+    .logo, .title {
+      left: $logoMarginLeftLarge;
+    }
+  }
+}
+
+.spacer {
+  flex: $flexSpaceSize;
+}
+
+.header-container {
+  margin-left: 0 !important;
+}
+
+@include default-screen() {
+  .header-container {
+    padding-left: 177px;
+    margin-left: 0 !important;
+  }
+}
+
+@include large-screen() {
+  .header-container {
+    padding-left: 467px;
+    margin-left: 0 !important;
+  }
+}
+
+.home-header {
+  height: $headerHeight;
+  padding: 0 16px 0 0;
+}
+
 i.bi-list {
   font-size: 24px;
 }
@@ -15,10 +85,6 @@ button.btn.btn-primary:focus {
   border-color: inherit;
   -webkit-box-shadow: none;
   box-shadow: none;
-}
-
-.header-subheader {
-  font-size: 12px;
 }
 
 div.d-flex {
