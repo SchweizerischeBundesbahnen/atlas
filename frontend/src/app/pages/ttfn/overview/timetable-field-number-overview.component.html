@@ -1,3 +1,8 @@
+<div class="new-buttons mb-5">
+  <button mat-raised-button data-cy="new-item" (click)="newVersion()">
+    {{ 'TTFN.NEW' | translate }}
+  </button>
+</div>
 <app-table
   data-cy="ttfn"
   [tableData]="timetableFieldNumbers"
