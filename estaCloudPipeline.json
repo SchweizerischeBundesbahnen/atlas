@@ -114,6 +114,12 @@
       "openshiftJenkinsCredentialsId": "ssp-p9d3z05co-ccn4-44b3-y824-1ut86c5e693",
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": "",
+      "preDeployConfirmUserMails": [
+        "thomas.schaefer@sbb.ch",
+        "frederic.barras@sbb.ch",
+        "hannes.laner@sbb.ch",
+        "antonio.romano@sbb.ch"
+      ],
       "api": {
         "artifactId": "apim-configuration",
         "instance": "prod",
@@ -141,7 +147,7 @@
         "feature",
         "bugfix"
       ],
-      "additionalBuildParams": "-DskipTests -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
+      "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
       "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
     },
