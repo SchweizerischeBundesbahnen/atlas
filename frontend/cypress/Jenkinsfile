@@ -104,13 +104,13 @@ pipeline {
           steps {
             sh 'npm -v'
             sh 'node -v'
-            sh 'npm ci'
+            sh 'npm --prefix frontend/ ci'
           }
         }
-    		    
+
       }
     }
-    
+
     stage('Run Cypress E2E Tests') {
       when {
         branch 'master'
@@ -118,9 +118,9 @@ pipeline {
       steps {
         script {
             if ('release'.equals(params.E2ETests)) {
-                sh 'npm run cypress:run-e2e-release'
+                sh 'npm --prefix frontend/ run cypress:run-e2e-release'
             } else {
-                sh 'npm run cypress:run'
+                sh 'npm --prefix frontend/ run cypress:run'
             }
         }
       }
@@ -168,15 +168,15 @@ pipeline {
   post {
     always {
       echo 'Archive cypress videos'
-      archiveArtifacts 'cypress/videos/**/*.mp4'
+      archiveArtifacts 'frontend/cypress/videos/**/*.mp4'
 
     }
     failure {
       echo 'Failure...'
       echo 'Archive logs'
-      archiveArtifacts 'cypress/logs/*.json'
+      archiveArtifacts 'frontend/cypress/logs/*.json'
       echo 'Archive screenshots'
-      archiveArtifacts 'cypress/screenshots/**.*'
+      archiveArtifacts 'frontend/cypress/screenshots/**.*'
     }
     cleanup {
       shutdownZAP()
