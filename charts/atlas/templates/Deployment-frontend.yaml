@@ -31,6 +31,8 @@ spec:
               value: '{{ .Values.frontend.production }}'
             - name: ENVIRONMENT_LABEL
               value: '{{ .Values.frontend.environmentLabel }}'
+            - name: APP_VERSION
+              value: '{{ .Chart.AppVersion }}'
             - name: ATLAS_API_URL
               value: '{{ .Values.frontend.atlasApiUrl }}'
             - name: API_CLIENT_ID
