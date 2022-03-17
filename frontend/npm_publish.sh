@@ -19,3 +19,6 @@ cat .npmrc
 npm publish --userconfig=.npmrc --registry=https://bin.sbb.ch/artifactory/api/npm/atlas.npm/ --loglevel verbose
 
 echo "atlas-frontend-${releaseVersion} successfully published"
+echo "Remove .npmrc"
+rm .npmrc
+echo ".npmrc successfully removed"
