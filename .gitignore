@@ -111,3 +111,7 @@ Thumbs.db
 /.idea/misc.xml
 /frontend/docker/package/
 /frontend/.npmrc
+/frontend/cypress.env.json
+/frontend/cypress/logs/
+/frontend/cypress/videos/
+/frontend/cypress/screenshots/
