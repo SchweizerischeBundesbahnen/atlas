@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import packageJson from '../../../../../package.json';
 import { environment } from '../../../../environments/environment';
 import { NavigationEnd, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
@@ -16,7 +15,7 @@ export class HeaderComponent {
   private readonly INT: string = 'int';
   private readonly STAGES_WITH_LABEL = [this.DEV, this.TEST, this.INT];
 
-  version: string = packageJson.version;
+  version: string = environment.appVersion;
   environmentLabel: string = environment.label;
   headerTitle$: Observable<string>;
 
