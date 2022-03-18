@@ -2,7 +2,7 @@
   <div class="d-flex flex-column align-items-center justify-content-center logo-container">
     <img src="assets/images/logo-atlas.svg" alt="Atlas Logo" />
     <span class="title color-primary-500">atlas</span>
-    <p class="font-regular-lg m-0">Die SKI Business Plattform</p>
+    <p class="font-regular-lg m-0">{{ 'PAGES.HOME_BUSINESS_PLATFORM' | translate }}</p>
   </div>
   <a *ngFor="let page of pages" id="{{ page.path }}" class="card" [routerLink]="page.path">
     <div class="d-flex flex-column justify-content-between card-content-box">
