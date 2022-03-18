@@ -6,28 +6,34 @@ import { LineDetailResolver } from './lines/detail/line-detail.resolver';
 import { Pages } from '../pages';
 import { SublineDetailComponent } from './sublines/detail/subline-detail.component';
 import { SublineDetailResolver } from './sublines/detail/subline-detail.resolver';
+import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LidiOverviewComponent,
+    children: [
+      {
+        path: Pages.LINES.path + '/:id',
+        component: RouteToDialogComponent,
+        data: { component: LineDetailComponent },
+        resolve: {
+          lineDetail: LineDetailResolver,
+        },
+        runGuardsAndResolvers: 'always',
+      },
+      {
+        path: Pages.SUBLINES.path + '/:id',
+        component: RouteToDialogComponent,
+        data: { component: SublineDetailComponent },
+        resolve: {
+          sublineDetail: SublineDetailResolver,
+        },
+        runGuardsAndResolvers: 'always',
+      },
+    ],
   },
-  {
-    path: Pages.LINES.path + '/:id',
-    component: LineDetailComponent,
-    resolve: {
-      lineDetail: LineDetailResolver,
-    },
-    runGuardsAndResolvers: 'always',
-  },
-  {
-    path: Pages.SUBLINES.path + '/:id',
-    component: SublineDetailComponent,
-    resolve: {
-      sublineDetail: SublineDetailResolver,
-    },
-    runGuardsAndResolvers: 'always',
-  },
+
   { path: '**', redirectTo: '' },
 ];
 

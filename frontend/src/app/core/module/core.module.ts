@@ -22,26 +22,32 @@ import { FieldErrorComponent } from '../components/field-error/field-error.compo
 import { ErrorNotificationComponent } from '../notification/error/error-notification.component';
 import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
 import { CoverageComponent } from '../components/coverage/coverage.component';
+import { RouteToDialogComponent } from '../components/route-to-dialog/route-to-dialog.component';
+import { DialogCloseButtonComponent } from '../components/dialog-close-button/dialog-close-button.component';
+
+const coreComponents = [
+  DetailWrapperComponent,
+  SwitchVersionComponent,
+  DialogComponent,
+  FieldErrorComponent,
+  HeaderComponent,
+  LanguageSwitcherComponent,
+  LoadingSpinnerComponent,
+  SideNavComponent,
+  TableComponent,
+  UserComponent,
+  EmptyToNullDirective,
+  TrimInputDirective,
+  WithDefaultValueDirective,
+  TableSearchComponent,
+  ErrorNotificationComponent,
+  CoverageComponent,
+  RouteToDialogComponent,
+  DialogCloseButtonComponent,
+];
 
 @NgModule({
-  declarations: [
-    DetailWrapperComponent,
-    SwitchVersionComponent,
-    DialogComponent,
-    FieldErrorComponent,
-    HeaderComponent,
-    LanguageSwitcherComponent,
-    LoadingSpinnerComponent,
-    SideNavComponent,
-    TableComponent,
-    UserComponent,
-    EmptyToNullDirective,
-    TrimInputDirective,
-    WithDefaultValueDirective,
-    TableSearchComponent,
-    ErrorNotificationComponent,
-    CoverageComponent,
-  ],
+  declarations: coreComponents,
   imports: [
     CommonModule,
     MaterialModule,
@@ -59,27 +65,7 @@ import { CoverageComponent } from '../components/coverage/coverage.component';
       },
     }),
   ],
-  exports: [
-    DetailWrapperComponent,
-    FieldErrorComponent,
-    SwitchVersionComponent,
-    DialogComponent,
-    HeaderComponent,
-    LanguageSwitcherComponent,
-    LoadingSpinnerComponent,
-    SideNavComponent,
-    TableComponent,
-    UserComponent,
-    CommonModule,
-    MaterialModule,
-    TranslateModule,
-    EmptyToNullDirective,
-    TrimInputDirective,
-    WithDefaultValueDirective,
-    TableSearchComponent,
-    ErrorNotificationComponent,
-    CoverageComponent,
-  ],
+  exports: [...coreComponents, CommonModule, MaterialModule, TranslateModule],
   providers: [TranslatePipe],
 })
 export class CoreModule {}
