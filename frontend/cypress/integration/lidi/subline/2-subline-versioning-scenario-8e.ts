@@ -26,7 +26,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   it('Step-3: Navigate to Linienverzeichnis', () => {
     LidiUtils.navigateToLidi();
     LidiUtils.checkHeaderTitle();
-    cy.get('[data-cy=sublines-title]').invoke('text').should('eq', 'Teillinien');
+    LidiUtils.assertSublineTitle();
   });
 
   it('Step-4: Add first Subline Version', () => {

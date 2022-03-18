@@ -13,7 +13,11 @@ export default class LidiUtils {
   }
 
   static checkHeaderTitle() {
-    cy.get('[data-cy=header-title]').should('have.text', 'Linien und Teillinien');
+    CommonUtils.assertHeaderTitle('Linien und Teillinien');
+  }
+
+  static assertSublineTitle() {
+    cy.get('[data-cy=sublines-title]').invoke('text').should('contain', 'Teillinien');
   }
 
   static readSlnidFromForm(element: { slnid: string }) {
@@ -23,7 +27,7 @@ export default class LidiUtils {
   }
 
   static clickOnAddNewLinieVersion() {
-    cy.get('[data-cy=lidi-lines] [data-cy=new-item]').click();
+    cy.get('[data-cy=new-line]').click();
     cy.get('[data-cy=save-item]').should('be.disabled');
     cy.get('[data-cy=edit-item]').should('not.exist');
     cy.get('[data-cy=delete-item]').should('not.exist');
@@ -31,7 +35,7 @@ export default class LidiUtils {
   }
 
   static clickOnAddNewSublinesLinieVersion() {
-    cy.get('[data-cy=lidi-sublines] [data-cy=new-item]').click();
+    cy.get('[data-cy=new-subline]').click();
     cy.get('[data-cy=save-item]').should('be.disabled');
     cy.get('[data-cy=edit-item]').should('not.exist');
     cy.get('[data-cy=delete-item]').should('not.exist');
