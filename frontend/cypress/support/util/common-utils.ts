@@ -93,7 +93,6 @@ export default class CommonUtils {
 
   static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
     cy.intercept('GET', pathToIntercept).as('searchItemUlrIntercept');
-
     cy.get(searchSelector).clear().type(value).type('{enter}').wait('@searchItemUlrIntercept');
   }
 

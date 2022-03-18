@@ -10,6 +10,10 @@ export default class TtfnUtils {
     });
   }
 
+  static checkHeaderTitle() {
+    cy.get('[data-cy=header-title]').should('have.text', 'Fahrplanfeld-Nummern');
+  }
+
   static readTtfnidFromForm(element: { ttfnid: string }) {
     cy.get('[data-cy=ttfnid]')
       .invoke('val')

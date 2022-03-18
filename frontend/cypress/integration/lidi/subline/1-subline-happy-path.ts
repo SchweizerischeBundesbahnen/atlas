@@ -4,7 +4,6 @@ import CommonUtils from '../../../support/util/common-utils';
 describe('Teillinie', () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
   let mainline: any;
-  const headerTitle = 'Linien und Teillinien';
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
@@ -16,7 +15,7 @@ describe('Teillinie', () => {
 
   it('Step-3: Navigate to Linienverzeichnis', () => {
     LidiUtils.navigateToLidi();
-    cy.get('[data-cy="header-title"]').should('have.text', headerTitle);
+    LidiUtils.checkHeaderTitle();
     cy.get('[data-cy=sublines-title]').invoke('text').should('eq', 'Teillinien');
   });
 
@@ -46,7 +45,7 @@ describe('Teillinie', () => {
   it('Step-6: Navigate to Linienverzeichnis', () => {
     CommonUtils.navigateToHome();
     LidiUtils.navigateToLidi();
-    cy.get('[data-cy="header-title"]').should('have.text', headerTitle);
+    LidiUtils.checkHeaderTitle();
   });
 
   it('Step-7: Search for added element on the table and navigate to it', () => {

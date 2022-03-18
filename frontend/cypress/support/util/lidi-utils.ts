@@ -12,6 +12,10 @@ export default class LidiUtils {
     });
   }
 
+  static checkHeaderTitle() {
+    cy.get('[data-cy=header-title]').should('have.text', 'Linien und Teillinien');
+  }
+
   static readSlnidFromForm(element: { slnid: string }) {
     cy.get('[data-cy=slnid]')
       .invoke('val')
