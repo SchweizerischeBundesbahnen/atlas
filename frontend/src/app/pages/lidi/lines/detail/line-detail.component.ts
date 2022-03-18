@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { LinesService, LineType, LineVersion, PaymentType, Status } from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
@@ -14,18 +14,20 @@ import {
   DateService,
   MAX_DATE,
   MAX_DATE_FORMATTED,
-  MIN_DATE
+  MIN_DATE,
 } from 'src/app/core/date/date.service';
 import { Page } from 'src/app/core/model/page';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  templateUrl: './line-detail.component.html'
+  templateUrl: './line-detail.component.html',
 })
 export class LineDetailComponent
   extends DetailWrapperController<LineVersion>
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   TYPE_OPTIONS = Object.values(LineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   STATUS_OPTIONS = Object.values(Status);
@@ -36,7 +38,7 @@ export class LineDetailComponent
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
     private linesService: LinesService,
     private formBuilder: FormBuilder,
@@ -56,7 +58,7 @@ export class LineDetailComponent
   }
 
   readRecord(): LineVersion {
-    return this.activatedRoute.snapshot.data.lineDetail;
+    return this.dialogData.lineDetail;
   }
 
   getTitle(record: LineVersion): string | undefined {
@@ -115,11 +117,7 @@ export class LineDetailComponent
       {
         swissLineNumber: [
           version.swissLineNumber,
-          [
-            Validators.required,
-            Validators.maxLength(50),
-            AtlasCharsetsValidator.sid4pt
-          ]
+          [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.sid4pt],
         ],
         slnid: [version.slnid],
         type: [version.type, [Validators.required]],
@@ -127,27 +125,51 @@ export class LineDetailComponent
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
-          [Validators.required, Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding]
+          [
+            Validators.required,
+            Validators.maxLength(50),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          ],
         ],
         number: [
           version.number,
-          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
+          [
+            Validators.maxLength(50),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
         alternativeName: [
           version.alternativeName,
-          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
+          [
+            Validators.maxLength(50),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
         combinationName: [
           version.combinationName,
-          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
+          [
+            Validators.maxLength(50),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
         longName: [
           version.longName,
-          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
+          [
+            Validators.maxLength(255),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
         icon: [
           version.icon,
-          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
+          [
+            Validators.maxLength(255),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
         colorFontRgb: [version.colorFontRgb || '#000000', [Validators.required]],
         colorBackRgb: [version.colorBackRgb || '#FFFFFF', [Validators.required]],
@@ -155,24 +177,32 @@ export class LineDetailComponent
         colorBackCmyk: [version.colorBackCmyk || '0,0,0,0', [Validators.required]],
         description: [
           version.description,
-          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
+          [
+            Validators.maxLength(255),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
+          [Validators.required],
         ],
         validTo: [
           version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required]
+          [Validators.required],
         ],
         comment: [
           version.comment,
-          [Validators.maxLength(1500), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
+          [
+            Validators.maxLength(1500),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
-        etagVersion: version.etagVersion
+        etagVersion: version.etagVersion,
       },
       {
-        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
   }
