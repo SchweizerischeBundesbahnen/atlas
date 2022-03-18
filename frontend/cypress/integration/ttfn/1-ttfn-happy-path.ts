@@ -33,7 +33,7 @@ describe('Fahrplanfeldnummer', () => {
   });
 
   it('Step-5: Navigate to the Fahrplanfeldnummer', () => {
-    cy.get('[data-cy=atlas-logo-home-link]').click();
+    CommonUtils.navigateToHome();
     TtfnUtils.navigateToTimetableFieldNumber();
     TtfnUtils.checkHeaderTitle();
   });

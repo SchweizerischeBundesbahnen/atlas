@@ -3,6 +3,10 @@ export default class CommonUtils {
     cy.get('[data-cy=atlas-logo-home-link]').click();
   }
 
+  static assertHeaderTitle(title: string) {
+    cy.get('[data-cy=header-title]').should('have.text', title);
+  }
+
   static saveTtfn() {
     this.saveVersionWithWait('/line-directory/v1/field-numbers/versions/*');
   }
@@ -70,7 +74,7 @@ export default class CommonUtils {
   ) {
     cy.get('app-table')
       .eq(tableNumber)
-      .find('mat-form-field')
+      .find('mat-label')
       .eq(fieldNumber)
       .contains(fieldLabelExpectation);
   }
