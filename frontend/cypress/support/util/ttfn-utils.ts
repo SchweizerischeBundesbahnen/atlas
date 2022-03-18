@@ -3,11 +3,15 @@ import CommonUtils from './common-utils';
 export default class TtfnUtils {
   static navigateToTimetableFieldNumber() {
     cy.intercept('GET', '/line-directory/v1/field-numbers?**').as('getFieldnumbers');
-    cy.get('#\\timetable-field-number').click();
+    cy.get('#timetable-field-number').click();
     cy.wait('@getFieldnumbers').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
       cy.url().should('contain', '/timetable-field-number');
     });
+  }
+
+  static checkHeaderTitle() {
+    cy.get('[data-cy=header-title]').should('have.text', 'Fahrplanfeld-Nummern');
   }
 
   static readTtfnidFromForm(element: { ttfnid: string }) {
@@ -33,7 +37,7 @@ export default class TtfnUtils {
       .type(version.swissTimetableFieldNumber, { force: true });
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
     cy.get('[data-cy=number]').clear().type(version.number);
-    cy.get('[data-cy=description]').clear().type(version.description);
+    cy.get('[data-cy=description]').clear().type(version.description, { force: true });
     cy.get('[data-cy=comment]').clear().type(version.comment);
     cy.get('[data-cy=save-item]').should('not.be.disabled');
   }
@@ -57,7 +61,7 @@ export default class TtfnUtils {
       number: '1.1',
       description:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-      comment: 'This is a comment',
+      comment: 'This is a comment'
     };
   }
 
@@ -70,7 +74,7 @@ export default class TtfnUtils {
       number: '1.1',
       description:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-      comment: 'A new comment',
+      comment: 'A new comment'
     };
   }
 }
