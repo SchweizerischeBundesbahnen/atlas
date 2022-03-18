@@ -71,6 +71,14 @@ i.bi {
   overflow: hidden;
 }
 
+.page-container {
+  height: calc(100vh - #{$headerHeight});
+}
+
+.page-container mat-sidenav {
+  height: 100%;
+}
+
 @include large-screen() {
   .sidenav-menu-btn {
     width: $navigationLargeSize;
