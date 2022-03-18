@@ -16,7 +16,7 @@
   <properties>
     <sonar.language>ts</sonar.language>
     <sonar.profile>TsLint</sonar.profile>
-    <sonar.sources>src/app</sonar.sources>
+    <sonar.sources>src</sonar.sources>
     <sonar.verbose>true</sonar.verbose>
     <sonar.exclusions>**/node_modules/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/src/app/api/**</sonar.exclusions>
     <sonar.test.inclusion>**/*.spec.ts</sonar.test.inclusion>
@@ -24,6 +24,7 @@
     <sonar.ts.coverage.lcovReportPath>coverage/atlas-frontend/lcov.info</sonar.ts.coverage.lcovReportPath>
     <sonar.typescript.lcov.reportPaths>${project.basedir}/coverage/atlas-frontend/lcov.info</sonar.typescript.lcov.reportPaths>
     <coverage.exclusions>**/*.spec.ts,**/src/app/api/**/**/*.module.ts</coverage.exclusions>
+    <sonar.coverage.exclusions>**/*.spec.ts,**/src/app/api/**,/**/*.module.ts</sonar.coverage.exclusions>
     <jenkins.build-javascript.reportsDirectory>reports/</jenkins.build-javascript.reportsDirectory>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <skip.npm.exec.ci>true</skip.npm.exec.ci>
