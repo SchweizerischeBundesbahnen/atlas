@@ -1,18 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {
   Line,
   LinesService,
+  LineVersion,
   PaymentType,
   Status,
   SublinesService,
   SublineType,
-  SublineVersion
+  SublineVersion,
 } from '../../../../api';
 import {
   DateService,
   MAX_DATE,
   MAX_DATE_FORMATTED,
-  MIN_DATE
+  MIN_DATE,
 } from 'src/app/core/date/date.service';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { catchError, distinctUntilChanged, EMPTY, Subject, takeUntil } from 'rxjs';
@@ -28,14 +29,16 @@ import { switchMap } from 'rxjs/operators';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './subline-detail.component.html',
-  styleUrls: ['./subline-detail.component.scss']
+  styleUrls: ['./subline-detail.component.scss'],
 })
 export class SublineDetailComponent
   extends DetailWrapperController<SublineVersion>
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   TYPE_OPTIONS = Object.values(SublineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   STATUS_OPTIONS = Object.values(Status);
@@ -48,7 +51,7 @@ export class SublineDetailComponent
   mainlines: Line[] = [];
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
     private sublinesService: SublinesService,
     private formBuilder: FormBuilder,
@@ -76,7 +79,7 @@ export class SublineDetailComponent
   }
 
   readRecord(): SublineVersion {
-    return this.activatedRoute.snapshot.data.sublineDetail;
+    return this.dialogData.sublineDetail;
   }
 
   getTitle(record: SublineVersion): string | undefined {
@@ -135,11 +138,7 @@ export class SublineDetailComponent
       {
         swissSublineNumber: [
           version.swissSublineNumber,
-          [
-            Validators.required,
-            Validators.maxLength(50),
-            AtlasCharsetsValidator.sid4pt
-          ]
+          [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.sid4pt],
         ],
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
@@ -152,31 +151,45 @@ export class SublineDetailComponent
             Validators.required,
             Validators.maxLength(50),
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591
-          ]
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
         number: [
           version.number,
-          [Validators.maxLength(50), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]],
+          [
+            Validators.maxLength(50),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
+        ],
         longName: [
           version.longName,
-          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]],
+          [
+            Validators.maxLength(255),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
+        ],
         description: [
           version.description,
-          [Validators.maxLength(255), WhitespaceValidator.blankOrEmptySpaceSurrounding, AtlasCharsetsValidator.iso88591]
+          [
+            Validators.maxLength(255),
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
+          [Validators.required],
         ],
         validTo: [
           version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required]
+          [Validators.required],
         ],
-        etagVersion: version.etagVersion
+        etagVersion: version.etagVersion,
       },
       {
-        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
   }
@@ -200,7 +213,7 @@ export class SublineDetailComponent
         distinctUntilChanged(),
         switchMap((term) =>
           this.linesService.getLines(term, [], [], [], undefined, undefined, undefined, [
-            'swissLineNumber,ASC'
+            'swissLineNumber,ASC',
           ])
         )
       )
