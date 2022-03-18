@@ -1,17 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TableComponent } from './table.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
-import { MaterialModule } from '../../module/material.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
-import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
-import { TableSearchComponent } from '../table-search/table-search.component';
+import {TableComponent} from './table.component';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
+import {MaterialModule} from '../../module/material.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {By} from '@angular/platform-browser';
+import {LoadingSpinnerComponent} from '../loading-spinner/loading-spinner.component';
+import {TableSearchComponent} from '../table-search/table-search.component';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -68,31 +63,6 @@ describe('TableComponent', () => {
   it('should render date nicely', () => {
     const firstTableCell = fixture.debugElement.query(By.css('td'));
     expect(firstTableCell.nativeElement.innerText).toBe('31.12.2021');
-  });
-
-  it('should not render add if user may not edit', () => {
-    component.canEdit = false;
-    fixture.detectChanges();
-
-    const addButton = fixture.debugElement.query(By.css('.bi-plus'));
-    expect(addButton).toBeFalsy();
-  });
-
-  it('should render add if user can edit', () => {
-    component.canEdit = true;
-    fixture.detectChanges();
-
-    const addButton = fixture.debugElement.query(By.css('.bi-plus'));
-    expect(addButton).toBeTruthy();
-  });
-
-  it('should output new event', () => {
-    spyOn(component.newElementEvent, 'emit');
-
-    const addButton = fixture.debugElement.query(By.css('.bi-plus'));
-    addButton.nativeElement.click();
-
-    expect(component.newElementEvent.emit).toHaveBeenCalled();
   });
 
   it('should output edit event', () => {

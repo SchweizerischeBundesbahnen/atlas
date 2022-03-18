@@ -1,12 +1,25 @@
-<app-table
-  data-cy="ttfn"
-  [tableData]="timetableFieldNumbers"
-  [totalCount]="totalCount$"
-  [tableColumns]="tableColumns"
-  [canEdit]="true"
-  [isLoading]="isLoading"
-  (newElementEvent)="newVersion()"
-  (editElementEvent)="editVersion($event)"
-  (getTableElementsEvent)="getOverview($event)"
-></app-table>
-<router-outlet></router-outlet>
+<div class="overview-container">
+  <div class="new-buttons m-5">
+    <button mat-raised-button data-cy="new-item" (click)="newVersion()">
+      {{ 'TTFN.NEW' | translate }}
+    </button>
+  </div>
+
+  <div class="white-container">
+    <div class="table-heading font-bold-4xl color-gray-900 mb-5">
+      {{ 'PAGES.TTFN.TITLE_MENU' | translate }}
+    </div>
+
+    <app-table
+      data-cy="ttfn"
+      [tableData]="timetableFieldNumbers"
+      [totalCount]="totalCount$"
+      [tableColumns]="tableColumns"
+      [canEdit]="true"
+      [isLoading]="isLoading"
+      (editElementEvent)="editVersion($event)"
+      (getTableElementsEvent)="getOverview($event)"
+    ></app-table>
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -82,14 +82,6 @@ export class LinesComponent implements OnInit, OnDestroy {
     this.tableComponent.searchData(this.tableComponent.tableSearchComponent.activeSearch);
   }
 
-  newVersion() {
-    this.router
-      .navigate([Pages.LINES.path, 'add'], {
-        relativeTo: this.route,
-      })
-      .then();
-  }
-
   editVersion($event: Line) {
     this.router
       .navigate([Pages.LINES.path, $event.slnid], {
