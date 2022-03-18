@@ -38,7 +38,6 @@ export default class LidiUtils {
     cy.url().should('contain', '/line-directory');
     cy.get('[data-cy="lidi-lines"]').should('exist');
     cy.get('[data-cy="lidi-sublines"]').should('exist');
-    cy.contains('Teillinien');
   }
 
   static navigateToSubline(sublineVersion: any) {

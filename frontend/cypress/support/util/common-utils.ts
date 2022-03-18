@@ -1,6 +1,6 @@
 export default class CommonUtils {
   static navigateToHome() {
-    cy.get('#home').click();
+    cy.get('[data-cy=atlas-logo-home-link]').click();
   }
 
   static saveTtfn() {

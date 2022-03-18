@@ -26,7 +26,7 @@ describe('Versioning: scenario 3', () => {
     comment: 'A new comment',
   };
 
-  const headerTitle = 'Fahrplanfeldnummer';
+  const headerTitle = 'Fahrplanfeld-Nummern';
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
@@ -34,7 +34,7 @@ describe('Versioning: scenario 3', () => {
 
   it('Step-2: Navigate to Fahrplanfeldnummer', () => {
     TtfnUtils.navigateToTimetableFieldNumber();
-    // cy.contains(headerTitle);
+    cy.get('[data-cy="header-title"]').should('have.text', headerTitle);
   });
 
   it('Step-3: Add first Version', () => {
@@ -105,6 +105,6 @@ describe('Versioning: scenario 3', () => {
 
   it('Step-10: Delete versions', () => {
     CommonUtils.deleteItems();
-    // cy.contains(headerTitle);
+    cy.get('[data-cy="header-title"]').should('have.text', headerTitle);
   });
 });

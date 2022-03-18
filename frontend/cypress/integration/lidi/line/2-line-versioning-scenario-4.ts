@@ -18,7 +18,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   const thirdLineVersion = LidiUtils.getThirdLineVersion();
   const editedLineVersion = LidiUtils.getEditedLineVersion();
 
-  const headerTitle = 'Linienverzeichnis';
+  const headerTitle = 'Linien und Teillinien';
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
@@ -108,6 +108,6 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
 
   it('Step-12: Delete the item ', () => {
     CommonUtils.deleteItems();
-    // cy.contains(headerTitle);
+    cy.get('[data-cy="header-title"]').should('have.text', headerTitle);
   });
 });

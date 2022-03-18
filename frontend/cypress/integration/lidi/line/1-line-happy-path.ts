@@ -3,7 +3,7 @@ import CommonUtils from '../../../support/util/common-utils';
 
 describe('Linie', () => {
   const line = LidiUtils.getFirstLineVersion();
-  const headerTitle = 'Linienverzeichnis';
+  const headerTitle = 'Linien und Teillinien';
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
@@ -14,7 +14,7 @@ describe('Linie', () => {
   });
 
   it('Step-3: Check the Linienverzeichnis Line Table is visible', () => {
-    // cy.contains(headerTitle);
+    cy.get('[data-cy="header-title"]').should('have.text', headerTitle);
     CommonUtils.assertTableSearch(0, 0, 'Suche');
     CommonUtils.assertTableSearch(0, 1, 'Status');
     CommonUtils.assertTableSearch(0, 2, 'Linientyp');
@@ -40,7 +40,7 @@ describe('Linie', () => {
   it('Step-5: Navigate to Linienverzeichnis', () => {
     CommonUtils.navigateToHome();
     LidiUtils.navigateToLidi();
-    // cy.contains(headerTitle);
+    cy.get('[data-cy="header-title"]').should('have.text', headerTitle);
   });
 
   it('Step-6: Search added item in table and navigate to it', () => {
@@ -50,6 +50,6 @@ describe('Linie', () => {
   it('Step-7: Delete the item', () => {
     CommonUtils.deleteItems();
     LidiUtils.assertIsOnLiDiHome();
-    // cy.contains(headerTitle);
+    cy.get('[data-cy="header-title"]').should('have.text', headerTitle);
   });
 });
