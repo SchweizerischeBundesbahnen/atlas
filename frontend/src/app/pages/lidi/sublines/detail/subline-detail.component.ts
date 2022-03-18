@@ -51,7 +51,7 @@ export class SublineDetailComponent
   mainlines: Line[] = [];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: any,
+    @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
     private sublinesService: SublinesService,
     private formBuilder: FormBuilder,
