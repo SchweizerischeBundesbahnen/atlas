@@ -85,14 +85,6 @@ export class SublinesComponent implements OnInit, OnDestroy {
     this.tableComponent.searchData(this.tableComponent.tableSearchComponent.activeSearch);
   }
 
-  newVersion() {
-    this.router
-      .navigate([Pages.SUBLINES.path, 'add'], {
-        relativeTo: this.route,
-      })
-      .then();
-  }
-
   editVersion($event: Subline) {
     this.router
       .navigate([Pages.SUBLINES.path, $event.slnid], {
