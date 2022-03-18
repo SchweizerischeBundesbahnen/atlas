@@ -38,7 +38,7 @@ export class LineDetailComponent
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: any,
+    @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
     private linesService: LinesService,
     private formBuilder: FormBuilder,
