@@ -80,12 +80,12 @@ pipeline {
                 string(name: "version", value: params.releaseVersion),
               ],
               wait: false
-              emailext body: """Dear Joel \n
+              emailext body: """Dear Tester \n
                                 The deployment of the INT environment is about to start. The deployment process may take a few minutes.\n\n
                                 Cordiali saluti\n
                                 Mr. Jenkin """,
                                   recipientProviders: [[$class: 'CulpritsRecipientProvider']],
-                                  subject: 'START INT Environment Deploy',
+                                  subject: 'START Deploy INT Environment',
                                   to: 'antonio.romano@sbb.ch'
           }
         }
