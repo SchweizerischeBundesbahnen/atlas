@@ -25,7 +25,7 @@
           <app-side-nav (showSideNav)="sidenav.toggle()"></app-side-nav>
         </mat-nav-list>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <mat-sidenav-content [class]="sidenav.opened ? 'content-menu-open' : 'content-menu-closed'">
         <div class="full-height">
           <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
           </app-loading-spinner>
