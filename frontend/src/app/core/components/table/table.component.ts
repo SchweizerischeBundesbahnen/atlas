@@ -18,7 +18,7 @@ import { TableSearchComponent } from '../table-search/table-search.component';
 import { TableSearch } from '../table-search/table-search';
 
 @Component({
-  selector: 'app-table [tableData][tableColumns][newElementEvent][editElementEvent]',
+  selector: 'app-table [tableData][tableColumns][editElementEvent]',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
@@ -31,7 +31,6 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() tableSearchFieldTemplate!: TemplateRef<any>;
 
-  @Output() newElementEvent = new EventEmitter<DATATYPE>();
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() getTableElementsEvent = new EventEmitter<TablePagination & TableSearch>();
 
@@ -53,10 +52,6 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
 
   getColumnValues(): string[] {
     return this.tableColumns.map((i) => i.value);
-  }
-
-  new(): void {
-    this.newElementEvent.emit();
   }
 
   edit(row: DATATYPE) {
