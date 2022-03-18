@@ -19,8 +19,8 @@ mat-sidenav-content.menu-opened {
   margin-left: $defaultScreenWidth !important;
 }
 
-mat-sidenav-content.menu-closed {
-  margin-left: 139px !important;
+mat-sidenav-content.content-menu-closed {
+  margin-left: $navigationDefaultSize !important;
 }
 
 .mat-nav-list {
@@ -43,6 +43,9 @@ mat-sidenav-content.menu-closed {
   }
   mat-sidenav-content {
     margin-left: $largeScreenWidth !important;
+  }
+  mat-sidenav-content.content-menu-closed {
+    margin-left: $navigationLargeSize !important;
   }
   .mat-list-item-content {
     padding-left: $navigationPaddingLeftLarge !important;
