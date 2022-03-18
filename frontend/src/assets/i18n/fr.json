@@ -124,7 +124,7 @@
     "ITEMS_PER_PAGE": "Objets par page",
     "NEXT_PAGE": "Page suivante",
     "PREVIOUS_PAGE": "Page précédente",
-    "RANGE_LABEL1": "0 de {{longueur}}",
+    "RANGE_LABEL1": "0 de {{length}}",
     "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} de {{length}}"
   },
   "VALIDATION": {
