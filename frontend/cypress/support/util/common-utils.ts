@@ -1,6 +1,6 @@
 export default class CommonUtils {
   static navigateToHome() {
-    cy.get('#home').click();
+    cy.get('[data-cy=atlas-logo-home-link]').click();
   }
 
   static saveTtfn() {
@@ -93,7 +93,6 @@ export default class CommonUtils {
 
   static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
     cy.intercept('GET', pathToIntercept).as('searchItemUlrIntercept');
-
     cy.get(searchSelector).clear().type(value).type('{enter}').wait('@searchItemUlrIntercept');
   }
 

@@ -15,8 +15,6 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   const editedFirstSublineVersion = LidiUtils.getEditedFirstSublineVersion();
   let mainline: any;
 
-  const breadcrumbTitle = 'Linienverzeichnis';
-
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
   });
@@ -27,7 +25,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-3: Navigate to Linienverzeichnis', () => {
     LidiUtils.navigateToLidi();
-    // cy.contains(breadcrumbTitle);
+    LidiUtils.checkHeaderTitle();
     cy.get('[data-cy=sublines-title]').invoke('text').should('eq', 'Teillinien');
   });
 
@@ -91,7 +89,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   it('Step-10: Navigate to Linienverzeichnis', () => {
     CommonUtils.navigateToHome();
     LidiUtils.navigateToLidi();
-    // cy.contains(breadcrumbTitle);
+    LidiUtils.checkHeaderTitle();
   });
 
   it('Step-11: Check the added is present on the table result and navigate to it ', () => {

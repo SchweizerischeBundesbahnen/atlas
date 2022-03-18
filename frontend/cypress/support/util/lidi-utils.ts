@@ -12,6 +12,10 @@ export default class LidiUtils {
     });
   }
 
+  static checkHeaderTitle() {
+    cy.get('[data-cy=header-title]').should('have.text', 'Linien und Teillinien');
+  }
+
   static readSlnidFromForm(element: { slnid: string }) {
     cy.get('[data-cy=slnid]')
       .invoke('val')
@@ -38,7 +42,6 @@ export default class LidiUtils {
     cy.url().should('contain', '/line-directory');
     cy.get('[data-cy="lidi-lines"]').should('exist');
     cy.get('[data-cy="lidi-sublines"]').should('exist');
-    cy.contains('Teillinien');
   }
 
   static navigateToSubline(sublineVersion: any) {

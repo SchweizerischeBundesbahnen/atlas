@@ -12,7 +12,6 @@ import CommonUtils from '../../support/util/common-utils';
  */
 describe('Versioning: scenario 3', () => {
   const firstVersion = TtfnUtils.getFirstVersion();
-
   const secondVersion = TtfnUtils.getSecondVersion();
 
   const versionUpdate = {
@@ -26,15 +25,13 @@ describe('Versioning: scenario 3', () => {
     comment: 'A new comment',
   };
 
-  const headerTitle = 'Fahrplanfeldnummer';
-
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
   });
 
   it('Step-2: Navigate to Fahrplanfeldnummer', () => {
     TtfnUtils.navigateToTimetableFieldNumber();
-    // cy.contains(headerTitle);
+    TtfnUtils.checkHeaderTitle();
   });
 
   it('Step-3: Add first Version', () => {
@@ -105,6 +102,6 @@ describe('Versioning: scenario 3', () => {
 
   it('Step-10: Delete versions', () => {
     CommonUtils.deleteItems();
-    // cy.contains(headerTitle);
+    TtfnUtils.checkHeaderTitle();
   });
 });

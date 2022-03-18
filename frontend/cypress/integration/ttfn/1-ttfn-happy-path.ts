@@ -3,7 +3,6 @@ import CommonUtils from '../../support/util/common-utils';
 
 describe('Fahrplanfeldnummer', () => {
   const firstVersion = TtfnUtils.getFirstVersion();
-  const headerTitle = 'Fahrplanfeldnummer';
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
@@ -11,10 +10,10 @@ describe('Fahrplanfeldnummer', () => {
 
   it('Step-2: Navigate to Fahrplanfeldnummer', () => {
     TtfnUtils.navigateToTimetableFieldNumber();
+    TtfnUtils.checkHeaderTitle();
   });
 
   it('Step-3: Check the Fahrplanfeldnummer Table is visible', () => {
-    // cy.contains(headerTitle);
     CommonUtils.assertTableSearch(0, 0, 'Suche');
     CommonUtils.assertTableSearch(0, 1, 'Status');
     CommonUtils.assertTableSearch(0, 2, 'Gültig am');
@@ -34,8 +33,9 @@ describe('Fahrplanfeldnummer', () => {
   });
 
   it('Step-5: Navigate to the Fahrplanfeldnummer', () => {
-    cy.get('#\\/timetable-field-number').click();
-    // cy.contains(headerTitle);
+    cy.get('[data-cy=atlas-logo-home-link]').click();
+    TtfnUtils.navigateToTimetableFieldNumber();
+    TtfnUtils.checkHeaderTitle();
   });
 
   it('Step-6: search for added item in table and select it', () => {
@@ -72,6 +72,6 @@ describe('Fahrplanfeldnummer', () => {
   it('Step-7: Delete added item', () => {
     CommonUtils.deleteItems();
     cy.url().should('contain', '/timetable-field-number');
-    // cy.contains(headerTitle);
+    TtfnUtils.checkHeaderTitle();
   });
 });
