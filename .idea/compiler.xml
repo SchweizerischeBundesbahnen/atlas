@@ -13,6 +13,14 @@
         <module name="gateway" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="apim-configuration" target="11" />
+      <module name="frontend" target="11" />
+      <module name="gateway" target="11" />
+      <module name="line-directory" target="11" />
+      <module name="line-directory-backend" target="11" />
+      <module name="versioning" target="11" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
@@ -10,6 +10,7 @@ import { PaymentType, SublinesService, SublineType, SublineVersion } from '../..
 import { SublineDetailComponent } from './subline-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -69,16 +70,12 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     'updateSublineVersion',
     'deleteSublines',
   ]);
-  const mockRoute = {
-    snapshot: {
-      data: {
-        sublineDetail: sublineVersion,
-      },
-    },
+  const mockData = {
+    sublineDetail: sublineVersion,
   };
 
   beforeEach(() => {
-    setupTestBed(mockSublinesService, mockRoute);
+    setupTestBed(mockSublinesService, mockData);
 
     fixture = TestBed.createComponent(SublineDetailComponent);
     component = fixture.componentInstance;
@@ -148,16 +145,12 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
 
 describe('SublineDetailComponent for new sublineVersion', () => {
   const mockSublinesService = jasmine.createSpyObj('sublinesService', ['createSublineVersion']);
-  const mockRoute = {
-    snapshot: {
-      data: {
-        sublineDetail: 'add',
-      },
-    },
+  const mockData = {
+    sublineDetail: 'add',
   };
 
   beforeEach(() => {
-    setupTestBed(mockSublinesService, mockRoute);
+    setupTestBed(mockSublinesService, mockData);
 
     fixture = TestBed.createComponent(SublineDetailComponent);
     component = fixture.componentInstance;
@@ -200,7 +193,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
 
 function setupTestBed(
   sublinesService: SublinesService,
-  activatedRoute: { snapshot: { data: { sublineDetail: string | SublineVersion } } }
+  data: { sublineDetail: string | SublineVersion }
 ) {
   TestBed.configureTestingModule({
     declarations: [SublineDetailComponent],
@@ -208,6 +201,7 @@ function setupTestBed(
       CoreModule,
       RouterModule.forRoot([]),
       HttpClientTestingModule,
+      MatDialogModule,
       BrowserAnimationsModule,
       TranslateModule.forRoot({
         loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
@@ -217,8 +211,8 @@ function setupTestBed(
       { provide: FormBuilder },
       { provide: SublinesService, useValue: sublinesService },
       {
-        provide: ActivatedRoute,
-        useValue: activatedRoute,
+        provide: MAT_DIALOG_DATA,
+        useValue: data,
       },
     ],
   })
