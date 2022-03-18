@@ -23,6 +23,8 @@ export class RouteToDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.routeToDialogService.closeDialog();
+    this.routeToDialogService.clearDialogRer();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
