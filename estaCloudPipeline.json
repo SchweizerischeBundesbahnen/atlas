@@ -81,7 +81,7 @@
       "openshiftCluster": "aws_aws01t",
       "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
       "preCiDeploymentJob": "",
-      "postCiDeploymentJob": "KI_ATLAS_E2E/atlas/master?successJob=KI_ATLAS/line-directory-backend/master",
+      "postCiDeploymentJob": "KI_ATLAS_E2E/atlas/master?successJob=KI_ATLAS/atlas/master",
       "api": {
         "artifactId": "apim-configuration",
         "instance": "int",
