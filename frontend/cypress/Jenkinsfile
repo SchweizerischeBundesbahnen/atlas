@@ -219,5 +219,5 @@ void sendEmailToTester(){
                     Mr. Jenkins""",
            recipientProviders: [[$class: 'CulpritsRecipientProvider']],
            subject: 'START Deploy INT Environment',
-           to: 'antonio.romano@sbb.ch'
+           to: 'joel.hofer@sbb.ch'
 }
