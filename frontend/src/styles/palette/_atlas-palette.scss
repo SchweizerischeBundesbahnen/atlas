@@ -1,22 +1,22 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
 $atlas-primary: (
-        default : $primaryColor,
-        contrast: (
-                default : #000000,
-        )
+  default: $primary-400,
+  contrast: (
+    default: white,
+  ),
 );
 
 $atlas-accent: (
-        default :$accentColor,
-        contrast: (
-                default : #ffffff,
-        )
+  default: $accentColor,
+  contrast: (
+    default: #ffffff,
+  ),
 );
 
 $atlas-red: (
-        default : $warnColor,
-        contrast: (
-                default : #ffffff,
-        )
+  default: $warnColor,
+  contrast: (
+    default: #ffffff,
+  ),
 );
