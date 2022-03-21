@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,12 @@ public class TimetableFieldNumberModel {
   @NotNull
   private String swissTimetableFieldNumber;
 
+  @Schema(description = "Number", example = "100; 80.099; 2700")
+  @Size(min = 1, max = 50)
+  @NotNull
+  @Pattern(regexp = AtlasCharacterSetsRegex.NUMERIC_WITH_DOT)
+  private String number;
+
   @Schema(description = "Timetable field number identifier", example = "ch:1:fpfnid:100000")
   @Size(min = 1, max = 500)
   @NotNull
@@ -38,6 +45,12 @@ public class TimetableFieldNumberModel {
   @Enumerated(EnumType.STRING)
   @NotNull
   private Status status;
+
+  @Schema(description = "Business organisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
+  @Size(min = 1, max = 50)
+  @NotNull
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String businessOrganisation;
 
   @Schema(description = "Date - valid from", example = "2021-11-23")
   @NotNull
