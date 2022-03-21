@@ -81,7 +81,7 @@
       "openshiftCluster": "aws_aws01t",
       "openshiftJenkinsCredentialsId": "9f141b06-c73b-4697-bee6-167d6de558bb",
       "preCiDeploymentJob": "",
-      "postCiDeploymentJob": "KI_ATLAS_E2E/line-directory-backend/master?successJob=KI_ATLAS/line-directory-backend/master",
+      "postCiDeploymentJob": "KI_ATLAS_E2E/atlas/master?successJob=KI_ATLAS/line-directory-backend/master",
       "api": {
         "artifactId": "apim-configuration",
         "instance": "int",
@@ -114,6 +114,12 @@
       "openshiftJenkinsCredentialsId": "ssp-p9d3z05co-ccn4-44b3-y824-1ut86c5e693",
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": "",
+      "preDeployConfirmUserMails": [
+        "thomas.schaefer@sbb.ch",
+        "frederic.barras@sbb.ch",
+        "hannes.laner@sbb.ch",
+        "antonio.romano@sbb.ch"
+      ],
       "api": {
         "artifactId": "apim-configuration",
         "instance": "prod",
@@ -142,6 +148,7 @@
         "bugfix"
       ],
       "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
+      "additionalBuildParamsForSonarScan": "-Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs",
       "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
     },
