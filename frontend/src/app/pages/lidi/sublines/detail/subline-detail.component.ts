@@ -2,7 +2,6 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {
   Line,
   LinesService,
-  LineVersion,
   PaymentType,
   Status,
   SublinesService,
@@ -20,7 +19,7 @@ import { catchError, distinctUntilChanged, EMPTY, Subject, takeUntil } from 'rxj
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Page } from '../../../../core/model/page';
 import { Pages } from '../../../pages';
 import moment from 'moment';
