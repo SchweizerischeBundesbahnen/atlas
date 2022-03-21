@@ -64,7 +64,6 @@ a Jenkins pipiline is executed. The modules are versionied and deployed with the
 
 ![ATLAS Monorepo](documentation/ATLAS-Mono-Repo-Migration.png)
 
-
 ## Structure
 
 Quick overview of the modules. There are more detailed `README`s available within each module.
