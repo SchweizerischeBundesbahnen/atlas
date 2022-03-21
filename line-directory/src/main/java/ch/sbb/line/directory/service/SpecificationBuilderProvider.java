@@ -21,7 +21,7 @@ public class SpecificationBuilderProvider {
         Line_.swissLineNumber
     );
     sublineSpecificationBuilderService = new SpecificationBuilderService<>(
-        List.of(Subline_.swissSublineNumber, Subline_.description, Subline_.swissLineNumber, Subline_.businessOrganisation, Subline_.slnid),
+        List.of(Subline_.swissSublineNumber, Subline_.description, Subline_.swissLineNumber, Subline_.businessOrganisation, Subline_.slnid, Subline_.number),
         Subline_.validFrom,
         Subline_.validTo,
         null

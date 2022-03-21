@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,11 @@ public class SublineModel implements DatesValidator {
   @Schema(description = "SwissLineNumber", example = "b1.L1")
   @Size(max = 50)
   private String swissLineNumber;
+
+  @Schema(description = "Number", example = "L1")
+  @Size(max = 50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  private String number;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
   private Status status;
