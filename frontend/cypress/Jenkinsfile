@@ -79,14 +79,8 @@ pipeline {
                 string(name: "manualstartcause", value: "deploy:simple,stage:int"),
                 string(name: "version", value: params.releaseVersion),
               ],
-              wait: false
-              emailext body: """Dear Tester \n
-                                The deployment of the INT environment is about to start. The deployment process may take a few minutes.\n\n
-                                Cordiali saluti\n
-                                Mr. Jenkin """,
-                                  recipientProviders: [[$class: 'CulpritsRecipientProvider']],
-                                  subject: 'START Deploy INT Environment',
-                                  to: 'antonio.romano@sbb.ch'
+              wait: false;
+              sendEmailToTester()
           }
         }
       }
@@ -216,4 +210,14 @@ void shutdownZAP() {
     reportFiles          : 'zap-report.xhtml,zap-report.json',
     reportName           : 'ZAP Report'
   ]
+}
+
+void sendEmailToTester(){
+  emailext body: """Dear Tester <br> <br>
+                    The deployment of the INT environment is about to start. The deployment process may take a few minutes.<br><br>
+                    Regards<br>
+                    Mr. Jenkins""",
+           recipientProviders: [[$class: 'CulpritsRecipientProvider']],
+           subject: 'START Deploy INT Environment',
+           to: 'antonio.romano@sbb.ch'
 }
