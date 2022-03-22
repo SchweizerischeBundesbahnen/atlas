@@ -10,6 +10,7 @@ import static ch.sbb.line.directory.entity.LineVersion.Fields.swissLineNumber;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.type;
 import static ch.sbb.line.directory.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -18,8 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
@@ -53,6 +56,22 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
     coverageRepository.deleteAll();
+  }
+
+  @Test
+  void shouldGetLineOverview() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    lineController.createLineVersion(lineVersionModel);
+
+    //when
+    mvc.perform(get("/v1/lines/")
+           .queryParam("page", "0")
+           .queryParam("size", "5")
+           .queryParam("sort", "swissLineNumber,asc"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$.totalCount").value(1))
+       .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
