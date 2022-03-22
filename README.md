@@ -9,6 +9,7 @@ This is the main repository for business relevant services for ATLAS.
 - [Monitoring and Logging](#monitoring-and-logging)
 - [Development](#development)
   * [Run locally](#run-locally)
+  * [Monorepo](#monorepo)
 - [Structure](#structure)
   * [apim-configuration](#apim-configuration)
   * [charts](#charts)
@@ -16,12 +17,13 @@ This is the main repository for business relevant services for ATLAS.
   * [Line-directory](#line-directory)
   * [Versioning lib](#versioning-lib)
   * [Frontend](#frontend)
+- [Troubleshooting](#troubleshooting)
 
 <!-- tocstop -->
 
 [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/job/master/)
 [![Build Status E2E](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/line-directory-backend/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/line-directory-backend/job/master/)
-[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb%3Aline-directory-backend&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb%3Aline-directory-backend)
+[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 ## Big Picture
 ATLAS shall be a platform, on which relevant data for customer information can be managed. \
 Applications on this platform share their tech stack and have the same monitoring and logging.
@@ -62,7 +64,6 @@ ATLAS has a Monorepo project structure. The CI/CD is execute on each module. For
 a Jenkins pipiline is executed. The modules are versionied and deployed with the same version number.
 
 ![ATLAS Monorepo](documentation/ATLAS-Mono-Repo-Migration.png)
-
 
 ## Structure
 
@@ -106,3 +107,7 @@ See [Versioning documentation](versioning/README.md);
 
 ### Frontend
 ATLAS Angular App. See [Frontend documentation](frontend/README.md);
+
+## Troubleshooting
+
+* [Sonarqube](documentation/Troubleshooting.md)
