@@ -32,6 +32,7 @@
     "TO": "al",
     "VERSION": "Versione",
     "FILLED_AUTOMATICALLY": "Compilato automaticamente",
+    "VERSION_DESCRIPTION": "Designazione della versione",
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
     "STATUS": "Stato",
