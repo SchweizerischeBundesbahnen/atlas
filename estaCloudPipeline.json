@@ -157,7 +157,7 @@
       "isBuildEnabled": true,
       "failOnXrayScan": true,
       "sonarScanEnabled": true,
-      "additionalBuildParamsForSonarScan": "-Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true",
+      "additionalBuildParamsForSonarScan": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js",
       "staging": {
         "stagingType": "simple",
         "stages": [
