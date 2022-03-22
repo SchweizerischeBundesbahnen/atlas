@@ -166,7 +166,7 @@
         "SWISS_NUMBER": "Le numéro de ligne CH (CHLNR) {{swissLineNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{slnid}}."
       },
       "PRECONDITION": {
-        "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validité de la ligne {{validFrom}}-{validTo}} est en dehors de la validité de la ligne partielle {{sublinie.swissSublineNumber}}. Celle-ci est {{sublinie.validFrom}}-{sublinie.validTo}}."
+        "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validité de la ligne {{validFrom}}-{{validTo}} est en dehors de la validité de la ligne partielle {{sublinie.swissSublineNumber}}. Celle-ci est {{sublinie.validFrom}}-{{sublinie.validTo}}."
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La ligne temporaire valide de {{validFrom}} à {{validTo}} dépasse la validité maximale de 12 mois.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La version de {{validFrom}} à {{validTo}} fait partie de versions temporaires connexes. Ensemble, elles dépassent la validité maximale de 12 mois.",
@@ -200,7 +200,7 @@
         "ASSIGN_DIFFERENT_LINE_CONFLICT": "La ligne principale ne peut pas être modifiée."
       },
       "PRECONDITION": {
-        "SUBLINE_OUTSIDE_OF_LINE_RANGE": "La validité de la ligne partielle {{validFrom}}-{validTo}} est en dehors de la validité de la ligne {{sublinie.swissSublineNumber}}. Celle-ci est {{mainline.validFrom}}-{mainline.validTo}}."
+        "SUBLINE_OUTSIDE_OF_LINE_RANGE": "La validité de la ligne partielle {{validFrom}}-{{validTo}} est en dehors de la validité de la ligne {{sublinie.swissSublineNumber}}. Celle-ci est {{mainline.validFrom}}-{{mainline.validTo}}."
       },
       "NUMBER": "Numéro de ligne partielle",
       "MAINLINE": "Ligne principale",
