@@ -32,6 +32,7 @@
     "TO": "à",
     "VERSION": "Version",
     "FILLED_AUTOMATICALLY": "Remplissage automatique",
+    "VERSION_DESCRIPTION": "Désignation de la version",
     "VALID_FROM": "Valable du",
     "VALID_TO": "Valable au",
     "STATUS": "Statut",
