@@ -1,5 +1,5 @@
 <div class="col-12 d-flex">
-  <div class="d-flex flex-column col-4 pe-3">
+  <div class="d-flex flex-column col-4 pe-3 search-box">
     <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
     <mat-form-field appearance="outline">
       <mat-chip-list #chipList>
@@ -27,9 +27,8 @@
         [(value)]="activeStatuses"
         multiple
       >
-        <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">{{
-          'COMMON.STATUS_TYPES.' + status | translate
-          }}
+        <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status"
+          >{{ 'COMMON.STATUS_TYPES.' + status | translate }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -51,7 +50,7 @@
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngFor="let validationError of getDateControlValidation()">
         {{
-        validationError.error | translate: { date: getMinOrMaxDateDisplay(validationError.value) }
+          validationError.error | translate: { date: getMinOrMaxDateDisplay(validationError.value) }
         }}
       </mat-error>
     </mat-form-field>

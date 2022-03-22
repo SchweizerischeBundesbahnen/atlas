@@ -1,18 +1,11 @@
 package ch.sbb.line.directory.entity;
 
 import ch.sbb.line.directory.enumaration.Status;
-import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.Immutable;
+
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,15 +16,19 @@ import org.hibernate.annotations.Immutable;
 @Entity(name = "timetable_field_number")
 public class TimetableFieldNumber {
 
-  private String swissTimetableFieldNumber;
-
   @Id
   private String ttfnid;
+
+  private String swissTimetableFieldNumber;
+
+  private String number;
 
   private String description;
 
   @Enumerated(EnumType.STRING)
   private Status status;
+
+  private String businessOrganisation;
 
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDate validFrom;

@@ -11,7 +11,6 @@ import { LineDetailComponent } from './line-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MaterialModule } from '../../../../core/module/material.module';
 
 const lineVersion: LineVersion = {
   id: 1234,

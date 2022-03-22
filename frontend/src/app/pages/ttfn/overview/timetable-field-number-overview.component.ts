@@ -11,20 +11,22 @@ import { TableSearch } from '../../../core/components/table-search/table-search'
 @Component({
   selector: 'app-timetable-field-number-overview',
   templateUrl: './timetable-field-number-overview.component.html',
-  styleUrls: ['./timetable-field-number-overview.component.scss']
+  styleUrls: ['./timetable-field-number-overview.component.scss'],
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
-    { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
+    { headerTitle: 'TTFN.NUMBER', value: 'number' },
     { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
+    { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
     {
       headerTitle: 'COMMON.STATUS',
       value: 'status',
       translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
     },
+    { headerTitle: 'TTFN.BUSINESS_ORGANISATION', value: 'businessOrganisation' },
     { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
-    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
   timetableFieldNumbers: TimetableFieldNumber[] = [];
