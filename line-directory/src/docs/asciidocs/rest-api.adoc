@@ -27,6 +27,9 @@
 
 = Line
 
+== Get Line Overview - Successfully
+include::{snippets}/line-controller-api-test/should-get-line-overview/auto-section.adoc[]
+
 == Create Line - Successfully
 include::{snippets}/line-controller-api-test/should-create-line-version/auto-section.adoc[]
 
@@ -55,6 +58,10 @@ include::{snippets}/line-controller-api-test/should-return-not-found-error-respo
 include::{snippets}/line-controller-api-test/should-get-subline-coverage/auto-section.adoc[]
 
 = Subline
+
+== Get Subline Overview - Successfully
+include::{snippets}/subline-controller-api-test/should-get-subline-overview/auto-section.adoc[]
+
 == Create Subline - Successfully
 include::{snippets}/subline-controller-api-test/should-create-subline/auto-section.adoc[]
 
