@@ -32,6 +32,7 @@
     "TO": "bis",
     "VERSION": "Version",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
+    "VERSION_DESCRIPTION": "Versions-Bezeichnung",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "STATUS": "Status",
