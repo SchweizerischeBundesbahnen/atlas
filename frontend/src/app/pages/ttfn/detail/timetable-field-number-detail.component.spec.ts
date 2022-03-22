@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { MaterialModule } from '../../../core/module/material.module';
@@ -15,6 +15,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CoreModule } from '../../../core/module/core.module';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -62,22 +63,12 @@ const error = new HttpErrorResponse({
   },
 });
 
-const routeSnapshotVersionReadMock = {
-  snapshot: {
-    paramMap: {},
-    data: {
-      timetableFieldNumberDetail: version,
-    },
-  },
+const mockData = {
+  timetableFieldNumberDetail: version,
 };
 
-const routeSnapshotVersionAddMock = {
-  snapshot: {
-    paramMap: {},
-    data: {
-      timetableFieldNumberDetail: 'add',
-    },
-  },
+const addTtfData = {
+  timetableFieldNumberDetail: 'add',
 };
 let component: TimetableFieldNumberDetailComponent;
 let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
@@ -104,8 +95,8 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         {
-          provide: ActivatedRoute,
-          useValue: routeSnapshotVersionReadMock,
+          provide: MAT_DIALOG_DATA,
+          useValue: mockData,
         },
       ],
     })
@@ -218,8 +209,8 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         {
-          provide: ActivatedRoute,
-          useValue: routeSnapshotVersionAddMock,
+          provide: MAT_DIALOG_DATA,
+          useValue: addTtfData,
         },
       ],
     }).compileComponents();
