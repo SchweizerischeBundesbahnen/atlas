@@ -1,11 +1,11 @@
-<div *ngIf='coverage'>
+<div *ngIf="coverage">
   <mat-chip-list>
-    <mat-chip [ngClass]='coverage.coverageType.toLowerCase()'>
-      <span class='text'>
-      {{'COMMON.COVERAGE.' + this.coverage.coverageType | translate}}
-        </span>
+    <mat-chip [ngClass]="coverage.coverageType!.toLowerCase()">
+      <span class="text">
+        {{ 'COMMON.COVERAGE.' + this.coverage.coverageType | translate }}
+      </span>
       <mat-chip-avatar>
-        <i [ngClass]='getIcon(this.coverage.coverageType)'></i>
+        <i [ngClass]="getIcon(this.coverage.coverageType!)"></i>
       </mat-chip-avatar>
     </mat-chip>
   </mat-chip-list>
