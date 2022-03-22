@@ -148,7 +148,7 @@
         "bugfix"
       ],
       "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
-      "additionalBuildParamsForSonarScan": "-Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs",
+      "additionalBuildParamsForSonarScan": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js",
       "sonarScanEnabled": true,
       "junitTestReportPath": "**/target/surefire-reports/*.xml"
     },
@@ -157,7 +157,7 @@
       "isBuildEnabled": true,
       "failOnXrayScan": true,
       "sonarScanEnabled": true,
-      "additionalBuildParamsForSonarScan": "-Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true",
+      "additionalBuildParamsForSonarScan": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js",
       "staging": {
         "stagingType": "simple",
         "stages": [
