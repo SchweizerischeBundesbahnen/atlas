@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -9,16 +10,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
+import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.CoverageRepository;
+import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
@@ -83,6 +85,27 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
            .contentType(contentType)
            .content(mapper.writeValueAsString(sublineVersionModel)))
        .andExpect(status().isCreated());
+  }
+
+  @Test
+  void shouldGetSublineOverview() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel = SublineTestData.sublineVersionModelBuilder()
+                                                             .mainlineSlnid(
+                                                                 lineVersionSaved.getSlnid())
+                                                             .build();
+    sublineController.createSublineVersion(sublineVersionModel);
+
+    //when
+    mvc.perform(get("/v1/sublines/")
+           .queryParam("page", "0")
+           .queryParam("size", "5")
+           .queryParam("sort", "swissSublineNumber,asc"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$.totalCount").value(1))
+       .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
