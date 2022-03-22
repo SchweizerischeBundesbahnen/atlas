@@ -1,11 +1,18 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
 .background-grey {
   background-color: $gray-lighter;
 }
 
+.detail-wrapper-panel {
+  height: 100%;
+}
+
 .detail-content {
-  padding-bottom: 4rem;
+  height: calc(100% - 100px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-right: 1px;
 }
 
 .edit-section {
