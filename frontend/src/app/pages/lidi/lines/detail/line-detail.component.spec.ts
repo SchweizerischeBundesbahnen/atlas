@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
@@ -10,6 +10,8 @@ import { LinesService, LineType, LineVersion, PaymentType } from '../../../../ap
 import { LineDetailComponent } from './line-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MaterialModule } from '../../../../core/module/material.module';
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -72,16 +74,12 @@ describe('LineDetailComponent for existing lineVersion', () => {
     'updateLineVersion',
     'deleteLines',
   ]);
-  const mockRoute = {
-    snapshot: {
-      data: {
-        lineDetail: lineVersion,
-      },
-    },
+  const mockData = {
+    lineDetail: lineVersion,
   };
 
   beforeEach(() => {
-    setupTestBed(mockLinesService, mockRoute);
+    setupTestBed(mockLinesService, mockData);
 
     fixture = TestBed.createComponent(LineDetailComponent);
     component = fixture.componentInstance;
@@ -151,16 +149,12 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
 describe('LineDetailComponent for new lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', ['createLineVersion']);
-  const mockRoute = {
-    snapshot: {
-      data: {
-        lineDetail: 'add',
-      },
-    },
+  const mockData = {
+    lineDetail: 'add',
   };
 
   beforeEach(() => {
-    setupTestBed(mockLinesService, mockRoute);
+    setupTestBed(mockLinesService, mockData);
 
     fixture = TestBed.createComponent(LineDetailComponent);
     component = fixture.componentInstance;
@@ -201,10 +195,7 @@ describe('LineDetailComponent for new lineVersion', () => {
   });
 });
 
-function setupTestBed(
-  linesService: LinesService,
-  activatedRoute: { snapshot: { data: { lineDetail: string | LineVersion } } }
-) {
+function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersion }) {
   TestBed.configureTestingModule({
     declarations: [LineDetailComponent],
     imports: [
@@ -212,6 +203,7 @@ function setupTestBed(
       RouterModule.forRoot([]),
       HttpClientTestingModule,
       BrowserAnimationsModule,
+      MatDialogModule,
       TranslateModule.forRoot({
         loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
       }),
@@ -220,8 +212,8 @@ function setupTestBed(
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
       {
-        provide: ActivatedRoute,
-        useValue: activatedRoute,
+        provide: MAT_DIALOG_DATA,
+        useValue: data,
       },
     ],
   })
