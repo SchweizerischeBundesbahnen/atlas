@@ -34,6 +34,11 @@ public class ApimYamlExtractionTest {
     Path specYamlFile = Paths.get("..", "apim-configuration",
         "src/main/resources/apis/", appName, "spec.yaml");
 
+    Path parentDir = specYamlFile.getParent();
+    if (!Files.exists(parentDir)) {
+      Files.createDirectories(parentDir);
+    }
+
     log.info("Exporting OpenAPI spec.yaml to {}", specYamlFile.toAbsolutePath().normalize());
 
     byte[] specYamlAsBytes = mvcResult.getResponse().getContentAsByteArray();
