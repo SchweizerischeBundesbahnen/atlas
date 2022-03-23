@@ -17,6 +17,8 @@ const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
       ttfnid: 'ttfnid',
       description: 'description',
       swissTimetableFieldNumber: 'asdf',
+      number: 'number',
+      businessOrganisation: 'businessOrganisation',
       status: 'ACTIVE',
       validFrom: new Date('2021-06-01'),
       validTo: new Date('2029-06-01'),

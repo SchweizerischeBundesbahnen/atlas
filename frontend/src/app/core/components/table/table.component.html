@@ -15,10 +15,16 @@
   >
     <ng-container *ngFor="let column of tableColumns">
       <ng-container matColumnDef="{{ column.value }}">
-        <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header class="font-bold-base color-primary-400">
+        <th
+          scope="col"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="font-bold-base color-primary-400"
+        >
           {{ column.headerTitle | translate }}
         </th>
-        <td mat-cell *matCellDef="let value" >
+        <td mat-cell *matCellDef="let value" class="table-cell">
           {{ format(column, value[column.value]) }}
         </td>
       </ng-container>

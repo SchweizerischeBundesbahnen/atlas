@@ -102,7 +102,7 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
     }
   }
 
-  format(column: TableColumn<DATATYPE>, value: string | Date): string | null {
+  format(column: TableColumn<DATATYPE>, value: string | Date): string {
     if (column.formatAsDate) {
       return DateService.getDateFormatted(value as Date);
     }

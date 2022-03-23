@@ -51,12 +51,14 @@ describe('AuthService', () => {
   });
 
   it('retrieves claims from oauthService', () => {
-    authService.claims;
+    const claims = authService.claims;
+    expect(claims).toBeUndefined();
     expect(oauthService.getIdentityClaims).toHaveBeenCalled();
   });
 
   it('retrieves scopes from oauthService', () => {
-    authService.scopes;
+    const scopes = authService.scopes;
+    expect(scopes).toBeUndefined();
     expect(oauthService.getGrantedScopes).toHaveBeenCalled();
   });
 

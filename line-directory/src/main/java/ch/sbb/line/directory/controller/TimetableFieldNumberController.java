@@ -10,14 +10,15 @@ import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.TtfnidNotFoundException;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -52,14 +53,16 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
 
   private TimetableFieldNumberModel toModel(TimetableFieldNumber version) {
     return TimetableFieldNumberModel.builder()
-                                    .description(version.getDescription())
-                                    .ttfnid(version.getTtfnid())
-                                    .swissTimetableFieldNumber(
-                                        version.getSwissTimetableFieldNumber())
-                                    .status(version.getStatus())
-                                    .validFrom(version.getValidFrom())
-                                    .validTo(version.getValidTo())
-                                    .build();
+            .description(version.getDescription())
+            .number(version.getNumber())
+            .ttfnid(version.getTtfnid())
+            .swissTimetableFieldNumber(
+                    version.getSwissTimetableFieldNumber())
+            .status(version.getStatus())
+            .businessOrganisation(version.getBusinessOrganisation())
+            .validFrom(version.getValidFrom())
+            .validTo(version.getValidTo())
+            .build();
   }
 
   @Override
