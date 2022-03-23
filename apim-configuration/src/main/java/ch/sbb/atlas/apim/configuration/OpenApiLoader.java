@@ -1,11 +1,7 @@
 package ch.sbb.atlas.apim.configuration;
 
-import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Component;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,27 +14,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 @Component
 public class OpenApiLoader {
 
-    @Autowired
-    private ResourceLoader resourceLoader;
+  private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiLoader.class);
 
-    public Map<String, OpenAPI> loadOpenApis() {
-        Map<String, OpenAPI> result = new HashMap<>();
-        try (Stream<Path> pathStream = Files.walk(Paths.get("src/main/resources/apis"))) {
-            List<File> apiSpecs = pathStream.filter(Files::isRegularFile)
-                    .map(Path::toFile)
-                    .collect(Collectors.toList());
-            for (File apiSpec : apiSpecs) {
-                InputStream inputStream = new FileInputStream(apiSpec);
-                OpenAPI openAPI = Json.mapper().readValue(inputStream, OpenAPI.class);
-                result.put(apiSpec.getParentFile().getName(), openAPI);
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-        return result;
+  public Map<String, OpenAPI> loadOpenApis() {
+    Map<String, OpenAPI> result = new HashMap<>();
+    try (Stream<Path> pathStream = Files.walk(Paths.get("src/main/resources/apis"))) {
+      List<File> apiSpecs = pathStream.filter(Files::isRegularFile)
+                                      .map(Path::toFile)
+                                      .collect(Collectors.toList());
+      LOGGER.info("Found {} OpenAPI specs", apiSpecs.size());
+      if (apiSpecs.isEmpty()) {
+        throw new IllegalStateException("No OpenAPI specs found!");
+      }
+      for (File apiSpec : apiSpecs) {
+        InputStream inputStream = new FileInputStream(apiSpec);
+        OpenAPI openAPI = Yaml.mapper().readValue(inputStream, OpenAPI.class);
+        String apiServiceName = apiSpec.getParentFile().getName();
+        LOGGER.info("Loaded OpenAPI spec for {}", apiServiceName);
+        result.put(apiServiceName, openAPI);
+      }
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
     }
+    return result;
+  }
 }
