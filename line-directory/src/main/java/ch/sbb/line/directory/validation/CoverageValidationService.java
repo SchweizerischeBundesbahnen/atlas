@@ -71,7 +71,7 @@ public class CoverageValidationService {
 
   private List<SublineVersion> getSublinesByType(List<SublineVersion> sublineVersions,
       SublineType sublineType) {
-    return sublineVersions.stream().filter(s -> s.getType() == sublineType).collect(toList());
+    return sublineVersions.stream().filter(s -> s.getSublineType() == sublineType).collect(toList());
   }
 
   private boolean lineCompletelyCoverSublines(List<LineVersion> lineVersions,

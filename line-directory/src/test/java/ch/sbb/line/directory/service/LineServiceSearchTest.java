@@ -272,10 +272,10 @@ public class LineServiceSearchTest {
     // Given
     lineVersionRepository.saveAndFlush(version1);
 
-    version2.setType(LineType.TEMPORARY);
+    version2.setLineType(LineType.TEMPORARY);
     lineVersionRepository.saveAndFlush(version2);
 
-    version3.setType(LineType.OPERATIONAL);
+    version3.setLineType(LineType.OPERATIONAL);
     lineVersionRepository.saveAndFlush(version3);
     // When
     Page<Line> result = lineService.findAll(SearchRestrictions.<LineType>builder()

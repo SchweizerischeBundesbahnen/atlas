@@ -15,7 +15,6 @@ import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.service.CoverageService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,7 @@ public class LineValidationServiceTest {
   void shouldNotSaveTemporaryLineWithValidityGreaterThan12Months() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .type(LineType.TEMPORARY)
+                                          .lineType(LineType.TEMPORARY)
                                           .validFrom(LocalDate.of(2021, 10, 15))
                                           .validTo(LocalDate.of(2022, 10, 16))
                                           .build();
@@ -75,7 +74,7 @@ public class LineValidationServiceTest {
   void shouldSaveTemporaryLine() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .type(LineType.TEMPORARY)
+                                          .lineType(LineType.TEMPORARY)
                                           .validFrom(LocalDate.of(2021, 10, 1))
                                           .validTo(LocalDate.of(2022, 10, 1))
                                           .build();
@@ -90,14 +89,14 @@ public class LineValidationServiceTest {
   void shouldNotSaveWith2ExistentTemporaryVersionsWhichRelateIncomingVersionWhenValidityLongerThan12() {
     // Given
     List<LineVersion> versions = List.of(
-        LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).id(1L)
+        LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY).id(1L)
                     .validFrom(LocalDate.of(2021, 1, 1))
                     .validTo(LocalDate.of(2021, 3, 31)).build(),
-        LineTestData.lineVersionBuilder().type(LineType.TEMPORARY).id(2L)
+        LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY).id(2L)
                     .validFrom(LocalDate.of(2021, 9, 1))
                     .validTo(LocalDate.of(2022, 2, 1)).build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .type(LineType.TEMPORARY)
+                                          .lineType(LineType.TEMPORARY)
                                           .validFrom(LocalDate.of(2021, 4, 1))
                                           .validTo(LocalDate.of(2021, 8, 31))
                                           .build();
@@ -114,12 +113,12 @@ public class LineValidationServiceTest {
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder()
                     .id(1L)
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .validFrom(LocalDate.of(2021, 1, 1))
                     .validTo(LocalDate.of(2021, 3, 31))
                     .build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .type(LineType.TEMPORARY)
+                                          .lineType(LineType.TEMPORARY)
                                           .validFrom(LocalDate.of(2021, 4, 1))
                                           .validTo(LocalDate.of(2021, 7, 31))
                                           .build();
@@ -135,13 +134,13 @@ public class LineValidationServiceTest {
     // Given
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder()
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .id(1L)
                     .validFrom(LocalDate.of(2021, 1, 1))
                     .validTo(LocalDate.of(2021, 3, 31))
                     .build(),
         LineTestData.lineVersionBuilder()
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .id(2L)
                     .validFrom(LocalDate.of(2021, 4, 1))
                     .validTo(LocalDate.of(2021, 8, 31))
@@ -149,7 +148,7 @@ public class LineValidationServiceTest {
         LineTestData.lineVersionBuilder().id(3L).validFrom(LocalDate.of(2022, 3, 1))
                     .validTo(LocalDate.of(2022, 3, 31)).build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .type(LineType.TEMPORARY)
+                                          .lineType(LineType.TEMPORARY)
                                           .validFrom(LocalDate.of(2021, 9, 1))
                                           .validTo(LocalDate.of(2022, 2, 28))
                                           .build();
@@ -166,20 +165,20 @@ public class LineValidationServiceTest {
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder()
                     .id(1L)
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .validFrom(LocalDate.of(2021, 1, 1))
                     .validTo(LocalDate.of(2021, 3, 31))
                     .build(),
         LineTestData.lineVersionBuilder()
                     .id(2L)
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .validFrom(LocalDate.of(2021, 4, 1))
                     .validTo(LocalDate.of(2021, 8, 31))
                     .build(),
         LineTestData.lineVersionBuilder().id(3L).validFrom(LocalDate.of(2021, 10, 1))
                     .validTo(LocalDate.of(2022, 3, 31)).build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .type(LineType.TEMPORARY)
+                                          .lineType(LineType.TEMPORARY)
                                           .validFrom(LocalDate.of(2021, 9, 1))
                                           .validTo(LocalDate.of(2021, 9, 30))
                                           .build();
@@ -196,12 +195,12 @@ public class LineValidationServiceTest {
     List<LineVersion> versions = List.of(
         LineTestData.lineVersionBuilder()
                     .id(1L)
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .validFrom(LocalDate.of(2021, 1, 1))
                     .validTo(LocalDate.of(2021, 3, 31))
                     .build());
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
-                                          .type(LineType.TEMPORARY)
+                                          .lineType(LineType.TEMPORARY)
                                           .validFrom(LocalDate.of(2021, 4, 2))
                                           .validTo(LocalDate.of(2021, 8, 31))
                                           .build();
@@ -216,10 +215,10 @@ public class LineValidationServiceTest {
   void shouldThrowExceptionOnUpdateWhenRelatingTemporaryVersionsLongerThan12Months() {
     // Given
     List<LineVersion> versions = List.of(
-        LineTestData.lineVersionBuilder().id(1L).type(LineType.TEMPORARY)
+        LineTestData.lineVersionBuilder().id(1L).lineType(LineType.TEMPORARY)
                     .validFrom(LocalDate.of(2021, 1, 1))
                     .validTo(LocalDate.of(2021, 3, 31)).build(),
-        LineTestData.lineVersionBuilder().id(2L).type(LineType.TEMPORARY)
+        LineTestData.lineVersionBuilder().id(2L).lineType(LineType.TEMPORARY)
                     .validFrom(LocalDate.of(2021, 8, 1))
                     .validTo(LocalDate.of(2021, 8, 31)).build());
     LineVersion lineVersion = versions.get(1);
@@ -236,16 +235,16 @@ public class LineValidationServiceTest {
   void shouldThrowExceptionOn2VersionsGap1VersionAndNewVersion() {
     // Given
     List<LineVersion> versions = List.of(
-        LineTestData.lineVersionBuilder().id(1L).type(LineType.TEMPORARY)
+        LineTestData.lineVersionBuilder().id(1L).lineType(LineType.TEMPORARY)
                     .validFrom(LocalDate.of(2021, 1, 1))
                     .validTo(LocalDate.of(2021, 4, 1)).build(),
-        LineTestData.lineVersionBuilder().id(2L).type(LineType.TEMPORARY)
+        LineTestData.lineVersionBuilder().id(2L).lineType(LineType.TEMPORARY)
                     .validFrom(LocalDate.of(2021, 4, 2))
                     .validTo(LocalDate.of(2021, 9, 2)).build(),
-        LineTestData.lineVersionBuilder().id(3L).type(LineType.TEMPORARY)
+        LineTestData.lineVersionBuilder().id(3L).lineType(LineType.TEMPORARY)
                     .validFrom(LocalDate.of(2021, 10, 2))
                     .validTo(LocalDate.of(2022, 2, 2)).build());
-    LineVersion lineVersion = LineTestData.lineVersionBuilder().type(LineType.TEMPORARY)
+    LineVersion lineVersion = LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY)
                                           .validFrom(LocalDate.of(2022, 2, 3))
                                           .validTo(LocalDate.of(2022, 11, 3)).build();
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(lineVersion.getSlnid())).thenReturn(

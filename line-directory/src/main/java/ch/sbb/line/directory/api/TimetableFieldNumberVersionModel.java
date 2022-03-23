@@ -27,18 +27,18 @@ public class TimetableFieldNumberVersionModel implements DatesValidator {
   private String ttfnid;
 
   @Schema(description = "Description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
 
   @Schema(description = "Number", example = "100; 80.099; 2700")
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.NUMERIC_WITH_DOT)
   private String number;
 
   @Schema(description = "Timetable field number")
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   private String swissTimetableFieldNumber;
@@ -55,7 +55,7 @@ public class TimetableFieldNumberVersionModel implements DatesValidator {
   private LocalDate validTo;
 
   @Schema(description = "Business organisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String businessOrganisation;

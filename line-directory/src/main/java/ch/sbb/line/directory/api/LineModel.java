@@ -23,7 +23,7 @@ public class LineModel implements DatesValidator {
 
   @Schema(description = "SwissLineNumber", example = "b1.L1")
   @NotBlank
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   private String swissLineNumber;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
@@ -37,11 +37,11 @@ public class LineModel implements DatesValidator {
   private String slnid;
 
   @Schema(description = "Number", example = "L1")
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   private String number;
 
   @Schema(description = "Description", example = "Meiringen - Innertkirchen")
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   private String description;
 
   @Schema(description = "Valid from")
@@ -54,7 +54,7 @@ public class LineModel implements DatesValidator {
 
   @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
   @NotBlank
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   private String businessOrganisation;
 
 }
