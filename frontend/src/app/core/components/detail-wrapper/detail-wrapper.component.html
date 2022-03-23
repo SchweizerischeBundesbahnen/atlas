@@ -15,10 +15,11 @@
     [switchDisabled]="controller.form.enabled"
     (switchVersion)="controller.switchVersion($event)"
   ></app-switch-version>
+  <!-- TODO: auth-roles -->
   <div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section mb-2">
     <button
       data-cy="edit-item"
-      class="me-3"
+      class="atlas-primary-btn me-3"
       (click)="controller.toggleEdit()"
       [disabled]="controller.form.enabled"
     >
@@ -28,6 +29,7 @@
       data-cy="delete-item"
       (click)="controller.delete()"
       [disabled]="controller.form.enabled"
+      class="atlas-primary-btn"
     >
       {{ 'COMMON.DELETE' | translate }}
     </button>
@@ -37,19 +39,15 @@
     <ng-content></ng-content>
   </div>
 
-  <div
-    class="footer fixed-bottom d-flex align-items-center justify-content-end background-grey"
-    *ngIf="controller.form.enabled"
-  >
-    <button mat-raised-button class="me-3" (click)="controller.toggleEdit()">
-      {{ 'COMMON.CANCEL' | translate }}
+  <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
+    <button class="atlas-primary-btn footer-btn" [mat-dialog-close]="true">
+      {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
     <button
+      *ngIf="controller.form.enabled"
+      class="atlas-primary-btn footer-btn ms-3"
       data-cy="save-item"
-      mat-raised-button
       type="submit"
-      class="me-3"
-      color="primary"
       (click)="controller.save()"
       [disabled]="!controller.form.dirty"
     >

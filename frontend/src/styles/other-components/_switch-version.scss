@@ -1,0 +1,81 @@
+@import '../variables';
+
+app-switch-version table {
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $white;
+  }
+
+  // TODO: scrollbar-color check
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  tbody {
+    display: block;
+    max-height: 13.75rem;
+    overflow: auto;
+
+    tr {
+      width: calc(42.5rem - 5px);
+      &.mat-row {
+        height: auto;
+      }
+
+      display: flex;
+      margin: 6px 0;
+
+      &:not(.placeholder-row) td {
+        &:first-child {
+          width: 35%;
+        }
+        &:last-child {
+          width: 25%;
+        }
+        width: 20%;
+      }
+
+      td {
+        width: 100%;
+      }
+
+      &:not(.placeholder-row) {
+        cursor: pointer;
+        &:hover {
+          background-color: $table-row-hover;
+        }
+      }
+    }
+  }
+
+  thead {
+    border-bottom: 2px solid $gray-900;
+    display: block;
+    width: calc(
+      42.5rem - 5px
+    ); /* scrollbar is average 1em/16px width, remove it from thead width */
+    //-webkit-border-vertical-spacing: 0;
+    tr {
+      &.mat-header-row {
+        height: auto;
+      }
+      display: flex;
+      th {
+        &:first-child {
+          width: 35%;
+        }
+        &:last-child {
+          width: 25%;
+        }
+        width: 20%;
+      }
+    }
+  }
+}

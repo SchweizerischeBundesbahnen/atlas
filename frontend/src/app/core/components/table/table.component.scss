@@ -21,7 +21,7 @@ table {
 }
 
 .mat-row:hover {
-  background-color: #ececec;
+  background-color: $table-row-hover;
   cursor: pointer;
 }
 

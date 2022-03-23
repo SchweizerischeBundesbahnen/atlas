@@ -20,61 +20,7 @@ hr {
   margin: 0;
 }
 
-// TODO: maybe fixed column widths
 table {
-  width: 48rem;
-  td {
-    max-width: 11.25rem;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  tr {
-    height: auto;
-  }
+  width: 42.5rem;
   -webkit-border-vertical-spacing: 6px !important;
-}
-
-table::ng-deep tbody tr {
-  td:not(.placeholder-row) {
-    cursor: pointer;
-  }
-  display: table;
-  width: 100%;
-  table-layout: fixed; /* even columns width , fix width of table too*/
-}
-
-table::ng-deep tbody {
-  display: block;
-  height: 13.75rem;
-  overflow: auto;
-}
-
-table::ng-deep thead {
-  border-bottom: 2px solid $gray-900;
-  display: table;
-  table-layout: fixed; /* even columns width , fix width of table too*/
-  width: calc(100% - 5px); /* scrollbar is average 1em/16px width, remove it from thead width */
-  -webkit-border-vertical-spacing: 0;
-  tr.mat-header-row {
-    height: 3rem;
-  }
-}
-
-// TODO: scrollbar-color check
-table::ng-deep {
-  ::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: $white;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #888;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
 }
