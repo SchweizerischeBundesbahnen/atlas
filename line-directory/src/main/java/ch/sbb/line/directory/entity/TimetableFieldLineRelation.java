@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.line.directory.api.AtlasFieldLengths;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +35,7 @@ public class TimetableFieldLineRelation {
   @SequenceGenerator(name = LINE_RELATION_SEQ, sequenceName = LINE_RELATION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
+  @Size(max = AtlasFieldLengths.BUSINESS_IDS)
   private String slnid;
 
   @ToString.Exclude

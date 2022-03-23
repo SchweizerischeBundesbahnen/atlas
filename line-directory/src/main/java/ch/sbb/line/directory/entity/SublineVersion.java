@@ -3,6 +3,7 @@ package ch.sbb.line.directory.entity;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.line.directory.api.AtlasFieldLengths;
 import ch.sbb.line.directory.entity.BusinessIdGenerator.SlnidGenerator;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
@@ -48,11 +49,11 @@ public class SublineVersion extends BaseVersion implements Versionable {
   private Long id;
 
   @NotBlank
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @AtlasVersionableProperty
   private String swissSublineNumber;
 
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.BUSINESS_IDS)
   @NotBlank
   @AtlasVersionableProperty
   private String mainlineSlnid;
@@ -69,17 +70,17 @@ public class SublineVersion extends BaseVersion implements Versionable {
   @NotNull
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private SublineType type;
+  private SublineType sublineType;
 
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   @AtlasVersionableProperty
   private String description;
 
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @AtlasVersionableProperty
   private String number;
 
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   @AtlasVersionableProperty
   private String longName;
 
@@ -97,7 +98,7 @@ public class SublineVersion extends BaseVersion implements Versionable {
   private LocalDate validTo;
 
   @NotBlank
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @AtlasVersionableProperty
   private String businessOrganisation;
 
