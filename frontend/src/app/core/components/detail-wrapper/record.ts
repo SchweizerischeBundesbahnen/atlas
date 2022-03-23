@@ -6,6 +6,5 @@ export interface Record {
   validTo?: Date;
   slnid?: string;
   status?: Status;
-  description?: string;
-  placeholder?: boolean;
+  versionName?: string;
 }

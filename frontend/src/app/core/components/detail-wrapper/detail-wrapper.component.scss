@@ -18,11 +18,21 @@
 .edit-section {
   display: flex;
 
-  .edit-buttons {
-    margin-left: auto;
+  button {
+    padding: 18px 30px 18px 30px;
+    border: 2px solid $primary-500;
+    border-radius: 28px;
+    background-color: $white;
+    color: $primary-500;
   }
 }
 
 .footer {
   height: 3rem;
+}
+
+.detail-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

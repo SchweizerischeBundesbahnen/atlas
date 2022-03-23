@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Status, TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { DetailWrapperController } from '../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -65,6 +65,14 @@ export class TimetableFieldNumberDetailComponent
 
   getTitle(record: TimetableFieldNumberVersion): string | undefined {
     return record.swissTimetableFieldNumber;
+  }
+
+  getDetailHeading(record: TimetableFieldNumberVersion): string {
+    return `${record.number} - ${record.description}`;
+  }
+
+  getDetailSubheading(record: TimetableFieldNumberVersion): string {
+    return `${record.ttfnid}`;
   }
 
   updateRecord(): void {
