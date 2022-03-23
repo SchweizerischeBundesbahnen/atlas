@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   Output,
@@ -44,11 +43,7 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
 
   SHOW_TOOLTIP_LENGTH = 20;
 
-  constructor(
-    private dateService: DateService,
-    private translatePipe: TranslatePipe,
-    private elementRef: ElementRef
-  ) {}
+  constructor(private dateService: DateService, private translatePipe: TranslatePipe) {}
 
   ngAfterViewInit() {
     if (this.tableDataSrc !== undefined) {
