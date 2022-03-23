@@ -1,0 +1,10 @@
+@import 'src/styles/variables';
+
+.mat-tooltip {
+  max-width: unset !important;
+  text-overflow: unset !important;
+  font-size: 16px;
+  color: $gray-900 !important;
+  background-color: $gray-100;
+  display: table-caption;
+}
