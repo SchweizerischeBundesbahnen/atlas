@@ -41,6 +41,8 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
   tableDataSrc!: MatTableDataSource<DATATYPE>;
   loading = true;
 
+  SHOW_TOOLTIP_LENGTH = 20;
+
   constructor(private dateService: DateService, private translatePipe: TranslatePipe) {}
 
   ngAfterViewInit() {
@@ -110,5 +112,12 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
       return value ? this.translatePipe.transform(column.translate.withPrefix + value) : null;
     }
     return value as string;
+  }
+
+  hideTooltip(forText: string | null) {
+    if (!forText) {
+      return true;
+    }
+    return forText.length <= this.SHOW_TOOLTIP_LENGTH;
   }
 }

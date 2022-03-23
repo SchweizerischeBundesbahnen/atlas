@@ -24,7 +24,14 @@
         >
           {{ column.headerTitle | translate }}
         </th>
-        <td mat-cell *matCellDef="let value" class="table-cell">
+        <td
+          mat-cell
+          *matCellDef="let value"
+          class="table-cell"
+          [matTooltip]="format(column, value[column.value])"
+          matTooltipShowDelay="1000"
+          [matTooltipDisabled]="hideTooltip(format(column, value[column.value]))"
+        >
           {{ format(column, value[column.value]) }}
         </td>
       </ng-container>
