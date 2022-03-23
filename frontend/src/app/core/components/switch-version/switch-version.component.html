@@ -13,7 +13,7 @@
 
   <ng-container matColumnDef="placeholder-row">
     <ng-container *matCellDef="let element">
-      <td *ngIf="hasGapToNextRecord(element)" class="placeholder-row">
+      <td *ngIf="hasGapToNextRecord(element)">
         <hr />
       </td>
     </ng-container>
@@ -26,5 +26,5 @@
     *matRowDef="let row; columns: columnValues"
     (click)="setCurrentRecord(row)"
   ></tr>
-  <tr mat-row *matRowDef="let element; columns: ['placeholder-row']"></tr>
+  <tr mat-row *matRowDef="let element; columns: ['placeholder-row']" class="placeholder-row"></tr>
 </table>
