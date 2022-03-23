@@ -1,34 +1,24 @@
-import {
-  AfterContentChecked,
-  AfterContentInit,
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Record } from '../detail-wrapper/record';
 import { DateService } from '../../date/date.service';
 import { Page } from '../../model/page';
-import { Pages } from '../../../pages/pages';
-import { Status } from '../../../api';
 
 @Component({
   selector: 'app-switch-version',
   templateUrl: './switch-version.component.html',
   styleUrls: ['./switch-version.component.scss'],
 })
-export class SwitchVersionComponent implements AfterContentChecked {
+export class SwitchVersionComponent implements OnChanges {
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
   @Input() pageType!: Page;
   @Input() recordTitle: string | undefined;
+  @Input() switchDisabled = false;
   @Output() switchVersion = new EventEmitter<number>();
 
   currentIndex: number;
   tableColumns = [
-    { translationKey: 'COMMON.VERSION_DESCRIPTION', identifier: 'description' },
+    { translationKey: 'COMMON.VERSION_DESCRIPTION', identifier: 'versionName' },
     { translationKey: 'COMMON.VALID_FROM', identifier: 'validFrom' },
     { translationKey: 'COMMON.VALID_TO', identifier: 'validTo' },
     { translationKey: 'COMMON.STATUS', identifier: 'status' },
@@ -38,29 +28,13 @@ export class SwitchVersionComponent implements AfterContentChecked {
     this.currentIndex = 0;
   }
 
-  // TODO: ngOnChanges
-  ngAfterContentChecked() {
-    for (let i = 0; i < this.records.length; i++) {
-      if (this.hasGapToNextRecord(this.records[i])) {
-        this.records.splice(i + 1, 0, { placeholder: true });
-        i++;
-      }
-    }
-    this.records
-      .filter((item) => !item.placeholder)
-      .map((item, index) => (item.description = `Version ${index + 1}`));
+  ngOnChanges() {
+    this.records.map((item, index) => (item.versionName = `Version ${index + 1}`));
+    this.getCurrentIndex();
   }
 
   get columnValues() {
     return this.tableColumns.map((el) => el.identifier);
-  }
-
-  getStartDate() {
-    return this.formatDate(this.records[0].validFrom);
-  }
-
-  getEndDate() {
-    return this.formatDate(this.records[this.records.length - 1].validTo);
   }
 
   formatDate(date: Date | undefined) {
@@ -79,13 +53,12 @@ export class SwitchVersionComponent implements AfterContentChecked {
   }
 
   setCurrentRecord(clickedRecord: Record) {
-    if (clickedRecord.placeholder) return;
+    if (this.switchDisabled) return;
     this.currentIndex = this.getIndexOfRecord(clickedRecord);
     this.switchVersion.emit(this.currentIndex);
   }
 
   isCurrentRecord(record: Record): boolean {
-    this.getCurrentIndex();
     return this.currentIndex == this.getIndexOfRecord(record);
   }
 
