@@ -20,14 +20,14 @@
     "cypress:run-e2e-ttfn": "cypress run --spec cypress/integration/ttfn/**/*.ts",
     "cypress:run-e2e-release": "cypress run --config integrationFolder=cypress/release",
     "cypress:open-e2e-release": "cypress open --config integrationFolder=cypress/release",
-    "generate-api": "openapi-generator-cli generate -g typescript-angular -i {GO TO LIDI-DIRECTORY (antil this project is not in Monorepo) to point to the file -> ../apim-configuration/src/main/resources/api-dev/spec.yml } -o src/app/api --type-mappings=date=Date --additional-properties apiModulePrefix=Atlas"
+    "generate-api": "openapi-generator-cli generate -g typescript-angular -i ../apim-configuration/src/main/resources/api-dev/spec.yaml -o src/app/api --type-mappings=date=Date --additional-properties apiModulePrefix=Atlas"
   },
   "name": "atlas-frontend",
   "repository": {
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas-frontend.git"
   },
-  "version": "0.317.0",
+  "version": "0.321.0",
   "files": [
     "dist/*"
   ],
