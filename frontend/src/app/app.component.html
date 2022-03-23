@@ -19,7 +19,7 @@
       <span class="bi-arrow-left"> {{ 'MENU.TITLE_OPENED' | translate }}</span>
     </div>
     <mat-sidenav-container class="page-container">
-      <mat-sidenav #sidenav mode="side" opened="true">
+      <mat-sidenav #sidenav mode="side" opened="false">
         <mat-nav-list>
           <div class="nav-list-spacer" (click)="sidenav.toggle()">&nbsp;</div>
           <app-side-nav (showSideNav)="sidenav.toggle()"></app-side-nav>
