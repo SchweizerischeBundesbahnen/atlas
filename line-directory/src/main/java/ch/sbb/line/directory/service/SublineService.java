@@ -46,7 +46,7 @@ public class SublineService {
                                    .and(specificationBuilderService.buildEnumSpecification(
                                        searchRestrictions.getStatusRestrictions(), Subline_.status))
                                    .and(specificationBuilderService.buildEnumSpecification(
-                                       searchRestrictions.getTypeRestrictions(), Subline_.type)),
+                                       searchRestrictions.getTypeRestrictions(), Subline_.sublineType)),
         searchRestrictions.getPageable());
   }
 

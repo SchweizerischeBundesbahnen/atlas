@@ -44,7 +44,7 @@ public class LineValidationService {
   }
 
   void validateTemporaryLinesDuration(LineVersion lineVersion) {
-    if (LineType.TEMPORARY.equals(lineVersion.getType())) {
+    if (LineType.TEMPORARY.equals(lineVersion.getLineType())) {
       List<LineVersion> allBySlnidOrderByValidFrom = lineVersionRepository.findAllBySlnidOrderByValidFrom(
           lineVersion.getSlnid());
       doValidateTemporaryLinesDuration(lineVersion, allBySlnidOrderByValidFrom);
@@ -60,7 +60,7 @@ public class LineValidationService {
       return;
     }
     allVersions = allVersions.stream()
-                             .filter(version -> LineType.TEMPORARY.equals(version.getType())
+                             .filter(version -> LineType.TEMPORARY.equals(version.getLineType())
                                  && !Objects.equals(lineVersion.getId(), version.getId()))
                              .collect(Collectors.toList());
 
