@@ -13,6 +13,7 @@
     "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé Atlas."
   },
   "COMMON": {
+    "BACK_TO_OVERVIEW": "Retour au sommaire",
     "SAVE": "Sauvegarder",
     "EDIT": "Modifier",
     "DELETE": "Effacer",
