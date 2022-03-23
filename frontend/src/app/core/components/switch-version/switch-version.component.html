@@ -1,12 +1,20 @@
-<table mat-table [dataSource]="records">
+<h3 class="font-bold-lg">Version(en) mit unterschiedlicher Gültigkeit</h3>
+<table mat-table multiTemplateDataRows [dataSource]="records">
   <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.identifier }}">
     <th scope="col" mat-header-cell *matHeaderCellDef class="font-bold-base color-primary-400">
       {{ column.translationKey | translate }}
     </th>
     <ng-container *matCellDef="let value">
-      <td class="placeholder-row" colspan="4" *ngIf="value.placeholder"><hr /></td>
       <td mat-cell *ngIf="!value.placeholder">
         {{ this.format(value[column.identifier], column) }}
+      </td>
+    </ng-container>
+  </ng-container>
+
+  <ng-container matColumnDef="placeholder-row">
+    <ng-container *matCellDef="let element">
+      <td *ngIf="hasGapToNextRecord(element)" class="placeholder-row">
+        <hr />
       </td>
     </ng-container>
   </ng-container>
@@ -18,4 +26,5 @@
     *matRowDef="let row; columns: columnValues"
     (click)="setCurrentRecord(row)"
   ></tr>
+  <tr mat-row *matRowDef="let element; columns: ['placeholder-row']"></tr>
 </table>
