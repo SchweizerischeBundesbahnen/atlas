@@ -63,6 +63,7 @@ chrome-profiler-events*.json
 
 # IDEs and editors
 .idea/dataSources.xml
+.idea/uiDesigner.xml
 .idea/libraries/
 .idea/dbnavigator.xml
 .idea/misc.xml
