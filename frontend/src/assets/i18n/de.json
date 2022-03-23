@@ -15,6 +15,7 @@
   "COMMON": {
     "SAVE": "Speichern",
     "EDIT": "Editieren",
+    "DELETE": "Löschen",
     "CANCEL": "Abbrechen",
     "COVERAGE": {
       "COMPLETE": "Vollständig",
