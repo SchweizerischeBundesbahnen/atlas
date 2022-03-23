@@ -1,12 +1,17 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TableComponent} from './table.component';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
-import {MaterialModule} from '../../module/material.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {By} from '@angular/platform-browser';
-import {LoadingSpinnerComponent} from '../loading-spinner/loading-spinner.component';
-import {TableSearchComponent} from '../table-search/table-search.component';
+import { TableComponent } from './table.component';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslatePipe,
+} from '@ngx-translate/core';
+import { MaterialModule } from '../../module/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { TableSearchComponent } from '../table-search/table-search.component';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -127,5 +132,12 @@ describe('TableComponent', () => {
         statusChoices: [],
       })
     );
+  });
+
+  it('should hide tooltip on text shorter than configured', () => {
+    expect(component.hideTooltip(null)).toBeTrue();
+    expect(component.hideTooltip('')).toBeTrue();
+    expect(component.hideTooltip('asdf')).toBeTrue();
+    expect(component.hideTooltip('asdf asdf asdf asdf asdf asdf asdf asdf ')).toBeFalse();
   });
 });
