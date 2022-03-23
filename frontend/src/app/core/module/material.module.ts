@@ -34,6 +34,7 @@ import { GlobalErrorHandler } from '../configuration/global-error-handler';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ServerErrorInterceptor } from '../configuration/server-error-interceptor';
 import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export const FORMAT = {
   parse: {
@@ -66,6 +67,7 @@ export const FORMAT = {
     MatSortModule,
     MatTableModule,
     MatToolbarModule,
+    MatTooltipModule,
     ReactiveFormsModule,
     NgSelectModule,
     MatChipsModule,
