@@ -18,19 +18,19 @@ export class LinesComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<Line>;
 
   linesTableColumns: TableColumn<Line>[] = [
-    { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
     { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
+    { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
+    { headerTitle: 'LIDI.TYPE', value: 'type', translate: { withPrefix: 'LIDI.LINE.TYPES.' } },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
     {
       headerTitle: 'COMMON.STATUS',
       value: 'status',
       translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
     },
-    { headerTitle: 'LIDI.TYPE', value: 'type', translate: { withPrefix: 'LIDI.LINE.TYPES.' } },
     { headerTitle: 'LIDI.BUSINESS_ORGANISATION', value: 'businessOrganisation' },
     { headerTitle: 'LIDI.SLNID', value: 'slnid' },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
-    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
   readonly LINE_TYPES: LineType[] = Object.values(LineType);
