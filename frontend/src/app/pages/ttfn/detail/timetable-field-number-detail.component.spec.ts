@@ -1,13 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { AbstractControl, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
-import { MaterialModule } from '../../../core/module/material.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DetailWrapperComponent } from '../../../core/components/detail-wrapper/detail-wrapper.component';
 import moment from 'moment/moment';
 import { of, throwError } from 'rxjs';
@@ -16,6 +12,7 @@ import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CoreModule } from '../../../core/module/core.module';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AppTestingModule } from '../../../app.testing.module';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -82,15 +79,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TimetableFieldNumberDetailComponent],
-      imports: [
-        CoreModule,
-        RouterModule.forRoot([]),
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [CoreModule, AppTestingModule],
       providers: [
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
@@ -195,15 +184,8 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     await TestBed.configureTestingModule({
       declarations: [TimetableFieldNumberDetailComponent, DetailWrapperComponent],
       imports: [
-        RouterModule.forRoot([]),
         RouterTestingModule.withRoutes([{ path: '', component: HomeComponent }]),
-        HttpClientTestingModule,
-        ReactiveFormsModule,
-        MaterialModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
+        AppTestingModule,
       ],
       providers: [
         { provide: FormBuilder },
