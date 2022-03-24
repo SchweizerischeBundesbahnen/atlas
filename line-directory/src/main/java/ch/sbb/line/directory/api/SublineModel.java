@@ -24,15 +24,15 @@ public class SublineModel implements DatesValidator {
 
   @Schema(description = "SwissSublineNumber", example = "b1.L1.X")
   @NotBlank
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   private String swissSublineNumber;
 
   @Schema(description = "SwissLineNumber", example = "b1.L1")
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   private String swissLineNumber;
 
   @Schema(description = "Number", example = "L1")
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String number;
 
@@ -47,7 +47,7 @@ public class SublineModel implements DatesValidator {
   private String slnid;
 
   @Schema(description = "Description", example = "Meiringen - Innertkirchen")
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   private String description;
 
   @Schema(description = "Valid from")
@@ -60,7 +60,7 @@ public class SublineModel implements DatesValidator {
 
   @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
   @NotBlank
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   private String businessOrganisation;
 
 }

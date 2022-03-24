@@ -15,7 +15,6 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import java.time.LocalDate;
@@ -32,6 +31,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 public class SublineControllerTest {
+
+  private static final String[] RECURSIVE_COMPARISION_IGNORE_FIELDS = {"editor", "creator",
+      "editionDate", "creationDate", "version", "etagVersion", "sublineType", "type"};
 
   @Mock
   private SublineService sublineService;
@@ -55,7 +57,7 @@ public class SublineControllerTest {
   void shouldGetSublines() {
     // Given
     Subline subline = SublineTestData.subline();
-    when(sublineService.findAll(any(SearchRestrictions.class))).thenReturn(
+    when(sublineService.findAll(any())).thenReturn(
         new PageImpl<>(Collections.singletonList(subline)));
 
     // When
@@ -68,6 +70,7 @@ public class SublineControllerTest {
     assertThat(sublineContainer.getObjects()).hasSize(1)
                                              .first()
                                              .usingRecursiveComparison()
+                                             .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
                                              .isEqualTo(subline);
     assertThat(sublineContainer.getTotalCount()).isEqualTo(1);
   }
@@ -86,7 +89,7 @@ public class SublineControllerTest {
     assertThat(subline).hasSize(1)
                        .first()
                        .usingRecursiveComparison()
-                       .ignoringFields("etagVersion")
+                       .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
                        .isEqualTo(sublineVersion);
   }
 
@@ -101,8 +104,7 @@ public class SublineControllerTest {
     // Then
     verify(sublineService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-                                                .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate", "version")
+                                                .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
                                                 .isEqualTo(sublineVersionModel);
   }
 

@@ -18,10 +18,10 @@ public class LineTestData {
   private static final RgbColor RGB_COLOR = new RgbColor(0, 0, 0);
   private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
 
-  public static LineVersionBuilder lineVersionBuilder() {
+  public static LineVersionBuilder<?,?> lineVersionBuilder() {
     return LineVersion.builder()
                       .status(Status.ACTIVE)
-                      .type(LineType.ORDERLY)
+                      .lineType(LineType.ORDERLY)
                       .paymentType(PaymentType.INTERNATIONAL)
                       .number("number")
                       .alternativeName("alternativeName")
@@ -69,7 +69,7 @@ public class LineTestData {
   public static LineBuilder lineBuilder() {
     return Line.builder()
                .status(Status.ACTIVE)
-               .type(LineType.ORDERLY)
+               .lineType(LineType.ORDERLY)
                .number("number")
                .description("description")
                .validFrom(LocalDate.of(2020, 1, 1))

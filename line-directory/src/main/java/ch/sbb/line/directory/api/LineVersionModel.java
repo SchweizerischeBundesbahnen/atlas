@@ -50,22 +50,22 @@ public class LineVersionModel implements DatesValidator {
   private PaymentType paymentType;
 
   @Schema(description = "Number", example = "L1")
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String number;
 
   @Schema(description = "AlternativeName", example = "L1")
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String alternativeName;
 
   @Schema(description = "CombinationName", example = "S L1")
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String combinationName;
 
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus")
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String longName;
 
@@ -90,12 +90,12 @@ public class LineVersionModel implements DatesValidator {
   private String colorBackCmyk;
 
   @Schema(description = "Icon", example = "https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg")
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String icon;
 
   @Schema(description = "Description", example = "Meiringen - Innertkirchen")
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
 
@@ -109,12 +109,12 @@ public class LineVersionModel implements DatesValidator {
 
   @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
   @NotBlank
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String businessOrganisation;
 
   @Schema(description = "Comment", example = "Comment regarding the line")
-  @Size(max = 1500)
+  @Size(max = AtlasFieldLengths.COMMENTS)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
 

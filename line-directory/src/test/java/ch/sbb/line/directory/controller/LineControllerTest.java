@@ -17,9 +17,8 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
-import ch.sbb.line.directory.model.SearchRestrictions;
-import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.CoverageService;
+import ch.sbb.line.directory.service.LineService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +36,9 @@ public class LineControllerTest {
 
   private static final RgbColor RGB_COLOR = new RgbColor(0, 0, 0);
   private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
+
+  private static final String[] RECURSIVE_COMPARISION_IGNORE_FIELDS = {"editor", "creator",
+      "editionDate", "creationDate", "version", "lineType", "type"};
 
   @Mock
   private LineService lineService;
@@ -67,8 +69,7 @@ public class LineControllerTest {
     // Then
     verify(lineService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-                                                .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate", "version")
+                                                .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
                                                 .ignoringFieldsMatchingRegexes("color.*")
                                                 .isEqualTo(lineVersionModel);
   }
@@ -77,18 +78,19 @@ public class LineControllerTest {
   void shouldGetLines() {
     // Given
     Line line = LineTestData.line();
-    when(lineService.findAll(any(SearchRestrictions.class))).thenReturn(
-        new PageImpl<>(Collections.singletonList(line)));
+    when(lineService.findAll(any())).thenReturn(new PageImpl<>(Collections.singletonList(line)));
 
     // When
     Container<LineModel> lineContainer = lineController.getLines(
-        Pageable.unpaged(), Optional.empty(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Optional.empty());
+        Pageable.unpaged(), Optional.empty(), Collections.emptyList(), Collections.emptyList(),
+        Collections.emptyList(), Optional.empty());
 
     // Then
     assertThat(lineContainer).isNotNull();
     assertThat(lineContainer.getObjects()).hasSize(1)
                                           .first()
                                           .usingRecursiveComparison()
+                                          .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
                                           .isEqualTo(line);
     assertThat(lineContainer.getTotalCount()).isEqualTo(1);
   }
@@ -105,9 +107,7 @@ public class LineControllerTest {
     // Then
     assertThat(result).isNotNull();
     assertThat(result).usingRecursiveComparison()
-                      .ignoringFields("editor", "creator",
-                          "editionDate",
-                          "creationDate")
+                      .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
                       .ignoringFieldsMatchingRegexes("color.*")
                       .isEqualTo(line);
   }
@@ -126,9 +126,7 @@ public class LineControllerTest {
     assertThat(line).hasSize(1)
                     .first()
                     .usingRecursiveComparison()
-                    .ignoringFields("editor", "creator",
-                        "editionDate",
-                        "creationDate")
+                    .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
                     .ignoringFieldsMatchingRegexes("color.*", "etagVersion")
                     .isEqualTo(lineVersion);
   }
@@ -136,7 +134,7 @@ public class LineControllerTest {
   @Test
   void shouldDeleteVersion() {
     // Given
-    String slnid ="ch:1:slnid:10000";
+    String slnid = "ch:1:slnid:10000";
     // When
     lineController.deleteLines(slnid);
 
@@ -163,24 +161,24 @@ public class LineControllerTest {
 
   private static LineVersionModel createModel() {
     return LineTestData.lineVersionModelBuilder()
-                           .status(Status.ACTIVE)
-                           .type(LineType.ORDERLY)
-                           .slnid("slnid")
-                           .paymentType(PaymentType.INTERNATIONAL)
-                           .number("number")
-                           .alternativeName("alternativeName")
-                           .combinationName("combinationName")
-                           .longName("longName")
-                           .colorFontRgb("#FFFFFF")
-                           .colorBackRgb("#FFFFFF")
-                           .colorFontCmyk("10,0,100,7")
-                           .colorBackCmyk("10,0,100,7")
-                           .description("description")
-                           .validFrom(LocalDate.of(2020, 12, 12))
-                           .validTo(LocalDate.of(2099, 12, 12))
-                           .businessOrganisation("businessOrganisation")
-                           .comment("comment")
-                           .swissLineNumber("swissLineNumber")
-                           .build();
+                       .status(Status.ACTIVE)
+                       .type(LineType.ORDERLY)
+                       .slnid("slnid")
+                       .paymentType(PaymentType.INTERNATIONAL)
+                       .number("number")
+                       .alternativeName("alternativeName")
+                       .combinationName("combinationName")
+                       .longName("longName")
+                       .colorFontRgb("#FFFFFF")
+                       .colorBackRgb("#FFFFFF")
+                       .colorFontCmyk("10,0,100,7")
+                       .colorBackCmyk("10,0,100,7")
+                       .description("description")
+                       .validFrom(LocalDate.of(2020, 12, 12))
+                       .validTo(LocalDate.of(2099, 12, 12))
+                       .businessOrganisation("businessOrganisation")
+                       .comment("comment")
+                       .swissLineNumber("swissLineNumber")
+                       .build();
   }
 }

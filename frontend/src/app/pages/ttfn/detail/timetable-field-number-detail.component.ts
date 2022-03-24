@@ -20,6 +20,7 @@ import { Page } from '../../../core/model/page';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -35,9 +36,6 @@ export class TimetableFieldNumberDetailComponent
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
-  MAX_LENGTH_255 = 255;
-  MAX_LENGTH_250 = 250;
-  MAX_LENGTH_50 = 50;
 
   readonly STATUS_OPTIONS = Object.values(Status);
 
@@ -115,11 +113,7 @@ export class TimetableFieldNumberDetailComponent
       {
         swissTimetableFieldNumber: [
           version.swissTimetableFieldNumber,
-          [
-            Validators.required,
-            Validators.maxLength(this.MAX_LENGTH_50),
-            AtlasCharsetsValidator.sid4pt,
-          ],
+          [Validators.required, AtlasFieldLengthValidator.small, AtlasCharsetsValidator.sid4pt],
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
@@ -134,7 +128,7 @@ export class TimetableFieldNumberDetailComponent
           version.businessOrganisation,
           [
             Validators.required,
-            Validators.maxLength(this.MAX_LENGTH_50),
+            AtlasFieldLengthValidator.small,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -143,14 +137,14 @@ export class TimetableFieldNumberDetailComponent
           version.number,
           [
             Validators.required,
-            Validators.maxLength(this.MAX_LENGTH_50),
+            AtlasFieldLengthValidator.small,
             AtlasCharsetsValidator.numericWithDot,
           ],
         ],
         description: [
           version.description,
           [
-            Validators.maxLength(this.MAX_LENGTH_255),
+            AtlasFieldLengthValidator.mid,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -158,7 +152,7 @@ export class TimetableFieldNumberDetailComponent
         comment: [
           version.comment,
           [
-            Validators.maxLength(this.MAX_LENGTH_250),
+            AtlasFieldLengthValidator.comments,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
