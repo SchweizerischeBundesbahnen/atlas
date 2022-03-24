@@ -37,7 +37,7 @@ export class LoadingSpinnerService {
         merge(
           of(true),
           navigationEnd$.pipe(
-            delay(1),
+            delay(1000),
             map(() => false)
           )
         )
