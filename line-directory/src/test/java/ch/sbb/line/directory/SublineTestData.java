@@ -15,10 +15,10 @@ public class SublineTestData {
 
   public static final String MAINLINE_SLNID = "mainlineSlnid";
 
-  public static SublineVersionBuilder sublineVersionBuilder() {
+  public static SublineVersionBuilder<?,?> sublineVersionBuilder() {
     return SublineVersion.builder()
                          .status(Status.ACTIVE)
-                         .type(SublineType.TECHNICAL)
+                         .sublineType(SublineType.TECHNICAL)
                          .paymentType(
                              PaymentType.INTERNATIONAL)
                          .number("number")
@@ -42,7 +42,7 @@ public class SublineTestData {
   public static SublineBuilder sublineBuilder() {
     return Subline.builder()
                   .status(Status.ACTIVE)
-                  .type(SublineType.TECHNICAL)
+                  .sublineType(SublineType.TECHNICAL)
                   .description("description")
                   .slnid("slnid")
                   .swissSublineNumber("swissSublineNumber")
