@@ -1,10 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SideNavComponent } from './side-nav.component';
-import { MaterialModule } from '../../module/material.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AppRoutingModule } from '../../../app-routing.module';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
@@ -13,14 +11,7 @@ describe('SideNavComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SideNavComponent],
-      imports: [
-        MaterialModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ]
+      imports: [AppTestingModule, AppRoutingModule],
     }).compileComponents();
   });
 
