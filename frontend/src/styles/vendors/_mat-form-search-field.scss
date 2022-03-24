@@ -33,6 +33,11 @@ mat-form-field {
   .mat-form-field-outline-thick {
     color: $primary-400;
   }
+  .mat-form-field-flex {
+    border-width: unset !important;
+    border-left-style: unset !important;
+    border-right-style: unset !important;
+  }
 }
 em {
   color: $primary-400;
