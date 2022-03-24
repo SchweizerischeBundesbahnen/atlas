@@ -81,7 +81,7 @@ public class LineController implements LineApiV1 {
   private LineModel toModel(Line lineVersion) {
     return LineModel.builder()
                     .status(lineVersion.getStatus())
-                    .type(lineVersion.getType())
+                    .type(lineVersion.getLineType())
                     .slnid(lineVersion.getSlnid())
                     .number(lineVersion.getNumber())
                     .description(lineVersion.getDescription())
@@ -123,7 +123,7 @@ public class LineController implements LineApiV1 {
     return LineVersionModel.builder()
                            .id(lineVersion.getId())
                            .status(lineVersion.getStatus())
-                           .type(lineVersion.getType())
+                           .type(lineVersion.getLineType())
                            .slnid(lineVersion.getSlnid())
                            .paymentType(lineVersion.getPaymentType())
                            .number(lineVersion.getNumber())
@@ -150,7 +150,7 @@ public class LineController implements LineApiV1 {
   private LineVersion toEntity(LineVersionModel lineVersionModel) {
     return LineVersion.builder()
                       .id(lineVersionModel.getId())
-                      .type(lineVersionModel.getType())
+                      .lineType(lineVersionModel.getType())
                       .slnid(lineVersionModel.getSlnid())
                       .paymentType(lineVersionModel.getPaymentType())
                       .number(lineVersionModel.getNumber())
