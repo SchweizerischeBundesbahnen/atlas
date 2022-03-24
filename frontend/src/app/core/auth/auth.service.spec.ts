@@ -51,8 +51,9 @@ describe('AuthService', () => {
   });
 
   it('retrieves claims from oauthService', () => {
+    oauthService.getIdentityClaims.and.returnValue({ name: 'me', email: 'me@sbb.ch', roles: [] });
     const claims = authService.claims;
-    expect(claims).toBeUndefined();
+    expect(claims).toBeTruthy();
     expect(oauthService.getIdentityClaims).toHaveBeenCalled();
   });
 

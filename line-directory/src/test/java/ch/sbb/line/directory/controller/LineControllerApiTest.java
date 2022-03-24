@@ -7,7 +7,6 @@ import static ch.sbb.line.directory.entity.LineVersion.Fields.longName;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.paymentType;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.slnid;
 import static ch.sbb.line.directory.entity.LineVersion.Fields.swissLineNumber;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.type;
 import static ch.sbb.line.directory.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -19,16 +18,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.CoverageRepository;
+import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
@@ -100,7 +97,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$[0]." + alternativeName, is("alternative")))
        .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
        .andExpect(jsonPath("$[0]." + longName, is("long name")))
-       .andExpect(jsonPath("$[0]." + type, is(LineType.TEMPORARY.toString())))
+       .andExpect(jsonPath("$[0]." + "type", is(LineType.TEMPORARY.toString())))
        .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
        .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC2")))
        .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
@@ -238,7 +235,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
        .andExpect(jsonPath("$[0]." + longName, is("long name")))
        .andExpect(jsonPath("$[0]." + slnid, is(lineVersion.getSlnid())))
-       .andExpect(jsonPath("$[0]." + type, is(LineType.TEMPORARY.toString())))
+       .andExpect(jsonPath("$[0]." + "type", is(LineType.TEMPORARY.toString())))
        .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
        .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC5")))
        .andExpect(jsonPath("$[0]." + businessOrganisation, is("sbb")))
