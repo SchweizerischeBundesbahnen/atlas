@@ -62,7 +62,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     { provide: HTTP_INTERCEPTORS, useClass: ServerErrorInterceptor, multi: true },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { floatLabel: 'always', appearance: 'outline' },
+      useValue: { floatLabel: 'always' },
     },
     {
       provide: MAT_CHIPS_DEFAULT_OPTIONS,
