@@ -115,7 +115,12 @@
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": "",
       "preDeployConfirmUserMails": [
-        "techsupport-atlas@sbb.ch"
+        "frederic.barras@sbb.ch",
+        "hannes.laner@sbb.ch",
+        "antonio.romano@sbb.ch",
+        "luca.ammann2@sbb.ch",
+        "joel.hofer@sbb.ch",
+        "marek.stankala@sbb.ch"
       ],
       "api": {
         "artifactId": "apim-configuration",
