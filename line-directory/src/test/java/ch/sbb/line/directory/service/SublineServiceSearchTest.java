@@ -302,7 +302,7 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version1);
     sublineVersionRepository.saveAndFlush(version2);
 
-    version3.setType(SublineType.COMPENSATION);
+    version3.setSublineType(SublineType.COMPENSATION);
     sublineVersionRepository.saveAndFlush(version3);
     // When
     Page<Subline> result = sublineService.findAll(SearchRestrictions.<SublineType>builder()
