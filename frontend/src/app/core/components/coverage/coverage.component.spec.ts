@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CoverageComponent } from './coverage.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('CoverageComponent', () => {
   let component: CoverageComponent;
@@ -10,11 +10,8 @@ describe('CoverageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CoverageComponent],
-      imports: [
-        HttpClientTestingModule
-      ]
-    })
-    .compileComponents();
+      imports: [AppTestingModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {
