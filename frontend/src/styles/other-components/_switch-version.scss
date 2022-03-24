@@ -9,13 +9,12 @@ app-switch-version table {
     background: $white;
   }
 
-  // TODO: scrollbar-color check
   ::-webkit-scrollbar-thumb {
-    background: #888;
+    background: $gray-400;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: $gray-500;
   }
 
   tbody {
@@ -24,7 +23,7 @@ app-switch-version table {
     overflow: auto;
 
     tr {
-      width: calc(42.5rem - 5px);
+      width: 42rem;
       &.mat-row {
         height: auto;
       }
@@ -56,25 +55,25 @@ app-switch-version table {
   }
 
   thead {
-    border-bottom: 2px solid $gray-900;
     display: block;
-    width: calc(
-      42.5rem - 5px
-    ); /* scrollbar is average 1em/16px width, remove it from thead width */
-    //-webkit-border-vertical-spacing: 0;
+    width: 42rem;
     tr {
+      display: flex;
+      border-bottom: 2px solid $gray-900;
       &.mat-header-row {
         height: auto;
       }
-      display: flex;
       th {
+        width: 20%;
+        &.mat-header-cell {
+          border-bottom: 0;
+        }
         &:first-child {
           width: 35%;
         }
         &:last-child {
           width: 25%;
         }
-        width: 20%;
       }
     }
   }
