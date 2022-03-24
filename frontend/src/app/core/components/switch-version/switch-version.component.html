@@ -1,19 +1,21 @@
-<h3 class="font-bold-lg">Version(en) mit unterschiedlicher Gültigkeit</h3>
+<h3 class="font-bold-lg">{{ 'COMMON.VERSION_TABLE_TITLE' | translate }}</h3>
 <table mat-table multiTemplateDataRows [dataSource]="records">
-  <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.identifier }}">
+  <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.value }}">
     <th scope="col" mat-header-cell *matHeaderCellDef class="font-bold-base color-primary-400">
-      {{ column.translationKey | translate }}
+      {{ column.headerTitle | translate }}
     </th>
     <ng-container *matCellDef="let value">
       <td mat-cell *ngIf="!value.placeholder">
-        {{ this.format(value[column.identifier], column) }}
+        {{ format(value[column.value], column) }}
       </td>
     </ng-container>
   </ng-container>
 
   <ng-container matColumnDef="placeholder-row">
     <ng-container *matCellDef="let element">
-      <td *ngIf="hasGapToNextRecord(element)">
+      <td *ngIf="hasGapToNextRecord(element)" class="d-flex align-items-center">
+        <hr />
+        <span>{{ 'COMMON.GAP' | translate }}</span>
         <hr />
       </td>
     </ng-container>

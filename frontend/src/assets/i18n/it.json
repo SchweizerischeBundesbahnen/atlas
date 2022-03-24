@@ -33,6 +33,8 @@
     "FROM": "dal",
     "TO": "al",
     "VERSION": "Versione",
+    "VERSION_TABLE_TITLE": "Versioni con validità diversa",
+    "GAP": "Spazio",
     "FILLED_AUTOMATICALLY": "Compilato automaticamente",
     "VERSION_DESCRIPTION": "Designazione della versione",
     "VALID_FROM": "Valido dal",
