@@ -42,7 +42,7 @@ public class LineService {
                                    .and(specificationBuilderService.buildEnumSpecification(
                                        searchRestrictions.getStatusRestrictions(), Line_.status))
                                    .and(specificationBuilderService.buildEnumSpecification(
-                                       searchRestrictions.getTypeRestrictions(), Line_.type))
+                                       searchRestrictions.getTypeRestrictions(), Line_.lineType))
                                    .and(specificationBuilderService.buildSingleStringSpecification(
                                        searchRestrictions.getSwissLineNumber())),
         searchRestrictions.getPageable());
