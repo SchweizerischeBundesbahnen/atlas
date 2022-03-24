@@ -3,6 +3,7 @@ package ch.sbb.line.directory.entity;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.line.directory.api.AtlasFieldLengths;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.BusinessIdGenerator.SlnidGenerator;
@@ -53,7 +54,7 @@ public class LineVersion extends BaseVersion implements Versionable {
   private Long id;
 
   @NotBlank
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @AtlasVersionableProperty
   private String swissLineNumber;
 
@@ -69,26 +70,26 @@ public class LineVersion extends BaseVersion implements Versionable {
   @NotNull
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private LineType type;
+  private LineType lineType;
 
   @NotNull
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private PaymentType paymentType;
 
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @AtlasVersionableProperty
   private String number;
 
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @AtlasVersionableProperty
   private String alternativeName;
 
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @AtlasVersionableProperty
   private String combinationName;
 
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   @AtlasVersionableProperty
   private String longName;
 
@@ -112,11 +113,11 @@ public class LineVersion extends BaseVersion implements Versionable {
   @AtlasVersionableProperty
   private CmykColor colorBackCmyk;
 
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   @AtlasVersionableProperty
   private String icon;
 
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   @AtlasVersionableProperty
   private String description;
 
@@ -129,11 +130,11 @@ public class LineVersion extends BaseVersion implements Versionable {
   private LocalDate validTo;
 
   @NotBlank
-  @Size(max = 50)
+  @Size(max = AtlasFieldLengths.SMALL)
   @AtlasVersionableProperty
   private String businessOrganisation;
 
-  @Size(max = 1500)
+  @Size(max = AtlasFieldLengths.COMMENTS)
   @AtlasVersionableProperty
   private String comment;
 

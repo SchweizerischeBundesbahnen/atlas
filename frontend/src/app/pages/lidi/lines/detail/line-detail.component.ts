@@ -20,6 +20,7 @@ import { Page } from 'src/app/core/model/page';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -135,14 +136,14 @@ export class LineDetailComponent
           version.businessOrganisation,
           [
             Validators.required,
-            Validators.maxLength(50),
+            AtlasFieldLengthValidator.small,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
           ],
         ],
         number: [
           version.number,
           [
-            Validators.maxLength(50),
+            AtlasFieldLengthValidator.small,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -150,7 +151,7 @@ export class LineDetailComponent
         alternativeName: [
           version.alternativeName,
           [
-            Validators.maxLength(50),
+            AtlasFieldLengthValidator.small,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -158,7 +159,7 @@ export class LineDetailComponent
         combinationName: [
           version.combinationName,
           [
-            Validators.maxLength(50),
+            AtlasFieldLengthValidator.small,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -166,7 +167,7 @@ export class LineDetailComponent
         longName: [
           version.longName,
           [
-            Validators.maxLength(255),
+            AtlasFieldLengthValidator.mid,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -174,7 +175,7 @@ export class LineDetailComponent
         icon: [
           version.icon,
           [
-            Validators.maxLength(255),
+            AtlasFieldLengthValidator.mid,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -186,7 +187,7 @@ export class LineDetailComponent
         description: [
           version.description,
           [
-            Validators.maxLength(255),
+            AtlasFieldLengthValidator.mid,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -202,7 +203,7 @@ export class LineDetailComponent
         comment: [
           version.comment,
           [
-            Validators.maxLength(1500),
+            AtlasFieldLengthValidator.comments,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],

@@ -29,6 +29,7 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -156,7 +157,7 @@ export class SublineDetailComponent
           version.businessOrganisation,
           [
             Validators.required,
-            Validators.maxLength(50),
+            AtlasFieldLengthValidator.small,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -164,7 +165,7 @@ export class SublineDetailComponent
         number: [
           version.number,
           [
-            Validators.maxLength(50),
+            AtlasFieldLengthValidator.small,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -172,7 +173,7 @@ export class SublineDetailComponent
         longName: [
           version.longName,
           [
-            Validators.maxLength(255),
+            AtlasFieldLengthValidator.mid,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -180,7 +181,7 @@ export class SublineDetailComponent
         description: [
           version.description,
           [
-            Validators.maxLength(255),
+            AtlasFieldLengthValidator.mid,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],

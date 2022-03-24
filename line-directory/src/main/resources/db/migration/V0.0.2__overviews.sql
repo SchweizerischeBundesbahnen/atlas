@@ -1,5 +1,4 @@
---- Update TTFN Overview
-drop view timetable_field_number;
+--- TTFN
 create or replace view timetable_field_number as
 select *
 from (
@@ -37,8 +36,69 @@ from (
          ) v on f.ttfnid = v.ttfnid
      ) as timetable_field_numbers;
 
--- Update Subline
-drop view subline;
+-- Line
+create or replace view line as
+select *
+from (
+         select f.*, v.valid_from, v.valid_to
+         from (
+                  select swiss_line_number,
+                         number,
+                         description,
+                         status,
+                         line_type,
+                         business_organisation,
+                         slnid
+                  from (
+                           select distinct on (slnid) *
+                           from ((select distinct on (slnid) swiss_line_number,
+                                                             number,
+                                                             description,
+                                                             status,
+                                                             line_type,
+                                                             business_organisation,
+                                                             slnid,
+                                                             valid_from,
+                                                             valid_to
+                                  from line_version
+                                  where valid_from <= current_timestamp
+                                    and current_timestamp <= valid_to)
+                                 union all
+                                 (select distinct on (slnid) swiss_line_number,
+                                                             number,
+                                                             description,
+                                                             status,
+                                                             line_type,
+                                                             business_organisation,
+                                                             slnid,
+                                                             valid_from,
+                                                             valid_to
+                                  from line_version
+                                  where valid_from >= current_timestamp
+                                  order by slnid, valid_from)
+                                 union all
+                                 (select distinct on (slnid) swiss_line_number,
+                                                             number,
+                                                             description,
+                                                             status,
+                                                             line_type,
+                                                             business_organisation,
+                                                             slnid,
+                                                             valid_from,
+                                                             valid_to
+                                  from line_version
+                                  where valid_to <= current_timestamp
+                                  order by slnid, valid_to desc)) as ranked
+                       ) as chosen
+              ) f
+                  join (
+             select slnid, min(valid_from) as valid_from, max(valid_to) as valid_to
+             from line_version
+             group by slnid
+         ) v on f.slnid = v.slnid
+     ) as lines;
+
+-- Subline
 create or replace view subline as
 select *
 from (
@@ -49,7 +109,7 @@ from (
                          swiss_line_number,
                          number,
                          status,
-                         type,
+                         subline_type,
                          business_organisation,
                          slnid
                   from (
@@ -59,7 +119,7 @@ from (
                                                                l.swiss_line_number,
                                                                s.number,
                                                                s.status,
-                                                               s.type,
+                                                               s.subline_type,
                                                                s.business_organisation,
                                                                s.slnid,
                                                                s.valid_from,
@@ -74,7 +134,7 @@ from (
                                                                l.swiss_line_number,
                                                                s.number,
                                                                s.status,
-                                                               s.type,
+                                                               s.subline_type,
                                                                s.business_organisation,
                                                                s.slnid,
                                                                s.valid_from,
@@ -89,7 +149,7 @@ from (
                                                                l.swiss_line_number,
                                                                s.number,
                                                                s.status,
-                                                               s.type,
+                                                               s.subline_type,
                                                                s.business_organisation,
                                                                s.slnid,
                                                                s.valid_from,

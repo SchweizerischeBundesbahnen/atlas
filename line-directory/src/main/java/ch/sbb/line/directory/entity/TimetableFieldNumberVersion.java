@@ -4,6 +4,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
+import ch.sbb.line.directory.api.AtlasFieldLengths;
 import ch.sbb.line.directory.entity.BusinessIdGenerator.TtfnidGenerator;
 import ch.sbb.line.directory.enumaration.Status;
 import java.time.LocalDate;
@@ -64,16 +65,16 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
   private String ttfnid;
 
   @AtlasVersionableProperty
-  @Size(max = 255)
+  @Size(max = AtlasFieldLengths.MID)
   private String description;
 
   @AtlasVersionableProperty
   @NotNull
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   private String number;
 
   @AtlasVersionableProperty
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   @NotNull
   private String swissTimetableFieldNumber;
 
@@ -90,12 +91,12 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
   private LocalDate validTo;
 
   @AtlasVersionableProperty
-  @Size(min = 1, max = 50)
+  @Size(min = 1, max = AtlasFieldLengths.SMALL)
   @NotNull
   private String businessOrganisation;
 
   @AtlasVersionableProperty
-  @Size(max = 250)
+  @Size(max = AtlasFieldLengths.COMMENTS)
   private String comment;
 
 }
