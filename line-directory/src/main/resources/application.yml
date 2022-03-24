@@ -28,7 +28,7 @@ management:
         include: "*"
 info:
   app:
-    name: line-directory-backend
+    name: line-directory
     version: @version@
     buildtime: @timestamp@
 logging:
