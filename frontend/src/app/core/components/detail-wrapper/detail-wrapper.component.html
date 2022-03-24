@@ -15,7 +15,6 @@
     [switchDisabled]="controller.form.enabled"
     (switchVersion)="controller.switchVersion($event)"
   ></app-switch-version>
-  <!-- TODO: auth-roles -->
   <div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section mb-2">
     <button
       data-cy="edit-item"
@@ -40,18 +39,26 @@
   </div>
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-    <button class="atlas-primary-btn footer-btn" [mat-dialog-close]="true">
+    <button
+      *ngIf="controller.form.disabled; else editModeButtons"
+      class="atlas-primary-btn footer-btn"
+      [mat-dialog-close]="true"
+    >
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
-    <button
-      *ngIf="controller.form.enabled"
-      class="atlas-primary-btn footer-btn ms-3"
-      data-cy="save-item"
-      type="submit"
-      (click)="controller.save()"
-      [disabled]="!controller.form.dirty"
-    >
-      {{ 'COMMON.SAVE' | translate }}
-    </button>
+    <ng-template #editModeButtons>
+      <button class="atlas-primary-btn footer-btn" (click)="controller.toggleEdit()">
+        {{ 'COMMON.CANCEL' | translate }}
+      </button>
+      <button
+        class="atlas-primary-btn footer-btn ms-3"
+        data-cy="save-item"
+        type="submit"
+        (click)="controller.save()"
+        [disabled]="!controller.form.dirty"
+      >
+        {{ 'COMMON.SAVE' | translate }}
+      </button>
+    </ng-template>
   </div>
 </div>
