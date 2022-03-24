@@ -33,6 +33,8 @@
     "FROM": "von",
     "TO": "bis",
     "VERSION": "Version",
+    "VERSION_TABLE_TITLE": "Versionen mit unterschiedlicher Gültigkeit",
+    "GAP": "Lücke",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
     "VERSION_DESCRIPTION": "Versions-Bezeichnung",
     "VALID_FROM": "Gültig von",
