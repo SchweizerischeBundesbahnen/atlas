@@ -2,6 +2,9 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 import { Record } from '../detail-wrapper/record';
 import { DateService } from '../../date/date.service';
 import { Page } from '../../model/page';
+import { TableColumn } from '../table/table-column';
+import { Status } from '../../../api';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-switch-version',
@@ -17,39 +20,49 @@ export class SwitchVersionComponent implements OnChanges {
   @Output() switchVersion = new EventEmitter<number>();
 
   currentIndex: number;
-  tableColumns = [
-    { translationKey: 'COMMON.VERSION_DESCRIPTION', identifier: 'versionName' },
-    { translationKey: 'COMMON.VALID_FROM', identifier: 'validFrom' },
-    { translationKey: 'COMMON.VALID_TO', identifier: 'validTo' },
-    { translationKey: 'COMMON.STATUS', identifier: 'status' },
+  tableColumns: TableColumn<Record>[] = [
+    {
+      headerTitle: 'COMMON.VERSION_DESCRIPTION',
+      value: 'versionNumber',
+      translate: { withKey: 'COMMON.VERSION' },
+    },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
+    {
+      headerTitle: 'COMMON.STATUS',
+      value: 'status',
+      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+    },
   ];
 
-  constructor() {
+  constructor(private readonly translatePipe: TranslatePipe) {
     this.currentIndex = 0;
   }
 
   ngOnChanges() {
-    this.records.map((item, index) => (item.versionName = `Version ${index + 1}`));
+    this.records.map((item, index) => (item.versionNumber = index + 1));
     this.getCurrentIndex();
   }
 
   get columnValues() {
-    return this.tableColumns.map((el) => el.identifier);
+    return this.tableColumns.map((item) => item.value);
   }
 
   formatDate(date: Date | undefined) {
     return DateService.getDateFormatted(date);
   }
 
-  format(input: Date | undefined, column: { translationKey: string; identifier: string }) {
-    if (
-      this.tableColumns
-        .filter((el) => el.identifier === 'validFrom' || el.identifier === 'validTo')
-        .includes(column)
-    ) {
-      return this.formatDate(input);
+  format(input: Date | Status | number | undefined, column: TableColumn<Record>): string | null {
+    if (column.formatAsDate) {
+      return this.formatDate(input as Date);
     }
-    return input;
+    if (column.translate?.withKey) {
+      return `${this.translatePipe.transform(column.translate.withKey)} ${input}`;
+    }
+    if (column.translate?.withPrefix) {
+      return this.translatePipe.transform(column.translate.withPrefix + input);
+    }
+    return null;
   }
 
   setCurrentRecord(clickedRecord: Record) {
