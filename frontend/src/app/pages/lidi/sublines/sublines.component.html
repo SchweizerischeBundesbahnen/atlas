@@ -1,3 +1,7 @@
+<div class="table-heading font-bold-4xl color-gray-900 mb-5" data-cy="sublines-title">
+  {{ 'LIDI.SUBLINE.SUBLINES' | translate }}
+</div>
+
 <app-table
   [tableSearchFieldTemplate]="sublineTypeSelection"
   [tableData]="sublines"
@@ -21,7 +25,7 @@
       >
         <mat-option *ngFor="let sublineType of SUBLINE_TYPES" [value]="sublineType">{{
           'LIDI.SUBLINE.TYPES.' + sublineType | translate
-          }}</mat-option>
+        }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
