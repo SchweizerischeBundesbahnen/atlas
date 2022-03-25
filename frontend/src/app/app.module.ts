@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from '../environments/environment';
 import { AtlasApiModule, Configuration } from './api';
+import { DateModule } from './core/module/date.module';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
@@ -22,6 +23,7 @@ function withBasePath(basePath: string) {
   declarations: [AppComponent, HomeComponent],
   imports: [
     CoreModule,
+    DateModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

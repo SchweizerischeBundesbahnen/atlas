@@ -1,14 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { LinesComponent } from './lines.component';
 import { ContainerLine, LinesService, LineType } from '../../../api';
 import { CoreModule } from '../../../core/module/core.module';
+import { AppTestingModule } from '../../../app.testing.module';
 
 const versionContainer: ContainerLine = {
   objects: [
@@ -36,15 +33,7 @@ describe('LinesComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [LinesComponent, TableComponent, LoadingSpinnerComponent],
-      imports: [
-        CoreModule,
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        RouterModule.forRoot([]),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [CoreModule, AppTestingModule],
       providers: [{ provide: LinesService, useValue: linesService }],
     }).compileComponents();
 

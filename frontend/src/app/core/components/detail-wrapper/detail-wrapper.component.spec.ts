@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DetailWrapperComponent } from './detail-wrapper.component';
-import { MaterialModule } from '../../module/material.module';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { DetailWrapperController } from './detail-wrapper-controller';
 import { of } from 'rxjs';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('DetailWrapperComponent', () => {
   /*eslint-disable */
@@ -15,12 +14,7 @@ describe('DetailWrapperComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DetailWrapperComponent],
-      imports: [
-        MaterialModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
     }).compileComponents();
   });
 

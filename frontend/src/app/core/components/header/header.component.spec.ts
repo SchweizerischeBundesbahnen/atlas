@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../auth/auth.service';
-import { MaterialModule } from '../../module/material.module';
 import { UserComponent } from '../user/user.component';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
-import { RouterTestingModule } from '@angular/router/testing';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('HeaderComponent', () => {
   const authServiceMock: Partial<AuthService> = {
@@ -20,13 +18,7 @@ describe('HeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent, UserComponent, LanguageSwitcherComponent],
-      imports: [
-        RouterTestingModule,
-        MaterialModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
   });
