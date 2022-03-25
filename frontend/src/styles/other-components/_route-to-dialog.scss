@@ -1,35 +1,23 @@
 @import 'src/styles/variables';
 
-.cdk-overlay-container {
-}
-
-.cdk-overlay-pane {
-  overflow: unset;
-  max-width: 100% !important;
-}
-
+/* this must be set to enable scroll, but it is a global dialog class */
 .cdk-global-overlay-wrapper {
   overflow: auto;
   height: calc(100% - #{$footerHeight});
+  pointer-events: auto !important;
 }
 
-.cdk-overlay-dark-backdrop {
+.route-to-dialog-backdrop {
   background: rgba(0, 0, 0, 0.7);
   /* background-blur */
   backdrop-filter: blur(10px);
 }
 
-.cdk-overlay-container,
-.cdk-global-overlay-wrapper {
-  /* enables mouse-scroll BUT disables the dialog-close on mouseclick event*/
-  pointer-events: auto !important;
-}
-
 .route-to-dialog-panel {
+  overflow: unset;
+  max-width: 100% !important;
+
   .mat-dialog-container {
-    min-width: 1440px !important;
-    width: 1440px;
-    max-width: 1440px !important;
     background: $white;
     border-radius: 14px;
     padding: 64px 80px 144px;
