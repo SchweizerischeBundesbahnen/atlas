@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { CoreModule } from '../../../core/module/core.module';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('LidiOverviewComponent', () => {
   let component: LidiOverviewComponent;
@@ -16,15 +17,7 @@ describe('LidiOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LidiOverviewComponent, LinesComponent, SublinesComponent],
-      imports: [
-        CoreModule,
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        RouterModule.forRoot([]),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [CoreModule, AppTestingModule],
     }).compileComponents();
   });
 
