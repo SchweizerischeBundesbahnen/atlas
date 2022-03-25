@@ -18,7 +18,7 @@
   <div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section mb-2">
     <button
       data-cy="edit-item"
-      class="atlas-primary-btn me-3 no-hover"
+      class="atlas-primary-btn me-3"
       (click)="controller.toggleEdit()"
       [disabled]="controller.form.enabled"
     >
@@ -51,7 +51,7 @@
         {{ 'COMMON.CANCEL' | translate }}
       </button>
       <button
-        class="atlas-primary-btn footer-btn ms-3 no-hover"
+        class="atlas-primary-btn footer-btn ms-3"
         data-cy="save-item"
         type="submit"
         (click)="controller.save()"
