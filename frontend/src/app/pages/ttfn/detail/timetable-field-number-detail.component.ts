@@ -65,6 +65,14 @@ export class TimetableFieldNumberDetailComponent
     return record.swissTimetableFieldNumber;
   }
 
+  getDetailHeading(record: TimetableFieldNumberVersion): string {
+    return `${record.number} - ${record.description}`;
+  }
+
+  getDetailSubheading(record: TimetableFieldNumberVersion): string {
+    return `${record.ttfnid}`;
+  }
+
   updateRecord(): void {
     this.timetableFieldNumberService
       .updateVersionWithVersioning(this.getId(), this.form.value)
