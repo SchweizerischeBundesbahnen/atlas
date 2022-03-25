@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { User } from '../components/user/user';
 import { Pages } from '../../pages/pages';
 import jwtDecode from 'jwt-decode';
-import { Role, Roles } from './role';
+import { Role } from './role';
 
 const DEEP_LINK_URL_KEY = 'deepLinkUrl';
 
@@ -68,7 +68,7 @@ export class AuthService {
   get roles(): Role[] {
     if (this.accessToken) {
       return this.decodeAccessToken().roles.filter((role) =>
-        Object.values(Roles).includes(role as Role)
+        Object.values(Role).includes(role as Role)
       ) as Role[];
     }
     return [];

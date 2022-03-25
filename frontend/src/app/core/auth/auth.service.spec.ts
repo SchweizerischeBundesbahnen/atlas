@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from './auth.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Subject } from 'rxjs';
-import { Roles } from './role';
+import { Role } from './role';
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
@@ -88,30 +88,27 @@ describe('AuthService', () => {
   });
 
   it('checks for roles correctly', () => {
-    let result = authService.containsAnyRole(
-      [Roles.LidiWriter],
-      [Roles.LidiWriter, Roles.LidiAdmin]
-    );
+    let result = authService.containsAnyRole([Role.LidiWriter], [Role.LidiWriter, Role.LidiAdmin]);
     expect(result).toBeTrue();
 
-    result = authService.containsAnyRole([Roles.LidiWriter], [Roles.LidiWriter]);
+    result = authService.containsAnyRole([Role.LidiWriter], [Role.LidiWriter]);
     expect(result).toBeTrue();
 
-    result = authService.containsAnyRole([Roles.LidiWriter], [Roles.LidiAdmin]);
+    result = authService.containsAnyRole([Role.LidiWriter], [Role.LidiAdmin]);
     expect(result).toBeFalse();
 
-    result = authService.containsAnyRole([Roles.LidiWriter, Roles.LidiAdmin], [Roles.LidiAdmin]);
+    result = authService.containsAnyRole([Role.LidiWriter, Role.LidiAdmin], [Role.LidiAdmin]);
     expect(result).toBeTrue();
 
-    result = authService.containsAnyRole([Roles.LidiWriter, Roles.LidiAdmin], [Roles.LidiWriter]);
+    result = authService.containsAnyRole([Role.LidiWriter, Role.LidiAdmin], [Role.LidiWriter]);
     expect(result).toBeTrue();
 
-    result = authService.containsAnyRole([Roles.LidiWriter, Roles.LidiAdmin], []);
+    result = authService.containsAnyRole([Role.LidiWriter, Role.LidiAdmin], []);
     expect(result).toBeFalse();
 
     result = authService.containsAnyRole(
-      [Roles.LidiWriter, Roles.LidiAdmin],
-      [Roles.BoWriter, Roles.BoAdmin]
+      [Role.LidiWriter, Role.LidiAdmin],
+      [Role.BoWriter, Role.BoAdmin]
     );
     expect(result).toBeFalse();
   });
