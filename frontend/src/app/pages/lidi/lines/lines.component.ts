@@ -84,7 +84,7 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   editVersion($event: Line) {
     this.router
-      .navigate([Pages.LINES.path, $event.slnid], {
+      .navigate([$event.slnid], {
         relativeTo: this.route,
       })
       .then();
