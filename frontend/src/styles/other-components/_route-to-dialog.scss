@@ -21,6 +21,7 @@
 
 .cdk-overlay-container,
 .cdk-global-overlay-wrapper {
+  /* enables mouse-scroll BUT disables the dialog-close on mouseclick event*/
   pointer-events: auto !important;
 }
 
