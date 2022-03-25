@@ -17,7 +17,7 @@ const versionContainer: ContainerSubline = {
       status: Status.Active,
       businessOrganisation: 'SBB',
       swissSublineNumber: 'L1:2',
-      type: SublineType.Technical,
+      sublineType: SublineType.Technical,
     },
   ],
   totalCount: 1,
