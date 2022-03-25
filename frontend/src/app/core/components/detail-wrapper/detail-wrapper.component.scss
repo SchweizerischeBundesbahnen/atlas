@@ -5,14 +5,18 @@
 }
 
 .detail-wrapper-panel {
-  height: 100%;
+  .title-section {
+    margin: 0 !important;
+    margin-bottom: 64px !important;
+  }
+
+  .title-section h1 {
+    font-size: 32px;
+  }
 }
 
 .detail-content {
-  height: calc(100% - 100px);
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding-right: 1px;
+  padding-top: 10px;
 }
 
 .edit-section {
