@@ -41,15 +41,15 @@ describe('DetailWrapperComponent', () => {
     });
 
     it('should switch from disabled to enabled', () => {
-      const editButton = fixture.debugElement.query(By.css('.bi-pencil-fill'));
+      const editButton = fixture.debugElement.query(By.css('.edit-section button:first-child'));
       editButton.nativeElement.click();
 
       expect(dummyController.toggleEdit).toHaveBeenCalled();
     });
 
     it('should delete record', () => {
-      const editButton = fixture.debugElement.query(By.css('.bi-trash-fill'));
-      editButton.nativeElement.click();
+      const deleteButton = fixture.debugElement.query(By.css('.edit-section button:last-child'));
+      deleteButton.nativeElement.click();
 
       expect(dummyController.delete).toHaveBeenCalled();
     });
