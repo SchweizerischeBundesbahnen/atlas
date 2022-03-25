@@ -88,7 +88,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
 
   editVersion($event: Subline) {
     this.router
-      .navigate([Pages.SUBLINES.path, $event.slnid], {
+      .navigate([$event.slnid], {
         relativeTo: this.route,
       })
       .then();
