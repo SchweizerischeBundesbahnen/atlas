@@ -1,49 +1,32 @@
-<div class="detail-header mb-2">
-  <div class="title">
-    <div class="d-flex justify-content-between">
-      <h1 class="title-string">
-        <strong>{{ this.recordTitle }}</strong>
-      </h1>
-      <app-coverage [currentRecord]="this.currentRecord" [pageType]="this.pageType"></app-coverage>
-    </div>
-    <span data-cy="switch-version-total-range">
-      {{ this.displayPageTypeTitle() | translate }}
-      {{ 'COMMON.FROM' | translate }}
-      <strong>{{ this.getStartDate() }}</strong>
-      {{ 'COMMON.TO' | translate }}
-      <strong>{{ this.getEndDate() }}</strong>
-    </span>
-  </div>
-  <div class="versionedElements">
-    <div *ngFor="let record of records">
-      <div class="versionContainer">
-        <a
-          (click)="setCurrentRecord(record)"
-          [id]="'version' + (getIndexOfRecord(record) + 1)"
-          class="versionedElement"
-          [ngClass]="isCurrentRecord(record) ? 'currentVersion' : ''"
-        >
-          <div class="row upper-row" data-cy="dateRange">
-            <div class="col left-cell">
-              {{ formatDate(record.validFrom) }}
-            </div>
-            <div class="col right-cell">
-              {{ formatDate(record.validTo) }}
-            </div>
-          </div>
-          <div class="row lower-row">
-            <div class="col lower-cell">
-              {{ 'COMMON.VERSION' | translate }} {{ getIndexOfRecord(record) + 1 }}
-            </div>
-          </div>
-        </a>
-        <div class="versionGap" *ngIf="hasGapToNextRecord(record)">
-          <div class="row upper-row">
-            <div class="col left-cell"></div>
-            <div class="col right-cell"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<h3 class="font-bold-lg">{{ 'COMMON.VERSION_TABLE_TITLE' | translate }}</h3>
+<table mat-table multiTemplateDataRows [dataSource]="records">
+  <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.value }}">
+    <th scope="col" mat-header-cell *matHeaderCellDef class="font-bold-base color-primary-400">
+      {{ column.headerTitle | translate }}
+    </th>
+    <ng-container *matCellDef="let value">
+      <td mat-cell *ngIf="!value.placeholder">
+        {{ format(value[column.value], column) }}
+      </td>
+    </ng-container>
+  </ng-container>
+
+  <ng-container matColumnDef="placeholder-row">
+    <ng-container *matCellDef="let element">
+      <td *ngIf="hasGapToNextRecord(element)" class="d-flex align-items-center">
+        <hr />
+        <span>{{ 'COMMON.GAP' | translate }}</span>
+        <hr />
+      </td>
+    </ng-container>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnValues"></tr>
+  <tr
+    [ngClass]="isCurrentRecord(row) ? 'selected-row' : ''"
+    mat-row
+    *matRowDef="let row; columns: columnValues"
+    (click)="setCurrentRecord(row)"
+  ></tr>
+  <tr mat-row *matRowDef="let element; columns: ['placeholder-row']" class="placeholder-row"></tr>
+</table>

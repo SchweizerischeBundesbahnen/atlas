@@ -33,6 +33,14 @@ describe('DetailWrapperController', () => {
       return dummyController.getPageType();
     }
 
+    getDetailHeading(record: Record): string {
+      return '';
+    }
+
+    getDetailSubheading(record: Record): string {
+      return '';
+    }
+
     backToOverview(): void {
       dummyController.backToOverview();
     }

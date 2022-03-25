@@ -13,8 +13,10 @@
     "VERSIONING": "Diese Versionierungs-Änderung ist vom System nicht unterstützt. Wenden Sie sich bitte an die Fachstelle Atlas."
   },
   "COMMON": {
+    "BACK_TO_OVERVIEW": "Zurück zur Übersicht",
     "SAVE": "Speichern",
     "EDIT": "Editieren",
+    "DELETE": "Löschen",
     "CANCEL": "Abbrechen",
     "COVERAGE": {
       "COMPLETE": "Vollständig",
@@ -31,7 +33,10 @@
     "FROM": "von",
     "TO": "bis",
     "VERSION": "Version",
+    "VERSION_TABLE_TITLE": "Versionen mit unterschiedlicher Gültigkeit",
+    "GAP": "Lücke",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
+    "VERSION_DESCRIPTION": "Versions-Bezeichnung",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "STATUS": "Status",

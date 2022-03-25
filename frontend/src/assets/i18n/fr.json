@@ -13,8 +13,10 @@
     "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé Atlas."
   },
   "COMMON": {
+    "BACK_TO_OVERVIEW": "Retour au sommaire",
     "SAVE": "Sauvegarder",
     "EDIT": "Modifier",
+    "DELETE": "Effacer",
     "CANCEL": "Annuler",
     "COVERAGE": {
       "COMPLETE": "Complet",
@@ -31,7 +33,10 @@
     "FROM": "de",
     "TO": "à",
     "VERSION": "Version",
+    "VERSION_TABLE_TITLE": "Versions avec validité différente",
+    "GAP": "Lacune",
     "FILLED_AUTOMATICALLY": "Remplissage automatique",
+    "VERSION_DESCRIPTION": "Désignation de la version",
     "VALID_FROM": "Valable du",
     "VALID_TO": "Valable au",
     "STATUS": "Statut",

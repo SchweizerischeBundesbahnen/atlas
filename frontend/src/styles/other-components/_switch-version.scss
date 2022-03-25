@@ -1,0 +1,80 @@
+@import '../variables';
+
+app-switch-version table {
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $white;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $gray-400;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: $gray-500;
+  }
+
+  tbody {
+    display: block;
+    max-height: 13.75rem;
+    overflow: auto;
+
+    tr {
+      width: 42rem;
+      &.mat-row {
+        height: auto;
+      }
+
+      display: flex;
+      margin: 6px 0;
+
+      &:not(.placeholder-row) td {
+        &:first-child {
+          width: 35%;
+        }
+        &:last-child {
+          width: 25%;
+        }
+        width: 20%;
+      }
+
+      td {
+        width: 100%;
+      }
+
+      &:not(.placeholder-row) {
+        cursor: pointer;
+        &:hover {
+          background-color: $table-row-hover;
+        }
+      }
+    }
+  }
+
+  thead {
+    display: block;
+    width: 42rem;
+    tr {
+      display: flex;
+      border-bottom: 2px solid $gray-900;
+      &.mat-header-row {
+        height: auto;
+      }
+      th {
+        width: 20%;
+        &.mat-header-cell {
+          border-bottom: 0;
+        }
+        &:first-child {
+          width: 35%;
+        }
+        &:last-child {
+          width: 25%;
+        }
+      }
+    }
+  }
+}
