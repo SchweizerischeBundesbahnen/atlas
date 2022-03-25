@@ -31,7 +31,7 @@ public class LineModel implements DatesValidator {
 
   @Schema(description = "LineType")
   @NotNull
-  private LineType type;
+  private LineType lineType;
 
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001234")
   private String slnid;
