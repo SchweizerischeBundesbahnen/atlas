@@ -1,21 +1,37 @@
 @import 'src/styles/variables';
 
+.cdk-overlay-container {
+}
+
+.cdk-overlay-pane {
+  overflow: unset;
+  max-width: 100% !important;
+}
+
+.cdk-global-overlay-wrapper {
+  overflow: auto;
+  height: calc(100% - #{$footerHeight});
+}
+
 .cdk-overlay-dark-backdrop {
   background: rgba(0, 0, 0, 0.7);
   /* background-blur */
   backdrop-filter: blur(10px);
 }
 
-.route-to-dialog-panel {
-  min-width: 1000px !important;
-  width: 1440px;
-  max-width: 1440px;
+.cdk-overlay-container,
+.cdk-global-overlay-wrapper {
+  pointer-events: auto !important;
+}
 
+.route-to-dialog-panel {
   .mat-dialog-container {
+    min-width: 1440px !important;
+    width: 1440px;
+    max-width: 1440px !important;
     background: $white;
     border-radius: 14px;
     padding: 64px 80px 144px;
-    height: 100%;
-    overflow: hidden;
+    overflow: unset;
   }
 }
