@@ -86,6 +86,14 @@ export class SublineDetailComponent
     return record.swissSublineNumber;
   }
 
+  getDetailHeading(record: SublineVersion): string {
+    return '';
+  }
+
+  getDetailSubheading(record: SublineVersion): string {
+    return '';
+  }
+
   updateRecord(): void {
     this.sublinesService
       .updateSublineVersion(this.getId(), this.form.value)

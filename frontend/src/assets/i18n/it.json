@@ -13,8 +13,10 @@
     "VERSIONING": "Questa modifica nel controllo delle versioni non è supportata dal sistema. Contattare il servizio specializzato Atlas."
   },
   "COMMON": {
+    "BACK_TO_OVERVIEW": "Torna al sommario",
     "SAVE": "Salva",
     "EDIT": "Modifica",
+    "DELETE": "Eliminare",
     "CANCEL": "Annulla",
     "COVERAGE": {
       "COMPLETE": "Completo",
@@ -31,7 +33,10 @@
     "FROM": "dal",
     "TO": "al",
     "VERSION": "Versione",
+    "VERSION_TABLE_TITLE": "Versioni con validità diversa",
+    "GAP": "Spazio",
     "FILLED_AUTOMATICALLY": "Compilato automaticamente",
+    "VERSION_DESCRIPTION": "Designazione della versione",
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
     "STATUS": "Stato",
