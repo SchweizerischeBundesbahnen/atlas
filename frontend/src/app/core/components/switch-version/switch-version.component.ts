@@ -1,55 +1,72 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Record } from '../detail-wrapper/record';
 import { DateService } from '../../date/date.service';
 import { Page } from '../../model/page';
-import { Pages } from '../../../pages/pages';
+import { TableColumn } from '../table/table-column';
+import { Status } from '../../../api';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-switch-version',
   templateUrl: './switch-version.component.html',
   styleUrls: ['./switch-version.component.scss'],
 })
-export class SwitchVersionComponent {
+export class SwitchVersionComponent implements OnChanges {
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
   @Input() pageType!: Page;
   @Input() recordTitle: string | undefined;
+  @Input() switchDisabled = false;
   @Output() switchVersion = new EventEmitter<number>();
 
   currentIndex: number;
+  tableColumns: TableColumn<Record>[] = [
+    {
+      headerTitle: 'COMMON.VERSION_DESCRIPTION',
+      value: 'versionNumber',
+      translate: { withKey: 'COMMON.VERSION' },
+    },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
+    {
+      headerTitle: 'COMMON.STATUS',
+      value: 'status',
+      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+    },
+  ];
 
-  constructor() {
+  constructor(private readonly translatePipe: TranslatePipe) {
     this.currentIndex = 0;
   }
 
-  displayPageTypeTitle() {
+  ngOnChanges() {
+    this.records.map((item, index) => (item.versionNumber = index + 1));
     this.getCurrentIndex();
-
-    if (this.pageType === Pages.TTFN) {
-      return 'TTFN.TTFN';
-    }
-    if (this.pageType === Pages.LINES) {
-      return 'LIDI.LINE.LINE';
-    }
-    if (this.pageType === Pages.SUBLINES) {
-      return 'LIDI.SUBLINE.SUBLINE';
-    }
-    return '';
   }
 
-  getStartDate() {
-    return this.formatDate(this.records[0].validFrom);
-  }
-
-  getEndDate() {
-    return this.formatDate(this.records[this.records.length - 1].validTo);
+  get columnValues() {
+    return this.tableColumns.map((item) => item.value);
   }
 
   formatDate(date: Date | undefined) {
     return DateService.getDateFormatted(date);
   }
 
+  format(input: Date | Status | number | undefined, column: TableColumn<Record>): string | null {
+    if (column.formatAsDate) {
+      return this.formatDate(input as Date);
+    }
+    if (column.translate?.withKey) {
+      return `${this.translatePipe.transform(column.translate.withKey)} ${input}`;
+    }
+    if (column.translate?.withPrefix) {
+      return this.translatePipe.transform(column.translate.withPrefix + input);
+    }
+    return null;
+  }
+
   setCurrentRecord(clickedRecord: Record) {
+    if (this.switchDisabled) return;
     this.currentIndex = this.getIndexOfRecord(clickedRecord);
     this.switchVersion.emit(this.currentIndex);
   }

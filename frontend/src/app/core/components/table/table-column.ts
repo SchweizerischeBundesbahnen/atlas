@@ -3,6 +3,7 @@ export interface TableColumn<TYPE> {
   value: keyof TYPE & string;
   formatAsDate?: boolean;
   translate?: {
-    withPrefix: string;
+    withPrefix?: string;
+    withKey?: string;
   };
 }
