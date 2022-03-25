@@ -64,7 +64,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -75,7 +75,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                            .validTo(LocalDate.of(2000, 12, 31))
                            .businessOrganisation("sbb")
                            .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
+                           .sublineType(SublineType.TECHNICAL)
                            .paymentType(PaymentType.LOCAL)
                            .mainlineSlnid(lineVersionSaved.getSlnid())
                            .build();
@@ -119,7 +119,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -130,7 +130,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                            .validTo(LocalDate.of(2000, 12, 31))
                            .businessOrganisation("sbb")
                            .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
+                           .sublineType(SublineType.TECHNICAL)
                            .paymentType(PaymentType.LOCAL)
                            .mainlineSlnid(lineVersionSaved.getSlnid())
                            .build();
@@ -159,7 +159,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -170,7 +170,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                            .validTo(LocalDate.of(2000, 12, 31))
                            .businessOrganisation("sbb")
                            .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
+                           .sublineType(SublineType.TECHNICAL)
                            .paymentType(PaymentType.LOCAL)
                            .mainlineSlnid(lineVersionSaved.getSlnid())
                            .build();
@@ -213,7 +213,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -226,7 +226,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne-changed")
                     .build();
@@ -238,7 +238,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                            .validTo(LocalDate.of(2000, 12, 31))
                            .businessOrganisation("sbb")
                            .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
+                           .sublineType(SublineType.TECHNICAL)
                            .paymentType(PaymentType.LOCAL)
                            .mainlineSlnid(lineVersionSaved.getSlnid())
                            .build();
@@ -275,7 +275,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -286,7 +286,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                            .validTo(LocalDate.of(2001, 1, 1))
                            .businessOrganisation("sbb")
                            .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
+                           .sublineType(SublineType.TECHNICAL)
                            .paymentType(PaymentType.LOCAL)
                            .mainlineSlnid(lineVersionSaved.getSlnid())
                            .build();
@@ -309,7 +309,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -320,7 +320,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                            .validTo(LocalDate.of(2000, 12, 31))
                            .businessOrganisation("sbb")
                            .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
+                           .sublineType(SublineType.TECHNICAL)
                            .paymentType(PaymentType.LOCAL)
                            .mainlineSlnid(lineVersionModel.getSlnid())
                            .build();
@@ -361,7 +361,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.ORDERLY)
+                    .lineType(LineType.ORDERLY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -372,7 +372,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                            .validTo(LocalDate.of(2000, 12, 31))
                            .businessOrganisation("sbb")
                            .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
+                           .sublineType(SublineType.TECHNICAL)
                            .paymentType(PaymentType.LOCAL)
                            .mainlineSlnid(lineVersionModel.getSlnid())
                            .build();
@@ -384,7 +384,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
                            .validTo(LocalDate.of(2001, 12, 31))
                            .businessOrganisation("bls")
                            .swissSublineNumber("b0.Ic2-sibline")
-                           .type(SublineType.TECHNICAL)
+                           .sublineType(SublineType.TECHNICAL)
                            .paymentType(PaymentType.LOCAL)
                            .mainlineSlnid(lineVersionModel.getSlnid())
                            .build();
