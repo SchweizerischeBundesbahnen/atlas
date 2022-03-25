@@ -108,7 +108,7 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
     if (column.formatAsDate) {
       return DateService.getDateFormatted(value as Date);
     }
-    if (column.translate) {
+    if (column.translate?.withPrefix) {
       return value ? this.translatePipe.transform(column.translate.withPrefix + value) : null;
     }
     return value as string;

@@ -190,6 +190,10 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   abstract getTitle(record: TYPE): string | undefined;
 
+  abstract getDetailHeading(record: TYPE): string;
+
+  abstract getDetailSubheading(record: TYPE): string;
+
   abstract readRecord(): TYPE;
 
   abstract getFormGroup(record: TYPE): FormGroup;

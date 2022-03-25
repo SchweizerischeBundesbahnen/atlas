@@ -1,128 +1,39 @@
-.detail-header {
-  display: flex;
+@import 'src/styles/variables';
+
+h3 {
+  margin-bottom: 1.5rem;
+}
+
+hr {
+  height: 2px;
+  margin: 0;
   width: 100%;
+  opacity: 1;
+  background-color: $gray-400;
+}
 
-  .title {
-    align-self: flex-start;
-    padding-right: 15px;
-    margin-right: auto;
+table {
+  width: 42.5rem;
+  -webkit-border-vertical-spacing: 0 !important;
+}
 
-    app-coverage {
-      padding-left: 0.5rem;
+.selected-row {
+  border: 3px solid $primary-300;
+  border-radius: 5px;
+  td {
+    border-bottom: 0;
+    &:first-child {
+      border-left: 0;
+    }
+    &:last-child {
+      border-right: 0;
     }
   }
+}
 
-  .versionedElements {
-    display: flex;
-    align-self: flex-end;
-    font-size: 85%;
-    overflow-x: auto;
-    padding-left: 1px;
-
-    .row {
-      margin: 0;
-
-      * {
-        padding-left: 5px;
-        padding-right: 5px;
-      }
-    }
-
-    a {
-      color: unset;
-      text-decoration: unset;
-      cursor: pointer;
-    }
-
-    a:hover {
-      color: unset;
-      text-decoration: unset;
-      font-weight: bold;
-    }
-
-    .versionedElement.currentVersion * {
-      border-width: 3px;
-      font-weight: bold;
-    }
-
-    .versionedElement * {
-      border-width: 1px;
-    }
-
-    .versionedElement {
-      min-width: 180px;
-      margin-left: -1px;
-
-      .row {
-        width: 100%;
-      }
-
-      .upper-row {
-        border-bottom-style: solid;
-        border-bottom-color: black;
-      }
-
-      .lower-row {
-        width: 100%;
-
-        .lower-cell {
-          text-align: center;
-
-          border-left-style: solid;
-          border-left-color: black;
-          border-right-style: solid;
-          border-right-color: black;
-        }
-      }
-
-      .left-cell {
-        border-left-style: solid;
-        border-left-color: black;
-      }
-
-      .right-cell {
-        text-align: right;
-
-        border-right-style: solid;
-        border-right-color: black;
-      }
-    }
-
-    .versionContainer {
-      display: flex;
-    }
-
-    .versionGap {
-      height: 100%;
-
-      display: flex;
-
-      .upper-row {
-        height: 1.8em;
-        border-width: 1px;
-        border-bottom-style: dotted;
-        border-bottom-color: black;
-      }
-    }
-  }
-  ::-webkit-scrollbar {
-    background: white;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px black;
-    border-radius: 10px;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: rgb(128 126 126);
-    border-radius: 10px;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgb(108 106 106);
+.placeholder-row {
+  span {
+    padding: 0 5px;
+    color: $gray-500;
   }
 }
