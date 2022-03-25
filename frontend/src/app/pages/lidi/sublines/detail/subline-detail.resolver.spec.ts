@@ -19,7 +19,7 @@ const version: SublineVersion = {
   businessOrganisation: 'SBB',
   paymentType: PaymentType.None,
   swissSublineNumber: 'L1:2',
-  type: SublineType.Technical,
+  sublineType: SublineType.Technical,
   mainlineSlnid: 'ch:1:slnid:1000',
 };
 
