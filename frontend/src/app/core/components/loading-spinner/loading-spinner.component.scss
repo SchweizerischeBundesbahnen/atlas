@@ -18,24 +18,17 @@
 .full-screen {
   height: 100vh;
   position: fixed;
-  // 4rem is height of navbar
-  top: 4rem;
   bottom: 0;
   right: 0;
   left: 0;
 }
 
-@keyframes spinner {
-  to {
-    transform: rotate(360deg);
-  }
-}
+$loading-spinner-size: 160px;
 
 .loading-spinner-animation {
   position: relative;
-  width: 60px;
-  height: 60px;
-  background-image: url('../../../../assets/images/atlas-logo.png');
-  background-size: 60px;
-  animation: spinner 2s linear infinite;
+  width: $loading-spinner-size;
+  height: $loading-spinner-size;
+  background-size: $loading-spinner-size;
+  background-image: url('../../../../assets/images/logo-atlas.svg');
 }
