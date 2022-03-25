@@ -1,4 +1,4 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
 .dialog-close-panel {
   width: 100%;
@@ -7,11 +7,12 @@
   button {
     position: absolute;
     padding: 0;
-    margin: -30px 0 0 10px;
+    margin: -55px 0 0 44px;
     width: 25px;
     line-height: 25px;
     height: 25px;
     border-radius: 10px;
+    font-size: 24px;
   }
 
   .bi {
