@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from './auth.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Subject } from 'rxjs';
+import { Roles } from './role';
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
@@ -84,5 +85,34 @@ describe('AuthService', () => {
   it('logs out with oauthService', () => {
     authService.logout();
     expect(oauthService.logOut).toHaveBeenCalled();
+  });
+
+  it('checks for roles correctly', () => {
+    let result = authService.containsAnyRole(
+      [Roles.LidiWriter],
+      [Roles.LidiWriter, Roles.LidiAdmin]
+    );
+    expect(result).toBeTrue();
+
+    result = authService.containsAnyRole([Roles.LidiWriter], [Roles.LidiWriter]);
+    expect(result).toBeTrue();
+
+    result = authService.containsAnyRole([Roles.LidiWriter], [Roles.LidiAdmin]);
+    expect(result).toBeFalse();
+
+    result = authService.containsAnyRole([Roles.LidiWriter, Roles.LidiAdmin], [Roles.LidiAdmin]);
+    expect(result).toBeTrue();
+
+    result = authService.containsAnyRole([Roles.LidiWriter, Roles.LidiAdmin], [Roles.LidiWriter]);
+    expect(result).toBeTrue();
+
+    result = authService.containsAnyRole([Roles.LidiWriter, Roles.LidiAdmin], []);
+    expect(result).toBeFalse();
+
+    result = authService.containsAnyRole(
+      [Roles.LidiWriter, Roles.LidiAdmin],
+      [Roles.BoWriter, Roles.BoAdmin]
+    );
+    expect(result).toBeFalse();
   });
 });
