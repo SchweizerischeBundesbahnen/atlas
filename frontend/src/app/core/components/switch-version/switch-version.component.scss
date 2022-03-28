@@ -14,7 +14,7 @@ hr {
 
 table {
   width: 43.5rem;
-  -webkit-border-vertical-spacing: 0 !important;
+  border-spacing: 0 0 !important;
 }
 
 .selected-row {
@@ -42,4 +42,8 @@ table {
     padding: 0 0.25rem;
     color: $gray-500;
   }
+}
+
+.no-display {
+  display: none;
 }
