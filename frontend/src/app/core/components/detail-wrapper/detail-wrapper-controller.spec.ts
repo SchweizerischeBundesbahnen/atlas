@@ -33,6 +33,14 @@ describe('DetailWrapperController', () => {
       return dummyController.getPageType();
     }
 
+    getDetailHeading(record: Record): string {
+      return '';
+    }
+
+    getDetailSubheading(record: Record): string {
+      return '';
+    }
+
     backToOverview(): void {
       dummyController.backToOverview();
     }
@@ -102,10 +110,6 @@ describe('DetailWrapperController', () => {
       expect(controller).toBeTruthy();
     });
 
-    it('should initialize heading', () => {
-      expect(controller.heading).toBe('1');
-    });
-
     it('should initialize form', () => {
       expect(controller.isNewRecord()).toBeFalse();
       expect(controller.isExistingRecord()).toBeTrue();
@@ -155,10 +159,6 @@ describe('DetailWrapperController', () => {
       record = {};
       controller = new DummyWrapperController();
       controller.ngOnInit();
-    });
-
-    it('should initialize heading', () => {
-      expect(controller.heading).toBeUndefined();
     });
 
     it('should initialize form', () => {

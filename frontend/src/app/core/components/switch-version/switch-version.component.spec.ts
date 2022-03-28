@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SwitchVersionComponent } from './switch-version.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Record } from '../detail-wrapper/record';
 import moment from 'moment';
-import { Pages } from '../../../pages/pages';
 import { CoverageComponent } from '../coverage/coverage.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('SwitchVersionComponent', () => {
   let component: SwitchVersionComponent;
@@ -15,12 +14,8 @@ describe('SwitchVersionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SwitchVersionComponent, CoverageComponent],
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
+      providers: [TranslatePipe],
     }).compileComponents();
   });
 
@@ -45,12 +40,22 @@ describe('SwitchVersionComponent', () => {
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
     component.currentRecord = firstRecord;
     component.records = records;
-    component.pageType = Pages.TTFN;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('currentIndex should be 0 at start', () => {
+    expect(component.currentIndex).toBe(0);
+  });
+
+  it('records should have versionName', () => {
+    component.ngOnChanges();
+    expect(component.records[0].versionNumber).toBe(1);
+    expect(component.records[1].versionNumber).toEqual(2);
+    expect(component.records[2].versionNumber).toEqual(3);
   });
 
   it('should switch to second version', () => {
@@ -74,27 +79,6 @@ describe('SwitchVersionComponent', () => {
     //then
     expect(component.currentIndex).toBe(0);
     expect(component.switchVersion.emit).toHaveBeenCalledWith(0);
-  });
-
-  it('should get initial data range', () => {
-    //when
-    const result = component.getStartDate();
-    //then
-    expect(result).toBe('01.01.2000');
-  });
-
-  it('should get end data range', () => {
-    //when
-    const result = component.getEndDate();
-    //then
-    expect(result).toBe('31.12.2002');
-  });
-
-  it('should get end data range', () => {
-    //when
-    const result = component.getEndDate();
-    //then
-    expect(result).toBe('31.12.2002');
   });
 
   it('should evaluate gaps', () => {

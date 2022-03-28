@@ -66,6 +66,14 @@ export class LineDetailComponent
     return record.swissLineNumber;
   }
 
+  getDetailHeading(record: LineVersion): string {
+    return `${record.number} - ${record.description}`;
+  }
+
+  getDetailSubheading(record: LineVersion): string {
+    return record.swissLineNumber;
+  }
+
   updateRecord(): void {
     this.linesService
       .updateLineVersion(this.getId(), this.form.value)
