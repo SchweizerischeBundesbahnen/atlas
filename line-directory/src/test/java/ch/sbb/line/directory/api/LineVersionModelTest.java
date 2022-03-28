@@ -213,7 +213,7 @@ class LineVersionModelTest {
   private static LineVersionModelBuilder lineVersionModel() {
     return LineTestData.lineVersionModelBuilder()
                        .status(Status.ACTIVE)
-                       .type(LineType.ORDERLY)
+                       .lineType(LineType.ORDERLY)
                        .slnid("slnid")
                        .paymentType(PaymentType.INTERNATIONAL)
                        .number("number")
