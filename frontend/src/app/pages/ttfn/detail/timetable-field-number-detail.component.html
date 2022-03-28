@@ -36,12 +36,39 @@
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col-6 pe-3">
         <mat-label class="font-bold-lg">{{ 'TTFN.NUMBER' | translate }}</mat-label>
+        <mat-label class="font-regular-sm hide-lable-content">{{
+          'TTFN.NUMBER' | translate
+        }}</mat-label>
         <mat-form-field>
           <input data-cy="number" required matInput formControlName="number" />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
       <div class="d-flex flex-column col-6 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}
+          <em
+            class="bi bi-info-circle me-2"
+            title="{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER_TOOLTIP' | translate }}"
+          ></em>
+        </mat-label>
+        <mat-label class="font-regular-sm">
+          {{ this.SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER }}
+        </mat-label>
+        <mat-form-field>
+          <input
+            data-cy="swissTimetableFieldNumber"
+            required
+            matInput
+            formControlName="swissTimetableFieldNumber"
+          />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-12 pe-3">
         <mat-label class="font-bold-lg"
           >{{ 'TTFN.DESCRIPTION' | translate }}
           <em
@@ -51,30 +78,6 @@
         </mat-label>
         <mat-form-field>
           <input data-cy="description" matInput formControlName="description" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg"
-          >{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}
-          <em
-            class="bi bi-info-circle me-2"
-            title="{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER_TOOLTIP' | translate }}"
-          ></em>
-        </mat-label>
-        <mat-label class="font-regular-sm">{{
-          this.SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER
-        }}</mat-label>
-        <mat-form-field>
-          <input
-            data-cy="swissTimetableFieldNumber"
-            required
-            matInput
-            formControlName="swissTimetableFieldNumber"
-          />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
