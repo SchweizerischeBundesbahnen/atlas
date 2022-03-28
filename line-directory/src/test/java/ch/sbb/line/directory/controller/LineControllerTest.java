@@ -38,7 +38,7 @@ public class LineControllerTest {
   private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
 
   private static final String[] RECURSIVE_COMPARISION_IGNORE_FIELDS = {"editor", "creator",
-      "editionDate", "creationDate", "version", "lineType", "type"};
+      "editionDate", "creationDate", "version"};
 
   @Mock
   private LineService lineService;
@@ -162,7 +162,7 @@ public class LineControllerTest {
   private static LineVersionModel createModel() {
     return LineTestData.lineVersionModelBuilder()
                        .status(Status.ACTIVE)
-                       .type(LineType.ORDERLY)
+                       .lineType(LineType.ORDERLY)
                        .slnid("slnid")
                        .paymentType(PaymentType.INTERNATIONAL)
                        .number("number")

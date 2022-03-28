@@ -41,7 +41,7 @@ public class SublineModel implements DatesValidator {
 
   @Schema(description = "Subline Type")
   @NotNull
-  private SublineType type;
+  private SublineType sublineType;
 
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001235")
   private String slnid;
