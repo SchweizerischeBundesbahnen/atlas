@@ -1,6 +1,6 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
 .mat-raised-button {
-  border-radius: 28px !important;
+  border-radius: $border-radius !important;
   padding: 10px 20px !important;
 }
