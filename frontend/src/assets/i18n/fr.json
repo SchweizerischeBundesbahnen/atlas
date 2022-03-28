@@ -13,8 +13,10 @@
     "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé Atlas."
   },
   "COMMON": {
+    "BACK_TO_OVERVIEW": "Retour au sommaire",
     "SAVE": "Sauvegarder",
     "EDIT": "Modifier",
+    "DELETE": "Effacer",
     "CANCEL": "Annuler",
     "COVERAGE": {
       "COMPLETE": "Complet",
@@ -58,6 +60,11 @@
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Soit l’objet a déjà été supprimé, soit il a été traité entre-temps. Veuillez recharger la page en appuyant sur la touche F5."
     }
+  },
+  "VERSION_TABLE": {
+    "TITLE": "Versions avec validité différente",
+    "GAP": "Lacune",
+    "VERSION_DESCRIPTION": "Désignation de la version"
   },
   "DIALOG": {
     "OK": "Suivant",

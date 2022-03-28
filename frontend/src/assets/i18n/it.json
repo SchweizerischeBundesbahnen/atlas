@@ -13,8 +13,10 @@
     "VERSIONING": "Questa modifica nel controllo delle versioni non è supportata dal sistema. Contattare il servizio specializzato Atlas."
   },
   "COMMON": {
+    "BACK_TO_OVERVIEW": "Torna al sommario",
     "SAVE": "Salva",
     "EDIT": "Modifica",
+    "DELETE": "Eliminare",
     "CANCEL": "Annulla",
     "COVERAGE": {
       "COMPLETE": "Completo",
@@ -58,6 +60,11 @@
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "L’oggetto è già stato cancellato o nel frattempo è stato modificato. Ricaricare la pagina premendo il tasto F5."
     }
+  },
+  "VERSION_TABLE": {
+    "TITLE": "Versioni con validità diversa",
+    "GAP": "Spazio",
+    "VERSION_DESCRIPTION": "Designazione della versione"
   },
   "DIALOG": {
     "OK": "Avanti",
