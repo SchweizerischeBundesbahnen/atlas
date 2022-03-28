@@ -1,15 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimetableFieldNumberOverviewComponent } from './timetable-field-number-overview.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 import { ContainerTimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { CoreModule } from '../../../core/module/core.module';
+import { AppTestingModule } from '../../../app.testing.module';
 
 const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   objects: [
@@ -43,15 +40,7 @@ describe('TimetableFieldNumberOverviewComponent', () => {
         TableComponent,
         LoadingSpinnerComponent,
       ],
-      imports: [
-        CoreModule,
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        RouterModule.forRoot([]),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [CoreModule, AppTestingModule],
       providers: [{ provide: TimetableFieldNumbersService, useValue: timetableFieldNumberService }],
     }).compileComponents();
 

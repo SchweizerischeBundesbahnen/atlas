@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RouteToDialogComponent } from './route-to-dialog.component';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('RouteToDialogComponent', () => {
   let component: RouteToDialogComponent;
@@ -11,7 +11,7 @@ describe('RouteToDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RouteToDialogComponent],
-      imports: [MatDialogModule, RouterTestingModule],
+      imports: [AppTestingModule],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
