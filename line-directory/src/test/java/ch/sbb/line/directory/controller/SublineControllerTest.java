@@ -33,7 +33,7 @@ import org.springframework.data.domain.Pageable;
 public class SublineControllerTest {
 
   private static final String[] RECURSIVE_COMPARISION_IGNORE_FIELDS = {"editor", "creator",
-      "editionDate", "creationDate", "version", "etagVersion", "sublineType", "type"};
+      "editionDate", "creationDate", "version", "etagVersion"};
 
   @Mock
   private SublineService sublineService;
@@ -140,7 +140,7 @@ public class SublineControllerTest {
                               .swissSublineNumber("swissSublineNumber")
                               .mainlineSlnid("mainlineSlnid")
                               .status(Status.ACTIVE)
-                              .type(SublineType.TECHNICAL)
+                              .sublineType(SublineType.TECHNICAL)
                               .slnid("slnid")
                               .description("description")
                               .number("number")

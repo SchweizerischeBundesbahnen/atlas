@@ -12,16 +12,20 @@
     </div>
   </div>
 
+  <nav mat-tab-nav-bar class="tabs">
+    <a
+      mat-tab-link
+      *ngFor="let tab of TABS"
+      [routerLink]="tab.link"
+      routerLinkActive
+      #rla="routerLinkActive"
+      [active]="rla.isActive"
+      [class]="'font-bold-xl ' + (rla.isActive ? 'color-gray-900' : 'color-primary-400')"
+    >
+      {{ tab.title | translate }}
+    </a>
+  </nav>
   <div class="white-container">
-    <div class="table-heading font-bold-4xl color-gray-900 mb-5">
-      {{ 'LIDI.LINE.LINES' | translate }}
-    </div>
-
-    <app-lidi-lines data-cy="lidi-lines"></app-lidi-lines>
-
-    <div class="table-heading font-bold-4xl color-gray-900 mb-5" data-cy="sublines-title">
-      {{ 'LIDI.SUBLINE.SUBLINES' | translate }}
-    </div>
-    <app-lidi-sublines data-cy="lidi-sublines"></app-lidi-sublines>
+    <router-outlet></router-outlet>
   </div>
 </div>

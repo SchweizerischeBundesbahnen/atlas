@@ -7,12 +7,18 @@ import { Pages } from '../pages';
 import { SublineDetailComponent } from './sublines/detail/subline-detail.component';
 import { SublineDetailResolver } from './sublines/detail/subline-detail.resolver';
 import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
+import { LinesComponent } from './lines/lines.component';
+import { SublinesComponent } from './sublines/sublines.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LidiOverviewComponent,
     children: [
+      {
+        path: Pages.LINES.path,
+        component: LinesComponent,
+      },
       {
         path: Pages.LINES.path + '/:id',
         component: RouteToDialogComponent,
@@ -23,6 +29,10 @@ const routes: Routes = [
         runGuardsAndResolvers: 'always',
       },
       {
+        path: Pages.SUBLINES.path,
+        component: SublinesComponent,
+      },
+      {
         path: Pages.SUBLINES.path + '/:id',
         component: RouteToDialogComponent,
         data: { component: SublineDetailComponent },
@@ -31,10 +41,9 @@ const routes: Routes = [
         },
         runGuardsAndResolvers: 'always',
       },
+      { path: '**', redirectTo: Pages.LINES.path },
     ],
   },
-
-  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

@@ -151,7 +151,7 @@ export class SublineDetailComponent
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
         status: [version.status],
-        type: [version.type, [Validators.required]],
+        sublineType: [version.sublineType, [Validators.required]],
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,

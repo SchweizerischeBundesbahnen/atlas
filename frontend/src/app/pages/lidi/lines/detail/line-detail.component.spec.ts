@@ -20,7 +20,7 @@ const lineVersion: LineVersion = {
   businessOrganisation: 'SBB',
   paymentType: PaymentType.None,
   swissLineNumber: 'L1',
-  type: LineType.Orderly,
+  lineType: LineType.Orderly,
   colorBackCmyk: '',
   colorBackRgb: '',
   colorFontCmyk: '',
