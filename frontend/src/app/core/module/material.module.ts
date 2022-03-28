@@ -27,6 +27,7 @@ import { ServerErrorInterceptor } from '../configuration/server-error-intercepto
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DateModule } from './date.module';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   imports: [CommonModule],
@@ -53,6 +54,7 @@ import { DateModule } from './date.module';
     MatIconModule,
     MatCheckboxModule,
     MatCardModule,
+    MatTabsModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: TranslatedPaginator },

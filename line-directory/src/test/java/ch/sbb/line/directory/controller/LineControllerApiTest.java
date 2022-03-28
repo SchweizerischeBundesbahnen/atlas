@@ -1,12 +1,13 @@
 package ch.sbb.line.directory.controller;
 
-import static ch.sbb.line.directory.entity.LineVersion.Fields.alternativeName;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.businessOrganisation;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.combinationName;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.longName;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.paymentType;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.slnid;
-import static ch.sbb.line.directory.entity.LineVersion.Fields.swissLineNumber;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.alternativeName;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.businessOrganisation;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.combinationName;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.lineType;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.longName;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.paymentType;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.slnid;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.swissLineNumber;
 import static ch.sbb.line.directory.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -82,7 +83,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2")
                     .build();
@@ -97,7 +98,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$[0]." + alternativeName, is("alternative")))
        .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
        .andExpect(jsonPath("$[0]." + longName, is("long name")))
-       .andExpect(jsonPath("$[0]." + "type", is(LineType.TEMPORARY.toString())))
+       .andExpect(jsonPath("$[0]." + lineType, is(LineType.TEMPORARY.toString())))
        .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
        .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC2")))
        .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
@@ -139,7 +140,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC5")
                     .build();
@@ -163,7 +164,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC5")
                     .build();
@@ -192,7 +193,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC5")
                     .build();
@@ -203,7 +204,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
         .contentType(contentType)
     ).andExpect(status().isOk())
         .andExpect(jsonPath("$[0].businessOrganisation", is("sbb")))
-        .andExpect(jsonPath("$[0].type", is(LineType.TEMPORARY.toString())))
+        .andExpect(jsonPath("$[0].lineType", is(LineType.TEMPORARY.toString())))
         .andExpect(jsonPath("$[0].status" , is(Status.ACTIVE.toString())))
         .andExpect(jsonPath("$[0].slnid" , is(lineVersion.getSlnid())))
         .andExpect(jsonPath("$[0].validFrom" , is("2000-01-01")))
@@ -221,7 +222,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC5")
                     .build();
@@ -235,7 +236,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
        .andExpect(jsonPath("$[0]." + longName, is("long name")))
        .andExpect(jsonPath("$[0]." + slnid, is(lineVersion.getSlnid())))
-       .andExpect(jsonPath("$[0]." + "type", is(LineType.TEMPORARY.toString())))
+       .andExpect(jsonPath("$[0]." + lineType, is(LineType.TEMPORARY.toString())))
        .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
        .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC5")))
        .andExpect(jsonPath("$[0]." + businessOrganisation, is("sbb")))
@@ -254,7 +255,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -296,7 +297,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -337,7 +338,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -350,7 +351,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();
@@ -382,7 +383,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
                     .alternativeName("alternative")
                     .combinationName("combination")
                     .longName("long name")
-                    .type(LineType.TEMPORARY)
+                    .lineType(LineType.TEMPORARY)
                     .paymentType(PaymentType.LOCAL)
                     .swissLineNumber("b0.IC2-libne")
                     .build();

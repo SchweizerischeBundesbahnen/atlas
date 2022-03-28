@@ -15,11 +15,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
+@FieldNameConstants
 @Schema(name = "LineVersion")
 public class LineVersionModel implements DatesValidator {
 
@@ -40,7 +42,7 @@ public class LineVersionModel implements DatesValidator {
 
   @Schema(description = "LineType")
   @NotNull
-  private LineType type;
+  private LineType lineType;
 
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001234")
   private String slnid;
@@ -121,3 +123,5 @@ public class LineVersionModel implements DatesValidator {
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 }
+
+
