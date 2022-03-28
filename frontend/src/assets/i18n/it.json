@@ -176,7 +176,7 @@
       "BACKGROUND_RGB": "Colore dello sfondo dei caratteri RGB",
       "FONT_CMYK": "Colore dei caratteri CMYK",
       "BACKGROUND_CMYK": "Colore dello sfondo dei caratteri CMYK",
-      "NEW": "Nuova linea",
+      "NEW": "Inserire nuova linea",
       "TYPES": {
         "ORDERLY": "Ordinaria",
         "TEMPORARY": "Provvisoria",
@@ -205,7 +205,7 @@
       "NUMBER": "Numero linea parziale",
       "MAINLINE": "Linea principale",
       "DESCRIPTION": "Denominazione linea parziale",
-      "NEW": "Nuova linea parziale",
+      "NEW": "Inserire nuova linea parziale",
       "TYPES": {
         "COMPENSATION": "Compensazione",
         "TECHNICAL": "Tecnica"
