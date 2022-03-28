@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Record } from '../detail-wrapper/record';
 import { DateService } from '../../date/date.service';
-import { Page } from '../../model/page';
 import { TableColumn } from '../table/table-column';
 import { Status } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -14,15 +13,13 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class SwitchVersionComponent implements OnChanges {
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
-  @Input() pageType!: Page;
-  @Input() recordTitle: string | undefined;
   @Input() switchDisabled = false;
   @Output() switchVersion = new EventEmitter<number>();
 
   currentIndex: number;
   tableColumns: TableColumn<Record>[] = [
     {
-      headerTitle: 'COMMON.VERSION_DESCRIPTION',
+      headerTitle: 'VERSION_TABLE.VERSION_DESCRIPTION',
       value: 'versionNumber',
       translate: { withKey: 'COMMON.VERSION' },
     },
@@ -40,7 +37,7 @@ export class SwitchVersionComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.records.map((item, index) => (item.versionNumber = index + 1));
+    this.records.forEach((item, index) => (item.versionNumber = index + 1));
     this.getCurrentIndex();
   }
 

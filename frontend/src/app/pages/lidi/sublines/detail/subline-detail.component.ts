@@ -87,11 +87,11 @@ export class SublineDetailComponent
   }
 
   getDetailHeading(record: SublineVersion): string {
-    return '';
+    return `${record.number} - ${record.description}`;
   }
 
   getDetailSubheading(record: SublineVersion): string {
-    return '';
+    return record.swissSublineNumber;
   }
 
   updateRecord(): void {

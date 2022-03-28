@@ -33,10 +33,7 @@
     "FROM": "de",
     "TO": "à",
     "VERSION": "Version",
-    "VERSION_TABLE_TITLE": "Versions avec validité différente",
-    "GAP": "Lacune",
     "FILLED_AUTOMATICALLY": "Remplissage automatique",
-    "VERSION_DESCRIPTION": "Désignation de la version",
     "VALID_FROM": "Valable du",
     "VALID_TO": "Valable au",
     "STATUS": "Statut",
@@ -63,6 +60,11 @@
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Soit l’objet a déjà été supprimé, soit il a été traité entre-temps. Veuillez recharger la page en appuyant sur la touche F5."
     }
+  },
+  "VERSION_TABLE": {
+    "TITLE": "Versions avec validité différente",
+    "GAP": "Lacune",
+    "VERSION_DESCRIPTION": "Désignation de la version"
   },
   "DIALOG": {
     "OK": "Suivant",
