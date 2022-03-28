@@ -1,16 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { PaymentType, SublinesService, SublineType, SublineVersion } from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AppTestingModule } from '../../../../app.testing.module';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -197,16 +194,7 @@ function setupTestBed(
 ) {
   TestBed.configureTestingModule({
     declarations: [SublineDetailComponent],
-    imports: [
-      CoreModule,
-      RouterModule.forRoot([]),
-      HttpClientTestingModule,
-      MatDialogModule,
-      BrowserAnimationsModule,
-      TranslateModule.forRoot({
-        loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-      }),
-    ],
+    imports: [CoreModule, AppTestingModule],
     providers: [
       { provide: FormBuilder },
       { provide: SublinesService, useValue: sublinesService },

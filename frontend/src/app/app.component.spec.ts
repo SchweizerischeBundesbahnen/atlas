@@ -1,16 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
 import { AuthService } from './core/auth/auth.service';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HeaderComponent } from './core/components/header/header.component';
-import { MaterialModule } from './core/module/material.module';
 import { UserComponent } from './core/components/user/user.component';
 import { LanguageSwitcherComponent } from './core/components/language-switcher/language-switcher.component';
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 import { LoadingSpinnerComponent } from './core/components/loading-spinner/loading-spinner.component';
+import { AppTestingModule } from './app.testing.module';
 
 const authServiceMock: Partial<AuthService> = {
   claims: { name: 'Test', email: 'test@test.ch', roles: [] },
@@ -23,14 +20,7 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        NoopAnimationsModule,
-        RouterTestingModule,
-        MaterialModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
       declarations: [
         AppComponent,
         HeaderComponent,
