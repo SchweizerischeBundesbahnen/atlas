@@ -104,6 +104,12 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
     }
   }
 
+  showTitle(column: TableColumn<DATATYPE>, value: string | Date): string {
+    let content = this.format(column, value);
+    let hideTooltip = this.hideTooltip(content);
+    return !hideTooltip ? content : '';
+  }
+
   format(column: TableColumn<DATATYPE>, value: string | Date): string {
     if (column.formatAsDate) {
       return DateService.getDateFormatted(value as Date);
