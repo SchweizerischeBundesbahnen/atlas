@@ -42,6 +42,17 @@ mat-form-field {
     margin-bottom: 2px;
   }
 }
+
+.mat-form-field-appearance-outline.mat-form-field-disabled
+  .mat-form-field-flex
+  .mat-form-field-outline,
+.mat-form-field-appearance-outline:hover.mat-form-field-disabled
+  .mat-form-field-flex
+  .mat-form-field-outline {
+  color: $gray-400;
+  border-width: 1px;
+}
+
 em {
   color: $primary-400;
 }
