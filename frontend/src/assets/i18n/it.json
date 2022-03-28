@@ -33,10 +33,7 @@
     "FROM": "dal",
     "TO": "al",
     "VERSION": "Versione",
-    "VERSION_TABLE_TITLE": "Versioni con validità diversa",
-    "GAP": "Spazio",
     "FILLED_AUTOMATICALLY": "Compilato automaticamente",
-    "VERSION_DESCRIPTION": "Designazione della versione",
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
     "STATUS": "Stato",
@@ -63,6 +60,11 @@
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "L’oggetto è già stato cancellato o nel frattempo è stato modificato. Ricaricare la pagina premendo il tasto F5."
     }
+  },
+  "VERSION_TABLE": {
+    "TITLE": "Versioni con validità diversa",
+    "GAP": "Spazio",
+    "VERSION_DESCRIPTION": "Designazione della versione"
   },
   "DIALOG": {
     "OK": "Avanti",

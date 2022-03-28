@@ -10,13 +10,12 @@
     *ngIf="controller.showSwitch"
     [records]="controller.records"
     [currentRecord]="controller.record"
-    [pageType]="controller.getPageType()"
-    [recordTitle]="controller.heading"
     [switchDisabled]="controller.form.enabled"
     (switchVersion)="controller.switchVersion($event)"
   ></app-switch-version>
-  <div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section mb-2">
+  <div *ngIf="controller.isExistingRecord()" class="edit-section mb-2">
     <button
+      *ngIf="hasAdminOrWriterRole"
       data-cy="edit-item"
       class="atlas-primary-btn me-3"
       (click)="controller.toggleEdit()"
@@ -25,6 +24,7 @@
       {{ 'COMMON.EDIT' | translate }}
     </button>
     <button
+      *ngIf="hasAdminRole"
       data-cy="delete-item"
       (click)="controller.delete()"
       [disabled]="controller.form.enabled"
