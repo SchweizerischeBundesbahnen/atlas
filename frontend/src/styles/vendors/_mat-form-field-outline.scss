@@ -28,15 +28,15 @@ mat-form-field {
 
 // Form Field with appearance="outline"
 .mat-form-field-appearance-outline,
+.mat-form-field-appearance-outline:hover,
 .mat-form-field-appearance-outline.mat-focused {
   .mat-form-field-outline,
   .mat-form-field-outline-thick {
     color: $primary-400;
   }
-  .mat-form-field-flex {
-    border-width: unset !important;
-    border-left-style: unset !important;
-    border-right-style: unset !important;
+  .mat-form-field-flex .mat-form-field-infix {
+    border: unset;
+    margin-bottom: 2px;
   }
 }
 em {

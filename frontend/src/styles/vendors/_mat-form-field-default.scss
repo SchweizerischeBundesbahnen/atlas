@@ -1,54 +1,50 @@
 @import 'src/styles/palette/atlas-palette';
 
-.mat-focused .mat-form-field-flex {
-  border-color: $primary-300 !important;
-  border-width: 3px;
-  border-left-style: solid;
-  border-right-style: solid;
+%default-border-style {
+  border-style: solid;
+  border-top-style: none;
 }
 
-.mat-form-field-invalid .mat-form-field-flex {
-  border-color: red !important;
+%text-padding-left-default {
+  padding-left: 0.3rem;
+}
+.mat-focused .mat-form-field-flex .mat-form-field-infix,
+.mat-form-field-flex .mat-form-field-infix:hover {
+  border-color: $primary-300;
   border-width: 3px;
-  border-left-style: solid;
-  border-right-style: solid;
-  border-bottom-style: solid;
+  margin-bottom: -2px;
+  @extend %default-border-style;
+}
+
+.mat-form-field-invalid .mat-form-field-flex .mat-form-field-infix {
+  border-color: red;
+  border-width: 3px;
   border-bottom-width: 2px;
+  margin-bottom: -2px;
+  @extend %default-border-style;
 }
 
 mat-form-field {
-  .mat-form-field-flex {
-    border-color: $gray-400 !important;
+  .mat-form-field-flex .mat-form-field-infix {
+    border-color: $gray-400;
     border-width: 1px;
-    border-left-style: solid;
-    border-right-style: solid;
+    @extend %default-border-style;
 
-    .mat-form-field-disabled {
-      border-color: $gray-400 !important;
+    .mat-form-field-disabled .mat-form-field-infix {
+      border-color: $gray-400;
       border-width: 1px;
-      border-left-style: solid;
-      border-right-style: solid;
-      border-bottom-style: solid;
+      @extend %default-border-style;
     }
 
-    input {
-      padding-left: 0.3rem;
-    }
-
+    input,
     mat-select {
-      padding-left: 0.3rem;
-    }
-
-    textarea {
       padding-left: 0.3rem;
     }
   }
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-underline {
-  border-bottom-style: solid !important;
-  border-width: 1px;
-  border-color: $gray-400 !important;
+  display: none;
 }
 
 mat-form-field.atlas-text-area {
