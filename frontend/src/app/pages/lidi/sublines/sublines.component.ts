@@ -6,7 +6,6 @@ import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { SublinesService, Subline, SublineType } from '../../../api';
-import { Pages } from '../../pages';
 import { TableSearch } from '../../../core/components/table-search/table-search';
 import { TableComponent } from '../../../core/components/table/table.component';
 

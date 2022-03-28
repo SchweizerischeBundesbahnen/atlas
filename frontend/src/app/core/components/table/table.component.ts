@@ -105,8 +105,8 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
   }
 
   showTitle(column: TableColumn<DATATYPE>, value: string | Date): string {
-    let content = this.format(column, value);
-    let hideTooltip = this.hideTooltip(content);
+    const content = this.format(column, value);
+    const hideTooltip = this.hideTooltip(content);
     return !hideTooltip ? content : '';
   }
 
