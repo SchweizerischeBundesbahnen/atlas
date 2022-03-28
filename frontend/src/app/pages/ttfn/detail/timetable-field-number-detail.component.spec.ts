@@ -13,6 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CoreModule } from '../../../core/module/core.module';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../app.testing.module';
+import { AuthService } from '../../../core/auth/auth.service';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -193,6 +194,10 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         {
           provide: MAT_DIALOG_DATA,
           useValue: addTtfData,
+        },
+        {
+          provide: AuthService,
+          useValue: {},
         },
       ],
     }).compileComponents();
