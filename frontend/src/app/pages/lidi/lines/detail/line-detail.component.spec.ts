@@ -1,16 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
 import { CoreModule } from '../../../../core/module/core.module';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AppTestingModule } from '../../../../app.testing.module';
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -197,16 +194,7 @@ describe('LineDetailComponent for new lineVersion', () => {
 function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersion }) {
   TestBed.configureTestingModule({
     declarations: [LineDetailComponent],
-    imports: [
-      CoreModule,
-      RouterModule.forRoot([]),
-      HttpClientTestingModule,
-      BrowserAnimationsModule,
-      MatDialogModule,
-      TranslateModule.forRoot({
-        loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-      }),
-    ],
+    imports: [CoreModule, AppTestingModule],
     providers: [
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
