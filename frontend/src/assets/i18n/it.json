@@ -67,10 +67,10 @@
   "DIALOG": {
     "OK": "Avanti",
     "CANCEL": "Annulla",
-    "BACK": "_it_Zurück zur Eingabemaske",
+    "BACK": "Tornare al modulo di immissione dati",
     "WARNING": "Attenzione!",
     "DELETE": "Eliminare definitivamente questo record?",
-    "CONFIRM_DELETE": "_it_Daten löschen",
+    "CONFIRM_DELETE": "Cancellare i dati",
     "DISCARD_CHANGES_TITLE": "Annullare le modifiche?",
     "LEAVE_SITE": "Se si esce dalla pagina, i dati non verranno salvati.",
     "CANCEL_EDITMODE": "All’uscita dalla modalità di modifica tutti i dati modificati andranno perduti."
