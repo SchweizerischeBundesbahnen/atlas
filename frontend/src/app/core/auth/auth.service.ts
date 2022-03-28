@@ -5,6 +5,8 @@ import { first } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { User } from '../components/user/user';
 import { Pages } from '../../pages/pages';
+import jwtDecode from 'jwt-decode';
+import { Role } from './role';
 
 const DEEP_LINK_URL_KEY = 'deepLinkUrl';
 
@@ -61,5 +63,30 @@ export class AuthService {
   logout() {
     this.oauthService.logOut(true);
     return this.router.navigate([Pages.HOME.path]);
+  }
+
+  get roles(): Role[] {
+    if (this.accessToken) {
+      return this.decodeAccessToken().roles.filter((role) =>
+        Object.values(Role).includes(role as Role)
+      ) as Role[];
+    }
+    return [];
+  }
+
+  hasRole(role: Role): boolean {
+    return this.hasAnyRole([role]);
+  }
+
+  hasAnyRole(roles: Role[]): boolean {
+    return this.containsAnyRole(roles, this.roles);
+  }
+
+  containsAnyRole(roles: Role[], userRoles: Role[]): boolean {
+    return userRoles.some((r) => roles.includes(r));
+  }
+
+  private decodeAccessToken(): User {
+    return jwtDecode(this.accessToken);
   }
 }
