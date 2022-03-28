@@ -1,17 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableComponent } from './table.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
-import { MaterialModule } from '../../module/material.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { TableSearchComponent } from '../table-search/table-search.component';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -22,13 +16,7 @@ describe('TableComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TableComponent, LoadingSpinnerComponent, TableSearchComponent],
-      imports: [
-        MaterialModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
       providers: [TranslatePipe],
     }).compileComponents();
   });
