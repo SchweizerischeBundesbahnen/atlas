@@ -12,20 +12,20 @@
     </div>
   </div>
 
+  <nav mat-tab-nav-bar class="tabs">
+    <a
+      mat-tab-link
+      *ngFor="let tab of TABS"
+      [routerLink]="tab.link"
+      routerLinkActive
+      #rla="routerLinkActive"
+      [active]="rla.isActive"
+      [class]="'font-bold-xl ' + (rla.isActive ? 'color-gray-900' : 'color-primary-400')"
+    >
+      {{ tab.title | translate }}
+    </a>
+  </nav>
   <div class="white-container">
-    <nav mat-tab-nav-bar class="mb-5">
-      <a
-        mat-tab-link
-        *ngFor="let tab of TABS"
-        [routerLink]="tab.link"
-        routerLinkActive
-        #rla="routerLinkActive"
-        [active]="rla.isActive"
-        [class]="'font-bold-xl ' + (rla.isActive ? 'color-primary-400' : 'color-gray-900')"
-      >
-        {{ tab.title | translate }}
-      </a>
-    </nav>
     <router-outlet></router-outlet>
   </div>
 </div>
