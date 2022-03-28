@@ -9,11 +9,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LidiOverviewComponent {
   TABS = [
     {
-      link: 'lines',
+      link: Pages.LINES.path,
       title: 'LIDI.LINE.LINES',
     },
     {
-      link: 'sublines',
+      link: Pages.SUBLINES.path,
       title: 'LIDI.SUBLINE.SUBLINES',
     },
   ];
