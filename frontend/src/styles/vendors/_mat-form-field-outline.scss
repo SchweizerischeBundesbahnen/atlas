@@ -31,8 +31,11 @@ mat-form-field {
 .mat-form-field-appearance-outline:hover,
 .mat-form-field-appearance-outline.mat-focused {
   .mat-form-field-outline,
-  .mat-form-field-outline-thick {
+  .mat-form-field-outline-thick .mat-form-field-outline-start,
+  .mat-form-field-outline-thick .mat-form-field-outline-end,
+  .mat-form-field-outline-thick .mat-form-field-outline-gap {
     color: $primary-400;
+    border-width: 3px;
   }
   .mat-form-field-flex .mat-form-field-infix {
     border: unset;
