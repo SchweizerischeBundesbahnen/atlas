@@ -1,4 +1,4 @@
-<h3 class="font-bold-lg">{{ 'COMMON.VERSION_TABLE_TITLE' | translate }}</h3>
+<h3 class="font-bold-lg">{{ 'VERSION_TABLE.TITLE' | translate }}</h3>
 <table mat-table multiTemplateDataRows [dataSource]="records">
   <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.value }}">
     <th scope="col" mat-header-cell *matHeaderCellDef class="font-bold-base color-primary-400">
@@ -15,7 +15,7 @@
     <ng-container *matCellDef="let element">
       <td *ngIf="hasGapToNextRecord(element)" class="d-flex align-items-center">
         <hr />
-        <span>{{ 'COMMON.GAP' | translate }}</span>
+        <span>{{ 'VERSION_TABLE.GAP' | translate }}</span>
         <hr />
       </td>
     </ng-container>

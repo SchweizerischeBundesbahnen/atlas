@@ -13,7 +13,6 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   record!: TYPE;
   records!: Array<TYPE>;
   form = new FormGroup({});
-  heading!: string | undefined;
   switchedIndex!: number | undefined;
 
   showSwitch: boolean | undefined;
@@ -33,7 +32,6 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     this.form = this.getFormGroup(this.record);
     if (this.isExistingRecord()) {
       this.form.disable();
-      this.heading = this.getTitle(this.record);
     } else {
       this.form.enable();
     }
