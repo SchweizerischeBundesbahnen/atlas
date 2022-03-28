@@ -8,33 +8,30 @@
 %text-padding-left-default {
   padding-left: 0.3rem;
 }
+%bold-border {
+  border-width: 3px;
+  margin-bottom: -2px;
+}
+
 .mat-focused .mat-form-field-flex .mat-form-field-infix,
 .mat-form-field-flex .mat-form-field-infix:hover {
   border-color: $primary-300;
-  border-width: 3px;
-  margin-bottom: -2px;
+  @extend %bold-border;
   @extend %default-border-style;
 }
 
 .mat-form-field-invalid .mat-form-field-flex .mat-form-field-infix {
-  border-color: red;
-  border-width: 3px;
-  border-bottom-width: 2px;
-  margin-bottom: -2px;
+  border-color: $warnColor;
+  @extend %bold-border;
   @extend %default-border-style;
 }
 
 mat-form-field {
-  .mat-form-field-flex .mat-form-field-infix {
+  .mat-form-field-flex .mat-form-field-infix,
+  .mat-form-field-disabled .mat-form-field-infix {
     border-color: $gray-400;
     border-width: 1px;
     @extend %default-border-style;
-
-    .mat-form-field-disabled .mat-form-field-infix {
-      border-color: $gray-400;
-      border-width: 1px;
-      @extend %default-border-style;
-    }
 
     input,
     mat-select {
