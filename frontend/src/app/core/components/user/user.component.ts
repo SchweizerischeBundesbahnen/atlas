@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { User } from './user';
-import jwtDecode from 'jwt-decode';
 
 @Component({
   selector: 'app-user',
@@ -40,13 +39,7 @@ export class UserComponent implements OnInit {
   }
 
   extractRoles() {
-    if (this.authService.accessToken) {
-      this.roles = this.decodeAccessToken().roles.filter((role) => role !== 'apim-default-role');
-    }
-  }
-
-  private decodeAccessToken(): User {
-    return jwtDecode(this.authService.accessToken);
+    this.roles = this.authService.roles;
   }
 
   authenticate() {
