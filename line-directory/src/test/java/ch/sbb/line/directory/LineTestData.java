@@ -47,7 +47,7 @@ public class LineTestData {
   public static LineVersionModelBuilder lineVersionModelBuilder() {
     return LineVersionModel.builder()
                       .status(Status.ACTIVE)
-                      .type(LineType.ORDERLY)
+                      .lineType(LineType.ORDERLY)
                       .paymentType(PaymentType.INTERNATIONAL)
                       .number("number")
                       .alternativeName("alternativeName")

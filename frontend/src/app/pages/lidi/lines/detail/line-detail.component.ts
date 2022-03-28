@@ -129,7 +129,7 @@ export class LineDetailComponent
           [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.sid4pt],
         ],
         slnid: [version.slnid],
-        type: [version.type, [Validators.required]],
+        lineType: [version.lineType, [Validators.required]],
         status: [version.status],
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
