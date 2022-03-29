@@ -106,8 +106,12 @@
   "TTFN": {
     "TTFN": "Numéro du tableau-horaire",
     "NEW": "Saisir un nouveau numéro de tableau-horaire",
+    "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld__FR__",
+    "KEY_DATA": "Eckdaten__FR__",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numéro de tableau-horaire CH",
     "DESCRIPTION": "Désignation numéro de tableau-horaire CH",
+    "DESCRIPTION_TOOLTIP": "CH-Fahrplanfeldnummer Bezeichnung Tooltip__FR__",
+    "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__FR__",
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "NUMBER": "Numéro du tableau-horaire",
     "TTFNID": "ID du tableau-horaire",
