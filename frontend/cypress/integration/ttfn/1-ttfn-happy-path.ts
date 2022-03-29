@@ -68,7 +68,7 @@ describe('Fahrplanfeldnummer', () => {
     cy.get('[data-cy="ttfn"] table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', firstVersion.swissTimetableFieldNumber).parents('tr').click({ force: true });
-
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');
     TtfnUtils.assertContainsVersion(firstVersion);
   });
 

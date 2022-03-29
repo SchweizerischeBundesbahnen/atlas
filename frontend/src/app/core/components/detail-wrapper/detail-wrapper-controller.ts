@@ -7,6 +7,7 @@ import moment from 'moment/moment';
 import { Page } from '../../model/page';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from '../../notification/notification.service';
+import { DateService } from '../../date/date.service';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
@@ -43,7 +44,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     //if is a version/s already persist get switched or actual version and fill the Form
     if (Array.isArray(records) && records.length > 0) {
       this.records = records;
-      this.records.sort((x, y) => +new Date(x.validFrom!) - +new Date(y.validFrom!));
+      this.sortRecords();
       if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
         this.record = this.records[this.switchedIndex];
       } else {
@@ -82,6 +83,16 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     } else {
       this.ngOnInit();
     }
+  }
+
+  getStartDate() {
+    this.sortRecords();
+    return DateService.getDateFormatted(this.records[0].validFrom);
+  }
+
+  getEndDate() {
+    this.sortRecords();
+    return DateService.getDateFormatted(this.records[this.records.length - 1].validTo);
   }
 
   toggleEdit() {
@@ -184,6 +195,10 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
       }
     }
     return null;
+  }
+
+  private sortRecords() {
+    this.records.sort((x, y) => +new Date(x.validFrom!) - +new Date(y.validFrom!));
   }
 
   abstract getTitle(record: TYPE): string | undefined;

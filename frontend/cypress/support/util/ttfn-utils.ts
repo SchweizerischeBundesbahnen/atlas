@@ -15,7 +15,7 @@ export default class TtfnUtils {
   }
 
   static readTtfnidFromForm(element: { ttfnid: string }) {
-    cy.get('h2')
+    cy.get('[data-cy=detail-subheading-id]')
       .invoke('text')
       .then((ttfnid) => (element.ttfnid = ttfnid ? ttfnid.toString() : ''));
   }

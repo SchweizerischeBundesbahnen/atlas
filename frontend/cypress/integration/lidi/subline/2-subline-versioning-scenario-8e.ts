@@ -40,6 +40,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     CommonUtils.clickOnEdit();
     LidiUtils.fillSublineVersionForm(secondSublineVersion);
     CommonUtils.saveSubline();
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
   });
 
   it('Step-6: update first Subline Version', () => {

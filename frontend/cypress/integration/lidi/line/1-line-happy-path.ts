@@ -45,6 +45,7 @@ describe('Linie', () => {
 
   it('Step-6: Search added item in table and navigate to it', () => {
     LidiUtils.searchAndNavigateToLine(line);
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');
   });
 
   it('Step-7: Delete the item', () => {
