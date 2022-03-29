@@ -183,7 +183,7 @@
       "BACKGROUND_RGB": "Couleur de fond de la police RVB",
       "FONT_CMYK": "Couleur de la police CMJN",
       "BACKGROUND_CMYK": "Couleur de fond de la police CMJN",
-      "NEW": "Nouvelle ligne",
+      "NEW": "Saisir une nouvelle ligne",
       "TYPES": {
         "ORDERLY": "Ordinaire",
         "TEMPORARY": "Temporaire",
@@ -212,7 +212,7 @@
       "NUMBER": "Numéro de ligne partielle",
       "MAINLINE": "Ligne principale",
       "DESCRIPTION": "Description de la ligne partielle",
-      "NEW": "Nouvelle ligne partielle",
+      "NEW": "Saisir une nouvelle ligne partielle",
       "TYPES": {
         "COMPENSATION": "Compensation",
         "TECHNICAL": "Technique"
