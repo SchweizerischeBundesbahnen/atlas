@@ -77,12 +77,12 @@ export default class LidiUtils {
   }
 
   static navigateToSubline(sublineVersion: any) {
-    const itemToDeleteUrl = LidiUtils.LIDI_SUBLINES_PATH + sublineVersion.slnid;
+    const itemToDeleteUrl = LidiUtils.LIDI_SUBLINES_PATH + '/' + sublineVersion.slnid;
     cy.visit({url: itemToDeleteUrl, method: 'GET'});
   }
 
   static navigateToLine(mainline: any) {
-    const itemToDeleteUrl = LidiUtils.LIDI_LINES_PATH + mainline.slnid;
+    const itemToDeleteUrl = LidiUtils.LIDI_LINES_PATH + '/' + mainline.slnid;
     cy.visit({url: itemToDeleteUrl, method: 'GET'});
   }
 
