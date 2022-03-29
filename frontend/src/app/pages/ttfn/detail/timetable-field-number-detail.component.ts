@@ -25,6 +25,7 @@ import { AtlasFieldLengthValidator } from '../../../core/validation/field-length
 @Component({
   selector: 'app-timetable-field-number-detail',
   templateUrl: './timetable-field-number-detail.component.html',
+  styleUrls: ['./timetable-field-number-detail.component.scss'],
 })
 export class TimetableFieldNumberDetailComponent
   extends DetailWrapperController<TimetableFieldNumberVersion>
@@ -32,7 +33,6 @@ export class TimetableFieldNumberDetailComponent
 {
   SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
   VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
-  DESCRIPTION_PLACEHOLDER = 'Grenze - Bad, Bahnhof - Basel SBB - Zürich HB - Chur';
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;

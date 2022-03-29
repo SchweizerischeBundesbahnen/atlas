@@ -1,119 +1,130 @@
 <app-dialog-close-button></app-dialog-close-button>
 <app-detail-wrapper [controller]="this" headingNew="TTFN.NEW">
-  <form [formGroup]="form">
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'COMMON.VALID_FROM' | translate }}</mat-label>
-        <input
-          data-cy="validFrom"
-          required
-          matInput
-          formControlName="validFrom"
-          [matDatepicker]="validFromPicker"
-          [min]="MIN_DATE"
-          [max]="MAX_DATE"
-          placeholder="{{ getValidFromPlaceHolder() }}"
-        />
-        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-        <mat-datepicker #validFromPicker></mat-datepicker>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'COMMON.VALID_TO' | translate }}</mat-label>
-        <input
-          data-cy="validTo"
-          required
-          matInput
-          formControlName="validTo"
-          [matDatepicker]="validToPicker"
-          [min]="MIN_DATE"
-          [max]="MAX_DATE"
-          placeholder="{{ VALID_TO_PLACEHOLDER }}"
-        />
-        <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
-        <mat-datepicker #validToPicker></mat-datepicker>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+  <form [formGroup]="form" class="mt-3">
+    <span class="font-bold-2xl">{{ 'TTFN.NEW_TIMETABLE_INFORMATION' | translate }}</span>
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column col-6 pe-3">
+        <mat-label class="font-bold-lg">{{ 'TTFN.NUMBER' | translate }}</mat-label>
+        <mat-label class="font-regular-sm hide-label-content">{{
+          'TTFN.NUMBER' | translate
+        }}</mat-label>
+        <mat-form-field>
+          <input data-cy="number" required matInput formControlName="number" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+      <div class="d-flex flex-column col-6 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}
+          <em
+            class="bi bi-info-circle me-2"
+            title="{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER_TOOLTIP' | translate }}"
+          ></em>
+        </mat-label>
+        <mat-label class="font-regular-sm">
+          {{ SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER }}
+        </mat-label>
+        <mat-form-field>
+          <input
+            data-cy="swissTimetableFieldNumber"
+            required
+            matInput
+            formControlName="swissTimetableFieldNumber"
+          />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}</mat-label>
-        <input
-          data-cy="swissTimetableFieldNumber"
-          required
-          matInput
-          formControlName="swissTimetableFieldNumber"
-          placeholder="{{ SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER }}"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-      <mat-form-field class="col">
-        <mat-label>{{ 'TTFN.TTFNID' | translate }}</mat-label>
-        <input
-          data-cy="ttfnid"
-          matInput
-          [value]="form.value.ttfnid || ''"
-          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
-          [disabled]="true"
-          required
-        />
-      </mat-form-field>
-      <mat-form-field class="col">
-        <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
-        <mat-select
-          [value]="form.value.status"
-          [disabled]="true"
-          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
-        >
-          <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
-            {{ 'COMMON.STATUS_TYPES.' + status | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-12 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'TTFN.DESCRIPTION' | translate }}
+          <em
+            class="bi bi-info-circle me-2"
+            title="{{ 'TTFN.DESCRIPTION_TOOLTIP' | translate }}"
+          ></em>
+        </mat-label>
+        <mat-form-field>
+          <input data-cy="description" matInput formControlName="description" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <span class="font-bold-2xl">{{ 'TTFN.KEY_DATA' | translate }}</span>
+    <div class="col-6 d-flex mt-3">
+      <div class="d-flex flex-column col-6 pe-3">
+        <mat-label class="font-bold-lg">{{ 'COMMON.VALID_FROM' | translate }}</mat-label>
+        <mat-label class="font-regular-sm">{{ getValidFromPlaceHolder() }}</mat-label>
+        <mat-form-field>
+          <input
+            data-cy="validFrom"
+            required
+            matInput
+            formControlName="validFrom"
+            [matDatepicker]="validFromPicker"
+            [min]="MIN_DATE"
+            [max]="MAX_DATE"
+          />
+          <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #validFromPicker></mat-datepicker>
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+      <div class="d-flex flex-column col-6 pe-3">
+        <mat-label class="font-bold-lg">{{ 'COMMON.VALID_TO' | translate }}</mat-label>
+        <mat-label class="font-regular-sm">{{ this.VALID_TO_PLACEHOLDER }} </mat-label>
+        <mat-form-field>
+          <input
+            data-cy="validTo"
+            required
+            matInput
+            formControlName="validTo"
+            [matDatepicker]="validToPicker"
+            [min]="MIN_DATE"
+            [max]="MAX_DATE"
+          />
+          <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
+          <mat-datepicker #validToPicker></mat-datepicker>
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <mat-form-field>
-        <mat-label>{{ 'TTFN.NUMBER' | translate }}</mat-label>
-        <input data-cy="number" required matInput formControlName="number" />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-3 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'TTFN.BUSINESS_ORGANISATION' | translate }}
+          <em
+            class="bi bi-info-circle me-2"
+            title="{{ 'TTFN.BUSINESS_ORGANISATION_TOOLTIP' | translate }}"
+          ></em>
+        </mat-label>
+        <mat-form-field>
+          <input
+            data-cy="businessOrganisation"
+            required
+            matInput
+            formControlName="businessOrganisation"
+          />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <mat-form-field>
-        <mat-label>{{ 'TTFN.DESCRIPTION' | translate }}</mat-label>
-        <input
-          data-cy="description"
-          matInput
-          formControlName="description"
-          placeholder="{{ DESCRIPTION_PLACEHOLDER }}"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
+    <span class="font-bold-2xl">{{ 'TTFN.SUPPLEMENTARY_INFORMATION' | translate }}</span>
 
-    <div class="row mb-3">
-      <mat-form-field>
-        <mat-label>{{ 'TTFN.BUSINESS_ORGANISATION' | translate }}</mat-label>
-        <input
-          data-cy="businessOrganisation"
-          required
-          matInput
-          formControlName="businessOrganisation"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="row mb-3">
-      <mat-form-field>
-        <mat-label>{{ 'TTFN.COMMENT' | translate }}</mat-label>
-        <input data-cy="comment" matInput formControlName="comment" />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column col-6 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'TTFN.COMMENT' | translate }}
+          <em class="bi bi-info-circle me-2" title="{{ 'TTFN.COMMENT_TOOLTIP' | translate }}"></em>
+        </mat-label>
+        <mat-form-field appearance="outline" class="atlas-text-area">
+          <textarea data-cy="comment" matInput formControlName="comment"></textarea>
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
   </form>
 </app-detail-wrapper>

@@ -106,8 +106,12 @@
   "TTFN": {
     "TTFN": "Numero del quadro d’orario",
     "NEW": "Registrazione nuovo numero del quadro d’orario",
+    "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld__IT__",
+    "KEY_DATA": "Eckdaten__IT__",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numero del quadro d’orario CH",
     "DESCRIPTION": "Denominazione quadro d’orario CH",
+    "DESCRIPTION_TOOLTIP": "CH-Fahrplanfeldnummer Bezeichnung Tooltip__IT__",
+    "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__IT__",
     "BUSINESS_ORGANISATION": "Organizzazione aziendale",
     "NUMBER": "Numero del quadro d’orario",
     "TTFNID": "ID numero del quadro d’orario",
