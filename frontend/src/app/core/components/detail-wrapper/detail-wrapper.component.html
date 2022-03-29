@@ -43,6 +43,7 @@
       *ngIf="controller.form.disabled; else editModeButtons"
       class="atlas-primary-btn footer-btn"
       [mat-dialog-close]="true"
+      data-cy="back-to-overview"
     >
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
