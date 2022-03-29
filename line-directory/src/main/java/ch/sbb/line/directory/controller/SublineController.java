@@ -33,6 +33,7 @@ public class SublineController implements SublinenApiV1 {
   public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
       List<Status> statusRestrictions, List<SublineType> typeRestrictions,
       Optional<LocalDate> validOn) {
+    log.info("Load Versions using pageable={}", pageable);
     Page<Subline> sublines = sublineService.findAll(
         new SearchRestrictions<>(pageable, Optional.empty(), searchCriteria, statusRestrictions,
             typeRestrictions, validOn)

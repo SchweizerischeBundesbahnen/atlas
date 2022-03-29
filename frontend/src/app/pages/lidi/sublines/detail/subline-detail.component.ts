@@ -138,7 +138,7 @@ export class SublineDetailComponent
   }
 
   backToOverview(): void {
-    this.router.navigate([Pages.LIDI.path]).then();
+    this.router.navigate([Pages.LIDI.path, Pages.SUBLINES.path]).then();
   }
 
   getFormGroup(version: SublineVersion): FormGroup {
