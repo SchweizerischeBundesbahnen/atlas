@@ -15,8 +15,8 @@ export default class TtfnUtils {
   }
 
   static readTtfnidFromForm(element: { ttfnid: string }) {
-    cy.get('[data-cy=ttfnid]')
-      .invoke('val')
+    cy.get('h2')
+      .invoke('text')
       .then((ttfnid) => (element.ttfnid = ttfnid ? ttfnid.toString() : ''));
   }
 
@@ -25,7 +25,6 @@ export default class TtfnUtils {
     cy.get('[data-cy=save-item]').should('be.disabled');
     cy.get('[data-cy=edit-item]').should('not.exist');
     cy.get('[data-cy=delete-item]').should('not.exist');
-    cy.contains('Neue Fahrplanfeldnummer');
   }
 
   static fillVersionForm(version: any) {
