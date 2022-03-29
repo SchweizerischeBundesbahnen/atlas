@@ -2,8 +2,8 @@ import CommonUtils from './common-utils';
 
 export default class LidiUtils {
 
-  private static LIDI_LINES_PATH: '/line-directory/lines';
-  private static LIDI_SUBLINES_PATH: '/line-directory/sublines';
+  private static LIDI_LINES_PATH = '/line-directory/lines';
+  private static LIDI_SUBLINES_PATH = '/line-directory/sublines';
 
   static navigateToLines() {
     this.interceptLines('#line-directory');
