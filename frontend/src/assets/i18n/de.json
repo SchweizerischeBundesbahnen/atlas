@@ -183,7 +183,7 @@
       "BACKGROUND_RGB": "Schrifthintergrundfarbe RGB",
       "FONT_CMYK": "Schriftfarbe CMYK",
       "BACKGROUND_CMYK": "Schrifthintergrundfarbe CMYK",
-      "NEW": "Neue Linie",
+      "NEW": "Neue Linie erfassen",
       "TYPES": {
         "ORDERLY": "Ordentlich",
         "TEMPORARY": "Temporär",
@@ -212,7 +212,7 @@
       "NUMBER": "Teilliniennummer",
       "MAINLINE": "Hauptlinie",
       "DESCRIPTION": "Teillinienbezeichnung",
-      "NEW": "Neue Teillinie",
+      "NEW": "Neue Teillinie erfassen",
       "TYPES": {
         "COMPENSATION": "Kompensation",
         "TECHNICAL": "Technisch"
