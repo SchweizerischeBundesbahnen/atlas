@@ -1,14 +1,35 @@
 import CommonUtils from './common-utils';
 
 export default class LidiUtils {
-  static navigateToLidi() {
+
+  static navigateToLines() {
+    this.interceptLines(() => cy.get('#line-directory'));
+  }
+
+  static changeLiDiTabToLines() {
+    this.interceptLines(() => cy.get('a[href="/line-directory/lines"]'));
+  }
+
+  private static interceptLines(visitSelector: () => Cypress.Chainable) {
     cy.intercept('GET', '/line-directory/v1/lines?**').as('getLines');
-    cy.intercept('GET', '/line-directory/v1/sublines?**').as('getSublines');
+    visitSelector().click();
+    cy.wait('@getLines').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/line-directory/lines');
+    });
+  }
+
+  static navigateToSublines() {
     cy.get('#line-directory').click();
-    cy.wait(['@getLines', '@getSublines']).then((interceptions) => {
-      cy.wrap(interceptions[0].response?.statusCode).should('eq', 200);
-      cy.wrap(interceptions[1].response?.statusCode).should('eq', 200);
-      cy.url().should('contain', '/line-directory');
+    this.changeLiDiTabToSublines();
+  }
+
+  static changeLiDiTabToSublines() {
+    cy.intercept('GET', '/line-directory/v1/sublines?**').as('getSublines');
+    cy.get('a[href="/line-directory/sublines"]').click();
+    cy.wait('@getSublines').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/line-directory/sublines');
     });
   }
 
@@ -42,9 +63,13 @@ export default class LidiUtils {
     cy.contains('Neue Teillinie');
   }
 
-  static assertIsOnLiDiHome() {
-    cy.url().should('contain', '/line-directory');
+  static assertIsOnLines() {
+    cy.url().should('contain', '/line-directory/lines');
     cy.get('[data-cy="lidi-lines"]').should('exist');
+  }
+
+  static assertIsOnSublines() {
+    cy.url().should('contain', '/line-directory/sublines');
     cy.get('[data-cy="lidi-sublines"]').should('exist');
   }
 
@@ -171,12 +196,13 @@ export default class LidiUtils {
 
   static addMainLine() {
     const mainline = LidiUtils.getMainLineVersion();
-    LidiUtils.navigateToLidi();
+    LidiUtils.navigateToLines();
     LidiUtils.clickOnAddNewLinieVersion();
     LidiUtils.fillLineVersionForm(mainline);
     CommonUtils.saveLine();
     LidiUtils.readSlnidFromForm(mainline);
     LidiUtils.assertContainsLineVersion(mainline);
+    CommonUtils.fromDetailBackToOverview();
     CommonUtils.navigateToHome();
     return mainline;
   }

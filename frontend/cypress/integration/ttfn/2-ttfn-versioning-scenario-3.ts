@@ -50,13 +50,10 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(versionUpdate);
     CommonUtils.saveTtfn();
-    cy.get('[data-cy=switch-version-total-range]').contains(
-      'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
-    );
   });
 
   it('Step-6: Assert fourth version (actual version)', () => {
-    cy.get('#version4').should('have.class', 'currentVersion');
+    CommonUtils.assertSelectedVersion(4);
     CommonUtils.assertVersionRange(4, '02.06.2002', '31.12.2002');
 
     secondVersion.validFrom = '02.06.2002';
@@ -65,9 +62,6 @@ describe('Versioning: scenario 3', () => {
   });
 
   it('Step-7: Assert third version', () => {
-    cy.get('[data-cy=switch-version-total-range]').contains(
-      'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
-    );
     CommonUtils.switchToVersion(3);
     CommonUtils.assertVersionRange(3, '01.06.2001', '01.06.2002');
 
@@ -77,9 +71,6 @@ describe('Versioning: scenario 3', () => {
   });
 
   it('Step-8: Assert second version', () => {
-    cy.get('[data-cy=switch-version-total-range]').contains(
-      'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
-    );
     CommonUtils.switchToVersion(2);
     CommonUtils.assertVersionRange(2, '01.01.2001', '31.05.2001');
 
@@ -89,9 +80,6 @@ describe('Versioning: scenario 3', () => {
   });
 
   it('Step-9: Assert first version', () => {
-    cy.get('[data-cy=switch-version-total-range]').contains(
-      'Fahrplanfeldnummer von 01.01.2000 bis 31.12.2002'
-    );
     CommonUtils.switchToVersion(1);
     CommonUtils.assertVersionRange(1, '01.01.2000', '31.12.2000');
 
