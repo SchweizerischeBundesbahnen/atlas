@@ -50,6 +50,8 @@ describe('Versioning: scenario 3', () => {
     cy.get('[data-cy=edit-item]').click();
     TtfnUtils.fillVersionForm(versionUpdate);
     CommonUtils.saveTtfn();
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
+
   });
 
   it('Step-6: Assert fourth version (actual version)', () => {

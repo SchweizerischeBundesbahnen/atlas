@@ -84,7 +84,7 @@ describe('Teillinie', () => {
     cy.get('[data-cy="lidi-sublines"] table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', sublineVersion.swissSublineNumber).parents('tr').click({ force: true });
-
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
 
@@ -96,6 +96,7 @@ describe('Teillinie', () => {
   it('Step-9: Navigate to the mainline item', () => {
     LidiUtils.changeLiDiTabToLines();
     LidiUtils.searchAndNavigateToLine(mainline);
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
   });
 
   it('Step-10: Delete the mainline item', () => {

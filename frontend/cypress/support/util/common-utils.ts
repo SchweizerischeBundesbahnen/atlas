@@ -24,6 +24,10 @@ export default class CommonUtils {
     this.saveVersionWithWait('line-directory/v1/sublines/versions/*');
   }
 
+  static getTotalRange(){
+    return cy.get('[data-cy="total-range"]')
+  }
+
   static saveVersionWithWait(urlToIntercept: string) {
     cy.intercept('GET', urlToIntercept).as('saveAndGetVersion');
     cy.get('[data-cy=save-item]').click();

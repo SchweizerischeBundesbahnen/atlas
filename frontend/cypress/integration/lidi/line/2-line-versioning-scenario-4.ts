@@ -50,6 +50,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     cy.get('[data-cy=validTo]').clear().type(editedLineVersion.validTo);
     cy.get('[data-cy=alternativeName]').clear().type(editedLineVersion.alternativeName);
     CommonUtils.saveLine();
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
   });
 
   it('Step-7: Assert fifth version (actual version)', () => {

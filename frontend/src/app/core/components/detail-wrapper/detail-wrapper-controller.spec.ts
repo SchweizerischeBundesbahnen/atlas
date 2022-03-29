@@ -333,4 +333,55 @@ describe('Get actual versioned record', () => {
     //then
     expect(record.id).toBe(todayRecord.id);
   });
+
+  it('should return the first temporal sorted valid from of records', () => {
+    //given
+    const first: Record = {
+      id: 1,
+      validFrom: moment('1.1.2004', 'DD.MM.YYYY').toDate(),
+      validTo: moment('1.1.2004', 'DD.MM.YYYY').toDate(),
+    };
+    const second: Record = {
+      id: 2,
+      validFrom: moment('2.1.2004', 'DD.MM.YYYY').toDate(),
+      validTo: moment('2.1.2004', 'DD.MM.YYYY').toDate(),
+    };
+    const third: Record = {
+      id: 3,
+      validFrom: moment('4.1.2004', 'DD.MM.YYYY').toDate(),
+      validTo: moment('4.1.2004', 'DD.MM.YYYY').toDate(),
+    };
+    controller.records = [first, second, third];
+
+    //when
+    const result = controller.getStartDate();
+
+    //then
+    expect(result).toBe('01.01.2004');
+  });
+
+  it('should return the last temporal sorted valid to', () => {
+    //given
+    const first: Record = {
+      id: 1,
+      validFrom: moment('1.1.2004', 'DD.MM.YYYY').toDate(),
+      validTo: moment('1.1.2004', 'DD.MM.YYYY').toDate(),
+    };
+    const second: Record = {
+      id: 2,
+      validFrom: moment('2.1.2004', 'DD.MM.YYYY').toDate(),
+      validTo: moment('2.1.2004', 'DD.MM.YYYY').toDate(),
+    };
+    const third: Record = {
+      id: 3,
+      validFrom: moment('4.1.2004', 'DD.MM.YYYY').toDate(),
+      validTo: moment('4.1.2004', 'DD.MM.YYYY').toDate(),
+    };
+    controller.records = [first, second, third];
+    //when
+    const result = controller.getEndDate();
+
+    //then
+    expect(result).toBe('04.01.2004');
+  });
 });
