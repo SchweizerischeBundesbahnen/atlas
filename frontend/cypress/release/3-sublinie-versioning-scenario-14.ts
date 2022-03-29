@@ -15,8 +15,6 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
   const newValidFrom = '31.12.2000';
   let mainline: any;
 
-  const breadcrumbTitle = 'Linienverzeichnis';
-
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
   });
@@ -25,10 +23,10 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
     mainline = LidiUtils.addMainLine();
   });
 
-  it('Step-3: Navigate to Linienverzeichnis', () => {
-    LidiUtils.navigateToLidi();
-    cy.contains(breadcrumbTitle);
-    cy.get('[data-cy=sublines-title]').invoke('text').should('eq', 'Teillinien');
+  it('Step-3: Navigate to Sublines', () => {
+    LidiUtils.navigateToSublines();
+    LidiUtils.checkHeaderTitle();
+    LidiUtils.assertSublineTitle();
   });
 
   it('Step-4: Add Subline Version', () => {
@@ -43,48 +41,34 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
     CommonUtils.saveSubline();
   });
 
-  it('Step-6: Check version display', () => {
-    cy.get('[data-cy=switch-version-total-range]').contains(
-      'Teillinien von ' + newValidFrom + ' bis 31.12.2000'
-    );
-  });
-
-  it('Step-7: Assert version (current version)', () => {
+  it('Step-6: Assert version (current version)', () => {
+    CommonUtils.assertSelectedVersion(1);
     sublineVersion.validFrom = newValidFrom;
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
 
-  it('Step-8: Navigate to Linienverzeichnis', () => {
+  it('Step-7: Navigate to Sublines', () => {
+    CommonUtils.fromDetailBackToOverview();
     CommonUtils.navigateToHome();
-    LidiUtils.navigateToLidi();
-    cy.contains(breadcrumbTitle);
+    LidiUtils.navigateToSublines();
   });
 
-  it('Step-9: Check the added is present on the table result and navigate to it ', () => {
+  it('Step-8: Check the added is present on the table result and navigate to it ', () => {
     cy.contains(sublineVersion.swissSublineNumber).parents('tr').click();
     cy.contains(sublineVersion.swissSublineNumber);
   });
 
-  it('Step-10: Delete the subline item ', () => {
+  it('Step-9: Delete the subline item ', () => {
     CommonUtils.deleteItems();
-    cy.contains(breadcrumbTitle);
+    LidiUtils.assertIsOnSublines();
   });
 
   it('Step-11: Delete the mainline item ', () => {
-    CommonUtils.typeSearchInput(
-      '/line-directory/v1/lines?**',
-      '[data-cy="lidi-lines"] [data-cy=table-search-chip-input]',
-      mainline.swissLineNumber
-    );
-    CommonUtils.typeSearchInput(
-      '/line-directory/v1/lines?**',
-      '[data-cy="lidi-lines"] [data-cy=table-search-chip-input]',
-      mainline.slnid
-    );
-    cy.get('[data-cy=lidi-lines] tbody tr').should('have.length', 1);
-    cy.contains('td', mainline.swissLineNumber).parents('tr').click({ force: true });
+    LidiUtils.navigateToLine(mainline);
     cy.contains(mainline.swissLineNumber);
+    LidiUtils.assertContainsLineVersion(mainline);
+
     CommonUtils.deleteItems();
-    cy.contains(breadcrumbTitle);
+    LidiUtils.assertIsOnLines();
   });
 });
