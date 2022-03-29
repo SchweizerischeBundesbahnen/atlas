@@ -1,4 +1,9 @@
 export default class CommonUtils {
+
+  static fromDetailBackToOverview() {
+    cy.get('[data-cy=back-to-overview]').click();
+  }
+
   static navigateToHome() {
     cy.get('[data-cy=atlas-logo-home-link]').click();
   }
@@ -44,14 +49,18 @@ export default class CommonUtils {
   }
 
   static switchToVersion(versionNumber: number) {
-    cy.get('#version' + versionNumber).click();
-    cy.get('#version' + versionNumber).should('have.class', 'currentVersion');
+    cy.get(this.getVersionRowSelector(versionNumber)).click();
+    this.assertSelectedVersion(versionNumber);
   }
 
   static assertVersionRange(versionNumber: number, validFrom: string, validTo: string) {
-    cy.get('#version' + versionNumber + ' > [data-cy="dateRange"]')
-      .should('contain.text', validFrom)
-      .should('contain.text', validTo);
+    const versionDataSelector = this.getVersionRowSelector(versionNumber) + ' > .cdk-column-';
+    cy.get(versionDataSelector + "validFrom").should('contain.text', validFrom);
+    cy.get(versionDataSelector + "validTo").should('contain.text', validTo);
+  }
+
+  static getVersionRowSelector(versionNumber: number) {
+    return '[data-cy="version-switch"] > tbody > :nth-child(' + (versionNumber * 2 - 1) + ')';
   }
 
   static assertTableHeader(
@@ -104,5 +113,9 @@ export default class CommonUtils {
     //Select status to search
     CommonUtils.selectItemFromDropDown(searchStatusSelector, value);
     cy.get('body').type('{esc}');
+  }
+
+  static assertSelectedVersion(number: number) {
+    cy.get('.selected-row > .cdk-column-versionNumber').should('contain.text', 'Version ' + number)
   }
 }

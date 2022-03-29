@@ -23,8 +23,8 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     mainline = LidiUtils.addMainLine();
   });
 
-  it('Step-3: Navigate to Linienverzeichnis', () => {
-    LidiUtils.navigateToLidi();
+  it('Step-3: Navigate to Sublines', () => {
+    LidiUtils.navigateToSublines();
     LidiUtils.checkHeaderTitle();
     LidiUtils.assertSublineTitle();
   });
@@ -50,13 +50,10 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     cy.get('[data-cy=number]').clear().type(editedFirstSublineVersion.number);
     cy.get('[data-cy=longName]').clear().type(editedFirstSublineVersion.longName);
     CommonUtils.saveSubline();
-    cy.get('[data-cy=switch-version-total-range]').contains(
-      'Teillinie von 01.01.2000 bis 31.12.2002'
-    );
   });
 
   it('Step-7: Assert third version (actual version)', () => {
-    cy.get('#version3').should('have.class', 'currentVersion');
+    CommonUtils.assertSelectedVersion(3);
     CommonUtils.assertVersionRange(3, '02.06.2002', '31.12.2002');
 
     secondSublineVersion.validFrom = '02.06.2002';
@@ -86,9 +83,10 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.assertContainsSublineVersion(firstSublineVersion);
   });
 
-  it('Step-10: Navigate to Linienverzeichnis', () => {
+  it('Step-10: Navigate to Sublines', () => {
+    CommonUtils.fromDetailBackToOverview();
     CommonUtils.navigateToHome();
-    LidiUtils.navigateToLidi();
+    LidiUtils.navigateToSublines();
     LidiUtils.checkHeaderTitle();
   });
 
@@ -100,7 +98,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-12: Delete the subline item ', () => {
     CommonUtils.deleteItems();
-    LidiUtils.assertIsOnLiDiHome();
+    LidiUtils.assertIsOnSublines();
   });
 
   it('Step-13: Search and Navigate to the mainline item ', () => {
@@ -110,6 +108,6 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
   it('Step-14: Delete the mainline item ', () => {
     CommonUtils.deleteItems();
-    LidiUtils.assertIsOnLiDiHome();
+    LidiUtils.assertIsOnLines();
   });
 });
