@@ -83,7 +83,7 @@
     "@types/node": "^16.9.6",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
-    "cypress": "^9.4.1",
+    "cypress": "^9.5.3",
     "cypress-failed-log": "^2.9.2",
     "cypress-high-resolution": "^1.0.0",
     "eslint": "^7.32.0",
