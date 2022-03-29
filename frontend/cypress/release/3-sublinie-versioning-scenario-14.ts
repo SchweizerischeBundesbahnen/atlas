@@ -63,7 +63,7 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
     LidiUtils.assertIsOnSublines();
   });
 
-  it('Step-11: Delete the mainline item ', () => {
+  it('Step-10: Delete the mainline item ', () => {
     LidiUtils.navigateToLine(mainline);
     cy.contains(mainline.swissLineNumber);
     LidiUtils.assertContainsLineVersion(mainline);

@@ -2,20 +2,23 @@ import CommonUtils from './common-utils';
 
 export default class LidiUtils {
 
+  private static LIDI_LINES_PATH: '/line-directory/lines';
+  private static LIDI_SUBLINES_PATH: '/line-directory/sublines';
+
   static navigateToLines() {
-    this.interceptLines(() => cy.get('#line-directory'));
+    this.interceptLines('#line-directory');
   }
 
   static changeLiDiTabToLines() {
-    this.interceptLines(() => cy.get('a[href="/line-directory/lines"]'));
+    this.interceptLines('a[href="' + LidiUtils.LIDI_LINES_PATH + '"]');
   }
 
-  private static interceptLines(visitSelector: () => Cypress.Chainable) {
+  private static interceptLines(visitSelector: string) {
     cy.intercept('GET', '/line-directory/v1/lines?**').as('getLines');
-    visitSelector().click();
+    cy.get(visitSelector).click();
     cy.wait('@getLines').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
-      cy.url().should('contain', '/line-directory/lines');
+      cy.url().should('contain', LidiUtils.LIDI_LINES_PATH);
     });
   }
 
@@ -26,10 +29,10 @@ export default class LidiUtils {
 
   static changeLiDiTabToSublines() {
     cy.intercept('GET', '/line-directory/v1/sublines?**').as('getSublines');
-    cy.get('a[href="/line-directory/sublines"]').click();
+    cy.get('a[href="' + LidiUtils.LIDI_SUBLINES_PATH + '"]').click();
     cy.wait('@getSublines').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
-      cy.url().should('contain', '/line-directory/sublines');
+      cy.url().should('contain', LidiUtils.LIDI_SUBLINES_PATH);
     });
   }
 
@@ -43,8 +46,8 @@ export default class LidiUtils {
 
   static readSlnidFromForm(element: { slnid: string }) {
     cy.get('[data-cy=slnid]')
-      .invoke('val')
-      .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
+    .invoke('val')
+    .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
   static clickOnAddNewLinieVersion() {
@@ -64,36 +67,36 @@ export default class LidiUtils {
   }
 
   static assertIsOnLines() {
-    cy.url().should('contain', '/line-directory/lines');
+    cy.url().should('contain', LidiUtils.LIDI_LINES_PATH);
     cy.get('[data-cy="lidi-lines"]').should('exist');
   }
 
   static assertIsOnSublines() {
-    cy.url().should('contain', '/line-directory/sublines');
+    cy.url().should('contain', LidiUtils.LIDI_SUBLINES_PATH);
     cy.get('[data-cy="lidi-sublines"]').should('exist');
   }
 
   static navigateToSubline(sublineVersion: any) {
-    const itemToDeleteUrl = '/line-directory/sublines/' + sublineVersion.slnid;
-    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+    const itemToDeleteUrl = LidiUtils.LIDI_SUBLINES_PATH + sublineVersion.slnid;
+    cy.visit({url: itemToDeleteUrl, method: 'GET'});
   }
 
   static navigateToLine(mainline: any) {
-    const itemToDeleteUrl = '/line-directory/lines/' + mainline.slnid;
-    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+    const itemToDeleteUrl = LidiUtils.LIDI_LINES_PATH + mainline.slnid;
+    cy.visit({url: itemToDeleteUrl, method: 'GET'});
   }
 
   static fillLineVersionForm(version: any) {
     // workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
     cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
-    cy.get('[data-cy=validTo]').clear().type(version.validTo, { force: true });
-    cy.get('[data-cy=swissLineNumber]').clear().type(version.swissLineNumber, { force: true });
+    cy.get('[data-cy=validTo]').clear().type(version.validTo, {force: true});
+    cy.get('[data-cy=swissLineNumber]').clear().type(version.swissLineNumber, {force: true});
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
     CommonUtils.selectItemFromDropDown('[data-cy=type]', version.type);
     CommonUtils.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
     cy.get('[data-cy=colorFontRgb] [data-cy=rgb-picker-input]')
-      .type('{selectall}' + version.colorFontRgb, { force: true })
-      .type('{selectall}' + version.colorFontRgb);
+    .type('{selectall}' + version.colorFontRgb, {force: true})
+    .type('{selectall}' + version.colorFontRgb);
     cy.get('[data-cy=colorBackRgb] [data-cy=rgb-picker-input]').type(
       '{selectall}' + version.colorBackRgb
     );
@@ -150,7 +153,7 @@ export default class LidiUtils {
     // Check that the table contains 1 result
     cy.get('[data-cy="lidi-lines"] table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', line.swissLineNumber).parents('tr').click({ force: true });
+    cy.contains('td', line.swissLineNumber).parents('tr').click({force: true});
     this.assertContainsLineVersion(line);
   }
 
@@ -312,15 +315,15 @@ export default class LidiUtils {
   static fillSublineVersionForm(version: any) {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
-    cy.get('[data-cy=validTo]').clear().type(version.validTo, { force: true });
+    cy.get('[data-cy=validTo]').clear().type(version.validTo, {force: true});
     cy.get('[data-cy=swissSublineNumber]')
-      .clear()
-      .type(version.swissSublineNumber, { force: true });
+    .clear()
+    .type(version.swissSublineNumber, {force: true});
     this.typeAndSelectItemFromDropDown('[data-cy=mainlineSlnid]', version.mainlineSlnid);
     cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
     CommonUtils.selectItemFromDropDown('[data-cy=type]', version.type);
     CommonUtils.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
-    cy.get('[data-cy=description]').clear().type(version.description, { force: true });
+    cy.get('[data-cy=description]').clear().type(version.description, {force: true});
     cy.get('[data-cy=number]').clear().type(version.number);
     cy.get('[data-cy=longName]').clear().type(version.longName);
     cy.get('[data-cy=save-item]').should('not.be.disabled');
