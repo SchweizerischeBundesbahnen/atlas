@@ -1,5 +1,6 @@
 import LidiUtils from '../support/util/lidi-utils';
 import CommonUtils from '../support/util/common-utils';
+import {DataCy} from "../support/data-cy";
 
 /** Szenario 14: Linke Grenze ("Gültig von") auf gleichen Tag setzen, wie rechte Grenze ("Gültig bis")
  *
@@ -37,7 +38,7 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
 
   it('Step-5: Update Subline Version', () => {
     CommonUtils.clickOnEdit();
-    cy.get('[data-cy=validFrom]').clear().type(newValidFrom);
+    cy.get(DataCy.VALID_FROM).clear().type(newValidFrom);
     CommonUtils.saveSubline();
   });
 

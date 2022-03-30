@@ -33,5 +33,17 @@ export class DataCy {
   static DETAIL_SUBHEADING_ID = '[data-cy=detail-subheading-id]';
   static NEW_ITEM = '[data-cy=new-item]';
   static SWISS_TIMETABLE_FIELD_NUMBER = '[data-cy=swissTimetableFieldNumber]';
-
+  static VERSION_SWITCH = '[data-cy=version-switch]';
+  static COLOR_FONT_RGB = '[data-cy=colorFontRgb]';
+  static COLOR_BACK_RGB = '[data-cy=colorBackRgb]';
+  static RGB_PICKER_INPUT = '[data-cy=rgb-picker-input]';
+  static COLOR_FONT_CMYK = '[data-cy=colorFontCmyk]';
+  static CMYK_PICKER_INPUT = '[data-cy=cmyk-picker-input]';
+  static COLOR_BACK_CMYK = '[data-cy=colorBackCmyk]';
+  static TABLE_SEARCH_CHIP_INPUT = '[data-cy="table-search-chip-input"]';
+  static TABLE_SEARCH_STATUS_INPUT = '[data-cy="table-search-status-input"]';
+  static TABLE_SEARCH_LINE_TYPE = '[data-cy="table-search-line-type"]';
+  static TABLE_SEARCH_DATE_INPUT = '[data-cy="table-search-date-input"]';
+  static TABLE_SEARCH_SUBLINE_TYPE = '[data-cy="table-search-subline-type"]';
+  static TTFN= '[data-cy="ttfn"]';
 }

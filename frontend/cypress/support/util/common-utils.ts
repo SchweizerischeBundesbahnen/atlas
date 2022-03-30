@@ -66,7 +66,7 @@ export default class CommonUtils {
   }
 
   static getVersionRowSelector(versionNumber: number) {
-    return '[data-cy="version-switch"] > tbody > :nth-child(' + (versionNumber * 2 - 1) + ')';
+    return DataCy.VERSION_SWITCH + ' > tbody > :nth-child(' + (versionNumber * 2 - 1) + ')';
   }
 
   static assertTableHeader(

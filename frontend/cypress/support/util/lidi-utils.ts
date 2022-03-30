@@ -95,16 +95,16 @@ export default class LidiUtils {
     cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
-    cy.get('[data-cy=colorFontRgb] [data-cy=rgb-picker-input]')
+    cy.get(DataCy.COLOR_FONT_RGB + ' ' + DataCy.RGB_PICKER_INPUT)
     .type('{selectall}' + version.colorFontRgb, {force: true})
     .type('{selectall}' + version.colorFontRgb);
-    cy.get('[data-cy=colorBackRgb] [data-cy=rgb-picker-input]').type(
+    cy.get(DataCy.COLOR_BACK_RGB + ' ' + DataCy.RGB_PICKER_INPUT).type(
       '{selectall}' + version.colorBackRgb
     );
-    cy.get('[data-cy=colorFontCmyk] [data-cy=cmyk-picker-input]').type(
+    cy.get(DataCy.COLOR_FONT_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT).type(
       '{selectall}' + version.colorFontCmyk
     );
-    cy.get('[data-cy=colorBackCmyk] [data-cy=cmyk-picker-input]').type(
+    cy.get(DataCy.COLOR_BACK_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT).type(
       '{selectall}' + version.colorBackCmyk
     );
     cy.get(DataCy.DESCRIPTION).clear().type(version.description);
@@ -126,33 +126,33 @@ export default class LidiUtils {
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-lines"] [data-cy="table-search-chip-input"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
       line.swissLineNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-lines"] [data-cy="table-search-chip-input"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
       line.slnid
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      '[data-cy="lidi-lines"] [data-cy="table-search-status-input"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
       'Aktiv'
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      '[data-cy="lidi-lines"] [data-cy="table-search-line-type"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_LINE_TYPE,
       line.type
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-lines"] [data-cy="table-search-date-input"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
       line.validTo
     );
     // Check that the table contains 1 result
-    cy.get('[data-cy="lidi-lines"] table tbody tr').should('have.length', 1);
+    cy.get(DataCy.LIDI_LINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', line.swissLineNumber).parents('tr').click({force: true});
     this.assertContainsLineVersion(line);
@@ -164,27 +164,27 @@ export default class LidiUtils {
     CommonUtils.assertItemValue(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber);
     CommonUtils.assertItemValue(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
     CommonUtils.assertItemText(
-      '[data-cy=type] .mat-select-value-text > .mat-select-min-line',
+      DataCy.TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.type
     );
     CommonUtils.assertItemText(
-      '[data-cy=paymentType] .mat-select-value-text > .mat-select-min-line',
+      DataCy.PAYMENT_TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.paymentType
     );
     CommonUtils.assertItemValue(
-      '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]',
+      DataCy.COLOR_FONT_RGB + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > ' + DataCy.RGB_PICKER_INPUT,
       version.colorFontRgb
     );
     CommonUtils.assertItemValue(
-      '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]',
+      DataCy.COLOR_FONT_RGB + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix >  ' + DataCy.RGB_PICKER_INPUT,
       version.colorBackRgb
     );
     CommonUtils.assertItemValue(
-      '[data-cy=colorFontCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]',
+      DataCy.COLOR_BACK_CMYK + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > ' + DataCy.CMYK_PICKER_INPUT,
       version.colorFontCmyk
     );
     CommonUtils.assertItemValue(
-      '[data-cy=colorBackCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]',
+      DataCy.COLOR_BACK_CMYK + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > ' + DataCy.CMYK_PICKER_INPUT,
       version.colorBackCmyk
     );
     CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);
@@ -337,11 +337,11 @@ export default class LidiUtils {
     cy.get(DataCy.MAINLINE_SLNID).should('contain.text', version.mainlineSlnid);
     CommonUtils.assertItemValue(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
     CommonUtils.assertItemText(
-      '[data-cy=type] .mat-select-value-text > .mat-select-min-line',
+      DataCy.TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.type
     );
     CommonUtils.assertItemText(
-      '[data-cy=paymentType] .mat-select-value-text > .mat-select-min-line',
+      DataCy.PAYMENT_TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.paymentType
     );
     CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);
