@@ -61,7 +61,7 @@ public class TimetableFieldNumberVersionModel implements DatesValidator {
   private String businessOrganisation;
 
   @Schema(description = "Additional comment", example = "Hier kann für interne Zwecke ein Kommentar welcher das Fahrplanfeld betrifft erfasst werden.")
-  @Size(max = 250)
+  @Size(max = AtlasFieldLengths.COMMENTS)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
 
