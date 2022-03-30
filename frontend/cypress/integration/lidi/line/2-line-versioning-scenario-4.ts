@@ -1,5 +1,6 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
+import {DataCy} from "../../../support/data-cy";
 
 /**
  * Szenario 4: Update, das über eine ganze Version hinausragt
@@ -46,9 +47,9 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
 
   it('Step-6: Add edited Linie Version to trigger versioning Scenario 4', () => {
     CommonUtils.clickOnEdit();
-    cy.get('[data-cy=validFrom]').clear().type(editedLineVersion.validFrom);
-    cy.get('[data-cy=validTo]').clear().type(editedLineVersion.validTo);
-    cy.get('[data-cy=alternativeName]').clear().type(editedLineVersion.alternativeName);
+    cy.get(DataCy.VALID_FROM).clear().type(editedLineVersion.validFrom);
+    cy.get(DataCy.VALID_TO).clear().type(editedLineVersion.validTo);
+    cy.get(DataCy.ALTERNATIVE_NAME).clear().type(editedLineVersion.alternativeName);
     CommonUtils.saveLine();
     CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
   });

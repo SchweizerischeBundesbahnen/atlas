@@ -1,15 +1,17 @@
+import {DataCy} from "../data-cy";
+
 export default class CommonUtils {
 
   static fromDetailBackToOverview() {
-    cy.get('[data-cy=back-to-overview]').click();
+    cy.get(DataCy.BACK_TO_OVERVIEW).click();
   }
 
   static navigateToHome() {
-    cy.get('[data-cy=atlas-logo-home-link]').click();
+    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click();
   }
 
   static assertHeaderTitle(title: string) {
-    cy.get('[data-cy=header-title]').should('have.text', title);
+    cy.get(DataCy.HEADER_TITLE).should('have.text', title);
   }
 
   static saveTtfn() {
@@ -25,15 +27,15 @@ export default class CommonUtils {
   }
 
   static getTotalRange(){
-    return cy.get('[data-cy="total-range"]')
+    return cy.get(DataCy.TOTAL_RANGE)
   }
 
   static saveVersionWithWait(urlToIntercept: string) {
     cy.intercept('GET', urlToIntercept).as('saveAndGetVersion');
-    cy.get('[data-cy=save-item]').click();
+    cy.get(DataCy.SAVE_ITEM).click();
     cy.wait('@saveAndGetVersion').its('response.statusCode').should('eq', 200);
-    cy.get('[data-cy=edit-item]').should('be.visible');
-    cy.get('[data-cy=delete-item]').should('be.visible');
+    cy.get(DataCy.EDIT_ITEM).should('be.visible');
+    cy.get(DataCy.DELETE_ITEM).should('be.visible');
   }
 
   static assertItemValue(selector: string, value: string) {
@@ -45,11 +47,11 @@ export default class CommonUtils {
   }
 
   static deleteItems() {
-    cy.get('[data-cy=delete-item]').click();
-    cy.get('[data-cy=dialog]').contains('Warnung!');
-    cy.get('[data-cy=dialog-confirm-button]').should('exist');
-    cy.get('[data-cy=dialog-cancel-button]').should('exist');
-    cy.get('[data-cy=dialog-confirm-button]').click();
+    cy.get(DataCy.DELETE_ITEM).click();
+    cy.get(DataCy.DIALOG).contains('Warnung!');
+    cy.get(DataCy.DIALOG_CONFIRM_BUTTON).should('exist');
+    cy.get(DataCy.DIALOG_CANCEL_BUTTON).should('exist');
+    cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
   }
 
   static switchToVersion(versionNumber: number) {
@@ -93,7 +95,7 @@ export default class CommonUtils {
   }
 
   static clickOnEdit() {
-    cy.get('[data-cy=edit-item]').click();
+    cy.get(DataCy.EDIT_ITEM).click();
   }
 
   static selectItemFromDropDown(selector: string, value: string) {
