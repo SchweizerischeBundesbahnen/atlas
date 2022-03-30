@@ -32,8 +32,8 @@ describe('SideNavComponent', () => {
     const result = fixture.nativeElement.querySelectorAll('div.link-border');
     //then
     expect(result).toBeDefined();
-    const firstSideNavItem = result[0].querySelector('div.mat-list-item-content');
-    const secondSideNavItem = result[1].querySelector('div.mat-list-item-content');
+    const firstSideNavItem = result[0].querySelector('.mat-list-item-content');
+    const secondSideNavItem = result[1].querySelector('.mat-list-item-content');
     expect(firstSideNavItem.textContent.trim()).toBe(component.pages[0].titleMenu);
     expect(secondSideNavItem.textContent.trim()).toBe(component.pages[1].titleMenu);
   });
