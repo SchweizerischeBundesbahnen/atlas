@@ -176,7 +176,8 @@
       "LINE": "Linea",
       "LINES": "Linee",
       "CONFLICT": {
-        "SWISS_NUMBER": "Il numero di linea CH (CHLNR) {{swissLineNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}."
+        "SWISS_NUMBER": "Il numero di linea CH (CHLNR) {{swissLineNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
+        "DELETE": "La linea {{slnid}} non può essere eliminata perché è ancora referenziata alla linea parziale {{SublineVersion.slnid}}"
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "La validità della linea {{validFrom}}-{{validTo}} non rientra nel campo di validità della linea parziale {{sublinie.swissSublineNumber}}. Quest’ultimo è {{sublinie.validFrom}}-{{sublinie.validTo}}."
@@ -201,7 +202,6 @@
         "EDIT_SUCCESS": "Linea memorizzata con successo.",
         "EDIT_ERROR": "Si è verificato un errore durante la modifica della linea.",
         "DELETE_SUCCESS": "Linea cancellata con successo.",
-        "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea.",
         "FETCH_ERROR": "Si è verificato un errore sconosciuto durante il caricamento della linea."
       }
     },

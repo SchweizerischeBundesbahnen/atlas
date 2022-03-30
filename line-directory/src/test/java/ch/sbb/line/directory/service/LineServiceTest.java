@@ -14,13 +14,16 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
+import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineValidationService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -40,6 +43,9 @@ class LineServiceTest {
 
   @Mock
   private LineVersionRepository lineVersionRepository;
+
+  @Mock
+  private SublineVersionRepository sublineVersionRepository;
 
   @Mock
   private LineRepository lineRepository;
@@ -67,8 +73,8 @@ class LineServiceTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineService = new LineService(lineVersionRepository, lineRepository, versionableService,
-        lineValidationService, specificationBuilderProvider, coverageService);
+    lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
+        versionableService, lineValidationService, specificationBuilderProvider, coverageService);
   }
 
   @Test
@@ -150,6 +156,30 @@ class LineServiceTest {
 
     //When & Then
     assertThatExceptionOfType(NotFoundException.class).isThrownBy(
+        () -> lineService.deleteAll(slnid));
+  }
+
+  @Test
+  void shouldThrowLineDeleteConflictException() {
+    // Given
+    String slnid = "ch:1:ttfnid:1000083";
+    LineVersion lineVersion = LineVersion.builder()
+                                         .validFrom(LocalDate.of(2000, 1, 1))
+                                         .validTo(LocalDate.of(2001, 12, 31))
+                                         .description("desc")
+                                         .build();
+    List<LineVersion> lineVersions = List.of(lineVersion);
+    when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(lineVersions);
+    SublineVersion sublineVersion = SublineVersion.builder()
+                                        .validFrom(LocalDate.of(2000, 1, 1))
+                                        .validTo(LocalDate.of(2001, 12, 31))
+                                        .description("desc")
+                                        .build();
+    List<SublineVersion> sublineVersions = List.of(sublineVersion);
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(slnid)).thenReturn(sublineVersions);
+
+    //When & Then
+    assertThatExceptionOfType(LineDeleteConflictException.class).isThrownBy(
         () -> lineService.deleteAll(slnid));
   }
 

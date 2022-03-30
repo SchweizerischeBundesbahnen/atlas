@@ -5,13 +5,16 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Line_;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineValidationService;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LineService {
 
   private final LineVersionRepository lineVersionRepository;
+  private final SublineVersionRepository sublineVersionRepository;
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
   private final LineValidationService lineValidationService;
@@ -77,9 +81,16 @@ public class LineService {
 
   public void deleteAll(String slnid) {
     List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
+
     if (currentVersions.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
+    List<SublineVersion> sublineVersionRelatedToLine = sublineVersionRepository.getSublineVersionByMainlineSlnid(
+        slnid);
+    if(!sublineVersionRelatedToLine.isEmpty()){
+      throw new LineDeleteConflictException(slnid,sublineVersionRelatedToLine);
+    }
+
     lineVersionRepository.deleteAll(currentVersions);
   }
 
