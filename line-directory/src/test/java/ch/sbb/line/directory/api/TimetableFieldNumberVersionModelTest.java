@@ -103,10 +103,10 @@ public class TimetableFieldNumberVersionModelTest {
   }
 
   @Test
-  void commentShouldNotHaveMoreThan250Chars() {
+  void commentShouldNotHaveMoreThan1500Chars() {
     // Given
     StringBuilder comment = new StringBuilder("test");
-    while (comment.length() < 250) {
+    while (comment.length() <= AtlasFieldLengths.COMMENTS) {
       comment.append("test");
     }
     TimetableFieldNumberVersionModel version = versionModel().comment(comment.toString()).build();
