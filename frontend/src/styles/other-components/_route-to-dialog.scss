@@ -1,7 +1,6 @@
 @import 'src/styles/variables';
 
-/* this must be set to enable scroll, but it is a global dialog class */
-.cdk-global-overlay-wrapper {
+.route-to-dialog-wrapper {
   overflow: auto;
   height: calc(100% - #{$footerHeight});
   pointer-events: auto !important;
