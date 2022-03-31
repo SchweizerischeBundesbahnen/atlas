@@ -1,5 +1,6 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
+import {DataCy} from "../../../support/data-cy";
 
 /** Szenario 8e: Letzte Version validTo und props updated
  *  NEU:      |_______________________________________|
@@ -46,10 +47,10 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   it('Step-6: update first Subline Version', () => {
     CommonUtils.switchToVersion(1);
     CommonUtils.clickOnEdit();
-    cy.get('[data-cy=validFrom]').clear().type(editedFirstSublineVersion.validFrom);
-    cy.get('[data-cy=validTo]').clear().type(editedFirstSublineVersion.validTo);
-    cy.get('[data-cy=number]').clear().type(editedFirstSublineVersion.number);
-    cy.get('[data-cy=longName]').clear().type(editedFirstSublineVersion.longName);
+    cy.get(DataCy.VALID_FROM).clear().type(editedFirstSublineVersion.validFrom);
+    cy.get(DataCy.VALID_TO).clear().type(editedFirstSublineVersion.validTo);
+    cy.get(DataCy.NUMBER).clear().type(editedFirstSublineVersion.number);
+    cy.get(DataCy.LONG_NAME).clear().type(editedFirstSublineVersion.longName);
     CommonUtils.saveSubline();
   });
 

@@ -1,4 +1,5 @@
 import CommonUtils from './common-utils';
+import {DataCy} from "../data-cy";
 
 export default class LidiUtils {
 
@@ -41,39 +42,39 @@ export default class LidiUtils {
   }
 
   static assertSublineTitle() {
-    cy.get('[data-cy=sublines-title]').invoke('text').should('contain', 'Teillinien');
+    cy.get(DataCy.SUBLINES_TITLE).invoke('text').should('contain', 'Teillinien');
   }
 
   static readSlnidFromForm(element: { slnid: string }) {
-    cy.get('[data-cy=slnid]')
+    cy.get(DataCy.SLNID)
     .invoke('val')
     .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
   static clickOnAddNewLinieVersion() {
-    cy.get('[data-cy=new-line]').click();
-    cy.get('[data-cy=save-item]').should('be.disabled');
-    cy.get('[data-cy=edit-item]').should('not.exist');
-    cy.get('[data-cy=delete-item]').should('not.exist');
+    cy.get(DataCy.NEW_LINE).click();
+    cy.get(DataCy.SAVE_ITEM).should('be.disabled');
+    cy.get(DataCy.EDIT_ITEM).should('not.exist');
+    cy.get(DataCy.DELETE_ITEM).should('not.exist');
     cy.contains('Neue Linie');
   }
 
   static clickOnAddNewSublinesLinieVersion() {
-    cy.get('[data-cy=new-subline]').click();
-    cy.get('[data-cy=save-item]').should('be.disabled');
-    cy.get('[data-cy=edit-item]').should('not.exist');
-    cy.get('[data-cy=delete-item]').should('not.exist');
+    cy.get(DataCy.NEW_SUBLINE).click();
+    cy.get(DataCy.SAVE_ITEM).should('be.disabled');
+    cy.get(DataCy.EDIT_ITEM).should('not.exist');
+    cy.get(DataCy.DELETE_ITEM).should('not.exist');
     cy.contains('Neue Teillinie');
   }
 
   static assertIsOnLines() {
     cy.url().should('contain', LidiUtils.LIDI_LINES_PATH);
-    cy.get('[data-cy="lidi-lines"]').should('exist');
+    cy.get(DataCy.LIDI_LINES).should('exist');
   }
 
   static assertIsOnSublines() {
     cy.url().should('contain', LidiUtils.LIDI_SUBLINES_PATH);
-    cy.get('[data-cy="lidi-sublines"]').should('exist');
+    cy.get(DataCy.LIDI_SUBLINES).should('exist');
   }
 
   static navigateToSubline(sublineVersion: any) {
@@ -88,32 +89,32 @@ export default class LidiUtils {
 
   static fillLineVersionForm(version: any) {
     // workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
-    cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
-    cy.get('[data-cy=validTo]').clear().type(version.validTo, {force: true});
-    cy.get('[data-cy=swissLineNumber]').clear().type(version.swissLineNumber, {force: true});
-    cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
-    CommonUtils.selectItemFromDropDown('[data-cy=type]', version.type);
-    CommonUtils.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
-    cy.get('[data-cy=colorFontRgb] [data-cy=rgb-picker-input]')
+    cy.get(DataCy.VALID_FROM).clear().type(version.validFrom);
+    cy.get(DataCy.VALID_TO).clear().type(version.validTo, {force: true});
+    cy.get(DataCy.SWISS_LINE_NUMBER).clear().type(version.swissLineNumber, {force: true});
+    cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
+    CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
+    CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
+    cy.get(DataCy.COLOR_FONT_RGB + ' ' + DataCy.RGB_PICKER_INPUT)
     .type('{selectall}' + version.colorFontRgb, {force: true})
     .type('{selectall}' + version.colorFontRgb);
-    cy.get('[data-cy=colorBackRgb] [data-cy=rgb-picker-input]').type(
+    cy.get(DataCy.COLOR_BACK_RGB + ' ' + DataCy.RGB_PICKER_INPUT).type(
       '{selectall}' + version.colorBackRgb
     );
-    cy.get('[data-cy=colorFontCmyk] [data-cy=cmyk-picker-input]').type(
+    cy.get(DataCy.COLOR_FONT_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT).type(
       '{selectall}' + version.colorFontCmyk
     );
-    cy.get('[data-cy=colorBackCmyk] [data-cy=cmyk-picker-input]').type(
+    cy.get(DataCy.COLOR_BACK_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT).type(
       '{selectall}' + version.colorBackCmyk
     );
-    cy.get('[data-cy=description]').clear().type(version.description);
-    cy.get('[data-cy=number]').clear().type(version.number);
-    cy.get('[data-cy=alternativeName]').clear().type(version.alternativeName);
-    cy.get('[data-cy=combinationName]').clear().type(version.combinationName);
-    cy.get('[data-cy=longName]').clear().type(version.longName);
-    cy.get('[data-cy=icon]').clear().type(version.icon);
-    cy.get('[data-cy=comment]').clear().type(version.comment);
-    cy.get('[data-cy=save-item]').should('not.be.disabled');
+    cy.get(DataCy.DESCRIPTION).clear().type(version.description);
+    cy.get(DataCy.NUMBER).clear().type(version.number);
+    cy.get(DataCy.ALTERNATIVE_NAME).clear().type(version.alternativeName);
+    cy.get(DataCy.COMBINATION_NAME).clear().type(version.combinationName);
+    cy.get(DataCy.LONG_NAME).clear().type(version.longName);
+    cy.get(DataCy.ICON).clear().type(version.icon);
+    cy.get(DataCy.COMMENT).clear().type(version.comment);
+    cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
   }
 
   static typeAndSelectItemFromDropDown(selector: string, value: string) {
@@ -125,76 +126,76 @@ export default class LidiUtils {
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-lines"] [data-cy="table-search-chip-input"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
       line.swissLineNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-lines"] [data-cy="table-search-chip-input"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
       line.slnid
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      '[data-cy="lidi-lines"] [data-cy="table-search-status-input"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
       'Aktiv'
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      '[data-cy="lidi-lines"] [data-cy="table-search-line-type"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_LINE_TYPE,
       line.type
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-lines"] [data-cy="table-search-date-input"]',
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
       line.validTo
     );
     // Check that the table contains 1 result
-    cy.get('[data-cy="lidi-lines"] table tbody tr').should('have.length', 1);
+    cy.get(DataCy.LIDI_LINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', line.swissLineNumber).parents('tr').click({force: true});
     this.assertContainsLineVersion(line);
   }
 
   static assertContainsLineVersion(version: any) {
-    CommonUtils.assertItemValue('[data-cy=validFrom]', version.validFrom);
-    CommonUtils.assertItemValue('[data-cy=validTo]', version.validTo);
-    CommonUtils.assertItemValue('[data-cy=swissLineNumber]', version.swissLineNumber);
-    CommonUtils.assertItemValue('[data-cy=businessOrganisation]', version.businessOrganisation);
+    CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
+    CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
+    CommonUtils.assertItemValue(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber);
+    CommonUtils.assertItemValue(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
     CommonUtils.assertItemText(
-      '[data-cy=type] .mat-select-value-text > .mat-select-min-line',
+      DataCy.TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.type
     );
     CommonUtils.assertItemText(
-      '[data-cy=paymentType] .mat-select-value-text > .mat-select-min-line',
+      DataCy.PAYMENT_TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.paymentType
     );
     CommonUtils.assertItemValue(
-      '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]',
+      DataCy.COLOR_FONT_RGB + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > ' + DataCy.RGB_PICKER_INPUT,
       version.colorFontRgb
     );
     CommonUtils.assertItemValue(
-      '[data-cy=colorFontRgb] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=rgb-picker-input]',
+      DataCy.COLOR_FONT_RGB + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix >  ' + DataCy.RGB_PICKER_INPUT,
       version.colorBackRgb
     );
     CommonUtils.assertItemValue(
-      '[data-cy=colorFontCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]',
+      DataCy.COLOR_BACK_CMYK + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > ' + DataCy.CMYK_PICKER_INPUT,
       version.colorFontCmyk
     );
     CommonUtils.assertItemValue(
-      '[data-cy=colorBackCmyk] > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > [data-cy=cmyk-picker-input]',
+      DataCy.COLOR_BACK_CMYK + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > ' + DataCy.CMYK_PICKER_INPUT,
       version.colorBackCmyk
     );
-    CommonUtils.assertItemValue('[data-cy=description]', version.description);
-    CommonUtils.assertItemValue('[data-cy=number]', version.number);
-    CommonUtils.assertItemValue('[data-cy=alternativeName]', version.alternativeName);
-    CommonUtils.assertItemValue('[data-cy=combinationName]', version.combinationName);
-    CommonUtils.assertItemValue('[data-cy=longName]', version.longName);
-    CommonUtils.assertItemValue('[data-cy=icon]', version.icon);
-    CommonUtils.assertItemValue('[data-cy=comment]', version.comment);
+    CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);
+    CommonUtils.assertItemValue(DataCy.NUMBER, version.number);
+    CommonUtils.assertItemValue(DataCy.ALTERNATIVE_NAME, version.alternativeName);
+    CommonUtils.assertItemValue(DataCy.COMBINATION_NAME, version.combinationName);
+    CommonUtils.assertItemValue(DataCy.LONG_NAME, version.longName);
+    CommonUtils.assertItemValue(DataCy.ICON, version.icon);
+    CommonUtils.assertItemValue(DataCy.COMMENT, version.comment);
 
-    cy.get('[data-cy=edit-item]').should('not.be.disabled');
+    cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
   }
 
   static addMainLine() {
@@ -314,40 +315,40 @@ export default class LidiUtils {
 
   static fillSublineVersionForm(version: any) {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
-    cy.get('[data-cy=validFrom]').clear().type(version.validFrom);
-    cy.get('[data-cy=validTo]').clear().type(version.validTo, {force: true});
-    cy.get('[data-cy=swissSublineNumber]')
+    cy.get(DataCy.VALID_FROM).clear().type(version.validFrom);
+    cy.get(DataCy.VALID_TO).clear().type(version.validTo, {force: true});
+    cy.get(DataCy.SWISS_SUBLINE_NUMBER)
     .clear()
     .type(version.swissSublineNumber, {force: true});
-    this.typeAndSelectItemFromDropDown('[data-cy=mainlineSlnid]', version.mainlineSlnid);
-    cy.get('[data-cy=businessOrganisation]').clear().type(version.businessOrganisation);
-    CommonUtils.selectItemFromDropDown('[data-cy=type]', version.type);
-    CommonUtils.selectItemFromDropDown('[data-cy=paymentType]', version.paymentType);
-    cy.get('[data-cy=description]').clear().type(version.description, {force: true});
-    cy.get('[data-cy=number]').clear().type(version.number);
-    cy.get('[data-cy=longName]').clear().type(version.longName);
-    cy.get('[data-cy=save-item]').should('not.be.disabled');
+    this.typeAndSelectItemFromDropDown(DataCy.MAINLINE_SLNID, version.mainlineSlnid);
+    cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
+    CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
+    CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
+    cy.get(DataCy.DESCRIPTION).clear().type(version.description, {force: true});
+    cy.get(DataCy.NUMBER).clear().type(version.number);
+    cy.get(DataCy.LONG_NAME).clear().type(version.longName);
+    cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
   }
 
   static assertContainsSublineVersion(version: any) {
-    CommonUtils.assertItemValue('[data-cy=validFrom]', version.validFrom);
-    CommonUtils.assertItemValue('[data-cy=validTo]', version.validTo);
-    CommonUtils.assertItemValue('[data-cy=swissSublineNumber]', version.swissSublineNumber);
-    cy.get('[data-cy=mainlineSlnid]').should('contain.text', version.mainlineSlnid);
-    CommonUtils.assertItemValue('[data-cy=businessOrganisation]', version.businessOrganisation);
+    CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
+    CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
+    CommonUtils.assertItemValue(DataCy.SWISS_SUBLINE_NUMBER, version.swissSublineNumber);
+    cy.get(DataCy.MAINLINE_SLNID).should('contain.text', version.mainlineSlnid);
+    CommonUtils.assertItemValue(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
     CommonUtils.assertItemText(
-      '[data-cy=type] .mat-select-value-text > .mat-select-min-line',
+      DataCy.TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.type
     );
     CommonUtils.assertItemText(
-      '[data-cy=paymentType] .mat-select-value-text > .mat-select-min-line',
+      DataCy.PAYMENT_TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.paymentType
     );
-    CommonUtils.assertItemValue('[data-cy=description]', version.description);
-    CommonUtils.assertItemValue('[data-cy=number]', version.number);
-    CommonUtils.assertItemValue('[data-cy=longName]', version.longName);
+    CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);
+    CommonUtils.assertItemValue(DataCy.NUMBER, version.number);
+    CommonUtils.assertItemValue(DataCy.LONG_NAME, version.longName);
 
-    cy.get('[data-cy=edit-item]').should('not.be.disabled');
+    cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
   }
 
   static getFirstSublineVersion() {
