@@ -26,8 +26,7 @@ export class NotificationService implements OnDestroy {
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   success(msg: string, param?: NotificationParamMessage) {
     this.notify(msg, 'success', param);
