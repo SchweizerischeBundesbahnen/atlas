@@ -87,11 +87,11 @@ export class SublineDetailComponent
   }
 
   getDetailHeading(record: SublineVersion): string {
-    return '';
+    return `${record.number} - ${record.description}`;
   }
 
   getDetailSubheading(record: SublineVersion): string {
-    return '';
+    return record.swissSublineNumber;
   }
 
   updateRecord(): void {
@@ -138,7 +138,7 @@ export class SublineDetailComponent
   }
 
   backToOverview(): void {
-    this.router.navigate([Pages.LIDI.path]).then();
+    this.router.navigate([Pages.LIDI.path, Pages.SUBLINES.path]).then();
   }
 
   getFormGroup(version: SublineVersion): FormGroup {
@@ -151,7 +151,7 @@ export class SublineDetailComponent
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
         status: [version.status],
-        type: [version.type, [Validators.required]],
+        sublineType: [version.sublineType, [Validators.required]],
         paymentType: [version.paymentType, [Validators.required]],
         businessOrganisation: [
           version.businessOrganisation,
