@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { DetailWrapperController } from './detail-wrapper-controller';
+import { AuthService } from '../../auth/auth.service';
+import { Role } from '../../auth/role';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -9,6 +11,14 @@ import { DetailWrapperController } from './detail-wrapper-controller';
 export class DetailWrapperComponent<TYPE> {
   @Input() controller!: DetailWrapperController<TYPE>;
   @Input() headingNew!: string;
-  @Input() canEdit = true;
-  @Input() pageType!: string;
+
+  constructor(private readonly authService: AuthService) {}
+
+  get hasAdminRole(): boolean {
+    return this.authService.hasRole(Role.LidiAdmin);
+  }
+
+  get hasAdminOrWriterRole(): boolean {
+    return this.authService.hasAnyRole([Role.LidiAdmin, Role.LidiWriter]);
+  }
 }

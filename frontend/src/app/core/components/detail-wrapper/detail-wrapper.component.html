@@ -1,22 +1,33 @@
 <div class="detail-wrapper-panel">
-  <h1 *ngIf="!controller.showSwitch; else detailPageTitle">
-    <strong>{{ headingNew | translate }}</strong>
-  </h1>
+  <div *ngIf="!controller.showSwitch; else detailPageTitle">
+    <span class="font-bold-4xl">{{ headingNew | translate }}</span>
+  </div>
   <ng-template #detailPageTitle>
-    <h1 class="font-bold-4xl detail-title">{{ controller.getDetailHeading(controller.record) }}</h1>
-    <h2>{{ controller.getDetailSubheading(controller.record) }}</h2>
+    <div class="font-bold-4xl detail-title mb-3">
+      {{ controller.getDetailHeading(controller.record) }}
+    </div>
+    <div class="font-bold-xl mb-2">
+      <span data-cy="detail-subheading-id">{{
+        controller.getDetailSubheading(controller.record)
+      }}</span>
+      <span data-cy="total-range">
+        - {{ 'COMMON.VALID_FROM' | translate }}
+        {{ controller.getStartDate() }}
+        {{ 'COMMON.TO' | translate }}
+        {{ controller.getEndDate() }}</span
+      >
+    </div>
   </ng-template>
   <app-switch-version
     *ngIf="controller.showSwitch"
     [records]="controller.records"
     [currentRecord]="controller.record"
-    [pageType]="controller.getPageType()"
-    [recordTitle]="controller.heading"
     [switchDisabled]="controller.form.enabled"
     (switchVersion)="controller.switchVersion($event)"
   ></app-switch-version>
-  <div *ngIf="canEdit && controller.isExistingRecord()" class="edit-section mb-2">
+  <div *ngIf="controller.isExistingRecord()" class="edit-section mb-2">
     <button
+      *ngIf="hasAdminOrWriterRole"
       data-cy="edit-item"
       class="atlas-primary-btn me-3"
       (click)="controller.toggleEdit()"
@@ -25,6 +36,7 @@
       {{ 'COMMON.EDIT' | translate }}
     </button>
     <button
+      *ngIf="hasAdminRole"
       data-cy="delete-item"
       (click)="controller.delete()"
       [disabled]="controller.form.enabled"
@@ -34,7 +46,7 @@
     </button>
   </div>
 
-  <div class="detail-content">
+  <div class="detail-content mt-4">
     <ng-content></ng-content>
   </div>
 
@@ -43,6 +55,7 @@
       *ngIf="controller.form.disabled; else editModeButtons"
       class="atlas-primary-btn footer-btn"
       [mat-dialog-close]="true"
+      data-cy="back-to-overview"
     >
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
