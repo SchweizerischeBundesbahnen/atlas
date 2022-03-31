@@ -1,13 +1,13 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
-import { NotificationParamMessage } from './notification-param-message';
-import { catchError, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { ErrorNotificationComponent } from './error/error-notification.component';
-import { DisplayInfo } from '../../api';
-import { NavigationStart, Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Injectable, OnDestroy} from '@angular/core';
+import {MatSnackBar, MatSnackBarConfig, MatSnackBarRef} from '@angular/material/snack-bar';
+import {TranslateService} from '@ngx-translate/core';
+import {NotificationParamMessage} from './notification-param-message';
+import {catchError, Subject} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
+import {ErrorNotificationComponent} from './error/error-notification.component';
+import {DisplayInfo} from '../../api';
+import {NavigationStart, Router} from '@angular/router';
+import {HttpErrorResponse} from '@angular/common/http';
 
 const VERSIONING_NO_CHANGES_HTTP_STATUS = 520;
 
@@ -26,7 +26,8 @@ export class NotificationService implements OnDestroy {
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   success(msg: string, param?: NotificationParamMessage) {
     this.notify(msg, 'success', param);
@@ -58,19 +59,19 @@ export class NotificationService implements OnDestroy {
 
   notify(msg: string, type: string, param?: NotificationParamMessage) {
     this.translateService
-      .get(msg, param)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          console.log(err);
-          throw err;
-        })
-      )
-      .subscribe((value) => {
-        this.SNACK_BAR_CONFIG['duration'] = 5000;
-        this.SNACK_BAR_CONFIG['panelClass'] = [type, 'notification'];
-        this.snackBar.open(value, '', this.SNACK_BAR_CONFIG);
-      });
+    .get(msg, param)
+    .pipe(
+      takeUntil(this.ngUnsubscribe),
+      catchError((err) => {
+        console.log(err);
+        throw err;
+      })
+    )
+    .subscribe((value) => {
+      this.SNACK_BAR_CONFIG['duration'] = 5000;
+      this.SNACK_BAR_CONFIG['panelClass'] = [type, 'notification'];
+      this.snackBar.open(value, '', this.SNACK_BAR_CONFIG);
+    });
   }
 
   arrayParametersToObject(displayInfo: DisplayInfo) {
@@ -79,16 +80,16 @@ export class NotificationService implements OnDestroy {
 
   private dismissOnNavigation(errorSnackBar: MatSnackBarRef<ErrorNotificationComponent>) {
     this.router.events
-      .pipe(filter((event) => event instanceof NavigationStart))
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          throw err;
-        })
-      )
-      .subscribe(() => {
-        errorSnackBar.dismiss();
-      });
+    .pipe(filter((event) => event instanceof NavigationStart))
+    .pipe(
+      takeUntil(this.ngUnsubscribe),
+      catchError((err) => {
+        throw err;
+      })
+    )
+    .subscribe(() => {
+      errorSnackBar.dismiss();
+    });
   }
 
   private configureNotification(code: string | undefined, errorResponse: HttpErrorResponse) {
