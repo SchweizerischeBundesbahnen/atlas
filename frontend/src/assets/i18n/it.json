@@ -219,7 +219,8 @@
       "NEW": "Inserire nuova linea parziale",
       "TYPES": {
         "COMPENSATION": "Compensazione",
-        "TECHNICAL": "Tecnica"
+        "TECHNICAL": "Tecnica",
+        "CONCESSION": "Concessioni"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Linea parziale aggiunta con successo.",
