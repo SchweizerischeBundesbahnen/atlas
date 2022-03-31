@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import {Injectable} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +26,4 @@ export class RouteToDialogService {
   clearDialogRer() {
     this.lastDialogRef = undefined;
   }
-
-  // TODO: unit tests
 }
