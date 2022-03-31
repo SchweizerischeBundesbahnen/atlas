@@ -6,7 +6,6 @@ import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { SublinesService, Subline, SublineType } from '../../../api';
-import { Pages } from '../../pages';
 import { TableSearch } from '../../../core/components/table-search/table-search';
 import { TableComponent } from '../../../core/components/table/table.component';
 
@@ -24,7 +23,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
     {
       headerTitle: 'LIDI.SUBLINE_TYPE',
-      value: 'type',
+      value: 'sublineType',
       translate: { withPrefix: 'LIDI.SUBLINE.TYPES.' },
     },
     { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
@@ -88,7 +87,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
 
   editVersion($event: Subline) {
     this.router
-      .navigate([Pages.SUBLINES.path, $event.slnid], {
+      .navigate([$event.slnid], {
         relativeTo: this.route,
       })
       .then();

@@ -1,5 +1,5 @@
-<h3 class="font-bold-lg">{{ 'COMMON.VERSION_TABLE_TITLE' | translate }}</h3>
-<table mat-table multiTemplateDataRows [dataSource]="records">
+<h3 class="font-bold-lg">{{ 'VERSION_TABLE.TITLE' | translate }}</h3>
+<table mat-table multiTemplateDataRows [dataSource]="records" data-cy="version-switch">
   <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.value }}">
     <th scope="col" mat-header-cell *matHeaderCellDef class="font-bold-base color-primary-400">
       {{ column.headerTitle | translate }}
@@ -12,13 +12,11 @@
   </ng-container>
 
   <ng-container matColumnDef="placeholder-row">
-    <ng-container *matCellDef="let element">
-      <td *ngIf="hasGapToNextRecord(element)" class="d-flex align-items-center">
-        <hr />
-        <span>{{ 'COMMON.GAP' | translate }}</span>
-        <hr />
-      </td>
-    </ng-container>
+    <td *matCellDef="let element" class="d-flex align-items-center">
+      <hr />
+      <span>{{ 'VERSION_TABLE.GAP' | translate }}</span>
+      <hr />
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="columnValues"></tr>
@@ -28,5 +26,10 @@
     *matRowDef="let row; columns: columnValues"
     (click)="setCurrentRecord(row)"
   ></tr>
-  <tr mat-row *matRowDef="let element; columns: ['placeholder-row']" class="placeholder-row"></tr>
+  <tr
+    *matRowDef="let row; columns: ['placeholder-row']"
+    mat-row
+    class="placeholder-row"
+    [ngClass]="hasGapToNextRecord(row) ? '' : 'no-display'"
+  ></tr>
 </table>
