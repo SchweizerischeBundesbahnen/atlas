@@ -2,7 +2,7 @@ export class DataCy {
   static BACK_TO_OVERVIEW = '[data-cy=back-to-overview]';
   static ATLAS_LOGO_HOME_LINK = '[data-cy=atlas-logo-home-link]';
   static HEADER_TITLE = '[data-cy=header-title]';
-  static TOTAL_RANGE = '[data-cy="total-range"]';
+  static TOTAL_RANGE = '[data-cy=total-range]';
   static SAVE_ITEM = '[data-cy=save-item]';
   static EDIT_ITEM = '[data-cy=edit-item]';
   static DELETE_ITEM = '[data-cy=delete-item]';
@@ -13,8 +13,8 @@ export class DataCy {
   static SLNID = '[data-cy=slnid]';
   static NEW_LINE = '[data-cy=new-line]';
   static NEW_SUBLINE = '[data-cy=new-subline]';
-  static LIDI_LINES = '[data-cy="lidi-lines"]';
-  static LIDI_SUBLINES = '[data-cy="lidi-sublines"]';
+  static LIDI_LINES = '[data-cy=lidi-lines]';
+  static LIDI_SUBLINES = '[data-cy=lidi-sublines]';
   static VALID_FROM = '[data-cy=validFrom]';
   static VALID_TO = '[data-cy=validTo]';
   static SWISS_LINE_NUMBER = '[data-cy=swissLineNumber]';
@@ -40,10 +40,10 @@ export class DataCy {
   static COLOR_FONT_CMYK = '[data-cy=colorFontCmyk]';
   static CMYK_PICKER_INPUT = '[data-cy=cmyk-picker-input]';
   static COLOR_BACK_CMYK = '[data-cy=colorBackCmyk]';
-  static TABLE_SEARCH_CHIP_INPUT = '[data-cy="table-search-chip-input"]';
-  static TABLE_SEARCH_STATUS_INPUT = '[data-cy="table-search-status-input"]';
-  static TABLE_SEARCH_LINE_TYPE = '[data-cy="table-search-line-type"]';
-  static TABLE_SEARCH_DATE_INPUT = '[data-cy="table-search-date-input"]';
-  static TABLE_SEARCH_SUBLINE_TYPE = '[data-cy="table-search-subline-type"]';
-  static TTFN= '[data-cy="ttfn"]';
+  static TABLE_SEARCH_CHIP_INPUT = '[data-cy=table-search-chip-input]';
+  static TABLE_SEARCH_STATUS_INPUT = '[data-cy=table-search-status-input]';
+  static TABLE_SEARCH_LINE_TYPE = '[data-cy=table-search-line-type]';
+  static TABLE_SEARCH_DATE_INPUT = '[data-cy=table-search-date-input]';
+  static TABLE_SEARCH_SUBLINE_TYPE = '[data-cy=table-search-subline-type]';
+  static TTFN = '[data-cy=ttfn]';
 }
