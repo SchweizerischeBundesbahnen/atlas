@@ -33,10 +33,7 @@
     "FROM": "dal",
     "TO": "al",
     "VERSION": "Versione",
-    "VERSION_TABLE_TITLE": "Versioni con validità diversa",
-    "GAP": "Spazio",
     "FILLED_AUTOMATICALLY": "Compilato automaticamente",
-    "VERSION_DESCRIPTION": "Designazione della versione",
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
     "STATUS": "Stato",
@@ -63,6 +60,11 @@
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "L’oggetto è già stato cancellato o nel frattempo è stato modificato. Ricaricare la pagina premendo il tasto F5."
     }
+  },
+  "VERSION_TABLE": {
+    "TITLE": "Versioni con validità diversa",
+    "GAP": "Spazio",
+    "VERSION_DESCRIPTION": "Designazione della versione"
   },
   "DIALOG": {
     "OK": "Avanti",
@@ -106,8 +108,12 @@
   "TTFN": {
     "TTFN": "Numero del quadro d’orario",
     "NEW": "Registrazione nuovo numero del quadro d’orario",
+    "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld__IT__",
+    "KEY_DATA": "Eckdaten__IT__",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numero del quadro d’orario CH",
     "DESCRIPTION": "Denominazione quadro d’orario CH",
+    "DESCRIPTION_TOOLTIP": "CH-Fahrplanfeldnummer Bezeichnung Tooltip__IT__",
+    "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__IT__",
     "BUSINESS_ORGANISATION": "Organizzazione aziendale",
     "NUMBER": "Numero del quadro d’orario",
     "TTFNID": "ID numero del quadro d’orario",
@@ -183,7 +189,7 @@
       "BACKGROUND_RGB": "Colore dello sfondo dei caratteri RGB",
       "FONT_CMYK": "Colore dei caratteri CMYK",
       "BACKGROUND_CMYK": "Colore dello sfondo dei caratteri CMYK",
-      "NEW": "Nuova linea",
+      "NEW": "Inserire nuova linea",
       "TYPES": {
         "ORDERLY": "Ordinaria",
         "TEMPORARY": "Provvisoria",
@@ -212,7 +218,7 @@
       "NUMBER": "Numero linea parziale",
       "MAINLINE": "Linea principale",
       "DESCRIPTION": "Denominazione linea parziale",
-      "NEW": "Nuova linea parziale",
+      "NEW": "Inserire nuova linea parziale",
       "TYPES": {
         "COMPENSATION": "Compensazione",
         "TECHNICAL": "Tecnica"

@@ -1,18 +1,24 @@
-import {Component} from '@angular/core';
-import {Pages} from "../../pages";
-import {ActivatedRoute, Router} from "@angular/router";
+import { Component } from '@angular/core';
+import { Pages } from '../../pages';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   templateUrl: './lidi-overview.component.html',
-  styleUrls:['./lidi-overview.component.scss']
+  styleUrls: ['./lidi-overview.component.scss'],
 })
 export class LidiOverviewComponent {
+  TABS = [
+    {
+      link: Pages.LINES.path,
+      title: 'LIDI.LINE.LINES',
+    },
+    {
+      link: Pages.SUBLINES.path,
+      title: 'LIDI.SUBLINE.SUBLINES',
+    },
+  ];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-  ) {
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   newLine() {
     this.router

@@ -22,8 +22,8 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     cy.atlasLogin();
   });
 
-  it('Step-2: Navigate to Linienverzeichnis', () => {
-    LidiUtils.navigateToLidi();
+  it('Step-2: Navigate to Linien', () => {
+    LidiUtils.navigateToLines();
   });
 
   it('Step-3: Add first Linie Version', () => {
@@ -50,11 +50,11 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     cy.get('[data-cy=validTo]').clear().type(editedLineVersion.validTo);
     cy.get('[data-cy=alternativeName]').clear().type(editedLineVersion.alternativeName);
     CommonUtils.saveLine();
-    cy.get('[data-cy=switch-version-total-range]').contains('Linie von 01.01.2000 bis 31.12.2002');
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
   });
 
   it('Step-7: Assert fifth version (actual version)', () => {
-    cy.get('#version5').should('have.class', 'currentVersion');
+    CommonUtils.assertSelectedVersion(5);
     CommonUtils.assertVersionRange(5, '02.06.2002', '31.12.2002');
 
     thirdLineVersion.validFrom = '02.06.2002';

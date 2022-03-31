@@ -17,12 +17,14 @@ describe('Fahrplanfeldnummer', () => {
     CommonUtils.assertTableSearch(0, 0, 'Suche');
     CommonUtils.assertTableSearch(0, 1, 'Status');
     CommonUtils.assertTableSearch(0, 2, 'Gültig am');
-    CommonUtils.assertTableHeader(0, 0, 'CH-Fahrplanfeldnummer');
+    CommonUtils.assertTableHeader(0, 0, 'Fahrplanfeldnummer');
     CommonUtils.assertTableHeader(0, 1, 'CH-Fahrplanfeldnummer Bezeichnung');
-    CommonUtils.assertTableHeader(0, 2, 'Status');
-    CommonUtils.assertTableHeader(0, 3, 'Fahrplanfeldnummer-ID');
-    CommonUtils.assertTableHeader(0, 4, 'Gültig von');
-    CommonUtils.assertTableHeader(0, 5, 'Gültig bis');
+    CommonUtils.assertTableHeader(0, 2, 'CH-Fahrplanfeldnummer');
+    CommonUtils.assertTableHeader(0, 3, 'Gültig von');
+    CommonUtils.assertTableHeader(0, 4, 'Gültig bis');
+    CommonUtils.assertTableHeader(0, 5, 'Status');
+    CommonUtils.assertTableHeader(0, 6, 'Geschäftsorganisation');
+    CommonUtils.assertTableHeader(0, 7, 'Fahrplanfeldnummer-ID');
   });
 
   it('Step-4: Go to page Add new Version', () => {
@@ -33,6 +35,7 @@ describe('Fahrplanfeldnummer', () => {
   });
 
   it('Step-5: Navigate to the Fahrplanfeldnummer', () => {
+    CommonUtils.fromDetailBackToOverview();
     CommonUtils.navigateToHome();
     TtfnUtils.navigateToTimetableFieldNumber();
     TtfnUtils.checkHeaderTitle();
@@ -65,7 +68,7 @@ describe('Fahrplanfeldnummer', () => {
     cy.get('[data-cy="ttfn"] table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', firstVersion.swissTimetableFieldNumber).parents('tr').click({ force: true });
-
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');
     TtfnUtils.assertContainsVersion(firstVersion);
   });
 

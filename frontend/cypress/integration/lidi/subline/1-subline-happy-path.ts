@@ -13,26 +13,27 @@ describe('Teillinie', () => {
     mainline = LidiUtils.addMainLine();
   });
 
-  it('Step-3: Navigate to Linienverzeichnis', () => {
-    LidiUtils.navigateToLidi();
+  it('Step-3: Navigate to Sublines', () => {
+    LidiUtils.navigateToSublines();
     LidiUtils.checkHeaderTitle();
     LidiUtils.assertSublineTitle();
   });
 
   it('Step-4: Check the Linienverzeichnis Line Table is visible', () => {
-    CommonUtils.assertTableSearch(1, 0, 'Suche');
-    CommonUtils.assertTableSearch(1, 1, 'Status');
-    CommonUtils.assertTableSearch(1, 2, 'Teillinientyp');
-    CommonUtils.assertTableSearch(1, 3, 'Gültig am');
-    CommonUtils.assertTableHeader(1, 0, 'CH-Teilliniennummer');
-    CommonUtils.assertTableHeader(1, 1, 'Teillinienbezeichnung');
-    CommonUtils.assertTableHeader(1, 2, 'CH-Liniennummer (CHLNR)');
-    CommonUtils.assertTableHeader(1, 3, 'Status');
-    CommonUtils.assertTableHeader(1, 4, 'Teillinientyp');
-    CommonUtils.assertTableHeader(1, 5, 'Geschäftsorganisation');
-    CommonUtils.assertTableHeader(1, 6, 'SLNID');
-    CommonUtils.assertTableHeader(1, 7, 'Gültig von');
-    CommonUtils.assertTableHeader(1, 8, 'Gültig bis');
+    CommonUtils.assertTableSearch(0, 0, 'Suche');
+    CommonUtils.assertTableSearch(0, 1, 'Status');
+    CommonUtils.assertTableSearch(0, 2, 'Teillinientyp');
+    CommonUtils.assertTableSearch(0, 3, 'Gültig am');
+    CommonUtils.assertTableHeader(0, 0, 'Teilliniennummer');
+    CommonUtils.assertTableHeader(0, 1, 'Teillinienbezeichnung');
+    CommonUtils.assertTableHeader(0, 2, 'CH-Teilliniennummer');
+    CommonUtils.assertTableHeader(0, 3, 'CH-Liniennummer (CHLNR)');
+    CommonUtils.assertTableHeader(0, 4, 'Teillinientyp');
+    CommonUtils.assertTableHeader(0, 5, 'Gültig von');
+    CommonUtils.assertTableHeader(0, 6, 'Gültig bis');
+    CommonUtils.assertTableHeader(0, 7, 'Status');
+    CommonUtils.assertTableHeader(0, 8, 'Geschäftsorganisation');
+    CommonUtils.assertTableHeader(0, 9, 'SLNID');
   });
 
   it('Step-5: Go to page Add new Version', () => {
@@ -42,9 +43,10 @@ describe('Teillinie', () => {
     LidiUtils.readSlnidFromForm(sublineVersion);
   });
 
-  it('Step-6: Navigate to Linienverzeichnis', () => {
+  it('Step-6: Navigate to Sublines', () => {
+    CommonUtils.fromDetailBackToOverview();
     CommonUtils.navigateToHome();
-    LidiUtils.navigateToLidi();
+    LidiUtils.navigateToSublines();
     LidiUtils.checkHeaderTitle();
   });
 
@@ -82,21 +84,23 @@ describe('Teillinie', () => {
     cy.get('[data-cy="lidi-sublines"] table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', sublineVersion.swissSublineNumber).parents('tr').click({ force: true });
-
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
 
   it('Step-8: Delete the subline item', () => {
     CommonUtils.deleteItems();
-    LidiUtils.assertIsOnLiDiHome();
+    LidiUtils.assertIsOnSublines();
   });
 
   it('Step-9: Navigate to the mainline item', () => {
+    LidiUtils.changeLiDiTabToLines();
     LidiUtils.searchAndNavigateToLine(mainline);
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
   });
 
   it('Step-10: Delete the mainline item', () => {
     CommonUtils.deleteItems();
-    LidiUtils.assertIsOnLiDiHome();
+    LidiUtils.assertIsOnLines();
   });
 });

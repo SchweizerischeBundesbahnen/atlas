@@ -65,7 +65,7 @@ public class SublineTestData {
                               .swissSublineNumber("b0.Ic2-sibline")
                               .number("number")
                               .description("description")
-                              .type(SublineType.TECHNICAL)
+                              .sublineType(SublineType.TECHNICAL)
                               .paymentType(PaymentType.LOCAL)
                               .mainlineSlnid(MAINLINE_SLNID);
   }

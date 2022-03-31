@@ -8,8 +8,8 @@ describe('Linie', () => {
     cy.atlasLogin();
   });
 
-  it('Step-2: Navigate to Linienverzeichnis', () => {
-    LidiUtils.navigateToLidi();
+  it('Step-2: Navigate to Linien', () => {
+    LidiUtils.navigateToLines();
   });
 
   it('Step-3: Check the Linienverzeichnis Line Table is visible', () => {
@@ -18,15 +18,15 @@ describe('Linie', () => {
     CommonUtils.assertTableSearch(0, 1, 'Status');
     CommonUtils.assertTableSearch(0, 2, 'Linientyp');
     CommonUtils.assertTableSearch(0, 3, 'Gültig am');
-    CommonUtils.assertTableHeader(0, 0, 'CH-Liniennummer (CHLNR)');
-    CommonUtils.assertTableHeader(0, 1, 'Liniennummer');
-    CommonUtils.assertTableHeader(0, 2, 'Linienbezeichnung');
-    CommonUtils.assertTableHeader(0, 3, 'Status');
-    CommonUtils.assertTableHeader(0, 4, 'Linientyp');
-    CommonUtils.assertTableHeader(0, 5, 'Geschäftsorganisation');
-    CommonUtils.assertTableHeader(0, 6, 'SLNID');
-    CommonUtils.assertTableHeader(0, 7, 'Gültig von');
-    CommonUtils.assertTableHeader(0, 8, 'Gültig bis');
+    CommonUtils.assertTableHeader(0, 0, 'Liniennummer');
+    CommonUtils.assertTableHeader(0, 1, 'Linienbezeichnung');
+    CommonUtils.assertTableHeader(0, 2, 'CH-Liniennummer (CHLNR)');
+    CommonUtils.assertTableHeader(0, 3, 'Linientyp');
+    CommonUtils.assertTableHeader(0, 4, 'Gültig von');
+    CommonUtils.assertTableHeader(0, 5, 'Gültig bis');
+    CommonUtils.assertTableHeader(0, 6, 'Status');
+    CommonUtils.assertTableHeader(0, 7, 'Geschäftsorganisation');
+    CommonUtils.assertTableHeader(0, 8, 'SLNID');
   });
 
   it('Step-4: Go to page Add new Version', () => {
@@ -36,19 +36,21 @@ describe('Linie', () => {
     LidiUtils.readSlnidFromForm(line);
   });
 
-  it('Step-5: Navigate to Linienverzeichnis', () => {
+  it('Step-5: Navigate to Linien', () => {
+    CommonUtils.fromDetailBackToOverview();
     CommonUtils.navigateToHome();
-    LidiUtils.navigateToLidi();
+    LidiUtils.navigateToLines();
     LidiUtils.checkHeaderTitle();
   });
 
   it('Step-6: Search added item in table and navigate to it', () => {
     LidiUtils.searchAndNavigateToLine(line);
+    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');
   });
 
   it('Step-7: Delete the item', () => {
     CommonUtils.deleteItems();
-    LidiUtils.assertIsOnLiDiHome();
+    LidiUtils.assertIsOnLines();
     LidiUtils.checkHeaderTitle();
   });
 });
