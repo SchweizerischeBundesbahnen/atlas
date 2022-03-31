@@ -107,7 +107,7 @@
   },
   "TTFN": {
     "TTFN": "Numero del quadro d’orario",
-    "NEW": "Registrazione nuovo numero del quadro d’orario",
+    "NEW": "Inserire nuovo numero del quadro d’orario",
     "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld__IT__",
     "KEY_DATA": "Eckdaten__IT__",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numero del quadro d’orario CH",
@@ -221,7 +221,8 @@
       "NEW": "Inserire nuova linea parziale",
       "TYPES": {
         "COMPENSATION": "Compensazione",
-        "TECHNICAL": "Tecnica"
+        "TECHNICAL": "Tecnica",
+        "CONCESSION": "Concessione"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Linea parziale aggiunta con successo.",
