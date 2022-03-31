@@ -220,7 +220,7 @@
       "TYPES": {
         "COMPENSATION": "Compensation",
         "TECHNICAL": "Technique",
-        "CONCESSION": "Concessions"
+        "CONCESSION": "Concession"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le ligne partielle a été ajoutée avec succès.",
