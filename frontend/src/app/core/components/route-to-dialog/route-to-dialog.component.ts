@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Data, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { RouteToDialogService } from './route-to-dialog.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {ActivatedRoute, Data, Router} from '@angular/router';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {RouteToDialogService} from './route-to-dialog.service';
 
 const DIALOG_WIDTH = '1440px';
 
@@ -18,7 +18,8 @@ export class RouteToDialogComponent implements OnInit, OnDestroy {
     private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly route: ActivatedRoute
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((data) => this.openDialog(data));
@@ -47,16 +48,25 @@ export class RouteToDialogComponent implements OnInit, OnDestroy {
         minWidth: DIALOG_WIDTH,
       });
       dialogRef
-        .afterClosed()
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => this.navigateBack());
+      .afterClosed()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => this.navigateBack());
 
       this.routeToDialogService.setDialogRef(dialogRef);
+
+      this.setDialogWrapperClass(dialogRef);
+    }
+  }
+
+  private setDialogWrapperClass(dialogRef: MatDialogRef<any>) {
+    // see how to override mat-dialog-wrapper: https://github.com/angular/components/issues/7471
+    if (dialogRef['_overlayRef']?.overlayElement) {
+      dialogRef['_overlayRef'].overlayElement.parentElement.className += ' route-to-dialog-wrapper';
     }
   }
 
   private navigateBack() {
     this.routeToDialogService.clearDialogRer();
-    return this.router.navigate(['..'], { relativeTo: this.route });
+    return this.router.navigate(['..'], {relativeTo: this.route});
   }
 }
