@@ -16,18 +16,18 @@ describe('RouteToDialogService', () => {
   });
 
   it('should have dialog when setDialogRef', () => {
-    service.setDialogRef({} as any);
+    service.setDialogRef({});
     expect(service.hasDialog()).toBeTruthy();
   });
 
   it('should have dialog when setDialogRef', () => {
-    service.setDialogRef({} as any);
+    service.setDialogRef({});
     expect(service.hasDialog()).toBeTruthy();
     expect(service.getDialog()).toBeTruthy();
   });
 
   it('should remove dialog when clearDialogRef', () => {
-    service.setDialogRef({} as any);
+    service.setDialogRef({});
     expect(service.hasDialog()).toBeTruthy();
     service.clearDialogRer();
     expect(service.hasDialog()).toBeFalsy();
