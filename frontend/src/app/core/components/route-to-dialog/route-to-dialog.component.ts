@@ -41,6 +41,7 @@ export class RouteToDialogComponent implements OnInit, OnDestroy {
       const dialogRef = this.dialog.open(data.component, {
         data,
         panelClass: 'route-to-dialog-panel',
+        disableClose: true,
         backdropClass: 'route-to-dialog-backdrop',
         width: DIALOG_WIDTH,
         minWidth: DIALOG_WIDTH,

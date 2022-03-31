@@ -33,6 +33,7 @@ public class SublineController implements SublinenApiV1 {
   public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
       List<Status> statusRestrictions, List<SublineType> typeRestrictions,
       Optional<LocalDate> validOn) {
+    log.info("Load Versions using pageable={}", pageable);
     Page<Subline> sublines = sublineService.findAll(
         new SearchRestrictions<>(pageable, Optional.empty(), searchCriteria, statusRestrictions,
             typeRestrictions, validOn)
@@ -49,7 +50,7 @@ public class SublineController implements SublinenApiV1 {
             .number(sublineVersion.getNumber())
             .swissLineNumber(sublineVersion.getSwissLineNumber())
             .status(sublineVersion.getStatus())
-            .type(sublineVersion.getSublineType())
+            .sublineType(sublineVersion.getSublineType())
             .slnid(sublineVersion.getSlnid())
             .description(sublineVersion.getDescription())
             .validFrom(sublineVersion.getValidFrom())
@@ -105,7 +106,7 @@ public class SublineController implements SublinenApiV1 {
                               .swissSublineNumber(sublineVersion.getSwissSublineNumber())
                               .mainlineSlnid(sublineVersion.getMainlineSlnid())
                               .status(sublineVersion.getStatus())
-                              .type(sublineVersion.getSublineType())
+                              .sublineType(sublineVersion.getSublineType())
                               .slnid(sublineVersion.getSlnid())
                               .description(sublineVersion.getDescription())
                               .number(sublineVersion.getNumber())
@@ -123,7 +124,7 @@ public class SublineController implements SublinenApiV1 {
                          .id(sublineVersionModel.getId())
                          .swissSublineNumber(sublineVersionModel.getSwissSublineNumber())
                          .mainlineSlnid(sublineVersionModel.getMainlineSlnid())
-                         .sublineType(sublineVersionModel.getType())
+                         .sublineType(sublineVersionModel.getSublineType())
                          .slnid(sublineVersionModel.getSlnid())
                          .description(sublineVersionModel.getDescription())
                          .number(sublineVersionModel.getNumber())

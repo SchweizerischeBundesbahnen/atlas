@@ -17,7 +17,7 @@ const versionContainer: ContainerLine = {
       validTo: new Date('2029-06-01'),
       businessOrganisation: 'SBB',
       swissLineNumber: 'L1',
-      type: LineType.Orderly,
+      lineType: LineType.Orderly,
     },
   ],
   totalCount: 1,

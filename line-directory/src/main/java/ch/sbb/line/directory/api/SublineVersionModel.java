@@ -15,11 +15,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
+@FieldNameConstants
 @Schema(name = "SublineVersion")
 public class SublineVersionModel implements DatesValidator {
 
@@ -42,7 +44,7 @@ public class SublineVersionModel implements DatesValidator {
 
   @Schema(description = "Subline Type")
   @NotNull
-  private SublineType type;
+  private SublineType sublineType;
 
   @Schema(description = "SLNID", accessMode = AccessMode.READ_ONLY, example = "ch:1:slnid:10001235")
   private String slnid;

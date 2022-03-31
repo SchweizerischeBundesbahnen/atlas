@@ -33,10 +33,7 @@
     "FROM": "de",
     "TO": "à",
     "VERSION": "Version",
-    "VERSION_TABLE_TITLE": "Versions avec validité différente",
-    "GAP": "Lacune",
     "FILLED_AUTOMATICALLY": "Remplissage automatique",
-    "VERSION_DESCRIPTION": "Désignation de la version",
     "VALID_FROM": "Valable du",
     "VALID_TO": "Valable au",
     "STATUS": "Statut",
@@ -63,6 +60,11 @@
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Soit l’objet a déjà été supprimé, soit il a été traité entre-temps. Veuillez recharger la page en appuyant sur la touche F5."
     }
+  },
+  "VERSION_TABLE": {
+    "TITLE": "Versions avec validité différente",
+    "GAP": "Lacune",
+    "VERSION_DESCRIPTION": "Désignation de la version"
   },
   "DIALOG": {
     "OK": "Suivant",
@@ -106,8 +108,12 @@
   "TTFN": {
     "TTFN": "Numéro du tableau-horaire",
     "NEW": "Saisir un nouveau numéro de tableau-horaire",
+    "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld__FR__",
+    "KEY_DATA": "Eckdaten__FR__",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numéro de tableau-horaire CH",
     "DESCRIPTION": "Désignation numéro de tableau-horaire CH",
+    "DESCRIPTION_TOOLTIP": "CH-Fahrplanfeldnummer Bezeichnung Tooltip__FR__",
+    "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__FR__",
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "NUMBER": "Numéro du tableau-horaire",
     "TTFNID": "ID du tableau-horaire",
@@ -183,7 +189,7 @@
       "BACKGROUND_RGB": "Couleur de fond de la police RVB",
       "FONT_CMYK": "Couleur de la police CMJN",
       "BACKGROUND_CMYK": "Couleur de fond de la police CMJN",
-      "NEW": "Nouvelle ligne",
+      "NEW": "Saisir une nouvelle ligne",
       "TYPES": {
         "ORDERLY": "Ordinaire",
         "TEMPORARY": "Temporaire",
@@ -212,7 +218,7 @@
       "NUMBER": "Numéro de ligne partielle",
       "MAINLINE": "Ligne principale",
       "DESCRIPTION": "Description de la ligne partielle",
-      "NEW": "Nouvelle ligne partielle",
+      "NEW": "Saisir une nouvelle ligne partielle",
       "TYPES": {
         "COMPENSATION": "Compensation",
         "TECHNICAL": "Technique"

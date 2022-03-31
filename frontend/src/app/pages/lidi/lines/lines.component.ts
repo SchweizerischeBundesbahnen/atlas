@@ -6,7 +6,6 @@ import { catchError, Subscription } from 'rxjs';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { Line, LinesService, LineType } from '../../../api';
-import { Pages } from '../../pages';
 import { TableSearch } from '../../../core/components/table-search/table-search';
 import { TableComponent } from '../../../core/components/table/table.component';
 
@@ -21,7 +20,7 @@ export class LinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
     { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
-    { headerTitle: 'LIDI.TYPE', value: 'type', translate: { withPrefix: 'LIDI.LINE.TYPES.' } },
+    { headerTitle: 'LIDI.TYPE', value: 'lineType', translate: { withPrefix: 'LIDI.LINE.TYPES.' } },
     { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
     {
@@ -84,7 +83,7 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   editVersion($event: Line) {
     this.router
-      .navigate([Pages.LINES.path, $event.slnid], {
+      .navigate([$event.slnid], {
         relativeTo: this.route,
       })
       .then();

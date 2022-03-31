@@ -1,18 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SwitchVersionComponent } from './switch-version.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Record } from '../detail-wrapper/record';
 import moment from 'moment';
-import { Pages } from '../../../pages/pages';
 import { CoverageComponent } from '../coverage/coverage.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MaterialModule } from '../../module/material.module';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('SwitchVersionComponent', () => {
   let component: SwitchVersionComponent;
@@ -21,13 +14,7 @@ describe('SwitchVersionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SwitchVersionComponent, CoverageComponent],
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        MaterialModule,
-      ],
+      imports: [AppTestingModule],
       providers: [TranslatePipe],
     }).compileComponents();
   });
@@ -53,7 +40,6 @@ describe('SwitchVersionComponent', () => {
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
     component.currentRecord = firstRecord;
     component.records = records;
-    component.pageType = Pages.TTFN;
     fixture.detectChanges();
   });
 

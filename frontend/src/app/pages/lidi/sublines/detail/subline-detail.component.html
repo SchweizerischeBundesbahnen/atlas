@@ -121,7 +121,7 @@
 
       <mat-form-field class="col">
         <mat-label>{{ 'LIDI.TYPE' | translate }}</mat-label>
-        <mat-select required formControlName="type" data-cy="type">
+        <mat-select required formControlName="sublineType" data-cy="type">
           <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
             {{ 'LIDI.SUBLINE.TYPES.' + type | translate }}
           </mat-option>
