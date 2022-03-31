@@ -1,5 +1,6 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
+import {DataCy} from "../../../support/data-cy";
 
 describe('Teillinie', () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
@@ -55,33 +56,33 @@ describe('Teillinie', () => {
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-sublines"] [data-cy=table-search-chip-input]',
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
       sublineVersion.swissSublineNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-sublines"] [data-cy=table-search-chip-input]',
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
       sublineVersion.slnid
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      '[data-cy="lidi-sublines"] [data-cy=table-search-status-input]',
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
       'Aktiv'
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      '[data-cy="lidi-sublines"] [data-cy="table-search-subline-type"]',
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_SUBLINE_TYPE,
       sublineVersion.type
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy="lidi-sublines"] [data-cy=table-search-date-input]',
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
       sublineVersion.validTo
     );
     // Check that the table contains 1 result
-    cy.get('[data-cy="lidi-sublines"] table tbody tr').should('have.length', 1);
+    cy.get(DataCy.LIDI_SUBLINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', sublineVersion.swissSublineNumber).parents('tr').click({ force: true });
     CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');

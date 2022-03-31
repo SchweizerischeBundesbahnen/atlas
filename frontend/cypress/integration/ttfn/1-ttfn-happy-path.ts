@@ -1,5 +1,6 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
 import CommonUtils from '../../support/util/common-utils';
+import {DataCy} from "../../support/data-cy";
 
 describe('Fahrplanfeldnummer', () => {
   const firstVersion = TtfnUtils.getFirstVersion();
@@ -46,26 +47,26 @@ describe('Fahrplanfeldnummer', () => {
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy=table-search-chip-input]',
+      DataCy.TABLE_SEARCH_CHIP_INPUT,
       firstVersion.swissTimetableFieldNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy=table-search-chip-input]',
+      DataCy.TABLE_SEARCH_CHIP_INPUT,
       firstVersion.ttfnid
     );
 
-    CommonUtils.selectItemFromDropdownSearchItem('[data-cy=table-search-status-input]', 'Aktiv');
+    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, 'Aktiv');
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      '[data-cy=table-search-date-input]',
+      DataCy.TABLE_SEARCH_DATE_INPUT,
       firstVersion.validTo
     );
 
     // Check that the table contains 1 result
-    cy.get('[data-cy="ttfn"] table tbody tr').should('have.length', 1);
+    cy.get(DataCy.TTFN + ' table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', firstVersion.swissTimetableFieldNumber).parents('tr').click({ force: true });
     CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');

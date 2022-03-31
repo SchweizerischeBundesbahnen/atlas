@@ -1,5 +1,6 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
 import CommonUtils from '../../support/util/common-utils';
+import {DataCy} from "../../support/data-cy";
 
 /**
  * Szenario 3: Update, dass über Versionsgrenze geht
@@ -41,13 +42,13 @@ describe('Versioning: scenario 3', () => {
   });
 
   it('Step-4: Add second Version', () => {
-    cy.get('[data-cy=edit-item]').click();
+    cy.get(DataCy.EDIT_ITEM).click();
     TtfnUtils.fillVersionForm(secondVersion);
     CommonUtils.saveTtfn();
   });
 
   it('Step-5: Add third Version', () => {
-    cy.get('[data-cy=edit-item]').click();
+    cy.get(DataCy.EDIT_ITEM).click();
     TtfnUtils.fillVersionForm(versionUpdate);
     CommonUtils.saveTtfn();
     CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
