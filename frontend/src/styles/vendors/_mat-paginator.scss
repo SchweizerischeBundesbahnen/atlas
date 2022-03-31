@@ -1,31 +1,34 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
-mat-paginator{
+mat-paginator {
   // Display it on the left
-  .mat-paginator-container{
+  .mat-paginator-container {
     justify-content: unset;
     padding: unset;
     color: $gray-900;
+    align-items: baseline;
   }
 
-  .mat-paginator-page-size-label{
+  .mat-paginator-page-size-label {
     margin-left: 0;
   }
 
   // Page switcher color
-  .mat-icon-button{
+  .mat-icon-button {
     color: $primary-400;
   }
 
   // Selection color
   .mat-select {
-    .mat-select-value, .mat-select-arrow {
+    .mat-select-value,
+    .mat-select-arrow {
       color: $primary-400;
     }
   }
 
   // Use atlas defined font size
-  .mat-paginator, .mat-paginator-page-size .mat-select-trigger{
+  .mat-paginator,
+  .mat-paginator-page-size .mat-select-trigger {
     font-size: unset;
   }
 }
