@@ -219,7 +219,8 @@
       "NEW": "Saisir une nouvelle ligne partielle",
       "TYPES": {
         "COMPENSATION": "Compensation",
-        "TECHNICAL": "Technique"
+        "TECHNICAL": "Technique",
+        "CONCESSION": "Concessions"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le ligne partielle a été ajoutée avec succès.",

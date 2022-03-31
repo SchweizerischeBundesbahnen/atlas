@@ -219,7 +219,8 @@
       "NEW": "Neue Teillinie erfassen",
       "TYPES": {
         "COMPENSATION": "Kompensation",
-        "TECHNICAL": "Technisch"
+        "TECHNICAL": "Technisch",
+        "CONCESSION": "Konzessionen"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Teillinie wurde erfolgreich hinzugefügt.",
