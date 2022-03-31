@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ActivatedRoute, Data, Router} from '@angular/router';
 import {Subject} from 'rxjs';
@@ -9,6 +9,8 @@ const DIALOG_WIDTH = '1440px';
 
 @Component({
   template: '',
+  styleUrls: ['route-to-dialog.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class RouteToDialogComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
