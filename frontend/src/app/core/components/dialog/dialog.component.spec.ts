@@ -28,7 +28,7 @@ describe('DialogComponent', () => {
   it('should create with title and text', () => {
     expect(component).toBeTruthy();
 
-    const title = fixture.debugElement.query(By.css('h2'));
+    const title = fixture.debugElement.query(By.css('h1'));
     expect(title.nativeElement.innerText).toBe('Title');
 
     const content = fixture.debugElement.query(By.css('mat-dialog-content'));
