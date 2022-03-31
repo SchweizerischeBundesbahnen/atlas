@@ -220,7 +220,7 @@
       "TYPES": {
         "COMPENSATION": "Kompensation",
         "TECHNICAL": "Technisch",
-        "CONCESSION": "Konzessionen"
+        "CONCESSION": "Konzession"
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Teillinie wurde erfolgreich hinzugefügt.",
