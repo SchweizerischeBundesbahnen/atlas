@@ -26,4 +26,6 @@ export class RouteToDialogService {
   clearDialogRer() {
     this.lastDialogRef = undefined;
   }
+
+  // TODO: unit tests
 }
