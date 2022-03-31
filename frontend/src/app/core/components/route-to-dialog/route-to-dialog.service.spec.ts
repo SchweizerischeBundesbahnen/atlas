@@ -1,4 +1,4 @@
-import {RouteToDialogService} from "./route-to-dialog.service";
+import { RouteToDialogService } from './route-to-dialog.service';
 
 describe('RouteToDialogService', () => {
   let service: RouteToDialogService;
@@ -16,18 +16,18 @@ describe('RouteToDialogService', () => {
   });
 
   it('should have dialog when setDialogRef', () => {
-    service.setDialogRef({});
+    service.setDialogRef({ componentInstance: {} });
     expect(service.hasDialog()).toBeTruthy();
   });
 
   it('should have dialog when setDialogRef', () => {
-    service.setDialogRef({});
+    service.setDialogRef({ componentInstance: {} });
     expect(service.hasDialog()).toBeTruthy();
     expect(service.getDialog()).toBeTruthy();
   });
 
   it('should remove dialog when clearDialogRef', () => {
-    service.setDialogRef({});
+    service.setDialogRef({ componentInstance: {} });
     expect(service.hasDialog()).toBeTruthy();
     service.clearDialogRer();
     expect(service.hasDialog()).toBeFalsy();
