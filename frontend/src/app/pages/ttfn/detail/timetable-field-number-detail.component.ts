@@ -96,19 +96,10 @@ export class TimetableFieldNumberDetailComponent
   deleteRecord(): void {
     const selectedRecord: TimetableFieldNumberVersion = this.getSelectedRecord();
     if (selectedRecord.ttfnid != null) {
-      this.timetableFieldNumberService
-        .deleteVersions(selectedRecord.ttfnid)
-        .pipe(
-          takeUntil(this.ngUnsubscribe),
-          catchError((err) => {
-            this.notificationService.error(err, 'TTFN.NOTIFICATION.DELETE_ERROR');
-            return EMPTY;
-          })
-        )
-        .subscribe(() => {
-          this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
-          this.backToOverview();
-        });
+      this.timetableFieldNumberService.deleteVersions(selectedRecord.ttfnid).subscribe(() => {
+        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+        this.backToOverview();
+      });
     }
   }
 
