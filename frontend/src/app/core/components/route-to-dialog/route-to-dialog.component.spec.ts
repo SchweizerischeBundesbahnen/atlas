@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { RouteToDialogComponent } from './route-to-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { AppTestingModule } from '../../../app.testing.module';
-import { ActivatedRoute, Data, Router } from '@angular/router';
-import { of, Subject } from 'rxjs';
-import { RouteToDialogService } from './route-to-dialog.service';
+import {RouteToDialogComponent} from './route-to-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {AppTestingModule} from '../../../app.testing.module';
+import {ActivatedRoute, Data, Router} from '@angular/router';
+import {of, Subject} from 'rxjs';
+import {RouteToDialogService} from './route-to-dialog.service';
 
 let matDialogOpenCount = 0;
 
@@ -14,7 +14,9 @@ class matDialogMock {
     matDialogOpenCount++;
     return {
       afterClosed: () => of({}),
-      close() {},
+      close() {
+        void (0);
+      },
     };
   }
 }
@@ -23,7 +25,7 @@ describe('RouteToDialogComponent', () => {
   let component: RouteToDialogComponent;
   let routeToDialogService: RouteToDialogService;
   const dataSubject = new Subject<Data>();
-  const route = { data: dataSubject } as any as ActivatedRoute;
+  const route = {data: dataSubject};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -33,11 +35,13 @@ describe('RouteToDialogComponent', () => {
         {
           provide: Router,
           useValue: {
-            navigate: () => {},
+            navigate: () => {
+              void (0);
+            },
           },
         },
-        { provide: ActivatedRoute, useValue: route },
-        { provide: MatDialog, useValue: new matDialogMock() },
+        {provide: ActivatedRoute, useValue: route},
+        {provide: MatDialog, useValue: new matDialogMock()},
       ],
     }).compileComponents();
   });
@@ -55,30 +59,30 @@ describe('RouteToDialogComponent', () => {
   });
 
   it('should open dialog and set ref', () => {
-    dataSubject.next({ component: {} });
+    dataSubject.next({component: {}});
     expect(routeToDialogService.getDialog()).toBeTruthy();
     expect(routeToDialogService.hasDialog()).toBeTruthy();
   });
 
   it('should re-open dialog using ref', () => {
-    dataSubject.next({ component: {} });
-    dataSubject.next({ component: {} });
-    dataSubject.next({ component: {} });
+    dataSubject.next({component: {}});
+    dataSubject.next({component: {}});
+    dataSubject.next({component: {}});
     expect(matDialogOpenCount).toEqual(1);
   });
 
   it('should remove dialog on destroy', () => {
-    dataSubject.next({ component: {} });
+    dataSubject.next({component: {}});
     expect(routeToDialogService.hasDialog()).toBeTruthy();
     component.ngOnDestroy();
     expect(routeToDialogService.hasDialog()).toBeFalsy();
   });
 
   it('should route unsubscribe on destroy', () => {
-    dataSubject.next({ component: {} });
+    dataSubject.next({component: {}});
     expect(routeToDialogService.hasDialog()).toBeTruthy();
     component.ngOnDestroy();
-    dataSubject.next({ component: {} });
+    dataSubject.next({component: {}});
     expect(routeToDialogService.hasDialog()).toBeFalsy();
   });
 });

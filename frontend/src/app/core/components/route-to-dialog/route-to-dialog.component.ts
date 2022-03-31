@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Data, Router} from '@angular/router';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {RouteToDialogService} from './route-to-dialog.service';
+import {DialogReference} from "./dialog-reference";
 
 const DIALOG_WIDTH = '1440px';
 
@@ -59,7 +60,7 @@ export class RouteToDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setDialogWrapperClass(dialogRef: MatDialogRef<any>) {
+  private setDialogWrapperClass(dialogRef: DialogReference) {
     // see how to override mat-dialog-wrapper: https://github.com/angular/components/issues/7471
     if (dialogRef['_overlayRef']?.overlayElement) {
       dialogRef['_overlayRef'].overlayElement.parentElement.className += ' route-to-dialog-wrapper';

@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import {DialogReference} from "./dialog-reference";
 
 @Injectable({
   providedIn: 'root',
 })
 export class RouteToDialogService {
-  private lastDialogRef?: MatDialogRef<any>;
+  private lastDialogRef?: DialogReference;
 
   hasDialog(): boolean {
     return !!this.lastDialogRef;
   }
 
-  getDialog(): MatDialogRef<any> {
+  getDialog(): DialogReference {
     return this.lastDialogRef!;
   }
 
@@ -19,7 +19,7 @@ export class RouteToDialogService {
     this.lastDialogRef?.close();
   }
 
-  setDialogRef(dialogRef: MatDialogRef<any>) {
+  setDialogRef(dialogRef: DialogReference) {
     this.lastDialogRef = dialogRef;
   }
 
