@@ -48,6 +48,7 @@ describe('RouteToDialogComponent', () => {
 
   beforeEach(() => {
     routeToDialogService = TestBed.inject(RouteToDialogService);
+    routeToDialogService.clearDialogRef();
     const fixture = TestBed.createComponent(RouteToDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
