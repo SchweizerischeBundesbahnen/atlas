@@ -67,7 +67,7 @@ export class LineDetailComponent
   }
 
   getDetailSubheading(record: LineVersion): string {
-    return record.swissLineNumber;
+    return record.slnid!;
   }
 
   updateRecord(): void {
