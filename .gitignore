@@ -116,3 +116,4 @@ frontend/node_modules
 frontend/coverage
 frontend/docker/package
 frontend/.npmrc
+.idea/jpa-buddy.xml
