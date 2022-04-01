@@ -134,6 +134,8 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
       .confirm({
         title: 'DIALOG.WARNING',
         message: 'DIALOG.DELETE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_DELETE',
       })
       .subscribe((confirmed) => {
         if (confirmed) {

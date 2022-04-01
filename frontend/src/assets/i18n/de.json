@@ -77,8 +77,10 @@
   "DIALOG": {
     "OK": "Weiter",
     "CANCEL": "Abbrechen",
+    "BACK": "Zurück zur Eingabemaske",
     "WARNING": "Warnung!",
     "DELETE": "Wollen Sie diesen Datensatz unwiderruflich löschen?",
+    "CONFIRM_DELETE": "Daten löschen",
     "DISCARD_CHANGES_TITLE": "Änderungen verwerfen?",
     "LEAVE_SITE": "Wenn Sie die Seite verlassen werden Ihre Daten nicht gespeichert.",
     "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlieren Sie alle angepassten Daten."

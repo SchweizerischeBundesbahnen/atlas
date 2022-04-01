@@ -8,6 +8,7 @@ import { CoreModule } from '../../../../core/module/core.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
+import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -193,7 +194,7 @@ function setupTestBed(
   data: { sublineDetail: string | SublineVersion }
 ) {
   TestBed.configureTestingModule({
-    declarations: [SublineDetailComponent],
+    declarations: [SublineDetailComponent, DialogCloseButtonComponent],
     imports: [CoreModule, AppTestingModule],
     providers: [
       { provide: FormBuilder },
