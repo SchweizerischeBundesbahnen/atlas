@@ -18,7 +18,7 @@
 
   .mat-dialog-container {
     background: $white;
-    border-radius: 14px;
+    border-radius: $border-radius;
     padding: 64px 80px 144px;
     overflow: unset;
   }
