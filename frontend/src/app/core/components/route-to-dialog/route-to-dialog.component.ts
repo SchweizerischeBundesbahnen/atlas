@@ -30,7 +30,7 @@ export class RouteToDialogComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routeToDialogService.closeDialog();
-    this.routeToDialogService.clearDialogRer();
+    this.routeToDialogService.clearDialogRef();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
@@ -68,7 +68,7 @@ export class RouteToDialogComponent implements OnInit, OnDestroy {
   }
 
   private navigateBack() {
-    this.routeToDialogService.clearDialogRer();
+    this.routeToDialogService.clearDialogRef();
     return this.router.navigate(['..'], {relativeTo: this.route});
   }
 }
