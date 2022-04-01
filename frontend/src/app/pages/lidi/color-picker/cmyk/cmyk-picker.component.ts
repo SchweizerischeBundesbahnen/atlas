@@ -9,7 +9,6 @@ import { CMYK_COLOR_REGEX, ColorService } from '../color.service';
 })
 export class CmykPickerComponent {
   @Input() attributeName!: string;
-  @Input() label!: string;
   @Input() formGroup!: FormGroup;
   @Input() defaultColor!: string;
 
