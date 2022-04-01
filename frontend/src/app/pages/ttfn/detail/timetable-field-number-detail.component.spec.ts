@@ -15,6 +15,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
 import { FormModule } from '../../../core/module/form.module';
+import { DialogCloseButtonComponent } from '../../../core/components/dialog-close-button/dialog-close-button.component';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -80,7 +81,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   ]);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimetableFieldNumberDetailComponent],
+      declarations: [TimetableFieldNumberDetailComponent, DialogCloseButtonComponent],
       imports: [CoreModule, AppTestingModule],
       providers: [
         { provide: FormBuilder },
@@ -181,7 +182,11 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimetableFieldNumberDetailComponent, DetailWrapperComponent],
+      declarations: [
+        TimetableFieldNumberDetailComponent,
+        DetailWrapperComponent,
+        DialogCloseButtonComponent,
+      ],
       imports: [
         RouterTestingModule.withRoutes([{ path: '', component: HomeComponent }]),
         AppTestingModule,

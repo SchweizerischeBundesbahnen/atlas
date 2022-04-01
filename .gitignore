@@ -75,6 +75,7 @@ chrome-profiler-events*.json
 .idea/aws.xml
 .idea/jarRepositories.xml
 .idea/vcs.xml
+.idea/prettier.xml
 .c9/
 *.launch
 .settings/
@@ -115,3 +116,4 @@ frontend/node_modules
 frontend/coverage
 frontend/docker/package
 frontend/.npmrc
+.idea/jpa-buddy.xml

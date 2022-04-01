@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogComponent } from './dialog.component';
 import { By } from '@angular/platform-browser';
 import { AppTestingModule } from '../../../app.testing.module';
+import { DialogCloseButtonComponent } from '../dialog-close-button/dialog-close-button.component';
 
 describe('DialogComponent', () => {
   let component: DialogComponent;
@@ -10,7 +11,7 @@ describe('DialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DialogComponent],
+      declarations: [DialogComponent, DialogCloseButtonComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { title: 'Title', message: 'message' } },
@@ -28,7 +29,7 @@ describe('DialogComponent', () => {
   it('should create with title and text', () => {
     expect(component).toBeTruthy();
 
-    const title = fixture.debugElement.query(By.css('h2'));
+    const title = fixture.debugElement.query(By.css('h1'));
     expect(title.nativeElement.innerText).toBe('Title');
 
     const content = fixture.debugElement.query(By.css('mat-dialog-content'));
