@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogComponent } from './dialog.component';
 import { By } from '@angular/platform-browser';
 import { AppTestingModule } from '../../../app.testing.module';
+import { DialogCloseButtonComponent } from '../dialog-close-button/dialog-close-button.component';
 
 describe('DialogComponent', () => {
   let component: DialogComponent;
@@ -10,7 +11,7 @@ describe('DialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DialogComponent],
+      declarations: [DialogComponent, DialogCloseButtonComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { title: 'Title', message: 'message' } },
