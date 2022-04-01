@@ -1,14 +1,7 @@
 @import 'src/styles/variables';
 
-.detail-wrapper-panel {
-  height: 100%;
-}
-
 .detail-content {
-  height: calc(100% - 100px);
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding-right: 1px;
+  margin-top: 86px;
 }
 
 .edit-section {
@@ -17,7 +10,7 @@
 }
 
 .footer {
-  height: 8rem;
+  height: $footerHeight;
   background-color: $primary-500;
 }
 
@@ -31,10 +24,12 @@
   background-color: $primary-500;
   color: $white;
   border-color: $white;
+
   &:hover:not(:disabled) {
     color: $primary-500;
     background-color: $white;
   }
+
   &:disabled {
     color: $primary-300;
     border-color: $primary-300;
