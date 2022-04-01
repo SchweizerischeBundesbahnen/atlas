@@ -23,7 +23,7 @@ export class RouteToDialogService {
     this.lastDialogRef = dialogRef;
   }
 
-  clearDialogRer() {
+  clearDialogRef() {
     this.lastDialogRef = undefined;
   }
 }
