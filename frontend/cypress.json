@@ -11,5 +11,6 @@
   "videoCompression": false,
   "env": {
     "resolution": "high"
-  }
+  },
+  "blockHosts": ["fonts.googleapis.com"]
 }
