@@ -18,7 +18,6 @@ import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
 import { TableSearchComponent } from '../components/table-search/table-search.component';
-import { FieldErrorComponent } from '../components/field-error/field-error.component';
 import { ErrorNotificationComponent } from '../notification/error/error-notification.component';
 import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
 import { CoverageComponent } from '../components/coverage/coverage.component';
@@ -29,7 +28,6 @@ const coreComponents = [
   DetailWrapperComponent,
   SwitchVersionComponent,
   DialogComponent,
-  FieldErrorComponent,
   HeaderComponent,
   LanguageSwitcherComponent,
   LoadingSpinnerComponent,

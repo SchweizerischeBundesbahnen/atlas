@@ -1,233 +1,254 @@
 <app-dialog-close-button></app-dialog-close-button>
 <app-detail-wrapper [controller]="this" headingNew="LIDI.LINE.NEW">
-  <form [formGroup]="form">
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'COMMON.VALID_FROM' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          formControlName="validFrom"
-          data-cy="validFrom"
-          [matDatepicker]="validFromPicker"
-          [min]="MIN_DATE"
-          [max]="MAX_DATE"
-          placeholder="{{ getValidFromPlaceHolder() }}"
-        />
-        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-        <mat-datepicker #validFromPicker></mat-datepicker>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+  <form [formGroup]="form" class="mt-3">
+    <span class="font-bold-2xl">{{ 'LIDI.NEW_LINE_INFORMATION' | translate }}</span>
 
-      <mat-form-field class="col">
-        <mat-label>{{ 'COMMON.VALID_TO' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          formControlName="validTo"
-          data-cy="validTo"
-          [matDatepicker]="validToPicker"
-          [min]="MIN_DATE"
-          [max]="MAX_DATE"
-          placeholder="{{ VALID_TO_PLACEHOLDER }}"
-        />
-        <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
-        <mat-datepicker #validToPicker></mat-datepicker>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          formControlName="swissLineNumber"
-          data-cy="swissLineNumber"
-          placeholder="b0.IC2"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.SLNID' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          data-cy="slnid"
-          [value]="form.value.slnid || ''"
-          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
-          [disabled]="true"
-        />
-      </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
-        <mat-select
-          [value]="form.value.status"
-          [disabled]="true"
-          data-cy="status"
-          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column col-3 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.LINE.NUMBER' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em
+        ></mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ LINE_NUMBER_EXAMPLE }}</mat-label
         >
-          <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
-            {{ 'COMMON.STATUS_TYPES.' + status | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field>
+          <input data-cy="number" required matInput formControlName="number" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+      <div class="d-flex flex-column col-9">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.LINE.DESCRIPTION' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ LINE_DESCRIPTION_EXAMPLE }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
+        >
+        <mat-form-field>
+          <input required matInput formControlName="description" data-cy="description" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          formControlName="businessOrganisation"
-          data-cy="businessOrganisation"
-          placeholder="SBB"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.TYPE' | translate }}</mat-label>
-        <mat-select required formControlName="lineType" data-cy="type">
-          <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
-            {{ 'LIDI.LINE.TYPES.' + type | translate }}
-          </mat-option>
-        </mat-select>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.PAYMENT.TYPE' | translate }}</mat-label>
-        <mat-select required formControlName="paymentType" data-cy="paymentType">
-          <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
-            {{ 'LIDI.PAYMENT.' + type | translate }}
-          </mat-option>
-        </mat-select>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column col-12">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.LONG_NAME' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 150 } }}
+          {{ 'FORM.OPTIONAL' | translate }}</mat-label
+        >
+        <mat-form-field>
+          <input matInput formControlName="longName" data-cy="longName" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <app-rgb-picker
-        [formGroup]="form"
-        label="LIDI.LINE.FONT_RGB"
-        attributeName="colorFontRgb"
-        data-cy="colorFontRgb"
-        class="col"
-        defaultColor="#000000"
-      ></app-rgb-picker>
-      <app-rgb-picker
-        [formGroup]="form"
-        label="LIDI.LINE.BACKGROUND_RGB"
-        attributeName="colorBackRgb"
-        data-cy="colorBackRgb"
-        class="col"
-        defaultColor="#FFFFFF"
-      ></app-rgb-picker>
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column col-4 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ SWISS_LINE_NUMBER_EXAMPLE }}</mat-label
+        >
+        <mat-form-field>
+          <input required matInput formControlName="swissLineNumber" data-cy="swissLineNumber" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-4 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.ALTERNATIVE_NAME' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm">{{ 'FORM.OPTIONAL' | translate }}</mat-label>
+        <mat-form-field>
+          <input matInput formControlName="alternativeName" data-cy="alternativeName" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-4">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.COMBINATION_NAME' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm">{{ 'FORM.OPTIONAL' | translate }}</mat-label>
+        <mat-form-field>
+          <input matInput formControlName="combinationName" data-cy="combinationName" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <app-cmyk-picker
-        [formGroup]="form"
-        label="LIDI.LINE.FONT_CMYK"
-        attributeName="colorFontCmyk"
-        data-cy="colorFontCmyk"
-        class="col"
-        defaultColor="100,100,100,100"
-      ></app-cmyk-picker>
-      <app-cmyk-picker
-        [formGroup]="form"
-        label="LIDI.LINE.BACKGROUND_CMYK"
-        attributeName="colorBackCmyk"
-        data-cy="colorBackCmyk"
-        class="col"
-        defaultColor="0,0,0,0"
-      ></app-cmyk-picker>
+    <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
+
+    <form-date-range [formGroup]="form"></form-date-range>
+
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column col-3 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-form-field>
+          <input
+            required
+            matInput
+            formControlName="businessOrganisation"
+            data-cy="businessOrganisation"
+          />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-6 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.TYPE' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-form-field appearance="outline" class="form-outline">
+          <mat-select
+            required
+            formControlName="lineType"
+            data-cy="type"
+            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+          >
+            <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
+              {{ 'LIDI.LINE.TYPES.' + type | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.PAYMENT.TYPE' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-form-field appearance="outline" class="form-outline">
+          <mat-select
+            required
+            formControlName="paymentType"
+            data-cy="paymentType"
+            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+          >
+            <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
+              {{ 'LIDI.PAYMENT.' + type | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.LINE.DESCRIPTION' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          formControlName="description"
-          data-cy="description"
-          placeholder="Lorem Ipsum Linie"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <span class="font-bold-2xl">{{ 'FORM.DESIGN_INFORMATION' | translate }}</span>
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column col-6 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.ICON' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm">{{ 'FORM.OPTIONAL' | translate }}</mat-label>
+        <mat-form-field>
+          <input matInput formControlName="icon" data-cy="icon" />
+          <a matSuffix target="_blank" [attr.href]="form.value.icon"
+            ><em role="button" class="bi bi-box-arrow-in-up-right ms-1"></em
+          ></a>
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-3 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.LINE.FONT_RGB' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ COLOR_RGB_EXAMPLE }}</mat-label
+        >
+        <app-rgb-picker
+          [formGroup]="form"
+          attributeName="colorFontRgb"
+          data-cy="colorFontRgb"
+          defaultColor="#000000"
+        ></app-rgb-picker>
+      </div>
+
+      <div class="d-flex flex-column col-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.LINE.FONT_CMYK' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ FONT_CMYK_EXAMPLE }}</mat-label
+        >
+        <app-cmyk-picker
+          [formGroup]="form"
+          attributeName="colorFontCmyk"
+          data-cy="colorFontCmyk"
+          defaultColor="100,100,100,100"
+        ></app-cmyk-picker>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.LINE.NUMBER' | translate }}</mat-label>
-        <input matInput formControlName="number" data-cy="number" placeholder="IC2" />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <div class="col-12 d-flex justify-content-end mt-3">
+      <div class="d-flex flex-column col-3 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.LINE.BACKGROUND_RGB' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ COLOR_RGB_EXAMPLE }}</mat-label
+        >
+        <app-rgb-picker
+          [formGroup]="form"
+          attributeName="colorBackRgb"
+          data-cy="colorBackRgb"
+          defaultColor="#FFFFFF"
+        ></app-rgb-picker>
+      </div>
 
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.ALTERNATIVE_NAME' | translate }}</mat-label>
-        <input
-          matInput
-          formControlName="alternativeName"
-          data-cy="alternativeName"
-          placeholder="IC2 alt"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.COMBINATION_NAME' | translate }}</mat-label>
-        <input
-          matInput
-          formControlName="combinationName"
-          data-cy="combinationName"
-          placeholder="IC2 comb"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      <div class="d-flex flex-column col-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.LINE.BACKGROUND_CMYK' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ BACKGROUND_CMYK_EXAMPLE }}</mat-label
+        >
+        <app-cmyk-picker
+          [formGroup]="form"
+          attributeName="colorBackCmyk"
+          data-cy="colorBackCmyk"
+          defaultColor="0,0,0,0"
+        ></app-cmyk-picker>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.LONG_NAME' | translate }}</mat-label>
-        <input
-          matInput
-          formControlName="longName"
-          data-cy="longName"
-          placeholder="Zürich HB - Arth-Goldau - Lugano -  Chiasso - Grenze"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.ICON' | translate }}</mat-label>
-        <input
-          matInput
-          formControlName="icon"
-          data-cy="icon"
-          placeholder="https://en.wikipedia.org/wiki/File:Icon_train.svg"
-        />
-        <a matSuffix target="_blank" [attr.href]="form.value.icon"
-          ><em class="bi bi-box-arrow-in-up-right"></em
-        ></a>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.COMMENT' | translate }}</mat-label>
-        <input matInput formControlName="comment" data-cy="comment" placeholder="Kommentar" />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column col-6">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.COMMENT' | translate }}
+          <em class="bi bi-info-circle me-2" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm">{{ 'FORM.OPTIONAL' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="atlas-text-area">
+          <textarea data-cy="comment" matInput formControlName="comment"></textarea>
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
   </form>
 </app-detail-wrapper>

@@ -21,8 +21,8 @@
             title="{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER_TOOLTIP' | translate }}"
           ></em>
         </mat-label>
-        <mat-label class="font-regular-sm">
-          {{ SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER }}
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER }}
         </mat-label>
         <mat-form-field>
           <input
@@ -51,45 +51,8 @@
         </mat-form-field>
       </div>
     </div>
-    <span class="font-bold-2xl">{{ 'TTFN.KEY_DATA' | translate }}</span>
-    <div class="col-6 d-flex mt-3">
-      <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg">{{ 'COMMON.VALID_FROM' | translate }}</mat-label>
-        <mat-label class="font-regular-sm">{{ getValidFromPlaceHolder() }}</mat-label>
-        <mat-form-field>
-          <input
-            data-cy="validFrom"
-            required
-            matInput
-            formControlName="validFrom"
-            [matDatepicker]="validFromPicker"
-            [min]="MIN_DATE"
-            [max]="MAX_DATE"
-          />
-          <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-          <mat-datepicker #validFromPicker></mat-datepicker>
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-      <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg">{{ 'COMMON.VALID_TO' | translate }}</mat-label>
-        <mat-label class="font-regular-sm">{{ this.VALID_TO_PLACEHOLDER }} </mat-label>
-        <mat-form-field>
-          <input
-            data-cy="validTo"
-            required
-            matInput
-            formControlName="validTo"
-            [matDatepicker]="validToPicker"
-            [min]="MIN_DATE"
-            [max]="MAX_DATE"
-          />
-          <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
-          <mat-datepicker #validToPicker></mat-datepicker>
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
+    <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
+    <form-date-range [formGroup]="form"></form-date-range>
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-3 pe-3">
@@ -112,7 +75,7 @@
       </div>
     </div>
 
-    <span class="font-bold-2xl">{{ 'TTFN.SUPPLEMENTARY_INFORMATION' | translate }}</span>
+    <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
 
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col-6 pe-3">

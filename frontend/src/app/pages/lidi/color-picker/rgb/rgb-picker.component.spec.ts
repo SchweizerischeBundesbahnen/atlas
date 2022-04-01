@@ -38,15 +38,11 @@ describe('RgbPickerComponent', () => {
       colorRgb: new FormControl(),
     });
     component.attributeName = 'colorRgb';
-    component.label = 'Rgb Label';
-
     fixture.detectChanges();
   });
 
-  it('should create input component with label', () => {
+  it('should create component', () => {
     expect(component).toBeTruthy();
-    const label = fixture.debugElement.query(By.css('mat-label')).nativeElement.innerText;
-    expect(label).toBe('Rgb Label');
   });
 
   it('should create rgb input with color indicator', () => {
@@ -65,6 +61,6 @@ describe('RgbPickerComponent', () => {
     fixture.detectChanges();
 
     const errorMessage = fixture.debugElement.query(By.css('mat-error')).nativeElement.innerText;
-    expect(errorMessage).toBe('COMMON.COLOR_INVALID');
+    expect(errorMessage).toBe('VALIDATION.COLOR_INVALID');
   });
 });

@@ -1,6 +1,18 @@
 .mat-form-field {
-  width: inherit;
+  width: 100%;
 }
 .mat-input-element {
   width: inherit;
+}
+
+img {
+  margin-left: 5px;
+  margin-bottom: 26.5px;
+  cursor: pointer;
+}
+
+.field-input-container {
+  display: flex;
+  width: 100%;
+  padding-left: 0.4375em;
 }
