@@ -29,7 +29,7 @@ describe('RouteToDialogService', () => {
   it('should remove dialog when clearDialogRef', () => {
     service.setDialogRef({ componentInstance: {} });
     expect(service.hasDialog()).toBeTruthy();
-    service.clearDialogRer();
+    service.clearDialogRef();
     expect(service.hasDialog()).toBeFalsy();
   });
 });
