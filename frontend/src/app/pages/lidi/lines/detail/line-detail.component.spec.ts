@@ -8,6 +8,7 @@ import { CoreModule } from '../../../../core/module/core.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
+import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -193,7 +194,7 @@ describe('LineDetailComponent for new lineVersion', () => {
 
 function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersion }) {
   TestBed.configureTestingModule({
-    declarations: [LineDetailComponent],
+    declarations: [LineDetailComponent, DialogCloseButtonComponent],
     imports: [CoreModule, AppTestingModule],
     providers: [
       { provide: FormBuilder },

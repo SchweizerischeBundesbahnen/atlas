@@ -1,0 +1,25 @@
+@import 'src/styles/variables';
+
+.atlas-dialog-panel {
+  .dialog-close-panel button {
+    margin-left: 30px !important;
+  }
+
+  .mat-dialog-container {
+    background: $white;
+    border-radius: $border-radius;
+    padding: 64px;
+  }
+
+  .mat-dialog-content {
+    padding-top: 15px;
+  }
+
+  .mat-dialog-actions {
+    padding-top: 80px;
+  }
+}
+
+.atlas-dialog-backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}

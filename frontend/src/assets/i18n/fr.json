@@ -69,8 +69,10 @@
   "DIALOG": {
     "OK": "Suivant",
     "CANCEL": "Annuler",
+    "BACK": "Retour au formulaire de saisie",
     "WARNING": "Avertissement!",
     "DELETE": "Voulez-vous supprimer définitivement ce bloc de données?",
+    "CONFIRM_DELETE": "Supprimer les données",
     "DISCARD_CHANGES_TITLE": "Annuler les modifications?",
     "LEAVE_SITE": "Si vous quittez le site, vos données ne sont pas enregistrées.",
     "CANCEL_EDITMODE": "Si vous quittez le mode d’édition, vous perdez toutes les données adaptées."
