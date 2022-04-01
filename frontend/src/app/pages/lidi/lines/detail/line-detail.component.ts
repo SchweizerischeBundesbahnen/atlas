@@ -1,34 +1,39 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { LinesService, LineType, LineVersion, PaymentType, Status } from '../../../../api';
-import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { takeUntil } from 'rxjs/operators';
-import { catchError, EMPTY, Subject } from 'rxjs';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {LinesService, LineType, LineVersion, PaymentType, Status} from '../../../../api';
+import {
+  DetailWrapperController
+} from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
+import {Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {takeUntil} from 'rxjs/operators';
+import {catchError, EMPTY, Subject} from 'rxjs';
 import moment from 'moment/moment';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { Pages } from '../../../pages';
+import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
+import {Pages} from '../../../pages';
 import {
   DateService,
   MAX_DATE,
   MAX_DATE_FORMATTED,
   MIN_DATE,
 } from 'src/app/core/date/date.service';
-import { Page } from 'src/app/core/model/page';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {Page} from 'src/app/core/model/page';
+import {
+  AtlasCharsetsValidator
+} from '../../../../core/validation/charsets/atlas-charsets-validator';
+import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {
+  AtlasFieldLengthValidator
+} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
   templateUrl: './line-detail.component.html',
 })
 export class LineDetailComponent
   extends DetailWrapperController<LineVersion>
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   TYPE_OPTIONS = Object.values(LineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   STATUS_OPTIONS = Object.values(Status);
@@ -76,44 +81,44 @@ export class LineDetailComponent
 
   updateRecord(): void {
     this.linesService
-      .updateLineVersion(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
-          .then(() => this.ngOnInit());
-      });
+    .updateLineVersion(this.getId(), this.form.value)
+    .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+    .subscribe(() => {
+      this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
+      this.router
+      .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
+      .then(() => this.ngOnInit());
+    });
   }
 
   createRecord(): void {
     this.linesService
-      .createLineVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe((version) => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
-        this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, version.slnid])
-          .then(() => this.ngOnInit());
-      });
+    .createLineVersion(this.form.value)
+    .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+    .subscribe((version) => {
+      this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
+      this.router
+      .navigate([Pages.LIDI.path, Pages.LINES.path, version.slnid])
+      .then(() => this.ngOnInit());
+    });
   }
 
   deleteRecord(): void {
     const selectedLineVersion: LineVersion = this.getSelectedRecord();
     if (selectedLineVersion.slnid != null) {
       this.linesService
-        .deleteLines(selectedLineVersion.slnid)
-        .pipe(
-          takeUntil(this.ngUnsubscribe),
-          catchError((err) => {
-            this.notificationService.error(err, 'LIDI.LINE.NOTIFICATION.DELETE_ERROR');
-            return EMPTY;
-          })
-        )
-        .subscribe(() => {
-          this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
-          this.backToOverview();
-        });
+      .deleteLines(selectedLineVersion.slnid)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        catchError((err) => {
+          this.notificationService.error(err, 'LIDI.LINE.NOTIFICATION.DELETE_ERROR');
+          return EMPTY;
+        })
+      )
+      .subscribe(() => {
+        this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
+        this.backToOverview();
+      });
     }
   }
 

@@ -34,8 +34,8 @@ export default class CommonUtils {
     cy.intercept('GET', urlToIntercept).as('saveAndGetVersion');
     cy.get(DataCy.SAVE_ITEM).click();
     cy.wait('@saveAndGetVersion').its('response.statusCode').should('eq', 200);
-    cy.get(DataCy.EDIT_ITEM).should('be.visible');
-    cy.get(DataCy.DELETE_ITEM).should('be.visible');
+    cy.get(DataCy.EDIT_ITEM).should('exist');
+    cy.get(DataCy.DELETE_ITEM).should('exist');
   }
 
   static assertItemValue(selector: string, value: string) {
