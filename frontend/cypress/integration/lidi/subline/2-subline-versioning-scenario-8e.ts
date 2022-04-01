@@ -1,6 +1,6 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
-import {DataCy} from "../../../support/data-cy";
+import { DataCy } from '../../../support/data-cy';
 
 /** Szenario 8e: Letzte Version validTo und props updated
  *  NEU:      |_______________________________________|
@@ -41,7 +41,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     CommonUtils.clickOnEdit();
     LidiUtils.fillSublineVersionForm(secondSublineVersion);
     CommonUtils.saveSubline();
-    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
+    CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2002');
   });
 
   it('Step-6: update first Subline Version', () => {
@@ -95,7 +95,9 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   it('Step-11: Check the added is present on the table result and navigate to it ', () => {
     LidiUtils.navigateToSubline(firstSublineVersion);
     cy.contains(mainline.swissLineNumber);
-    cy.contains(firstSublineVersion.swissSublineNumber);
+    cy.get(DataCy.SWISS_SUBLINE_NUMBER)
+      .invoke('val')
+      .should('eq', firstSublineVersion.swissSublineNumber);
   });
 
   it('Step-12: Delete the subline item ', () => {
@@ -105,7 +107,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-13: Search and Navigate to the mainline item ', () => {
     LidiUtils.navigateToLine(mainline);
-    cy.contains(mainline.swissLineNumber);
+    cy.get(DataCy.SWISS_LINE_NUMBER).invoke('val').should('eq', mainline.swissLineNumber);
     LidiUtils.assertContainsLineVersion(mainline);
   });
   it('Step-14: Delete the mainline item ', () => {
