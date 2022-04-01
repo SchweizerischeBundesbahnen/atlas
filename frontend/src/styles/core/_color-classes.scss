@@ -1,12 +1,12 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
 $primary-scales: (
-        primary-600: $primary-600,
-        primary-500: $primary-500,
-        primary-400: $primary-400,
-        primary-300: $primary-300,
-        primary-200: $primary-200,
-        primary-50: $primary-50,
+  primary-600: $primary-600,
+  primary-500: $primary-500,
+  primary-400: $primary-400,
+  primary-300: $primary-300,
+  primary-200: $primary-200,
+  primary-50: $primary-50,
 );
 
 @each $class, $value in $primary-scales {
@@ -19,13 +19,13 @@ $primary-scales: (
 }
 
 $gray-scales: (
-        gray-900: $gray-900,
-        gray-700: $gray-700,
-        gray-600: $gray-600,
-        gray-500: $gray-500,
-        gray-400: $gray-400,
-        gray-100: $gray-100,
-        gray-50: $gray-50,
+  gray-900: $gray-900,
+  gray-700: $gray-700,
+  gray-600: $gray-600,
+  gray-500: $gray-500,
+  gray-400: $gray-400,
+  gray-100: $gray-100,
+  gray-50: $gray-50,
 );
 
 @each $class, $value in $gray-scales {
@@ -35,4 +35,8 @@ $gray-scales: (
   .bg-color-#{$class} {
     background-color: $value !important;
   }
+}
+
+.color-transparent {
+  color: transparent;
 }
