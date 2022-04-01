@@ -12,7 +12,11 @@ export class DialogService {
   constructor(private dialog: MatDialog) {}
 
   confirm(dialogData: DialogData): Observable<boolean> {
-    const dialogComponent = this.dialog.open(DialogComponent, { data: dialogData });
+    const dialogComponent = this.dialog.open(DialogComponent, {
+      data: dialogData,
+      panelClass: 'atlas-dialog-panel',
+      backdropClass: 'atlas-dialog-backdrop',
+    });
     return dialogComponent.afterClosed().pipe(map((value) => (value ? value : false)));
   }
 }
