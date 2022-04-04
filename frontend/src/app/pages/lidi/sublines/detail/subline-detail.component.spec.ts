@@ -124,21 +124,6 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
-
-  it('should not delete Version', () => {
-    const httpResponseError = new HttpErrorResponse({
-      status: 404,
-    });
-    mockSublinesService.deleteSublines.and.returnValue(throwError(() => httpResponseError));
-    fixture.componentInstance.deleteRecord();
-    fixture.detectChanges();
-
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-    expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toContain('LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
-    expect(snackBarContainer.classList).toContain('error');
-  });
 });
 
 describe('SublineDetailComponent for new sublineVersion', () => {
