@@ -51,6 +51,9 @@ include::{snippets}/line-controller-api-test/should-return-not-found-error-respo
 == Update Line with no changes after versioning error
 include::{snippets}/line-controller-api-test/should-return-validation-no-changes-error-response/auto-section.adoc[]
 
+== Delete Line with related subline
+include::{snippets}/line-controller-api-test/should-return-line-delete-conflict-error-response/auto-section.adoc[]
+
 == Get Line with not found error
 include::{snippets}/line-controller-api-test/should-return-not-found-error-response-when-no-found-lines/auto-section.adoc[]
 

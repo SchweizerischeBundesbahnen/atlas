@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -21,10 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -39,6 +42,9 @@ public class LineControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private LineController lineController;
+
+  @Autowired
+  private SublineController sublineController;
 
   @Autowired
   private LineVersionRepository lineVersionRepository;
@@ -172,8 +178,8 @@ public class LineControllerApiTest extends BaseControllerApiTest {
 
     //when
     mvc.perform(get("/v1/lines/line-coverage/" + lineVersion.getSlnid())
-        .contentType(contentType)
-    ).andExpect(status().isOk())
+           .contentType(contentType)
+       ).andExpect(status().isOk())
        .andExpect(jsonPath("$.slnid", is(lineVersion.getSlnid())))
        .andExpect(jsonPath("$.modelType", is(LINE.toString())))
        .andExpect(jsonPath("$.coverageType", is(CoverageType.COMPLETE.toString())))
@@ -201,14 +207,14 @@ public class LineControllerApiTest extends BaseControllerApiTest {
 
     //when
     mvc.perform(get("/v1/lines/covered")
-        .contentType(contentType)
-    ).andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].businessOrganisation", is("sbb")))
-        .andExpect(jsonPath("$[0].lineType", is(LineType.TEMPORARY.toString())))
-        .andExpect(jsonPath("$[0].status" , is(Status.ACTIVE.toString())))
-        .andExpect(jsonPath("$[0].slnid" , is(lineVersion.getSlnid())))
-        .andExpect(jsonPath("$[0].validFrom" , is("2000-01-01")))
-        .andExpect(jsonPath("$[0].validTo" , is("2000-12-31")));
+           .contentType(contentType)
+       ).andExpect(status().isOk())
+       .andExpect(jsonPath("$[0].businessOrganisation", is("sbb")))
+       .andExpect(jsonPath("$[0].lineType", is(LineType.TEMPORARY.toString())))
+       .andExpect(jsonPath("$[0].status", is(Status.ACTIVE.toString())))
+       .andExpect(jsonPath("$[0].slnid", is(lineVersion.getSlnid())))
+       .andExpect(jsonPath("$[0].validFrom", is("2000-01-01")))
+       .andExpect(jsonPath("$[0].validTo", is("2000-12-31")));
   }
 
   @Test
@@ -230,8 +236,8 @@ public class LineControllerApiTest extends BaseControllerApiTest {
 
     //when
     mvc.perform(get("/v1/lines/versions/covered")
-        .contentType(contentType)
-    ).andExpect(status().isOk())
+           .contentType(contentType)
+       ).andExpect(status().isOk())
        .andExpect(jsonPath("$[0]." + alternativeName, is("alternative")))
        .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
        .andExpect(jsonPath("$[0]." + longName, is("long name")))
@@ -240,8 +246,8 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$[0]." + paymentType, is(PaymentType.LOCAL.toString())))
        .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC5")))
        .andExpect(jsonPath("$[0]." + businessOrganisation, is("sbb")))
-       .andExpect(jsonPath("$[0].validFrom" , is("2000-01-01")))
-       .andExpect(jsonPath("$[0].validTo" , is("2000-12-31")));
+       .andExpect(jsonPath("$[0].validFrom", is("2000-01-01")))
+       .andExpect(jsonPath("$[0].validTo", is("2000-12-31")));
   }
 
   @Test
@@ -403,6 +409,58 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("id")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
+  }
+
+  @Test
+  void shouldReturnLineDeleteConflictErrorResponse() throws Exception {
+    //given
+    LineVersionModel lineVersionModel =
+        LineTestData.lineVersionModelBuilder()
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .lineType(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2-libne")
+                    .build();
+
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
+                           .validFrom(LocalDate.of(2000, 1, 1))
+                           .validTo(LocalDate.of(2000, 12, 31))
+                           .businessOrganisation("sbb")
+                           .swissSublineNumber("b0.Ic2-sibline")
+                           .sublineType(SublineType.TECHNICAL)
+                           .paymentType(PaymentType.LOCAL)
+                           .mainlineSlnid(lineVersionSaved.getSlnid())
+                           .build();
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+        sublineVersionModel);
+
+    //when
+    mvc.perform(delete("/v1/lines/" + lineVersionSaved.getSlnid())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(lineVersionModel)))
+       .andExpect(status().isConflict())
+       .andExpect(jsonPath("$.status", is(409)))
+       .andExpect(jsonPath("$.message", is("A line related to a subline cannot be deleted.")))
+       .andExpect(jsonPath("$.error", is("Line delete conflict")))
+       .andExpect(jsonPath("$.details[0].message",
+           is("Line with SLNID " + lineVersionSaved.getSlnid() + " is related to Subline SLNID "
+               + sublineVersionSaved.getSlnid())))
+       .andExpect(jsonPath("$.details[0].field", is("slnid")))
+       .andExpect(jsonPath("$.details[0].displayInfo.code", is("LIDI.LINE.CONFLICT.DELETE")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("slnid")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value",
+           is(lineVersionSaved.getSlnid())))
+       .andExpect(
+           jsonPath("$.details[0].displayInfo.parameters[1].key", is("SublineVersion.slnid")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value",
+           is(sublineVersionSaved.getSlnid())));
   }
 
   @Test
