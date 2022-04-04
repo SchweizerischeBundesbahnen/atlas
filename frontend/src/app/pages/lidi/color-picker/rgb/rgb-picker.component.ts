@@ -18,10 +18,10 @@ import { Keys } from '../../../../core/constants/keys';
   styleUrls: ['./rgb-picker.component.scss', '../color-indicator.scss'],
 })
 export class RgbPickerComponent implements OnInit, OnChanges {
-  @ViewChild('input', { read: ColorPickerDirective }) colorPickerDirective!: ColorPickerDirective;
+  @ViewChild('colorPicker', { read: ColorPickerDirective })
+  colorPickerDirective!: ColorPickerDirective;
 
   @Input() attributeName!: string;
-  @Input() label!: string;
   @Input() formGroup!: FormGroup;
   @Input() defaultColor!: string;
 

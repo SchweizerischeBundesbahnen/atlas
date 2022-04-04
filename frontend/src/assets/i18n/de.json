@@ -47,8 +47,6 @@
     "OK": "Ok",
     "EDIT_VERSION": "Version editieren",
     "CREATE_VERSION": "Version hinzufügen",
-    "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
-    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
     "ROLES": {
       "lidi-writer": "LiDi Writer",
       "lidi-admin": "LiDi Admin"
@@ -60,6 +58,16 @@
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken."
     }
+  },
+  "FORM": {
+    "MAX_CHARS": "{{numberOfChars}} Zeichen max.",
+    "DROPDOWN_PLACEHOLDER": "auswählen",
+    "FOR_EXAMPLE": "z.B.:",
+    "DESIGN_INFORMATION": "Angaben zur Gestaltung",
+    "KEY_DATA": "Eckdaten",
+    "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben",
+    "OPTIONAL": "(optional)",
+    "DATE_FORMAT": "TT.MM.JJJJ"
   },
   "VERSION_TABLE": {
     "TITLE": "Versionen mit unterschiedlicher Gültigkeit",
@@ -105,15 +113,33 @@
     },
     "DETAILS": "Details"
   },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Objekte pro Seite",
+    "NEXT_PAGE": "Nächste Seite",
+    "PREVIOUS_PAGE": "Vorherige Seite",
+    "RANGE_LABEL1": "0 von {{length}}",
+    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} von {{length}}"
+  },
+  "VALIDATION": {
+    "REQUIRED": "Dies ist ein Pflichtfeld.",
+    "BLANK": "Dieses Feld darf nicht leer sein.",
+    "MAXLENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
+    "MATDATEPICKERMIN": "Das Datum muss grösser als oder gleich dem {{date}} sein.",
+    "MATDATEPICKERMAX": "Das Datum muss kleiner als oder gleich dem {{date}} sein.",
+    "MATDATEPICKERPARSE": "Das Datumsformat ist ungültig. (Gültige Format: TT.MM.YYYY)",
+    "DATE_RANGE_ERROR": "Das Gültig-von Datum darf nicht grösser als das Gültig-bis Datum sein: {{date}}",
+    "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
+    "WHITESPACES": "Darf nicht mit einem Leerzeichen starten oder enden.",
+    "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
+    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100"
+  },
   "TTFN": {
     "TTFN": "Fahrplanfeldnummer",
     "NEW": "Neues Fahrplanfeld erfassen",
     "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld",
-    "KEY_DATA": "Eckdaten",
     "SWISS_TIMETABLE_FIELD_NUMBER": "CH-Fahrplanfeldnummer",
     "DESCRIPTION": "CH-Fahrplanfeldnummer Bezeichnung",
     "DESCRIPTION_TOOLTIP": "CH-Fahrplanfeldnummer Bezeichnung Tooltip",
-    "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "NUMBER": "Fahrplanfeldnummer",
     "TTFNID": "Fahrplanfeldnummer-ID",
@@ -133,25 +159,8 @@
       "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
     }
   },
-  "PAGINATOR": {
-    "ITEMS_PER_PAGE": "Objekte pro Seite",
-    "NEXT_PAGE": "Nächste Seite",
-    "PREVIOUS_PAGE": "Vorherige Seite",
-    "RANGE_LABEL1": "0 von {{length}}",
-    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} von {{length}}"
-  },
-  "VALIDATION": {
-    "REQUIRED": "Dies ist ein Pflichtfeld.",
-    "BLANK": "Dieses Feld darf nicht leer sein.",
-    "MAXLENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
-    "MATDATEPICKERMIN": "Das Datum muss grösser als oder gleich dem {{date}} sein.",
-    "MATDATEPICKERMAX": "Das Datum muss kleiner als oder gleich dem {{date}} sein.",
-    "MATDATEPICKERPARSE": "Das Datumsformat ist ungültig. (Gültige Format: TT.MM.YYYY)",
-    "DATE_RANGE_ERROR": "Das Gültig-von Datum darf nicht grösser als das Gültig-bis Datum sein: {{date}}",
-    "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
-    "WHITESPACES": "Darf nicht mit einem Leerzeichen starten oder enden."
-  },
   "LIDI": {
+    "NEW_LINE_INFORMATION": "Angaben zur neuen Linie",
     "SWISS_LINE_NUMBER": "CH-Liniennummer (CHLNR)",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
     "ALTERNATIVE_NAME": "Alternativbezeichnung",

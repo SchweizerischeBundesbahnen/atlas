@@ -36,15 +36,11 @@ describe('CmykPickerComponent', () => {
       colorCmyk: new FormControl(),
     });
     component.attributeName = 'colorCmyk';
-    component.label = 'Cmyk Label';
-
     fixture.detectChanges();
   });
 
-  it('should create input component with label', () => {
+  it('should create component', () => {
     expect(component).toBeTruthy();
-    const label = fixture.debugElement.query(By.css('mat-label')).nativeElement.innerText;
-    expect(label).toBe('Cmyk Label');
   });
 
   it('should create cmyk input with color indicator', () => {
@@ -67,6 +63,6 @@ describe('CmykPickerComponent', () => {
     expect(squareColor).toBe('transparent');
 
     const errorMessage = fixture.debugElement.query(By.css('mat-error')).nativeElement.innerText;
-    expect(errorMessage).toBe('COMMON.CMYK_INVALID');
+    expect(errorMessage).toBe('VALIDATION.CMYK_INVALID');
   });
 });

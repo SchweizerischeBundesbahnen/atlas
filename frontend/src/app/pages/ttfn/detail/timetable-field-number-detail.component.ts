@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Status, TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
+import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { DetailWrapperController } from '../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
@@ -10,12 +10,6 @@ import { DateRangeValidator } from '../../../core/validation/date-range/date-ran
 import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Pages } from '../../pages';
-import {
-  DateService,
-  MAX_DATE,
-  MAX_DATE_FORMATTED,
-  MIN_DATE,
-} from '../../../core/date/date.service';
 import { Page } from '../../../core/model/page';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
@@ -32,12 +26,6 @@ export class TimetableFieldNumberDetailComponent
   implements OnInit, OnDestroy
 {
   SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
-  VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
-
-  MIN_DATE = MIN_DATE;
-  MAX_DATE = MAX_DATE;
-
-  readonly STATUS_OPTIONS = Object.values(Status);
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -47,8 +35,7 @@ export class TimetableFieldNumberDetailComponent
     private timetableFieldNumberService: TimetableFieldNumbersService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
-    protected dialogService: DialogService,
-    private dateService: DateService
+    protected dialogService: DialogService
   ) {
     super(dialogService, notificationService);
   }
@@ -163,10 +150,6 @@ export class TimetableFieldNumberDetailComponent
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
-  }
-
-  getValidFromPlaceHolder() {
-    return this.dateService.getCurrentDateFormatted();
   }
 
   ngOnDestroy() {

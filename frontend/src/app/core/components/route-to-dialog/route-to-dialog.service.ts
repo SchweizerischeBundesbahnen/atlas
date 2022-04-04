@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {DialogReference} from "./dialog-reference";
+import { Injectable } from '@angular/core';
+import { DialogReference } from './dialog-reference';
 
 @Injectable({
   providedIn: 'root',
