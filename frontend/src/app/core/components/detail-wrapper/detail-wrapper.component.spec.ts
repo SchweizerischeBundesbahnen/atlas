@@ -7,6 +7,16 @@ import { of } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-coverage',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppCoverageComponent {
+  @Input() pageType!: any;
+  @Input() currentRecord!: any;
+}
 
 describe('DetailWrapperComponent', () => {
   /*eslint-disable */
@@ -30,7 +40,7 @@ describe('DetailWrapperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DetailWrapperComponent],
+      declarations: [DetailWrapperComponent, MockAppCoverageComponent],
       imports: [AppTestingModule],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
@@ -42,6 +52,7 @@ describe('DetailWrapperComponent', () => {
     component.controller = controller;
     fixture.detectChanges();
   }
+
   /*eslint-enable */
 
   describe('disabled', (dummyController = createDummyForm(false)) => {
@@ -141,6 +152,7 @@ function createDummyForm(enabledForm: boolean) {
       'validateAllFormFields',
       'ngOnInit',
       'delete',
+      'getPageType',
     ],
     {
       heading: undefined,

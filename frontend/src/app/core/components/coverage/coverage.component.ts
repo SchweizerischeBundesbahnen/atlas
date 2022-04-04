@@ -4,19 +4,20 @@ import { Pages } from '../../../pages/pages';
 import { Record } from '../detail-wrapper/record';
 import { Page } from '../../model/page';
 
+const LINE_SUBLINE_HEADING = 'COMMON.COVERAGE.LINE_SUBLINE';
+
 @Component({
   selector: 'app-coverage',
   templateUrl: './coverage.component.html',
-  styleUrls: ['./coverage.component.scss']
+  styleUrls: ['./coverage.component.scss'],
 })
 export class CoverageComponent implements OnInit, OnChanges {
-
   @Input() currentRecord!: Record;
   @Input() pageType!: Page;
   coverage!: Coverage;
+  heading!: string;
 
-  constructor(private linesService: LinesService, private sublineService: SublinesService) {
-  }
+  constructor(private linesService: LinesService, private sublineService: SublinesService) {}
 
   ngOnInit(): void {
     this.displayCoverage();
@@ -25,15 +26,17 @@ export class CoverageComponent implements OnInit, OnChanges {
   displayCoverage() {
     if (this.pageType === Pages.LINES) {
       if (this.currentRecord.slnid != null) {
-        this.linesService.getLineCoverage(this.currentRecord.slnid).subscribe(value => {
+        this.linesService.getLineCoverage(this.currentRecord.slnid).subscribe((value) => {
           this.coverage = value;
+          this.heading = LINE_SUBLINE_HEADING;
         });
       }
     }
     if (this.pageType === Pages.SUBLINES) {
       if (this.currentRecord.slnid != null) {
-        this.sublineService.getSublineCoverage(this.currentRecord.slnid).subscribe(value => {
+        this.sublineService.getSublineCoverage(this.currentRecord.slnid).subscribe((value) => {
           this.coverage = value;
+          this.heading = LINE_SUBLINE_HEADING;
         });
       }
     }
@@ -44,7 +47,6 @@ export class CoverageComponent implements OnInit, OnChanges {
       return 'bi bi-check-circle-fill';
     }
     return 'bi bi-exclamation-triangle-fill';
-
   }
 
   ngOnChanges(): void {

@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { PaymentType, SublinesService, SublineType, SublineVersion } from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
-import { CoreModule } from '../../../../core/module/core.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
+import { Component, Input } from '@angular/core';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -58,6 +58,15 @@ const error = new HttpErrorResponse({
     ],
   },
 });
+
+@Component({
+  selector: 'app-detail-wrapper [controller][headingNew]',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppDetailWrapperComponent {
+  @Input() controller!: any;
+  @Input() headingNew!: any;
+}
 
 let component: SublineDetailComponent;
 let fixture: ComponentFixture<SublineDetailComponent>;
@@ -179,8 +188,12 @@ function setupTestBed(
   data: { sublineDetail: string | SublineVersion }
 ) {
   TestBed.configureTestingModule({
-    declarations: [SublineDetailComponent, DialogCloseButtonComponent],
-    imports: [CoreModule, AppTestingModule],
+    declarations: [
+      SublineDetailComponent,
+      DialogCloseButtonComponent,
+      MockAppDetailWrapperComponent,
+    ],
+    imports: [AppTestingModule],
     providers: [
       { provide: FormBuilder },
       { provide: SublinesService, useValue: sublinesService },

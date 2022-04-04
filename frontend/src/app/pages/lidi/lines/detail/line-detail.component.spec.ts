@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
+import { Component, Input } from '@angular/core';
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -65,6 +66,15 @@ const error = new HttpErrorResponse({
 let component: LineDetailComponent;
 let fixture: ComponentFixture<LineDetailComponent>;
 let router: Router;
+
+@Component({
+  selector: 'app-detail-wrapper [controller][headingNew]',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppDetailWrapperComponent {
+  @Input() controller!: any;
+  @Input() headingNew!: any;
+}
 
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
@@ -179,8 +189,8 @@ describe('LineDetailComponent for new lineVersion', () => {
 
 function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersion }) {
   TestBed.configureTestingModule({
-    declarations: [LineDetailComponent, DialogCloseButtonComponent],
-    imports: [CoreModule, AppTestingModule],
+    declarations: [LineDetailComponent, DialogCloseButtonComponent, MockAppDetailWrapperComponent],
+    imports: [AppTestingModule],
     providers: [
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
