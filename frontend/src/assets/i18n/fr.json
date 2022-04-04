@@ -47,8 +47,6 @@
     "OK": "OK",
     "EDIT_VERSION": "Éditer la version",
     "CREATE_VERSION": "Ajouter la version",
-    "COLOR_INVALID": "Couleur attendue au format #FFFFFF",
-    "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100",
     "ROLES": {
       "lidi-writer": "LiDi Writer",
       "lidi-admin": "LiDi Admin"
@@ -60,6 +58,16 @@
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Soit l’objet a déjà été supprimé, soit il a été traité entre-temps. Veuillez recharger la page en appuyant sur la touche F5."
     }
+  },
+  "FORM": {
+    "MAX_CHARS": "{{numberOfChars}} caractères max.",
+    "DROPDOWN_PLACEHOLDER": "sélectionner",
+    "FOR_EXAMPLE": "z.B.:__FR__",
+    "DESIGN_INFORMATION": "Angaben zur Gestaltung__FR__",
+    "KEY_DATA": "Eckdaten__FR__",
+    "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__FR__",
+    "OPTIONAL": "(optionnel)",
+    "DATE_FORMAT": "TT.MM.JJJJ__FR__"
   },
   "VERSION_TABLE": {
     "TITLE": "Versions avec validité différente",
@@ -105,15 +113,33 @@
     },
     "DETAILS": "Précisions"
   },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Objets par page",
+    "NEXT_PAGE": "Page suivante",
+    "PREVIOUS_PAGE": "Page précédente",
+    "RANGE_LABEL1": "0 de {{length}}",
+    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} de {{length}}"
+  },
+  "VALIDATION": {
+    "REQUIRED": "Ce champ est obligatoire.",
+    "BLANK": "Ce champ ne peut pas être vide.",
+    "MAXLENGTH": "Le nombre maximum de caractères autorisés est {{length}}.",
+    "MATDATEPICKERMIN": "La date doit être supérieure ou égale à {{date}}.",
+    "MATDATEPICKERMAX": "La date doit être inférieure ou égale à {{date}}.",
+    "MATDATEPICKERPARSE": "Le format de date n’est pas valable. (Format valide: JJ.MM.AAAA)",
+    "DATE_RANGE_ERROR": "La date «Valide du» ne doit pas être postérieure à la date «Valide au»: {{date}}",
+    "PATTERN": "Format non valide. Caractères autorisés: {{allowedChars}}",
+    "WHITESPACES": "Ne peut pas commencer ou se terminer par un espace.",
+    "COLOR_INVALID": "Couleur attendue au format #FFFFFF",
+    "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100"
+  },
   "TTFN": {
     "TTFN": "Numéro du tableau-horaire",
     "NEW": "Saisir un nouveau numéro de tableau-horaire",
     "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld__FR__",
-    "KEY_DATA": "Eckdaten__FR__",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numéro de tableau-horaire CH",
     "DESCRIPTION": "Désignation numéro de tableau-horaire CH",
     "DESCRIPTION_TOOLTIP": "CH-Fahrplanfeldnummer Bezeichnung Tooltip__FR__",
-    "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__FR__",
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "NUMBER": "Numéro du tableau-horaire",
     "TTFNID": "ID du tableau-horaire",
@@ -133,25 +159,8 @@
       "SWISSNUMBER_NOT_UNIQUE": "Le numéro de tableau-horaire CH ou de tableau-horaire sélectionné est déjà attribué à cette période."
     }
   },
-  "PAGINATOR": {
-    "ITEMS_PER_PAGE": "Objets par page",
-    "NEXT_PAGE": "Page suivante",
-    "PREVIOUS_PAGE": "Page précédente",
-    "RANGE_LABEL1": "0 de {{length}}",
-    "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} de {{length}}"
-  },
-  "VALIDATION": {
-    "REQUIRED": "Ce champ est obligatoire.",
-    "BLANK": "Ce champ ne peut pas être vide.",
-    "MAXLENGTH": "Le nombre maximum de caractères autorisés est {{length}}.",
-    "MATDATEPICKERMIN": "La date doit être supérieure ou égale à {{date}}.",
-    "MATDATEPICKERMAX": "La date doit être inférieure ou égale à {{date}}.",
-    "MATDATEPICKERPARSE": "Le format de date n’est pas valable. (Format valide: JJ.MM.AAAA)",
-    "DATE_RANGE_ERROR": "La date «Valide du» ne doit pas être postérieure à la date «Valide au»: {{date}}",
-    "PATTERN": "Format non valide. Caractères autorisés: {{allowedChars}}",
-    "WHITESPACES": "Ne peut pas commencer ou se terminer par un espace."
-  },
   "LIDI": {
+    "NEW_LINE_INFORMATION": "Angaben zur neuen Linie__FR__",
     "SWISS_LINE_NUMBER": "Numéro de ligne CH (CHLNR)",
     "SWISS_SUBLINE_NUMBER": "Numéro de ligne partielle CH",
     "ALTERNATIVE_NAME": "Désignation alternative",
