@@ -4,7 +4,7 @@ import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../..
 import { DetailWrapperController } from '../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { catchError, EMPTY, Subject } from 'rxjs';
+import { catchError, Subject } from 'rxjs';
 import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import { takeUntil } from 'rxjs/operators';
@@ -83,19 +83,10 @@ export class TimetableFieldNumberDetailComponent
   deleteRecord(): void {
     const selectedRecord: TimetableFieldNumberVersion = this.getSelectedRecord();
     if (selectedRecord.ttfnid != null) {
-      this.timetableFieldNumberService
-        .deleteVersions(selectedRecord.ttfnid)
-        .pipe(
-          takeUntil(this.ngUnsubscribe),
-          catchError((err) => {
-            this.notificationService.error(err, 'TTFN.NOTIFICATION.DELETE_ERROR');
-            return EMPTY;
-          })
-        )
-        .subscribe(() => {
-          this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
-          this.backToOverview();
-        });
+      this.timetableFieldNumberService.deleteVersions(selectedRecord.ttfnid).subscribe(() => {
+        this.notificationService.success('TTFN.NOTIFICATION.DELETE_SUCCESS');
+        this.backToOverview();
+      });
     }
   }
 
