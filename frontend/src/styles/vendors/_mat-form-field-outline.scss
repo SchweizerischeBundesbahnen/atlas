@@ -25,6 +25,51 @@ mat-form-field {
   }
 }
 
+// Material style overrides for dropdown in form
+mat-form-field.form-outline {
+  .mat-form-field-wrapper {
+    margin: 0 !important;
+  }
+
+  .mat-form-field-subscript-wrapper {
+    padding-left: unset;
+  }
+
+  .mat-form-field-flex .mat-form-field-infix {
+    padding: 11px 0 6px 0;
+  }
+
+  .mat-focused {
+    padding-right: unset;
+  }
+
+  .mat-select-arrow-wrapper {
+    transform: none;
+  }
+
+  .mat-select-arrow {
+    color: $primary-400;
+  }
+
+  .mat-select-placeholder {
+    color: $primary-400;
+    font-weight: 500;
+  }
+
+  .mat-select-disabled .mat-select-min-line {
+    color: unset;
+  }
+
+  .mat-select-min-line {
+    color: $primary-400;
+    font-weight: 500;
+  }
+
+  .mat-select.mat-select-invalid .mat-select-arrow {
+    color: unset;
+  }
+}
+
 // Form Field with appearance="outline"
 .mat-form-field-appearance-outline,
 .mat-form-field-appearance-outline:hover,
@@ -43,14 +88,12 @@ mat-form-field {
   }
 }
 
-.mat-form-field-appearance-outline.mat-form-field-disabled
-  .mat-form-field-flex
-  .mat-form-field-outline,
-.mat-form-field-appearance-outline:hover.mat-form-field-disabled
-  .mat-form-field-flex
-  .mat-form-field-outline {
-  color: $gray-400;
-  border-width: 1px;
+.mat-form-field-appearance-outline.mat-form-field-disabled,
+.mat-form-field-appearance-outline:hover.mat-form-field-disabled {
+  .mat-form-field-flex .mat-form-field-outline {
+    color: $gray-400;
+    border-width: 1px;
+  }
 }
 
 mat-label {
