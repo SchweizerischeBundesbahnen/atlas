@@ -153,22 +153,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
-
-  it('should not delete Version', () => {
-    const httpResponseError = new HttpErrorResponse({
-      status: 404,
-    });
-    mockTimetableFieldNumbersService.deleteVersions.and.returnValue(
-      throwError(() => httpResponseError)
-    );
-    fixture.componentInstance.deleteRecord();
-    fixture.detectChanges();
-
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-    expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.classList).toContain('error');
-  });
 });
 
 describe('TimetableFieldNumberDetailComponent Detail page add new version', () => {

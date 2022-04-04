@@ -15,7 +15,7 @@ import {
   MIN_DATE,
 } from 'src/app/core/date/date.service';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
-import { catchError, distinctUntilChanged, EMPTY, Subject, takeUntil } from 'rxjs';
+import { catchError, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -121,19 +121,10 @@ export class SublineDetailComponent
   deleteRecord(): void {
     const selectedSublineVersion = this.getSelectedRecord();
     if (selectedSublineVersion.slnid != null) {
-      this.sublinesService
-        .deleteSublines(selectedSublineVersion.slnid)
-        .pipe(
-          takeUntil(this.ngUnsubscribe),
-          catchError((err) => {
-            this.notificationService.error(err, 'LIDI.SUBLINE.NOTIFICATION.DELETE_ERROR');
-            return EMPTY;
-          })
-        )
-        .subscribe(() => {
-          this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
-          this.backToOverview();
-        });
+      this.sublinesService.deleteSublines(selectedSublineVersion.slnid).subscribe(() => {
+        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
+        this.backToOverview();
+      });
     }
   }
 

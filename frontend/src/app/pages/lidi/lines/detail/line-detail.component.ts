@@ -97,19 +97,10 @@ export class LineDetailComponent
   deleteRecord(): void {
     const selectedLineVersion: LineVersion = this.getSelectedRecord();
     if (selectedLineVersion.slnid != null) {
-      this.linesService
-        .deleteLines(selectedLineVersion.slnid)
-        .pipe(
-          takeUntil(this.ngUnsubscribe),
-          catchError((err) => {
-            this.notificationService.error(err, 'LIDI.LINE.NOTIFICATION.DELETE_ERROR');
-            return EMPTY;
-          })
-        )
-        .subscribe(() => {
-          this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
-          this.backToOverview();
-        });
+      this.linesService.deleteLines(selectedLineVersion.slnid).subscribe(() => {
+        this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
+        this.backToOverview();
+      });
     }
   }
 

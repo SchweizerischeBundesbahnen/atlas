@@ -185,7 +185,8 @@
       "LINE": "Linie",
       "LINES": "Linien",
       "CONFLICT": {
-        "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben."
+        "SWISS_NUMBER": "Die CH-Liniennummer (CHLNR) {{swissLineNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{slnid}} vergeben.",
+        "DELETE": "Linie mit {{slnid}} kann nicht gelöscht werden, da sie noch von Teillinie {{SublineVersion.slnid}} referenziert wird"
       },
       "PRECONDITION": {
         "LINE_OUTSIDE_OF_SUBLINE_RANGE": "Die Gültigkeit der Linie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Teillinie {{sublinie.swissSublineNumber}}. Diese ist {{sublinie.validFrom}}-{{sublinie.validTo}}."
@@ -210,7 +211,6 @@
         "EDIT_SUCCESS": "Die Linie wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
         "DELETE_SUCCESS": "Die Linie wurde erfolgreich gelöscht.",
-        "DELETE_ERROR": "Beim Löschen der Linie ist ein Fehler aufgetreten.",
         "FETCH_ERROR": "Beim Laden der Linie ist ein unbekannter Fehler aufgetreten."
       }
     },

@@ -28,5 +28,4 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
 
   List<SublineVersion> getSublineVersionByMainlineSlnid(String mainlineSlnid);
 
-
 }
