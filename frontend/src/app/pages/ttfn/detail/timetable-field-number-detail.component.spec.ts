@@ -14,6 +14,7 @@ import { CoreModule } from '../../../core/module/core.module';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
+import { FormModule } from '../../../core/module/form.module';
 import { DialogCloseButtonComponent } from '../../../core/components/dialog-close-button/dialog-close-button.component';
 
 const version: TimetableFieldNumberVersion = {
@@ -110,9 +111,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     const fixedDate = new Date(2020, 11, 31);
     jasmine.clock().install();
     jasmine.clock().mockDate(fixedDate);
-    const result = fixture.componentInstance.getValidFromPlaceHolder();
-
-    expect(result).toBe('31.12.2020');
   });
 
   it('should update Version successfully', () => {
@@ -176,6 +174,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       imports: [
         RouterTestingModule.withRoutes([{ path: '', component: HomeComponent }]),
         AppTestingModule,
+        FormModule,
       ],
       providers: [
         { provide: FormBuilder },
@@ -220,7 +219,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     expect(validToErrors?.date_range_error).toBeDefined();
   });
 
-  describe('Validation swissTimeTableFieldNumber ', () => {
+  describe('Validation swissTimeTableFieldNumber', () => {
     it('should be required', () => {
       const swissTimeTableFieldNumber: AbstractControl =
         fixture.componentInstance.form.controls['swissTimetableFieldNumber'];
@@ -245,7 +244,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
   });
 
-  describe('Validation businessOrganisation ', () => {
+  describe('Validation businessOrganisation', () => {
     it('should be required', () => {
       const businessOrganisation: AbstractControl =
         fixture.componentInstance.form.controls['businessOrganisation'];
@@ -270,7 +269,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
   });
 
-  describe('Validation number ', () => {
+  describe('Validation number', () => {
     it('should be required', () => {
       const number: AbstractControl = fixture.componentInstance.form.controls['number'];
       number.markAsTouched();
@@ -306,7 +305,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
   });
 
-  describe('Validation validFrom ', () => {
+  describe('Validation validFrom', () => {
     it('should be required', () => {
       const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
       validFrom.markAsTouched();
@@ -329,7 +328,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     });
   });
 
-  describe('Validation validTo ', () => {
+  describe('Validation validTo', () => {
     it('should be required', () => {
       const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
       validTo.markAsTouched();
@@ -340,7 +339,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       expect(validationErrors?.required).toBeDefined();
     });
 
-    it('should not be greater then 31.12.2099', () => {
+    it('should not be greater than 31.12.2099', () => {
       const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
       validTo.setValue(moment('1.12.2100', 'dd.MM.yyyy'));
       validTo.markAsTouched();
