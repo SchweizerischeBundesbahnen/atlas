@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { DialogReference } from './dialog-reference';
 
 @Injectable({
@@ -6,6 +6,7 @@ import { DialogReference } from './dialog-reference';
 })
 export class RouteToDialogService {
   private lastDialogRef?: DialogReference;
+  detailDialogEvent: EventEmitter<DetailDialogEvents> = new EventEmitter();
 
   hasDialog(): boolean {
     return !!this.lastDialogRef;
@@ -17,13 +18,20 @@ export class RouteToDialogService {
 
   closeDialog(): void {
     this.lastDialogRef?.close();
+    this.detailDialogEvent.emit(DetailDialogEvents.Closed);
   }
 
   setDialogRef(dialogRef: DialogReference) {
+    this.detailDialogEvent.emit(DetailDialogEvents.Opened);
     this.lastDialogRef = dialogRef;
   }
 
   clearDialogRef() {
     this.lastDialogRef = undefined;
   }
+}
+
+export enum DetailDialogEvents {
+  Opened = 'opened',
+  Closed = 'closed',
 }

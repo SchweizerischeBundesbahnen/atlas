@@ -1,28 +1,33 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
-import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { takeUntil } from 'rxjs/operators';
-import { catchError, Subject } from 'rxjs';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {LinesService, LineType, LineVersion, PaymentType} from '../../../../api';
+import {
+  DetailWrapperController
+} from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
+import {Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {takeUntil} from 'rxjs/operators';
+import {catchError, Subject} from 'rxjs';
 import moment from 'moment/moment';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { Pages } from '../../../pages';
-import { Page } from 'src/app/core/model/page';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
+import {Pages} from '../../../pages';
+import {Page} from 'src/app/core/model/page';
+import {
+  AtlasCharsetsValidator
+} from '../../../../core/validation/charsets/atlas-charsets-validator';
+import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {
+  AtlasFieldLengthValidator
+} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
   templateUrl: './line-detail.component.html',
 })
 export class LineDetailComponent
   extends DetailWrapperController<LineVersion>
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   readonly LINE_NUMBER_EXAMPLE = 50.391;
   readonly LINE_DESCRIPTION_EXAMPLE = 'Lenzburg Langsamstig - Bahnhof - Lenzburg Schloss';
   readonly SWISS_LINE_NUMBER_EXAMPLE = 'r.50.391';
@@ -38,6 +43,7 @@ export class LineDetailComponent
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
+    private dialogRef: MatDialogRef<LineDetailComponent>,
     private linesService: LinesService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
@@ -72,26 +78,26 @@ export class LineDetailComponent
 
   updateRecord(): void {
     this.linesService
-      .updateLineVersion(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
-          .then(() => this.ngOnInit());
-      });
+    .updateLineVersion(this.getId(), this.form.value)
+    .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+    .subscribe(() => {
+      this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
+      this.router
+      .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
+      .then(() => this.ngOnInit());
+    });
   }
 
   createRecord(): void {
     this.linesService
-      .createLineVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe((version) => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
-        this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, version.slnid])
-          .then(() => this.ngOnInit());
-      });
+    .createLineVersion(this.form.value)
+    .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+    .subscribe((version) => {
+      this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
+      this.router
+      .navigate([Pages.LIDI.path, Pages.LINES.path, version.slnid])
+      .then(() => this.ngOnInit());
+    });
   }
 
   deleteRecord(): void {
@@ -105,7 +111,7 @@ export class LineDetailComponent
   }
 
   backToOverview(): void {
-    this.router.navigate([Pages.LIDI.path]).then();
+    this.dialogRef.close();
   }
 
   getFormGroup(version: LineVersion): FormGroup {
