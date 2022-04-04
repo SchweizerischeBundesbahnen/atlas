@@ -18,6 +18,7 @@ import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -310,5 +311,12 @@ public class LineValidationServiceTest {
   verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
   }
 
+  @Test
+  void regex(){
+    String test = "";
+    for (char c : test.toCharArray()){
+      Assertions.assertTrue(String.valueOf(c).matches("[\\u0000-\\u00ff]*"), String.valueOf(c));
+    }
+  }
 
 }
