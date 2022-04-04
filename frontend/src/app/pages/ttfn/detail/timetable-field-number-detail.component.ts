@@ -13,7 +13,7 @@ import { Pages } from '../../pages';
 import { Page } from '../../../core/model/page';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
@@ -32,6 +32,7 @@ export class TimetableFieldNumberDetailComponent
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
+    private dialogRef: MatDialogRef<TimetableFieldNumberDetailComponent>,
     private timetableFieldNumberService: TimetableFieldNumbersService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
@@ -91,7 +92,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   backToOverview(): void {
-    this.router.navigate([Pages.TTFN.path]).then();
+    this.dialogRef.close();
   }
 
   getFormGroup(version: TimetableFieldNumberVersion): FormGroup {
