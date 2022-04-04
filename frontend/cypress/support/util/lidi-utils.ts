@@ -46,8 +46,8 @@ export default class LidiUtils {
   }
 
   static readSlnidFromForm(element: { slnid: string }) {
-    cy.get(DataCy.SLNID)
-    .invoke('val')
+    cy.get(DataCy.DETAIL_SUBHEADING_ID)
+    .invoke('text')
     .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
@@ -172,19 +172,19 @@ export default class LidiUtils {
       version.paymentType
     );
     CommonUtils.assertItemValue(
-      DataCy.COLOR_FONT_RGB + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > ' + DataCy.RGB_PICKER_INPUT,
+      DataCy.COLOR_FONT_RGB + ' ' + DataCy.RGB_PICKER_INPUT,
       version.colorFontRgb
     );
     CommonUtils.assertItemValue(
-      DataCy.COLOR_FONT_RGB + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix >  ' + DataCy.RGB_PICKER_INPUT,
+      DataCy.COLOR_BACK_RGB + ' ' + DataCy.RGB_PICKER_INPUT,
       version.colorBackRgb
     );
     CommonUtils.assertItemValue(
-      DataCy.COLOR_BACK_CMYK + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > ' + DataCy.CMYK_PICKER_INPUT,
+      DataCy.COLOR_FONT_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT,
       version.colorFontCmyk
     );
     CommonUtils.assertItemValue(
-      DataCy.COLOR_BACK_CMYK + ' > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix > ' + DataCy.CMYK_PICKER_INPUT,
+      DataCy.COLOR_BACK_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT,
       version.colorBackCmyk
     );
     CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);

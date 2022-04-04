@@ -10,7 +10,6 @@ export class DataCy {
   static DIALOG_CONFIRM_BUTTON = '[data-cy=dialog-confirm-button]';
   static DIALOG_CANCEL_BUTTON = '[data-cy=dialog-cancel-button]';
   static SUBLINES_TITLE = '[data-cy=sublines-title]';
-  static SLNID = '[data-cy=slnid]';
   static NEW_LINE = '[data-cy=new-line]';
   static NEW_SUBLINE = '[data-cy=new-subline]';
   static LIDI_LINES = '[data-cy=lidi-lines]';

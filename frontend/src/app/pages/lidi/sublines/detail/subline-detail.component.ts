@@ -91,7 +91,7 @@ export class SublineDetailComponent
   }
 
   getDetailSubheading(record: SublineVersion): string {
-    return record.swissSublineNumber;
+    return record.slnid!;
   }
 
   updateRecord(): void {
