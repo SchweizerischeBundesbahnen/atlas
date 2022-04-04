@@ -28,7 +28,7 @@ import { switchMap } from 'rxjs/operators';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
@@ -53,6 +53,7 @@ export class SublineDetailComponent
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
+    private dialogRef: MatDialogRef<SublineDetailComponent>,
     private sublinesService: SublinesService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
@@ -129,7 +130,7 @@ export class SublineDetailComponent
   }
 
   backToOverview(): void {
-    this.router.navigate([Pages.LIDI.path, Pages.SUBLINES.path]).then();
+    this.dialogRef.close();
   }
 
   getFormGroup(version: SublineVersion): FormGroup {
