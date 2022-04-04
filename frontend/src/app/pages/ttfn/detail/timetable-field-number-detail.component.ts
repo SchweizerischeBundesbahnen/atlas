@@ -4,7 +4,7 @@ import { Status, TimetableFieldNumbersService, TimetableFieldNumberVersion } fro
 import { DetailWrapperController } from '../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { catchError, EMPTY, Subject } from 'rxjs';
+import { catchError, Subject } from 'rxjs';
 import moment from 'moment/moment';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import { takeUntil } from 'rxjs/operators';
