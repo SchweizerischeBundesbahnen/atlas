@@ -2,144 +2,206 @@ const csvToJson = require("convert-csv-to-json");
 const axios = require("axios").default;
 const fs = require("fs");
 
-const outputFilePath = "output.txt";
+let outputFilePath = "";
 
 console.log("======================== Started ========================\n");
-fs.writeFileSync(outputFilePath, "");
 main(process.argv.slice(2))
-    .then(([failedImports, numberOfElements]) => {
-        const finalMessage = `Failed Imports: ${failedImports} of ${numberOfElements}`;
-        fs.appendFileSync(outputFilePath, finalMessage);
-        console.log("======================== Finished ========================");
-        console.log(finalMessage);
-    })
-    .catch((e) => console.log(e));
+  .then(([failedImports, numberOfElements]) => {
+    const finalMessage = `Failed Imports: ${failedImports} of ${numberOfElements}`;
+    fs.appendFileSync(outputFilePath, finalMessage);
+    console.log("======================== Finished ========================");
+    console.log(finalMessage);
+  })
+  .catch((e) => console.log(e));
 
 async function main(args) {
-    let failedImports = 0;
-    let token = "";
-    let url = "";
-    let csv = "";
-    for (let i = 0; i < args.length; i += 2) {
-        if (args[i] === '--token') token = args[i + 1];
-        if (args[i] === '--url') url = args[i + 1];
-        if (args[i] === '--csv') csv = args[i + 1];
+  let failedImports = 0;
+  let token = "";
+  let url = "";
+  let csv = "";
+  for (let i = 0; i < args.length; i += 2) {
+    if (args[i] === "--token") {
+      token = args[i + 1];
     }
-    if (!(token && url && csv)) throw "Error: Not all required parameters (url, token, csv) passed";
-    const json = convertCsv(csv);
-    // Format validFrom and validTo. Ex. 25.01.2021 -> 2021-01-25
-    // Use '$$' in csv file as placeholder for ';', because it's used as delimiter and it can not be escaped.
-    // Here '$$' will be replaced with ';' in json-object values.
-    json.forEach((obj) => {
-        obj.validFrom = getFormattedDate(obj.validFrom);
-        obj.validTo = getFormattedDate(obj.validTo);
-        for (let key in obj) {
-            obj[key] = obj[key].replaceAll("$$", ";");
-        }
-    });
-    for (let i = 0; i < json.length; i++) {
-        if (url.includes("sublines")) {
-            const slnidResult = await getSlnidForSubline(token, url, json[i].mainLineSwissLineNumber);
-            if (slnidResult.status !== 200) {
-                logToFile(slnidResult, i + 2);
-                failedImports++;
-                continue;
-            }
-            if (slnidResult.data.totalCount === 0) {
-                logToFile(null, i + 2, `[ERROR] Not found a line with swissLineNumber: ${json[i].mainLineSwissLineNumber}`);
-                console.log(`[ERROR] Not found a line with swissLineNumber: ${json[i].mainLineSwissLineNumber}\n`);
-                failedImports++;
-                continue;
-            }
-            if (slnidResult.data.totalCount > 1) {
-                const filteredLine = slnidResult.data.objects.filter((value) => value.validFrom <= json[i].validFrom && value.validTo >= json[i].validFrom
-                    && value.swissLineNumber === json[i].mainLineSwissLineNumber);
-                if (filteredLine.length === 1) {
-                    json[i].mainlineSlnid = filteredLine[0].slnid;
-                    delete json[i].mainLineSwissLineNumber;
-                    logToFile(null, i + 2, `[WARNING] Get-Request for mainlineSlnid search answered with more than 1 result --> ${JSON.stringify(filteredLine[0])} is used`);
-                } else {
-                    logToFile(null, i + 2, "[ERROR] Get-Request for mainlineSlnid search answered with more than 1 result --> not found a matching line");
-                    console.log("[ERROR] Get-Request for mainlineSlnid search answered with more than 1 result --> not found a matching line\n");
-                    failedImports++;
-                    continue;
-                }
-            }
-            if (slnidResult.data.totalCount === 1) {
-                json[i].mainlineSlnid = slnidResult.data.objects[0].slnid;
-                delete json[i].mainLineSwissLineNumber;
-            }
-        }
-        const apiResult = await postData(url, json[i], token);
-        if (apiResult.status !== 201) {
-            logToFile(apiResult, i + 2);
-            failedImports++;
-        }
+    if (args[i] === "--url") {
+      url = args[i + 1];
     }
-    return [failedImports, json.length];
+    if (args[i] === "--csv") {
+      csv = args[i + 1];
+    }
+  }
+  if (!(token && url && csv)) {
+    throw "Error: Not all required parameters (url, token, csv) passed";
+  }
+  const csvPathSplit = csv.split("\\");
+  const fileNameSplit = csvPathSplit[csvPathSplit.length - 1].split(".");
+  outputFilePath = `output/${fileNameSplit[0]}.txt`;
+  if (!fs.existsSync("output")) {
+    fs.mkdirSync("output");
+  }
+  fs.writeFileSync(outputFilePath, "");
+  const json = convertCsv(csv);
+  // Format validFrom and validTo. Ex. 25.01.2021 -> 2021-01-25
+  // Use '$$' in csv file as placeholder for ';', because it's used as delimiter and it can not be escaped.
+  // Here '$$' will be replaced with ';' in json-object values.
+  json.forEach((obj) => {
+    obj.validFrom = getFormattedDate(obj.validFrom);
+    obj.validTo = getFormattedDate(obj.validTo);
+    for (let key in obj) {
+      obj[key] = obj[key].replaceAll("$$", ";");
+    }
+  });
+  for (let i = 0; i < json.length; i++) {
+    if (url.includes("sublines")) {
+      const slnidResult = await getSlnidForSubline(
+        token,
+        url,
+        json[i].mainLineSwissLineNumber
+      );
+      if (slnidResult.status !== 200) {
+        logToFile(slnidResult, i + 2);
+        failedImports++;
+        continue;
+      }
+      if (slnidResult.data.totalCount === 0) {
+        logToFile(
+          null,
+          i + 2,
+          `[ERROR] Not found a line with swissLineNumber: ${json[i].mainLineSwissLineNumber}`
+        );
+        console.log(
+          `[ERROR] Not found a line with swissLineNumber: ${json[i].mainLineSwissLineNumber}\n`
+        );
+        failedImports++;
+        continue;
+      }
+      if (slnidResult.data.totalCount > 1) {
+        const filteredLine = slnidResult.data.objects.filter(
+          (value) =>
+            value.validFrom <= json[i].validFrom &&
+            value.validTo >= json[i].validFrom &&
+            value.swissLineNumber === json[i].mainLineSwissLineNumber
+        );
+        if (filteredLine.length === 1) {
+          json[i].mainlineSlnid = filteredLine[0].slnid;
+          delete json[i].mainLineSwissLineNumber;
+          logToFile(
+            null,
+            i + 2,
+            `[WARNING] Get-Request for mainlineSlnid search answered with more than 1 result --> ${JSON.stringify(
+              filteredLine[0]
+            )} is used`
+          );
+        } else {
+          logToFile(
+            null,
+            i + 2,
+            "[ERROR] Get-Request for mainlineSlnid search answered with more than 1 result --> not found a matching line"
+          );
+          console.log(
+            "[ERROR] Get-Request for mainlineSlnid search answered with more than 1 result --> not found a matching line\n"
+          );
+          failedImports++;
+          continue;
+        }
+      }
+      if (slnidResult.data.totalCount === 1) {
+        json[i].mainlineSlnid = slnidResult.data.objects[0].slnid;
+        delete json[i].mainLineSwissLineNumber;
+      }
+    }
+    const apiResult = await postData(url, json[i], token);
+    if (apiResult.status !== 201) {
+      logToFile(apiResult, i + 2);
+      failedImports++;
+    }
+  }
+  return [failedImports, json.length];
 }
 
 function getFormattedDate(dateString) {
-    const dateSplit = dateString.split(".");
-    if (dateSplit.length !== 3) return dateString;
-    return [dateSplit[2], dateSplit[1], dateSplit[0]].join("-");
+  const dateSplit = dateString.split(".");
+  if (dateSplit.length !== 3) {
+    return dateString;
+  }
+  return [dateSplit[2], dateSplit[1], dateSplit[0]].join("-");
 }
 
 function convertCsv(csvFilePath) {
-    return csvToJson.getJsonFromCsv(csvFilePath);
+  return csvToJson.getJsonFromCsv(csvFilePath);
 }
 
 async function getSlnidForSubline(token, url, mainLineSwissLineNumber) {
-    const index = url.indexOf(".net");
-    const hostUrl = url.substring(0, index + 4);
-    try {
-        const response = await axios.get(`${hostUrl}/v1/lines?swissLineNumber=${mainLineSwissLineNumber}`, {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-        return {
-            status: response.status,
-            data: response.data
-        };
-    } catch (e) {
-        const customError = {
-            status: e.response.status,
-            message: e.response.data.message ?? e.response.data,
-        };
-        console.log(`Get-Request for mainlineSlnid failed: ${JSON.stringify(customError)}\n`);
-        return customError;
-    }
+  const index = url.indexOf(".net");
+  const hostUrl = url.substring(0, index + 4);
+  try {
+    const response = await axios.get(
+      `${hostUrl}/v1/lines?swissLineNumber=${mainLineSwissLineNumber}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      status: response.status,
+      data: response.data,
+    };
+  } catch (e) {
+    const customError = {
+      status: e.response.status,
+      message: e.response.data.message ?? e.response.data,
+    };
+    console.log(
+      `Get-Request for mainlineSlnid failed: ${JSON.stringify(customError)}\n`
+    );
+    return customError;
+  }
 }
 
 async function postData(url, body, token) {
-    try {
-        return await axios.post(url, body, {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-    } catch (e) {
-        const responseError = e.response;
-        const customError = {
-            status: responseError.status,
-            message: responseError.data.message ?? responseError.data,
-            details: responseError.data.details?.map((value) => {
-                return {
-                    message: value.message
-                }
-            })
-        };
-        console.log(`Response: ${customError.status}, data: ${JSON.stringify(customError)}\n`);
-        return customError;
+  try {
+    return await axios.post(url, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (e) {
+    const responseError = e.response;
+    if (!responseError) {
+      console.log(
+        `Did not receive response with body: ${JSON.stringify(
+          body
+        )}, catchedError: ${JSON.stringify(e)}\n`
+      );
+      return { status: 500, catchedError: JSON.stringify(e) };
     }
+    const customError = {
+      status: responseError.status,
+      message: responseError.data.message ?? responseError.data,
+      details: responseError.data.details?.map((value) => {
+        return {
+          message: value.message,
+        };
+      }),
+    };
+    console.log(
+      `Response: ${customError.status}, data: ${JSON.stringify(customError)}\n`
+    );
+    return customError;
+  }
 }
 
 function logToFile(apiResult, lineNumber, message = "") {
-    if (message) {
-        fs.appendFileSync(outputFilePath, `Line Number ${lineNumber}: ${message}\n`);
-    } else {
-        const defaultMessage = `Line Number ${lineNumber}: Status Code: ${apiResult.status} and Response: ${JSON.stringify(apiResult.data ?? apiResult)}`;
-        fs.appendFileSync(outputFilePath, defaultMessage + "\n");
-    }
+  if (message) {
+    fs.appendFileSync(
+      outputFilePath,
+      `Line Number ${lineNumber}: ${message}\n`
+    );
+  } else {
+    const defaultMessage = `Line Number ${lineNumber}: Status Code: ${
+      apiResult.status
+    } and Response: ${JSON.stringify(apiResult.data ?? apiResult)}`;
+    fs.appendFileSync(outputFilePath, defaultMessage + "\n");
+  }
 }
