@@ -3,11 +3,17 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
-import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { SublinesService, Subline, SublineType } from '../../../api';
-import { TableSearch } from '../../../core/components/table-search/table-search';
+import { Subline, SublinesService, SublineType } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
+import { TableSettings } from '../../../core/components/table/table-settings';
+import { Pages } from '../../pages';
+import { TableSettingsService } from '../../../core/components/table/table-settings.service';
+import {
+  DetailDialogEvents,
+  RouteToDialogService,
+} from '../../../core/components/route-to-dialog/route-to-dialog.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lidi-sublines',
@@ -48,14 +54,22 @@ export class SublinesComponent implements OnInit, OnDestroy {
     private sublinesService: SublinesService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: NotificationService
-  ) {}
-
-  ngOnInit(): void {
-    this.getOverview({ page: 0, size: 10, sort: 'swissSublineNumber,ASC' });
+    private notificationService: NotificationService,
+    private tableSettingsService: TableSettingsService,
+    private routeToDialogService: RouteToDialogService
+  ) {
+    this.routeToDialogService.detailDialogEvent
+      .pipe(filter((e) => e === DetailDialogEvents.Closed))
+      .subscribe(() => this.ngOnInit());
   }
 
-  getOverview($paginationAndSearch: TablePagination & TableSearch) {
+  ngOnInit(): void {
+    const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.SUBLINES.path);
+    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'swissSublineNumber,ASC' });
+  }
+
+  getOverview($paginationAndSearch: TableSettings) {
+    this.tableSettingsService.storeTableSettings(Pages.SUBLINES.path, $paginationAndSearch);
     this.isLoading = true;
     this.sublineVersionsSubscription = this.sublinesService
       .getSublines(

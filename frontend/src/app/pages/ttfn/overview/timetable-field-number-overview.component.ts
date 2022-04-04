@@ -7,6 +7,14 @@ import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TableSearch } from '../../../core/components/table-search/table-search';
+import { TableSettings } from '../../../core/components/table/table-settings';
+import { TableSettingsService } from '../../../core/components/table/table-settings.service';
+import { Pages } from '../../pages';
+import {
+  DetailDialogEvents,
+  RouteToDialogService,
+} from '../../../core/components/route-to-dialog/route-to-dialog.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -38,14 +46,24 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     private timetableFieldNumbersService: TimetableFieldNumbersService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: NotificationService
-  ) {}
-
-  ngOnInit(): void {
-    this.getOverview({ page: 0, size: 10, sort: 'swissTimetableFieldNumber,ASC' });
+    private notificationService: NotificationService,
+    private tableSettingsService: TableSettingsService,
+    private routeToDialogService: RouteToDialogService
+  ) {
+    this.routeToDialogService.detailDialogEvent
+      .pipe(filter((e) => e === DetailDialogEvents.Closed))
+      .subscribe(() => this.ngOnInit());
   }
 
-  getOverview($paginationAndSearch: TablePagination & TableSearch) {
+  ngOnInit(): void {
+    const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.TTFN.path);
+    this.getOverview(
+      storedTableSettings || { page: 0, size: 10, sort: 'swissTimetableFieldNumber,ASC' }
+    );
+  }
+
+  getOverview($paginationAndSearch: TableSettings) {
+    this.tableSettingsService.storeTableSettings(Pages.TTFN.path, $paginationAndSearch);
     this.isLoading = true;
     this.getVersionsSubscription = this.timetableFieldNumbersService
       .getOverview(
