@@ -1,4 +1,4 @@
-@import '../variables';
+@use '../variables' as variables;
 
 app-switch-version table {
   ::-webkit-scrollbar {
@@ -6,15 +6,15 @@ app-switch-version table {
   }
 
   ::-webkit-scrollbar-track {
-    background: $white;
+    background: variables.$white;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: $gray-400;
+    background: variables.$gray-400;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: $gray-500;
+    background: variables.$gray-500;
   }
 
   tbody {
@@ -48,7 +48,7 @@ app-switch-version table {
       &:not(.placeholder-row) {
         cursor: pointer;
         &:hover {
-          background-color: $gray-100;
+          background-color: variables.$gray-100;
         }
       }
 
@@ -64,7 +64,7 @@ app-switch-version table {
     margin: 0 auto 0 3px;
     tr {
       display: flex;
-      border-bottom: 2px solid $gray-900;
+      border-bottom: 2px solid variables.$gray-900;
       &.mat-header-row {
         height: auto;
       }

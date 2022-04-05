@@ -1,12 +1,12 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 $primary-scales: (
-  primary-600: $primary-600,
-  primary-500: $primary-500,
-  primary-400: $primary-400,
-  primary-300: $primary-300,
-  primary-200: $primary-200,
-  primary-50: $primary-50,
+  primary-600: variables.$primary-600,
+  primary-500: variables.$primary-500,
+  primary-400: variables.$primary-400,
+  primary-300: variables.$primary-300,
+  primary-200: variables.$primary-200,
+  primary-50: variables.$primary-50,
 );
 
 @each $class, $value in $primary-scales {
@@ -19,13 +19,13 @@ $primary-scales: (
 }
 
 $gray-scales: (
-  gray-900: $gray-900,
-  gray-700: $gray-700,
-  gray-600: $gray-600,
-  gray-500: $gray-500,
-  gray-400: $gray-400,
-  gray-100: $gray-100,
-  gray-50: $gray-50,
+  gray-900: variables.$gray-900,
+  gray-700: variables.$gray-700,
+  gray-600: variables.$gray-600,
+  gray-500: variables.$gray-500,
+  gray-400: variables.$gray-400,
+  gray-100: variables.$gray-100,
+  gray-50: variables.$gray-50,
 );
 
 @each $class, $value in $gray-scales {
