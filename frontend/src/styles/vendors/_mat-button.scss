@@ -29,11 +29,4 @@
 .primary-color-btn {
   background-color: $primary-500;
   color: $white;
-  border-color: $white;
-
-  &:hover:not(:disabled) {
-    color: $primary-500;
-    background-color: $white;
-    border-color: $primary-500;
-  }
 }
