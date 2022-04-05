@@ -1,7 +1,13 @@
 <div *ngIf="coverage">
-  <mat-chip-list>
+  <div class="font-bold-lg mb-2">
+    <span>{{ 'COMMON.COVERAGE.HEADING' | translate }}</span>
+  </div>
+  <mat-chip-list id="coverage" [disabled]="true" aria-labelledby="coverage" class="ms-5">
+    <span class="color-primary-400 font-bold-base mb-2 ms-4 me-3 mt-2">{{
+      heading | translate
+    }}</span>
     <mat-chip [ngClass]="coverage.coverageType!.toLowerCase()">
-      <span class="text">
+      <span class="text font-bold-base">
         {{ 'COMMON.COVERAGE.' + this.coverage.coverageType | translate }}
       </span>
       <mat-chip-avatar>
