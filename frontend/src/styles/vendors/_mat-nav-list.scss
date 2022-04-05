@@ -37,7 +37,7 @@ mat-sidenav-content.content-menu-closed {
   padding: 16px 22px 16px variables.$navigationPaddingLeftDefault !important;
 }
 
-@mixin large-screen() {
+@include variables.large-screen() {
   .mat-drawer {
     width: $largeScreenWidth;
   }
