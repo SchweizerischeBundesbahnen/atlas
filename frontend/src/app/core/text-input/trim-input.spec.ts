@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CoreModule } from '../module/core.module';
 import { By } from '@angular/platform-browser';
 import { TrimInputDirective } from './trim-input';
+import { AppTestingModule } from '../../app.testing.module';
 
 @Component({
   template: ` <input [formControl]="form" trim /> `,
@@ -22,7 +22,7 @@ describe('TrimInputDirective', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       declarations: [TrimInputDirective, TestComponent],
-      imports: [CoreModule],
+      imports: [AppTestingModule],
     }).createComponent(TestComponent);
 
     component = fixture.componentInstance;

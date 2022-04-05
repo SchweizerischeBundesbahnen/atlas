@@ -4,8 +4,9 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { ContainerSubline, Status, SublinesService, SublineType } from '../../../api';
 import { SublinesComponent } from './sublines.component';
-import { CoreModule } from '../../../core/module/core.module';
 import { AppTestingModule } from '../../../app.testing.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 
 const versionContainer: ContainerSubline = {
   objects: [
@@ -23,6 +24,14 @@ const versionContainer: ContainerSubline = {
   totalCount: 1,
 };
 
+@Component({
+  selector: 'app-table-search',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppTableSearchComponent {
+  @Input() additionalFieldTemplate!: TemplateRef<any>;
+}
+
 describe('SublinesComponent', () => {
   let component: SublinesComponent;
   let fixture: ComponentFixture<SublinesComponent>;
@@ -32,9 +41,14 @@ describe('SublinesComponent', () => {
   sublinesService.getSublines.and.returnValue(of(versionContainer));
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SublinesComponent, TableComponent, LoadingSpinnerComponent],
-      imports: [CoreModule, AppTestingModule],
-      providers: [{ provide: SublinesService, useValue: sublinesService }],
+      declarations: [
+        SublinesComponent,
+        TableComponent,
+        LoadingSpinnerComponent,
+        MockAppTableSearchComponent,
+      ],
+      imports: [AppTestingModule],
+      providers: [{ provide: SublinesService, useValue: sublinesService }, TranslatePipe],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SublinesComponent);
