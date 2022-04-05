@@ -4,8 +4,9 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { LinesComponent } from './lines.component';
 import { ContainerLine, LinesService, LineType } from '../../../api';
-import { CoreModule } from '../../../core/module/core.module';
 import { AppTestingModule } from '../../../app.testing.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 
 const versionContainer: ContainerLine = {
   objects: [
@@ -23,6 +24,14 @@ const versionContainer: ContainerLine = {
   totalCount: 1,
 };
 
+@Component({
+  selector: 'app-table-search',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppTableSearchComponent {
+  @Input() additionalFieldTemplate!: TemplateRef<any>;
+}
+
 describe('LinesComponent', () => {
   let component: LinesComponent;
   let fixture: ComponentFixture<LinesComponent>;
@@ -32,9 +41,14 @@ describe('LinesComponent', () => {
   linesService.getLines.and.returnValue(of(versionContainer));
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LinesComponent, TableComponent, LoadingSpinnerComponent],
-      imports: [CoreModule, AppTestingModule],
-      providers: [{ provide: LinesService, useValue: linesService }],
+      declarations: [
+        LinesComponent,
+        TableComponent,
+        LoadingSpinnerComponent,
+        MockAppTableSearchComponent,
+      ],
+      imports: [AppTestingModule],
+      providers: [{ provide: LinesService, useValue: linesService }, TranslatePipe],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LinesComponent);
