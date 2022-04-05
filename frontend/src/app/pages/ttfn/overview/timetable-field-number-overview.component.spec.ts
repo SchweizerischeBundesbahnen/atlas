@@ -5,8 +5,9 @@ import { of } from 'rxjs';
 import { ContainerTimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
-import { CoreModule } from '../../../core/module/core.module';
 import { AppTestingModule } from '../../../app.testing.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 
 const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   objects: [
@@ -24,6 +25,14 @@ const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   totalCount: 1,
 };
 
+@Component({
+  selector: 'app-table-search',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppTableSearchComponent {
+  @Input() additionalFieldTemplate!: TemplateRef<any>;
+}
+
 describe('TimetableFieldNumberOverviewComponent', () => {
   let component: TimetableFieldNumberOverviewComponent;
   let fixture: ComponentFixture<TimetableFieldNumberOverviewComponent>;
@@ -39,9 +48,16 @@ describe('TimetableFieldNumberOverviewComponent', () => {
         TimetableFieldNumberOverviewComponent,
         TableComponent,
         LoadingSpinnerComponent,
+        MockAppTableSearchComponent,
       ],
-      imports: [CoreModule, AppTestingModule],
-      providers: [{ provide: TimetableFieldNumbersService, useValue: timetableFieldNumberService }],
+      imports: [AppTestingModule],
+      providers: [
+        {
+          provide: TimetableFieldNumbersService,
+          useValue: timetableFieldNumberService,
+        },
+        TranslatePipe,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimetableFieldNumberOverviewComponent);
