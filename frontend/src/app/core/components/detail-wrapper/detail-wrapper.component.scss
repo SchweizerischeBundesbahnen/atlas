@@ -22,8 +22,13 @@
 }
 
 .footer-btn {
+  background-color: $primary-500;
+  color: $white;
+  border-color: $white;
+
   &:hover:not(:disabled) {
-    border-color: $white;
+    background-color: $white;
+    color: $primary-500;
   }
 
   &:disabled {
