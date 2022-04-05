@@ -39,7 +39,7 @@ export class TableSettingsService {
   }
 
   getTableSettings(key: string): TableSettings | undefined {
-    const storedSettings = localStorage.getItem(key);
+    const storedSettings = sessionStorage.getItem(key);
     if (storedSettings) {
       return JSON.parse(storedSettings);
     }
@@ -47,7 +47,7 @@ export class TableSettingsService {
   }
 
   storeTableSettings(key: string, tableSettings: TableSettings) {
-    localStorage.setItem(key, JSON.stringify(tableSettings));
+    sessionStorage.setItem(key, JSON.stringify(tableSettings));
   }
 
   private deleteAllTableSettings() {
@@ -63,6 +63,6 @@ export class TableSettingsService {
   }
 
   private static deleteTableSettings(key: string) {
-    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
   }
 }

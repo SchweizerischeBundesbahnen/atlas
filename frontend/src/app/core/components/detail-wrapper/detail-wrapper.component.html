@@ -83,7 +83,11 @@
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
     <ng-template #editModeButtons>
-      <button class="atlas-primary-btn footer-btn" (click)="controller.toggleEdit()">
+      <button
+        class="atlas-primary-btn footer-btn"
+        (click)="controller.toggleEdit()"
+        data-cy="cancel"
+      >
         {{ 'COMMON.CANCEL' | translate }}
       </button>
       <button
