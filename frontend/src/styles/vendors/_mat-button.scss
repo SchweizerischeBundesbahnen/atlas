@@ -1,5 +1,9 @@
 @use 'src/styles/variables' as variables;
 
+.mat-button-focus-overlay {
+  background-color: transparent !important;
+}
+
 .mat-raised-button {
   border-radius: variables.$border-radius !important;
   padding: 10px 20px !important;
