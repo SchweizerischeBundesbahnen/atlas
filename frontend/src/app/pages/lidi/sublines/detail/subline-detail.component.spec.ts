@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { PaymentType, SublinesService, SublineType, SublineVersion } from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
 import { Component, Input } from '@angular/core';
@@ -72,6 +72,7 @@ class MockAppDetailWrapperComponent {
 let component: SublineDetailComponent;
 let fixture: ComponentFixture<SublineDetailComponent>;
 let router: Router;
+let dialogRef: MatDialogRef<SublineDetailComponent>;
 
 describe('SublineDetailComponent for existing sublineVersion', () => {
   const mockSublinesService = jasmine.createSpyObj('sublinesService', [
@@ -89,6 +90,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
+    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should be created', () => {
@@ -121,9 +123,9 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     expect(snackBarContainer.classList).toContain('error');
   });
 
-  it('should delete LineVersion successfully', () => {
+  it('should delete SublineVersion successfully', () => {
     mockSublinesService.deleteSublines.and.returnValue(of({}));
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    spyOn(dialogRef, 'close');
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
@@ -132,7 +134,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent).toBe('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
-    expect(router.navigate).toHaveBeenCalled();
+    expect(dialogRef.close).toHaveBeenCalled();
   });
 });
 
