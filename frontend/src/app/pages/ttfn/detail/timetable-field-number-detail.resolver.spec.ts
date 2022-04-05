@@ -1,12 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { Status, TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { TimetableFieldNumberDetailResolver } from './timetable-field-number-detail.resolver';
 import { of } from 'rxjs';
-import { CoreModule } from '../../../core/module/core.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { AppTestingModule } from '../../../app.testing.module';
 
 const version: TimetableFieldNumberVersion = {
   id: 1234,
@@ -30,15 +27,7 @@ describe('TimetableFieldNumberDetailResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreModule,
-        RouterModule.forRoot([]),
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
       providers: [
         TimetableFieldNumberDetailResolver,
         { provide: TimetableFieldNumbersService, useValue: timetableFieldNumberServiceSpy },
