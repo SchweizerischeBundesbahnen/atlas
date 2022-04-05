@@ -1,12 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { TablePagination } from '../../../core/components/table/table-pagination';
-import { TableSearch } from '../../../core/components/table-search/table-search';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableSettingsService } from '../../../core/components/table/table-settings.service';
 import { Pages } from '../../pages';
@@ -15,6 +13,7 @@ import {
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
+import { TableComponent } from '../../../core/components/table/table.component';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -22,6 +21,9 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./timetable-field-number-overview.component.scss'],
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
+  @ViewChild(TableComponent, { static: true })
+  tableComponent!: TableComponent<TimetableFieldNumber>;
+
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.NUMBER', value: 'number' },
     { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
@@ -84,6 +86,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
       .subscribe((container) => {
         this.timetableFieldNumbers = container.objects!;
         this.totalCount$ = container.totalCount!;
+        this.tableComponent.setTableSettings($paginationAndSearch);
         this.isLoading = false;
       });
   }
