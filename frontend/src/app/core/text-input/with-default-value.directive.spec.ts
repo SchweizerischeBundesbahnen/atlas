@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CoreModule } from '../module/core.module';
 import { By } from '@angular/platform-browser';
 import { WithDefaultValueDirective } from './with-default-value.directive';
+import { AppTestingModule } from '../../app.testing.module';
 
 const keyUpEvent = new KeyboardEvent('keyup');
 
@@ -22,7 +22,7 @@ describe('WithDefaultValueDirective', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       declarations: [WithDefaultValueDirective, TestComponent],
-      imports: [CoreModule],
+      imports: [AppTestingModule],
     }).createComponent(TestComponent);
 
     component = fixture.componentInstance;
