@@ -22,7 +22,7 @@ export class TableSettingsService {
   }
 
   getTableSettings(key: string): TableSettings | undefined {
-    let storedSettings = localStorage.getItem(key);
+    const storedSettings = localStorage.getItem(key);
     if (storedSettings) {
       return JSON.parse(storedSettings);
     }
