@@ -18,13 +18,23 @@
       >
     </div>
   </ng-template>
-  <app-switch-version
-    *ngIf="controller.showSwitch"
-    [records]="controller.records!"
-    [currentRecord]="controller.record!"
-    [switchDisabled]="controller.form.enabled"
-    (switchVersion)="controller.switchVersion($event)"
-  ></app-switch-version>
+  <div class="col-12 d-flex mt-3">
+    <div class="d-flex flex-column col-7 pe-3">
+      <app-switch-version
+        *ngIf="controller.showSwitch"
+        [records]="controller.records!"
+        [currentRecord]="controller.record!"
+        [switchDisabled]="controller.form.enabled"
+        (switchVersion)="controller.switchVersion($event)"
+      ></app-switch-version>
+    </div>
+    <div class="d-flex flex-column col-5 pe-3">
+      <app-coverage
+        [currentRecord]="controller.record"
+        [pageType]="controller.getPageType()"
+      ></app-coverage>
+    </div>
+  </div>
   <div *ngIf="controller.isExistingRecord()" class="edit-section">
     <button
       *ngIf="hasAdminOrWriterRole"
