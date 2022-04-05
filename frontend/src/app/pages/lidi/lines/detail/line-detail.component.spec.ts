@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
 import { Component, Input } from '@angular/core';
@@ -66,6 +66,7 @@ const error = new HttpErrorResponse({
 let component: LineDetailComponent;
 let fixture: ComponentFixture<LineDetailComponent>;
 let router: Router;
+let dialogRef: MatDialogRef<LineDetailComponent>;
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -92,6 +93,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
+    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should be created', () => {
@@ -126,7 +128,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should delete LineVersion successfully', () => {
     mockLinesService.deleteLines.and.returnValue(of({}));
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    spyOn(dialogRef, 'close');
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
@@ -135,7 +137,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent).toBe('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
-    expect(router.navigate).toHaveBeenCalled();
+    expect(dialogRef.close).toHaveBeenCalled();
   });
 });
 
