@@ -117,3 +117,4 @@ frontend/coverage
 frontend/docker/package
 frontend/.npmrc
 .idea/jpa-buddy.xml
+.idea/jsLibraryMappings.xml

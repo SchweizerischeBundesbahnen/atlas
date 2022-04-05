@@ -87,7 +87,7 @@ export class SublineDetailComponent
   }
 
   getDetailHeading(record: SublineVersion): string {
-    return `${record.number} - ${record.description}`;
+    return `${record.number ?? ''} - ${record.description ?? ''}`;
   }
 
   getDetailSubheading(record: SublineVersion): string {
