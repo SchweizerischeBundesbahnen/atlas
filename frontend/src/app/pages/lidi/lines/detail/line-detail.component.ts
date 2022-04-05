@@ -63,7 +63,7 @@ export class LineDetailComponent
   }
 
   getDetailHeading(record: LineVersion): string {
-    return `${record.number} - ${record.description}`;
+    return `${record.number ?? ''} - ${record.description ?? ''}`;
   }
 
   getDetailSubheading(record: LineVersion): string {

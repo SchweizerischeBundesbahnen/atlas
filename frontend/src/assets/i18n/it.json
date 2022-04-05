@@ -136,6 +136,7 @@
   "TTFN": {
     "TTFN": "Numero del quadro d’orario",
     "NEW": "Inserire nuovo numero del quadro d’orario",
+    "DETAIL_TIMETABLE_INFORMATION": "Angaben zum Fahrplanfeld__IT__",
     "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld__IT__",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numero del quadro d’orario CH",
     "DESCRIPTION": "Denominazione quadro d’orario CH",
@@ -160,6 +161,7 @@
     }
   },
   "LIDI": {
+    "DETAIL_LINE_INFORMATION": "Angaben zur Linie__IT__",
     "NEW_LINE_INFORMATION": "Angaben zur neuen Linie__IT__",
     "SWISS_LINE_NUMBER": "Numero di linea CH (CHLNR)",
     "SWISS_SUBLINE_NUMBER": "Numero di linea parziale CH",
