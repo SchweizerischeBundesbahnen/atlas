@@ -10,12 +10,13 @@ import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CoreModule } from '../../../core/module/core.module';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
 import { FormModule } from '../../../core/module/form.module';
 import { DialogCloseButtonComponent } from '../../../core/components/dialog-close-button/dialog-close-button.component';
+import { Component, Input } from '@angular/core';
+import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -70,6 +71,25 @@ const mockData = {
 const addTtfData = {
   timetableFieldNumberDetail: 'add',
 };
+
+@Component({
+  selector: 'app-coverage',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppCoverageComponent {
+  @Input() pageType!: any;
+  @Input() currentRecord!: any;
+}
+
+@Component({
+  selector: 'app-detail-wrapper [controller][headingNew]',
+  template: '<p>Mock Product Editor Component</p>',
+})
+class MockAppDetailWrapperComponent {
+  @Input() controller!: any;
+  @Input() headingNew!: any;
+}
+
 let component: TimetableFieldNumberDetailComponent;
 let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
 
@@ -81,8 +101,14 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   ]);
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimetableFieldNumberDetailComponent, DialogCloseButtonComponent],
-      imports: [CoreModule, AppTestingModule],
+      declarations: [
+        TimetableFieldNumberDetailComponent,
+        DialogCloseButtonComponent,
+        MockAppCoverageComponent,
+        MockAppDetailWrapperComponent,
+        ErrorNotificationComponent,
+      ],
+      imports: [AppTestingModule],
       providers: [
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
@@ -170,6 +196,8 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         TimetableFieldNumberDetailComponent,
         DetailWrapperComponent,
         DialogCloseButtonComponent,
+        MockAppCoverageComponent,
+        ErrorNotificationComponent,
       ],
       imports: [
         RouterTestingModule.withRoutes([{ path: '', component: HomeComponent }]),

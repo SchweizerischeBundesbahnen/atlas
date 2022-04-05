@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { EmptyToNullDirective } from './empty-to-null';
 import { FormControl } from '@angular/forms';
-import { CoreModule } from '../module/core.module';
 import { By } from '@angular/platform-browser';
+import { AppTestingModule } from '../../app.testing.module';
 
 @Component({
   template: ` <input [formControl]="form" emptyToNull /> `,
@@ -22,7 +22,7 @@ describe('EmptyToNullDirective', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       declarations: [EmptyToNullDirective, TestComponent],
-      imports: [CoreModule],
+      imports: [AppTestingModule],
     }).createComponent(TestComponent);
 
     component = fixture.componentInstance;
