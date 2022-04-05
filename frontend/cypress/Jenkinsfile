@@ -202,7 +202,6 @@ void sendEmailToTester(){
                     The deployment of the INT environment is about to start. The deployment process may take a few minutes.<br><br>
                     Regards<br>
                     Mr. Jenkins""",
-           recipientProviders: [[$class: 'CulpritsRecipientProvider']],
            subject: 'START Deploy INT Environment',
            to: 'joel.hofer@sbb.ch'
 }
