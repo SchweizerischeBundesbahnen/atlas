@@ -136,6 +136,7 @@
   "TTFN": {
     "TTFN": "Fahrplanfeldnummer",
     "NEW": "Neues Fahrplanfeld erfassen",
+    "DETAIL_TIMETABLE_INFORMATION": "Angaben zum Fahrplanfeld",
     "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld",
     "SWISS_TIMETABLE_FIELD_NUMBER": "CH-Fahrplanfeldnummer",
     "DESCRIPTION": "CH-Fahrplanfeldnummer Bezeichnung",
@@ -160,6 +161,7 @@
     }
   },
   "LIDI": {
+    "DETAIL_LINE_INFORMATION": "Angaben zur Linie",
     "NEW_LINE_INFORMATION": "Angaben zur neuen Linie",
     "SWISS_LINE_NUMBER": "CH-Liniennummer (CHLNR)",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
