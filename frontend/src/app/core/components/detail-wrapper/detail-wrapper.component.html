@@ -1,7 +1,7 @@
 <div>
-  <div *ngIf="!controller.showSwitch; else detailPageTitle">
-    <span class="font-bold-4xl">{{ headingNew | translate }}</span>
-  </div>
+  <h1 *ngIf="!controller.showSwitch; else detailPageTitle" class="font-bold-4xl mb-5">
+    {{ headingNew | translate }}
+  </h1>
   <ng-template #detailPageTitle>
     <div class="font-bold-4xl detail-title mb-3">
       {{ controller.getDetailHeading(controller.record) }}
@@ -20,12 +20,12 @@
   </ng-template>
   <app-switch-version
     *ngIf="controller.showSwitch"
-    [records]="controller.records"
-    [currentRecord]="controller.record"
+    [records]="controller.records!"
+    [currentRecord]="controller.record!"
     [switchDisabled]="controller.form.enabled"
     (switchVersion)="controller.switchVersion($event)"
   ></app-switch-version>
-  <div *ngIf="controller.isExistingRecord()" class="edit-section mb-2">
+  <div *ngIf="controller.isExistingRecord()" class="edit-section">
     <button
       *ngIf="hasAdminOrWriterRole"
       data-cy="edit-item"
@@ -46,25 +46,41 @@
     </button>
   </div>
 
-  <div class="detail-content mt-4">
+  <div *ngIf="controller.isExistingRecord()" class="form-title-section">
+    <h2 class="font-bold-2xl color-gray-900">
+      {{ formDetailHeading | translate }} - {{ 'COMMON.VERSION' | translate }}
+      {{ controller.versionNumberOfCurrentRecord }}
+    </h2>
+    <div>
+      <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+      <span class="color-gray-900">{{
+        'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate | lowercase
+      }}</span>
+    </div>
+  </div>
+
+  <div>
     <ng-content></ng-content>
   </div>
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
     <button
       *ngIf="controller.form.disabled; else editModeButtons"
-      class="atlas-primary-btn footer-btn"
+      class="atlas-primary-btn primary-color-btn footer-btn"
       [mat-dialog-close]="true"
       data-cy="back-to-overview"
     >
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
     <ng-template #editModeButtons>
-      <button class="atlas-primary-btn footer-btn" (click)="controller.toggleEdit()">
+      <button
+        class="atlas-primary-btn primary-color-btn footer-btn"
+        (click)="controller.toggleEdit()"
+      >
         {{ 'COMMON.CANCEL' | translate }}
       </button>
       <button
-        class="atlas-primary-btn footer-btn ms-3"
+        class="atlas-primary-btn primary-color-btn footer-btn ms-3"
         data-cy="save-item"
         type="submit"
         (click)="controller.save()"
