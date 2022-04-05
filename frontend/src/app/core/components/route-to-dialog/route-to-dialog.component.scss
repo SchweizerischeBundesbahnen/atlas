@@ -1,8 +1,8 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 .route-to-dialog-wrapper {
   overflow: auto;
-  height: calc(100% - #{$footerHeight});
+  height: calc(100% - #{variables.$footerHeight});
   pointer-events: auto !important;
 }
 
@@ -17,8 +17,8 @@
   max-width: 100% !important;
 
   .mat-dialog-container {
-    background: $white;
-    border-radius: $border-radius;
+    background: variables.$white;
+    border-radius: variables.$border-radius;
     padding: 64px 80px 144px;
     overflow: unset;
   }

@@ -1,4 +1,4 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 h3 {
   margin-bottom: 1.5rem;
@@ -9,7 +9,7 @@ hr {
   margin: 0;
   width: 100%;
   opacity: 1;
-  background-color: $gray-400;
+  background-color: variables.$gray-400;
 }
 
 table {
@@ -18,14 +18,14 @@ table {
 }
 
 .selected-row {
-  border: 3px solid $primary-300;
+  border: 3px solid variables.$primary-300;
   border-radius: 5px;
   width: calc(42.5rem + 6px);
   margin-left: 0;
   td {
     padding-top: 7px !important;
     padding-bottom: 8px !important;
-    color: $primary-500;
+    color: variables.$primary-500;
     border-bottom: 0;
     &:first-child {
       border-left: 0;
@@ -40,7 +40,7 @@ table {
 .placeholder-row {
   span {
     padding: 0 0.25rem;
-    color: $gray-500;
+    color: variables.$gray-500;
   }
 }
 
