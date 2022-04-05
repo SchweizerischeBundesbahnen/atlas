@@ -1,4 +1,4 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 $logoMarginLeft: 47px;
 $logoMarginLeftLarge: 63.5px;
@@ -6,10 +6,10 @@ $navigationDefaultSize: 139px;
 
 .logo-placeholder {
   cursor: pointer;
-  background: $white;
+  background: variables.$white;
   width: $navigationDefaultSize;
   min-width: $navigationDefaultSize;
-  height: $headerHeight;
+  height: variables.$headerHeight;
   text-align: center;
   vertical-align: middle;
 
@@ -19,13 +19,13 @@ $navigationDefaultSize: 139px;
     left: $logoMarginLeft;
     width: 45px;
     height: 45px;
-    background: $accentColor url('~src/assets/images/a-logo.svg') no-repeat 12px 12px;
+    background: variables.$accentColor url('~src/assets/images/a-logo.svg') no-repeat 12px 12px;
     border-radius: 9.47368px;
     background-size: 23px 23px;
   }
 
   .title {
-    color: $accentColor;
+    color: variables.$accentColor;
     position: absolute;
     top: 83px;
     left: $logoMarginLeft;
@@ -35,34 +35,34 @@ $navigationDefaultSize: 139px;
   }
 }
 
-
-@include large-screen() {
+@mixin large-screen() {
   .logo-placeholder {
-    width: $navigationLargeSize;
-    min-width: $navigationLargeSize;
+    width: variables.$navigationLargeSize;
+    min-width: variables.$navigationLargeSize;
 
-    .logo, .title {
-      left: $logoMarginLeftLarge;
+    .logo,
+    .title {
+      left: variables.$logoMarginLeftLarge;
     }
   }
 }
 
 .spacer {
-  flex: $flexSpaceSize;
+  flex: variables.$flexSpaceSize;
 }
 
 .header-container {
   margin-left: 0 !important;
 }
 
-@include default-screen() {
+@mixin default-screen() {
   .header-container {
     padding-left: 177px;
     margin-left: 0 !important;
   }
 }
 
-@include large-screen() {
+@mixin large-screen() {
   .header-container {
     padding-left: 467px;
     margin-left: 0 !important;
@@ -70,7 +70,7 @@ $navigationDefaultSize: 139px;
 }
 
 .home-header {
-  height: $headerHeight;
+  height: variables.$headerHeight;
   padding: 0 16px 0 0;
 }
 

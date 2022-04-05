@@ -1,4 +1,4 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 .overview-table {
   background: white;
@@ -21,7 +21,7 @@ table {
 }
 
 .mat-row:hover {
-  background-color: $gray-100;
+  background-color: variables.$gray-100;
   cursor: pointer;
 }
 
@@ -43,11 +43,11 @@ table {
   .mat-sort-header-container:not(.mat-sort-header-sorted) .mat-sort-header-arrow {
     opacity: 0.54 !important;
     transform: translateY(0px) !important;
-    color: $primary-400;
+    color: variables.$primary-400;
   }
 
   // Sorted header should be grayscaled
   .mat-sort-header-sorted {
-    color: $gray-900;
+    color: variables.$gray-900;
   }
 }

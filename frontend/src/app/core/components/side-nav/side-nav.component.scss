@@ -1,12 +1,12 @@
-@import "src/styles/variables";
+@use 'src/styles/variables' as variables;
 
 .spacer {
-  flex: $flexSpaceSize;
+  flex: variables.$flexSpaceSize;
 }
 
 .route-active {
-  color: $navigationDisabled;
-  background: $white;
+  color: variables.$navigationDisabled;
+  background: variables.$white;
 }
 
 .link-border {

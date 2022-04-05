@@ -1,4 +1,4 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 :host::ng-deep {
   mat-form-field mat-chip-list .mat-chip-list-wrapper {
@@ -18,7 +18,7 @@
   }
 
   .search-box .mat-form-field-appearance-outline .mat-form-field-outline {
-    background-color: $gray-50;
+    background-color: variables.$gray-50;
     border-radius: 5px;
   }
 }

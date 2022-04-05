@@ -1,9 +1,9 @@
-@import '~@ng-select/ng-select/themes/material.theme.css';
-@import "src/styles/variables";
+@use 'src/styles/variables' as variables;
+@use 'node_modules/@ng-select/ng-select/themes/material.theme.css';
 
 mat-select {
   &.mat-select-disabled .mat-select-value {
-    color: $black;
+    color: variables.$black;
   }
 }
 
