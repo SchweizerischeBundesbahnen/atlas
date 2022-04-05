@@ -76,21 +76,18 @@
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
     <button
       *ngIf="controller.form.disabled; else editModeButtons"
-      class="atlas-primary-btn primary-color-btn footer-btn"
+      class="atlas-primary-btn footer-btn"
       [mat-dialog-close]="true"
       data-cy="back-to-overview"
     >
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
     <ng-template #editModeButtons>
-      <button
-        class="atlas-primary-btn primary-color-btn footer-btn"
-        (click)="controller.toggleEdit()"
-      >
+      <button class="atlas-primary-btn footer-btn" (click)="controller.toggleEdit()">
         {{ 'COMMON.CANCEL' | translate }}
       </button>
       <button
-        class="atlas-primary-btn primary-color-btn footer-btn ms-3"
+        class="atlas-primary-btn footer-btn ms-3"
         data-cy="save-item"
         type="submit"
         (click)="controller.save()"
