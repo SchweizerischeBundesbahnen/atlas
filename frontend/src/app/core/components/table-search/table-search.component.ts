@@ -77,11 +77,9 @@ export class TableSearchComponent {
   }
 
   private emitSearch(): void {
-    this.activeSearch = {
-      searchCriteria: this.searchStrings,
-      validOn: this.searchDate,
-      statusChoices: this.activeStatuses,
-    };
+    this.activeSearch.searchCriteria = this.searchStrings;
+    this.activeSearch.validOn = this.searchDate;
+    this.activeSearch.statusChoices = this.activeStatuses;
     this.searchEvent.emit(this.activeSearch);
   }
 }
