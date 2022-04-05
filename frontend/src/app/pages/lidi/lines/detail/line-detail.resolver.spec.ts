@@ -1,12 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
 import { LinesService, LineType, LineVersion, PaymentType, Status } from '../../../../api';
 import { LineDetailResolver } from './line-detail.resolver';
-import { CoreModule } from '../../../../core/module/core.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { AppTestingModule } from '../../../../app.testing.module';
 
 const version: LineVersion = {
   id: 1234,
@@ -34,15 +31,7 @@ describe('LineDetailResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreModule,
-        RouterModule.forRoot([]),
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
       providers: [LineDetailResolver, { provide: LinesService, useValue: linesServiceSpy }],
     });
     resolver = TestBed.inject(LineDetailResolver);

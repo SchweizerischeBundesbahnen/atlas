@@ -1,12 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap, RouterModule } from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
 import { PaymentType, Status, SublinesService, SublineType, SublineVersion } from '../../../../api';
 import { SublineDetailResolver } from './subline-detail.resolver';
-import { CoreModule } from '../../../../core/module/core.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { AppTestingModule } from '../../../../app.testing.module';
 
 const version: SublineVersion = {
   id: 1234,
@@ -31,15 +28,7 @@ describe('SublineDetailResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreModule,
-        RouterModule.forRoot([]),
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
+      imports: [AppTestingModule],
       providers: [
         SublineDetailResolver,
         { provide: SublinesService, useValue: sublinesServiceSpy },
