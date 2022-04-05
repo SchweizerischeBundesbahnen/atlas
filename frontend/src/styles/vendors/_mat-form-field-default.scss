@@ -1,4 +1,4 @@
-@import 'src/styles/palette/atlas-palette';
+@use 'src/styles/variables' as variables;
 
 %default-border-style {
   border-style: solid;
@@ -11,7 +11,7 @@
 }
 
 %default-border {
-  border-color: $gray-400;
+  border-color: variables.$gray-400;
   border-width: 1px;
 }
 
@@ -22,7 +22,7 @@
 
 .mat-focused .mat-form-field-flex .mat-form-field-infix,
 .mat-form-field-flex .mat-form-field-infix:hover {
-  border-color: $primary-300;
+  border-color: variables.$primary-300;
   @extend %bold-border;
   @extend %default-border-style;
 }
@@ -33,7 +33,7 @@
 }
 
 .mat-form-field-invalid .mat-form-field-flex .mat-form-field-infix {
-  border-color: $warnColor;
+  border-color: variables.$warnColor;
   @extend %bold-border;
   @extend %default-border-style;
 }
@@ -58,6 +58,6 @@ mat-form-field {
 mat-form-field.atlas-text-area {
   .mat-form-field-outline,
   .mat-form-field-outline-thick {
-    color: $gray-400;
+    color: variables.$gray-400;
   }
 }
