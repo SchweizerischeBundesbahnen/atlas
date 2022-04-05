@@ -75,7 +75,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
       .getSublines(
         $paginationAndSearch.searchCriteria,
         $paginationAndSearch.statusChoices,
-        this.activeSublineTypes,
+        $paginationAndSearch.sublineTypes,
         $paginationAndSearch.validOn,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
@@ -91,12 +91,17 @@ export class SublinesComponent implements OnInit, OnDestroy {
       .subscribe((sublineContainer) => {
         this.sublines = sublineContainer.objects!;
         this.totalCount$ = sublineContainer.totalCount!;
+        this.tableComponent.setTableSettings($paginationAndSearch);
+        this.activeSublineTypes = $paginationAndSearch.sublineTypes;
         this.isLoading = false;
       });
   }
 
   onSublineTypeSelectionChange(): void {
-    this.tableComponent.searchData(this.tableComponent.tableSearchComponent.activeSearch);
+    this.tableComponent.searchData({
+      ...this.tableComponent.tableSearchComponent.activeSearch,
+      sublineTypes: this.activeSublineTypes,
+    });
   }
 
   editVersion($event: Subline) {
