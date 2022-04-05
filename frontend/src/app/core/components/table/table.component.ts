@@ -80,9 +80,7 @@ export class TableComponent<DATATYPE> {
         page: 0,
         size: this.paginator.pageSize,
         sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
-        searchCriteria: search.searchCriteria,
-        validOn: search.validOn,
-        statusChoices: search.statusChoices,
+        ...search,
       });
     }
   }

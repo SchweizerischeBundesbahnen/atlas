@@ -14,7 +14,6 @@ import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
-import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-lidi-lines',
@@ -72,7 +71,7 @@ export class LinesComponent implements OnInit, OnDestroy {
         undefined,
         $paginationAndSearch.searchCriteria,
         $paginationAndSearch.statusChoices,
-        this.activeLineTypes,
+        $paginationAndSearch.lineTypes,
         $paginationAndSearch.validOn,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
@@ -89,12 +88,16 @@ export class LinesComponent implements OnInit, OnDestroy {
         this.lineVersions = lineContainer.objects!;
         this.totalCount$ = lineContainer.totalCount!;
         this.tableComponent.setTableSettings($paginationAndSearch);
-        this.activeLineTypes = $paginationAndSearch.this.isLoading = false;
+        this.activeLineTypes = $paginationAndSearch.lineTypes;
+        this.isLoading = false;
       });
   }
 
   onLineTypeSelectionChange(): void {
-    this.tableComponent.searchData(this.tableComponent.tableSearchComponent.activeSearch);
+    this.tableComponent.searchData({
+      ...this.tableComponent.tableSearchComponent.activeSearch,
+      lineTypes: this.activeLineTypes,
+    });
   }
 
   editVersion($event: Line) {
