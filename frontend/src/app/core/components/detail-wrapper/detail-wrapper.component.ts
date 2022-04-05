@@ -11,6 +11,7 @@ import { Role } from '../../auth/role';
 export class DetailWrapperComponent<TYPE> {
   @Input() controller!: DetailWrapperController<TYPE>;
   @Input() headingNew!: string;
+  @Input() formDetailHeading!: string;
 
   constructor(private readonly authService: AuthService) {}
 
