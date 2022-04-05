@@ -35,14 +35,14 @@ $navigationDefaultSize: 139px;
   }
 }
 
-@mixin large-screen() {
+@include variables.large-screen() {
   .logo-placeholder {
     width: variables.$navigationLargeSize;
     min-width: variables.$navigationLargeSize;
 
     .logo,
     .title {
-      left: variables.$logoMarginLeftLarge;
+      left: $logoMarginLeftLarge;
     }
   }
 }
@@ -55,14 +55,14 @@ $navigationDefaultSize: 139px;
   margin-left: 0 !important;
 }
 
-@mixin default-screen() {
+@include variables.default-screen() {
   .header-container {
     padding-left: 177px;
     margin-left: 0 !important;
   }
 }
 
-@mixin large-screen() {
+@include variables.large-screen() {
   .header-container {
     padding-left: 467px;
     margin-left: 0 !important;

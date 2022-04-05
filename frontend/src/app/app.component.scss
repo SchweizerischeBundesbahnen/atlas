@@ -79,7 +79,7 @@ i.bi {
   height: 100%;
 }
 
-@mixin large-screen() {
+@include variables.large-screen() {
   .sidenav-menu-btn {
     width: variables.$navigationLargeSize;
     padding: 25px 0 0 $navMenuBtnLargeLeft !important;
