@@ -37,7 +37,7 @@ describe('Linie', () => {
   });
 
   it('Step-5: Navigate to Linien', () => {
-    CommonUtils.fromDetailBackToOverview();
+    CommonUtils.fromDetailBackToLinesOverview();
     CommonUtils.navigateToHome();
     LidiUtils.navigateToLines();
     LidiUtils.checkHeaderTitle();
