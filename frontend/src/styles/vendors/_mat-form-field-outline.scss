@@ -1,5 +1,4 @@
-@import 'src/styles/palette/atlas-palette';
-@import 'src/styles/core/font-classes';
+@use 'src/styles/variables' as variables;
 
 // TODO: move to vendor/_<control-name>.scss
 .mat-form-field-type-mat-date-range-input .mat-form-field-infix {
@@ -11,7 +10,7 @@
 // ------------------------------
 mat-form-field {
   &.mat-form-field.mat-form-field-disabled .mat-input-element {
-    color: $black;
+    color: variables.$black;
   }
 
   &.override-material-error-messages-space.mat-form-field.mat-form-field-type-mat-date-range-input.mat-form-field-invalid,
@@ -48,11 +47,11 @@ mat-form-field.form-outline {
   }
 
   .mat-select-arrow {
-    color: $primary-400;
+    color: variables.$primary-400;
   }
 
   .mat-select-placeholder {
-    color: $primary-400;
+    color: variables.$primary-400;
     font-weight: 500;
   }
 
@@ -61,7 +60,7 @@ mat-form-field.form-outline {
   }
 
   .mat-select-min-line {
-    color: $primary-400;
+    color: variables.$primary-400;
     font-weight: 500;
   }
 
@@ -78,7 +77,7 @@ mat-form-field.form-outline {
   .mat-form-field-outline-thick .mat-form-field-outline-start,
   .mat-form-field-outline-thick .mat-form-field-outline-end,
   .mat-form-field-outline-thick .mat-form-field-outline-gap {
-    color: $primary-400;
+    color: variables.$primary-400;
     border-width: 3px;
   }
 
@@ -91,13 +90,13 @@ mat-form-field.form-outline {
 .mat-form-field-appearance-outline.mat-form-field-disabled,
 .mat-form-field-appearance-outline:hover.mat-form-field-disabled {
   .mat-form-field-flex .mat-form-field-outline {
-    color: $gray-400;
+    color: variables.$gray-400;
     border-width: 1px;
   }
 }
 
 mat-label {
   em {
-    color: $primary-400;
+    color: variables.$primary-400;
   }
 }
