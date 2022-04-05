@@ -1,7 +1,6 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TableSettings } from './table-settings';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Pages } from '../../../pages/pages';
 
 @Injectable({
@@ -9,16 +8,34 @@ import { Pages } from '../../../pages/pages';
 })
 export class TableSettingsService {
   private tableKeys = [Pages.TTFN.path, Pages.LINES.path, Pages.SUBLINES.path];
+  private navigationStartUrl!: string;
 
-  constructor(private router: Router, private injector: Injector) {
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((e) => {
+  constructor(public router: Router) {
+    this.router.events.subscribe((e) => {
+      if (e instanceof NavigationStart) {
+        this.navigationStartUrl = this.router.url;
+      }
       if (e instanceof NavigationEnd) {
-        const currentTable = this.tableKeys.find((tableKey) =>
-          e.urlAfterRedirects.includes('/' + tableKey)
-        );
-        this.deleteAllTableSettingsBut(currentTable!);
+        if (
+          this.navigationStartUrl &&
+          (!this.isOverviewRoute() || this.navigationStartUrl !== e.urlAfterRedirects)
+        ) {
+          const currentTable = this.tableKeys.find((tableKey) =>
+            e.urlAfterRedirects.includes('/' + tableKey)
+          );
+          this.deleteAllTableSettingsBut(currentTable!);
+        } else {
+          this.deleteAllTableSettings();
+        }
       }
     });
+  }
+
+  private isOverviewRoute(): boolean {
+    const overview = this.tableKeys.find((tableKey) =>
+      this.navigationStartUrl.endsWith('/' + tableKey)
+    );
+    return !!overview;
   }
 
   getTableSettings(key: string): TableSettings | undefined {
@@ -33,7 +50,11 @@ export class TableSettingsService {
     localStorage.setItem(key, JSON.stringify(tableSettings));
   }
 
-  deleteAllTableSettingsBut(key: string) {
+  private deleteAllTableSettings() {
+    this.tableKeys.forEach((tableKey) => TableSettingsService.deleteTableSettings(tableKey));
+  }
+
+  private deleteAllTableSettingsBut(key: string) {
     this.tableKeys.forEach((tableKey) => {
       if (tableKey !== key) {
         TableSettingsService.deleteTableSettings(tableKey);
