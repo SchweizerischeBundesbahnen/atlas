@@ -19,6 +19,9 @@
     "DELETE": "Effacer",
     "CANCEL": "Annuler",
     "COVERAGE": {
+      "HEADING": "_FR_Validierungen",
+      "LINE_SUBLINE": "_FR_Line / Teillinie",
+      "LINE_TIMETABLE_FIELD": "_FR_Line / Fahrplanfeld",
       "COMPLETE": "Complet",
       "INCOMPLETE": "Incomplet"
     },
