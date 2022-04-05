@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
-import { CoreModule } from '../../../../core/module/core.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
 import { Component, Input } from '@angular/core';
+import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -189,7 +189,12 @@ describe('LineDetailComponent for new lineVersion', () => {
 
 function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersion }) {
   TestBed.configureTestingModule({
-    declarations: [LineDetailComponent, DialogCloseButtonComponent, MockAppDetailWrapperComponent],
+    declarations: [
+      LineDetailComponent,
+      DialogCloseButtonComponent,
+      MockAppDetailWrapperComponent,
+      ErrorNotificationComponent,
+    ],
     imports: [AppTestingModule],
     providers: [
       { provide: FormBuilder },

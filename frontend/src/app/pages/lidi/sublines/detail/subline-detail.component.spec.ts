@@ -9,6 +9,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
 import { Component, Input } from '@angular/core';
+import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -192,6 +193,7 @@ function setupTestBed(
       SublineDetailComponent,
       DialogCloseButtonComponent,
       MockAppDetailWrapperComponent,
+      ErrorNotificationComponent,
     ],
     imports: [AppTestingModule],
     providers: [

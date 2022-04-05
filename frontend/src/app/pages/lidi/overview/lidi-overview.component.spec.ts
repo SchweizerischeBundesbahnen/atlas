@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LidiOverviewComponent } from './lidi-overview.component';
 import { LinesComponent } from '../lines/lines.component';
 import { SublinesComponent } from '../sublines/sublines.component';
-import { CoreModule } from '../../../core/module/core.module';
 import { AppTestingModule } from '../../../app.testing.module';
 
 describe('LidiOverviewComponent', () => {
@@ -13,7 +12,7 @@ describe('LidiOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LidiOverviewComponent, LinesComponent, SublinesComponent],
-      imports: [CoreModule, AppTestingModule],
+      imports: [AppTestingModule],
     }).compileComponents();
   });
 
