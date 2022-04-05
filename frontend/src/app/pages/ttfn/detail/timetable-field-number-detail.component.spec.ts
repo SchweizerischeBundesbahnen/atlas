@@ -15,6 +15,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
 import { DialogCloseButtonComponent } from '../../../core/components/dialog-close-button/dialog-close-button.component';
 import { Component, Input } from '@angular/core';
+import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -104,6 +105,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
         DialogCloseButtonComponent,
         MockAppCoverageComponent,
         MockAppDetailWrapperComponent,
+        ErrorNotificationComponent,
       ],
       imports: [AppTestingModule],
       providers: [
@@ -197,6 +199,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         DetailWrapperComponent,
         DialogCloseButtonComponent,
         MockAppCoverageComponent,
+        ErrorNotificationComponent,
       ],
       imports: [
         RouterTestingModule.withRoutes([{ path: '', component: HomeComponent }]),

@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CmykPickerComponent } from './cmyk-picker.component';
-import { CoreModule } from '../../../../core/module/core.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { WithDefaultValueDirective } from '../../../../core/text-input/with-default-value.directive';
 
 describe('CmykPickerComponent', () => {
   let component: CmykPickerComponent;
@@ -15,16 +12,8 @@ describe('CmykPickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        CoreModule,
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        RouterModule.forRoot([]),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-      ],
-      declarations: [CmykPickerComponent],
+      imports: [AppTestingModule],
+      declarations: [CmykPickerComponent, WithDefaultValueDirective],
     }).compileComponents();
   });
 
