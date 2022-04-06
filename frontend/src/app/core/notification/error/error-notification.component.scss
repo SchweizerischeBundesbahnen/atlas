@@ -1,5 +1,5 @@
-@import "src/styles/variables";
+@use 'src/styles/variables' as variables;
 
 i.bi {
-  font-size: $navigationItemFontSize;
+  font-size: variables.$navigationItemFontSize;
 }

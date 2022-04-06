@@ -1,8 +1,8 @@
-@import "src/styles/variables";
+@use 'src/styles/variables' as variables;
 
 mat-slide-toggle {
   &.mat-slide-toggle.mat-disabled {
     opacity: 1;
-    color: $black;
+    color: variables.$black;
   }
 }
