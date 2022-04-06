@@ -16,19 +16,23 @@ export class TableSettingsService {
         this.navigationStartUrl = this.router.url;
       }
       if (e instanceof NavigationEnd) {
-        if (
-          this.navigationStartUrl &&
-          (!this.isOverviewRoute() || this.navigationStartUrl !== e.urlAfterRedirects)
-        ) {
-          const currentTable = this.tableKeys.find((tableKey) =>
-            e.urlAfterRedirects.includes('/' + tableKey)
-          );
-          this.deleteAllTableSettingsBut(currentTable!);
-        } else {
-          this.deleteAllTableSettings();
-        }
+        this.handleNavigationEnd(e);
       }
     });
+  }
+
+  private handleNavigationEnd(e: NavigationEnd) {
+    if (
+      this.navigationStartUrl &&
+      (!this.isOverviewRoute() || this.navigationStartUrl !== e.urlAfterRedirects)
+    ) {
+      const currentTable = this.tableKeys.find((tableKey) =>
+        e.urlAfterRedirects.includes('/' + tableKey)
+      );
+      this.deleteAllTableSettingsBut(currentTable!);
+    } else {
+      this.deleteAllTableSettings();
+    }
   }
 
   private isOverviewRoute(): boolean {
