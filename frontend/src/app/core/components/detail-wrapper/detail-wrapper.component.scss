@@ -1,5 +1,25 @@
 @use 'src/styles/variables' as variables;
 
+.dialog-close-panel {
+  width: 100%;
+  text-align: right;
+
+  button {
+    position: absolute;
+    padding: 0;
+    margin: -55px 0 0 36px;
+    width: 25px;
+    line-height: 25px;
+    height: 25px;
+    border-radius: 10px;
+    font-size: 24px;
+  }
+
+  .bi {
+    color: variables.$primary-400;
+  }
+}
+
 .edit-section {
   display: flex;
   margin-top: 2.5rem;

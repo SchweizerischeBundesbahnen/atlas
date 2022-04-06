@@ -21,9 +21,12 @@ This is the main repository for business relevant services for ATLAS.
 
 <!-- tocstop -->
 
-[![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/)
-[![Build Status E2E](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/job/master/)
-[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+Build Status: [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/)
+
+E2E Status: [![Build Status E2E](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/job/master/)
+
+Quality Gate: [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+
 ## Big Picture
 ATLAS shall be a platform, on which relevant data for customer information can be managed. \
 Applications on this platform share their tech stack and have the same monitoring and logging.
@@ -34,8 +37,8 @@ It's applications share the following architectural goal:
 
 ## Links
 
-- **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/line-directory-backend/job/master/
-- **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/line-directory-backend/
+- **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/
+- **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/
 - **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
 - **JFrog Artifactory**:
   - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Fatlas-frontend
@@ -44,8 +47,10 @@ It's applications share the following architectural goal:
   - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
   - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
 - **Deployment**:
-  - **Dev**: https://atlas-frontend-dev.apps.aws01t.sbb-aws-test.net
-  - **Test**: https://atlas-frontend-test.apps.aws01t.sbb-aws-test.net
+  - **Dev**: https://atlas.dev.sbb-cloud.net
+  - **Test**: https://atlas.test.sbb-cloud.net
+  - **Int**: https://atlas.int.sbb-cloud.net
+  - **Prod**: https://atlas.sbb-cloud.net
 
 
 ## Monitoring and Logging
