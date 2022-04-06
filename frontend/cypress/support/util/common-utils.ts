@@ -2,8 +2,38 @@ import {DataCy} from "../data-cy";
 
 export default class CommonUtils {
 
-  static fromDetailBackToOverview() {
+  static fromDetailBackToTtfnOverview() {
+    this.fromDetailBackToOverview('timetable-field-number')
+  }
+
+  static fromDetailBackToLinesOverview() {
+    this.fromDetailBackToOverview('line-directory/lines')
+  }
+
+  static fromDetailBackToSublinesOverview() {
+    this.fromDetailBackToOverview('line-directory/sublines')
+  }
+
+  private static fromDetailBackToOverview(overviewPath: string) {
     cy.get(DataCy.BACK_TO_OVERVIEW).click();
+    cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath)
+  }
+
+  static clickCancelOnDetailView() {
+    cy.get(DataCy.CANCEL).click();
+  }
+
+  static clickFirstRowInTable(selector: string) {
+    cy.get(selector + ' table tbody tr').click();
+  }
+
+  static assertNumberOfTableRows(selector: string, numberOfRows: number) {
+    cy.get(selector + ' table tbody tr').should('have.length', numberOfRows);
+  }
+
+  static assertNoItemsInTable(selector: string) {
+    cy.get(selector + ' table tbody tr').should('have.length', 1);
+    cy.get(selector + ' table tbody tr').should('have.text', 'Es wurden keine Daten gefunden.');
   }
 
   static navigateToHome() {

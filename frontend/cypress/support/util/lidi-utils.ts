@@ -206,7 +206,7 @@ export default class LidiUtils {
     CommonUtils.saveLine();
     LidiUtils.readSlnidFromForm(mainline);
     LidiUtils.assertContainsLineVersion(mainline);
-    CommonUtils.fromDetailBackToOverview();
+    CommonUtils.fromDetailBackToLinesOverview();
     CommonUtils.navigateToHome();
     return mainline;
   }

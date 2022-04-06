@@ -1,5 +1,6 @@
 export class DataCy {
   static BACK_TO_OVERVIEW = '[data-cy=back-to-overview]';
+  static CANCEL = '[data-cy=cancel]';
   static ATLAS_LOGO_HOME_LINK = '[data-cy=atlas-logo-home-link]';
   static HEADER_TITLE = '[data-cy=header-title]';
   static TOTAL_RANGE = '[data-cy=total-range]';
@@ -40,6 +41,7 @@ export class DataCy {
   static CMYK_PICKER_INPUT = '[data-cy=cmyk-picker-input]';
   static COLOR_BACK_CMYK = '[data-cy=colorBackCmyk]';
   static TABLE_SEARCH_CHIP_INPUT = '[data-cy=table-search-chip-input]';
+  static TABLE_SEARCH_STRINGS = '[data-cy=table-search-strings]';
   static TABLE_SEARCH_STATUS_INPUT = '[data-cy=table-search-status-input]';
   static TABLE_SEARCH_LINE_TYPE = '[data-cy=table-search-line-type]';
   static TABLE_SEARCH_DATE_INPUT = '[data-cy=table-search-date-input]';

@@ -77,4 +77,18 @@ export default class TtfnUtils {
       comment: 'A new comment'
     };
   }
+
+  static getTtfnBernThun() {
+    return {
+      ttfnid: '',
+      swissTimetableFieldNumber: '01.AAA',
+      validFrom: '01.01.2000',
+      validTo: '31.12.2000',
+      businessOrganisation: 'SBB',
+      number: '0.1',
+      description:
+        'Bern - Thun',
+      comment: 'Beste'
+    };
+  }
 }
