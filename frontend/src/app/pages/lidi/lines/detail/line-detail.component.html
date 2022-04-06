@@ -1,9 +1,15 @@
 <app-dialog-close-button></app-dialog-close-button>
-<app-detail-wrapper [controller]="this" headingNew="LIDI.LINE.NEW">
-  <form [formGroup]="form" class="mt-3">
-    <span class="font-bold-2xl">{{ 'LIDI.NEW_LINE_INFORMATION' | translate }}</span>
+<app-detail-wrapper
+  [controller]="this"
+  headingNew="LIDI.LINE.NEW"
+  formDetailHeading="LIDI.DETAIL_LINE_INFORMATION"
+>
+  <form [formGroup]="form">
+    <h2 *ngIf="isNewRecord()" class="font-bold-2xl mb-4">
+      {{ 'LIDI.NEW_LINE_INFORMATION' | translate }}
+    </h2>
 
-    <div class="col-12 d-flex mt-3">
+    <div class="col-12 d-flex">
       <div class="d-flex flex-column col-3 pe-3">
         <mat-label class="font-bold-lg"
           >{{ 'LIDI.LINE.NUMBER' | translate }}
@@ -13,7 +19,7 @@
           >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ LINE_NUMBER_EXAMPLE }}</mat-label
         >
         <mat-form-field>
-          <input data-cy="number" required matInput formControlName="number" />
+          <input data-cy="number" matInput formControlName="number" />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
@@ -27,7 +33,7 @@
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
         >
         <mat-form-field>
-          <input required matInput formControlName="description" data-cy="description" />
+          <input matInput formControlName="description" data-cy="description" />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
@@ -60,7 +66,7 @@
           >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ SWISS_LINE_NUMBER_EXAMPLE }}</mat-label
         >
         <mat-form-field>
-          <input required matInput formControlName="swissLineNumber" data-cy="swissLineNumber" />
+          <input matInput formControlName="swissLineNumber" data-cy="swissLineNumber" />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
@@ -101,12 +107,7 @@
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
         <mat-form-field>
-          <input
-            required
-            matInput
-            formControlName="businessOrganisation"
-            data-cy="businessOrganisation"
-          />
+          <input matInput formControlName="businessOrganisation" data-cy="businessOrganisation" />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
@@ -118,7 +119,6 @@
         </mat-label>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
-            required
             formControlName="lineType"
             data-cy="type"
             placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
@@ -138,7 +138,6 @@
         </mat-label>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
-            required
             formControlName="paymentType"
             data-cy="paymentType"
             placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"

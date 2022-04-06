@@ -1,12 +1,13 @@
 @import 'src/styles/variables';
 
-.detail-content {
-  margin-top: 86px;
-}
-
 .edit-section {
   display: flex;
   margin-top: 2.5rem;
+  margin-bottom: 5rem;
+}
+
+.form-title-section {
+  margin-bottom: 5rem;
 }
 
 .footer {
@@ -26,8 +27,8 @@
   border-color: $white;
 
   &:hover:not(:disabled) {
-    color: $primary-500;
     background-color: $white;
+    color: $primary-500;
   }
 
   &:disabled {
