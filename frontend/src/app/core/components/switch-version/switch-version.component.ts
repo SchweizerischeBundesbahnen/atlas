@@ -37,7 +37,6 @@ export class SwitchVersionComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.records.forEach((item, index) => (item.versionNumber = index + 1));
     this.getCurrentIndex();
   }
 

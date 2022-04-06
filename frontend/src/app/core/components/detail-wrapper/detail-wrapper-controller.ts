@@ -8,6 +8,7 @@ import { Page } from '../../model/page';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
+import { Status } from '../../../api';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
@@ -30,6 +31,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   private init() {
     this.getRecord();
+    if (this.records) this.records.forEach((item, index) => (item.versionNumber = index + 1));
     this.form = this.getFormGroup(this.record);
     if (this.isExistingRecord()) {
       this.form.disable();
@@ -58,6 +60,14 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   private isVersionSwitched() {
     return this.switchedIndex !== undefined && this.switchedIndex >= 0;
+  }
+
+  get versionNumberOfCurrentRecord(): number {
+    return this.record.versionNumber!;
+  }
+
+  get statusOfCurrentRecord(): Status {
+    return this.record.status!;
   }
 
   getId(): number {
