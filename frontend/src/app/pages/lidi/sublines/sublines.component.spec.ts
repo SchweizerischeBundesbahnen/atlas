@@ -64,7 +64,7 @@ describe('SublinesComponent', () => {
       undefined,
       0,
       10,
-      ['swissSublineNumber,ASC', 'slnid,ASC']
+      ['number,ASC', 'slnid,ASC']
     );
     expect(component.sublines.length).toBe(1);
     expect(component.totalCount$).toBe(1);
