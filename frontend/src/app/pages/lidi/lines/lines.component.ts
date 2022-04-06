@@ -3,11 +3,17 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
-import { TablePagination } from '../../../core/components/table/table-pagination';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { Line, LinesService, LineType } from '../../../api';
-import { TableSearch } from '../../../core/components/table-search/table-search';
 import { TableComponent } from '../../../core/components/table/table.component';
+import { TableSettings } from '../../../core/components/table/table-settings';
+import { TableSettingsService } from '../../../core/components/table/table-settings.service';
+import { Pages } from '../../pages';
+import { filter } from 'rxjs/operators';
+import {
+  DetailDialogEvents,
+  RouteToDialogService,
+} from '../../../core/components/route-to-dialog/route-to-dialog.service';
 
 @Component({
   selector: 'app-lidi-lines',
@@ -38,26 +44,35 @@ export class LinesComponent implements OnInit, OnDestroy {
   totalCount$ = 0;
   isLoading = false;
   private lineVersionsSubscription!: Subscription;
+  private routeSubscription!: Subscription;
 
   constructor(
     private linesService: LinesService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: NotificationService
-  ) {}
-
-  ngOnInit(): void {
-    this.getOverview({ page: 0, size: 10, sort: 'swissLineNumber,ASC' });
+    private notificationService: NotificationService,
+    private tableSettingsService: TableSettingsService,
+    private routeToDialogService: RouteToDialogService
+  ) {
+    this.routeSubscription = this.routeToDialogService.detailDialogEvent
+      .pipe(filter((e) => e === DetailDialogEvents.Closed))
+      .subscribe(() => this.ngOnInit());
   }
 
-  getOverview($paginationAndSearch: TablePagination & TableSearch) {
+  ngOnInit(): void {
+    const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.LINES.path);
+    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'number,ASC' });
+  }
+
+  getOverview($paginationAndSearch: TableSettings) {
+    this.tableSettingsService.storeTableSettings(Pages.LINES.path, $paginationAndSearch);
     this.isLoading = true;
     this.lineVersionsSubscription = this.linesService
       .getLines(
         undefined,
         $paginationAndSearch.searchCriteria,
         $paginationAndSearch.statusChoices,
-        this.activeLineTypes,
+        $paginationAndSearch.lineTypes,
         $paginationAndSearch.validOn,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
@@ -73,12 +88,17 @@ export class LinesComponent implements OnInit, OnDestroy {
       .subscribe((lineContainer) => {
         this.lineVersions = lineContainer.objects!;
         this.totalCount$ = lineContainer.totalCount!;
+        this.tableComponent.setTableSettings($paginationAndSearch);
+        this.activeLineTypes = $paginationAndSearch.lineTypes;
         this.isLoading = false;
       });
   }
 
   onLineTypeSelectionChange(): void {
-    this.tableComponent.searchData(this.tableComponent.tableSearchComponent.activeSearch);
+    this.tableComponent.searchData({
+      ...this.tableComponent.tableSearchComponent.activeSearch,
+      lineTypes: this.activeLineTypes,
+    });
   }
 
   editVersion($event: Line) {
@@ -91,5 +111,6 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.lineVersionsSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 }
