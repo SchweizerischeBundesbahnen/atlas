@@ -43,6 +43,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
   totalCount$ = 0;
   isLoading = false;
   private getVersionsSubscription!: Subscription;
+  private routeSubscription!: Subscription;
 
   constructor(
     private timetableFieldNumbersService: TimetableFieldNumbersService,
@@ -52,16 +53,14 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     private tableSettingsService: TableSettingsService,
     private routeToDialogService: RouteToDialogService
   ) {
-    this.routeToDialogService.detailDialogEvent
+    this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
       .subscribe(() => this.ngOnInit());
   }
 
   ngOnInit(): void {
     const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.TTFN.path);
-    this.getOverview(
-      storedTableSettings || { page: 0, size: 10, sort: 'swissTimetableFieldNumber,ASC' }
-    );
+    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'number,ASC' });
   }
 
   getOverview($paginationAndSearch: TableSettings) {
@@ -109,5 +108,6 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
 
   ngOnDestroy() {
     this.getVersionsSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 }
