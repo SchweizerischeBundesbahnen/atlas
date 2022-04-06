@@ -49,7 +49,7 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
   });
 
   it('Step-7: Navigate to Sublines', () => {
-    CommonUtils.fromDetailBackToOverview();
+    CommonUtils.fromDetailBackToSublinesOverview();
     CommonUtils.navigateToHome();
     LidiUtils.navigateToSublines();
   });
