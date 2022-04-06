@@ -1,4 +1,4 @@
-@import "src/styles/variables";
+@use 'src/styles/variables' as variables;
 
 .mat-snack-bar-container {
   margin: unset !important;
@@ -7,21 +7,21 @@
 }
 
 snack-bar-container.success {
-  background-color: $successColor;
+  background-color: variables.$successColor;
 }
 
 snack-bar-container.error {
-  background-color: $errorColor;
+  background-color: variables.$errorColor;
   white-space: unset !important;
 }
 
 snack-bar-container.warning {
-  background-color: $warnColor;
+  background-color: variables.$warnColor;
   white-space: unset !important;
 }
 
 snack-bar-container.notification {
-  color: $white;
+  color: variables.$white;
 }
 
 .snack-bar-error-container {
@@ -57,13 +57,13 @@ snack-bar-container.notification {
 
   /* Track */
   ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px $white;
+    box-shadow: inset 0 0 5px variables.$white;
     border-radius: 10px;
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: $white;
+    background: variables.$white;
     border-radius: 10px;
   }
 
@@ -77,5 +77,5 @@ snack-bar-container.notification {
   position: absolute;
   top: 0.4rem;
   right: 0.4rem;
-  color: $white;
+  color: variables.$white;
 }
