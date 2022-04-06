@@ -53,7 +53,7 @@ export class SublineDetailComponent
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
-    private dialogRef: MatDialogRef<SublineDetailComponent>,
+    protected dialogRef: MatDialogRef<SublineDetailComponent>,
     private sublinesService: SublinesService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
@@ -62,7 +62,7 @@ export class SublineDetailComponent
     private validationService: ValidationService,
     private linesService: LinesService
   ) {
-    super(dialogService, notificationService);
+    super(dialogRef, dialogService, notificationService);
   }
 
   ngOnInit() {
@@ -127,10 +127,6 @@ export class SublineDetailComponent
         this.backToOverview();
       });
     }
-  }
-
-  backToOverview(): void {
-    this.dialogRef.close();
   }
 
   getFormGroup(version: SublineVersion): FormGroup {
