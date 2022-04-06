@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
 import { Status } from '../../../api';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
@@ -20,6 +21,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   showSwitch: boolean | undefined;
 
   protected constructor(
+    protected dialogRef: MatDialogRef<any>,
     protected dialogService: DialogService,
     protected notificationService: NotificationService
   ) {}
@@ -229,7 +231,9 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   abstract deleteRecord(): void;
 
-  abstract backToOverview(): void;
+  backToOverview(): void {
+    this.dialogRef.close();
+  }
 
   abstract getPageType(): Page;
 

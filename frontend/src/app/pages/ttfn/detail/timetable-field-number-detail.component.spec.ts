@@ -10,7 +10,7 @@ import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
 import { FormModule } from '../../../core/module/form.module';
@@ -92,6 +92,7 @@ class MockAppDetailWrapperComponent {
 
 let component: TimetableFieldNumberDetailComponent;
 let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
+let dialogRef: MatDialogRef<TimetableFieldNumberDetailComponent>;
 
 describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   let router: Router;
@@ -127,6 +128,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
+    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should create', () => {
@@ -168,7 +170,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 
   it('should delete Version successfully', () => {
     mockTimetableFieldNumbersService.deleteVersions.and.returnValue(of({}));
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    spyOn(dialogRef, 'close');
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
@@ -177,7 +179,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
-    expect(router.navigate).toHaveBeenCalled();
+    expect(dialogRef.close).toHaveBeenCalled();
   });
 });
 

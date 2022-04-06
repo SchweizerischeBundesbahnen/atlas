@@ -6,6 +6,13 @@ import { MaterialModule } from './core/module/material.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+
+const dialogMock = {
+  close: () => {
+    // Mock implementation
+  },
+};
 
 @NgModule({
   imports: [
@@ -28,5 +35,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     RouterTestingModule,
     TranslateModule,
   ],
+  providers: [{ provide: MatDialogRef, useValue: dialogMock }],
 })
 export class AppTestingModule {}

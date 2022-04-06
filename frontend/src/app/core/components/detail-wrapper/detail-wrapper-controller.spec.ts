@@ -14,6 +14,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MatDialogRef } from '@angular/material/dialog';
+
+const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
+const dialogRefSpy = jasmine.createSpyObj(['close']);
 
 describe('DetailWrapperController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
@@ -26,7 +30,7 @@ describe('DetailWrapperController', () => {
 
   class DummyWrapperController extends DetailWrapperController<Record> implements OnInit {
     constructor() {
-      super(dialogService, notificationService);
+      super(dialogRef, dialogService, notificationService);
     }
 
     getPageType(): Page {
@@ -73,7 +77,7 @@ describe('DetailWrapperController', () => {
   }
 
   let controller: DummyWrapperController;
-  const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
+  let dialogRef: MatDialogRef<any>;
   let dialogService: DialogService;
   let notificationService: NotificationService;
 
@@ -91,12 +95,14 @@ describe('DetailWrapperController', () => {
       ],
       providers: [
         { provide: DialogService, useValue: dialogServiceSpy },
+        { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
       ],
     });
     dialogService = TestBed.inject(DialogService);
     notificationService = TestBed.inject(NotificationService);
+    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   describe('existing record', () => {
@@ -187,7 +193,6 @@ describe('DetailWrapperController', () => {
 
 describe('Get actual versioned record', () => {
   let controller: DetailWrapperController<Record>;
-  const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -203,6 +208,7 @@ describe('Get actual versioned record', () => {
       ],
       providers: [
         { provide: DetailWrapperController },
+        { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },

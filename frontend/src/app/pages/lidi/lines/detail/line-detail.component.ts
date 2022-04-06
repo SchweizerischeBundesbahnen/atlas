@@ -13,7 +13,7 @@ import { Pages } from '../../../pages';
 import { Page } from 'src/app/core/model/page';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
@@ -38,12 +38,13 @@ export class LineDetailComponent
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
+    protected dialogRef: MatDialogRef<LineDetailComponent>,
     private linesService: LinesService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService
   ) {
-    super(dialogService, notificationService);
+    super(dialogRef, dialogService, notificationService);
   }
 
   ngOnInit() {
@@ -102,10 +103,6 @@ export class LineDetailComponent
         this.backToOverview();
       });
     }
-  }
-
-  backToOverview(): void {
-    this.router.navigate([Pages.LIDI.path]).then();
   }
 
   getFormGroup(version: LineVersion): FormGroup {

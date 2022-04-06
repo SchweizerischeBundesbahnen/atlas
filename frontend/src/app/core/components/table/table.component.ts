@@ -1,28 +1,19 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
-import { MatSort, Sort } from '@angular/material/sort';
+import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { TableColumn } from './table-column';
-import { TablePagination } from './table-pagination';
 import { DateService } from '../../date/date.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TableSearchComponent } from '../table-search/table-search.component';
 import { TableSearch } from '../table-search/table-search';
+import { TableSettings } from './table-settings';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent<DATATYPE> implements AfterViewInit {
+export class TableComponent<DATATYPE> {
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() tableData!: DATATYPE[];
   @Input() canEdit = true;
@@ -32,25 +23,17 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
   @Input() tableSearchFieldTemplate!: TemplateRef<any>;
 
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
-  @Output() getTableElementsEvent = new EventEmitter<TablePagination & TableSearch>();
+  @Output() getTableElementsEvent = new EventEmitter<TableSettings>();
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(TableSearchComponent, { static: true }) tableSearchComponent!: TableSearchComponent;
 
-  tableDataSrc!: MatTableDataSource<DATATYPE>;
   loading = true;
 
   SHOW_TOOLTIP_LENGTH = 20;
 
   constructor(private dateService: DateService, private translatePipe: TranslatePipe) {}
-
-  ngAfterViewInit() {
-    if (this.tableDataSrc !== undefined) {
-      this.tableDataSrc.paginator = this.paginator;
-      this.tableDataSrc.sort = this.sort;
-    }
-  }
 
   getColumnValues(): string[] {
     return this.tableColumns.map((i) => i.value);
@@ -97,9 +80,7 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
         page: 0,
         size: this.paginator.pageSize,
         sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
-        searchCriteria: search.searchCriteria,
-        validOn: search.validOn,
-        statusChoices: search.statusChoices,
+        ...search,
       });
     }
   }
@@ -125,5 +106,26 @@ export class TableComponent<DATATYPE> implements AfterViewInit {
       return true;
     }
     return forText.length <= this.SHOW_TOOLTIP_LENGTH;
+  }
+
+  setTableSettings(tableSettings: TableSettings) {
+    this.paginator.pageIndex = tableSettings.page;
+    this.paginator.pageSize = tableSettings.size;
+
+    if (tableSettings.sort) {
+      const sorting = tableSettings.sort.split(',');
+      this.sort.active = sorting[0];
+      this.sort.direction = sorting[1].toLowerCase() as SortDirection;
+      this.sort._stateChanges.next();
+    }
+
+    this.tableSearchComponent.searchStrings = tableSettings.searchCriteria || [];
+    this.tableSearchComponent.activeSearch.searchCriteria = this.tableSearchComponent.searchStrings;
+
+    this.tableSearchComponent.activeStatuses = tableSettings.statusChoices || [];
+    this.tableSearchComponent.activeSearch.statusChoices = this.tableSearchComponent.activeStatuses;
+
+    this.tableSearchComponent.searchDate = tableSettings.validOn;
+    this.tableSearchComponent.activeSearch.validOn = this.tableSearchComponent.searchDate;
   }
 }
