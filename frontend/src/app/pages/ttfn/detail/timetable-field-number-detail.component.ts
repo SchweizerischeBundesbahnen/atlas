@@ -53,7 +53,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   getDetailHeading(record: TimetableFieldNumberVersion): string {
-    return `${record.number} - ${record.description}`;
+    return `${record.number} - ${record.description ?? ''}`;
   }
 
   getDetailSubheading(record: TimetableFieldNumberVersion): string {

@@ -4,7 +4,6 @@ import { SwitchVersionComponent } from './switch-version.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Record } from '../detail-wrapper/record';
 import moment from 'moment';
-import { CoverageComponent } from '../coverage/coverage.component';
 import { AppTestingModule } from '../../../app.testing.module';
 
 describe('SwitchVersionComponent', () => {
@@ -13,7 +12,7 @@ describe('SwitchVersionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SwitchVersionComponent, CoverageComponent],
+      declarations: [SwitchVersionComponent],
       imports: [AppTestingModule],
       providers: [TranslatePipe],
     }).compileComponents();
@@ -26,16 +25,19 @@ describe('SwitchVersionComponent', () => {
       id: 1,
       validFrom: moment('1.1.2000', 'DD.MM.YYYY').toDate(),
       validTo: moment('31.12.2000', 'DD.MM.YYYY').toDate(),
+      versionNumber: 1,
     };
     const secondRecord: Record = {
       id: 2,
       validFrom: moment('1.1.2001', 'DD.MM.YYYY').toDate(),
       validTo: moment('31.12.2001', 'DD.MM.YYYY').toDate(),
+      versionNumber: 2,
     };
     const thirdRecord: Record = {
       id: 3,
       validFrom: moment('1.6.2002', 'DD.MM.YYYY').toDate(),
       validTo: moment('31.12.2002', 'DD.MM.YYYY').toDate(),
+      versionNumber: 3,
     };
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
     component.currentRecord = firstRecord;
