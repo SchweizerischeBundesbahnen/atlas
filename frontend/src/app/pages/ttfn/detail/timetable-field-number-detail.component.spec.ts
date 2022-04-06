@@ -14,7 +14,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
 import { FormModule } from '../../../core/module/form.module';
-import { DialogCloseButtonComponent } from '../../../core/components/dialog-close-button/dialog-close-button.component';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
 
@@ -104,7 +103,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     await TestBed.configureTestingModule({
       declarations: [
         TimetableFieldNumberDetailComponent,
-        DialogCloseButtonComponent,
         MockAppCoverageComponent,
         MockAppDetailWrapperComponent,
         ErrorNotificationComponent,
@@ -197,7 +195,6 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       declarations: [
         TimetableFieldNumberDetailComponent,
         DetailWrapperComponent,
-        DialogCloseButtonComponent,
         MockAppCoverageComponent,
         ErrorNotificationComponent,
       ],
