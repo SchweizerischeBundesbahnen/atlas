@@ -170,6 +170,11 @@ public final class VersioningHelper {
     return !vd.getEditedEntity().getProperties().isEmpty();
   }
 
+  public static boolean isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(ToVersioning toVersioning, VersioningData vd){
+    return vd.getEditedValidFrom().isAfter(toVersioning.getValidFrom()) && vd.getEditedValidTo().isBefore(toVersioning.getValidTo())
+        && !arePropertiesEdited(vd);
+  }
+
   public static boolean isSingularVersionAndPropertiesAreNotEdited(VersioningData vd) {
     return vd.getObjectsToVersioning().size() == 1 && !arePropertiesEdited(vd);
   }

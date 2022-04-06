@@ -1,8 +1,10 @@
 package ch.sbb.atlas.versioning.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import ch.sbb.atlas.versioning.BaseTest.VersionableObject.Fields;
+import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -266,5 +268,33 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
         secondVersionedObjectEntity.getProperties(), Fields.oneToManyRelation);
     assertThat(oneToManyRelationsecondVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     assertThat(oneToManyRelationsecondVersionedObjectEntity.getOneToMany()).isEmpty();
+  }
+
+  /**
+   * Szenario 14m: Start-Version 2: Gültig-bis verkürzen. Props sind ungleich. Props von Version 2&Änderung sind gleich. (Ist Szenario 2 ohne Property-Update)
+   *
+   * NEU:                            |_________|
+   * IST:      |----------------| |----------------| |----------------|
+   * Version:           1                  2                  3
+   *
+   * RESULTAT: Warnung, dass dies nicht erlaubt ist
+   */
+  @Test
+  public void scenario14mShouldThrowException() {
+    //given
+    LocalDate editedValidFrom = versionableObject2.getValidFrom().plusMonths(2);
+    LocalDate editedValidTo = versionableObject2.getValidTo().minusMonths(2);
+
+    VersionableObject editedVersion = VersionableObject.builder()
+                                                       .validFrom(editedValidFrom)
+                                                       .validTo(editedValidTo)
+                                                       .build();
+
+    //when & then
+    assertThatExceptionOfType(VersioningException.class).isThrownBy(
+        () -> versionableService.versioningObjects(
+            versionableObject2,
+            editedVersion,
+            List.of(versionableObject1, versionableObject2, versionableObject3)));
   }
 }
