@@ -22,7 +22,6 @@ import { ErrorNotificationComponent } from '../notification/error/error-notifica
 import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
 import { CoverageComponent } from '../components/coverage/coverage.component';
 import { RouteToDialogComponent } from '../components/route-to-dialog/route-to-dialog.component';
-import { DialogCloseButtonComponent } from '../components/dialog-close-button/dialog-close-button.component';
 
 const coreComponents = [
   DetailWrapperComponent,
@@ -41,7 +40,6 @@ const coreComponents = [
   ErrorNotificationComponent,
   CoverageComponent,
   RouteToDialogComponent,
-  DialogCloseButtonComponent,
 ];
 
 @NgModule({
