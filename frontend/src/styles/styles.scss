@@ -1,20 +1,15 @@
 // app variables (color, size, etc.)
-// Google Fonts
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700');
-
-@import 'variables';
-
-@import 'core/atlas-core';
+@use 'variables';
+@use 'core/atlas-core';
 
 // Presentation framework
-@import '~bootstrap/scss/bootstrap';
-@import '~bootstrap-icons/font/bootstrap-icons.css';
+@use '~bootstrap/scss/bootstrap';
 
 // Theme (based on Material)
-@import 'theme';
+@use 'theme';
 
 // Vendors
-@import 'vendors/material';
+@use 'vendors/material';
 
 // App 3rd party components
-@import 'other-components/components';
+@use 'other-components/components';

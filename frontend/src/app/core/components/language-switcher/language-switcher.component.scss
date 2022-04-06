@@ -1,4 +1,4 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 a {
   text-decoration: none;
@@ -10,6 +10,6 @@ a {
 }
 
 .isSelected {
-  border: 1px solid $gray-900;
+  border: 1px solid variables.$gray-900;
   border-radius: 2px;
 }

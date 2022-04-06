@@ -1,4 +1,4 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 .dialog-close-panel {
   width: 100%;
@@ -7,7 +7,7 @@
   button {
     position: absolute;
     padding: 0;
-    margin: -55px 0 0 44px;
+    margin: -55px 0 0 36px;
     width: 25px;
     line-height: 25px;
     height: 25px;
@@ -16,6 +16,6 @@
   }
 
   .bi {
-    color: $primary-400;
+    color: variables.$primary-400;
   }
 }

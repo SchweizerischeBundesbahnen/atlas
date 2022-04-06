@@ -1,13 +1,13 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 .atlas-dialog-panel {
   .dialog-close-panel button {
-    margin-left: 30px !important;
+    margin-left: 20px !important;
   }
 
   .mat-dialog-container {
-    background: $white;
-    border-radius: $border-radius;
+    background: variables.$white;
+    border-radius: variables.$border-radius;
     padding: 64px;
   }
 

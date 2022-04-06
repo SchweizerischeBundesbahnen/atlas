@@ -1,4 +1,4 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 .edit-section {
   display: flex;
@@ -11,8 +11,8 @@
 }
 
 .footer {
-  height: $footerHeight;
-  background-color: $primary-500;
+  height: variables.$footerHeight;
+  background-color: variables.$primary-500;
 }
 
 .detail-title {
@@ -22,17 +22,17 @@
 }
 
 .footer-btn {
-  background-color: $primary-500;
-  color: $white;
-  border-color: $white;
+  background-color: variables.$primary-500;
+  color: variables.$white;
+  border-color: variables.$white;
 
   &:hover:not(:disabled) {
-    background-color: $white;
-    color: $primary-500;
+    color: variables.$primary-500;
+    background-color: variables.$white;
   }
 
   &:disabled {
-    color: $primary-300;
-    border-color: $primary-300;
+    color: variables.$primary-300;
+    border-color: variables.$primary-300;
   }
 }

@@ -1,11 +1,11 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 mat-paginator {
   // Display it on the left
   .mat-paginator-container {
     justify-content: unset;
     padding: unset;
-    color: $gray-900;
+    color: variables.$gray-900;
     align-items: baseline;
   }
 
@@ -19,14 +19,14 @@ mat-paginator {
 
   // Page switcher color
   .mat-icon-button {
-    color: $primary-400;
+    color: variables.$primary-400;
   }
 
   // Selection color
   .mat-select {
     .mat-select-value,
     .mat-select-arrow {
-      color: $primary-400;
+      color: variables.$primary-400;
     }
   }
 

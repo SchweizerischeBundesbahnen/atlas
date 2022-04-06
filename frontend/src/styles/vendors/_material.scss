@@ -1,12 +1,12 @@
 // STAM: angular material components style overrides
-@import 'ng-select';
-@import 'mat-snack-bar';
-@import 'mat-nav-list';
-@import 'mat-form-field';
-@import 'mat-label';
-@import 'mat-date-range-input';
-@import 'mat-chip';
-@import 'mat-button';
-@import 'mat-paginator';
-@import 'mat-table';
-@import 'mat-tab';
+@use 'ng-select';
+@use 'mat-snack-bar';
+@use 'mat-nav-list';
+@use 'mat-form-field';
+@use 'mat-label';
+@use 'mat-date-range-input';
+@use 'mat-chip';
+@use 'mat-button';
+@use 'mat-paginator';
+@use 'mat-table';
+@use 'mat-tab';

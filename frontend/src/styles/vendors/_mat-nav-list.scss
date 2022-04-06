@@ -1,10 +1,10 @@
-@import "src/styles/variables";
+@use 'src/styles/variables' as variables;
 
 $defaultScreenWidth: 239px;
 $largeScreenWidth: 400px;
 
 .mat-drawer {
-  background-color: $navigationBackground;
+  background-color: variables.$navigationBackground;
   width: $defaultScreenWidth;
   border: 0;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -12,7 +12,7 @@ $largeScreenWidth: 400px;
 
 .mat-drawer-container,
 .mat-drawer-content {
-  background: $background;
+  background: variables.$background;
 }
 
 mat-sidenav-content.menu-opened {
@@ -20,12 +20,12 @@ mat-sidenav-content.menu-opened {
 }
 
 mat-sidenav-content.content-menu-closed {
-  margin-left: $navigationDefaultSize !important;
+  margin-left: variables.$navigationDefaultSize !important;
 }
 
 .mat-nav-list {
   padding: 0 !important;
-  background-color: $gray-100;
+  background-color: variables.$gray-100;
 }
 
 .mat-list-item {
@@ -34,10 +34,10 @@ mat-sidenav-content.content-menu-closed {
 }
 
 .mat-list-item-content {
-  padding: 16px 22px 16px $navigationPaddingLeftDefault !important;
+  padding: 16px 22px 16px variables.$navigationPaddingLeftDefault !important;
 }
 
-@include large-screen() {
+@include variables.large-screen() {
   .mat-drawer {
     width: $largeScreenWidth;
   }
@@ -45,10 +45,9 @@ mat-sidenav-content.content-menu-closed {
     margin-left: $largeScreenWidth !important;
   }
   mat-sidenav-content.content-menu-closed {
-    margin-left: $navigationLargeSize !important;
+    margin-left: variables.$navigationLargeSize !important;
   }
   .mat-list-item-content {
-    padding-left: $navigationPaddingLeftLarge !important;
+    padding-left: variables.$navigationPaddingLeftLarge !important;
   }
 }
-

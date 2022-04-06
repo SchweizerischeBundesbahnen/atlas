@@ -1,4 +1,4 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
 
 $navMenuBtnHeight: 79px;
 
@@ -6,8 +6,8 @@ $navMenuBtnDefaultLeft: 32.5px;
 $navMenuBtnLargeLeft: 56.5px;
 
 i.bi {
-  font-size: $navigationItemFontSize;
-  color: $foreground;
+  font-size: variables.$navigationItemFontSize;
+  color: variables.$foreground;
 }
 
 .app-body {
@@ -20,9 +20,9 @@ i.bi {
 }
 
 .sidenav-menu-btn {
-  background-color: $navigationBackground;
+  background-color: variables.$navigationBackground;
   position: absolute;
-  width: $navigationDefaultSize;
+  width: variables.$navigationDefaultSize;
   height: $navMenuBtnHeight;
   vertical-align: middle;
   z-index: 2;
@@ -32,7 +32,7 @@ i.bi {
   margin: 0 !important;
   font-weight: bold;
   text-align: left;
-  color: $primary-400;
+  color: variables.$primary-400;
   border-radius: 0;
 }
 
@@ -57,7 +57,7 @@ i.bi {
   height: $navMenuBtnHeight !important;
   padding: 0 !important;
   margin: 0 !important;
-  background: $navigationBackground;
+  background: variables.$navigationBackground;
   cursor: pointer;
 }
 
@@ -72,16 +72,16 @@ i.bi {
 }
 
 .page-container {
-  height: calc(100vh - #{$headerHeight});
+  height: calc(100vh - #{variables.$headerHeight});
 }
 
 .page-container mat-sidenav {
   height: 100%;
 }
 
-@include large-screen() {
+@include variables.large-screen() {
   .sidenav-menu-btn {
-    width: $navigationLargeSize;
+    width: variables.$navigationLargeSize;
     padding: 25px 0 0 $navMenuBtnLargeLeft !important;
   }
   .menu-opened {

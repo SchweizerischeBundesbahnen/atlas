@@ -1,32 +1,36 @@
-@import 'src/styles/variables';
+@use 'src/styles/variables' as variables;
+
+.mat-button-focus-overlay {
+  background-color: transparent !important;
+}
 
 .mat-raised-button {
-  border-radius: $border-radius !important;
+  border-radius: variables.$border-radius !important;
   padding: 10px 20px !important;
 }
 
 .atlas-primary-btn {
   padding: 1rem 1.875rem;
-  border: 2px solid $primary-500;
+  border: 2px solid variables.$primary-500;
   border-radius: 28px;
-  background-color: $white;
-  color: $primary-500;
+  background-color: variables.$white;
+  color: variables.$primary-500;
   font-weight: 600;
   font-size: 16px;
   line-height: 125%;
 
   &:hover:not(:disabled) {
-    background-color: $primary-500;
-    color: $white;
+    background-color: variables.$primary-500;
+    color: variables.$white;
   }
 
   &:disabled {
-    color: $gray-400;
-    border-color: $gray-400;
+    color: variables.$gray-400;
+    border-color: variables.$gray-400;
   }
 }
 
 .primary-color-btn {
-  background-color: $primary-500;
-  color: $white;
+  background-color: variables.$primary-500;
+  color: variables.$white;
 }
