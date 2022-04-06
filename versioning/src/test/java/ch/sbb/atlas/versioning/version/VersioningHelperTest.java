@@ -564,6 +564,157 @@ public class VersioningHelperTest {
     assertThat(result).isTrue();
   }
 
+  @Test
+  public void shouldReturnTrueIfEditedVersionIsInTheMiddleOfToVersioningAndNoPropertiesAreEdited() {
+    //given
+    VersionableObject editedVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 2, 1))
+        .validTo(LocalDate.of(2020, 11, 30))
+        .build();
+    VersionableObject currentVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    Entity entity = Entity.builder().id(1L).properties(new ArrayList<>()).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
+    List<ToVersioning> toVersioningList = new ArrayList<>();
+    toVersioningList.add(toVersioningCurrent);
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(
+        toVersioningCurrent, versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void shouldReturnFalseIfEditedVersionIsOnTheLeftBorderOfToVersioningAndNoPropertiesAreEdited() {
+    //given
+    VersionableObject editedVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 11, 30))
+        .build();
+    VersionableObject currentVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    Entity entity = Entity.builder().id(1L).properties(new ArrayList<>()).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
+    List<ToVersioning> toVersioningList = new ArrayList<>();
+    toVersioningList.add(toVersioningCurrent);
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(
+        toVersioningCurrent, versioningData);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnFalseIfEditedVersionIsOnTheRightBorderOfToVersioningAndNoPropertiesAreEdited() {
+    //given
+    VersionableObject editedVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 2, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    VersionableObject currentVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    Entity entity = Entity.builder().id(1L).properties(new ArrayList<>()).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
+    List<ToVersioning> toVersioningList = new ArrayList<>();
+    toVersioningList.add(toVersioningCurrent);
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(
+        toVersioningCurrent, versioningData);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnFalseIfEditedVersionIsOverTheRightANndTheLeftBorderOfToVersioningAndNoPropertiesAreEdited() {
+    //given
+    VersionableObject editedVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2019, 12, 31))
+        .validTo(LocalDate.of(2021, 1, 1))
+        .build();
+    VersionableObject currentVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    Entity entity = Entity.builder().id(1L).properties(new ArrayList<>()).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
+    List<ToVersioning> toVersioningList = new ArrayList<>();
+    toVersioningList.add(toVersioningCurrent);
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(
+        toVersioningCurrent, versioningData);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  public void shouldReturnFalseIfEditedVersionIsInTheMiddleOfToVersioningAndPropertiesAreEdited() {
+    //given
+    VersionableObject editedVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 2, 1))
+        .validTo(LocalDate.of(2020, 11, 30))
+        .build();
+    VersionableObject currentVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    Property property = Property.builder().key("prop").value("asd").build();
+    Entity entity = Entity.builder().id(1L).properties(List.of(property)).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
+    List<ToVersioning> toVersioningList = new ArrayList<>();
+    toVersioningList.add(toVersioningCurrent);
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
+        toVersioningList);
+
+    //when
+    boolean result = VersioningHelper.isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(
+        toVersioningCurrent, versioningData);
+
+    //then
+    assertThat(result).isFalse();
+  }
+
 
   @Test
   public void shouldReturnTrueWhenValidFromAndValidToAreNotEdited() {
