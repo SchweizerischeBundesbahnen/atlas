@@ -44,6 +44,7 @@ export class LinesComponent implements OnInit, OnDestroy {
   totalCount$ = 0;
   isLoading = false;
   private lineVersionsSubscription!: Subscription;
+  private routeSubscription!: Subscription;
 
   constructor(
     private linesService: LinesService,
@@ -53,14 +54,14 @@ export class LinesComponent implements OnInit, OnDestroy {
     private tableSettingsService: TableSettingsService,
     private routeToDialogService: RouteToDialogService
   ) {
-    this.routeToDialogService.detailDialogEvent
+    this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
       .subscribe(() => this.ngOnInit());
   }
 
   ngOnInit(): void {
     const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.LINES.path);
-    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'swissLineNumber,ASC' });
+    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'number,ASC' });
   }
 
   getOverview($paginationAndSearch: TableSettings) {
@@ -110,5 +111,6 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.lineVersionsSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 }

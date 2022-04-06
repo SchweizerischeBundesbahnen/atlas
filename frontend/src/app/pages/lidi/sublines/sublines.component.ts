@@ -49,6 +49,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
   totalCount$ = 0;
   isLoading = false;
   private sublineVersionsSubscription!: Subscription;
+  private routeSubscription!: Subscription;
 
   constructor(
     private sublinesService: SublinesService,
@@ -58,14 +59,14 @@ export class SublinesComponent implements OnInit, OnDestroy {
     private tableSettingsService: TableSettingsService,
     private routeToDialogService: RouteToDialogService
   ) {
-    this.routeToDialogService.detailDialogEvent
+    this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
       .subscribe(() => this.ngOnInit());
   }
 
   ngOnInit(): void {
     const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.SUBLINES.path);
-    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'swissSublineNumber,ASC' });
+    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'number,ASC' });
   }
 
   getOverview($paginationAndSearch: TableSettings) {
@@ -114,5 +115,6 @@ export class SublinesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sublineVersionsSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 }
