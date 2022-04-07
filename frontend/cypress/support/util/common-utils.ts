@@ -29,7 +29,7 @@ export default class CommonUtils {
   }
 
   static clickFirstRowInTable(selector: string) {
-    cy.get(selector + ' table tbody tr').click();
+    cy.get(selector + ' table tbody tr').click({force: true});
   }
 
   static assertNumberOfTableRows(selector: string, numberOfRows: number) {
