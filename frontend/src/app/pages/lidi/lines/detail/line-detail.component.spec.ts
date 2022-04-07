@@ -7,7 +7,6 @@ import { LineDetailComponent } from './line-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 
@@ -191,12 +190,7 @@ describe('LineDetailComponent for new lineVersion', () => {
 
 function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersion }) {
   TestBed.configureTestingModule({
-    declarations: [
-      LineDetailComponent,
-      DialogCloseButtonComponent,
-      MockAppDetailWrapperComponent,
-      ErrorNotificationComponent,
-    ],
+    declarations: [LineDetailComponent, MockAppDetailWrapperComponent, ErrorNotificationComponent],
     imports: [AppTestingModule],
     providers: [
       { provide: FormBuilder },
