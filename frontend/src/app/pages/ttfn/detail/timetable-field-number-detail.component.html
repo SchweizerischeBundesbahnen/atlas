@@ -78,18 +78,6 @@
     </div>
 
     <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
-
-    <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg"
-          >{{ 'TTFN.COMMENT' | translate }}
-          <em class="bi bi-info-circle me-2" title="{{ 'TTFN.COMMENT_TOOLTIP' | translate }}"></em>
-        </mat-label>
-        <mat-form-field appearance="outline" class="atlas-text-area">
-          <textarea data-cy="comment" matInput formControlName="comment"></textarea>
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
+    <form-comment [formGroup]="form"></form-comment>
   </form>
 </app-detail-wrapper>

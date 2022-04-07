@@ -7,30 +7,31 @@ mat-select {
   }
 }
 
-.ng-placeholder {
-  color: inherit !important;
-}
-
 .ng-select {
   padding-bottom: inherit;
 
   .ng-select-container {
-    min-height: 40px;
+    min-height: 33px;
+
+    &:after {
+      border-bottom-color: variables.$gray-400;
+    }
+
+    .ng-arrow {
+      color: variables.$gray-400;
+    }
 
     .ng-value-container {
-      padding-bottom: 0.3em;
+      padding: 4.5px 0;
+      border-top: 0;
+
+      .ng-input {
+        bottom: 4.5px;
+      }
     }
   }
 
-  .ng-select-container:after {
-    bottom: 0.05em;
-  }
-
-  .ng-select-container.ng-has-value:after {
-    bottom: 0.2em;
-  }
-
-  .ng-placeholder {
-    transform: translateY(-1.28125em) scale(0.75) perspective(100px) translateZ(0.001px);
+  ng-dropdown-panel {
+    top: 33px !important;
   }
 }
