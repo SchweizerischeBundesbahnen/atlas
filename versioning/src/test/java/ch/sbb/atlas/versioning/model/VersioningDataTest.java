@@ -81,7 +81,7 @@ public class VersioningDataTest {
   }
 
   @Test
-  public void shouldThrowDateValidationExceptionWhenValidFromIsBefore1600_01_01() {
+  public void shouldThrowDateValidationExceptionWhenValidFromIsBefore1700_01_01() {
     //given
     editedVersion.setValidFrom(LocalDate.of(1699, 12, 31));
     editedVersion.setValidTo(LocalDate.of(2019, 1, 2));
