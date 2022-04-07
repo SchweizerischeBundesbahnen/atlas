@@ -8,6 +8,7 @@ $navMenuBtnLargeLeft: 56.5px;
 i.bi {
   font-size: variables.$navigationItemFontSize;
   color: variables.$foreground;
+  padding-right: 9px;
 }
 
 .app-body {
@@ -38,10 +39,6 @@ i.bi {
 
 .menu-opened {
   padding-left: 30px !important;
-}
-
-i.bi {
-  padding-right: 9px;
 }
 
 .bi-arrow-left::before {
