@@ -8,6 +8,7 @@ import static ch.sbb.atlas.versioning.version.VersioningHelper.isCurrentVersionF
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedValidFromOverTheLeftBorderAndEndsWithin;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedValidToAfterTheRightBorderAndValidFromNotEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfCurrentEntity;
+import static ch.sbb.atlas.versioning.version.VersioningHelper.isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnBeginningOfVersionAndEndingWithin;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isOnTheRightBorderAndValidToIsOnOrOverTheBorder;
@@ -60,6 +61,10 @@ public class VersioningOnSingleFoundEntity implements Versioning {
   private List<VersionedObject> applyVersioningInTheMiddleOfAnExistingEntity(VersioningData vd,
       ToVersioning toVersioning) {
     log.info("Found in the middle of an existing.");
+    if(isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(toVersioning,vd)){
+      log.info("Scenario 14m not supported");
+      throw new VersioningException();
+    }
     List<VersionedObject> versionedObjects = new ArrayList<>();
     VersionedObject currentVersionUpdate = shortenLeftCurrentVersion(vd, toVersioning);
     versionedObjects.add(currentVersionUpdate);

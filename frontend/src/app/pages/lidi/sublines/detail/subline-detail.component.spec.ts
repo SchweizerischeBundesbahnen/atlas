@@ -7,7 +7,6 @@ import { SublineDetailComponent } from './subline-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { DialogCloseButtonComponent } from '../../../../core/components/dialog-close-button/dialog-close-button.component';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 
@@ -193,7 +192,6 @@ function setupTestBed(
   TestBed.configureTestingModule({
     declarations: [
       SublineDetailComponent,
-      DialogCloseButtonComponent,
       MockAppDetailWrapperComponent,
       ErrorNotificationComponent,
     ],
