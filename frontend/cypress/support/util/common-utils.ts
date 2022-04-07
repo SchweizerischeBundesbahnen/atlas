@@ -19,8 +19,13 @@ export default class CommonUtils {
     cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath)
   }
 
-  static clickCancelOnDetailView() {
+  static clickCancelOnDetailViewBackToTtfn() {
+    this.clickCancelOnDetailView('timetable-field-number')
+  }
+
+  private static clickCancelOnDetailView(overviewPath: string) {
     cy.get(DataCy.CANCEL).click();
+    cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath)
   }
 
   static clickFirstRowInTable(selector: string) {

@@ -49,12 +49,13 @@ describe('TTFN: TableSettings and Routing', () => {
 
   it('Step-6: Click on add and come back', () => {
     TtfnUtils.clickOnAddNewVersion();
-    CommonUtils.clickCancelOnDetailView();
+    CommonUtils.clickCancelOnDetailViewBackToTtfn();
 
     assertSearchForBernThunPresent();
   });
 
   it('Step-7: Edit Bern-Thun to Bern-Thun-Interlaken', () => {
+    CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
     CommonUtils.clickFirstRowInTable(DataCy.TTFN);
 
     cy.get(DataCy.EDIT_ITEM).click();
