@@ -8,30 +8,61 @@ mat-select {
 }
 
 .ng-select {
+  min-height: 32px;
   padding-bottom: inherit;
+  border-color: variables.$gray-400;
+  border-style: solid;
+  border-width: thin;
+  border-top: 0;
 
-  .ng-select-container {
-    min-height: 33px;
+  &:hover:not(.ng-select-disabled),
+  &.ng-select-focused {
+    border-width: 3px;
+    border-color: variables.$primary-300;
 
-    &:after {
-      border-bottom-color: variables.$gray-400;
+    .ng-value {
+      margin-left: -2px;
     }
 
-    .ng-arrow {
-      color: variables.$gray-400;
+    .ng-input input {
+      padding-left: 2.8px !important;
+    }
+  }
+
+  &.ng-invalid.ng-touched {
+    border-width: 3px;
+    border-color: variables.$warnColor;
+  }
+
+  input {
+    cursor: initial !important;
+    padding-left: 4.8px !important;
+  }
+
+  .ng-select-container {
+    min-height: 32px;
+
+    &:after {
+      border-bottom: unset;
+    }
+
+    .ng-arrow,
+    .ng-clear {
+      color: variables.$gray-400 !important;
     }
 
     .ng-value-container {
-      padding: 4.5px 0;
+      height: 32px;
+      padding: 4.5px 0 4.5px 4.8px;
       border-top: 0;
 
       .ng-input {
-        bottom: 4.5px;
+        bottom: 3.5px;
       }
     }
   }
 
   ng-dropdown-panel {
-    top: 33px !important;
+    top: 35px !important;
   }
 }

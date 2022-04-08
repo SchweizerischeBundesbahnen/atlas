@@ -1,4 +1,8 @@
-<app-detail-wrapper [controller]="this" headingNew="LIDI.SUBLINE.NEW">
+<app-detail-wrapper
+  [controller]="this"
+  headingNew="LIDI.SUBLINE.NEW"
+  formDetailHeading="LIDI.SUBLINE.DETAIL_SUBLINE_INFORMATION"
+>
   <form [formGroup]="form">
     <h2 *ngIf="isNewRecord()" class="font-bold-2xl mb-4">
       {{ 'LIDI.SUBLINE.NEW_SUBLINE_INFORMATION' | translate }}

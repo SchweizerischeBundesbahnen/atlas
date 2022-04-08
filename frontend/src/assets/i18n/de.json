@@ -219,6 +219,7 @@
       }
     },
     "SUBLINE": {
+      "DETAIL_SUBLINE_INFORMATION": "Angaben zur Teillinie",
       "NEW_SUBLINE_INFORMATION": "Angaben zur neuen Teillinie",
       "SUBLINE": "Teillinie",
       "SUBLINES": "Teillinien",
