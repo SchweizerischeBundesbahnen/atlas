@@ -70,9 +70,9 @@ describe('TableSearchComponent', () => {
   it('should not emit event on invalid Date', () => {
     spyOn(component.searchEvent, 'emit');
     const dateControl = fixture.componentInstance.dateControl;
-    dateControl.setValue(moment('31.12.1800', 'DD.MM.yyyy').toDate());
+    dateControl.setValue(moment('31.12.1600', 'DD.MM.yyyy').toDate());
     const spy = jasmine.createSpyObj([], {
-      value: moment('31.12.1800', 'DD.MM.yyyy'),
+      value: moment('31.12.1600', 'DD.MM.yyyy'),
     });
     component.onDateChanged(spy);
     expect(component.searchDate).not.toBeDefined();
