@@ -15,8 +15,9 @@
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em
         ></mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ LINE_NUMBER_EXAMPLE }}</mat-label
-        >
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '50.391' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        </mat-label>
         <mat-form-field>
           <input data-cy="number" matInput formControlName="number" />
           <mat-error fieldErrors></mat-error>
@@ -27,10 +28,11 @@
           >{{ 'LIDI.LINE.DESCRIPTION' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ LINE_DESCRIPTION_EXAMPLE }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
-        >
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Lenzburg Langsamstig - Bahnhof - Lenzburg Schloss' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
+        </mat-label>
         <mat-form-field>
           <input matInput formControlName="description" data-cy="description" />
           <mat-error fieldErrors></mat-error>
@@ -44,10 +46,11 @@
           >{{ 'LIDI.LONG_NAME' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 150 } }}
-          {{ 'FORM.OPTIONAL' | translate }}</mat-label
-        >
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Lenzburg Langsamstig - Lenzburg Bahnhof - Lenzburg Schloss' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
+        </mat-label>
         <mat-form-field>
           <input matInput formControlName="longName" data-cy="longName" />
           <mat-error fieldErrors></mat-error>
@@ -57,13 +60,14 @@
 
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col-4 pe-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ SWISS_LINE_NUMBER_EXAMPLE }}</mat-label
-        >
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.50.391' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        </mat-label>
         <mat-form-field>
           <input matInput formControlName="swissLineNumber" data-cy="swissLineNumber" />
           <mat-error fieldErrors></mat-error>
@@ -75,7 +79,9 @@
           >{{ 'LIDI.ALTERNATIVE_NAME' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
-        <mat-label class="font-regular-sm">{{ 'FORM.OPTIONAL' | translate }}</mat-label>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        </mat-label>
         <mat-form-field>
           <input matInput formControlName="alternativeName" data-cy="alternativeName" />
           <mat-error fieldErrors></mat-error>
@@ -87,7 +93,9 @@
           >{{ 'LIDI.COMBINATION_NAME' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
-        <mat-label class="font-regular-sm">{{ 'FORM.OPTIONAL' | translate }}</mat-label>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        </mat-label>
         <mat-form-field>
           <input matInput formControlName="combinationName" data-cy="combinationName" />
           <mat-error fieldErrors></mat-error>
@@ -101,9 +109,13 @@
 
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '106 - SVB' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
         </mat-label>
         <mat-form-field>
           <input matInput formControlName="businessOrganisation" data-cy="businessOrganisation" />
@@ -112,7 +124,7 @@
       </div>
 
       <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'LIDI.TYPE' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
@@ -131,7 +143,7 @@
       </div>
 
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'LIDI.PAYMENT.TYPE' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
@@ -157,7 +169,10 @@
           >{{ 'LIDI.ICON' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
-        <mat-label class="font-regular-sm">{{ 'FORM.OPTIONAL' | translate }}</mat-label>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'https://sbb.ch' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        </mat-label>
         <mat-form-field>
           <input matInput formControlName="icon" data-cy="icon" />
           <a matSuffix target="_blank" [attr.href]="form.value.icon"
@@ -168,12 +183,12 @@
       </div>
 
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'LIDI.LINE.FONT_RGB' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ COLOR_RGB_EXAMPLE }}</mat-label
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
         >
         <app-rgb-picker
           [formGroup]="form"
@@ -184,12 +199,12 @@
       </div>
 
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'LIDI.LINE.FONT_CMYK' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ FONT_CMYK_EXAMPLE }}</mat-label
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '0,0,0,100' }}</mat-label
         >
         <app-cmyk-picker
           [formGroup]="form"
@@ -202,12 +217,12 @@
 
     <div class="col-12 d-flex justify-content-end mt-3">
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'LIDI.LINE.BACKGROUND_RGB' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ COLOR_RGB_EXAMPLE }}</mat-label
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '4AC44F' }}</mat-label
         >
         <app-rgb-picker
           [formGroup]="form"
@@ -218,12 +233,12 @@
       </div>
 
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'LIDI.LINE.BACKGROUND_CMYK' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ BACKGROUND_CMYK_EXAMPLE }}</mat-label
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '85,10,65,0' }}</mat-label
         >
         <app-cmyk-picker
           [formGroup]="form"
