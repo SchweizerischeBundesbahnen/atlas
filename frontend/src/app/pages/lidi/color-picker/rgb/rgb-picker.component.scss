@@ -9,6 +9,10 @@ img {
   margin-left: 5px;
   margin-bottom: 26.5px;
   cursor: pointer;
+
+  &[ng-reflect-cp-disabled='true'] {
+    cursor: initial;
+  }
 }
 
 .field-input-container {
