@@ -18,18 +18,12 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 
 @Component({
   templateUrl: './line-detail.component.html',
+  styleUrls: ['./line-detail.component.scss'],
 })
 export class LineDetailComponent
   extends DetailWrapperController<LineVersion>
   implements OnInit, OnDestroy
 {
-  readonly LINE_NUMBER_EXAMPLE = 50.391;
-  readonly LINE_DESCRIPTION_EXAMPLE = 'Lenzburg Langsamstig - Bahnhof - Lenzburg Schloss';
-  readonly SWISS_LINE_NUMBER_EXAMPLE = 'r.50.391';
-  readonly COLOR_RGB_EXAMPLE = '#4AC44F';
-  readonly FONT_CMYK_EXAMPLE = '0,0,0,100';
-  readonly BACKGROUND_CMYK_EXAMPLE = '85,10,65,0';
-
   TYPE_OPTIONS = Object.values(LineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
 
