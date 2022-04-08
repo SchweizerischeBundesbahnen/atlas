@@ -81,9 +81,9 @@ public class VersioningDataTest {
   }
 
   @Test
-  public void shouldThrowDateValidationExceptionWhenValidFromIsBefore1900_01_01() {
+  public void shouldThrowDateValidationExceptionWhenValidFromIsBefore1700_01_01() {
     //given
-    editedVersion.setValidFrom(LocalDate.of(1899, 12, 31));
+    editedVersion.setValidFrom(LocalDate.of(1699, 12, 31));
     editedVersion.setValidTo(LocalDate.of(2019, 1, 2));
 
     //when
@@ -93,13 +93,13 @@ public class VersioningDataTest {
       //then
     }).isInstanceOf(DateValidationException.class)
       .hasMessageContaining(
-          "ValidFrom cannot be before 1.1.1900.");
+          "ValidFrom cannot be before 1.1.1700.");
   }
 
   @Test
   public void shouldThrowDateValidationExceptionWhenValidToIsAfter2099_12_31() {
     //given
-    editedVersion.setValidFrom(LocalDate.of(1899, 12, 31));
+    editedVersion.setValidFrom(LocalDate.of(1699, 12, 31));
     editedVersion.setValidTo(LocalDate.of(2019, 1, 2));
 
     //when
@@ -109,7 +109,7 @@ public class VersioningDataTest {
       //then
     }).isInstanceOf(DateValidationException.class)
       .hasMessageContaining(
-          "ValidFrom cannot be before 1.1.1900.");
+          "ValidFrom cannot be before 1.1.1700.");
   }
 
 }
