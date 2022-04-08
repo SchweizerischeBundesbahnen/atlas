@@ -219,6 +219,7 @@
       }
     },
     "SUBLINE": {
+      "DETAIL_SUBLINE_INFORMATION": "Angaben zur Teillinie__IT__",
       "NEW_SUBLINE_INFORMATION": "Angaben zur neuen Teillinie__IT__",
       "SUBLINE": "Linea parziale",
       "SUBLINES": "Linee parziali",
