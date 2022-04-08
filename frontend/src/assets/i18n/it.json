@@ -71,7 +71,8 @@
     "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__IT__",
     "OPTIONAL": "(opzionale)",
     "DATE_FORMAT": "TT.MM.JJJJ__IT__",
-    "COMMENT": "Commento"
+    "COMMENT": "Commento",
+    "TEXT": "Testo libero"
   },
   "VERSION_TABLE": {
     "TITLE": "Versioni con validità diversa",

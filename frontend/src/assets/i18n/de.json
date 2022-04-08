@@ -71,7 +71,8 @@
     "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben",
     "OPTIONAL": "(optional)",
     "DATE_FORMAT": "TT.MM.JJJJ",
-    "COMMENT": "Kommentar"
+    "COMMENT": "Kommentar",
+    "TEXT": "Freitext"
   },
   "VERSION_TABLE": {
     "TITLE": "Versionen mit unterschiedlicher Gültigkeit",
