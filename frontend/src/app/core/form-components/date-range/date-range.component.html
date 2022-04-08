@@ -1,6 +1,8 @@
 <div class="col-6 d-flex mt-3" [formGroup]="formGroup">
   <div class="d-flex flex-column col-6 pe-3">
-    <mat-label class="font-bold-lg">{{ 'COMMON.VALID_FROM' | translate }}*</mat-label>
+    <mat-label class="font-bold-lg required-indicator">{{
+      'COMMON.VALID_FROM' | translate
+    }}</mat-label>
     <mat-label class="font-regular-sm">{{ 'FORM.DATE_FORMAT' | translate }}</mat-label>
     <mat-form-field>
       <input
@@ -18,7 +20,9 @@
     </mat-form-field>
   </div>
   <div class="d-flex flex-column col-6 pe-3">
-    <mat-label class="font-bold-lg">{{ 'COMMON.VALID_TO' | translate }}*</mat-label>
+    <mat-label class="font-bold-lg required-indicator">{{
+      'COMMON.VALID_TO' | translate
+    }}</mat-label>
     <mat-label class="font-regular-sm">{{ 'FORM.DATE_FORMAT' | translate }}</mat-label>
     <mat-form-field>
       <input
