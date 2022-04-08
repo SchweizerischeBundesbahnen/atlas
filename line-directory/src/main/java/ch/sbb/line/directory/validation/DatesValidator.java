@@ -7,8 +7,8 @@ import javax.validation.constraints.AssertTrue;
 
 public interface DatesValidator {
 
-  LocalDate minDate = LocalDate.of(1899, 12, 31);
-  LocalDate maxDate = LocalDate.of(2100, 1, 1);
+  LocalDate minDate = LocalDate.of(1699, 12, 31);
+  LocalDate maxDate = LocalDate.of(10000, 1, 1);
 
   LocalDate getValidFrom();
 
@@ -23,14 +23,14 @@ public interface DatesValidator {
 
   @Schema(hidden = true)
   @JsonIgnore
-  @AssertTrue(message = "ValidTo must be between 1.1.1900 and 31.12.2099")
+  @AssertTrue(message = "ValidTo must be between 1.1.1700 and 31.12.9999")
   default boolean isValidToValid() {
     return getValidTo().isAfter(minDate) && getValidTo().isBefore(maxDate);
   }
 
   @Schema(hidden = true)
   @JsonIgnore
-  @AssertTrue(message = "ValidFrom must be between 1.1.1900 and 31.12.2099")
+  @AssertTrue(message = "ValidFrom must be between 1.1.1700 and 31.12.9999")
   default boolean isValidFromValid() {
     return getValidFrom().isAfter(minDate) && getValidFrom().isBefore(maxDate);
   }

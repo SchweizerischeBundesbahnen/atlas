@@ -343,9 +343,9 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       expect(validationErrors?.required).toBeDefined();
     });
 
-    it('should not be less then 01.01.1900', () => {
+    it('should not be less then 01.01.1700', () => {
       const validFrom: AbstractControl = fixture.componentInstance.form.controls['validFrom'];
-      validFrom.setValue(moment('1899-12-01 00:00:00'));
+      validFrom.setValue(moment('1699-12-01 00:00:00'));
       validFrom.markAsTouched();
 
       const validationErrors = validFrom.errors;
@@ -366,9 +366,9 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       expect(validationErrors?.required).toBeDefined();
     });
 
-    it('should not be greater than 31.12.2099', () => {
+    it('should not be greater than 31.12.9999', () => {
       const validTo: AbstractControl = fixture.componentInstance.form.controls['validTo'];
-      validTo.setValue(moment('1.12.2100', 'dd.MM.yyyy'));
+      validTo.setValue(moment('1.12.10000', 'dd.MM.yyyy'));
       validTo.markAsTouched();
 
       const validationErrors = validTo.errors;
