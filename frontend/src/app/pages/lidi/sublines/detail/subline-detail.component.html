@@ -12,7 +12,7 @@
       <div class="d-flex flex-column col-4 pe-3">
         <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE.NUMBER' | translate }}</mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ NUMBER_EXAMPLE }} |
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '31.001:a' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
         >
         <mat-form-field>
@@ -24,7 +24,8 @@
       <div class="d-flex flex-column col-8">
         <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE.DESCRIPTION' | translate }}</mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ DESCRIPTION_EXAMPLE }} |
+          >{{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Thun Bahnhof - Gwatt Deltapark - Einigen - Spiez Bahnhof' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}</mat-label
         >
         <mat-form-field>
@@ -41,7 +42,8 @@
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ LONG_NAME_EXAMPLE }} |
+          >{{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}</mat-label
         >
         <mat-form-field>
@@ -51,7 +53,7 @@
       </div>
 
       <div class="d-flex flex-column col-4">
-        <mat-label class="font-bold-lg subtitle-margin">{{
+        <mat-label class="font-bold-lg subtitle-margin required-indicator">{{
           'LIDI.SUBLINE.MAINLINE' | translate
         }}</mat-label>
         <ng-select
@@ -84,9 +86,11 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg">{{ 'LIDI.SWISS_SUBLINE_NUMBER' | translate }}*</mat-label>
+        <mat-label class="font-bold-lg required-indicator">{{
+          'LIDI.SWISS_SUBLINE_NUMBER' | translate
+        }}</mat-label>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ SWISS_SUBLINE_NUMBER_EXAMPLE }} |
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.31.001:a' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
         >
         <mat-form-field>
@@ -101,13 +105,14 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ BO_EXAMPLE }}</mat-label
-        >
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '146 - STI' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        </mat-label>
         <mat-form-field>
           <input matInput formControlName="businessOrganisation" data-cy="businessOrganisation" />
           <mat-error fieldErrors></mat-error>
@@ -115,7 +120,7 @@
       </div>
 
       <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg subtitle-margin">{{
+        <mat-label class="font-bold-lg subtitle-margin required-indicator">{{
           'LIDI.SUBLINE_TYPE' | translate
         }}</mat-label>
         <mat-form-field appearance="outline" class="form-outline">
@@ -133,7 +138,7 @@
       </div>
 
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg subtitle-margin"
+        <mat-label class="font-bold-lg subtitle-margin required-indicator"
           >{{ 'LIDI.PAYMENT.TYPE' | translate }}
           <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
         </mat-label>
