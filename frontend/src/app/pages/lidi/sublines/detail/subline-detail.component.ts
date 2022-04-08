@@ -36,12 +36,6 @@ export class SublineDetailComponent
   TYPE_OPTIONS = Object.values(SublineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
 
-  readonly NUMBER_EXAMPLE = '31.001:a';
-  readonly DESCRIPTION_EXAMPLE = 'Thun Bahnhof - Gwatt Deltapark - Einigen - Spiez Bahnhof';
-  readonly LONG_NAME_EXAMPLE = 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof';
-  readonly SWISS_SUBLINE_NUMBER_EXAMPLE = 'r.31.001:a';
-  readonly BO_EXAMPLE = '146 - STI';
-
   private ngUnsubscribe = new Subject<void>();
   mainlineSearchTerm = new Subject<string>();
   mainlines: Line[] = [];
@@ -130,7 +124,7 @@ export class SublineDetailComponent
       {
         swissSublineNumber: [
           version.swissSublineNumber,
-          [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.sid4pt],
+          [Validators.required, AtlasFieldLengthValidator.small, AtlasCharsetsValidator.sid4pt],
         ],
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
