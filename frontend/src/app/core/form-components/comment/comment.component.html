@@ -4,7 +4,10 @@
       >{{ 'FORM.COMMENT' | translate }}
       <em class="bi bi-info-circle me-2" title="{{ 'To replace' | translate }}"></em>
     </mat-label>
-    <mat-label class="font-regular-sm">{{ 'FORM.OPTIONAL' | translate }}</mat-label>
+    <mat-label class="font-regular-sm">
+      {{ 'FORM.TEXT' | translate }} |
+      {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 1500 } }}
+    </mat-label>
     <mat-form-field appearance="outline" class="atlas-text-area">
       <textarea data-cy="comment" matInput formControlName="comment"></textarea>
       <mat-error fieldErrors></mat-error>

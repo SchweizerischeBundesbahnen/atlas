@@ -25,8 +25,6 @@ export class TimetableFieldNumberDetailComponent
   extends DetailWrapperController<TimetableFieldNumberVersion>
   implements OnInit, OnDestroy
 {
-  SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER = 'bO.BEX:a';
-
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
