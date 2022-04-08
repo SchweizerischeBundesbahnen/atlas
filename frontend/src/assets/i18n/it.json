@@ -70,7 +70,9 @@
     "KEY_DATA": "Eckdaten__IT__",
     "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__IT__",
     "OPTIONAL": "(opzionale)",
-    "DATE_FORMAT": "TT.MM.JJJJ__IT__"
+    "DATE_FORMAT": "TT.MM.JJJJ__IT__",
+    "COMMENT": "Commento",
+    "TEXT": "Testo libero"
   },
   "VERSION_TABLE": {
     "TITLE": "Versioni con validità diversa",
@@ -147,7 +149,6 @@
     "BUSINESS_ORGANISATION": "Organizzazione aziendale",
     "NUMBER": "Numero del quadro d’orario",
     "TTFNID": "ID numero del quadro d’orario",
-    "COMMENT": "Commento",
     "CONFLICT": {
       "NUMBER": "Il numero del quadro d’orario {{number}} è già assegnato dal {{validFrom}} al {{validTo}} da {{ttfnid}}.",
       "SWISS_NUMBER": "Il numero del quadro d’orario CH {{swissTimetableFieldNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{ttfnid}}."
@@ -176,7 +177,6 @@
     "SUBLINE_TYPE": "Tipo linea parziale",
     "BUSINESS_ORGANISATION": "Organizzazione aziendale",
     "SLNID": "SLNID",
-    "COMMENT": "Commento",
     "PAYMENT": {
       "TYPE": "Metodo di pagamento",
       "INTERNATIONAL": "Internazionale",
@@ -220,6 +220,8 @@
       }
     },
     "SUBLINE": {
+      "DETAIL_SUBLINE_INFORMATION": "Angaben zur Teillinie__IT__",
+      "NEW_SUBLINE_INFORMATION": "Angaben zur neuen Teillinie__IT__",
       "SUBLINE": "Linea parziale",
       "SUBLINES": "Linee parziali",
       "CONFLICT": {
@@ -230,7 +232,7 @@
         "SUBLINE_OUTSIDE_OF_LINE_RANGE": "La validità della linea parziale {{validFrom}}-{{validTo}} non rientra nel campo di validità della linea {{mainline.swissLineNumber}}. Quest’ultimo è {{mainline.validFrom}}-{{mainline.validTo}}."
       },
       "NUMBER": "Numero linea parziale",
-      "MAINLINE": "Linea principale",
+      "MAINLINE": "Gehört zu Hauptlinie__IT__",
       "DESCRIPTION": "Denominazione linea parziale",
       "NEW": "Inserire nuova linea parziale",
       "TYPES": {

@@ -70,7 +70,9 @@
     "KEY_DATA": "Eckdaten",
     "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben",
     "OPTIONAL": "(optional)",
-    "DATE_FORMAT": "TT.MM.JJJJ"
+    "DATE_FORMAT": "TT.MM.JJJJ",
+    "COMMENT": "Kommentar",
+    "TEXT": "Freitext"
   },
   "VERSION_TABLE": {
     "TITLE": "Versionen mit unterschiedlicher Gültigkeit",
@@ -147,7 +149,6 @@
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "NUMBER": "Fahrplanfeldnummer",
     "TTFNID": "Fahrplanfeldnummer-ID",
-    "COMMENT": "Kommentar",
     "CONFLICT": {
       "NUMBER": "Die Fahrplanfeldnummer {{number}} ist bereits von {{validFrom}} bis {{validTo}} durch {{ttfnid}} vergeben.",
       "SWISS_NUMBER": "Die CH-Fahrplanfeldnummer {{swissTimetableFieldNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{ttfnid}} vergeben."
@@ -176,7 +177,6 @@
     "SUBLINE_TYPE": "Teillinientyp",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "SLNID": "SLNID",
-    "COMMENT": "Kommentar",
     "PAYMENT": {
       "TYPE": "Bezahlungsart",
       "INTERNATIONAL": "International",
@@ -220,6 +220,8 @@
       }
     },
     "SUBLINE": {
+      "DETAIL_SUBLINE_INFORMATION": "Angaben zur Teillinie",
+      "NEW_SUBLINE_INFORMATION": "Angaben zur neuen Teillinie",
       "SUBLINE": "Teillinie",
       "SUBLINES": "Teillinien",
       "CONFLICT": {
@@ -230,7 +232,7 @@
         "SUBLINE_OUTSIDE_OF_LINE_RANGE": "Die Gültigkeit der Teillinie {{validFrom}}-{{validTo}} ist ausserhalb der Gültigkeit der Linie {{mainline.swissLineNumber}}. Diese ist {{mainline.validFrom}}-{{mainline.validTo}}."
       },
       "NUMBER": "Teilliniennummer",
-      "MAINLINE": "Hauptlinie",
+      "MAINLINE": "Gehört zu Hauptlinie",
       "DESCRIPTION": "Teillinienbezeichnung",
       "NEW": "Neue Teillinie erfassen",
       "TYPES": {

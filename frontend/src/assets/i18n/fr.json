@@ -70,7 +70,9 @@
     "KEY_DATA": "Eckdaten__FR__",
     "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__FR__",
     "OPTIONAL": "(optionnel)",
-    "DATE_FORMAT": "TT.MM.JJJJ__FR__"
+    "DATE_FORMAT": "TT.MM.JJJJ__FR__",
+    "COMMENT": "Commentaire",
+    "TEXT": "Texte libre"
   },
   "VERSION_TABLE": {
     "TITLE": "Versions avec validité différente",
@@ -147,7 +149,6 @@
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "NUMBER": "Numéro du tableau-horaire",
     "TTFNID": "ID du tableau-horaire",
-    "COMMENT": "Commentaire",
     "CONFLICT": {
       "NUMBER": "Le numéro de tableau-horaire {{number}} est déjà attribué de {{validFrom}} à {{validTo}} par {{ttfnid}}.",
       "SWISS_NUMBER": "Le numéro de tableau-horaire CH {{swissTimetableFieldNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{ttfnid}}."
@@ -176,7 +177,6 @@
     "SUBLINE_TYPE": "Type de ligne partielle",
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "SLNID": "SLNID",
-    "COMMENT": "Commentaire",
     "PAYMENT": {
       "TYPE": "Mode de paiement",
       "INTERNATIONAL": "International",
@@ -220,6 +220,8 @@
       }
     },
     "SUBLINE": {
+      "DETAIL_SUBLINE_INFORMATION": "Angaben zur Teillinie__FR__",
+      "NEW_SUBLINE_INFORMATION": "Angaben zur neuen Teillinie__FR__",
       "SUBLINE": "Ligne partielle",
       "SUBLINES": "Lignes partielles",
       "CONFLICT": {
@@ -230,7 +232,7 @@
         "SUBLINE_OUTSIDE_OF_LINE_RANGE": "La validité de la ligne partielle {{validFrom}}-{{validTo}} est en dehors de la validité de la ligne {{sublinie.swissSublineNumber}}. Celle-ci est {{mainline.validFrom}}-{{mainline.validTo}}."
       },
       "NUMBER": "Numéro de ligne partielle",
-      "MAINLINE": "Ligne principale",
+      "MAINLINE": "Gehört zu Hauptlinie__FR__",
       "DESCRIPTION": "Description de la ligne partielle",
       "NEW": "Saisir une nouvelle ligne partielle",
       "TYPES": {

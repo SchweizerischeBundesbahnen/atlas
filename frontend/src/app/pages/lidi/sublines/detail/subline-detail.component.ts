@@ -3,17 +3,11 @@ import {
   Line,
   LinesService,
   PaymentType,
-  Status,
   SublinesService,
   SublineType,
   SublineVersion,
 } from '../../../../api';
-import {
-  DateService,
-  MAX_DATE,
-  MAX_DATE_FORMATTED,
-  MIN_DATE,
-} from 'src/app/core/date/date.service';
+import { DateService } from 'src/app/core/date/date.service';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { catchError, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
@@ -41,10 +35,6 @@ export class SublineDetailComponent
 {
   TYPE_OPTIONS = Object.values(SublineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
-  STATUS_OPTIONS = Object.values(Status);
-  MIN_DATE = MIN_DATE;
-  MAX_DATE = MAX_DATE;
-  VALID_TO_PLACEHOLDER = MAX_DATE_FORMATTED;
 
   private ngUnsubscribe = new Subject<void>();
   mainlineSearchTerm = new Subject<string>();
@@ -134,7 +124,7 @@ export class SublineDetailComponent
       {
         swissSublineNumber: [
           version.swissSublineNumber,
-          [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.sid4pt],
+          [Validators.required, AtlasFieldLengthValidator.small, AtlasCharsetsValidator.sid4pt],
         ],
         mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],

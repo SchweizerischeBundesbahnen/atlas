@@ -1,55 +1,61 @@
-<app-detail-wrapper [controller]="this" headingNew="LIDI.SUBLINE.NEW">
+<app-detail-wrapper
+  [controller]="this"
+  headingNew="LIDI.SUBLINE.NEW"
+  formDetailHeading="LIDI.SUBLINE.DETAIL_SUBLINE_INFORMATION"
+>
   <form [formGroup]="form">
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'COMMON.VALID_FROM' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          data-cy="validFrom"
-          formControlName="validFrom"
-          [matDatepicker]="validFromPicker"
-          [min]="MIN_DATE"
-          [max]="MAX_DATE"
-          placeholder="{{ getValidFromPlaceHolder() }}"
-        />
-        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-        <mat-datepicker #validFromPicker></mat-datepicker>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <h2 *ngIf="isNewRecord()" class="font-bold-2xl mb-4">
+      {{ 'LIDI.SUBLINE.NEW_SUBLINE_INFORMATION' | translate }}
+    </h2>
 
-      <mat-form-field class="col">
-        <mat-label>{{ 'COMMON.VALID_TO' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          formControlName="validTo"
-          data-cy="validTo"
-          [matDatepicker]="validToPicker"
-          [min]="MIN_DATE"
-          [max]="MAX_DATE"
-          placeholder="{{ VALID_TO_PLACEHOLDER }}"
-        />
-        <mat-datepicker-toggle matSuffix [for]="validToPicker"></mat-datepicker-toggle>
-        <mat-datepicker #validToPicker></mat-datepicker>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-4 pe-3">
+        <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE.NUMBER' | translate }}</mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '31.001:a' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
+        >
+        <mat-form-field>
+          <input matInput formControlName="number" data-cy="number" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-8">
+        <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE.DESCRIPTION' | translate }}</mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Thun Bahnhof - Gwatt Deltapark - Einigen - Spiez Bahnhof' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}</mat-label
+        >
+        <mat-form-field>
+          <input matInput formControlName="description" data-cy="description" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.SWISS_SUBLINE_NUMBER' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          formControlName="swissSublineNumber"
-          data-cy="swissSublineNumber"
-          placeholder="b0.IC2"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-8 pe-3">
+        <mat-label class="font-bold-lg"
+          >{{ 'LIDI.LONG_NAME' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}</mat-label
+        >
+        <mat-form-field>
+          <input matInput formControlName="longName" data-cy="longName" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
 
-      <div class="col">
+      <div class="d-flex flex-column col-4">
+        <mat-label class="font-bold-lg subtitle-margin required-indicator">{{
+          'LIDI.SUBLINE.MAINLINE' | translate
+        }}</mat-label>
         <ng-select
           [items]="mainlines"
           bindValue="slnid"
@@ -57,7 +63,6 @@
           data-cy="mainlineSlnid"
           [minTermLength]="1"
           [typeahead]="mainlineSearchTerm"
-          [placeholder]="('LIDI.SUBLINE.MAINLINE' | translate) + ' *'"
           notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
           typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
         >
@@ -77,100 +82,79 @@
           </mat-error>
         </div>
       </div>
+    </div>
 
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.SLNID' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          data-cy="slnid"
-          [value]="form.value.slnid || ''"
-          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
-          [disabled]="true"
-        />
-      </mat-form-field>
-
-      <mat-form-field class="col">
-        <mat-label>{{ 'COMMON.STATUS' | translate }}</mat-label>
-        <mat-select
-          data-cy="status"
-          [value]="form.value.status"
-          [disabled]="true"
-          placeholder="{{ 'COMMON.FILLED_AUTOMATICALLY' | translate }}"
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-3">
+        <mat-label class="font-bold-lg required-indicator">{{
+          'LIDI.SWISS_SUBLINE_NUMBER' | translate
+        }}</mat-label>
+        <mat-label class="font-regular-sm"
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.31.001:a' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
         >
-          <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
-            {{ 'COMMON.STATUS_TYPES.' + status | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="swissSublineNumber" data-cy="swissSublineNumber" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}</mat-label>
-        <input
-          required
-          matInput
-          formControlName="businessOrganisation"
-          data-cy="businessOrganisation"
-          placeholder="SBB"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
+    <form-date-range [formGroup]="form"></form-date-range>
 
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.TYPE' | translate }}</mat-label>
-        <mat-select required formControlName="sublineType" data-cy="type">
-          <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
-            {{ 'LIDI.SUBLINE.TYPES.' + type | translate }}
-          </mat-option>
-        </mat-select>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-3 pe-3">
+        <mat-label class="font-bold-lg required-indicator"
+          >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '146 - STI' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="businessOrganisation" data-cy="businessOrganisation" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.PAYMENT.TYPE' | translate }}</mat-label>
-        <mat-select required formControlName="paymentType" data-cy="paymentType">
-          <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
-            {{ 'LIDI.PAYMENT.' + type | translate }}
-          </mat-option>
-        </mat-select>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
+      <div class="d-flex flex-column col-6 pe-3">
+        <mat-label class="font-bold-lg subtitle-margin required-indicator">{{
+          'LIDI.SUBLINE_TYPE' | translate
+        }}</mat-label>
+        <mat-form-field appearance="outline" class="form-outline">
+          <mat-select
+            formControlName="sublineType"
+            data-cy="type"
+            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+          >
+            <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
+              {{ 'LIDI.SUBLINE.TYPES.' + type | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.SUBLINE.DESCRIPTION' | translate }}</mat-label>
-        <input
-          matInput
-          formControlName="description"
-          data-cy="description"
-          placeholder="Lorem Ipsum Linie"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.SUBLINE.NUMBER' | translate }}</mat-label>
-        <input matInput formControlName="number" data-cy="number" placeholder="IC2" />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="row mb-3">
-      <mat-form-field class="col">
-        <mat-label>{{ 'LIDI.LONG_NAME' | translate }}</mat-label>
-        <input
-          matInput
-          formControlName="longName"
-          data-cy="longName"
-          placeholder="Zürich HB - Arth-Goldau - Lugano -  Chiasso - Grenze"
-        />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      <div class="d-flex flex-column col-3">
+        <mat-label class="font-bold-lg subtitle-margin required-indicator"
+          >{{ 'LIDI.PAYMENT.TYPE' | translate }}
+          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
+        </mat-label>
+        <mat-form-field appearance="outline" class="form-outline">
+          <mat-select
+            formControlName="paymentType"
+            data-cy="paymentType"
+            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+          >
+            <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
+              {{ 'LIDI.PAYMENT.' + type | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
   </form>
 </app-detail-wrapper>

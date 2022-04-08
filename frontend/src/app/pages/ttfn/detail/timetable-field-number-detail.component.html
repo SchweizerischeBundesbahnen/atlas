@@ -11,24 +11,26 @@
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-6 pe-3">
         <mat-label class="font-bold-lg">{{ 'TTFN.NUMBER' | translate }}</mat-label>
-        <mat-label class="font-regular-sm hide-label-content">{{
-          'TTFN.NUMBER' | translate
-        }}</mat-label>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '30.003' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        </mat-label>
         <mat-form-field>
           <input data-cy="number" matInput formControlName="number" />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
       <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}
           <em
-            class="bi bi-info-circle me-2"
+            class="bi bi-info-circle"
             title="{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER_TOOLTIP' | translate }}"
           ></em>
         </mat-label>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ SWISS_TIMETABLE_FIELD_NUMBER_PLACEHOLDER }}
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.30.003' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
         </mat-label>
         <mat-form-field>
           <input
@@ -50,6 +52,10 @@
             title="{{ 'TTFN.DESCRIPTION_TOOLTIP' | translate }}"
           ></em>
         </mat-label>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'Bern Bahnhof - Eigerplatz - Weissbühl' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
+        </mat-label>
         <mat-form-field>
           <input data-cy="description" matInput formControlName="description" />
           <mat-error fieldErrors></mat-error>
@@ -62,12 +68,16 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg"
+        <mat-label class="font-bold-lg required-indicator"
           >{{ 'TTFN.BUSINESS_ORGANISATION' | translate }}
           <em
-            class="bi bi-info-circle me-2"
+            class="bi bi-info-circle"
             title="{{ 'TTFN.BUSINESS_ORGANISATION_TOOLTIP' | translate }}"
           ></em>
+        </mat-label>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '106 - SVB' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
         </mat-label>
         <mat-form-field>
           <input data-cy="businessOrganisation" matInput formControlName="businessOrganisation" />
@@ -77,18 +87,6 @@
     </div>
 
     <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
-
-    <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg"
-          >{{ 'TTFN.COMMENT' | translate }}
-          <em class="bi bi-info-circle me-2" title="{{ 'TTFN.COMMENT_TOOLTIP' | translate }}"></em>
-        </mat-label>
-        <mat-form-field appearance="outline" class="atlas-text-area">
-          <textarea data-cy="comment" matInput formControlName="comment"></textarea>
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
+    <form-comment [formGroup]="form"></form-comment>
   </form>
 </app-detail-wrapper>
