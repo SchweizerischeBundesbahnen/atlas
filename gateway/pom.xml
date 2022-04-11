@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>ch.sbb.atlas</groupId>
 		<artifactId>atlas</artifactId>
-		<version>0.360.0</version>
+		<version>0.361.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>gateway</artifactId>
 
