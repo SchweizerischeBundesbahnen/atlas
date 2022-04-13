@@ -45,6 +45,37 @@ export default class CommonUtils {
     cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click();
   }
 
+  static navigateToHomepageViaSidemenu() {
+    // Move to LiDi via the side-menu
+    // First we need to open the side-menu
+    cy.get('.sidenav-menu-btn').click();
+    cy.get(DataCy.SIDEMENU_START).click();
+
+    // Check that we are on the (german) home-page
+    cy.contains('Home');
+    cy.contains('Die SKI Business Plattform');
+  }
+
+  static navigateToTtfnViaSidemenu() {
+    // Move to TTFN via the side-menu
+    // First we need to open the side-menu
+    cy.get('.sidenav-menu-btn').click();
+    cy.get(DataCy.SIDEMENU_TTFN).click();
+
+    // Check that we are on the TTFN-path
+    cy.url().should('contain', '/timetable-field-number');
+  }
+
+  static navigateToLidiViaSidemenu() {
+    // Move to LiDi via the side-menu
+    // First we need to open the side-menu
+    cy.get('.sidenav-menu-btn').click();
+    cy.get(DataCy.SIDEMENU_LIDI).click();
+
+    // Check that we are on the LiDi-path
+    cy.url().should('contain', '/line-directory');
+  }
+
   static assertHeaderTitle(title: string) {
     cy.get(DataCy.HEADER_TITLE).should('have.text', title);
   }

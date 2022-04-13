@@ -47,4 +47,7 @@ export class DataCy {
   static TABLE_SEARCH_DATE_INPUT = '[data-cy=table-search-date-input]';
   static TABLE_SEARCH_SUBLINE_TYPE = '[data-cy=table-search-subline-type]';
   static TTFN = '[data-cy=ttfn]';
+  static SIDEMENU_START = '[data-cy=sidemenu-start]';
+  static SIDEMENU_TTFN = '[data-cy=sidemenu-timetable-field-number]';
+  static SIDEMENU_LIDI = '[data-cy=sidemenu-line-directory]';
 }
