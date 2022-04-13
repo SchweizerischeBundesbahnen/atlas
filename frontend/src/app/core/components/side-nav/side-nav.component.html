@@ -1,4 +1,4 @@
-<div *ngFor="let page of pages" class="link-border">
+<div *ngFor="let page of pages" class="link-border" [attr.data-cy]="page.path ? 'sidemenu-'+page.path : 'sidemenu-start'">
   <a
     mat-list-item
     class="font-bold-base color-primary-400"
