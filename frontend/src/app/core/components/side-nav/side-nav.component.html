@@ -1,15 +1,18 @@
-<div *ngFor='let page of pages' class='link-border'
-     [attr.data-cy]="page.path ? 'sidemenu-'+page.path : 'sidemenu-start'">
+<div
+  *ngFor="let page of pages"
+  class="link-border"
+  [attr.data-cy]="page.path ? 'sidemenu-' + page.path : 'sidemenu-start'"
+>
   <a
     mat-list-item
-    class='font-bold-base color-primary-400'
-    (click)='toggle()'
-    routerLink='{{ page.path }}'
-    routerLinkActive='route-active'
-    [routerLinkActiveOptions]='{ exact: true }'
+    class="font-bold-base color-primary-400"
+    (click)="toggle()"
+    routerLink="{{ page.path }}"
+    routerLinkActive="route-active"
+    [routerLinkActiveOptions]="{ exact: true }"
   >
     {{ page.titleMenu ?? '' | translate }}
-    <span class='spacer'></span>
-    <i class='bi bi-arrow-right ms-5'></i>
+    <span class="spacer"></span>
+    <i class="bi bi-arrow-right ms-5"></i>
   </a>
 </div>
