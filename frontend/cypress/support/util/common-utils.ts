@@ -46,7 +46,7 @@ export default class CommonUtils {
   }
 
   static navigateToHomepageViaSidemenu() {
-    // Move to LiDi via the side-menu
+    // Move to Home via the side-menu
     // First we need to open the side-menu
     cy.get('.sidenav-menu-btn').click();
     cy.get(DataCy.SIDEMENU_START).click();
