@@ -45,10 +45,13 @@ export default class CommonUtils {
     cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click();
   }
 
+  private static openSideMenu() {
+    cy.get('.sidenav-menu-btn').should('be.visible').click();
+  }
+
   static navigateToHomepageViaSidemenu() {
     // Move to LiDi via the side-menu
-    // First we need to open the side-menu
-    cy.get('.sidenav-menu-btn').click();
+    this.openSideMenu();
     cy.get(DataCy.SIDEMENU_START).click();
 
     // Check that we are on the (german) home-page
@@ -58,8 +61,7 @@ export default class CommonUtils {
 
   static navigateToTtfnViaSidemenu() {
     // Move to TTFN via the side-menu
-    // First we need to open the side-menu
-    cy.get('.sidenav-menu-btn').click();
+    this.openSideMenu();
     cy.get(DataCy.SIDEMENU_TTFN).click();
 
     // Check that we are on the TTFN-path
@@ -68,8 +70,7 @@ export default class CommonUtils {
 
   static navigateToLidiViaSidemenu() {
     // Move to LiDi via the side-menu
-    // First we need to open the side-menu
-    cy.get('.sidenav-menu-btn').click();
+    this.openSideMenu();
     cy.get(DataCy.SIDEMENU_LIDI).click();
 
     // Check that we are on the LiDi-path
