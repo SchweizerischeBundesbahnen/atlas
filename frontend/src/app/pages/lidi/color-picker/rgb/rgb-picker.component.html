@@ -28,6 +28,7 @@
     [cpOutputFormat]="'hex'"
     [cpDisableInput]="true"
     [cpDisabled]="formControl.disabled"
+    [ngStyle]="formControl.disabled ? { cursor: 'initial' } : {}"
     src="assets/images/color_lens.svg"
     alt="Color Picker"
   />
