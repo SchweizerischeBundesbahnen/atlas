@@ -46,7 +46,7 @@ describe('TTFN: TableSettings and Routing', () => {
     assertSearchForBernThunPresent();
   });
 
-  it('Step-6: Click on add and come back', () => {
+  it('Step-6: Click on add new TTFN Button and come back without actually creating it', () => {
     TtfnUtils.clickOnAddNewVersion();
     CommonUtils.clickCancelOnDetailViewBackToTtfn();
 
