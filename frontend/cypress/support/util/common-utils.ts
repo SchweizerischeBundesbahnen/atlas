@@ -116,7 +116,7 @@ export default class CommonUtils {
     cy.get(selector).invoke('text').should('eq', value);
   }
 
-  static deleteItems() {
+  static deleteItem() {
     cy.get(DataCy.DELETE_ITEM).click();
     cy.get(DataCy.DIALOG).contains('Warnung!');
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).should('exist');

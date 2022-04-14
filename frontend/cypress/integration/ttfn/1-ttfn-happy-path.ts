@@ -1,6 +1,6 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
 import CommonUtils from '../../support/util/common-utils';
-import {DataCy} from "../../support/data-cy";
+import { DataCy } from '../../support/data-cy';
 
 describe('Fahrplanfeldnummer', () => {
   const firstVersion = TtfnUtils.getFirstVersion();
@@ -69,12 +69,12 @@ describe('Fahrplanfeldnummer', () => {
     cy.get(DataCy.TTFN + ' table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', firstVersion.swissTimetableFieldNumber).parents('tr').click({ force: true });
-    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');
+    CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2000');
     TtfnUtils.assertContainsVersion(firstVersion);
   });
 
   it('Step-7: Delete added item', () => {
-    CommonUtils.deleteItems();
+    CommonUtils.deleteItem();
     cy.url().should('contain', '/timetable-field-number');
     TtfnUtils.checkHeaderTitle();
   });

@@ -1,6 +1,6 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
 import CommonUtils from '../../support/util/common-utils';
-import {DataCy} from "../../support/data-cy";
+import { DataCy } from '../../support/data-cy';
 
 /**
  * Szenario 3: Update, dass über Versionsgrenze geht
@@ -51,8 +51,7 @@ describe('Versioning: scenario 3', () => {
     cy.get(DataCy.EDIT_ITEM).click();
     TtfnUtils.fillVersionForm(versionUpdate);
     CommonUtils.saveTtfn();
-    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
-
+    CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2002');
   });
 
   it('Step-6: Assert fourth version (actual version)', () => {
@@ -92,7 +91,7 @@ describe('Versioning: scenario 3', () => {
   });
 
   it('Step-10: Delete versions', () => {
-    CommonUtils.deleteItems();
+    CommonUtils.deleteItem();
     TtfnUtils.checkHeaderTitle();
   });
 });

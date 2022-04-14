@@ -1,9 +1,8 @@
 import CommonUtils from '../../support/util/common-utils';
-import TtfnUtils from "../../support/util/ttfn-utils";
-import {DataCy} from "../../support/data-cy";
+import TtfnUtils from '../../support/util/ttfn-utils';
+import { DataCy } from '../../support/data-cy';
 
 describe('TTFN: TableSettings and Routing', () => {
-
   const ttfnBernThun = TtfnUtils.getTtfnBernThun();
   const churGrenze = TtfnUtils.getFirstVersion();
 
@@ -60,7 +59,7 @@ describe('TTFN: TableSettings and Routing', () => {
 
     cy.get(DataCy.EDIT_ITEM).click();
     const newDescription = 'Bern - Thun - Interlaken';
-    cy.get(DataCy.DESCRIPTION).clear().type(newDescription, {force: true});
+    cy.get(DataCy.DESCRIPTION).clear().type(newDescription, { force: true });
     CommonUtils.saveTtfn();
 
     cy.intercept('GET', '/line-directory/v1/field-numbers?**').as('getTtfns');
@@ -76,7 +75,7 @@ describe('TTFN: TableSettings and Routing', () => {
   it('Step-8: Delete Bern-Thun-Interlaken', () => {
     CommonUtils.clickFirstRowInTable(DataCy.TTFN);
 
-    CommonUtils.deleteItems();
+    CommonUtils.deleteItem();
     cy.url().should('eq', Cypress.config().baseUrl + '/timetable-field-number');
 
     // Search still present after delete
@@ -101,7 +100,7 @@ describe('TTFN: TableSettings and Routing', () => {
 
     CommonUtils.clickFirstRowInTable(DataCy.TTFN);
 
-    CommonUtils.deleteItems();
+    CommonUtils.deleteItem();
     cy.url().should('eq', Cypress.config().baseUrl + '/timetable-field-number');
 
     // Search still present after delete
@@ -109,5 +108,4 @@ describe('TTFN: TableSettings and Routing', () => {
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.TTFN);
   });
-
 });

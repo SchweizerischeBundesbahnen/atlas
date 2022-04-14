@@ -1,6 +1,6 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
-import {DataCy} from "../../../support/data-cy";
+import { DataCy } from '../../../support/data-cy';
 
 /**
  * Szenario 4: Update, das über eine ganze Version hinausragt
@@ -51,7 +51,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     cy.get(DataCy.VALID_TO).clear().type(editedLineVersion.validTo);
     cy.get(DataCy.ALTERNATIVE_NAME).clear().type(editedLineVersion.alternativeName);
     CommonUtils.saveLine();
-    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
+    CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2002');
   });
 
   it('Step-7: Assert fifth version (actual version)', () => {
@@ -106,7 +106,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-12: Delete the item ', () => {
-    CommonUtils.deleteItems();
+    CommonUtils.deleteItem();
     LidiUtils.checkHeaderTitle();
   });
 });

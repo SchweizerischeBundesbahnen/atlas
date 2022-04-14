@@ -101,7 +101,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-12: Delete the subline item ', () => {
-    CommonUtils.deleteItems();
+    CommonUtils.deleteItem();
     LidiUtils.assertIsOnSublines();
   });
 
@@ -111,7 +111,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.assertContainsLineVersion(mainline);
   });
   it('Step-14: Delete the mainline item ', () => {
-    CommonUtils.deleteItems();
+    CommonUtils.deleteItem();
     LidiUtils.assertIsOnLines();
   });
 });
