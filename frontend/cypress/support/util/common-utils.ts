@@ -1,35 +1,34 @@
-import {DataCy} from "../data-cy";
+import { DataCy } from '../data-cy';
 
 export default class CommonUtils {
-
   static fromDetailBackToTtfnOverview() {
-    this.fromDetailBackToOverview('timetable-field-number')
+    this.fromDetailBackToOverview('timetable-field-number');
   }
 
   static fromDetailBackToLinesOverview() {
-    this.fromDetailBackToOverview('line-directory/lines')
+    this.fromDetailBackToOverview('line-directory/lines');
   }
 
   static fromDetailBackToSublinesOverview() {
-    this.fromDetailBackToOverview('line-directory/sublines')
+    this.fromDetailBackToOverview('line-directory/sublines');
   }
 
   private static fromDetailBackToOverview(overviewPath: string) {
     cy.get(DataCy.BACK_TO_OVERVIEW).click();
-    cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath)
+    cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
   }
 
   static clickCancelOnDetailViewBackToTtfn() {
-    this.clickCancelOnDetailView('timetable-field-number')
+    this.clickCancelOnDetailView('timetable-field-number');
   }
 
   private static clickCancelOnDetailView(overviewPath: string) {
     cy.get(DataCy.CANCEL).click();
-    cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath)
+    cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
   }
 
   static clickFirstRowInTable(selector: string) {
-    cy.get(selector + ' table tbody tr').click({force: true});
+    cy.get(selector + ' table tbody tr').click({ force: true });
   }
 
   static assertNumberOfTableRows(selector: string, numberOfRows: number) {
@@ -43,6 +42,42 @@ export default class CommonUtils {
 
   static navigateToHome() {
     cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click();
+  }
+
+  private static openSideMenu() {
+    cy.get('.sidenav-menu-btn').then(($sidemenu) => {
+      if (!$sidemenu.hasClass('menu-opened')) {
+        $sidemenu.click();
+      }
+    });
+  }
+
+  static navigateToHomepageViaSidemenu() {
+    // Move to Home via the side-menu
+    this.openSideMenu();
+    cy.get(DataCy.SIDEMENU_START).click();
+
+    // Check that we are on the (german) home-page
+    cy.contains('Home');
+    cy.contains('Die SKI Business Plattform');
+  }
+
+  static navigateToTtfnViaSidemenu() {
+    // Move to TTFN via the side-menu
+    this.openSideMenu();
+    cy.get(DataCy.SIDEMENU_TTFN).click();
+
+    // Check that we are on the TTFN-path
+    cy.url().should('contain', '/timetable-field-number');
+  }
+
+  static navigateToLidiViaSidemenu() {
+    // Move to LiDi via the side-menu
+    this.openSideMenu();
+    cy.get(DataCy.SIDEMENU_LIDI).click();
+
+    // Check that we are on the LiDi-path
+    cy.url().should('contain', '/line-directory');
   }
 
   static assertHeaderTitle(title: string) {
@@ -61,8 +96,8 @@ export default class CommonUtils {
     this.saveVersionWithWait('line-directory/v1/sublines/versions/*');
   }
 
-  static getTotalRange(){
-    return cy.get(DataCy.TOTAL_RANGE)
+  static getTotalRange() {
+    return cy.get(DataCy.TOTAL_RANGE);
   }
 
   static saveVersionWithWait(urlToIntercept: string) {
@@ -96,8 +131,8 @@ export default class CommonUtils {
 
   static assertVersionRange(versionNumber: number, validFrom: string, validTo: string) {
     const versionDataSelector = this.getVersionRowSelector(versionNumber) + ' > .cdk-column-';
-    cy.get(versionDataSelector + "validFrom").should('contain.text', validFrom);
-    cy.get(versionDataSelector + "validTo").should('contain.text', validTo);
+    cy.get(versionDataSelector + 'validFrom').should('contain.text', validFrom);
+    cy.get(versionDataSelector + 'validTo').should('contain.text', validTo);
   }
 
   static getVersionRowSelector(versionNumber: number) {
@@ -157,6 +192,6 @@ export default class CommonUtils {
   }
 
   static assertSelectedVersion(number: number) {
-    cy.get('.selected-row > .cdk-column-versionNumber').should('contain.text', 'Version ' + number)
+    cy.get('.selected-row > .cdk-column-versionNumber').should('contain.text', 'Version ' + number);
   }
 }
