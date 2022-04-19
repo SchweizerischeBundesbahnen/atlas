@@ -46,7 +46,11 @@
         [min]="MIN_DATE"
         [max]="MAX_DATE"
       />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix [for]="picker">
+        <mat-icon matDatepickerToggleIcon>
+          <app-date-icon [enabled]="true"></app-date-icon>
+        </mat-icon>
+      </mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngFor="let validationError of getDateControlValidation()">
         {{
