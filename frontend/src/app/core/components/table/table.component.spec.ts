@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { TableSearchComponent } from '../table-search/table-search.component';
 import { AppTestingModule } from '../../../app.testing.module';
+import { DateIconComponent } from '../date-icon/date-icon.component';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -15,7 +16,12 @@ describe('TableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TableComponent, LoadingSpinnerComponent, TableSearchComponent],
+      declarations: [
+        TableComponent,
+        LoadingSpinnerComponent,
+        TableSearchComponent,
+        DateIconComponent,
+      ],
       imports: [AppTestingModule],
       providers: [TranslatePipe],
     }).compileComponents();

@@ -7,8 +7,4 @@ import { Component, Input } from '@angular/core';
 })
 export class DateIconComponent {
   @Input() enabled!: boolean;
-
-  constructor() {
-    console.log(this.enabled);
-  }
 }
