@@ -29,6 +29,7 @@
     [cpDisableInput]="true"
     [cpDisabled]="formControl.disabled"
     [ngStyle]="formControl.disabled ? { cursor: 'initial' } : {}"
+    [ngClass]="formControl.disabled ? 'inactive' : 'active'"
     src="assets/images/color_lens.svg"
     alt="Color Picker"
   />
