@@ -6,8 +6,13 @@ describe('TTFN: TableSettings and Routing', () => {
   const ttfnBernThun = TtfnUtils.getTtfnBernThun();
   const churGrenze = TtfnUtils.getFirstVersion();
 
-  function assertSearchForBernThunPresent() {
+  const firstJune2000 = '01.06.2000';
+  const statusAktiv = 'Aktiv';
+
+  function assertAllTableFiltersAreFilled() {
     cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(ttfnBernThun.swissTimetableFieldNumber);
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusAktiv]);
+    CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, firstJune2000);
     CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
   }
 
@@ -40,17 +45,25 @@ describe('TTFN: TableSettings and Routing', () => {
       ttfnBernThun.swissTimetableFieldNumber
     );
 
+    CommonUtils.typeSearchInput(
+      '/line-directory/v1/field-numbers?**',
+      DataCy.TABLE_SEARCH_DATE_INPUT,
+      firstJune2000
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, statusAktiv);
+
     // Check that the table contains 1 result
     CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
 
-    assertSearchForBernThunPresent();
+    assertAllTableFiltersAreFilled();
   });
 
   it('Step-6: Click on add new TTFN Button and come back without actually creating it', () => {
     TtfnUtils.clickOnAddNewVersion();
     CommonUtils.clickCancelOnDetailViewBackToTtfn();
 
-    assertSearchForBernThunPresent();
+    assertAllTableFiltersAreFilled();
   });
 
   it('Step-7: Edit Bern-Thun to Bern-Thun-Interlaken', () => {
@@ -67,7 +80,7 @@ describe('TTFN: TableSettings and Routing', () => {
     cy.wait('@getTtfns');
 
     // Search still present after edit
-    assertSearchForBernThunPresent();
+    assertAllTableFiltersAreFilled();
     // Change is already visible in table
     cy.get(DataCy.TTFN + ' .mat-row > .cdk-column-description').contains(newDescription);
   });
@@ -79,7 +92,7 @@ describe('TTFN: TableSettings and Routing', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/timetable-field-number');
 
     // Search still present after delete
-    assertSearchForBernThunPresent();
+    assertAllTableFiltersAreFilled();
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.TTFN);
   });

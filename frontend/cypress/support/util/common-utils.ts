@@ -194,4 +194,34 @@ export default class CommonUtils {
   static assertSelectedVersion(number: number) {
     cy.get('.selected-row > .cdk-column-versionNumber').should('contain.text', 'Version ' + number);
   }
+
+  /**
+   * It is also checked if all options that are not given have the state unchecked.
+   */
+  static assertItemsFromDropdownAreChecked(selector: string, checkedOptionNames: string[]) {
+    cy.get(selector)
+      .click()
+      .get('mat-option')
+      .each(($dropDownElement) => {
+        const dropDownElementName = $dropDownElement.text().trim();
+        const message = 'State of checkbox "' + dropDownElementName + '"';
+
+        const checkBoxState = $dropDownElement.find('mat-pseudo-checkbox').attr('ng-reflect-state');
+        if (checkedOptionNames.includes(dropDownElementName)) {
+          expect(checkBoxState, message).to.equal('checked');
+        } else {
+          expect(checkBoxState, message).to.equal('unchecked');
+        }
+      });
+    // Workaround to close the dropDown-menu again after all checks are done
+    cy.get(selector).type('{esc}');
+  }
+
+  static assertDatePickerIs(selector: string, date: string) {
+    cy.get(selector)
+      .invoke('val')
+      .then((text) => {
+        expect(date, selector + '-Date').to.equal(text);
+      });
+  }
 }
