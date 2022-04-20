@@ -1,6 +1,6 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
-import {DataCy} from "../../../support/data-cy";
+import { DataCy } from '../../../support/data-cy';
 
 describe('Teillinie', () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
@@ -85,23 +85,23 @@ describe('Teillinie', () => {
     cy.get(DataCy.LIDI_SUBLINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
     cy.contains('td', sublineVersion.swissSublineNumber).parents('tr').click({ force: true });
-    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2000');
+    CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2000');
     LidiUtils.assertContainsSublineVersion(sublineVersion);
   });
 
   it('Step-8: Delete the subline item', () => {
-    CommonUtils.deleteItems();
+    CommonUtils.deleteItem();
     LidiUtils.assertIsOnSublines();
   });
 
   it('Step-9: Navigate to the mainline item', () => {
     LidiUtils.changeLiDiTabToLines();
     LidiUtils.searchAndNavigateToLine(mainline);
-    CommonUtils.getTotalRange().should('contain','01.01.2000').should('contain','31.12.2002');
+    CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2002');
   });
 
   it('Step-10: Delete the mainline item', () => {
-    CommonUtils.deleteItems();
+    CommonUtils.deleteItem();
     LidiUtils.assertIsOnLines();
   });
 });

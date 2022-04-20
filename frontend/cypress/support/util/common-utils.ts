@@ -116,7 +116,7 @@ export default class CommonUtils {
     cy.get(selector).invoke('text').should('eq', value);
   }
 
-  static deleteItems() {
+  static deleteItem() {
     cy.get(DataCy.DELETE_ITEM).click();
     cy.get(DataCy.DIALOG).contains('Warnung!');
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).should('exist');
@@ -193,5 +193,35 @@ export default class CommonUtils {
 
   static assertSelectedVersion(number: number) {
     cy.get('.selected-row > .cdk-column-versionNumber').should('contain.text', 'Version ' + number);
+  }
+
+  /**
+   * It is also checked if all options that are not given have the state unchecked.
+   */
+  static assertItemsFromDropdownAreChecked(selector: string, checkedOptionNames: string[]) {
+    cy.get(selector)
+      .click()
+      .get('mat-option')
+      .each(($dropDownElement) => {
+        const dropDownElementName = $dropDownElement.text().trim();
+        const message = 'State of checkbox "' + dropDownElementName + '"';
+
+        const checkBoxState = $dropDownElement.hasClass('mat-selected');
+        if (checkedOptionNames.includes(dropDownElementName)) {
+          expect(checkBoxState, message).to.be.true;
+        } else {
+          expect(checkBoxState, message).to.be.false;
+        }
+      });
+    // Workaround to close the dropDown-menu again after all checks are done
+    cy.get(selector).type('{esc}');
+  }
+
+  static assertDatePickerIs(selector: string, date: string) {
+    cy.get(selector)
+      .invoke('val')
+      .then((text) => {
+        expect(date, selector + '-Date').to.equal(text);
+      });
   }
 }
