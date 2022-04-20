@@ -110,7 +110,7 @@ frontend/cypress/videos
 frontend/cypress/screenshots
 frontend/cypress/logs
 frontend/.angular
-frontend/cypress.env.json
+frontend/cypress.env.json*
 frontend/dist
 frontend/node_modules
 frontend/coverage
