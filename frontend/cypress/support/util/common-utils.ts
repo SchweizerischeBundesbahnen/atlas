@@ -206,11 +206,11 @@ export default class CommonUtils {
         const dropDownElementName = $dropDownElement.text().trim();
         const message = 'State of checkbox "' + dropDownElementName + '"';
 
-        const checkBoxState = $dropDownElement.find('mat-pseudo-checkbox').attr('ng-reflect-state');
+        const checkBoxState = $dropDownElement.hasClass('mat-selected');
         if (checkedOptionNames.includes(dropDownElementName)) {
-          expect(checkBoxState, message).to.equal('checked');
+          expect(checkBoxState, message).to.be.true;
         } else {
-          expect(checkBoxState, message).to.equal('unchecked');
+          expect(checkBoxState, message).to.be.false;
         }
       });
     // Workaround to close the dropDown-menu again after all checks are done
