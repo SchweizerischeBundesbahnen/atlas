@@ -105,10 +105,12 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-label class="font-regular-sm">
           {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '146 - STI' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
@@ -138,10 +140,12 @@
       </div>
 
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg subtitle-margin required-indicator"
-          >{{ 'LIDI.PAYMENT.TYPE' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg subtitle-margin required-indicator"
+            >{{ 'LIDI.PAYMENT.TYPE' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
             formControlName="paymentType"
