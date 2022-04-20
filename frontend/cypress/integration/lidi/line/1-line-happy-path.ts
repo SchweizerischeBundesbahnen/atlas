@@ -15,8 +15,8 @@ describe('Linie', () => {
   it('Step-3: Check the Linienverzeichnis Line Table is visible', () => {
     LidiUtils.checkHeaderTitle();
     CommonUtils.assertTableSearch(0, 0, 'Suche');
-    CommonUtils.assertTableSearch(0, 1, 'Status');
-    CommonUtils.assertTableSearch(0, 2, 'Linientyp');
+    CommonUtils.assertTableSearch(0, 1, 'Linientyp');
+    CommonUtils.assertTableSearch(0, 2, 'Status');
     CommonUtils.assertTableSearch(0, 3, 'Gültig am');
     CommonUtils.assertTableHeader(0, 0, 'Liniennummer');
     CommonUtils.assertTableHeader(0, 1, 'Linienbezeichnung');

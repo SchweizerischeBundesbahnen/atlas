@@ -18,6 +18,7 @@
       </mat-chip-list>
     </mat-form-field>
   </div>
+  <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
   <div class="d-flex flex-column col pe-3">
     <mat-label class="font-bold-lg">{{ 'COMMON.STATUS' | translate }}</mat-label>
     <mat-form-field appearance="outline">
@@ -33,7 +34,6 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
   <div class="d-flex flex-column col">
     <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
     <mat-form-field appearance="outline">

@@ -22,8 +22,8 @@ describe('Teillinie', () => {
 
   it('Step-4: Check the Linienverzeichnis Line Table is visible', () => {
     CommonUtils.assertTableSearch(0, 0, 'Suche');
-    CommonUtils.assertTableSearch(0, 1, 'Status');
-    CommonUtils.assertTableSearch(0, 2, 'Teillinientyp');
+    CommonUtils.assertTableSearch(0, 1, 'Teillinientyp');
+    CommonUtils.assertTableSearch(0, 2, 'Status');
     CommonUtils.assertTableSearch(0, 3, 'Gültig am');
     CommonUtils.assertTableHeader(0, 0, 'Teilliniennummer');
     CommonUtils.assertTableHeader(0, 1, 'Teillinienbezeichnung');
