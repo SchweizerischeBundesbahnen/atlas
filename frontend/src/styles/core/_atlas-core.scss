@@ -4,7 +4,7 @@
 
 @use 'src/styles/variables' as variables;
 
-.required-indicator:after {
+.required-indicator::after {
   content: ' *';
 
   font-style: normal !important;
@@ -12,4 +12,9 @@
   font-size: 18px !important;
   line-height: 150% !important;
   color: variables.$gray-900;
+  padding-right: 0.3rem;
+}
+
+.info-icon-position {
+  display: flex;
 }
