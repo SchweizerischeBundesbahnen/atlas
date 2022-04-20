@@ -48,7 +48,7 @@
       "REVIEWED": "Verifica conclusa"
     },
     "OK": "OK",
-    "EDIT_VERSION": "Modificare versione",
+    "EDIT_VERSION": "Version bearbeiten__IT__",
     "CREATE_VERSION": "Aggiungere versione",
     "ROLES": {
       "lidi-writer": "Autore LiDi",
@@ -70,7 +70,6 @@
     "KEY_DATA": "Eckdaten__IT__",
     "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__IT__",
     "OPTIONAL": "(opzionale)",
-    "DATE_FORMAT": "TT.MM.JJJJ__IT__",
     "COMMENT": "Commento",
     "TEXT": "Testo libero"
   },

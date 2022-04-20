@@ -48,7 +48,7 @@
       "REVIEWED": "Prüfung abgeschlossen"
     },
     "OK": "Ok",
-    "EDIT_VERSION": "Version editieren",
+    "EDIT_VERSION": "Version bearbeiten",
     "CREATE_VERSION": "Version hinzufügen",
     "ROLES": {
       "lidi-writer": "LiDi Writer",
@@ -70,7 +70,6 @@
     "KEY_DATA": "Eckdaten",
     "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben",
     "OPTIONAL": "(optional)",
-    "DATE_FORMAT": "TT.MM.JJJJ",
     "COMMENT": "Kommentar",
     "TEXT": "Freitext"
   },
