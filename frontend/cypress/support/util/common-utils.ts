@@ -180,6 +180,21 @@ export default class CommonUtils {
     });
   }
 
+  /**
+   * Cypress.Chainable<JQuery<HTMLElement>>.type() throws an exception
+   * when an empty string ("") is passed. This method only calls type() when textToType is filled.
+   */
+  static getClearType(selector: string, textToType: string, force: boolean = false) {
+    cy.get(selector)
+      .clear()
+      .then((e) => {
+        // Workaround so that no exception is thrown when textToType="" (meaning an empty string)
+        if (textToType) {
+          cy.wrap(e).type(textToType×, { force: force });
+        }
+      });
+  }
+
   static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
     cy.intercept('GET', pathToIntercept).as('searchItemUlrIntercept');
     cy.get(searchSelector).clear().type(value).type('{enter}').wait('@searchItemUlrIntercept');
