@@ -9,6 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
+import { InfoIconComponent } from '../../../../core/components/info-icon/info-icon.component';
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -190,7 +191,12 @@ describe('LineDetailComponent for new lineVersion', () => {
 
 function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersion }) {
   TestBed.configureTestingModule({
-    declarations: [LineDetailComponent, MockAppDetailWrapperComponent, ErrorNotificationComponent],
+    declarations: [
+      LineDetailComponent,
+      MockAppDetailWrapperComponent,
+      ErrorNotificationComponent,
+      InfoIconComponent,
+    ],
     imports: [AppTestingModule],
     providers: [
       { provide: FormBuilder },
