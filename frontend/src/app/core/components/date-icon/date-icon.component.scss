@@ -1,8 +1,9 @@
-.active {
-  filter: brightness(0) saturate(100%) invert(19%) sepia(67%) saturate(2574%) hue-rotate(208deg)
-    brightness(89%) contrast(92%);
+@use 'src/styles/variables' as variables;
+
+svg.active path {
+  fill: variables.$primary-400;
 }
 
-.inactive {
-  filter: invert(80%) sepia(0%) saturate(3%) hue-rotate(63deg) brightness(99%) contrast(85%);
+svg.inactive path {
+  fill: variables.$gray-500;
 }
