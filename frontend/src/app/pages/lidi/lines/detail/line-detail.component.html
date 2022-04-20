@@ -60,10 +60,12 @@
 
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col-4 pe-3">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-label class="font-regular-sm">
           {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.50.391' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
@@ -109,10 +111,12 @@
 
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-label class="font-regular-sm">
           {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '146 - STI' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
@@ -124,10 +128,12 @@
       </div>
 
       <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg required-indicator subtitle-margin"
-          >{{ 'LIDI.TYPE' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator subtitle-margin"
+            >{{ 'LIDI.TYPE' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
             formControlName="lineType"
@@ -143,10 +149,12 @@
       </div>
 
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg required-indicator subtitle-margin"
-          >{{ 'LIDI.PAYMENT.TYPE' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator subtitle-margin"
+            >{{ 'LIDI.PAYMENT.TYPE' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
             formControlName="paymentType"
@@ -168,10 +176,12 @@
         <url-comment [formGroup]="form"></url-comment>
       </div>
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.LINE.FONT_RGB' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'LIDI.LINE.FONT_RGB' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-label class="font-regular-sm"
           >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
         >
@@ -184,10 +194,12 @@
       </div>
 
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.LINE.FONT_CMYK' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'LIDI.LINE.FONT_CMYK' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-label class="font-regular-sm"
           >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '0,0,0,100' }}</mat-label
         >
@@ -202,10 +214,12 @@
 
     <div class="col-12 d-flex justify-content-end mt-3">
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.LINE.BACKGROUND_RGB' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'LIDI.LINE.BACKGROUND_RGB' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-label class="font-regular-sm"
           >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
         >
@@ -218,10 +232,12 @@
       </div>
 
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.LINE.BACKGROUND_CMYK' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'LIDI.LINE.BACKGROUND_CMYK' | translate }}
+          </mat-label>
           <app-info-icon infoTitle="{{ 'To replace' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-label class="font-regular-sm"
           >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '85,10,65,0' }}</mat-label
         >
