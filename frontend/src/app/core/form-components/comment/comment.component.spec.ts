@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommentComponent } from './comment.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
+import { InfoIconComponent } from '../../components/info-icon/info-icon.component';
 
 describe('CommentComponent', () => {
   let component: CommentComponent;
@@ -10,7 +11,7 @@ describe('CommentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CommentComponent],
+      declarations: [CommentComponent, InfoIconComponent],
       imports: [AppTestingModule],
     }).compileComponents();
   });

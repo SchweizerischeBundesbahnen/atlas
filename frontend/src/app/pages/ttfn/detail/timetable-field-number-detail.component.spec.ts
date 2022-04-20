@@ -16,6 +16,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { FormModule } from '../../../core/module/form.module';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
+import { InfoIconComponent } from '../../../core/components/info-icon/info-icon.component';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -106,6 +107,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
         MockAppCoverageComponent,
         MockAppDetailWrapperComponent,
         ErrorNotificationComponent,
+        InfoIconComponent,
       ],
       imports: [AppTestingModule],
       providers: [
@@ -197,6 +199,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         DetailWrapperComponent,
         MockAppCoverageComponent,
         ErrorNotificationComponent,
+        InfoIconComponent,
       ],
       imports: [
         RouterTestingModule.withRoutes([{ path: '', component: HomeComponent }]),
