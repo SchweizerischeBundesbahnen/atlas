@@ -3,7 +3,9 @@
     <mat-label class="font-bold-lg required-indicator">{{
       'COMMON.VALID_FROM' | translate
     }}</mat-label>
-    <mat-label class="font-regular-sm">{{ 'FORM.DATE_FORMAT' | translate }}</mat-label>
+    <mat-label class="font-regular-sm"
+      >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ EXAMPLE_DATE_FROM }}</mat-label
+    >
     <mat-form-field>
       <input
         data-cy="validFrom"
@@ -23,7 +25,9 @@
     <mat-label class="font-bold-lg required-indicator">{{
       'COMMON.VALID_TO' | translate
     }}</mat-label>
-    <mat-label class="font-regular-sm">{{ 'FORM.DATE_FORMAT' | translate }}</mat-label>
+    <mat-label class="font-regular-sm"
+      >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ EXAMPLE_DATE_TO }}</mat-label
+    >
     <mat-form-field>
       <input
         data-cy="validTo"

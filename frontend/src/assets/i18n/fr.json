@@ -48,7 +48,7 @@
       "REVIEWED": "Examen terminé"
     },
     "OK": "OK",
-    "EDIT_VERSION": "Éditer la version",
+    "EDIT_VERSION": "Version bearbeiten__FR__",
     "CREATE_VERSION": "Ajouter la version",
     "ROLES": {
       "lidi-writer": "LiDi Writer",
@@ -70,7 +70,6 @@
     "KEY_DATA": "Eckdaten__FR__",
     "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__FR__",
     "OPTIONAL": "(optionnel)",
-    "DATE_FORMAT": "TT.MM.JJJJ__FR__",
     "COMMENT": "Commentaire",
     "TEXT": "Texte libre"
   },
