@@ -261,6 +261,29 @@ export default class LidiUtils {
     };
   }
 
+  static getSecondMinimalLineVersion() {
+    return {
+      slnid: '',
+      validFrom: '31.12.9999',
+      validTo: '31.12.9999',
+      swissLineNumber: 'minimal2',
+      businessOrganisation: 'BO2',
+      type: 'Temporär',
+      paymentType: 'Keine',
+      colorFontRgb: '#1FE23D',
+      colorBackRgb: '#271611',
+      colorFontCmyk: '1,2,3,4',
+      colorBackCmyk: '0,33,66,100',
+      description: '',
+      number: '',
+      alternativeName: '',
+      combinationName: '',
+      longName: '',
+      icon: '',
+      comment: '',
+    };
+  }
+
   static getFirstLineVersion() {
     return {
       slnid: '',

@@ -1,19 +1,33 @@
 import CommonUtils from '../../../support/util/common-utils';
-import TtfnUtils from '../../../support/util/ttfn-utils';
 import { DataCy } from '../../../support/data-cy';
 import LidiUtils from '../../../support/util/lidi-utils';
 
-describe('TTFN: TableSettings and Routing', () => {
-  const minimalLine = LidiUtils.getFirstMinimalLineVersion();
+describe('Lines: TableSettings and Routing', () => {
+  const minimalLine1 = LidiUtils.getFirstMinimalLineVersion();
+  const minimalLine2 = LidiUtils.getSecondMinimalLineVersion();
 
   const firstValidDate = '01.01.1700';
   const statusAktiv = 'Aktiv';
 
+  function deleteFirstFoundLineInTable() {
+    CommonUtils.clickFirstRowInTable(DataCy.LIDI_LINES);
+
+    CommonUtils.deleteItem();
+    cy.url().should('eq', Cypress.config().baseUrl + '/line-directory/lines');
+  }
+
   function assertAllTableFiltersAreFilled() {
-    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(ttfnBernThun.swissTimetableFieldNumber);
+    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalLine1.swissLineNumber);
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusAktiv]);
-    CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, firstValidDate);
-    CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
+
+    // Comment back in when ATLAS-614 is done
+    // CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_LINE_TYPE, [
+    //   minimalLine1.type,
+    // ]);
+    // CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, firstValidDate);
+
+    // Check that the table contains 1 result
+    CommonUtils.assertNumberOfTableRows(DataCy.LIDI_LINES, 1);
   }
 
   it('Step-1: Login on ATLAS', () => {
@@ -26,99 +40,91 @@ describe('TTFN: TableSettings and Routing', () => {
 
   it('Step-3: Add new line', () => {
     LidiUtils.clickOnAddNewLinieVersion();
-    LidiUtils.fillLineVersionForm(minimalLine);
+    LidiUtils.fillLineVersionForm(minimalLine1);
     CommonUtils.saveLine();
     CommonUtils.fromDetailBackToLinesOverview();
   });
 
-  it.skip('Step-4: Add another field number', () => {
-    TtfnUtils.clickOnAddNewVersion();
-    TtfnUtils.fillVersionForm(ttfnBernThun);
-    CommonUtils.saveTtfn();
-    CommonUtils.fromDetailBackToTtfnOverview();
+  it('Step-4: Add another line', () => {
+    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.fillLineVersionForm(minimalLine2);
+    CommonUtils.saveLine();
+    CommonUtils.fromDetailBackToLinesOverview();
   });
 
-  it.skip('Step-5: Look for TTFN Bern - Thun', () => {
+  it('Step-5: Look for line minimal1', () => {
     CommonUtils.typeSearchInput(
-      '/line-directory/v1/field-numbers?**',
+      '/line-directory/v1/lines?**',
       DataCy.TABLE_SEARCH_CHIP_INPUT,
-      ttfnBernThun.swissTimetableFieldNumber
+      minimalLine1.swissLineNumber
     );
 
+    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, statusAktiv);
+    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_LINE_TYPE, minimalLine1.type);
+
     CommonUtils.typeSearchInput(
-      '/line-directory/v1/field-numbers?**',
+      '/line-directory/v1/lines?**',
       DataCy.TABLE_SEARCH_DATE_INPUT,
       firstValidDate
     );
 
-    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, statusAktiv);
+    assertAllTableFiltersAreFilled();
+  });
 
-    // Check that the table contains 1 result
-    CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
+  it('Step-6: Click on add new Line Button and come back without actually creating it', () => {
+    LidiUtils.clickOnAddNewLinieVersion();
+    CommonUtils.clickCancelOnDetailViewBackToLines();
 
     assertAllTableFiltersAreFilled();
   });
 
-  it.skip('Step-6: Click on add new TTFN Button and come back without actually creating it', () => {
-    TtfnUtils.clickOnAddNewVersion();
-    CommonUtils.clickCancelOnDetailViewBackToTtfn();
-
-    assertAllTableFiltersAreFilled();
-  });
-
-  it.skip('Step-7: Edit Bern-Thun to Bern-Thun-Interlaken', () => {
-    CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
-    CommonUtils.clickFirstRowInTable(DataCy.TTFN);
+  it('Step-7: Change CHLNR of line from minimal1 to minimal1-changed', () => {
+    CommonUtils.assertNumberOfTableRows(DataCy.LIDI_LINES, 1);
+    CommonUtils.clickFirstRowInTable(DataCy.LIDI_LINES);
 
     cy.get(DataCy.EDIT_ITEM).click();
-    const newDescription = 'Bern - Thun - Interlaken';
-    cy.get(DataCy.DESCRIPTION).clear().type(newDescription, { force: true });
-    CommonUtils.saveTtfn();
+    const newCHLNR = 'minimal1-changed';
+    cy.get(DataCy.SWISS_LINE_NUMBER).clear().type(newCHLNR, { force: true });
+    CommonUtils.saveLine();
 
-    cy.intercept('GET', '/line-directory/v1/field-numbers?**').as('getTtfns');
+    cy.intercept('GET', '/line-directory/v1/line-directory/lines?**').as('getLines');
     CommonUtils.fromDetailBackToTtfnOverview();
-    cy.wait.skip('@getTtfns');
+    cy.wait('@getLines');
 
     // Search still present after edit
     assertAllTableFiltersAreFilled();
     // Change is already visible in table
-    cy.get(DataCy.TTFN + ' .mat-row > .cdk-column-description').contains(newDescription);
+    cy.get(DataCy.TTFN + ' .mat-row > .cdk-column-swissLineNumber').contains(newCHLNR);
   });
 
   it.skip('Step-8: Delete Line minimal1', () => {
-    CommonUtils.clickFirstRowInTable(DataCy.TTFN);
-
-    CommonUtils.deleteItem();
-    cy.url().should('eq', Cypress.config().baseUrl + '/timetable-field-number');
+    deleteFirstFoundLineInTable();
 
     // Search still present after delete
     assertAllTableFiltersAreFilled();
     // No more items found
-    CommonUtils.assertNoItemsInTable(DataCy.TTFN);
+    CommonUtils.assertNoItemsInTable(DataCy.LIDI_LINES);
   });
 
-  it.skip('Step-9: Cleanup other TTFN', () => {
+  it('Step-9: Cleanup other TTFN', () => {
     // Get rid of search filter by reload
     cy.reload();
 
     // Find other created item to clean up
     CommonUtils.typeSearchInput(
-      '/line-directory/v1/field-numbers?**',
+      '/line-directory/v1/line-directory/lines?**',
       DataCy.TABLE_SEARCH_CHIP_INPUT,
-      churGrenze.swissTimetableFieldNumber
+      minimalLine2.swissLineNumber
     );
 
     // Check that the table contains 1 result
-    CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
+    CommonUtils.assertNumberOfTableRows(DataCy.LIDI_LINES, 1);
 
-    CommonUtils.clickFirstRowInTable(DataCy.TTFN);
-
-    CommonUtils.deleteItem();
-    cy.url().should('eq', Cypress.config().baseUrl + '/timetable-field-number');
+    deleteFirstFoundLineInTable();
 
     // Search still present after delete
-    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(churGrenze.swissTimetableFieldNumber);
+    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalLine2.swissLineNumber);
     // No more items found
-    CommonUtils.assertNoItemsInTable(DataCy.TTFN);
+    CommonUtils.assertNoItemsInTable(DataCy.LIDI_LINES);
   });
 });
