@@ -46,10 +46,10 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-12 pe-3">
-        <mat-label class="font-bold-lg"
-          >{{ 'TTFN.DESCRIPTION' | translate }}
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg">{{ 'TTFN.DESCRIPTION' | translate }} </mat-label>
           <app-info-icon infoTitle="{{ 'TTFN.DESCRIPTION_INFO' | translate }}"></app-info-icon>
-        </mat-label>
+        </div>
         <mat-label class="font-regular-sm">
           {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'Bern Bahnhof - Eigerplatz - Weissenbühl' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
