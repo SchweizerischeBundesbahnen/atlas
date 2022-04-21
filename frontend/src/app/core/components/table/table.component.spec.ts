@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { TableSearchComponent } from '../table-search/table-search.component';
 import { AppTestingModule } from '../../../app.testing.module';
-import { DateIconComponent } from '../date-icon/date-icon.component';
+import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
 
 describe('TableComponent', () => {
   /*eslint-disable */

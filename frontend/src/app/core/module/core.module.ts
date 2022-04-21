@@ -22,8 +22,7 @@ import { ErrorNotificationComponent } from '../notification/error/error-notifica
 import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
 import { CoverageComponent } from '../components/coverage/coverage.component';
 import { RouteToDialogComponent } from '../components/route-to-dialog/route-to-dialog.component';
-import { DateIconComponent } from '../components/date-icon/date-icon.component';
-import { InfoIconComponent } from '../components/info-icon/info-icon.component';
+import { FormModule } from './form.module';
 
 const coreComponents = [
   DetailWrapperComponent,
@@ -42,8 +41,6 @@ const coreComponents = [
   ErrorNotificationComponent,
   CoverageComponent,
   RouteToDialogComponent,
-  DateIconComponent,
-  InfoIconComponent,
 ];
 
 @NgModule({
@@ -53,6 +50,7 @@ const coreComponents = [
     MaterialModule,
     TranslateModule,
     RouterModule,
+    FormModule,
     HttpClientModule,
     OAuthModule.forRoot({
       resourceServer: {
