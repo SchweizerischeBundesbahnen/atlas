@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-info-icon',
+  selector: 'form-info-icon',
   templateUrl: './info-icon.component.html',
   styleUrls: ['./info-icon.component.scss'],
 })
