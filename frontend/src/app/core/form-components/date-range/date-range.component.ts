@@ -12,20 +12,10 @@ export class DateRangeComponent {
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
 
-<<<<<<< HEAD
   readonly EXAMPLE_DATE_FROM = '21.01.2021';
   readonly EXAMPLE_DATE_TO = '31.12.9999';
 
-  isEnabled(fromName: string): boolean {
-    return this.getFormControl(fromName).enabled;
-  }
-
-  getFormControl(formName: string): AbstractControl {
-    return <AbstractControl>this.formGroup.get([formName]);
-=======
   get isEnabled(): boolean {
     return this.formGroup.enabled;
->>>>>>> 6b0d3750 (ATLAS-688: changes after review)
   }
-
 }
