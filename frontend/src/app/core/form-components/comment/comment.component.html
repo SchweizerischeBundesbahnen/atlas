@@ -1,9 +1,9 @@
 <div class="col-12 d-flex mt-3" [formGroup]="formGroup">
   <div class="d-flex flex-column col-6">
-    <mat-label class="font-bold-lg"
-      >{{ 'FORM.COMMENT' | translate }}
+    <div class="info-icon-position">
+      <mat-label class="font-bold-lg">{{ 'FORM.COMMENT' | translate }} </mat-label>
       <app-info-icon infoTitle="{{ 'FORM.COMMENT_INFO' | translate }}"></app-info-icon>
-    </mat-label>
+    </div>
     <mat-label class="font-regular-sm">
       {{ 'FORM.TEXT' | translate }} |
       {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 1500 } }}

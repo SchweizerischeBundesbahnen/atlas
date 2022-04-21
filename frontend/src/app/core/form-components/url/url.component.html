@@ -1,8 +1,8 @@
 <div class="d-flex flex-column col-12 pe-12" [formGroup]="formGroup">
-  <mat-label class="font-bold-lg"
-    >{{ 'LIDI.ICON' | translate }}
+  <div class="info-icon-position">
+    <mat-label class="font-bold-lg">{{ 'LIDI.ICON' | translate }} </mat-label>
     <app-info-icon infoTitle="{{ 'LIDI.ICON_INFO' | translate }}"></app-info-icon>
-  </mat-label>
+  </div>
   <mat-label class="font-regular-sm">
     {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'https://sbb.ch' }} |
     {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
