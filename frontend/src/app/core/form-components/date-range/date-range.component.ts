@@ -11,4 +11,7 @@ export class DateRangeComponent {
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
+
+  readonly EXAMPLE_DATE_FROM = '21.01.2021';
+  readonly EXAMPLE_DATE_TO = '31.12.9999';
 }
