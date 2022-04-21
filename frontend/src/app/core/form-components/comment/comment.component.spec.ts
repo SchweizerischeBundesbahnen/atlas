@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommentComponent } from './comment.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
-import { InfoIconComponent } from '../../components/info-icon/info-icon.component';
+import { InfoIconComponent } from '../info-icon/info-icon.component';
 
 describe('CommentComponent', () => {
   let component: CommentComponent;

@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '../../../../core/components/info-icon/info-icon.component';
+import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 
 const lineVersion: LineVersion = {
   id: 1234,
