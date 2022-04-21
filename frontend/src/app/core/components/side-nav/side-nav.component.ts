@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { Page } from '../../model/page';
 import { Pages } from '../../../pages/pages';
 
@@ -8,11 +8,5 @@ import { Pages } from '../../../pages/pages';
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent {
-  @Output() showSideNav = new EventEmitter<void>();
-
   pages: Page[] = Pages.pages;
-
-  toggle(): void {
-    this.showSideNav.emit();
-  }
 }
