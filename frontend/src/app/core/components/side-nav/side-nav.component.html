@@ -7,8 +7,7 @@
     mat-list-item
     class="font-bold-base color-primary-400"
     routerLink="{{ page.path }}"
-    routerLinkActive="route-active"
-    [routerLinkActiveOptions]="{ exact: true }"
+    [ngClass]="isRouteActive(page.path) ? 'route-active' : ''"
   >
     {{ page.titleMenu ?? '' | translate }}
     <span class="spacer"></span>

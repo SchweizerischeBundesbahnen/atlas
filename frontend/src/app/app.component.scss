@@ -1,15 +1,8 @@
 @use 'src/styles/variables' as variables;
 
 $navMenuBtnHeight: 79px;
-
 $navMenuBtnDefaultLeft: 32.5px;
 $navMenuBtnLargeLeft: 56.5px;
-
-i.bi {
-  font-size: variables.$navigationItemFontSize;
-  color: variables.$foreground;
-  padding-right: 9px;
-}
 
 .app-body {
   margin: 0;
@@ -37,12 +30,11 @@ i.bi {
   border-radius: 0;
 }
 
-.menu-opened {
-  padding-left: 30px !important;
-}
-
-.bi-arrow-left::before {
-  padding-right: 8px;
+.bi-arrow-left,
+.bi-list {
+  &:before {
+    padding-right: 8px;
+  }
 }
 
 .sidenav-menu-btn span {
@@ -80,8 +72,5 @@ i.bi {
   .sidenav-menu-btn {
     width: variables.$navigationLargeSize;
     padding: 25px 0 0 $navMenuBtnLargeLeft !important;
-  }
-  .menu-opened {
-    padding-left: $navMenuBtnLargeLeft !important;
   }
 }
