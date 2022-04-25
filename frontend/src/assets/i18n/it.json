@@ -248,6 +248,7 @@
       },
       "NUMBER": "Numero linea parziale",
       "MAINLINE": "Gehört zu Hauptlinie__IT__",
+      "OVERVIEW_MAINLINE": "Gehört zu\nLinie (CHLNR)__IT__",
       "DESCRIPTION": "Denominazione linea parziale",
       "NEW": "Inserire nuova linea parziale",
       "TYPES": {
