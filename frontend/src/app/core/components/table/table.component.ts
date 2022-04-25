@@ -76,12 +76,14 @@ export class TableComponent<DATATYPE> {
     if (this.paginator.pageIndex !== 0) {
       this.paginator.firstPage();
     } else {
-      this.getTableElementsEvent.emit({
+      const currentSearch = {
         page: 0,
         size: this.paginator.pageSize,
         sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
         ...search,
-      });
+      };
+      this.tableSearchComponent.activeSearch = currentSearch;
+      this.getTableElementsEvent.emit(currentSearch);
     }
   }
 
