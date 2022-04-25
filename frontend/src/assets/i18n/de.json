@@ -168,7 +168,7 @@
   "LIDI": {
     "DETAIL_LINE_INFORMATION": "Angaben zur Linie",
     "NEW_LINE_INFORMATION": "Angaben zur neuen Linie",
-    "SWISS_LINE_NUMBER": "CH-Liniennummer (CHLNR)",
+    "SWISS_LINE_NUMBER": "CH-Liniennummer\n(CHLNR)",
     "SWISS_LINE_NUMBER_INFO": "CH-Liniennummer (CHLNR) Tooltip to replace",
     "SWISS_SUBLINE_NUMBER": "CH-Teilliniennummer",
     "ALTERNATIVE_NAME": "Alternativbezeichnung",
@@ -183,6 +183,7 @@
     "TYPE_INFO": "Linientyp Tooltip to replace",
     "SUBLINE_TYPE": "Teillinientyp",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "OVERVIEW_BUSINESS_ORGANISATION": "Geschäfts-\norganisation",
     "BUSINESS_ORGANISATION_INFO": "Geschäftsorganisation Tooltip to replace",
     "SLNID": "SLNID",
     "PAYMENT": {
@@ -248,6 +249,7 @@
       },
       "NUMBER": "Teilliniennummer",
       "MAINLINE": "Gehört zu Hauptlinie",
+      "OVERVIEW_MAINLINE": "Gehört zu\nLinie (CHLNR)",
       "DESCRIPTION": "Teillinienbezeichnung",
       "NEW": "Neue Teillinie erfassen",
       "TYPES": {
