@@ -23,6 +23,10 @@ mat-sidenav-content.menu-opened {
   margin-left: $defaultScreenWidth !important;
 }
 
+mat-sidenav-content.content-menu-open {
+  margin-left: $defaultScreenWidth !important;
+}
+
 mat-sidenav-content.content-menu-closed {
   margin-left: variables.$navigationDefaultSize !important;
 }
