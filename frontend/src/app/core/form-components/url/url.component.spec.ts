@@ -1,32 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommentComponent } from './comment.component';
+import { UrlComponent } from './url.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
 import { InfoIconComponent } from '../info-icon/info-icon.component';
 
-describe('CommentComponent', () => {
-  let component: CommentComponent;
-  let fixture: ComponentFixture<CommentComponent>;
+describe('UrlComponent', () => {
+  let component: UrlComponent;
+  let fixture: ComponentFixture<UrlComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CommentComponent, InfoIconComponent],
+      declarations: [UrlComponent, InfoIconComponent],
       imports: [AppTestingModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommentComponent);
+    fixture = TestBed.createComponent(UrlComponent);
     component = fixture.componentInstance;
     component.formGroup = new FormGroup({
-      comment: new FormControl('test'),
+      icon: new FormControl('https://www.sbb.ch'),
     });
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.formGroup.value).toEqual({ comment: 'test' });
+    expect(component.formGroup.value).toEqual({ icon: 'https://www.sbb.ch' });
   });
 });
