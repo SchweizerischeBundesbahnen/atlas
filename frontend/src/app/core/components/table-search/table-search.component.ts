@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -17,6 +25,7 @@ export class TableSearchComponent {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() additionalFieldTemplate!: TemplateRef<any>;
   @Output() searchEvent: EventEmitter<TableSearch> = new EventEmitter<TableSearch>();
+  @ViewChild('validOnInput') validOnInput!: ElementRef;
 
   readonly STATUS_OPTIONS = Object.values(Status);
   searchStrings: string[] = [];
