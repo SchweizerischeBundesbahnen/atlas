@@ -27,7 +27,7 @@ export class LinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
     { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
     { headerTitle: 'LIDI.TYPE', value: 'lineType', translate: { withPrefix: 'LIDI.LINE.TYPES.' } },
-    { headerTitle: 'LIDI.BUSINESS_ORGANISATION', value: 'businessOrganisation' },
+    { headerTitle: 'LIDI.OVERVIEW_BUSINESS_ORGANISATION', value: 'businessOrganisation' },
     { headerTitle: 'LIDI.SLNID', value: 'slnid' },
     {
       headerTitle: 'COMMON.STATUS',
