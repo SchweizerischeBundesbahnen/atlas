@@ -3,6 +3,10 @@
 $defaultScreenWidth: 239px;
 $largeScreenWidth: 400px;
 
+mat-sidenav {
+  width: $defaultScreenWidth !important;
+}
+
 .mat-drawer {
   background-color: variables.$navigationBackground;
   width: $defaultScreenWidth;
