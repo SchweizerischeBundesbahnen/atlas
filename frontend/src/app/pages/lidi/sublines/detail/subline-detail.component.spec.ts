@@ -9,6 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
+import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -194,6 +195,7 @@ function setupTestBed(
       SublineDetailComponent,
       MockAppDetailWrapperComponent,
       ErrorNotificationComponent,
+      InfoIconComponent,
     ],
     imports: [AppTestingModule],
     providers: [
