@@ -37,10 +37,10 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-8 pe-3">
-        <mat-label class="font-bold-lg"
-          >{{ 'LIDI.LONG_NAME' | translate }}
-          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
-        </mat-label>
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg">{{ 'LIDI.LONG_NAME' | translate }} </mat-label>
+          <form-info-icon infoTitle="{{ 'LIDI.LONG_NAME_INFO' | translate }}"></form-info-icon>
+        </div>
         <mat-label class="font-regular-sm"
           >{{ 'FORM.FOR_EXAMPLE' | translate }}
           {{ 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof' }} |
@@ -105,10 +105,14 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-3 pe-3">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
-          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
-        </mat-label>
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
+          </mat-label>
+          <form-info-icon
+            infoTitle="{{ 'LIDI.BUSINESS_ORGANISATION_INFO' | translate }}"
+          ></form-info-icon>
+        </div>
         <mat-label class="font-regular-sm">
           {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '146 - STI' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
@@ -138,10 +142,12 @@
       </div>
 
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg subtitle-margin required-indicator"
-          >{{ 'LIDI.PAYMENT.TYPE' | translate }}
-          <em class="bi bi-info-circle" title="{{ 'To replace' | translate }}"></em>
-        </mat-label>
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg subtitle-margin required-indicator"
+            >{{ 'LIDI.PAYMENT.TYPE' | translate }}
+          </mat-label>
+          <form-info-icon infoTitle="{{ 'LIDI.PAYMENT.TYPE_INFO' | translate }}"></form-info-icon>
+        </div>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
             formControlName="paymentType"

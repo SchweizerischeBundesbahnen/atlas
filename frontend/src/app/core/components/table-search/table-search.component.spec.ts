@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import moment from 'moment/moment';
 import { Status } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
+import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
 
 describe('TableSearchComponent', () => {
   let component: TableSearchComponent;
@@ -13,7 +14,7 @@ describe('TableSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TableSearchComponent],
+      declarations: [TableSearchComponent, DateIconComponent],
       imports: [AppTestingModule],
       providers: [TranslatePipe],
     }).compileComponents();

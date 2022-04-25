@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateRangeComponent } from './date-range.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
+import { DateIconComponent } from '../date-icon/date-icon.component';
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
@@ -10,7 +11,7 @@ describe('DateRangeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateRangeComponent],
+      declarations: [DateRangeComponent, DateIconComponent],
       imports: [AppTestingModule],
     }).compileComponents();
   });

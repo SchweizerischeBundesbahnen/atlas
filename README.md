@@ -74,7 +74,7 @@ a Jenkins pipiline is executed. The modules are versionied and deployed with the
 
 Quick overview of the modules. There are more detailed `README`s available within each module.
 
-### apim-configuration
+### APIM-configuration
 
 Module, which will be published to APIM and served on the SBB developer portal.
 

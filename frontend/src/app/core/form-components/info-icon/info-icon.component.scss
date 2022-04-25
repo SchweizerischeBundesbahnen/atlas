@@ -1,0 +1,9 @@
+@use 'src/styles/variables' as variables;
+
+span {
+  padding-left: 0.3rem;
+}
+
+svg path {
+  fill: variables.$primary-400;
+}
