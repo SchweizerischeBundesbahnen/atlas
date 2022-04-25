@@ -25,16 +25,17 @@ describe('Teillinie', () => {
     CommonUtils.assertTableSearch(0, 1, 'Teillinientyp');
     CommonUtils.assertTableSearch(0, 2, 'Status');
     CommonUtils.assertTableSearch(0, 3, 'Gültig am');
+
     CommonUtils.assertTableHeader(0, 0, 'Teilliniennummer');
     CommonUtils.assertTableHeader(0, 1, 'Teillinienbezeichnung');
     CommonUtils.assertTableHeader(0, 2, 'CH-Teilliniennummer');
-    CommonUtils.assertTableHeader(0, 3, 'CH-Liniennummer (CHLNR)');
+    CommonUtils.assertTableHeader(0, 3, 'Gehört zu Linie (CHLNR)');
     CommonUtils.assertTableHeader(0, 4, 'Teillinientyp');
-    CommonUtils.assertTableHeader(0, 5, 'Gültig von');
-    CommonUtils.assertTableHeader(0, 6, 'Gültig bis');
+    CommonUtils.assertTableHeader(0, 5, 'Geschäfts-');
+    CommonUtils.assertTableHeader(0, 6, 'SLNID');
     CommonUtils.assertTableHeader(0, 7, 'Status');
-    CommonUtils.assertTableHeader(0, 8, 'Geschäftsorganisation');
-    CommonUtils.assertTableHeader(0, 9, 'SLNID');
+    CommonUtils.assertTableHeader(0, 8, 'Gültig von');
+    CommonUtils.assertTableHeader(0, 9, 'Gültig bis');
   });
 
   it('Step-5: Go to page Add new Version', () => {

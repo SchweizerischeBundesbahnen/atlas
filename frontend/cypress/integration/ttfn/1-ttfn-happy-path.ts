@@ -18,14 +18,15 @@ describe('Fahrplanfeldnummer', () => {
     CommonUtils.assertTableSearch(0, 0, 'Suche');
     CommonUtils.assertTableSearch(0, 1, 'Status');
     CommonUtils.assertTableSearch(0, 2, 'Gültig am');
+
     CommonUtils.assertTableHeader(0, 0, 'Fahrplanfeldnummer');
     CommonUtils.assertTableHeader(0, 1, 'CH-Fahrplanfeldnummer Bezeichnung');
     CommonUtils.assertTableHeader(0, 2, 'CH-Fahrplanfeldnummer');
-    CommonUtils.assertTableHeader(0, 3, 'Gültig von');
-    CommonUtils.assertTableHeader(0, 4, 'Gültig bis');
+    CommonUtils.assertTableHeader(0, 3, 'Geschäftsorganisation');
+    CommonUtils.assertTableHeader(0, 4, 'Fahrplanfeldnummer-ID');
     CommonUtils.assertTableHeader(0, 5, 'Status');
-    CommonUtils.assertTableHeader(0, 6, 'Geschäftsorganisation');
-    CommonUtils.assertTableHeader(0, 7, 'Fahrplanfeldnummer-ID');
+    CommonUtils.assertTableHeader(0, 6, 'Gültig von');
+    CommonUtils.assertTableHeader(0, 7, 'Gültig bis');
   });
 
   it('Step-4: Go to page Add new Version', () => {
