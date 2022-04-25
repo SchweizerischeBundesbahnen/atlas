@@ -38,6 +38,7 @@
     <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
     <mat-form-field appearance="outline">
       <input
+        #validOnInput
         data-cy="table-search-date-input"
         matInput
         [formControl]="dateControl"

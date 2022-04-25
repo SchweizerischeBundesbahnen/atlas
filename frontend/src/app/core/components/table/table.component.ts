@@ -126,6 +126,9 @@ export class TableComponent<DATATYPE> {
     this.tableSearchComponent.activeSearch.statusChoices = this.tableSearchComponent.activeStatuses;
 
     this.tableSearchComponent.searchDate = tableSettings.validOn;
-    this.tableSearchComponent.activeSearch.validOn = this.tableSearchComponent.searchDate;
+    this.tableSearchComponent.activeSearch.validOn = tableSettings.validOn;
+    this.tableSearchComponent.validOnInput.nativeElement.value = tableSettings.validOn
+      ? DateService.getDateFormatted(tableSettings.validOn)
+      : '';
   }
 }
