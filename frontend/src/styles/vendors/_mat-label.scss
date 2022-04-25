@@ -1,5 +1,6 @@
 @use 'src/styles/variables' as variables;
 
 mat-label {
+  margin-top: 1px;
   color: variables.$gray-900;
 }
