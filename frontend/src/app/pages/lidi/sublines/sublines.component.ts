@@ -32,7 +32,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
       value: 'sublineType',
       translate: { withPrefix: 'LIDI.SUBLINE.TYPES.' },
     },
-    { headerTitle: 'LIDI.BUSINESS_ORGANISATION', value: 'businessOrganisation' },
+    { headerTitle: 'LIDI.OVERVIEW_BUSINESS_ORGANISATION', value: 'businessOrganisation' },
     { headerTitle: 'LIDI.SLNID', value: 'slnid' },
     {
       headerTitle: 'COMMON.STATUS',
