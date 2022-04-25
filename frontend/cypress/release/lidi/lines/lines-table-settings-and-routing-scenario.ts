@@ -9,11 +9,14 @@ describe('Lines: TableSettings and Routing', () => {
   const firstValidDate = '01.01.1700';
   const statusAktiv = 'Aktiv';
 
+  const lineDirectoryUrlPath = '/line-directory/lines';
+  const lineDirectoryUrlPathToIntercept = '/line-directory/v1/lines?**';
+
   function deleteFirstFoundLineInTable() {
     CommonUtils.clickFirstRowInTable(DataCy.LIDI_LINES);
 
     CommonUtils.deleteItem();
-    cy.url().should('eq', Cypress.config().baseUrl + '/line-directory/lines');
+    cy.url().should('eq', Cypress.config().baseUrl + lineDirectoryUrlPath);
   }
 
   function assertAllTableFiltersAreFilled() {
@@ -54,7 +57,7 @@ describe('Lines: TableSettings and Routing', () => {
 
   it('Step-5: Look for line minimal1', () => {
     CommonUtils.typeSearchInput(
-      '/line-directory/v1/lines?**',
+      lineDirectoryUrlPathToIntercept,
       DataCy.TABLE_SEARCH_CHIP_INPUT,
       minimalLine1.swissLineNumber
     );
@@ -63,7 +66,7 @@ describe('Lines: TableSettings and Routing', () => {
     CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_LINE_TYPE, minimalLine1.type);
 
     CommonUtils.typeSearchInput(
-      '/line-directory/v1/lines?**',
+      lineDirectoryUrlPathToIntercept,
       DataCy.TABLE_SEARCH_DATE_INPUT,
       firstValidDate
     );
@@ -87,17 +90,17 @@ describe('Lines: TableSettings and Routing', () => {
     cy.get(DataCy.SWISS_LINE_NUMBER).clear().type(newCHLNR, { force: true });
     CommonUtils.saveLine();
 
-    cy.intercept('GET', '/line-directory/v1/line-directory/lines?**').as('getLines');
-    CommonUtils.fromDetailBackToTtfnOverview();
+    cy.intercept('GET', lineDirectoryUrlPathToIntercept).as('getLines');
+    CommonUtils.fromDetailBackToLinesOverview();
     cy.wait('@getLines');
 
     // Search still present after edit
     assertAllTableFiltersAreFilled();
     // Change is already visible in table
-    cy.get(DataCy.TTFN + ' .mat-row > .cdk-column-swissLineNumber').contains(newCHLNR);
+    cy.get(DataCy.LIDI_LINES + ' .mat-row > .cdk-column-swissLineNumber').contains(newCHLNR);
   });
 
-  it.skip('Step-8: Delete Line minimal1', () => {
+  it('Step-8: Delete Line minimal1', () => {
     deleteFirstFoundLineInTable();
 
     // Search still present after delete
@@ -106,13 +109,13 @@ describe('Lines: TableSettings and Routing', () => {
     CommonUtils.assertNoItemsInTable(DataCy.LIDI_LINES);
   });
 
-  it('Step-9: Cleanup other TTFN', () => {
+  it('Step-9: Cleanup other Line', () => {
     // Get rid of search filter by reload
     cy.reload();
 
     // Find other created item to clean up
     CommonUtils.typeSearchInput(
-      '/line-directory/v1/line-directory/lines?**',
+      lineDirectoryUrlPathToIntercept,
       DataCy.TABLE_SEARCH_CHIP_INPUT,
       minimalLine2.swissLineNumber
     );
