@@ -28,6 +28,7 @@ E2E Status: [![Build Status E2E](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/jo
 Quality Gate: [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 
 ## Big Picture
+
 ATLAS shall be a platform, on which relevant data for customer information can be managed. \
 Applications on this platform share their tech stack and have the same monitoring and logging.
 
@@ -46,6 +47,8 @@ It's applications share the following architectural goal:
 - **Openshift**:
   - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
   - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
+  - **Int**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
+  - **Prod**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 - **Deployment**:
   - **Dev**: https://atlas.dev.sbb-cloud.net
   - **Test**: https://atlas.test.sbb-cloud.net
