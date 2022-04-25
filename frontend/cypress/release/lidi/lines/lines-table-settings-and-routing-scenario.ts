@@ -23,11 +23,10 @@ describe('Lines: TableSettings and Routing', () => {
     cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalLine1.swissLineNumber);
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusAktiv]);
 
-    // Comment back in when ATLAS-614 is done
-    // CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_LINE_TYPE, [
-    //   minimalLine1.type,
-    // ]);
-    // CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, firstValidDate);
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_LINE_TYPE, [
+      minimalLine1.type,
+    ]);
+    CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, firstValidDate);
 
     // Check that the table contains 1 result
     CommonUtils.assertNumberOfTableRows(DataCy.LIDI_LINES, 1);
