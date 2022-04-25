@@ -248,6 +248,7 @@
       },
       "NUMBER": "Numéro de ligne partielle",
       "MAINLINE": "Gehört zu Hauptlinie__FR__",
+      "OVERVIEW_MAINLINE": "Gehört zu\nLinie (CHLNR) ___FR___",
       "DESCRIPTION": "Description de la ligne partielle",
       "NEW": "Saisir une nouvelle ligne partielle",
       "TYPES": {
