@@ -182,7 +182,8 @@
     "TYPE": "Type de ligne",
     "TYPE_INFO": "Linientyp Tooltip to replace __FR__",
     "SUBLINE_TYPE": "Type de ligne partielle",
-    "BUSINESS_ORGANISATION": "Organisation\ncommerciale",
+    "BUSINESS_ORGANISATION": "Organisation commerciale",
+    "OVERVIEW_BUSINESS_ORGANISATION": "Organisation\ncommerciale",
     "BUSINESS_ORGANISATION_INFO": "Geschäftsorganisation Tooltip to replace __FR__",
     "SLNID": "SLNID",
     "PAYMENT": {

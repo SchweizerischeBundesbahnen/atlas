@@ -182,7 +182,8 @@
     "TYPE": "Linientyp",
     "TYPE_INFO": "Linientyp Tooltip to replace",
     "SUBLINE_TYPE": "Teillinientyp",
-    "BUSINESS_ORGANISATION": "Geschäfts-\norganisation",
+    "BUSINESS_ORGANISATION": "Geschäftsorganisation",
+    "OVERVIEW_BUSINESS_ORGANISATION": "Geschäfts-\norganisation",
     "BUSINESS_ORGANISATION_INFO": "Geschäftsorganisation Tooltip to replace",
     "SLNID": "SLNID",
     "PAYMENT": {
