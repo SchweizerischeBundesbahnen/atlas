@@ -63,3 +63,8 @@ mat-form-field.atlas-text-area {
     color: variables.$gray-400;
   }
 }
+
+// Formfields in Detail Dialogs
+.detail-wrapper mat-form-field {
+  margin-top: 16px;
+}
