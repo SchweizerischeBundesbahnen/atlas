@@ -248,6 +248,7 @@
       },
       "NUMBER": "Teilliniennummer",
       "MAINLINE": "Gehört zu Hauptlinie",
+      "OVERVIEW_MAINLINE": "Gehört zu\nLinie (CHLNR)",
       "DESCRIPTION": "Teillinienbezeichnung",
       "NEW": "Neue Teillinie erfassen",
       "TYPES": {
