@@ -41,10 +41,9 @@
 }
 
 .card-container {
-  max-width: 79.625rem;
   margin: 8rem 5rem 0 77px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-flow: row wrap;
   column-gap: 1.875rem;
   row-gap: 1.875rem;
 }
