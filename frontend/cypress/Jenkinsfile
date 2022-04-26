@@ -89,6 +89,9 @@ pipeline {
       steps {
         script {
             if ('release'.equals(params.E2ETests)) {
+                echo 'Run E2E Integration Tests'
+                sh 'npm --prefix frontend/ run cypress:run'
+                echo 'Run E2E Release Tests'
                 sh 'npm --prefix frontend/ run cypress:run-e2e-release'
             } else {
                 sh 'npm --prefix frontend/ run cypress:run'
