@@ -47,13 +47,11 @@ export class TableComponent<DATATYPE> {
     this.loading = true;
     const pageIndex = pageEvent.pageIndex;
     const pageSize = pageEvent.pageSize;
-    this.getTableElementsEvent.emit({
+    this.getElementsSearched({
+      ...this.tableSearchComponent.activeSearch,
       page: pageIndex,
       size: pageSize,
       sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
-      searchCriteria: this.tableSearchComponent.searchStrings,
-      validOn: this.tableSearchComponent.searchDate,
-      statusChoices: this.tableSearchComponent.activeStatuses,
     });
   }
 
@@ -61,13 +59,11 @@ export class TableComponent<DATATYPE> {
     if (this.paginator.pageIndex !== 0) {
       this.paginator.firstPage();
     } else {
-      this.getTableElementsEvent.emit({
+      this.getElementsSearched({
+        ...this.tableSearchComponent.activeSearch,
         page: 0,
         size: this.paginator.pageSize,
         sort: `${sort.active},${sort.direction.toUpperCase()}`,
-        searchCriteria: this.tableSearchComponent.searchStrings,
-        validOn: this.tableSearchComponent.searchDate,
-        statusChoices: this.tableSearchComponent.activeStatuses,
       });
     }
   }
@@ -76,15 +72,18 @@ export class TableComponent<DATATYPE> {
     if (this.paginator.pageIndex !== 0) {
       this.paginator.firstPage();
     } else {
-      const currentSearch = {
+      this.getElementsSearched({
         page: 0,
         size: this.paginator.pageSize,
         sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
         ...search,
-      };
-      this.tableSearchComponent.activeSearch = currentSearch;
-      this.getTableElementsEvent.emit(currentSearch);
+      });
     }
+  }
+
+  private getElementsSearched(tableSettings: TableSettings) {
+    this.tableSearchComponent.activeSearch = tableSettings;
+    this.getTableElementsEvent.emit(tableSettings);
   }
 
   showTitle(column: TableColumn<DATATYPE>, value: string | Date): string {
