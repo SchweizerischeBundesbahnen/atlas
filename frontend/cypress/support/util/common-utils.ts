@@ -26,6 +26,10 @@ export default class CommonUtils {
     this.clickCancelOnDetailView('line-directory/lines');
   }
 
+  static clickCancelOnDetailViewBackToSublines() {
+    this.clickCancelOnDetailView('line-directory/sublines');
+  }
+
   private static clickCancelOnDetailView(overviewPath: string) {
     cy.get(DataCy.CANCEL).click();
     cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
