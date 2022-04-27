@@ -1,8 +1,7 @@
 import CommonUtils from './common-utils';
-import {DataCy} from "../data-cy";
+import { DataCy } from '../data-cy';
 
 export default class LidiUtils {
-
   private static LIDI_LINES_PATH = '/line-directory/lines';
   private static LIDI_SUBLINES_PATH = '/line-directory/sublines';
 
@@ -47,8 +46,8 @@ export default class LidiUtils {
 
   static readSlnidFromForm(element: { slnid: string }) {
     cy.get(DataCy.DETAIL_SUBHEADING_ID)
-    .invoke('text')
-    .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
+      .invoke('text')
+      .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
   static clickOnAddNewLinieVersion() {
@@ -79,25 +78,27 @@ export default class LidiUtils {
 
   static navigateToSubline(sublineVersion: any) {
     const itemToDeleteUrl = LidiUtils.LIDI_SUBLINES_PATH + '/' + sublineVersion.slnid;
-    cy.visit({url: itemToDeleteUrl, method: 'GET'});
+    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
   }
 
   static navigateToLine(mainline: any) {
     const itemToDeleteUrl = LidiUtils.LIDI_LINES_PATH + '/' + mainline.slnid;
-    cy.visit({url: itemToDeleteUrl, method: 'GET'});
+    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
   }
 
   static fillLineVersionForm(version: any) {
-    // workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
-    cy.get(DataCy.VALID_FROM).clear().type(version.validFrom);
-    cy.get(DataCy.VALID_TO).clear().type(version.validTo, {force: true});
-    cy.get(DataCy.SWISS_LINE_NUMBER).clear().type(version.swissLineNumber, {force: true});
-    cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
+    // force-workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
+    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom);
+    CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
+    CommonUtils.getClearType(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber, true);
+    CommonUtils.getClearType(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
+
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
-    cy.get(DataCy.COLOR_FONT_RGB + ' ' + DataCy.RGB_PICKER_INPUT)
-    .type('{selectall}' + version.colorFontRgb, {force: true})
-    .type('{selectall}' + version.colorFontRgb);
+
+    cy.get(DataCy.COLOR_FONT_RGB + ' ' + DataCy.RGB_PICKER_INPUT).type(
+      '{selectall}' + version.colorFontRgb
+    );
     cy.get(DataCy.COLOR_BACK_RGB + ' ' + DataCy.RGB_PICKER_INPUT).type(
       '{selectall}' + version.colorBackRgb
     );
@@ -107,13 +108,15 @@ export default class LidiUtils {
     cy.get(DataCy.COLOR_BACK_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT).type(
       '{selectall}' + version.colorBackCmyk
     );
-    cy.get(DataCy.DESCRIPTION).clear().type(version.description);
-    cy.get(DataCy.NUMBER).clear().type(version.number);
-    cy.get(DataCy.ALTERNATIVE_NAME).clear().type(version.alternativeName);
-    cy.get(DataCy.COMBINATION_NAME).clear().type(version.combinationName);
-    cy.get(DataCy.LONG_NAME).clear().type(version.longName);
-    cy.get(DataCy.ICON).clear().type(version.icon);
-    cy.get(DataCy.COMMENT).clear().type(version.comment);
+
+    CommonUtils.getClearType(DataCy.DESCRIPTION, version.description);
+    CommonUtils.getClearType(DataCy.NUMBER, version.number);
+    CommonUtils.getClearType(DataCy.ALTERNATIVE_NAME, version.alternativeName);
+    CommonUtils.getClearType(DataCy.COMBINATION_NAME, version.combinationName);
+    CommonUtils.getClearType(DataCy.LONG_NAME, version.longName);
+    CommonUtils.getClearType(DataCy.ICON, version.icon);
+    CommonUtils.getClearType(DataCy.COMMENT, version.comment);
+
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
   }
 
@@ -154,7 +157,7 @@ export default class LidiUtils {
     // Check that the table contains 1 result
     cy.get(DataCy.LIDI_LINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', line.swissLineNumber).parents('tr').click({force: true});
+    cy.contains('td', line.swissLineNumber).parents('tr').click({ force: true });
     this.assertContainsLineVersion(line);
   }
 
@@ -232,6 +235,52 @@ export default class LidiUtils {
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
       comment: 'Kommentar',
+    };
+  }
+
+  static getFirstMinimalLineVersion() {
+    return {
+      slnid: '',
+      validFrom: '01.01.1700',
+      validTo: '01.01.1700',
+      swissLineNumber: 'minimal1',
+      businessOrganisation: 'BO1',
+      type: 'Ordentlich',
+      paymentType: 'Regional',
+      colorFontRgb: '#ABCDEF',
+      colorBackRgb: '#123456',
+      colorFontCmyk: '1,2,3,4',
+      colorBackCmyk: '0,33,66,100',
+      description: '',
+      number: '',
+      alternativeName: '',
+      combinationName: '',
+      longName: '',
+      icon: '',
+      comment: '',
+    };
+  }
+
+  static getSecondMinimalLineVersion() {
+    return {
+      slnid: '',
+      validFrom: '31.12.9999',
+      validTo: '31.12.9999',
+      swissLineNumber: 'minimal2',
+      businessOrganisation: 'BO2',
+      type: 'Temporär',
+      paymentType: 'Keine',
+      colorFontRgb: '#1FE23D',
+      colorBackRgb: '#271611',
+      colorFontCmyk: '1,2,3,4',
+      colorBackCmyk: '0,33,66,100',
+      description: '',
+      number: '',
+      alternativeName: '',
+      combinationName: '',
+      longName: '',
+      icon: '',
+      comment: '',
     };
   }
 
@@ -316,15 +365,13 @@ export default class LidiUtils {
   static fillSublineVersionForm(version: any) {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     cy.get(DataCy.VALID_FROM).clear().type(version.validFrom);
-    cy.get(DataCy.VALID_TO).clear().type(version.validTo, {force: true});
-    cy.get(DataCy.SWISS_SUBLINE_NUMBER)
-    .clear()
-    .type(version.swissSublineNumber, {force: true});
+    cy.get(DataCy.VALID_TO).clear().type(version.validTo, { force: true });
+    cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, { force: true });
     this.typeAndSelectItemFromDropDown(DataCy.MAINLINE_SLNID, version.mainlineSlnid);
     cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
-    cy.get(DataCy.DESCRIPTION).clear().type(version.description, {force: true});
+    cy.get(DataCy.DESCRIPTION).clear().type(version.description, { force: true });
     cy.get(DataCy.NUMBER).clear().type(version.number);
     cy.get(DataCy.LONG_NAME).clear().type(version.longName);
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
