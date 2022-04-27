@@ -12,3 +12,4 @@ frontend:
   apiClientId: '18746f30-7978-48b5-b19b-0f871fb12e67'
   apiScope: 'openid profile email offline_access api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default'
   clusterLoadBalancer: 'public-aws01t.app.sbb.ch'
+  instanaKey: 'JxmTF5fGTEmLrJeyAiPtaA'
