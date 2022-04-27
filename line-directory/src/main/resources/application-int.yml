@@ -8,4 +8,4 @@ auth:
     service-name: 733b361e-a067-4882-bb00-6bbaf36a007f
 logging:
   pattern:
-    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{X-B3-TraceId:-} spanid=%X{X-B3-SpanId:-} message="%m"%n
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n

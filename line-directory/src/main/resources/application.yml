@@ -4,6 +4,8 @@ spring:
     username: user
     password: pwd
     driver-class-name: org.postgresql.Driver
+  application:
+    name: line-directory
   jpa:
     open-in-view: false
   jmx:
