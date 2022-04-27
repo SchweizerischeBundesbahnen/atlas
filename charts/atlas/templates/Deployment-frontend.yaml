@@ -39,6 +39,8 @@ spec:
               value: '{{ .Values.frontend.apiClientId }}'
             - name: API_SCOPE
               value: '{{ .Values.frontend.apiScope }}'
+            - name: INSTANA_KEY
+              value: '{{ .Values.frontend.instanaKey }}'
           ports:
             - containerPort: 8080
           livenessProbe:
