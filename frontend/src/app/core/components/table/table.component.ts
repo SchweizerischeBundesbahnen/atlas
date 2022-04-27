@@ -121,15 +121,14 @@ export class TableComponent<DATATYPE> {
     }
 
     this.tableSearchComponent.searchStrings = tableSettings.searchCriteria || [];
-    this.tableSearchComponent.activeSearch.searchCriteria = this.tableSearchComponent.searchStrings;
 
     this.tableSearchComponent.activeStatuses = tableSettings.statusChoices || [];
-    this.tableSearchComponent.activeSearch.statusChoices = this.tableSearchComponent.activeStatuses;
 
     this.tableSearchComponent.searchDate = tableSettings.validOn;
-    this.tableSearchComponent.activeSearch.validOn = tableSettings.validOn;
     this.tableSearchComponent.validOnInput.nativeElement.value = tableSettings.validOn
       ? DateService.getDateFormatted(tableSettings.validOn)
       : '';
+
+    this.tableSearchComponent.activeSearch = tableSettings;
   }
 }
