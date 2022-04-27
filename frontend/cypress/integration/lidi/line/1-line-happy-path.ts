@@ -32,7 +32,7 @@ describe('Linie', () => {
   });
 
   it('Step-4: Go to page Add new Version', () => {
-    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.clickOnAddNewLineVersion();
     LidiUtils.fillLineVersionForm(line);
     CommonUtils.saveLine();
     LidiUtils.readSlnidFromForm(line);

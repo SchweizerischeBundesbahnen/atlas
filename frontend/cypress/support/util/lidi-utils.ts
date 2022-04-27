@@ -50,7 +50,7 @@ export default class LidiUtils {
       .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
-  static clickOnAddNewLinieVersion() {
+  static clickOnAddNewLineVersion() {
     cy.get(DataCy.NEW_LINE).click();
     cy.get(DataCy.SAVE_ITEM).should('be.disabled');
     cy.get(DataCy.EDIT_ITEM).should('not.exist');
@@ -58,7 +58,7 @@ export default class LidiUtils {
     cy.contains('Neue Linie');
   }
 
-  static clickOnAddNewSublinesLinieVersion() {
+  static clickOnAddNewSublineVersion() {
     cy.get(DataCy.NEW_SUBLINE).click();
     cy.get(DataCy.SAVE_ITEM).should('be.disabled');
     cy.get(DataCy.EDIT_ITEM).should('not.exist');
@@ -204,7 +204,7 @@ export default class LidiUtils {
   static addMainLine() {
     const mainline = LidiUtils.getMainLineVersion();
     LidiUtils.navigateToLines();
-    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.clickOnAddNewLineVersion();
     LidiUtils.fillLineVersionForm(mainline);
     CommonUtils.saveLine();
     LidiUtils.readSlnidFromForm(mainline);
@@ -438,6 +438,38 @@ export default class LidiUtils {
       number: 'IC2-Edit',
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z - Edit',
+    };
+  }
+
+  static getFirstMinimalSubline() {
+    return {
+      slnid: '',
+      number: '_31.001:a:',
+      description: 'Thun Bahnhof - Gwatt Deltapark - Einigen - Spiez Bahnhof -',
+      longName: 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof',
+      mainlineSlnid: 'b0.IC2',
+      swissSublineNumber: 'r.31.001:x_',
+      validFrom: '01.01.1700',
+      validTo: '01.01.2000',
+      businessOrganisation: '146 - STI',
+      type: 'Kompensation',
+      paymentType: 'Regional',
+    };
+  }
+
+  static getSecondMinimalSubline() {
+    return {
+      slnid: '',
+      number: '31.001:a',
+      description: 'Das ist eine kurze Beschreibung auf deutsch.',
+      longName: '- Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof',
+      mainlineSlnid: 'b0.IC2',
+      swissSublineNumber: 'r.31.001:a_',
+      validFrom: '01.01.2000',
+      validTo: '31.12.2099',
+      businessOrganisation: 'abcdefghijklmnopqrstuvwxyabcdefghijklmnopqrstuvwxy',
+      type: 'Konzession',
+      paymentType: 'Lokal',
     };
   }
 }

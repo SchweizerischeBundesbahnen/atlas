@@ -31,7 +31,7 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
   });
 
   it('Step-4: Add Subline Version', () => {
-    LidiUtils.clickOnAddNewSublinesLinieVersion();
+    LidiUtils.clickOnAddNewSublineVersion();
     LidiUtils.fillSublineVersionForm(sublineVersion);
     CommonUtils.saveSubline();
   });

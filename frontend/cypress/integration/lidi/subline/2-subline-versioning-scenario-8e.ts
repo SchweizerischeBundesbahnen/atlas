@@ -31,7 +31,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   });
 
   it('Step-4: Add first Subline Version', () => {
-    LidiUtils.clickOnAddNewSublinesLinieVersion();
+    LidiUtils.clickOnAddNewSublineVersion();
     LidiUtils.fillSublineVersionForm(firstSublineVersion);
     CommonUtils.saveSubline();
     LidiUtils.readSlnidFromForm(firstSublineVersion);
