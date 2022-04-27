@@ -124,7 +124,7 @@
         "ngsscbuild": {
           "builder": "angular-server-side-configuration:ngsscbuild",
           "options": {
-            "additionalEnvironmentVariables": [],
+            "additionalEnvironmentVariables": ["INSTANA_KEY"],
             "browserTarget": "atlas-frontend:build",
             "ngsscEnvironmentFile": "src/environments/environment.prod.ts",
             "filePattern": "**/index.html"
