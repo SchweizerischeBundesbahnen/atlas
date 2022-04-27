@@ -15,6 +15,26 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
     />
+
+    <!-- Instana Website Tracking -->
+    <script>
+      (function (s, t, a, n) {
+        s[t] ||
+          ((s[t] = a),
+          (n = s[a] =
+            function () {
+              n.q.push(arguments);
+            }),
+          (n.q = []),
+          (n.v = 2),
+          (n.l = 1 * new Date()));
+      })(window, 'InstanaEumObject', 'ineum');
+
+      ineum('reportingUrl', 'https://eum-green-saas.instana.io');
+      ineum('key', 'JxmTF5fGTEmLrJeyAiPtaA');
+      ineum('trackSessions');
+    </script>
+    <script defer crossorigin="anonymous" src="https://eum.instana.io/eum.min.js"></script>
   </head>
   <body class="mat-typography">
     <app-root></app-root>
