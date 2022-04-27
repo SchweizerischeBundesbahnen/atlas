@@ -163,7 +163,7 @@
       "staging": {
         "stagingType": "simple",
         "stages": [
-          "dev"
+          "dev", "test"
         ]
       },
       "dependencyCheckEnabled": true,
