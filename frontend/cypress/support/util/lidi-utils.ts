@@ -50,7 +50,7 @@ export default class LidiUtils {
       .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
-  static clickOnAddNewLinieVersion() {
+  static clickOnAddNewLineVersion() {
     cy.get(DataCy.NEW_LINE).click();
     cy.get(DataCy.SAVE_ITEM).should('be.disabled');
     cy.get(DataCy.EDIT_ITEM).should('not.exist');
@@ -58,7 +58,7 @@ export default class LidiUtils {
     cy.contains('Neue Linie');
   }
 
-  static clickOnAddNewSublinesLinieVersion() {
+  static clickOnAddNewSublineVersion() {
     cy.get(DataCy.NEW_SUBLINE).click();
     cy.get(DataCy.SAVE_ITEM).should('be.disabled');
     cy.get(DataCy.EDIT_ITEM).should('not.exist');
@@ -204,7 +204,7 @@ export default class LidiUtils {
   static addMainLine() {
     const mainline = LidiUtils.getMainLineVersion();
     LidiUtils.navigateToLines();
-    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.clickOnAddNewLineVersion();
     LidiUtils.fillLineVersionForm(mainline);
     CommonUtils.saveLine();
     LidiUtils.readSlnidFromForm(mainline);

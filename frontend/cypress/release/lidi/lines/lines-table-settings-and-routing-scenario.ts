@@ -41,14 +41,14 @@ describe('Lines: TableSettings and Routing', () => {
   });
 
   it('Step-3: Add new line', () => {
-    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.clickOnAddNewLineVersion();
     LidiUtils.fillLineVersionForm(minimalLine1);
     CommonUtils.saveLine();
     CommonUtils.fromDetailBackToLinesOverview();
   });
 
   it('Step-4: Add another line', () => {
-    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.clickOnAddNewLineVersion();
     LidiUtils.fillLineVersionForm(minimalLine2);
     CommonUtils.saveLine();
     CommonUtils.fromDetailBackToLinesOverview();
@@ -74,7 +74,7 @@ describe('Lines: TableSettings and Routing', () => {
   });
 
   it('Step-6: Click on add new Line Button and come back without actually creating it', () => {
-    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.clickOnAddNewLineVersion();
     CommonUtils.clickCancelOnDetailViewBackToLines();
 
     assertAllTableFiltersAreFilled();

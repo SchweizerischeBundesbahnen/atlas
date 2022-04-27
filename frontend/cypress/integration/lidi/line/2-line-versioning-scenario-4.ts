@@ -28,7 +28,7 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   });
 
   it('Step-3: Add first Linie Version', () => {
-    LidiUtils.clickOnAddNewLinieVersion();
+    LidiUtils.clickOnAddNewLineVersion();
     LidiUtils.fillLineVersionForm(firstLinieVersion);
     CommonUtils.saveLine();
   });

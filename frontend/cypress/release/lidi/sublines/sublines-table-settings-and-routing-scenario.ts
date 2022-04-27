@@ -41,14 +41,14 @@ describe('Sublines: TableSettings and Routing', () => {
   });
 
   it('Step-3: Add new subline', () => {
-    LidiUtils.clickOnAddNewSublinesLinieVersion();
+    LidiUtils.clickOnAddNewSublineVersion();
     LidiUtils.fillSublineVersionForm(minimalSubline1);
     CommonUtils.saveSubline();
     CommonUtils.fromDetailBackToSublinesOverview();
   });
 
   it('Step-4: Add another subline', () => {
-    LidiUtils.clickOnAddNewSublinesLinieVersion();
+    LidiUtils.clickOnAddNewSublineVersion();
     LidiUtils.fillSublineVersionForm(minimalSubline2);
     CommonUtils.saveSubline();
     CommonUtils.fromDetailBackToSublinesOverview();
@@ -77,7 +77,7 @@ describe('Sublines: TableSettings and Routing', () => {
   });
 
   it('Step-6: Click on add new subline Button and come back without actually creating it', () => {
-    LidiUtils.clickOnAddNewSublinesLinieVersion();
+    LidiUtils.clickOnAddNewSublineVersion();
     CommonUtils.clickCancelOnDetailViewBackToSublines();
 
     assertAllTableFiltersAreFilled();

@@ -39,7 +39,7 @@ describe('Teillinie', () => {
   });
 
   it('Step-5: Go to page Add new Version', () => {
-    LidiUtils.clickOnAddNewSublinesLinieVersion();
+    LidiUtils.clickOnAddNewSublineVersion();
     LidiUtils.fillSublineVersionForm(sublineVersion);
     CommonUtils.saveSubline();
     LidiUtils.readSlnidFromForm(sublineVersion);
