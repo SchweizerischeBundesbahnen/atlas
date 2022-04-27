@@ -22,6 +22,10 @@ export default class CommonUtils {
     this.clickCancelOnDetailView('timetable-field-number');
   }
 
+  static clickCancelOnDetailViewBackToLines() {
+    this.clickCancelOnDetailView('line-directory/lines');
+  }
+
   private static clickCancelOnDetailView(overviewPath: string) {
     cy.get(DataCy.CANCEL).click();
     cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
@@ -178,6 +182,21 @@ export default class CommonUtils {
         }
       }
     });
+  }
+
+  /**
+   * Cypress.Chainable<JQuery<HTMLElement>>.type() throws an exception
+   * when an empty string ("") is passed. This method only calls type() when textToType is filled.
+   */
+  static getClearType(selector: string, textToType: string, force: boolean = false) {
+    cy.get(selector)
+      .clear()
+      .then((e) => {
+        // Workaround so that no exception is thrown when textToType="" (meaning an empty string)
+        if (textToType) {
+          cy.wrap(e).type(textToType, { force: force });
+        }
+      });
   }
 
   static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
