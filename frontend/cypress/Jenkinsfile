@@ -89,10 +89,15 @@ pipeline {
       steps {
         script {
             if ('release'.equals(params.E2ETests)) {
-                echo 'Run E2E Integration Tests'
-                sh 'npm --prefix frontend/ run cypress:run'
-                echo 'Run E2E Release Tests'
-                sh 'npm --prefix frontend/ run cypress:run-e2e-release'
+                 echo 'Run E2E Integration Tests'
+                 sh 'npm --prefix frontend/ run cypress:run'
+                 echo 'Archive E2E Integration Tests videos'
+                 archiveArtifacts 'frontend/cypress/videos/**/*.mp4'
+                 echo 'Run E2E Release Tests'
+                 sh 'npm --prefix frontend/ run cypress:run-e2e-release'
+                 echo 'Archive E2E Integration Tests videos'
+                 archiveArtifacts 'frontend/cypress/videos/**/*.mp4'
+
             } else {
                 sh 'npm --prefix frontend/ run cypress:run'
             }
@@ -141,9 +146,7 @@ pipeline {
 
   post {
     always {
-      echo 'Archive cypress videos'
-      archiveArtifacts 'frontend/cypress/videos/**/*.mp4'
-
+      sendNotifications()
     }
 
     success {
@@ -212,4 +215,37 @@ void sendEmailToTester(){
                     Mr. Jenkins""",
            subject: 'START Deploy INT Environment',
            to: 'joel.hofer@sbb.ch'
+}
+
+void sendReleaseEmailJobStatusNotification(){
+  emailext body: """ATLAS-E2E Nightly Release Job ran with status: ${currentBuild.currentResult}!<br><br>
+                    Please go to ${BUILD_URL} and verify the build. <br><br>
+                    Regards<br>
+                    Mr. Jenkins""",
+           subject: "ATLAS-E2E Nightly Release Job (${JOB_NAME} - ${BUILD_NUMBER}) Status: ${currentBuild.currentResult}",
+           to: 'joel.hofer@sbb.ch'
+}
+
+void sendNotifications(){
+
+  def notificationColor = '#C0C0C0';
+  if('SUCCESS'.equals(currentBuild.currentResult)){
+    notificationColor = "#00FF00";
+  }
+  if('FAILURE'.equals(currentBuild.currentResult)){
+    notificationColor = "#FF0000";
+  }
+  if('UNSTABLE'.equals(currentBuild.currentResult)){
+    notificationColor = "#FFA500"
+  }
+
+  if ('release'.equals(params.E2ETests)) {
+    sendReleaseEmailJobStatusNotification()
+    office365ConnectorSend(
+          webhookUrl: "https://sbb.webhook.office.com/webhookb2/e262e9dc-5836-4c36-b3e5-0e827f2a2787@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/JenkinsCI/1d957b31eb2c46aeac8003d5a70e1926/8231c64b-bcb4-497e-93bf-0213ebdac9e4",,
+          message: "ATLAS-E2E Nightly Release was ${currentBuild.currentResult}!",
+          color: notificationColor,
+          status: currentBuild.currentResult
+    )
+  }
 }
