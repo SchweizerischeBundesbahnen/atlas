@@ -146,7 +146,7 @@ pipeline {
 
   post {
     always {
-      sendTeamNotification()
+      sendNotifications()
     }
 
     success {
@@ -217,7 +217,15 @@ void sendEmailToTester(){
            to: 'joel.hofer@sbb.ch'
 }
 
-void sendTeamNotification(){
+void sendReleaseEmailJobStatusNotification(){
+  emailext body: """ATLAS-E2E Nightly Release Job ran with status: ${currentBuild.currentResult}!<br><br>
+                    Regards<br>
+                    Mr. Jenkins""",
+           subject: "ATLAS-E2E Nightly Release Job Status: ${currentBuild.currentResult}",
+           to: 'joel.hofer@sbb.ch'
+}
+
+void sendNotifications(){
 
   def notificationColor = '#C0C0C0';
   if('SUCCESS'.equals(currentBuild.currentResult)){
@@ -231,6 +239,7 @@ void sendTeamNotification(){
   }
 
   if ('release'.equals(params.E2ETests)) {
+    sendReleaseEmailJobStatusNotification()
     office365ConnectorSend(
           webhookUrl: "https://sbb.webhook.office.com/webhookb2/e262e9dc-5836-4c36-b3e5-0e827f2a2787@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/JenkinsCI/1d957b31eb2c46aeac8003d5a70e1926/8231c64b-bcb4-497e-93bf-0213ebdac9e4",,
           message: "ATLAS-E2E Nightly Release was ${currentBuild.currentResult}!",
