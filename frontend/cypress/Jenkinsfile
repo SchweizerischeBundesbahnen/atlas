@@ -219,9 +219,10 @@ void sendEmailToTester(){
 
 void sendReleaseEmailJobStatusNotification(){
   emailext body: """ATLAS-E2E Nightly Release Job ran with status: ${currentBuild.currentResult}!<br><br>
+                    Please go to ${BUILD_URL} and verify the build. <br><br>
                     Regards<br>
                     Mr. Jenkins""",
-           subject: "ATLAS-E2E Nightly Release Job Status: ${currentBuild.currentResult}",
+           subject: "ATLAS-E2E Nightly Release Job (${JOB_NAME} - ${BUILD_NUMBER}) Status: ${currentBuild.currentResult}",
            to: 'joel.hofer@sbb.ch'
 }
 
