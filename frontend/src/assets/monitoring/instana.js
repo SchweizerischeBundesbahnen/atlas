@@ -14,7 +14,6 @@ const instanaKey =
   typeof process === 'object' && process.env && process.env.INSTANA_KEY
     ? process.env.INSTANA_KEY
     : 'JxmTF5fGTEmLrJeyAiPtaA';
-console.log('Logging to instanaKey=' + instanaKey);
 
 ineum('reportingUrl', 'https://eum-green-saas.instana.io');
 ineum('key', instanaKey);
