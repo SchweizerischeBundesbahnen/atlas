@@ -13,22 +13,25 @@ import { Subject } from 'rxjs';
 export class SideNavComponent implements OnDestroy {
   readonly pages: Page[] = Pages.pages;
   private readonly ngUnsubscribe = new Subject<void>();
-  private currentUrl = '/';
+  activePageIndex = 0;
 
   constructor(private readonly router: Router) {
     this.router.events
       .pipe(
         takeUntil(this.ngUnsubscribe),
         filter((event) => event instanceof NavigationEnd),
-        tap(() => (this.currentUrl = this.router.url))
+        tap(() => (this.activePageIndex = this.getActivePageIndex(this.router.url)))
       )
       .subscribe();
   }
 
-  isRouteActive(path: string): boolean {
-    if (path.length === 0 && this.currentUrl === '/') return true;
-    else if (path.length > 0 && this.currentUrl.includes(path)) return true;
-    return false;
+  getActivePageIndex(currentUrl: string): number {
+    if (currentUrl === '/') {
+      return this.pages.findIndex((value) => value.path.length === 0);
+    }
+    return this.pages.findIndex(
+      (value) => value.path.length > 0 && currentUrl.includes(value.path)
+    );
   }
 
   ngOnDestroy(): void {
