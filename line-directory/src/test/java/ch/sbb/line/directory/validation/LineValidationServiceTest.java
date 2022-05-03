@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.line.directory.api.AtlasCharacterSetsRegexTest;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -308,15 +309,7 @@ public class LineValidationServiceTest {
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
 
     //then
-  verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
-  }
-
-  @Test
-  void regex(){
-    String test = "";
-    for (char c : test.toCharArray()){
-      Assertions.assertTrue(String.valueOf(c).matches("[\\u0000-\\u00ff]*"), String.valueOf(c));
-    }
+    verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
   }
 
 }
