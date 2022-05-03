@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
@@ -55,5 +56,14 @@ public class AtlasCharacterSetsRegexTest {
     assertThat(pattern.matcher("aser%").matches()).isFalse();
     assertThat(pattern.matcher("&").matches()).isFalse();
     assertThat(pattern.matcher("/").matches()).isFalse();
+  }
+
+  @Test
+  void findNotMatchingCharFromISORegex() {
+    String testString = "test";
+    for (char c : testString.toCharArray()) {
+      assertTrue(String.valueOf(c).matches(AtlasCharacterSetsRegex.ISO_8859_1),
+          "Not matching char: " + c);
+    }
   }
 }
