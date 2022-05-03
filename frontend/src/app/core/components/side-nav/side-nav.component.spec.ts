@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Pages } from '../../../pages/pages';
 import { LidiOverviewComponent } from '../../../pages/lidi/overview/lidi-overview.component';
+import { TimetableFieldNumberOverviewComponent } from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
@@ -20,6 +21,10 @@ describe('SideNavComponent', () => {
           {
             path: Pages.LIDI.path,
             component: LidiOverviewComponent,
+          },
+          {
+            path: Pages.TTFN.path,
+            component: TimetableFieldNumberOverviewComponent,
           },
         ]),
         TranslateModule.forRoot({
@@ -43,24 +48,32 @@ describe('SideNavComponent', () => {
   it('should show side-nav', () => {
     const result = fixture.debugElement.queryAll(By.css('a'));
     expect(result).toBeDefined();
-    const firstSideNavItem = result[0];
-    const secondSideNavItem = result[1];
-    expect(firstSideNavItem.nativeElement.textContent.trim()).toBe(component.pages[0].titleMenu);
-    expect(secondSideNavItem.nativeElement.textContent.trim()).toBe(component.pages[1].titleMenu);
+    expect(result[0].nativeElement.textContent.trim()).toBe(component.pages[0].titleMenu);
+    expect(result[1].nativeElement.textContent.trim()).toBe(component.pages[1].titleMenu);
   });
 
   it('home route should be active', () => {
-    expect(component.isRouteActive(component.pages[0].path)).toBeTrue();
+    assertActiveNavItem('PAGES.HOME');
   });
 
-  it('timetable route should not be active', () => {
-    expect(component.isRouteActive(component.pages[1].path)).toBeFalse();
+  it('timetable route should be active', async () => {
+    await router.navigate(['timetable-field-number']);
+    fixture.detectChanges();
+    assertActiveNavItem('PAGES.TTFN.TITLE');
   });
 
   it('line directory route should be active', async () => {
     await router.navigate(['line-directory']);
-    expect(component.isRouteActive(component.pages[2].path)).toBeTrue();
-    expect(component.isRouteActive(component.pages[1].path)).toBeFalse();
-    expect(component.isRouteActive(component.pages[0].path)).toBeFalse();
+    fixture.detectChanges();
+    assertActiveNavItem('PAGES.LIDI.TITLE');
   });
+
+  const assertActiveNavItem = (pageTitle: string) => {
+    const navItems = fixture.debugElement.queryAll(By.css('a'));
+    const activeNavItemIndex = navItems.findIndex((item) =>
+      Object.keys(item.classes).includes('route-active')
+    );
+    expect(activeNavItemIndex).toBe(component.pages.findIndex((page) => page.title === pageTitle));
+    expect(activeNavItemIndex).toBe(component.activePageIndex);
+  };
 });
