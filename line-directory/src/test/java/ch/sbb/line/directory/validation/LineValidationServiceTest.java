@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.line.directory.api.AtlasCharacterSetsRegexTest;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -19,7 +18,6 @@ import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
