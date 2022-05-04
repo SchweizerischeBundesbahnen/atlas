@@ -55,7 +55,7 @@ export default class CommonUtils {
   private static openSideMenu() {
     cy.get('.sidenav-menu-btn span').then(($sidemenuBtnSpan) => {
       if ($sidemenuBtnSpan.text() === 'Menü') {
-        $sidemenuBtnSpan.click();
+        $sidemenuBtnSpan.trigger("click");
       }
     });
   }
