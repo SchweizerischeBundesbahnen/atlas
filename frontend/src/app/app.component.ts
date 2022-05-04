@@ -9,12 +9,9 @@ import { animate, style, transition, trigger } from '@angular/animations';
   styleUrls: ['./app.component.scss'],
   animations: [
     trigger('fadeInOut', [
-      transition(':enter', [   // :enter is alias to 'void => *'
-        style({ opacity: 0 }),
-        animate(650, style({ opacity: 1 }))
-      ])
-    ])
-  ]
+      transition('true <=> false', [style({ opacity: 0 }), animate(650, style({ opacity: 1 }))]),
+    ]),
+  ],
 })
 export class AppComponent {
   constructor(public loadingSpinnerService: LoadingSpinnerService) {
@@ -23,7 +20,7 @@ export class AppComponent {
   }
 }
 
-Date.prototype.toISOString = function() {
+Date.prototype.toISOString = function () {
   return (
     this.getFullYear() +
     '-' +

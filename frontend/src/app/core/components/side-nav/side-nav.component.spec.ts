@@ -1,23 +1,43 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SideNavComponent } from './side-nav.component';
-import { AppRoutingModule } from '../../../app-routing.module';
-import { AppTestingModule } from '../../../app.testing.module';
+import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Pages } from '../../../pages/pages';
+import { LidiOverviewComponent } from '../../../pages/lidi/overview/lidi-overview.component';
+import { TimetableFieldNumberOverviewComponent } from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
   let fixture: ComponentFixture<SideNavComponent>;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SideNavComponent],
-      imports: [AppTestingModule, AppRoutingModule],
+      imports: [
+        RouterTestingModule.withRoutes([
+          {
+            path: Pages.LIDI.path,
+            component: LidiOverviewComponent,
+          },
+          {
+            path: Pages.TTFN.path,
+            component: TimetableFieldNumberOverviewComponent,
+          },
+        ]),
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SideNavComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -26,15 +46,34 @@ describe('SideNavComponent', () => {
   });
 
   it('should show side-nav', () => {
-    //given
-    fixture.detectChanges();
-    //when
-    const result = fixture.nativeElement.querySelectorAll('div.link-border');
-    //then
+    const result = fixture.debugElement.queryAll(By.css('a'));
     expect(result).toBeDefined();
-    const firstSideNavItem = result[0].querySelector('.mat-list-item-content');
-    const secondSideNavItem = result[1].querySelector('.mat-list-item-content');
-    expect(firstSideNavItem.textContent.trim()).toBe(component.pages[0].titleMenu);
-    expect(secondSideNavItem.textContent.trim()).toBe(component.pages[1].titleMenu);
+    expect(result[0].nativeElement.textContent.trim()).toBe(component.pages[0].titleMenu);
+    expect(result[1].nativeElement.textContent.trim()).toBe(component.pages[1].titleMenu);
   });
+
+  it('home route should be active', () => {
+    assertActiveNavItem('PAGES.HOME');
+  });
+
+  it('timetable route should be active', async () => {
+    await router.navigate(['timetable-field-number']);
+    fixture.detectChanges();
+    assertActiveNavItem('PAGES.TTFN.TITLE');
+  });
+
+  it('line directory route should be active', async () => {
+    await router.navigate(['line-directory']);
+    fixture.detectChanges();
+    assertActiveNavItem('PAGES.LIDI.TITLE');
+  });
+
+  const assertActiveNavItem = (pageTitle: string) => {
+    const navItems = fixture.debugElement.queryAll(By.css('a'));
+    const activeNavItemIndex = navItems.findIndex((item) =>
+      Object.keys(item.classes).includes('route-active')
+    );
+    expect(activeNavItemIndex).toBe(component.pages.findIndex((page) => page.title === pageTitle));
+    expect(activeNavItemIndex).toBe(component.activePageIndex);
+  };
 });
