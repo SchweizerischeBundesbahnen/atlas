@@ -5,8 +5,8 @@
 }
 
 .route-active {
-  color: variables.$navigationDisabled;
-  background: variables.$white;
+  color: variables.$navigationDisabled !important;
+  background: variables.$white !important;
 }
 
 .link-border {

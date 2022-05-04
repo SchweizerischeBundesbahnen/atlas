@@ -53,9 +53,9 @@ export default class CommonUtils {
   }
 
   private static openSideMenu() {
-    cy.get('.sidenav-menu-btn').then(($sidemenu) => {
-      if (!$sidemenu.hasClass('menu-opened')) {
-        $sidemenu.click();
+    cy.get('.sidenav-menu-btn span').then(($sidemenuBtnSpan) => {
+      if ($sidemenuBtnSpan.text() === 'Menü') {
+        $sidemenuBtnSpan.trigger("click");
       }
     });
   }
@@ -192,7 +192,7 @@ export default class CommonUtils {
    * Cypress.Chainable<JQuery<HTMLElement>>.type() throws an exception
    * when an empty string ("") is passed. This method only calls type() when textToType is filled.
    */
-  static getClearType(selector: string, textToType: string, force: boolean = false) {
+  static getClearType(selector: string, textToType: string, force = false) {
     cy.get(selector)
       .clear()
       .then((e) => {

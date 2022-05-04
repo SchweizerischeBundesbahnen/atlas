@@ -12,6 +12,8 @@ describe('Sublines: TableSettings and Routing', () => {
   const sublineDirectoryUrlPath = '/line-directory/sublines';
   const sublineDirectoryUrlPathToIntercept = '/line-directory/v1/sublines?**';
 
+  let mainLine: any;
+
   function deleteFirstFoundSublineInTable() {
     CommonUtils.clickFirstRowInTable(DataCy.LIDI_SUBLINES);
 
@@ -36,7 +38,8 @@ describe('Sublines: TableSettings and Routing', () => {
     cy.atlasLogin();
   });
 
-  it('Step-2: Navigate to Sublines', () => {
+  it('Step-2: Add mainline and navigate to Sublines', () => {
+    mainLine = LidiUtils.addMainLine();
     LidiUtils.navigateToSublines();
   });
 
@@ -131,5 +134,11 @@ describe('Sublines: TableSettings and Routing', () => {
     cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalSubline2.swissSublineNumber);
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.LIDI_SUBLINES);
+  });
+
+  it('Step-10: Delete mainline', () => {
+    LidiUtils.changeLiDiTabToLines();
+    LidiUtils.searchAndNavigateToLine(mainLine);
+    CommonUtils.deleteItem();
   });
 });
