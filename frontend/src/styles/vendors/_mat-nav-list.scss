@@ -19,16 +19,11 @@ mat-sidenav {
   background: variables.$background;
 }
 
-mat-sidenav-content.menu-opened {
+mat-sidenav-content {
+  &.content-menu-closed {
+    margin-left: variables.$navigationDefaultSize !important;
+  }
   margin-left: $defaultScreenWidth !important;
-}
-
-mat-sidenav-content.content-menu-open {
-  margin-left: $defaultScreenWidth !important;
-}
-
-mat-sidenav-content.content-menu-closed {
-  margin-left: variables.$navigationDefaultSize !important;
 }
 
 .mat-nav-list {
@@ -50,10 +45,10 @@ mat-sidenav-content.content-menu-closed {
     width: $largeScreenWidth;
   }
   mat-sidenav-content {
+    &.content-menu-closed {
+      margin-left: variables.$navigationLargeSize !important;
+    }
     margin-left: $largeScreenWidth !important;
-  }
-  mat-sidenav-content.content-menu-closed {
-    margin-left: variables.$navigationLargeSize !important;
   }
   .mat-list-item-content {
     padding-left: variables.$navigationPaddingLeftLarge !important;
