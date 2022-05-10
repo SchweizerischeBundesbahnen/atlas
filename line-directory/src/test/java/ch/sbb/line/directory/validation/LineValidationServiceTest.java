@@ -307,8 +307,7 @@ public class LineValidationServiceTest {
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
 
     //then
-  verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
+    verify(coverageValidationService).validateLineSublineCoverage(lineVersion);
   }
-
 
 }
