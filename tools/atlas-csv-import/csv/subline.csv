@@ -1,4 +1,4 @@
-swissSublineNumber;mainLineSwissLineNumber;type;description;number;longName;paymentType;validFrom;validTo;businessOrganisation
+swissSublineNumber;mainLineSwissLineNumber;sublineType;description;number;longName;paymentType;validFrom;validTo;businessOrganisation
 b1.SL1.1;b1.10.1;TECHNICAL;Villars-sur-Glâne;0.1.1;Talstation - Bergstation$$ Ersatzbus;INTERNATIONAL;2022-02-01;2022-02-25;sbb
 b1.SL1.2;b1.10.1;TECHNICAL;Meiringen - Innertkirchen;0.1.2;Talstation - Bergstation Ersatzbus;INTERNATIONAL;2022-02-01;2022-02-25;sbb
 b1.SL1.1;b1.10.2;TECHNICAL;Meiringen - Innertkirchen;0.1.3;Talstation - Bergstation Ersatzbus;INTERNATIONAL;2022-02-01;2022-02-25;sbb

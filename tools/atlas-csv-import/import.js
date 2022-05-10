@@ -132,11 +132,11 @@ function convertCsv(csvFilePath) {
 }
 
 async function getSlnidForSubline(token, url, mainLineSwissLineNumber) {
-  const index = url.indexOf(".net");
-  const hostUrl = url.substring(0, index + 4);
+  const index = url.indexOf("sublines");
+  const hostUrl = url.substring(0, index);
   try {
     const response = await axios.get(
-      `${hostUrl}/v1/lines?swissLineNumber=${mainLineSwissLineNumber}`,
+      `${hostUrl}lines?swissLineNumber=${mainLineSwissLineNumber}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
