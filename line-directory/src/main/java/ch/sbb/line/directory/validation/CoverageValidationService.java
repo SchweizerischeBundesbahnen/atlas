@@ -52,7 +52,7 @@ public class CoverageValidationService {
       boolean result = isLineCompletelyCoveredBySublines(lineVersions, sublinesByType);
       validationResult.add(result);
     }
-    int falseResultSize = (int) validationResult.stream().filter(vr -> !vr).count();
+    long falseResultSize = validationResult.stream().filter(vr -> !vr).count();
     return falseResultSize <= 0;
   }
 
