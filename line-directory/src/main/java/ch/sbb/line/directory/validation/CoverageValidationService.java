@@ -1,7 +1,5 @@
 package ch.sbb.line.directory.validation;
 
-import static ch.sbb.line.directory.enumaration.SublineType.COMPENSATION;
-import static ch.sbb.line.directory.enumaration.SublineType.TECHNICAL;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
@@ -47,14 +45,15 @@ public class CoverageValidationService {
     if (sublineVersions.isEmpty()) {
       return true;
     }
-    List<SublineVersion> technincalSublines = getSublinesByType(sublineVersions, TECHNICAL);
-    List<SublineVersion> compensationSublines = getSublinesByType(sublineVersions, COMPENSATION);
-    boolean lineCompletelyCoverByTechnicalSublines =
-        isLineCompletelyCoveredBySublines(lineVersions, technincalSublines);
-    boolean lineCompletelyCoverByCompensationSublines =
-        isLineCompletelyCoveredBySublines(lineVersions, compensationSublines);
+    List<Boolean> validationResult = new ArrayList<>();
 
-    return lineCompletelyCoverByCompensationSublines && lineCompletelyCoverByTechnicalSublines;
+    for (SublineType sublineType : SublineType.values()) {
+      List<SublineVersion> sublinesByType = getSublinesByType(sublineVersions, sublineType);
+      boolean result = isLineCompletelyCoveredBySublines(lineVersions, sublinesByType);
+      validationResult.add(result);
+    }
+    long falseResultSize = validationResult.stream().filter(vr -> !vr).count();
+    return falseResultSize <= 0;
   }
 
   private boolean isLineCompletelyCoveredBySublines(List<LineVersion> lineVersions,
@@ -63,7 +62,7 @@ public class CoverageValidationService {
     if (!sublinesVersions.isEmpty()) {
       lineCompletelyCoverByTechnicalSublines = lineCompletelyCoverSublines(lineVersions,
           sublinesVersions);
-    }else {
+    } else {
       return true;
     }
     return lineCompletelyCoverByTechnicalSublines;
@@ -71,7 +70,9 @@ public class CoverageValidationService {
 
   private List<SublineVersion> getSublinesByType(List<SublineVersion> sublineVersions,
       SublineType sublineType) {
-    return sublineVersions.stream().filter(s -> s.getSublineType() == sublineType).collect(toList());
+    return sublineVersions.stream()
+                          .filter(s -> s.getSublineType() == sublineType)
+                          .collect(toList());
   }
 
   private boolean lineCompletelyCoverSublines(List<LineVersion> lineVersions,
@@ -151,8 +152,11 @@ public class CoverageValidationService {
       for (int i = 1; i <= versionableList.size(); i++) {
         T current = versionableList.get(i - 1);
         if ((versionableList.size()) == i) {
-          if(coveredDataRages.get(coveredDataRages.size()-1).getTo().plusDays(1).isEqual(current.getValidFrom())){
-            coveredDataRages.get(coveredDataRages.size()-1).setTo(current.getValidTo());
+          if (coveredDataRages.get(coveredDataRages.size() - 1)
+                              .getTo()
+                              .plusDays(1)
+                              .isEqual(current.getValidFrom())) {
+            coveredDataRages.get(coveredDataRages.size() - 1).setTo(current.getValidTo());
             return coveredDataRages;
           }
           coveredDataRages.add(currentDateRange);
