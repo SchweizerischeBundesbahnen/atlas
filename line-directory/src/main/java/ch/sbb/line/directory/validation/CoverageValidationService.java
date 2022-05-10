@@ -1,8 +1,5 @@
 package ch.sbb.line.directory.validation;
 
-import static ch.sbb.line.directory.enumaration.SublineType.COMPENSATION;
-import static ch.sbb.line.directory.enumaration.SublineType.CONCESSION;
-import static ch.sbb.line.directory.enumaration.SublineType.TECHNICAL;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
@@ -16,7 +13,6 @@ import ch.sbb.line.directory.service.CoverageService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,7 +47,7 @@ public class CoverageValidationService {
     }
     List<Boolean> validationResult = new ArrayList<>();
 
-    for(SublineType sublineType :  SublineType.values()){
+    for (SublineType sublineType : SublineType.values()) {
       List<SublineVersion> sublinesByType = getSublinesByType(sublineVersions, sublineType);
       boolean result = isLineCompletelyCoveredBySublines(lineVersions, sublinesByType);
       validationResult.add(result);
