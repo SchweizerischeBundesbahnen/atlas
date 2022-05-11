@@ -1,4 +1,4 @@
-swissLineNumber;type;paymentType;number;alternativeName;combinationName;longName;colorFontRgb;colorBackRgb;colorFontCmyk;colorBackCmyk;icon;description;validFrom;validTo;businessOrganisation;comment
+swissLineNumber;lineType;paymentType;number;alternativeName;combinationName;longName;colorFontRgb;colorBackRgb;colorFontCmyk;colorBackCmyk;icon;description;validFrom;validTo;businessOrganisation;comment
 b1.10.1;ORDERLY;INTERNATIONAL;1.10.1;alt name;comb name;Talstation - Bergstation$$ Ersatzbus;#FF0000;#FF0000;10,100,0,50;10,100,0,50;https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg;Villars-sur-Glâne;2022-01-25;2022-03-01;sbb;Comment
 b1.10.2;TEMPORARY;INTERNATIONAL;1.10.2;alt name;comb name;Talstation - Bergstation Ersatzbus;#FF0000;#FF0000;10,100,0,50;10,100,0,50;https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg;Meiringen - Innertkirchen;25.01.2022;01.03.2022;sbb;Comment
 b1.10.3;ORDERL;INTERNATIONAL;1.10.3;alt name;comb name;Talstation - Bergstation Ersatzbus;#FF0000;#FF0000;10,100,0,50;10,100,0,50;https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg;Meiringen - Innertkirchen;2022-01-25;2022-03-01;sbb;Comment
