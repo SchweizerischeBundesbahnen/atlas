@@ -8,9 +8,9 @@
   width: inherit;
 }
 
-svg {
+img {
   margin-left: 5px;
-  margin-bottom: 26.5px;
+  margin-bottom: 15px;
   cursor: pointer;
 }
 
@@ -18,12 +18,4 @@ svg {
   display: flex;
   width: 100%;
   padding-left: 0.4375em;
-}
-
-svg.active path {
-  fill: variables.$primary-400;
-}
-
-svg.inactive path {
-  fill: variables.$gray-500;
 }
