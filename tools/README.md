@@ -9,4 +9,4 @@ ATLAS Tools.
 <!-- tocstop -->
 
 ## Atlas CSV Import
-See [atlas-csv-import](README.md)
+See [atlas-csv-import](atlas-csv-import/README.md)

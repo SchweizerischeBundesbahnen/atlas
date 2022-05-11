@@ -17,8 +17,8 @@
 ### Arguments
 - **token**: Valid OAuth-Token to authenticate on the API. This token is added to the Authorization-Header
 in the request as follows: `Bearer <token>`.
-- **url**: The url from the api-endpoint to send the POST-request (insert new entity) to. You have to use
-the url with the host-ending `.net` like `https://line-directory-backend.dev.sbb-cloud.net/v1/lines/versions`
+- **url**: The url from the api-endpoint to send the POST-request (insert new entity) to.
+For example `http://localhost:8082/v1/lines/versions`
 - **csv**: The local path to the csv-file from which the data should be read. (Example: `csv\line.csv`)
 
 ## Semicolon escaping in csv file
