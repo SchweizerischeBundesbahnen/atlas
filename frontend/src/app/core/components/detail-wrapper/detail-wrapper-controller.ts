@@ -112,6 +112,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
       this.showConfirmationDialog();
     } else {
       this.form.enable();
+      this.disableFormFieldsAfterEditFormEnable();
     }
   }
 
@@ -230,6 +231,8 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   abstract createRecord(): void;
 
   abstract deleteRecord(): void;
+
+  abstract disableFormFieldsAfterEditFormEnable(): void;
 
   backToOverview(): void {
     this.dialogRef.close();
