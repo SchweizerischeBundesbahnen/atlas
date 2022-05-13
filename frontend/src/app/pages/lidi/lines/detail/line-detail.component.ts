@@ -192,6 +192,9 @@ export class LineDetailComponent
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  disableFormFieldsAfterEditFormEnable(): void {}
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
