@@ -40,6 +40,8 @@ export class SublineDetailComponent
   mainlineSearchTerm = new Subject<string>();
   mainlines: Line[] = [];
 
+  private readonly mainlineSlnidFormControlName = 'mainlineSlnid';
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
@@ -126,7 +128,7 @@ export class SublineDetailComponent
           version.swissSublineNumber,
           [Validators.required, AtlasFieldLengthValidator.small, AtlasCharsetsValidator.sid4pt],
         ],
-        mainlineSlnid: [version.mainlineSlnid, [Validators.required]],
+        [this.mainlineSlnidFormControlName]: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
         status: [version.status],
         sublineType: [version.sublineType, [Validators.required]],
@@ -186,6 +188,10 @@ export class SublineDetailComponent
 
   getValidFromPlaceHolder() {
     return this.dateService.getCurrentDateFormatted();
+  }
+
+  disableFormFieldsAfterEditFormEnable(): void {
+    this.form.get(this.mainlineSlnidFormControlName)?.disable();
   }
 
   ngOnDestroy() {

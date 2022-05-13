@@ -25,6 +25,7 @@ describe('DetailWrapperController', () => {
     'createRecord',
     'deleteRecord',
     'updateRecord',
+    'disableFormFieldsAfterEditFormEnable',
   ]);
   let record: Record;
 
@@ -73,6 +74,10 @@ describe('DetailWrapperController', () => {
 
     updateRecord(): void {
       dummyController.updateRecord();
+    }
+
+    disableFormFieldsAfterEditFormEnable(): void {
+      dummyController.disableFormFieldsAfterEditFormEnable();
     }
   }
 
@@ -129,6 +134,7 @@ describe('DetailWrapperController', () => {
 
       controller.toggleEdit();
       expect(controller.form.enabled).toBeTrue();
+      expect(dummyController.disableFormFieldsAfterEditFormEnable).toHaveBeenCalled();
 
       controller.toggleEdit();
       expect(controller.form.enabled).toBeFalse();
