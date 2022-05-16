@@ -153,6 +153,7 @@ function createDummyForm(enabledForm: boolean) {
       'ngOnInit',
       'delete',
       'getPageType',
+      'disableUneditableFormFields',
     ],
     {
       heading: undefined,
