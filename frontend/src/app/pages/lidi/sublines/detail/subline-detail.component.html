@@ -60,7 +60,7 @@
           [items]="mainlines"
           class="mainline-select"
           bindValue="slnid"
-          formControlName="mainlineSlnid"
+          [formControlName]="mainlineSlnidFormControlName"
           data-cy="mainlineSlnid"
           [minTermLength]="1"
           [typeahead]="mainlineSearchTerm"
@@ -74,9 +74,9 @@
             {{ item.swissLineNumber + ' (' + item.description + ')' }}
           </ng-template>
         </ng-select>
-        <div *ngIf="form.get('mainlineSlnid')?.touched">
+        <div *ngIf="form.get(mainlineSlnidFormControlName)?.touched">
           <mat-error
-            *ngFor="let validationError of this.getValidation('mainlineSlnid')"
+            *ngFor="let validationError of this.getValidation(mainlineSlnidFormControlName)"
             class="fs-75p"
           >
             {{ validationError.error | translate }}
