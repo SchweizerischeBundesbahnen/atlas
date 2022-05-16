@@ -81,34 +81,6 @@ public class TimetableFieldNumberControllerTest {
   }
 
   @Test
-  void shouldGetVersion() {
-    // Given
-    TimetableFieldNumberVersion version = createEntity();
-    when(timetableFieldNumberService.findById(anyLong())).thenReturn(Optional.of(version));
-
-    // When
-    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = timetableFieldNumberController.getVersion(1L);
-
-    // Then
-    assertThat(timetableFieldNumberVersionModel).usingRecursiveComparison()
-                                                .ignoringFields("editor", "creator", "editionDate", "creationDate",
-            "lineRelations")
-                                                .isEqualTo(timetableFieldNumberVersionModel);
-  }
-
-  @Test
-  void shouldReturnNotFoundOnUnexcitingVersion() {
-    // Given
-    when(timetableFieldNumberService.findById(anyLong())).thenReturn(Optional.empty());
-
-    // When
-
-    // Then
-    assertThatExceptionOfType(NotFoundException.class).isThrownBy(
-        () -> timetableFieldNumberController.getVersion(1L));
-  }
-
-  @Test
   void shouldDeleteVersions() {
     // Given
     String ttfnid = "ch:1:ttfnid:100000";
