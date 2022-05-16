@@ -192,8 +192,9 @@ export class LineDetailComponent
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  disableFormFieldsAfterEditFormEnable(): void {}
+  getFormControlsToDisable(): string[] {
+    return [];
+  }
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();

@@ -112,7 +112,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
       this.showConfirmationDialog();
     } else {
       this.form.enable();
-      this.disableFormFieldsAfterEditFormEnable();
+      this.disableUneditableFormFields();
     }
   }
 
@@ -232,13 +232,18 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   abstract deleteRecord(): void;
 
-  abstract disableFormFieldsAfterEditFormEnable(): void;
+  abstract getFormControlsToDisable(): string[];
+
+  abstract getPageType(): Page;
 
   backToOverview(): void {
     this.dialogRef.close();
   }
 
-  abstract getPageType(): Page;
+  private disableUneditableFormFields(): void {
+    const formControlsToDisable = this.getFormControlsToDisable();
+    formControlsToDisable.forEach((ctrl) => this.form.get(ctrl)?.disable());
+  }
 
   private confirmLeave(): Observable<boolean> {
     if (this.form.dirty) {

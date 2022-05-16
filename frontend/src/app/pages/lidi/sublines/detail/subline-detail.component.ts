@@ -40,7 +40,7 @@ export class SublineDetailComponent
   mainlineSearchTerm = new Subject<string>();
   mainlines: Line[] = [];
 
-  private readonly mainlineSlnidFormControlName = 'mainlineSlnid';
+  readonly mainlineSlnidFormControlName = 'mainlineSlnid';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
@@ -186,12 +186,8 @@ export class SublineDetailComponent
     return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
-  getValidFromPlaceHolder() {
-    return this.dateService.getCurrentDateFormatted();
-  }
-
-  disableFormFieldsAfterEditFormEnable(): void {
-    this.form.get(this.mainlineSlnidFormControlName)?.disable();
+  getFormControlsToDisable(): string[] {
+    return [this.mainlineSlnidFormControlName];
   }
 
   ngOnDestroy() {

@@ -110,8 +110,8 @@ describe('Date Validator', () => {
 
   it('should successfully validate dates', () => {
     //given
-    const validFromForm = new FormControl(moment('12.12.2000'));
-    const validToForm = new FormControl(moment('12.12.2001'));
+    const validFromForm = new FormControl(moment('12.12.2000', 'DD.MM.YYYY'));
+    const validToForm = new FormControl(moment('12.12.2001', 'DD.MM.YYYY'));
     //when
     DateRangeValidator.validate(validFromForm, validToForm);
     //then

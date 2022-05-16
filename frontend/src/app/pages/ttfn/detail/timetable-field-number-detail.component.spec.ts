@@ -135,12 +135,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get valid from placeholder', () => {
-    const fixedDate = new Date(2020, 11, 31);
-    jasmine.clock().install();
-    jasmine.clock().mockDate(fixedDate);
-  });
-
   it('should update Version successfully', () => {
     mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(of(version));
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
