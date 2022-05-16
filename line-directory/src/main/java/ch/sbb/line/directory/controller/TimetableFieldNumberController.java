@@ -66,14 +66,6 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   }
 
   @Override
-  public TimetableFieldNumberVersionModel getVersion(Long id) {
-    return timetableFieldNumberService.findById(id)
-                                      .map(this::toModel)
-                                      .orElseThrow(() ->
-                                          new IdNotFoundException(id));
-  }
-
-  @Override
   public List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(String ttfnId) {
     List<TimetableFieldNumberVersionModel> timetableFieldNumberVersionModels = timetableFieldNumberService.getAllVersionsVersioned(
                                                                                                               ttfnId)
