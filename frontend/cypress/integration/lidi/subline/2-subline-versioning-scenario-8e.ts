@@ -87,7 +87,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-10: Navigate to Sublines', () => {
     CommonUtils.fromDetailBackToSublinesOverview();
-    CommonUtils.navigateToHome();
+    CommonUtils.navigateToHomeViaHomeLogo();
     LidiUtils.navigateToSublines();
     LidiUtils.checkHeaderTitle();
   });

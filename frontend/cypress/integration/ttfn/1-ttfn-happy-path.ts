@@ -38,7 +38,7 @@ describe('Fahrplanfeldnummer', () => {
 
   it('Step-5: Navigate to the Fahrplanfeldnummer', () => {
     CommonUtils.fromDetailBackToTtfnOverview();
-    CommonUtils.navigateToHome();
+    CommonUtils.navigateToHomeViaHomeLogo();
     TtfnUtils.navigateToTimetableFieldNumber();
     TtfnUtils.checkHeaderTitle();
   });

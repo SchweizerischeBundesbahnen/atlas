@@ -48,14 +48,14 @@ export default class CommonUtils {
     cy.get(selector + ' table tbody tr').should('have.text', 'Es wurden keine Daten gefunden.');
   }
 
-  static navigateToHome() {
+  static navigateToHomeViaHomeLogo() {
     cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click();
   }
 
   private static openSideMenu() {
     cy.get('.sidenav-menu-btn span').then(($sidemenuBtnSpan) => {
       if ($sidemenuBtnSpan.text() === 'Menü') {
-        $sidemenuBtnSpan.trigger("click");
+        $sidemenuBtnSpan.trigger('click');
       }
     });
   }
