@@ -32,11 +32,10 @@ public class LineService {
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
   private final LineValidationService lineValidationService;
-  private final SpecificationBuilderProvider specificationBuilderProvider;
+  private final SpecificationBuilder<Line> specificationBuilder;
   private final CoverageService coverageService;
 
   public Page<Line> findAll(LineSearchRestrictions searchRestrictions) {
-    SpecificationBuilder<Line> specificationBuilder = specificationBuilderProvider.getLineSpecificationBuilderService();
     return lineRepository.findAll(searchRestrictions.getSpecification(specificationBuilder),
         searchRestrictions.getPageable());
   }
