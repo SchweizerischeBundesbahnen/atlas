@@ -57,9 +57,6 @@ class LineServiceTest {
   private LineValidationService lineValidationService;
 
   @Mock
-  private SpecificationBuilderProvider specificationBuilderProvider;
-
-  @Mock
   private SpecificationBuilder<Line> specificationBuilder;
 
   @Mock
@@ -74,17 +71,15 @@ class LineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
-        versionableService, lineValidationService, specificationBuilderProvider, coverageService);
+        versionableService, lineValidationService, specificationBuilder, coverageService);
   }
 
   @Test
   void shouldGetPagableLinesFromRepository() {
     // Given
     when(lineSpecification.and(any())).thenReturn(lineSpecification);
-    when(specificationBuilder.buildSearchCriteriaSpecification(any())).thenReturn(
+    when(specificationBuilder.searchCriteriaSpecification(any())).thenReturn(
         lineSpecification);
-    when(specificationBuilderProvider.getLineSpecificationBuilderService()).thenReturn(
-        specificationBuilder);
     Pageable pageable = Pageable.unpaged();
 
     // When
@@ -92,8 +87,7 @@ class LineServiceTest {
 
     // Then
     verify(lineRepository).findAll(ArgumentMatchers.<Specification<Line>>any(), eq(pageable));
-    verify(specificationBuilderProvider).getLineSpecificationBuilderService();
-    verify(specificationBuilder).buildSearchCriteriaSpecification(List.of());
+    verify(specificationBuilder).searchCriteriaSpecification(List.of());
   }
 
   @Test

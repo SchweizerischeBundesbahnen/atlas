@@ -3,6 +3,7 @@ package ch.sbb.line.directory.service;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -32,11 +33,10 @@ public class SublineService {
   private final VersionableService versionableService;
   private final LineService lineService;
   private final SublineValidationService sublineValidationService;
-  private final SpecificationBuilderProvider specificationBuilderProvider;
+  private final SpecificationBuilder<Subline> specificationBuilder;
   private final CoverageService coverageService;
 
   public Page<Subline> findAll(SublineSearchRestrictions searchRestrictions) {
-    SpecificationBuilder<Subline> specificationBuilder = specificationBuilderProvider.getSublineSpecificationBuilderService();
     return sublineRepository.findAll(searchRestrictions.getSpecification(specificationBuilder),
         searchRestrictions.getPageable());
   }

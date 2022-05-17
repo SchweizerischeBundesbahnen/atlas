@@ -48,9 +48,6 @@ class SublineServiceTest {
   private VersionableService versionableService;
 
   @Mock
-  private SpecificationBuilderProvider specificationBuilderProvider;
-
-  @Mock
   private SpecificationBuilder<Subline> specificationBuilder;
 
   @Mock
@@ -68,18 +65,16 @@ class SublineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService, lineService, sublineValidationService, specificationBuilderProvider,
+        versionableService, lineService, sublineValidationService, specificationBuilder,
         coverageService);
   }
 
   @Test
   void shouldGetPagableSublinesFromRepository() {
     // Given
-    when(specificationBuilder.buildSearchCriteriaSpecification(any())).thenReturn(
+    when(specificationBuilder.searchCriteriaSpecification(any())).thenReturn(
         sublineSpecification);
     when(sublineSpecification.and(any())).thenReturn(sublineSpecification);
-    when(specificationBuilderProvider.getSublineSpecificationBuilderService()).thenReturn(
-        specificationBuilder);
     Pageable pageable = Pageable.unpaged();
 
     // When
@@ -87,8 +82,7 @@ class SublineServiceTest {
 
     // Then
     verify(sublineRepository).findAll(ArgumentMatchers.<Specification<Subline>>any(), eq(pageable));
-    verify(specificationBuilderProvider).getSublineSpecificationBuilderService();
-    verify(specificationBuilder).buildSearchCriteriaSpecification(List.of());
+    verify(specificationBuilder).searchCriteriaSpecification(List.of());
   }
 
   @Test
