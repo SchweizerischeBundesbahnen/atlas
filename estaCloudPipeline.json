@@ -16,6 +16,12 @@
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
+      "openshiftAppName": "business-organisation-directory",
+      "dockerFile": "business-organisation-directory/docker/Dockerfile",
+      "artifactorySupressProjectSubfolderCreation": true
+    },
+    {
+      "artifactoryDockerRepo": "atlas.docker",
       "openshiftAppName": "gateway",
       "dockerFile": "gateway/docker/Dockerfile",
       "artifactorySupressProjectSubfolderCreation": true
