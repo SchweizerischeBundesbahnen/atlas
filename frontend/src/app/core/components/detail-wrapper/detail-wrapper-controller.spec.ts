@@ -236,7 +236,7 @@ describe('Get actual versioned record', () => {
   it('should return the firstRecord version when today is the firstRecord range', () => {
     //given
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
-    const today = moment('1.2.2000').toDate();
+    const today = moment('1.2.2000', 'DD.MM.YYYY').toDate();
     jasmine.clock().mockDate(today);
 
     //when
@@ -249,7 +249,7 @@ describe('Get actual versioned record', () => {
   it('should return the secondRecord version when today is the secondRecord range', () => {
     //given
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
-    const today = moment('1.2.2001').toDate();
+    const today = moment('1.2.2001', 'DD.MM.YYYY').toDate();
     jasmine.clock().mockDate(today);
 
     //when
@@ -262,7 +262,7 @@ describe('Get actual versioned record', () => {
   it('should return the thirdRecord version when today is the thirdRecord range', () => {
     //given
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
-    const today = moment('1.2.2002').toDate();
+    const today = moment('1.2.2002', 'DD.MM.YYYY').toDate();
     jasmine.clock().mockDate(today);
 
     //when
@@ -275,7 +275,7 @@ describe('Get actual versioned record', () => {
   it('should return the firstRecord version when today is before all records', () => {
     //given
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
-    const today = moment('1.2.1999').toDate();
+    const today = moment('1.2.1999', 'DD.MM.YYYY').toDate();
     jasmine.clock().mockDate(today);
 
     //when
@@ -288,7 +288,7 @@ describe('Get actual versioned record', () => {
   it('should return the thirdRecord version when today is after all records', () => {
     //given
     const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
-    const today = moment('1.2.2099').toDate();
+    const today = moment('1.2.2099', 'DD.MM.YYYY').toDate();
     jasmine.clock().mockDate(today);
 
     //when
@@ -307,7 +307,7 @@ describe('Get actual versioned record', () => {
     };
     records.push(fourthRecord);
     //given
-    const today = moment('1.2.2003').toDate();
+    const today = moment('1.2.2003', 'DD.MM.YYYY').toDate();
     jasmine.clock().mockDate(today);
 
     //when
@@ -330,7 +330,7 @@ describe('Get actual versioned record', () => {
     };
     const records: Array<Record> = [todayRecord, tomorrowRecord];
     //given
-    const today = moment('1.1.2004').toDate();
+    const today = moment('1.1.2004', 'DD.MM.YYYY').toDate();
     jasmine.clock().mockDate(today);
 
     //when
