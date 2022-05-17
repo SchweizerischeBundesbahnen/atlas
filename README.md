@@ -11,10 +11,11 @@ This is the main repository for business relevant services for ATLAS.
   * [Run locally](#run-locally)
   * [Monorepo](#monorepo)
 - [Structure](#structure)
-  * [apim-configuration](#apim-configuration)
+  * [APIM-configuration](#apim-configuration)
   * [charts](#charts)
   * [Gateway](#gateway)
   * [Line-directory](#line-directory)
+  * [Business-organisation-directory](#business-organisation-directory)
   * [Versioning lib](#versioning-lib)
   * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
@@ -106,6 +107,12 @@ See [Gateway documentation](gateway/README.md);
 
 Business service for lines, sublines and timetable field numbers. All of these business objects use the atlas own versioning.
 See [Line-directory documentation](line-directory/README.md);
+
+### Business-organisation-directory
+
+Business service for business organisations. All of these business objects use the atlas own versioning.
+See [Business-Organisation-directory documentation](business-organisation-directory/README.md);
+
 
 ### Versioning lib
 
