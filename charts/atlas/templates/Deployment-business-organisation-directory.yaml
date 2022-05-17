@@ -1,13 +1,13 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: '{{ .Values.businessOrganisationDirectory.name }}'
+  name: '{{ .Values.lineDirectory.name }}'
 spec:
   replicas: {{ .Values.common.replicas }}
   selector:
     matchLabels:
-      app: '{{ .Values.businessOrganisationDirectory.name }}'
-      deploymentconfig: '{{ .Values.businessOrganisationDirectory.name }}'
+      app: '{{ .Values.lineDirectory.name }}'
+      deploymentconfig: '{{ .Values.lineDirectory.name }}'
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -20,8 +20,8 @@ spec:
         collectord.io/logs-output: splunk::prod
         collectord.io/logs-eventpattern: ^(timestamp=)
       labels:
-        app: '{{ .Values.businessOrganisationDirectory.name }}'
-        deploymentconfig: '{{ .Values.businessOrganisationDirectory.name }}'
+        app: '{{ .Values.lineDirectory.name }}'
+        deploymentconfig: '{{ .Values.lineDirectory.name }}'
     spec:
       containers:
       - env:
@@ -30,18 +30,18 @@ spec:
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: db-secret-{{ .Values.businessOrganisationDirectory.name }}
+              name: db-secret-{{ .Values.lineDirectory.name }}
               key: user
         - name: DB_PWD
           valueFrom:
             secretKeyRef:
-              name: db-secret-{{ .Values.businessOrganisationDirectory.name }}
+              name: db-secret-{{ .Values.lineDirectory.name }}
               key: password
-        image: "atlas.docker.bin.sbb.ch/{{ .Values.businessOrganisationDirectory.name }}:{{ .Chart.AppVersion }}"
+        image: "atlas.docker.bin.sbb.ch/{{ .Values.lineDirectory.name }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
-        name: '{{ .Values.businessOrganisationDirectory.name }}'
+        name: '{{ .Values.lineDirectory.name }}'
         ports:
-        - containerPort: {{ .Values.businessOrganisationDirectory.port }}
+        - containerPort: {{ .Values.lineDirectory.port }}
           protocol: TCP
         resources:
           requests:
@@ -52,8 +52,8 @@ spec:
             memory: '{{ .Values.common.memoryMax }}'
         livenessProbe:
           httpGet:
-            path: '{{ .Values.businessOrganisationDirectory.livenessProbe }}'
-            port: {{ .Values.businessOrganisationDirectory.port }}
+            path: '{{ .Values.lineDirectory.livenessProbe }}'
+            port: {{ .Values.lineDirectory.port }}
             scheme: HTTP
           initialDelaySeconds: 40
           timeoutSeconds: 90
@@ -62,8 +62,8 @@ spec:
           failureThreshold: 10
         readinessProbe:
           httpGet:
-            path: '{{ .Values.businessOrganisationDirectory.readynessProbe }}'
-            port: {{ .Values.businessOrganisationDirectory.port }}
+            path: '{{ .Values.lineDirectory.readynessProbe }}'
+            port: {{ .Values.lineDirectory.port }}
             scheme: HTTP
           initialDelaySeconds: 30
           timeoutSeconds: 90
