@@ -8,7 +8,7 @@
     </parent>
     <groupId>ch.sbb.atlas</groupId>
     <artifactId>atlas</artifactId>
-    <version>0.404.0</version>
+    <version>0.405.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Atlas</name>
     <description>ATLAS - SKI Business Application</description>
@@ -57,7 +57,7 @@
             <dependency>
                 <groupId>ch.sbb.atlas</groupId>
                 <artifactId>versioning</artifactId>
-                <version>0.404.0</version>
+                <version>0.405.0-SNAPSHOT</version>
             </dependency>
 
             <!-- Third Party-->
