@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
+import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,8 @@ public class TimetableFieldNumberControllerExceptionHandlingTest {
   @Test
   void shouldReturnBadRequestExceptionOnInvalidSortParam() throws Exception {
     // Given
-    when(timetableFieldNumberService.getVersionsSearched(any(Pageable.class), any(), any(), any())).thenThrow(new PropertyReferenceException( "nam",
+    when(timetableFieldNumberService.getVersionsSearched(any(
+        TimetableFieldNumberSearchRestrictions.class))).thenThrow(new PropertyReferenceException( "nam",
         ClassTypeInformation.from(TimetableFieldNumber.class), Collections.emptyList()));
     // When
     // Then

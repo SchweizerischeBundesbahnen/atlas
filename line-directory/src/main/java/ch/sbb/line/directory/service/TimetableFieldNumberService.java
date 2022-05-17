@@ -1,40 +1,32 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.atlas.model.Status;
-import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
+import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
+import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-@Transactional
+@RequiredArgsConstructor
 public class TimetableFieldNumberService {
 
   private final TimetableFieldNumberVersionRepository versionRepository;
   private final TimetableFieldNumberRepository timetableFieldNumberRepository;
   private final VersionableService versionableService;
 
-  @Autowired
-  public TimetableFieldNumberService(TimetableFieldNumberVersionRepository versionRepository,
-      TimetableFieldNumberRepository timetableFieldNumberRepository,
-      VersionableService versionableService) {
-    this.versionRepository = versionRepository;
-    this.timetableFieldNumberRepository = timetableFieldNumberRepository;
-    this.versionableService = versionableService;
-  }
+  private final SpecificationBuilder<TimetableFieldNumber> specificationBuilder;
 
   public List<TimetableFieldNumberVersion> getAllVersionsVersioned(String ttfnId) {
     return versionRepository.getAllVersionsVersioned(ttfnId);
@@ -53,11 +45,9 @@ public class TimetableFieldNumberService {
     return versionRepository.save(newVersion);
   }
 
-  public Page<TimetableFieldNumber> getVersionsSearched(Pageable pageable,
-      List<String> searchCriteria,
-      LocalDate validOn,
-      List<Status> statusChoices) {
-    return timetableFieldNumberRepository.searchVersions(pageable, searchCriteria, validOn, statusChoices);
+  public Page<TimetableFieldNumber> getVersionsSearched(TimetableFieldNumberSearchRestrictions searchRestrictions) {
+    return timetableFieldNumberRepository.findAll(searchRestrictions.getSpecification(specificationBuilder),
+        searchRestrictions.getPageable());
   }
 
   public void deleteById(Long id) {
