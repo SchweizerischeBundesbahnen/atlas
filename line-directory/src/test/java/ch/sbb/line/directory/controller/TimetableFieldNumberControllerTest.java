@@ -13,6 +13,7 @@ import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.NotFoundException;
+import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -65,7 +66,7 @@ public class TimetableFieldNumberControllerTest {
   void shouldGetOverview() {
     // Given
     TimetableFieldNumber version = createOverviewEntity();
-    when(timetableFieldNumberService.getVersionsSearched(any(Pageable.class), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberService.getVersionsSearched(any(TimetableFieldNumberSearchRestrictions.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(version)));
 
     // When
