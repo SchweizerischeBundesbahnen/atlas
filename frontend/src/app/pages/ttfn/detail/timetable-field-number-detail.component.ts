@@ -147,10 +147,6 @@ export class TimetableFieldNumberDetailComponent
     );
   }
 
-  getFormControlsToDisable(): string[] {
-    return [];
-  }
-
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
