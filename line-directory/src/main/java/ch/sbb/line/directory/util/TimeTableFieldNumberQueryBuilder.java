@@ -2,7 +2,7 @@ package ch.sbb.line.directory.util;
 
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumber_;
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
