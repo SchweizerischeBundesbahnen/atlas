@@ -74,10 +74,6 @@ describe('DetailWrapperController', () => {
     updateRecord(): void {
       dummyController.updateRecord();
     }
-
-    getFormControlsToDisable(): string[] {
-      return [];
-    }
   }
 
   let controller: DummyWrapperController;
