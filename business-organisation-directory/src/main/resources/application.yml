@@ -32,7 +32,7 @@ management:
         include: "*"
 info:
   app:
-    name: business-organisation
+    name: business-organisation-directory
     version: @version@
     buildtime: @timestamp@
 logging:
