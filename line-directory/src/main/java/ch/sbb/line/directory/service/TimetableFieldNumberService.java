@@ -4,7 +4,7 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
