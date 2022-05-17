@@ -1,8 +1,6 @@
 import CommonUtils from '../support/util/common-utils';
 
 describe('Test the navigation of the homepage links', () => {
-
-
   it('Step-01: Login on ATLAS', () => {
     cy.atlasLogin();
   });
@@ -15,7 +13,7 @@ describe('Test the navigation of the homepage links', () => {
   });
 
   it('Step-03: Move back to / (the homepage) via atlas-logo (ATLAS-516)', () => {
-    CommonUtils.navigateToHome();
+    CommonUtils.navigateToHomeViaHomeLogo();
     cy.contains('Die SKI Business Plattform');
   });
 
@@ -25,7 +23,7 @@ describe('Test the navigation of the homepage links', () => {
   });
 
   it('Step-05: Move back to / (the homepage) via atlas-logo (ATLAS-516)', () => {
-    CommonUtils.navigateToHome();
+    CommonUtils.navigateToHomeViaHomeLogo();
     cy.contains('Die SKI Business Plattform');
   });
 
@@ -42,5 +40,4 @@ describe('Test the navigation of the homepage links', () => {
   it('Step-08: Move to /line-directory via Sidemenu (ATLAS-516)', () => {
     CommonUtils.navigateToLidiViaSidemenu();
   });
-
 });

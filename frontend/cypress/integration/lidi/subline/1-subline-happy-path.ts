@@ -47,7 +47,7 @@ describe('Teillinie', () => {
 
   it('Step-6: Navigate to Sublines', () => {
     CommonUtils.fromDetailBackToSublinesOverview();
-    CommonUtils.navigateToHome();
+    CommonUtils.navigateToHomeViaHomeLogo();
     LidiUtils.navigateToSublines();
     LidiUtils.checkHeaderTitle();
   });

@@ -1,8 +1,9 @@
 import CommonUtils from './common-utils';
-import {DataCy} from "../data-cy";
+import { DataCy } from '../data-cy';
 
 export default class TtfnUtils {
   static navigateToTimetableFieldNumber() {
+    CommonUtils.navigateToHomeViaHomeLogo();
     cy.intercept('GET', '/line-directory/v1/field-numbers?**').as('getFieldnumbers');
     cy.get('#timetable-field-number').click();
     cy.wait('@getFieldnumbers').then((interception) => {
@@ -61,7 +62,7 @@ export default class TtfnUtils {
       number: '1.1',
       description:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-      comment: 'This is a comment'
+      comment: 'This is a comment',
     };
   }
 
@@ -74,7 +75,7 @@ export default class TtfnUtils {
       number: '1.1',
       description:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
-      comment: 'A new comment'
+      comment: 'A new comment',
     };
   }
 
@@ -86,9 +87,8 @@ export default class TtfnUtils {
       validTo: '31.12.2000',
       businessOrganisation: 'SBB',
       number: '0.1',
-      description:
-        'Bern - Thun',
-      comment: 'Beste'
+      description: 'Bern - Thun',
+      comment: 'Beste',
     };
   }
 }

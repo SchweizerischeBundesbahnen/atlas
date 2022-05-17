@@ -6,6 +6,7 @@ export default class LidiUtils {
   private static LIDI_SUBLINES_PATH = '/line-directory/sublines';
 
   static navigateToLines() {
+    CommonUtils.navigateToHomeViaHomeLogo();
     this.interceptLines('#line-directory');
   }
 
@@ -23,6 +24,7 @@ export default class LidiUtils {
   }
 
   static navigateToSublines() {
+    CommonUtils.navigateToHomeViaHomeLogo();
     cy.get('#line-directory').click();
     this.changeLiDiTabToSublines();
   }
@@ -201,17 +203,23 @@ export default class LidiUtils {
     cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
   }
 
+  /** SLNID of mainline is implicitly updated */
   static addMainLine() {
     const mainline = LidiUtils.getMainLineVersion();
+    this.addLine(mainline);
+    return mainline;
+  }
+
+  /** SLNID of given line-object is implicitly updated */
+  static addLine(line: any) {
     LidiUtils.navigateToLines();
     LidiUtils.clickOnAddNewLineVersion();
-    LidiUtils.fillLineVersionForm(mainline);
+    LidiUtils.fillLineVersionForm(line);
     CommonUtils.saveLine();
-    LidiUtils.readSlnidFromForm(mainline);
-    LidiUtils.assertContainsLineVersion(mainline);
+    LidiUtils.readSlnidFromForm(line);
+    LidiUtils.assertContainsLineVersion(line);
     CommonUtils.fromDetailBackToLinesOverview();
-    CommonUtils.navigateToHome();
-    return mainline;
+    return line;
   }
 
   static getMainLineVersion() {
@@ -447,7 +455,7 @@ export default class LidiUtils {
       number: '_31.001:a:',
       description: 'Thun Bahnhof - Gwatt Deltapark - Einigen - Spiez Bahnhof -',
       longName: 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof',
-      mainlineSlnid: 'b0.IC2',
+      mainlineSlnid: 'minimal1',
       swissSublineNumber: 'r.31.001:x_',
       validFrom: '01.01.1700',
       validTo: '01.01.2000',
@@ -463,7 +471,7 @@ export default class LidiUtils {
       number: '31.001:a',
       description: 'Das ist eine kurze Beschreibung auf deutsch.',
       longName: '- Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof',
-      mainlineSlnid: 'b0.IC2',
+      mainlineSlnid: 'minimal1',
       swissSublineNumber: 'r.31.001:a_',
       validFrom: '01.01.2000',
       validTo: '31.12.2099',

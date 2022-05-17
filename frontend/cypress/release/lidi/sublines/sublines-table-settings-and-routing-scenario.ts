@@ -3,6 +3,7 @@ import { DataCy } from '../../../support/data-cy';
 import LidiUtils from '../../../support/util/lidi-utils';
 
 describe('Sublines: TableSettings and Routing', () => {
+  const minimalLine1 = LidiUtils.getFirstMinimalLineVersion();
   const minimalSubline1 = LidiUtils.getFirstMinimalSubline();
   const minimalSubline2 = LidiUtils.getSecondMinimalSubline();
 
@@ -11,8 +12,6 @@ describe('Sublines: TableSettings and Routing', () => {
 
   const sublineDirectoryUrlPath = '/line-directory/sublines';
   const sublineDirectoryUrlPathToIntercept = '/line-directory/v1/sublines?**';
-
-  let mainLine: any;
 
   function deleteFirstFoundSublineInTable() {
     CommonUtils.clickFirstRowInTable(DataCy.LIDI_SUBLINES);
@@ -38,26 +37,29 @@ describe('Sublines: TableSettings and Routing', () => {
     cy.atlasLogin();
   });
 
-  it('Step-2: Add mainline and navigate to Sublines', () => {
-    mainLine = LidiUtils.addMainLine();
+  it('Step-2: Navigate to Sublines', () => {
     LidiUtils.navigateToSublines();
   });
 
-  it('Step-3: Add new subline', () => {
+  it('Step-3: Add new line', () => {
+    LidiUtils.addLine(minimalLine1);
+  });
+
+  it('Step-4: Add new subline', () => {
     LidiUtils.clickOnAddNewSublineVersion();
     LidiUtils.fillSublineVersionForm(minimalSubline1);
     CommonUtils.saveSubline();
     CommonUtils.fromDetailBackToSublinesOverview();
   });
 
-  it('Step-4: Add another subline', () => {
+  it('Step-5: Add another subline', () => {
     LidiUtils.clickOnAddNewSublineVersion();
     LidiUtils.fillSublineVersionForm(minimalSubline2);
     CommonUtils.saveSubline();
     CommonUtils.fromDetailBackToSublinesOverview();
   });
 
-  it('Step-5: Look for subline 1', () => {
+  it('Step-6: Look for subline 1', () => {
     CommonUtils.typeSearchInput(
       sublineDirectoryUrlPathToIntercept,
       DataCy.TABLE_SEARCH_CHIP_INPUT,
@@ -79,14 +81,14 @@ describe('Sublines: TableSettings and Routing', () => {
     assertAllTableFiltersAreFilled();
   });
 
-  it('Step-6: Click on add new subline Button and come back without actually creating it', () => {
+  it('Step-7: Click on add new subline Button and come back without actually creating it', () => {
     LidiUtils.clickOnAddNewSublineVersion();
     CommonUtils.clickCancelOnDetailViewBackToSublines();
 
     assertAllTableFiltersAreFilled();
   });
 
-  it('Step-7: Change CHTLNR of subline from r.31.001:x_ to r.31.001:x_-changed', () => {
+  it('Step-8: Change CHTLNR of subline from r.31.001:x_ to r.31.001:x_-changed', () => {
     CommonUtils.assertNumberOfTableRows(DataCy.LIDI_SUBLINES, 1);
     CommonUtils.clickFirstRowInTable(DataCy.LIDI_SUBLINES);
 
@@ -105,7 +107,7 @@ describe('Sublines: TableSettings and Routing', () => {
     cy.get(DataCy.LIDI_SUBLINES + ' .mat-row > .cdk-column-swissSublineNumber').contains(newCHTLNR);
   });
 
-  it('Step-8: Delete subline minimal1', () => {
+  it('Step-9: Delete subline minimal1', () => {
     deleteFirstFoundSublineInTable();
 
     // Search still present after delete
@@ -114,7 +116,7 @@ describe('Sublines: TableSettings and Routing', () => {
     CommonUtils.assertNoItemsInTable(DataCy.LIDI_SUBLINES);
   });
 
-  it('Step-9: Cleanup other subline', () => {
+  it('Step-10: Cleanup other subline', () => {
     // Get rid of search filter by reload
     cy.reload();
 
@@ -136,9 +138,13 @@ describe('Sublines: TableSettings and Routing', () => {
     CommonUtils.assertNoItemsInTable(DataCy.LIDI_SUBLINES);
   });
 
-  it('Step-10: Delete mainline', () => {
+  it('Step-11: Delete line minimal1', () => {
     LidiUtils.changeLiDiTabToLines();
-    LidiUtils.searchAndNavigateToLine(mainLine);
+    LidiUtils.searchAndNavigateToLine(minimalLine1);
     CommonUtils.deleteItem();
+    cy.url().should('eq', Cypress.config().baseUrl + '/line-directory/lines');
+
+    // No more items found
+    CommonUtils.assertNoItemsInTable(DataCy.LIDI_LINES);
   });
 });
