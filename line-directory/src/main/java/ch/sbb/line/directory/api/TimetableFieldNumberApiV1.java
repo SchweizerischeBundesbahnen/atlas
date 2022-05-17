@@ -35,9 +35,6 @@ public interface TimetableFieldNumberApiV1 {
       @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate validOn,
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
-  @GetMapping("/{id}")
-  TimetableFieldNumberVersionModel getVersion(@PathVariable Long id);
-
   @GetMapping("versions/{ttfnId}")
   List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
 
@@ -50,7 +47,7 @@ public interface TimetableFieldNumberApiV1 {
   List<TimetableFieldNumberVersionModel> updateVersionWithVersioning(@PathVariable Long id,
       @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
-  @PostMapping
+  @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
