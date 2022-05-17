@@ -42,10 +42,7 @@ describe('Sublines: TableSettings and Routing', () => {
   });
 
   it('Step-3: Add new line', () => {
-    LidiUtils.clickOnAddNewLineVersion();
-    LidiUtils.fillLineVersionForm(minimalLine1);
-    CommonUtils.saveLine();
-    CommonUtils.fromDetailBackToLinesOverview();
+    LidiUtils.addLineFrom(minimalLine1);
   });
 
   it('Step-4: Add new subline', () => {
@@ -144,7 +141,6 @@ describe('Sublines: TableSettings and Routing', () => {
   it('Step-11: Delete line minimal1', () => {
     LidiUtils.changeLiDiTabToLines();
     LidiUtils.searchAndNavigateToLine(minimalLine1);
-
     CommonUtils.deleteItem();
     cy.url().should('eq', Cypress.config().baseUrl + '/line-directory/lines');
 

@@ -6,6 +6,7 @@ export default class LidiUtils {
   private static LIDI_SUBLINES_PATH = '/line-directory/sublines';
 
   static navigateToLines() {
+    CommonUtils.navigateToHomeViaHomeLogo();
     this.interceptLines('#line-directory');
   }
 
@@ -23,6 +24,7 @@ export default class LidiUtils {
   }
 
   static navigateToSublines() {
+    CommonUtils.navigateToHomeViaHomeLogo();
     cy.get('#line-directory').click();
     this.changeLiDiTabToSublines();
   }
@@ -201,6 +203,7 @@ export default class LidiUtils {
     cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
   }
 
+  /** Update SLNID of mainline */
   static addMainLine() {
     const mainline = LidiUtils.getMainLineVersion();
     LidiUtils.navigateToLines();
@@ -210,8 +213,19 @@ export default class LidiUtils {
     LidiUtils.readSlnidFromForm(mainline);
     LidiUtils.assertContainsLineVersion(mainline);
     CommonUtils.fromDetailBackToLinesOverview();
-    CommonUtils.navigateToHome();
     return mainline;
+  }
+
+  /** Update SLNID of given line-object */
+  static addLineFrom(line: any) {
+    LidiUtils.navigateToLines();
+    LidiUtils.clickOnAddNewLineVersion();
+    LidiUtils.fillLineVersionForm(line);
+    CommonUtils.saveLine();
+    LidiUtils.readSlnidFromForm(line);
+    LidiUtils.assertContainsLineVersion(line);
+    CommonUtils.fromDetailBackToLinesOverview();
+    return line;
   }
 
   static getMainLineVersion() {
@@ -404,7 +418,7 @@ export default class LidiUtils {
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
       swissSublineNumber: 'b0.IC233',
-      mainlineSlnid: 'minimal1',
+      mainlineSlnid: 'b0.IC2',
       businessOrganisation: 'SBB-2',
       type: 'Technisch',
       paymentType: 'International',
@@ -420,7 +434,7 @@ export default class LidiUtils {
       validFrom: '01.01.2002',
       validTo: '31.12.2002',
       swissSublineNumber: 'b0.IC233',
-      mainlineSlnid: 'minimal1',
+      mainlineSlnid: 'b0.IC2',
       businessOrganisation: 'SBB-2-update',
       type: 'Technisch',
       paymentType: 'International',
