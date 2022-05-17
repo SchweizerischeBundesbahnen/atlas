@@ -192,10 +192,6 @@ export class LineDetailComponent
     );
   }
 
-  getFormControlsToDisable(): string[] {
-    return [];
-  }
-
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
