@@ -42,7 +42,7 @@ describe('Sublines: TableSettings and Routing', () => {
   });
 
   it('Step-3: Add new line', () => {
-    LidiUtils.addLineFrom(minimalLine1);
+    LidiUtils.addLine(minimalLine1);
   });
 
   it('Step-4: Add new subline', () => {

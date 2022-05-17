@@ -203,21 +203,15 @@ export default class LidiUtils {
     cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
   }
 
-  /** Update SLNID of mainline */
+  /** SLNID of mainline is implicitly updated */
   static addMainLine() {
     const mainline = LidiUtils.getMainLineVersion();
-    LidiUtils.navigateToLines();
-    LidiUtils.clickOnAddNewLineVersion();
-    LidiUtils.fillLineVersionForm(mainline);
-    CommonUtils.saveLine();
-    LidiUtils.readSlnidFromForm(mainline);
-    LidiUtils.assertContainsLineVersion(mainline);
-    CommonUtils.fromDetailBackToLinesOverview();
+    this.addLine(mainline);
     return mainline;
   }
 
-  /** Update SLNID of given line-object */
-  static addLineFrom(line: any) {
+  /** SLNID of given line-object is implicitly updated */
+  static addLine(line: any) {
     LidiUtils.navigateToLines();
     LidiUtils.clickOnAddNewLineVersion();
     LidiUtils.fillLineVersionForm(line);
