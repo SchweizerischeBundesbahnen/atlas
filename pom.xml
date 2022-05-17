@@ -29,6 +29,7 @@
         <module>versioning</module>
         <!--  Services-->
         <module>line-directory</module>
+        <module>business-organisation-directory</module>
         <!-- Combine APIs-->
         <module>apim-configuration</module>
         <module>gateway</module>
