@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +33,7 @@ public interface TimetableFieldNumberApiV1 {
   Container<TimetableFieldNumberModel> getOverview(
       @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
-      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate validOn,
+      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
   @GetMapping("versions/{ttfnId}")
