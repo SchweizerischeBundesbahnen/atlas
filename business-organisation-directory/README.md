@@ -32,10 +32,10 @@ This project uses [Semantic Versioning](https://semver.org/).
 ## Links
 
 ### Localhost
-* Swagger UI: http://localhost:8085/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
-* Api Docs as JSON: http://localhost:8085/v3/api-docs/
-* Api Docs as YAML: http://localhost:8085/v3/api-docs.yaml
-* Rest-api generated doc: http://localhost:8085/static/rest-api.html
+* Swagger UI: http://localhost:8083/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Api Docs as JSON: http://localhost:8083/v3/api-docs/
+* Api Docs as YAML: http://localhost:8083/v3/api-docs.yaml
+* Rest-api generated doc: http://localhost:8083/static/rest-api.html
 
 ### Development
 * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=business-organisation-directory-dev
