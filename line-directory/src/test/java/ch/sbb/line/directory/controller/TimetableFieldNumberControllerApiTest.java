@@ -15,6 +15,7 @@ import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -31,19 +32,45 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
   @Autowired
   private TimetableFieldNumberVersionRepository versionRepository;
 
-  private final TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder().ttfnid("ch:1:ttfnid:100000")
-                                                                                 .description("FPFN Description")
-                                                                                 .number("10.100")
-                                                                                 .status(Status.ACTIVE)
-                                                                                 .swissTimetableFieldNumber("b0.100")
-                                                                                 .validFrom(LocalDate.of(2020, 1, 1))
-                                                                                 .validTo(LocalDate.of(2020, 12, 31))
-                                                                                 .businessOrganisation("sbb")
-                                                                                 .build();
+  protected final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+      MediaType.APPLICATION_JSON.getSubtype(),
+      StandardCharsets.UTF_8);
+
+  private final TimetableFieldNumberVersion version =
+      TimetableFieldNumberVersion.builder()
+                                 .ttfnid("ch:1:ttfnid:100000")
+                                 .description("FPFN Description")
+                                 .number("10.100")
+                                 .status(Status.ACTIVE)
+                                 .swissTimetableFieldNumber("b0.100")
+                                 .validFrom(LocalDate.of(2020, 1,1))
+                                 .validTo(LocalDate.of(2020, 12,31))
+                                 .businessOrganisation("sbb")
+                                 .build();
 
   @BeforeEach
   void createDefaultVersion() {
     versionRepository.save(version);
+  }
+
+  @Test
+  void shouldCreateTimetableFieldNumber() throws Exception {
+    //given
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel =
+        TimetableFieldNumberVersionModel.builder()
+                                        .validTo(LocalDate.of(2000, 12, 31))
+                                        .validFrom(LocalDate.of(2000, 1, 1))
+                                        .businessOrganisation("sbb")
+                                        .swissTimetableFieldNumber("swissLineNumber")
+                                        .number("123")
+                                        .description("description")
+                                        .ttfnid("123")
+                                        .status(Status.ACTIVE).build();
+    //when && then
+    mvc.perform(post("/v1/field-numbers/versions")
+           .contentType(contentType)
+        .content(mapper.writeValueAsString(timetableFieldNumberVersionModel))
+       ).andExpect(status().isCreated());
   }
 
   @Test
@@ -91,48 +118,46 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
   }
 
   @Test
-  void shouldReturnNotFoundErrorResponse() throws Exception {
-    // Given
-    mvc.perform(get("/v1/field-numbers/" + 123)
-           .contentType(contentType))
-       .andExpect(status().isNotFound())
-       .andExpect(jsonPath("$.status", is(404)))
-       .andExpect(jsonPath("$.message", is("Entity not found")))
-       .andExpect(jsonPath("$.error", is("Not found")))
-       .andExpect(jsonPath("$.details[0].message", is("Object with id 123 not found")))
-       .andExpect(jsonPath("$.details[0].field", is("id")))
-       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("id")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
-  }
-
-  @Test
   void shouldReturnValidationNoChangesErrorResponse() throws Exception {
     // Given
-    TimetableFieldNumberVersion secondVersion = TimetableFieldNumberVersion.builder().ttfnid("ch:1:ttfnid:100000")
-                                                                           .description("FPFN Description")
+    TimetableFieldNumberVersion secondVersion = TimetableFieldNumberVersion.builder()
+                                                                           .ttfnid(
+                                                                               "ch:1:ttfnid:100000")
+                                                                           .description(
+                                                                               "FPFN Description")
                                                                            .number("10.100")
                                                                            .status(Status.ACTIVE)
-                                                                           .swissTimetableFieldNumber("b0.100")
-                                                                           .validFrom(LocalDate.of(2021, 1, 1))
-                                                                           .validTo(LocalDate.of(2021, 12, 31))
-                                                                           .businessOrganisation("BLS")
+                                                                           .swissTimetableFieldNumber(
+                                                                               "b0.100")
+                                                                           .validFrom(
+                                                                               LocalDate.of(2021, 1,
+                                                                                   1))
+                                                                           .validTo(
+                                                                               LocalDate.of(2021,
+                                                                                   12, 31))
+                                                                           .businessOrganisation(
+                                                                               "BLS")
                                                                            .build();
     versionRepository.save(secondVersion);
     //When
     TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = TimetableFieldNumberVersionModel.builder()
-                                                                                                        .validFrom(version.getValidFrom())
-                                                                                                        .validTo(version.getValidTo())
+                                                                                                        .validFrom(
+                                                                                                            version.getValidFrom())
+                                                                                                        .validTo(
+                                                                                                            version.getValidTo())
                                                                                                         .id(version.getId())
-                                                                                                        .ttfnid(version.getTtfnid())
-                                                                                                        .description(version.getDescription())
-                                                                                                        .number(version.getNumber())
-                                                                                                        .status(version.getStatus())
+                                                                                                        .ttfnid(
+                                                                                                            version.getTtfnid())
+                                                                                                        .description(
+                                                                                                            version.getDescription())
+                                                                                                        .number(
+                                                                                                            version.getNumber())
+                                                                                                        .status(
+                                                                                                            version.getStatus())
                                                                                                         .swissTimetableFieldNumber(
-                                                version.getSwissTimetableFieldNumber())
-                                                                                                        .businessOrganisation(version.getBusinessOrganisation())
+                                                                                                            version.getSwissTimetableFieldNumber())
+                                                                                                        .businessOrganisation(
+                                                                                                            version.getBusinessOrganisation())
                                                                                                         .build();
 
     //Then
@@ -141,11 +166,14 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
            .contentType(MediaType.APPLICATION_JSON)
            .content(mapper.writeValueAsString(timetableFieldNumberVersionModel)))
        .andExpect(jsonPath("$.status", is(520)))
-       .andExpect(jsonPath("$.message", is("No entities were modified after versioning execution.")))
+       .andExpect(
+           jsonPath("$.message", is("No entities were modified after versioning execution.")))
        .andExpect(jsonPath("$.error", is("No changes after versioning")))
-       .andExpect(jsonPath("$.details[0].message", is("No entities were modified after versioning execution.")))
+       .andExpect(jsonPath("$.details[0].message",
+           is("No entities were modified after versioning execution.")))
        .andExpect(jsonPath("$.details[0].field", is(nullValue())))
-       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
+       .andExpect(
+           jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
   }
 
   @Test
