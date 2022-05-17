@@ -7,12 +7,9 @@ describe('Sublines: TableSettings and Routing', () => {
   const minimalSubline1 = LidiUtils.getFirstMinimalSubline();
   const minimalSubline2 = LidiUtils.getSecondMinimalSubline();
 
-  const firstValidDate = '01.01.1700';
   const commonValidDate = '01.01.2000';
   const statusAktiv = 'Aktiv';
 
-  const lineDirectoryUrlPath = '/line-directory/lines';
-  const lineDirectoryUrlPathToIntercept = '/line-directory/v1/lines?**';
   const sublineDirectoryUrlPath = '/line-directory/sublines';
   const sublineDirectoryUrlPathToIntercept = '/line-directory/v1/sublines?**';
 
@@ -147,26 +144,6 @@ describe('Sublines: TableSettings and Routing', () => {
   it('Step-11: Delete line minimal1', () => {
     LidiUtils.changeLiDiTabToLines();
     LidiUtils.searchAndNavigateToLine(minimalLine1);
-
-    CommonUtils.typeSearchInput(
-      lineDirectoryUrlPathToIntercept,
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
-      minimalLine1.swissLineNumber
-    );
-
-    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, statusAktiv);
-    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_LINE_TYPE, minimalLine1.type);
-
-    CommonUtils.typeSearchInput(
-      lineDirectoryUrlPathToIntercept,
-      DataCy.TABLE_SEARCH_DATE_INPUT,
-      firstValidDate
-    );
-
-    cy.get(DataCy.LIDI_LINES + ' .mat-row > .cdk-column-swissLineNumber').contains(
-      minimalLine1.swissLineNumber
-    );
-    CommonUtils.clickFirstRowInTable(DataCy.LIDI_LINES);
 
     CommonUtils.deleteItem();
     cy.url().should('eq', Cypress.config().baseUrl + '/line-directory/lines');
