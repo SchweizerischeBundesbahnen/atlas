@@ -94,14 +94,14 @@ include::{snippets}/subline-controller-api-test/should-get-subline-coverage/auto
 == Search versions - Successfully
 include::{snippets}/timetable-field-number-controller-api-test/should-return-one-timetable-field-number/auto-section.adoc[]
 
+== Create version - Successfully
+include::{snippets}/timetable-field-number-controller-api-test/should-create-timetable-field-number/auto-section.adoc[]
+
 == Update version with rest optimistic locking error
 include::{snippets}/timetable-field-number-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
 
 == Update version with no changes after versioning error
 include::{snippets}/timetable-field-number-controller-api-test/should-return-validation-no-changes-error-response/auto-section.adoc[]
-
-== Get version with not found error
-include::{snippets}/timetable-field-number-controller-api-test/should-return-not-found-error-response/auto-section.adoc[]
 
 == Get versions with not found error
 include::{snippets}/timetable-field-number-controller-api-test/should-return-not-found-error-response-when-search-item-not-found/auto-section.adoc[]
