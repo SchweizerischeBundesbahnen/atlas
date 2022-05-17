@@ -32,6 +32,16 @@ lineDirectory:
   # Application Port
   port: 8082
 
+businessOrganisationDirectory:
+  # Name of the Dockerimge in bin.sbb.ch/dockerrepo
+  name: "business-organisation-directory"
+  # LIVENESS_PROBE
+  livenessProbe: "actuator/health"
+  # READYNESS_PROBE
+  readynessProbe: "actuator/health"
+  # Application Port
+  port: 8083
+
 frontend:
   # Name of the Dockerimge in bin.sbb.ch/dockerrepoted"
   name: "atlas-frontend"
