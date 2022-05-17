@@ -13,7 +13,7 @@ import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;

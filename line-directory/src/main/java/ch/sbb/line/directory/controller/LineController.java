@@ -2,6 +2,7 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toList;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
@@ -12,10 +13,9 @@ import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
-import ch.sbb.line.directory.model.SearchRestrictions;
+import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
 import java.time.LocalDate;
@@ -40,10 +40,15 @@ public class LineController implements LineApiV1 {
       List<String> searchCriteria, List<Status> statusRestrictions, List<LineType> typeRestrictions,
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
-    Page<Line> lines = lineService.findAll(
-        new SearchRestrictions<>(pageable, swissLineNumber, searchCriteria, statusRestrictions,
-            typeRestrictions, validOn)
-    );
+    Page<Line> lines = lineService.findAll(LineSearchRestrictions.builder()
+                                                                 .pageable(pageable)
+                                                                 .searchCriterias(searchCriteria)
+                                                                 .statusRestrictions(
+                                                                     statusRestrictions)
+                                                                 .validOn(validOn)
+                                                                 .typeRestrictions(typeRestrictions)
+                                                                 .swissLineNumber(swissLineNumber)
+                                                                 .build());
     List<LineModel> lineModels = lines.stream().map(this::toModel).collect(toList());
     return Container.<LineModel>builder()
                     .objects(lineModels)

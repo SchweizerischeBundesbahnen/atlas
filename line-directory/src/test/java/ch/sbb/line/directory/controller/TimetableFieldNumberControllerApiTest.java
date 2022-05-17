@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

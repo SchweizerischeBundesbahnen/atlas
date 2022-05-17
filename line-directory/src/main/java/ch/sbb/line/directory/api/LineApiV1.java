@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.api;
 
 import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,7 +33,7 @@ public interface LineApiV1 {
   @PageableAsQueryParam
   Container<LineModel> getLines(@Parameter(hidden = true) Pageable pageable,
       @RequestParam(required = false) Optional<String> swissLineNumber,
-      @RequestParam(required = false, defaultValue = "") List<String> searchCriteria,
+      @RequestParam(required = false) List<String> searchCriteria,
       @RequestParam(required = false) List<Status> statusRestrictions,
       @RequestParam(required = false) List<LineType> typeRestrictions,
       @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> validOn);

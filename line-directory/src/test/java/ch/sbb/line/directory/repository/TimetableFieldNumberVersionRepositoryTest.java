@@ -6,7 +6,7 @@ import ch.sbb.line.directory.entity.TimetableFieldLineRelation;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.WithMockJwtAuthentication;
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;

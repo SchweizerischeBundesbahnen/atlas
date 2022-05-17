@@ -6,7 +6,7 @@ import ch.sbb.line.directory.api.TimetableFieldNumberModel;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.TtfnidNotFoundException;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
@@ -36,7 +36,7 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
       List<String> searchCriteria,
       LocalDate validOn, List<Status> statusChoices) {
     log.info(
-        "Load TimetableFieldNumbers using pageable={}, searchCriteria={}, validOn={} and statusChoices={}",
+        "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
         pageable, searchCriteria, validOn, statusChoices);
     Page<TimetableFieldNumber> timetableFieldNumberPage = timetableFieldNumberService.getVersionsSearched(
         pageable,

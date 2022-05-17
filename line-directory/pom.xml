@@ -58,6 +58,14 @@
             <artifactId>versioning</artifactId>
         </dependency>
         <dependency>
+            <groupId>ch.sbb.atlas</groupId>
+            <artifactId>searching</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.sbb.atlas</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>

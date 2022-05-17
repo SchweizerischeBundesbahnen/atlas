@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.api;
 
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,7 +32,7 @@ public interface SublinenApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<SublineModel> getSublines(@Parameter(hidden = true) Pageable pageable,
-      @RequestParam(required = false, defaultValue = "") List<String> searchCriteria,
+      @RequestParam(required = false) List<String> searchCriteria,
       @RequestParam(required = false) List<Status> statusRestrictions,
       @RequestParam(required = false) List<SublineType> typeRestrictions,
       @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> validOn);
