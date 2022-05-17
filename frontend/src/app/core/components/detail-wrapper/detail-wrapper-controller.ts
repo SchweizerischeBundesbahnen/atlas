@@ -232,12 +232,22 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   abstract deleteRecord(): void;
 
-  abstract getFormControlsToDisable(): string[];
-
   abstract getPageType(): Page;
 
   backToOverview(): void {
     this.dialogRef.close();
+  }
+
+  protected handleError() {
+    return (err: HttpErrorResponse) => {
+      this.notificationService.error(err);
+      this.form.enable();
+      return EMPTY;
+    };
+  }
+
+  protected getFormControlsToDisable(): string[] {
+    return [];
   }
 
   private disableUneditableFormFields(): void {
@@ -264,13 +274,5 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
         this.validateAllFormFields(control);
       }
     });
-  }
-
-  protected handleError() {
-    return (err: HttpErrorResponse) => {
-      this.notificationService.error(err);
-      this.form.enable();
-      return EMPTY;
-    };
   }
 }
