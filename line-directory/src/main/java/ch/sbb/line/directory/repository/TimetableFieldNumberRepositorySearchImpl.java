@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.repository;
 
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.util.TimeTableFieldNumberQueryBuilder;
 import java.time.LocalDate;
 import java.util.List;

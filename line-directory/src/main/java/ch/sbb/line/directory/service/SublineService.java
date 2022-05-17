@@ -1,16 +1,15 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.entity.Subline_;
-import ch.sbb.line.directory.enumaration.Status;
-import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
-import ch.sbb.line.directory.model.SearchRestrictions;
+import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
@@ -36,17 +35,9 @@ public class SublineService {
   private final SpecificationBuilderProvider specificationBuilderProvider;
   private final CoverageService coverageService;
 
-  public Page<Subline> findAll(SearchRestrictions<SublineType> searchRestrictions) {
-    SpecificationBuilderService<Subline> specificationBuilderService = specificationBuilderProvider.getSublineSpecificationBuilderService();
-    return sublineRepository.findAll(
-        specificationBuilderService.buildSearchCriteriaSpecification(
-                                       searchRestrictions.getSearchCriteria())
-                                   .and(specificationBuilderService.buildValidOnSpecification(
-                                       searchRestrictions.getValidOn()))
-                                   .and(specificationBuilderService.buildEnumSpecification(
-                                       searchRestrictions.getStatusRestrictions(), Subline_.status))
-                                   .and(specificationBuilderService.buildEnumSpecification(
-                                       searchRestrictions.getTypeRestrictions(), Subline_.sublineType)),
+  public Page<Subline> findAll(SublineSearchRestrictions searchRestrictions) {
+    SpecificationBuilder<Subline> specificationBuilder = specificationBuilderProvider.getSublineSpecificationBuilderService();
+    return sublineRepository.findAll(searchRestrictions.getSpecification(specificationBuilder),
         searchRestrictions.getPageable());
   }
 

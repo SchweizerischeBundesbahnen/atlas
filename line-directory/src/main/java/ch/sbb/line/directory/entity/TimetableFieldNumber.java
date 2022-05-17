@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import lombok.*;
 import org.hibernate.annotations.Immutable;
 

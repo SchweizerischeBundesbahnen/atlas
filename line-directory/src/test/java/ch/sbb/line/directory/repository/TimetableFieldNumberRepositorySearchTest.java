@@ -6,7 +6,7 @@ import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
-import ch.sbb.line.directory.enumaration.Status;
+import ch.sbb.atlas.model.Status;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
