@@ -12,7 +12,7 @@ import { DataCy } from '../support/data-cy';
  * Version:                                                         1
  */
 describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
-  const sublineVersion = LidiUtils.getFirstSublineVersion();
+  const sublineV = LidiUtils.getFirstSublineVersion();
   const newValidFrom = '31.12.2000';
   let mainline: any;
 
