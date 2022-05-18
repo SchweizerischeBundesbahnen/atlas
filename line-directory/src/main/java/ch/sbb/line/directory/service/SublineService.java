@@ -1,13 +1,11 @@
 package ch.sbb.line.directory.service;
 
-import ch.sbb.atlas.searching.SpecificationBuilder;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SublineSearchRestrictions;
@@ -33,11 +31,10 @@ public class SublineService {
   private final VersionableService versionableService;
   private final LineService lineService;
   private final SublineValidationService sublineValidationService;
-  private final SpecificationBuilder<Subline> specificationBuilder;
   private final CoverageService coverageService;
 
   public Page<Subline> findAll(SublineSearchRestrictions searchRestrictions) {
-    return sublineRepository.findAll(searchRestrictions.getSpecification(specificationBuilder),
+    return sublineRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());
   }
 
