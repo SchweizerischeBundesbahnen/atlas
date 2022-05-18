@@ -28,7 +28,7 @@ export class DataCy {
   static LONG_NAME = '[data-cy=longName]';
   static ICON = '[data-cy=icon]';
   static COMMENT = '[data-cy=comment]';
-  static MAINLINE_SLNID = '[data-cy=mainlineSlnid]';
+  static MAINLINE = '[data-cy=mainline]';
   static SWISS_SUBLINE_NUMBER = '[data-cy=swissSublineNumber]';
   static DETAIL_SUBHEADING_ID = '[data-cy=detail-subheading-id]';
   static NEW_ITEM = '[data-cy=new-item]';
