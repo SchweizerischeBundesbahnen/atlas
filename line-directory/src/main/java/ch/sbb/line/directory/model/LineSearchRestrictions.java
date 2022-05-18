@@ -34,11 +34,22 @@ public class LineSearchRestrictions extends SearchRestrictions<Line> {
   }
 
   @Override
-  public Specification<Line> getSpecification(SpecificationBuilder<Line> specificationBuilder) {
-    return getBaseSpecification(specificationBuilder).and(
-                                                         specificationBuilder.enumSpecification(typeRestrictions, Line_.lineType))
-                                                     .and(
-                                                         specificationBuilder.singleStringSpecification(
-                                                             swissLineNumber));
+  public Specification<Line> getSpecification() {
+    return getBaseSpecification().and(
+                                     specificationBuilder().enumSpecification(typeRestrictions, Line_.lineType))
+                                 .and(specificationBuilder().singleStringSpecification(
+                                     swissLineNumber));
+  }
+
+  @Override
+  protected SpecificationBuilder<Line> specificationBuilder() {
+    return SpecificationBuilder.<Line>builder()
+                               .stringAttributes(
+                                   List.of(Line_.swissLineNumber, Line_.number, Line_.description,
+                                       Line_.businessOrganisation, Line_.slnid))
+                               .validFromAttribute(Line_.validFrom)
+                               .validToAttribute(Line_.validTo)
+                               .singleStringAttribute(Line_.swissLineNumber)
+                               .build();
   }
 }
