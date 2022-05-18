@@ -8,7 +8,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
@@ -48,9 +47,6 @@ class SublineServiceTest {
   private VersionableService versionableService;
 
   @Mock
-  private SpecificationBuilder<Subline> specificationBuilder;
-
-  @Mock
   private Specification<Subline> sublineSpecification;
 
   @Mock
@@ -65,15 +61,12 @@ class SublineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService, lineService, sublineValidationService, specificationBuilder,
-        coverageService);
+        versionableService, lineService, sublineValidationService, coverageService);
   }
 
   @Test
   void shouldGetPagableSublinesFromRepository() {
     // Given
-    when(specificationBuilder.searchCriteriaSpecification(any())).thenReturn(
-        sublineSpecification);
     when(sublineSpecification.and(any())).thenReturn(sublineSpecification);
     Pageable pageable = Pageable.unpaged();
 
@@ -82,7 +75,6 @@ class SublineServiceTest {
 
     // Then
     verify(sublineRepository).findAll(ArgumentMatchers.<Specification<Subline>>any(), eq(pageable));
-    verify(specificationBuilder).searchCriteriaSpecification(List.of());
   }
 
   @Test

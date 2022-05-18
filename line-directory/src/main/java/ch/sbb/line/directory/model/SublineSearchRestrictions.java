@@ -28,9 +28,20 @@ public class SublineSearchRestrictions extends SearchRestrictions<Subline> {
   }
 
   @Override
-  public Specification<Subline> getSpecification(
-      SpecificationBuilder<Subline> specificationBuilder) {
-    return getBaseSpecification(specificationBuilder).and(
-        specificationBuilder.enumSpecification(typeRestrictions, Subline_.sublineType));
+  public Specification<Subline> getSpecification() {
+    return getBaseSpecification().and(
+        specificationBuilder().enumSpecification(typeRestrictions, Subline_.sublineType));
+  }
+
+  @Override
+  protected SpecificationBuilder<Subline> specificationBuilder() {
+    return SpecificationBuilder.<Subline>builder()
+                               .stringAttributes(
+                                   List.of(Subline_.swissSublineNumber, Subline_.description,
+                                       Subline_.swissLineNumber, Subline_.businessOrganisation,
+                                       Subline_.slnid, Subline_.number))
+                               .validFromAttribute(Subline_.validFrom)
+                               .validToAttribute(Subline_.validTo)
+                               .build();
   }
 }

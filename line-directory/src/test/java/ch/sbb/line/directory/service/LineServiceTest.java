@@ -10,7 +10,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
@@ -57,9 +56,6 @@ class LineServiceTest {
   private LineValidationService lineValidationService;
 
   @Mock
-  private SpecificationBuilder<Line> specificationBuilder;
-
-  @Mock
   private Specification<Line> lineSpecification;
 
   @Mock
@@ -71,15 +67,13 @@ class LineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
-        versionableService, lineValidationService, specificationBuilder, coverageService);
+        versionableService, lineValidationService, coverageService);
   }
 
   @Test
   void shouldGetPagableLinesFromRepository() {
     // Given
     when(lineSpecification.and(any())).thenReturn(lineSpecification);
-    when(specificationBuilder.searchCriteriaSpecification(any())).thenReturn(
-        lineSpecification);
     Pageable pageable = Pageable.unpaged();
 
     // When
@@ -87,7 +81,6 @@ class LineServiceTest {
 
     // Then
     verify(lineRepository).findAll(ArgumentMatchers.<Specification<Line>>any(), eq(pageable));
-    verify(specificationBuilder).searchCriteriaSpecification(List.of());
   }
 
   @Test

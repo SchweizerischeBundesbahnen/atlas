@@ -1,12 +1,11 @@
 package ch.sbb.line.directory.service;
 
-import ch.sbb.atlas.searching.SpecificationBuilder;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
@@ -32,11 +31,10 @@ public class LineService {
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
   private final LineValidationService lineValidationService;
-  private final SpecificationBuilder<Line> specificationBuilder;
   private final CoverageService coverageService;
 
   public Page<Line> findAll(LineSearchRestrictions searchRestrictions) {
-    return lineRepository.findAll(searchRestrictions.getSpecification(specificationBuilder),
+    return lineRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());
   }
 
