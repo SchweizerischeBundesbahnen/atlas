@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
@@ -26,8 +25,6 @@ public class TimetableFieldNumberService {
   private final TimetableFieldNumberRepository timetableFieldNumberRepository;
   private final VersionableService versionableService;
 
-  private final SpecificationBuilder<TimetableFieldNumber> specificationBuilder;
-
   public List<TimetableFieldNumberVersion> getAllVersionsVersioned(String ttfnId) {
     return versionRepository.getAllVersionsVersioned(ttfnId);
   }
@@ -46,7 +43,7 @@ public class TimetableFieldNumberService {
   }
 
   public Page<TimetableFieldNumber> getVersionsSearched(TimetableFieldNumberSearchRestrictions searchRestrictions) {
-    return timetableFieldNumberRepository.findAll(searchRestrictions.getSpecification(specificationBuilder),
+    return timetableFieldNumberRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());
   }
 

@@ -29,17 +29,19 @@ public abstract class SearchRestrictions<T> {
   @Builder.Default
   private Optional<LocalDate> validOn = Optional.empty();
 
-  protected Specification<T> getBaseSpecification(SpecificationBuilder<T> specificationBuilder) {
-    return specificationBuilder.searchCriteriaSpecification(searchCriterias)
-                               .and(specificationBuilder.validOnSpecification(validOn))
-                               .and(specificationBuilder.enumSpecification(statusRestrictions,
-                                   getStatus()));
+  public Specification<T> getSpecification() {
+    return getBaseSpecification();
+  }
+
+  protected Specification<T> getBaseSpecification() {
+    return specificationBuilder().searchCriteriaSpecification(searchCriterias)
+                                 .and(specificationBuilder().validOnSpecification(validOn))
+                                 .and(specificationBuilder().enumSpecification(statusRestrictions,
+                                     getStatus()));
   }
 
   protected abstract SingularAttribute<T, Status> getStatus();
 
-  public Specification<T> getSpecification(SpecificationBuilder<T> specificationBuilder) {
-    return getBaseSpecification(specificationBuilder);
-  }
+  protected abstract SpecificationBuilder<T> specificationBuilder();
 
 }
