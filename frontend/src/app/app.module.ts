@@ -11,6 +11,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from '../environments/environment';
 import { AtlasApiModule, Configuration } from './api';
 import { DateModule } from './core/module/date.module';
+import { IdleExpiry, NgIdleModule, SimpleExpiry } from '@ng-idle/core';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
@@ -34,7 +35,14 @@ function withBasePath(basePath: string) {
     BrowserAnimationsModule,
     AppRoutingModule,
     AtlasApiModule.forRoot(withBasePath(environment.atlasApiUrl)),
+    NgIdleModule.forRoot(),
   ],
   bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: IdleExpiry,
+      useClass: SimpleExpiry,
+    },
+  ],
 })
 export class AppModule {}
