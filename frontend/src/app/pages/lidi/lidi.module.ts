@@ -8,6 +8,7 @@ import { LineDetailComponent } from './lines/detail/line-detail.component';
 import { SublineDetailComponent } from './sublines/detail/subline-detail.component';
 import { ColorModule } from './color-picker/color.module';
 import { FormModule } from '../../core/module/form.module';
+import { NgIdleModule } from '@ng-idle/core';
 
 @NgModule({
   declarations: [
@@ -18,5 +19,6 @@ import { FormModule } from '../../core/module/form.module';
     SublineDetailComponent,
   ],
   imports: [CoreModule, ColorModule, LidiRoutingModule, FormModule],
+  providers: [],
 })
 export class LidiModule {}
