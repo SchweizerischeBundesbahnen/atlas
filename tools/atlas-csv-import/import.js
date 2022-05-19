@@ -33,9 +33,8 @@ async function main(args) {
   if (!(token && url && csv)) {
     throw "Error: Not all required parameters (url, token, csv) passed";
   }
-  const csvPathSplit = csv.split("\\");
-  const fileNameSplit = csvPathSplit[csvPathSplit.length - 1].split(".");
-  outputFilePath = `output/${fileNameSplit[0]}.txt`;
+  const fileName = csv.split("\\").pop().split("/").pop().split(".")[0];
+  outputFilePath = `output/${fileName}.txt`;
   if (!fs.existsSync("output")) {
     fs.mkdirSync("output");
   }
