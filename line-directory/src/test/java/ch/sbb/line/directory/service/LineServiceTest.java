@@ -15,12 +15,11 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
-import ch.sbb.line.directory.model.SearchRestrictions;
+import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -57,12 +56,6 @@ class LineServiceTest {
   private LineValidationService lineValidationService;
 
   @Mock
-  private SpecificationBuilderProvider specificationBuilderProvider;
-
-  @Mock
-  private SpecificationBuilderService<Line> specificationBuilderService;
-
-  @Mock
   private Specification<Line> lineSpecification;
 
   @Mock
@@ -74,26 +67,20 @@ class LineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
-        versionableService, lineValidationService, specificationBuilderProvider, coverageService);
+        versionableService, lineValidationService, coverageService);
   }
 
   @Test
   void shouldGetPagableLinesFromRepository() {
     // Given
     when(lineSpecification.and(any())).thenReturn(lineSpecification);
-    when(specificationBuilderService.buildSearchCriteriaSpecification(any())).thenReturn(
-        lineSpecification);
-    when(specificationBuilderProvider.getLineSpecificationBuilderService()).thenReturn(
-        specificationBuilderService);
     Pageable pageable = Pageable.unpaged();
 
     // When
-    lineService.findAll(SearchRestrictions.<LineType>builder().pageable(pageable).build());
+    lineService.findAll(LineSearchRestrictions.builder().pageable(pageable).build());
 
     // Then
     verify(lineRepository).findAll(ArgumentMatchers.<Specification<Line>>any(), eq(pageable));
-    verify(specificationBuilderProvider).getLineSpecificationBuilderService();
-    verify(specificationBuilderService).buildSearchCriteriaSpecification(List.of());
   }
 
   @Test
@@ -205,14 +192,14 @@ class LineServiceTest {
   void shouldDeleteLine() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
-    lineVersion.setId(1l);
-    when(lineVersionRepository.findById(1l)).thenReturn(Optional.ofNullable(lineVersion));
+    lineVersion.setId(1L);
+    when(lineVersionRepository.findById(1L)).thenReturn(Optional.of(lineVersion));
 
     // When
-    lineService.deleteById(1l);
+    lineService.deleteById(1L);
 
     // Then
-    verify(lineVersionRepository).deleteById(1l);
+    verify(lineVersionRepository).deleteById(1L);
   }
 
   @Test

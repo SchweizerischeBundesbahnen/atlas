@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -9,7 +10,6 @@ import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.BusinessIdGenerator.SlnidGenerator;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import java.time.LocalDate;

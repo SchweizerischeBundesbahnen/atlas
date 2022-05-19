@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.enumaration;
+package ch.sbb.atlas.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
