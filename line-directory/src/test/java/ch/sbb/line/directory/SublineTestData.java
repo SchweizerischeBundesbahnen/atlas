@@ -1,5 +1,6 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel.SublineVersionModelBuilder;
 import ch.sbb.line.directory.entity.Subline;
@@ -7,7 +8,6 @@ import ch.sbb.line.directory.entity.Subline.SublineBuilder;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
 import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import java.time.LocalDate;
 

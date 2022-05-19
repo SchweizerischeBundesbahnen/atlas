@@ -1,25 +1,28 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.line.directory.api.*;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.line.directory.api.Container;
+import ch.sbb.line.directory.api.CoverageModel;
+import ch.sbb.line.directory.api.SublineModel;
+import ch.sbb.line.directory.api.SublineVersionModel;
+import ch.sbb.line.directory.api.SublinenApiV1;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
-import ch.sbb.line.directory.model.SearchRestrictions;
+import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -34,10 +37,14 @@ public class SublineController implements SublinenApiV1 {
       List<Status> statusRestrictions, List<SublineType> typeRestrictions,
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
-    Page<Subline> sublines = sublineService.findAll(
-        new SearchRestrictions<>(pageable, Optional.empty(), searchCriteria, statusRestrictions,
-            typeRestrictions, validOn)
-    );
+    Page<Subline> sublines = sublineService.findAll(SublineSearchRestrictions.builder()
+                                                                             .pageable(pageable)
+                                                                             .searchCriterias(searchCriteria)
+                                                                             .statusRestrictions(
+                                                                              statusRestrictions)
+                                                                             .validOn(validOn)
+                                                                             .typeRestrictions(typeRestrictions)
+                                                                             .build());
     return Container.<SublineModel>builder()
                     .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
                     .totalCount(sublines.getTotalElements())

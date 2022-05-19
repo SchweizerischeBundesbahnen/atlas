@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.CoverageType;
+import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.ValidationErrorType;
 import java.time.LocalDate;
 import javax.persistence.Column;
