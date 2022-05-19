@@ -3,7 +3,6 @@ package ch.sbb.line.directory.model;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
-import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumber_;
 import java.util.List;

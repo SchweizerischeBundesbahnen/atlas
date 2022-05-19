@@ -2,9 +2,9 @@ package ch.sbb.line.directory.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.api.SublineVersionModel.SublineVersionModelBuilder;
 import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.enumaration.SublineType;
 import java.time.LocalDate;
 import java.util.List;

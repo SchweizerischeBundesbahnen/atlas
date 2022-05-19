@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.line.directory.enumaration.LineType;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
