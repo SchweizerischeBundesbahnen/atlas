@@ -24,6 +24,7 @@ import { ValidationService } from '../../../../core/validation/validation.servic
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { Idle } from '@ng-idle/core';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -52,9 +53,10 @@ export class SublineDetailComponent
     protected dialogService: DialogService,
     private dateService: DateService,
     private validationService: ValidationService,
-    private linesService: LinesService
+    private linesService: LinesService,
+    protected readonly idle: Idle
   ) {
-    super(dialogRef, dialogService, notificationService);
+    super(dialogRef, dialogService, notificationService, idle);
   }
 
   ngOnInit() {
