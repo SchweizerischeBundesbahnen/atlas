@@ -375,7 +375,7 @@ export default class LidiUtils {
     cy.get(DataCy.VALID_FROM).clear().type(version.validFrom);
     cy.get(DataCy.VALID_TO).clear().type(version.validTo, { force: true });
     cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, { force: true });
-    this.typeAndSelectItemFromDropDown(DataCy.MAINLINE_SLNID, version.mainlineSlnid);
+    this.typeAndSelectItemFromDropDown(DataCy.MAINLINE, version.mainline);
     cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
@@ -389,7 +389,7 @@ export default class LidiUtils {
     CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
     CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
     CommonUtils.assertItemValue(DataCy.SWISS_SUBLINE_NUMBER, version.swissSublineNumber);
-    cy.get(DataCy.MAINLINE_SLNID).should('contain.text', version.mainlineSlnid);
+    cy.get(DataCy.MAINLINE).should('contain.text', version.mainline);
     CommonUtils.assertItemValue(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
     CommonUtils.assertItemText(
       DataCy.TYPE + ' .mat-select-value-text > .mat-select-min-line',
@@ -412,7 +412,7 @@ export default class LidiUtils {
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
       swissSublineNumber: 'b0.IC233',
-      mainlineSlnid: 'b0.IC2',
+      mainline: 'b0.IC2',
       businessOrganisation: 'SBB-2',
       type: 'Technisch',
       paymentType: 'International',
@@ -428,7 +428,7 @@ export default class LidiUtils {
       validFrom: '01.01.2002',
       validTo: '31.12.2002',
       swissSublineNumber: 'b0.IC233',
-      mainlineSlnid: 'b0.IC2',
+      mainline: 'b0.IC2',
       businessOrganisation: 'SBB-2-update',
       type: 'Technisch',
       paymentType: 'International',
@@ -455,7 +455,7 @@ export default class LidiUtils {
       number: '_31.001:a:',
       description: 'Thun Bahnhof - Gwatt Deltapark - Einigen - Spiez Bahnhof -',
       longName: 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof',
-      mainlineSlnid: 'minimal1',
+      mainline: 'minimal1',
       swissSublineNumber: 'r.31.001:x_',
       validFrom: '01.01.1700',
       validTo: '01.01.2000',
@@ -471,7 +471,7 @@ export default class LidiUtils {
       number: '31.001:a',
       description: 'Das ist eine kurze Beschreibung auf deutsch.',
       longName: '- Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof',
-      mainlineSlnid: 'minimal1',
+      mainline: 'minimal1',
       swissSublineNumber: 'r.31.001:a_',
       validFrom: '01.01.2000',
       validTo: '31.12.2099',
