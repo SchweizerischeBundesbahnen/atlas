@@ -1,11 +1,18 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.enumaration.Status;
-import lombok.*;
-import org.hibernate.annotations.Immutable;
-
-import javax.persistence.*;
+import ch.sbb.atlas.model.Status;
 import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.Immutable;
 
 @NoArgsConstructor
 @AllArgsConstructor

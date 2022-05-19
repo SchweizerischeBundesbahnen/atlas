@@ -1,17 +1,15 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.entity.Line_;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
-import ch.sbb.line.directory.model.SearchRestrictions;
+import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -33,22 +31,10 @@ public class LineService {
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
   private final LineValidationService lineValidationService;
-  private final SpecificationBuilderProvider specificationBuilderProvider;
   private final CoverageService coverageService;
 
-  public Page<Line> findAll(SearchRestrictions<LineType> searchRestrictions) {
-    SpecificationBuilderService<Line> specificationBuilderService = specificationBuilderProvider.getLineSpecificationBuilderService();
-    return lineRepository.findAll(
-        specificationBuilderService.buildSearchCriteriaSpecification(
-                                       searchRestrictions.getSearchCriteria())
-                                   .and(specificationBuilderService.buildValidOnSpecification(
-                                       searchRestrictions.getValidOn()))
-                                   .and(specificationBuilderService.buildEnumSpecification(
-                                       searchRestrictions.getStatusRestrictions(), Line_.status))
-                                   .and(specificationBuilderService.buildEnumSpecification(
-                                       searchRestrictions.getTypeRestrictions(), Line_.lineType))
-                                   .and(specificationBuilderService.buildSingleStringSpecification(
-                                       searchRestrictions.getSwissLineNumber())),
+  public Page<Line> findAll(LineSearchRestrictions searchRestrictions) {
+    return lineRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());
   }
 
