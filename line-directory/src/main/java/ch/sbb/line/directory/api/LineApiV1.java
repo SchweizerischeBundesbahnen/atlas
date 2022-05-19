@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.api;
 
-import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.line.directory.enumaration.LineType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

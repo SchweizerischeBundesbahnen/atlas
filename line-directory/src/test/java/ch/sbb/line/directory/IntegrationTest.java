@@ -1,6 +1,5 @@
 package ch.sbb.line.directory;
 
-import ch.sbb.line.directory.WithMockJwtAuthentication;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;

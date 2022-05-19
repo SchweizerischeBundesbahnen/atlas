@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import java.time.LocalDate;
