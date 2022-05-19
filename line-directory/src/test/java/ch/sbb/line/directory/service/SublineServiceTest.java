@@ -13,9 +13,8 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.exception.NotFoundException;
-import ch.sbb.line.directory.model.SearchRestrictions;
+import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
@@ -48,12 +47,6 @@ class SublineServiceTest {
   private VersionableService versionableService;
 
   @Mock
-  private SpecificationBuilderProvider specificationBuilderProvider;
-
-  @Mock
-  private SpecificationBuilderService<Subline> specificationBuilderService;
-
-  @Mock
   private Specification<Subline> sublineSpecification;
 
   @Mock
@@ -68,27 +61,20 @@ class SublineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineService = new SublineService(sublineVersionRepository, sublineRepository,
-        versionableService, lineService, sublineValidationService, specificationBuilderProvider,
-        coverageService);
+        versionableService, lineService, sublineValidationService, coverageService);
   }
 
   @Test
   void shouldGetPagableSublinesFromRepository() {
     // Given
-    when(specificationBuilderService.buildSearchCriteriaSpecification(any())).thenReturn(
-        sublineSpecification);
     when(sublineSpecification.and(any())).thenReturn(sublineSpecification);
-    when(specificationBuilderProvider.getSublineSpecificationBuilderService()).thenReturn(
-        specificationBuilderService);
     Pageable pageable = Pageable.unpaged();
 
     // When
-    sublineService.findAll(SearchRestrictions.<SublineType>builder().pageable(pageable).build());
+    sublineService.findAll(SublineSearchRestrictions.builder().pageable(pageable).build());
 
     // Then
     verify(sublineRepository).findAll(ArgumentMatchers.<Specification<Subline>>any(), eq(pageable));
-    verify(specificationBuilderProvider).getSublineSpecificationBuilderService();
-    verify(specificationBuilderService).buildSearchCriteriaSpecification(List.of());
   }
 
   @Test
@@ -159,14 +145,14 @@ class SublineServiceTest {
   void shouldDeleteSubline() {
     // Given
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    sublineVersion.setId(1l);
-    when(sublineVersionRepository.findById(1l)).thenReturn(Optional.ofNullable(sublineVersion));
+    sublineVersion.setId(1L);
+    when(sublineVersionRepository.findById(1L)).thenReturn(Optional.of(sublineVersion));
 
     // When
-    sublineService.deleteById(1l);
+    sublineService.deleteById(1L);
 
     // Then
-    verify(sublineVersionRepository).deleteById(1l);
+    verify(sublineVersionRepository).deleteById(1L);
   }
 
   @Test

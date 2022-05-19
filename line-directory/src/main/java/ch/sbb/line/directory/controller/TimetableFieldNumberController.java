@@ -1,24 +1,25 @@
 package ch.sbb.line.directory.controller;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.TimetableFieldNumberApiV1;
 import ch.sbb.line.directory.api.TimetableFieldNumberModel;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.enumaration.Status;
 import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.exception.NotFoundException.TtfnidNotFoundException;
+import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -33,15 +34,17 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
 
   @Override
   public Container<TimetableFieldNumberModel> getOverview(Pageable pageable,
-      List<String> searchCriteria,
-      LocalDate validOn, List<Status> statusChoices) {
+      List<String> searchCriteria, Optional<LocalDate> validOn, List<Status> statusChoices) {
     log.info(
-        "Load TimetableFieldNumbers using pageable={}, searchCriteria={}, validOn={} and statusChoices={}",
+        "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
         pageable, searchCriteria, validOn, statusChoices);
     Page<TimetableFieldNumber> timetableFieldNumberPage = timetableFieldNumberService.getVersionsSearched(
-        pageable,
-        searchCriteria,
-        validOn, statusChoices);
+        TimetableFieldNumberSearchRestrictions.builder()
+                                              .pageable(pageable)
+                                              .searchCriterias(searchCriteria)
+                                              .statusRestrictions(statusChoices)
+                                              .validOn(validOn)
+                                              .build());
     List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(this::toModel)
                                                                        .collect(
                                                                            Collectors.toList());

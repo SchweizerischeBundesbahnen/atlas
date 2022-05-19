@@ -3,7 +3,6 @@ package ch.sbb.line.directory.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,11 +12,11 @@ import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.NotFoundException;
+import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -65,7 +64,7 @@ public class TimetableFieldNumberControllerTest {
   void shouldGetOverview() {
     // Given
     TimetableFieldNumber version = createOverviewEntity();
-    when(timetableFieldNumberService.getVersionsSearched(any(Pageable.class), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberService.getVersionsSearched(any(TimetableFieldNumberSearchRestrictions.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(version)));
 
     // When
