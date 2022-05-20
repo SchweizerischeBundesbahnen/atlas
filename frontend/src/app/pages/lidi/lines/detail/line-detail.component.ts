@@ -15,7 +15,6 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { Idle } from '@ng-idle/core';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -37,10 +36,9 @@ export class LineDetailComponent
     private linesService: LinesService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
-    protected dialogService: DialogService,
-    protected readonly idle: Idle
+    protected dialogService: DialogService
   ) {
-    super(dialogRef, dialogService, notificationService, idle);
+    super(dialogRef, dialogService, notificationService);
   }
 
   ngOnInit() {
