@@ -19,6 +19,5 @@ import { NgIdleModule } from '@ng-idle/core';
     SublineDetailComponent,
   ],
   imports: [CoreModule, ColorModule, LidiRoutingModule, FormModule],
-  providers: [],
 })
 export class LidiModule {}
