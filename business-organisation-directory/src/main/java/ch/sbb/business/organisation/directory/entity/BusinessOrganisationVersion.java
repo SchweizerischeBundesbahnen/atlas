@@ -2,11 +2,11 @@ package ch.sbb.business.organisation.directory.entity;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseVersion;
+import ch.sbb.atlas.model.entity.BusinessIdGenerator.SboidGenerator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.business.organisation.directory.converter.BusinessTypeConverter;
-import ch.sbb.atlas.model.entity.BusinessIdGenerator.SboidGenerator;
 import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.Column;
