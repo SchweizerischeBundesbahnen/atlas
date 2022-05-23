@@ -1,12 +1,13 @@
 package ch.sbb.line.directory.configuration;
 
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
 import ch.sbb.line.directory.exception.AtlasException;
-import ch.sbb.line.directory.exception.NotFoundException;
+import ch.sbb.line.directory.exception.LiDiNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -66,9 +67,10 @@ public class AtlasExceptionHandler {
   }
 
   @ExceptionHandler(value = {NotFoundException.class})
-  public ResponseEntity<ErrorResponse> notFoundException(NotFoundException notFoundException) {
-    return new ResponseEntity<>(notFoundException.getErrorResponse(),
-        HttpStatus.valueOf(notFoundException.getErrorResponse().getStatus()));
+  public ResponseEntity<ErrorResponse> notFoundException(
+      NotFoundException liDiNotFoundException) {
+    return new ResponseEntity(liDiNotFoundException.getErrorResponse(),
+        HttpStatus.valueOf(liDiNotFoundException.getErrorResponse().getStatus()));
   }
 
   @ExceptionHandler(PropertyReferenceException.class)
