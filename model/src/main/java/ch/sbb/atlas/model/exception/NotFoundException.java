@@ -30,18 +30,20 @@ public abstract class NotFoundException extends AtlasException {
                           .field(field)
                           .message("Object with {0} {1} not found")
                           .displayInfo(ErrorResponse.DisplayInfo.builder()
-                              .code(CODE)
-                              .with("field", field)
-                              .with("value", value)
-                              .build())
+                                                                .code(CODE)
+                                                                .with("field", field)
+                                                                .with("value", value)
+                                                                .build())
                           .build();
     return List.of(detail);
   }
 
   public static class IdNotFoundException extends NotFoundException {
-    private static final String ID= "id";
+
+    private static final String ID = "id";
+
     public IdNotFoundException(Long value) {
-      super("id", String.valueOf(value));
+      super(ID, String.valueOf(value));
     }
   }
 

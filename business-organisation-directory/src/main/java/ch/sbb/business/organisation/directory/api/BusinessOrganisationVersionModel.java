@@ -143,7 +143,8 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
 
 
   private static String getSaid(String sboid) {
-    return sboid.substring(11);
+    int index = 11;
+    return sboid.substring(index);
   }
 
 

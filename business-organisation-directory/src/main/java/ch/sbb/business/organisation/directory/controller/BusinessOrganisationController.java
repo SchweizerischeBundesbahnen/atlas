@@ -4,7 +4,6 @@ import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVer
 import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationApiV1;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
