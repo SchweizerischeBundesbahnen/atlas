@@ -1,14 +1,15 @@
 package ch.sbb.business.organisation.directory.controller;
 
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.toEntity;
+import static java.util.stream.Collectors.toList;
+
 import ch.sbb.atlas.model.Status;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationApiV1;
+import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.entity.BusinessType;
-import ch.sbb.business.organisation.directory.repository.BusinessOrganisationRepository;
-import java.time.LocalDate;
-import java.util.HashSet;
+import ch.sbb.business.organisation.directory.service.BusinessOrganisationVersionService;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,40 +17,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BusinessOrganisationController implements BusinessOrganisationApiV1 {
 
-  private final BusinessOrganisationRepository businessOrganisationRepository;
+  private final BusinessOrganisationVersionService service;
 
   @Override
-  public List<BusinessOrganisationVersion> getBusinessOrganisations() {
-    return businessOrganisationRepository.findAll();
+  public List<BusinessOrganisationVersionModel> getBusinessOrganisations() {
+    return service.getBusinessOrganisations()
+                  .stream()
+                  .map(BusinessOrganisationVersionModel::toModel)
+                  .collect(toList());
   }
 
   @Override
-  public BusinessOrganisationVersion createBusinessOrganisations() {
-
-    Set<BusinessType> businessTypes = new HashSet<>();
-    businessTypes.add(BusinessType.AIR);
-    businessTypes.add(BusinessType.FAIR);
-    BusinessOrganisationVersion businessOrganisationVersion =
-        BusinessOrganisationVersion.builder()
-                                   .organisationNumber(123)
-                                   .descriptionDe("Description")
-            .abbreviationDe("de")
-            .abbreviationFr("fr")
-            .abbreviationIt("it")
-            .abbreviationEn("en")
-            .descriptionDe("DescDe")
-            .descriptionFr("DescFr")
-            .descriptionIt("DescIt")
-            .descriptionEn("DescEn")
-            .status(Status.ACTIVE)
-            .businessTypes(businessTypes)
-            .validFrom(LocalDate.of(2000,1,1))
-            .validTo(LocalDate.of(2000,12,31))
-                                   .build();
-    BusinessOrganisationVersion createdVersion = businessOrganisationRepository.save(
-        businessOrganisationVersion);
-    return createdVersion;
+  public BusinessOrganisationVersionModel createBusinessOrganisationVersion(
+      BusinessOrganisationVersionModel newVersion) {
+    BusinessOrganisationVersion businessOrganisationVersion = toEntity(newVersion);
+    businessOrganisationVersion.setStatus(Status.ACTIVE);
+    BusinessOrganisationVersion organisationVersionSaved =
+        service.save(businessOrganisationVersion);
+    return BusinessOrganisationVersionModel.toModel(organisationVersionSaved);
   }
 
+  @Override
+  public List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(Long id,
+      BusinessOrganisationVersionModel newVersion) {
+    BusinessOrganisationVersion versionToUpdate = service.findById(id)
+                                                         .orElseThrow(
+                                                             () -> new IllegalStateException(
+                                                                 "Replace me wit IdNotFoundException"));
+    service.updateBusinessOrganisationVersion(versionToUpdate, toEntity(newVersion));
+    return service.findBusinessOrganisationVersions(versionToUpdate.getSboid())
+                  .stream()
+                  .map(BusinessOrganisationVersionModel::toModel)
+                  .collect(Collectors.toList());
+  }
 
 }

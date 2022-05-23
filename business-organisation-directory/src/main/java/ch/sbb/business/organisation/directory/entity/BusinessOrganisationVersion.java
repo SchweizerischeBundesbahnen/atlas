@@ -4,6 +4,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.business.organisation.directory.converter.BusinessTypeConverter;
 import ch.sbb.business.organisation.directory.entity.BusinessIdGenerator.SboidGenerator;
 import java.time.LocalDate;
 import java.util.Set;
@@ -92,7 +93,7 @@ public class BusinessOrganisationVersion extends BaseVersion implements Versiona
 
   @AtlasVersionableProperty
   @ElementCollection(targetClass = BusinessType.class, fetch = FetchType.EAGER)
-  @Enumerated(EnumType.STRING)
+  @Convert(converter = BusinessTypeConverter.class)
   private Set<BusinessType> businessTypes;
 
   @NotNull
