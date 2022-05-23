@@ -2,12 +2,12 @@ package ch.sbb.line.directory.entity;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseVersion;
+import ch.sbb.atlas.model.entity.BusinessIdGenerator.TtfnidGenerator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.line.directory.api.AtlasFieldLengths;
-import ch.sbb.line.directory.entity.BusinessIdGenerator.TtfnidGenerator;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;

@@ -1,16 +1,16 @@
 package ch.sbb.business.organisation.directory.entity;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.business.organisation.directory.converter.BusinessTypeConverter;
-import ch.sbb.business.organisation.directory.entity.BusinessIdGenerator.SboidGenerator;
+import ch.sbb.atlas.model.entity.BusinessIdGenerator.SboidGenerator;
 import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.Converter;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,8 +19,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
