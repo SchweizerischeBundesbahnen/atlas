@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.service;
+package ch.sbb.atlas.model.service;
 
 
 import org.springframework.security.core.context.SecurityContextHolder;
