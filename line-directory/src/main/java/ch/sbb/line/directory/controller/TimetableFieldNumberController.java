@@ -1,14 +1,14 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.TimetableFieldNumberApiV1;
 import ch.sbb.line.directory.api.TimetableFieldNumberModel;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.exception.NotFoundException.TtfnidNotFoundException;
+import ch.sbb.line.directory.exception.LiDiNotFoundException.TtfnidNotFoundException;
 import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
@@ -56,16 +56,16 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
 
   private TimetableFieldNumberModel toModel(TimetableFieldNumber version) {
     return TimetableFieldNumberModel.builder()
-            .description(version.getDescription())
-            .number(version.getNumber())
-            .ttfnid(version.getTtfnid())
-            .swissTimetableFieldNumber(
-                    version.getSwissTimetableFieldNumber())
-            .status(version.getStatus())
-            .businessOrganisation(version.getBusinessOrganisation())
-            .validFrom(version.getValidFrom())
-            .validTo(version.getValidTo())
-            .build();
+                                    .description(version.getDescription())
+                                    .number(version.getNumber())
+                                    .ttfnid(version.getTtfnid())
+                                    .swissTimetableFieldNumber(
+                                        version.getSwissTimetableFieldNumber())
+                                    .status(version.getStatus())
+                                    .businessOrganisation(version.getBusinessOrganisation())
+                                    .validFrom(version.getValidFrom())
+                                    .validTo(version.getValidTo())
+                                    .build();
   }
 
   @Override
