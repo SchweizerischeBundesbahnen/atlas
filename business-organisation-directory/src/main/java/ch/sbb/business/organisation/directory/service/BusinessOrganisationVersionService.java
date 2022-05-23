@@ -5,7 +5,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.repository.BusinessOrganisationRepository;
+import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BusinessOrganisationVersionService {
 
-  private final BusinessOrganisationRepository repository;
+  private final BusinessOrganisationVersionRepository repository;
   private final VersionableService versionableService;
 
   public List<BusinessOrganisationVersion> getBusinessOrganisations() {
