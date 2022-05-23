@@ -1,13 +1,12 @@
 package ch.sbb.business.organisation.directory.api;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.validation.DatesValidator;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
-import ch.sbb.business.organisation.directory.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
