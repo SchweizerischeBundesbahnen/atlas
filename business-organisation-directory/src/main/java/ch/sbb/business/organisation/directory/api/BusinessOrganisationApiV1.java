@@ -1,20 +1,31 @@
 package ch.sbb.business.organisation.directory.api;
 
-import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import javax.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Business Organisations")
 @RequestMapping("v1/business-organisations")
 public interface BusinessOrganisationApiV1 {
 
   @GetMapping
-  List<BusinessOrganisationVersion> getBusinessOrganisations();
+  List<BusinessOrganisationVersionModel> getBusinessOrganisations();
 
   @PostMapping({"versions"})
-  BusinessOrganisationVersion createBusinessOrganisations();
+  @ResponseStatus(HttpStatus.CREATED)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201"),
+  })
+  BusinessOrganisationVersionModel createBusinessOrganisationVersion(
+      @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
+
 
 }
