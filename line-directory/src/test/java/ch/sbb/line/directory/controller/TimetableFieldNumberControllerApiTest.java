@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.api.ErrorResponse;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
@@ -31,10 +32,6 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
 
   @Autowired
   private TimetableFieldNumberVersionRepository versionRepository;
-
-  protected final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-      MediaType.APPLICATION_JSON.getSubtype(),
-      StandardCharsets.UTF_8);
 
   private final TimetableFieldNumberVersion version =
       TimetableFieldNumberVersion.builder()
