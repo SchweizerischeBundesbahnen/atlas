@@ -1,0 +1,31 @@
+= ATLAS - BoOrDi (Business Organisation Directory) API Guide
+:doctype: book
+:compat-mode:
+:page-layout!:
+:toc: left
+:toclevels: 1
+:sectanchors:
+:sectlinks:
+:linkattrs:
+:icons: font
+:table-caption!:
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:revnumber: {version}
+
+[[abstract]]
+
+= Overview
+
+=== Project information
+[width="60%" cols="18%,35%" ]
+|=================================
+|Application Name | {name}
+|Version | {version}
+|Build-Time| {buildTime}
+|=================================
+
+= Business Organisation Directory
+
+== Create  Business Organisation Directory - Successfully
+include::{snippets}/business-organisation-controller-api-test/should-create-business-organisation-version/auto-section.adoc[]
