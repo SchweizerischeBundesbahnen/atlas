@@ -2,7 +2,7 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.line.directory.IntegrationTest;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -36,27 +36,27 @@ public class LineRepositoryTest {
   void shouldDisplayDescriptionOfCurrentDay() {
     // Given
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
-                                           .slnid(SLNID)
-                                           .description("Last Year")
-                                           .validFrom(LocalDate.now().minusYears(2))
-                                           .validTo(LocalDate.now().minusYears(1))
-                                           .build();
+                                            .slnid(SLNID)
+                                            .description("Last Year")
+                                            .validFrom(LocalDate.now().minusYears(2))
+                                            .validTo(LocalDate.now().minusYears(1))
+                                            .build();
     lineVersionRepository.saveAndFlush(validLastYear);
 
     LineVersion validToday = LineTestData.lineVersionBuilder()
-                                        .slnid(SLNID)
-                                        .description("Today")
-                                        .validFrom(LocalDate.now().minusDays(1))
-                                        .validTo(LocalDate.now().plusDays(1))
-                                        .build();
+                                         .slnid(SLNID)
+                                         .description("Today")
+                                         .validFrom(LocalDate.now().minusDays(1))
+                                         .validTo(LocalDate.now().plusDays(1))
+                                         .build();
     lineVersionRepository.saveAndFlush(validToday);
 
     LineVersion validNextYear = LineTestData.lineVersionBuilder()
-                                           .slnid(SLNID)
-                                           .description("Next Year")
-                                           .validFrom(LocalDate.now().plusYears(1))
-                                           .validTo(LocalDate.now().plusYears(2))
-                                           .build();
+                                            .slnid(SLNID)
+                                            .description("Next Year")
+                                            .validFrom(LocalDate.now().plusYears(1))
+                                            .validTo(LocalDate.now().plusYears(2))
+                                            .build();
     lineVersionRepository.saveAndFlush(validNextYear);
 
     // When
@@ -81,27 +81,27 @@ public class LineRepositoryTest {
   void shouldDisplayDescriptionOfNextYear() {
     // Given
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
-                                           .slnid(SLNID)
-                                           .description("Last Year")
-                                           .validFrom(LocalDate.now().minusYears(2))
-                                           .validTo(LocalDate.now().minusYears(1))
-                                           .build();
+                                            .slnid(SLNID)
+                                            .description("Last Year")
+                                            .validFrom(LocalDate.now().minusYears(2))
+                                            .validTo(LocalDate.now().minusYears(1))
+                                            .build();
     lineVersionRepository.saveAndFlush(validLastYear);
 
     LineVersion validNextYear = LineTestData.lineVersionBuilder()
-                                           .slnid(SLNID)
-                                           .description("Next Year")
-                                           .validFrom(LocalDate.now().plusYears(1))
-                                           .validTo(LocalDate.now().plusYears(2))
-                                           .build();
+                                            .slnid(SLNID)
+                                            .description("Next Year")
+                                            .validFrom(LocalDate.now().plusYears(1))
+                                            .validTo(LocalDate.now().plusYears(2))
+                                            .build();
     lineVersionRepository.saveAndFlush(validNextYear);
 
     LineVersion validInTwoYears = LineTestData.lineVersionBuilder()
-                                             .slnid(SLNID)
-                                             .description("Later")
-                                             .validFrom(LocalDate.now().plusYears(3))
-                                             .validTo(LocalDate.now().plusYears(4))
-                                             .build();
+                                              .slnid(SLNID)
+                                              .description("Later")
+                                              .validFrom(LocalDate.now().plusYears(3))
+                                              .validTo(LocalDate.now().plusYears(4))
+                                              .build();
     lineVersionRepository.saveAndFlush(validInTwoYears);
 
     // When
@@ -126,19 +126,19 @@ public class LineRepositoryTest {
   void shouldDisplayDescriptionOfLastYear() {
     // Given
     LineVersion validEarlier = LineTestData.lineVersionBuilder()
-                                          .slnid(SLNID)
-                                          .description("Earlier")
-                                          .validFrom(LocalDate.now().minusYears(4))
-                                          .validTo(LocalDate.now().minusYears(3))
-                                          .build();
+                                           .slnid(SLNID)
+                                           .description("Earlier")
+                                           .validFrom(LocalDate.now().minusYears(4))
+                                           .validTo(LocalDate.now().minusYears(3))
+                                           .build();
     lineVersionRepository.saveAndFlush(validEarlier);
 
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
-                                           .slnid(SLNID)
-                                           .description("Last Year")
-                                           .validFrom(LocalDate.now().minusYears(2))
-                                           .validTo(LocalDate.now().minusYears(1))
-                                           .build();
+                                            .slnid(SLNID)
+                                            .description("Last Year")
+                                            .validFrom(LocalDate.now().minusYears(2))
+                                            .validTo(LocalDate.now().minusYears(1))
+                                            .build();
     lineVersionRepository.saveAndFlush(validLastYear);
 
     // When
@@ -160,19 +160,19 @@ public class LineRepositoryTest {
   void shouldDeleteLines() {
     // Given
     LineVersion validEarlier = LineTestData.lineVersionBuilder()
-                                          .slnid(SLNID)
-                                          .description("Earlier")
-                                          .validFrom(LocalDate.now().minusYears(4))
-                                          .validTo(LocalDate.now().minusYears(3))
-                                          .build();
+                                           .slnid(SLNID)
+                                           .description("Earlier")
+                                           .validFrom(LocalDate.now().minusYears(4))
+                                           .validTo(LocalDate.now().minusYears(3))
+                                           .build();
     lineVersionRepository.saveAndFlush(validEarlier);
 
     LineVersion validLastYear = LineTestData.lineVersionBuilder()
-                                           .slnid(SLNID)
-                                           .description("Last Year")
-                                           .validFrom(LocalDate.now().minusYears(2))
-                                           .validTo(LocalDate.now().minusYears(1))
-                                           .build();
+                                            .slnid(SLNID)
+                                            .description("Last Year")
+                                            .validFrom(LocalDate.now().minusYears(2))
+                                            .validTo(LocalDate.now().minusYears(1))
+                                            .build();
     lineVersionRepository.saveAndFlush(validLastYear);
 
     List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(SLNID);
