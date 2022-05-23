@@ -8,19 +8,29 @@ import java.util.List;
 
 public class OpenApiYamlExporter {
 
-    private static final List<String> EXPORT_DIRS = List.of("api-dev", "api-test", "api-int", "api-prod");
+  private final List<String> exportDirectories;
 
-    public void export(OpenAPI openAPI) {
-        for (String dir : EXPORT_DIRS) {
-            writeToFile(dir, openAPI);
-        }
+  public OpenApiYamlExporter(boolean productive) {
+    if (productive) {
+      this.exportDirectories = List.of("api-prod");
+    } else {
+      this.exportDirectories = List.of("api-dev", "api-test", "api-int");
     }
+  }
 
-    private void writeToFile(String dir, OpenAPI openAPI) {
-        try {
-            Yaml.mapper().writeValue(Paths.get("src/main/resources").resolve(dir).resolve("spec.yaml").toFile(), openAPI);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+  public void export(OpenAPI openAPI) {
+    for (String dir : exportDirectories) {
+      writeToFile(dir, openAPI);
     }
+  }
+
+  private void writeToFile(String dir, OpenAPI openAPI) {
+    try {
+      Yaml.mapper()
+          .writeValue(Paths.get("src/main/resources").resolve(dir).resolve("spec.yaml").toFile(),
+              openAPI);
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
+    }
+  }
 }
