@@ -1,12 +1,12 @@
 package ch.sbb.business.organisation.directory.service;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationRepository;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +32,8 @@ public class BusinessOrganisationVersionService {
     return repository.findAllBySboidOrderByValidFrom(sboid);
   }
 
-  public Optional<BusinessOrganisationVersion> findById(Long id) {
-    return repository.findById(id);
+  public BusinessOrganisationVersion findById(Long id) {
+    return repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
   public void updateBusinessOrganisationVersion(
@@ -47,8 +47,7 @@ public class BusinessOrganisationVersionService {
   }
 
   private void deleteById(long id) {
-    repository.findById(id).orElseThrow(
-        () -> new IllegalStateException("Replace me with IdNotFoundException(id)"));
+    findById(id);
     repository.deleteById(id);
   }
 
