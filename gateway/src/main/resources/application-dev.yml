@@ -8,6 +8,3 @@ spring:
         cors-configurations:
           '[/**]':
             allowed-origins: http://localhost:4200,https://atlas.dev.sbb-cloud.net,https://atlas.dev.app.sbb.ch,https://developer-int.sbb.ch
-gateway:
-  routes:
-    line-directory: http://line-directory:8082
