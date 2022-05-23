@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BusinessOrganisationRepository extends JpaRepository<BusinessOrganisationVersion, Long> {
+public interface BusinessOrganisationVersionRepository extends JpaRepository<BusinessOrganisationVersion, Long> {
 
   List<BusinessOrganisationVersion> findAllBySboidOrderByValidFrom(String slnid);
 

@@ -1,4 +1,4 @@
-package ch.sbb.line.directory;
+package ch.sbb.atlas.model.controller;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
