@@ -10,14 +10,15 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.exception.LiDiNotFoundException;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
-import ch.sbb.line.directory.exception.NotFoundException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
@@ -158,12 +159,13 @@ class LineServiceTest {
     List<LineVersion> lineVersions = List.of(lineVersion);
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(lineVersions);
     SublineVersion sublineVersion = SublineVersion.builder()
-                                        .validFrom(LocalDate.of(2000, 1, 1))
-                                        .validTo(LocalDate.of(2001, 12, 31))
-                                        .description("desc")
-                                        .build();
+                                                  .validFrom(LocalDate.of(2000, 1, 1))
+                                                  .validTo(LocalDate.of(2001, 12, 31))
+                                                  .description("desc")
+                                                  .build();
     List<SublineVersion> sublineVersions = List.of(sublineVersion);
-    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(slnid)).thenReturn(sublineVersions);
+    when(sublineVersionRepository.getSublineVersionByMainlineSlnid(slnid)).thenReturn(
+        sublineVersions);
 
     //When & Then
     assertThatExceptionOfType(LineDeleteConflictException.class).isThrownBy(
