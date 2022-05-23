@@ -1,6 +1,5 @@
-package ch.sbb.line.directory.entity;
+package ch.sbb.atlas.model.entity;
 
-import ch.sbb.line.directory.entity.LineVersion.Fields;
 import java.lang.reflect.Field;
 import java.util.Optional;
 import org.hibernate.FlushMode;
@@ -44,17 +43,24 @@ public abstract class BusinessIdGenerator implements ValueGenerator<String> {
     }
   }
 
-  static class SlnidGenerator extends BusinessIdGenerator {
+  public static class SlnidGenerator extends BusinessIdGenerator {
 
     public SlnidGenerator() {
-      super("slnid_seq", "ch:1:slnid:", Fields.slnid);
+      super("slnid_seq", "ch:1:slnid:", "slnid");
     }
   }
 
-  static class TtfnidGenerator extends BusinessIdGenerator {
+  public static class TtfnidGenerator extends BusinessIdGenerator {
 
     public TtfnidGenerator() {
-      super("ttfnid_seq", "ch:1:ttfnid:", TimetableFieldNumberVersion.Fields.ttfnid);
+      super("ttfnid_seq", "ch:1:ttfnid:", "ttfnid");
+    }
+  }
+
+  public static class SboidGenerator extends BusinessIdGenerator {
+
+    public SboidGenerator() {
+      super("sboid_seq", "ch:1:sboid:", "sboid");
     }
   }
 
