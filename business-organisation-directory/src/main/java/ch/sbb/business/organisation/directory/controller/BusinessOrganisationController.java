@@ -4,6 +4,7 @@ import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVer
 import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationApiV1;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
@@ -40,10 +41,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   @Override
   public List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(Long id,
       BusinessOrganisationVersionModel newVersion) {
-    BusinessOrganisationVersion versionToUpdate = service.findById(id)
-                                                         .orElseThrow(
-                                                             () -> new IllegalStateException(
-                                                                 "Replace me wit IdNotFoundException"));
+    BusinessOrganisationVersion versionToUpdate = service.findById(id);
     service.updateBusinessOrganisationVersion(versionToUpdate, toEntity(newVersion));
     return service.findBusinessOrganisationVersions(versionToUpdate.getSboid())
                   .stream()

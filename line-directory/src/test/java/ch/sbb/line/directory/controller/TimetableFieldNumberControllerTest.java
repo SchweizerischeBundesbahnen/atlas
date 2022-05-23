@@ -6,12 +6,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.TimetableFieldNumberModel;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.exception.NotFoundException;
+import ch.sbb.line.directory.exception.LiDiNotFoundException;
 import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;

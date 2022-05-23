@@ -1,14 +1,14 @@
 package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.exception.LiDiNotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
-import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -73,8 +73,8 @@ public class LineService {
     }
     List<SublineVersion> sublineVersionRelatedToLine = sublineVersionRepository.getSublineVersionByMainlineSlnid(
         slnid);
-    if(!sublineVersionRelatedToLine.isEmpty()){
-      throw new LineDeleteConflictException(slnid,sublineVersionRelatedToLine);
+    if (!sublineVersionRelatedToLine.isEmpty()) {
+      throw new LineDeleteConflictException(slnid, sublineVersionRelatedToLine);
     }
 
     lineVersionRepository.deleteAll(currentVersions);
