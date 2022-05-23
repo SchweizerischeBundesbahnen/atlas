@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.SublineModel;
@@ -9,8 +10,7 @@ import ch.sbb.line.directory.api.SublinenApiV1;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
+import ch.sbb.line.directory.exception.LiDiNotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
@@ -39,11 +39,13 @@ public class SublineController implements SublinenApiV1 {
     log.info("Load Versions using pageable={}", pageable);
     Page<Subline> sublines = sublineService.findAll(SublineSearchRestrictions.builder()
                                                                              .pageable(pageable)
-                                                                             .searchCriterias(searchCriteria)
+                                                                             .searchCriterias(
+                                                                                 searchCriteria)
                                                                              .statusRestrictions(
-                                                                              statusRestrictions)
+                                                                                 statusRestrictions)
                                                                              .validOn(validOn)
-                                                                             .typeRestrictions(typeRestrictions)
+                                                                             .typeRestrictions(
+                                                                                 typeRestrictions)
                                                                              .build());
     return Container.<SublineModel>builder()
                     .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
@@ -53,17 +55,17 @@ public class SublineController implements SublinenApiV1 {
 
   private SublineModel toModel(Subline sublineVersion) {
     return SublineModel.builder()
-            .swissSublineNumber(sublineVersion.getSwissSublineNumber())
-            .number(sublineVersion.getNumber())
-            .swissLineNumber(sublineVersion.getSwissLineNumber())
-            .status(sublineVersion.getStatus())
-            .sublineType(sublineVersion.getSublineType())
-            .slnid(sublineVersion.getSlnid())
-            .description(sublineVersion.getDescription())
-            .validFrom(sublineVersion.getValidFrom())
-            .validTo(sublineVersion.getValidTo())
-            .businessOrganisation(sublineVersion.getBusinessOrganisation())
-            .build();
+                       .swissSublineNumber(sublineVersion.getSwissSublineNumber())
+                       .number(sublineVersion.getNumber())
+                       .swissLineNumber(sublineVersion.getSwissLineNumber())
+                       .status(sublineVersion.getStatus())
+                       .sublineType(sublineVersion.getSublineType())
+                       .slnid(sublineVersion.getSlnid())
+                       .description(sublineVersion.getDescription())
+                       .validFrom(sublineVersion.getValidFrom())
+                       .validTo(sublineVersion.getValidTo())
+                       .businessOrganisation(sublineVersion.getBusinessOrganisation())
+                       .build();
   }
 
   @Override
