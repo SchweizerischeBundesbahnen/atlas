@@ -1,4 +1,4 @@
-package ch.sbb.business.organisation.directory.validation;
+package ch.sbb.atlas.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
