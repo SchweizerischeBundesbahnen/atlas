@@ -3,6 +3,7 @@ package ch.sbb.line.directory.controller;
 import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.Container;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
@@ -13,8 +14,7 @@ import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
+import ch.sbb.line.directory.exception.LiDiNotFoundException.SlnidNotFoundException;
 import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
