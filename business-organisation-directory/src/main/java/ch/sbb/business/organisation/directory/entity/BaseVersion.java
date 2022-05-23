@@ -1,8 +1,8 @@
 package ch.sbb.business.organisation.directory.entity;
 
+import ch.sbb.atlas.model.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.business.organisation.directory.service.UserService;
-import ch.sbb.business.organisation.directory.validation.DatesValidator;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
