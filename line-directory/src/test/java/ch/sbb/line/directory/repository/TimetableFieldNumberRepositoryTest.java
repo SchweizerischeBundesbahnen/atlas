@@ -94,7 +94,7 @@ public class TimetableFieldNumberRepositoryTest {
 
     // Then
     assertThat(result.getTotalElements()).isEqualTo(1L);
-    assertThat(result.getContent().size()).isEqualTo(1L);
+    assertThat(result.getContent()).hasSize(1);
 
     TimetableFieldNumber timetableFieldNumber = result.getContent().get(0);
     assertThat(timetableFieldNumber).usingRecursiveComparison()
@@ -173,7 +173,7 @@ public class TimetableFieldNumberRepositoryTest {
 
     // Then
     assertThat(result.getTotalElements()).isEqualTo(1L);
-    assertThat(result.getContent().size()).isEqualTo(1L);
+    assertThat(result.getContent()).hasSize(1);
 
     TimetableFieldNumber timetableFieldNumber = result.getContent().get(0);
     assertThat(timetableFieldNumber).usingRecursiveComparison()
@@ -231,7 +231,7 @@ public class TimetableFieldNumberRepositoryTest {
 
     // Then
     assertThat(result.getTotalElements()).isEqualTo(1L);
-    assertThat(result.getContent().size()).isEqualTo(1L);
+    assertThat(result.getContent()).hasSize(1);
 
     TimetableFieldNumber timetableFieldNumber = result.getContent().get(0);
     assertThat(timetableFieldNumber).usingRecursiveComparison()
