@@ -10,65 +10,67 @@
  * Do not edit the class manually.
  */
 import { Status } from './status';
-import { PaymentType } from './paymentType';
-import { LineType } from './lineType';
+import { BusinessType } from './businessType';
 
-export interface LineVersion {
+export interface BusinessOrganisationVersion {
   /**
    * Technical identifier
    */
   readonly id?: number;
   /**
-   * SwissLineNumber
+   * Swiss Business Organisation ID (SBOID)
    */
-  swissLineNumber: string;
+  readonly sboid?: string;
+  /**
+   * Swiss Administration ID (SAID)
+   */
+  readonly said?: string;
+  /**
+   * Description German
+   */
+  descriptionDe: string;
+  /**
+   * Description French
+   */
+  descriptionFr: string;
+  /**
+   * Description Italian
+   */
+  descriptionIt: string;
+  /**
+   * Description English
+   */
+  descriptionEn: string;
+  /**
+   * Abbreviation German
+   */
+  abbreviationDe: string;
+  /**
+   * Abbreviation French
+   */
+  abbreviationFr: string;
+  /**
+   * Abbreviation Italian
+   */
+  abbreviationIt: string;
+  /**
+   * Abbreviation English
+   */
+  abbreviationEn: string;
+  /**
+   * Organisation Number
+   */
+  organisationNumber?: number;
+  contactEnterpriseEmail?: string;
   status?: Status;
-  lineType: LineType;
   /**
-   * SLNID
+   * Business Types
    */
-  readonly slnid?: string;
-  paymentType: PaymentType;
+  businessTypes?: Set<BusinessType>;
   /**
-   * Number
+   * Business Types ID pipe separated
    */
-  number?: string;
-  /**
-   * AlternativeName
-   */
-  alternativeName?: string;
-  /**
-   * CombinationName
-   */
-  combinationName?: string;
-  /**
-   * LongName
-   */
-  longName?: string;
-  /**
-   * Color of the font in RGB
-   */
-  colorFontRgb: string;
-  /**
-   * Color of the background in RGB
-   */
-  colorBackRgb: string;
-  /**
-   * Color of the font in CMYK
-   */
-  colorFontCmyk: string;
-  /**
-   * Color of the background in CMYK
-   */
-  colorBackCmyk: string;
-  /**
-   * Icon
-   */
-  icon?: string;
-  /**
-   * Description
-   */
-  description?: string;
+  readonly types?: string;
   /**
    * Valid from
    */
@@ -78,15 +80,7 @@ export interface LineVersion {
    */
   validTo: Date;
   /**
-   * BusinessOrganisation
-   */
-  businessOrganisation: string;
-  /**
-   * Comment
-   */
-  comment?: string;
-  /**
    * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
    */
-  etagVersion?: number;
+  readonly etagVersion?: number;
 }
