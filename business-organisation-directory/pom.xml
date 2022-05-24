@@ -103,6 +103,10 @@
       <artifactId>spring-auto-restdocs-core</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>ch.sbb.atlas</groupId>
+      <artifactId>searching</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
