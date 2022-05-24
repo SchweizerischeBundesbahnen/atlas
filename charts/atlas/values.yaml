@@ -49,3 +49,5 @@ frontend:
   replicas: 1
   # Used to deploy the Angular with production flag
   production: true
+  # BusinessOrganisationDirectory Menus
+  pageBodiEnabled: true
