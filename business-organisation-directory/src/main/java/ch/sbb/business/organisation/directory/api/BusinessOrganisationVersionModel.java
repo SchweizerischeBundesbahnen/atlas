@@ -67,7 +67,6 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
   @Size(min = 1, max = 10)
   private String abbreviationEn;
 
-
   @Schema(description = "Organisation Number")
   @Min(value = 0)
   @Max(value = 99999)
@@ -141,11 +140,10 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
         .build();
   }
 
+  private static int INDEX_SBOID = 11;
 
   private static String getSaid(String sboid) {
-    int index = 11;
-    return sboid.substring(index);
+    return sboid.substring(INDEX_SBOID);
   }
-
 
 }
