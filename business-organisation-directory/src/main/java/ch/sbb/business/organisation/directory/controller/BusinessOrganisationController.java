@@ -7,6 +7,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationApiV1;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationVersionService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,11 +21,23 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   private final BusinessOrganisationVersionService service;
 
   @Override
-  public List<BusinessOrganisationVersionModel> getBusinessOrganisations() {
+  public List<BusinessOrganisationVersionModel> getAllBusinessOrganisations() {
     return service.getBusinessOrganisations()
                   .stream()
                   .map(BusinessOrganisationVersionModel::toModel)
                   .collect(toList());
+  }
+
+  @Override
+  public List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(String sboid) {
+    List<BusinessOrganisationVersionModel> organisationVersionModels =
+        service.findBusinessOrganisationVersions(sboid).stream()
+               .map(BusinessOrganisationVersionModel::toModel)
+               .collect(toList());
+    if(organisationVersionModels.isEmpty()){
+      throw new SboidNotFoundException(sboid);
+    }
+    return organisationVersionModels;
   }
 
   @Override

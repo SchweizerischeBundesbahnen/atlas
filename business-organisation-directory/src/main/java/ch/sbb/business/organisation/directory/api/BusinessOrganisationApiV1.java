@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface BusinessOrganisationApiV1 {
 
   @GetMapping
-  List<BusinessOrganisationVersionModel> getBusinessOrganisations();
+  List<BusinessOrganisationVersionModel> getAllBusinessOrganisations();
+
+  @GetMapping("versions/{sboid}")
+  List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(@PathVariable String sboid);
 
   @PostMapping({"versions"})
   @ResponseStatus(HttpStatus.CREATED)
