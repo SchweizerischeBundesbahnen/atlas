@@ -108,13 +108,20 @@
       "TITLE": "Fahrplanfeld-Nummern verwalten",
       "TITLE_MENU": "Fahrplanfeld-Nummern",
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Fahrplanfeldern.",
-      "PATH_TEXT": "Zu den Fahrplanfeldern"
+      "PATH_TEXT": "Fahrplanfelder"
     },
     "LIDI": {
       "TITLE": "Linien und Teillinien bearbeiten und erstellen",
       "TITLE_MENU": "Linien und Teillinien",
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Linien und Teillinien.",
-      "PATH_TEXT": "Zum Linienverzeichnis"
+      "PATH_TEXT": "Linienverzeichnis"
+    },
+    "BODI": {
+      "TITLE": "Geschäftsorganisationen verwalten",
+      "TITLE_HEADER": "Geschäftsorganisationen",
+      "TITLE_MENU": "Geschäfts-organisationen",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Geschäftsorganisationen.",
+      "PATH_TEXT": "Geschäftsorganisationen"
     },
     "DETAILS": "Details"
   },
@@ -266,6 +273,11 @@
         "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten.",
         "FETCH_ERROR": "Beim Laden der Teillinie ist ein unbekannter Fehler aufgetreten."
       }
+    }
+  },
+  "BODI": {
+    "BUSINESS_ORGANISATION": {
+      "BUSINESS_ORGANISATIONS": "Geschäftsorganisationen"
     }
   }
 }

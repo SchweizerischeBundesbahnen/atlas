@@ -74,6 +74,11 @@ a Jenkins pipiline is executed. The modules are versionied and deployed with the
 
 ![ATLAS Monorepo](documentation/ATLAS-Mono-Repo-Migration.png)
 
+### Running Python scripts
+
+The backend services include python scripts, which were used to generate SQL-Insert-Scripts from `xlsx` or `csv` files.
+You can download and install python from https://www.python.org/downloads/.
+
 ## Structure
 
 Quick overview of the modules. There are more detailed `README`s available within each module.
