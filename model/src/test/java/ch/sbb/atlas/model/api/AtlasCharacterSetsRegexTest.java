@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.model.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;

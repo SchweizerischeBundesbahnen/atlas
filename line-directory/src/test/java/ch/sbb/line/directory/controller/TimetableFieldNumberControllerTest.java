@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.exception.NotFoundException;
-import ch.sbb.line.directory.api.Container;
+import ch.sbb.atlas.model.api.Container;
 import ch.sbb.line.directory.api.TimetableFieldNumberModel;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;

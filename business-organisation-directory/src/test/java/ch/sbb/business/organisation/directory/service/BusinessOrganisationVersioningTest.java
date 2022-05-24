@@ -31,7 +31,7 @@ public class BusinessOrganisationVersioningTest {
   private BusinessOrganisationVersion version4;
 
   @Autowired
-  private BusinessOrganisationVersionService service;
+  private BusinessOrganisationService service;
 
   @Autowired
   private BusinessOrganisationVersionRepository repository;
