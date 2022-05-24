@@ -38,6 +38,10 @@ On compilation the various specifications are published into `apim-configuration
 In this project we use the `OpenApiMerger` class to combine the services APIs in one API served by the gateway.
 This merged API will then be used by our frontend to generate a client.
 
+## Productive APIs
+
+During development there might be a whole service, which we don't want to publish on production yet. Use the `application.yml` to define service keys to include in the production specification.
+
 ## Deployment
 
 This module will get deployed on staging. See `estaCloudPipeline.json`

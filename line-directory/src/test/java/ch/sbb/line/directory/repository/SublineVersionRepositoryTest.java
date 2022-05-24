@@ -2,9 +2,9 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.line.directory.IntegrationTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.line.directory.WithMockJwtAuthentication;
 import ch.sbb.line.directory.entity.SublineVersion;
 import java.time.LocalDate;
 import java.util.List;
@@ -72,7 +72,8 @@ public class SublineVersionRepositoryTest {
     //given
     SublineVersion sublineVersion = sublineVersionRepository.saveAndFlush(SUBLINE_VERSION);
     String slnid = sublineVersion.getSlnid();
-    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
+    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
+        slnid);
     assertThat(sublineVersions.size()).isEqualTo(1);
 
     //when
@@ -91,14 +92,17 @@ public class SublineVersionRepositoryTest {
   @Test
   void shouldAllowSwissNumberOnDifferentSwissIds() {
     // Given
-    sublineVersionRepository.save(SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
-                                           .validTo(LocalDate.of(2019, 12, 31))
-                                           .build());
-    sublineVersionRepository.save(SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2021, 1, 1))
-                                           .validTo(LocalDate.of(2021, 12, 31))
-                                           .build());
+    sublineVersionRepository.save(
+        SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2019, 1, 1))
+                       .validTo(LocalDate.of(2019, 12, 31))
+                       .build());
+    sublineVersionRepository.save(
+        SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2021, 1, 1))
+                       .validTo(LocalDate.of(2021, 12, 31))
+                       .build());
     // When
-    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isTrue();
+    assertThat(
+        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isTrue();
 
     // Then
   }
@@ -111,12 +115,13 @@ public class SublineVersionRepositoryTest {
   void shouldNotAllowSwissNumberOnOverlapBetween() {
     // Given
     sublineVersionRepository.save(SublineTestData.sublineVersionBuilder()
-        .validFrom(LocalDate.of(2019, 1, 1))
-        .validTo(LocalDate.of(2099, 12, 31))
-        .swissSublineNumber("SWISSSublineNUMBER")
-        .build());
+                                                 .validFrom(LocalDate.of(2019, 1, 1))
+                                                 .validTo(LocalDate.of(2099, 12, 31))
+                                                 .swissSublineNumber("SWISSSublineNUMBER")
+                                                 .build());
     // When
-    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
+    assertThat(
+        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
 
     // Then
   }
@@ -130,10 +135,11 @@ public class SublineVersionRepositoryTest {
     // Given
     sublineVersionRepository.save(
         SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2020, 10, 1))
-                    .validTo(LocalDate.of(2099, 12, 31))
-                    .build());
+                       .validTo(LocalDate.of(2099, 12, 31))
+                       .build());
     // When
-    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
+    assertThat(
+        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
 
     // Then
   }
@@ -145,11 +151,13 @@ public class SublineVersionRepositoryTest {
   @Test
   void shouldNotAllowSwissNumberOnOverlapEnd() {
     // Given
-    sublineVersionRepository.save(SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2000, 1, 1))
-                                           .validTo(LocalDate.of(2020, 10, 31))
-                                           .build());
+    sublineVersionRepository.save(
+        SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2000, 1, 1))
+                       .validTo(LocalDate.of(2020, 10, 31))
+                       .build());
     // When
-    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
+    assertThat(
+        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
 
     // Then
   }
@@ -163,7 +171,8 @@ public class SublineVersionRepositoryTest {
     // Given
     SublineVersion entity = sublineVersionRepository.save(SUBLINE_VERSION);
     // When
-    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isTrue();
+    assertThat(
+        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isTrue();
 
     // Then
   }
