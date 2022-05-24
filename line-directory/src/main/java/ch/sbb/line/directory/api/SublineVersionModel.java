@@ -1,6 +1,8 @@
 package ch.sbb.line.directory.api;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.model.api.AtlasFieldLengths;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.validation.DatesValidator;
