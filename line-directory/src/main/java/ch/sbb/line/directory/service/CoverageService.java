@@ -12,7 +12,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.ModelType;
 import ch.sbb.line.directory.enumaration.ValidationErrorType;
-import ch.sbb.line.directory.exception.LiDiNotFoundException.SlnidNotFoundException;
+import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import java.time.LocalDate;
 import java.util.List;
