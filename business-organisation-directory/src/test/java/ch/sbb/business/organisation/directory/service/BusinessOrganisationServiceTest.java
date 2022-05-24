@@ -4,6 +4,7 @@ import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import ch.sbb.business.organisation.directory.repository.BusinessOrganisationRepository;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,12 +13,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-public class BusinessOrganisationVersionServiceTest {
+public class BusinessOrganisationServiceTest {
 
-  private BusinessOrganisationVersionService service;
+  private BusinessOrganisationService service;
 
   @Mock
-  private BusinessOrganisationVersionRepository repository;
+  private BusinessOrganisationVersionRepository versionRepository;
+  @Mock
+  private BusinessOrganisationRepository repository;
 
   @Mock
   private VersionableService versionableService;
@@ -25,7 +28,7 @@ public class BusinessOrganisationVersionServiceTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    service = new BusinessOrganisationVersionService(repository, versionableService);
+    service = new BusinessOrganisationService(versionRepository, repository, versionableService);
   }
 
   @Test
@@ -33,10 +36,10 @@ public class BusinessOrganisationVersionServiceTest {
     //given
     BusinessOrganisationVersion version = new BusinessOrganisationVersion();
 
-    Mockito.when(repository.findById(123l)).thenReturn(Optional.ofNullable(version));
+    Mockito.when(versionRepository.findById(123L)).thenReturn(Optional.of(version));
     service.deleteById(123);
     //then
-    verify(repository).deleteById(123l);
+    verify(versionRepository).deleteById(123L);
   }
 
 }
