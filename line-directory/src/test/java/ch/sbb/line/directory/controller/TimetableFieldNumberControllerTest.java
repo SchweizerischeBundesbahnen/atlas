@@ -12,7 +12,6 @@ import ch.sbb.line.directory.api.TimetableFieldNumberModel;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.exception.LiDiNotFoundException;
 import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
@@ -42,7 +41,8 @@ public class TimetableFieldNumberControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    when(timetableFieldNumberService.save(any())).then(i -> i.getArgument(0, TimetableFieldNumberVersion.class));
+    when(timetableFieldNumberService.save(any())).then(
+        i -> i.getArgument(0, TimetableFieldNumberVersion.class));
   }
 
   @Test
@@ -56,27 +56,30 @@ public class TimetableFieldNumberControllerTest {
     // Then
     verify(timetableFieldNumberService).save(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-        .ignoringFields("editor", "creator", "editionDate",
-            "creationDate", "lineRelations", "ttfnid", "version")
-        .isEqualTo(timetableFieldNumberVersionModel);
+                                                .ignoringFields("editor", "creator", "editionDate",
+                                                    "creationDate", "lineRelations", "ttfnid",
+                                                    "version")
+                                                .isEqualTo(timetableFieldNumberVersionModel);
   }
 
   @Test
   void shouldGetOverview() {
     // Given
     TimetableFieldNumber version = createOverviewEntity();
-    when(timetableFieldNumberService.getVersionsSearched(any(TimetableFieldNumberSearchRestrictions.class))).thenReturn(
+    when(timetableFieldNumberService.getVersionsSearched(
+        any(TimetableFieldNumberSearchRestrictions.class))).thenReturn(
         new PageImpl<>(Collections.singletonList(version)));
 
     // When
-    Container<TimetableFieldNumberModel> timetableFieldNumberContainer = timetableFieldNumberController.getOverview(Pageable.unpaged(), null, null, null);
+    Container<TimetableFieldNumberModel> timetableFieldNumberContainer = timetableFieldNumberController.getOverview(
+        Pageable.unpaged(), null, null, null);
 
     // Then
     assertThat(timetableFieldNumberContainer).isNotNull();
     assertThat(timetableFieldNumberContainer.getObjects()).hasSize(1)
-        .first()
-        .usingRecursiveComparison()
-        .isEqualTo(version);
+                                                          .first()
+                                                          .usingRecursiveComparison()
+                                                          .isEqualTo(version);
     assertThat(timetableFieldNumberContainer.getTotalCount()).isEqualTo(1);
   }
 
@@ -112,12 +115,12 @@ public class TimetableFieldNumberControllerTest {
 
   private static TimetableFieldNumber createOverviewEntity() {
     return TimetableFieldNumber.builder()
-        .ttfnid("ch:1:ttfnid:100000")
-        .description("FPFN Description")
-        .swissTimetableFieldNumber("b0.BEX")
-        .validFrom(LocalDate.of(2020, 12, 12))
-        .validTo(LocalDate.of(2099, 12, 12))
-        .build();
+                               .ttfnid("ch:1:ttfnid:100000")
+                               .description("FPFN Description")
+                               .swissTimetableFieldNumber("b0.BEX")
+                               .validFrom(LocalDate.of(2020, 12, 12))
+                               .validTo(LocalDate.of(2099, 12, 12))
+                               .build();
   }
 
   private static TimetableFieldNumberVersion createEntity() {

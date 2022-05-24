@@ -9,6 +9,7 @@
     <artifactId>atlas</artifactId>
     <version>0.408.0-SNAPSHOT</version>
   </parent>
+  <name>Atlas Model</name>
   <artifactId>model</artifactId>
 
   <dependencies>

@@ -9,7 +9,7 @@
     </parent>
     <artifactId>line-directory</artifactId>
 
-    <name>LineDirectory</name>
+    <name>Atlas Line Directory</name>
     <description>LineDirectory</description>
 
     <dependencies>
