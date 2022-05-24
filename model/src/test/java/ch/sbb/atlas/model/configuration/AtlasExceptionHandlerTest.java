@@ -1,10 +1,10 @@
-package ch.sbb.line.directory.configuration;
+package ch.sbb.atlas.model.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.line.directory.api.ErrorResponse;
+import ch.sbb.atlas.model.api.ErrorResponse;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
@@ -16,8 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public class AtlasExceptionHandlerTest {
 
-  private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler();
-
+ private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler();
   @Test
   void shouldConvertMethodArgumentExceptionToErrorResponse() {
     // Given
