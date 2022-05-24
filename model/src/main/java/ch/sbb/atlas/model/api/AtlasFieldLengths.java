@@ -1,10 +1,9 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.model.api;
 
-public final class AtlasFieldLengths {
+import lombok.experimental.UtilityClass;
 
-  private AtlasFieldLengths() {
-    throw new IllegalStateException();
-  }
+@UtilityClass
+public class AtlasFieldLengths {
 
   public static final int SMALL = 50;
   public static final int MID = 255;
