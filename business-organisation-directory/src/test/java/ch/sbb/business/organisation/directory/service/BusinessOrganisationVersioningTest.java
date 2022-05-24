@@ -29,7 +29,6 @@ public class BusinessOrganisationVersioningTest {
   private BusinessOrganisationVersion version2;
   private BusinessOrganisationVersion version3;
   private BusinessOrganisationVersion version4;
-  private BusinessOrganisationVersion version5;
 
   @Autowired
   private BusinessOrganisationVersionService service;
@@ -115,25 +114,6 @@ public class BusinessOrganisationVersioningTest {
                                           .validFrom(LocalDate.of(2025, 1, 1))
                                           .validTo(LocalDate.of(2025, 12, 31))
                                           .build();
-    version5 = BusinessOrganisationVersion.builder()
-                                          .sboid(SBOID)
-                                          .abbreviationDe("de5")
-                                          .abbreviationFr("fr1")
-                                          .abbreviationIt("it1")
-                                          .abbreviationEn("en1")
-                                          .descriptionDe("desc-de1")
-                                          .descriptionFr("desc-fr1")
-                                          .descriptionIt("desc-it1")
-                                          .descriptionEn("desc-en1")
-                                          .businessTypes(new HashSet<>(
-                                              Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
-                                                  BusinessType.SHIP)))
-                                          .contactEnterpriseEmail("mail1@mail.ch")
-                                          .organisationNumber(1234)
-                                          .status(Status.ACTIVE)
-                                          .validFrom(LocalDate.of(2026, 1, 1))
-                                          .validTo(LocalDate.of(2026, 12, 31))
-                                          .build();
   }
 
   @AfterEach
@@ -162,6 +142,9 @@ public class BusinessOrganisationVersioningTest {
     version4 = repository.save(version4);
     BusinessOrganisationVersion editedVersion = new BusinessOrganisationVersion();
     editedVersion.setDescriptionDe("Description <changed>");
+    editedVersion.setBusinessTypes(new HashSet<>(
+        Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
+            BusinessType.SHIP,BusinessType.STREET)));
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2025, 6, 1));
 
@@ -206,7 +189,7 @@ public class BusinessOrganisationVersioningTest {
     assertThat(secondTemporalVersion.getDescriptionIt()).isEqualTo("desc-it1");
     assertThat(secondTemporalVersion.getDescriptionEn()).isEqualTo("desc-en1");
     assertThat(secondTemporalVersion.getBusinessTypes()).containsExactlyInAnyOrder(
-        BusinessType.RAILROAD, BusinessType.AIR,BusinessType.SHIP);
+        BusinessType.RAILROAD, BusinessType.AIR,BusinessType.SHIP,BusinessType.STREET);
     assertThat(secondTemporalVersion.getContactEnterpriseEmail()).isEqualTo("mail1@mail.ch");
     assertThat(secondTemporalVersion.getOrganisationNumber()).isEqualTo(1234);
 
@@ -223,7 +206,7 @@ public class BusinessOrganisationVersioningTest {
     assertThat(thirdTemporalVersion.getDescriptionIt()).isEqualTo("desc-it1");
     assertThat(thirdTemporalVersion.getDescriptionEn()).isEqualTo("desc-en1");
     assertThat(thirdTemporalVersion.getBusinessTypes()).containsExactlyInAnyOrder(
-        BusinessType.RAILROAD, BusinessType.AIR,BusinessType.SHIP);
+        BusinessType.RAILROAD, BusinessType.AIR,BusinessType.SHIP,BusinessType.STREET);
     assertThat(thirdTemporalVersion.getContactEnterpriseEmail()).isEqualTo("mail1@mail.ch");
     assertThat(thirdTemporalVersion.getOrganisationNumber()).isEqualTo(1234);
 
@@ -240,7 +223,7 @@ public class BusinessOrganisationVersioningTest {
     assertThat(fourthTemporalVersion.getDescriptionIt()).isEqualTo("desc-it1");
     assertThat(fourthTemporalVersion.getDescriptionEn()).isEqualTo("desc-en1");
     assertThat(fourthTemporalVersion.getBusinessTypes()).containsExactlyInAnyOrder(
-        BusinessType.RAILROAD, BusinessType.AIR,BusinessType.SHIP);
+        BusinessType.RAILROAD, BusinessType.AIR,BusinessType.SHIP,BusinessType.STREET);
     assertThat(fourthTemporalVersion.getContactEnterpriseEmail()).isEqualTo("mail1@mail.ch");
     assertThat(fourthTemporalVersion.getOrganisationNumber()).isEqualTo(1234);
 
@@ -257,7 +240,7 @@ public class BusinessOrganisationVersioningTest {
     assertThat(fifthTemporalVersion.getDescriptionIt()).isEqualTo("desc-it1");
     assertThat(fifthTemporalVersion.getDescriptionEn()).isEqualTo("desc-en1");
     assertThat(fifthTemporalVersion.getBusinessTypes()).containsExactlyInAnyOrder(
-        BusinessType.RAILROAD, BusinessType.AIR,BusinessType.SHIP);
+        BusinessType.RAILROAD, BusinessType.AIR,BusinessType.SHIP,BusinessType.STREET);
     assertThat(fifthTemporalVersion.getContactEnterpriseEmail()).isEqualTo("mail1@mail.ch");
     assertThat(fifthTemporalVersion.getOrganisationNumber()).isEqualTo(1234);
 
