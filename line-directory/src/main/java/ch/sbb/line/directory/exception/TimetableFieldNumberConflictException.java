@@ -1,8 +1,9 @@
 package ch.sbb.line.directory.exception;
 
-import ch.sbb.line.directory.api.ErrorResponse;
-import ch.sbb.line.directory.api.ErrorResponse.Detail;
-import ch.sbb.line.directory.api.ErrorResponse.DisplayInfo;
+import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.atlas.model.api.ErrorResponse;
+import ch.sbb.atlas.model.api.ErrorResponse.Detail;
+import ch.sbb.atlas.model.api.ErrorResponse.DisplayInfo;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion.Fields;
 import java.util.ArrayList;
