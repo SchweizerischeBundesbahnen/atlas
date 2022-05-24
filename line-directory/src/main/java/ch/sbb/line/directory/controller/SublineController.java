@@ -10,7 +10,7 @@ import ch.sbb.line.directory.api.SublinenApiV1;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.exception.LiDiNotFoundException.SlnidNotFoundException;
+import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;

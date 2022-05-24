@@ -16,7 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public class AtlasExceptionHandlerTest {
 
- private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler();
+ private final LiDiExceptionHandler lidiExceptionHandler = new LiDiExceptionHandler();
   @Test
   void shouldConvertMethodArgumentExceptionToErrorResponse() {
     // Given
@@ -27,7 +27,7 @@ public class AtlasExceptionHandlerTest {
         mock(MethodParameter.class), bindingResult);
 
     // When
-    ResponseEntity<ErrorResponse> errorResponseResponseEntity = atlasExceptionHandler.methodArgumentNotValidException(
+    ResponseEntity<ErrorResponse> errorResponseResponseEntity = lidiExceptionHandler.methodArgumentNotValidException(
         exception);
 
     // Then

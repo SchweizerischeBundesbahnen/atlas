@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>business-organisation-directory</artifactId>
-  <name>BusinessOrganisationDirectory</name>
+  <name>Atlas Business Organisation Directory</name>
   <description>BusinessOrganisationDirectory</description>
 
   <dependencies>

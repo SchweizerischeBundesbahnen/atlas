@@ -29,42 +29,50 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY)
   private Long id;
 
-  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052")
+  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052", accessMode = AccessMode.READ_ONLY)
   private String sboid;
 
-  @Schema(description = "Swiss Administration ID (SAID)", example = "100052")
+  @Schema(description = "Swiss Administration ID (SAID)", example = "100052", accessMode = AccessMode.READ_ONLY)
   private String said;
 
   @Schema(description = "Description German")
   @Size(min = 1, max = 60)
+  @NotNull
   private String descriptionDe;
 
   @Schema(description = "Description French")
   @Size(min = 1, max = 60)
+  @NotNull
   private String descriptionFr;
 
   @Schema(description = "Description Italian")
   @Size(min = 1, max = 60)
+  @NotNull
   private String descriptionIt;
 
   @Schema(description = "Description English")
   @Size(min = 1, max = 60)
+  @NotNull
   private String descriptionEn;
 
   @Schema(description = "Abbreviation German")
   @Size(min = 1, max = 10)
+  @NotNull
   private String abbreviationDe;
 
   @Schema(description = "Abbreviation French")
   @Size(min = 1, max = 10)
+  @NotNull
   private String abbreviationFr;
 
   @Schema(description = "Abbreviation Italian")
   @Size(min = 1, max = 10)
+  @NotNull
   private String abbreviationIt;
 
   @Schema(description = "Abbreviation English")
   @Size(min = 1, max = 10)
+  @NotNull
   private String abbreviationEn;
 
   @Schema(description = "Organisation Number")
@@ -91,7 +99,7 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5", accessMode = AccessMode.READ_ONLY)
   private Integer etagVersion;
 
   public static BusinessOrganisationVersion toEntity(BusinessOrganisationVersionModel model) {
@@ -140,7 +148,7 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
         .build();
   }
 
-  private static int INDEX_SBOID = 11;
+  private static final int INDEX_SBOID = 11;
 
   private static String getSaid(String sboid) {
     return sboid.substring(INDEX_SBOID);
