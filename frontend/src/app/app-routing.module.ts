@@ -15,6 +15,11 @@ const routes: Routes = [
     data: { headerTitle: Pages.LIDI.headerTitle },
   },
   {
+    path: Pages.BODI.path,
+    loadChildren: () => import('./pages/bodi/bodi.module').then((m) => m.BodiModule),
+    data: { headerTitle: Pages.BODI.headerTitle },
+  },
+  {
     path: Pages.HOME.path,
     component: HomeComponent,
     data: {
