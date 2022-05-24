@@ -221,39 +221,40 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
     //when and then
     mvc.perform(get("/v1/business-organisations")
        ).andExpect(status().isOk())
-       .andExpect(jsonPath("$[0]." + businessTypes,
+       .andExpect(jsonPath("$.totalCount" ).value(2))
+       .andExpect(jsonPath("$.objects[0]." + businessTypes,
            containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
                BusinessType.SHIP.name())))
-       .andExpect(jsonPath("$[0]." + types, is("10|20|45")))
-       .andExpect(jsonPath("$[0]." + validFrom, is("2000-01-01")))
-       .andExpect(jsonPath("$[0]." + validTo, is("2000-12-31")))
-       .andExpect(jsonPath("$[0]." + organisationNumber, is(123)))
-       .andExpect(jsonPath("$[0]." + contactEnterpriseEmail, is("mail@mail.ch")))
-       .andExpect(jsonPath("$[0]." + descriptionDe, is("desc-de")))
-       .andExpect(jsonPath("$[0]." + descriptionFr, is("desc-fr")))
-       .andExpect(jsonPath("$[0]." + descriptionIt, is("desc-it")))
-       .andExpect(jsonPath("$[0]." + descriptionEn, is("desc-en")))
-       .andExpect(jsonPath("$[0]." + abbreviationDe, is("de")))
-       .andExpect(jsonPath("$[0]." + abbreviationFr, is("fr")))
-       .andExpect(jsonPath("$[0]." + abbreviationIt, is("it")))
-       .andExpect(jsonPath("$[0]." + abbreviationEn, is("en")))
+       .andExpect(jsonPath("$.objects[0]." + types, is("10|20|45")))
+       .andExpect(jsonPath("$.objects[0]." + validFrom, is("2000-01-01")))
+       .andExpect(jsonPath("$.objects[0]." + validTo, is("2000-12-31")))
+       .andExpect(jsonPath("$.objects[0]." + organisationNumber, is(123)))
+       .andExpect(jsonPath("$.objects[0]." + contactEnterpriseEmail, is("mail@mail.ch")))
+       .andExpect(jsonPath("$.objects[0]." + descriptionDe, is("desc-de")))
+       .andExpect(jsonPath("$.objects[0]." + descriptionFr, is("desc-fr")))
+       .andExpect(jsonPath("$.objects[0]." + descriptionIt, is("desc-it")))
+       .andExpect(jsonPath("$.objects[0]." + descriptionEn, is("desc-en")))
+       .andExpect(jsonPath("$.objects[0]." + abbreviationDe, is("de")))
+       .andExpect(jsonPath("$.objects[0]." + abbreviationFr, is("fr")))
+       .andExpect(jsonPath("$.objects[0]." + abbreviationIt, is("it")))
+       .andExpect(jsonPath("$.objects[0]." + abbreviationEn, is("en")))
 
-       .andExpect(jsonPath("$[1]." + businessTypes,
+       .andExpect(jsonPath("$.objects[1]." + businessTypes,
            containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
                BusinessType.SHIP.name())))
-       .andExpect(jsonPath("$[1]." + types, is("10|20|45")))
-       .andExpect(jsonPath("$[1]." + validFrom, is("2001-01-01")))
-       .andExpect(jsonPath("$[1]." + validTo, is("2001-12-31")))
-       .andExpect(jsonPath("$[1]." + organisationNumber, is(1234)))
-       .andExpect(jsonPath("$[1]." + contactEnterpriseEmail, is("mail1@mail.ch")))
-       .andExpect(jsonPath("$[1]." + descriptionDe, is("desc-de1")))
-       .andExpect(jsonPath("$[1]." + descriptionFr, is("desc-fr1")))
-       .andExpect(jsonPath("$[1]." + descriptionIt, is("desc-it1")))
-       .andExpect(jsonPath("$[1]." + descriptionEn, is("desc-en1")))
-       .andExpect(jsonPath("$[1]." + abbreviationDe, is("de1")))
-       .andExpect(jsonPath("$[1]." + abbreviationFr, is("fr1")))
-       .andExpect(jsonPath("$[1]." + abbreviationIt, is("it1")))
-       .andExpect(jsonPath("$[1]." + abbreviationEn, is("en1")));
+       .andExpect(jsonPath("$.objects[1]." + types, is("10|20|45")))
+       .andExpect(jsonPath("$.objects[1]." + validFrom, is("2001-01-01")))
+       .andExpect(jsonPath("$.objects[1]." + validTo, is("2001-12-31")))
+       .andExpect(jsonPath("$.objects[1]." + organisationNumber, is(1234)))
+       .andExpect(jsonPath("$.objects[1]." + contactEnterpriseEmail, is("mail1@mail.ch")))
+       .andExpect(jsonPath("$.objects[1]." + descriptionDe, is("desc-de1")))
+       .andExpect(jsonPath("$.objects[1]." + descriptionFr, is("desc-fr1")))
+       .andExpect(jsonPath("$.objects[1]." + descriptionIt, is("desc-it1")))
+       .andExpect(jsonPath("$.objects[1]." + descriptionEn, is("desc-en1")))
+       .andExpect(jsonPath("$.objects[1]." + abbreviationDe, is("de1")))
+       .andExpect(jsonPath("$.objects[1]." + abbreviationFr, is("fr1")))
+       .andExpect(jsonPath("$.objects[1]." + abbreviationIt, is("it1")))
+       .andExpect(jsonPath("$.objects[1]." + abbreviationEn, is("en1")));
   }
 
   @Test
