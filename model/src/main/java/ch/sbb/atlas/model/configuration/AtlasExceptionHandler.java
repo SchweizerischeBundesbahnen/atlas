@@ -1,12 +1,12 @@
-package ch.sbb.line.directory.configuration;
+package ch.sbb.atlas.model.configuration;
 
-import ch.sbb.atlas.model.exception.NotFoundException;
-import ch.sbb.atlas.versioning.exception.VersioningException;
-import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.atlas.model.api.ErrorResponse.Detail;
 import ch.sbb.atlas.model.api.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.atlas.model.exception.NotFoundException;
+import ch.sbb.atlas.versioning.exception.VersioningException;
+import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
