@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent implements OnDestroy {
-  readonly pages: Page[] = Pages.pages;
+  readonly pages: Page[] = Pages.enabledPages();
   private readonly ngUnsubscribe = new Subject<void>();
   activePageIndex = 0;
 

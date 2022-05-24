@@ -1,0 +1,37 @@
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { BodiOverviewComponent } from './overview/bodi-overview.component';
+import { BusinessOrganisationDetailComponent } from './business-organisations/detail/business-organisation-detail.component';
+import { BusinessOrganisationDetailResolver } from './business-organisations/detail/business-organisation-detail-resolver.service';
+import { Pages } from '../pages';
+import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
+import { BusinessOrganisationComponent } from './business-organisations/business-organisation.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: BodiOverviewComponent,
+    children: [
+      {
+        path: Pages.BUSINESS_ORGANISATIONS.path,
+        component: BusinessOrganisationComponent,
+      },
+      {
+        path: Pages.BUSINESS_ORGANISATIONS.path + '/:id',
+        component: RouteToDialogComponent,
+        data: { component: BusinessOrganisationDetailComponent },
+        resolve: {
+          lineDetail: BusinessOrganisationDetailResolver,
+        },
+        runGuardsAndResolvers: 'always',
+      },
+      { path: '**', redirectTo: Pages.BUSINESS_ORGANISATIONS.path },
+    ],
+  },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class BodiRoutingModule {}

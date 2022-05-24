@@ -1,0 +1,34 @@
+<div class="table-heading font-bold-4xl color-gray-900 mb-5">
+  {{ 'LIDI.LINE.LINES' | translate }}
+</div>
+
+<app-table
+  [tableSearchFieldTemplate]="lineTypeSelection"
+  [tableData]="lineVersions"
+  [totalCount]="totalCount$"
+  [tableColumns]="linesTableColumns"
+  [canEdit]="true"
+  [isLoading]="isLoading"
+  (editElementEvent)="editVersion($event)"
+  (getTableElementsEvent)="getOverview($event)"
+  data-cy="lidi-lines"
+>
+</app-table>
+<router-outlet></router-outlet>
+<ng-template #lineTypeSelection>
+  <div class="d-flex flex-column col pe-3">
+    <mat-label class="font-bold-lg">{{ 'LIDI.TYPE' | translate }}</mat-label>
+    <mat-form-field appearance="outline">
+      <mat-select
+        (selectionChange)="onLineTypeSelectionChange()"
+        [(value)]="activeLineTypes"
+        multiple
+        data-cy="table-search-line-type"
+      >
+        <mat-option *ngFor="let lineType of LINE_TYPES" [value]="lineType">{{
+          'LIDI.LINE.TYPES.' + lineType | translate
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
