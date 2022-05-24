@@ -46,7 +46,7 @@ public class BusinessOrganisationVersionService {
         this::save, this::deleteById);
   }
 
-  private void deleteById(long id) {
+  void deleteById(long id) {
     findById(id);
     repository.deleteById(id);
   }
