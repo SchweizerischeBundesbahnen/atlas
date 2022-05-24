@@ -116,6 +116,13 @@
       "DESCRIPTION": "Registrazione e gestione dei dati delle linee.",
       "PATH_TEXT": "Dalla cartella delle linee"
     },
+    "BODI": {
+      "TITLE": "Cartella delle organizzazioni aziendale",
+      "TITLE_HEADER": "Organizzazioni aziendali",
+      "TITLE_MENU": "Organizzazioni aziendali",
+      "DESCRIPTION": "Registrazione e gestione dei dati delle rganizzazioni aziendali.",
+      "PATH_TEXT": "Organizzazioni aziendali"
+    },
     "DETAILS": "Precisazioni"
   },
   "PAGINATOR": {
@@ -266,6 +273,11 @@
         "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea parziale.",
         "FETCH_ERROR": "Si è verificato un errore sconosciuto durante il caricamento della linea parziale."
       }
+    }
+  },
+  "BODI": {
+    "BUSINESS_ORGANISATION": {
+      "BUSINESS_ORGANISATIONS": "Organizzazioni aziendali"
     }
   }
 }
