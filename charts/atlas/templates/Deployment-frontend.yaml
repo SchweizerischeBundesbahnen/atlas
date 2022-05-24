@@ -41,6 +41,8 @@ spec:
               value: '{{ .Values.frontend.apiScope }}'
             - name: INSTANA_KEY
               value: '{{ .Values.frontend.instanaKey }}'
+            - name: PAGE_BODI_ENABLED
+              value: '{{ .Values.frontend.pageBodiEnabled }}'
           ports:
             - containerPort: 8080
           livenessProbe:
