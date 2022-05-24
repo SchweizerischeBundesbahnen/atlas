@@ -2,6 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
+api/businessOrganisations.service.ts
 api/lines.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
@@ -9,6 +10,8 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/businessOrganisationVersion.ts
+model/businessType.ts
 model/containerLine.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
