@@ -1,7 +1,7 @@
-package ch.sbb.line.directory.exception;
+package ch.sbb.atlas.model.exception;
 
 
-import ch.sbb.line.directory.api.ErrorResponse;
+import ch.sbb.atlas.model.api.ErrorResponse;
 
 public abstract class AtlasException extends RuntimeException {
 

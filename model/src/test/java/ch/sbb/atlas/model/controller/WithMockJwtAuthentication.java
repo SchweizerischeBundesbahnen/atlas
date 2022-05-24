@@ -1,6 +1,6 @@
-package ch.sbb.line.directory;
+package ch.sbb.atlas.model.controller;
 
-import ch.sbb.line.directory.WithMockJwtAuthentication.MockJwtAuthenticationFactory;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockJwtAuthenticationFactory;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
