@@ -1,4 +1,4 @@
-= ATLAS - BoOrDi (Business Organisation Directory) API Guide
+= ATLAS - BoDi (Business Organisation Directory) API Guide
 :doctype: book
 :compat-mode:
 :page-layout!:
@@ -27,5 +27,17 @@
 
 = Business Organisation Directory
 
-== Create  Business Organisation Directory - Successfully
+== Create Business Organisation Directory - Successfully
 include::{snippets}/business-organisation-controller-api-test/should-create-business-organisation-version/auto-section.adoc[]
+
+== Get Business Organisation Directories - Successfully
+include::{snippets}/business-organisation-controller-api-test/should-gel-business-organisation-versions/auto-section.adoc[]
+
+== Create Business Organisation Directory when provided field is too long - Unsuccessfully
+include::{snippets}/business-organisation-controller-api-test/should-not-create-business-organisation-version-when-required-abbreviation-de-field-provided-is-too-long/auto-section.adoc[]
+
+== Update Business Organisation Directory when required field is not provided - Unsuccessfully
+include::{snippets}/business-organisation-controller-api-test/should-not-update-business-organisation-version-when-required-abbreviation-de-field-not-provided/auto-section.adoc[]
+
+== Update Business Organisation Directory when id provided does not exist - Unsuccessfully
+include::{snippets}/business-organisation-controller-api-test/should-not-update-business-organisation-version-when-provided-id-does-not-exists/auto-section.adoc[]

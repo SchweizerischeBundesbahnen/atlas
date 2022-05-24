@@ -1,6 +1,7 @@
 package ch.sbb.business.organisation.directory.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -43,6 +44,7 @@ public enum BusinessType {
 
   public static String getBusinessTypesPiped(Set<BusinessType> businessTypes) {
     return businessTypes.stream()
+                        .sorted(Comparator.comparing(BusinessType::getId))
                         .map(businessType -> String.valueOf(businessType.getId()))
                         .collect(Collectors.joining(PIPE));
   }
