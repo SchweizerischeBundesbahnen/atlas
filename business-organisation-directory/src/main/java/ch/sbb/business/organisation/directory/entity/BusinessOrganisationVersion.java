@@ -55,30 +55,39 @@ public class BusinessOrganisationVersion extends BaseVersion implements Versiona
   @AtlasVersionableProperty
   private String sboid;
 
+  @NotNull
   @AtlasVersionableProperty
   private String descriptionDe;
 
+  @NotNull
   @AtlasVersionableProperty
   private String descriptionFr;
 
+  @NotNull
   @AtlasVersionableProperty
   private String descriptionIt;
 
+  @NotNull
   @AtlasVersionableProperty
   private String descriptionEn;
 
+  @NotNull
   @AtlasVersionableProperty
   private String abbreviationDe;
 
+  @NotNull
   @AtlasVersionableProperty
   private String abbreviationFr;
 
+  @NotNull
   @AtlasVersionableProperty
   private String abbreviationIt;
 
+  @NotNull
   @AtlasVersionableProperty
   private String abbreviationEn;
 
+  @NotNull
   @AtlasVersionableProperty
   private Integer organisationNumber;
 
