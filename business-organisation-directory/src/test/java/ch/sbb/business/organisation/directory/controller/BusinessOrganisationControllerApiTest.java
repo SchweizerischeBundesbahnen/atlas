@@ -107,7 +107,94 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
   }
 
   @Test
-  public void shouldGelBusinessOrganisationVersions() throws Exception {
+  public void shouldGetBusinessOrganisationVersions() throws Exception {
+    //given
+    BusinessOrganisationVersionModel model =
+        BusinessOrganisationVersionModel.builder()
+                                        .sboid("ch:1:sboid:1000001")
+                                        .abbreviationDe("de1")
+                                        .abbreviationFr("fr1")
+                                        .abbreviationIt("it1")
+                                        .abbreviationEn("en1")
+                                        .descriptionDe("desc-de1")
+                                        .descriptionFr("desc-fr1")
+                                        .descriptionIt("desc-it1")
+                                        .descriptionEn("desc-en1")
+                                        .businessTypes(new HashSet<>(
+                                            Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
+                                                BusinessType.SHIP)))
+                                        .contactEnterpriseEmail("mail1@mail.ch")
+                                        .organisationNumber(1234)
+                                        .status(Status.ACTIVE)
+                                        .validFrom(LocalDate.of(2001, 1, 1))
+                                        .validTo(LocalDate.of(2001, 12, 31))
+                                        .build();
+    BusinessOrganisationVersionModel businessOrganisationVersion = controller.createBusinessOrganisationVersion(
+        model);
+
+    model.setDescriptionDe("desc-de1-changed");
+    model.setValidFrom(LocalDate.of(2002,1,1));
+    model.setValidTo(LocalDate.of(2002,12,31));
+    controller.updateBusinessOrganisationVersion(businessOrganisationVersion.getId(),model);
+
+    //when and then
+    mvc.perform(get("/v1/business-organisations/versions/"+ businessOrganisationVersion.getSboid())
+       ).andExpect(status().isOk())
+       .andExpect(jsonPath("$[0]." + businessTypes,
+           containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
+               BusinessType.SHIP.name())))
+       .andExpect(jsonPath("$[0]." + types, is("10|20|45")))
+       .andExpect(jsonPath("$[0]." + validFrom, is("2001-01-01")))
+       .andExpect(jsonPath("$[0]." + validTo, is("2001-12-31")))
+       .andExpect(jsonPath("$[0]." + organisationNumber, is(1234)))
+       .andExpect(jsonPath("$[0]." + contactEnterpriseEmail, is("mail1@mail.ch")))
+       .andExpect(jsonPath("$[0]." + descriptionDe, is("desc-de1")))
+       .andExpect(jsonPath("$[0]." + descriptionFr, is("desc-fr1")))
+       .andExpect(jsonPath("$[0]." + descriptionIt, is("desc-it1")))
+       .andExpect(jsonPath("$[0]." + descriptionEn, is("desc-en1")))
+       .andExpect(jsonPath("$[0]." + abbreviationDe, is("de1")))
+       .andExpect(jsonPath("$[0]." + abbreviationFr, is("fr1")))
+       .andExpect(jsonPath("$[0]." + abbreviationIt, is("it1")))
+       .andExpect(jsonPath("$[0]." + abbreviationEn, is("en1")))
+
+       .andExpect(jsonPath("$[1]." + businessTypes,
+           containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
+               BusinessType.SHIP.name())))
+       .andExpect(jsonPath("$[1]." + types, is("10|20|45")))
+       .andExpect(jsonPath("$[1]." + validFrom, is("2002-01-01")))
+       .andExpect(jsonPath("$[1]." + validTo, is("2002-12-31")))
+       .andExpect(jsonPath("$[1]." + organisationNumber, is(1234)))
+       .andExpect(jsonPath("$[1]." + contactEnterpriseEmail, is("mail1@mail.ch")))
+       .andExpect(jsonPath("$[1]." + descriptionDe, is("desc-de1-changed")))
+       .andExpect(jsonPath("$[1]." + descriptionFr, is("desc-fr1")))
+       .andExpect(jsonPath("$[1]." + descriptionIt, is("desc-it1")))
+       .andExpect(jsonPath("$[1]." + descriptionEn, is("desc-en1")))
+       .andExpect(jsonPath("$[1]." + abbreviationDe, is("de1")))
+       .andExpect(jsonPath("$[1]." + abbreviationFr, is("fr1")))
+       .andExpect(jsonPath("$[1]." + abbreviationIt, is("it1")))
+       .andExpect(jsonPath("$[1]." + abbreviationEn, is("en1")));
+  }
+
+  @Test
+  public void shouldNotGetBusinessOrganisationVersionsWhenProvidedSboidDoesNotExists()
+      throws Exception {
+    //when and then
+    mvc.perform(get("/v1/business-organisations/versions/ch:1:sboid:110000112" )
+    ).andExpect(status().isNotFound())
+       .andExpect(jsonPath("$.status", is(404)))
+       .andExpect(jsonPath("$.message", is("Entity not found")))
+       .andExpect(jsonPath("$.error", is("Not found")))
+       .andExpect(jsonPath("$.details[0].message", is("Object with sboid ch:1:sboid:110000112 not found")))
+       .andExpect(jsonPath("$.details[0].field", is("sboid")))
+       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("sboid")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("ch:1:sboid:110000112")));
+  }
+
+  @Test
+  public void shouldGetAllBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel model =
         BusinessOrganisationVersionModel.builder()

@@ -30,8 +30,14 @@
 == Create Business Organisation Directory - Successfully
 include::{snippets}/business-organisation-controller-api-test/should-create-business-organisation-version/auto-section.adoc[]
 
-== Get Business Organisation Directories - Successfully
-include::{snippets}/business-organisation-controller-api-test/should-gel-business-organisation-versions/auto-section.adoc[]
+== Get All Business Organisation Directories - Successfully
+include::{snippets}/business-organisation-controller-api-test/should-get-all-business-organisation-versions/auto-section.adoc[]
+
+== Get Business Organisation Directories Versions- Successfully
+include::{snippets}/business-organisation-controller-api-test/should-get-business-organisation-versions/auto-section.adoc[]
+
+== Get Business Organisation Directories Versions- Unsuccessfully
+include::{snippets}/business-organisation-controller-api-test/should-not-get-business-organisation-versions-when-provided-sboid-does-not-exists/auto-section.adoc[]
 
 == Create Business Organisation Directory when provided field is too long - Unsuccessfully
 include::{snippets}/business-organisation-controller-api-test/should-not-create-business-organisation-version-when-required-abbreviation-de-field-provided-is-too-long/auto-section.adoc[]
