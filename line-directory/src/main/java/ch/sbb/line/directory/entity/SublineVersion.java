@@ -1,11 +1,11 @@
 package ch.sbb.line.directory.entity;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.line.directory.api.AtlasFieldLengths;
-import ch.sbb.line.directory.entity.BusinessIdGenerator.SlnidGenerator;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import java.time.LocalDate;

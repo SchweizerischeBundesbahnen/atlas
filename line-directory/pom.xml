@@ -9,7 +9,7 @@
     </parent>
     <artifactId>line-directory</artifactId>
 
-    <name>LineDirectory</name>
+    <name>Atlas Line Directory</name>
     <description>LineDirectory</description>
 
     <dependencies>
@@ -74,6 +74,14 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>ch.sbb.atlas</groupId>
+            <artifactId>model</artifactId>
+            <classifier>tests</classifier>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

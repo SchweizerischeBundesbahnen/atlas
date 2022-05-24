@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.model.api;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.text.MessageFormat;

@@ -9,13 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.line.directory.api.ErrorResponse;
+import ch.sbb.atlas.model.api.ErrorResponse;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -32,10 +32,6 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
   @Autowired
   private TimetableFieldNumberVersionRepository versionRepository;
 
-  protected final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-      MediaType.APPLICATION_JSON.getSubtype(),
-      StandardCharsets.UTF_8);
-
   private final TimetableFieldNumberVersion version =
       TimetableFieldNumberVersion.builder()
                                  .ttfnid("ch:1:ttfnid:100000")
@@ -43,8 +39,8 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
                                  .number("10.100")
                                  .status(Status.ACTIVE)
                                  .swissTimetableFieldNumber("b0.100")
-                                 .validFrom(LocalDate.of(2020, 1,1))
-                                 .validTo(LocalDate.of(2020, 12,31))
+                                 .validFrom(LocalDate.of(2020, 1, 1))
+                                 .validTo(LocalDate.of(2020, 12, 31))
                                  .businessOrganisation("sbb")
                                  .build();
 
@@ -68,9 +64,9 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
                                         .status(Status.ACTIVE).build();
     //when && then
     mvc.perform(post("/v1/field-numbers/versions")
-           .contentType(contentType)
+        .contentType(contentType)
         .content(mapper.writeValueAsString(timetableFieldNumberVersionModel))
-       ).andExpect(status().isCreated());
+    ).andExpect(status().isCreated());
   }
 
   @Test

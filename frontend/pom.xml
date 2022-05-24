@@ -10,7 +10,7 @@
   <packaging>pom</packaging>
   <artifactId>frontend</artifactId>
 
-  <name>Frontend</name>
+  <name>Atlas Frontend</name>
   <description>ATLAS-Frontend</description>
 
   <properties>

@@ -1,0 +1,49 @@
+= ATLAS - BoDi (Business Organisation Directory) API Guide
+:doctype: book
+:compat-mode:
+:page-layout!:
+:toc: left
+:toclevels: 1
+:sectanchors:
+:sectlinks:
+:linkattrs:
+:icons: font
+:table-caption!:
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:revnumber: {version}
+
+[[abstract]]
+
+= Overview
+
+=== Project information
+[width="60%" cols="18%,35%" ]
+|=================================
+|Application Name | {name}
+|Version | {version}
+|Build-Time| {buildTime}
+|=================================
+
+= Business Organisation Directory
+
+== Create Business Organisation Directory - Successfully
+include::{snippets}/business-organisation-controller-api-test/should-create-business-organisation-version/auto-section.adoc[]
+
+== Get All Business Organisation Directories - Successfully
+include::{snippets}/business-organisation-controller-api-test/should-get-all-business-organisation-versions/auto-section.adoc[]
+
+== Get Business Organisation Directories Versions- Successfully
+include::{snippets}/business-organisation-controller-api-test/should-get-business-organisation-versions/auto-section.adoc[]
+
+== Get Business Organisation Directories Versions- Unsuccessfully
+include::{snippets}/business-organisation-controller-api-test/should-not-get-business-organisation-versions-when-provided-sboid-does-not-exists/auto-section.adoc[]
+
+== Create Business Organisation Directory when provided field is too long - Unsuccessfully
+include::{snippets}/business-organisation-controller-api-test/should-not-create-business-organisation-version-when-required-abbreviation-de-field-provided-is-too-long/auto-section.adoc[]
+
+== Update Business Organisation Directory when required field is not provided - Unsuccessfully
+include::{snippets}/business-organisation-controller-api-test/should-not-update-business-organisation-version-when-required-abbreviation-de-field-not-provided/auto-section.adoc[]
+
+== Update Business Organisation Directory when id provided does not exist - Unsuccessfully
+include::{snippets}/business-organisation-controller-api-test/should-not-update-business-organisation-version-when-provided-id-does-not-exists/auto-section.adoc[]
