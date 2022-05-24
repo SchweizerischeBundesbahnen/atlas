@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.api.Container;
+import ch.sbb.atlas.model.api.Container;
 import ch.sbb.line.directory.api.LineModel;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.entity.Line;

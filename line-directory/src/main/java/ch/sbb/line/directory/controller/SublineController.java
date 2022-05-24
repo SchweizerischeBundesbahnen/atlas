@@ -2,7 +2,7 @@ package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.api.Container;
+import ch.sbb.atlas.model.api.Container;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;

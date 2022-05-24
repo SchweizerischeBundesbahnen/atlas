@@ -3,6 +3,7 @@ package ch.sbb.line.directory.api;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.api.AtlasFieldLengths;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel.TimetableFieldNumberVersionModelBuilder;
 import java.time.LocalDate;
 import java.util.List;

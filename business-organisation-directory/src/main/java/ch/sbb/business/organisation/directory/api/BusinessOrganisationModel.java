@@ -1,8 +1,7 @@
 package ch.sbb.business.organisation.directory.api;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.validation.DatesValidator;
-import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -23,11 +22,8 @@ import lombok.experimental.FieldNameConstants;
 @Data
 @Builder
 @FieldNameConstants
-@Schema(name = "BusinessOrganisationVersion")
-public class BusinessOrganisationVersionModel implements DatesValidator {
-
-  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY)
-  private Long id;
+@Schema(name = "BusinessOrganisation")
+public class BusinessOrganisationModel {
 
   @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052", accessMode = AccessMode.READ_ONLY)
   private String sboid;
@@ -99,34 +95,9 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5", accessMode = AccessMode.READ_ONLY)
-  private Integer etagVersion;
-
-  public static BusinessOrganisationVersion toEntity(BusinessOrganisationVersionModel model) {
-    return BusinessOrganisationVersion.builder()
-                                      .id(model.getId())
-                                      .status(model.getStatus())
-                                      .descriptionDe(model.getDescriptionDe())
-                                      .descriptionFr(model.getDescriptionFr())
-                                      .descriptionIt(model.getDescriptionIt())
-                                      .descriptionEn(model.getDescriptionEn())
-                                      .abbreviationDe(model.getAbbreviationDe())
-                                      .abbreviationFr(model.getAbbreviationFr())
-                                      .abbreviationIt(model.getAbbreviationIt())
-                                      .abbreviationEn(model.getAbbreviationEn())
-                                      .validFrom(model.getValidFrom())
-                                      .validTo(model.getValidTo())
-                                      .organisationNumber(model.getOrganisationNumber())
-                                      .contactEnterpriseEmail(model.getContactEnterpriseEmail())
-                                      .sboid(model.getSboid())
-                                      .businessTypes(model.getBusinessTypes())
-                                      .build();
-  }
-
-  public static BusinessOrganisationVersionModel toModel(BusinessOrganisationVersion entity) {
-    return BusinessOrganisationVersionModel
+  public static BusinessOrganisationModel toModel(BusinessOrganisation entity) {
+    return BusinessOrganisationModel
         .builder()
-        .id(entity.getId())
         .status(entity.getStatus())
         .descriptionDe(entity.getDescriptionDe())
         .descriptionFr(entity.getDescriptionFr())
@@ -141,7 +112,6 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
         .organisationNumber(entity.getOrganisationNumber())
         .contactEnterpriseEmail(entity.getContactEnterpriseEmail())
         .sboid(entity.getSboid())
-        .etagVersion(entity.getVersion())
         .said(SboidToSaidConverter.toSaid(entity.getSboid()))
         .businessTypes(entity.getBusinessTypes())
         .types(BusinessType.getBusinessTypesPiped(entity.getBusinessTypes()))
