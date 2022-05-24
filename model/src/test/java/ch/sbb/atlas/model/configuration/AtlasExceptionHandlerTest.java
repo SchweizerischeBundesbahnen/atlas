@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.configuration;
+package ch.sbb.atlas.model.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public class AtlasExceptionHandlerTest {
 
- private final LiDiExceptionHandler lidiExceptionHandler = new LiDiExceptionHandler();
+ private final AtlasExceptionHandler atlasExceptionHandler = new AtlasExceptionHandler();
   @Test
   void shouldConvertMethodArgumentExceptionToErrorResponse() {
     // Given
@@ -27,7 +27,7 @@ public class AtlasExceptionHandlerTest {
         mock(MethodParameter.class), bindingResult);
 
     // When
-    ResponseEntity<ErrorResponse> errorResponseResponseEntity = lidiExceptionHandler.methodArgumentNotValidException(
+    ResponseEntity<ErrorResponse> errorResponseResponseEntity = atlasExceptionHandler.methodArgumentNotValidException(
         exception);
 
     // Then
