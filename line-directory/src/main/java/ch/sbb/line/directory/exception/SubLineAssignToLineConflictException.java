@@ -1,9 +1,10 @@
 package ch.sbb.line.directory.exception;
 
-import static ch.sbb.line.directory.api.ErrorResponse.DisplayInfo.builder;
+import static ch.sbb.atlas.model.api.ErrorResponse.DisplayInfo.builder;
 
-import ch.sbb.line.directory.api.ErrorResponse;
-import ch.sbb.line.directory.api.ErrorResponse.Detail;
+import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.atlas.model.api.ErrorResponse;
+import ch.sbb.atlas.model.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.Fields;
 import java.util.List;

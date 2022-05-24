@@ -17,7 +17,7 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Coverage;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.exception.NotFoundException.SlnidNotFoundException;
+import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import java.util.ArrayList;
 import java.util.List;
