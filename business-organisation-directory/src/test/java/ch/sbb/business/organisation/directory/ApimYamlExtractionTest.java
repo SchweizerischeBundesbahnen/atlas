@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest
 @IntegrationTest
-@ActiveProfiles("integration-test")
 @AutoConfigureMockMvc(addFilters = false)
 @Slf4j
 public class ApimYamlExtractionTest {
