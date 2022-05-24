@@ -12,7 +12,7 @@ public abstract class BusinessIdGenerator implements ValueGenerator<String> {
   private final String businessIdPrefix;
   private final String dbField;
 
-  private BusinessIdGenerator(String dbSequence, String businessIdPrefix, String dbField) {
+  public BusinessIdGenerator(String dbSequence, String businessIdPrefix, String dbField) {
     this.dbSequence = dbSequence;
     this.businessIdPrefix = businessIdPrefix;
     this.dbField = dbField;
@@ -40,27 +40,6 @@ public abstract class BusinessIdGenerator implements ValueGenerator<String> {
       return Optional.ofNullable(slnidValue);
     } catch (IllegalAccessException | NoSuchFieldException e) {
       throw new IllegalStateException(e);
-    }
-  }
-
-  public static class SlnidGenerator extends BusinessIdGenerator {
-
-    public SlnidGenerator() {
-      super("slnid_seq", "ch:1:slnid:", "slnid");
-    }
-  }
-
-  public static class TtfnidGenerator extends BusinessIdGenerator {
-
-    public TtfnidGenerator() {
-      super("ttfnid_seq", "ch:1:ttfnid:", "ttfnid");
-    }
-  }
-
-  public static class SboidGenerator extends BusinessIdGenerator {
-
-    public SboidGenerator() {
-      super("sboid_seq", "ch:1:sboid:", "sboid");
     }
   }
 
