@@ -1,5 +1,6 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.atlas.model.configuration.AtlasExceptionHandler;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
 import java.time.ZoneId;
@@ -20,4 +21,11 @@ public class LineDirectoryApplication {
   public VersionableService versionableService() {
     return new VersionableServiceImpl();
   }
+
+
+  @Bean
+  public AtlasExceptionHandler atlasExceptionHandler() {
+    return new AtlasExceptionHandler();
+  }
+
 }
