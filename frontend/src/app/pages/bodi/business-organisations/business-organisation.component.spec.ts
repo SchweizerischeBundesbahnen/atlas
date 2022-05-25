@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { BusinessOrganisationComponent } from './business-organisation.component';
 import { BusinessOrganisationsService, ContainerBusinessOrganisation } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Component, EventEmitter, Input, TemplateRef } from '@angular/core';
-import { LangChangeEvent } from '@ngx-translate/core/lib/translate.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 
 const businessOrganisation: ContainerBusinessOrganisation = {
   objects: [
     {
-      sboid: 'slnid',
+      sboid: 'sboid',
       descriptionDe: 'asdf',
       descriptionFr: 'asdf',
       descriptionIt: 'asdf',
