@@ -34,7 +34,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
       List<String> searchCriteria, Optional<LocalDate> validOn, List<Status> statusChoices) {
     log.info(
-        "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
+        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
         pageable, searchCriteria, validOn, statusChoices);
     Page<BusinessOrganisation> timetableFieldNumberPage = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
