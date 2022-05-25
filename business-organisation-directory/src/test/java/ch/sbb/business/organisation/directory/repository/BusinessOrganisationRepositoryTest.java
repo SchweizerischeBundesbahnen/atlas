@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BusinessOrganisationRepositoryTest {
 
   private static final String SBOID = "sboid";
+  private static final String[] IGNORED_FIELDS = {"validFrom", "validTo", "organisationNumber"};
   private final BusinessOrganisationVersionRepository versionRepository;
   private final BusinessOrganisationRepository businessOrganisationRepository;
 
@@ -78,7 +79,7 @@ public class BusinessOrganisationRepositoryTest {
 
     BusinessOrganisation businessOrganisation = result.getContent().get(0);
     assertThat(businessOrganisation).usingRecursiveComparison()
-                                    .ignoringFields("validFrom", "validTo")
+                                    .ignoringFields(IGNORED_FIELDS)
                                     .isEqualTo(validToday);
     assertThat(businessOrganisation.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
     assertThat(businessOrganisation.getValidTo()).isEqualTo(validNextYear.getValidTo());
@@ -135,7 +136,7 @@ public class BusinessOrganisationRepositoryTest {
 
     BusinessOrganisation businessOrganisation = result.getContent().get(0);
     assertThat(businessOrganisation).usingRecursiveComparison()
-                                    .ignoringFields("validFrom", "validTo")
+                                    .ignoringFields(IGNORED_FIELDS)
                                     .isEqualTo(validNextYear);
     assertThat(businessOrganisation.getValidFrom()).isEqualTo(validLastYear.getValidFrom());
     assertThat(businessOrganisation.getValidTo()).isEqualTo(validInTwoYears.getValidTo());
@@ -180,7 +181,7 @@ public class BusinessOrganisationRepositoryTest {
 
     BusinessOrganisation businessOrganisation = result.getContent().get(0);
     assertThat(businessOrganisation).usingRecursiveComparison()
-                                    .ignoringFields("validFrom", "validTo")
+                                    .ignoringFields(IGNORED_FIELDS)
                                     .isEqualTo(validLastYear);
     assertThat(businessOrganisation.getValidFrom()).isEqualTo(validEarlier.getValidFrom());
     assertThat(businessOrganisation.getValidTo()).isEqualTo(validLastYear.getValidTo());

@@ -1,270 +1,230 @@
 <app-detail-wrapper
   [controller]="this"
-  headingNew="LIDI.LINE.NEW"
-  formDetailHeading="LIDI.DETAIL_LINE_INFORMATION"
+  headingNew="BODI.BUSINESS_ORGANISATION.NEW"
+  formDetailHeading="BODI.BUSINESS_ORGANISATION.DETAIL_INFORMATION"
 >
   <form [formGroup]="form">
     <h2 *ngIf="isNewRecord()" class="font-bold-2xl mb-4">
-      {{ 'LIDI.NEW_LINE_INFORMATION' | translate }}
+      {{ 'BODI.BUSINESS_ORGANISATION.NEW_INFORMATION' | translate }}
     </h2>
 
+    <!-- Organisation Number -->
     <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-3 pe-3">
+      <div class="d-flex flex-column col-6 pe-3">
         <div class="info-icon-position">
-          <mat-label class="font-bold-lg">{{ 'LIDI.LINE.NUMBER' | translate }} </mat-label>
-          <form-info-icon infoTitle="{{ 'LIDI.LINE.NUMBER_INFO' | translate }}"></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '50.391' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-        </mat-label>
-        <mat-form-field>
-          <input data-cy="number" matInput formControlName="number" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-      <div class="d-flex flex-column col-9">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg">{{ 'LIDI.LINE.DESCRIPTION' | translate }} </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'LIDI.LINE.DESCRIPTION_INFO' | translate }}"
-          ></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }}
-          {{ 'Lenzburg Langsamstig - Bahnhof - Lenzburg Schloss' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="description" data-cy="description" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-12">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg">{{ 'LIDI.LONG_NAME' | translate }} </mat-label>
-          <form-info-icon infoTitle="{{ 'LIDI.LONG_NAME_INFO' | translate }}"></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }}
-          {{ 'Lenzburg Langsamstig - Lenzburg Bahnhof - Lenzburg Schloss' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="longName" data-cy="longName" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-4 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER' | translate }}
           </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'LIDI.SWISS_LINE_NUMBER_INFO' | translate }}"
-          ></form-info-icon>
         </div>
         <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.50.391' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ '146' }}
         </mat-label>
         <mat-form-field>
-          <input matInput formControlName="swissLineNumber" data-cy="swissLineNumber" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-
-      <div class="d-flex flex-column col-4 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg">{{ 'LIDI.ALTERNATIVE_NAME' | translate }} </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'LIDI.ALTERNATIVE_NAME_INFO' | translate }}"
-          ></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="alternativeName" data-cy="alternativeName" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-
-      <div class="d-flex flex-column col-4">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg">{{ 'LIDI.COMBINATION_NAME' | translate }} </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'LIDI.COMBINATION_NAME_INFO' | translate }}"
-          ></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="combinationName" data-cy="combinationName" />
+          <input matInput formControlName="organisationNumber" data-cy="organisationNumber" />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
     </div>
+
+    <!-- Descriptions -->
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-6 pe-3">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_DE' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Verkehrsbetriebe STI AG' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 60 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="descriptionDe" data-cy="descriptionDe" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-6">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_FR' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Verkehrsbetriebe STI AG' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 60 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="descriptionFr" data-cy="descriptionFr" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-6 pe-3">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_IT' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Verkehrsbetriebe STI AG' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 60 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="descriptionIt" data-cy="descriptionIt" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-6">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_EN' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Verkehrsbetriebe STI AG' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 60 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="descriptionEn" data-cy="descriptionEn" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <!-- Descriptions -->
+
+    <!-- Abbreviations -->
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-6 pe-3">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_DE' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'STI' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 10 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="abbreviationDe" data-cy="abbreviationDe" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-6">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_FR' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'STI' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 10 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="abbreviationFr" data-cy="abbreviationFr" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-6 pe-3">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_IT' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'STI' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 10 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="abbreviationIt" data-cy="abbreviationIt" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-6">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_EN' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'STI' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 10 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="abbreviationEn" data-cy="abbreviationEn" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <!-- Abbreviations -->
 
     <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
 
     <form-date-range [formGroup]="form"></form-date-range>
 
     <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-3 pe-3">
+      <div class="d-flex flex-column col-12">
         <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
+          <mat-label class="font-bold-lg subtitle-margin"
+            >{{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE' | translate }}
           </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'LIDI.BUSINESS_ORGANISATION_INFO' | translate }}"
-          ></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '146 - STI' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="businessOrganisation" data-cy="businessOrganisation" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-
-      <div class="d-flex flex-column col-6 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator subtitle-margin"
-            >{{ 'LIDI.TYPE' | translate }}
-          </mat-label>
-          <form-info-icon infoTitle="{{ 'LIDI.TYPE_INFO' | translate }}"></form-info-icon>
         </div>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
-            formControlName="lineType"
-            data-cy="type"
+            multiple
+            formControlName="businessTypes"
+            data-cy="businessTypes"
             placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
           >
-            <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
-              {{ 'LIDI.LINE.TYPES.' + type | translate }}
+            <mat-option *ngFor="let type of BUSINESS_TYPES" [value]="type">
+              {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES.' + type | translate }}
             </mat-option>
           </mat-select>
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
-      </div>
-
-      <div class="d-flex flex-column col-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator subtitle-margin"
-            >{{ 'LIDI.PAYMENT.TYPE' | translate }}
-          </mat-label>
-          <form-info-icon infoTitle="{{ 'LIDI.PAYMENT.TYPE_INFO' | translate }}"></form-info-icon>
-        </div>
-        <mat-form-field appearance="outline" class="form-outline">
-          <mat-select
-            formControlName="paymentType"
-            data-cy="paymentType"
-            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-          >
-            <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
-              {{ 'LIDI.PAYMENT.' + type | translate }}
-            </mat-option>
-          </mat-select>
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <span class="font-bold-2xl">{{ 'FORM.DESIGN_INFORMATION' | translate }}</span>
-    <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-6 pe-3">
-        <form-url-component [formGroup]="form"></form-url-component>
-      </div>
-      <div class="d-flex flex-column col-3 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'LIDI.LINE.FONT_RGB' | translate }}
-          </mat-label>
-          <form-info-icon infoTitle="{{ 'LIDI.LINE.FONT_RGB_INFO' | translate }}"></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
-        >
-        <app-rgb-picker
-          [formGroup]="form"
-          attributeName="colorFontRgb"
-          data-cy="colorFontRgb"
-          defaultColor="#000000"
-        ></app-rgb-picker>
-      </div>
-
-      <div class="d-flex flex-column col-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'LIDI.LINE.FONT_CMYK' | translate }}
-          </mat-label>
-          <form-info-icon infoTitle="{{ 'LIDI.LINE.FONT_CMYK_INFO' | translate }}"></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '0,0,0,100' }}</mat-label
-        >
-        <app-cmyk-picker
-          [formGroup]="form"
-          attributeName="colorFontCmyk"
-          data-cy="colorFontCmyk"
-          defaultColor="100,100,100,100"
-        ></app-cmyk-picker>
-      </div>
-    </div>
-
-    <div class="col-12 d-flex justify-content-end mt-3">
-      <div class="d-flex flex-column col-3 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'LIDI.LINE.BACKGROUND_RGB' | translate }}
-          </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'LIDI.LINE.BACKGROUND_RGB_INFO' | translate }}"
-          ></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
-        >
-        <app-rgb-picker
-          [formGroup]="form"
-          attributeName="colorBackRgb"
-          data-cy="colorBackRgb"
-          defaultColor="#FFFFFF"
-        ></app-rgb-picker>
-      </div>
-
-      <div class="d-flex flex-column col-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'LIDI.LINE.BACKGROUND_CMYK' | translate }}
-          </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'LIDI.LINE.BACKGROUND_CMYK_INFO' | translate }}"
-          ></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '85,10,65,0' }}</mat-label
-        >
-        <app-cmyk-picker
-          [formGroup]="form"
-          attributeName="colorBackCmyk"
-          data-cy="colorBackCmyk"
-          defaultColor="0,0,0,0"
-        ></app-cmyk-picker>
       </div>
     </div>
 
     <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
-    <form-comment [formGroup]="form"></form-comment>
+    <!-- E-Mail -->
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-6 pe-3">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg"
+            >{{ 'BODI.BUSINESS_ORGANISATION.CONTACT' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'hans.muster@enterprise.ch' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
+        </mat-label>
+        <mat-form-field>
+          <input
+            matInput
+            formControlName="contactEnterpriseEmail"
+            data-cy="contactEnterpriseEmail"
+          />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
   </form>
 </app-detail-wrapper>

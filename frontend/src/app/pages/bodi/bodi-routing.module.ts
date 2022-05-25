@@ -21,7 +21,7 @@ const routes: Routes = [
         component: RouteToDialogComponent,
         data: { component: BusinessOrganisationDetailComponent },
         resolve: {
-          lineDetail: BusinessOrganisationDetailResolver,
+          businessOrganisationDetail: BusinessOrganisationDetailResolver,
         },
         runGuardsAndResolvers: 'always',
       },

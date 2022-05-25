@@ -1,31 +1,31 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { LinesService, LineType, LineVersion, PaymentType, Status } from '../../../../api';
+import { BusinessOrganisationsService, BusinessOrganisationVersion, Status } from '../../../../api';
 import { BusinessOrganisationDetailResolver } from './business-organisation-detail-resolver.service';
 import { AppTestingModule } from '../../../../app.testing.module';
 
-const version: LineVersion = {
+const version: BusinessOrganisationVersion = {
   id: 1234,
-  slnid: 'slnid',
-  number: 'name',
-  description: 'asdf',
-  status: Status.Active,
+  sboid: 'sboid',
+  descriptionDe: 'asdf',
+  descriptionFr: 'asdf',
+  descriptionIt: 'asdf',
+  descriptionEn: 'asdf',
+  abbreviationDe: 'asdf',
+  abbreviationFr: 'asdf',
+  abbreviationIt: 'asdf',
+  abbreviationEn: 'asdf',
+  status: 'ACTIVE',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
-  businessOrganisation: 'SBB',
-  paymentType: PaymentType.None,
-  swissLineNumber: 'L1',
-  lineType: LineType.Orderly,
-  colorBackCmyk: '',
-  colorBackRgb: '',
-  colorFontCmyk: '',
-  colorFontRgb: '',
 };
 
 describe('BusinessOrganisationDetailResolver', () => {
-  const linesServiceSpy = jasmine.createSpyObj('linesService', ['getLineVersions']);
-  linesServiceSpy.getLineVersions.and.returnValue(of([version]));
+  const businessOrganisationsServiceSpy = jasmine.createSpyObj('businessOrganisationsService', [
+    'getBusinessOrganisationVersions',
+  ]);
+  businessOrganisationsServiceSpy.getBusinessOrganisationVersions.and.returnValue(of([version]));
 
   let resolver: BusinessOrganisationDetailResolver;
 
@@ -34,7 +34,7 @@ describe('BusinessOrganisationDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         BusinessOrganisationDetailResolver,
-        { provide: LinesService, useValue: linesServiceSpy },
+        { provide: BusinessOrganisationsService, useValue: businessOrganisationsServiceSpy },
       ],
     });
     resolver = TestBed.inject(BusinessOrganisationDetailResolver);
@@ -53,7 +53,7 @@ describe('BusinessOrganisationDetailResolver', () => {
       expect(versions.length).toBe(1);
       expect(versions[0].id).toBe(1234);
       expect(versions[0].status).toBe(Status.Active);
-      expect(versions[0].slnid).toBe('slnid');
+      expect(versions[0].sboid).toBe('sboid');
     });
   });
 });

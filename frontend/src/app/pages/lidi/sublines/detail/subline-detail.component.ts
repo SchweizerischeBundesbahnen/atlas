@@ -126,7 +126,7 @@ export class SublineDetailComponent
       {
         swissSublineNumber: [
           version.swissSublineNumber,
-          [Validators.required, AtlasFieldLengthValidator.small, AtlasCharsetsValidator.sid4pt],
+          [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.sid4pt],
         ],
         [this.mainlineSlnidFormControlName]: [version.mainlineSlnid, [Validators.required]],
         slnid: [version.slnid],
@@ -137,7 +137,7 @@ export class SublineDetailComponent
           version.businessOrganisation,
           [
             Validators.required,
-            AtlasFieldLengthValidator.small,
+            AtlasFieldLengthValidator.length_50,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -145,7 +145,7 @@ export class SublineDetailComponent
         number: [
           version.number,
           [
-            AtlasFieldLengthValidator.small,
+            AtlasFieldLengthValidator.length_50,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -153,7 +153,7 @@ export class SublineDetailComponent
         longName: [
           version.longName,
           [
-            AtlasFieldLengthValidator.mid,
+            AtlasFieldLengthValidator.length_255,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -161,7 +161,7 @@ export class SublineDetailComponent
         description: [
           version.description,
           [
-            AtlasFieldLengthValidator.mid,
+            AtlasFieldLengthValidator.length_255,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
