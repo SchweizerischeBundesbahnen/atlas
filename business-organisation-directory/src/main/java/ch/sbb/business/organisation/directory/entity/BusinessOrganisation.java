@@ -58,7 +58,7 @@ public class BusinessOrganisation {
 
   private String abbreviationEn;
 
-  private Integer organisationNumber;
+  private String organisationNumber;
 
   private String contactEnterpriseEmail;
 
@@ -92,7 +92,7 @@ public class BusinessOrganisation {
           + "                         description_fr,"
           + "                         description_it,"
           + "                         description_en,"
-          + "                         organisation_number,"
+          + "                         cast(organisation_number as varchar) as organisation_number,"
           + "                         contact_enterprise_email,"
           + "                         status,"
           + "                         valid_from as vf"
