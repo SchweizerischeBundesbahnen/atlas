@@ -1,24 +1,29 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { BusinessOrganisationComponent } from './business-organisation.component';
-import { ContainerLine, LinesService, LineType } from '../../../api';
+import { BusinessOrganisationsService, ContainerBusinessOrganisation } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
-import { TranslatePipe } from '@ngx-translate/core';
-import { Component, Input, TemplateRef } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Component, EventEmitter, Input, TemplateRef } from '@angular/core';
+import { LangChangeEvent } from '@ngx-translate/core/lib/translate.service';
 
-const versionContainer: ContainerLine = {
+const businessOrganisation: ContainerBusinessOrganisation = {
   objects: [
     {
-      slnid: 'slnid',
-      description: 'asdf',
+      sboid: 'slnid',
+      descriptionDe: 'asdf',
+      descriptionFr: 'asdf',
+      descriptionIt: 'asdf',
+      descriptionEn: 'asdf',
+      abbreviationDe: 'asdf',
+      abbreviationFr: 'asdf',
+      abbreviationIt: 'asdf',
+      abbreviationEn: 'asdf',
       status: 'ACTIVE',
       validFrom: new Date('2021-06-01'),
       validTo: new Date('2029-06-01'),
-      businessOrganisation: 'SBB',
-      swissLineNumber: 'L1',
-      lineType: LineType.Orderly,
     },
   ],
   totalCount: 1,
@@ -32,13 +37,18 @@ class MockAppTableSearchComponent {
   @Input() additionalFieldTemplate!: TemplateRef<any>;
 }
 
-describe('LinesComponent', () => {
+describe('BusinessOrganisationComponent', () => {
   let component: BusinessOrganisationComponent;
   let fixture: ComponentFixture<BusinessOrganisationComponent>;
 
   // With Spy
-  const linesService = jasmine.createSpyObj('linesService', ['getLines']);
-  linesService.getLines.and.returnValue(of(versionContainer));
+  const businessOrganisationsService = jasmine.createSpyObj('businessOrganisationsService', [
+    'getAllBusinessOrganisations',
+  ]);
+  businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
+    of(businessOrganisation)
+  );
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -48,7 +58,10 @@ describe('LinesComponent', () => {
         MockAppTableSearchComponent,
       ],
       imports: [AppTestingModule],
-      providers: [{ provide: LinesService, useValue: linesService }, TranslatePipe],
+      providers: [
+        { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
+        TranslatePipe,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BusinessOrganisationComponent);
@@ -57,9 +70,9 @@ describe('LinesComponent', () => {
   });
 
   it('should create', () => {
-    expect(linesService.getLines).toHaveBeenCalled();
+    expect(businessOrganisationsService.getAllBusinessOrganisations).toHaveBeenCalled();
 
-    expect(component.lineVersions.length).toBe(1);
+    expect(component.businessOrganisations.length).toBe(1);
     expect(component.totalCount$).toBe(1);
   });
 });
