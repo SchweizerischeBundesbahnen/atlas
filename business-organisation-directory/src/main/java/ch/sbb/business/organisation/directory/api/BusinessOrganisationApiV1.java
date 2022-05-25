@@ -39,7 +39,7 @@ public interface BusinessOrganisationApiV1 {
   @GetMapping("versions/{sboid}")
   List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(@PathVariable String sboid);
 
-  @PostMapping({"versions"})
+  @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
@@ -48,7 +48,7 @@ public interface BusinessOrganisationApiV1 {
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
 
-  @PostMapping({"versions/{id}"})
+  @PostMapping("versions/{id}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
@@ -56,6 +56,6 @@ public interface BusinessOrganisationApiV1 {
       @PathVariable Long id,
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
-  @DeleteMapping({"/{sboid}"})
+  @DeleteMapping("{sboid}")
   void deleteBusinessOrganisation(@PathVariable String sboid);
 }
