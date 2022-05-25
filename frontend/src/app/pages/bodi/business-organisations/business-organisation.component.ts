@@ -75,7 +75,10 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
       )
       .pipe(
         catchError((err) => {
-          this.notificationService.error(err, 'LIDI.LINE.NOTIFICATION.FETCH_ERROR');
+          this.notificationService.error(
+            err,
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.FETCH_ERROR'
+          );
           this.isLoading = false;
           throw err;
         })

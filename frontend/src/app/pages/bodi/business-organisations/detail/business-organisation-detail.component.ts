@@ -1,5 +1,9 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
+import {
+  BusinessOrganisationsService,
+  BusinessOrganisationVersion,
+  BusinessType,
+} from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -21,19 +25,17 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
   styleUrls: ['./business-organisation-detail.component.scss'],
 })
 export class BusinessOrganisationDetailComponent
-  extends DetailWrapperController<LineVersion>
+  extends DetailWrapperController<BusinessOrganisationVersion>
   implements OnInit, OnDestroy
 {
-  TYPE_OPTIONS = Object.values(LineType);
-  PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
-
   private ngUnsubscribe = new Subject<void>();
+  BUSINESS_TYPES = Object.values(BusinessType);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
     protected dialogRef: MatDialogRef<BusinessOrganisationDetailComponent>,
-    private linesService: LinesService,
+    private businessOrganisationsService: BusinessOrganisationsService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService
@@ -46,128 +48,151 @@ export class BusinessOrganisationDetailComponent
   }
 
   getPageType(): Page {
-    return Pages.LINES;
+    return Pages.BUSINESS_ORGANISATIONS;
   }
 
-  readRecord(): LineVersion {
-    return this.dialogData.lineDetail;
+  readRecord(): BusinessOrganisationVersion {
+    return this.dialogData.businessOrganisationDetail;
   }
 
-  getTitle(record: LineVersion): string | undefined {
-    return record.swissLineNumber;
+  getTitle(record: BusinessOrganisationVersion): string | undefined {
+    return record.descriptionDe;
   }
 
-  getDetailHeading(record: LineVersion): string {
-    return `${record.number ?? ''} - ${record.description ?? ''}`;
+  getDetailHeading(record: BusinessOrganisationVersion): string {
+    return `${record.abbreviationDe ?? ''} - ${record.organisationNumber ?? ''}`;
   }
 
-  getDetailSubheading(record: LineVersion): string {
-    return record.slnid!;
+  getDetailSubheading(record: BusinessOrganisationVersion): string {
+    return record.sboid!;
   }
 
   updateRecord(): void {
-    this.linesService
-      .updateLineVersion(this.getId(), this.form.value)
+    this.businessOrganisationsService
+      .updateBusinessOrganisationVersion(this.getId(), this.form.value)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
+        this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
+          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, this.record.sboid])
           .then(() => this.ngOnInit());
       });
   }
 
   createRecord(): void {
-    this.linesService
-      .createLineVersion(this.form.value)
+    this.businessOrganisationsService
+      .createBusinessOrganisationVersion(this.form.value)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((version) => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
+        this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS');
         this.router
-          .navigate([Pages.LIDI.path, Pages.LINES.path, version.slnid])
+          .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, version.sboid])
           .then(() => this.ngOnInit());
       });
   }
 
   deleteRecord(): void {
-    const selectedLineVersion: LineVersion = this.getSelectedRecord();
-    if (selectedLineVersion.slnid != null) {
-      this.linesService.deleteLines(selectedLineVersion.slnid).subscribe(() => {
-        this.notificationService.success('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
-        this.backToOverview();
-      });
+    const selectedVersion: BusinessOrganisationVersion = this.getSelectedRecord();
+    if (selectedVersion.sboid != null) {
+      this.businessOrganisationsService
+        .deleteBusinessOrganisation(selectedVersion.sboid)
+        .subscribe(() => {
+          this.notificationService.success(
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
+          );
+          this.backToOverview();
+        });
     }
   }
 
-  getFormGroup(version: LineVersion): FormGroup {
+  getFormGroup(version: BusinessOrganisationVersion): FormGroup {
     return this.formBuilder.group(
       {
-        swissLineNumber: [
-          version.swissLineNumber,
-          [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.sid4pt],
-        ],
-        lineType: [version.lineType, [Validators.required]],
-        paymentType: [version.paymentType, [Validators.required]],
-        businessOrganisation: [
-          version.businessOrganisation,
+        descriptionDe: [
+          version.descriptionDe,
           [
             Validators.required,
-            AtlasFieldLengthValidator.small,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          ],
-        ],
-        number: [
-          version.number,
-          [
-            AtlasFieldLengthValidator.small,
+            AtlasFieldLengthValidator.length_60,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
         ],
-        alternativeName: [
-          version.alternativeName,
+        descriptionFr: [
+          version.descriptionFr,
           [
-            AtlasFieldLengthValidator.small,
+            Validators.required,
+            AtlasFieldLengthValidator.length_60,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
         ],
-        combinationName: [
-          version.combinationName,
+        descriptionIt: [
+          version.descriptionIt,
           [
-            AtlasFieldLengthValidator.small,
+            Validators.required,
+            AtlasFieldLengthValidator.length_60,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
         ],
-        longName: [
-          version.longName,
+        descriptionEn: [
+          version.descriptionEn,
           [
-            AtlasFieldLengthValidator.mid,
+            Validators.required,
+            AtlasFieldLengthValidator.length_60,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
         ],
-        icon: [
-          version.icon,
+        abbreviationDe: [
+          version.abbreviationDe,
           [
-            AtlasFieldLengthValidator.mid,
+            Validators.required,
+            AtlasFieldLengthValidator.length_10,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
         ],
-        colorFontRgb: [version.colorFontRgb || '#000000', [Validators.required]],
-        colorBackRgb: [version.colorBackRgb || '#FFFFFF', [Validators.required]],
-        colorFontCmyk: [version.colorFontCmyk || '100,100,100,100', [Validators.required]],
-        colorBackCmyk: [version.colorBackCmyk || '0,0,0,0', [Validators.required]],
-        description: [
-          version.description,
+        abbreviationFr: [
+          version.abbreviationFr,
           [
-            AtlasFieldLengthValidator.mid,
+            Validators.required,
+            AtlasFieldLengthValidator.length_10,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
         ],
+        abbreviationIt: [
+          version.abbreviationIt,
+          [
+            Validators.required,
+            AtlasFieldLengthValidator.length_10,
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
+        ],
+        abbreviationEn: [
+          version.abbreviationEn,
+          [
+            Validators.required,
+            AtlasFieldLengthValidator.length_10,
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
+        ],
+        organisationNumber: [
+          version.organisationNumber,
+          [Validators.required, Validators.min(0), Validators.max(99999)],
+        ],
+        contactEnterpriseEmail: [
+          version.contactEnterpriseEmail,
+          [
+            AtlasFieldLengthValidator.length_255,
+            WhitespaceValidator.blankOrEmptySpaceSurrounding,
+            AtlasCharsetsValidator.iso88591,
+          ],
+        ],
+        businessTypes: [version.businessTypes],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -175,14 +200,6 @@ export class BusinessOrganisationDetailComponent
         validTo: [
           version.validTo ? moment(version.validTo) : version.validTo,
           [Validators.required],
-        ],
-        comment: [
-          version.comment,
-          [
-            AtlasFieldLengthValidator.comments,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
         ],
         etagVersion: version.etagVersion,
       },
