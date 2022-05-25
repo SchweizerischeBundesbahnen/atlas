@@ -1,6 +1,8 @@
 package ch.sbb.business.organisation.directory;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
+import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.BusinessOrganisationVersionModelBuilder;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
 import java.time.LocalDate;
@@ -34,6 +36,32 @@ public class BusinessOrganisationData {
                                       .status(Status.ACTIVE)
                                       .validFrom(LocalDate.of(2000, 1, 1))
                                       .validTo(LocalDate.of(2000, 12, 31));
+  }
+
+  public static BusinessOrganisationVersionModel businessOrganisationVersionModel() {
+    return businessOrganisationVersionModelBuilder().build();
+  }
+
+  public static BusinessOrganisationVersionModelBuilder businessOrganisationVersionModelBuilder() {
+    return BusinessOrganisationVersionModel.builder()
+                                           .sboid("ch:1:sboid:100000")
+                                           .abbreviationDe("de")
+                                           .abbreviationFr("fr")
+                                           .abbreviationIt("it")
+                                           .abbreviationEn("en")
+                                           .descriptionDe("desc-de")
+                                           .descriptionFr("desc-fr")
+                                           .descriptionIt("desc-it")
+                                           .descriptionEn("desc-en")
+                                           .businessTypes(new HashSet<>(
+                                               Arrays.asList(BusinessType.RAILROAD,
+                                                   BusinessType.AIR,
+                                                   BusinessType.SHIP)))
+                                           .contactEnterpriseEmail("mail@mail.ch")
+                                           .organisationNumber(123)
+                                           .status(Status.ACTIVE)
+                                           .validFrom(LocalDate.of(2000, 1, 1))
+                                           .validTo(LocalDate.of(2000, 12, 31));
   }
 
 }
