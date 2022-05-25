@@ -4,7 +4,7 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Subscription } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { Line, LinesService, LineType } from '../../../api';
+import { BusinessOrganisation, BusinessOrganisationsService } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableSettingsService } from '../../../core/components/table/table-settings.service';
@@ -14,69 +14,64 @@ import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-bodi-lines',
   templateUrl: './business-organisation.component.html',
 })
 export class BusinessOrganisationComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<Line>;
+  @ViewChild(TableComponent, { static: true })
+  tableComponent!: TableComponent<BusinessOrganisation>;
 
-  linesTableColumns: TableColumn<Line>[] = [
-    { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
-    { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
-    { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
-    { headerTitle: 'LIDI.TYPE', value: 'lineType', translate: { withPrefix: 'LIDI.LINE.TYPES.' } },
-    { headerTitle: 'LIDI.OVERVIEW_BUSINESS_ORGANISATION', value: 'businessOrganisation' },
-    { headerTitle: 'LIDI.SLNID', value: 'slnid' },
-    {
-      headerTitle: 'COMMON.STATUS',
-      value: 'status',
-      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
-    },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
-    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
-  ];
+  tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();
 
-  readonly LINE_TYPES: LineType[] = Object.values(LineType);
-  activeLineTypes: LineType[] = [];
-  lineVersions: Line[] = [];
+  businessOrganisations: BusinessOrganisation[] = [];
   totalCount$ = 0;
   isLoading = false;
-  private lineVersionsSubscription!: Subscription;
+  private businessOrganisationsSubscription!: Subscription;
   private routeSubscription!: Subscription;
+  private langChangeSubscription!: Subscription;
 
   constructor(
-    private linesService: LinesService,
+    private businessOrganisationsService: BusinessOrganisationsService,
     private route: ActivatedRoute,
     private router: Router,
     private notificationService: NotificationService,
     private tableSettingsService: TableSettingsService,
-    private routeToDialogService: RouteToDialogService
+    private routeToDialogService: RouteToDialogService,
+    public translateService: TranslateService
   ) {
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
       .subscribe(() => this.ngOnInit());
+
+    this.langChangeSubscription = this.translateService.onLangChange.subscribe(
+      () => (this.tableColumns = this.getColumns())
+    );
   }
 
   ngOnInit(): void {
-    const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.LINES.path);
-    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'number,ASC' });
+    const storedTableSettings = this.tableSettingsService.getTableSettings(
+      Pages.BUSINESS_ORGANISATIONS.path
+    );
+    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: this.getDefaultSort() });
   }
 
   getOverview($paginationAndSearch: TableSettings) {
-    this.tableSettingsService.storeTableSettings(Pages.LINES.path, $paginationAndSearch);
+    this.tableSettingsService.storeTableSettings(
+      Pages.BUSINESS_ORGANISATIONS.path,
+      $paginationAndSearch
+    );
     this.isLoading = true;
-    this.lineVersionsSubscription = this.linesService
-      .getLines(
-        undefined,
+    this.businessOrganisationsSubscription = this.businessOrganisationsService
+      .getAllBusinessOrganisations(
         $paginationAndSearch.searchCriteria,
-        $paginationAndSearch.statusChoices,
-        $paginationAndSearch.lineTypes,
         $paginationAndSearch.validOn,
+        $paginationAndSearch.statusChoices,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, 'slnid,ASC']
+        [$paginationAndSearch.sort!, this.getDefaultSort()]
       )
       .pipe(
         catchError((err) => {
@@ -85,32 +80,65 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
           throw err;
         })
       )
-      .subscribe((lineContainer) => {
-        this.lineVersions = lineContainer.objects!;
-        this.totalCount$ = lineContainer.totalCount!;
+      .subscribe((container) => {
+        this.businessOrganisations = container.objects!;
+        this.totalCount$ = container.totalCount!;
         this.tableComponent.setTableSettings($paginationAndSearch);
-        this.activeLineTypes = $paginationAndSearch.lineTypes;
         this.isLoading = false;
       });
   }
 
-  onLineTypeSelectionChange(): void {
-    this.tableComponent.searchData({
-      ...this.tableComponent.tableSearchComponent.activeSearch,
-      lineTypes: this.activeLineTypes,
-    });
-  }
-
-  editVersion($event: Line) {
+  editVersion($event: BusinessOrganisation) {
     this.router
-      .navigate([$event.slnid], {
+      .navigate([$event.sboid], {
         relativeTo: this.route,
       })
       .then();
   }
 
   ngOnDestroy() {
-    this.lineVersionsSubscription.unsubscribe();
+    this.businessOrganisationsSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+    this.langChangeSubscription.unsubscribe();
+  }
+
+  getDefaultSort() {
+    return this.displayedDescription() + ',ASC';
+  }
+
+  displayedDescription() {
+    return ('description' + this.formatedLanguage()) as
+      | 'descriptionDe'
+      | 'descriptionFr'
+      | 'descriptionIt';
+  }
+
+  displayedAbbreviation() {
+    return ('abbreviation' + this.formatedLanguage()) as
+      | 'abbreviationDe'
+      | 'abbreviationFr'
+      | 'abbreviationIt';
+  }
+
+  private formatedLanguage() {
+    const currentLanguage = this.translateService.currentLang || 'de';
+    return currentLanguage.charAt(0).toUpperCase() + currentLanguage.slice(1);
+  }
+
+  private getColumns(): TableColumn<BusinessOrganisation>[] {
+    return [
+      { headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION', value: this.displayedDescription() },
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
+        value: this.displayedAbbreviation(),
+      },
+      { headerTitle: 'BODI.BUSINESS_ORGANISATION.SBOID', value: 'sboid' },
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
+        value: 'organisationNumber',
+      },
+      { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+      { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
+    ];
   }
 }
