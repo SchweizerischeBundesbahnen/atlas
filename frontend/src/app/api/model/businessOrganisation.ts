@@ -12,11 +12,7 @@
 import { Status } from './status';
 import { BusinessType } from './businessType';
 
-export interface BusinessOrganisationVersion {
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
+export interface BusinessOrganisation {
   /**
    * Swiss Business Organisation ID (SBOID)
    */
@@ -79,8 +75,4 @@ export interface BusinessOrganisationVersion {
    * Valid to
    */
   validTo: Date;
-  /**
-   * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
-   */
-  readonly etagVersion?: number;
 }
