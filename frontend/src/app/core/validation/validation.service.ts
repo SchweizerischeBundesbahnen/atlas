@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ValidationError } from './validation-error';
 import { ValidationErrors } from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,8 @@ export class ValidationService {
             date: this.displayDate(controlErrors[keyError]),
             length: controlErrors[keyError]['requiredLength'],
             allowedChars: controlErrors[keyError]['allowedCharacters'],
+            max: controlErrors[keyError]['max'],
+            min: controlErrors[keyError]['min'],
           },
         });
       });
@@ -41,10 +44,10 @@ export class ValidationService {
       const validTo = validationError.date.validTo;
       return validFrom.format(DATE_PATTERN) + ' - ' + validTo.format(DATE_PATTERN);
     }
-    if (validationError?.min) {
+    if (validationError?.min && typeof validationError?.min.format === 'function') {
       return validationError.min.format(DATE_PATTERN);
     }
-    if (validationError?.max) {
+    if (validationError?.max && typeof validationError?.max.format === 'function') {
       return validationError.max.format(DATE_PATTERN);
     }
   }

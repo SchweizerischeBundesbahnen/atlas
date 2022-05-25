@@ -143,7 +143,9 @@
     "PATTERN": "Formato non valido. I caratteri permessi sono: {{allowedChars}}",
     "WHITESPACES": "Non può iniziare o terminare con uno spazio.",
     "COLOR_INVALID": "Colore previsto nel formato #FFFFFF",
-    "CMYK_INVALID": "Colore CMYK previsto nel formato 0-100,0-100,0-100,0-100. Esempio 10,10,0,100"
+    "CMYK_INVALID": "Colore CMYK previsto nel formato 0-100,0-100,0-100,0-100. Esempio 10,10,0,100",
+    "MIN": "Die Zahl muss mindestens {{min}} sein. __IT__",
+    "MAX": "Die Zahl darf maximal {{max}} sein. __IT__"
   },
   "TTFN": {
     "TTFN": "Numero del quadro d’orario",
