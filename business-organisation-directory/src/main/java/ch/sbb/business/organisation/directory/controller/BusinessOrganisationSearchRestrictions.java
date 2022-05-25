@@ -35,6 +35,7 @@ public class BusinessOrganisationSearchRestrictions extends
                                        BusinessOrganisation_.abbreviationFr,
                                        BusinessOrganisation_.abbreviationIt,
                                        BusinessOrganisation_.abbreviationEn,
+                                       BusinessOrganisation_.organisationNumber,
                                        BusinessOrganisation_.sboid))
                                .validFromAttribute(BusinessOrganisation_.validFrom)
                                .validToAttribute(BusinessOrganisation_.validTo)

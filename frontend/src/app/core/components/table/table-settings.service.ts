@@ -7,7 +7,12 @@ import { Pages } from '../../../pages/pages';
   providedIn: 'root',
 })
 export class TableSettingsService {
-  private tableKeys = [Pages.TTFN.path, Pages.LINES.path, Pages.SUBLINES.path];
+  private tableKeys = [
+    Pages.TTFN.path,
+    Pages.LINES.path,
+    Pages.SUBLINES.path,
+    Pages.BUSINESS_ORGANISATIONS.path,
+  ];
   private navigationStartUrl!: string;
 
   constructor(public router: Router) {

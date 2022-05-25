@@ -9,11 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BusinessOrganisation } from './businessOrganisation';
 
-/**
- * Parameters for messages
- */
-export interface Parameter {
-  key?: string;
-  value?: string;
+export interface ContainerBusinessOrganisation {
+  objects?: Array<BusinessOrganisation>;
+  totalCount?: number;
 }

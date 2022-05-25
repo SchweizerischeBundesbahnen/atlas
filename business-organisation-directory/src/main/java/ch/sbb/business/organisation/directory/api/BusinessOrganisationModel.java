@@ -109,7 +109,7 @@ public class BusinessOrganisationModel {
         .abbreviationEn(entity.getAbbreviationEn())
         .validFrom(entity.getValidFrom())
         .validTo(entity.getValidTo())
-        .organisationNumber(entity.getOrganisationNumber())
+        .organisationNumber(Integer.parseInt(entity.getOrganisationNumber()))
         .contactEnterpriseEmail(entity.getContactEnterpriseEmail())
         .sboid(entity.getSboid())
         .said(SboidToSaidConverter.toSaid(entity.getSboid()))
