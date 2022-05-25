@@ -277,7 +277,12 @@
   },
   "BODI": {
     "BUSINESS_ORGANISATION": {
-      "BUSINESS_ORGANISATIONS": "Geschäftsorganisationen"
+      "NEW": "Neue Geschäftsorganisation erfassen",
+      "BUSINESS_ORGANISATIONS": "Geschäftsorganisationen",
+      "DESCRIPTION": "Bezeichnung",
+      "ABBREVIATION": "Abkürzung",
+      "SBOID": "Swiss Business Organisation\nID (SBOID)",
+      "ORGANISATION_NUMBER": "GO-Nummer"
     }
   }
 }
