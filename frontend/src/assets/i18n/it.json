@@ -278,11 +278,50 @@
   "BODI": {
     "BUSINESS_ORGANISATION": {
       "NEW": "Inserire nuova organizzazione aziendale",
+      "NEW_INFORMATION": "Angaben zur neuen Geschäftsorganisation ___IT___",
+      "DETAIL_INFORMATION": "Angaben zur Geschäftsorganisation ___IT___",
       "BUSINESS_ORGANISATIONS": "Organizzazioni aziendali",
       "DESCRIPTION": "Denominazione",
+      "DESCRIPTION_DE": "Bezeichnung Deutsch ___IT___",
+      "DESCRIPTION_FR": "Bezeichnung Französisch ___IT___",
+      "DESCRIPTION_IT": "Bezeichnung Italienisch ___IT___",
+      "DESCRIPTION_EN": "Bezeichnung Englisch ___IT___",
       "ABBREVIATION": "Iniziali",
+      "ABBREVIATION_DE": "Abkürzung Deutsch ___IT___",
+      "ABBREVIATION_FR": "Abkürzung Französisch ___IT___",
+      "ABBREVIATION_IT": "Abkürzung Italienisch ___IT___",
+      "ABBREVIATION_EN": "Abkürzung Englisch ___IT___",
       "SBOID": "Swiss Business Organisation\nID (SBOID)",
-      "ORGANISATION_NUMBER": "Numero"
+      "ORGANISATION_NUMBER": "Numero",
+      "CONTACT": "Kontakt E-Mail Unternehmung ___IT___",
+      "BUSINESS_TYPE": "Geschäftsorganisationstyp ___IT___",
+      "BUSINESS_TYPES": {
+        "STREET": "Strada",
+        "STREET_WITHOUT_TRAFFIC": "Strada, senza rapporto sul traffico",
+        "RAILROAD": "Ferrovia",
+        "RAILROAD_UIC": "Ferrovia UIC",
+        "TRAIN_WITHOUT_TRAFFIC": "Ferrovia, senza rapporto sul traffico",
+        "SHIP": "Nave",
+        "SHIP_WITHOUT_TRAFFIC": "Nave, senza rapporto sul traffico",
+        "AIR": "Aria",
+        "LEISURE_ACTIVITIES": "Ricreativo",
+        "TARIFF_ASSOCIATION": "Comunità tariffaria",
+        "FAIR": "Fiera",
+        "TRAVEL_AGENCY_ORGANISATION": "Organizzazione d'agenzia di viaggi",
+        "CUSTOMER_INFORMATION": "Informazione alla clientela",
+        "SUBSIDIARY": "Affiliata (Ferrovia)",
+        "INTERNAL_BILLING_PURPOSES": "interne scopi di fatturazione interna",
+        "UNKNOWN": "sconosciuto"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich hinzugefügt. ___IT___",
+        "ADD_ERROR": "Beim Erfassen der Geschäftsorganisation ist ein Fehler aufgetreten. ___IT___",
+        "EDIT_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gespeichert. ___IT___",
+        "EDIT_ERROR": "Beim Editieren der Geschäftsorganisation ist ein Fehler aufgetreten. ___IT___",
+        "DELETE_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gelöscht. ___IT___",
+        "DELETE_ERROR": "Beim Löschen der Geschäftsorganisation ist ein Fehler aufgetreten. ___IT___",
+        "FETCH_ERROR": "Beim Laden der Geschäftsorganisation ist ein unbekannter Fehler aufgetreten. ___IT___"
+      }
     }
   }
 }

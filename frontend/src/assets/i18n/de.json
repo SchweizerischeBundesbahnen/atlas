@@ -278,11 +278,50 @@
   "BODI": {
     "BUSINESS_ORGANISATION": {
       "NEW": "Neue Geschäftsorganisation erfassen",
+      "NEW_INFORMATION": "Angaben zur neuen Geschäftsorganisation",
+      "DETAIL_INFORMATION": "Angaben zur Geschäftsorganisation",
       "BUSINESS_ORGANISATIONS": "Geschäftsorganisationen",
       "DESCRIPTION": "Bezeichnung",
+      "DESCRIPTION_DE": "Bezeichnung Deutsch",
+      "DESCRIPTION_FR": "Bezeichnung Französisch",
+      "DESCRIPTION_IT": "Bezeichnung Italienisch",
+      "DESCRIPTION_EN": "Bezeichnung Englisch",
       "ABBREVIATION": "Abkürzung",
+      "ABBREVIATION_DE": "Abkürzung Deutsch",
+      "ABBREVIATION_FR": "Abkürzung Französisch",
+      "ABBREVIATION_IT": "Abkürzung Italienisch",
+      "ABBREVIATION_EN": "Abkürzung Englisch",
       "SBOID": "Swiss Business Organisation\nID (SBOID)",
-      "ORGANISATION_NUMBER": "GO-Nummer"
+      "ORGANISATION_NUMBER": "GO-Nummer",
+      "CONTACT": "Kontakt E-Mail Unternehmung",
+      "BUSINESS_TYPE": "Geschäftsorganisationstyp",
+      "BUSINESS_TYPES": {
+        "STREET": "Strasse",
+        "STREET_WITHOUT_TRAFFIC": "Strasse, ohne Verkehrsabrechnug",
+        "RAILROAD": "Eisenbahn",
+        "RAILROAD_UIC": "UIC Eisenbahn",
+        "TRAIN_WITHOUT_TRAFFIC": "Bahn, ohne Verkehrsabrechnung",
+        "SHIP": "Schiff",
+        "SHIP_WITHOUT_TRAFFIC": "Schiff, ohne Verkehrsabrechnung",
+        "AIR": "Luft",
+        "LEISURE_ACTIVITIES": "Freizeitangebot",
+        "TARIFF_ASSOCIATION": "Tarifverbund",
+        "FAIR": "Messe",
+        "TRAVEL_AGENCY_ORGANISATION": "Reisebüroorganisation",
+        "CUSTOMER_INFORMATION": "Kundeninformation",
+        "SUBSIDIARY": "Tochtergesellschaft (Bahn)",
+        "INTERNAL_BILLING_PURPOSES": "interne Abrechnungszwecke",
+        "UNKNOWN": "unbekannt"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Geschäftsorganisation ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Geschäftsorganisation ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Geschäftsorganisation ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Geschäftsorganisation ist ein unbekannter Fehler aufgetreten."
+      }
     }
   }
 }
