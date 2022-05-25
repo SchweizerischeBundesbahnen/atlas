@@ -143,7 +143,9 @@
     "PATTERN": "Format non valide. Caractères autorisés: {{allowedChars}}",
     "WHITESPACES": "Ne peut pas commencer ou se terminer par un espace.",
     "COLOR_INVALID": "Couleur attendue au format #FFFFFF",
-    "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100"
+    "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100",
+    "MIN": "Die Zahl muss mindestens {{min}} sein. __FR__",
+    "MAX": "Die Zahl darf maximal {{max}} sein. __FR__"
   },
   "TTFN": {
     "TTFN": "Numéro du tableau-horaire",
