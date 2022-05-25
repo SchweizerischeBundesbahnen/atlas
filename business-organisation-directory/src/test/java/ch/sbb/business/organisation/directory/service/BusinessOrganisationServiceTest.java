@@ -6,6 +6,8 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationRepository;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +42,17 @@ public class BusinessOrganisationServiceTest {
     service.deleteById(123);
     //then
     verify(versionRepository).deleteById(123L);
+  }
+
+  @Test
+  public void shouldDeleteByList() {
+    //given
+    BusinessOrganisationVersion version = new BusinessOrganisationVersion();
+
+    List<BusinessOrganisationVersion> versions = Collections.singletonList(version);
+    service.deleteAll(versions);
+    //then
+    verify(versionRepository).deleteAll(versions);
   }
 
 }

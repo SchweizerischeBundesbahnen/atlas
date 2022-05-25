@@ -16,6 +16,7 @@ import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVer
 import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.validTo;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
@@ -385,6 +387,17 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("id")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123456789")));
+  }
+
+  @Test
+  public void shouldDeleteBusinessOrganisationBySboid() throws Exception {
+    //given
+    BusinessOrganisationVersionModel model = BusinessOrganisationData.businessOrganisationVersionModel();
+    controller.createBusinessOrganisationVersion(model);
+
+    //when and then
+    mvc.perform(delete("/v1/business-organisations/" + model.getSboid()))
+       .andExpect(status().isOk());
   }
 
 
