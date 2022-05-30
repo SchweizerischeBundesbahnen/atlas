@@ -171,6 +171,98 @@ public class LineServiceSearchTest {
   }
 
   @Test
+  void shouldFindVersionWithUnderscore() {
+    // Given
+    lineVersionRepository.saveAndFlush(version1);
+    lineVersionRepository.saveAndFlush(version2);
+    lineVersionRepository.saveAndFlush(version3);
+    LineVersion versionWithUnderscore = LineTestData.lineVersionBuilder().slnid("ch:slnid:4")
+                                    .swissLineNumber("1_")
+                                    .validFrom(LocalDate.of(2020, 1, 1))
+                                    .validTo(LocalDate.of(2021, 12, 31))
+                                    .build();
+    lineVersionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
+                                                                  .pageable(Pageable.unpaged())
+                                                                  .searchCriterias(List.of("_"))
+                                                                  .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithMultipleUnderscore() {
+    // Given
+    lineVersionRepository.saveAndFlush(version1);
+    lineVersionRepository.saveAndFlush(version2);
+    lineVersionRepository.saveAndFlush(version3);
+    LineVersion versionWithUnderscore = LineTestData.lineVersionBuilder().slnid("ch:slnid:4")
+                                    .swissLineNumber("1__")
+                                    .validFrom(LocalDate.of(2020, 1, 1))
+                                    .validTo(LocalDate.of(2021, 12, 31))
+                                    .build();
+    lineVersionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
+                                                                  .pageable(Pageable.unpaged())
+                                                                  .searchCriterias(List.of("__"))
+                                                                  .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithPercente() {
+    // Given
+    lineVersionRepository.saveAndFlush(version1);
+    lineVersionRepository.saveAndFlush(version2);
+    lineVersionRepository.saveAndFlush(version3);
+    LineVersion versionWithUnderscore = LineTestData.lineVersionBuilder().slnid("ch:slnid:4")
+                                    .swissLineNumber("1%")
+                                    .validFrom(LocalDate.of(2020, 1, 1))
+                                    .validTo(LocalDate.of(2021, 12, 31))
+                                    .build();
+    lineVersionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
+                                                                  .pageable(Pageable.unpaged())
+                                                                  .searchCriterias(List.of("%"))
+                                                                  .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithMultiplePercente() {
+    // Given
+    lineVersionRepository.saveAndFlush(version1);
+    lineVersionRepository.saveAndFlush(version2);
+    lineVersionRepository.saveAndFlush(version3);
+    LineVersion versionWithUnderscore = LineTestData.lineVersionBuilder().slnid("ch:slnid:4")
+                                    .swissLineNumber("1%%")
+                                    .validFrom(LocalDate.of(2020, 1, 1))
+                                    .validTo(LocalDate.of(2021, 12, 31))
+                                    .build();
+    lineVersionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
+                                                                  .pageable(Pageable.unpaged())
+                                                                  .searchCriterias(List.of("%%"))
+                                                                  .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
   void shouldFindVersionWithMultipleTexts() {
     // Given
     version1.setDescription("Luca ist der grösste YB-Fan");
