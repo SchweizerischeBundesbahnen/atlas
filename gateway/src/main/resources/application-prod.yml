@@ -11,3 +11,4 @@ spring:
 gateway:
   routes:
     line-directory: http://line-directory:8082
+    business-organisation-directory: http://business-organisation-directory:8083
