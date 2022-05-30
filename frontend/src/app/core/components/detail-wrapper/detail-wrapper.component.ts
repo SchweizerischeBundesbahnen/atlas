@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DetailWrapperController } from './detail-wrapper-controller';
 import { AuthService } from '../../auth/auth.service';
-import { Role } from '../../auth/role';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -16,10 +15,10 @@ export class DetailWrapperComponent<TYPE> {
   constructor(private readonly authService: AuthService) {}
 
   get hasAdminRole(): boolean {
-    return this.authService.hasRole(Role.LidiAdmin);
+    return this.authService.hasAnyRole(this.controller.getRolesAllowedToDelete());
   }
 
   get hasAdminOrWriterRole(): boolean {
-    return this.authService.hasAnyRole([Role.LidiAdmin, Role.LidiWriter]);
+    return this.authService.hasAnyRole(this.controller.getRolesAllowedToEdit());
   }
 }
