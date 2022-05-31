@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
@@ -82,10 +81,10 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
     BusinessOrganisationVersionModel model =
         BusinessOrganisationVersionModel.builder()
                                         .sboid("ch:1:sboid:100000")
-                                        .abbreviationDe("de")
-                                        .abbreviationFr("fr")
-                                        .abbreviationIt("it")
-                                        .abbreviationEn("en")
+                                        .abbreviationDe("abkde")
+                                        .abbreviationFr("abkfr")
+                                        .abbreviationIt("abkit")
+                                        .abbreviationEn("abken")
                                         .descriptionDe("desc-de")
                                         .descriptionFr("desc-fr")
                                         .descriptionIt("desc-it")
@@ -135,12 +134,12 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
         model);
 
     model.setDescriptionDe("desc-de1-changed");
-    model.setValidFrom(LocalDate.of(2002,1,1));
-    model.setValidTo(LocalDate.of(2002,12,31));
-    controller.updateBusinessOrganisationVersion(businessOrganisationVersion.getId(),model);
+    model.setValidFrom(LocalDate.of(2002, 1, 1));
+    model.setValidTo(LocalDate.of(2002, 12, 31));
+    controller.updateBusinessOrganisationVersion(businessOrganisationVersion.getId(), model);
 
     //when and then
-    mvc.perform(get("/v1/business-organisations/versions/"+ businessOrganisationVersion.getSboid())
+    mvc.perform(get("/v1/business-organisations/versions/" + businessOrganisationVersion.getSboid())
        ).andExpect(status().isOk())
        .andExpect(jsonPath("$[0]." + businessTypes,
            containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
@@ -181,18 +180,20 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
   public void shouldNotGetBusinessOrganisationVersionsWhenProvidedSboidDoesNotExists()
       throws Exception {
     //when and then
-    mvc.perform(get("/v1/business-organisations/versions/ch:1:sboid:110000112" )
-    ).andExpect(status().isNotFound())
+    mvc.perform(get("/v1/business-organisations/versions/ch:1:sboid:110000112")
+       ).andExpect(status().isNotFound())
        .andExpect(jsonPath("$.status", is(404)))
        .andExpect(jsonPath("$.message", is("Entity not found")))
        .andExpect(jsonPath("$.error", is("Not found")))
-       .andExpect(jsonPath("$.details[0].message", is("Object with sboid ch:1:sboid:110000112 not found")))
+       .andExpect(
+           jsonPath("$.details[0].message", is("Object with sboid ch:1:sboid:110000112 not found")))
        .andExpect(jsonPath("$.details[0].field", is("sboid")))
        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("sboid")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("ch:1:sboid:110000112")));
+       .andExpect(
+           jsonPath("$.details[0].displayInfo.parameters[1].value", is("ch:1:sboid:110000112")));
   }
 
   @Test
@@ -223,7 +224,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
     //when and then
     mvc.perform(get("/v1/business-organisations")
        ).andExpect(status().isOk())
-       .andExpect(jsonPath("$.totalCount" ).value(2))
+       .andExpect(jsonPath("$.totalCount").value(2))
        .andExpect(jsonPath("$.objects[0]." + businessTypes,
            containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
                BusinessType.SHIP.name())))
@@ -391,14 +392,54 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
 
   @Test
   public void shouldDeleteBusinessOrganisationBySboid() throws Exception {
-    //given
-    BusinessOrganisationVersionModel model = BusinessOrganisationData.businessOrganisationVersionModel();
-    controller.createBusinessOrganisationVersion(model);
-
     //when and then
-    mvc.perform(delete("/v1/business-organisations/" + model.getSboid()))
+    mvc.perform(delete("/v1/business-organisations/" + version.getSboid()))
        .andExpect(status().isOk());
   }
 
+  @Test
+  public void shouldReturnConflictErrorResponse() throws Exception {
+    //given
+    BusinessOrganisationVersionModel model =
+        BusinessOrganisationVersionModel.builder()
+                                        .abbreviationDe("de1")
+                                        .abbreviationFr("fr1")
+                                        .abbreviationIt("it1")
+                                        .abbreviationEn("en1")
+                                        .descriptionDe("desc-de1")
+                                        .descriptionFr("desc-fr1")
+                                        .descriptionIt("desc-it1")
+                                        .descriptionEn("desc-en1")
+                                        .businessTypes(new HashSet<>(
+                                            Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
+                                                BusinessType.SHIP)))
+                                        .contactEnterpriseEmail("mail1@mail.ch")
+                                        .organisationNumber(1234)
+                                        .validFrom(LocalDate.of(2001, 1, 1))
+                                        .validTo(LocalDate.of(2001, 12, 31))
+                                        .build();
+    BusinessOrganisationVersionModel savedVersion = controller.createBusinessOrganisationVersion(
+        model);
 
+    //when and then
+    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+                                                           .content(
+                                                               mapper.writeValueAsString(model))
+       ).andExpect(status().isConflict())
+       .andExpect(jsonPath("$.status", is(409)))
+       .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
+       .andExpect(jsonPath("$.error", is("BO abbreviation conflict")))
+       .andExpect(jsonPath("$.details[0].message",
+           is("abbreviationDe de1 already taken from 01.01.2001 to 31.12.2001 by "
+               + savedVersion.getSboid())))
+       .andExpect(jsonPath("$.details[1].message",
+           is("abbreviationFr fr1 already taken from 01.01.2001 to 31.12.2001 by "
+               + savedVersion.getSboid())))
+       .andExpect(jsonPath("$.details[2].message",
+           is("abbreviationIt it1 already taken from 01.01.2001 to 31.12.2001 by "
+               + savedVersion.getSboid())))
+       .andExpect(jsonPath("$.details[3].message",
+           is("abbreviationEn en1 already taken from 01.01.2001 to 31.12.2001 by "
+               + savedVersion.getSboid())));
+  }
 }
