@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DateAdapter } from '@angular/material/core';
+import { Language } from './language';
 
 @Component({
   selector: 'app-language-switcher',
@@ -9,7 +10,7 @@ import { DateAdapter } from '@angular/material/core';
 })
 export class LanguageSwitcherComponent {
   static readonly STORED_LANGUAGE_KEY = 'language';
-  languages = ['de', 'fr', 'it'];
+  languages = [Language.DE, Language.FR, Language.IT];
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   constructor(private translateService: TranslateService, private dateAdapter: DateAdapter<any>) {
