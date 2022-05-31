@@ -75,10 +75,6 @@ export class SublineDetailComponent
     return this.dialogData.sublineDetail;
   }
 
-  getTitle(record: SublineVersion): string | undefined {
-    return record.swissSublineNumber;
-  }
-
   getDetailHeading(record: SublineVersion): string {
     return `${record.number ?? ''} - ${record.description ?? ''}`;
   }
