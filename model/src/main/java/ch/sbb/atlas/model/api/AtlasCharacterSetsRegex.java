@@ -1,12 +1,12 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.model.api;
 
-public final class AtlasCharacterSetsRegex {
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class AtlasCharacterSetsRegex {
 
   public static final String ISO_8859_1 = "[\\u0000-\\u00ff]*";
   public static final String NUMERIC_WITH_DOT = "[.0-9]*";
   public static final String SID4PT = "[-.:_0-9a-zA-Z]*";
 
-  private AtlasCharacterSetsRegex() {
-    throw new IllegalStateException();
-  }
 }

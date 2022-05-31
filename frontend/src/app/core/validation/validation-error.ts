@@ -10,4 +10,6 @@ export interface TranslationParameter {
   date?: string;
   length?: string;
   allowedChars?: string;
+  max?: string;
+  min?: string;
 }

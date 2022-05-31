@@ -10,6 +10,7 @@ import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
 import { Status } from '../../../api';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Role } from '../../auth/role';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
@@ -216,8 +217,6 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     this.records.sort((x, y) => +new Date(x.validFrom!) - +new Date(y.validFrom!));
   }
 
-  abstract getTitle(record: TYPE): string | undefined;
-
   abstract getDetailHeading(record: TYPE): string;
 
   abstract getDetailSubheading(record: TYPE): string;
@@ -233,6 +232,14 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
   abstract deleteRecord(): void;
 
   abstract getPageType(): Page;
+
+  getRolesAllowedToDelete(): Role[] {
+    return [Role.LidiAdmin];
+  }
+
+  getRolesAllowedToEdit(): Role[] {
+    return [Role.LidiWriter, Role.LidiAdmin];
+  }
 
   backToOverview(): void {
     this.dialogRef.close();

@@ -10,8 +10,10 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
 model/businessType.ts
+model/containerBusinessOrganisation.ts
 model/containerLine.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
