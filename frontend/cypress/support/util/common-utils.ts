@@ -13,7 +13,7 @@ export default class CommonUtils {
     this.fromDetailBackToOverview('line-directory/sublines');
   }
 
-  private static fromDetailBackToOverview(overviewPath: string) {
+  static fromDetailBackToOverview(overviewPath: string) {
     cy.get(DataCy.BACK_TO_OVERVIEW).click();
     cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
   }
