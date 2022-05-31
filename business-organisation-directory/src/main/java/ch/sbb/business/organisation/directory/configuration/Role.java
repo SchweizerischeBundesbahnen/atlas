@@ -5,8 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Role {
 
-  public static final String LIDI_WRITER =  "lidi-writer";
-  public static final String LIDI_ADMIN =  "lidi-admin";
-
+  public static final String BO_WRITER =  "bo-writer";
+  public static final String BO_ADMIN =  "bo-admin";
 
 }

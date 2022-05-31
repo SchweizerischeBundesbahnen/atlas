@@ -19,6 +19,7 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { Role } from '../../../../core/auth/role';
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',
@@ -207,6 +208,14 @@ export class BusinessOrganisationDetailComponent
         validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
       }
     );
+  }
+
+  getRolesAllowedToDelete(): Role[] {
+    return [Role.BoAdmin];
+  }
+
+  getRolesAllowedToEdit(): Role[] {
+    return [Role.BoWriter, Role.BoAdmin];
   }
 
   ngOnDestroy() {
