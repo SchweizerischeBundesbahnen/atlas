@@ -54,7 +54,7 @@ public class LineVersion extends BaseVersion implements Versionable {
   private Long id;
 
   @NotBlank
-  @Size(max = AtlasFieldLengths.SMALL)
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String swissLineNumber;
 
@@ -77,19 +77,19 @@ public class LineVersion extends BaseVersion implements Versionable {
   @AtlasVersionableProperty
   private PaymentType paymentType;
 
-  @Size(max = AtlasFieldLengths.SMALL)
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String number;
 
-  @Size(max = AtlasFieldLengths.SMALL)
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String alternativeName;
 
-  @Size(max = AtlasFieldLengths.SMALL)
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String combinationName;
 
-  @Size(max = AtlasFieldLengths.MID)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String longName;
 
@@ -113,11 +113,11 @@ public class LineVersion extends BaseVersion implements Versionable {
   @AtlasVersionableProperty
   private CmykColor colorBackCmyk;
 
-  @Size(max = AtlasFieldLengths.MID)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String icon;
 
-  @Size(max = AtlasFieldLengths.MID)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String description;
 
@@ -130,11 +130,11 @@ public class LineVersion extends BaseVersion implements Versionable {
   private LocalDate validTo;
 
   @NotBlank
-  @Size(max = AtlasFieldLengths.SMALL)
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String businessOrganisation;
 
-  @Size(max = AtlasFieldLengths.COMMENTS)
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
   @AtlasVersionableProperty
   private String comment;
 
