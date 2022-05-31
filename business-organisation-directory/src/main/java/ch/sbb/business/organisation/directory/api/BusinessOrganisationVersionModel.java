@@ -1,6 +1,8 @@
 package ch.sbb.business.organisation.directory.api;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.validation.DatesValidator;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
@@ -11,6 +13,7 @@ import java.util.Set;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,50 +39,62 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
   private String said;
 
   @Schema(description = "Description German")
-  @Size(min = 1, max = 60)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_60)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String descriptionDe;
 
   @Schema(description = "Description French")
-  @Size(min = 1, max = 60)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_60)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String descriptionFr;
 
   @Schema(description = "Description Italian")
-  @Size(min = 1, max = 60)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_60)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String descriptionIt;
 
   @Schema(description = "Description English")
-  @Size(min = 1, max = 60)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_60)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String descriptionEn;
 
   @Schema(description = "Abbreviation German")
-  @Size(min = 1, max = 10)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationDe;
 
   @Schema(description = "Abbreviation French")
-  @Size(min = 1, max = 10)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationFr;
 
   @Schema(description = "Abbreviation Italian")
-  @Size(min = 1, max = 10)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationIt;
 
   @Schema(description = "Abbreviation English")
-  @Size(min = 1, max = 10)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationEn;
 
   @Schema(description = "Organisation Number")
   @Min(value = 0)
   @Max(value = 99999)
+  @NotNull
   private Integer organisationNumber;
 
+  @Schema(description = "Enterprise E-Mail address")
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   private String contactEnterpriseEmail;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)

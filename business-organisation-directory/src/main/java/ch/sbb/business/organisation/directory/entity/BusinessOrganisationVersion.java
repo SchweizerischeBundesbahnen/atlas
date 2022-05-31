@@ -1,6 +1,7 @@
 package ch.sbb.business.organisation.directory.entity;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -20,6 +21,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,34 +58,42 @@ public class BusinessOrganisationVersion extends BaseVersion implements Versiona
 
   @NotNull
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_60)
   private String descriptionDe;
 
   @NotNull
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_60)
   private String descriptionFr;
 
   @NotNull
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_60)
   private String descriptionIt;
 
   @NotNull
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_60)
   private String descriptionEn;
 
   @NotNull
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_10)
   private String abbreviationDe;
 
   @NotNull
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_10)
   private String abbreviationFr;
 
   @NotNull
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_10)
   private String abbreviationIt;
 
   @NotNull
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_10)
   private String abbreviationEn;
 
   @NotNull
@@ -91,6 +101,7 @@ public class BusinessOrganisationVersion extends BaseVersion implements Versiona
   private Integer organisationNumber;
 
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   private String contactEnterpriseEmail;
 
   @NotNull

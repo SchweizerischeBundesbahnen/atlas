@@ -49,11 +49,11 @@ public class SublineVersion extends BaseVersion implements Versionable {
   private Long id;
 
   @NotBlank
-  @Size(max = AtlasFieldLengths.SMALL)
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String swissSublineNumber;
 
-  @Size(max = AtlasFieldLengths.BUSINESS_IDS)
+  @Size(max = AtlasFieldLengths.LENGTH_500)
   @NotBlank
   @AtlasVersionableProperty
   private String mainlineSlnid;
@@ -72,15 +72,15 @@ public class SublineVersion extends BaseVersion implements Versionable {
   @AtlasVersionableProperty
   private SublineType sublineType;
 
-  @Size(max = AtlasFieldLengths.MID)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String description;
 
-  @Size(max = AtlasFieldLengths.SMALL)
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String number;
 
-  @Size(max = AtlasFieldLengths.MID)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String longName;
 
@@ -98,7 +98,7 @@ public class SublineVersion extends BaseVersion implements Versionable {
   private LocalDate validTo;
 
   @NotBlank
-  @Size(max = AtlasFieldLengths.SMALL)
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String businessOrganisation;
 

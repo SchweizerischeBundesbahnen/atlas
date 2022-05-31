@@ -25,6 +25,18 @@ export class AtlasCharsetsValidator {
     );
   }
 
+  static alphaNumeric(control: AbstractControl): ValidationErrors | null {
+    return AtlasCharsetsValidator.validateAllowedCharacters(control, '[0-9a-zA-Z]*', '0-9a-zA-Z');
+  }
+
+  static email(control: AbstractControl): ValidationErrors | null {
+    return AtlasCharsetsValidator.validateAllowedCharacters(
+      control,
+      '([\\u0000-\\u00ff]+)@([\\u0000-\\u00ff]+)\\.([\\u0000-\\u00ff]{2,})',
+      'ISO-8859-1: E-Mail Format'
+    );
+  }
+
   private static validateAllowedCharacters(
     control: AbstractControl,
     pattern: string,
