@@ -12,20 +12,25 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class SearchCriteriaSpecification<T> implements Specification<T> {
 
-    private final List<String> searchCriteria;
-    private final List<SingularAttribute<T, String>> searchPaths;
+  private static final long serialVersionUID = 1;
 
-    public SearchCriteriaSpecification(List<String> searchCriteria, List<SingularAttribute<T, String>> searchPaths) {
-      this.searchCriteria = Objects.requireNonNull(searchCriteria);
-      this.searchPaths = searchPaths;
-    }
+  private final List<String> searchCriteria;
+  private final List<SingularAttribute<T, String>> searchPaths;
 
-    @Override
-    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
-        CriteriaBuilder criteriaBuilder) {
-      return criteriaBuilder.and(searchCriteria.stream().map(searchString -> criteriaBuilder.or(
-          searchPaths.stream().map(path -> StringPredicates.likeIgnoreCase(criteriaBuilder, root.get(path), searchString))
-              .toArray(Predicate[]::new))
-      ).toArray(Predicate[]::new));
-    }
+  public SearchCriteriaSpecification(List<String> searchCriteria,
+      List<SingularAttribute<T, String>> searchPaths) {
+    this.searchCriteria = Objects.requireNonNull(searchCriteria);
+    this.searchPaths = searchPaths;
   }
+
+  @Override
+  public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
+      CriteriaBuilder criteriaBuilder) {
+    return criteriaBuilder.and(searchCriteria.stream().map(searchString -> criteriaBuilder.or(
+        searchPaths.stream()
+                   .map(path -> StringPredicates.likeIgnoreCase(criteriaBuilder, root.get(path),
+                       searchString))
+                   .toArray(Predicate[]::new))
+    ).toArray(Predicate[]::new));
+  }
+}
