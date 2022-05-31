@@ -146,8 +146,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
+            AtlasCharsetsValidator.alphaNumeric,
           ],
         ],
         abbreviationFr: [
@@ -155,8 +154,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
+            AtlasCharsetsValidator.alphaNumeric,
           ],
         ],
         abbreviationIt: [
@@ -164,8 +162,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
+            AtlasCharsetsValidator.alphaNumeric,
           ],
         ],
         abbreviationEn: [
@@ -173,8 +170,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
+            AtlasCharsetsValidator.alphaNumeric,
           ],
         ],
         organisationNumber: [
@@ -183,11 +179,7 @@ export class BusinessOrganisationDetailComponent
         ],
         contactEnterpriseEmail: [
           version.contactEnterpriseEmail,
-          [
-            AtlasFieldLengthValidator.length_255,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
+          [AtlasFieldLengthValidator.length_255, AtlasCharsetsValidator.email],
         ],
         businessTypes: [version.businessTypes],
         validFrom: [
