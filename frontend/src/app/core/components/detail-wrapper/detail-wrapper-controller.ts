@@ -217,8 +217,6 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     this.records.sort((x, y) => +new Date(x.validFrom!) - +new Date(y.validFrom!));
   }
 
-  abstract getTitle(record: TYPE): string | undefined;
-
   abstract getDetailHeading(record: TYPE): string;
 
   abstract getDetailSubheading(record: TYPE): string;

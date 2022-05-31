@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ValidationError } from './validation-error';
 import { ValidationErrors } from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
-import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',

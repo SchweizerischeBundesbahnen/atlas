@@ -53,10 +53,6 @@ export class LineDetailComponent
     return this.dialogData.lineDetail;
   }
 
-  getTitle(record: LineVersion): string | undefined {
-    return record.swissLineNumber;
-  }
-
   getDetailHeading(record: LineVersion): string {
     return `${record.number ?? ''} - ${record.description ?? ''}`;
   }

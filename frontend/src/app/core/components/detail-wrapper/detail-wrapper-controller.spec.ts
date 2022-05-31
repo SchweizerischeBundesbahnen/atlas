@@ -63,10 +63,6 @@ describe('DetailWrapperController', () => {
       });
     }
 
-    getTitle(record: Record): string | undefined {
-      return record.id ? +record.id + '' : undefined;
-    }
-
     readRecord(): Record {
       return record;
     }

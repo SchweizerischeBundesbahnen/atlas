@@ -47,10 +47,6 @@ export class TimetableFieldNumberDetailComponent
     return this.dialogData.timetableFieldNumberDetail;
   }
 
-  getTitle(record: TimetableFieldNumberVersion): string | undefined {
-    return record.swissTimetableFieldNumber;
-  }
-
   getDetailHeading(record: TimetableFieldNumberVersion): string {
     return `${record.number} - ${record.description ?? ''}`;
   }

@@ -15,6 +15,7 @@ import {
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Language } from '../../../core/components/language-switcher/language';
 
 @Component({
   selector: 'app-bodi-lines',
@@ -124,7 +125,7 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
   }
 
   private formatedLanguage() {
-    const currentLanguage = this.translateService.currentLang || 'de';
+    const currentLanguage = this.translateService.currentLang || Language.DE;
     return currentLanguage.charAt(0).toUpperCase() + currentLanguage.slice(1);
   }
 
