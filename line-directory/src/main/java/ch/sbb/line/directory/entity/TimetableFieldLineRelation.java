@@ -35,7 +35,7 @@ public class TimetableFieldLineRelation {
   @SequenceGenerator(name = LINE_RELATION_SEQ, sequenceName = LINE_RELATION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @Size(max = AtlasFieldLengths.BUSINESS_IDS)
+  @Size(max = AtlasFieldLengths.LENGTH_500)
   private String slnid;
 
   @ToString.Exclude

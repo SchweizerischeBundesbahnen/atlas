@@ -34,4 +34,27 @@ describe('Atlas Charsets Validator', () => {
     expect(iso88591(new FormControl('\uD83D\uDE00\uD83D\uDE01\uD83D'))).toBeDefined();
     expect(iso88591(new FormControl('╗'))).toBeDefined();
   });
+
+  it('should allow alphaNumeric charset', () => {
+    const alphaNumeric = AtlasCharsetsValidator.alphaNumeric;
+
+    expect(alphaNumeric(new FormControl('asdf'))).toBeNull();
+    expect(alphaNumeric(new FormControl('sbb01'))).toBeNull();
+    expect(alphaNumeric(new FormControl('AAHS2S'))).toBeNull();
+
+    expect(alphaNumeric(new FormControl('asdf 2'))).toBeDefined();
+    expect(alphaNumeric(new FormControl('.hello.'))).toBeDefined();
+    expect(alphaNumeric(new FormControl('╗'))).toBeDefined();
+  });
+
+  it('should allow ISO-8859-1 charset', () => {
+    const email = AtlasCharsetsValidator.email;
+
+    expect(email(new FormControl('this@here.com'))).toBeNull();
+    expect(email(new FormControl('test@sbb.ch'))).toBeNull();
+
+    expect(email(new FormControl('a@'))).toBeDefined();
+    expect(email(new FormControl('@sbb.ch'))).toBeDefined();
+    expect(email(new FormControl('this@.ch'))).toBeDefined();
+  });
 });
