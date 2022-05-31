@@ -154,6 +154,8 @@ function createDummyForm(enabledForm: boolean) {
       'delete',
       'getPageType',
       'disableUneditableFormFields',
+      'getRolesAllowedToEdit',
+      'getRolesAllowedToDelete',
     ],
     {
       heading: undefined,
@@ -167,6 +169,12 @@ function createDummyForm(enabledForm: boolean) {
   dummyController.save.and.callFake(DetailWrapperController.prototype.save);
   dummyController.toggleEdit.and.callFake(DetailWrapperController.prototype.toggleEdit);
   dummyController.confirmLeave.and.returnValue(of(true));
+  dummyController.getRolesAllowedToEdit.and.callFake(
+    DetailWrapperController.prototype.getRolesAllowedToEdit
+  );
+  dummyController.getRolesAllowedToDelete.and.callFake(
+    DetailWrapperController.prototype.getRolesAllowedToDelete
+  );
 
   return dummyController;
 }
