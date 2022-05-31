@@ -104,10 +104,10 @@ public class TimetableFieldNumberServiceSearchTest {
     List<TimetableFieldNumber> versionsSearched = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
                                               .pageable(Pageable.ofSize(5).withPage(0))
-                                              .searchCriterias(List.of("2"))
+                                              .searchCriterias(List.of("TimetableFieldNumberVersion 2"))
                                               .build()).toList();
     // Then
-    assertThat(versionsSearched).hasSize(2);
+    assertThat(versionsSearched).hasSize(1);
   }
 
   @Test

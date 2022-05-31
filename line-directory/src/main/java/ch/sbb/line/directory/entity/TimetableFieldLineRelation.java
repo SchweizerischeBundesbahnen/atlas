@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.api.AtlasFieldLengths;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;

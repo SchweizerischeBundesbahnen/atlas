@@ -60,9 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#method-security-expressions">Method Security Expressions</a>
                 // In order to use these annotations, you have to enable global-method-security using <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
                 .mvcMatchers(HttpMethod.GET, "/**").authenticated()
-                .mvcMatchers(HttpMethod.POST, "/**").hasAnyRole(Role.LIDI_WRITER, Role.LIDI_ADMIN)
-                .mvcMatchers(HttpMethod.PUT, "/**").hasAnyRole(Role.LIDI_WRITER, Role.LIDI_ADMIN)
-                .mvcMatchers(HttpMethod.DELETE, "/**").hasRole(Role.LIDI_ADMIN)
+                .mvcMatchers(HttpMethod.POST, "/**").hasAnyRole(Role.BO_WRITER, Role.BO_ADMIN)
+                .mvcMatchers(HttpMethod.PUT, "/**").hasAnyRole(Role.BO_WRITER, Role.BO_ADMIN)
+                .mvcMatchers(HttpMethod.DELETE, "/**").hasRole(Role.BO_ADMIN)
                 .anyRequest().authenticated()
         )
 

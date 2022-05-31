@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.model.api;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

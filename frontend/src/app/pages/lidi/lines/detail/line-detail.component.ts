@@ -53,10 +53,6 @@ export class LineDetailComponent
     return this.dialogData.lineDetail;
   }
 
-  getTitle(record: LineVersion): string | undefined {
-    return record.swissLineNumber;
-  }
-
   getDetailHeading(record: LineVersion): string {
     return `${record.number ?? ''} - ${record.description ?? ''}`;
   }
@@ -112,14 +108,14 @@ export class LineDetailComponent
           version.businessOrganisation,
           [
             Validators.required,
-            AtlasFieldLengthValidator.small,
+            AtlasFieldLengthValidator.length_50,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
           ],
         ],
         number: [
           version.number,
           [
-            AtlasFieldLengthValidator.small,
+            AtlasFieldLengthValidator.length_50,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -127,7 +123,7 @@ export class LineDetailComponent
         alternativeName: [
           version.alternativeName,
           [
-            AtlasFieldLengthValidator.small,
+            AtlasFieldLengthValidator.length_50,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -135,7 +131,7 @@ export class LineDetailComponent
         combinationName: [
           version.combinationName,
           [
-            AtlasFieldLengthValidator.small,
+            AtlasFieldLengthValidator.length_50,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -143,7 +139,7 @@ export class LineDetailComponent
         longName: [
           version.longName,
           [
-            AtlasFieldLengthValidator.mid,
+            AtlasFieldLengthValidator.length_255,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -151,7 +147,7 @@ export class LineDetailComponent
         icon: [
           version.icon,
           [
-            AtlasFieldLengthValidator.mid,
+            AtlasFieldLengthValidator.length_255,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -163,7 +159,7 @@ export class LineDetailComponent
         description: [
           version.description,
           [
-            AtlasFieldLengthValidator.mid,
+            AtlasFieldLengthValidator.length_255,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],

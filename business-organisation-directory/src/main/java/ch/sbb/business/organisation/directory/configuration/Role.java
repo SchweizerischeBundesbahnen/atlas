@@ -1,12 +1,11 @@
 package ch.sbb.business.organisation.directory.configuration;
 
-public final class Role {
+import lombok.experimental.UtilityClass;
 
-  public static final String LIDI_WRITER =  "lidi-writer";
-  public static final String LIDI_ADMIN =  "lidi-admin";
+@UtilityClass
+public class Role {
 
-  private Role() {
-    throw new IllegalStateException("Constants class");
-  }
+  public static final String BO_WRITER =  "bo-writer";
+  public static final String BO_ADMIN =  "bo-admin";
 
 }

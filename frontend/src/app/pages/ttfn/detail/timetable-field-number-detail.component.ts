@@ -47,10 +47,6 @@ export class TimetableFieldNumberDetailComponent
     return this.dialogData.timetableFieldNumberDetail;
   }
 
-  getTitle(record: TimetableFieldNumberVersion): string | undefined {
-    return record.swissTimetableFieldNumber;
-  }
-
   getDetailHeading(record: TimetableFieldNumberVersion): string {
     return `${record.number} - ${record.description ?? ''}`;
   }
@@ -94,7 +90,7 @@ export class TimetableFieldNumberDetailComponent
       {
         swissTimetableFieldNumber: [
           version.swissTimetableFieldNumber,
-          [Validators.required, AtlasFieldLengthValidator.small, AtlasCharsetsValidator.sid4pt],
+          [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.sid4pt],
         ],
         validFrom: [
           version.validFrom ? moment(version.validFrom) : version.validFrom,
@@ -109,7 +105,7 @@ export class TimetableFieldNumberDetailComponent
           version.businessOrganisation,
           [
             Validators.required,
-            AtlasFieldLengthValidator.small,
+            AtlasFieldLengthValidator.length_50,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],
@@ -118,14 +114,14 @@ export class TimetableFieldNumberDetailComponent
           version.number,
           [
             Validators.required,
-            AtlasFieldLengthValidator.small,
+            AtlasFieldLengthValidator.length_50,
             AtlasCharsetsValidator.numericWithDot,
           ],
         ],
         description: [
           version.description,
           [
-            AtlasFieldLengthValidator.mid,
+            AtlasFieldLengthValidator.length_255,
             WhitespaceValidator.blankOrEmptySpaceSurrounding,
             AtlasCharsetsValidator.iso88591,
           ],

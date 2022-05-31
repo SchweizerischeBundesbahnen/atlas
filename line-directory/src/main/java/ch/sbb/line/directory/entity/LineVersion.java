@@ -5,7 +5,7 @@ import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.line.directory.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.api.AtlasFieldLengths;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.enumaration.LineType;

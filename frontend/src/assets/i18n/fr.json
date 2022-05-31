@@ -116,6 +116,13 @@
       "DESCRIPTION": "Saisie et gestion des données des lignes.",
       "PATH_TEXT": "Vers liste des lignes"
     },
+    "BODI": {
+      "TITLE": "Liste des organisations commerciales",
+      "TITLE_HEADER": "Organisations commerciales",
+      "TITLE_MENU": "Organisations commerciales",
+      "DESCRIPTION": "Vers liste des organisations commerciales",
+      "PATH_TEXT": "Organisations commerciales"
+    },
     "DETAILS": "Précisions"
   },
   "PAGINATOR": {
@@ -136,7 +143,9 @@
     "PATTERN": "Format non valide. Caractères autorisés: {{allowedChars}}",
     "WHITESPACES": "Ne peut pas commencer ou se terminer par un espace.",
     "COLOR_INVALID": "Couleur attendue au format #FFFFFF",
-    "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100"
+    "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100",
+    "MIN": "Die Zahl muss mindestens {{min}} sein. __FR__",
+    "MAX": "Die Zahl darf maximal {{max}} sein. __FR__"
   },
   "TTFN": {
     "TTFN": "Numéro du tableau-horaire",
@@ -265,6 +274,55 @@
         "DELETE_SUCCESS": "Le ligne partielle a été supprimée avec succès.",
         "DELETE_ERROR": "Une erreur est survenue lors de la suppression de la ligne partielle.",
         "FETCH_ERROR": "Une erreur inconnue est survenue lors du chargement de la ligne partielle."
+      }
+    }
+  },
+  "BODI": {
+    "BUSINESS_ORGANISATION": {
+      "NEW": "Saisir une nouvelle organisation commerciale",
+      "NEW_INFORMATION": "Angaben zur neuen Geschäftsorganisation ___FR___",
+      "DETAIL_INFORMATION": "Angaben zur Geschäftsorganisation___FR___",
+      "BUSINESS_ORGANISATIONS": "Organisations commerciales",
+      "DESCRIPTION": "Désignation ___FR___",
+      "DESCRIPTION_DE": "Bezeichnung Deutsch ___FR___",
+      "DESCRIPTION_FR": "Bezeichnung Französisch ___FR___",
+      "DESCRIPTION_IT": "Bezeichnung Italienisch ___FR___",
+      "DESCRIPTION_EN": "Bezeichnung Englisch ___FR___",
+      "ABBREVIATION": "Abbréviation",
+      "ABBREVIATION_DE": "Abkürzung Deutsch ___FR___",
+      "ABBREVIATION_FR": "Abkürzung Französisch ___FR___",
+      "ABBREVIATION_IT": "Abkürzung Italienisch ___FR___",
+      "ABBREVIATION_EN": "Abkürzung Englisch ___FR___",
+      "SBOID": "Swiss Business Organisation\nID (SBOID)",
+      "ORGANISATION_NUMBER": "Numéro",
+      "CONTACT": "Kontakt E-Mail Unternehmung ___FR___",
+      "BUSINESS_TYPE": "Geschäftsorganisationstyp ___FR___",
+      "BUSINESS_TYPES": {
+        "STREET": "Route",
+        "STREET_WITHOUT_TRAFFIC": "Route, sans rapport de circulation",
+        "RAILROAD": "Chemin de fer",
+        "RAILROAD_UIC": "Chemin de fer UIC",
+        "TRAIN_WITHOUT_TRAFFIC": "Chemin de fer, sans rapport de circulation",
+        "SHIP": "Bateau",
+        "SHIP_WITHOUT_TRAFFIC": "Bateau, sans rapport de circulation",
+        "AIR": "Air",
+        "LEISURE_ACTIVITIES": "Loisirs",
+        "TARIFF_ASSOCIATION": "Communauté tarifaire",
+        "FAIR": "Foire",
+        "TRAVEL_AGENCY_ORGANISATION": "Organisation d'agence de voyages",
+        "CUSTOMER_INFORMATION": "Information clientèle",
+        "SUBSIDIARY": "Filiale (Chemin de fer)",
+        "INTERNAL_BILLING_PURPOSES": "fins de facturation",
+        "UNKNOWN": "inconnu"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich hinzugefügt. ___FR___",
+        "ADD_ERROR": "Beim Erfassen der Geschäftsorganisation ist ein Fehler aufgetreten. ___FR___",
+        "EDIT_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gespeichert. ___FR___",
+        "EDIT_ERROR": "Beim Editieren der Geschäftsorganisation ist ein Fehler aufgetreten. ___FR___",
+        "DELETE_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gelöscht. ___FR___",
+        "DELETE_ERROR": "Beim Löschen der Geschäftsorganisation ist ein Fehler aufgetreten. ___FR___",
+        "FETCH_ERROR": "Beim Laden der Geschäftsorganisation ist ein unbekannter Fehler aufgetreten. ___FR___"
       }
     }
   }

@@ -4,41 +4,48 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import ch.sbb.business.organisation.directory.controller.BusinessOrganisationSearchRestrictions;
+import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import ch.sbb.business.organisation.directory.repository.BusinessOrganisationRepository;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class BusinessOrganisationVersionService {
+public class BusinessOrganisationService {
 
-  private final BusinessOrganisationVersionRepository repository;
+  private final BusinessOrganisationVersionRepository versionRepository;
+  private final BusinessOrganisationRepository repository;
   private final VersionableService versionableService;
 
-  public List<BusinessOrganisationVersion> getBusinessOrganisations() {
-    return repository.findAll();
+  public Page<BusinessOrganisation> getBusinessOrganisations(
+      BusinessOrganisationSearchRestrictions searchRestrictions) {
+    return repository.findAll(searchRestrictions.getSpecification(),
+        searchRestrictions.getPageable());
   }
 
   public BusinessOrganisationVersion save(BusinessOrganisationVersion version) {
     version.setStatus(Status.ACTIVE);
-    return repository.save(version);
+    return versionRepository.save(version);
   }
 
   public List<BusinessOrganisationVersion> findBusinessOrganisationVersions(String sboid) {
-    return repository.findAllBySboidOrderByValidFrom(sboid);
+    return versionRepository.findAllBySboidOrderByValidFrom(sboid);
   }
 
   public BusinessOrganisationVersion findById(Long id) {
-    return repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    return versionRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
   public void updateBusinessOrganisationVersion(
       BusinessOrganisationVersion currentVersion, BusinessOrganisationVersion editedVersion) {
-    List<BusinessOrganisationVersion> currentVersions = repository.findAllBySboidOrderByValidFrom(
+    List<BusinessOrganisationVersion> currentVersions = versionRepository.findAllBySboidOrderByValidFrom(
         currentVersion.getSboid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
@@ -48,7 +55,11 @@ public class BusinessOrganisationVersionService {
 
   void deleteById(long id) {
     findById(id);
-    repository.deleteById(id);
+    versionRepository.deleteById(id);
+  }
+
+  public void deleteAll(List<BusinessOrganisationVersion> versions) {
+    versionRepository.deleteAll(versions);
   }
 
 }

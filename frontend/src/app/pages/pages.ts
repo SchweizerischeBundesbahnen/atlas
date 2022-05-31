@@ -1,4 +1,5 @@
 import { Page } from '../core/model/page';
+import { environment } from '../../environments/environment';
 
 export class Pages {
   public static HOME: Page = {
@@ -49,5 +50,29 @@ export class Pages {
     description: '',
   };
 
-  public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI];
+  public static BODI: Page = {
+    title: 'PAGES.BODI.TITLE',
+    titleMenu: 'PAGES.BODI.TITLE_MENU',
+    headerTitle: 'PAGES.BODI.TITLE_HEADER',
+    path: 'business-organisation-directory',
+    pathText: 'PAGES.BODI.PATH_TEXT',
+    description: 'PAGES.BODI.DESCRIPTION',
+  };
+
+  public static BUSINESS_ORGANISATIONS: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'business-organisation',
+    pathText: '',
+    description: '',
+  };
+
+  private static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
+
+  public static enabledPages(): Page[] {
+    let enabledPages = this.pages;
+    if (!environment.pageBodiEnabled) {
+      enabledPages = enabledPages.filter((page) => page !== Pages.BODI);
+    }
+    return enabledPages;
+  }
 }

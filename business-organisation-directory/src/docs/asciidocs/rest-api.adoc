@@ -47,3 +47,6 @@ include::{snippets}/business-organisation-controller-api-test/should-not-update-
 
 == Update Business Organisation Directory when id provided does not exist - Unsuccessfully
 include::{snippets}/business-organisation-controller-api-test/should-not-update-business-organisation-version-when-provided-id-does-not-exists/auto-section.adoc[]
+
+== Delete Business Organisation when id provided does exist - Successful
+include::{snippets}/business-organisation-controller-api-test/should-delete-business-organisation-by-sboid/auto-section.adoc[]
