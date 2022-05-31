@@ -79,13 +79,11 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version2);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               Pageable.unpaged())
-                                                                           .validOn(Optional.of(
-                                                                               LocalDate.of(2020, 1,
-                                                                                   1)))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .validOn(Optional.of(LocalDate.of(2020, 1, 1)))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -138,13 +136,11 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version1);
     sublineVersionRepository.saveAndFlush(version2);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               PageRequest.of(0, 20,
-                                                                                   Sort.by(
-                                                                                           "swissSublineNumber")
-                                                                                       .ascending()))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(PageRequest.of(0, 20,
+                                     Sort.by("swissSublineNumber").ascending()))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);
@@ -157,13 +153,11 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version1);
     sublineVersionRepository.saveAndFlush(version2);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               PageRequest.of(0, 20,
-                                                                                   Sort.by(
-                                                                                           "swissSublineNumber")
-                                                                                       .descending()))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(PageRequest.of(0, 20,
+                                     Sort.by("swissSublineNumber").descending()))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);
@@ -175,12 +169,11 @@ public class SublineServiceSearchTest {
     // Given
     sublineVersionRepository.saveAndFlush(version1);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               Pageable.unpaged())
-                                                                           .searchCriterias(
-                                                                               List.of("1"))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .searchCriterias(List.of("1"))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -194,14 +187,11 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version2);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               Pageable.unpaged())
-                                                                           .searchCriterias(
-                                                                               List.of("1",
-                                                                                   "ch:SLNID:1",
-                                                                                   "yb", "Fan"))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .searchCriterias(List.of("1", "ch:SLNID:1", "yb", "Fan"))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -212,12 +202,11 @@ public class SublineServiceSearchTest {
     // Given
     sublineVersionRepository.saveAndFlush(version1);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               Pageable.unpaged())
-                                                                           .searchCriterias(
-                                                                               List.of("2"))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .searchCriterias(List.of("2"))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).isEmpty();
@@ -231,17 +220,12 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version2);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               Pageable.unpaged())
-                                                                           .searchCriterias(
-                                                                               List.of("1",
-                                                                                   "ch:SLNID:1",
-                                                                                   "yb", "Fan"))
-                                                                           .statusRestrictions(
-                                                                               List.of(
-                                                                                   Status.ACTIVE))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .searchCriterias(List.of("1", "ch:SLNID:1", "yb", "Fan"))
+                                 .statusRestrictions(List.of(Status.ACTIVE))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -258,14 +242,12 @@ public class SublineServiceSearchTest {
     version3.setStatus(Status.REVIEWED);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               Pageable.unpaged())
-                                                                           .statusRestrictions(
-                                                                               List.of(
-                                                                                   Status.ACTIVE,
-                                                                                   Status.NEEDS_REVIEW))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .statusRestrictions(
+                                     List.of(Status.ACTIVE, Status.NEEDS_REVIEW))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);
@@ -280,17 +262,13 @@ public class SublineServiceSearchTest {
     sublineVersionRepository.saveAndFlush(version2);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               Pageable.unpaged())
-                                                                           .searchCriterias(
-                                                                               List.of("1",
-                                                                                   "ch:SLNID:1",
-                                                                                   "yb", "Fan"))
-                                                                           .typeRestrictions(
-                                                                               List.of(
-                                                                                   SublineType.TECHNICAL))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .searchCriterias(
+                                     List.of("1", "ch:SLNID:1", "yb", "Fan"))
+                                 .typeRestrictions(List.of(SublineType.TECHNICAL))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -305,16 +283,116 @@ public class SublineServiceSearchTest {
     version3.setSublineType(SublineType.COMPENSATION);
     sublineVersionRepository.saveAndFlush(version3);
     // When
-    Page<Subline> result = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                           .pageable(
-                                                                               Pageable.unpaged())
-                                                                           .typeRestrictions(
-                                                                               List.of(
-                                                                                   SublineType.TECHNICAL,
-                                                                                   SublineType.COMPENSATION))
-                                                                           .build());
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .typeRestrictions(List.of(
+                                     SublineType.TECHNICAL,
+                                     SublineType.COMPENSATION))
+                                 .build());
 
     // Then
     assertThat(result.getContent()).hasSize(3);
   }
+
+  @Test
+  void shouldFindVersionWithUnderscore() {
+    // Given
+    sublineVersionRepository.saveAndFlush(version1);
+    sublineVersionRepository.saveAndFlush(version2);
+    sublineVersionRepository.saveAndFlush(version3);
+    SublineVersion versionWithUnderscore = SublineTestData.sublineVersionBuilder()
+                                                          .slnid("ch:slnid:4")
+                                                          .swissSublineNumber("1_")
+                                                          .validFrom(LocalDate.of(2020, 1, 1))
+                                                          .validTo(LocalDate.of(2021, 12, 31))
+                                                          .build();
+    sublineVersionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .searchCriterias(List.of("_"))
+                                 .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithMultipleUnderscore() {
+    // Given
+    sublineVersionRepository.saveAndFlush(version1);
+    sublineVersionRepository.saveAndFlush(version2);
+    sublineVersionRepository.saveAndFlush(version3);
+    SublineVersion versionWithUnderscore = SublineTestData.sublineVersionBuilder()
+                                                          .slnid("ch:slnid:4")
+                                                          .swissSublineNumber("1__")
+                                                          .validFrom(LocalDate.of(2020, 1, 1))
+                                                          .validTo(LocalDate.of(2021, 12, 31))
+                                                          .build();
+    sublineVersionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .searchCriterias(List.of("__"))
+                                 .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithPercente() {
+    // Given
+    sublineVersionRepository.saveAndFlush(version1);
+    sublineVersionRepository.saveAndFlush(version2);
+    sublineVersionRepository.saveAndFlush(version3);
+    SublineVersion versionWithUnderscore = SublineTestData.sublineVersionBuilder()
+                                                          .slnid("ch:slnid:4")
+                                                          .swissSublineNumber("1%")
+                                                          .validFrom(LocalDate.of(2020, 1, 1))
+                                                          .validTo(LocalDate.of(2021, 12, 31))
+                                                          .build();
+    sublineVersionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .searchCriterias(List.of("%"))
+                                 .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithMultiplePercente() {
+    // Given
+    sublineVersionRepository.saveAndFlush(version1);
+    sublineVersionRepository.saveAndFlush(version2);
+    sublineVersionRepository.saveAndFlush(version3);
+    SublineVersion versionWithUnderscore = SublineTestData.sublineVersionBuilder()
+                                                          .slnid("ch:slnid:4")
+                                                          .swissSublineNumber("1%%")
+                                                          .validFrom(LocalDate.of(2020, 1, 1))
+                                                          .validTo(LocalDate.of(2021, 12, 31))
+                                                          .build();
+    sublineVersionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<Subline> result = sublineService.findAll(
+        SublineSearchRestrictions.builder()
+                                 .pageable(Pageable.unpaged())
+                                 .searchCriterias(List.of("%%"))
+                                 .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
 }
