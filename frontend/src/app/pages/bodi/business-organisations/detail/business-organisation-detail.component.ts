@@ -56,10 +56,6 @@ export class BusinessOrganisationDetailComponent
     return this.dialogData.businessOrganisationDetail;
   }
 
-  getTitle(record: BusinessOrganisationVersion): string | undefined {
-    return record.descriptionDe;
-  }
-
   getDetailHeading(record: BusinessOrganisationVersion): string {
     return `${record.abbreviationDe ?? ''} - ${record.organisationNumber ?? ''}`;
   }
@@ -215,7 +211,7 @@ export class BusinessOrganisationDetailComponent
   }
 
   getRolesAllowedToEdit(): Role[] {
-    return [Role.BoWriter, Role.BoAdmin];
+    return [Role.BoWriter, Role.BoAdmin, Role.LidiAdmin];
   }
 
   ngOnDestroy() {
