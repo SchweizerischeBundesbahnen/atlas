@@ -17,6 +17,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -44,25 +45,17 @@ public class TimetableFieldNumberServiceSearchTest {
 
   @BeforeEach
   void initialData() {
-    TimetableFieldNumberVersionBuilder<?, ?> versionBuilder = TimetableFieldNumberVersion.builder()
-                                                                                         .ttfnid(
-                                                                                             "ch:1:ttfnid:100000")
-                                                                                         .description(
-                                                                                             "TimetableFieldNumberVersion 1")
-                                                                                         .swissTimetableFieldNumber(
-                                                                                             "a.1")
-                                                                                         .status(
-                                                                                             Status.ACTIVE)
-                                                                                         .number(
-                                                                                             "1.0")
-                                                                                         .comment(
-                                                                                             "Valid this month")
-                                                                                         .validFrom(
-                                                                                             START_OF_MONTH_AT_SEARCH_DATE)
-                                                                                         .validTo(
-                                                                                             END_OF_MONTH_AT_SEARCH_DATE)
-                                                                                         .businessOrganisation(
-                                                                                             "sbb");
+    TimetableFieldNumberVersionBuilder<?, ?> versionBuilder =
+        TimetableFieldNumberVersion.builder()
+                                   .ttfnid("ch:1:ttfnid:100000")
+                                   .description("TimetableFieldNumberVersion 1")
+                                   .swissTimetableFieldNumber("a.1")
+                                   .status(Status.ACTIVE)
+                                   .number("1.0")
+                                   .comment("Valid this month")
+                                   .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
+                                   .validTo(END_OF_MONTH_AT_SEARCH_DATE)
+                                   .businessOrganisation("sbb");
     TimetableFieldNumberVersion version1 = versionBuilder.build();
     TimetableFieldNumberVersion version2 = versionBuilder.description(
                                                              "TimetableFieldNumberVersion 2")
@@ -108,6 +101,122 @@ public class TimetableFieldNumberServiceSearchTest {
                                               .build()).toList();
     // Then
     assertThat(versionsSearched).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithUnderscore() {
+    // Given
+    TimetableFieldNumberVersion versionWithUnderscore =
+        TimetableFieldNumberVersion.builder()
+                                   .ttfnid("ch:1:ttfnid:100011")
+                                   .description("3")
+                                   .swissTimetableFieldNumber("a.2")
+                                   .comment("Valid this month")
+                                   .status(Status.ACTIVE)
+                                   .number("1.0")
+                                   .comment("Valid this month")
+                                   .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
+                                   .validTo(END_OF_MONTH_AT_SEARCH_DATE)
+                                   .businessOrganisation("_bls")
+                                   .build();
+    versionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<TimetableFieldNumber> result = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+                                              .pageable(Pageable.unpaged())
+                                              .searchCriterias(List.of("_"))
+                                              .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithMultipleUnderscore() {
+    // Given
+    TimetableFieldNumberVersion versionWithUnderscore =
+        TimetableFieldNumberVersion.builder()
+                                   .ttfnid("ch:1:ttfnid:100011")
+                                   .description("3")
+                                   .swissTimetableFieldNumber("a.2")
+                                   .comment("Valid this month")
+                                   .status(Status.ACTIVE)
+                                   .number("1.0")
+                                   .comment("Valid this month")
+                                   .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
+                                   .validTo(END_OF_MONTH_AT_SEARCH_DATE)
+                                   .businessOrganisation("__bls")
+                                   .build();
+    versionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<TimetableFieldNumber> result = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+                                              .pageable(Pageable.unpaged())
+                                              .searchCriterias(List.of("__"))
+                                              .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithPercent() {
+    // Given
+    TimetableFieldNumberVersion versionWithUnderscore =
+        TimetableFieldNumberVersion.builder()
+                                   .ttfnid("ch:1:ttfnid:100011")
+                                   .description("3")
+                                   .swissTimetableFieldNumber("a.2")
+                                   .comment("Valid this month")
+                                   .status(Status.ACTIVE)
+                                   .number("1.0")
+                                   .comment("Valid this month")
+                                   .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
+                                   .validTo(END_OF_MONTH_AT_SEARCH_DATE)
+                                   .businessOrganisation("%bls")
+                                   .build();
+    versionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<TimetableFieldNumber> result = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+                                              .pageable(Pageable.unpaged())
+                                              .searchCriterias(List.of("%"))
+                                              .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionWithMultiplePercente() {
+    // Given
+    TimetableFieldNumberVersion versionWithUnderscore =
+        TimetableFieldNumberVersion.builder()
+                                   .ttfnid("ch:1:ttfnid:100011")
+                                   .description("3")
+                                   .swissTimetableFieldNumber("a.2")
+                                   .comment("Valid this month")
+                                   .status(Status.ACTIVE)
+                                   .number("1.0")
+                                   .comment("Valid this month")
+                                   .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
+                                   .validTo(END_OF_MONTH_AT_SEARCH_DATE)
+                                   .businessOrganisation("%%bls")
+                                   .build();
+    versionRepository.saveAndFlush(versionWithUnderscore);
+
+    // When
+    Page<TimetableFieldNumber> result = timetableFieldNumberService.getVersionsSearched(
+        TimetableFieldNumberSearchRestrictions.builder()
+                                              .pageable(Pageable.unpaged())
+                                              .searchCriterias(List.of("%%"))
+                                              .build());
+
+    // Then
+    assertThat(result.getContent()).hasSize(1);
   }
 
   @Test

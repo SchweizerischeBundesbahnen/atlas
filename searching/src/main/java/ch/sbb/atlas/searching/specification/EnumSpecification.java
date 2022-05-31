@@ -11,20 +11,22 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class EnumSpecification<T> implements Specification<T> {
 
-    private final List<?> enumRestrictions;
-    private final SingularAttribute<T, ?> enumAttribute;
+  private static final long serialVersionUID = 1;
 
-    public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute) {
-      this.enumRestrictions = Objects.requireNonNull(enumRestrictions);
-      this.enumAttribute = enumAttribute;
-    }
+  private final List<?> enumRestrictions;
+  private final SingularAttribute<T, ?> enumAttribute;
 
-    @Override
-    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
-        CriteriaBuilder criteriaBuilder) {
-      if (enumRestrictions.isEmpty()) {
-        return criteriaBuilder.and();
-      }
-      return root.get(enumAttribute).in(enumRestrictions);
-    }
+  public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute) {
+    this.enumRestrictions = Objects.requireNonNull(enumRestrictions);
+    this.enumAttribute = enumAttribute;
   }
+
+  @Override
+  public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
+      CriteriaBuilder criteriaBuilder) {
+    if (enumRestrictions.isEmpty()) {
+      return criteriaBuilder.and();
+    }
+    return root.get(enumAttribute).in(enumRestrictions);
+  }
+}
