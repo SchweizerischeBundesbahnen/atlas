@@ -66,4 +66,32 @@ public class AtlasCharacterSetsRegexTest {
           "Not matching char: " + c);
     }
   }
+
+  @Test
+  void shouldValidateEmailAddressCorrectly() {
+    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.EMAIL_ADDRESS);
+
+    assertThat(pattern.matcher("test@here.com").matches()).isTrue();
+    assertThat(pattern.matcher("beste.dude@sbb.ch").matches()).isTrue();
+
+    assertThat(pattern.matcher("@me").matches()).isFalse();
+    assertThat(pattern.matcher("@me.here").matches()).isFalse();
+    assertThat(pattern.matcher("#besteLife").matches()).isFalse();
+    assertThat(pattern.matcher("hello@asdf").matches()).isFalse();
+    assertThat(pattern.matcher("hello@asdf.").matches()).isFalse();
+  }
+
+  @Test
+  void shouldValidateAlphaNumericCorrectly() {
+    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.ALPHA_NUMERIC);
+
+    assertThat(pattern.matcher("ABK").matches()).isTrue();
+    assertThat(pattern.matcher("sbb01").matches()).isTrue();
+
+    assertThat(pattern.matcher(".").matches()).isFalse();
+    assertThat(pattern.matcher("hello there").matches()).isFalse();
+    assertThat(pattern.matcher("wut_this").matches()).isFalse();
+    assertThat(pattern.matcher("hello@asdf").matches()).isFalse();
+    assertThat(pattern.matcher("tag me on #atlas").matches()).isFalse();
+  }
 }
