@@ -5,7 +5,7 @@ describe('Atlas Field Length Validator', () => {
   it('should check for max field length', () => {
     const formControl = new FormControl(
       '12345678901234567890123456789012345678901234567890123',
-      AtlasFieldLengthValidator.small
+      AtlasFieldLengthValidator.length_50
     );
     expect(formControl.errors).toBeTruthy();
   });
