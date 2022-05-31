@@ -32,12 +32,12 @@ public class SublineVersionModel implements DatesValidator {
 
   @Schema(description = "SwissSublineNumber", example = "b1.L1.X")
   @NotBlank
-  @Size(min = 1, max = AtlasFieldLengths.SMALL)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   private String swissSublineNumber;
 
   @Schema(description = "SLNID of main line", example = "ch:1:slnid:10001235")
-  @Size(max = AtlasFieldLengths.BUSINESS_IDS)
+  @Size(max = AtlasFieldLengths.LENGTH_500)
   @NotBlank
   private String mainlineSlnid;
 
@@ -52,17 +52,17 @@ public class SublineVersionModel implements DatesValidator {
   private String slnid;
 
   @Schema(description = "Description", example = "Meiringen - Innertkirchen")
-  @Size(max = AtlasFieldLengths.MID)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
 
   @Schema(description = "Number", example = "L1")
-  @Size(max = AtlasFieldLengths.SMALL)
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String number;
 
   @Schema(description = "LongName", example = "Spiseggfräser; Talstation - Bergstation; Ersatzbus")
-  @Size(max = AtlasFieldLengths.MID)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String longName;
 
@@ -80,7 +80,7 @@ public class SublineVersionModel implements DatesValidator {
 
   @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
   @NotBlank
-  @Size(min = 1, max = AtlasFieldLengths.SMALL)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String businessOrganisation;
 
