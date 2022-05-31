@@ -4,6 +4,7 @@ import { LidiOverviewComponent } from './lidi-overview.component';
 import { LinesComponent } from '../lines/lines.component';
 import { SublinesComponent } from '../sublines/sublines.component';
 import { AppTestingModule } from '../../../app.testing.module';
+import { AuthService } from '../../../core/auth/auth.service';
 
 describe('LidiOverviewComponent', () => {
   let component: LidiOverviewComponent;
@@ -13,6 +14,12 @@ describe('LidiOverviewComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [LidiOverviewComponent, LinesComponent, SublinesComponent],
       imports: [AppTestingModule],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasAnyRole']),
+        },
+      ],
     }).compileComponents();
   });
 

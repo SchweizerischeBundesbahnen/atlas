@@ -2,8 +2,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationParamMessage } from './notification-param-message';
-import { catchError, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { catchError, Subject, Subscription } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
 import { ErrorNotificationComponent } from './error/error-notification.component';
 import { DisplayInfo } from '../../api';
 import { NavigationStart, Router } from '@angular/router';
@@ -15,12 +15,20 @@ const VERSIONING_NO_CHANGES_HTTP_STATUS = 520;
   providedIn: 'root',
 })
 export class NotificationService implements OnDestroy {
-  private ngUnsubscribe = new Subject<void>();
   displayCode = '';
   SNACK_BAR_CONFIG: MatSnackBarConfig = {
     horizontalPosition: 'right',
     verticalPosition: 'top',
   };
+  private ngUnsubscribe = new Subject<void>();
+  private routerEventSubscription?: Subscription;
+  private readonly routerEventPipe = this.router.events.pipe(
+    first((event) => event instanceof NavigationStart),
+    takeUntil(this.ngUnsubscribe),
+    catchError((err) => {
+      throw err;
+    })
+  );
 
   constructor(
     private snackBar: MatSnackBar,
@@ -78,17 +86,8 @@ export class NotificationService implements OnDestroy {
   }
 
   private dismissOnNavigation(errorSnackBar: MatSnackBarRef<ErrorNotificationComponent>) {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationStart))
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          throw err;
-        })
-      )
-      .subscribe(() => {
-        errorSnackBar.dismiss();
-      });
+    this.routerEventSubscription?.unsubscribe();
+    this.routerEventSubscription = this.routerEventPipe.subscribe(() => errorSnackBar.dismiss());
   }
 
   private configureNotification(code: string | undefined, errorResponse: HttpErrorResponse) {

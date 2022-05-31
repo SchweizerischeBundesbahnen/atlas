@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../core/auth/auth.service';
+import { Role } from '../../../core/auth/role';
 
 @Component({
   templateUrl: './bodi-overview.component.html',
@@ -14,7 +16,15 @@ export class BodiOverviewComponent {
     },
   ];
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  readonly userAllowedToCreate;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private readonly authService: AuthService
+  ) {
+    this.userAllowedToCreate = authService.hasAnyRole([Role.BoWriter, Role.BoAdmin]);
+  }
 
   newBusinessOrganisation() {
     this.router

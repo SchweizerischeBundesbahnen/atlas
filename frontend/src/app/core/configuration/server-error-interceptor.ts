@@ -30,7 +30,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
 
   isCypressRefreshTokenError(error: HttpErrorResponse) {
     return (
-      error.error.error === 'invalid_grant' &&
+      error.error?.error === 'invalid_grant' &&
       error.status === 400 &&
       error.name == 'HttpErrorResponse' &&
       error.statusText === 'Bad Request' &&
