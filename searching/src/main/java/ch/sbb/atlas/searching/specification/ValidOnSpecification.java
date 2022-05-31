@@ -12,28 +12,30 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class ValidOnSpecification<T> implements Specification<T> {
 
-    private final Optional<LocalDate> validOn;
-    private final SingularAttribute<T, LocalDate> validFromAttribute;
-    private final SingularAttribute<T, LocalDate> validToAttribute;
+  private static final long serialVersionUID = 1;
 
-    public ValidOnSpecification(
-        Optional<LocalDate> validOn,
-        SingularAttribute<T, LocalDate> validFromAttribute,
-        SingularAttribute<T, LocalDate> validToAttribute) {
-      this.validOn = Objects.requireNonNull(validOn);
-      this.validFromAttribute = validFromAttribute;
-      this.validToAttribute = validToAttribute;
-    }
+  private final Optional<LocalDate> validOn;
+  private final SingularAttribute<T, LocalDate> validFromAttribute;
+  private final SingularAttribute<T, LocalDate> validToAttribute;
 
-    @Override
-    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
-        CriteriaBuilder criteriaBuilder) {
-      if (validOn.isEmpty()) {
-        return criteriaBuilder.and();
-      }
-      return criteriaBuilder.and(
-          criteriaBuilder.lessThanOrEqualTo(root.get(validFromAttribute), validOn.orElseThrow()),
-          criteriaBuilder.greaterThanOrEqualTo(root.get(validToAttribute), validOn.orElseThrow())
-      );
-    }
+  public ValidOnSpecification(
+      Optional<LocalDate> validOn,
+      SingularAttribute<T, LocalDate> validFromAttribute,
+      SingularAttribute<T, LocalDate> validToAttribute) {
+    this.validOn = Objects.requireNonNull(validOn);
+    this.validFromAttribute = validFromAttribute;
+    this.validToAttribute = validToAttribute;
   }
+
+  @Override
+  public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
+      CriteriaBuilder criteriaBuilder) {
+    if (validOn.isEmpty()) {
+      return criteriaBuilder.and();
+    }
+    return criteriaBuilder.and(
+        criteriaBuilder.lessThanOrEqualTo(root.get(validFromAttribute), validOn.orElseThrow()),
+        criteriaBuilder.greaterThanOrEqualTo(root.get(validToAttribute), validOn.orElseThrow())
+    );
+  }
+}
