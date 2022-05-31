@@ -4,28 +4,52 @@ import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVer
 import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.api.Container;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationApiV1;
+import ch.sbb.business.organisation.directory.api.BusinessOrganisationModel;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
+import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
-import ch.sbb.business.organisation.directory.service.BusinessOrganisationVersionService;
+import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class BusinessOrganisationController implements BusinessOrganisationApiV1 {
 
-  private final BusinessOrganisationVersionService service;
+  private final BusinessOrganisationService service;
+
 
   @Override
-  public List<BusinessOrganisationVersionModel> getAllBusinessOrganisations() {
-    return service.getBusinessOrganisations()
-                  .stream()
-                  .map(BusinessOrganisationVersionModel::toModel)
-                  .collect(toList());
+  public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
+      List<String> searchCriteria, Optional<LocalDate> validOn, List<Status> statusChoices) {
+    log.info(
+        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
+        pageable, searchCriteria, validOn, statusChoices);
+    Page<BusinessOrganisation> timetableFieldNumberPage = service.getBusinessOrganisations(
+        BusinessOrganisationSearchRestrictions.builder()
+                                              .pageable(pageable)
+                                              .searchCriterias(searchCriteria)
+                                              .statusRestrictions(statusChoices)
+                                              .validOn(validOn)
+                                              .build());
+    List<BusinessOrganisationModel> versions = timetableFieldNumberPage.stream().map(BusinessOrganisationModel::toModel)
+                                                                       .collect(
+                                                                           Collectors.toList());
+    return Container.<BusinessOrganisationModel>builder()
+                    .objects(versions)
+                    .totalCount(timetableFieldNumberPage.getTotalElements())
+                    .build();
   }
 
   @Override
@@ -59,6 +83,15 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
                   .stream()
                   .map(BusinessOrganisationVersionModel::toModel)
                   .collect(Collectors.toList());
+  }
+
+  @Override
+  public void deleteBusinessOrganisation(String sboid) {
+    List<BusinessOrganisationVersion> versions = service.findBusinessOrganisationVersions(sboid);
+    if (versions.isEmpty()) {
+      throw new SboidNotFoundException(sboid);
+    }
+    service.deleteAll(versions);
   }
 
 }

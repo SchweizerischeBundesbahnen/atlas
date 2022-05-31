@@ -1,5 +1,7 @@
+export * from './businessOrganisation';
 export * from './businessOrganisationVersion';
 export * from './businessType';
+export * from './containerBusinessOrganisation';
 export * from './containerLine';
 export * from './containerSubline';
 export * from './containerTimetableFieldNumber';

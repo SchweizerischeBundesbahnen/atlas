@@ -108,13 +108,20 @@
       "TITLE": "Fahrplanfeld-Nummern verwalten",
       "TITLE_MENU": "Fahrplanfeld-Nummern",
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Fahrplanfeldern.",
-      "PATH_TEXT": "Zu den Fahrplanfeldern"
+      "PATH_TEXT": "Fahrplanfelder"
     },
     "LIDI": {
       "TITLE": "Linien und Teillinien bearbeiten und erstellen",
       "TITLE_MENU": "Linien und Teillinien",
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Linien und Teillinien.",
-      "PATH_TEXT": "Zum Linienverzeichnis"
+      "PATH_TEXT": "Linienverzeichnis"
+    },
+    "BODI": {
+      "TITLE": "Geschäftsorganisationen verwalten",
+      "TITLE_HEADER": "Geschäftsorganisationen",
+      "TITLE_MENU": "Geschäfts-organisationen",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Geschäftsorganisationen.",
+      "PATH_TEXT": "Geschäftsorganisationen"
     },
     "DETAILS": "Details"
   },
@@ -136,7 +143,9 @@
     "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
     "WHITESPACES": "Darf nicht mit einem Leerzeichen starten oder enden.",
     "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
-    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100"
+    "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
+    "MIN": "Die Zahl muss mindestens {{min}} sein.",
+    "MAX": "Die Zahl darf maximal {{max}} sein."
   },
   "TTFN": {
     "TTFN": "Fahrplanfeldnummer",
@@ -265,6 +274,55 @@
         "DELETE_SUCCESS": "Die Teillinie wurde erfolgreich gelöscht.",
         "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten.",
         "FETCH_ERROR": "Beim Laden der Teillinie ist ein unbekannter Fehler aufgetreten."
+      }
+    }
+  },
+  "BODI": {
+    "BUSINESS_ORGANISATION": {
+      "NEW": "Neue Geschäftsorganisation erfassen",
+      "NEW_INFORMATION": "Angaben zur neuen Geschäftsorganisation",
+      "DETAIL_INFORMATION": "Angaben zur Geschäftsorganisation",
+      "BUSINESS_ORGANISATIONS": "Geschäftsorganisationen",
+      "DESCRIPTION": "Bezeichnung",
+      "DESCRIPTION_DE": "Bezeichnung Deutsch",
+      "DESCRIPTION_FR": "Bezeichnung Französisch",
+      "DESCRIPTION_IT": "Bezeichnung Italienisch",
+      "DESCRIPTION_EN": "Bezeichnung Englisch",
+      "ABBREVIATION": "Abkürzung",
+      "ABBREVIATION_DE": "Abkürzung Deutsch",
+      "ABBREVIATION_FR": "Abkürzung Französisch",
+      "ABBREVIATION_IT": "Abkürzung Italienisch",
+      "ABBREVIATION_EN": "Abkürzung Englisch",
+      "SBOID": "Swiss Business Organisation\nID (SBOID)",
+      "ORGANISATION_NUMBER": "GO-Nummer",
+      "CONTACT": "Kontakt E-Mail Unternehmung",
+      "BUSINESS_TYPE": "Geschäftsorganisationstyp",
+      "BUSINESS_TYPES": {
+        "STREET": "Strasse",
+        "STREET_WITHOUT_TRAFFIC": "Strasse, ohne Verkehrsabrechnug",
+        "RAILROAD": "Eisenbahn",
+        "RAILROAD_UIC": "UIC Eisenbahn",
+        "TRAIN_WITHOUT_TRAFFIC": "Bahn, ohne Verkehrsabrechnung",
+        "SHIP": "Schiff",
+        "SHIP_WITHOUT_TRAFFIC": "Schiff, ohne Verkehrsabrechnung",
+        "AIR": "Luft",
+        "LEISURE_ACTIVITIES": "Freizeitangebot",
+        "TARIFF_ASSOCIATION": "Tarifverbund",
+        "FAIR": "Messe",
+        "TRAVEL_AGENCY_ORGANISATION": "Reisebüroorganisation",
+        "CUSTOMER_INFORMATION": "Kundeninformation",
+        "SUBSIDIARY": "Tochtergesellschaft (Bahn)",
+        "INTERNAL_BILLING_PURPOSES": "interne Abrechnungszwecke",
+        "UNKNOWN": "unbekannt"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich hinzugefügt.",
+        "ADD_ERROR": "Beim Erfassen der Geschäftsorganisation ist ein Fehler aufgetreten.",
+        "EDIT_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gespeichert.",
+        "EDIT_ERROR": "Beim Editieren der Geschäftsorganisation ist ein Fehler aufgetreten.",
+        "DELETE_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gelöscht.",
+        "DELETE_ERROR": "Beim Löschen der Geschäftsorganisation ist ein Fehler aufgetreten.",
+        "FETCH_ERROR": "Beim Laden der Geschäftsorganisation ist ein unbekannter Fehler aufgetreten."
       }
     }
   }

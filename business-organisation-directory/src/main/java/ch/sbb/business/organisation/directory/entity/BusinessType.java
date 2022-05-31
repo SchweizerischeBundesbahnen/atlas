@@ -32,15 +32,15 @@ public enum BusinessType {
       "Informazione alla clientela"),
   SUBSIDIARY(80, "Tochtergesellschaft (Bahn)", "Filiale (Chemin de fer)", "Affiliata (Ferrovia)"),
   INTERNAL_BILLING_PURPOSES(95, "interne Abrechnungszwecke", "fins de facturation",
-      "interne	scopi di fatturazione interna"),
+      "scopi di fatturazione interna"),
   UNKNOWN(99, "unbekannt", "inconnu", "sconosciuto");
 
 
   private static final String PIPE = "|";
-  private int id;
-  private String typeDe;
-  private String typeFr;
-  private String typeIt;
+  private final int id;
+  private final String typeDe;
+  private final String typeFr;
+  private final String typeIt;
 
   public static String getBusinessTypesPiped(Set<BusinessType> businessTypes) {
     return businessTypes.stream()
