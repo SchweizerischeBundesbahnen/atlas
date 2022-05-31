@@ -29,7 +29,7 @@ describe('Business Organisation Directory', () => {
 
   it('Step-4: Go to page Add new Version', () => {
     BodiUtils.clickOnAddBusinessOrganisationVersion();
-    BodiUtils.fillLineVersionForm(organisation);
+    BodiUtils.fillBusinessOrganisationVersionForm(organisation);
     BodiUtils.saveBusinessOrganisation();
     BodiUtils.readSboidFromForm(organisation);
   });
@@ -37,7 +37,7 @@ describe('Business Organisation Directory', () => {
   it('Step-5: Navigate to Geschäftsorganisationen', () => {
     BodiUtils.fromDetailBackToBusinessOrganisationOverview();
     CommonUtils.navigateToHomeViaHomeLogo();
-    BodiUtils.navigateToBusinessOrganisation()
+    BodiUtils.navigateToBusinessOrganisation();
     BodiUtils.checkHeaderTitle();
   });
 

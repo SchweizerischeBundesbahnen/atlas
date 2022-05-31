@@ -33,7 +33,7 @@ export default class BodiUtils {
     cy.contains('Neue Geschäftsorganisation');
   }
 
-  static fillLineVersionForm(version: any) {
+  static fillBusinessOrganisationVersionForm(version: any) {
     // force-workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
     CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom);
     CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
