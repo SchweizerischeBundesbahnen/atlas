@@ -8,6 +8,7 @@ import { LoadingSpinnerComponent } from '../../../core/components/loading-spinne
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Component, Input, TemplateRef } from '@angular/core';
+import { AuthService } from '../../../core/auth/auth.service';
 
 const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   objects: [
@@ -57,6 +58,10 @@ describe('TimetableFieldNumberOverviewComponent', () => {
           useValue: timetableFieldNumberService,
         },
         TranslatePipe,
+        {
+          provide: AuthService,
+          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasAnyRole']),
+        },
       ],
     }).compileComponents();
 

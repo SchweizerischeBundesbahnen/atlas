@@ -14,6 +14,8 @@ import {
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
 import { TableComponent } from '../../../core/components/table/table.component';
+import { AuthService } from '../../../core/auth/auth.service';
+import { Role } from '../../../core/auth/role';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -42,6 +44,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
   timetableFieldNumbers: TimetableFieldNumber[] = [];
   totalCount$ = 0;
   isLoading = false;
+  readonly userAllowedToCreate;
   private getVersionsSubscription!: Subscription;
   private routeSubscription!: Subscription;
 
@@ -51,8 +54,10 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     private router: Router,
     private notificationService: NotificationService,
     private tableSettingsService: TableSettingsService,
-    private routeToDialogService: RouteToDialogService
+    private routeToDialogService: RouteToDialogService,
+    private readonly authService: AuthService
   ) {
+    this.userAllowedToCreate = authService.hasAnyRole([Role.LidiWriter, Role.LidiAdmin]);
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
       .subscribe(() => this.ngOnInit());
