@@ -217,7 +217,7 @@ public class LineServiceSearchTest {
   }
 
   @Test
-  void shouldFindVersionWithPercente() {
+  void shouldFindVersionWithPercent() {
     // Given
     lineVersionRepository.saveAndFlush(version1);
     lineVersionRepository.saveAndFlush(version2);
@@ -240,7 +240,7 @@ public class LineServiceSearchTest {
   }
 
   @Test
-  void shouldFindVersionWithMultiplePercente() {
+  void shouldFindVersionWithMultiplePercent() {
     // Given
     lineVersionRepository.saveAndFlush(version1);
     lineVersionRepository.saveAndFlush(version2);
