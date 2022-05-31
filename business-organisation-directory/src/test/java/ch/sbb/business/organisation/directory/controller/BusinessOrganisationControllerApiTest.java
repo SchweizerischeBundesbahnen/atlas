@@ -267,7 +267,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
         BusinessOrganisationVersionModel.builder()
                                         .sboid("ch:1:sboid:100000")
                                         .abbreviationDe("de")
-                                        .abbreviationFr("fr-fr-fr-fr-fr-fr-fr")
+                                        .abbreviationFr("frufrufrufrufrufrufr")
                                         .abbreviationIt("it")
                                         .abbreviationEn("en")
                                         .descriptionDe("desc-de")
@@ -293,7 +293,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
        .andExpect(jsonPath("$.details[0].message",
-           is("Value fr-fr-fr-fr-fr-fr-fr rejected due to size must be between 1 and 10")))
+           is("Value frufrufrufrufrufrufr rejected due to size must be between 1 and 10")))
        .andExpect(jsonPath("$.details[0].field", is("abbreviationFr")))
        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
