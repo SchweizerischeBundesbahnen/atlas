@@ -142,16 +142,10 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
         .contactEnterpriseEmail(entity.getContactEnterpriseEmail())
         .sboid(entity.getSboid())
         .etagVersion(entity.getVersion())
-        .said(getSaid(entity.getSboid()))
+        .said(SboidToSaidConverter.toSaid(entity.getSboid()))
         .businessTypes(entity.getBusinessTypes())
         .types(BusinessType.getBusinessTypesPiped(entity.getBusinessTypes()))
         .build();
-  }
-
-  private static final int INDEX_SBOID = 11;
-
-  private static String getSaid(String sboid) {
-    return sboid.substring(INDEX_SBOID);
   }
 
 }

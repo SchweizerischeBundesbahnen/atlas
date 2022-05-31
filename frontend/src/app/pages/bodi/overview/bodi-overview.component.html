@@ -1,0 +1,26 @@
+<div class="ms-5">
+  <div class="d-flex flex-column mt-5">
+    <div>
+      <button mat-raised-button data-cy="new-line" (click)="newBusinessOrganisation()" class="mb-3">
+        {{ 'BODI.BUSINESS_ORGANISATION.NEW' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <nav mat-tab-nav-bar class="tabs" data-cy="tabs">
+    <a
+      mat-tab-link
+      *ngFor="let tab of TABS"
+      [routerLink]="tab.link"
+      routerLinkActive
+      #rla="routerLinkActive"
+      [active]="rla.isActive"
+      [class]="'font-bold-xl ' + (rla.isActive ? 'color-gray-900' : 'color-primary-400')"
+    >
+      {{ tab.title | translate }}
+    </a>
+  </nav>
+  <div class="white-container">
+    <router-outlet></router-outlet>
+  </div>
+</div>
