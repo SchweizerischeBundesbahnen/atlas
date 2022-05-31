@@ -100,7 +100,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                               .searchCriterias(List.of("TimetableFieldNumberVersion 2"))
                                               .build()).toList();
     // Then
-    assertThat(versionsSearched).hasSize(3);
+    assertThat(versionsSearched).hasSize(1);
   }
 
   @Test
