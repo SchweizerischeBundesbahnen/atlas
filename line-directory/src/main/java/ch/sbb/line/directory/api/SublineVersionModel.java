@@ -5,7 +5,7 @@ import ch.sbb.atlas.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.model.api.AtlasFieldLengths;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.line.directory.validation.DatesValidator;
+import ch.sbb.atlas.model.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
