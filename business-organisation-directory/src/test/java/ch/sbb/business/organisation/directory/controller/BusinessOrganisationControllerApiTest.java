@@ -298,7 +298,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
        .andExpect(
-           jsonPath("$.details[0].displayInfo.parameters[0].value", is("fr-fr-fr-fr-fr-fr-fr")))
+           jsonPath("$.details[0].displayInfo.parameters[0].value", is("frufrufrufrufrufrufr")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value",
            is("size must be between 1 and 10")));
