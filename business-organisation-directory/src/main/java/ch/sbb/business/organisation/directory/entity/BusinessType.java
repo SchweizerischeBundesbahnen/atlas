@@ -43,6 +43,9 @@ public enum BusinessType {
   private final String typeIt;
 
   public static String getBusinessTypesPiped(Set<BusinessType> businessTypes) {
+    if (businessTypes.isEmpty()) {
+      return "";
+    }
     return businessTypes.stream()
                         .sorted(Comparator.comparing(BusinessType::getId))
                         .map(businessType -> String.valueOf(businessType.getId()))
