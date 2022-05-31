@@ -211,7 +211,7 @@ export class BusinessOrganisationDetailComponent
   }
 
   getRolesAllowedToEdit(): Role[] {
-    return [Role.BoWriter, Role.BoAdmin, Role.LidiAdmin];
+    return [Role.BoWriter, Role.BoAdmin];
   }
 
   ngOnDestroy() {
