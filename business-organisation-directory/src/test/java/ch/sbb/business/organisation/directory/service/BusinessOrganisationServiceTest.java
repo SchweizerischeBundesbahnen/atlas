@@ -27,10 +27,14 @@ public class BusinessOrganisationServiceTest {
   @Mock
   private VersionableService versionableService;
 
+  @Mock
+  private BusinessOrganisationValidationService validationService;
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    service = new BusinessOrganisationService(versionRepository, repository, versionableService);
+    service = new BusinessOrganisationService(versionRepository, repository, versionableService,
+        validationService);
   }
 
   @Test
