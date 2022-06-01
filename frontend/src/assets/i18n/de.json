@@ -52,7 +52,9 @@
     "CREATE_VERSION": "Version hinzufügen",
     "ROLES": {
       "lidi-writer": "LiDi Writer",
-      "lidi-admin": "LiDi Admin"
+      "lidi-admin": "LiDi Admin",
+      "bo-writer": "BoDi Writer",
+      "bo-admin": "BoDi Admin"
     },
     "SEARCH": {
       "VALIDITY": "Gültig am",

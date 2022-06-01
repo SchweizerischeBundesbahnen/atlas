@@ -3,8 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BodiOverviewComponent } from './bodi-overview.component';
 import { BusinessOrganisationComponent } from '../business-organisations/business-organisation.component';
 import { AppTestingModule } from '../../../app.testing.module';
+import { AuthService } from '../../../core/auth/auth.service';
 
-describe('LidiOverviewComponent', () => {
+describe('BoDiOverviewComponent', () => {
   let component: BodiOverviewComponent;
   let fixture: ComponentFixture<BodiOverviewComponent>;
 
@@ -12,6 +13,12 @@ describe('LidiOverviewComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [BodiOverviewComponent, BusinessOrganisationComponent],
       imports: [AppTestingModule],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasAnyRole']),
+        },
+      ],
     }).compileComponents();
   });
 
