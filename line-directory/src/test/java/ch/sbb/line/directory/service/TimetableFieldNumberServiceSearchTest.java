@@ -68,6 +68,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                                                  6))
                                                          .build();
     TimetableFieldNumberVersion version3 = versionBuilder.ttfnid("ch:1:ttfnid:100001")
+                                                         .number("2.0")
                                                          .description(
                                                              "TimetableFieldNumberVersion 3")
                                                          .swissTimetableFieldNumber("a.2")
@@ -97,7 +98,7 @@ public class TimetableFieldNumberServiceSearchTest {
     List<TimetableFieldNumber> versionsSearched = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
                                               .pageable(Pageable.ofSize(5).withPage(0))
-                                              .searchCriterias(List.of("TimetableFieldNumberVersion 2"))
+                                              .searchCriterias(List.of("1.0"))
                                               .build()).toList();
     // Then
     assertThat(versionsSearched).hasSize(1);
