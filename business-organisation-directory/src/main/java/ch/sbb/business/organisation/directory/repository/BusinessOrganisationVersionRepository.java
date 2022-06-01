@@ -12,16 +12,16 @@ public interface BusinessOrganisationVersionRepository extends
 
   List<BusinessOrganisationVersion> findAllBySboidOrderByValidFrom(String slnid);
 
-  List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationDeIgnoreCase(
+  List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationDe(
       LocalDate validFrom, LocalDate validTo, String abbreviation);
 
-  List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationFrIgnoreCase(
+  List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationFr(
       LocalDate validFrom, LocalDate validTo, String abbreviation);
 
-  List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationItIgnoreCase(
+  List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationIt(
       LocalDate validFrom, LocalDate validTo, String abbreviation);
 
-  List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEnIgnoreCase(
+  List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEn(
       LocalDate validFrom, LocalDate validTo, String abbreviation);
 
 }

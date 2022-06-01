@@ -31,16 +31,16 @@ public class BusinessOrganisationValidationService {
   List<BusinessOrganisationVersion> findAbbreviationOverlaps(
       BusinessOrganisationVersion version) {
     return Stream.of(
-                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationDeIgnoreCase(
+                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationDe(
                                           version.getValidFrom(), version.getValidTo(), version.getAbbreviationDe())
                                       .stream(),
-                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationFrIgnoreCase(
+                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationFr(
                                           version.getValidFrom(), version.getValidTo(), version.getAbbreviationFr())
                                       .stream(),
-                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationItIgnoreCase(
+                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationIt(
                                           version.getValidFrom(), version.getValidTo(), version.getAbbreviationIt())
                                       .stream(),
-                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEnIgnoreCase(
+                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEn(
                                           version.getValidFrom(), version.getValidTo(), version.getAbbreviationEn())
                                       .stream())
                  .flatMap(Function.identity())
