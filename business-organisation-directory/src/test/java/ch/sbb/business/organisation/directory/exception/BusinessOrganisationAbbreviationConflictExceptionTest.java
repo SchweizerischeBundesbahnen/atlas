@@ -1,4 +1,4 @@
-package ch.sbb.business.organisation.directory.service;
+package ch.sbb.business.organisation.directory.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,7 +6,6 @@ import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion.Fields;
-import ch.sbb.business.organisation.directory.exception.BusinessOrganisationAbbreviationConflictException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
