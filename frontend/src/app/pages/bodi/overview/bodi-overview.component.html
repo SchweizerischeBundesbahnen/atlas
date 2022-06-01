@@ -1,7 +1,12 @@
 <div class="ms-5">
   <div *ngIf="userAllowedToCreate" class="d-flex flex-column mt-5">
     <div>
-      <button mat-raised-button data-cy="new-line" (click)="newBusinessOrganisation()" class="mb-3">
+      <button
+        mat-raised-button
+        data-cy="new-business-organisation"
+        (click)="newBusinessOrganisation()"
+        class="mb-3"
+      >
         {{ 'BODI.BUSINESS_ORGANISATION.NEW' | translate }}
       </button>
     </div>
