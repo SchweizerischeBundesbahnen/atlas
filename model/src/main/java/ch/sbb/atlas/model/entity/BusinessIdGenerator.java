@@ -12,7 +12,7 @@ public abstract class BusinessIdGenerator implements ValueGenerator<String> {
   private final String businessIdPrefix;
   private final String dbField;
 
-  public BusinessIdGenerator(String dbSequence, String businessIdPrefix, String dbField) {
+  protected BusinessIdGenerator(String dbSequence, String businessIdPrefix, String dbField) {
     this.dbSequence = dbSequence;
     this.businessIdPrefix = businessIdPrefix;
     this.dbField = dbField;

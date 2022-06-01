@@ -23,6 +23,7 @@ public class BusinessOrganisationService {
   private final BusinessOrganisationVersionRepository versionRepository;
   private final BusinessOrganisationRepository repository;
   private final VersionableService versionableService;
+  private final BusinessOrganisationValidationService validationService;
 
   public Page<BusinessOrganisation> getBusinessOrganisations(
       BusinessOrganisationSearchRestrictions searchRestrictions) {
@@ -32,6 +33,7 @@ public class BusinessOrganisationService {
 
   public BusinessOrganisationVersion save(BusinessOrganisationVersion version) {
     version.setStatus(Status.ACTIVE);
+    validationService.validatePreconditionBusinessRule(version);
     return versionRepository.save(version);
   }
 
