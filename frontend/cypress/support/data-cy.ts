@@ -13,6 +13,8 @@ export class DataCy {
   static SUBLINES_TITLE = '[data-cy=sublines-title]';
   static NEW_LINE = '[data-cy=new-line]';
   static NEW_SUBLINE = '[data-cy=new-subline]';
+  static NEW_BUSINESS_ORGANISATION = '[data-cy=new-business-organisation]';
+  static BODI_BUSINESS_ORGANISATION = '[data-cy=bodi-business-organisation]';
   static LIDI_LINES = '[data-cy=lidi-lines]';
   static LIDI_SUBLINES = '[data-cy=lidi-sublines]';
   static VALID_FROM = '[data-cy=validFrom]';
@@ -50,4 +52,15 @@ export class DataCy {
   static SIDEMENU_START = '[data-cy=sidemenu-start]';
   static SIDEMENU_TTFN = '[data-cy=sidemenu-timetable-field-number]';
   static SIDEMENU_LIDI = '[data-cy=sidemenu-line-directory]';
+  static ORGANISATION_NUMBER = '[data-cy=organisationNumber]';
+  static DESCRIPTION_DE = '[data-cy=descriptionDe]';
+  static DESCRIPTION_FR = '[data-cy=descriptionFr]';
+  static DESCRIPTION_IT = '[data-cy=descriptionIt]';
+  static DESCRIPTION_EN = '[data-cy=descriptionEn]';
+  static ABBREVIATION_DE = '[data-cy=abbreviationDe]';
+  static ABBREVIATION_FR = '[data-cy=abbreviationFr]';
+  static ABBREVIATION_IT = '[data-cy=abbreviationIt]';
+  static ABBREVIATION_EN = '[data-cy=abbreviationEn]';
+  static BUSINESS_TYPES = '[data-cy=businessTypes]';
+  static CONTACT_ENTERPRISE_EMAIL = '[data-cy=contactEnterpriseEmail]';
 }
