@@ -13,11 +13,11 @@ public class BusinessOrganisationValidationService {
 
   private final BusinessOrganisationVersionRepository versionRepository;
 
-  public void validateLinePreconditionBusinessRule(BusinessOrganisationVersion version) {
-    validateLineConflict(version);
+  public void validatePreconditionBusinessRule(BusinessOrganisationVersion version) {
+    validateAbbreviationConflict(version);
   }
 
-  void validateLineConflict(BusinessOrganisationVersion version) {
+  private void validateAbbreviationConflict(BusinessOrganisationVersion version) {
     List<BusinessOrganisationVersion> overlaps = versionRepository.findAbbreviationOverlaps(
         version);
     if (!overlaps.isEmpty()) {

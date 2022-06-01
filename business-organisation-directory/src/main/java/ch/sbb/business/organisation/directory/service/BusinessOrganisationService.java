@@ -33,7 +33,7 @@ public class BusinessOrganisationService {
 
   public BusinessOrganisationVersion save(BusinessOrganisationVersion version) {
     version.setStatus(Status.ACTIVE);
-    validationService.validateLinePreconditionBusinessRule(version);
+    validationService.validatePreconditionBusinessRule(version);
     return versionRepository.save(version);
   }
 

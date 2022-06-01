@@ -115,7 +115,6 @@ class LineVersionModelTest {
         lineVersion);
 
     //then
-    assertThat(constraintViolations).isNotEmpty();
     assertThat(constraintViolations).hasSize(1);
     assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString(
         "validFromValid");
@@ -132,8 +131,7 @@ class LineVersionModelTest {
         lineVersion);
 
     //then
-    assertThat(constraintViolations).isNotEmpty();
-    assertThat(constraintViolations).hasSize(2);
+    assertThat(constraintViolations).isNotEmpty().hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
                                                          .map(ConstraintViolation::getMessage)
                                                          .collect(Collectors.toList());
@@ -153,8 +151,7 @@ class LineVersionModelTest {
         lineVersion);
 
     //then
-    assertThat(constraintViolations).isNotEmpty();
-    assertThat(constraintViolations).hasSize(2);
+    assertThat(constraintViolations).isNotEmpty().hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
                                                          .map(ConstraintViolation::getMessage)
                                                          .collect(Collectors.toList());
@@ -174,8 +171,7 @@ class LineVersionModelTest {
         lineVersion);
 
     //then
-    assertThat(constraintViolations).isNotEmpty();
-    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations).isNotEmpty().hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
                                                          .map(ConstraintViolation::getMessage)
                                                          .collect(Collectors.toList());
