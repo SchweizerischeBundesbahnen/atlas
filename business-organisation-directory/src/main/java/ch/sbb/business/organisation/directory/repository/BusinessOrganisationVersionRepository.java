@@ -15,27 +15,6 @@ public interface BusinessOrganisationVersionRepository extends
 
   List<BusinessOrganisationVersion> findAllBySboidOrderByValidFrom(String slnid);
 
-  default List<BusinessOrganisationVersion> findAbbreviationOverlaps(
-      BusinessOrganisationVersion version) {
-    return Stream.of(
-                     findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationDeIgnoreCase(
-                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationDe())
-                         .stream(),
-                     findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationFrIgnoreCase(
-                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationFr())
-                         .stream(),
-                     findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationItIgnoreCase(
-                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationIt())
-                         .stream(),
-                     findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEnIgnoreCase(
-                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationEn())
-                         .stream())
-                 .flatMap(Function.identity())
-                 .filter(i -> !i.getSboid().equals(version.getSboid()))
-                 .distinct()
-                 .collect(Collectors.toList());
-  }
-
   List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationDeIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String abbreviation);
 
