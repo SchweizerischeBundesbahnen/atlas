@@ -1,7 +1,7 @@
 package ch.sbb.atlas.searching.predicates;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import lombok.experimental.UtilityClass;
 
@@ -11,7 +11,7 @@ public final class StringPredicates {
   private static final String UNDERSCORE = "_";
   private static final String PERCENT = "%";
 
-  public static Predicate likeIgnoreCase(CriteriaBuilder criteriaBuilder, Path<String> path,
+  public static Predicate likeIgnoreCase(CriteriaBuilder criteriaBuilder, Expression<String> path,
       String searchString) {
     String escapedSearchString = searchString;
     if(searchString.contains(UNDERSCORE)){
