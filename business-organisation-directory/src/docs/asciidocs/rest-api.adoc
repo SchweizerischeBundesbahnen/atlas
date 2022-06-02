@@ -50,3 +50,6 @@ include::{snippets}/business-organisation-controller-api-test/should-not-update-
 
 == Delete Business Organisation when id provided does exist - Successful
 include::{snippets}/business-organisation-controller-api-test/should-delete-business-organisation-by-sboid/auto-section.adoc[]
+
+== Create Business Organisation when Abbreviation conflict occurs
+include::{snippets}/business-organisation-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
