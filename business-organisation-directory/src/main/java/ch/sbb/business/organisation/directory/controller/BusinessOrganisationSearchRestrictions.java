@@ -27,16 +27,16 @@ public class BusinessOrganisationSearchRestrictions extends
     return SpecificationBuilder.<BusinessOrganisation>builder()
                                .stringAttributes(
                                    List.of(
-                                       BusinessOrganisation_.descriptionDe,
-                                       BusinessOrganisation_.descriptionFr,
-                                       BusinessOrganisation_.descriptionIt,
-                                       BusinessOrganisation_.descriptionEn,
-                                       BusinessOrganisation_.abbreviationDe,
-                                       BusinessOrganisation_.abbreviationFr,
-                                       BusinessOrganisation_.abbreviationIt,
-                                       BusinessOrganisation_.abbreviationEn,
-                                       BusinessOrganisation_.organisationNumber,
-                                       BusinessOrganisation_.sboid))
+                                       BusinessOrganisation.Fields.descriptionDe,
+                                       BusinessOrganisation.Fields.descriptionFr,
+                                       BusinessOrganisation.Fields.descriptionIt,
+                                       BusinessOrganisation.Fields.descriptionEn,
+                                       BusinessOrganisation.Fields.abbreviationDe,
+                                       BusinessOrganisation.Fields.abbreviationFr,
+                                       BusinessOrganisation.Fields.abbreviationIt,
+                                       BusinessOrganisation.Fields.abbreviationEn,
+                                       BusinessOrganisation.Fields.organisationNumber,
+                                       BusinessOrganisation.Fields.sboid))
                                .validFromAttribute(BusinessOrganisation_.validFrom)
                                .validToAttribute(BusinessOrganisation_.validTo)
                                .build();

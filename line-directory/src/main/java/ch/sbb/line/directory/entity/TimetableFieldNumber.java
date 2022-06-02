@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.Immutable;
 
 @NoArgsConstructor
@@ -20,6 +21,7 @@ import org.hibernate.annotations.Immutable;
 @ToString
 @Builder
 @Immutable
+@FieldNameConstants
 @Entity(name = "timetable_field_number")
 public class TimetableFieldNumber {
 
