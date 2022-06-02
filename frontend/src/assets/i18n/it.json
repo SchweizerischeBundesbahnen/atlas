@@ -19,9 +19,9 @@
     "DELETE": "Eliminare",
     "CANCEL": "Annulla",
     "COVERAGE": {
-      "HEADING": "_IT_Validierungen",
-      "LINE_SUBLINE": "_IT_Line / Teillinie",
-      "LINE_TIMETABLE_FIELD": "_IT_Line / Fahrplanfeld",
+      "HEADING": "Validazioni",
+      "LINE_SUBLINE": "Linea / Linea parziale",
+      "LINE_TIMETABLE_FIELD": "Linea / Tabella oraria",
       "COMPLETE": "Completo",
       "INCOMPLETE": "Incompleto"
     },
@@ -48,7 +48,7 @@
       "REVIEWED": "Verifica conclusa"
     },
     "OK": "OK",
-    "EDIT_VERSION": "Version bearbeiten__IT__",
+    "EDIT_VERSION": "Modificare la versione",
     "CREATE_VERSION": "Aggiungere versione",
     "ROLES": {
       "lidi-writer": "Autore LiDi",
@@ -67,13 +67,13 @@
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caratteri max.",
     "DROPDOWN_PLACEHOLDER": "selezionare",
-    "FOR_EXAMPLE": "z.B.:__IT__",
-    "DESIGN_INFORMATION": "Angaben zur Gestaltung__IT__",
-    "KEY_DATA": "Eckdaten__IT__",
-    "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben__IT__",
+    "FOR_EXAMPLE": "p.e.:",
+    "DESIGN_INFORMATION": "Informazioni sulla creazione",
+    "KEY_DATA": "Dati chiave",
+    "SUPPLEMENTARY_INFORMATION": "Informazioni supplementari",
     "OPTIONAL": "(opzionale)",
     "COMMENT": "Commento",
-    "COMMENT_INFO": "Kommentar Tooltip to replace __FR__",
+    "COMMENT_INFO": "Kommentar Tooltip to replace __IT__",
     "TEXT": "Testo libero"
   },
   "VERSION_TABLE": {
@@ -146,14 +146,14 @@
     "WHITESPACES": "Non può iniziare o terminare con uno spazio.",
     "COLOR_INVALID": "Colore previsto nel formato #FFFFFF",
     "CMYK_INVALID": "Colore CMYK previsto nel formato 0-100,0-100,0-100,0-100. Esempio 10,10,0,100",
-    "MIN": "Die Zahl muss mindestens {{min}} sein. __IT__",
-    "MAX": "Die Zahl darf maximal {{max}} sein. __IT__"
+    "MIN": "Il valore deve essere minimo {{min}}",
+    "MAX": "Il valore può essere massimo {{max}}"
   },
   "TTFN": {
     "TTFN": "Numero del quadro d’orario",
     "NEW": "Inserire nuovo numero del quadro d’orario",
-    "DETAIL_TIMETABLE_INFORMATION": "Angaben zum Fahrplanfeld__IT__",
-    "NEW_TIMETABLE_INFORMATION": "Angaben zum neuen Fahrplanfeld__IT__",
+    "DETAIL_TIMETABLE_INFORMATION": "Informazioni sugli orari",
+    "NEW_TIMETABLE_INFORMATION": "Informazioni sul nuovo orario",
     "SWISS_TIMETABLE_FIELD_NUMBER": "Numero del quadro d’orario CH",
     "SWISS_TIMETABLE_FIELD_NUMBER_INFO": "CH-Fahrplanfeldnummer Tooltip to replace __IT__",
     "DESCRIPTION": "Denominazione quadro d’orario CH",
@@ -177,8 +177,8 @@
     }
   },
   "LIDI": {
-    "DETAIL_LINE_INFORMATION": "Angaben zur Linie__IT__",
-    "NEW_LINE_INFORMATION": "Angaben zur neuen Linie__IT__",
+    "DETAIL_LINE_INFORMATION": "Informazioni sulla linea",
+    "NEW_LINE_INFORMATION": "Informazioni sulla nuova linea",
     "SWISS_LINE_NUMBER": "Numero di linea CH\n(CHLNR)",
     "SWISS_LINE_NUMBER_INFO": "CH-Liniennummer (CHLNR) Tooltip to replace __IT__",
     "SWISS_SUBLINE_NUMBER": "Numero di linea parziale CH",
@@ -247,8 +247,8 @@
       }
     },
     "SUBLINE": {
-      "DETAIL_SUBLINE_INFORMATION": "Angaben zur Teillinie__IT__",
-      "NEW_SUBLINE_INFORMATION": "Angaben zur neuen Teillinie__IT__",
+      "DETAIL_SUBLINE_INFORMATION": "Informazioni sulla linea parziale",
+      "NEW_SUBLINE_INFORMATION": "Informazioni sulla nuova linea parziale",
       "SUBLINE": "Linea parziale",
       "SUBLINES": "Linee parziali",
       "CONFLICT": {
@@ -259,8 +259,8 @@
         "SUBLINE_OUTSIDE_OF_LINE_RANGE": "La validità della linea parziale {{validFrom}}-{{validTo}} non rientra nel campo di validità della linea {{mainline.swissLineNumber}}. Quest’ultimo è {{mainline.validFrom}}-{{mainline.validTo}}."
       },
       "NUMBER": "Numero linea parziale",
-      "MAINLINE": "Gehört zu Hauptlinie__IT__",
-      "OVERVIEW_MAINLINE": "Gehört zu\nLinie (CHLNR)__IT__",
+      "MAINLINE": "Appartiene alla lienea principale",
+      "OVERVIEW_MAINLINE": "Appartiene alla\nlinea (CHLNR)",
       "DESCRIPTION": "Denominazione linea parziale",
       "NEW": "Inserire nuova linea parziale",
       "TYPES": {
@@ -281,24 +281,24 @@
   },
   "BODI": {
     "BUSINESS_ORGANISATION": {
-      "NEW": "Inserire nuova organizzazione aziendale",
-      "NEW_INFORMATION": "Angaben zur neuen Geschäftsorganisation ___IT___",
-      "DETAIL_INFORMATION": "Angaben zur Geschäftsorganisation ___IT___",
+      "NEW": "Inserire una nuova organizzazione aziendale",
+      "NEW_INFORMATION": "Informazioni sulla nuova organizzazione commerciale",
+      "DETAIL_INFORMATION": "Informazioni sulla linea commerciale",
       "BUSINESS_ORGANISATIONS": "Organizzazioni aziendali",
       "DESCRIPTION": "Denominazione",
-      "DESCRIPTION_DE": "Bezeichnung Deutsch ___IT___",
-      "DESCRIPTION_FR": "Bezeichnung Französisch ___IT___",
-      "DESCRIPTION_IT": "Bezeichnung Italienisch ___IT___",
-      "DESCRIPTION_EN": "Bezeichnung Englisch ___IT___",
+      "DESCRIPTION_DE": "Denominazione DE",
+      "DESCRIPTION_FR": "Denominazione FR",
+      "DESCRIPTION_IT": "Denominazione IT",
+      "DESCRIPTION_EN": "Denominazione EN",
       "ABBREVIATION": "Iniziali",
-      "ABBREVIATION_DE": "Abkürzung Deutsch ___IT___",
-      "ABBREVIATION_FR": "Abkürzung Französisch ___IT___",
-      "ABBREVIATION_IT": "Abkürzung Italienisch ___IT___",
-      "ABBREVIATION_EN": "Abkürzung Englisch ___IT___",
+      "ABBREVIATION_DE": "Abbreviazione DE",
+      "ABBREVIATION_FR": "Abbreviazione FR",
+      "ABBREVIATION_IT": "Abbreviazione IT",
+      "ABBREVIATION_EN": "Abbreviazione EN",
       "SBOID": "Swiss Business Organisation\nID (SBOID)",
       "ORGANISATION_NUMBER": "Numero",
-      "CONTACT": "Kontakt E-Mail Unternehmung ___IT___",
-      "BUSINESS_TYPE": "Geschäftsorganisationstyp ___IT___",
+      "CONTACT": "E-Mail organizzazione",
+      "BUSINESS_TYPE": "Tipo di organizzazione commerciale",
       "BUSINESS_TYPES": {
         "STREET": "Strada",
         "STREET_WITHOUT_TRAFFIC": "Strada, senza rapporto sul traffico",
@@ -318,19 +318,19 @@
         "UNKNOWN": "sconosciuto"
       },
       "CONFLICT": {
-        "ABBREVIATIONDE": "L'iniziale tedesco {{abbreviationDe}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
-        "ABBREVIATIONFR": "L'iniziale francese {{abbreviationFr}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
-        "ABBREVIATIONIT": "L'iniziale italiano {{abbreviationIt}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
-        "ABBREVIATIONEN": "L'iniziale inglese {{abbreviationEn}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}."
+        "ABBREVIATIONDE": "L'abbreviazione tedesco {{abbreviationDe}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
+        "ABBREVIATIONFR": "L'abbreviazione francese {{abbreviationFr}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
+        "ABBREVIATIONIT": "L'abbreviazione italiano {{abbreviationIt}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}.",
+        "ABBREVIATIONEN": "L'abbreviazione inglese {{abbreviationEn}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{slnid}}."
       },
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich hinzugefügt. ___IT___",
-        "ADD_ERROR": "Beim Erfassen der Geschäftsorganisation ist ein Fehler aufgetreten. ___IT___",
-        "EDIT_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gespeichert. ___IT___",
-        "EDIT_ERROR": "Beim Editieren der Geschäftsorganisation ist ein Fehler aufgetreten. ___IT___",
-        "DELETE_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gelöscht. ___IT___",
-        "DELETE_ERROR": "Beim Löschen der Geschäftsorganisation ist ein Fehler aufgetreten. ___IT___",
-        "FETCH_ERROR": "Beim Laden der Geschäftsorganisation ist ein unbekannter Fehler aufgetreten. ___IT___"
+        "ADD_SUCCESS": "L'organizzazione commerciale è stata creata con successo.",
+        "ADD_ERROR": "Si è verificato un errore durante la creazione dell'organizzazione commerciale.",
+        "EDIT_SUCCESS": "L'organizzazione commerciale è stata salvata correttamente.",
+        "EDIT_ERROR": "Si è verificato un errore durante la modifica dell'organizzazione commerciale",
+        "DELETE_SUCCESS": "L'organizzazione commerciale è stata eliminata con successo.",
+        "DELETE_ERROR": "Si è verificato un errore durante l'eliminazione dell'organizzazione commerciale.",
+        "FETCH_ERROR": "Si è verificato un errore sconosciuto durante il caricamento dei dati dell'organizzazione commerciale."
       }
     }
   }
