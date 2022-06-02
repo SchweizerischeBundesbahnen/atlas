@@ -357,4 +357,22 @@ public class BusinessOrganisationServiceSearchTest {
     assertThat(result.getContent()).hasSize(2);
   }
 
+  @Test
+  void shouldFindVersionByOrganisationNumber() {
+    //given
+    repository.saveAndFlush(version1);
+    repository.saveAndFlush(version2);
+    repository.saveAndFlush(version3);
+    //when
+    Page<BusinessOrganisation> result = service.getBusinessOrganisations(
+        BusinessOrganisationSearchRestrictions.builder()
+                                              .pageable(Pageable.unpaged())
+                                              .searchCriterias(of(String.valueOf(
+                                                  version3.getOrganisationNumber())))
+                                              .build());
+
+    //then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
 }
