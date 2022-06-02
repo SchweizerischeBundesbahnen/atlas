@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 @Builder
 public class SpecificationBuilder<T> {
 
-  private final List<SingularAttribute<T, String>> stringAttributes;
+  private final List<String> stringAttributes;
   private final SingularAttribute<T, LocalDate> validFromAttribute;
   private final SingularAttribute<T, LocalDate> validToAttribute;
   private final SingularAttribute<T, String> singleStringAttribute;
