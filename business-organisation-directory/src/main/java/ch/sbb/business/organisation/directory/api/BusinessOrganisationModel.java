@@ -98,9 +98,6 @@ public class BusinessOrganisationModel {
   @Schema(description = "Business Types")
   private Set<BusinessType> businessTypes;
 
-  @Schema(description = "Business Types ID pipe separated", accessMode = AccessMode.READ_ONLY)
-  private String types;
-
   @Schema(description = "Valid from")
   @NotNull
   private LocalDate validFrom;
@@ -128,7 +125,6 @@ public class BusinessOrganisationModel {
         .sboid(entity.getSboid())
         .said(SboidToSaidConverter.toSaid(entity.getSboid()))
         .businessTypes(entity.getBusinessTypes())
-        .types(BusinessType.getBusinessTypesPiped(entity.getBusinessTypes()))
         .build();
   }
 
