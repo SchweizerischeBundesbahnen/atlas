@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.Immutable;
 
 @NoArgsConstructor
@@ -21,6 +22,7 @@ import org.hibernate.annotations.Immutable;
 @ToString
 @Builder
 @Immutable
+@FieldNameConstants
 @Entity(name = "line")
 public class Line {
 

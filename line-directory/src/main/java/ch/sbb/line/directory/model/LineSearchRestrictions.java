@@ -45,8 +45,11 @@ public class LineSearchRestrictions extends SearchRestrictions<Line> {
   protected SpecificationBuilder<Line> specificationBuilder() {
     return SpecificationBuilder.<Line>builder()
                                .stringAttributes(
-                                   List.of(Line_.swissLineNumber, Line_.number, Line_.description,
-                                       Line_.businessOrganisation, Line_.slnid))
+                                   List.of(Line.Fields.swissLineNumber,
+                                       Line.Fields.number,
+                                       Line.Fields.description,
+                                       Line.Fields.businessOrganisation,
+                                       Line.Fields.slnid))
                                .validFromAttribute(Line_.validFrom)
                                .validToAttribute(Line_.validTo)
                                .singleStringAttribute(Line_.swissLineNumber)
