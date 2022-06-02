@@ -8,6 +8,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.business.organisation.directory.converter.BusinessTypeConverter;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -121,4 +122,10 @@ public class BusinessOrganisationVersion extends BaseVersion implements Versiona
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDate validTo;
 
+  public Set<BusinessType> getBusinessTypes() {
+    if (businessTypes == null) {
+      return new HashSet<>();
+    }
+    return businessTypes;
+  }
 }
