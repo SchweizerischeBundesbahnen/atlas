@@ -37,9 +37,12 @@ public class SublineSearchRestrictions extends SearchRestrictions<Subline> {
   protected SpecificationBuilder<Subline> specificationBuilder() {
     return SpecificationBuilder.<Subline>builder()
                                .stringAttributes(
-                                   List.of(Subline_.swissSublineNumber, Subline_.description,
-                                       Subline_.swissLineNumber, Subline_.businessOrganisation,
-                                       Subline_.slnid, Subline_.number))
+                                   List.of(Subline.Fields.swissSublineNumber,
+                                       Subline.Fields.description,
+                                       Subline.Fields.swissLineNumber,
+                                       Subline.Fields.businessOrganisation,
+                                       Subline.Fields.slnid,
+                                       Subline.Fields.number))
                                .validFromAttribute(Subline_.validFrom)
                                .validToAttribute(Subline_.validTo)
                                .build();
