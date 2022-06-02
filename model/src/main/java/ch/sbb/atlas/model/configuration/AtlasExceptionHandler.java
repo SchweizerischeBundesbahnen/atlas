@@ -68,7 +68,7 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(value = {NotFoundException.class})
   public ResponseEntity<ErrorResponse> notFoundException(
       NotFoundException liDiNotFoundException) {
-    return new ResponseEntity(liDiNotFoundException.getErrorResponse(),
+    return new ResponseEntity<>(liDiNotFoundException.getErrorResponse(),
         HttpStatus.valueOf(liDiNotFoundException.getErrorResponse().getStatus()));
   }
 
