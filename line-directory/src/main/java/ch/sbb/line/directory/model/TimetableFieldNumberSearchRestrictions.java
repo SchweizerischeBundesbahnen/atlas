@@ -26,10 +26,11 @@ public class TimetableFieldNumberSearchRestrictions extends
   protected SpecificationBuilder<TimetableFieldNumber> specificationBuilder() {
     return SpecificationBuilder.<TimetableFieldNumber>builder()
                                .stringAttributes(
-                                   List.of(TimetableFieldNumber_.swissTimetableFieldNumber,
-                                       TimetableFieldNumber_.description,
-                                       TimetableFieldNumber_.ttfnid, TimetableFieldNumber_.number,
-                                       TimetableFieldNumber_.businessOrganisation))
+                                   List.of(TimetableFieldNumber.Fields.swissTimetableFieldNumber,
+                                       TimetableFieldNumber.Fields.description,
+                                       TimetableFieldNumber.Fields.ttfnid,
+                                       TimetableFieldNumber.Fields.number,
+                                       TimetableFieldNumber.Fields.businessOrganisation))
                                .validFromAttribute(TimetableFieldNumber_.validFrom)
                                .validToAttribute(TimetableFieldNumber_.validTo)
                                .build();
