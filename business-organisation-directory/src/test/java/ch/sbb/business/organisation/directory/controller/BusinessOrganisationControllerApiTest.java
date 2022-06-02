@@ -11,7 +11,6 @@ import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVer
 import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionFr;
 import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionIt;
 import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.organisationNumber;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.types;
 import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.validFrom;
 import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.validTo;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -144,7 +143,6 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$[0]." + businessTypes,
            containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
                BusinessType.SHIP.name())))
-       .andExpect(jsonPath("$[0]." + types, is("10|20|45")))
        .andExpect(jsonPath("$[0]." + validFrom, is("2001-01-01")))
        .andExpect(jsonPath("$[0]." + validTo, is("2001-12-31")))
        .andExpect(jsonPath("$[0]." + organisationNumber, is(1234)))
@@ -161,7 +159,6 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$[1]." + businessTypes,
            containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
                BusinessType.SHIP.name())))
-       .andExpect(jsonPath("$[1]." + types, is("10|20|45")))
        .andExpect(jsonPath("$[1]." + validFrom, is("2002-01-01")))
        .andExpect(jsonPath("$[1]." + validTo, is("2002-12-31")))
        .andExpect(jsonPath("$[1]." + organisationNumber, is(1234)))
@@ -228,7 +225,6 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$.objects[0]." + businessTypes,
            containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
                BusinessType.SHIP.name())))
-       .andExpect(jsonPath("$.objects[0]." + types, is("10|20|45")))
        .andExpect(jsonPath("$.objects[0]." + validFrom, is("2000-01-01")))
        .andExpect(jsonPath("$.objects[0]." + validTo, is("2000-12-31")))
        .andExpect(jsonPath("$.objects[0]." + organisationNumber, is(123)))
@@ -245,7 +241,6 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$.objects[1]." + businessTypes,
            containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(),
                BusinessType.SHIP.name())))
-       .andExpect(jsonPath("$.objects[1]." + types, is("10|20|45")))
        .andExpect(jsonPath("$.objects[1]." + validFrom, is("2001-01-01")))
        .andExpect(jsonPath("$.objects[1]." + validTo, is("2001-12-31")))
        .andExpect(jsonPath("$.objects[1]." + organisationNumber, is(1234)))
