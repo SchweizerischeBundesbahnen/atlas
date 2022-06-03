@@ -1,29 +1,95 @@
-import { Injectable } from '@angular/core';
-import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
-import { Subscription } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { fromEvent, merge, Subscription, throttleTime } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class KeepaliveService {
-  private onTimeoutSubscription?: Subscription;
-  private readonly DEFAULT_IDLE_SECONDS = 10;
-  private readonly DEFAULT_TIMEOUT_SECONDS = 1800;
+  private readonly TIMEOUT_MS = 30 * 60000;
+  private readonly INTERVAL_FREQUENCY_MS = 30000;
+  private readonly EVENT_THROTTLE_TIME_MS = 5000;
+  private readonly interruptionEventNames: string[] = [
+    'mousemove',
+    'keydown',
+    'DOMMouseScroll',
+    'mousewheel',
+    'mousedown',
+    'touchstart',
+    'touchmove',
+    'scroll',
+  ];
+  private readonly interruptionEventPipe;
 
-  constructor(private readonly idle: Idle) {
-    idle.setIdle(this.DEFAULT_IDLE_SECONDS);
-    idle.setTimeout(this.DEFAULT_TIMEOUT_SECONDS);
-    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+  private interruptions: Event[] = [];
+  private eventsSubscription?: Subscription;
+  private timeoutId?: number;
+  private intervalId?: number;
+
+  constructor(private readonly zone: NgZone) {
+    const fromEvents = this.interruptionEventNames.map((eventName) =>
+      fromEvent(document, eventName, {
+        passive: true,
+      })
+    );
+    this.interruptionEventPipe = merge(...fromEvents).pipe(
+      throttleTime(this.EVENT_THROTTLE_TIME_MS)
+    );
   }
 
   startWatching(timeoutFunc: () => void): void {
-    this.onTimeoutSubscription?.unsubscribe();
-    this.onTimeoutSubscription = this.idle.onTimeout.subscribe(timeoutFunc);
-    this.idle.watch();
+    this.createIdleInterval(timeoutFunc);
+    this.eventsSubscription?.unsubscribe();
+    this.zone.runOutsideAngular(() => this.createEventsSubscription(timeoutFunc));
   }
 
   stopWatching(): void {
-    this.idle.stop();
-    this.onTimeoutSubscription?.unsubscribe();
+    this.cleanup();
+    this.removeActiveInterval();
+    this.removeActiveTimeout();
+  }
+
+  private createEventsSubscription(timeoutFunc: () => void): void {
+    this.eventsSubscription = this.interruptionEventPipe.subscribe((event) => {
+      if (this.interruptions.length === 0) {
+        this.interruptions.push(event);
+      }
+
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = undefined;
+        this.createIdleInterval(timeoutFunc);
+      }
+    });
+  }
+
+  private createIdleInterval(timeoutFunc: () => void): void {
+    this.zone.runOutsideAngular(() => {
+      this.intervalId = setInterval(() => {
+        if (this.interruptions.length !== 0) {
+          this.interruptions = [];
+        } else {
+          this.timeoutId = setTimeout(() => {
+            this.cleanup();
+            this.zone.run(() => timeoutFunc());
+          }, this.TIMEOUT_MS);
+          this.removeActiveInterval();
+        }
+      }, this.INTERVAL_FREQUENCY_MS);
+    });
+  }
+
+  private removeActiveInterval(): void {
+    clearInterval(this.intervalId);
+    this.intervalId = undefined;
+  }
+
+  private removeActiveTimeout(): void {
+    clearTimeout(this.timeoutId);
+    this.timeoutId = undefined;
+  }
+
+  private cleanup(): void {
+    this.eventsSubscription?.unsubscribe();
+    this.interruptions = [];
   }
 }
