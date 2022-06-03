@@ -1,43 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-
 import { KeepaliveService } from './keepalive.service';
-import {
-  DEFAULT_INTERRUPTSOURCES,
-  Idle,
-  IdleExpiry,
-  NgIdleModule,
-  SimpleExpiry,
-} from '@ng-idle/core';
-import SpyObj = jasmine.SpyObj;
-import { EventEmitter } from '@angular/core';
 
 describe('KeepaliveService', () => {
   let service: KeepaliveService;
-  let idleMock: SpyObj<Idle>;
-  let eventEmitterSpy: SpyObj<EventEmitter<number>>;
 
   beforeEach(() => {
-    eventEmitterSpy = jasmine.createSpyObj('EventEmitter', ['subscribe']);
-    idleMock = jasmine.createSpyObj(
-      'Idle',
-      ['stop', 'watch', 'setIdle', 'setTimeout', 'setInterrupts'],
-      {
-        onTimeout: eventEmitterSpy,
-      }
-    );
-    TestBed.configureTestingModule({
-      imports: [NgIdleModule.forRoot()],
-      providers: [
-        {
-          provide: IdleExpiry,
-          useClass: SimpleExpiry,
-        },
-        {
-          provide: Idle,
-          useValue: idleMock,
-        },
-      ],
-    });
     service = TestBed.inject(KeepaliveService);
   });
 
@@ -45,21 +12,21 @@ describe('KeepaliveService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should configure idle', () => {
-    expect(idleMock.setIdle).toHaveBeenCalledOnceWith(10);
-    expect(idleMock.setTimeout).toHaveBeenCalledOnceWith(1800);
-    expect(idleMock.setInterrupts).toHaveBeenCalledOnceWith(DEFAULT_INTERRUPTSOURCES);
+  it('test startWatching', () => {
+    service.startWatching(() => null);
+    expect(service['intervalId']).toBeDefined();
+    expect(service['eventsSubscription']).toBeDefined();
+    expect(service['timeoutId']).toBeUndefined();
+    expect(service['interruptions']).toEqual([]);
   });
 
-  it('should start watching', () => {
-    const timeoutFunc = () => null;
-    service.startWatching(timeoutFunc);
-    expect(idleMock.onTimeout.subscribe).toHaveBeenCalledOnceWith(timeoutFunc);
-    expect(idleMock.watch).toHaveBeenCalledOnceWith();
-  });
-
-  it('should stop watching', () => {
+  it('test stopWatching', () => {
+    service.startWatching(() => null);
     service.stopWatching();
-    expect(idleMock.stop).toHaveBeenCalledOnceWith();
+    expect(service['intervalId']).toBeUndefined();
+    expect(service['timeoutId']).toBeUndefined();
+    expect(service['eventsSubscription']).toBeDefined();
+    expect(service['eventsSubscription']?.closed).toBeTrue();
+    expect(service['interruptions']).toEqual([]);
   });
 });

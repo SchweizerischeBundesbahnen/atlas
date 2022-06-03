@@ -8,7 +8,6 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
 import { Component, Input } from '@angular/core';
-import { NgIdleModule } from '@ng-idle/core';
 
 @Component({
   selector: 'app-coverage',
@@ -42,7 +41,7 @@ describe('DetailWrapperComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DetailWrapperComponent, MockAppCoverageComponent],
-      imports: [AppTestingModule, NgIdleModule.forRoot()],
+      imports: [AppTestingModule],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
   });
