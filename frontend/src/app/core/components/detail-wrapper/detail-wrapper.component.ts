@@ -17,7 +17,10 @@ export class DetailWrapperComponent<TYPE> implements OnDestroy {
     private readonly authService: AuthService,
     private readonly keepaliveService: KeepaliveService
   ) {
-    keepaliveService.startWatching(() => this.controller.backToOverview());
+    keepaliveService.startWatching(() => {
+      this.controller.closeConfirmDialog();
+      this.controller.backToOverview();
+    });
   }
 
   get hasAdminRole(): boolean {

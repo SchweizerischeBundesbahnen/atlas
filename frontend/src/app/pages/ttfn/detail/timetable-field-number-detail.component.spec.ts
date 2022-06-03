@@ -17,7 +17,6 @@ import { FormModule } from '../../../core/module/form.module';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
-import { NgIdleModule } from '@ng-idle/core';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -200,7 +199,6 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         RouterTestingModule.withRoutes([{ path: '', component: HomeComponent }]),
         AppTestingModule,
         FormModule,
-        NgIdleModule.forRoot(),
       ],
       providers: [
         { provide: FormBuilder },
