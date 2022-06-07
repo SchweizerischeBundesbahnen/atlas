@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { TrimInputDirective } from './trim-input';
 import { AppTestingModule } from '../../app.testing.module';
@@ -9,7 +9,7 @@ import { AppTestingModule } from '../../app.testing.module';
   template: ` <input [formControl]="form" trim /> `,
 })
 class TestComponent {
-  form = new FormControl();
+  form = new UntypedFormControl();
 }
 
 const keyUpEvent = new KeyboardEvent('keyup');

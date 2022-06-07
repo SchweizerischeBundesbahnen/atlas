@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RgbPickerComponent } from './rgb-picker.component';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -21,8 +21,8 @@ describe('RgbPickerComponent', () => {
     fixture = TestBed.createComponent(RgbPickerComponent);
     component = fixture.componentInstance;
 
-    component.formGroup = new FormGroup({
-      colorRgb: new FormControl(),
+    component.formGroup = new UntypedFormGroup({
+      colorRgb: new UntypedFormControl(),
     });
     component.attributeName = 'colorRgb';
     fixture.detectChanges();
