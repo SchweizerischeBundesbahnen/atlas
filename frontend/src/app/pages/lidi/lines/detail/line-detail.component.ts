@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { takeUntil } from 'rxjs/operators';
@@ -34,7 +34,7 @@ export class LineDetailComponent
     private router: Router,
     protected dialogRef: MatDialogRef<LineDetailComponent>,
     private linesService: LinesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService
   ) {
@@ -95,7 +95,7 @@ export class LineDetailComponent
     }
   }
 
-  getFormGroup(version: LineVersion): FormGroup {
+  getFormGroup(version: LineVersion): UntypedFormGroup {
     return this.formBuilder.group(
       {
         swissLineNumber: [
