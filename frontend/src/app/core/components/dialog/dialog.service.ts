@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DialogComponent } from './dialog.component';
@@ -9,14 +9,21 @@ import { DialogData } from './dialog.data';
   providedIn: 'root',
 })
 export class DialogService {
+  private confirmDialog?: MatDialogRef<DialogComponent>;
+
   constructor(private dialog: MatDialog) {}
 
   confirm(dialogData: DialogData): Observable<boolean> {
-    const dialogComponent = this.dialog.open(DialogComponent, {
+    this.confirmDialog = this.dialog.open(DialogComponent, {
       data: dialogData,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
-    return dialogComponent.afterClosed().pipe(map((value) => (value ? value : false)));
+    return this.confirmDialog.afterClosed().pipe(map((value) => (value ? value : false)));
+  }
+
+  closeConfirmDialog(): void {
+    this.confirmDialog?.close();
+    this.confirmDialog = undefined;
   }
 }

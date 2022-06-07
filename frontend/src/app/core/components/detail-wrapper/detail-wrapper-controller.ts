@@ -245,6 +245,10 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     this.dialogRef.close();
   }
 
+  closeConfirmDialog(): void {
+    this.dialogService.closeConfirmDialog();
+  }
+
   protected handleError() {
     return (err: HttpErrorResponse) => {
       this.notificationService.error(err);
