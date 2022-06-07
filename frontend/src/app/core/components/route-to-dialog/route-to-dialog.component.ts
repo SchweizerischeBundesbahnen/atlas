@@ -54,6 +54,16 @@ export class RouteToDialogComponent implements OnInit, OnDestroy {
         .subscribe(() => this.navigateBack());
 
       this.routeToDialogService.setDialogRef(dialogRef);
+
+      this.setDialogWrapperClass(dialogRef);
+    }
+  }
+
+  private setDialogWrapperClass(dialogRef: DialogReference) {
+    // see how to override mat-dialog-wrapper: https://github.com/angular/components/issues/7471
+    if (dialogRef._ref.overlayRef.overlayElement) {
+      dialogRef._ref.overlayRef.overlayElement.parentElement.className +=
+        ' route-to-dialog-wrapper';
     }
   }
 
