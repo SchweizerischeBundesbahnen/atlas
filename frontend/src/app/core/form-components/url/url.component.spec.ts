@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UrlComponent } from './url.component';
 import { AppTestingModule } from '../../../app.testing.module';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { InfoIconComponent } from '../info-icon/info-icon.component';
 
 describe('UrlComponent', () => {
@@ -19,8 +19,8 @@ describe('UrlComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UrlComponent);
     component = fixture.componentInstance;
-    component.formGroup = new FormGroup({
-      icon: new FormControl('https://www.sbb.ch'),
+    component.formGroup = new UntypedFormGroup({
+      icon: new UntypedFormControl('https://www.sbb.ch'),
     });
     fixture.detectChanges();
   });

@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { RGB_HEX_COLOR_REGEX } from '../color.service';
 import { ColorPickerDirective } from 'ngx-color-picker';
 import { Keys } from '../../../../core/constants/keys';
@@ -22,7 +22,7 @@ export class RgbPickerComponent implements OnInit, OnChanges {
   colorPickerDirective!: ColorPickerDirective;
 
   @Input() attributeName!: string;
-  @Input() formGroup!: FormGroup;
+  @Input() formGroup!: UntypedFormGroup;
   @Input() defaultColor!: string;
 
   color = '#FFFFFF';

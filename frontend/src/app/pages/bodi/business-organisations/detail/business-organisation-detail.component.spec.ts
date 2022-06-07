@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { BusinessOrganisationsService, BusinessOrganisationVersion } from '../../../../api';
@@ -206,7 +206,7 @@ function setupTestBed(
     ],
     imports: [AppTestingModule],
     providers: [
-      { provide: FormBuilder },
+      { provide: UntypedFormBuilder },
       { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
       {
         provide: MAT_DIALOG_DATA,

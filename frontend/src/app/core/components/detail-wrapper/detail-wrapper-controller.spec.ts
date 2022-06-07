@@ -1,6 +1,6 @@
 import { DetailWrapperController } from './detail-wrapper-controller';
 import { OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { TestBed } from '@angular/core/testing';
@@ -57,8 +57,8 @@ describe('DetailWrapperController', () => {
       dummyController.deleteRecord();
     }
 
-    getFormGroup(value: Record): FormGroup {
-      return new FormBuilder().group({
+    getFormGroup(value: Record): UntypedFormGroup {
+      return new UntypedFormBuilder().group({
         value: [value.id],
       });
     }

@@ -11,7 +11,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DATE_PATTERN, MAX_DATE, MIN_DATE } from '../../date/date.service';
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { UntypedFormControl, ValidationErrors } from '@angular/forms';
 import { Status } from '../../../api';
 import moment from 'moment/moment';
 import { ValidationService } from '../../validation/validation.service';
@@ -37,7 +37,7 @@ export class TableSearchComponent {
     statusChoices: this.activeStatuses,
   };
 
-  dateControl = new FormControl();
+  dateControl = new UntypedFormControl();
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
