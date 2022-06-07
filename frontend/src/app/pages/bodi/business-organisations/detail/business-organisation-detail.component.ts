@@ -6,7 +6,7 @@ import {
 } from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { takeUntil } from 'rxjs/operators';
@@ -39,7 +39,7 @@ export class BusinessOrganisationDetailComponent
     private router: Router,
     protected dialogRef: MatDialogRef<BusinessOrganisationDetailComponent>,
     private businessOrganisationsService: BusinessOrganisationsService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     private translateService: TranslateService
@@ -117,7 +117,7 @@ export class BusinessOrganisationDetailComponent
     }
   }
 
-  getFormGroup(version: BusinessOrganisationVersion): FormGroup {
+  getFormGroup(version: BusinessOrganisationVersion): UntypedFormGroup {
     return this.formBuilder.group(
       {
         descriptionDe: [

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CommentComponent } from './comment.component';
 import { AppTestingModule } from '../../../app.testing.module';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { InfoIconComponent } from '../info-icon/info-icon.component';
 
 describe('CommentComponent', () => {
@@ -19,8 +19,8 @@ describe('CommentComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CommentComponent);
     component = fixture.componentInstance;
-    component.formGroup = new FormGroup({
-      comment: new FormControl('test'),
+    component.formGroup = new UntypedFormGroup({
+      comment: new UntypedFormControl('test'),
     });
     fixture.detectChanges();
   });
