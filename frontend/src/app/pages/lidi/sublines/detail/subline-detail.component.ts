@@ -12,7 +12,7 @@ import { DetailWrapperController } from '../../../../core/components/detail-wrap
 import { catchError, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Page } from '../../../../core/model/page';
 import { Pages } from '../../../pages';
@@ -47,7 +47,7 @@ export class SublineDetailComponent
     private router: Router,
     protected dialogRef: MatDialogRef<SublineDetailComponent>,
     private sublinesService: SublinesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     private dateService: DateService,
@@ -117,7 +117,7 @@ export class SublineDetailComponent
     }
   }
 
-  getFormGroup(version: SublineVersion): FormGroup {
+  getFormGroup(version: SublineVersion): UntypedFormGroup {
     return this.formBuilder.group(
       {
         swissSublineNumber: [

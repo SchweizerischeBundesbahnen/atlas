@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { WithDefaultValueDirective } from './with-default-value.directive';
 import { AppTestingModule } from '../../app.testing.module';
@@ -11,7 +11,7 @@ const keyUpEvent = new KeyboardEvent('keyup');
   template: ` <input [formControl]="form" withDefaultValue="defaultValue" /> `,
 })
 class TestComponent {
-  form = new FormControl();
+  form = new UntypedFormControl();
 }
 
 describe('WithDefaultValueDirective', () => {
