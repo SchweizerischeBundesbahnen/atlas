@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { catchError, EMPTY, Observable, retry, throwError } from 'rxjs';
+import { catchError, EMPTY, Observable, retry } from 'rxjs';
 import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (!this.isCypressRefreshTokenError(error)) {
           this.notificationService.error(error);
-          return throwError(() => error);
+          throw error;
         }
         console.error(error);
         return EMPTY;

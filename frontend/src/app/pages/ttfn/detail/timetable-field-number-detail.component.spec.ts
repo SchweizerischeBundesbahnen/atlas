@@ -156,10 +156,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-    expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.classList).toContain('error');
+    expect(component.form.enabled).toBeTrue();
   });
 
   it('should delete Version successfully', () => {
@@ -395,10 +392,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
-      const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-      expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.classList).toContain('error');
+      expect(component.form.enabled).toBeTrue();
     });
   });
 });

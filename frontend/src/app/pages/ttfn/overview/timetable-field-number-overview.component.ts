@@ -80,13 +80,6 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
         $paginationAndSearch.size,
         [$paginationAndSearch.sort!, 'ttfnid,ASC']
       )
-      .pipe(
-        catchError((err) => {
-          this.notificationService.error(err, 'TTFN.NOTIFICATION.FETCH_ERROR');
-          this.isLoading = false;
-          throw err;
-        })
-      )
       .subscribe((container) => {
         this.timetableFieldNumbers = container.objects!;
         this.totalCount$ = container.totalCount!;
