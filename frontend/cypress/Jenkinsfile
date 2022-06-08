@@ -95,7 +95,7 @@ pipeline {
                  archiveArtifacts 'frontend/cypress/videos/**/*.mp4'
                  echo 'Run E2E Release Tests'
                  sh 'npm --prefix frontend/ run cypress:run-e2e-release'
-                 echo 'Archive E2E Integration Tests videos'
+                 echo 'Archive E2E Release Tests videos'
                  archiveArtifacts 'frontend/cypress/videos/**/*.mp4'
 
             } else {
@@ -176,6 +176,8 @@ pipeline {
       archiveArtifacts 'frontend/cypress/logs/*.json'
       echo 'Archive screenshots'
       archiveArtifacts 'frontend/cypress/screenshots/**.*'
+      echo 'Archive E2E Tests videos'
+      archiveArtifacts 'frontend/cypress/videos/**/*.mp4'
     }
     cleanup {
       shutdownZAP()
