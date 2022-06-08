@@ -172,7 +172,6 @@
       "EDIT_ERROR": "Beim Editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "DELETE_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich gelöscht.",
       "DELETE_ERROR": "Beim Löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
-      "FETCH_ERROR": "Beim Laden der Fahrplanfeldnummern ist ein unbekannter Fehler aufgetreten.",
       "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
     }
   },
@@ -242,8 +241,7 @@
         "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
         "EDIT_SUCCESS": "Die Linie wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
-        "DELETE_SUCCESS": "Die Linie wurde erfolgreich gelöscht.",
-        "FETCH_ERROR": "Beim Laden der Linie ist ein unbekannter Fehler aufgetreten."
+        "DELETE_SUCCESS": "Die Linie wurde erfolgreich gelöscht."
       }
     },
     "SUBLINE": {
@@ -274,8 +272,7 @@
         "EDIT_SUCCESS": "Die Teillinie wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Teillinie ist ein Fehler aufgetreten.",
         "DELETE_SUCCESS": "Die Teillinie wurde erfolgreich gelöscht.",
-        "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten.",
-        "FETCH_ERROR": "Beim Laden der Teillinie ist ein unbekannter Fehler aufgetreten."
+        "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten."
       }
     }
   },
@@ -329,8 +326,7 @@
         "EDIT_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Geschäftsorganisation ist ein Fehler aufgetreten.",
         "DELETE_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gelöscht.",
-        "DELETE_ERROR": "Beim Löschen der Geschäftsorganisation ist ein Fehler aufgetreten.",
-        "FETCH_ERROR": "Beim Laden der Geschäftsorganisation ist ein unbekannter Fehler aufgetreten."
+        "DELETE_ERROR": "Beim Löschen der Geschäftsorganisation ist ein Fehler aufgetreten."
       }
     }
   }

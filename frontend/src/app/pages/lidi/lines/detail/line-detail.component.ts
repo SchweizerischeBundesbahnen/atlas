@@ -64,7 +64,7 @@ export class LineDetailComponent
   updateRecord(): void {
     this.linesService
       .updateLineVersion(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -76,7 +76,7 @@ export class LineDetailComponent
   createRecord(): void {
     this.linesService
       .createLineVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
         this.router
