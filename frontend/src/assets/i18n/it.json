@@ -172,7 +172,6 @@
       "EDIT_ERROR": "Si è verificato un errore durante la modifica del numero del quadro d’orario.",
       "DELETE_SUCCESS": "Numero del quadro d’orario cancellato con successo.",
       "DELETE_ERROR": "Si è verificato un errore durante la cancellazione del numero del quadro d’orario.",
-      "FETCH_ERROR": "Si è verificato un errore sconosciuto durante il caricamento del numero del quadro d’orario.",
       "SWISSNUMBER_NOT_UNIQUE": "Il numero del quadro d’orario CH o il numero del quadro d’orario selezionato è già assegnato in questo intervallo di tempo."
     }
   },
@@ -242,8 +241,7 @@
         "ADD_ERROR": "Si è verificato un errore durante la registrazione della linea.",
         "EDIT_SUCCESS": "Linea memorizzata con successo.",
         "EDIT_ERROR": "Si è verificato un errore durante la modifica della linea.",
-        "DELETE_SUCCESS": "Linea cancellata con successo.",
-        "FETCH_ERROR": "Si è verificato un errore sconosciuto durante il caricamento della linea."
+        "DELETE_SUCCESS": "Linea cancellata con successo."
       }
     },
     "SUBLINE": {
@@ -274,8 +272,7 @@
         "EDIT_SUCCESS": "Linea parziale memorizzata con successo.",
         "EDIT_ERROR": "Si è verificato un errore nella modifica della linea parziale.",
         "DELETE_SUCCESS": "Linea parziale cancellata con successo.",
-        "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea parziale.",
-        "FETCH_ERROR": "Si è verificato un errore sconosciuto durante il caricamento della linea parziale."
+        "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea parziale."
       }
     }
   },
@@ -329,8 +326,7 @@
         "EDIT_SUCCESS": "L'organizzazione commerciale è stata salvata correttamente.",
         "EDIT_ERROR": "Si è verificato un errore durante la modifica dell'organizzazione commerciale",
         "DELETE_SUCCESS": "L'organizzazione commerciale è stata eliminata con successo.",
-        "DELETE_ERROR": "Si è verificato un errore durante l'eliminazione dell'organizzazione commerciale.",
-        "FETCH_ERROR": "Si è verificato un errore sconosciuto durante il caricamento dei dati dell'organizzazione commerciale."
+        "DELETE_ERROR": "Si è verificato un errore durante l'eliminazione dell'organizzazione commerciale."
       }
     }
   }
