@@ -18,8 +18,8 @@
     "cypress:run-e2e-line": "cypress run --spec cypress/integration/lidi/line/**/*.ts",
     "cypress:run-e2e-subline": "cypress run --spec cypress/integration/lidi/subline/**/*.ts",
     "cypress:run-e2e-ttfn": "cypress run --spec cypress/integration/ttfn/**/*.ts",
-    "cypress:run-e2e-release": "cypress run --config integrationFolder=cypress/release",
-    "cypress:open-e2e-release": "cypress open --config integrationFolder=cypress/release",
+    "cypress:run-e2e-release": "cypress run --config specPattern=cypress/release",
+    "cypress:open-e2e-release": "cypress open --config specPattern=cypress/release",
     "generate-api": "openapi-generator-cli generate -g typescript-angular -i ../apim-configuration/src/main/resources/api-dev/spec.yaml -o src/app/api --type-mappings=date=Date --additional-properties apiModulePrefix=Atlas"
   },
   "name": "atlas-frontend",
