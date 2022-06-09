@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 public class AtlasCharacterSetsRegexTest {
@@ -73,6 +74,7 @@ public class AtlasCharacterSetsRegexTest {
 
     assertThat(pattern.matcher("test@here.com").matches()).isTrue();
     assertThat(pattern.matcher("beste.dude@sbb.ch").matches()).isTrue();
+    assertThat(pattern.matcher(StringUtils.EMPTY).matches()).isTrue();
 
     assertThat(pattern.matcher("@me").matches()).isFalse();
     assertThat(pattern.matcher("@me.here").matches()).isFalse();
