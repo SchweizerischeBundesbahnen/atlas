@@ -41,7 +41,7 @@ public class TimetableFieldNumberService {
     if (!overlappingVersions.isEmpty()) {
       throw new TimetableFieldNumberConflictException(newVersion, overlappingVersions);
     }
-    return versionRepository.save(newVersion);
+    return versionRepository.saveAndFlush(newVersion);
   }
 
   public Page<TimetableFieldNumber> getVersionsSearched(TimetableFieldNumberSearchRestrictions searchRestrictions) {
@@ -53,7 +53,8 @@ public class TimetableFieldNumberService {
     versionRepository.deleteById(id);
   }
 
-  public List<VersionedObject> updateVersion(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion) {
+  public void updateVersion(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion) {
+    versionRepository.incrementVersion(currentVersion.getTtfnid());
     List<TimetableFieldNumberVersion> currentVersions = getAllVersionsVersioned(currentVersion.getTtfnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
@@ -61,8 +62,6 @@ public class TimetableFieldNumberService {
 
     versionableService.applyVersioning(TimetableFieldNumberVersion.class, versionedObjects, this::save,
         this::deleteById);
-    versionRepository.incrementVersion(currentVersion.getTtfnid());
-    return versionedObjects;
   }
 
   public List<TimetableFieldNumberVersion> getOverlapsOnNumberAndSttfn(
