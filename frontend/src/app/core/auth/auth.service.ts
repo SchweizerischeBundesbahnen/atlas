@@ -35,8 +35,10 @@ export class AuthService {
     this.oauthService.setupAutomaticSilentRefresh();
 
     this.oauthService.loadDiscoveryDocumentAndLogin().then(() => {
-      this.eventUserComponentNotification.emit(this.claims);
-      this.router.navigate([sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY)]).then();
+      if (this.loggedIn) {
+        this.eventUserComponentNotification.emit(this.claims);
+        this.router.navigate([sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY)]).then();
+      }
     });
   }
 
