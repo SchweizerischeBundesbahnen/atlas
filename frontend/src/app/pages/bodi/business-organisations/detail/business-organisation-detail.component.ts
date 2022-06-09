@@ -146,7 +146,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.alphaNumeric,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
         abbreviationFr: [
@@ -154,7 +154,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.alphaNumeric,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
         abbreviationIt: [
@@ -162,7 +162,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.alphaNumeric,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
         abbreviationEn: [
@@ -170,7 +170,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.alphaNumeric,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
         organisationNumber: [
