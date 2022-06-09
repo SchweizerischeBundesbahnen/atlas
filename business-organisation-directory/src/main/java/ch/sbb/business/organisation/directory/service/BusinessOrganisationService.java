@@ -53,6 +53,7 @@ public class BusinessOrganisationService {
         editedVersion, currentVersions);
     versionableService.applyVersioning(BusinessOrganisationVersion.class, versionedObjects,
         this::save, this::deleteById);
+    versionRepository.incrementVersion(currentVersion.getSboid());
   }
 
   void deleteById(long id) {
