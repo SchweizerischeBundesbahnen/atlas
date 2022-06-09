@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CmykPickerComponent } from './cmyk-picker.component';
-import { AbstractControl, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { WithDefaultValueDirective } from '../../../../core/text-input/with-default-value.directive';
@@ -21,8 +21,8 @@ describe('CmykPickerComponent', () => {
     fixture = TestBed.createComponent(CmykPickerComponent);
     component = fixture.componentInstance;
 
-    component.formGroup = new UntypedFormGroup({
-      colorCmyk: new UntypedFormControl(),
+    component.formGroup = new FormGroup({
+      colorCmyk: new FormControl(),
     });
     component.attributeName = 'colorCmyk';
     fixture.detectChanges();

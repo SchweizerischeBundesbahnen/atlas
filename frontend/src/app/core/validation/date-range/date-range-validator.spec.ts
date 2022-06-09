@@ -1,5 +1,5 @@
 import { DateRangeValidator } from './date-range-validator';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import moment from 'moment';
 
 describe('Date Validator', () => {
@@ -7,8 +7,8 @@ describe('Date Validator', () => {
     //given
     const validFrom = moment('12.12.2000', 'DD.MM.YYYY');
     const validTo = moment('12.12.1999', 'DD.MM.YYYY');
-    const validFromForm = new UntypedFormControl(validFrom);
-    const validToForm = new UntypedFormControl(validTo);
+    const validFromForm = new FormControl(validFrom);
+    const validToForm = new FormControl(validTo);
     //when
     DateRangeValidator.validate(validFromForm, validToForm);
     //then
@@ -31,8 +31,8 @@ describe('Date Validator', () => {
     //given
     const validFrom = moment();
     const validTo = moment();
-    const validFromForm = new UntypedFormControl(validFrom);
-    const validToForm = new UntypedFormControl(validTo);
+    const validFromForm = new FormControl(validFrom);
+    const validToForm = new FormControl(validTo);
     //when
     DateRangeValidator.validate(validFromForm, validToForm);
     //then
@@ -44,8 +44,8 @@ describe('Date Validator', () => {
     //given
     const validFrom = moment('2010-12-31');
     const validTo = moment('2011-12-31');
-    const validFromForm = new UntypedFormControl(validFrom);
-    const validToForm = new UntypedFormControl(validTo);
+    const validFromForm = new FormControl(validFrom);
+    const validToForm = new FormControl(validTo);
     validFromForm.setErrors({
       date_range_error: {
         date: {
@@ -72,8 +72,8 @@ describe('Date Validator', () => {
     //given
     const validFrom = moment('2010-12-31');
     const validTo = moment('2009-12-31 23:59:59');
-    const validFromForm = new UntypedFormControl(validFrom);
-    const validToForm = new UntypedFormControl(validTo);
+    const validFromForm = new FormControl(validFrom);
+    const validToForm = new FormControl(validTo);
     validFromForm.setErrors({
       matDatepickerMin: {
         actual: validFrom,
@@ -110,8 +110,8 @@ describe('Date Validator', () => {
 
   it('should successfully validate dates', () => {
     //given
-    const validFromForm = new UntypedFormControl(moment('12.12.2000', 'DD.MM.YYYY'));
-    const validToForm = new UntypedFormControl(moment('12.12.2001', 'DD.MM.YYYY'));
+    const validFromForm = new FormControl(moment('12.12.2000', 'DD.MM.YYYY'));
+    const validToForm = new FormControl(moment('12.12.2001', 'DD.MM.YYYY'));
     //when
     DateRangeValidator.validate(validFromForm, validToForm);
     //then

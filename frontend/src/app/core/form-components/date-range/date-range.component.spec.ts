@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DateRangeComponent } from './date-range.component';
 import { AppTestingModule } from '../../../app.testing.module';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DateIconComponent } from '../date-icon/date-icon.component';
 
 describe('DateRangeComponent', () => {
@@ -19,9 +19,9 @@ describe('DateRangeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DateRangeComponent);
     component = fixture.componentInstance;
-    component.formGroup = new UntypedFormGroup({
-      validFrom: new UntypedFormControl(),
-      validTo: new UntypedFormControl(),
+    component.formGroup = new FormGroup({
+      validFrom: new FormControl(),
+      validTo: new FormControl(),
     });
     fixture.detectChanges();
   });

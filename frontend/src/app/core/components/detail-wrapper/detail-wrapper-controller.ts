@@ -1,5 +1,5 @@
 import { Directive, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { EMPTY, Observable, of } from 'rxjs';
@@ -15,7 +15,7 @@ import { Role } from '../../auth/role';
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
   record!: TYPE;
   records!: Array<TYPE>;
-  form = new UntypedFormGroup({});
+  form!: FormGroup;
   switchedIndex!: number | undefined;
 
   showSwitch: boolean | undefined;
@@ -222,7 +222,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   abstract readRecord(): TYPE;
 
-  abstract getFormGroup(record: TYPE): UntypedFormGroup;
+  abstract getFormGroup(record: TYPE): FormGroup;
 
   abstract updateRecord(): void;
 
@@ -272,12 +272,12 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     return of(true);
   }
 
-  private validateAllFormFields(formGroup: UntypedFormGroup) {
+  private validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
-      if (control instanceof UntypedFormControl) {
+      if (control instanceof FormControl) {
         control.markAsTouched({ onlySelf: true });
-      } else if (control instanceof UntypedFormGroup) {
+      } else if (control instanceof FormGroup) {
         this.validateAllFormFields(control);
       }
     });

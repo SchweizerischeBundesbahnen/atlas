@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { Router } from '@angular/router';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { takeUntil } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { LineDetailFormGroup } from '../../../bodi/business-organisations/detail/line-detail-form-group';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -34,7 +35,7 @@ export class LineDetailComponent
     private router: Router,
     protected dialogRef: MatDialogRef<LineDetailComponent>,
     private linesService: LinesService,
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService
   ) {
@@ -95,96 +96,72 @@ export class LineDetailComponent
     }
   }
 
-  getFormGroup(version: LineVersion): UntypedFormGroup {
-    return this.formBuilder.group(
+  getFormGroup(version: LineVersion): FormGroup {
+    return new FormGroup<LineDetailFormGroup>(
       {
-        swissLineNumber: [
-          version.swissLineNumber,
-          [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.sid4pt],
-        ],
-        lineType: [version.lineType, [Validators.required]],
-        paymentType: [version.paymentType, [Validators.required]],
-        businessOrganisation: [
-          version.businessOrganisation,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_50,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          ],
-        ],
-        number: [
-          version.number,
-          [
-            AtlasFieldLengthValidator.length_50,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        alternativeName: [
-          version.alternativeName,
-          [
-            AtlasFieldLengthValidator.length_50,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        combinationName: [
-          version.combinationName,
-          [
-            AtlasFieldLengthValidator.length_50,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        longName: [
-          version.longName,
-          [
-            AtlasFieldLengthValidator.length_255,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        icon: [
-          version.icon,
-          [
-            AtlasFieldLengthValidator.length_255,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        colorFontRgb: [version.colorFontRgb || '#000000', [Validators.required]],
-        colorBackRgb: [version.colorBackRgb || '#FFFFFF', [Validators.required]],
-        colorFontCmyk: [version.colorFontCmyk || '100,100,100,100', [Validators.required]],
-        colorBackCmyk: [version.colorBackCmyk || '0,0,0,0', [Validators.required]],
-        description: [
-          version.description,
-          [
-            AtlasFieldLengthValidator.length_255,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        validFrom: [
+        swissLineNumber: new FormControl(version.swissLineNumber, [
+          Validators.required,
+          Validators.maxLength(50),
+          AtlasCharsetsValidator.sid4pt,
+        ]),
+        lineType: new FormControl(version.lineType, [Validators.required]),
+        paymentType: new FormControl(version.paymentType, [Validators.required]),
+        businessOrganisation: new FormControl(version.businessOrganisation, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_50,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+        ]),
+        number: new FormControl(version.number, [
+          AtlasFieldLengthValidator.length_50,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        alternativeName: new FormControl(version.alternativeName, [
+          AtlasFieldLengthValidator.length_50,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        combinationName: new FormControl(version.combinationName, [
+          AtlasFieldLengthValidator.length_50,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        longName: new FormControl(version.longName, [
+          AtlasFieldLengthValidator.length_255,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        icon: new FormControl(version.icon, [
+          AtlasFieldLengthValidator.length_255,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        colorFontRgb: new FormControl(version.colorFontRgb || '#000000', [Validators.required]),
+        colorBackRgb: new FormControl(version.colorBackRgb || '#FFFFFF', [Validators.required]),
+        colorFontCmyk: new FormControl(version.colorFontCmyk || '100,100,100,100', [
+          Validators.required,
+        ]),
+        colorBackCmyk: new FormControl(version.colorBackCmyk || '0,0,0,0', [Validators.required]),
+        description: new FormControl(version.description, [
+          AtlasFieldLengthValidator.length_255,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
-        ],
-        validTo: [
-          version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required],
-        ],
-        comment: [
-          version.comment,
-          [
-            AtlasFieldLengthValidator.comments,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        etagVersion: version.etagVersion,
+          [Validators.required]
+        ),
+        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
+          Validators.required,
+        ]),
+        comment: new FormControl(version.comment, [
+          AtlasFieldLengthValidator.comments,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        etagVersion: new FormControl(version.etagVersion),
       },
-      {
-        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
-      }
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 

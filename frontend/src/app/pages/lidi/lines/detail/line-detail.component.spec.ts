@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
@@ -191,7 +191,7 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
     ],
     imports: [AppTestingModule],
     providers: [
-      { provide: UntypedFormBuilder },
+      { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
       {
         provide: MAT_DIALOG_DATA,

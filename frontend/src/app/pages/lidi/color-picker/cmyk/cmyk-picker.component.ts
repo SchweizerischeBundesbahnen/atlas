@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AbstractControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { CMYK_COLOR_REGEX, ColorService } from '../color.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { CMYK_COLOR_REGEX, ColorService } from '../color.service';
 })
 export class CmykPickerComponent {
   @Input() attributeName!: string;
-  @Input() formGroup!: UntypedFormGroup;
+  @Input() formGroup!: FormGroup;
   @Input() defaultColor!: string;
 
   constructor(private colorService: ColorService) {}
