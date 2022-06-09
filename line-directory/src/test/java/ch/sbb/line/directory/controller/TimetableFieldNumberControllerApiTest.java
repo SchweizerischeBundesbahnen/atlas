@@ -203,7 +203,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
 
     // Then on a second update it has to return error for optimistic lock
     version.setValidFrom(LocalDate.of(2000, 1, 1));
-    version.setValidTo(LocalDate.of(2011, 12, 31));
+    version.setValidTo(LocalDate.of(2025, 12, 31));
     mvc.perform(createUpdateRequest(TimetableFieldNumberController.toModel(version)))
        .andExpect(status().isPreconditionFailed());
   }
