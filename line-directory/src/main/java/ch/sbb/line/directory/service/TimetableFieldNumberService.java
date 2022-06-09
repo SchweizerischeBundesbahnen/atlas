@@ -15,10 +15,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class TimetableFieldNumberService {
 
   private final TimetableFieldNumberVersionRepository versionRepository;
@@ -59,6 +61,7 @@ public class TimetableFieldNumberService {
 
     versionableService.applyVersioning(TimetableFieldNumberVersion.class, versionedObjects, this::save,
         this::deleteById);
+    versionRepository.incrementVersion(currentVersion.getTtfnid());
     return versionedObjects;
   }
 
