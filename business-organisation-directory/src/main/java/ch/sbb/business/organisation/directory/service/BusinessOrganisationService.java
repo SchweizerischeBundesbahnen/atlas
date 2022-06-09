@@ -47,13 +47,13 @@ public class BusinessOrganisationService {
 
   public void updateBusinessOrganisationVersion(
       BusinessOrganisationVersion currentVersion, BusinessOrganisationVersion editedVersion) {
+    versionRepository.incrementVersion(currentVersion.getSboid());
     List<BusinessOrganisationVersion> currentVersions = versionRepository.findAllBySboidOrderByValidFrom(
         currentVersion.getSboid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
     versionableService.applyVersioning(BusinessOrganisationVersion.class, versionedObjects,
         this::save, this::deleteById);
-    versionRepository.incrementVersion(currentVersion.getSboid());
   }
 
   void deleteById(long id) {
