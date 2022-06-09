@@ -28,6 +28,9 @@ public class Property {
     return this.oneToOne != null;
   }
 
+  /**
+   * Properties with value null are ignored, so we can send API calls only with targeted updates.
+   */
   public boolean isNotEmpty() {
     if (this.key != null) {
       if (this.value != null) {
