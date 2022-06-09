@@ -87,6 +87,7 @@ public class SublineService {
 
     versionableService.applyVersioning(SublineVersion.class, versionedObjects, this::save,
         this::deleteById);
+    sublineVersionRepository.incrementVersion(currentVersion.getSlnid());
   }
 
 }

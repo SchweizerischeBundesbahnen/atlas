@@ -3,8 +3,8 @@ package ch.sbb.line.directory.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.line.directory.entity.TimetableFieldLineRelation;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
@@ -89,6 +89,19 @@ public class TimetableFieldNumberVersionRepositoryTest {
   }
 
   @Test
+  void shouldUpdateVersionOnAllVersions() {
+    //given
+    assertThat(version.getVersion()).isZero();
+
+    //when
+    versionRepository.incrementVersion(version.getTtfnid());
+    TimetableFieldNumberVersion result = versionRepository.findAll().get(0);
+
+    //then
+    assertThat(result.getVersion()).isEqualTo(1);
+  }
+
+  @Test
   void shouldUpdateVersionWithAdditionalLineRelation() {
     //given
     version.getLineRelations()
@@ -166,7 +179,7 @@ public class TimetableFieldNumberVersionRepositoryTest {
 
     List<TimetableFieldNumberVersion> allVersionsVersioned = versionRepository.getAllVersionsVersioned(
         ttfnid);
-    assertThat(allVersionsVersioned.size()).isEqualTo(2);
+    assertThat(allVersionsVersioned).hasSize(2);
 
     //when
     versionRepository.deleteAll(allVersionsVersioned);
