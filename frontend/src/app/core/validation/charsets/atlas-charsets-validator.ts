@@ -37,6 +37,10 @@ export class AtlasCharsetsValidator {
     );
   }
 
+  static fiveNumbers(control: AbstractControl): ValidationErrors | null {
+    return AtlasCharsetsValidator.validateAllowedCharacters(control, '[0-9]{1,5}', '0-9');
+  }
+
   private static validateAllowedCharacters(
     control: AbstractControl,
     pattern: string,

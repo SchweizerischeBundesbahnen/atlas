@@ -175,7 +175,12 @@ export class BusinessOrganisationDetailComponent
         ],
         organisationNumber: [
           version.organisationNumber,
-          [Validators.required, Validators.min(0), Validators.max(99999)],
+          [
+            Validators.required,
+            Validators.min(0),
+            Validators.max(99999),
+            AtlasCharsetsValidator.fiveNumbers,
+          ],
         ],
         contactEnterpriseEmail: [
           version.contactEnterpriseEmail,
