@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
-import { AbstractControl, UntypedFormBuilder } from '@angular/forms';
+import { AbstractControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { DetailWrapperComponent } from '../../../core/components/detail-wrapper/detail-wrapper.component';
@@ -111,7 +111,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
       ],
       imports: [AppTestingModule],
       providers: [
-        { provide: UntypedFormBuilder },
+        { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         {
           provide: MAT_DIALOG_DATA,
@@ -198,7 +198,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         FormModule,
       ],
       providers: [
-        { provide: UntypedFormBuilder },
+        { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         {
           provide: MAT_DIALOG_DATA,

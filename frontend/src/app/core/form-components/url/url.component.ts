@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'form-url-component',
@@ -7,5 +7,5 @@ import { UntypedFormGroup } from '@angular/forms';
   styleUrls: ['url.component.scss'],
 })
 export class UrlComponent {
-  @Input() formGroup!: UntypedFormGroup;
+  @Input() formGroup!: FormGroup;
 }

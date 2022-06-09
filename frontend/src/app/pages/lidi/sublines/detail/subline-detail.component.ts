@@ -12,7 +12,7 @@ import { DetailWrapperController } from '../../../../core/components/detail-wrap
 import { catchError, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Page } from '../../../../core/model/page';
 import { Pages } from '../../../pages';
@@ -24,6 +24,7 @@ import { ValidationService } from '../../../../core/validation/validation.servic
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { SublineDetailFormGroup } from './subline-detail-form-group';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -47,7 +48,7 @@ export class SublineDetailComponent
     private router: Router,
     protected dialogRef: MatDialogRef<SublineDetailComponent>,
     private sublinesService: SublinesService,
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     private dateService: DateService,
@@ -117,64 +118,52 @@ export class SublineDetailComponent
     }
   }
 
-  getFormGroup(version: SublineVersion): UntypedFormGroup {
-    return this.formBuilder.group(
+  getFormGroup(version: SublineVersion): FormGroup {
+    return new FormGroup<SublineDetailFormGroup>(
       {
-        swissSublineNumber: [
-          version.swissSublineNumber,
-          [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.sid4pt],
-        ],
-        [this.mainlineSlnidFormControlName]: [version.mainlineSlnid, [Validators.required]],
-        slnid: [version.slnid],
-        status: [version.status],
-        sublineType: [version.sublineType, [Validators.required]],
-        paymentType: [version.paymentType, [Validators.required]],
-        businessOrganisation: [
-          version.businessOrganisation,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_50,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        number: [
-          version.number,
-          [
-            AtlasFieldLengthValidator.length_50,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        longName: [
-          version.longName,
-          [
-            AtlasFieldLengthValidator.length_255,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        description: [
-          version.description,
-          [
-            AtlasFieldLengthValidator.length_255,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        validFrom: [
+        swissSublineNumber: new FormControl(version.swissSublineNumber, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_50,
+          AtlasCharsetsValidator.sid4pt,
+        ]),
+        [this.mainlineSlnidFormControlName]: new FormControl(version.mainlineSlnid, [
+          Validators.required,
+        ]),
+        slnid: new FormControl(version.slnid),
+        status: new FormControl(version.status),
+        sublineType: new FormControl(version.sublineType, [Validators.required]),
+        paymentType: new FormControl(version.paymentType, [Validators.required]),
+        businessOrganisation: new FormControl(version.businessOrganisation, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_50,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        number: new FormControl(version.number, [
+          AtlasFieldLengthValidator.length_50,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        longName: new FormControl(version.longName, [
+          AtlasFieldLengthValidator.length_255,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        description: new FormControl(version.description, [
+          AtlasFieldLengthValidator.length_255,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
-        ],
-        validTo: [
-          version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required],
-        ],
-        etagVersion: version.etagVersion,
+          [Validators.required]
+        ),
+        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
+          Validators.required,
+        ]),
+        etagVersion: new FormControl(version.etagVersion),
       },
-      {
-        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
-      }
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
