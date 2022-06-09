@@ -423,4 +423,34 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
   }
+
+  @Test
+  void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel =
+        SublineTestData.sublineVersionModelBuilder()
+                       .mainlineSlnid(lineVersionModel.getSlnid())
+                       .validFrom(LocalDate.of(2000, 1, 1))
+                       .validTo(LocalDate.of(2000, 12, 31))
+                       .build();
+    sublineVersionModel = sublineController.createSublineVersion(sublineVersionModel);
+
+    // When first update it is ok
+    sublineVersionModel.setValidFrom(LocalDate.of(2010, 1, 1));
+    sublineVersionModel.setValidTo(LocalDate.of(2010, 12, 31));
+    mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(sublineVersionModel)))
+       .andExpect(status().isOk());
+
+    // Then on a second update it has to return error for optimistic lock
+    sublineVersionModel.setValidFrom(LocalDate.of(2000, 1, 1));
+    sublineVersionModel.setValidTo(LocalDate.of(2011, 12, 31));
+    mvc.perform(post("/v1/sublines/versions/" + sublineVersionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(sublineVersionModel)))
+       .andExpect(status().isPreconditionFailed());
+  }
 }

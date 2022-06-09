@@ -4,6 +4,7 @@ import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,4 +23,8 @@ public interface TimetableFieldNumberVersionRepository extends JpaRepository<Tim
       + "and v.ttfnid not like :ttfnid")
   List<TimetableFieldNumberVersion> getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(@Param("number") String number, @Param("sttfn") String sttfn,
       @Param("validFrom") LocalDate validFrom, @Param("validTo") LocalDate validTo, @Param("ttfnid") String ttfnid);
+
+  @Modifying(clearAutomatically = true)
+  @Query("update timetable_field_number_version v set v.version = (v.version + 1) where v.ttfnid = :ttfnid")
+  void incrementVersion(@Param("ttfnid") String ttfnid);
 }

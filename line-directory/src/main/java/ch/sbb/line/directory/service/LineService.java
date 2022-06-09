@@ -90,6 +90,7 @@ public class LineService {
 
     versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save,
         this::deleteById);
+    lineVersionRepository.incrementVersion(currentVersion.getSlnid());
   }
 
   public List<Line> getAllCoveredLines() {

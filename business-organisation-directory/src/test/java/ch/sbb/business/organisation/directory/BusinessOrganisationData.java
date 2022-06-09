@@ -44,7 +44,6 @@ public class BusinessOrganisationData {
 
   public static BusinessOrganisationVersionModelBuilder businessOrganisationVersionModelBuilder() {
     return BusinessOrganisationVersionModel.builder()
-                                           .sboid("ch:1:sboid:100000")
                                            .abbreviationDe("de")
                                            .abbreviationFr("fr")
                                            .abbreviationIt("it")
