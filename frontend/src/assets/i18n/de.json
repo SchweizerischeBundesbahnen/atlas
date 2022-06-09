@@ -301,7 +301,7 @@
       "BUSINESS_TYPE": "Geschäftsorganisationstyp",
       "BUSINESS_TYPES": {
         "STREET": "Strasse",
-        "STREET_WITHOUT_TRAFFIC": "Strasse ohne Verkehrsabrechnug",
+        "STREET_WITHOUT_TRAFFIC": "Strasse ohne Verkehrsabrechnung",
         "RAILROAD": "Eisenbahn",
         "RAILROAD_UIC": "UIC Eisenbahn",
         "TRAIN_WITHOUT_TRAFFIC": "Bahn ohne Verkehrsabrechnung",
