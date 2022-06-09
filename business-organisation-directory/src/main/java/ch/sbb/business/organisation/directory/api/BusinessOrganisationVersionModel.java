@@ -132,6 +132,7 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
                                       .contactEnterpriseEmail(model.getContactEnterpriseEmail())
                                       .sboid(model.getSboid())
                                       .businessTypes(model.getBusinessTypes())
+                                      .version(model.getEtagVersion())
                                       .build();
   }
 
