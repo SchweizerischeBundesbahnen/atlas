@@ -82,6 +82,7 @@ public class LineService {
 
   public void updateVersion(LineVersion currentVersion,
       LineVersion editedVersion) {
+    lineVersionRepository.incrementVersion(currentVersion.getSlnid());
     List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
         currentVersion.getSlnid());
 
@@ -90,7 +91,6 @@ public class LineService {
 
     versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save,
         this::deleteById);
-    lineVersionRepository.incrementVersion(currentVersion.getSlnid());
   }
 
   public List<Line> getAllCoveredLines() {
