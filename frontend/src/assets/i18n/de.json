@@ -83,6 +83,7 @@
   },
   "DIALOG": {
     "OK": "Weiter",
+    "RELOAD": "Neu laden",
     "CANCEL": "Abbrechen",
     "BACK": "Zurück zur Eingabemaske",
     "WARNING": "Warnung!",
