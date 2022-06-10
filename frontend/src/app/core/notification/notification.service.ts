@@ -23,7 +23,11 @@ export class NotificationService implements OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   private routerEventSubscription?: Subscription;
   private readonly routerEventPipe = this.router.events.pipe(
-    first((event) => event instanceof NavigationStart),
+    first(
+      (event) =>
+        event instanceof NavigationStart &&
+        !this.router.getCurrentNavigation()?.extras.state?.notDismissSnackBar
+    ),
     takeUntil(this.ngUnsubscribe),
     catchError((err) => {
       throw err;
