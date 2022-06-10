@@ -79,6 +79,7 @@ public class SublineService {
   }
 
   public void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
+    sublineVersionRepository.incrementVersion(currentVersion.getSlnid());
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         currentVersion.getSlnid());
 

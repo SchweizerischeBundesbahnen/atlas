@@ -82,6 +82,7 @@ public class LineService {
 
   public void updateVersion(LineVersion currentVersion,
       LineVersion editedVersion) {
+    lineVersionRepository.incrementVersion(currentVersion.getSlnid());
     List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
         currentVersion.getSlnid());
 
