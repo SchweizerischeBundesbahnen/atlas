@@ -86,7 +86,7 @@ export class SublineDetailComponent
   updateRecord(): void {
     this.sublinesService
       .updateSublineVersion(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -98,7 +98,7 @@ export class SublineDetailComponent
   createRecord(): void {
     this.sublinesService
       .createSublineVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
         this.router

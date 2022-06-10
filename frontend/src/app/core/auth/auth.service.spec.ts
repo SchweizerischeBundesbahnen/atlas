@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Subject } from 'rxjs';
 import { Role } from './role';
+import { Component } from '@angular/core';
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
@@ -11,12 +12,11 @@ function createOauthServiceSpy() {
     'getGrantedScopes',
     'configure',
     'setupAutomaticSilentRefresh',
-    'loadDiscoveryDocumentAndTryLogin',
-    'initLoginFlow',
-    'hasValidIdToken',
+    'loadDiscoveryDocumentAndLogin',
     'logOut',
+    'initCodeFlow',
   ]);
-  oauthServiceSpy.loadDiscoveryDocumentAndTryLogin.and.returnValue(
+  oauthServiceSpy.loadDiscoveryDocumentAndLogin.and.returnValue(
     new Promise((resolve: (v: boolean) => void): void => {
       oauthServiceSpy.state = undefined;
       resolve(true);
@@ -29,12 +29,20 @@ function createOauthServiceSpy() {
 
 const oauthService = createOauthServiceSpy();
 
+@Component({
+  selector: 'mock-component',
+  template: '<h1>Mock Component</h1>',
+})
+class MockComponent {}
+
 describe('AuthService', () => {
+  sessionStorage.setItem('requested_route', 'mock');
+
   let authService: AuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule.withRoutes([{ path: 'mock', component: MockComponent }])],
       providers: [
         AuthService,
         {
@@ -43,7 +51,6 @@ describe('AuthService', () => {
         },
       ],
     });
-
     authService = TestBed.inject(AuthService);
   });
 
@@ -79,7 +86,7 @@ describe('AuthService', () => {
 
   it('logs in with oauthService', () => {
     authService.login();
-    expect(oauthService.initLoginFlow).toHaveBeenCalled();
+    expect(oauthService.initCodeFlow).toHaveBeenCalled();
   });
 
   it('logs out with oauthService', () => {
