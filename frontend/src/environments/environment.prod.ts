@@ -28,6 +28,7 @@ const authConfig: AuthConfig = {
   redirectUri: location.origin,
   responseType: 'code',
   scope: process.env.API_SCOPE!,
+  preserveRequestedRoute: true,
 };
 
 export const environment: Environment = {

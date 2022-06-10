@@ -78,13 +78,6 @@ export class LinesComponent implements OnInit, OnDestroy {
         $paginationAndSearch.size,
         [$paginationAndSearch.sort!, 'slnid,ASC']
       )
-      .pipe(
-        catchError((err) => {
-          this.notificationService.error(err, 'LIDI.LINE.NOTIFICATION.FETCH_ERROR');
-          this.isLoading = false;
-          throw err;
-        })
-      )
       .subscribe((lineContainer) => {
         this.lineVersions = lineContainer.objects!;
         this.totalCount$ = lineContainer.totalCount!;

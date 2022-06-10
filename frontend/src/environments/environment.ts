@@ -16,6 +16,7 @@ const authConfig: AuthConfig = {
   redirectUri: location.origin,
   responseType: 'code',
   scope: `openid profile email offline_access api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default`,
+  preserveRequestedRoute: true,
 };
 
 export const environment: Environment = {
