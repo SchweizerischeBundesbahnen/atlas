@@ -116,11 +116,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-    expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
-    expect(snackBarContainer.classList).toContain('error');
+    expect(component.form.enabled).toBeTrue();
   });
 
   it('should delete SublineVersion successfully', () => {
@@ -177,11 +173,7 @@ describe('SublineDetailComponent for new sublineVersion', () => {
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
-      const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-      expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
-      expect(snackBarContainer.classList).toContain('error');
+      expect(component.form.enabled).toBeTrue();
     });
   });
 });

@@ -123,10 +123,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-    expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.classList).toContain('error');
+    expect(component.form.enabled).toBeTrue();
   });
 
   it('should delete BusinessOrganisationVersion successfully', () => {
@@ -191,10 +188,7 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
-      const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-      expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.classList).toContain('error');
+      expect(component.form.enabled).toBeTrue();
     });
   });
 });
