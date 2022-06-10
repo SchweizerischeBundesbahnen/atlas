@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -33,5 +35,9 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
       + " AND c.coverageType = ch.sbb.line.directory.enumaration.CoverageType.COMPLETE"
       + " ORDER BY lv.slnid, lv.validFrom ASC")
   List<LineVersion> getAllCoveredLineVersions();
+
+  @Modifying(clearAutomatically = true)
+  @Query("update line_version v set v.version = (v.version + 1) where v.slnid = :slnid")
+  void incrementVersion(@Param("slnid") String slnid);
 
 }

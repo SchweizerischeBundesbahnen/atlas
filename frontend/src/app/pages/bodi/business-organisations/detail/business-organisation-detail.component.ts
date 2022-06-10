@@ -20,6 +20,8 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { Role } from '../../../../core/auth/role';
+import { Language } from '../../../../core/components/language-switcher/language';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',
@@ -39,7 +41,8 @@ export class BusinessOrganisationDetailComponent
     private businessOrganisationsService: BusinessOrganisationsService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
-    protected dialogService: DialogService
+    protected dialogService: DialogService,
+    private translateService: TranslateService
   ) {
     super(dialogRef, dialogService, notificationService);
   }
@@ -57,7 +60,19 @@ export class BusinessOrganisationDetailComponent
   }
 
   getDetailHeading(record: BusinessOrganisationVersion): string {
-    return `${record.abbreviationDe ?? ''} - ${record.organisationNumber ?? ''}`;
+    return `${record[this.displayedAbbreviation()] ?? ''} - ${record.organisationNumber ?? ''}`;
+  }
+
+  displayedAbbreviation() {
+    return ('abbreviation' + this.formatedLanguage()) as
+      | 'abbreviationDe'
+      | 'abbreviationFr'
+      | 'abbreviationIt';
+  }
+
+  private formatedLanguage() {
+    const currentLanguage = this.translateService.currentLang || Language.DE;
+    return currentLanguage.charAt(0).toUpperCase() + currentLanguage.slice(1);
   }
 
   getDetailSubheading(record: BusinessOrganisationVersion): string {
@@ -146,7 +161,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.alphaNumeric,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
         abbreviationFr: [
@@ -154,7 +169,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.alphaNumeric,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
         abbreviationIt: [
@@ -162,7 +177,7 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.alphaNumeric,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
         abbreviationEn: [
@@ -170,12 +185,17 @@ export class BusinessOrganisationDetailComponent
           [
             Validators.required,
             AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.alphaNumeric,
+            AtlasCharsetsValidator.iso88591,
           ],
         ],
         organisationNumber: [
           version.organisationNumber,
-          [Validators.required, Validators.min(0), Validators.max(99999)],
+          [
+            Validators.required,
+            Validators.min(0),
+            Validators.max(99999),
+            AtlasCharsetsValidator.fiveNumbers,
+          ],
         ],
         contactEnterpriseEmail: [
           version.contactEnterpriseEmail,
