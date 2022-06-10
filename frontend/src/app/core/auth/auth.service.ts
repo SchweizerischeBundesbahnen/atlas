@@ -1,20 +1,18 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { first } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { User } from '../components/user/user';
 import { Pages } from '../../pages/pages';
 import jwtDecode from 'jwt-decode';
 import { Role } from './role';
 
-const DEEP_LINK_URL_KEY = 'deepLinkUrl';
-
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  eventUserComponentNotification: EventEmitter<User> = new EventEmitter<User>();
+  readonly eventUserComponentNotification: EventEmitter<User> = new EventEmitter<User>();
+  private readonly REQUESTED_ROUTE_STORAGE_KEY = 'requested_route';
 
   get claims() {
     return this.oauthService.getIdentityClaims() as User;
@@ -33,31 +31,21 @@ export class AuthService {
   }
 
   constructor(private oauthService: OAuthService, private router: Router) {
-    if (
-      window.location.href !== environment.authConfig.redirectUri &&
-      sessionStorage.getItem(DEEP_LINK_URL_KEY) == null
-    ) {
-      sessionStorage.setItem(DEEP_LINK_URL_KEY, location.pathname);
-    }
-
     this.oauthService.configure(environment.authConfig);
     this.oauthService.setupAutomaticSilentRefresh();
-    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
-      if (!this.oauthService.hasValidIdToken() || !this.oauthService.hasValidAccessToken()) {
-        this.oauthService.initLoginFlow(this.router.url);
+
+    this.oauthService.loadDiscoveryDocumentAndLogin().then(() => {
+      if (this.loggedIn) {
+        this.eventUserComponentNotification.emit(this.claims);
+        this.router.navigate([sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY)]).then();
       }
-    });
-    this.oauthService.events.pipe(first((e) => e.type === 'token_received')).subscribe(() => {
-      this.eventUserComponentNotification.emit(this.claims);
-      const deepLink = sessionStorage.getItem(DEEP_LINK_URL_KEY);
-      sessionStorage.removeItem(DEEP_LINK_URL_KEY);
-      this.router.navigate([deepLink]).then();
     });
   }
 
   login() {
-    // Set the current url as the state. This will enable redirection after login.
-    this.oauthService.initLoginFlow(Pages.HOME.path);
+    sessionStorage.setItem(this.REQUESTED_ROUTE_STORAGE_KEY, location.pathname);
+    // App will be reloaded after initCodeFlow
+    this.oauthService.initCodeFlow();
   }
 
   logout() {

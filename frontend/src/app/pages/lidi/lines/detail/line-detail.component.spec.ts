@@ -119,11 +119,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();
 
-    const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-    expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
-    expect(snackBarContainer.classList).toContain('error');
+    expect(component.form.enabled).toBeTrue();
   });
 
   it('should delete LineVersion successfully', () => {
@@ -180,11 +176,7 @@ describe('LineDetailComponent for new lineVersion', () => {
       fixture.componentInstance.createRecord();
       fixture.detectChanges();
 
-      const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
-      expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
-      expect(snackBarContainer.classList).toContain('error');
+      expect(component.form.enabled).toBeTrue();
     });
   });
 });

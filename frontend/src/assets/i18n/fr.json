@@ -172,7 +172,6 @@
       "EDIT_ERROR": "Une erreur est survenue lors de l’édition du tableau-horaire.",
       "DELETE_SUCCESS": "Le numéro de tableau-horaire a été supprimé avec succès.",
       "DELETE_ERROR": "Une erreur est survenue lors de la suppression du tableau-horaire.",
-      "FETCH_ERROR": "Une erreur inconnue est survenue lors du chargement du tableau-horaire.",
       "SWISSNUMBER_NOT_UNIQUE": "Le numéro de tableau-horaire CH ou de tableau-horaire sélectionné est déjà attribué à cette période."
     }
   },
@@ -242,8 +241,7 @@
         "ADD_ERROR": "Une erreur est survenue lors de la saisie de la ligne.",
         "EDIT_SUCCESS": "La ligne a été enregistrée avec succès.",
         "EDIT_ERROR": "Une erreur est survenue lors de l’édition de la ligne.",
-        "DELETE_SUCCESS": "La ligne a été supprimée avec succès.",
-        "FETCH_ERROR": "Une erreur inconnue est survenue lors du chargement de la ligne."
+        "DELETE_SUCCESS": "La ligne a été supprimée avec succès."
       }
     },
     "SUBLINE": {
@@ -274,8 +272,7 @@
         "EDIT_SUCCESS": "Le ligne partielle a été enregistrée avec succès.",
         "EDIT_ERROR": "Une erreur est survenue lors de l’édition de la ligne partielle.",
         "DELETE_SUCCESS": "Le ligne partielle a été supprimée avec succès.",
-        "DELETE_ERROR": "Une erreur est survenue lors de la suppression de la ligne partielle.",
-        "FETCH_ERROR": "Une erreur inconnue est survenue lors du chargement de la ligne partielle."
+        "DELETE_ERROR": "Une erreur est survenue lors de la suppression de la ligne partielle."
       }
     }
   },
@@ -329,8 +326,7 @@
         "EDIT_SUCCESS": "L'organisation commerciale a été sauvegardée avec succès.",
         "EDIT_ERROR": "Une erreur s'est produite durant l'édition de l'organisation commerciale",
         "DELETE_SUCCESS": "L'organisation commerciale a été supprimée avec succès.",
-        "DELETE_ERROR": "Une erreur s'est produite durant la suppression de l'organisation commerciale.",
-        "FETCH_ERROR": "Une erreur inconnue s'est produite durant le chargement des données de l'organisation commerciale."
+        "DELETE_ERROR": "Une erreur s'est produite durant la suppression de l'organisation commerciale."
       }
     }
   }
