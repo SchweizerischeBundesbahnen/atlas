@@ -74,16 +74,6 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
         $paginationAndSearch.size,
         [$paginationAndSearch.sort!, this.getDefaultSort()]
       )
-      .pipe(
-        catchError((err) => {
-          this.notificationService.error(
-            err,
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.FETCH_ERROR'
-          );
-          this.isLoading = false;
-          throw err;
-        })
-      )
       .subscribe((container) => {
         this.businessOrganisations = container.objects!;
         this.totalCount$ = container.totalCount!;

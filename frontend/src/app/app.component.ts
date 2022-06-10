@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 
@@ -15,7 +14,6 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class AppComponent {
   constructor(public loadingSpinnerService: LoadingSpinnerService) {
-    // private keepalive: KeepaliveService
     this.loadingSpinnerService.initLoadingSpinner();
   }
 }

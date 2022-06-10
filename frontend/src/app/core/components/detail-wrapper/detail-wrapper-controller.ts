@@ -5,7 +5,6 @@ import { DialogService } from '../dialog/dialog.service';
 import { EMPTY, Observable, of } from 'rxjs';
 import moment from 'moment/moment';
 import { Page } from '../../model/page';
-import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
 import { Status } from '../../../api';
@@ -249,13 +248,10 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
     this.dialogService.closeConfirmDialog();
   }
 
-  protected handleError() {
-    return (err: HttpErrorResponse) => {
-      this.notificationService.error(err);
-      this.form.enable();
-      return EMPTY;
-    };
-  }
+  protected handleError = () => {
+    this.form.enable();
+    return EMPTY;
+  };
 
   protected getFormControlsToDisable(): string[] {
     return [];

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { catchError, EMPTY, Observable, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { BusinessOrganisationsService, BusinessOrganisationVersion } from '../../../../api';
-import { NotificationService } from '../../../../core/notification/notification.service';
 import { Pages } from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
@@ -10,9 +9,8 @@ export class BusinessOrganisationDetailResolver
   implements Resolve<Array<BusinessOrganisationVersion>>
 {
   constructor(
-    private businessOrganisationsService: BusinessOrganisationsService,
-    private router: Router,
-    private notificationService: NotificationService
+    private readonly businessOrganisationsService: BusinessOrganisationsService,
+    private readonly router: Router
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<BusinessOrganisationVersion>> {
@@ -20,11 +18,13 @@ export class BusinessOrganisationDetailResolver
     return idParameter === 'add'
       ? of([])
       : this.businessOrganisationsService.getBusinessOrganisationVersions(idParameter).pipe(
-          catchError((error) => {
-            this.router.navigate([Pages.BODI.path]).then();
-            this.notificationService.error(error);
-            return EMPTY;
-          })
+          catchError(() =>
+            this.router
+              .navigate([Pages.BODI.path], {
+                state: { notDismissSnackBar: true },
+              })
+              .then(() => [])
+          )
         );
   }
 }
