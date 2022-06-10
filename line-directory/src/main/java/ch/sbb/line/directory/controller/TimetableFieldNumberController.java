@@ -74,7 +74,7 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
                                                                                                               ttfnId)
                                                                                                           .stream()
                                                                                                           .map(
-                                                                                                              this::toModel)
+                                                                                                              TimetableFieldNumberController::toModel)
                                                                                                           .collect(
                                                                                                               Collectors.toList());
     if (timetableFieldNumberVersionModels.isEmpty()) {
@@ -113,7 +113,7 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
     timetableFieldNumberService.deleteAll(allVersionsVersioned);
   }
 
-  private TimetableFieldNumberVersionModel toModel(TimetableFieldNumberVersion version) {
+  static TimetableFieldNumberVersionModel toModel(TimetableFieldNumberVersion version) {
     return TimetableFieldNumberVersionModel.builder()
                                            .id(version.getId())
                                            .description(version.getDescription())
