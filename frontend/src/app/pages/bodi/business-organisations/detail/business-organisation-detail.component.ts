@@ -82,7 +82,7 @@ export class BusinessOrganisationDetailComponent
   updateRecord(): void {
     this.businessOrganisationsService
       .updateBusinessOrganisationVersion(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -94,7 +94,7 @@ export class BusinessOrganisationDetailComponent
   createRecord(): void {
     this.businessOrganisationsService
       .createBusinessOrganisationVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS');
         this.router

@@ -82,13 +82,6 @@ export class SublinesComponent implements OnInit, OnDestroy {
         $paginationAndSearch.size,
         [$paginationAndSearch.sort!, 'slnid,ASC']
       )
-      .pipe(
-        catchError((err) => {
-          this.notificationService.error(err, 'LIDI.SUBLINE.NOTIFICATION.FETCH_ERROR');
-          this.isLoading = false;
-          throw err;
-        })
-      )
       .subscribe((sublineContainer) => {
         this.sublines = sublineContainer.objects!;
         this.totalCount$ = sublineContainer.totalCount!;
