@@ -481,4 +481,31 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
   }
+
+  @Test
+  void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
+    //given
+    LineVersionModel lineVersionModel =
+        LineTestData.lineVersionModelBuilder()
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+
+    // When first update it is ok
+    lineVersionModel.setValidFrom(LocalDate.of(2010, 1, 1));
+    lineVersionModel.setValidTo(LocalDate.of(2010, 12, 31));
+    mvc.perform(post("/v1/lines/versions/" + lineVersionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(lineVersionModel)))
+       .andExpect(status().isOk());
+
+    // Then on a second update it has to return error for optimistic lock
+    lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 1));
+    lineVersionModel.setValidTo(LocalDate.of(2011, 12, 31));
+    mvc.perform(post("/v1/lines/versions/" + lineVersionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(lineVersionModel)))
+       .andExpect(status().isPreconditionFailed());
+  }
 }

@@ -190,6 +190,24 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
   }
 
+
+  @Test
+  void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
+    //given
+
+    // When first update it is ok
+    version.setValidFrom(LocalDate.of(2025, 1, 1));
+    version.setValidTo(LocalDate.of(2025, 12, 31));
+    mvc.perform(createUpdateRequest(TimetableFieldNumberController.toModel(version)))
+       .andExpect(status().isOk());
+
+    // Then on a second update it has to return error for optimistic lock
+    version.setValidFrom(LocalDate.of(2000, 1, 1));
+    version.setValidTo(LocalDate.of(2025, 12, 31));
+    mvc.perform(createUpdateRequest(TimetableFieldNumberController.toModel(version)))
+       .andExpect(status().isPreconditionFailed());
+  }
+
   private MockHttpServletRequestBuilder createUpdateRequest(
       TimetableFieldNumberVersionModel timetableFieldNumberVersionModel)
       throws JsonProcessingException {

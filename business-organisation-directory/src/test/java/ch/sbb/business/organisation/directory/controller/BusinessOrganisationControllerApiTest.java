@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
@@ -436,5 +437,32 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
        .andExpect(jsonPath("$.details[3].message",
            is("abbreviationEn en1 already taken from 01.01.2001 to 31.12.2001 by "
                + savedVersion.getSboid())));
+  }
+
+  @Test
+  void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
+    //given
+    BusinessOrganisationVersionModel versionModel =
+        BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+                                .validFrom(LocalDate.of(2001, 1, 1))
+                                .validTo(LocalDate.of(2001, 12, 31))
+                                .build();
+    versionModel = controller.createBusinessOrganisationVersion(versionModel);
+
+    // When first update it is ok
+    versionModel.setValidFrom(LocalDate.of(2010, 1, 1));
+    versionModel.setValidTo(LocalDate.of(2010, 12, 31));
+    mvc.perform(post("/v1/business-organisations/versions/" + versionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(versionModel)))
+       .andExpect(status().isOk());
+
+    // Then on a second update it has to return error for optimistic lock
+    versionModel.setValidFrom(LocalDate.of(2001, 1, 1));
+    versionModel.setValidTo(LocalDate.of(2010, 12, 31));
+    mvc.perform(post("/v1/business-organisations/versions/" + versionModel.getId())
+           .contentType(contentType)
+           .content(mapper.writeValueAsString(versionModel)))
+       .andExpect(status().isPreconditionFailed());
   }
 }

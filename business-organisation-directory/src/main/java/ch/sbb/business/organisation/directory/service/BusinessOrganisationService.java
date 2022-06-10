@@ -47,6 +47,7 @@ public class BusinessOrganisationService {
 
   public void updateBusinessOrganisationVersion(
       BusinessOrganisationVersion currentVersion, BusinessOrganisationVersion editedVersion) {
+    versionRepository.incrementVersion(currentVersion.getSboid());
     List<BusinessOrganisationVersion> currentVersions = versionRepository.findAllBySboidOrderByValidFrom(
         currentVersion.getSboid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
