@@ -15,10 +15,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class TimetableFieldNumberService {
 
   private final TimetableFieldNumberVersionRepository versionRepository;
@@ -39,7 +41,7 @@ public class TimetableFieldNumberService {
     if (!overlappingVersions.isEmpty()) {
       throw new TimetableFieldNumberConflictException(newVersion, overlappingVersions);
     }
-    return versionRepository.save(newVersion);
+    return versionRepository.saveAndFlush(newVersion);
   }
 
   public Page<TimetableFieldNumber> getVersionsSearched(TimetableFieldNumberSearchRestrictions searchRestrictions) {
@@ -51,7 +53,8 @@ public class TimetableFieldNumberService {
     versionRepository.deleteById(id);
   }
 
-  public List<VersionedObject> updateVersion(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion) {
+  public void updateVersion(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion) {
+    versionRepository.incrementVersion(currentVersion.getTtfnid());
     List<TimetableFieldNumberVersion> currentVersions = getAllVersionsVersioned(currentVersion.getTtfnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
@@ -59,7 +62,6 @@ public class TimetableFieldNumberService {
 
     versionableService.applyVersioning(TimetableFieldNumberVersion.class, versionedObjects, this::save,
         this::deleteById);
-    return versionedObjects;
   }
 
   public List<TimetableFieldNumberVersion> getOverlapsOnNumberAndSttfn(

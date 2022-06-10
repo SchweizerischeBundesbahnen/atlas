@@ -4,6 +4,9 @@ import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -23,5 +26,9 @@ public interface BusinessOrganisationVersionRepository extends
 
   List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEn(
       LocalDate validFrom, LocalDate validTo, String abbreviation);
+
+  @Modifying(clearAutomatically = true)
+  @Query("update business_organisation_version v set v.version = (v.version + 1) where v.sboid = :sboid")
+  void incrementVersion(@Param("sboid") String sboid);
 
 }
