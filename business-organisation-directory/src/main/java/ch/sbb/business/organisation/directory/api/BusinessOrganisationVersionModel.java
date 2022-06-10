@@ -64,25 +64,25 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
 
   @Schema(description = "Abbreviation German")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String abbreviationDe;
 
   @Schema(description = "Abbreviation French")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String abbreviationFr;
 
   @Schema(description = "Abbreviation Italian")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String abbreviationIt;
 
   @Schema(description = "Abbreviation English")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String abbreviationEn;
 
@@ -132,6 +132,7 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
                                       .contactEnterpriseEmail(model.getContactEnterpriseEmail())
                                       .sboid(model.getSboid())
                                       .businessTypes(model.getBusinessTypes())
+                                      .version(model.getEtagVersion())
                                       .build();
   }
 
