@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
