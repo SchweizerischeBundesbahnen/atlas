@@ -20,10 +20,9 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { Role } from '../../../../core/auth/role';
-import { validateOptions } from '@angular/localize/tools/src/extract/translation_files/format_options';
-import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
 import { Language } from '../../../../core/components/language-switcher/language';
 import { TranslateService } from '@ngx-translate/core';
+import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',
