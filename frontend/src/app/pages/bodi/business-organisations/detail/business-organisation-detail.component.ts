@@ -6,7 +6,7 @@ import {
 } from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { takeUntil } from 'rxjs/operators';
@@ -22,6 +22,7 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 import { Role } from '../../../../core/auth/role';
 import { Language } from '../../../../core/components/language-switcher/language';
 import { TranslateService } from '@ngx-translate/core';
+import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',
@@ -118,103 +119,71 @@ export class BusinessOrganisationDetailComponent
   }
 
   getFormGroup(version: BusinessOrganisationVersion): FormGroup {
-    return this.formBuilder.group(
+    return new FormGroup<BusinessOrganisationDetailFormGroup>(
       {
-        descriptionDe: [
-          version.descriptionDe,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_60,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        descriptionFr: [
-          version.descriptionFr,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_60,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        descriptionIt: [
-          version.descriptionIt,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_60,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        descriptionEn: [
-          version.descriptionEn,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_60,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        abbreviationDe: [
-          version.abbreviationDe,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        abbreviationFr: [
-          version.abbreviationFr,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        abbreviationIt: [
-          version.abbreviationIt,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        abbreviationEn: [
-          version.abbreviationEn,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_10,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        organisationNumber: [
-          version.organisationNumber,
-          [
-            Validators.required,
-            Validators.min(0),
-            Validators.max(99999),
-            AtlasCharsetsValidator.fiveNumbers,
-          ],
-        ],
-        contactEnterpriseEmail: [
-          version.contactEnterpriseEmail,
-          [AtlasFieldLengthValidator.length_255, AtlasCharsetsValidator.email],
-        ],
-        businessTypes: [version.businessTypes],
-        validFrom: [
+        descriptionDe: new FormControl(version.descriptionDe, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_60,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        descriptionFr: new FormControl(version.descriptionFr, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_60,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        descriptionIt: new FormControl(version.descriptionIt, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_60,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        descriptionEn: new FormControl(version.descriptionEn, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_60,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        abbreviationDe: new FormControl(version.abbreviationDe, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_10,
+          AtlasCharsetsValidator.alphaNumeric,
+        ]),
+        abbreviationFr: new FormControl(version.abbreviationFr, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_10,
+          AtlasCharsetsValidator.alphaNumeric,
+        ]),
+        abbreviationIt: new FormControl(version.abbreviationIt, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_10,
+          AtlasCharsetsValidator.alphaNumeric,
+        ]),
+        abbreviationEn: new FormControl(version.abbreviationEn, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_10,
+          AtlasCharsetsValidator.alphaNumeric,
+        ]),
+        organisationNumber: new FormControl(version.organisationNumber, [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(99999),
+        ]),
+        contactEnterpriseEmail: new FormControl(version.contactEnterpriseEmail, [
+          AtlasFieldLengthValidator.length_255,
+          AtlasCharsetsValidator.email,
+        ]),
+        businessTypes: new FormControl(version.businessTypes),
+        validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
-        ],
-        validTo: [
-          version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required],
-        ],
-        etagVersion: version.etagVersion,
+          [Validators.required]
+        ),
+        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
+          Validators.required,
+        ]),
       },
-      {
-        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
-      }
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
