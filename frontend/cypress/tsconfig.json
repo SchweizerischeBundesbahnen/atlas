@@ -4,6 +4,7 @@
   "compilerOptions": {
     "sourceMap": false,
     "typeRoots": ["./support"],
-    "types": ["cypress", "@testing-library/cypress"]
+    "types": ["cypress", "@testing-library/cypress"],
+    "target": "ES2019"
   }
 }

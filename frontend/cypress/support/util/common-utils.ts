@@ -49,7 +49,7 @@ export default class CommonUtils {
   }
 
   static navigateToHomeViaHomeLogo() {
-    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click();
+    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({force: true});
   }
 
   private static openSideMenu() {

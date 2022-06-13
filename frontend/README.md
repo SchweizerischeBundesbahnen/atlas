@@ -1,4 +1,4 @@
-# Timetable field number Frontend
+# ATLAS Frontend
 
 This project was generated from [esta-cloud-angular](https://code.sbb.ch/projects/KD_ESTA_BLUEPRINTS/repos/esta-cloud-angular/browse).
 See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
@@ -7,6 +7,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 - [Development](#development)
   * [Node.js](#nodejs)
+  * [Angular update](#angular-update)
   * [Cypress E2E](#cypress-e2e)
     + [Run cypress test locally](#run-cypress-test-locally)
     + [Cypress E2E CI-Jenkins](#cypress-e2e-ci-jenkins)
@@ -33,14 +34,26 @@ You should have a NVM_DIR environment variable, which points to a directory (lik
 To install new Node.js version and set it as active using nvm, type this in the console:
 
 ```bash
-% nvm install 16.13.2
+ nvm install 16.13.2
 ```
 
 Now you should be ready to install all required angular packages for this project. Just type:
 
 ```bash
-% npm install
+ npm install
 ```
+
+### Angular update
+
+To update the angular packages:
+
+```bash
+ ng update
+```
+
+For more information see:
+* [ng update](https://docs.angular.lat/cli/update)
+* [Angular Update Guide](https://update.angular.io/)
 
 ### Cypress E2E
 

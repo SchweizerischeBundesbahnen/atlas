@@ -32,13 +32,13 @@ export default class TtfnUtils {
   static fillVersionForm(version: any) {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     cy.get(DataCy.VALID_FROM).clear().type(version.validFrom);
-    cy.get(DataCy.VALID_TO).clear().type(version.validTo, { force: true });
+    cy.get(DataCy.VALID_TO).clear().type(version.validTo);
     cy.get(DataCy.SWISS_TIMETABLE_FIELD_NUMBER)
       .clear()
-      .type(version.swissTimetableFieldNumber, { force: true });
+      .type(version.swissTimetableFieldNumber);
     cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
     cy.get(DataCy.NUMBER).clear().type(version.number);
-    cy.get(DataCy.DESCRIPTION).clear().type(version.description, { force: true });
+    cy.get(DataCy.DESCRIPTION).clear().type(version.description);
     cy.get(DataCy.COMMENT).clear().type(version.comment);
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
   }
