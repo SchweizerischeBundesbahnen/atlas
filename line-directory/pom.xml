@@ -5,7 +5,7 @@
     <parent>
         <groupId>ch.sbb.atlas</groupId>
         <artifactId>atlas</artifactId>
-        <version>0.434.0</version>
+        <version>0.435.0-SNAPSHOT</version>
     </parent>
     <artifactId>line-directory</artifactId>
 
@@ -79,7 +79,7 @@
             <groupId>ch.sbb.atlas</groupId>
             <artifactId>model</artifactId>
             <classifier>tests</classifier>
-            <version>0.434.0</version>
+            <version>0.435.0-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
