@@ -22,6 +22,8 @@
         <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
         <!-- Spring Boot Overrides -->
         <lombok.version>1.18.22</lombok.version>
+        <!-- patch for CVE-2022-22978 (check to see if we can remove this with future versions of Spring Boot) -->
+        <spring-security.version>5.7.1</spring-security.version>
     </properties>
     <modules>
         <!-- Order is important here-->
