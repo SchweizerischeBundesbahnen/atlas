@@ -8,6 +8,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.controller.BusinessOrganisationSearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion.BusinessOrganisationVersionBuilder;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.time.LocalDate;
@@ -316,7 +317,7 @@ public class BusinessOrganisationServiceSearchTest {
                                               .build());
 
     //then
-    assertThat(result.getContent()).hasSize(0);
+    assertThat(result.getContent()).isEmpty();
   }
 
   @Test
@@ -375,4 +376,74 @@ public class BusinessOrganisationServiceSearchTest {
     assertThat(result.getContent()).hasSize(1);
   }
 
+  @Test
+  void shouldNotFindByOutdatedDescription() {
+    //given
+    BusinessOrganisationVersionBuilder<?, ?> baseBuilder = BusinessOrganisationVersion.builder()
+                                                                                      .sboid(
+                                                                                          "ch:1:sboid:100000")
+                                                                                      .abbreviationDe(
+                                                                                          "de1")
+                                                                                      .abbreviationFr(
+                                                                                          "fr1")
+                                                                                      .abbreviationIt(
+                                                                                          "it1")
+                                                                                      .abbreviationEn(
+                                                                                          "en1")
+                                                                                      .descriptionDe(
+                                                                                          "desc-de1")
+                                                                                      .descriptionFr(
+                                                                                          "desc-fr1")
+                                                                                      .descriptionIt(
+                                                                                          "desc-it1")
+                                                                                      .descriptionEn(
+                                                                                          "desc-en1")
+                                                                                      .businessTypes(
+                                                                                          new HashSet<>(
+                                                                                              Arrays.asList(
+                                                                                                  BusinessType.RAILROAD,
+                                                                                                  BusinessType.AIR,
+                                                                                                  BusinessType.SHIP)))
+                                                                                      .contactEnterpriseEmail(
+                                                                                          "mail1@mail.ch")
+                                                                                      .organisationNumber(
+                                                                                          1234)
+                                                                                      .status(
+                                                                                          Status.ACTIVE);
+    BusinessOrganisationVersion currentVersion = baseBuilder
+        .validFrom(
+            LocalDate.of(2020, 1, 1))
+        .validTo(
+            LocalDate.of(2099, 12, 31))
+        .build();
+    repository.saveAndFlush(currentVersion);
+    BusinessOrganisationVersion outdated = baseBuilder.descriptionDe(
+                                                          "olddescription").validFrom(
+                                                          LocalDate.of(1900,
+                                                              1, 1))
+                                                      .validTo(
+                                                          LocalDate.of(2019,
+                                                              12, 31)).build();
+    repository.saveAndFlush(outdated);
+
+    //when
+    Page<BusinessOrganisation> result = service.getBusinessOrganisations(
+        BusinessOrganisationSearchRestrictions.builder()
+                                              .pageable(Pageable.unpaged())
+                                              .searchCriterias(of("olddescription"))
+                                              .build());
+
+    //then
+    assertThat(result.getContent()).isEmpty();
+
+    //when
+    result = service.getBusinessOrganisations(
+        BusinessOrganisationSearchRestrictions.builder()
+                                              .pageable(Pageable.unpaged())
+                                              .searchCriterias(of("desc-de1"))
+                                              .build());
+
+    //then
+    assertThat(result.getContent()).hasSize(1);
+  }
 }
