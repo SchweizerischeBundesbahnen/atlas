@@ -27,6 +27,7 @@ export class AppComponent {
   ) {
     loadingSpinnerService.initLoadingSpinner();
 
+    // TODO: service
     if (swUpdate.isEnabled) {
       const appIsStable$ = appRef.isStable.pipe(first((isStable) => isStable));
       const checkForUpdateInterval$ = interval(60000);
@@ -34,7 +35,6 @@ export class AppComponent {
 
       checkForUpdate$.subscribe(() => swUpdate.checkForUpdate());
 
-      // TODO: filter event type
       swUpdate.versionUpdates
         .pipe(filter((versionEvent) => versionEvent.type === 'VERSION_READY'))
         .subscribe(() => {
