@@ -1,4 +1,6 @@
 import { defineConfig } from 'cypress'
+import cypress_failed_log from 'cypress-failed-log/src/failed';
+import  cypress_high_resolution from 'cypress-high-resolution';
 
 export default defineConfig({
   videosFolder: 'cypress/videos',
@@ -14,7 +16,10 @@ export default defineConfig({
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
-      return require('./cypress/plugins/index.ts').default(on, config)
+      on('task', {
+        failed: cypress_failed_log(),
+      });
+      cypress_high_resolution(on, config);
     },
     baseUrl: 'http://localhost:4200',
   },
