@@ -6,6 +6,7 @@
         <groupId>ch.sbb.atlas</groupId>
         <artifactId>atlas</artifactId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>apim-configuration</artifactId>
 
