@@ -14,7 +14,7 @@ export class ServiceWorkerService {
   ) {
     if (swUpdate.isEnabled) {
       const appIsStable$ = appRef.isStable.pipe(first((isStable) => isStable));
-      const checkForUpdateInterval$ = interval(60000); // TODO: change to 5mins
+      const checkForUpdateInterval$ = interval(300000); // all 5 minutes
       const checkForUpdate$ = concat(appIsStable$, checkForUpdateInterval$);
 
       checkForUpdate$.subscribe(() => swUpdate.checkForUpdate());
