@@ -93,6 +93,12 @@
     "LEAVE_SITE": "Wenn Sie die Seite verlassen werden Ihre Daten nicht gespeichert.",
     "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlieren Sie alle angepassten Daten."
   },
+  "SW_DIALOG": {
+    "UPDATE_TITLE": "Neuere Version ist verfügbar",
+    "UPDATE_MESSAGE": "Es ist eine neue Version von Atlas verfügbar. Sie sollten die Seite neu laden.",
+    "UNRECOVERABLE_TITLE": "Nicht wiederherstellbare Version entdeckt",
+    "UNRECOVERABLE_MESSAGE": "Ihre aktuelle Version von Atlas ist nicht wiederherstellbar. Bitte laden Sie die Seite neu. Wenn das Problem immer noch besteht, versuchen Sie es mit einem vollständigen Refresh (Ctrl+F5)."
+  },
   "PROFILE": {
     "HELLO": "Hallo",
     "YOUR_ROLES": "Ihre Rollen:",
