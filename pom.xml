@@ -8,22 +8,21 @@
     </parent>
     <groupId>ch.sbb.atlas</groupId>
     <artifactId>atlas</artifactId>
-    <version>0.435.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>Atlas</name>
     <description>ATLAS - SKI Business Application</description>
     <properties>
+        <revision>0.435.0-SNAPSHOT</revision>
         <java.version>11</java.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
-        <springdoc-openapi.version>1.6.6</springdoc-openapi.version>
+        <springdoc-openapi.version>1.6.9</springdoc-openapi.version>
         <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
         <!-- Spring Boot Overrides -->
         <lombok.version>1.18.22</lombok.version>
-        <!-- patch for CVE-2022-22978 (check to see if we can remove this with future versions of Spring Boot) -->
-        <spring-security.version>5.7.1</spring-security.version>
     </properties>
     <modules>
         <!-- Order is important here-->
@@ -55,23 +54,6 @@
                 <version>${springdoc-openapi.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-            <!-- Atlas Dependencies-->
-            <dependency>
-                <groupId>ch.sbb.atlas</groupId>
-                <artifactId>versioning</artifactId>
-                <version>0.435.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.sbb.atlas</groupId>
-                <artifactId>searching</artifactId>
-                <version>0.435.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.sbb.atlas</groupId>
-                <artifactId>model</artifactId>
-                <version>0.435.0-SNAPSHOT</version>
             </dependency>
 
             <!-- Third Party-->
@@ -148,18 +130,18 @@
                         </execution>
                     </executions>
                 </plugin>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
-                        <excludes>
-                            <exclude>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                            </exclude>
-                        </excludes>
-                    </configuration>
-                </plugin>
+<!--                <plugin>-->
+<!--                    <groupId>org.springframework.boot</groupId>-->
+<!--                    <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                    <configuration>-->
+<!--                        <excludes>-->
+<!--                            <exclude>-->
+<!--                                <groupId>org.projectlombok</groupId>-->
+<!--                                <artifactId>lombok</artifactId>-->
+<!--                            </exclude>-->
+<!--                        </excludes>-->
+<!--                    </configuration>-->
+<!--                </plugin>-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
