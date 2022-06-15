@@ -10,6 +10,7 @@ This is the main repository for business relevant services for ATLAS.
 - [Development](#development)
   * [Run locally](#run-locally)
   * [Monorepo](#monorepo)
+  * [Running Python scripts](#running-python-scripts)
 - [Structure](#structure)
   * [APIM-configuration](#apim-configuration)
   * [charts](#charts)
