@@ -6,10 +6,12 @@ This is the main repository for business relevant services for ATLAS.
 
 - [Big Picture](#big-picture)
 - [Links](#links)
+- [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
 - [Development](#development)
   * [Run locally](#run-locally)
   * [Monorepo](#monorepo)
+  * [Running Python scripts](#running-python-scripts)
 - [Structure](#structure)
   * [APIM-configuration](#apim-configuration)
   * [charts](#charts)
@@ -56,6 +58,8 @@ It's applications share the following architectural goal:
   - **Int**: https://atlas.int.sbb-cloud.net
   - **Prod**: https://atlas.sbb-cloud.net
 
+## Stages and their purpose
+* [Stages](documentation/stages.md)
 
 ## Monitoring and Logging
 * [Monitoring (Instana and Actuator)](documentation/Monitoring.md)
