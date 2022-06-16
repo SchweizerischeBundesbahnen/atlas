@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { Subline, SublinesService, SublineType } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
