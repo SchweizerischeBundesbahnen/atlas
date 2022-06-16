@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { DetailWrapperController } from '../../../core/components/detail-wrapper/detail-wrapper-controller';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { catchError, Subject } from 'rxjs';
 import moment from 'moment/moment';
@@ -15,6 +15,7 @@ import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
+import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -86,60 +87,46 @@ export class TimetableFieldNumberDetailComponent
   }
 
   getFormGroup(version: TimetableFieldNumberVersion): FormGroup {
-    return this.formBuilder.group(
+    return new FormGroup<TimetableFieldNumberDetailFormGroup>(
       {
-        swissTimetableFieldNumber: [
-          version.swissTimetableFieldNumber,
-          [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.sid4pt],
-        ],
-        validFrom: [
+        swissTimetableFieldNumber: new FormControl(version.swissTimetableFieldNumber, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_50,
+          AtlasCharsetsValidator.sid4pt,
+        ]),
+        validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
-        ],
-        validTo: [
-          version.validTo ? moment(version.validTo) : version.validTo,
-          [Validators.required],
-        ],
-        ttfnid: version.ttfnid,
-        businessOrganisation: [
-          version.businessOrganisation,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_50,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        number: [
-          version.number,
-          [
-            Validators.required,
-            AtlasFieldLengthValidator.length_50,
-            AtlasCharsetsValidator.numericWithDot,
-          ],
-        ],
-        description: [
-          version.description,
-          [
-            AtlasFieldLengthValidator.length_255,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        comment: [
-          version.comment,
-          [
-            AtlasFieldLengthValidator.comments,
-            WhitespaceValidator.blankOrEmptySpaceSurrounding,
-            AtlasCharsetsValidator.iso88591,
-          ],
-        ],
-        status: version.status,
-        etagVersion: version.etagVersion,
+          [Validators.required]
+        ),
+        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
+          Validators.required,
+        ]),
+        ttfnid: new FormControl(version.ttfnid),
+        businessOrganisation: new FormControl(version.businessOrganisation, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_50,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        number: new FormControl(version.number, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_50,
+          AtlasCharsetsValidator.numericWithDot,
+        ]),
+        description: new FormControl(version.description, [
+          AtlasFieldLengthValidator.length_255,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        comment: new FormControl(version.comment, [
+          AtlasFieldLengthValidator.comments,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        status: new FormControl(version.status),
+        etagVersion: new FormControl(version.etagVersion),
       },
-      {
-        validators: [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
-      }
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
   }
 
