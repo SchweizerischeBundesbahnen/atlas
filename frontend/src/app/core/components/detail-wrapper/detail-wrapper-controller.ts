@@ -15,7 +15,7 @@ import { Role } from '../../auth/role';
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
   record!: TYPE;
   records!: Array<TYPE>;
-  form = new FormGroup({});
+  form!: FormGroup;
   switchedIndex!: number | undefined;
 
   showSwitch: boolean | undefined;
