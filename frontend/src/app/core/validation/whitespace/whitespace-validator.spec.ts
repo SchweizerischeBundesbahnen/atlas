@@ -2,7 +2,6 @@ import { FormControl } from '@angular/forms';
 import { WhitespaceValidator } from './whitespace-validator';
 
 describe('Whitespace Validator', () => {
-
   it('should return validation error when blank', () => {
     //given
     const formControl = new FormControl('    ');
@@ -78,5 +77,4 @@ describe('Whitespace Validator', () => {
     //then
     expect(errors).toBeNull();
   });
-
 });
