@@ -94,10 +94,10 @@
     "CANCEL_EDITMODE": "All’uscita dalla modalità di modifica tutti i dati modificati andranno perduti."
   },
   "SW_DIALOG": {
-    "UPDATE_TITLE": "Neuere Version ist verfügbar__it__",
-    "UPDATE_MESSAGE": "Es ist eine neue Version von Atlas verfügbar. Sie sollten die Seite neu laden.__it__",
-    "UNRECOVERABLE_TITLE": "Nicht wiederherstellbare Version entdeckt__it__",
-    "UNRECOVERABLE_MESSAGE": "Ihre aktuelle Version von Atlas ist nicht wiederherstellbar. Bitte laden Sie die Seite neu. Wenn das Problem immer noch besteht, versuchen Sie es mit einem vollständigen Refresh (Ctrl+F5).__it__"
+    "UPDATE_TITLE": "Neue Version verfügbar__it__",
+    "UPDATE_MESSAGE": "Es ist eine neue Version von Atlas verfügbar. Bitte laden Sie die Seite neu.__it__",
+    "UNRECOVERABLE_TITLE": "Es ist ein Fehler aufgetreten__it__",
+    "UNRECOVERABLE_MESSAGE": "Bitte laden Sie die Seite neu.__it__"
   },
   "PROFILE": {
     "HELLO": "Ciao,",
