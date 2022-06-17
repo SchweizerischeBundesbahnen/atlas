@@ -26,5 +26,7 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  // without this inclusion jasmine expect does not work correctly with intellij
+  "include": ["src/**/*.spec.ts"]
 }

@@ -83,6 +83,7 @@
   },
   "DIALOG": {
     "OK": "Suivant",
+    "RELOAD": "Neu laden__fr__",
     "CANCEL": "Annuler",
     "BACK": "Retour au formulaire de saisie",
     "WARNING": "Avertissement!",
@@ -91,6 +92,12 @@
     "DISCARD_CHANGES_TITLE": "Annuler les modifications?",
     "LEAVE_SITE": "Si vous quittez le site, vos données ne sont pas enregistrées.",
     "CANCEL_EDITMODE": "Si vous quittez le mode d’édition, vous perdez toutes les données adaptées."
+  },
+  "SW_DIALOG": {
+    "UPDATE_TITLE": "Neue Version verfügbar__fr__",
+    "UPDATE_MESSAGE": "Es ist eine neue Version von Atlas verfügbar. Bitte laden Sie die Seite neu.__fr__",
+    "UNRECOVERABLE_TITLE": "Es ist ein Fehler aufgetreten__fr__",
+    "UNRECOVERABLE_MESSAGE": "Bitte laden Sie die Seite neu.__fr__"
   },
   "PROFILE": {
     "HELLO": "Bonjour,",
