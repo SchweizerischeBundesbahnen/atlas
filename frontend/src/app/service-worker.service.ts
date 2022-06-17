@@ -43,8 +43,12 @@ export class ServiceWorkerService {
       .afterClosed()
       .subscribe((result) => {
         if (result) {
-          document.location.reload();
+          ServiceWorkerService.reloadPage();
         }
       });
+  }
+
+  private static reloadPage(): void {
+    location.reload();
   }
 }
