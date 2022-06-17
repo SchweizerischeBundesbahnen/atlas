@@ -8,6 +8,7 @@ import { LanguageSwitcherComponent } from './core/components/language-switcher/l
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 import { LoadingSpinnerComponent } from './core/components/loading-spinner/loading-spinner.component';
 import { AppTestingModule } from './app.testing.module';
+import { SwUpdate } from '@angular/service-worker';
 
 const authServiceMock: Partial<AuthService> = {
   claims: { name: 'Test', email: 'test@test.ch', roles: [] },
@@ -29,7 +30,13 @@ describe('AppComponent', () => {
         SideNavComponent,
         LoadingSpinnerComponent,
       ],
-      providers: [{ provide: AuthService, useValue: authServiceMock }],
+      providers: [
+        { provide: AuthService, useValue: authServiceMock },
+        {
+          provide: SwUpdate,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
   });
 
