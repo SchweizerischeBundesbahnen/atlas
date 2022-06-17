@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BusinessOrganisationRepositoryTest {
 
   private static final String SBOID = "sboid";
-  private static final String[] IGNORED_FIELDS = {"validFrom", "validTo", "organisationNumber"};
+  private static final String[] IGNORED_FIELDS = {"validFrom", "validTo"};
   private final BusinessOrganisationVersionRepository versionRepository;
   private final BusinessOrganisationRepository businessOrganisationRepository;
 
