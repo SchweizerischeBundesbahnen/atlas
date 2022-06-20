@@ -96,8 +96,8 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
     LidiUtils.navigateToSubline(firstSublineVersion);
     cy.contains(mainline.swissLineNumber);
     cy.get(DataCy.SWISS_SUBLINE_NUMBER)
-      .invoke('val')
-      .should('eq', firstSublineVersion.swissSublineNumber);
+    .invoke('val')
+    .should('eq', firstSublineVersion.swissSublineNumber);
   });
 
   it('Step-12: Delete the subline item ', () => {

@@ -41,6 +41,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+import CommonUtils from './util/common-utils';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
@@ -59,6 +60,7 @@ declare namespace Cypress {
 Cypress.Commands.add('atlasLogin', () => {
   cy.clearCookies();
   cy.clearLocalStorage();
+  CommonUtils.unregisterServiceWorker();
   cy.login();
   cy.visit('/');
 });
@@ -74,8 +76,8 @@ Cypress.Commands.add('login', () => {
       client_secret: Cypress.env('CLIENT_SECRET'),
       username: Cypress.env('USERNAME'),
       password: Cypress.env('PASSWORD'),
-      scope: Cypress.env('SCOPE'),
-    },
+      scope: Cypress.env('SCOPE')
+    }
   }).then((response) => {
     expect(response).property('status').to.equal(200);
     expect(response.body).property('access_token').to.not.be.oneOf([null, '']);
@@ -110,7 +112,7 @@ Cypress.Commands.add('login', () => {
         given_name: 'Test',
         sbbuid: 'ue0000000',
         family_name: Cypress.env('CLIENT_ID'),
-        email: Cypress.env('CLIENT_ID') + '@sbb.ch',
+        email: Cypress.env('CLIENT_ID') + '@sbb.ch'
       })
     );
   });
