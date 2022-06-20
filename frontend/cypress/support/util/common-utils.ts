@@ -246,6 +246,11 @@ export default class CommonUtils {
     }
   }
 
+  static visit(itemToDeleteUrl: string) {
+    CommonUtils.unregisterServiceWorker();
+    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+  }
+
   private static clickCancelOnDetailView(overviewPath: string) {
     cy.get(DataCy.CANCEL).click();
     cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
