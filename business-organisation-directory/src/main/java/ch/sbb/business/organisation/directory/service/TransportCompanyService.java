@@ -28,7 +28,8 @@ public class TransportCompanyService {
   private final TransportCompanyRepository transportCompanyRepository;
 
   public void saveTransportCompaniesFromBav() {
-    saveTransportCompanies(getTransportCompaniesFromBav());
+    List<TransportCompanyCsvModel> transportCompaniesFromBav = getTransportCompaniesFromBav();
+    saveTransportCompanies(transportCompaniesFromBav);
   }
 
   void saveTransportCompanies(List<TransportCompanyCsvModel> companies) {
@@ -55,8 +56,8 @@ public class TransportCompanyService {
   }
 
   List<TransportCompanyCsvModel> getTransportCompaniesFromBav() {
-    try (Body body = transportCompanyClient.getTransportCompanies()
-                                           .body(); InputStream inputStream = body.asInputStream()) {
+    try (Body body = transportCompanyClient.getTransportCompanies().body();
+        InputStream inputStream = body.asInputStream()) {
       return parseTransportCompanies(inputStream);
     } catch (IOException e) {
       throw new IllegalStateException("Could not read response from BAV correctly", e);
