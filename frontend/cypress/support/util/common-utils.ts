@@ -30,11 +30,6 @@ export default class CommonUtils {
     this.clickCancelOnDetailView('line-directory/sublines');
   }
 
-  private static clickCancelOnDetailView(overviewPath: string) {
-    cy.get(DataCy.CANCEL).click();
-    cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
-  }
-
   static clickFirstRowInTable(selector: string) {
     cy.get(selector + ' table tbody tr').click({ force: true });
   }
@@ -49,15 +44,7 @@ export default class CommonUtils {
   }
 
   static navigateToHomeViaHomeLogo() {
-    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({force: true});
-  }
-
-  private static openSideMenu() {
-    cy.get('.sidenav-menu-btn span').then(($sidemenuBtnSpan) => {
-      if ($sidemenuBtnSpan.text() === 'Menü') {
-        $sidemenuBtnSpan.trigger('click');
-      }
-    });
+    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({ force: true });
   }
 
   static navigateToHomepageViaSidemenu() {
@@ -153,11 +140,11 @@ export default class CommonUtils {
     columnHeaderContent: string
   ) {
     cy.get('table')
-      .eq(tableNumber)
-      .find('thead tr th')
-      .eq(columnHeaderNumber)
-      .find('div')
-      .contains(columnHeaderContent);
+    .eq(tableNumber)
+    .find('thead tr th')
+    .eq(columnHeaderNumber)
+    .find('div')
+    .contains(columnHeaderContent);
   }
 
   static assertTableSearch(
@@ -166,10 +153,10 @@ export default class CommonUtils {
     fieldLabelExpectation: string
   ) {
     cy.get('app-table')
-      .eq(tableNumber)
-      .find('mat-label')
-      .eq(fieldNumber)
-      .contains(fieldLabelExpectation);
+    .eq(tableNumber)
+    .find('mat-label')
+    .eq(fieldNumber)
+    .contains(fieldLabelExpectation);
   }
 
   static clickOnEdit() {
@@ -194,13 +181,13 @@ export default class CommonUtils {
    */
   static getClearType(selector: string, textToType: string, force = false) {
     cy.get(selector)
-      .clear()
-      .then((e) => {
-        // Workaround so that no exception is thrown when textToType="" (meaning an empty string)
-        if (textToType) {
-          cy.wrap(e).type(textToType, { force: force });
-        }
-      });
+    .clear()
+    .then((e) => {
+      // Workaround so that no exception is thrown when textToType="" (meaning an empty string)
+      if (textToType) {
+        cy.wrap(e).type(textToType, { force: force });
+      }
+    });
   }
 
   static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
@@ -223,28 +210,57 @@ export default class CommonUtils {
    */
   static assertItemsFromDropdownAreChecked(selector: string, checkedOptionNames: string[]) {
     cy.get(selector)
-      .click()
-      .get('mat-option')
-      .each(($dropDownElement) => {
-        const dropDownElementName = $dropDownElement.text().trim();
-        const message = 'State of checkbox "' + dropDownElementName + '"';
+    .click()
+    .get('mat-option')
+    .each(($dropDownElement) => {
+      const dropDownElementName = $dropDownElement.text().trim();
+      const message = 'State of checkbox "' + dropDownElementName + '"';
 
-        const checkBoxState = $dropDownElement.hasClass('mat-selected');
-        if (checkedOptionNames.includes(dropDownElementName)) {
-          expect(checkBoxState, message).to.be.true;
-        } else {
-          expect(checkBoxState, message).to.be.false;
-        }
-      });
+      const checkBoxState = $dropDownElement.hasClass('mat-selected');
+      if (checkedOptionNames.includes(dropDownElementName)) {
+        expect(checkBoxState, message).to.be.true;
+      } else {
+        expect(checkBoxState, message).to.be.false;
+      }
+    });
     // Workaround to close the dropDown-menu again after all checks are done
     cy.get(selector).type('{esc}');
   }
 
   static assertDatePickerIs(selector: string, date: string) {
     cy.get(selector)
-      .invoke('val')
-      .then((text) => {
-        expect(date, selector + '-Date').to.equal(text);
+    .invoke('val')
+    .then((text) => {
+      expect(date, selector + '-Date').to.equal(text);
+    });
+  }
+
+  static unregisterServiceWorker() {
+    if (window.navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations()
+      .then((registrations) => {
+        registrations.forEach((registration) => {
+          registration.unregister();
+        });
       });
+    }
+  }
+
+  static visit(itemToDeleteUrl: string) {
+    CommonUtils.unregisterServiceWorker();
+    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+  }
+
+  private static clickCancelOnDetailView(overviewPath: string) {
+    cy.get(DataCy.CANCEL).click();
+    cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
+  }
+
+  private static openSideMenu() {
+    cy.get('.sidenav-menu-btn span').then(($sidemenuBtnSpan) => {
+      if ($sidemenuBtnSpan.text() === 'Menü') {
+        $sidemenuBtnSpan.trigger('click');
+      }
+    });
   }
 }
