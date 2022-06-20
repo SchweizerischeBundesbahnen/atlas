@@ -3,6 +3,8 @@ package ch.sbb.business.organisation.directory.controller;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompany.Fields;
+import ch.sbb.business.organisation.directory.entity.TransportCompany_;
+import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
 import java.util.List;
 import lombok.Getter;
 import lombok.Singular;
@@ -21,8 +23,13 @@ public class TransportCompanySearchRestrictions {
   @Singular(ignoreNullCollections = true)
   private List<String> searchCriterias;
 
+  @Singular(ignoreNullCollections = true)
+  private List<TransportCompanyStatus> statusRestrictions;
+
   public Specification<TransportCompany> getSpecification() {
-    return specificationBuilder().searchCriteriaSpecification(searchCriterias);
+    return specificationBuilder().searchCriteriaSpecification(searchCriterias)
+                                 .and(specificationBuilder().enumSpecification(statusRestrictions,
+                                     TransportCompany_.transportCompanyStatus));
   }
 
   protected SpecificationBuilder<TransportCompany> specificationBuilder() {
