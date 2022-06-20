@@ -119,3 +119,4 @@ frontend/.npmrc
 .idea/jpa-buddy.xml
 .idea/jsLibraryMappings.xml
 /.idea/sqldialects.xml
+/frontend/out-tsc/
