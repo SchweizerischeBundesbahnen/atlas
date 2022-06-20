@@ -1,6 +1,8 @@
 package ch.sbb.business.organisation.directory.entity;
 
 import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
+import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +12,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @SuperBuilder
@@ -42,5 +46,13 @@ public class TransportCompany {
   private String businessOrganisationNumbers;
 
   private String comment;
+
+  @CreationTimestamp
+  @Column(columnDefinition = "TIMESTAMP", updatable = false)
+  private LocalDateTime creationDate;
+
+  @UpdateTimestamp
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDateTime editionDate;
 
 }
