@@ -25,7 +25,7 @@ describe('Sublines: TableSettings and Routing', () => {
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusAktiv]);
 
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_SUBLINE_TYPE, [
-      minimalSubline1.type,
+      minimalSubline1.type
     ]);
     CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, commonValidDate);
 
@@ -118,7 +118,7 @@ describe('Sublines: TableSettings and Routing', () => {
 
   it('Step-10: Cleanup other subline', () => {
     // Get rid of search filter by reload
-    cy.reload();
+    CommonUtils.visit('/line-directory/sublines');
 
     // Find other created item to clean up
     CommonUtils.typeSearchInput(
