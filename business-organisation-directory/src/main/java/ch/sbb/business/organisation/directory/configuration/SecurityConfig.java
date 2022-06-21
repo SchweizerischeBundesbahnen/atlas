@@ -27,7 +27,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-  private static final String ROLE_PREFIX = "ROLE_";
   private static final String ROLES_KEY = "roles";
 
   @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
@@ -104,7 +103,7 @@ public class SecurityConfig {
    */
   private JwtGrantedAuthoritiesConverter azureAdRoleConverter() {
     JwtGrantedAuthoritiesConverter roleConverter = new JwtGrantedAuthoritiesConverter();
-    roleConverter.setAuthorityPrefix(ROLE_PREFIX);
+    roleConverter.setAuthorityPrefix(Role.ROLE_PREFIX);
     roleConverter.setAuthoritiesClaimName(ROLES_KEY);
     return roleConverter;
   }
