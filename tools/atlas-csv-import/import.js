@@ -46,6 +46,9 @@ async function main(args) {
   json.forEach((obj) => {
     obj.validFrom = getFormattedDate(obj.validFrom);
     obj.validTo = getFormattedDate(obj.validTo);
+    if (obj.sboid){
+      obj.sboid = 'ch:1:sboid:' + obj.sboid;
+    }
     for (let key in obj) {
       obj[key] = obj[key].replaceAll("$$", ";");
     }
