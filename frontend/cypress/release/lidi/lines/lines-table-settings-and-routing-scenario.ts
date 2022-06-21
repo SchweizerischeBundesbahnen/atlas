@@ -24,7 +24,7 @@ describe('Lines: TableSettings and Routing', () => {
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusAktiv]);
 
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_LINE_TYPE, [
-      minimalLine1.type,
+      minimalLine1.type
     ]);
     CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, firstValidDate);
 
@@ -110,7 +110,7 @@ describe('Lines: TableSettings and Routing', () => {
 
   it('Step-9: Cleanup other Line', () => {
     // Get rid of search filter by reload
-    cy.reload();
+    CommonUtils.visit('/line-directory/lines');
 
     // Find other created item to clean up
     CommonUtils.typeSearchInput(

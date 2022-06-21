@@ -99,7 +99,7 @@ describe('TTFN: TableSettings and Routing', () => {
 
   it('Step-9: Cleanup other TTFN', () => {
     // Get rid of search filter by reload
-    cy.reload();
+    CommonUtils.visit('/timetable-field-number');
 
     // Find other created item to clean up
     CommonUtils.typeSearchInput(
