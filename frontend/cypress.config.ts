@@ -10,6 +10,10 @@ export default defineConfig({
   viewportHeight: 1080,
   videoCompression: false,
   defaultCommandTimeout: 60000,
+  execTimeout: 60000,
+  pageLoadTimeout: 60000,
+  requestTimeout: 60000,
+  responseTimeout: 60000,
   env: {
     resolution: 'high'
   },
