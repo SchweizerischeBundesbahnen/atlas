@@ -5,6 +5,7 @@ import ch.sbb.business.organisation.directory.api.TransportCompanyApiV1;
 import ch.sbb.business.organisation.directory.api.TransportCompanyModel;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.service.TransportCompanyService;
+import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +28,12 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
 
   @Override
   public Container<TransportCompanyModel> getTransportCompanies(Pageable pageable,
-      List<String> searchCriteria) {
+      List<String> searchCriteria, List<TransportCompanyStatus> statusChoices) {
     Page<TransportCompany> transportCompanies = transportCompanyService.findAll(
         TransportCompanySearchRestrictions.builder()
                                           .pageable(pageable)
                                           .searchCriterias(searchCriteria)
+                                          .statusRestrictions(statusChoices)
                                           .build());
     List<TransportCompanyModel> transportCompanyModels = transportCompanies.stream()
                                                                            .map(this::toModel)
