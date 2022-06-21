@@ -2,6 +2,7 @@ package ch.sbb.business.organisation.directory.api;
 
 import ch.sbb.atlas.model.api.Container;
 import ch.sbb.business.organisation.directory.configuration.Role;
+import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -25,6 +26,7 @@ public interface TransportCompanyApiV1 {
   @PageableAsQueryParam
   Container<TransportCompanyModel> getTransportCompanies(
       @Parameter(hidden = true) Pageable pageable,
-      @Parameter @RequestParam(required = false) List<String> searchCriteria);
+      @Parameter @RequestParam(required = false) List<String> searchCriteria,
+      @Parameter @RequestParam(required = false) List<TransportCompanyStatus> statusChoices);
 
 }

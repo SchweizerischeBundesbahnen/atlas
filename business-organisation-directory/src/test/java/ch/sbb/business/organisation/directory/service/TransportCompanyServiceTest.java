@@ -7,6 +7,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ class TransportCompanyServiceTest {
 
     // When
     List<TransportCompanyCsvModel> transportCompanies = TransportCompanyService.parseTransportCompanies(
-        new ByteArrayInputStream(csv.getBytes()));
+        toInputStream(csv));
     // Then
     assertThat(transportCompanies).isNotEmpty();
     assertThat(transportCompanies.get(0).getRicsCode()).isNull();
@@ -63,7 +64,7 @@ class TransportCompanyServiceTest {
 
     // When
     List<TransportCompanyCsvModel> transportCompanies = TransportCompanyService.parseTransportCompanies(
-        new ByteArrayInputStream(csv.getBytes()));
+        toInputStream(csv));
     // Then
     assertThat(transportCompanies).isNotEmpty();
   }
@@ -76,7 +77,7 @@ class TransportCompanyServiceTest {
 
     // When
     List<TransportCompanyCsvModel> transportCompanies = TransportCompanyService.parseTransportCompanies(
-        new ByteArrayInputStream(csv.getBytes()));
+        toInputStream(csv));
     // Then
     assertThat(transportCompanies).isNotEmpty();
   }
@@ -89,9 +90,13 @@ class TransportCompanyServiceTest {
 
     // When
     List<TransportCompanyCsvModel> transportCompanies = TransportCompanyService.parseTransportCompanies(
-        new ByteArrayInputStream(csv.getBytes()));
+        toInputStream(csv));
     // Then
     assertThat(transportCompanies).isNotEmpty();
     assertThat(transportCompanies.get(0).getAbbreviation()).isEqualTo("(LBBD)");
+  }
+
+  private InputStream toInputStream(String string) {
+    return new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8));
   }
 }
