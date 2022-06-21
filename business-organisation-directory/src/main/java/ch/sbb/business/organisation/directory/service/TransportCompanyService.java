@@ -46,7 +46,7 @@ public class TransportCompanyService {
                            .abbreviation(csvModel.getAbbreviation())
                            .description(csvModel.getDescription())
                            .businessRegisterName(csvModel.getBusinessRegisterName())
-                           .transportCompanyStatus(csvModel.getTransportCompanyStatus())
+                           .transportCompanyStatus(csvModel.getTransportCompanyStatus().toTransportCompanyStatus())
                            .businessRegisterNumber(csvModel.getBusinessRegisterNumber())
                            .enterpriseId(csvModel.getEnterpriseId())
                            .ricsCode(csvModel.getRicsCode())

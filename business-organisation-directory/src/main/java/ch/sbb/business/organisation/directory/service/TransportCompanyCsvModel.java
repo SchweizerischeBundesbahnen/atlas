@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TransportCompanyCsvModel {
 
   @JsonProperty("ID")
@@ -28,7 +30,7 @@ public class TransportCompanyCsvModel {
   private String businessRegisterName;
 
   @JsonProperty("Status TU")
-  private TransportCompanyStatus transportCompanyStatus;
+  private TransportCompanyCsvStatus transportCompanyStatus;
 
   @JsonProperty("HR-Nr.")
   private String businessRegisterNumber;
@@ -44,5 +46,36 @@ public class TransportCompanyCsvModel {
 
   @JsonProperty("Kommentar")
   private String comment;
+
+  @Getter
+  @RequiredArgsConstructor
+  public enum TransportCompanyCsvStatus {
+
+    // Betreiber
+    @JsonProperty("1")
+    OPERATOR,
+    // Aktuell
+    @JsonProperty("2")
+    CURRENT,
+    // Aufsicht
+    @JsonProperty("3")
+    SUPERVISION,
+    // Betriebsteil
+    @JsonProperty("4")
+    OPERATING_PART,
+    // Liquidiert
+    @JsonProperty("5")
+    LIQUIDATED,
+    // Inaktiv
+    @JsonProperty("6")
+    INACTIVE,
+
+    ;
+
+    public TransportCompanyStatus toTransportCompanyStatus() {
+      return TransportCompanyStatus.valueOf(name());
+    }
+
+  }
 
 }
