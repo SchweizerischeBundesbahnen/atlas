@@ -15,4 +15,6 @@ frontend:
   clusterLoadBalancer: 'public-maggie.app.sbb.ch'
   replicas: 2
   instanaKey: 'Crh7TVwYQhGC5pt_qhlWWg'
-  pageBodiEnabled: false
+
+businessOrganisationDirectory:
+  enabled: false

@@ -42,7 +42,7 @@ spec:
             - name: INSTANA_KEY
               value: '{{ .Values.frontend.instanaKey }}'
             - name: PAGE_BODI_ENABLED
-              value: '{{ .Values.frontend.pageBodiEnabled }}'
+              value: '{{ .Values.businessOrganisationDirectory.enabled }}'
           ports:
             - containerPort: 8080
           livenessProbe:

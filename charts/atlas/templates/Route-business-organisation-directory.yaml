@@ -1,3 +1,4 @@
+{{- if .Values.businessOrganisationDirectory.enabled }}
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
@@ -16,3 +17,4 @@ spec:
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Allow
+{{- end }}
