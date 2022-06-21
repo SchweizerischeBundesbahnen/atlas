@@ -1,7 +1,7 @@
-create table business_organisation_transport_company_link
+create table transport_company_relation
 (
-    id integer unique not null primary key,
-    transport_company_id smallint not null,
+    id bigint primary key,
+    transport_company_id bigint not null,
     sboid varchar(32) not null,
     valid_from date not null,
     valid_to date not null,
@@ -9,8 +9,8 @@ create table business_organisation_transport_company_link
     creation_date timestamp not null,
     editor varchar(50) not null,
     edition_date timestamp not null,
-    version BIGINT NOT NULL DEFAULT 0,
+    version bigint not null default 0,
     foreign key (transport_company_id) references transport_company (id)
 );
 
-CREATE SEQUENCE business_organisation_transport_company_link_seq START WITH 1000 INCREMENT BY 1;
+create sequence transport_company_relation_seq start with 1000 increment by 1;

@@ -23,21 +23,20 @@ import org.hibernate.annotations.Immutable;
 @Getter
 @Setter
 @SuperBuilder
-@FieldNameConstants
 @Immutable
-@Entity(name = "business_organisation_transport_company_link")
-public class BoTcLink extends BaseVersion {
+@Entity(name = "transport_company_relation")
+public class TransportCompanyRelation extends BaseVersion {
 
-  private static final String BO_TC_LINK_SEQ = "business_organisation_transport_company_link_seq";
+  private static final String BO_TC_LINK_SEQ = "transport_company_relation_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = BO_TC_LINK_SEQ)
   @SequenceGenerator(name = BO_TC_LINK_SEQ, sequenceName = BO_TC_LINK_SEQ, allocationSize = 1, initialValue = 1000)
-  private Integer id;
+  private Long id;
 
   @NotNull
   @JoinColumn(name = "transport_company_id", referencedColumnName = "id")
-  private Integer transportCompanyId;
+  private Long transportCompanyId;
 
   @NotNull
   @Size(max = 32)
