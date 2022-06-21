@@ -33,6 +33,8 @@ lineDirectory:
   port: 8082
 
 businessOrganisationDirectory:
+  # Deploy BusinessOrganisations
+  enabled: true
   # Name of the Dockerimge in bin.sbb.ch/dockerrepo
   name: "business-organisation-directory"
   # LIVENESS_PROBE
@@ -49,5 +51,3 @@ frontend:
   replicas: 1
   # Used to deploy the Angular with production flag
   production: true
-  # BusinessOrganisationDirectory Menus
-  pageBodiEnabled: true
