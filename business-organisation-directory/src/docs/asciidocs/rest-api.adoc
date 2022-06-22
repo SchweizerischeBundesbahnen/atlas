@@ -53,3 +53,11 @@ include::{snippets}/business-organisation-controller-api-test/should-delete-busi
 
 == Create Business Organisation when Abbreviation conflict occurs
 include::{snippets}/business-organisation-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
+
+= Transport Companies
+
+== Get Transport Companies - Successfully
+include::{snippets}/transport-company-controller-api-test/should-get-transport-companies/auto-section.adoc[]
+
+== Get Transport Company - Successfully
+include::{snippets}/transport-company-controller-api-test/should-get-transport-company/auto-section.adoc[]

@@ -4,11 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.business.organisation.directory.repository.TransportCompanyRepository;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,6 +19,13 @@ class TransportCompanyServiceTest {
 
   @Autowired
   private TransportCompanyService transportCompanyService;
+  @Autowired
+  private TransportCompanyRepository repository;
+
+  @AfterEach
+  void cleanUpDb() {
+    repository.deleteAll();
+  }
 
   @Test
   void shouldParseCsvFileFromBavCorrectly() throws IOException {
