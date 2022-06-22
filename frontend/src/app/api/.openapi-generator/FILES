@@ -6,6 +6,7 @@ api/businessOrganisations.service.ts
 api/lines.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
+api/transportCompanies.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -17,6 +18,7 @@ model/containerBusinessOrganisation.ts
 model/containerLine.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
+model/containerTransportCompany.ts
 model/coverage.ts
 model/coverageType.ts
 model/displayInfo.ts
@@ -34,4 +36,6 @@ model/sublineType.ts
 model/sublineVersion.ts
 model/timetableFieldNumber.ts
 model/timetableFieldNumberVersion.ts
+model/transportCompany.ts
+model/transportCompanyStatus.ts
 variables.ts
