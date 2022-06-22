@@ -57,7 +57,7 @@ This module will get deployed on staging. See `estaCloudPipeline.json`
 ```
 
 ## HowTo Update
-https://api-deploy.int.app.ose.sbb-aws.net/swagger-ui.html#/API/updateServiceUsingPUT mit folgenden Parameter
+https://api-deploy.int.sbb-cloud.net/swagger-ui.html#/API/updateServiceUsingPUT mit folgenden Parameter
 - artifactId: apim-configuration
 - classifier: dev
 - groupId: ch.sbb.atlas
@@ -70,7 +70,7 @@ Siehe https://confluence.sbb.ch/display/~u222997/%5BATLAS%5D+APIM+Configuration+
 
 ## dev, test, int
 
-### [Admin Portal](https://3scale-admin.int.app.ose.sbb-aws.net/p/login)
+### [Admin Portal](https://api-management.int.sbb-cloud.net)
 (use SSO-Login):\
 View Configuration in the admin panel. Lists limits, application plans, traffic and configuration in a GUI.
 
