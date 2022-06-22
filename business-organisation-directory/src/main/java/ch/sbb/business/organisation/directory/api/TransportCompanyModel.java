@@ -2,7 +2,6 @@ package ch.sbb.business.organisation.directory.api;
 
 import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +16,7 @@ import lombok.experimental.FieldNameConstants;
 @Schema(name = "TransportCompany")
 public class TransportCompanyModel {
 
-  @Id
+  @Schema(description = "Identifier")
   private Long id;
 
   @Schema(description = "Number")
