@@ -3,6 +3,9 @@
   <app-table-search
     [additionalFieldTemplate]="tableSearchFieldTemplate"
     (searchEvent)="searchData($event)"
+    [displayStatus]="displayStatusSearch"
+    [displayValidOn]="displayValidOnSearch"
+    [searchTextColumnStyle]="searchTextColumnStyle"
   >
   </app-table-search>
   <table

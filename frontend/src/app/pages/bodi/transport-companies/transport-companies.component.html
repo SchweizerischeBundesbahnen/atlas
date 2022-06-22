@@ -3,6 +3,7 @@
 </div>
 
 <app-table
+  [tableSearchFieldTemplate]="transportCompanyTypeSelection"
   [tableData]="transportCompanies"
   [totalCount]="totalCount$"
   [tableColumns]="tableColumns"
@@ -10,7 +11,27 @@
   [isLoading]="isLoading"
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
+  [displayStatusSearch]="false"
+  [displayValidOnSearch]="false"
+  searchTextColumnStyle="col-9"
   data-cy="bodi-transport-companies"
 >
 </app-table>
 <router-outlet></router-outlet>
+<ng-template #transportCompanyTypeSelection>
+  <div class="d-flex flex-column col pe-3">
+    <mat-label class="font-bold-lg">{{ 'BODI.TRANSPORT_COMPANIES.STATUS' | translate }}</mat-label>
+    <mat-form-field appearance="outline">
+      <mat-select
+        (selectionChange)="onLineTypeSelectionChange()"
+        [(value)]="activeStatusTypes"
+        multiple
+        data-cy="table-search-line-type"
+      >
+        <mat-option *ngFor="let status of STATUS_TYPES" [value]="status">{{
+          'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.' + status | translate
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
