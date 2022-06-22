@@ -7,6 +7,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 
 const version: BusinessOrganisationVersion = {
   id: 1234,
+  organisationNumber: 1234,
   sboid: 'sboid',
   descriptionDe: 'asdf',
   descriptionFr: 'asdf',
