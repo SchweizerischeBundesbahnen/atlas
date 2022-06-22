@@ -20,7 +20,7 @@ public class TransportCompanyRelationService {
     if (businessOrganisationService.findBusinessOrganisationVersions(entity.getSboid()).isEmpty()){
       throw new SboidNotFoundException(entity.getSboid());
     }
-    if (transportCompanyService.findTransportCompanyById(entity.getTransportCompanyId()).isEmpty()){
+    if (transportCompanyService.findById(entity.getTransportCompanyId()).isEmpty()){
       throw new TransportCompanyNotFoundException(entity.getTransportCompanyId());
     }
     return transportCompanyRelationRepository.save(entity);
