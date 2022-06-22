@@ -13,10 +13,12 @@ import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion
 import ch.sbb.business.organisation.directory.entity.BusinessType;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
+import ch.sbb.business.organisation.directory.repository.TransportCompanyRelationRepository;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRepository;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,6 +28,16 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
   private BusinessOrganisationVersionRepository businessOrganisationVersionRepository;
   @Autowired
   private TransportCompanyRepository transportCompanyRepository;
+
+  @Autowired
+  private TransportCompanyRelationRepository transportCompanyRelationRepository;
+
+  @AfterEach
+  void cleanUp() {
+    transportCompanyRelationRepository.deleteAll();
+    businessOrganisationVersionRepository.deleteAll();
+    transportCompanyRepository.deleteAll();
+  }
 
   @Test
   void shouldCreateTransportCompanyRelation() throws Exception {
@@ -70,8 +82,8 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
                                                                        .build();
 
     mvc.perform(post("/v1/transport-company-relations/add").contentType(contentType)
-                                                          .content(
-                                                              mapper.writeValueAsString(model)))
+                                                           .content(
+                                                               mapper.writeValueAsString(model)))
        .andExpect(status().isCreated())
        .andExpect(jsonPath("$." + Fields.transportCompanyId, is(5)))
        .andExpect(jsonPath("$." + Fields.sboid, is("ch:1:sboid:100500")))
