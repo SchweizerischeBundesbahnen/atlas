@@ -18,7 +18,6 @@ class TransportCompanyServiceTest {
   @Autowired
   private TransportCompanyService transportCompanyService;
 
-
   @Test
   void shouldParseCsvFileFromBavCorrectly() throws IOException {
     // Given

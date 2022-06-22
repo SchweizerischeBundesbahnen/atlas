@@ -46,7 +46,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
   ];
 
   transportCompanies: TransportCompany[] = [];
-  totalCount$ = 0;
+  totalCount = 0;
   isLoading = false;
   private transportCompaniesSubscription!: Subscription;
   private routeSubscription!: Subscription;
@@ -87,7 +87,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
       )
       .subscribe((container) => {
         this.transportCompanies = container.objects!;
-        this.totalCount$ = container.totalCount!;
+        this.totalCount = container.totalCount!;
         this.tableComponent.setTableSettings($paginationAndSearch);
         this.activeStatusTypes = $paginationAndSearch.statusTypes;
         this.isLoading = false;
