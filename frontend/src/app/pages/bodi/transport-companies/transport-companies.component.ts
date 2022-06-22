@@ -4,7 +4,7 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { TransportCompaniesService, TransportCompany } from '../../../api';
+import { TransportCompaniesService, TransportCompany, TransportCompanyStatus } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableSettingsService } from '../../../core/components/table/table-settings.service';
@@ -20,6 +20,9 @@ import {
   templateUrl: './transport-companies.component.html',
 })
 export class TransportCompaniesComponent implements OnInit, OnDestroy {
+  readonly STATUS_TYPES: TransportCompanyStatus[] = Object.values(TransportCompanyStatus);
+  activeStatusTypes: TransportCompanyStatus[] = [];
+
   @ViewChild(TableComponent, { static: true })
   tableComponent!: TableComponent<TransportCompany>;
 
@@ -77,7 +80,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
     this.transportCompaniesSubscription = this.transportCompaniesService
       .getTransportCompanies(
         $paginationAndSearch.searchCriteria,
-        [],
+        $paginationAndSearch.statusTypes,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
         [$paginationAndSearch.sort!, this.getDefaultSort()]
@@ -86,8 +89,16 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
         this.transportCompanies = container.objects!;
         this.totalCount$ = container.totalCount!;
         this.tableComponent.setTableSettings($paginationAndSearch);
+        this.activeStatusTypes = $paginationAndSearch.statusTypes;
         this.isLoading = false;
       });
+  }
+
+  onLineTypeSelectionChange(): void {
+    this.tableComponent.searchData({
+      ...this.tableComponent.tableSearchComponent.activeSearch,
+      statusTypes: this.activeStatusTypes,
+    });
   }
 
   editVersion($event: TransportCompany) {
