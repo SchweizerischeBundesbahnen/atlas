@@ -1,5 +1,5 @@
 <div class="col-12 d-flex">
-  <div class="d-flex flex-column col-4 pe-3 search-box">
+  <div [class]="'d-flex flex-column pe-3 search-box ' + searchTextColumnStyle">
     <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
     <mat-form-field appearance="outline">
       <mat-chip-list #chipList data-cy="table-search-strings">
@@ -19,7 +19,7 @@
     </mat-form-field>
   </div>
   <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
-  <div class="d-flex flex-column col pe-3">
+  <div class="d-flex flex-column col pe-3" *ngIf="displayStatus">
     <mat-label class="font-bold-lg">{{ 'COMMON.STATUS' | translate }}</mat-label>
     <mat-form-field appearance="outline">
       <mat-select
@@ -34,7 +34,7 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="d-flex flex-column col">
+  <div class="d-flex flex-column col" *ngIf="displayValidOn">
     <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
     <mat-form-field appearance="outline">
       <input
