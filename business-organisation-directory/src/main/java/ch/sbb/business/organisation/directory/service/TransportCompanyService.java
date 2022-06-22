@@ -11,6 +11,7 @@ import feign.Response.Body;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,8 @@ public class TransportCompanyService {
                            .abbreviation(csvModel.getAbbreviation())
                            .description(csvModel.getDescription())
                            .businessRegisterName(csvModel.getBusinessRegisterName())
-                           .transportCompanyStatus(csvModel.getTransportCompanyStatus().toTransportCompanyStatus())
+                           .transportCompanyStatus(
+                               csvModel.getTransportCompanyStatus().toTransportCompanyStatus())
                            .businessRegisterNumber(csvModel.getBusinessRegisterNumber())
                            .enterpriseId(csvModel.getEnterpriseId())
                            .ricsCode(csvModel.getRicsCode())
@@ -83,5 +85,9 @@ public class TransportCompanyService {
       TransportCompanySearchRestrictions searchRestrictions) {
     return transportCompanyRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());
+  }
+
+  public Optional<TransportCompany> findById(Long id) {
+    return transportCompanyRepository.findById(id);
   }
 }

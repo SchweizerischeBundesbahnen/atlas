@@ -1,6 +1,7 @@
 package ch.sbb.business.organisation.directory.controller;
 
 import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.api.TransportCompanyApiV1;
 import ch.sbb.business.organisation.directory.api.TransportCompanyModel;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
@@ -43,6 +44,13 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
                     .objects(transportCompanyModels)
                     .totalCount(transportCompanies.getTotalElements())
                     .build();
+  }
+
+  @Override
+  public TransportCompanyModel getTransportCompany(Long id) {
+    return transportCompanyService.findById(id)
+                                  .map(this::toModel)
+                                  .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   private TransportCompanyModel toModel(TransportCompany entity) {
