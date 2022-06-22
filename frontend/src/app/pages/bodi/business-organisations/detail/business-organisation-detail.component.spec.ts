@@ -13,6 +13,7 @@ import { InfoIconComponent } from '../../../../core/form-components/info-icon/in
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,
+  organisationNumber: 1234,
   sboid: 'sboid',
   descriptionDe: 'asdf',
   descriptionFr: 'asdf',

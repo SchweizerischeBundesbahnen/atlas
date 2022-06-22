@@ -1,0 +1,16 @@
+<div class="table-heading font-bold-4xl color-gray-900 mb-5">
+  {{ 'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANIES' | translate }}
+</div>
+
+<app-table
+  [tableData]="transportCompanies"
+  [totalCount]="totalCount$"
+  [tableColumns]="tableColumns"
+  [canEdit]="true"
+  [isLoading]="isLoading"
+  (editElementEvent)="editVersion($event)"
+  (getTableElementsEvent)="getOverview($event)"
+  data-cy="bodi-transport-companies"
+>
+</app-table>
+<router-outlet></router-outlet>
