@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { LineDetailFormGroup } from '../../../bodi/business-organisations/detail/line-detail-form-group';
+import { LineDetailFormGroup } from './line-detail-form-group';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -35,7 +35,6 @@ export class LineDetailComponent
     private router: Router,
     protected dialogRef: MatDialogRef<LineDetailComponent>,
     private linesService: LinesService,
-    private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService
   ) {
