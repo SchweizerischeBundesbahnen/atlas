@@ -46,6 +46,7 @@ async function main(args) {
   json.forEach((obj) => {
     obj.validFrom = getFormattedDate(obj.validFrom);
     obj.validTo = getFormattedDate(obj.validTo);
+    // if it's a transport-company-relation import
     if (obj.sboid){
       obj.sboid = 'ch:1:sboid:' + obj.sboid;
     }
