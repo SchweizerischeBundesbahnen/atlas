@@ -43,6 +43,3 @@ logging:
   level:
     root: INFO
     org.hibernate: ERROR
-external:
-  url:
-    bav: https://www.output.tu-verzeichnisse-a.bav.admin.ch

@@ -30,7 +30,7 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
   @Override
   public Container<TransportCompanyModel> getTransportCompanies(Pageable pageable,
       List<String> searchCriteria, List<TransportCompanyStatus> statusChoices) {
-    Page<TransportCompany> transportCompanies = transportCompanyService.findAll(
+    Page<TransportCompany> transportCompanies = transportCompanyService.getTransportCompanies(
         TransportCompanySearchRestrictions.builder()
                                           .pageable(pageable)
                                           .searchCriterias(searchCriteria)

@@ -63,6 +63,6 @@ describe('TransportCompaniesComponent', () => {
     expect(transportCompaniesService.getTransportCompanies).toHaveBeenCalled();
 
     expect(component.transportCompanies.length).toBe(1);
-    expect(component.totalCount$).toBe(1);
+    expect(component.totalCount).toBe(1);
   });
 });

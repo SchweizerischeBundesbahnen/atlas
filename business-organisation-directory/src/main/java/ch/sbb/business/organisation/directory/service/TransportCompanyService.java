@@ -81,7 +81,7 @@ public class TransportCompanyService {
     return transportCompanies;
   }
 
-  public Page<TransportCompany> findAll(
+  public Page<TransportCompany> getTransportCompanies(
       TransportCompanySearchRestrictions searchRestrictions) {
     return transportCompanyRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());
