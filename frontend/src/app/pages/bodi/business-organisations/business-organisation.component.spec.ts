@@ -34,6 +34,9 @@ const businessOrganisation: ContainerBusinessOrganisation = {
 })
 class MockAppTableSearchComponent {
   @Input() additionalFieldTemplate!: TemplateRef<any>;
+  @Input() displayStatus = true;
+  @Input() displayValidOn = true;
+  @Input() searchTextColumnStyle = 'col-4';
 }
 
 describe('BusinessOrganisationComponent', () => {
