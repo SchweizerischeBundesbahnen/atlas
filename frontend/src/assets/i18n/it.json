@@ -328,6 +328,30 @@
         "DELETE_SUCCESS": "L'organizzazione commerciale è stata eliminata con successo.",
         "DELETE_ERROR": "Si è verificato un errore durante l'eliminazione dell'organizzazione commerciale."
       }
+    },
+    "TRANSPORT_COMPANIES": {
+      "ID_NAN_ERROR": "L'ID di una azienda di trasporto deve essere un numero",
+      "BASIC_DATA": "Informazioni sull'azienda di trasporto",
+      "OFFICIAL_DATA": "Dati ufficiali",
+      "TRANSPORT_COMPANIES": "Azienda di trasporto",
+      "NUMBER": "Numero",
+      "ABBREVIATION": "Iniziali",
+      "BUSINESS_REGISTER_NAME": "Nome del registro commerciale",
+      "BUSINESS_REGISTER_NUMBER": "Nummero del registro commerciale",
+      "DESCRIPTION": "Designazione ufficiale",
+      "RICS_CODE": "RICS-Code",
+      "GO_NUMBERS": "OA-Numero",
+      "ENTERPRISE_ID": "UID",
+      "COMMENT": "Commento",
+      "STATUS": "Stato",
+      "TRANSPORT_COMPANY_STATUS": {
+        "OPERATOR": "Operatore",
+        "CURRENT": "Attuale",
+        "SUPERVISION": "Supervisione",
+        "OPERATING_PART": "Sezione operativa",
+        "LIQUIDATED": "Liquidato",
+        "INACTIVE": "Inattivo"
+      }
     }
   }
 }
