@@ -48,7 +48,6 @@ public class TransportCompanyCsvModel {
   @JsonProperty("Kommentar")
   private String comment;
 
-
   public TransportCompany toEntity() {
     return TransportCompany.builder()
                            .id(getId())
@@ -70,31 +69,16 @@ public class TransportCompanyCsvModel {
   @RequiredArgsConstructor
   public enum TransportCompanyCsvStatus {
 
-    // Betreiber
-    @JsonProperty("1")
-    OPERATOR,
-    // Aktuell
-    @JsonProperty("2")
-    CURRENT,
-    // Aufsicht
-    @JsonProperty("3")
-    SUPERVISION,
-    // Betriebsteil
-    @JsonProperty("4")
-    OPERATING_PART,
-    // Liquidiert
-    @JsonProperty("5")
-    LIQUIDATED,
-    // Inaktiv
-    @JsonProperty("6")
-    INACTIVE,
-
-    ;
+    @JsonProperty("1") OPERATOR,
+    @JsonProperty("2") CURRENT,
+    @JsonProperty("3") SUPERVISION,
+    @JsonProperty("4") OPERATING_PART,
+    @JsonProperty("5") LIQUIDATED,
+    @JsonProperty("6") INACTIVE;
 
     public TransportCompanyStatus toTransportCompanyStatus() {
       return TransportCompanyStatus.valueOf(name());
     }
 
   }
-
 }
