@@ -35,26 +35,9 @@ public class TransportCompanyService {
 
   void saveTransportCompanies(List<TransportCompanyCsvModel> companies) {
     List<TransportCompany> transportCompanies = companies.stream()
-                                                         .map(this::toEntity)
+                                                         .map(TransportCompanyCsvModel::toEntity)
                                                          .collect(Collectors.toList());
     transportCompanyRepository.saveAll(transportCompanies);
-  }
-
-  private TransportCompany toEntity(TransportCompanyCsvModel csvModel) {
-    return TransportCompany.builder()
-                           .id(csvModel.getId())
-                           .number(csvModel.getNumber())
-                           .abbreviation(csvModel.getAbbreviation())
-                           .description(csvModel.getDescription())
-                           .businessRegisterName(csvModel.getBusinessRegisterName())
-                           .transportCompanyStatus(
-                               csvModel.getTransportCompanyStatus().toTransportCompanyStatus())
-                           .businessRegisterNumber(csvModel.getBusinessRegisterNumber())
-                           .enterpriseId(csvModel.getEnterpriseId())
-                           .ricsCode(csvModel.getRicsCode())
-                           .businessOrganisationNumbers(csvModel.getBusinessOrganisationNumbers())
-                           .comment(csvModel.getComment())
-                           .build();
   }
 
   List<TransportCompanyCsvModel> getTransportCompaniesFromBav() {
