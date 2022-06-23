@@ -28,6 +28,16 @@ public class TransportCompanyService {
   private final TransportCompanyClient transportCompanyClient;
   private final TransportCompanyRepository transportCompanyRepository;
 
+  public Page<TransportCompany> getTransportCompanies(
+      TransportCompanySearchRestrictions searchRestrictions) {
+    return transportCompanyRepository.findAll(searchRestrictions.getSpecification(),
+        searchRestrictions.getPageable());
+  }
+
+  public Optional<TransportCompany> findById(Long id) {
+    return transportCompanyRepository.findById(id);
+  }
+
   public void saveTransportCompaniesFromBav() {
     List<TransportCompanyCsvModel> transportCompaniesFromBav = getTransportCompaniesFromBav();
     saveTransportCompanies(transportCompaniesFromBav);
@@ -41,8 +51,8 @@ public class TransportCompanyService {
   }
 
   List<TransportCompanyCsvModel> getTransportCompaniesFromBav() {
-    try (Body body = transportCompanyClient.getTransportCompanies().body();
-        InputStream inputStream = body.asInputStream()) {
+    try (Body body = transportCompanyClient.getTransportCompanies()
+                                           .body(); InputStream inputStream = body.asInputStream()) {
       return parseTransportCompanies(inputStream);
     } catch (IOException e) {
       throw new IllegalStateException("Could not read response from BAV correctly", e);
@@ -62,15 +72,5 @@ public class TransportCompanyService {
     List<TransportCompanyCsvModel> transportCompanies = mappingIterator.readAll();
     log.info("Parsed {} transportCompanies", transportCompanies.size());
     return transportCompanies;
-  }
-
-  public Page<TransportCompany> getTransportCompanies(
-      TransportCompanySearchRestrictions searchRestrictions) {
-    return transportCompanyRepository.findAll(searchRestrictions.getSpecification(),
-        searchRestrictions.getPageable());
-  }
-
-  public Optional<TransportCompany> findById(Long id) {
-    return transportCompanyRepository.findById(id);
   }
 }
