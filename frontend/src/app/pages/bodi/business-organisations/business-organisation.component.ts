@@ -18,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Language } from '../../../core/components/language-switcher/language';
 
 @Component({
-  selector: 'app-bodi-lines',
+  selector: 'app-bodi-business-organisations',
   templateUrl: './business-organisation.component.html',
 })
 export class BusinessOrganisationComponent implements OnInit, OnDestroy {

@@ -335,6 +335,30 @@
         "DELETE_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gelöscht.",
         "DELETE_ERROR": "Beim Löschen der Geschäftsorganisation ist ein Fehler aufgetreten."
       }
+    },
+    "TRANSPORT_COMPANIES": {
+      "ID_NAN_ERROR": "Die ID für ein Transportunternehmen muss eine Zahl sein",
+      "BASIC_DATA": "Angaben zum Transportunternehmen",
+      "OFFICIAL_DATA": "Amtliche Daten",
+      "TRANSPORT_COMPANIES": "Transportunternehmen",
+      "NUMBER": "TU-Nummer",
+      "ABBREVIATION": "Initialen",
+      "BUSINESS_REGISTER_NAME": "Handelsregistername",
+      "BUSINESS_REGISTER_NUMBER": "Handelsregisternummer",
+      "DESCRIPTION": "Amtliche Bezeichnung",
+      "RICS_CODE": "RICS-Code",
+      "GO_NUMBERS": "GO-Nummer",
+      "ENTERPRISE_ID": "Unternehmens-ID (UID)",
+      "COMMENT": "Kommentar",
+      "STATUS": "Status",
+      "TRANSPORT_COMPANY_STATUS": {
+        "OPERATOR": "Betreiber",
+        "CURRENT": "Aktuell",
+        "SUPERVISION": "Aufsicht",
+        "OPERATING_PART": "Betriebsteil",
+        "LIQUIDATED": "Liquidiert",
+        "INACTIVE": "Inaktiv"
+      }
     }
   }
 }

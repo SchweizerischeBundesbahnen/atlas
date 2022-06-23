@@ -51,7 +51,11 @@ export class NotificationService implements OnDestroy {
     if (error instanceof HttpErrorResponse) {
       this.configureNotification(code, error);
     } else {
-      this.configureGenericClientErrorNotification(error);
+      if (code) {
+        this.configureErrorCodeNotification(code);
+      } else {
+        this.configureGenericClientErrorNotification(error);
+      }
     }
     const errorSnackBar = this.snackBar.openFromComponent(
       ErrorNotificationComponent,

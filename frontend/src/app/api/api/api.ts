@@ -6,9 +6,12 @@ export * from './sublines.service';
 import { SublinesService } from './sublines.service';
 export * from './timetableFieldNumbers.service';
 import { TimetableFieldNumbersService } from './timetableFieldNumbers.service';
+export * from './transportCompanies.service';
+import { TransportCompaniesService } from './transportCompanies.service';
 export const APIS = [
   BusinessOrganisationsService,
   LinesService,
   SublinesService,
   TimetableFieldNumbersService,
+  TransportCompaniesService,
 ];
