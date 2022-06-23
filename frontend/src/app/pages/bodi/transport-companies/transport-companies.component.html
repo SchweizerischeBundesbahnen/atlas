@@ -23,10 +23,10 @@
     <mat-label class="font-bold-lg">{{ 'BODI.TRANSPORT_COMPANIES.STATUS' | translate }}</mat-label>
     <mat-form-field appearance="outline">
       <mat-select
-        (selectionChange)="onLineTypeSelectionChange()"
+        (selectionChange)="onStatusSelectionChange()"
         [(value)]="activeStatusTypes"
         multiple
-        data-cy="table-search-line-type"
+        data-cy="table-search-status"
       >
         <mat-option *ngFor="let status of STATUS_TYPES" [value]="status">{{
           'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.' + status | translate

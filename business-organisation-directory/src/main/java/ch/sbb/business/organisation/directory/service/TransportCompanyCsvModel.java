@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.service;
 
+import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -46,6 +47,24 @@ public class TransportCompanyCsvModel {
 
   @JsonProperty("Kommentar")
   private String comment;
+
+
+  public TransportCompany toEntity() {
+    return TransportCompany.builder()
+                           .id(getId())
+                           .number(getNumber())
+                           .abbreviation(getAbbreviation())
+                           .description(getDescription())
+                           .businessRegisterName(getBusinessRegisterName())
+                           .transportCompanyStatus(
+                               getTransportCompanyStatus().toTransportCompanyStatus())
+                           .businessRegisterNumber(getBusinessRegisterNumber())
+                           .enterpriseId(getEnterpriseId())
+                           .ricsCode(getRicsCode())
+                           .businessOrganisationNumbers(getBusinessOrganisationNumbers())
+                           .comment(getComment())
+                           .build();
+  }
 
   @Getter
   @RequiredArgsConstructor
