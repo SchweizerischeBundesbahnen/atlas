@@ -24,6 +24,9 @@ import { ValidationService } from '../../validation/validation.service';
 export class TableSearchComponent {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() additionalFieldTemplate!: TemplateRef<any>;
+  @Input() displayStatus = true;
+  @Input() displayValidOn = true;
+  @Input() searchTextColumnStyle = 'col-4';
   @Output() searchEvent: EventEmitter<TableSearch> = new EventEmitter<TableSearch>();
   @ViewChild('validOnInput') validOnInput!: ElementRef;
 

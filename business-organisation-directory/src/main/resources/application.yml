@@ -8,6 +8,10 @@ spring:
     name: business-organisation-directory
   jpa:
     open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 500
   jmx:
     enabled: true
   security:
@@ -39,3 +43,6 @@ logging:
   level:
     root: INFO
     org.hibernate: ERROR
+external:
+  url:
+    bav: https://www.output.tu-verzeichnisse.bav.admin.ch

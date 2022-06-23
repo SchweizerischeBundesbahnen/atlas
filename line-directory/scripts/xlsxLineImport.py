@@ -81,7 +81,7 @@ def main():
     if ':' in str(row[2]):
       result_sql_file.write(
           "INSERT INTO subline_version "
-          "(id, swiss_subline_number, mainline_slnid, type, status, slnid, description, number, long_name, payment_type, valid_from, valid_to, business_organisation, creation_date, creator, edition_date, editor) "
+          "(id, swiss_subline_number, mainline_slnid, subline_type, status, slnid, description, number, long_name, payment_type, valid_from, valid_to, business_organisation, creation_date, creator, edition_date, editor) "
           "VALUES "
           "(nextval('subline_version_seq'), '{}', '{}', '{}', 'ACTIVE', 'ch:1:slnid:'|| nextval('slnid_seq'), 'lorem ipsum Teillinie', '{}', '{}', '{}', '2020-12-12', '{}', 'ATLAS Transportation surrogate', current_timestamp, 'xlsx', current_timestamp, 'xlsx');"
             .format(
@@ -98,7 +98,7 @@ def main():
       spalte_d = str(row[3])
       result_sql_file.write(
           "INSERT INTO line_version "
-          "(id, status, type, slnid, payment_type, number, alternative_name, combination_name, long_name, color_font_rgb, color_back_rgb, color_font_cmyk, color_back_cmyk, "
+          "(id, status, line_type, slnid, payment_type, number, alternative_name, combination_name, long_name, color_font_rgb, color_back_rgb, color_font_cmyk, color_back_cmyk, "
           "icon, description, valid_from, valid_to, business_organisation, comment, swiss_line_number, creation_date, creator, edition_date, editor) "
           "VALUES "
           "(nextval('line_version_seq'), 'ACTIVE', 'ORDERLY', 'ch:1:slnid:' || nextval('slnid_seq'), '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', "
