@@ -5,12 +5,16 @@ import { BodiRoutingModule } from './bodi-routing.module';
 import { BodiOverviewComponent } from './overview/bodi-overview.component';
 import { BusinessOrganisationDetailComponent } from './business-organisations/detail/business-organisation-detail.component';
 import { FormModule } from '../../core/module/form.module';
+import { TransportCompaniesComponent } from './transport-companies/transport-companies.component';
+import { TransportCompanyDetailComponent } from './transport-companies/detail/transport-company-detail.component';
 
 @NgModule({
   declarations: [
     BodiOverviewComponent,
     BusinessOrganisationComponent,
     BusinessOrganisationDetailComponent,
+    TransportCompaniesComponent,
+    TransportCompanyDetailComponent,
   ],
   imports: [CoreModule, BodiRoutingModule, FormModule],
 })

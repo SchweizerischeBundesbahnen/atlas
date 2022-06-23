@@ -1,0 +1,42 @@
+@use 'src/styles/variables' as variables;
+
+.dialog-close-panel {
+  width: 100%;
+  text-align: right;
+
+  button {
+    position: absolute;
+    padding: 0;
+    margin: -55px 0 0 36px;
+    width: 25px;
+    line-height: 25px;
+    height: 25px;
+    border-radius: 10px;
+    font-size: 24px;
+  }
+
+  .bi {
+    color: variables.$primary-400;
+  }
+}
+
+.footer {
+  height: variables.$footerHeight;
+  background-color: variables.$primary-500;
+}
+
+.footer-btn {
+  background-color: variables.$primary-500;
+  color: variables.$white;
+  border-color: variables.$white;
+
+  &:hover:not(:disabled) {
+    color: variables.$primary-500;
+    background-color: variables.$white;
+  }
+
+  &:disabled {
+    color: variables.$primary-300;
+    border-color: variables.$primary-300;
+  }
+}
