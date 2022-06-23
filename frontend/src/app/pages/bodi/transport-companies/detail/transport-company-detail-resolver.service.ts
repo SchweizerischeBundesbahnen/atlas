@@ -17,12 +17,11 @@ export class TransportCompanyDetailResolver implements Resolve<TransportCompany>
     const idParameter = parseInt(route.paramMap.get('id') || '0');
     if (Number.isNaN(idParameter)) {
       this.notificationService.error(new Error(), 'BODI.TRANSPORT_COMPANIES.ID_NAN_ERROR');
-      this.routeOnFailure();
+      return this.routeOnFailure();
     }
     return this.transportCompaniesService.getTransportCompany(idParameter).pipe(
       catchError(() => {
-        this.routeOnFailure();
-        return EMPTY;
+        return this.routeOnFailure();
       })
     );
   }
@@ -33,5 +32,6 @@ export class TransportCompanyDetailResolver implements Resolve<TransportCompany>
         state: { notDismissSnackBar: true },
       })
       .then();
+    return EMPTY;
   }
 }
