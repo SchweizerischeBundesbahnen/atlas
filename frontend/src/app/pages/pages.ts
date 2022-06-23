@@ -61,7 +61,14 @@ export class Pages {
 
   public static BUSINESS_ORGANISATIONS: Page = {
     title: 'PAGES.DETAILS',
-    path: 'business-organisation',
+    path: 'business-organisations',
+    pathText: '',
+    description: '',
+  };
+
+  public static TRANSPORT_COMPANIES: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'transport-companies',
     pathText: '',
     description: '',
   };

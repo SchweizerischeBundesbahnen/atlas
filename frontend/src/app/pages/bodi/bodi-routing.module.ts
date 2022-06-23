@@ -6,6 +6,9 @@ import { BusinessOrganisationDetailResolver } from './business-organisations/det
 import { Pages } from '../pages';
 import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
 import { BusinessOrganisationComponent } from './business-organisations/business-organisation.component';
+import { TransportCompaniesComponent } from './transport-companies/transport-companies.component';
+import { TransportCompanyDetailComponent } from './transport-companies/detail/transport-company-detail.component';
+import { TransportCompanyDetailResolver } from './transport-companies/detail/transport-company-detail-resolver.service';
 
 const routes: Routes = [
   {
@@ -22,6 +25,19 @@ const routes: Routes = [
         data: { component: BusinessOrganisationDetailComponent },
         resolve: {
           businessOrganisationDetail: BusinessOrganisationDetailResolver,
+        },
+        runGuardsAndResolvers: 'always',
+      },
+      {
+        path: Pages.TRANSPORT_COMPANIES.path,
+        component: TransportCompaniesComponent,
+      },
+      {
+        path: Pages.TRANSPORT_COMPANIES.path + '/:id',
+        component: RouteToDialogComponent,
+        data: { component: TransportCompanyDetailComponent },
+        resolve: {
+          transportCompanyDetail: TransportCompanyDetailResolver,
         },
         runGuardsAndResolvers: 'always',
       },
