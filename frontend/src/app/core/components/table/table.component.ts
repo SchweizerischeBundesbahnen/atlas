@@ -27,7 +27,11 @@ export class TableComponent<DATATYPE> {
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+
   @ViewChild(TableSearchComponent, { static: true }) tableSearchComponent!: TableSearchComponent;
+  @Input() searchTextColumnStyle = 'col-4';
+  @Input() displayStatusSearch = true;
+  @Input() displayValidOnSearch = true;
 
   loading = true;
 
