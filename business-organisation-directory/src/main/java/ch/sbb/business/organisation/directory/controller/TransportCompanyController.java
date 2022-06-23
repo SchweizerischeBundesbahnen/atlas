@@ -37,7 +37,8 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
                                           .statusRestrictions(statusChoices)
                                           .build());
     List<TransportCompanyModel> transportCompanyModels = transportCompanies.stream()
-                                                                           .map(this::toModel)
+                                                                           .map(
+                                                                               TransportCompanyModel::fromEntity)
                                                                            .collect(
                                                                                Collectors.toList());
     return Container.<TransportCompanyModel>builder()
@@ -49,24 +50,8 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
   @Override
   public TransportCompanyModel getTransportCompany(Long id) {
     return transportCompanyService.findById(id)
-                                  .map(this::toModel)
+                                  .map(TransportCompanyModel::fromEntity)
                                   .orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  private TransportCompanyModel toModel(TransportCompany entity) {
-    return TransportCompanyModel.builder()
-                                .id(entity.getId())
-                                .number(entity.getNumber())
-                                .abbreviation(entity.getAbbreviation())
-                                .description(entity.getDescription())
-                                .businessRegisterName(entity.getBusinessRegisterName())
-                                .transportCompanyStatus(entity.getTransportCompanyStatus())
-                                .businessRegisterNumber(entity.getBusinessRegisterNumber())
-                                .enterpriseId(entity.getEnterpriseId())
-                                .ricsCode(entity.getRicsCode())
-                                .businessOrganisationNumbers(
-                                    entity.getBusinessOrganisationNumbers())
-                                .comment(entity.getComment())
-                                .build();
-  }
 }

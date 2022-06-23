@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.api;
 
+import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -49,4 +50,20 @@ public class TransportCompanyModel {
   @Schema(description = "Comment")
   private String comment;
 
+  public static TransportCompanyModel fromEntity(TransportCompany entity) {
+    return TransportCompanyModel.builder()
+                                .id(entity.getId())
+                                .number(entity.getNumber())
+                                .abbreviation(entity.getAbbreviation())
+                                .description(entity.getDescription())
+                                .businessRegisterName(entity.getBusinessRegisterName())
+                                .transportCompanyStatus(entity.getTransportCompanyStatus())
+                                .businessRegisterNumber(entity.getBusinessRegisterNumber())
+                                .enterpriseId(entity.getEnterpriseId())
+                                .ricsCode(entity.getRicsCode())
+                                .businessOrganisationNumbers(
+                                    entity.getBusinessOrganisationNumbers())
+                                .comment(entity.getComment())
+                                .build();
+  }
 }
