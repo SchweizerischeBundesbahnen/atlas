@@ -9,17 +9,6 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 public enum TransportCompanyStatus {
 
-  // Betreiber
-  OPERATOR,
-  // Aktuell
-  CURRENT,
-  // Aufsicht
-  SUPERVISION,
-  // Betriebsteil
-  OPERATING_PART,
-  // Liquidiert
-  LIQUIDATED,
-  // Inaktiv
-  INACTIVE
+  OPERATOR, CURRENT, SUPERVISION, OPERATING_PART, LIQUIDATED, INACTIVE
 
 }
