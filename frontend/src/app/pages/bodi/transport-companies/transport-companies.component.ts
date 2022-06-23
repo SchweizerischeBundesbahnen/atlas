@@ -68,7 +68,19 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
     const storedTableSettings = this.tableSettingsService.getTableSettings(
       Pages.TRANSPORT_COMPANIES.path
     );
-    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: this.getDefaultSort() });
+    this.getOverview(
+      storedTableSettings || {
+        page: 0,
+        size: 10,
+        sort: this.getDefaultSort(),
+        statusTypes: [
+          TransportCompanyStatus.Current,
+          TransportCompanyStatus.OperatingPart,
+          TransportCompanyStatus.Operator,
+          TransportCompanyStatus.Supervision,
+        ],
+      }
+    );
   }
 
   getOverview($paginationAndSearch: TableSettings) {
@@ -94,7 +106,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
       });
   }
 
-  onLineTypeSelectionChange(): void {
+  onStatusSelectionChange(): void {
     this.tableComponent.searchData({
       ...this.tableComponent.tableSearchComponent.activeSearch,
       statusTypes: this.activeStatusTypes,

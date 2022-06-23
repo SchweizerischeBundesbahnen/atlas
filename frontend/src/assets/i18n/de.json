@@ -341,7 +341,7 @@
       "DESCRIPTION": "Amtliche Bezeichnung",
       "RICS_CODE": "RICS-Code",
       "GO_NUMBERS": "GO-Nummer",
-      "ENTERPRISE_ID": "UID",
+      "ENTERPRISE_ID": "Unternehmens-ID (UID)",
       "COMMENT": "Kommentar",
       "STATUS": "Status",
       "TRANSPORT_COMPANY_STATUS": {
