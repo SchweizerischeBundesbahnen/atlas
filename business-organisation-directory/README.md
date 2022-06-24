@@ -125,3 +125,9 @@ Stop PostgreSQL container and remove volume:
 ~~~
 docker-compose down -v 
 ~~~
+
+### Proxy configuration to load Transport Companies from within SBB Network
+IntelliJ: Insert into VM options of your Spring Boot Run Configuration the following arguments:
+~~~
+-Dhttps.proxyHost=zscaler.sbb.ch -Dhttps.proxyPort=10465 -Dhttp.nonProxyHosts=login.microsoftonline.com
+~~~
