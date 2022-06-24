@@ -38,6 +38,10 @@ public class TransportCompanyService {
     return transportCompanyRepository.findById(id);
   }
 
+  public boolean existsById(Long id){
+    return transportCompanyRepository.existsById(id);
+  }
+
   public void saveTransportCompaniesFromBav() {
     List<TransportCompanyCsvModel> transportCompaniesFromBav = getTransportCompaniesFromBav();
     saveTransportCompanies(transportCompaniesFromBav);
