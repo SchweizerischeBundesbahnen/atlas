@@ -61,3 +61,8 @@ include::{snippets}/transport-company-controller-api-test/should-get-transport-c
 
 == Get Transport Company - Successfully
 include::{snippets}/transport-company-controller-api-test/should-get-transport-company/auto-section.adoc[]
+
+= Transport Company Relations
+
+== Create Transport Company Relation - Successfully
+include::{snippets}/transport-company-relation-controller-api-test/should-create-transport-company-relation/auto-section.adoc[]
