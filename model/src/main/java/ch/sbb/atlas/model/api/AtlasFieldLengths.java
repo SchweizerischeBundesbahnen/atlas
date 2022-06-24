@@ -5,7 +5,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class AtlasFieldLengths {
 
+  public static final int MIN_STRING_LENGTH = 1;
   public static final int LENGTH_10 = 10;
+  public static final int LENGTH_32 = 32;
   public static final int LENGTH_50 = 50;
   public static final int LENGTH_60 = 60;
   public static final int LENGTH_255 = 255;
