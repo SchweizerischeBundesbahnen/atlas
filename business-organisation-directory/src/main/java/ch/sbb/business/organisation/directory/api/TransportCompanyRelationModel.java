@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.api;
 
+import ch.sbb.atlas.model.api.AtlasFieldLengths;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ public class TransportCompanyRelationModel {
   @NotNull
   private Long transportCompanyId;
 
-  @Size(min = 1, max = 32)
+  @Size(min = AtlasFieldLengths.MIN_STRING_LENGTH, max = AtlasFieldLengths.LENGTH_32)
   @NotNull
   private String sboid;
 

@@ -16,7 +16,7 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
   private final TransportCompanyRelationService transportCompanyRelationService;
 
   @Override
-  public TransportCompanyRelationModel createBoTcLink(TransportCompanyRelationModel model){
+  public TransportCompanyRelationModel createTransportCompanyRelation(TransportCompanyRelationModel model){
     TransportCompanyRelation entity = TransportCompanyRelationModel.toEntity(model);
     TransportCompanyRelation savedEntity = transportCompanyRelationService.save(entity);
     return TransportCompanyRelationModel.toModel(savedEntity);
