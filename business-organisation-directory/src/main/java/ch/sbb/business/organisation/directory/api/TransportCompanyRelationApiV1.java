@@ -15,6 +15,6 @@ public interface TransportCompanyRelationApiV1 {
 
   @PostMapping("add")
   @ResponseStatus(HttpStatus.CREATED)
-  TransportCompanyRelationModel createBoTcLink(@RequestBody @Valid TransportCompanyRelationModel model);
+  TransportCompanyRelationModel createTransportCompanyRelation(@RequestBody @Valid TransportCompanyRelationModel model);
 
 }
