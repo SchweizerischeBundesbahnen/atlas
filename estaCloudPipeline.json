@@ -75,7 +75,7 @@
       "api": {
         "artifactId": "apim-configuration",
         "instance": "int",
-        "clientJenkinsId": "791ceebb-e433-4c6c-b2eb-dac031ba3fe2",
+        "clientJenkinsId": "ssp-f1tqg4s8z-53a6-4h5d-0r0k-33j211k08b4",
         "clientId": "client-atlas-jenkins-dev",
         "classifier": "dev"
       }
@@ -91,7 +91,7 @@
       "api": {
         "artifactId": "apim-configuration",
         "instance": "int",
-        "clientJenkinsId": "bcdd6468-861d-45ca-ac92-1823e09800b6",
+        "clientJenkinsId": "ssp-e2py25ozd-a12r-8xga-60s8-22did0rmx6s",
         "clientId": "client-atlas-jenkins-test",
         "classifier": "test"
       }
@@ -107,7 +107,7 @@
       "api": {
         "artifactId": "apim-configuration",
         "instance": "int",
-        "clientJenkinsId": "0dd7901b-1bd9-4b96-af99-9c81143bd987",
+        "clientJenkinsId": "ssp-dzyd7597p-wy82-j0i3-4ug5-17890eg89to",
         "clientId": "client-atlas-jenkins-int",
         "classifier": "int"
       }
