@@ -1,0 +1,10 @@
+spring:
+  mail:
+    host: smtp.ch
+    port: 123
+    properties:
+      mail:
+        smtp:
+          auth: false
+        starttls:
+          enable: false
