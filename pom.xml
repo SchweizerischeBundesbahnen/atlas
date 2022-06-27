@@ -32,6 +32,7 @@
         <module>versioning</module>
         <module>searching</module>
         <!--  Services-->
+        <module>mail</module>
         <module>line-directory</module>
         <module>business-organisation-directory</module>
         <!-- Combine APIs-->

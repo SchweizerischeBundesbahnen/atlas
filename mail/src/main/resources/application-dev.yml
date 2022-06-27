@@ -1,0 +1,16 @@
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 15MB
+      max-request-size: 15MB
+  mail:
+    host: smtp-app.sbb.ch
+    port: 25
+    properties:
+      mail:
+        smtp:
+          auth: false
+        starttls:
+          enable: false
