@@ -25,5 +25,3 @@ spring:
           auth: false
         starttls:
           enable: false
-  templates:
-      path: templates
