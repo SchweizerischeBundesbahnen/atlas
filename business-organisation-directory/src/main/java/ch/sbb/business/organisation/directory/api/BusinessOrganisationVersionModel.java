@@ -94,7 +94,7 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
 
   @Schema(description = "Enterprise E-Mail address")
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   private String contactEnterpriseEmail;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)

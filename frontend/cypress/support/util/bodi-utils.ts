@@ -3,7 +3,8 @@ import { DataCy } from '../data-cy';
 
 export default class BodiUtils {
 
-  private static BUSINESS_ORGANISATION_PATH = '/business-organisation-directory/business-organisation';
+  private static BUSINESS_ORGANISATION_PATH_NO_LEADING_SLASH = 'business-organisation-directory/business-organisations';
+  private static BUSINESS_ORGANISATION_PATH = '/' + BodiUtils.BUSINESS_ORGANISATION_PATH_NO_LEADING_SLASH;
 
   static navigateToBusinessOrganisation() {
     CommonUtils.navigateToHomeViaHomeLogo();
@@ -105,7 +106,7 @@ export default class BodiUtils {
   }
 
   static fromDetailBackToBusinessOrganisationOverview() {
-    CommonUtils.fromDetailBackToOverview('business-organisation-directory/business-organisation');
+    CommonUtils.fromDetailBackToOverview(BodiUtils.BUSINESS_ORGANISATION_PATH_NO_LEADING_SLASH);
   }
 
   static saveBusinessOrganisation() {
