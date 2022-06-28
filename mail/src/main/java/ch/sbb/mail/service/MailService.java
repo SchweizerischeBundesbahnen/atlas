@@ -57,7 +57,6 @@ public class MailService {
           MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
           StandardCharsets.UTF_8.name());
       messageHelper.addAttachment("logo.svg", new ClassPathResource("images/logo-atlas.svg"));
-
       messageHelper.setFrom(getSender(mailNotification));
       messageHelper.setTo(mailNotification.toAsArray());
       messageHelper.setSubject(mailNotification.getSubject());
