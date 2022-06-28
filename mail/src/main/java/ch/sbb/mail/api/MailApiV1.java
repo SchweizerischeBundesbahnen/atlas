@@ -16,5 +16,7 @@ public interface MailApiV1 {
 
   @PostMapping(value = "html")
   ResponseEntity<?> sendEmailInHtml(@RequestBody MailNotification mailNotification);
+  @PostMapping(value = "tu-import")
+  ResponseEntity<?> sendImportTuEmailInHtml(@RequestBody MailNotification mailNotification);
 
 }
