@@ -18,6 +18,7 @@ This is the main repository for business relevant services for ATLAS.
   * [Gateway](#gateway)
   * [Line-directory](#line-directory)
   * [Business-organisation-directory](#business-organisation-directory)
+  * [Mail Service](#mail-service)
   * [Versioning lib](#versioning-lib)
   * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
@@ -121,6 +122,10 @@ See [Line-directory documentation](line-directory/README.md);
 
 Business service for business organisations. All of these business objects use the atlas own versioning.
 See [Business-Organisation-directory documentation](business-organisation-directory/README.md);
+
+### Mail Service
+
+Service used by Atlas to send emails. See [Mail Service Documentation](mail/README.md)
 
 
 ### Versioning lib
