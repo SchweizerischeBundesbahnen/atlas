@@ -6,8 +6,10 @@ import static java.util.Objects.requireNonNull;
 
 import ch.sbb.mail.exception.MailSendException;
 import ch.sbb.mail.model.MailNotification;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -48,11 +50,33 @@ public class MailService {
       throw new MailSendException(e.getLocalizedMessage());
     }
   }
+  public void sendImportTuHtmlMail(MailNotification mailNotification){
+    validateMail(mailNotification);
+    MimeMessagePreparator mimeMessagePreparator = mimeMessage -> {
+      MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,
+          MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+          StandardCharsets.UTF_8.name());
+      messageHelper.addAttachment("logo.svg", new ClassPathResource("images/logo-atlas.svg"));
+
+      messageHelper.setFrom(getSender(mailNotification));
+      messageHelper.setTo(mailNotification.toAsArray());
+      messageHelper.setSubject(mailNotification.getSubject());
+      String htmlContent = mailContentBuilder.buildTuImportHtmlContent(mailNotification.getTemplateProperties());
+      messageHelper.setText(htmlContent, true);
+    };
+    try {
+      emailMailSender.send(mimeMessagePreparator);
+      log.info(format("Mail sent: %s ", mailNotification));
+    } catch (MailException e) {
+      log.error("Mail {} not sent. {}", mailNotification, e.getLocalizedMessage());
+      throw new MailSendException(e.getLocalizedMessage());
+    }
+  }
 
   public void sendEmailWithHtmlTemplate(MailNotification mailNotification) {
     validateMail(mailNotification);
     MimeMessagePreparator mimeMessagePreparator = mimeMessage -> {
-      MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+      MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,true);
       messageHelper.setFrom(getSender(mailNotification));
       messageHelper.setTo(mailNotification.toAsArray());
       messageHelper.setSubject(mailNotification.getSubject());
