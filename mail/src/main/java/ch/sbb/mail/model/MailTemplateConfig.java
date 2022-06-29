@@ -20,6 +20,9 @@ public enum MailTemplateConfig {
   private final boolean templateProperties;
 
   public static MailTemplateConfig getMailTemplateConfig(MailType mailType){
+    if(mailType == null){
+      throw new IllegalArgumentException("You have to provide a mailType");
+    }
     if(MailType.ATLAS_STANDARD == mailType){
       return ATLAS_STANDARD_TEMPLATE;
     }
