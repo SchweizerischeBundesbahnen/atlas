@@ -5,6 +5,9 @@ import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE
 
 import ch.sbb.mail.model.MailNotification;
 import ch.sbb.mail.model.MailTemplateConfig;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.mail.MessagingException;
@@ -35,7 +38,7 @@ public class MailContentBuilder {
         mailNotification.getMailType());
     messageHelper.addAttachment(LOGO_SVG, LOGO_ATALAS_PATH_RESOURCE);
     messageHelper.setFrom(getForm(mailTemplateConfig, mailNotification));
-    messageHelper.setTo(mailNotification.toAsArray());
+    messageHelper.setTo(getTo(mailTemplateConfig,mailNotification));
     messageHelper.setCc(mailNotification.ccAsArray());
     messageHelper.setBcc(mailNotification.bccAsArray());
     messageHelper.setSubject(getSubject(mailTemplateConfig, mailNotification));
@@ -43,7 +46,17 @@ public class MailContentBuilder {
     messageHelper.setText(htmlContent, true);
   }
 
-  public String getForm(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
+  String[] getTo(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
+    if(mailTemplateConfig.getTo() == null && (mailNotification.getTo() == null || mailNotification.getTo().isEmpty())){
+      throw new IllegalArgumentException("No reciver defined! You have to provide at least one reciver");
+    }
+    if(mailNotification.getTo() != null && !mailNotification.getTo().isEmpty()){
+      return mailNotification.toAsArray();
+    }
+    return mailTemplateConfig.getTo();
+  }
+
+  String getForm(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
     if(mailTemplateConfig.isFrom() && mailNotification.getFrom() != null && !mailNotification.getFrom().isEmpty()) {
      return mailNotification.getFrom();
     }else {
@@ -51,7 +64,7 @@ public class MailContentBuilder {
     }
   }
 
-  public String getSubject(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
+  String getSubject(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
     if(mailTemplateConfig.getSubject() != null){
      return mailTemplateConfig.getSubject();
     }else{
@@ -59,7 +72,7 @@ public class MailContentBuilder {
     }
   }
 
-  public String getHtmlContent(MailTemplateConfig mailTemplateConfig,
+  String getHtmlContent(MailTemplateConfig mailTemplateConfig,
       MailNotification mailNotification) {
     if (mailTemplateConfig.isContent() && mailTemplateConfig.isTemplateProperties()) {
       return buildtHtmlWithContentAndTemplateProperties(mailTemplateConfig,
@@ -69,12 +82,6 @@ public class MailContentBuilder {
     } else {
       return buildtHtmlWithProperties(mailTemplateConfig, mailNotification.getTemplateProperties());
     }
-  }
-
-  public String buildTuImportHtmlContent(List<Map<String, Object>> content) {
-    Context context = new Context();
-    context.setVariable("content", content);
-    return templateEngine.process(MailTemplateConfig.IMPORT_TU_TEMPLATE.getTemplate(), context);
   }
 
   private String buildHtmlContent(MailTemplateConfig mailTemplateConfig, String content) {
@@ -95,8 +102,7 @@ public class MailContentBuilder {
     Context context = new Context();
     context.setVariable("content", content);
     context.setVariable("properties", properties);
-    return templateEngine.process(MailTemplateConfig.IMPORT_TU_TEMPLATE.getTemplate(), context);
+    return templateEngine.process(mailTemplateConfig.getTemplate(), context);
   }
-
 
 }
