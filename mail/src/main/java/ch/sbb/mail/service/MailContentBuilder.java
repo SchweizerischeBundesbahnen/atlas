@@ -5,14 +5,10 @@ import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE
 
 import ch.sbb.mail.model.MailNotification;
 import ch.sbb.mail.model.MailTemplateConfig;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -38,7 +34,7 @@ public class MailContentBuilder {
     MailTemplateConfig mailTemplateConfig = MailTemplateConfig.getMailTemplateConfig(
         mailNotification.getMailType());
     messageHelper.addAttachment(LOGO_SVG, LOGO_ATALAS_PATH_RESOURCE);
-    messageHelper.setFrom(getForm(mailTemplateConfig, mailNotification));
+    messageHelper.setFrom(getFrom(mailTemplateConfig, mailNotification));
     messageHelper.setTo(getTo(mailTemplateConfig,mailNotification));
     messageHelper.setCc(mailNotification.ccAsArray());
     messageHelper.setBcc(mailNotification.bccAsArray());
@@ -49,7 +45,7 @@ public class MailContentBuilder {
 
   public String[] getTo(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
     if(mailTemplateConfig.getTo() == null && (mailNotification.getTo() == null || mailNotification.getTo().isEmpty())){
-      throw new IllegalArgumentException("No reciver defined! You have to provide at least one reciver");
+      throw new IllegalArgumentException("No receiver defined! You have to provide at least one receiver");
     }
     if(mailNotification.getTo() != null && !mailNotification.getTo().isEmpty()){
       return mailNotification.toAsArray();
@@ -57,7 +53,7 @@ public class MailContentBuilder {
     return mailTemplateConfig.getTo();
   }
 
-  String getForm(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
+  String getFrom(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
     if(mailTemplateConfig.isFrom() && mailNotification.getFrom() != null && !mailNotification.getFrom().isEmpty()) {
      return mailNotification.getFrom();
     }else {
@@ -66,6 +62,9 @@ public class MailContentBuilder {
   }
 
   String getSubject(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
+    if(mailTemplateConfig.getSubject() == null && mailNotification.getSubject() == null){
+      throw new IllegalArgumentException("No Subject defined! You have to provide a Subject");
+    }
     if(mailTemplateConfig.getSubject() != null){
      return mailTemplateConfig.getSubject();
     }else{
