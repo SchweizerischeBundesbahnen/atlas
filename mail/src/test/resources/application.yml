@@ -6,3 +6,20 @@ spring:
     port: 3025 # default protocol port + 3000 as offset
     protocol: smtp
     test-connection: false # avoid setting this to true when using a per-test-method GreenMail server
+  main:
+    banner-mode: OFF
+logging:
+  level:
+    root: ERROR
+    org:
+      hibernate: ERROR
+      jboss: ERROR
+      springframework:
+        core: fatal
+        beans: fatal
+        context: fatal
+        transaction: error
+        boot:
+          test: error
+        test: error
+        web: error
