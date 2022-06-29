@@ -15,6 +15,7 @@ import ch.sbb.line.directory.validation.SublineValidationService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,9 @@ public class SublineService {
 
   public void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
     sublineVersionRepository.incrementVersion(currentVersion.getSlnid());
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+      throw new StaleObjectStateException(SublineVersion.class.getSimpleName(), "version");
+    }
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         currentVersion.getSlnid());
 
