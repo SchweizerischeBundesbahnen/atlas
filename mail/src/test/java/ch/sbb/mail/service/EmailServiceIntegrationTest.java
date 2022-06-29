@@ -2,6 +2,11 @@ package ch.sbb.mail.service;
 
 import ch.sbb.mail.exception.MailSendException;
 import ch.sbb.mail.model.MailNotification;
+import ch.sbb.mail.model.MailTemplateConfig;
+import ch.sbb.mail.model.MailType;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +22,7 @@ import java.util.ArrayList;
 
 import static java.lang.String.valueOf;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -42,13 +45,13 @@ public class EmailServiceIntegrationTest {
 
     //then
     MimeMessage[] receivedMessages = smtpServerRule.getMessages();
-    assertThat(receivedMessages.length, is(1));
+    assertThat(receivedMessages).hasSize(1);
 
     MimeMessage current = receivedMessages[0];
 
-    assertThat(mail.getSubject(), is(current.getSubject()));
-    assertThat(mail.getTo(), hasItem(current.getAllRecipients()[0].toString()));
-    assertThat(valueOf(current.getContent()).contains(mail.getContent()), is(true));
+    assertThat(mail.getSubject()).isEqualTo(current.getSubject());
+    assertThat(mail.getTo()).contains(current.getAllRecipients()[0].toString());
+    assertThat(valueOf(current.getContent()).contains(mail.getContent())).isTrue();
 
   }
 
@@ -112,24 +115,46 @@ public class EmailServiceIntegrationTest {
   }
 
   @Test
-  public void shouldSendEmailWithHtmlTemplate() throws MessagingException, IOException {
+  public void shouldSendEmailWithTUHtmlTemplate() throws MessagingException, IOException {
     //given
-    MailNotification mail = createMail();
+
+    List<Map<String, Object>> templateProperties = new ArrayList<>();
+    Map<String, Object> objectMap1 = new HashMap<>();
+    objectMap1.put("action", "UPDATED");
+    objectMap1.put("csvTuNumber", "#0001");
+    objectMap1.put("csvHrName", "Schweizerische Bundesbahnen SBB");
+    objectMap1.put("dbTuNumber", "#0001");
+    objectMap1.put("dbHrNumber", "Schweizerische Bundesbahnen SBB");
+    Map<String, Object> objectMap2 = new HashMap<>();
+    objectMap2.put("action", "CREATED");
+    objectMap2.put("csvTuNumber", "#0002");
+    objectMap2.put("csvHrName", "AlpTransit Gotthard AG");
+    objectMap2.put("dbTuNumber", "#0002");
+    objectMap2.put("dbHrNumber", "AlpTransit Gotthard AG");
+    templateProperties.add(objectMap1);
+    templateProperties.add(objectMap2);
+
+    MailNotification mail = MailNotification.builder()
+                                            .mailType(MailType.TU_IMPORT)
+                                            .to(singletonList("a@b.c"))
+                                            .from("to-be@ignored.ch")
+                                            .subject("To be ignored")
+                                            .content("To be ignored")
+                                            .templateProperties(templateProperties).build();
 
     //when
     mailService.sendEmailWithHtmlTemplate(mail);
 
     //then
     MimeMessage[] receivedMessages = smtpServerRule.getMessages();
-    assertThat(receivedMessages.length, is(1));
+    assertThat(receivedMessages).hasSize(1);
 
     MimeMessage current = receivedMessages[0];
 
-    assertThat(mail.getSubject(), is(current.getSubject()));
-    assertThat(mail.getTo(), hasItem(current.getAllRecipients()[0].toString()));
-    assertThat(current.getContentType(), is("text/html;charset=UTF-8"));
-    assertThat(valueOf(current.getContent()).contains(mail.getContent()), is(true));
-    assertThat(current.getContent().toString().contains("<span>Ciao Ragazzi.</span>"), is(true));
+    assertThat(current.getSubject()).isEqualTo(MailTemplateConfig.getMailTemplateConfig(mail.getMailType()).getSubject());
+    assertThat(current.getAllRecipients()).hasSize(1);
+    assertThat(mail.getTo()).contains(current.getAllRecipients()[0].toString());
+    assertThat(valueOf(current.getContent()).contains(mail.getContent())).isFalse();
 
   }
 
