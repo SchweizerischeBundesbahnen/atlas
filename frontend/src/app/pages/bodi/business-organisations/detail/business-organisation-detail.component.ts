@@ -167,6 +167,7 @@ export class BusinessOrganisationDetailComponent
         ]),
         organisationNumber: new FormControl(version.organisationNumber, [
           Validators.required,
+          AtlasCharsetsValidator.numeric,
           Validators.min(0),
           Validators.max(99999),
         ]),
