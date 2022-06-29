@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import ch.sbb.mail.model.MailNotification;
+import ch.sbb.mail.model.MailTemplateConfig;
 import ch.sbb.mail.model.MailType;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +70,88 @@ public class MailContentBuilderTest {
     assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
         () -> mailContentBuilder.getTo(getMailTemplateConfig(MailType.ATLAS_STANDARD),
             mailNotification));
+  }
 
+  @Test
+  public void shouldGetSubjectFromMailNotification(){
+    //given
+    MailNotification mailNotification =
+        MailNotification.builder()
+                        .to(singletonList("asd@b.ch"))
+            .subject("Soggetto")
+                        .build();
+
+    //when
+    String result = mailContentBuilder.getSubject(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
+        mailNotification);
+
+    //then
+    assertThat(result).isEqualTo("Soggetto");
+  }
+
+  @Test
+  public void shouldGetSubjectFromMailTemplateConfig(){
+    //given
+    MailNotification mailNotification =
+        MailNotification.builder()
+                        .to(singletonList("asd@b.ch"))
+            .subject("Soggetto")
+                        .build();
+
+    //when
+    String result = mailContentBuilder.getSubject(MailTemplateConfig.IMPORT_TU_TEMPLATE,
+        mailNotification);
+
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.IMPORT_TU_TEMPLATE.getSubject());
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenNoSubjectIsDefined(){
+    //given
+    MailNotification mailNotification =
+        MailNotification.builder()
+                        .to(singletonList("asd@b.ch"))
+                        .build();
+
+    //when
+    assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
+        () ->  mailContentBuilder.getSubject(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
+        mailNotification));
+
+  }
+  @Test
+  public void shouldGetFromFromMailNotification(){
+    //given
+    MailNotification mailNotification =
+        MailNotification.builder()
+                        .from("asd@b.ch")
+            .subject("Soggetto")
+                        .build();
+
+    //when
+    String result = mailContentBuilder.getFrom(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
+        mailNotification);
+
+    //then
+    assertThat(result).isEqualTo("asd@b.ch");
+  }
+
+  @Test
+  public void shouldGetFromFromMailTemplateConfig(){
+    //given
+    MailNotification mailNotification =
+        MailNotification.builder()
+                        .to(singletonList("asd@b.ch"))
+            .subject("Soggetto")
+                        .build();
+
+    //when
+    String result = mailContentBuilder.getFrom(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
+        mailNotification);
+
+    //then
+    assertThat(result).isEqualTo("TechSupport-ATLAS@sbb.ch");
   }
 
 }
