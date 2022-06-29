@@ -38,13 +38,15 @@ public class TransportCompanyService {
     return transportCompanyRepository.findById(id);
   }
 
-  public boolean existsById(Long id){
+  public boolean existsById(Long id) {
     return transportCompanyRepository.existsById(id);
   }
 
   public void saveTransportCompaniesFromBav() {
     List<TransportCompanyCsvModel> transportCompaniesFromBav = getTransportCompaniesFromBav();
     saveTransportCompanies(transportCompaniesFromBav);
+
+    validateRelationsAndNotifyBusiness();
   }
 
   void saveTransportCompanies(List<TransportCompanyCsvModel> companies) {
@@ -76,5 +78,15 @@ public class TransportCompanyService {
     List<TransportCompanyCsvModel> transportCompanies = mappingIterator.readAll();
     log.info("Parsed {} transportCompanies", transportCompanies.size());
     return transportCompanies;
+  }
+
+  private void validateRelationsAndNotifyBusiness() {
+    List<TransportCompany> transportCompaniesWithInvalidRelations = transportCompanyRepository.findTransportCompaniesWithInvalidRelations();
+    if (!transportCompaniesWithInvalidRelations.isEmpty()) {
+      log.warn("TransportCompany with numbers={} have invalid relations",
+          transportCompaniesWithInvalidRelations.stream().map(TransportCompany::getNumber).collect(
+              Collectors.toList()));
+      // TODO: send mail with invalid company relations
+    }
   }
 }
