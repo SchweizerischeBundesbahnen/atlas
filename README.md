@@ -79,6 +79,8 @@ a Jenkins pipiline is executed. The modules are versionied and deployed with the
 
 ![ATLAS Monorepo](documentation/ATLAS-Mono-Repo-Migration.png)
 
+See the original file: [ATLAS-Monorepo drawio](https://confluence.sbb.ch/display/~e539196/ATLAS+Mono+Repo+migration)
+
 ### Running Python scripts
 
 The backend services include python scripts, which were used to generate SQL-Insert-Scripts from `xlsx` or `csv` files.
