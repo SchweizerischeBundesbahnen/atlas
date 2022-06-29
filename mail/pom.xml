@@ -9,7 +9,6 @@
     <version>${revision}</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <groupId>ch.sbb.mail</groupId>
   <artifactId>mail</artifactId>
   <name>Atlas Mail Service</name>
   <description>Atlas Mail Service</description>
@@ -66,19 +65,14 @@
     </dependency>
     <dependency>
       <groupId>com.icegreen</groupId>
-      <artifactId>greenmail</artifactId>
+      <artifactId>greenmail-junit5</artifactId>
       <version>1.6.9</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.asciidoctor</groupId>
-				<artifactId>asciidoctor-maven-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
