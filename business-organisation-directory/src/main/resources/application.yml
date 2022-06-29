@@ -44,9 +44,20 @@ logging:
     root: INFO
     org.hibernate: ERROR
 external:
-  url:
-    bav: https://www.output.tu-verzeichnisse.bav.admin.ch
-    mail: http://localhost:8084
+  mail:
+    url: http://localhost:8084
+  bav:
+    url: https://www.output.tu-verzeichnisse.bav.admin.ch
+    # Environment Variables used for CRD can be found in the restricted access page for passwords
+  crd:
+    url: https://crd.rne.eu/CRD/services/CRDRFDataReplicationWS
+    username: fs10651_li
+    password: ${CRD_PASSWORD}
+    keystore: classpath:crd/keystore.jks
+    keystore-password: ${CRD_KEYSTORE_PASSWORD}
+    keystore-alias: ttt-op-otc1-p01.sbb.ch
+    truststore: classpath:crd/rne-truststore.jks
+    truststore-password: ${CRD_TRUSTSTORE_PASSWORD}
 mail:
   receiver:
     tu-relations-report: TechSupport-ATLAS@sbb.ch
