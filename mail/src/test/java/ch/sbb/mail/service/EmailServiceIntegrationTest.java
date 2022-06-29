@@ -4,16 +4,16 @@ import ch.sbb.mail.exception.MailSendException;
 import ch.sbb.mail.model.MailNotification;
 import ch.sbb.mail.model.MailTemplateConfig;
 import ch.sbb.mail.model.MailType;
+import com.icegreen.greenmail.configuration.GreenMailConfiguration;
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -23,14 +23,15 @@ import java.util.ArrayList;
 import static java.lang.String.valueOf;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest
-@ActiveProfiles("test")
-@RunWith(SpringRunner.class)
-public class EmailServiceIntegrationTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class EmailServiceIntegrationTest {
 
-  @Rule
-  public SmtpServerRule smtpServerRule = new SmtpServerRule(2525);
+  @RegisterExtension
+  static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
+      .withConfiguration(GreenMailConfiguration.aConfig().withUser("duke", "springboot"))
+      .withPerMethodLifecycle(true);
 
   @Autowired
   private MailService mailService;
@@ -44,7 +45,7 @@ public class EmailServiceIntegrationTest {
     mailService.sendSimpleMail(mail);
 
     //then
-    MimeMessage[] receivedMessages = smtpServerRule.getMessages();
+    MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
     assertThat(receivedMessages).hasSize(1);
 
     MimeMessage current = receivedMessages[0];
@@ -55,6 +56,7 @@ public class EmailServiceIntegrationTest {
 
   }
 
+  @Test
   public void shouldThrowExceptionWhenSmtpServerIsDown() {
     //given
     MailNotification mail = MailNotification.builder()
@@ -63,14 +65,12 @@ public class EmailServiceIntegrationTest {
                                             .subject("Hello")
                                             .to(singletonList("as@cc.ch"))
                                             .build();
-    smtpServerRule.after();
-
     //when
     mailService.sendSimpleMail(mail);
 
   }
 
-  @Test(expected = MailSendException.class)
+  @Test
   public void shouldThrowExceptionWhenSendSimpleEmailHasNotRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
@@ -81,11 +81,12 @@ public class EmailServiceIntegrationTest {
                                             .build();
 
     //when
-    mailService.sendSimpleMail(mail);
+    assertThatExceptionOfType(MailSendException.class).isThrownBy(
+        () -> mailService.sendSimpleMail(mail));
 
   }
 
-  @Test(expected = MailSendException.class)
+  @Test
   public void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
@@ -96,21 +97,8 @@ public class EmailServiceIntegrationTest {
                                             .build();
 
     //when
-    mailService.sendSimpleMail(mail);
-
-  }
-
-  @Test(expected = MailSendException.class)
-  public void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedFromAddress() {
-    //given
-    MailNotification mail = MailNotification.builder()
-                                            .content("Ciao ragazzi")
-                                            .subject("Hello")
-                                            .to(singletonList("123as   }$§d!!0"))
-                                            .build();
-
-    //when
-    mailService.sendSimpleMail(mail);
+    assertThatExceptionOfType(MailSendException.class).isThrownBy(
+        () -> mailService.sendSimpleMail(mail));
 
   }
 
@@ -146,19 +134,35 @@ public class EmailServiceIntegrationTest {
     mailService.sendEmailWithHtmlTemplate(mail);
 
     //then
-    MimeMessage[] receivedMessages = smtpServerRule.getMessages();
+    MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
     assertThat(receivedMessages).hasSize(1);
 
     MimeMessage current = receivedMessages[0];
 
-    assertThat(current.getSubject()).isEqualTo(MailTemplateConfig.getMailTemplateConfig(mail.getMailType()).getSubject());
+    assertThat(current.getSubject()).isEqualTo(
+        MailTemplateConfig.getMailTemplateConfig(mail.getMailType()).getSubject());
     assertThat(current.getAllRecipients()).hasSize(1);
     assertThat(mail.getTo()).contains(current.getAllRecipients()[0].toString());
     assertThat(valueOf(current.getContent()).contains(mail.getContent())).isFalse();
 
   }
 
-  @Test(expected = MailSendException.class)
+  @Test
+  public void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedFromAddress() {
+    //given
+    MailNotification mail = MailNotification.builder()
+                                            .content("Ciao ragazzi")
+                                            .subject("Hello")
+                                            .to(singletonList("123as   }$§d!!0"))
+                                            .build();
+
+    //when
+    assertThatExceptionOfType(MailSendException.class).isThrownBy(
+        () -> mailService.sendSimpleMail(mail));
+
+  }
+
+  @Test
   public void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
@@ -169,11 +173,12 @@ public class EmailServiceIntegrationTest {
                                             .build();
 
     //when
-    mailService.sendEmailWithHtmlTemplate(mail);
+    assertThatExceptionOfType(MailSendException.class).isThrownBy(
+        () -> mailService.sendSimpleMail(mail));
 
   }
 
-  @Test(expected = MailSendException.class)
+  @Test
   public void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
@@ -184,11 +189,12 @@ public class EmailServiceIntegrationTest {
                                             .build();
 
     //when
-    mailService.sendEmailWithHtmlTemplate(mail);
+    assertThatExceptionOfType(MailSendException.class).isThrownBy(
+        () -> mailService.sendSimpleMail(mail));
 
   }
 
-  @Test(expected = MailSendException.class)
+  @Test
   public void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedFromAddress() {
     //given
     MailNotification mail = MailNotification.builder()
@@ -199,8 +205,8 @@ public class EmailServiceIntegrationTest {
                                             .build();
 
     //when
-    mailService.sendEmailWithHtmlTemplate(mail);
-
+    assertThatExceptionOfType(MailSendException.class).isThrownBy(
+        () -> mailService.sendSimpleMail(mail));
   }
 
   private MailNotification createMail() {
