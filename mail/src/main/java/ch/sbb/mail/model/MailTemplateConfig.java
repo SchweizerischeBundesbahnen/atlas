@@ -9,20 +9,24 @@ import lombok.Getter;
 @Schema(enumAsRef = true)
 public enum MailTemplateConfig {
 
-  STANDARD_HTML_TEMPLATE("mail-html-template",null,true,true,false),
-  IMPORT_TU_TEMPLATE("import-tu","[ATLAS] Import Transportunternehmen",false,false,true);
+  ATLAS_STANDARD_TEMPLATE("atlas-basic-html-template",null,null,true,true,false),
+  IMPORT_TU_TEMPLATE("import-tu","[ATLAS] Import Transportunternehmen",new String[]{"didok@sbb.ch"},false,false,true);
 
   private final String template;
   private final String subject;
+  private final String[] to;
   private final boolean from;
   private final boolean content;
   private final boolean templateProperties;
 
   public static MailTemplateConfig getMailTemplateConfig(MailType mailType){
+    if(MailType.ATLAS_STANDARD == mailType){
+      return ATLAS_STANDARD_TEMPLATE;
+    }
     if(MailType.TU_IMPORT == mailType){
       return IMPORT_TU_TEMPLATE;
     }
-    throw new IllegalArgumentException("No configuration provided for {}" + mailType.name());
+    throw new IllegalArgumentException("No configuration provided for: " + mailType.name());
   }
 
 }
