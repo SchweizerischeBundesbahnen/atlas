@@ -2,11 +2,16 @@ package ch.sbb.mail.service;
 
 
 import static java.lang.String.format;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
+import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED;
 
 import ch.sbb.mail.exception.MailSendException;
 import ch.sbb.mail.model.MailNotification;
+import ch.sbb.mail.model.MailTemplateConfig;
 import java.nio.charset.StandardCharsets;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
@@ -28,13 +33,6 @@ public class MailService {
 
   private final MailContentBuilder mailContentBuilder;
 
-  private String getSender(MailNotification mailNotification){
-    if(mailNotification.getFrom() != null && !mailNotification.getFrom().isEmpty()){
-      return mailNotification.getFrom();
-    }
-    return ATLAS_SENDER;
-  }
-
   public void sendSimpleMail(MailNotification mailNotification) {
     validateMail(mailNotification);
     SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -50,38 +48,10 @@ public class MailService {
       throw new MailSendException(e.getLocalizedMessage());
     }
   }
-  public void sendImportTuHtmlMail(MailNotification mailNotification){
-    validateMail(mailNotification);
-    MimeMessagePreparator mimeMessagePreparator = mimeMessage -> {
-      MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,
-          MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-          StandardCharsets.UTF_8.name());
-      messageHelper.addAttachment("logo.svg", new ClassPathResource("images/logo-atlas.svg"));
-      messageHelper.setFrom(getSender(mailNotification));
-      messageHelper.setTo(mailNotification.toAsArray());
-      messageHelper.setSubject(mailNotification.getSubject());
-      String htmlContent = mailContentBuilder.buildTuImportHtmlContent(mailNotification.getTemplateProperties());
-      messageHelper.setText(htmlContent, true);
-    };
-    try {
-      emailMailSender.send(mimeMessagePreparator);
-      log.info(format("Mail sent: %s ", mailNotification));
-    } catch (MailException e) {
-      log.error("Mail {} not sent. {}", mailNotification, e.getLocalizedMessage());
-      throw new MailSendException(e.getLocalizedMessage());
-    }
-  }
 
   public void sendEmailWithHtmlTemplate(MailNotification mailNotification) {
     validateMail(mailNotification);
-    MimeMessagePreparator mimeMessagePreparator = mimeMessage -> {
-      MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,true);
-      messageHelper.setFrom(getSender(mailNotification));
-      messageHelper.setTo(mailNotification.toAsArray());
-      messageHelper.setSubject(mailNotification.getSubject());
-      String htmlContent = mailContentBuilder.buildHtmlContent(mailNotification.getContent());
-      messageHelper.setText(htmlContent, true);
-    };
+    MimeMessagePreparator mimeMessagePreparator = mimeMessage -> mailContentBuilder.prepareMessageHelper(mailNotification, mimeMessage);
     try {
       emailMailSender.send(mimeMessagePreparator);
       log.info(format("Mail sent: %s ", mailNotification));
@@ -91,6 +61,12 @@ public class MailService {
     }
   }
 
+  private String getSender(MailNotification mailNotification) {
+    if (mailNotification.getFrom() != null && !mailNotification.getFrom().isEmpty()) {
+      return mailNotification.getFrom();
+    }
+    return ATLAS_SENDER;
+  }
   private void validateMail(MailNotification mail) {
     requireNonNull(mail);
     requireNonNull(mail.getTo());

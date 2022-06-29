@@ -27,7 +27,7 @@ public class MailController implements MailApiV1 {
   }
   @Override
   public ResponseEntity<?> sendImportTuEmailInHtml(@Valid MailNotification mailNotification) {
-    mailService.sendImportTuHtmlMail(mailNotification);
+    mailService.sendEmailWithHtmlTemplate(mailNotification);
     return ResponseEntity.ok().build();
   }
 
