@@ -73,6 +73,8 @@ This project uses [Semantic Versioning](https://semver.org/).
 ## Development
 For an easy local development setup, we provide a `docker-compose.yml`, which can be used to start dependent infrastructure.
 
+CRD Import requires passwords. These can be imported by using bash/cmd. The statement can be found [here](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050)
+
 ### Tech Stack
 | Layer     |  Technologie    |  Link     |
 |-----------|------------|-----------|
