@@ -33,8 +33,19 @@ public class MailService {
 
   private final MailContentBuilder mailContentBuilder;
 
+  public void sendEmailWithHtmlTemplate(MailNotification mailNotification) {
+    MimeMessagePreparator mimeMessagePreparator = mimeMessage ->
+        mailContentBuilder.prepareMessageHelper(mailNotification, mimeMessage);
+    try {
+      emailMailSender.send(mimeMessagePreparator);
+      log.info(format("Mail sent: %s ", mailNotification));
+    } catch (MailException e) {
+      log.error("Mail {} not sent. {}", mailNotification, e.getLocalizedMessage());
+      throw new MailSendException(e.getLocalizedMessage());
+    }
+  }
+
   public void sendSimpleMail(MailNotification mailNotification) {
-    validateMail(mailNotification);
     SimpleMailMessage mailMessage = new SimpleMailMessage();
     mailMessage.setTo(mailNotification.toAsArray());
     mailMessage.setFrom(getSender(mailNotification));
@@ -49,29 +60,11 @@ public class MailService {
     }
   }
 
-  public void sendEmailWithHtmlTemplate(MailNotification mailNotification) {
-    validateMail(mailNotification);
-    MimeMessagePreparator mimeMessagePreparator = mimeMessage -> mailContentBuilder.prepareMessageHelper(mailNotification, mimeMessage);
-    try {
-      emailMailSender.send(mimeMessagePreparator);
-      log.info(format("Mail sent: %s ", mailNotification));
-    } catch (MailException e) {
-      log.error("Mail {} not sent. {}", mailNotification, e.getLocalizedMessage());
-      throw new MailSendException(e.getLocalizedMessage());
-    }
-  }
-
   private String getSender(MailNotification mailNotification) {
     if (mailNotification.getFrom() != null && !mailNotification.getFrom().isEmpty()) {
       return mailNotification.getFrom();
     }
     return ATLAS_SENDER;
-  }
-  private void validateMail(MailNotification mail) {
-    requireNonNull(mail);
-    requireNonNull(mail.getTo());
-    requireNonNull(mail.getSubject());
-    requireNonNull(mail.getContent());
   }
 
 }
