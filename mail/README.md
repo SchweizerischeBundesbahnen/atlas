@@ -12,6 +12,7 @@
   * [Production](#production)
   * [Project Infrastructure](#project-infrastructure)
 - [Development](#development-1)
+  * [REST API](#rest-api)
   * [Thymeleaf Template](#thymeleaf-template)
   * [Tech Stack](#tech-stack)
 
@@ -51,6 +52,13 @@ in the Integration tests.
 * Infrastructure documentation: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+7.1.+Infrastruktur+Ebene+1
 
 ## Development
+
+### REST API
+
+The MailService provides a REST API to communicate with him. The [postman collection](postman/MailService.postman_collection.json)
+defines some REST Call example.
+
+:warning: The REST API will be deleted when ATLAS will integrate Kafka for the Service to Service cominication. :warning:
 
 ### Thymeleaf Template
 
