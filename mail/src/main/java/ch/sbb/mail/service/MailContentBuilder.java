@@ -13,13 +13,14 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Component
 public class MailContentBuilder {
 
@@ -46,7 +47,7 @@ public class MailContentBuilder {
     messageHelper.setText(htmlContent, true);
   }
 
-  String[] getTo(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
+  public String[] getTo(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification){
     if(mailTemplateConfig.getTo() == null && (mailNotification.getTo() == null || mailNotification.getTo().isEmpty())){
       throw new IllegalArgumentException("No reciver defined! You have to provide at least one reciver");
     }
