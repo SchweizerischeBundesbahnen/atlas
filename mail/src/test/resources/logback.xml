@@ -10,5 +10,4 @@
   <logger name="org.springframework.boot.test" level="error" />
   <logger name="org.springframework.security" level="error" />
   <logger name="org.hibernate" level="error" />
-  <logger name="ch.sbb.line.directory.ApimYamlExtractionTest" level="info" />
 </configuration>
