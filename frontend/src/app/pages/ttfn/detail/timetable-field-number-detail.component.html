@@ -10,7 +10,9 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg">{{ 'TTFN.NUMBER' | translate }}</mat-label>
+        <mat-label class="font-bold-lg required-indicator">{{
+          'TTFN.NUMBER' | translate
+        }}</mat-label>
         <mat-label class="font-regular-sm">
           {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '30.003' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
