@@ -1,4 +1,4 @@
-package ch.sbb.mail.model;
+package ch.sbb.atlas.model.mail;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
