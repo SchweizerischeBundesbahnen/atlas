@@ -1,7 +1,7 @@
 package ch.sbb.mail.controller;
 
 import ch.sbb.mail.api.MailApiV1;
-import ch.sbb.mail.model.MailNotification;
+import ch.sbb.atlas.model.mail.MailNotification;
 import ch.sbb.mail.service.MailService;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;

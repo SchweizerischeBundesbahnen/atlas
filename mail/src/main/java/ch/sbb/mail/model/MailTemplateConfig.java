@@ -1,5 +1,6 @@
 package ch.sbb.mail.model;
 
+import ch.sbb.atlas.model.mail.MailType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

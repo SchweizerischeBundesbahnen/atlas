@@ -6,10 +6,9 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import ch.sbb.mail.model.MailNotification;
+import ch.sbb.atlas.model.mail.MailNotification;
 import ch.sbb.mail.model.MailTemplateConfig;
-import ch.sbb.mail.model.MailType;
-import java.util.Collections;
+import ch.sbb.atlas.model.mail.MailType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
