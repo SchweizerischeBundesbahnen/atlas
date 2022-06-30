@@ -1,4 +1,4 @@
-package ch.sbb.mail.model;
+package ch.sbb.atlas.model.mail;
 
 import lombok.Getter;
 
