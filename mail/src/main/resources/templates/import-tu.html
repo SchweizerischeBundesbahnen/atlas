@@ -13,7 +13,6 @@
 
     .logo-container {
       width: 12%;
-      background-color: white;
       float: left;
     }
 
@@ -73,6 +72,7 @@
       border: 1px solid #ddd;
       padding: 8px;
     }
+
     th {
       background: whitesmoke;
       color: black;
@@ -91,22 +91,18 @@
 </head>
 <body>
 <div class='header-container'>
-  <!--[if !mso]><!-- -->
   <div class='logo-container'>
     <div class='logo'>
-      <img src='cid:logo.svg'/>
+      <img src='cid:logo.svg' th:width='45'/>
       <div class='logo-title'>
         atlas
       </div>
     </div>
   </div>
-  <!--<![endif]-->
   <div class='header-right'>
     <span class='header-title'>Atlas Import Transportunternehmen</span>
   </div>
 </div>
-
-
 <div>
   <div>
     <table>
