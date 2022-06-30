@@ -7,8 +7,8 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
+import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -17,6 +17,7 @@ import ch.sbb.line.directory.validation.LineValidationService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,6 +84,10 @@ public class LineService {
   public void updateVersion(LineVersion currentVersion,
       LineVersion editedVersion) {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+      throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
+    }
+
     List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
         currentVersion.getSlnid());
 

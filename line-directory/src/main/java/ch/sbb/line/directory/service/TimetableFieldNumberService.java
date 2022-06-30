@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +56,10 @@ public class TimetableFieldNumberService {
 
   public void updateVersion(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion) {
     versionRepository.incrementVersion(currentVersion.getTtfnid());
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+      throw new StaleObjectStateException(TimetableFieldNumberVersion.class.getSimpleName(), "version");
+    }
+
     List<TimetableFieldNumberVersion> currentVersions = getAllVersionsVersioned(currentVersion.getTtfnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
