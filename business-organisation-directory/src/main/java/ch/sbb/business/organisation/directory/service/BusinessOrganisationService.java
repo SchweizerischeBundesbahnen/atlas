@@ -11,6 +11,7 @@ import ch.sbb.business.organisation.directory.repository.BusinessOrganisationRep
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,10 @@ public class BusinessOrganisationService {
   public void updateBusinessOrganisationVersion(
       BusinessOrganisationVersion currentVersion, BusinessOrganisationVersion editedVersion) {
     versionRepository.incrementVersion(currentVersion.getSboid());
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+      throw new StaleObjectStateException(BusinessOrganisationVersion.class.getSimpleName(), "version");
+    }
+
     List<BusinessOrganisationVersion> currentVersions = versionRepository.findAllBySboidOrderByValidFrom(
         currentVersion.getSboid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,

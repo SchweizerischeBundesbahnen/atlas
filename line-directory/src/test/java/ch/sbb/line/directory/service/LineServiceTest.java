@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -15,6 +16,7 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.LineVersion.LineVersionBuilder;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
@@ -28,8 +30,10 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -245,4 +249,15 @@ class LineServiceTest {
 
   }
 
+  @Test
+  public void shouldThrowStaleExceptionOnDifferentVersion() {
+    //given
+    LineVersionBuilder<?, ?> version = LineVersion.builder().slnid("slnid");
+
+    Executable executable = () -> lineService.updateVersion(version.version(1).build(),
+        version.version(0).build());
+    assertThrows(StaleObjectStateException.class, executable);
+    //then
+    verify(lineVersionRepository).incrementVersion("slnid");
+  }
 }

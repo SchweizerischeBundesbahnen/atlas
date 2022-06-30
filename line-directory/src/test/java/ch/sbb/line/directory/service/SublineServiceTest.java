@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -14,6 +15,7 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
 import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -21,8 +23,10 @@ import ch.sbb.line.directory.validation.SublineValidationService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -190,5 +194,17 @@ class SublineServiceTest {
     assertThatExceptionOfType(NotFoundException.class).isThrownBy(
         () -> sublineService.deleteById(ID));
 
+  }
+
+  @Test
+  public void shouldThrowStaleExceptionOnDifferentVersion() {
+    //given
+    SublineVersionBuilder<?, ?> version = SublineVersion.builder().slnid("slnid");
+
+    Executable executable = () -> sublineService.updateVersion(version.version(1).build(),
+        version.version(0).build());
+    assertThrows(StaleObjectStateException.class, executable);
+    //then
+    verify(sublineVersionRepository).incrementVersion("slnid");
   }
 }
