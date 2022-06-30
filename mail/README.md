@@ -66,6 +66,8 @@ To send E-Mail in HTML this project uses [Spring with Thymeleaf](https://www.thy
 
 The HTML templates must be defined in the [templates](src/main/resources/templates). 
 
+For CSS Compatibilty see [Campaign Monitor](https://www.campaignmonitor.com/css). 
+
 ### Tech Stack
 | Layer     |  Technologie    |  Link     |
 |-----------|------------|-----------|
