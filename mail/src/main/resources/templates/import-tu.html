@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th='http://www.thymeleaf.org' lang='en' xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-  <title>Ergebnis Import Transportunternehmen von BAV CSV Datei</title>
+  <title>Import der Transportunternehmen vom BAV</title>
   <meta charset='UTF-8'>
   <style>
     body {
@@ -87,6 +87,14 @@
       font-size: large;
     }
 
+    .footer{
+      margin-top: 32px;
+    }
+
+    .mt-1 {
+      margin-top: 24px;
+    }
+
   </style>
 </head>
 <body>
@@ -100,33 +108,48 @@
     </div>
   </div>
   <div class='header-right'>
-    <span class='header-title'>Atlas Import Transportunternehmen</span>
+    <span class='header-title'>Import der Transportunternehmen vom BAV</span>
   </div>
 </div>
-<div>
-  <div>
+<div class='content-container'>
+  <div class='message mt-1'>
+    Nach dem Import der Transportunternehmen wurden die geltenden Verknüpfungen überprüft.
+    <br/>
+    Es wurden ungültige Verknüpfungen von Transportunternehmen zu Geschäftsorganisationen gefunden.
+    Ungültig bedeutet dabei, dass:
+    <ol>
+      <li>Das Transportunternehmen liquidiert oder inaktiv ist</li>
+      <li>Eine Verknüpfung zu einer Geschäftsorganisation heute besteht</li>
+    </ol>
+  </div>
+  <div class='mt-1'>
     <table>
       <thead>
-      <caption>Ergebnis Import Transportunternehmen von BAV CSV Datei</caption>
+      <caption>Transportunternehmen mit ungültigen Verknüpfungen</caption>
       <tr>
-        <th>Aktion</th>
-        <th>CSV TU Nummer</th>
-        <th>CSV HR Name</th>
-        <th>DB TU Nummer</th>
-        <th>DB HR Name</th>
+        <th>TU-Nummer</th>
+        <th>Initialen</th>
+        <th>Handelsregistername</th>
+        <th>Status</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each='entry : ${properties}'>
-        <td th:text='${entry.action}'></td>
-        <td th:text='${entry.csvTuNumber}'></td>
-        <td th:text='${entry.csvHrName}'></td>
-        <td th:text='${entry.dbTuNumber}'></td>
-        <td th:text='${entry.dbHrNumber}'></td>
+      <tr th:each='transportCompany : ${properties}'>
+        <td th:text='${transportCompany.number}'></td>
+        <td th:text='${transportCompany.abbreviation}'></td>
+        <td th:text='${transportCompany.businessRegisterName}'></td>
+        <td th:text='${transportCompany.transportCompanyStatus}'></td>
       </tr>
       </tbody>
     </table>
   </div>
+  <div class='mt-1'>
+    Bitte überprüfe die Verknüpfungen und nimm die entsprechenden Anpassungen vor.
+  </div>
+</div>
+<div class='footer'>
+  Herzlichste Grüsse,<br/>
+  dein atlas
 </div>
 </body>
 </html>

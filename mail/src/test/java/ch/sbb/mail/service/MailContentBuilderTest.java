@@ -26,6 +26,7 @@ public class MailContentBuilderTest {
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     mailContentBuilder = new MailContentBuilder(templateEngine);
+    mailContentBuilder.setActiveProfile("dev");
   }
 
   @Test
@@ -85,7 +86,25 @@ public class MailContentBuilderTest {
         mailNotification);
 
     //then
-    assertThat(result).isEqualTo("Soggetto");
+    assertThat(result).isEqualTo("[ATLAS-DEV] Soggetto");
+  }
+
+  @Test
+  public void shouldGetSubjectForProdFromMailNotification(){
+    //given
+    mailContentBuilder.setActiveProfile("prod");
+    MailNotification mailNotification =
+        MailNotification.builder()
+                        .to(singletonList("asd@b.ch"))
+                        .subject("Soggetto")
+                        .build();
+
+    //when
+    String result = mailContentBuilder.getSubject(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
+        mailNotification);
+
+    //then
+    assertThat(result).isEqualTo("[ATLAS] Soggetto");
   }
 
   @Test
@@ -102,7 +121,7 @@ public class MailContentBuilderTest {
         mailNotification);
 
     //then
-    assertThat(result).isEqualTo(MailTemplateConfig.IMPORT_TU_TEMPLATE.getSubject());
+    assertThat(result).contains(MailTemplateConfig.IMPORT_TU_TEMPLATE.getSubject());
   }
 
   @Test
