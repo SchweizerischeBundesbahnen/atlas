@@ -23,9 +23,8 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ContainerTransportCompany } from '../model/models';
-import { TransportCompany } from '../model/models';
-import { TransportCompanyStatus } from '../model/models';
+import { TransportCompanyBoRelation } from '../model/models';
+import { TransportCompanyRelation } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -33,7 +32,7 @@ import { Configuration } from '../configuration';
 @Injectable({
   providedIn: 'root',
 })
-export class TransportCompaniesService {
+export class TransportCompanyRelationsService {
   protected basePath = 'http://localhost';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
@@ -100,139 +99,37 @@ export class TransportCompaniesService {
   }
 
   /**
-   * @param searchCriteria
-   * @param statusChoices
-   * @param page Zero-based page index (0..N)
-   * @param size The size of the page to be returned
-   * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   * @param transportCompanyRelation
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public getTransportCompanies(
-    searchCriteria?: Array<string>,
-    statusChoices?: Array<TransportCompanyStatus>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
+  public createTransportCompanyRelation(
+    transportCompanyRelation: TransportCompanyRelation,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<ContainerTransportCompany>;
-  public getTransportCompanies(
-    searchCriteria?: Array<string>,
-    statusChoices?: Array<TransportCompanyStatus>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
+  ): Observable<TransportCompanyRelation>;
+  public createTransportCompanyRelation(
+    transportCompanyRelation: TransportCompanyRelation,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<ContainerTransportCompany>>;
-  public getTransportCompanies(
-    searchCriteria?: Array<string>,
-    statusChoices?: Array<TransportCompanyStatus>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
+  ): Observable<HttpResponse<TransportCompanyRelation>>;
+  public createTransportCompanyRelation(
+    transportCompanyRelation: TransportCompanyRelation,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<ContainerTransportCompany>>;
-  public getTransportCompanies(
-    searchCriteria?: Array<string>,
-    statusChoices?: Array<TransportCompanyStatus>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
+  ): Observable<HttpEvent<TransportCompanyRelation>>;
+  public createTransportCompanyRelation(
+    transportCompanyRelation: TransportCompanyRelation,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<any> {
-    let queryParameters = new HttpParams({ encoder: this.encoder });
-    if (searchCriteria) {
-      searchCriteria.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'searchCriteria');
-      });
-    }
-    if (statusChoices) {
-      statusChoices.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'statusChoices');
-      });
-    }
-    if (page !== undefined && page !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
-    }
-    if (size !== undefined && size !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>size, 'size');
-    }
-    if (sort) {
-      sort.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'sort');
-      });
-    }
-
-    let headers = this.defaultHeaders;
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
-
-    return this.httpClient.get<ContainerTransportCompany>(
-      `${this.configuration.basePath}/business-organisation-directory/v1/transport-companies`,
-      {
-        params: queryParameters,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
-
-  /**
-   * @param id
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public getTransportCompany(
-    id: number,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<TransportCompany>;
-  public getTransportCompany(
-    id: number,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<TransportCompany>>;
-  public getTransportCompany(
-    id: number,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<TransportCompany>>;
-  public getTransportCompany(
-    id: number,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (id === null || id === undefined) {
+    if (transportCompanyRelation === null || transportCompanyRelation === undefined) {
       throw new Error(
-        'Required parameter id was null or undefined when calling getTransportCompany.'
+        'Required parameter transportCompanyRelation was null or undefined when calling createTransportCompanyRelation.'
       );
     }
 
@@ -248,15 +145,22 @@ export class TransportCompaniesService {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
     let responseType_: 'text' | 'json' = 'json';
     if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
       responseType_ = 'text';
     }
 
-    return this.httpClient.get<TransportCompany>(
-      `${
-        this.configuration.basePath
-      }/business-organisation-directory/v1/transport-companies/${encodeURIComponent(String(id))}`,
+    return this.httpClient.post<TransportCompanyRelation>(
+      `${this.configuration.basePath}/business-organisation-directory/v1/transport-company-relations`,
+      transportCompanyRelation,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
@@ -268,29 +172,40 @@ export class TransportCompaniesService {
   }
 
   /**
+   * @param relationId
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public loadTransportCompaniesFromBav(
+  public deleteTransportCompanyRelation(
+    relationId: number,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any>;
-  public loadTransportCompaniesFromBav(
+  public deleteTransportCompanyRelation(
+    relationId: number,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpResponse<any>>;
-  public loadTransportCompaniesFromBav(
+  public deleteTransportCompanyRelation(
+    relationId: number,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<HttpEvent<any>>;
-  public loadTransportCompaniesFromBav(
+  public deleteTransportCompanyRelation(
+    relationId: number,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined }
   ): Observable<any> {
+    if (relationId === null || relationId === undefined) {
+      throw new Error(
+        'Required parameter relationId was null or undefined when calling deleteTransportCompanyRelation.'
+      );
+    }
+
     let headers = this.defaultHeaders;
 
     let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -308,10 +223,97 @@ export class TransportCompaniesService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.post<any>(
-      `${this.configuration.basePath}/business-organisation-directory/v1/transport-companies/loadFromBAV`,
-      null,
+    return this.httpClient.delete<any>(
+      `${
+        this.configuration.basePath
+      }/business-organisation-directory/v1/transport-company-relations/${encodeURIComponent(
+        String(relationId)
+      )}`,
       {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      }
+    );
+  }
+
+  /**
+   * @param transportCompanyId
+   * @param language
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public getTransportCompanyRelations(
+    transportCompanyId: number,
+    language: string,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<Array<TransportCompanyBoRelation>>;
+  public getTransportCompanyRelations(
+    transportCompanyId: number,
+    language: string,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpResponse<Array<TransportCompanyBoRelation>>>;
+  public getTransportCompanyRelations(
+    transportCompanyId: number,
+    language: string,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpEvent<Array<TransportCompanyBoRelation>>>;
+  public getTransportCompanyRelations(
+    transportCompanyId: number,
+    language: string,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any> {
+    if (transportCompanyId === null || transportCompanyId === undefined) {
+      throw new Error(
+        'Required parameter transportCompanyId was null or undefined when calling getTransportCompanyRelations.'
+      );
+    }
+    if (language === null || language === undefined) {
+      throw new Error(
+        'Required parameter language was null or undefined when calling getTransportCompanyRelations.'
+      );
+    }
+
+    let queryParameters = new HttpParams({ encoder: this.encoder });
+    if (language !== undefined && language !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>language, 'language');
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.get<Array<TransportCompanyBoRelation>>(
+      `${
+        this.configuration.basePath
+      }/business-organisation-directory/v1/transport-company-relations/${encodeURIComponent(
+        String(transportCompanyId)
+      )}`,
+      {
+        params: queryParameters,
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
         headers: headers,

@@ -1,24 +1,24 @@
 package ch.sbb.business.organisation.directory.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.is;
 
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.api.TransportCompanyRelationModel;
-import ch.sbb.business.organisation.directory.api.TransportCompanyRelationModel.Fields;
-import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.entity.BusinessType;
+import ch.sbb.business.organisation.directory.api.TransportCompanyBoRelationModel.Fields;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
+import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRelationRepository;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRepository;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,6 +32,14 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
   @Autowired
   private TransportCompanyRelationRepository transportCompanyRelationRepository;
 
+  @BeforeEach
+  void setup() {
+    businessOrganisationVersionRepository.save(
+        BusinessOrganisationData.businessOrganisationVersion());
+    transportCompanyRepository.save(TransportCompany.builder()
+                                                    .id(5L).build());
+  }
+
   @AfterEach
   void cleanUp() {
     transportCompanyRelationRepository.deleteAll();
@@ -41,54 +49,83 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
 
   @Test
   void shouldCreateTransportCompanyRelation() throws Exception {
-    businessOrganisationVersionRepository.save(BusinessOrganisationVersion.builder()
-                                                                          .sboid(
-                                                                              "ch:1:sboid:100500")
-                                                                          .abbreviationDe("de")
-                                                                          .abbreviationFr("fr")
-                                                                          .abbreviationIt("it")
-                                                                          .abbreviationEn("en")
-                                                                          .descriptionDe("desc-de")
-                                                                          .descriptionFr("desc-fr")
-                                                                          .descriptionIt("desc-it")
-                                                                          .descriptionEn("desc-en")
-                                                                          .businessTypes(
-                                                                              new HashSet<>(
-                                                                                  Arrays.asList(
-                                                                                      BusinessType.RAILROAD,
-                                                                                      BusinessType.AIR,
-                                                                                      BusinessType.SHIP)))
-                                                                          .contactEnterpriseEmail(
-                                                                              "mail@mail.ch")
-                                                                          .organisationNumber(123)
-                                                                          .status(Status.ACTIVE)
-                                                                          .validFrom(
-                                                                              LocalDate.of(2000, 1,
-                                                                                  1))
-                                                                          .validTo(
-                                                                              LocalDate.of(2000, 12,
-                                                                                  31))
-                                                                          .build());
-    transportCompanyRepository.save(TransportCompany.builder()
-                                                    .id(5L).build());
-
     TransportCompanyRelationModel model = TransportCompanyRelationModel.builder()
                                                                        .transportCompanyId(5L)
-                                                                       .sboid("ch:1:sboid:100500")
+                                                                       .sboid("ch:1:sboid:1000000")
                                                                        .validFrom(
                                                                            LocalDate.of(2020, 5, 5))
                                                                        .validTo(
                                                                            LocalDate.of(2021, 5, 5))
                                                                        .build();
 
-    mvc.perform(post("/v1/transport-company-relations/add").contentType(contentType)
-                                                           .content(
-                                                               mapper.writeValueAsString(model)))
+    mvc.perform(post("/v1/transport-company-relations").contentType(contentType)
+                                                       .content(
+                                                           mapper.writeValueAsString(model)))
        .andExpect(status().isCreated())
-       .andExpect(jsonPath("$." + Fields.transportCompanyId, is(5)))
-       .andExpect(jsonPath("$." + Fields.sboid, is("ch:1:sboid:100500")))
-       .andExpect(jsonPath("$." + Fields.validFrom, is("2020-05-05")))
-       .andExpect(jsonPath("$." + Fields.validTo, is("2021-05-05")));
+       .andExpect(jsonPath("$." + TransportCompanyRelationModel.Fields.transportCompanyId, is(5)))
+       .andExpect(
+           jsonPath("$." + TransportCompanyRelationModel.Fields.sboid, is("ch:1:sboid:1000000")))
+       .andExpect(jsonPath("$." + TransportCompanyRelationModel.Fields.validFrom, is("2020-05-05")))
+       .andExpect(jsonPath("$." + TransportCompanyRelationModel.Fields.validTo, is("2021-05-05")));
   }
 
+  @Test
+  void shouldDeleteTransportCompanyRelation() throws Exception {
+    TransportCompanyRelation savedRelationEntity = transportCompanyRelationRepository.save(
+        TransportCompanyRelation.builder()
+                                .sboid("ch:1:sboid:1000000")
+                                .transportCompany(
+                                    TransportCompany.builder()
+                                                    .id(5L)
+                                                    .build())
+                                .validFrom(
+                                    LocalDate.of(2020, 1, 1))
+                                .validTo(
+                                    LocalDate.of(2021, 1, 1))
+                                .build());
+
+    mvc.perform(delete("/v1/transport-company-relations/" + savedRelationEntity.getId()))
+       .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void shouldGetTransportCompanyRelationsForSpecificTU() throws Exception {
+    transportCompanyRepository.save(TransportCompany.builder()
+                                                    .id(6L).build());
+
+    TransportCompanyRelation savedRelationOne = transportCompanyRelationRepository.save(
+        TransportCompanyRelation.builder()
+                                .sboid("ch:1:sboid:1000000")
+                                .transportCompany(
+                                    TransportCompany.builder()
+                                                    .id(5L)
+                                                    .build())
+                                .validFrom(
+                                    LocalDate.of(2020, 1, 1))
+                                .validTo(
+                                    LocalDate.of(2021, 1, 1))
+                                .build());
+    transportCompanyRelationRepository.save(
+        TransportCompanyRelation.builder()
+                                .sboid("ch:1:sboid:1000000")
+                                .transportCompany(
+                                    TransportCompany.builder()
+                                                    .id(6L)
+                                                    .build())
+                                .validFrom(
+                                    LocalDate.of(2023, 1, 1))
+                                .validTo(
+                                    LocalDate.of(2024, 1, 1))
+                                .build());
+
+    mvc.perform(get("/v1/transport-company-relations/5?language=fr"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$[0]." + Fields.abbreviation, is("fr")))
+       .andExpect(jsonPath("$[0]." + Fields.description, is("desc-fr")))
+       .andExpect(jsonPath("$[0]." + Fields.validFrom, is("2020-01-01")))
+       .andExpect(jsonPath("$[0]." + Fields.validTo, is("2021-01-01")))
+       .andExpect(jsonPath("$[0]." + Fields.organisationNumber, is(123)))
+       .andExpect(jsonPath("$[0]." + Fields.said, is("1000000")))
+       .andExpect(jsonPath("$[0]." + Fields.id, is(savedRelationOne.getId())));
+  }
 }

@@ -7,6 +7,7 @@ import { LinesService } from './api/lines.service';
 import { SublinesService } from './api/sublines.service';
 import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
 import { TransportCompaniesService } from './api/transportCompanies.service';
+import { TransportCompanyRelationsService } from './api/transportCompanyRelations.service';
 
 @NgModule({
   imports: [],

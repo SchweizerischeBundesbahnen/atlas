@@ -23,6 +23,7 @@ import { WithDefaultValueDirective } from '../text-input/with-default-value.dire
 import { CoverageComponent } from '../components/coverage/coverage.component';
 import { RouteToDialogComponent } from '../components/route-to-dialog/route-to-dialog.component';
 import { FormModule } from './form.module';
+import { RelationComponent } from '../components/relation/relation.component';
 
 const coreComponents = [
   DetailWrapperComponent,
@@ -41,6 +42,7 @@ const coreComponents = [
   ErrorNotificationComponent,
   CoverageComponent,
   RouteToDialogComponent,
+  RelationComponent,
 ];
 
 @NgModule({

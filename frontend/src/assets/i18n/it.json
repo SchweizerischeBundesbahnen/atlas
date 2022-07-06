@@ -15,6 +15,7 @@
   "COMMON": {
     "BACK_TO_OVERVIEW": "Torna al sommario",
     "SAVE": "Salva",
+    "ADD": "Hinzufügen__it__",
     "EDIT": "Modifica",
     "DELETE": "Eliminare",
     "CANCEL": "Annulla",
@@ -74,7 +75,8 @@
     "OPTIONAL": "(opzionale)",
     "COMMENT": "Commento",
     "COMMENT_INFO": "Kommentar Tooltip to replace __IT__",
-    "TEXT": "Testo libero"
+    "TEXT": "Testo libero",
+    "DROPDOWN_SEARCH_RESULT_INFO": "Angezeigt werden {{pageSize}} von {{totalCount}} gefundenen Elementen. (genauere Suche notwendig)__it__"
   },
   "VERSION_TABLE": {
     "TITLE": "Versioni con validità diversa",
@@ -300,6 +302,7 @@
       "ABBREVIATION_IT": "Abbreviazione IT",
       "ABBREVIATION_EN": "Abbreviazione EN",
       "SBOID": "Swiss Business Organisation\nID (SBOID)",
+      "SAID": "Swiss Administration\nID (SAID)__it__",
       "ORGANISATION_NUMBER": "Numero",
       "CONTACT": "E-Mail organizzazione",
       "BUSINESS_TYPE": "Tipo di organizzazione commerciale",
@@ -337,6 +340,7 @@
       }
     },
     "TRANSPORT_COMPANIES": {
+      "BO_RELATION_TITLE": "Zugehörige Geschäftsorganisationen__it__",
       "ID_NAN_ERROR": "L'ID di una azienda di trasporto deve essere un numero",
       "BASIC_DATA": "Informazioni sull'azienda di trasporto",
       "OFFICIAL_DATA": "Dati ufficiali",

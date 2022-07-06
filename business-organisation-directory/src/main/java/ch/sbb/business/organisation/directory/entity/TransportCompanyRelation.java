@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -32,9 +33,10 @@ public class TransportCompanyRelation extends BaseVersion {
   @SequenceGenerator(name = TRANSPORT_COMPANY_RELATION_SEQ, sequenceName = TRANSPORT_COMPANY_RELATION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotNull
+  @ManyToOne
   @JoinColumn(name = "transport_company_id", referencedColumnName = "id")
-  private Long transportCompanyId;
+  @NotNull
+  private TransportCompany transportCompany;
 
   @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_32)

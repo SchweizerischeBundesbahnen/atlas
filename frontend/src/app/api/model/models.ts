@@ -23,4 +23,6 @@ export * from './sublineVersion';
 export * from './timetableFieldNumber';
 export * from './timetableFieldNumberVersion';
 export * from './transportCompany';
+export * from './transportCompanyBoRelation';
+export * from './transportCompanyRelation';
 export * from './transportCompanyStatus';
