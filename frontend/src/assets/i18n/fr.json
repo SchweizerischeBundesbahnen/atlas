@@ -96,7 +96,7 @@
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nouvelle version disponible",
     "UPDATE_MESSAGE": "Une nouvelle version d'ATLAS est disponible, veuillez recharger la page.",
-    "UNRECOVERABLE_TITLE": "Une erreur s'est produite.",
+    "UNRECOVERABLE_TITLE": "Une erreur s'est produite",
     "UNRECOVERABLE_MESSAGE": "Veuillez recharger la page."
   },
   "PROFILE": {
