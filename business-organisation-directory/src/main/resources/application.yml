@@ -46,3 +46,7 @@ logging:
 external:
   url:
     bav: https://www.output.tu-verzeichnisse.bav.admin.ch
+    mail: http://localhost:8084
+mail:
+  receiver:
+    tu-relations-report: TechSupport-ATLAS@sbb.ch

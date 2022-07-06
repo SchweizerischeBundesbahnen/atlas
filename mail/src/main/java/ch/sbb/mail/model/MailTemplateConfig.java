@@ -11,7 +11,7 @@ import lombok.Getter;
 public enum MailTemplateConfig {
 
   ATLAS_STANDARD_TEMPLATE("atlas-basic-html-template",null,null,true,true,false),
-  IMPORT_TU_TEMPLATE("import-tu","[ATLAS] Import Transportunternehmen",new String[]{"didok@sbb.ch"},false,false,true);
+  IMPORT_TU_TEMPLATE("import-tu","Import Transportunternehmen",new String[]{"didok@sbb.ch"},false,false,true);
 
   private final String template;
   private final String subject;
