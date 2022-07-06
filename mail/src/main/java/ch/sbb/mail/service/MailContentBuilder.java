@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import org.thymeleaf.context.Context;
 
 @RequiredArgsConstructor
 @Component
+@Setter
 public class MailContentBuilder {
 
   private static final String ATLAS_SENDER = "TechSupport-ATLAS@sbb.ch";
@@ -26,6 +29,9 @@ public class MailContentBuilder {
       "images/logo-atlas.svg");
 
   private final TemplateEngine templateEngine;
+
+  @Value("${spring.profiles.active:local}")
+  private String activeProfile;
 
   public void prepareMessageHelper(MailNotification mailNotification, MimeMessage mimeMessage)
       throws MessagingException {
@@ -65,11 +71,20 @@ public class MailContentBuilder {
     if(mailTemplateConfig.getSubject() == null && mailNotification.getSubject() == null){
       throw new IllegalArgumentException("No Subject defined! You have to provide a Subject");
     }
-    if(mailTemplateConfig.getSubject() != null){
-     return mailTemplateConfig.getSubject();
-    }else{
-      return mailNotification.getSubject();
+    if (mailTemplateConfig.getSubject() != null) {
+      return getSubjectPrefix() + mailTemplateConfig.getSubject();
+    } else {
+      return getSubjectPrefix() + mailNotification.getSubject();
     }
+  }
+
+  private String getSubjectPrefix() {
+    String subjectPrefix = "[ATLAS";
+    if (!activeProfile.equals("prod")) {
+      subjectPrefix += "-" + activeProfile.toUpperCase();
+    }
+    subjectPrefix += "] ";
+    return subjectPrefix;
   }
 
   String getHtmlContent(MailTemplateConfig mailTemplateConfig,
@@ -104,5 +119,4 @@ public class MailContentBuilder {
     context.setVariable("properties", properties);
     return templateEngine.process(mailTemplateConfig.getTemplate(), context);
   }
-
 }
