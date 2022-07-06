@@ -108,17 +108,15 @@ class EmailServiceIntegrationTest {
 
     List<Map<String, Object>> templateProperties = new ArrayList<>();
     Map<String, Object> objectMap1 = new HashMap<>();
-    objectMap1.put("action", "UPDATED");
-    objectMap1.put("csvTuNumber", "#0001");
-    objectMap1.put("csvHrName", "Schweizerische Bundesbahnen SBB");
-    objectMap1.put("dbTuNumber", "#0001");
-    objectMap1.put("dbHrNumber", "Schweizerische Bundesbahnen SBB");
+    objectMap1.put("number", "#0001");
+    objectMap1.put("abbreviation", "SBB");
+    objectMap1.put("businessRegisterName", "Schweizerische Bundesbahnen SBB");
+    objectMap1.put("transportCompanyStatus", "LIQUIDATED");
     Map<String, Object> objectMap2 = new HashMap<>();
-    objectMap2.put("action", "CREATED");
-    objectMap2.put("csvTuNumber", "#0002");
-    objectMap2.put("csvHrName", "AlpTransit Gotthard AG");
-    objectMap2.put("dbTuNumber", "#0002");
-    objectMap2.put("dbHrNumber", "AlpTransit Gotthard AG");
+    objectMap2.put("number", "#0002");
+    objectMap2.put("abbreviation", "AG");
+    objectMap2.put("businessRegisterName", "AlpTransit Gotthard AG");
+    objectMap2.put("transportCompanyStatus", "INACTIVE");
     templateProperties.add(objectMap1);
     templateProperties.add(objectMap2);
 
@@ -139,11 +137,11 @@ class EmailServiceIntegrationTest {
 
     MimeMessage current = receivedMessages[0];
 
-    assertThat(current.getSubject()).isEqualTo(
+    assertThat(current.getSubject()).contains(
         MailTemplateConfig.getMailTemplateConfig(mail.getMailType()).getSubject());
     assertThat(current.getAllRecipients()).hasSize(1);
     assertThat(mail.getTo()).contains(current.getAllRecipients()[0].toString());
-    assertThat(valueOf(current.getContent()).contains(mail.getContent())).isFalse();
+    assertThat(valueOf(current.getContent())).doesNotContain(mail.getContent());
 
   }
 
