@@ -53,35 +53,20 @@
       </div>
 
       <div class="d-flex flex-column col-4">
-        <mat-label class="font-bold-lg subtitle-margin required-indicator">{{
-          'LIDI.SUBLINE.MAINLINE' | translate
-        }}</mat-label>
-        <ng-select
-          [items]="mainlines"
-          class="mainline-select"
-          bindValue="slnid"
-          [formControlName]="mainlineSlnidFormControlName"
+        <form-search-select
+          [items$]="mainlines$"
+          [controlName]="mainlineSlnidFormControlName"
+          [formGroup]="form"
+          [getSelectOption]="selectOption"
+          [bindValueInp]="'slnid'"
+          (searchTrigger)="searchMainlines($event)"
           data-cy="mainline"
-          [minTermLength]="1"
-          [typeahead]="mainlineSearchTerm"
-          notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
-          typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
         >
-          <ng-template ng-label-tmp let-item="item">
-            {{ item.swissLineNumber + ' (' + item.description + ')' }}
-          </ng-template>
-          <ng-template ng-option-tmp let-item="item">
-            {{ item.swissLineNumber + ' (' + item.description + ')' }}
-          </ng-template>
-        </ng-select>
-        <div *ngIf="form.get(mainlineSlnidFormControlName)?.touched">
-          <mat-error
-            *ngFor="let validationError of this.getValidation(mainlineSlnidFormControlName)"
-            class="fs-75p"
-          >
-            {{ validationError.error | translate }}
-          </mat-error>
-        </div>
+          <mat-label class="font-bold-lg required-indicator">{{
+            'LIDI.SUBLINE.MAINLINE' | translate
+          }}</mat-label>
+          <div class="mat-label-form-field-space-between"></div>
+        </form-search-select>
       </div>
     </div>
 
