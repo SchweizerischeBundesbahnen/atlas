@@ -39,7 +39,7 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-5: Add second Subline Version (with gap)', () => {
     CommonUtils.clickOnEdit();
-    LidiUtils.fillSublineVersionForm(secondSublineVersion);
+    LidiUtils.fillSublineVersionForm(secondSublineVersion, true);
     CommonUtils.saveSubline();
     CommonUtils.getTotalRange().should('contain', '01.01.2000').should('contain', '31.12.2002');
   });

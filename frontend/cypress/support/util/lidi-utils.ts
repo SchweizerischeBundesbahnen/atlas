@@ -39,8 +39,8 @@ export default class LidiUtils {
 
   static readSlnidFromForm(element: { slnid: string }) {
     cy.get(DataCy.DETAIL_SUBHEADING_ID)
-    .invoke('text')
-    .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
+      .invoke('text')
+      .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
   static clickOnAddNewLineVersion() {
@@ -111,10 +111,6 @@ export default class LidiUtils {
     CommonUtils.getClearType(DataCy.COMMENT, version.comment);
 
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
-  }
-
-  static typeAndSelectItemFromDropDown(selector: string, value: string) {
-    cy.get(selector).type(value).wait(1000).type('{enter}');
   }
 
   static searchAndNavigateToLine(line: any) {
@@ -233,7 +229,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar'
+      comment: 'Kommentar',
     };
   }
 
@@ -256,7 +252,7 @@ export default class LidiUtils {
       combinationName: '',
       longName: '',
       icon: '',
-      comment: ''
+      comment: '',
     };
   }
 
@@ -279,7 +275,7 @@ export default class LidiUtils {
       combinationName: '',
       longName: '',
       icon: '',
-      comment: ''
+      comment: '',
     };
   }
 
@@ -303,7 +299,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar'
+      comment: 'Kommentar',
     };
   }
 
@@ -326,7 +322,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar-1'
+      comment: 'Kommentar-1',
     };
   }
 
@@ -349,7 +345,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar-2'
+      comment: 'Kommentar-2',
     };
   }
 
@@ -357,16 +353,18 @@ export default class LidiUtils {
     return {
       validFrom: '01.06.2000',
       validTo: '01.06.2002',
-      alternativeName: 'IC2 alt edit'
+      alternativeName: 'IC2 alt edit',
     };
   }
 
-  static fillSublineVersionForm(version: any) {
+  static fillSublineVersionForm(version: any, skipMainline = false) {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     cy.get(DataCy.VALID_FROM).clear().type(version.validFrom);
     cy.get(DataCy.VALID_TO).clear().type(version.validTo, { force: true });
     cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, { force: true });
-    this.typeAndSelectItemFromDropDown(DataCy.MAINLINE, version.mainline);
+    if (!skipMainline) {
+      CommonUtils.typeAndSelectItemFromDropDown(DataCy.MAINLINE + ' ' + 'input', version.mainline);
+    }
     cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
@@ -410,7 +408,7 @@ export default class LidiUtils {
       description: 'Lorem Ipus Linie',
       number: 'IC2',
       longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z'
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
     };
   }
 
@@ -426,7 +424,7 @@ export default class LidiUtils {
       description: 'Lorem Ipus Linie',
       number: 'IC2-update',
       longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z'
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
     };
   }
 
@@ -436,7 +434,7 @@ export default class LidiUtils {
       validTo: '01.06.2002',
       number: 'IC2-Edit',
       longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z - Edit'
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z - Edit',
     };
   }
 
@@ -452,7 +450,7 @@ export default class LidiUtils {
       validTo: '01.01.2000',
       businessOrganisation: '146 - STI',
       type: 'Kompensation',
-      paymentType: 'Regional'
+      paymentType: 'Regional',
     };
   }
 
@@ -468,13 +466,16 @@ export default class LidiUtils {
       validTo: '31.12.2099',
       businessOrganisation: 'abcdefghijklmnopqrstuvwxyabcdefghijklmnopqrstuvwxy',
       type: 'Konzession',
-      paymentType: 'Lokal'
+      paymentType: 'Lokal',
     };
   }
 
   private static interceptLines(visitSelector: string) {
     cy.intercept('GET', '/line-directory/v1/lines?**').as('getLines');
-    cy.get(visitSelector).click();
+    cy.get(visitSelector)
+      .should('be.visible')
+      .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
+      .click();
     cy.wait('@getLines').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
       cy.url().should('contain', LidiUtils.LIDI_LINES_PATH);

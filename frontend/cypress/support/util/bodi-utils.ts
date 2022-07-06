@@ -8,11 +8,14 @@ export default class BodiUtils {
 
   static navigateToBusinessOrganisation() {
     CommonUtils.navigateToHomeViaHomeLogo();
-    cy.get('#business-organisation-directory').click();
+    cy.get('#business-organisation-directory')
+      .should('be.visible')
+      .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
+      .click();
   }
 
-  static checkHeaderTitle() {
-    CommonUtils.assertHeaderTitle('Geschäftsorganisationen');
+  static checkHeaderTitle(title: string) {
+    CommonUtils.assertHeaderTitle(title);
   }
 
   static assertIsOnBusinessOrganisation() {
@@ -22,8 +25,8 @@ export default class BodiUtils {
 
   static readSboidFromForm(element: { sboid: string }) {
     cy.get(DataCy.DETAIL_SUBHEADING_ID)
-    .invoke('text')
-    .then((sboid) => (element.sboid = sboid ? sboid.toString() : ''));
+      .invoke('text')
+      .then((sboid) => (element.sboid = sboid ? sboid.toString() : ''));
   }
 
   static clickOnAddBusinessOrganisationVersion() {
@@ -36,7 +39,7 @@ export default class BodiUtils {
 
   static fillBusinessOrganisationVersionForm(version: any) {
     // force-workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
-    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom);
+    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
     CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
 
     CommonUtils.getClearType(DataCy.ORGANISATION_NUMBER, version.organisationNumber);
@@ -99,8 +102,10 @@ export default class BodiUtils {
     CommonUtils.assertItemValue(DataCy.ABBREVIATION_IT, version.abbreviationIt);
     CommonUtils.assertItemValue(DataCy.ABBREVIATION_EN, version.abbreviationEn);
     CommonUtils.assertItemValue(DataCy.CONTACT_ENTERPRISE_EMAIL, version.contactEnterpriseEmail);
-    CommonUtils.assertItemText(DataCy.BUSINESS_TYPES + ' .mat-select-value-text > .mat-select-min-line',
-      version.businessTypes[0] + ', ' + version.businessTypes[1] + ', ' + version.businessTypes[2]);
+    CommonUtils.assertItemText(
+      DataCy.BUSINESS_TYPES + ' .mat-select-value-text > .mat-select-min-line',
+      version.businessTypes[0] + ', ' + version.businessTypes[1] + ', ' + version.businessTypes[2]
+    );
 
     cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
   }
@@ -110,7 +115,9 @@ export default class BodiUtils {
   }
 
   static saveBusinessOrganisation() {
-    CommonUtils.saveVersionWithWait('business-organisation-directory/v1/business-organisations/versions/*');
+    CommonUtils.saveVersionWithWait(
+      'business-organisation-directory/v1/business-organisations/versions/*'
+    );
   }
 
   static getFirstBusinessOrganisationVersion() {
@@ -130,8 +137,24 @@ export default class BodiUtils {
       status: 'ACTIVE',
       businessTypes: ['Strasse', 'Eisenbahn', 'Luft'],
       validFrom: '01.01.2000',
-      validTo: '31.12.2000'
+      validTo: '31.12.2000',
     };
   }
 
+  static switchTabToTU() {
+    cy.intercept('GET', '/business-organisation-directory/v1/transport-companies?**').as('getTUs');
+    cy.contains('Transportunternehmen').click();
+    cy.wait('@getTUs').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/business-organisation-directory/transport-companies');
+    });
+  }
+
+  static interceptGetTransportCompanyRelations(selector: string) {
+    cy.intercept('GET', '/business-organisation-directory/v1/transport-company-relations/**').as(
+      'loadRelations'
+    );
+    cy.get(selector).click();
+    cy.wait('@loadRelations').its('response.statusCode').should('eq', 200);
+  }
 }

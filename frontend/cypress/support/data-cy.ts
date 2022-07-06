@@ -63,4 +63,7 @@ export class DataCy {
   static ABBREVIATION_EN = '[data-cy=abbreviationEn]';
   static BUSINESS_TYPES = '[data-cy=businessTypes]';
   static CONTACT_ENTERPRISE_EMAIL = '[data-cy=contactEnterpriseEmail]';
+  static BUSINESS_ORGANISATION_SEARCH_SELECT = '[data-cy=bo-search-select]';
+  static TC_ADD_RELATION_BTN = '[data-cy=add-relation-btn]';
+  static TC_DELETE_RELATION_BTN = '[data-cy=delete-relation-btn]';
 }

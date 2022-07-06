@@ -43,17 +43,19 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 import CommonUtils from './util/common-utils';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace Cypress {
-  interface Chainable<Subject> {
-    /**
-     * Login with test user
-     * @example
-     * cy.login()
-     */
-    login(): Chainable<Subject>;
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Login with test user
+       * @example
+       * cy.login()
+       */
+      login: () => void;
 
-    atlasLogin(): Chainable<Subject>;
+      atlasLogin: () => void;
+    }
   }
 }
 
@@ -76,8 +78,8 @@ Cypress.Commands.add('login', () => {
       client_secret: Cypress.env('CLIENT_SECRET'),
       username: Cypress.env('USERNAME'),
       password: Cypress.env('PASSWORD'),
-      scope: Cypress.env('SCOPE')
-    }
+      scope: Cypress.env('SCOPE'),
+    },
   }).then((response) => {
     expect(response).property('status').to.equal(200);
     expect(response.body).property('access_token').to.not.be.oneOf([null, '']);
@@ -112,7 +114,7 @@ Cypress.Commands.add('login', () => {
         given_name: 'Test',
         sbbuid: 'ue0000000',
         family_name: Cypress.env('CLIENT_ID'),
-        email: Cypress.env('CLIENT_ID') + '@sbb.ch'
+        email: Cypress.env('CLIENT_ID') + '@sbb.ch',
       })
     );
   });

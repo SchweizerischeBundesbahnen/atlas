@@ -10,6 +10,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
+import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -186,8 +187,8 @@ function setupTestBed(
     declarations: [
       SublineDetailComponent,
       MockAppDetailWrapperComponent,
-      ErrorNotificationComponent,
       InfoIconComponent,
+      SearchSelectComponent,
     ],
     imports: [AppTestingModule],
     providers: [
