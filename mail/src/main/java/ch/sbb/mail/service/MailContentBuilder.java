@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,6 +20,7 @@ import org.thymeleaf.context.Context;
 
 @RequiredArgsConstructor
 @Component
+@Setter
 public class MailContentBuilder {
 
   private static final String ATLAS_SENDER = "TechSupport-ATLAS@sbb.ch";
@@ -116,9 +118,5 @@ public class MailContentBuilder {
     context.setVariable("content", content);
     context.setVariable("properties", properties);
     return templateEngine.process(mailTemplateConfig.getTemplate(), context);
-  }
-
-  public void setActiveProfile(String activeProfile) {
-    this.activeProfile = activeProfile;
   }
 }
