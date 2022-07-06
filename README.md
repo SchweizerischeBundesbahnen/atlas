@@ -18,6 +18,7 @@ This is the main repository for business relevant services for ATLAS.
   * [Gateway](#gateway)
   * [Line-directory](#line-directory)
   * [Business-organisation-directory](#business-organisation-directory)
+  * [Mail Service](#mail-service)
   * [Versioning lib](#versioning-lib)
   * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
@@ -78,6 +79,8 @@ a Jenkins pipiline is executed. The modules are versionied and deployed with the
 
 ![ATLAS Monorepo](documentation/ATLAS-Mono-Repo-Migration.png)
 
+See the original file: [ATLAS-Monorepo drawio](https://confluence.sbb.ch/display/~e539196/ATLAS+Mono+Repo+migration)
+
 ### Running Python scripts
 
 The backend services include python scripts, which were used to generate SQL-Insert-Scripts from `xlsx` or `csv` files.
@@ -121,6 +124,10 @@ See [Line-directory documentation](line-directory/README.md);
 
 Business service for business organisations. All of these business objects use the atlas own versioning.
 See [Business-Organisation-directory documentation](business-organisation-directory/README.md);
+
+### Mail Service
+
+Service used by Atlas to send emails. See [Mail Service Documentation](mail/README.md)
 
 
 ### Versioning lib
