@@ -59,6 +59,8 @@ public class SecurityConfig {
                 // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#method-security-expressions">Method Security Expressions</a>
                 // In order to use these annotations, you have to enable global-method-security using <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
                 .mvcMatchers(HttpMethod.GET, "/**").authenticated()
+                // TransportCompanyRelation POST
+                .mvcMatchers(HttpMethod.POST, "/*/transport-company-relations").hasRole(Role.BO_ADMIN)
                 .mvcMatchers(HttpMethod.POST, "/**").hasAnyRole(Role.BO_WRITER, Role.BO_ADMIN)
                 .mvcMatchers(HttpMethod.PUT, "/**").hasAnyRole(Role.BO_WRITER, Role.BO_ADMIN)
                 .mvcMatchers(HttpMethod.DELETE, "/**").hasRole(Role.BO_ADMIN)

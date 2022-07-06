@@ -9,42 +9,34 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Status } from './status';
-import { SublineType } from './sublineType';
 
-export interface Subline {
+export interface TransportCompanyBoRelation {
   /**
-   * SwissSublineNumber
+   * Transport Company Relation Id
    */
-  swissSublineNumber: string;
+  id?: number;
   /**
-   * SwissLineNumber
+   * Swiss Administration ID (SAID)
    */
-  swissLineNumber?: string;
+  said?: string;
   /**
-   * Number
+   * Organisation Number
    */
-  number?: string;
-  status?: Status;
-  sublineType: SublineType;
+  organisationNumber?: number;
   /**
-   * SLNID
+   * Abbreviation
    */
-  readonly slnid?: string;
+  abbreviation?: string;
   /**
    * Description
    */
   description?: string;
   /**
-   * Valid from
+   * Valid From
    */
-  validFrom: Date;
+  validFrom?: Date;
   /**
-   * Valid to
+   * Valid To
    */
-  validTo: Date;
-  /**
-   * BusinessOrganisation
-   */
-  businessOrganisation: string;
+  validTo?: Date;
 }
