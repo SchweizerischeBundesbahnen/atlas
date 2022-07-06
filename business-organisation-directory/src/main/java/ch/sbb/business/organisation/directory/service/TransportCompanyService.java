@@ -1,7 +1,10 @@
 package ch.sbb.business.organisation.directory.service;
 
+import ch.sbb.atlas.model.mail.MailNotification;
+import ch.sbb.atlas.model.mail.MailType;
 import ch.sbb.business.organisation.directory.controller.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
+import ch.sbb.business.organisation.directory.entity.TransportCompany.Fields;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRepository;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -10,11 +13,14 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import feign.Response.Body;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +33,10 @@ public class TransportCompanyService {
 
   private final TransportCompanyClient transportCompanyClient;
   private final TransportCompanyRepository transportCompanyRepository;
+  private final MailClient mailClient;
+
+  @Value("${mail.receiver.tu-relations-report}")
+  private List<String> relationsReportAddresses;
 
   public Page<TransportCompany> getTransportCompanies(
       TransportCompanySearchRestrictions searchRestrictions) {
@@ -86,7 +96,33 @@ public class TransportCompanyService {
       log.warn("TransportCompany with numbers={} have invalid relations",
           transportCompaniesWithInvalidRelations.stream().map(TransportCompany::getNumber).collect(
               Collectors.toList()));
-      // TODO: send mail with invalid company relations
+
+      mailClient.sendEmailInHtml(MailNotification.builder()
+                                                 .to(relationsReportAddresses)
+                                                 .templateProperties(buildProperties(
+                                                     transportCompaniesWithInvalidRelations))
+                                                 .mailType(
+                                                     MailType.TU_IMPORT)
+                                                 .build());
     }
   }
+
+  private List<Map<String, Object>> buildProperties(
+      List<TransportCompany> transportCompaniesWithInvalidRelations) {
+    return transportCompaniesWithInvalidRelations.stream()
+                                                 .map(transportCompany -> {
+                                                   Map<String, Object> object = new HashMap<>();
+                                                   object.put(Fields.number,
+                                                       transportCompany.getNumber());
+                                                   object.put(Fields.abbreviation,
+                                                       transportCompany.getAbbreviation());
+                                                   object.put(Fields.businessRegisterName,
+                                                       transportCompany.getBusinessRegisterName());
+                                                   object.put(Fields.transportCompanyStatus,
+                                                       transportCompany.getTransportCompanyStatus());
+                                                   return object;
+                                                 })
+                                                 .collect(Collectors.toList());
+  }
+
 }
