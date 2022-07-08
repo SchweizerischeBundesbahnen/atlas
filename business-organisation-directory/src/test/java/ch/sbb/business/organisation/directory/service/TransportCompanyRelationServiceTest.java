@@ -7,6 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
@@ -15,7 +16,6 @@ import ch.sbb.business.organisation.directory.exception.TransportCompanyNotFound
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRelationRepository;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,9 @@ public class TransportCompanyRelationServiceTest {
         Collections.singletonList(Mockito.mock(BusinessOrganisationVersion.class)));
 
     TransportCompanyRelation entity = TransportCompanyRelation.builder()
-                                                              .transportCompanyId(5L)
+                                                              .transportCompany(
+                                                                  TransportCompany.builder()
+                                                                                  .id(5L).build())
                                                               .sboid("ch:1:sboid:100500")
                                                               .validFrom(
                                                                   LocalDate.of(2020, 1, 1))
@@ -78,7 +80,9 @@ public class TransportCompanyRelationServiceTest {
         Collections.singletonList(Mockito.mock(BusinessOrganisationVersion.class)));
 
     TransportCompanyRelation entity = TransportCompanyRelation.builder()
-                                                              .transportCompanyId(5L)
+                                                              .transportCompany(
+                                                                  TransportCompany.builder()
+                                                                                  .id(5L).build())
                                                               .sboid("ch:1:sboid:100500")
                                                               .validFrom(
                                                                   LocalDate.of(2020, 1, 1))
@@ -98,7 +102,9 @@ public class TransportCompanyRelationServiceTest {
         Collections.emptyList());
 
     TransportCompanyRelation entity = TransportCompanyRelation.builder()
-                                                              .transportCompanyId(5L)
+                                                              .transportCompany(
+                                                                  TransportCompany.builder()
+                                                                                  .id(5L).build())
                                                               .sboid("ch:1:sboid:100500")
                                                               .validFrom(
                                                                   LocalDate.of(2020, 1, 1))
@@ -108,6 +114,24 @@ public class TransportCompanyRelationServiceTest {
     Executable executable = () -> transportCompanyRelationService.save(entity);
     assertThrows(SboidNotFoundException.class, executable, "Entity not found");
     verify(transportCompanyRelationRepository, times(0)).save(entity);
+  }
+
+  @Test
+  void shouldDelete(){
+    when(transportCompanyRelationRepository.existsById(5L)).thenReturn(true);
+
+    Executable executable = () -> transportCompanyRelationService.deleteById(5L);
+    assertDoesNotThrow(executable);
+    verify(transportCompanyRelationRepository, times(1)).deleteById(5L);
+  }
+
+  @Test
+  void shouldThrowIdNotFoundExceptionAndNotDelete(){
+    when(transportCompanyRelationRepository.existsById(5L)).thenReturn(false);
+
+    Executable executable = () -> transportCompanyRelationService.deleteById(5L);
+    assertThrows(IdNotFoundException.class, executable, "Entity not found");
+    verify(transportCompanyRelationRepository, times(0)).deleteById(5L);
   }
 
 }
