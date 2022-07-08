@@ -23,7 +23,7 @@ public interface TransportCompanyRelationApiV1 {
   TransportCompanyRelationModel createTransportCompanyRelation(@RequestBody @Valid TransportCompanyRelationModel model);
 
   @GetMapping("{transportCompanyId}")
-  List<TransportCompanyBoRelationModel> getTransportCompanyRelations(@PathVariable Long transportCompanyId, @RequestParam String language);
+  List<TransportCompanyBoRelationModel> getTransportCompanyRelations(@PathVariable Long transportCompanyId);
 
   @DeleteMapping("{relationId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
