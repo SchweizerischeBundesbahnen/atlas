@@ -75,6 +75,21 @@ For an easy local development setup, we provide a `docker-compose.yml`, which ca
 
 CRD Import requires passwords. These can be imported by using bash/cmd. The statement can be found [here](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050)
 
+## CRD Certificate handling
+
+### From PEM to jks
+```bash
+# name defines the alias within the p12 file
+openssl pkcs12 -in keystore.pem -out keypair.p12 -export -name "atlas"
+
+# Convert the p12 to a jks
+keytool -importkeystore -srckeystore keypair.p12 -srcstoretype pkcs12 -destkeystore keystore.jks
+
+# Cleanup
+rm keypair.p12
+rm keystore.pem
+```
+
 ### Tech Stack
 | Layer     |  Technologie    |  Link     |
 |-----------|------------|-----------|
