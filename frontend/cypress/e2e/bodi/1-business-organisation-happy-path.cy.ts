@@ -13,7 +13,7 @@ describe('Business Organisation Directory', () => {
   });
 
   it('Step-3: Check the Geschäftsorganisationen Table is visible', () => {
-    BodiUtils.checkHeaderTitle();
+    BodiUtils.checkHeaderTitle('Geschäftsorganisationen');
 
     CommonUtils.assertTableSearch(0, 0, 'Suche');
     CommonUtils.assertTableSearch(0, 1, 'Status');
@@ -38,7 +38,7 @@ describe('Business Organisation Directory', () => {
     BodiUtils.fromDetailBackToBusinessOrganisationOverview();
     CommonUtils.navigateToHomeViaHomeLogo();
     BodiUtils.navigateToBusinessOrganisation();
-    BodiUtils.checkHeaderTitle();
+    BodiUtils.checkHeaderTitle('Geschäftsorganisationen');
   });
 
   it('Step-6: Search added item in table and navigate to it', () => {
@@ -49,6 +49,6 @@ describe('Business Organisation Directory', () => {
   it('Step-7: Delete the item', () => {
     CommonUtils.deleteItem();
     BodiUtils.assertIsOnBusinessOrganisation();
-    BodiUtils.checkHeaderTitle();
+    BodiUtils.checkHeaderTitle('Geschäftsorganisationen');
   });
 });

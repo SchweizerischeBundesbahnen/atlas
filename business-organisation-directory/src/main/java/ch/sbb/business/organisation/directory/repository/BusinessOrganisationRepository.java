@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface BusinessOrganisationRepository extends
     JpaRepository<BusinessOrganisation, String>, JpaSpecificationExecutor<BusinessOrganisation> {
 
+  BusinessOrganisation findBySboid(String sboid);
+
 }

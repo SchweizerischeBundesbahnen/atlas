@@ -140,11 +140,11 @@ export default class CommonUtils {
     columnHeaderContent: string
   ) {
     cy.get('table')
-    .eq(tableNumber)
-    .find('thead tr th')
-    .eq(columnHeaderNumber)
-    .find('div')
-    .contains(columnHeaderContent);
+      .eq(tableNumber)
+      .find('thead tr th')
+      .eq(columnHeaderNumber)
+      .find('div')
+      .contains(columnHeaderContent);
   }
 
   static assertTableSearch(
@@ -153,10 +153,10 @@ export default class CommonUtils {
     fieldLabelExpectation: string
   ) {
     cy.get('app-table')
-    .eq(tableNumber)
-    .find('mat-label')
-    .eq(fieldNumber)
-    .contains(fieldLabelExpectation);
+      .eq(tableNumber)
+      .find('mat-label')
+      .eq(fieldNumber)
+      .contains(fieldLabelExpectation);
   }
 
   static clickOnEdit() {
@@ -181,13 +181,13 @@ export default class CommonUtils {
    */
   static getClearType(selector: string, textToType: string, force = false) {
     cy.get(selector)
-    .clear()
-    .then((e) => {
-      // Workaround so that no exception is thrown when textToType="" (meaning an empty string)
-      if (textToType) {
-        cy.wrap(e).type(textToType, { force: force });
-      }
-    });
+      .clear()
+      .then((e) => {
+        // Workaround so that no exception is thrown when textToType="" (meaning an empty string)
+        if (textToType) {
+          cy.wrap(e).type(textToType, { force: force });
+        }
+      });
   }
 
   static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
@@ -210,40 +210,52 @@ export default class CommonUtils {
    */
   static assertItemsFromDropdownAreChecked(selector: string, checkedOptionNames: string[]) {
     cy.get(selector)
-    .click()
-    .get('mat-option')
-    .each(($dropDownElement) => {
-      const dropDownElementName = $dropDownElement.text().trim();
-      const message = 'State of checkbox "' + dropDownElementName + '"';
+      .click()
+      .get('mat-option')
+      .each(($dropDownElement) => {
+        const dropDownElementName = $dropDownElement.text().trim();
+        const message = 'State of checkbox "' + dropDownElementName + '"';
 
-      const checkBoxState = $dropDownElement.hasClass('mat-selected');
-      if (checkedOptionNames.includes(dropDownElementName)) {
-        expect(checkBoxState, message).to.be.true;
-      } else {
-        expect(checkBoxState, message).to.be.false;
-      }
-    });
+        const checkBoxState = $dropDownElement.hasClass('mat-selected');
+        if (checkedOptionNames.includes(dropDownElementName)) {
+          expect(checkBoxState, message).to.be.true;
+        } else {
+          expect(checkBoxState, message).to.be.false;
+        }
+      });
     // Workaround to close the dropDown-menu again after all checks are done
     cy.get(selector).type('{esc}');
   }
 
   static assertDatePickerIs(selector: string, date: string) {
     cy.get(selector)
-    .invoke('val')
-    .then((text) => {
-      expect(date, selector + '-Date').to.equal(text);
-    });
+      .invoke('val')
+      .then((text) => {
+        expect(date, selector + '-Date').to.equal(text);
+      });
   }
 
   static unregisterServiceWorker() {
     if (window.navigator && navigator.serviceWorker) {
-      navigator.serviceWorker.getRegistrations()
-      .then((registrations) => {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
         registrations.forEach((registration) => {
           registration.unregister();
         });
       });
     }
+  }
+
+  static typeAndSelectItemFromDropDown(selector: string, value: string) {
+    cy.get(selector)
+      .should('have.value', '')
+      .should(($el) => {
+        expect(Cypress.dom.isFocusable($el)).to.be.true;
+      })
+      .should('be.enabled')
+      .type(value)
+      .should('have.value', value)
+      .wait(1000)
+      .type('{enter}');
   }
 
   static visit(itemToDeleteUrl: string) {
