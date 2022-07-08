@@ -10,7 +10,6 @@ import {
 import { Pages } from '../../../pages';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Language } from '../../../../core/components/language-switcher/language';
 
 @Injectable({ providedIn: 'root' })
 export class TransportCompanyDetailResolver
@@ -39,7 +38,7 @@ export class TransportCompanyDetailResolver
         })
       ),
       this.transportCompanyRelationsService
-        .getTransportCompanyRelations(idParameter, this.translateService.currentLang ?? Language.DE)
+        .getTransportCompanyRelations(idParameter)
         .pipe(catchError(() => this.routeOnFailure()))
     );
   }
