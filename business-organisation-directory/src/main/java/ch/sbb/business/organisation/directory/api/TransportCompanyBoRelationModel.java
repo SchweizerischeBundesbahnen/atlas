@@ -27,11 +27,29 @@ public class TransportCompanyBoRelationModel {
   @Schema(description = "Organisation Number")
   private Integer organisationNumber;
 
-  @Schema(description = "Abbreviation")
-  private String abbreviation;
+  @Schema(description = "Description German")
+  private String descriptionDe;
 
-  @Schema(description = "Description")
-  private String description;
+  @Schema(description = "Description French")
+  private String descriptionFr;
+
+  @Schema(description = "Description Italian")
+  private String descriptionIt;
+
+  @Schema(description = "Description English")
+  private String descriptionEn;
+
+  @Schema(description = "Abbreviation German")
+  private String abbreviationDe;
+
+  @Schema(description = "Abbreviation French")
+  private String abbreviationFr;
+
+  @Schema(description = "Abbreviation Italian")
+  private String abbreviationIt;
+
+  @Schema(description = "Abbreviation English")
+  private String abbreviationEn;
 
   @Schema(description = "Valid From")
   private LocalDate validFrom;
@@ -41,39 +59,21 @@ public class TransportCompanyBoRelationModel {
 
   public static TransportCompanyBoRelationModel toModel(
       BusinessOrganisation businessOrganisation,
-      TransportCompanyRelation transportCompanyRelation,
-      String language) {
-
-    String description;
-    String abbreviation;
-
-    switch (language) {
-      case "fr":
-        description = businessOrganisation.getDescriptionFr();
-        abbreviation = businessOrganisation.getAbbreviationFr();
-        break;
-      case "it":
-        description = businessOrganisation.getDescriptionIt();
-        abbreviation = businessOrganisation.getAbbreviationIt();
-        break;
-      case "en":
-        description = businessOrganisation.getDescriptionEn();
-        abbreviation = businessOrganisation.getAbbreviationEn();
-        break;
-      default:
-        description = businessOrganisation.getDescriptionDe();
-        abbreviation = businessOrganisation.getAbbreviationDe();
-        break;
-    }
-
+      TransportCompanyRelation transportCompanyRelation) {
     return TransportCompanyBoRelationModel.builder()
                                           .id(transportCompanyRelation.getId())
                                           .said(SboidToSaidConverter.toSaid(
                                               transportCompanyRelation.getSboid()))
                                           .organisationNumber(
                                               businessOrganisation.getOrganisationNumber())
-                                          .abbreviation(abbreviation)
-                                          .description(description)
+                                          .descriptionDe(businessOrganisation.getDescriptionDe())
+                                          .descriptionFr(businessOrganisation.getDescriptionFr())
+                                          .descriptionIt(businessOrganisation.getDescriptionIt())
+                                          .descriptionEn(businessOrganisation.getDescriptionEn())
+                                          .abbreviationDe(businessOrganisation.getAbbreviationDe())
+                                          .abbreviationFr(businessOrganisation.getAbbreviationFr())
+                                          .abbreviationIt(businessOrganisation.getAbbreviationIt())
+                                          .abbreviationEn(businessOrganisation.getAbbreviationEn())
                                           .validFrom(transportCompanyRelation.getValidFrom())
                                           .validTo(transportCompanyRelation.getValidTo()).build();
   }

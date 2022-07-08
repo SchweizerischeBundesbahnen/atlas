@@ -39,7 +39,7 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
 
   @Override
   public List<TransportCompanyBoRelationModel> getTransportCompanyRelations(
-      Long transportCompanyId, String language) {
+      Long transportCompanyId) {
 
     TransportCompany transportCompany = transportCompanyService.findById(
                                                                    transportCompanyId)
@@ -56,8 +56,7 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
 
                                  return TransportCompanyBoRelationModel.toModel(
                                      businessOrganisation,
-                                     transportCompanyRelation,
-                                     language);
+                                     transportCompanyRelation);
                                }).collect(
             Collectors.toList());
   }
