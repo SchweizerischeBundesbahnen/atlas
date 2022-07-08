@@ -126,6 +126,6 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
        .andExpect(jsonPath("$[0]." + Fields.validTo, is("2021-01-01")))
        .andExpect(jsonPath("$[0]." + Fields.organisationNumber, is(123)))
        .andExpect(jsonPath("$[0]." + Fields.said, is("1000000")))
-       .andExpect(jsonPath("$[0]." + Fields.id, is(savedRelationOne.getId())));
+       .andExpect(jsonPath("$[0]." + Fields.id, is(savedRelationOne.getId().intValue())));
   }
 }

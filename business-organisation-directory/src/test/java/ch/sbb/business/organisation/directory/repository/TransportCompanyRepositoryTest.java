@@ -76,7 +76,7 @@ public class TransportCompanyRepositoryTest {
   TransportCompanyRelationBuilder<?, ?> relation() {
     return TransportCompanyRelation.builder()
                                    .id(1L)
-                                   .transportCompanyId(TRANSPORT_COMPANY_ID)
+                                   .transportCompany(transportCompany().build())
                                    .sboid("beste sboid")
                                    .validFrom(LocalDate.now().minusYears(1))
                                    .validTo(LocalDate.now().plusYears(1));
