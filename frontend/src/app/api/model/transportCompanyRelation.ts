@@ -9,36 +9,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Status } from './status';
 
-export interface TimetableFieldNumber {
+export interface TransportCompanyRelation {
   /**
-   * Timetable field number
+   * Transport Company Id
    */
-  swissTimetableFieldNumber: string;
+  transportCompanyId: number;
   /**
-   * Number
+   * Swiss Business Organisation ID (SBOID)
    */
-  number: string;
+  sboid: string;
   /**
-   * Timetable field number identifier
-   */
-  ttfnid?: string;
-  /**
-   * Description
-   */
-  description?: string;
-  status: Status;
-  /**
-   * Business organisation
-   */
-  businessOrganisation: string;
-  /**
-   * Date - valid from
+   * Valid From
    */
   validFrom: Date;
   /**
-   * Date - valid to
+   * Valid To
    */
   validTo: Date;
 }
