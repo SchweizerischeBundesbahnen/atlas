@@ -32,6 +32,10 @@ public class BusinessOrganisationService {
         searchRestrictions.getPageable());
   }
 
+  public BusinessOrganisation findBusinessOrganisationBySboid(String sboid) {
+    return repository.findBySboid(sboid);
+  }
+
   public BusinessOrganisationVersion save(BusinessOrganisationVersion version) {
     version.setStatus(Status.ACTIVE);
     validationService.validatePreconditionBusinessRule(version);

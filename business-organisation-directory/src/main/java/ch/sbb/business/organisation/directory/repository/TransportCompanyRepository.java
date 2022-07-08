@@ -12,7 +12,7 @@ public interface TransportCompanyRepository extends JpaRepository<TransportCompa
     JpaSpecificationExecutor<TransportCompany> {
 
   @Query("select tc from transport_company_relation r join transport_company tc "
-      + "on r.transportCompanyId=tc.id "
+      + "on r.transportCompany=tc "
       + "where "
       + "(r.validTo >= current_date and r.validFrom <= current_date) and "
       + "(tc.transportCompanyStatus in "

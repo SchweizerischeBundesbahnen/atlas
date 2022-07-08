@@ -9,7 +9,7 @@ import {
 } from '../../../../api';
 import { DateService } from 'src/app/core/date/date.service';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
-import { catchError, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { catchError, Observable, of, Subject, takeUntil } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -18,7 +18,7 @@ import { Page } from '../../../../core/model/page';
 import { Pages } from '../../../pages';
 import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
@@ -38,8 +38,7 @@ export class SublineDetailComponent
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
 
   private ngUnsubscribe = new Subject<void>();
-  mainlineSearchTerm = new Subject<string>();
-  mainlines: Line[] = [];
+  mainlines$: Observable<Line[]> = of([]);
 
   readonly mainlineSlnidFormControlName = 'mainlineSlnid';
 
@@ -61,11 +60,10 @@ export class SublineDetailComponent
   ngOnInit() {
     super.ngOnInit();
     if (this.isExistingRecord()) {
-      this.linesService
+      this.mainlines$ = this.linesService
         .getLine(this.record.mainlineSlnid)
-        .subscribe((line) => (this.mainlines = [line]));
+        .pipe(map((value) => [value]));
     }
-    this.initMainlineSearch();
   }
 
   getPageType(): Page {
@@ -171,6 +169,8 @@ export class SublineDetailComponent
     return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
+  readonly selectOption = (item: Line) => `${item.swissLineNumber} (${item.description})`;
+
   getFormControlsToDisable(): string[] {
     return [this.mainlineSlnidFormControlName];
   }
@@ -180,16 +180,9 @@ export class SublineDetailComponent
     this.ngUnsubscribe.complete();
   }
 
-  initMainlineSearch() {
-    this.mainlineSearchTerm
-      .pipe(
-        distinctUntilChanged(),
-        switchMap((term) =>
-          this.linesService.getLines(term, [], [], [], undefined, undefined, undefined, [
-            'swissLineNumber,ASC',
-          ])
-        )
-      )
-      .subscribe((lines) => (this.mainlines = lines.objects!));
+  searchMainlines(searchString: string) {
+    this.mainlines$ = this.linesService
+      .getLines(searchString, [], [], [], undefined, undefined, undefined, ['swissLineNumber,ASC'])
+      .pipe(map((value) => value.objects ?? []));
   }
 }

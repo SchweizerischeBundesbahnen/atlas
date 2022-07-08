@@ -8,10 +8,13 @@ export * from './timetableFieldNumbers.service';
 import { TimetableFieldNumbersService } from './timetableFieldNumbers.service';
 export * from './transportCompanies.service';
 import { TransportCompaniesService } from './transportCompanies.service';
+export * from './transportCompanyRelations.service';
+import { TransportCompanyRelationsService } from './transportCompanyRelations.service';
 export const APIS = [
   BusinessOrganisationsService,
   LinesService,
   SublinesService,
   TimetableFieldNumbersService,
   TransportCompaniesService,
+  TransportCompanyRelationsService,
 ];
