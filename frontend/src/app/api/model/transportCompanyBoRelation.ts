@@ -9,69 +9,58 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Status } from './status';
-import { BusinessType } from './businessType';
 
-export interface BusinessOrganisation {
+export interface TransportCompanyBoRelation {
   /**
-   * Swiss Business Organisation ID (SBOID)
+   * Transport Company Relation Id
    */
-  readonly sboid?: string;
+  id?: number;
   /**
    * Swiss Administration ID (SAID)
    */
-  readonly said?: string;
-  /**
-   * Description German
-   */
-  descriptionDe: string;
-  /**
-   * Description French
-   */
-  descriptionFr: string;
-  /**
-   * Description Italian
-   */
-  descriptionIt: string;
-  /**
-   * Description English
-   */
-  descriptionEn: string;
-  /**
-   * Abbreviation German
-   */
-  abbreviationDe: string;
-  /**
-   * Abbreviation French
-   */
-  abbreviationFr: string;
-  /**
-   * Abbreviation Italian
-   */
-  abbreviationIt: string;
-  /**
-   * Abbreviation English
-   */
-  abbreviationEn: string;
+  said?: string;
   /**
    * Organisation Number
    */
   organisationNumber?: number;
   /**
-   * Enterprise E-Mail address
+   * Description German
    */
-  contactEnterpriseEmail?: string;
-  status?: Status;
+  descriptionDe?: string;
   /**
-   * Business Types
+   * Description French
    */
-  businessTypes?: Set<BusinessType>;
+  descriptionFr?: string;
   /**
-   * Valid from
+   * Description Italian
    */
-  validFrom: Date;
+  descriptionIt?: string;
   /**
-   * Valid to
+   * Description English
    */
-  validTo: Date;
+  descriptionEn?: string;
+  /**
+   * Abbreviation German
+   */
+  abbreviationDe?: string;
+  /**
+   * Abbreviation French
+   */
+  abbreviationFr?: string;
+  /**
+   * Abbreviation Italian
+   */
+  abbreviationIt?: string;
+  /**
+   * Abbreviation English
+   */
+  abbreviationEn?: string;
+  /**
+   * Valid From
+   */
+  validFrom?: Date;
+  /**
+   * Valid To
+   */
+  validTo?: Date;
 }
