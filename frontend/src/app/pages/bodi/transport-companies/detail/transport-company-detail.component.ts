@@ -19,6 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Language } from '../../../../core/components/language-switcher/language';
 
 type abbreviationType = 'abbreviationDe' | 'abbreviationFr' | 'abbreviationIt';
+type descriptionType = 'descriptionDe' | 'descriptionFr' | 'descriptionIt';
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
@@ -46,10 +47,13 @@ export class TransportCompanyDetailComponent implements OnInit {
       value: 'said',
     },
     { headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER', value: 'organisationNumber' },
-    { headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION', value: 'abbreviation' },
+    {
+      headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
+      value: this.getCurrentLanguageKey('abbreviation'),
+    },
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
-      value: 'description',
+      value: this.getCurrentLanguageKey('description'),
     },
     {
       headerTitle: 'COMMON.VALID_FROM',
@@ -75,11 +79,7 @@ export class TransportCompanyDetailComponent implements OnInit {
   );
 
   readonly selectOption = (item: BusinessOrganisation) => {
-    const selectedLanguage = this.translateService.currentLang ?? Language.DE;
-    const abbreviationKey = `abbreviation${selectedLanguage[0].toUpperCase()}${
-      selectedLanguage[1]
-    }` as abbreviationType;
-    return `${item.organisationNumber} (${item[abbreviationKey]})`;
+    return `${item.organisationNumber} (${item[this.getCurrentLanguageKey('abbreviation')]})`;
   };
 
   ngOnInit() {
@@ -136,15 +136,19 @@ export class TransportCompanyDetailComponent implements OnInit {
 
   private reloadRelations(): Observable<TransportCompanyBoRelation[]> {
     return this.transportCompanyRelationsService
-      .getTransportCompanyRelations(
-        this.transportCompany.id!,
-        this.translateService.currentLang ?? Language.DE
-      )
+      .getTransportCompanyRelations(this.transportCompany.id!)
       .pipe(
         tap(
           (transportCompanyRelations) =>
             (this.transportCompanyRelations = transportCompanyRelations)
         )
       );
+  }
+
+  private getCurrentLanguageKey<keyType extends descriptionType | abbreviationType>(
+    propertyName: 'description' | 'abbreviation'
+  ): keyType {
+    const selectedLanguage = this.translateService.currentLang ?? Language.DE;
+    return `${propertyName}${selectedLanguage[0].toUpperCase()}${selectedLanguage[1]}` as keyType;
   }
 }

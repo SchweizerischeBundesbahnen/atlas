@@ -19,14 +19,13 @@ const transportCompany: TransportCompany = {
 const transportCompanyRelations: TransportCompanyBoRelation[] = [
   {
     id: 1,
-    description: 'Schweizerische Bundesbahnen',
+    descriptionDe: 'Schweizerische Bundesbahnen',
     organisationNumber: 50,
   },
 ];
 
 type getTransportCompanyRelationsType = (
   transportCompanyId: number,
-  language: string,
   observe?: 'body',
   reportProgress?: boolean,
   options?: { httpHeaderAccept?: '*/*' }
@@ -75,7 +74,7 @@ describe('TransportCompanyDetailResolver', () => {
       expect(tranyportCompany.description).toBe('SBB');
       expect(transportCompanyRelations.length).toBe(1);
       expect(transportCompanyRelations[0].id).toBe(1);
-      expect(transportCompanyRelations[0].description).toBe('Schweizerische Bundesbahnen');
+      expect(transportCompanyRelations[0].descriptionDe).toBe('Schweizerische Bundesbahnen');
       expect(transportCompanyRelations[0].organisationNumber).toBe(50);
       done();
     });

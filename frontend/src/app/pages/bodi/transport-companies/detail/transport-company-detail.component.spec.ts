@@ -23,12 +23,12 @@ const transportCompany: TransportCompany = {
 const transportCompanyRelations: TransportCompanyBoRelation[] = [
   {
     id: 1,
-    description: 'Schweizerische Bundesbahnen',
+    descriptionDe: 'Schweizerische Bundesbahnen',
     organisationNumber: 50,
   },
   {
     id: 2,
-    description: 'BLS',
+    descriptionDe: 'BLS',
     organisationNumber: 77,
   },
 ];
@@ -59,12 +59,12 @@ describe('TransportCompanyDetailComponent', () => {
     expect(component.transportCompanyRelations).toEqual([
       {
         id: 1,
-        description: 'Schweizerische Bundesbahnen',
+        descriptionDe: 'Schweizerische Bundesbahnen',
         organisationNumber: 50,
       },
       {
         id: 2,
-        description: 'BLS',
+        descriptionDe: 'BLS',
         organisationNumber: 77,
       },
     ]);
@@ -111,7 +111,7 @@ describe('TransportCompanyDetailComponent', () => {
     });
     expect(
       transportCompanyRelationsServiceSpy.getTransportCompanyRelations
-    ).toHaveBeenCalledOnceWith(1234, 'de');
+    ).toHaveBeenCalledOnceWith(1234);
   });
 
   it('should call deleteTransportCompanyRelation and reload relations', (done) => {
@@ -125,7 +125,7 @@ describe('TransportCompanyDetailComponent', () => {
     ).toHaveBeenCalledOnceWith(5);
     expect(
       transportCompanyRelationsServiceSpy.getTransportCompanyRelations
-    ).toHaveBeenCalledOnceWith(1234, 'de');
+    ).toHaveBeenCalledOnceWith(1234);
   });
 });
 
