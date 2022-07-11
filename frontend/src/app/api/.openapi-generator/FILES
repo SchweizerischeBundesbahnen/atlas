@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -41,10 +42,7 @@ model/sublineVersion.ts
 model/timetableFieldNumber.ts
 model/timetableFieldNumberVersion.ts
 model/transportCompany.ts
-<<<<<<< HEAD
 model/transportCompanyBoRelation.ts
-=======
->>>>>>> ATLAS-732: Views in frontend for companies
 model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
 variables.ts
