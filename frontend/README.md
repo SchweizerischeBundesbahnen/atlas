@@ -55,6 +55,14 @@ For more information see:
 * [ng update](https://docs.angular.lat/cli/update)
 * [Angular Update Guide](https://update.angular.io/)
 
+### Patch all used packages
+
+```bash
+npm install -g npm-check-updates
+ncu -u
+npm install
+```
+
 ### Cypress E2E
 
 #### Run cypress test locally

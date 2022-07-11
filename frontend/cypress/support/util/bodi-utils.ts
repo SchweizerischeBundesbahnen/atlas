@@ -150,6 +150,15 @@ export default class BodiUtils {
     });
   }
 
+  static switchTabToCompany() {
+    cy.intercept('GET', '/business-organisation-directory/v1/companies?**').as('getCompanies');
+    cy.contains('Company Codes').click();
+    cy.wait('@getCompanies').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/business-organisation-directory/companies');
+    });
+  }
+
   static interceptGetTransportCompanyRelations(selector: string) {
     cy.intercept('GET', '/business-organisation-directory/v1/transport-company-relations/**').as(
       'loadRelations'
