@@ -1,6 +1,6 @@
-package ch.sbb.business.organisation.directory.service;
+package ch.sbb.business.organisation.directory.service.crd;
 
-import ch.sbb.business.organisation.directory.service.crd.ObjectFactory;
+import ch.sbb.business.organisation.directory.service.SoapMessageLoggerInterceptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
