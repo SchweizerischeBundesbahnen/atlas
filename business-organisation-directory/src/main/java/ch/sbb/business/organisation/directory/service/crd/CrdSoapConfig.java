@@ -1,4 +1,4 @@
-package ch.sbb.business.organisation.directory.service;
+package ch.sbb.business.organisation.directory.service.crd;
 
 import lombok.Getter;
 import lombok.Setter;
