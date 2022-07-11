@@ -162,7 +162,7 @@
         <artifactId>maven-jaxb2-plugin</artifactId>
         <configuration>
           <schemaLanguage>WSDL</schemaLanguage>
-          <generatePackage>ch.sbb.business.organisation.directory.service</generatePackage>
+          <generatePackage>ch.sbb.business.organisation.directory.service.crd</generatePackage>
           <schemaDirectory>${project.basedir}/src/main/resources/crd</schemaDirectory>
           <schemaIncludes>
             <include>crd.wsdl</include>

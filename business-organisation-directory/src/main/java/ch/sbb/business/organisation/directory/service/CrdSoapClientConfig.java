@@ -1,18 +1,28 @@
 package ch.sbb.business.organisation.directory.service;
 
+import ch.sbb.business.organisation.directory.service.crd.ObjectFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.springframework.boot.webservices.client.WebServiceTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.ws.WebServiceMessage;
+import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceTemplate;
+import org.springframework.ws.soap.SoapHeader;
+import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j2.support.CryptoFactoryBean;
 import org.springframework.ws.transport.WebServiceMessageSender;
@@ -21,7 +31,10 @@ import org.springframework.ws.transport.http.HttpsUrlConnectionMessageSender;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
+@Profile("!integration-test")
 public class CrdSoapClientConfig {
+
+  public static final String MARSHALL_CONTEXT_PATH = "ch.sbb.business.organisation.directory.service.crd";
 
   private final CrdSoapConfig config;
   private final SoapMessageLoggerInterceptor soapMessageLoggerInterceptor;
@@ -29,7 +42,7 @@ public class CrdSoapClientConfig {
   @Bean
   public Jaxb2Marshaller marshaller() {
     Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-    marshaller.setContextPath("ch.sbb.business.organisation.directory.service");
+    marshaller.setContextPath(MARSHALL_CONTEXT_PATH);
     return marshaller;
   }
 
@@ -95,6 +108,36 @@ public class CrdSoapClientConfig {
         TrustManagerFactory.getDefaultAlgorithm());
     trustManagerFactory.init(truststore);
     return trustManagerFactory;
+  }
+
+  @Bean
+  public CrdHeaders crdHeaders(){
+    return new CrdHeaders(config);
+  }
+
+  @RequiredArgsConstructor
+  static class CrdHeaders implements WebServiceMessageCallback {
+
+    private final CrdSoapConfig config;
+
+    @Override
+    public void doWithMessage(WebServiceMessage message) {
+      SoapHeader soapHeader = ((SoapMessage) message).getSoapHeader();
+
+      ObjectFactory objectFactory = new ObjectFactory();
+      JAXBElement<String> username = objectFactory.createUsername(config.getUsername());
+      JAXBElement<String> password = objectFactory.createPassword(config.getPassword());
+
+      try {
+        JAXBContext context = JAXBContext.newInstance(String.class);
+
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.marshal(username, soapHeader.getResult());
+        marshaller.marshal(password, soapHeader.getResult());
+      } catch (JAXBException e) {
+        throw new IllegalStateException(e);
+      }
+    }
   }
 
 }
