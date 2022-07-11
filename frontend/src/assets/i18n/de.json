@@ -371,7 +371,8 @@
       "URL": "URL",
       "SHORT_NAME": "Kurzbezeichnung",
       "COUNTRY_CODE": "Länderkürzel",
-      "BASIC_DATA": "Angaben zur Company"
+      "BASIC_DATA": "Angaben zur Company",
+      "ID_NAN_ERROR": "Die ID für eine Company muss eine Zahl sein"
     }
   }
 }

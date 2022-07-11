@@ -16,7 +16,7 @@ export class CompanyDetailResolver implements Resolve<Company> {
   resolve(route: ActivatedRouteSnapshot): Observable<Company> {
     const idParameter = parseInt(route.paramMap.get('id') || '0');
     if (Number.isNaN(idParameter)) {
-      this.notificationService.error(new Error(), 'BODI.TRANSPORT_COMPANIES.ID_NAN_ERROR');
+      this.notificationService.error(new Error(), 'BODI.COMPANIES.ID_NAN_ERROR');
       return this.routeOnFailure();
     }
     return this.companiesService.getCompany(idParameter).pipe(

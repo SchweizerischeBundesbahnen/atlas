@@ -371,7 +371,8 @@
       "URL": "URL",
       "SHORT_NAME": "Designazione breve",
       "COUNTRY_CODE": "Codice paese",
-      "BASIC_DATA": "Dettagli company"
+      "BASIC_DATA": "Dettagli company",
+      "ID_NAN_ERROR": "L'ID di una company di trasporto deve essere un numero"
     }
   }
 }

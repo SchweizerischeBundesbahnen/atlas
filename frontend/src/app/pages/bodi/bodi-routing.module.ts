@@ -11,6 +11,7 @@ import { TransportCompanyDetailResolver } from './transport-companies/detail/tra
 import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './companies/detail/company-detail.component';
 import { CompanyDetailResolver } from './companies/detail/company-detail-resolver.service';
+import { BusinessOrganisationDetailResolver } from './business-organisations/detail/business-organisation-detail-resolver.service';
 
 const routes: Routes = [
   {
@@ -26,7 +27,7 @@ const routes: Routes = [
         component: RouteToDialogComponent,
         data: { component: BusinessOrganisationDetailComponent },
         resolve: {
-          businessOrganisationDetail: CompanyDetailResolver,
+          businessOrganisationDetail: BusinessOrganisationDetailResolver,
         },
         runGuardsAndResolvers: 'always',
       },
