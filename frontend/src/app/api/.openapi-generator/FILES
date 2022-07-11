@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/businessOrganisations.service.ts
+api/companies.service.ts
 api/lines.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
@@ -15,7 +16,9 @@ index.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
 model/businessType.ts
+model/company.ts
 model/containerBusinessOrganisation.ts
+model/containerCompany.ts
 model/containerLine.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
@@ -38,7 +41,10 @@ model/sublineVersion.ts
 model/timetableFieldNumber.ts
 model/timetableFieldNumberVersion.ts
 model/transportCompany.ts
+<<<<<<< HEAD
 model/transportCompanyBoRelation.ts
+=======
+>>>>>>> ATLAS-732: Views in frontend for companies
 model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
 variables.ts
