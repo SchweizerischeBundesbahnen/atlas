@@ -35,10 +35,6 @@ export class BodiOverviewComponent {
   }
 
   newBusinessOrganisation() {
-    this.router
-      .navigate([Pages.BUSINESS_ORGANISATIONS.path, 'add'], {
-        relativeTo: this.route,
-      })
-      .then();
+    this.router.navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, 'add']).then();
   }
 }
