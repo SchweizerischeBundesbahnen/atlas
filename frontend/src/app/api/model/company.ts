@@ -10,27 +10,37 @@
  * Do not edit the class manually.
  */
 
-export interface TransportCompanyRelation {
-<<<<<<< HEAD
+export interface Company {
   /**
-   * Transport Company Id
+   * Company UIC Code
    */
-  transportCompanyId: number;
+  uicCode?: number;
   /**
-   * Swiss Business Organisation ID (SBOID)
+   * Company Name
    */
-  sboid: string;
+  name?: string;
   /**
-   * Valid From
+   * Company URL
    */
-  validFrom: Date;
+  url?: string;
   /**
-   * Valid To
+   * Validity Start Date
    */
-=======
-  transportCompanyId: number;
-  sboid: string;
-  validFrom: Date;
->>>>>>> ATLAS-732: Views in frontend for companies
-  validTo: Date;
+  startValidity?: Date;
+  /**
+   * Validity End Date
+   */
+  endValidity?: Date;
+  /**
+   * Company short name
+   */
+  shortName?: string;
+  /**
+   * Free text
+   */
+  freeText?: string;
+  /**
+   * Country Code (ISO)
+   */
+  countryCodeIso?: string;
 }
