@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import ch.sbb.business.organisation.directory.repository.CompanyRepository;
 import ch.sbb.business.organisation.directory.service.crd.Company;
 import ch.sbb.business.organisation.directory.service.crd.CompanyDataResponse;
+import ch.sbb.business.organisation.directory.service.crd.CrdClientImpl;
+import ch.sbb.business.organisation.directory.service.crd.CrdSoapClientConfig;
 import java.io.IOException;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
@@ -26,7 +28,7 @@ class CompanyServiceTest {
   private CompanyRepository repository;
 
   @Mock
-  private CrdClient crdClient;
+  private CrdClientImpl crdClient;
 
   private CompanyService companyService;
 

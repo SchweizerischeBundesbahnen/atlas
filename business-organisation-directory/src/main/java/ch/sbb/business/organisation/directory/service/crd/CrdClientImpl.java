@@ -1,12 +1,6 @@
-package ch.sbb.business.organisation.directory.service;
+package ch.sbb.business.organisation.directory.service.crd;
 
-import ch.sbb.business.organisation.directory.service.CrdSoapClientConfig.CrdHeaders;
-import ch.sbb.business.organisation.directory.service.crd.Company;
-import ch.sbb.business.organisation.directory.service.crd.CompanyDataResponse;
-import ch.sbb.business.organisation.directory.service.crd.CompanyReplicationRequest;
-import ch.sbb.business.organisation.directory.service.crd.CompanyRequest;
-import ch.sbb.business.organisation.directory.service.crd.ObjectFactory;
-import ch.sbb.business.organisation.directory.service.crd.ReplicationVolume;
+import ch.sbb.business.organisation.directory.service.crd.CrdSoapClientConfig.CrdHeaders;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +13,12 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 @RequiredArgsConstructor
 @Component
 @Profile("!integration-test")
-public class CrdClient {
+public class CrdClientImpl implements CrdClient {
 
   private final WebServiceTemplate webServiceTemplate;
   private final CrdHeaders crdHeaders;
 
+  @Override
   public List<Company> getAllCompanies() {
     ObjectFactory objectFactory = new ObjectFactory();
     CompanyRequest companyRequest = objectFactory.createCompanyRequest();
