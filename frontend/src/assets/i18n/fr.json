@@ -371,7 +371,8 @@
       "URL": "URL",
       "SHORT_NAME": "Désignation abrégée",
       "COUNTRY_CODE": "Code pays",
-      "BASIC_DATA": "Données relatives à la Company"
+      "BASIC_DATA": "Données relatives à la Company",
+      "ID_NAN_ERROR": "L'identifiant d'un company de transport doit être un nombre"
     }
   }
 }
