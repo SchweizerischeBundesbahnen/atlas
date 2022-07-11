@@ -18,6 +18,10 @@ export class BodiOverviewComponent {
       link: Pages.TRANSPORT_COMPANIES.path,
       title: 'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANIES',
     },
+    {
+      link: Pages.COMPANIES.path,
+      title: 'BODI.COMPANIES.COMPANIES',
+    },
   ];
 
   readonly userAllowedToCreate;

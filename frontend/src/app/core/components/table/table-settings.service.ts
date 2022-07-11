@@ -13,6 +13,7 @@ export class TableSettingsService {
     Pages.SUBLINES.path,
     Pages.BUSINESS_ORGANISATIONS.path,
     Pages.TRANSPORT_COMPANIES.path,
+    Pages.COMPANIES.path,
   ];
   private navigationStartUrl!: string;
 
