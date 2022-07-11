@@ -29,7 +29,7 @@ public interface CompanyApiV1 {
       @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria);
 
-  @GetMapping("{id}")
+  @GetMapping("{uic}")
   CompanyModel getCompany(@PathVariable Long uic);
 
 

@@ -38,15 +38,15 @@ public class CompanyControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetTransportCompanies() throws Exception {
+  void shouldGetCompanies() throws Exception {
     mvc.perform(get("/v1/companies")).andExpect(status().isOk())
        .andExpect(jsonPath("$.objects[0]." + Fields.uicCode, is(5)))
        .andExpect(jsonPath("$.objects[0]." + Fields.name, is("Beste Company")));
   }
 
   @Test
-  void shouldGetTransportCompany() throws Exception {
-    mvc.perform(get("/v1/transport-companies/5")).andExpect(status().isOk())
+  void shouldGetCompany() throws Exception {
+    mvc.perform(get("/v1/companies/5")).andExpect(status().isOk())
        .andExpect(jsonPath("$." + Fields.uicCode, is(5)))
        .andExpect(jsonPath("$." + Fields.name, is("Beste Company")));
   }
