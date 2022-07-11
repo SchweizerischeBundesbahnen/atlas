@@ -9,28 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Company } from './company';
 
-export interface TransportCompanyRelation {
-<<<<<<< HEAD
-  /**
-   * Transport Company Id
-   */
-  transportCompanyId: number;
-  /**
-   * Swiss Business Organisation ID (SBOID)
-   */
-  sboid: string;
-  /**
-   * Valid From
-   */
-  validFrom: Date;
-  /**
-   * Valid To
-   */
-=======
-  transportCompanyId: number;
-  sboid: string;
-  validFrom: Date;
->>>>>>> ATLAS-732: Views in frontend for companies
-  validTo: Date;
+export interface ContainerCompany {
+  objects?: Array<Company>;
+  totalCount?: number;
 }

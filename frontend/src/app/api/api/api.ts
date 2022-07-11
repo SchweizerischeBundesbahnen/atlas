@@ -1,5 +1,7 @@
 export * from './businessOrganisations.service';
 import { BusinessOrganisationsService } from './businessOrganisations.service';
+export * from './companies.service';
+import { CompaniesService } from './companies.service';
 export * from './lines.service';
 import { LinesService } from './lines.service';
 export * from './sublines.service';
@@ -12,6 +14,7 @@ export * from './transportCompanyRelations.service';
 import { TransportCompanyRelationsService } from './transportCompanyRelations.service';
 export const APIS = [
   BusinessOrganisationsService,
+  CompaniesService,
   LinesService,
   SublinesService,
   TimetableFieldNumbersService,
