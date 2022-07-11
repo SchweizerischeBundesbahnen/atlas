@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,11 +30,11 @@ public class Company {
 
   private String url;
 
-  @Column(columnDefinition = "TIMESTAMP")
-  private LocalDateTime startValidity;
+  @Column(columnDefinition = "DATE")
+  private LocalDate startValidity;
 
-  @Column(columnDefinition = "TIMESTAMP")
-  private LocalDateTime endValidity;
+  @Column(columnDefinition = "DATE")
+  private LocalDate endValidity;
 
   private String shortName;
 
