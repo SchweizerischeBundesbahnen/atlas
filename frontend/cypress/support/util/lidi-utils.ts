@@ -81,7 +81,7 @@ export default class LidiUtils {
 
   static fillLineVersionForm(version: any) {
     // force-workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
-    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom);
+    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
     CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
     CommonUtils.getClearType(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber, true);
     CommonUtils.getClearType(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
@@ -359,8 +359,8 @@ export default class LidiUtils {
 
   static fillSublineVersionForm(version: any, skipMainline = false) {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
-    cy.get(DataCy.VALID_FROM).clear().type(version.validFrom);
-    cy.get(DataCy.VALID_TO).clear().type(version.validTo, { force: true });
+    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
+    CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
     cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, { force: true });
     if (!skipMainline) {
       CommonUtils.typeAndSelectItemFromDropDown(DataCy.MAINLINE + ' ' + 'input', version.mainline);

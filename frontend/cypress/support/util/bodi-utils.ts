@@ -114,6 +114,10 @@ export default class BodiUtils {
     CommonUtils.fromDetailBackToOverview(BodiUtils.BUSINESS_ORGANISATION_PATH_NO_LEADING_SLASH);
   }
 
+  static fromDetailBackToTransportCompanyOverview() {
+    CommonUtils.fromDetailBackToOverview('business-organisation-directory/transport-companies');
+  }
+
   static saveBusinessOrganisation() {
     CommonUtils.saveVersionWithWait(
       'business-organisation-directory/v1/business-organisations/versions/*'
@@ -139,6 +143,15 @@ export default class BodiUtils {
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
     };
+  }
+
+  static switchTabToBusinessOrganisations() {
+    cy.intercept('GET', '/business-organisation-directory/v1/business-organisations?**').as('getBusinessOrganisations');
+    cy.get('#mat-tab-link-0').click();
+    cy.wait('@getBusinessOrganisations').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/business-organisation-directory/business-organisations');
+    });
   }
 
   static switchTabToTU() {
