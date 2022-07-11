@@ -25,9 +25,6 @@ export * from './sublineVersion';
 export * from './timetableFieldNumber';
 export * from './timetableFieldNumberVersion';
 export * from './transportCompany';
-<<<<<<< HEAD
 export * from './transportCompanyBoRelation';
-=======
->>>>>>> ATLAS-732: Views in frontend for companies
 export * from './transportCompanyRelation';
 export * from './transportCompanyStatus';
