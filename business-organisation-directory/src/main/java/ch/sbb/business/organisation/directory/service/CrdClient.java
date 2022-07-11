@@ -1,15 +1,24 @@
 package ch.sbb.business.organisation.directory.service;
 
+import ch.sbb.business.organisation.directory.service.CrdSoapClientConfig.CrdHeaders;
+import ch.sbb.business.organisation.directory.service.crd.Company;
+import ch.sbb.business.organisation.directory.service.crd.CompanyDataResponse;
+import ch.sbb.business.organisation.directory.service.crd.CompanyReplicationRequest;
+import ch.sbb.business.organisation.directory.service.crd.CompanyRequest;
+import ch.sbb.business.organisation.directory.service.crd.ObjectFactory;
+import ch.sbb.business.organisation.directory.service.crd.ReplicationVolume;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
+@Profile("!integration-test")
 public class CrdClient {
 
   private final WebServiceTemplate webServiceTemplate;
