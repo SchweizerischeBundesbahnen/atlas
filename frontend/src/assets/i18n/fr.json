@@ -363,6 +363,15 @@
         "LIQUIDATED": "Liquidé",
         "INACTIVE": "Inactif"
       }
+    },
+    "COMPANIES": {
+      "COMPANIES": "Company Codes (RICS)",
+      "UIC_CODE": "Code",
+      "NAME": "Désignation",
+      "URL": "URL",
+      "SHORT_NAME": "Désignation abrégée",
+      "COUNTRY_CODE": "Code pays",
+      "BASIC_DATA": "Données relatives à la Company"
     }
   }
 }
