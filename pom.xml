@@ -23,6 +23,7 @@
         <springdoc-openapi.version>1.6.9</springdoc-openapi.version>
         <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
         <!-- Spring Boot Overrides -->
+        <!-- https://github.com/projectlombok/lombok/issues/3180 -->
         <lombok.version>1.18.22</lombok.version>
     </properties>
     <modules>
