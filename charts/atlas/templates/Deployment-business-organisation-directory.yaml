@@ -38,6 +38,21 @@ spec:
             secretKeyRef:
               name: db-secret-{{ .Values.businessOrganisationDirectory.name }}
               key: password
+        - name: CRD_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: crd-secrets
+              key: password
+        - name: CRD_KEYSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: crd-secrets
+              key: keystore-password
+        - name: CRD_TRUSTSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: crd-secrets
+              key: truststore-password
         image: "atlas.docker.bin.sbb.ch/{{ .Values.businessOrganisationDirectory.name }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
         name: '{{ .Values.businessOrganisationDirectory.name }}'
