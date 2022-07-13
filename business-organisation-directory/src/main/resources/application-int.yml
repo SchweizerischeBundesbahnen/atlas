@@ -9,6 +9,3 @@ auth:
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
-external:
-  mail:
-    url: http://mail:8084
