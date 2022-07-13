@@ -3,6 +3,8 @@ import CommonUtils from '../../support/util/common-utils';
 import { DataCy } from '../../support/data-cy';
 
 describe('Transport Company', () => {
+  const organisation = BodiUtils.getFirstBusinessOrganisationVersion();
+
   it('Step-1: ATLAS Login', () => {
     cy.atlasLogin();
   });
@@ -11,11 +13,19 @@ describe('Transport Company', () => {
     BodiUtils.navigateToBusinessOrganisation();
   });
 
-  it('Step-3: switch tab to TU', () => {
+  it('Step-3: Add BusinessOrganisation to relate a TU', () => {
+    BodiUtils.clickOnAddBusinessOrganisationVersion();
+    BodiUtils.fillBusinessOrganisationVersionForm(organisation);
+    BodiUtils.saveBusinessOrganisation();
+    BodiUtils.readSboidFromForm(organisation);
+    BodiUtils.fromDetailBackToBusinessOrganisationOverview();
+  });
+
+  it('Step-4: switch tab to TU', () => {
     BodiUtils.switchTabToTU();
   });
 
-  it('Step-4: Check TU Table is visible', () => {
+  it('Step-5: Check TU Table is visible', () => {
     BodiUtils.checkHeaderTitle('Geschäftsorganisationen');
 
     CommonUtils.assertTableSearch(0, 0, 'Suche');
@@ -29,7 +39,7 @@ describe('Transport Company', () => {
     CommonUtils.assertTableHeader(0, 5, 'Status');
   });
 
-  it('Step-5: search and open first TU', () => {
+  it('Step-6: search and open first TU', () => {
     CommonUtils.typeSearchInput(
       '/business-organisation-directory/v1/transport-companies?**',
       DataCy.TABLE_SEARCH_CHIP_INPUT,
@@ -47,19 +57,26 @@ describe('Transport Company', () => {
       });
   });
 
-  it('Step-6: add Relation with Business Organisation', () => {
-    // search for 10 (attribute sboid) to make sure to find results
+  it('Step-7: add Relation with Business Organisation', () => {
     CommonUtils.typeAndSelectItemFromDropDown(
       `${DataCy.BUSINESS_ORGANISATION_SEARCH_SELECT} input`,
-      '10'
+      String(organisation.organisationNumber)
     );
-    CommonUtils.getClearType(DataCy.VALID_FROM, '01.01.2020');
-    CommonUtils.getClearType(DataCy.VALID_TO, '01.01.2021');
+    CommonUtils.getClearType(DataCy.VALID_FROM, '01.01.2020', true);
+    CommonUtils.getClearType(DataCy.VALID_TO, '01.01.2021', true);
     BodiUtils.interceptGetTransportCompanyRelations(DataCy.TC_ADD_RELATION_BTN);
   });
 
-  it('Step-7: remove created Relation', () => {
+  it('Step-8: remove created Relation', () => {
     cy.get('table tbody').find('tr').last().click();
     BodiUtils.interceptGetTransportCompanyRelations(DataCy.TC_DELETE_RELATION_BTN);
+    BodiUtils.fromDetailBackToTransportCompanyOverview();
+    BodiUtils.switchTabToBusinessOrganisations();
   });
+
+  it('Step-9: Cleanup BusinessOrganisation', () => {
+    BodiUtils.searchAndNavigateToBusinessOrganisation(organisation);
+    CommonUtils.deleteItem();
+  });
+
 });

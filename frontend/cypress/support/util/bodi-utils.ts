@@ -114,6 +114,10 @@ export default class BodiUtils {
     CommonUtils.fromDetailBackToOverview(BodiUtils.BUSINESS_ORGANISATION_PATH_NO_LEADING_SLASH);
   }
 
+  static fromDetailBackToTransportCompanyOverview() {
+    CommonUtils.fromDetailBackToOverview('business-organisation-directory/transport-companies');
+  }
+
   static saveBusinessOrganisation() {
     CommonUtils.saveVersionWithWait(
       'business-organisation-directory/v1/business-organisations/versions/*'
@@ -141,12 +145,30 @@ export default class BodiUtils {
     };
   }
 
+  static switchTabToBusinessOrganisations() {
+    cy.intercept('GET', '/business-organisation-directory/v1/business-organisations?**').as('getBusinessOrganisations');
+    cy.get('#mat-tab-link-0').click();
+    cy.wait('@getBusinessOrganisations').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/business-organisation-directory/business-organisations');
+    });
+  }
+
   static switchTabToTU() {
     cy.intercept('GET', '/business-organisation-directory/v1/transport-companies?**').as('getTUs');
     cy.contains('Transportunternehmen').click();
     cy.wait('@getTUs').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
       cy.url().should('contain', '/business-organisation-directory/transport-companies');
+    });
+  }
+
+  static switchTabToCompany() {
+    cy.intercept('GET', '/business-organisation-directory/v1/companies?**').as('getCompanies');
+    cy.contains('Company Codes').click();
+    cy.wait('@getCompanies').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/business-organisation-directory/companies');
     });
   }
 
