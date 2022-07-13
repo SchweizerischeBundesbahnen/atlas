@@ -73,6 +73,13 @@ export class Pages {
     description: '',
   };
 
+  public static COMPANIES: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'companies',
+    pathText: '',
+    description: '',
+  };
+
   private static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
 
   public static enabledPages(): Page[] {
