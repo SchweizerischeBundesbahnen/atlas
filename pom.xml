@@ -15,7 +15,7 @@
     <description>ATLAS - SKI Business Application</description>
     <properties>
         <revision>0.458.0-SNAPSHOT</revision>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,6 +23,7 @@
         <springdoc-openapi.version>1.6.9</springdoc-openapi.version>
         <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
         <!-- Spring Boot Overrides -->
+        <!-- https://github.com/projectlombok/lombok/issues/3180 -->
         <lombok.version>1.18.22</lombok.version>
     </properties>
     <modules>
