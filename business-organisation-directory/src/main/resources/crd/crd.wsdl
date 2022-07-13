@@ -1,0 +1,275 @@
+<wsdl:definitions
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:types="http://schema.refdata.crd.cc.uic.org/types/v1/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:rfdata="http://ws.refdata.crd.cc.uic.org/v1/" name="CRDRFDataReplicationWSImplService"
+  targetNamespace="http://ws.refdata.crd.cc.uic.org/v1/">
+  <wsdl:types>
+    <xs:schema
+      xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+      xmlns:types="http://schema.refdata.crd.cc.uic.org/types/v1/"
+      xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+      xmlns:rfdata="http://ws.refdata.crd.cc.uic.org/v1/"
+      targetNamespace="http://ws.refdata.crd.cc.uic.org/v1/">
+      <xs:import namespace="http://schema.refdata.crd.cc.uic.org/types/v1/"
+        schemaLocation="crd.xsd"/>
+      <!--   Global elements  -->
+      <xs:element name="username" type="xs:string"/>
+      <xs:element name="password" type="xs:string"/>
+      <xs:complexType name="SubsidiaryTypeRequest">
+        <xs:sequence>
+          <xs:element ref="types:SubsidiaryTypeReplicationRequest"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SubsidiaryTypeDataResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="types:SubsidiaryTypeReplicationResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CompanyRequest">
+        <xs:sequence>
+          <xs:element ref="types:CompanyReplicationRequest"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CompanyDataResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="types:CompanyReplicationResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CountryRequest">
+        <xs:sequence>
+          <xs:element ref="types:CountryReplicationRequest"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CountryDataResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="types:CountryReplicationResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SubsidiaryLocationRequest">
+        <xs:sequence>
+          <xs:element ref="types:SubsidiaryLocationReplicationRequest"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SubsidiaryLocationDataResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="types:SubsidiaryLocationReplicationResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PrimaryLocationDataResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="types:PrimaryLocationReplicationResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PrimaryLocationRequest">
+        <xs:sequence>
+          <xs:element ref="types:PrimaryLocationReplicationRequest"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ReplicationFault">
+        <xs:sequence>
+          <xs:element name="errorCode" nillable="true" type="xs:int"/>
+          <xs:element name="errorDescription" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <!--  End of Global Elements  -->
+      <!--   Webservice Request  -->
+      <xs:element name="getSubsidiaryTypeRequest" type="rfdata:SubsidiaryTypeRequest"/>
+      <!--   Webservice Response  -->
+      <xs:element name="getSubsidiaryTypeDataResponse" type="rfdata:SubsidiaryTypeDataResponse"/>
+      <!--   Webservice Request  -->
+      <xs:element name="getCompanyRequest" type="rfdata:CompanyRequest"/>
+      <!--   Webservice Response  -->
+      <xs:element name="getCompanyDataResponse" type="rfdata:CompanyDataResponse"/>
+      <!--   Webservice Request  -->
+      <xs:element name="getCountryRequest" type="rfdata:CountryRequest"/>
+      <!--   Webservice Response  -->
+      <xs:element name="getCountryDataResponse" type="rfdata:CountryDataResponse"/>
+      <!--   Webservice Request  -->
+      <xs:element name="getSubsidiaryLocationRequest" type="rfdata:SubsidiaryLocationRequest"/>
+      <!--   Webservice Response  -->
+      <xs:element name="getSubsidiaryLocationDataResponse"
+        type="rfdata:SubsidiaryLocationDataResponse"/>
+      <!--   Webservice Request  -->
+      <xs:element name="getPrimaryLocationRequest" type="rfdata:PrimaryLocationRequest"/>
+      <!--   Webservice Response  -->
+      <xs:element name="getPrimaryLocationDataResponse" type="rfdata:PrimaryLocationDataResponse"/>
+      <!-- Fault Message in case of Replication failure -->
+      <xs:element name="ReplicationFault" type="rfdata:ReplicationFault"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="ReplicationFault">
+    <wsdl:part element="rfdata:ReplicationFault" name="ReplicationFault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPrimaryLocationDataResponseMessage">
+    <wsdl:part element="rfdata:getPrimaryLocationDataResponse"
+      name="primaryLocationDataResponsePart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSubsidiaryLocationDataResponseMessage">
+    <wsdl:part element="rfdata:getSubsidiaryLocationDataResponse"
+      name="subsidiaryLocationDataResponsePart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCompanyDataResponseMessage">
+    <wsdl:part element="rfdata:getCompanyDataResponse" name="companyDataResponsePart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCountryRequestMessage">
+    <wsdl:part element="rfdata:getCountryRequest" name="countryRequestPart"></wsdl:part>
+    <wsdl:part element="rfdata:username" name="usernamePart"></wsdl:part>
+    <wsdl:part element="rfdata:password" name="passwordPart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSubsidiaryLocationRequestMessage">
+    <wsdl:part element="rfdata:getSubsidiaryLocationRequest"
+      name="subsidiaryLocationRequestPart"></wsdl:part>
+    <wsdl:part element="rfdata:username" name="usernamePart"></wsdl:part>
+    <wsdl:part element="rfdata:password" name="passwordPart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSubsidiaryTypeDataResponseMessage">
+    <wsdl:part element="rfdata:getSubsidiaryTypeDataResponse"
+      name="subsidiaryTypeDataResponsePart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCountryDataResponseMessage">
+    <wsdl:part element="rfdata:getCountryDataResponse" name="countryDataResponsePart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCompanyRequestMessage">
+    <wsdl:part element="rfdata:getCompanyRequest" name="companyRequestPart"></wsdl:part>
+    <wsdl:part element="rfdata:username" name="usernamePart"></wsdl:part>
+    <wsdl:part element="rfdata:password" name="passwordPart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPrimaryLocationRequestMessage">
+    <wsdl:part element="rfdata:getPrimaryLocationRequest"
+      name="primaryLocationRequestPart"></wsdl:part>
+    <wsdl:part element="rfdata:username" name="usernamePart"></wsdl:part>
+    <wsdl:part element="rfdata:password" name="passwordPart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSubsidiaryTypeRequestMessage">
+    <wsdl:part element="rfdata:getSubsidiaryTypeRequest"
+      name="subsidiaryTypeRequestPart"></wsdl:part>
+    <wsdl:part element="rfdata:username" name="usernamePart"></wsdl:part>
+    <wsdl:part element="rfdata:password" name="passwordPart"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CRDRFDataReplicationWS">
+    <wsdl:operation name="getSubsidiaryTypeData">
+      <wsdl:input message="rfdata:getSubsidiaryTypeRequestMessage"
+        name="subsidiaryTypeRequest"></wsdl:input>
+      <wsdl:output message="rfdata:getSubsidiaryTypeDataResponseMessage"
+        name="subsidiaryTypeDataResponse"></wsdl:output>
+      <wsdl:fault message="rfdata:ReplicationFault" name="ReplicationFault"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCompanyData">
+      <wsdl:input message="rfdata:getCompanyRequestMessage" name="companyRequest"></wsdl:input>
+      <wsdl:output message="rfdata:getCompanyDataResponseMessage"
+        name="companyDataResponse"></wsdl:output>
+      <wsdl:fault message="rfdata:ReplicationFault" name="ReplicationFault"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCountryData">
+      <wsdl:input message="rfdata:getCountryRequestMessage" name="countryRequest"></wsdl:input>
+      <wsdl:output message="rfdata:getCountryDataResponseMessage"
+        name="countryDataResponse"></wsdl:output>
+      <wsdl:fault message="rfdata:ReplicationFault" name="ReplicationFault"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSubsidiaryLocationData">
+      <wsdl:input message="rfdata:getSubsidiaryLocationRequestMessage"
+        name="subsidiaryLocationRequest"></wsdl:input>
+      <wsdl:output message="rfdata:getSubsidiaryLocationDataResponseMessage"
+        name="subsidiaryLocationDataResponse"></wsdl:output>
+      <wsdl:fault message="rfdata:ReplicationFault" name="ReplicationFault"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPrimaryLocationData">
+      <wsdl:input message="rfdata:getPrimaryLocationRequestMessage"
+        name="primaryLocationRequest"></wsdl:input>
+      <wsdl:output message="rfdata:getPrimaryLocationDataResponseMessage"
+        name="primaryLocationDataResponse"></wsdl:output>
+      <wsdl:fault message="rfdata:ReplicationFault" name="ReplicationFault"></wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CRDRFDataReplicationWSImplServiceSoapBinding"
+    type="rfdata:CRDRFDataReplicationWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getSubsidiaryTypeData">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="subsidiaryTypeRequest">
+        <soap:header message="rfdata:getSubsidiaryTypeRequestMessage" part="usernamePart"
+          use="literal"></soap:header>
+        <soap:header message="rfdata:getSubsidiaryTypeRequestMessage" part="passwordPart"
+          use="literal"></soap:header>
+        <soap:body parts="subsidiaryTypeRequestPart" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="subsidiaryTypeDataResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ReplicationFault">
+        <soap:fault name="ReplicationFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCompanyData">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="companyRequest">
+        <soap:header message="rfdata:getCompanyRequestMessage" part="usernamePart"
+          use="literal"></soap:header>
+        <soap:header message="rfdata:getCompanyRequestMessage" part="passwordPart"
+          use="literal"></soap:header>
+        <soap:body parts="companyRequestPart" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="companyDataResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ReplicationFault">
+        <soap:fault name="ReplicationFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCountryData">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="countryRequest">
+        <soap:header message="rfdata:getCountryRequestMessage" part="usernamePart"
+          use="literal"></soap:header>
+        <soap:header message="rfdata:getCountryRequestMessage" part="passwordPart"
+          use="literal"></soap:header>
+        <soap:body parts="countryRequestPart" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="countryDataResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ReplicationFault">
+        <soap:fault name="ReplicationFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSubsidiaryLocationData">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="subsidiaryLocationRequest">
+        <soap:header message="rfdata:getSubsidiaryLocationRequestMessage" part="usernamePart"
+          use="literal"></soap:header>
+        <soap:header message="rfdata:getSubsidiaryLocationRequestMessage" part="passwordPart"
+          use="literal"></soap:header>
+        <soap:body parts="subsidiaryLocationRequestPart" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="subsidiaryLocationDataResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ReplicationFault">
+        <soap:fault name="ReplicationFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPrimaryLocationData">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="primaryLocationRequest">
+        <soap:header message="rfdata:getPrimaryLocationRequestMessage" part="usernamePart"
+          use="literal"></soap:header>
+        <soap:header message="rfdata:getPrimaryLocationRequestMessage" part="passwordPart"
+          use="literal"></soap:header>
+        <soap:body parts="primaryLocationRequestPart" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="primaryLocationDataResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ReplicationFault">
+        <soap:fault name="ReplicationFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CRDRFDataReplicationWSImplService">
+    <wsdl:port binding="rfdata:CRDRFDataReplicationWSImplServiceSoapBinding"
+      name="CRDRFDataReplicationWSImplPort">
+      <soap:address location="https://crd.rne.eu/CRD/services/CRDRFDataReplicationWS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

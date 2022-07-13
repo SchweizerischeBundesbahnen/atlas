@@ -7,6 +7,8 @@ import { BusinessOrganisationDetailComponent } from './business-organisations/de
 import { FormModule } from '../../core/module/form.module';
 import { TransportCompaniesComponent } from './transport-companies/transport-companies.component';
 import { TransportCompanyDetailComponent } from './transport-companies/detail/transport-company-detail.component';
+import { CompaniesComponent } from './companies/companies.component';
+import { CompanyDetailComponent } from './companies/detail/company-detail.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { TransportCompanyDetailComponent } from './transport-companies/detail/tr
     BusinessOrganisationDetailComponent,
     TransportCompaniesComponent,
     TransportCompanyDetailComponent,
+    CompaniesComponent,
+    CompanyDetailComponent,
   ],
   imports: [CoreModule, BodiRoutingModule, FormModule],
 })
