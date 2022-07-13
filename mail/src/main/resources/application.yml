@@ -19,3 +19,19 @@ spring:
           auth: false
         starttls:
           enable: false
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+        max:
+          poll:
+            interval:
+              ms: 1200000

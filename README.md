@@ -69,8 +69,26 @@ It's applications share the following architectural goal:
 ## Development
 ### Run locally
 
+- For an easy local development setup, we provide a `docker-compose.yml`, which can be used to start dependent infrastructure for atlas.
 - Make sure your needed business services are up
 - Start the gateway (the frontend Angular application uses it as a target for API calls)
+
+
+Run needed services for atlas in docker:
+~~~
+# -d to run in background
+docker-compose up -d
+~~~
+
+Stop infrastructure container:
+~~~
+docker-compose down
+~~~
+
+Stop infrastructure container and remove volume (deletes persistent content):
+~~~
+docker-compose down -v 
+~~~
 
 ### Monorepo
 
