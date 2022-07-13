@@ -66,3 +66,11 @@ include::{snippets}/transport-company-controller-api-test/should-get-transport-c
 
 == Create Transport Company Relation - Successfully
 include::{snippets}/transport-company-relation-controller-api-test/should-create-transport-company-relation/auto-section.adoc[]
+
+= Companies (CRD)
+
+== Get Companies - Successfully
+include::{snippets}/company-controller-api-test/should-get-companies/auto-section.adoc[]
+
+== Get Company - Successfully
+include::{snippets}/company-controller-api-test/should-get-company/auto-section.adoc[]
