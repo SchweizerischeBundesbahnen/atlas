@@ -18,6 +18,10 @@ export class BodiOverviewComponent {
       link: Pages.TRANSPORT_COMPANIES.path,
       title: 'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANIES',
     },
+    {
+      link: Pages.COMPANIES.path,
+      title: 'BODI.COMPANIES.COMPANIES',
+    },
   ];
 
   readonly userAllowedToCreate;
@@ -31,10 +35,6 @@ export class BodiOverviewComponent {
   }
 
   newBusinessOrganisation() {
-    this.router
-      .navigate([Pages.BUSINESS_ORGANISATIONS.path, 'add'], {
-        relativeTo: this.route,
-      })
-      .then();
+    this.router.navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, 'add']).then();
   }
 }

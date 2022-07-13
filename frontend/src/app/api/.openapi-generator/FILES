@@ -1,8 +1,10 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
 api/businessOrganisations.service.ts
+api/companies.service.ts
 api/lines.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
@@ -15,7 +17,9 @@ index.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
 model/businessType.ts
+model/company.ts
 model/containerBusinessOrganisation.ts
+model/containerCompany.ts
 model/containerLine.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
