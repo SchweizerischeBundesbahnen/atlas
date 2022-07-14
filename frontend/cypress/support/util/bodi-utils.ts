@@ -8,10 +8,7 @@ export default class BodiUtils {
 
   static navigateToBusinessOrganisation() {
     CommonUtils.navigateToHomeViaHomeLogo();
-    cy.get('#business-organisation-directory')
-      .should('be.visible')
-      .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
-      .click();
+    this.interceptBusinessOrganisations('#business-organisation-directory');
   }
 
   static checkHeaderTitle(title: string) {
@@ -146,12 +143,7 @@ export default class BodiUtils {
   }
 
   static switchTabToBusinessOrganisations() {
-    cy.intercept('GET', '/business-organisation-directory/v1/business-organisations?**').as('getBusinessOrganisations');
-    cy.get('#mat-tab-link-0').click();
-    cy.wait('@getBusinessOrganisations').then((interception) => {
-      cy.wrap(interception.response?.statusCode).should('eq', 200);
-      cy.url().should('contain', '/business-organisation-directory/business-organisations');
-    });
+    this.interceptBusinessOrganisations('#mat-tab-link-0');
   }
 
   static switchTabToTU() {
@@ -178,5 +170,14 @@ export default class BodiUtils {
     );
     cy.get(selector).click();
     cy.wait('@loadRelations').its('response.statusCode').should('eq', 200);
+  }
+
+  private static interceptBusinessOrganisations(visitSelector: string) {
+    cy.intercept('GET', '/business-organisation-directory/v1/business-organisations?**').as('getBusinessOrganisations');
+    cy.get(visitSelector).click();
+    cy.wait('@getBusinessOrganisations').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      cy.url().should('contain', '/business-organisation-directory/business-organisations');
+    });
   }
 }
