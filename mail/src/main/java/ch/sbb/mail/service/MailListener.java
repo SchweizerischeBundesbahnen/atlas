@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@KafkaListener(topics = "atlas.mail", groupId = "atlas.mail.consumer")
+@KafkaListener(topics = "${spring.kafka.atlas.mail.topic}", groupId = "${spring.kafka.atlas.mail.groupId}")
 public class MailListener {
 
   private final MailService mailService;
