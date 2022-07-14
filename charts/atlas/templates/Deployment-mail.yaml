@@ -27,6 +27,16 @@ spec:
       - env:
         - name: SPRING_PROFILES_ACTIVE
           value: '{{ .Values.common.springProfilesActive }}'
+        - name: KAFKA_SCRAM_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kafka-secrets
+              key: scram-password
+        - name: KAFKA_TRUSTSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kafka-secrets
+              key: truststore-password
         image: "atlas.docker.bin.sbb.ch/{{ .Values.mail.name }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
         name: '{{ .Values.mail.name }}'
