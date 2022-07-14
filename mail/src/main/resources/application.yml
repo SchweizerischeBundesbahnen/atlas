@@ -35,3 +35,7 @@ spring:
           poll:
             interval:
               ms: 1200000
+    atlas:
+      mail:
+        topic: atlas.mail
+        groupId: atlas.kafka.user
