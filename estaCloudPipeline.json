@@ -59,7 +59,7 @@
     },
     {
       "type": "string",
-      "id": "todo: jenkins credential id",
+      "id": "ssp-6slz1c1wa-b9r8-3t38-20bp-z8x1ch557uq",
       "variable": "KAFKA_AUTOMATION_CLIENT_SECRET"
     }
   ],
