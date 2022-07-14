@@ -116,7 +116,18 @@
         "clientJenkinsId": "ssp-e2py25ozd-a12r-8xga-60s8-22did0rmx6s",
         "clientId": "client-atlas-jenkins-test",
         "classifier": "test"
-      }
+      },
+      "kafkaDeployParameters": [
+        {
+          "environmentId": "test",
+          "type": "topics",
+          "fileGlob": "kafka/topics/test/*.json",
+          "clientId": "825e4030",
+          "clientSecret": "${KAFKA_AUTOMATION_CLIENT_SECRET}",
+          "providerId": "sc",
+          "kafkaAutomationUrl": "https://automation-ng.kafka.sbb.ch"
+        }
+      ]
     },
     {
       "stageName": "int",
@@ -132,7 +143,18 @@
         "clientJenkinsId": "ssp-dzyd7597p-wy82-j0i3-4ug5-17890eg89to",
         "clientId": "client-atlas-jenkins-int",
         "classifier": "int"
-      }
+      },
+      "kafkaDeployParameters": [
+        {
+          "environmentId": "inte",
+          "type": "topics",
+          "fileGlob": "kafka/topics/int/*.json",
+          "clientId": "825e4030",
+          "clientSecret": "${KAFKA_AUTOMATION_CLIENT_SECRET}",
+          "providerId": "sc",
+          "kafkaAutomationUrl": "https://automation-ng.kafka.sbb.ch"
+        }
+      ]
     },
     {
       "stageName": "prod",
@@ -155,7 +177,18 @@
         "instance": "prod",
         "clientJenkinsId": "ssp-ijzyow7em-c2c6-cd77-kwoi-7vt28p07a93",
         "clientId": "client-atlas-jenkins-prod"
-      }
+      },
+      "kafkaDeployParameters": [
+        {
+          "environmentId": "prod",
+          "type": "topics",
+          "fileGlob": "kafka/topics/prod/*.json",
+          "clientId": "825e4030",
+          "clientSecret": "${KAFKA_AUTOMATION_CLIENT_SECRET}",
+          "providerId": "sc",
+          "kafkaAutomationUrl": "https://automation-ng.kafka.sbb.ch"
+        }
+      ]
     }
   ],
   "teamsNotifications": {
