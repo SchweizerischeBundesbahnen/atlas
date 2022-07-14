@@ -15,10 +15,6 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 @RequiredArgsConstructor
 public class KafkaConfig {
 
-  public static final int INTERVAL = 1000;
-  public static final int MAX_ATTEMPTS = 2;
-  public static final int PARTITION = 1;
-
   private final KafkaProperties kafkaProperties;
 
   @Bean
