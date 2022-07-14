@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.ZoneId;
 import java.util.Objects;
+import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MailApplication {
 
   public static void main(String[] args) throws IOException {
+    TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
     setupTruststore();
     SpringApplication.run(MailApplication.class, args);
   }
