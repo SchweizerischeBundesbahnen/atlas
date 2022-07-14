@@ -58,6 +58,7 @@ describe('Transport Company', () => {
   });
 
   it('Step-7: add Relation with Business Organisation', () => {
+    cy.get('.cdk-global-overlay-wrapper').scrollTo('bottom');
     CommonUtils.typeAndSelectItemFromDropDown(
       `${DataCy.BUSINESS_ORGANISATION_SEARCH_SELECT} input`,
       String(organisation.organisationNumber)
