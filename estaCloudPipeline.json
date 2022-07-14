@@ -56,6 +56,11 @@
       "type": "usernamePassword",
       "usernameVariable": "ARTIFACTORY_USER",
       "passwordVariable": "ARTIFACTORY_PW"
+    },
+    {
+      "type": "string",
+      "id": "todo: jenkins credential id",
+      "variable": "KAFKA_AUTOMATION_CLIENT_SECRET"
     }
   ],
   "npm": {
@@ -84,7 +89,18 @@
         "clientJenkinsId": "ssp-f1tqg4s8z-53a6-4h5d-0r0k-33j211k08b4",
         "clientId": "client-atlas-jenkins-dev",
         "classifier": "dev"
-      }
+      },
+      "kafkaDeployParameters": [
+        {
+          "environmentId": "test",
+          "type": "topics",
+          "fileGlob": "kafka/topics/dev/*.json",
+          "clientId": "825e4030",
+          "clientSecret": "${KAFKA_AUTOMATION_CLIENT_SECRET}",
+          "providerId": "sc",
+          "kafkaAutomationUrl": "https://automation-ng.kafka.sbb.ch"
+        }
+      ]
     },
     {
       "stageName": "test",
