@@ -40,4 +40,4 @@ This will make sure all topics under `kafka/topics/dev/*.json` are deployed via 
 ### Authorize the new client to access the app
 
 Open up a ticket at https://confluence.sbb.ch/display/KAFKA/KAFKA+Home. \
-Include the client id.
+Include the client id and the app name from the appmanagement (https://cloud-ssp.sbb-cloud.net/kafka/appmanagement).
