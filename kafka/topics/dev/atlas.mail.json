@@ -1,0 +1,12 @@
+{
+  "name": "atlas.dev.mail",
+  "replicas": 3,
+  "partitions": 6,
+  "configs": {
+    "cleanup.policy": "delete,compact",
+    "message.timestamp.type": "CreateTime",
+    "min.insync.replicas": "2",
+    "retention.ms": "21600000",
+    "unclean.leader.election.enable": "false"
+  }
+}
