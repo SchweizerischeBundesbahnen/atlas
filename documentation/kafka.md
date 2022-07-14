@@ -23,10 +23,11 @@ To include these `json` configuration files into the build, we set up `estaCloud
           "type": "topics",
           "fileGlob": "kafka/topics/dev/*.json",
           "clientId": "825e4030",
-          "clientSecret": "3dc481acc5078d23dd9be02b7c5de29b",
+          "clientSecret": "${KAFKA_AUTOMATION_CLIENT_SECRET}",
           "providerId": "sc",
           "kafkaAutomationUrl": "https://automation-ng.kafka.sbb.ch"
         }
+]
 ```
 
 This will make sure all topics under `kafka/topics/dev/*.json` are deployed via kafka automation.
@@ -38,5 +39,5 @@ This will make sure all topics under `kafka/topics/dev/*.json` are deployed via 
 
 ### Authorize the new client to access the app
 
-Open up a ticket at https://confluence.sbb.ch/display/KAFKA/KAFKA+Home
-Include the client id
+Open up a ticket at https://confluence.sbb.ch/display/KAFKA/KAFKA+Home. \
+Include the client id.
