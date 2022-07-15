@@ -11,7 +11,7 @@ public class MailApplication {
 
   public static void main(String[] args) {
     TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
-    KafkaTruststorePreparation.setupTruststore(MailApplication.class.getClassLoader());
+    KafkaTruststorePreparation.setupTruststore();
     SpringApplication.run(MailApplication.class, args);
   }
 }
