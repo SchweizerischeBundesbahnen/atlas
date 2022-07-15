@@ -96,37 +96,7 @@ Get a truststore @ https://automation-ng.kafka.sbb.ch/swagger-ui/index.html#/env
 We add it to the classpath in the `resources` folder as `kafka/truststore-test.p12`.
 
 We have to add truststores for the three kafka environments: test, inte and prod.
-They will be included into our application by setting up the spring application like this:
-
-```java
-  public static void main(String[] args) throws IOException {
-    setupTruststore();
-    SpringApplication.run(MailApplication.class, args);
-    }
-
-private static void setupTruststore() throws IOException {
-    Path truststore = Files.createTempFile("truststore", ".p12");
-    Files.copy(Objects.requireNonNull(MailApplication.class.getClassLoader()
-    .getResourceAsStream(
-    "kafka/" + getTruststoreFileName()
-    + ".p12")), truststore,
-    StandardCopyOption.REPLACE_EXISTING);
-    System.setProperty("KAFKA_TRUSTSTORE_LOCATION", truststore.toUri().toString());
-    }
-
-private static String getTruststoreFileName() {
-    String truststoreFileName = "truststore-test";
-
-    String profilesActive = System.getenv("SPRING_PROFILES_ACTIVE");
-    if ("int".equals(profilesActive)) {
-    truststoreFileName = "truststore-inte";
-    }
-    if ("prod".equals(profilesActive)) {
-    truststoreFileName = "truststore-prod";
-    }
-    return truststoreFileName;
-    }
-```
+They will be included into our application by setting up the spring application with the help of our `KafkaTruststorePreparation` class
 
 and configuring `application-dev.yml`
 
