@@ -19,7 +19,7 @@ public class BusinessOrganisationDirectoryApplication {
 
   public static void main(String[] args) {
     TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
-    KafkaTruststorePreparation.setupTruststore(BusinessOrganisationDirectoryApplication.class.getClassLoader());
+    KafkaTruststorePreparation.setupTruststore();
     SpringApplication.run(BusinessOrganisationDirectoryApplication.class, args);
   }
 
