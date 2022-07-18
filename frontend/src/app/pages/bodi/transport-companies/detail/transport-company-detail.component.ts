@@ -44,7 +44,7 @@ export class TransportCompanyDetailComponent implements OnInit {
   readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] = [
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.SAID',
-      value: 'said',
+      value: 'businessOrganisation.said',
     },
     { headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER', value: 'organisationNumber' },
     {

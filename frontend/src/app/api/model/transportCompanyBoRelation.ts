@@ -9,52 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BusinessOrganisation } from './businessOrganisation';
 
 export interface TransportCompanyBoRelation {
   /**
    * Transport Company Relation Id
    */
   id?: number;
-  /**
-   * Swiss Administration ID (SAID)
-   */
-  said?: string;
-  /**
-   * Organisation Number
-   */
-  organisationNumber?: number;
-  /**
-   * Description German
-   */
-  descriptionDe?: string;
-  /**
-   * Description French
-   */
-  descriptionFr?: string;
-  /**
-   * Description Italian
-   */
-  descriptionIt?: string;
-  /**
-   * Description English
-   */
-  descriptionEn?: string;
-  /**
-   * Abbreviation German
-   */
-  abbreviationDe?: string;
-  /**
-   * Abbreviation French
-   */
-  abbreviationFr?: string;
-  /**
-   * Abbreviation Italian
-   */
-  abbreviationIt?: string;
-  /**
-   * Abbreviation English
-   */
-  abbreviationEn?: string;
+  businessOrganisation?: BusinessOrganisation;
   /**
    * Valid From
    */

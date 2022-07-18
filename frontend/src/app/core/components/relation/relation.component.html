@@ -9,7 +9,9 @@
         {{ column.headerTitle | translate }}
       </th>
       <td mat-cell *matCellDef="let value">
-        {{ column.formatAsDate ? formatDate(value[column.value]) : value[column.value] }}
+        {{
+          column.formatAsDate ? formatDate(test(value, column.value)) : test(value, column.value)
+        }}
       </td>
     </ng-container>
 
