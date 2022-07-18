@@ -12,6 +12,9 @@
 import { Status } from './status';
 import { BusinessType } from './businessType';
 
+/**
+ * Business Organisation
+ */
 export interface BusinessOrganisation {
   /**
    * Swiss Business Organisation ID (SBOID)

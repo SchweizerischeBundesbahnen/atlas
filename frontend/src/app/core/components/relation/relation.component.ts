@@ -7,7 +7,7 @@ import { DateService } from '../../date/date.service';
   templateUrl: './relation.component.html',
   styleUrls: ['./relation.component.scss'],
 })
-export class RelationComponent<RECORD_TYPE> {
+export class RelationComponent<RECORD_TYPE extends { [prop: string]: any }> {
   @Input() records: RECORD_TYPE[] = [];
   @Input() titleTranslationKey = '';
   @Input() editable = false;
@@ -19,7 +19,17 @@ export class RelationComponent<RECORD_TYPE> {
   private selectedIndex = 0;
 
   columnValues(): string[] {
-    return this.tableColumns.map((item) => item.value);
+    return this.tableColumns.map((item) => item.value as string);
+  }
+
+  test(row: RECORD_TYPE, path: string): any {
+    const splitted = path.split('.');
+    let currentValAccessor = row;
+    splitted.forEach(
+      (pathProp) =>
+        (currentValAccessor = currentValAccessor ? currentValAccessor[pathProp] : undefined)
+    );
+    return currentValAccessor;
   }
 
   formatDate(date: Date): string {
