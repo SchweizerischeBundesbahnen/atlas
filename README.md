@@ -134,7 +134,7 @@ helm template . -n atlas-dev -f values-atlas-dev.yaml
 Module to handle routing of API endpoints to the respective business applications. Start this locally, if you want to run the angular UI.
 See [Gateway documentation](gateway/README.md);
 
-### kafka
+### Kafka
 
 This folder is used to store `json` files used to create topics using kafka-automation with estaCloudPipeline.
 More information can be found in the [kafka documentation](documentation/kafka.md).
