@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +61,7 @@ public class TransportCompanyService {
   void saveTransportCompanies(List<TransportCompanyCsvModel> companies) {
     List<TransportCompany> transportCompanies = companies.stream()
                                                          .map(TransportCompanyCsvModel::toEntity)
-                                                         .collect(Collectors.toList());
+                                                         .toList();
     transportCompanyRepository.saveAll(transportCompanies);
   }
 
@@ -94,16 +93,16 @@ public class TransportCompanyService {
     List<TransportCompany> transportCompaniesWithInvalidRelations = transportCompanyRepository.findTransportCompaniesWithInvalidRelations();
     if (!transportCompaniesWithInvalidRelations.isEmpty()) {
       log.warn("TransportCompany with numbers={} have invalid relations",
-          transportCompaniesWithInvalidRelations.stream().map(TransportCompany::getNumber).collect(
-              Collectors.toList()));
+          transportCompaniesWithInvalidRelations.stream()
+                                                .map(TransportCompany::getNumber)
+                                                .toList());
 
-      mailClient.sendEmailInHtml(MailNotification.builder()
-                                                 .to(relationsReportAddresses)
-                                                 .templateProperties(buildProperties(
-                                                     transportCompaniesWithInvalidRelations))
-                                                 .mailType(
-                                                     MailType.TU_IMPORT)
-                                                 .build());
+      mailClient.produceMailNotification(MailNotification.builder()
+                                                         .to(relationsReportAddresses)
+                                                         .templateProperties(buildProperties(
+                                                             transportCompaniesWithInvalidRelations))
+                                                         .mailType(MailType.TU_IMPORT)
+                                                         .build());
     }
   }
 
@@ -121,8 +120,7 @@ public class TransportCompanyService {
                                                    object.put(Fields.transportCompanyStatus,
                                                        transportCompany.getTransportCompanyStatus());
                                                    return object;
-                                                 })
-                                                 .collect(Collectors.toList());
+                                                 }).toList();
   }
 
 }
