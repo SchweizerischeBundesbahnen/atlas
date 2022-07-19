@@ -14,7 +14,6 @@
 - [Development](#development-1)
   * [Tech Stack](#tech-stack)
   * [Test RESTful Web services](#test-restful-web-services)
-  * [PostgreSQL Docker](#postgresql-docker)
 
 <!-- tocstop -->
 
@@ -65,9 +64,6 @@ This project uses [Semantic Versioning](https://semver.org/).
   * Docker registry: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker
 * Infrastructure documentation: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+7.1.+Infrastruktur+Ebene+1
 
-## Development
-For an easy local development setup, we provide a `docker-compose.yml`, which can be used to start dependent infrastructure.
-
 ### Tech Stack
 | Layer     |  Technologie    |  Link     |
 |-----------|------------|-----------|
@@ -104,19 +100,3 @@ U need only to configure some secrets:
   // ... etc...
 }
 ```
-
-### PostgreSQL Docker
-Run PostgreSQL in docker:
-~~~
-docker-compose up
-~~~
-
-Stop PostgreSQL container:
-~~~
-docker-compose down
-~~~
-
-Stop PostgreSQL container and remove volume:
-~~~
-docker-compose down -v 
-~~~
