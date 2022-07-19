@@ -31,6 +31,10 @@ describe('Linie', () => {
     CommonUtils.assertTableHeader(0, 8, 'Gültig bis');
   });
 
+  it('PreStep-4: check if line already exists', () => {
+    LidiUtils.checkIfLineAlreadyExists(line);
+  });
+
   it('Step-4: Go to page Add new Version', () => {
     LidiUtils.clickOnAddNewLineVersion();
     LidiUtils.fillLineVersionForm(line);

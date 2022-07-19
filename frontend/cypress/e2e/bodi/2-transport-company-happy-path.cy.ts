@@ -13,6 +13,10 @@ describe('Transport Company', () => {
     BodiUtils.navigateToBusinessOrganisation();
   });
 
+  it('PreStep-3: check if business organisation already exists', () => {
+    BodiUtils.checkIfBoAlreadyExists(organisation);
+  });
+
   it('Step-3: Add BusinessOrganisation to relate a TU', () => {
     BodiUtils.clickOnAddBusinessOrganisationVersion();
     BodiUtils.fillBusinessOrganisationVersionForm(organisation);
