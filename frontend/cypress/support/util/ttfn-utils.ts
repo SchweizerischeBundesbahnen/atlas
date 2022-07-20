@@ -29,6 +29,32 @@ export default class TtfnUtils {
     cy.get(DataCy.DELETE_ITEM).should('not.exist');
   }
 
+  static checkIfTtfnAlreadyExists(ttfn: any){
+    const pathToIntercept = '/line-directory/v1/field-numbers?**';
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      ttfn.swissTimetableFieldNumber
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, 'Aktiv');
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.TABLE_SEARCH_DATE_INPUT,
+      ttfn.validTo
+    );
+
+    cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
+      if (!$el.hasClass("mat-no-data-row")){
+        $el.trigger('click');
+        TtfnUtils.assertContainsVersion(ttfn);
+        CommonUtils.deleteItem();
+      }
+    });
+  }
+
   static fillVersionForm(version: any) {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);

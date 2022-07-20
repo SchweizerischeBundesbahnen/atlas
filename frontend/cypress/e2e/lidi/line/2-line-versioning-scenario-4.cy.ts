@@ -27,6 +27,10 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     LidiUtils.navigateToLines();
   });
 
+  it('PreStep-3: check if line already exists', () => {
+    LidiUtils.checkIfLineAlreadyExists(firstLinieVersion);
+  });
+
   it('Step-3: Add first Linie Version', () => {
     LidiUtils.clickOnAddNewLineVersion();
     LidiUtils.fillLineVersionForm(firstLinieVersion);

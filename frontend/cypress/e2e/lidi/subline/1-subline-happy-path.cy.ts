@@ -10,6 +10,13 @@ describe('Teillinie', () => {
     cy.atlasLogin();
   });
 
+  it('PreStep-2: check if subline and mainline already exists', () => {
+    LidiUtils.navigateToSublines();
+    LidiUtils.checkIfSublineAlreadyExists(sublineVersion);
+    LidiUtils.navigateToLines();
+    LidiUtils.checkIfLineAlreadyExists(LidiUtils.getMainLineVersion());
+  });
+
   it('Step-2: Add mainline', () => {
     mainline = LidiUtils.addMainLine();
   });

@@ -54,7 +54,7 @@ export default class BodiUtils {
     CommonUtils.selectItemFromDropdownSearchItem(DataCy.BUSINESS_TYPES, version.businessTypes[2]);
   }
 
-  static searchAndNavigateToBusinessOrganisation(businessOrganisation: any) {
+  static searchBusinessOrganisation(businessOrganisation: any){
     const pathToIntercept = '/business-organisation-directory/v1/business-organisations?**';
 
     CommonUtils.typeSearchInput(
@@ -79,6 +79,10 @@ export default class BodiUtils {
       DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
       businessOrganisation.validTo
     );
+  }
+
+  static searchAndNavigateToBusinessOrganisation(businessOrganisation: any) {
+    this.searchBusinessOrganisation(businessOrganisation);
     // Check that the table contains 1 result
     cy.get(DataCy.BODI_BUSINESS_ORGANISATION + ' table tbody tr').should('have.length', 1);
     // Click on the item
@@ -140,6 +144,17 @@ export default class BodiUtils {
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
     };
+  }
+
+  static checkIfBoAlreadyExists(businessOrganisation: any){
+    this.searchBusinessOrganisation(businessOrganisation);
+    cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
+      if (!$el.hasClass("mat-no-data-row")){
+        $el.trigger('click');
+        BodiUtils.assertContainsBusinessOrganisationVersion(businessOrganisation);
+        CommonUtils.deleteItem();
+      }
+    });
   }
 
   static switchTabToBusinessOrganisations() {

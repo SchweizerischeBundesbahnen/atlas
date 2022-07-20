@@ -43,6 +43,74 @@ export default class LidiUtils {
       .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
+  static checkIfLineAlreadyExists(line: any){
+    const pathToIntercept = '/line-directory/v1/lines?**';
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      line.swissLineNumber
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
+      'Aktiv'
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_LINE_TYPE,
+      line.type
+    );
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
+      line.validTo
+    );
+
+    cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
+      if (!$el.hasClass("mat-no-data-row")){
+        $el.trigger('click');
+        LidiUtils.assertContainsLineVersion(line);
+        CommonUtils.deleteItem();
+      }
+    });
+  }
+
+  static checkIfSublineAlreadyExists(sublineVersion: any){
+    const pathToIntercept = '/line-directory/v1/sublines?**';
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      sublineVersion.swissSublineNumber
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
+      'Aktiv'
+    );
+
+    CommonUtils.selectItemFromDropdownSearchItem(
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_SUBLINE_TYPE,
+      sublineVersion.type
+    );
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
+      sublineVersion.validTo
+    );
+
+    cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
+      if (!$el.hasClass("mat-no-data-row")){
+        $el.trigger('click');
+        LidiUtils.assertContainsSublineVersion(sublineVersion);
+        CommonUtils.deleteItem();
+      }
+    });
+  }
+
   static clickOnAddNewLineVersion() {
     cy.get(DataCy.NEW_LINE).click();
     cy.get(DataCy.SAVE_ITEM).should('be.disabled');
@@ -214,7 +282,7 @@ export default class LidiUtils {
       slnid: '',
       validFrom: '01.01.2000',
       validTo: '31.12.2002',
-      swissLineNumber: 'b0.IC2',
+      swissLineNumber: 'b0.IC2-E2E',
       businessOrganisation: 'SBB',
       type: 'Betrieblich',
       paymentType: 'International',
@@ -284,7 +352,7 @@ export default class LidiUtils {
       slnid: '',
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
-      swissLineNumber: 'b0.IC2',
+      swissLineNumber: 'b0.IC2-E2E',
       businessOrganisation: 'SBB',
       type: 'Betrieblich',
       paymentType: 'International',
@@ -307,7 +375,7 @@ export default class LidiUtils {
     return {
       validFrom: '01.01.2001',
       validTo: '31.12.2001',
-      swissLineNumber: 'b0.IC2',
+      swissLineNumber: 'b0.IC2-E2E',
       businessOrganisation: 'SBB-1',
       type: 'Betrieblich',
       paymentType: 'International',
@@ -330,7 +398,7 @@ export default class LidiUtils {
     return {
       validFrom: '01.01.2002',
       validTo: '31.12.2002',
-      swissLineNumber: 'b0.IC2',
+      swissLineNumber: 'b0.IC2-E2E',
       businessOrganisation: 'SBB-2',
       type: 'Betrieblich',
       paymentType: 'International',

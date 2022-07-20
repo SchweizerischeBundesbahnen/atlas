@@ -29,6 +29,10 @@ describe('Fahrplanfeldnummer', () => {
     CommonUtils.assertTableHeader(0, 7, 'Gültig bis');
   });
 
+  it('PreStep-4: check if ttfn already exists', () => {
+    TtfnUtils.checkIfTtfnAlreadyExists(firstVersion);
+  });
+
   it('Step-4: Go to page Add new Version', () => {
     TtfnUtils.clickOnAddNewVersion();
     TtfnUtils.fillVersionForm(firstVersion);

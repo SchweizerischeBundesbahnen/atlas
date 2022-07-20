@@ -35,6 +35,10 @@ describe('Versioning: scenario 3', () => {
     TtfnUtils.checkHeaderTitle();
   });
 
+  it('PreStep-3: check if ttfn already exists', () => {
+    TtfnUtils.checkIfTtfnAlreadyExists(firstVersion);
+  });
+
   it('Step-3: Add first Version', () => {
     TtfnUtils.clickOnAddNewVersion();
     TtfnUtils.fillVersionForm(firstVersion);
