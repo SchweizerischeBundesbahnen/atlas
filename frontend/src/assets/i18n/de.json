@@ -362,7 +362,8 @@
         "OPERATING_PART": "Betriebsteil",
         "LIQUIDATED": "Liquidiert",
         "INACTIVE": "Inaktiv"
-      }
+      },
+      "RELATION_CONFLICT": "Die Geschäftsorganisation {{sboid}} ist bereits von {{validFrom}} bis {{validTo}} mit TU {{number}} verknüpft."
     },
     "COMPANIES": {
       "COMPANIES": "Company Codes (RICS)",

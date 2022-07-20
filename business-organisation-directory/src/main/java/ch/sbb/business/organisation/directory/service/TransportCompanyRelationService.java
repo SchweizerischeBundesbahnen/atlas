@@ -1,11 +1,12 @@
 package ch.sbb.business.organisation.directory.service;
 
-import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.exception.TransportCompanyNotFoundException;
+import ch.sbb.business.organisation.directory.exception.TransportCompanyRelationConflictException;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRelationRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,21 +19,34 @@ public class TransportCompanyRelationService {
   private final BusinessOrganisationService businessOrganisationService;
   private final TransportCompanyService transportCompanyService;
 
-  public TransportCompanyRelation save(TransportCompanyRelation entity){
-    if (businessOrganisationService.findBusinessOrganisationVersions(entity.getSboid()).isEmpty()){
+  public TransportCompanyRelation save(TransportCompanyRelation entity) {
+    if (businessOrganisationService.findBusinessOrganisationVersions(entity.getSboid()).isEmpty()) {
       throw new SboidNotFoundException(entity.getSboid());
     }
-    if (!transportCompanyService.existsById(entity.getTransportCompany().getId())){
+    if (!transportCompanyService.existsById(entity.getTransportCompany().getId())) {
       throw new TransportCompanyNotFoundException(entity.getTransportCompany().getId());
     }
+    validateRelationOverlaps(entity);
     return transportCompanyRelationRepository.save(entity);
   }
 
-  public void deleteById(Long relationId){
-    if (!transportCompanyRelationRepository.existsById(relationId)){
+  public void deleteById(Long relationId) {
+    if (!transportCompanyRelationRepository.existsById(relationId)) {
       throw new IdNotFoundException(relationId);
     }
     transportCompanyRelationRepository.deleteById(relationId);
+  }
+
+  void validateRelationOverlaps(TransportCompanyRelation relation) {
+    List<TransportCompanyRelation> relationOverlaps = findRelationOverlaps(relation);
+    if (!relationOverlaps.isEmpty()) {
+      throw new TransportCompanyRelationConflictException(relation, relationOverlaps);
+    }
+  }
+
+  List<TransportCompanyRelation> findRelationOverlaps(TransportCompanyRelation relation) {
+    return transportCompanyRelationRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSboid(
+        relation.getValidFrom(), relation.getValidTo(), relation.getSboid());
   }
 
 }
