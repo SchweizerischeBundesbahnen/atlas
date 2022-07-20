@@ -80,10 +80,7 @@ async function main(args) {
       }
       if (slnidResult.data.totalCount > 1) {
         const filteredLine = slnidResult.data.objects.filter(
-          (value) =>
-            value.validFrom <= json[i].validFrom &&
-            value.validTo >= json[i].validFrom &&
-            value.swissLineNumber === json[i].mainLineSwissLineNumber
+          (value) => value.swissLineNumber === json[i].mainLineSwissLineNumber
         );
         if (filteredLine.length === 1) {
           json[i].mainlineSlnid = filteredLine[0].slnid;
