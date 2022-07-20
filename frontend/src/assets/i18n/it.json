@@ -362,7 +362,8 @@
         "OPERATING_PART": "Sezione operativa",
         "LIQUIDATED": "Liquidato",
         "INACTIVE": "Inattivo"
-      }
+      },
+      "RELATION_CONFLICT": "L'organizzazione aziendale {{sboid}} è già collegata al TU {{number}} da {{validFrom}} a {{validTo}}."
     },
     "COMPANIES": {
       "COMPANIES": "Company Codes (RICS)",
