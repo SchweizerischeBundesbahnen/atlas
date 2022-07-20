@@ -1,0 +1,51 @@
+package ch.sbb.business.organisation.directory.exception;
+
+import ch.sbb.atlas.model.api.ErrorResponse;
+import ch.sbb.atlas.model.api.ErrorResponse.Detail;
+import ch.sbb.atlas.model.api.ErrorResponse.DisplayInfo;
+import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.business.organisation.directory.entity.TransportCompany;
+import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
+import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation.Fields;
+import java.util.List;
+import java.util.function.Function;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+@RequiredArgsConstructor
+public class TransportCompanyRelationConflictException extends AtlasException {
+
+  private final TransportCompanyRelation newRelation;
+  private final List<TransportCompanyRelation> overlappingRelations;
+
+  @Override
+  public ErrorResponse getErrorResponse() {
+    return ErrorResponse.builder()
+                        .status(HttpStatus.CONFLICT.value())
+                        .message("A conflict occurred due to a business rule")
+                        .error("TransportCompany - BO relation conflict")
+                        .details(getErrorDetails())
+                        .build();
+  }
+
+  private List<Detail> getErrorDetails() {
+    return overlappingRelations.stream().map(toOverlapDetail()).toList();
+  }
+
+  private Function<TransportCompanyRelation, Detail> toOverlapDetail() {
+    return relation -> Detail.builder()
+                             .field(Fields.sboid)
+                             .message("TransportCompany {0} already relates to {3} from {1} to {2}")
+                             .displayInfo(DisplayInfo.builder()
+                                                     .code("BODI.TRANSPORT_COMPANIES.RELATION_CONFLICT")
+                                                     .with(TransportCompany.Fields.number,
+                                                         newRelation.getTransportCompany()
+                                                                    .getNumber())
+                                                     .with(Fields.validFrom,
+                                                         relation.getValidFrom())
+                                                     .with(Fields.validTo, relation.getValidTo())
+                                                     .with(Fields.sboid, relation.getSboid())
+                                                     .build()).build();
+  }
+
+}
