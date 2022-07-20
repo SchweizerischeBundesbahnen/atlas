@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
@@ -23,6 +24,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
+@FieldNameConstants
 @Entity(name = "transport_company_relation")
 public class TransportCompanyRelation extends BaseVersion {
 
