@@ -165,7 +165,6 @@
       "preCiDeploymentJob": "",
       "postCiDeploymentJob": "",
       "preDeployConfirmUserMails": [
-        "frederic.barras@sbb.ch",
         "hannes.laner@sbb.ch",
         "antonio.romano@sbb.ch",
         "luca.ammann2@sbb.ch",
