@@ -174,7 +174,6 @@ appRegistrations:
   owners:
   - clientId: 992e3e78-57d8-4abc-ab7f-f10912696d0c
   - userPrincipalName: hannes.laner@sbb.ch
-  - userPrincipalName: frederic.barras@sbb.ch
   - userPrincipalName: antonio.romano@sbb.ch
   - clientId: d4b120bb-9793-4921-91d2-7f728fedfdc0
   passwords:
@@ -218,7 +217,6 @@ appRegistrations:
   implicitFlowEnabled: false
   owners:
   - userPrincipalName: antonio.romano@sbb.ch
-  - userPrincipalName: frederic.barras@sbb.ch
   - userPrincipalName: hannes.laner@sbb.ch
   - clientId: 992e3e78-57d8-4abc-ab7f-f10912696d0c
   passwords: []
