@@ -64,7 +64,7 @@ describe('Transport Company', () => {
   it('Step-7: add Relation with Business Organisation', () => {
     CommonUtils.typeAndSelectItemFromDropDown(
       `${DataCy.BUSINESS_ORGANISATION_SEARCH_SELECT} input`,
-      String(organisation.organisationNumber)
+      String(organisation.descriptionDe)
     );
     CommonUtils.getClearType(DataCy.VALID_FROM, '01.01.2020', true);
     CommonUtils.getClearType(DataCy.VALID_TO, '01.01.2021', true);

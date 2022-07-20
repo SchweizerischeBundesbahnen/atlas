@@ -252,7 +252,7 @@ export default class CommonUtils {
         expect(Cypress.dom.isFocusable($el)).to.be.true;
       })
       .should('be.enabled')
-      .type(value)
+      .type(value, { delay: 0 })
       .should('have.value', value)
       .wait(1000)
       .type('{enter}');
