@@ -122,64 +122,77 @@
     </div>
   </div>
 
-  <div class="mt-3">
-    <app-relation
-      [records]="transportCompanyRelations"
-      [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
-      [editable]="isAdmin()"
-      [tableColumns]="transportCompanyRelationTableColumns"
-      (createRelation)="createRelation()"
-      (deleteRelation)="deleteRelation($event)"
-    >
-      <form *ngIf="isAdmin()" class="col-12 d-flex">
-        <form-search-select
-          #searchSelectComponent
-          class="col-6 me-3 mt-3"
-          [formGroup]="form"
-          [controlName]="'businessOrganisation'"
-          [items$]="businessOrganisationSearchResults"
-          [getSelectOption]="selectOption"
-          (searchTrigger)="getBusinessOrganisations($event)"
-          data-cy="bo-search-select"
+  <app-relation
+    [editMode]="editMode"
+    [records]="transportCompanyRelations"
+    [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
+    [editable]="isAdmin()"
+    [tableColumns]="transportCompanyRelationTableColumns"
+    (deleteRelation)="deleteRelation($event)"
+    (editModeChanged)="editMode = !editMode"
+  >
+    <form *ngIf="editMode" class="col-12 d-flex">
+      <form-search-select
+        #searchSelectComponent
+        class="col-6 me-3 mt-3"
+        [formGroup]="form"
+        [controlName]="'businessOrganisation'"
+        [items$]="businessOrganisationSearchResults"
+        [getSelectOption]="selectOption"
+        (searchTrigger)="getBusinessOrganisations($event)"
+        data-cy="bo-search-select"
+      >
+        <mat-label class="font-bold-lg required-indicator">{{
+          'TTFN.BUSINESS_ORGANISATION' | translate
+        }}</mat-label>
+        <div
+          *ngIf="
+            totalCountOfFoundBusinessOrganisations <= pageSizeForBusinessOrganisationSearch ||
+              !searchSelectComponent.isDropdownOpen();
+            else notAllFoundItemsCanBeShowed
+          "
+          class="mat-label-form-field-space-between"
+        ></div>
+        <ng-template #notAllFoundItemsCanBeShowed
+          ><div class="font-regular-sm color-gray-900 mat-label-subtitle-form-field-space-between">
+            {{
+              'FORM.DROPDOWN_SEARCH_RESULT_INFO'
+                | translate
+                  : {
+                      pageSize: pageSizeForBusinessOrganisationSearch,
+                      totalCount: totalCountOfFoundBusinessOrganisations
+                    }
+            }}
+          </div></ng-template
         >
-          <mat-label class="font-bold-lg required-indicator">{{
-            'TTFN.BUSINESS_ORGANISATION' | translate
-          }}</mat-label>
-          <div
-            *ngIf="
-              totalCountOfFoundBusinessOrganisations <= pageSizeForBusinessOrganisationSearch ||
-                !searchSelectComponent.isDropdownOpen();
-              else notAllFoundItemsCanBeShowed
-            "
-            class="mat-label-form-field-space-between"
-          ></div>
-          <ng-template #notAllFoundItemsCanBeShowed
-            ><div
-              class="font-regular-sm color-gray-900 mat-label-subtitle-form-field-space-between"
-            >
-              {{
-                'FORM.DROPDOWN_SEARCH_RESULT_INFO'
-                  | translate
-                    : {
-                        pageSize: pageSizeForBusinessOrganisationSearch,
-                        totalCount: totalCountOfFoundBusinessOrganisations
-                      }
-              }}
-            </div></ng-template
-          >
-        </form-search-select>
-        <form-date-range class="col-6" [formGroup]="form"></form-date-range>
-      </form>
-    </app-relation>
-  </div>
+      </form-search-select>
+      <form-date-range class="col-12" [formGroup]="form"></form-date-range>
+    </form>
+  </app-relation>
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
     <button
+      *ngIf="!editMode; else editModeButtons"
       class="atlas-primary-btn footer-btn"
       [mat-dialog-close]="true"
       data-cy="back-to-overview"
     >
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
+
+    <ng-template #editModeButtons>
+      <button class="atlas-primary-btn footer-btn" (click)="leaveEditMode()" data-cy="cancel">
+        {{ 'COMMON.CANCEL' | translate }}
+      </button>
+      <button
+        class="atlas-primary-btn footer-btn ms-3"
+        data-cy="save-item"
+        type="submit"
+        (click)="createRelation()"
+        [disabled]="!form.dirty"
+      >
+        {{ 'COMMON.SAVE' | translate }}
+      </button>
+    </ng-template>
   </div>
 </div>
