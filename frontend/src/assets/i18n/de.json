@@ -375,5 +375,11 @@
       "BASIC_DATA": "Angaben zur Company",
       "ID_NAN_ERROR": "Die ID für eine Company muss eine Zahl sein"
     }
+  },
+  "RELATION": {
+    "ADD": "Verknüpfung hinzufügen",
+    "DELETE": "Verknüpfung löschen",
+    "ADD_SUCCESS_MSG": "Die gewünschte Verknüpfung wurde hinzugefügt.",
+    "DELETE_SUCCESS_MSG": "Das Löschen der ausgewählten Verknüpfung war erfolgreich."
   }
 }

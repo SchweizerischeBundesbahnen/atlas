@@ -4,14 +4,12 @@
 
 <div class="table-form-container">
   <table mat-table [dataSource]="records" [ngClass]="{ admin: editable }">
-    <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.value }}">
+    <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.columnDef }}">
       <th scope="col" mat-header-cell *matHeaderCellDef class="font-bold-base color-primary-400">
         {{ column.headerTitle | translate }}
       </th>
       <td mat-cell *matCellDef="let value">
-        {{
-          column.formatAsDate ? formatDate(test(value, column.value)) : test(value, column.value)
-        }}
+        {{ getValue(value, column) }}
       </td>
     </ng-container>
 
@@ -27,15 +25,25 @@
       ><td class="mat-cell" colspan="100">{{ 'COMMON.NODATAFOUND' | translate }}</td></ng-template
     >
   </table>
-
-  <ng-content></ng-content>
 </div>
 
 <div *ngIf="editable">
-  <button (click)="create()" class="atlas-primary-btn me-2" data-cy="add-relation-btn">
-    {{ 'COMMON.ADD' | translate }}
+  <button
+    [disabled]="editMode"
+    (click)="editModeChanged.emit()"
+    class="atlas-primary-btn me-2"
+    data-cy="add-relation-btn"
+  >
+    {{ 'RELATION.ADD' | translate }}
   </button>
-  <button (click)="delete()" class="atlas-primary-btn" data-cy="delete-relation-btn">
-    {{ 'COMMON.DELETE' | translate }}
+  <button
+    [disabled]="selectedIndex === -1"
+    (click)="delete()"
+    class="atlas-primary-btn"
+    data-cy="delete-relation-btn"
+  >
+    {{ 'RELATION.DELETE' | translate }}
   </button>
 </div>
+
+<ng-content></ng-content>
