@@ -1,16 +1,16 @@
 package ch.sbb.business.organisation.directory.controller;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.is;
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
-import ch.sbb.business.organisation.directory.api.TransportCompanyRelationModel;
 import ch.sbb.business.organisation.directory.api.TransportCompanyBoRelationModel.Fields;
+import ch.sbb.business.organisation.directory.api.TransportCompanyRelationModel;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
@@ -37,7 +37,7 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
     businessOrganisationVersionRepository.save(
         BusinessOrganisationData.businessOrganisationVersion());
     transportCompanyRepository.save(TransportCompany.builder()
-                                                    .id(5L).build());
+                                                    .id(5L).number("5").build());
   }
 
   @AfterEach
@@ -133,5 +133,26 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
        .andExpect(jsonPath("$[0]." + Fields.organisationNumber, is(123)))
        .andExpect(jsonPath("$[0]." + Fields.said, is("1000000")))
        .andExpect(jsonPath("$[0]." + Fields.id, is(savedRelationOne.getId().intValue())));
+  }
+
+  @Test
+  void shouldReportConflictingTransportCompanyRelation() throws Exception {
+    TransportCompanyRelationModel model = TransportCompanyRelationModel.builder()
+                                                                       .transportCompanyId(5L)
+                                                                       .sboid("ch:1:sboid:1000000")
+                                                                       .validFrom(
+                                                                           LocalDate.of(2020, 5, 5))
+                                                                       .validTo(
+                                                                           LocalDate.of(2021, 5, 5))
+                                                                       .build();
+    // First creation of relation is ok
+    mvc.perform(post("/v1/transport-company-relations").contentType(contentType)
+                                                       .content(mapper.writeValueAsString(model)))
+       .andExpect(status().isCreated());
+
+    // Second creation of identical relation should fail
+    mvc.perform(post("/v1/transport-company-relations").contentType(contentType)
+                                                       .content(mapper.writeValueAsString(model)))
+       .andExpect(status().isConflict());
   }
 }
