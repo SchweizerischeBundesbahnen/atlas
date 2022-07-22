@@ -45,8 +45,6 @@ export class TransportCompanyDetailComponent implements OnInit {
 
   editMode = false;
 
-  // TODO: tests
-
   totalCountOfFoundBusinessOrganisations = 0;
   readonly pageSizeForBusinessOrganisationSearch = 100;
 
