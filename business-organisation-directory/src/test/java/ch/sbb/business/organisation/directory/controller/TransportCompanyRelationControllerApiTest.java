@@ -13,7 +13,6 @@ import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationModel;
 import ch.sbb.business.organisation.directory.api.TransportCompanyRelationModel;
 import ch.sbb.business.organisation.directory.api.TransportCompanyBoRelationModel.Fields;
-import ch.sbb.business.organisation.directory.api.TransportCompanyRelationModel;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
