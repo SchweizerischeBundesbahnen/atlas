@@ -123,13 +123,15 @@
   </div>
 
   <app-relation
+    [selectedIndex]="selectedTransportCompanyRelationIndex"
     [editMode]="editMode"
     [records]="transportCompanyRelations"
     [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
     [editable]="isAdmin()"
     [tableColumns]="transportCompanyRelationTableColumns"
-    (deleteRelation)="deleteRelation($event)"
+    (deleteRelation)="deleteRelation()"
     (editModeChanged)="editMode = !editMode"
+    (selectedIndexChanged)="selectedTransportCompanyRelationIndex = $event"
   >
     <form *ngIf="editMode" class="col-12 d-flex">
       <form-search-select
@@ -166,7 +168,7 @@
           </div></ng-template
         >
       </form-search-select>
-      <form-date-range class="col-12" [formGroup]="form"></form-date-range>
+      <form-date-range class="col-6" [formGroup]="form"></form-date-range>
     </form>
   </app-relation>
 

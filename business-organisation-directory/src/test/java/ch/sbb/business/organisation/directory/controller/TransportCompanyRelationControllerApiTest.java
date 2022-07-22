@@ -1,6 +1,7 @@
 package ch.sbb.business.organisation.directory.controller;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -64,11 +65,13 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
                                                        .content(
                                                            mapper.writeValueAsString(model)))
        .andExpect(status().isCreated())
-       .andExpect(jsonPath("$." + TransportCompanyRelationModel.Fields.transportCompanyId, is(5)))
+       .andExpect(jsonPath("$." + Fields.id, notNullValue(Long.class)))
        .andExpect(
-           jsonPath("$." + TransportCompanyRelationModel.Fields.sboid, is("ch:1:sboid:1000000")))
-       .andExpect(jsonPath("$." + TransportCompanyRelationModel.Fields.validFrom, is("2020-05-05")))
-       .andExpect(jsonPath("$." + TransportCompanyRelationModel.Fields.validTo, is("2021-05-05")));
+           jsonPath(
+               "$." + Fields.businessOrganisation + "." + BusinessOrganisationModel.Fields.sboid,
+               is("ch:1:sboid:1000000")))
+       .andExpect(jsonPath("$." + Fields.validFrom, is("2020-05-05")))
+       .andExpect(jsonPath("$." + Fields.validTo, is("2021-05-05")));
   }
 
   @Test
