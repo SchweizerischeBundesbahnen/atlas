@@ -27,14 +27,22 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
   private final BusinessOrganisationService businessOrganisationService;
 
   @Override
-  public TransportCompanyRelationModel createTransportCompanyRelation(
+  public TransportCompanyBoRelationModel createTransportCompanyRelation(
       TransportCompanyRelationModel model) {
-    TransportCompanyRelation entity = TransportCompanyRelationModel.toEntity(model,
+    TransportCompanyRelation relationEntity = TransportCompanyRelationModel.toEntity(model,
         transportCompanyService.findById(model.getTransportCompanyId())
                                .orElseThrow(() -> new TransportCompanyNotFoundException(
                                    model.getTransportCompanyId())));
-    TransportCompanyRelation savedEntity = transportCompanyRelationService.save(entity);
-    return TransportCompanyRelationModel.toModel(savedEntity);
+
+    TransportCompanyRelation savedRelationEntity = transportCompanyRelationService.save(
+        relationEntity);
+
+    BusinessOrganisation businessOrganisation = businessOrganisationService.findBusinessOrganisationBySboid(
+        savedRelationEntity.getSboid());
+
+    return TransportCompanyBoRelationModel.toModel(
+        businessOrganisation,
+        savedRelationEntity);
   }
 
   @Override
