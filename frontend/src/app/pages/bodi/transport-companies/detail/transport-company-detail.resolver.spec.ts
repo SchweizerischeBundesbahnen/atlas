@@ -19,8 +19,9 @@ const transportCompany: TransportCompany = {
 const transportCompanyRelations: TransportCompanyBoRelation[] = [
   {
     id: 1,
-    descriptionDe: 'Schweizerische Bundesbahnen',
-    organisationNumber: 50,
+  },
+  {
+    id: 2,
   },
 ];
 
@@ -72,10 +73,9 @@ describe('TransportCompanyDetailResolver', () => {
     resolvedVersion.subscribe(([tranyportCompany, transportCompanyRelations]) => {
       expect(tranyportCompany.id).toBe(1234);
       expect(tranyportCompany.description).toBe('SBB');
-      expect(transportCompanyRelations.length).toBe(1);
+      expect(transportCompanyRelations.length).toBe(2);
       expect(transportCompanyRelations[0].id).toBe(1);
-      expect(transportCompanyRelations[0].descriptionDe).toBe('Schweizerische Bundesbahnen');
-      expect(transportCompanyRelations[0].organisationNumber).toBe(50);
+      expect(transportCompanyRelations[1].id).toBe(2);
       done();
     });
   });

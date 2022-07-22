@@ -41,8 +41,11 @@ export class TransportCompanyDetailComponent implements OnInit {
   transportCompany!: TransportCompany;
   transportCompanyRelations!: TransportCompanyBoRelation[];
   businessOrganisationSearchResults: Observable<BusinessOrganisation[]> = of([]);
+  selectedTransportCompanyRelationIndex = -1;
 
   editMode = false;
+
+  // TODO: tests
 
   totalCountOfFoundBusinessOrganisations = 0;
   readonly pageSizeForBusinessOrganisationSearch = 100;
@@ -161,11 +164,14 @@ export class TransportCompanyDetailComponent implements OnInit {
         validTo: moment(this.form.value.validTo).toDate(),
       })
       .pipe(
-        switchMap(() =>
+        switchMap((savedRelation) =>
           this.reloadRelations().pipe(
             tap(() => {
               this.editMode = false;
               this.form.reset();
+              this.selectedTransportCompanyRelationIndex = this.transportCompanyRelations.findIndex(
+                (item) => item.id === savedRelation.id
+              );
               this.notificationService.success('RELATION.ADD_SUCCESS_MSG');
             })
           )
@@ -174,13 +180,18 @@ export class TransportCompanyDetailComponent implements OnInit {
       .subscribe();
   }
 
-  deleteRelation(deleteEvent: { record: TransportCompanyBoRelation }): void {
+  deleteRelation(): void {
     this.transportCompanyRelationsService
-      .deleteTransportCompanyRelation(deleteEvent.record.id!)
+      .deleteTransportCompanyRelation(
+        this.transportCompanyRelations[this.selectedTransportCompanyRelationIndex].id!
+      )
       .pipe(
         switchMap(() =>
           this.reloadRelations().pipe(
-            tap(() => this.notificationService.success('RELATION.DELETE_SUCCESS_MSG'))
+            tap(() => {
+              this.selectedTransportCompanyRelationIndex = -1;
+              this.notificationService.success('RELATION.DELETE_SUCCESS_MSG');
+            })
           )
         )
       )
