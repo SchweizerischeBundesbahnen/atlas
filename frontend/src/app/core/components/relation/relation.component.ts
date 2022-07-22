@@ -7,17 +7,18 @@ import { TableColumn } from '../table/table-column';
   templateUrl: './relation.component.html',
   styleUrls: ['./relation.component.scss'],
 })
-export class RelationComponent<RECORD_TYPE extends { [prop: string]: any }> {
+export class RelationComponent<RECORD_TYPE> {
   @Input() records: RECORD_TYPE[] = [];
   @Input() titleTranslationKey = '';
   @Input() editable = false;
   @Input() tableColumns!: TableColumn<RECORD_TYPE>[];
   @Input() editMode = false;
 
-  @Output() deleteRelation = new EventEmitter<{ record: RECORD_TYPE }>();
+  @Output() deleteRelation = new EventEmitter<void>();
   @Output() editModeChanged = new EventEmitter<void>();
+  @Output() selectedIndexChanged = new EventEmitter<number>();
 
-  selectedIndex = -1;
+  @Input() selectedIndex = -1;
 
   columnValues(): string[] {
     return this.tableColumns.map((item) => item.columnDef!);
@@ -47,14 +48,11 @@ export class RelationComponent<RECORD_TYPE extends { [prop: string]: any }> {
 
   selectRecord(record: RECORD_TYPE): void {
     if (this.editable) {
-      this.selectedIndex = this.records.indexOf(record);
+      this.selectedIndexChanged.emit(this.records.indexOf(record));
     }
   }
 
-  delete(): void {
-    this.deleteRelation.emit({
-      record: this.records[this.selectedIndex],
-    });
-    this.selectedIndex = -1;
+  sortChanged(sortData: any): void {
+    console.log(sortData);
   }
 }
