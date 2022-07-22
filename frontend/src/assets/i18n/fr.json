@@ -362,7 +362,8 @@
         "OPERATING_PART": "Partie opérationnelle",
         "LIQUIDATED": "Liquidé",
         "INACTIVE": "Inactif"
-      }
+      },
+      "RELATION_CONFLICT": "L'organisation commerciale {{sboid}} est déjà liée de {{validFrom}} à {{validTo}} à TU {{number}}."
     },
     "COMPANIES": {
       "COMPANIES": "Company Codes (RICS)",
