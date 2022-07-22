@@ -1,6 +1,7 @@
 package ch.sbb.business.organisation.directory.api;
 
 
+import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;
@@ -19,7 +20,7 @@ public interface TransportCompanyRelationApiV1 {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  TransportCompanyRelationModel createTransportCompanyRelation(@RequestBody @Valid TransportCompanyRelationModel model);
+  TransportCompanyBoRelationModel createTransportCompanyRelation(@RequestBody @Valid TransportCompanyRelationModel model);
 
   @GetMapping("{transportCompanyId}")
   List<TransportCompanyBoRelationModel> getTransportCompanyRelations(@PathVariable Long transportCompanyId);
