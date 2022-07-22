@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RelationComponent } from './relation.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from '../../module/material.module';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('TransportCompanyRelationComponent', () => {
   let component: RelationComponent<any>;
@@ -15,11 +17,46 @@ describe('TransportCompanyRelationComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         MaterialModule,
+        BrowserAnimationsModule,
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RelationComponent);
     component = fixture.componentInstance;
+    component.tableColumns = [
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.SAID',
+        valuePath: 'businessOrganisation.said',
+        columnDef: 'said',
+      },
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
+        valuePath: 'businessOrganisation.organisationNumber',
+        columnDef: 'organisationNumber',
+      },
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
+        valuePath: `businessOrganisation.abbreviationDe`,
+        columnDef: 'abbreviation',
+      },
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
+        valuePath: `businessOrganisation.descriptionDe`,
+        columnDef: 'description',
+      },
+      {
+        headerTitle: 'COMMON.VALID_FROM',
+        value: 'validFrom',
+        columnDef: 'validFrom',
+        formatAsDate: true,
+      },
+      {
+        headerTitle: 'COMMON.VALID_TO',
+        value: 'validTo',
+        columnDef: 'validTo',
+        formatAsDate: true,
+      },
+    ];
     fixture.detectChanges();
   });
 
@@ -28,11 +65,14 @@ describe('TransportCompanyRelationComponent', () => {
   });
 
   it('test columnValues function', () => {
-    component.tableColumns = [
-      { headerTitle: 'test', value: 'test1' },
-      { headerTitle: 'test', value: 'test2' },
-    ];
-    expect(component.columnValues()).toEqual(['test1', 'test2']);
+    expect(component.columnValues()).toEqual([
+      'said',
+      'organisationNumber',
+      'abbreviation',
+      'description',
+      'validFrom',
+      'validTo',
+    ]);
   });
 
   it('test isRowSelected function', () => {
@@ -45,10 +85,13 @@ describe('TransportCompanyRelationComponent', () => {
     expect(component.isRowSelected(component.records[0])).toBeFalse();
   });
 
-  it('create should emit event', () => {
+  it('edit mode changed should emit event', () => {
+    component.editable = true;
+    fixture.detectChanges();
     let eventEmitted = false;
-    component.createRelation.subscribe(() => (eventEmitted = true));
-    component.create();
+    component.editModeChanged.subscribe(() => (eventEmitted = true));
+    const editBtn = fixture.debugElement.query(By.css('button'));
+    editBtn.nativeElement.click();
     expect(eventEmitted).toBeTrue();
   });
 
@@ -58,27 +101,22 @@ describe('TransportCompanyRelationComponent', () => {
       { id: 2, value: 'test2' },
     ];
     component.editable = true;
+    component.selectedIndexChanged.subscribe((index) => expect(index).toBe(1));
     component.selectRecord(component.records[1]);
-    expect(component['selectedIndex']).toBe(1);
 
     component.editable = false;
+    let selectedIndexChangedCalled = false;
+    component.selectedIndexChanged.subscribe(() => (selectedIndexChangedCalled = true));
     component.selectRecord(component.records[0]);
-    expect(component['selectedIndex']).toBe(1);
+    expect(selectedIndexChangedCalled).toBeFalse();
   });
 
   it('test delete', (done) => {
-    component.deleteRelation.subscribe((deleteEvent) => {
-      expect(component.records.length > 0);
-      expect(deleteEvent.record).toEqual({ id: 1, value: 'test1' });
-      expect(deleteEvent.callbackFn).toBeDefined();
-      done();
-    });
-    component.delete();
-
-    component.records = [
-      { id: 1, value: 'test1' },
-      { id: 2, value: 'test2' },
-    ];
-    component.delete();
+    component.editable = true;
+    component.selectedIndex = 0;
+    fixture.detectChanges();
+    component.deleteRelation.subscribe(() => done());
+    const deleteBtn = fixture.debugElement.queryAll(By.css('button'))[1];
+    deleteBtn.nativeElement.click();
   });
 });
