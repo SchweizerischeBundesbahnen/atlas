@@ -363,7 +363,7 @@
         "LIQUIDATED": "Liquidé",
         "INACTIVE": "Inactif"
       },
-      "RELATION_CONFLICT": "L'organisation commerciale {{sboid}} est déjà liée de {{validFrom}} à {{validTo}} à TU {{number}}."
+      "RELATION_CONFLICT": "L'organisation commerciale {{sboid}} est déjà liée de {{validFrom}} à {{validTo}} à TU {{number}} - {{abbreviation}} - {{businessRegisterName}}."
     },
     "COMPANIES": {
       "COMPANIES": "Company Codes (RICS)",
