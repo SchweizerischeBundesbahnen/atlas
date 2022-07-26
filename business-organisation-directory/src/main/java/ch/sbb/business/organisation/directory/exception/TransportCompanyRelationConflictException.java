@@ -37,14 +37,22 @@ public class TransportCompanyRelationConflictException extends AtlasException {
                              .field(Fields.sboid)
                              .message("TransportCompany {0} already relates to {3} from {1} to {2}")
                              .displayInfo(DisplayInfo.builder()
-                                                     .code("BODI.TRANSPORT_COMPANIES.RELATION_CONFLICT")
+                                                     .code(
+                                                         "BODI.TRANSPORT_COMPANIES.RELATION_CONFLICT")
                                                      .with(TransportCompany.Fields.number,
-                                                         newRelation.getTransportCompany()
-                                                                    .getNumber())
+                                                         relation.getTransportCompany()
+                                                                 .getNumber())
                                                      .with(Fields.validFrom,
                                                          relation.getValidFrom())
                                                      .with(Fields.validTo, relation.getValidTo())
                                                      .with(Fields.sboid, relation.getSboid())
+                                                     .with(TransportCompany.Fields.abbreviation,
+                                                         relation.getTransportCompany()
+                                                                 .getAbbreviation())
+                                                     .with(
+                                                         TransportCompany.Fields.businessRegisterName,
+                                                         relation.getTransportCompany()
+                                                                 .getBusinessRegisterName())
                                                      .build()).build();
   }
 
