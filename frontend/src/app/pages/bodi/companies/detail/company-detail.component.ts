@@ -14,4 +14,14 @@ export class CompanyDetailComponent implements OnInit {
   ngOnInit() {
     this.company = this.dialogData.companyDetail;
   }
+
+  prependHttp(url: string | undefined) {
+    if (!url) {
+      return url;
+    }
+    if (url.startsWith('http')) {
+      return url;
+    }
+    return 'http://' + url;
+  }
 }
