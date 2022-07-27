@@ -122,55 +122,57 @@
     </div>
   </div>
 
-  <app-relation
-    [selectedIndex]="selectedTransportCompanyRelationIndex"
-    [editMode]="editMode"
-    [records]="transportCompanyRelations"
-    [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
-    [editable]="isAdmin()"
-    [tableColumns]="transportCompanyRelationTableColumns"
-    (deleteRelation)="deleteRelation()"
-    (editModeChanged)="editMode = !editMode"
-    (selectedIndexChanged)="selectedTransportCompanyRelationIndex = $event"
-  >
-    <form *ngIf="editMode" class="col-12 d-flex">
-      <form-search-select
-        #searchSelectComponent
-        class="col-6 me-3 mt-3"
-        [formGroup]="form"
-        [controlName]="'businessOrganisation'"
-        [items$]="businessOrganisationSearchResults"
-        [getSelectOption]="selectOption"
-        (searchTrigger)="getBusinessOrganisations($event)"
-        data-cy="bo-search-select"
-      >
-        <mat-label class="font-bold-lg required-indicator">{{
-          'TTFN.BUSINESS_ORGANISATION' | translate
-        }}</mat-label>
-        <div
-          *ngIf="
-            totalCountOfFoundBusinessOrganisations <= pageSizeForBusinessOrganisationSearch ||
-              !searchSelectComponent.isDropdownOpen();
-            else notAllFoundItemsCanBeShowed
-          "
-          class="mat-label-form-field-space-between"
-        ></div>
-        <ng-template #notAllFoundItemsCanBeShowed
-          ><div class="font-regular-sm color-gray-900 mat-label-subtitle-form-field-space-between">
-            {{
-              'FORM.DROPDOWN_SEARCH_RESULT_INFO'
-                | translate
-                  : {
-                      pageSize: pageSizeForBusinessOrganisationSearch,
-                      totalCount: totalCountOfFoundBusinessOrganisations
-                    }
-            }}
-          </div></ng-template
+  <div class="mt-5">
+    <app-relation
+      [selectedIndex]="selectedTransportCompanyRelationIndex"
+      [editMode]="editMode"
+      [records]="transportCompanyRelations"
+      [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
+      [editable]="isAdmin()"
+      [tableColumns]="transportCompanyRelationTableColumns"
+      (deleteRelation)="deleteRelation()"
+      (editModeChanged)="editMode = !editMode"
+      (selectedIndexChanged)="selectedTransportCompanyRelationIndex = $event"
+    >
+      <form *ngIf="editMode" class="col-12 d-flex">
+        <form-search-select
+          #searchSelectComponent
+          class="col-6 me-3 mt-3"
+          [formGroup]="form"
+          [controlName]="'businessOrganisation'"
+          [items$]="businessOrganisationSearchResults"
+          [getSelectOption]="selectOption"
+          (searchTrigger)="getBusinessOrganisations($event)"
+          data-cy="bo-search-select"
         >
-      </form-search-select>
-      <form-date-range class="col-6" [formGroup]="form"></form-date-range>
-    </form>
-  </app-relation>
+          <mat-label class="font-bold-lg required-indicator">{{
+            'TTFN.BUSINESS_ORGANISATION' | translate
+          }}</mat-label>
+          <div
+            *ngIf="
+              totalCountOfFoundBusinessOrganisations <= pageSizeForBusinessOrganisationSearch ||
+                !searchSelectComponent.isDropdownOpen();
+              else notAllFoundItemsCanBeShowed
+            "
+            class="mat-label-form-field-space-between"
+          ></div>
+          <ng-template #notAllFoundItemsCanBeShowed>
+            <div class="font-regular-sm color-gray-900 mat-label-subtitle-form-field-space-between">
+              {{
+                'FORM.DROPDOWN_SEARCH_RESULT_INFO'
+                  | translate
+                    : {
+                        pageSize: pageSizeForBusinessOrganisationSearch,
+                        totalCount: totalCountOfFoundBusinessOrganisations
+                      }
+              }}
+            </div>
+          </ng-template>
+        </form-search-select>
+        <form-date-range class="col-6" [formGroup]="form"></form-date-range>
+      </form>
+    </app-relation>
+  </div>
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
     <button
