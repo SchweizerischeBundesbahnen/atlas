@@ -1,6 +1,6 @@
 # Atlas
 
-This is the main repository for business relevant services for ATLAS.
+This is the repository for business relevant services for ATLAS.
 
 <!-- toc -->
 
