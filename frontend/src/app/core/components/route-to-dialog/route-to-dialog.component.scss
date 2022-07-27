@@ -1,6 +1,6 @@
 @use 'src/styles/variables' as variables;
 
-.route-to-dialog-wrapper {
+.cdk-global-overlay-wrapper {
   overflow: auto;
   height: calc(100% - #{variables.$footerHeight});
   pointer-events: auto !important;

@@ -17,6 +17,9 @@ class matDialogMock {
       close() {
         void 0;
       },
+      componentInstance: {
+        ngOnInit() {},
+      },
     };
   }
 }
@@ -55,31 +58,31 @@ describe('RouteToDialogComponent', () => {
     matDialogOpenCount = 0;
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should open dialog and set ref', () => {
+  it('should open dialog and set ref', () => {
     dataSubject.next({ component: {} });
     expect(routeToDialogService.getDialog()).toBeTruthy();
     expect(routeToDialogService.hasDialog()).toBeTruthy();
   });
 
-  xit('should re-open dialog using ref', () => {
+  it('should re-open dialog using ref', () => {
     dataSubject.next({ component: {} });
     dataSubject.next({ component: {} });
     dataSubject.next({ component: {} });
     expect(matDialogOpenCount).toEqual(1);
   });
 
-  xit('should remove dialog on destroy', () => {
+  it('should remove dialog on destroy', () => {
     dataSubject.next({ component: {} });
     expect(routeToDialogService.hasDialog()).toBeTruthy();
     component.ngOnDestroy();
     expect(routeToDialogService.hasDialog()).toBeFalsy();
   });
 
-  xit('should route unsubscribe on destroy', () => {
+  it('should route unsubscribe on destroy', () => {
     dataSubject.next({ component: {} });
     expect(routeToDialogService.hasDialog()).toBeTruthy();
     component.ngOnDestroy();
