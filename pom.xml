@@ -14,7 +14,7 @@
     <name>Atlas</name>
     <description>ATLAS - SKI Business Application</description>
     <properties>
-        <revision>0.475.0-SNAPSHOT</revision>
+        <revision>0.475.0</revision>
         <java.version>17</java.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
