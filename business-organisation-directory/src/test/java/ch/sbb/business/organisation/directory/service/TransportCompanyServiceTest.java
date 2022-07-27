@@ -2,29 +2,73 @@ package ch.sbb.business.organisation.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRepository;
+import feign.Request;
+import feign.Request.HttpMethod;
+import feign.Response;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-@IntegrationTest
 class TransportCompanyServiceTest {
 
-  @Autowired
-  private TransportCompanyService transportCompanyService;
-  @Autowired
-  private TransportCompanyRepository repository;
+  @Mock
+  private TransportCompanyRepository transportCompanyRepository;
+  @Mock
+  private TransportCompanyClient transportCompanyClient;
+  @Mock
+  private MailClient mailClient;
 
-  @AfterEach
-  void cleanUpDb() {
-    repository.deleteAll();
+  private TransportCompanyService transportCompanyService;
+
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+    transportCompanyService = new TransportCompanyService(transportCompanyClient,
+        transportCompanyRepository, mailClient);
+  }
+
+  @Test
+  void shouldSaveTransportCompaniesAndValidateRelations() {
+    // Given
+    String csv = "ID;Initialen;TU-Nummer;Amtl. Bezeichnung;HR-Name/Körperschaft;Status TU;HR-Nr.;UID;RICS-Code;GO-Nr.;Kommentar;\n";
+    csv += "\"264\";\"(LBBD)\";\"#0696\";\"Luftseilbahn Betten FO - Betten Dorf\";\"Munizipalgemeinde Betten\";\"5\";\"\";\"CHE-114.857.964\";\"\";\"\";\"Gemeindefusion Bettmeralp; Konzession übertragen\";\n";
+
+    when(transportCompanyClient.getTransportCompanies()).thenReturn(
+        Response.builder()
+                .body(csv.getBytes())
+                .request(Request.create(HttpMethod.GET, "http://url.com",
+                    Collections.emptyMap(), null, null, null))
+                .build());
+    when(transportCompanyRepository.findTransportCompaniesWithInvalidRelations()).thenReturn(
+        List.of(
+            TransportCompany.builder()
+                            .id(5L)
+                            .description("Beste Company")
+                            .number("#0001")
+                            .enterpriseId("enterprisige ID")
+                            .transportCompanyStatus(TransportCompanyStatus.OPERATOR)
+                            .build()));
+
+    // When
+    transportCompanyService.saveTransportCompaniesFromBav();
+
+    // Then
+    verify(transportCompanyRepository).saveAll(anyList());
+    verify(mailClient).produceMailNotification(any());
   }
 
   @Test

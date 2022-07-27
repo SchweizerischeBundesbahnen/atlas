@@ -1,7 +1,6 @@
 package ch.sbb.business.organisation.directory.api;
 
 
-import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;

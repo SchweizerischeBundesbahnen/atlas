@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
+import { Sort } from '@angular/material/sort';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-relation',
@@ -8,6 +10,8 @@ import { TableColumn } from '../table/table-column';
   styleUrls: ['./relation.component.scss'],
 })
 export class RelationComponent<RECORD_TYPE> {
+  @ViewChild(MatTable) table!: MatTable<any>;
+
   @Input() records: RECORD_TYPE[] = [];
   @Input() titleTranslationKey = '';
   @Input() editable = false;
@@ -52,7 +56,37 @@ export class RelationComponent<RECORD_TYPE> {
     }
   }
 
-  sortChanged(sortData: any): void {
-    console.log(sortData);
+  sortChanged(sort: Sort): void {
+    const valuePathToSort = this.getValuePathFromColumnName(sort.active);
+    const nestedPath = valuePathToSort.split('.');
+
+    this.records = this.records.sort((a, b) => {
+      let i = 0;
+      while (i < nestedPath.length) {
+        a = (a as any)[nestedPath[i]];
+        b = (b as any)[nestedPath[i]];
+        i++;
+      }
+
+      switch (sort.direction) {
+        case 'desc':
+          return -1 * RelationComponent.compare(a, b);
+        default:
+          return RelationComponent.compare(a, b);
+      }
+    });
+
+    this.table.renderRows();
+  }
+
+  private getValuePathFromColumnName(column: string): string {
+    return this.tableColumns.filter((i) => i.columnDef == column)[0].valuePath!;
+  }
+
+  private static compare(a: any, b: any): number {
+    if (typeof a === 'string' && typeof b === 'string') {
+      return a.localeCompare(b);
+    }
+    return a > b ? 1 : -1;
   }
 }
