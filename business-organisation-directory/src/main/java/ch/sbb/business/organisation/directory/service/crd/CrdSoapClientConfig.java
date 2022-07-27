@@ -78,7 +78,7 @@ public class CrdSoapClientConfig {
                   .build();
   }
 
-  private WebServiceMessageSender createWebServiceMessageSender() throws Exception {
+  private WebServiceMessageSender createWebServiceMessageSender() {
     HttpsUrlConnectionMessageSender webServiceMessageSender = new HttpsUrlConnectionMessageSender();
     webServiceMessageSender.setKeyManagers(createKeyManagerFactory().getKeyManagers());
     webServiceMessageSender.setTrustManagers(createTrustManagerFactory().getTrustManagers());
@@ -86,32 +86,40 @@ public class CrdSoapClientConfig {
     return webServiceMessageSender;
   }
 
-  private KeyManagerFactory createKeyManagerFactory() throws Exception {
-    KeyStore keystore = KeyStore.getInstance("JKS");
-    try (InputStream keyStoreInputStream = config.getKeystore().getInputStream()) {
-      keystore.load(keyStoreInputStream, config.getKeystorePassword().toCharArray());
-    }
+  private KeyManagerFactory createKeyManagerFactory() {
+    try {
+      KeyStore keystore = KeyStore.getInstance("JKS");
+      try (InputStream keyStoreInputStream = config.getKeystore().getInputStream()) {
+        keystore.load(keyStoreInputStream, config.getKeystorePassword().toCharArray());
+      }
 
-    KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(
-        KeyManagerFactory.getDefaultAlgorithm());
-    keyManagerFactory.init(keystore, config.getKeystorePassword().toCharArray());
-    return keyManagerFactory;
+      KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(
+          KeyManagerFactory.getDefaultAlgorithm());
+      keyManagerFactory.init(keystore, config.getKeystorePassword().toCharArray());
+      return keyManagerFactory;
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
   }
 
-  private TrustManagerFactory createTrustManagerFactory() throws Exception {
-    KeyStore truststore = KeyStore.getInstance("JKS");
-    try (InputStream trustStoreInputStream = config.getTruststore().getInputStream()) {
-      truststore.load(trustStoreInputStream, config.getTruststorePassword().toCharArray());
-    }
+  private TrustManagerFactory createTrustManagerFactory() {
+    try {
+      KeyStore truststore = KeyStore.getInstance("JKS");
+      try (InputStream trustStoreInputStream = config.getTruststore().getInputStream()) {
+        truststore.load(trustStoreInputStream, config.getTruststorePassword().toCharArray());
+      }
 
-    TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
-        TrustManagerFactory.getDefaultAlgorithm());
-    trustManagerFactory.init(truststore);
-    return trustManagerFactory;
+      TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+          TrustManagerFactory.getDefaultAlgorithm());
+      trustManagerFactory.init(truststore);
+      return trustManagerFactory;
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   @Bean
-  public CrdHeaders crdHeaders(){
+  public CrdHeaders crdHeaders() {
     return new CrdHeaders(config);
   }
 
