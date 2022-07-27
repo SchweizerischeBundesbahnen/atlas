@@ -62,13 +62,15 @@ describe('Transport Company', () => {
   });
 
   it('Step-7: add Relation with Business Organisation', () => {
+    cy.get(DataCy.TC_ADD_RELATION_BTN).click();
+
     CommonUtils.typeAndSelectItemFromDropDown(
       `${DataCy.BUSINESS_ORGANISATION_SEARCH_SELECT} input`,
       String(organisation.descriptionDe)
     );
     CommonUtils.getClearType(DataCy.VALID_FROM, '01.01.2020', true);
     CommonUtils.getClearType(DataCy.VALID_TO, '01.01.2021', true);
-    BodiUtils.interceptGetTransportCompanyRelations(DataCy.TC_ADD_RELATION_BTN);
+    BodiUtils.interceptGetTransportCompanyRelations(DataCy.SAVE_ITEM);
   });
 
   it('Step-8: remove created Relation', () => {
