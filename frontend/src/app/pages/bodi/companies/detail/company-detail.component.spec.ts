@@ -35,6 +35,17 @@ describe('CompanyDetailComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should prepare url for link opening', () => {
+    expect(component.prependHttp(undefined)).toBeUndefined();
+    expect(component.prependHttp('www.betonplus-al.com')).toBe('http://www.betonplus-al.com');
+    expect(component.prependHttp('http://www.betonplus-al.com')).toBe(
+      'http://www.betonplus-al.com'
+    );
+    expect(component.prependHttp('https://www.betonplus-al.com')).toBe(
+      'https://www.betonplus-al.com'
+    );
+  });
 });
 
 function setupTestBed(data: { companyDetail: string | Company }) {
