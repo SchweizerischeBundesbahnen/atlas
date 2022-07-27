@@ -16,24 +16,4 @@ public class KafkaTruststorePreparationTest {
     // Then
     assertThat(System.getProperty("KAFKA_TRUSTSTORE_LOCATION")).isNotEmpty();
   }
-
-  @Test
-  void shouldPrepareTruststoreIntegration() {
-    // When
-    System.setProperty("SPRING_PROFILES_ACTIVE", "int");
-    KafkaTruststorePreparation.setupTruststore();
-
-    // Then
-    assertThat(System.getProperty("KAFKA_TRUSTSTORE_LOCATION")).isNotEmpty();
-  }
-
-  @Test
-  void shouldPrepareTruststoreProduction() {
-    // When
-    System.setProperty("SPRING_PROFILES_ACTIVE", "prod");
-    KafkaTruststorePreparation.setupTruststore();
-
-    // Then
-    assertThat(System.getProperty("KAFKA_TRUSTSTORE_LOCATION")).isNotEmpty();
-  }
 }
