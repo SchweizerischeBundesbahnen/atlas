@@ -11,12 +11,14 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { Role } from '../../../../core/auth/role';
-import { TableColumn } from '../../../../core/components/table/table-column';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import moment, { Moment } from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { Language } from '../../../../core/components/language-switcher/language';
+import { TableColumn } from '../../../../core/components/table/table-column';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
 
 type abbreviationType = 'abbreviationDe' | 'abbreviationFr' | 'abbreviationIt';
 type descriptionType = 'descriptionDe' | 'descriptionFr' | 'descriptionIt';
@@ -31,12 +33,17 @@ export class TransportCompanyDetailComponent implements OnInit {
     private readonly businessOrganisationsService: BusinessOrganisationsService,
     private readonly transportCompanyRelationsService: TransportCompanyRelationsService,
     private readonly authService: AuthService,
-    private readonly translateService: TranslateService
+    private readonly translateService: TranslateService,
+    private readonly dialogService: DialogService,
+    private readonly notificationService: NotificationService
   ) {}
 
   transportCompany!: TransportCompany;
   transportCompanyRelations!: TransportCompanyBoRelation[];
   businessOrganisationSearchResults: Observable<BusinessOrganisation[]> = of([]);
+  selectedTransportCompanyRelationIndex = -1;
+
+  editMode = false;
 
   totalCountOfFoundBusinessOrganisations = 0;
   readonly pageSizeForBusinessOrganisationSearch = 100;
@@ -44,25 +51,34 @@ export class TransportCompanyDetailComponent implements OnInit {
   readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] = [
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.SAID',
-      value: 'said',
+      valuePath: 'businessOrganisation.said',
+      columnDef: 'said',
     },
-    { headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER', value: 'organisationNumber' },
+    {
+      headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',
+      valuePath: 'businessOrganisation.organisationNumber',
+      columnDef: 'organisationNumber',
+    },
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
-      value: this.getCurrentLanguageKey('abbreviation'),
+      valuePath: `businessOrganisation.${this.getCurrentLanguageKey('abbreviation')}`,
+      columnDef: 'abbreviation',
     },
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
-      value: this.getCurrentLanguageKey('description'),
+      valuePath: `businessOrganisation.${this.getCurrentLanguageKey('description')}`,
+      columnDef: 'description',
     },
     {
       headerTitle: 'COMMON.VALID_FROM',
       value: 'validFrom',
+      columnDef: 'validFrom',
       formatAsDate: true,
     },
     {
       headerTitle: 'COMMON.VALID_TO',
       value: 'validTo',
+      columnDef: 'validTo',
       formatAsDate: true,
     },
   ];
@@ -79,7 +95,9 @@ export class TransportCompanyDetailComponent implements OnInit {
   );
 
   readonly selectOption = (item: BusinessOrganisation) => {
-    return `${item.organisationNumber} (${item[this.getCurrentLanguageKey('abbreviation')]})`;
+    return `${item.organisationNumber} - ${item[this.getCurrentLanguageKey('abbreviation')]} - ${
+      item[this.getCurrentLanguageKey('description')]
+    }`;
   };
 
   ngOnInit() {
@@ -89,6 +107,29 @@ export class TransportCompanyDetailComponent implements OnInit {
 
   isAdmin(): boolean {
     return this.authService.hasRole(Role.BoAdmin);
+  }
+
+  leaveEditMode(): void {
+    if (!this.form.dirty) {
+      this.cancelEdit();
+      return;
+    }
+
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.DISCARD_CHANGES_TITLE',
+        message: 'DIALOG.LEAVE_SITE',
+      })
+      .subscribe((result) => {
+        if (result) {
+          this.cancelEdit();
+        }
+      });
+  }
+
+  private cancelEdit(): void {
+    this.editMode = false;
+    this.form.reset();
   }
 
   getBusinessOrganisations(searchString: string): void {
@@ -120,18 +161,39 @@ export class TransportCompanyDetailComponent implements OnInit {
         validFrom: moment(this.form.value.validFrom).toDate(),
         validTo: moment(this.form.value.validTo).toDate(),
       })
-      .pipe(switchMap(() => this.reloadRelations()))
+      .pipe(
+        switchMap((savedRelation) =>
+          this.reloadRelations().pipe(
+            tap(() => {
+              this.editMode = false;
+              this.form.reset();
+              this.selectedTransportCompanyRelationIndex = this.transportCompanyRelations.findIndex(
+                (item) => item.id === savedRelation.id
+              );
+              this.notificationService.success('RELATION.ADD_SUCCESS_MSG');
+            })
+          )
+        )
+      )
       .subscribe();
   }
 
-  deleteRelation(deleteEvent: {
-    record: TransportCompanyBoRelation;
-    callbackFn: () => void;
-  }): void {
+  deleteRelation(): void {
     this.transportCompanyRelationsService
-      .deleteTransportCompanyRelation(deleteEvent.record.id!)
-      .pipe(switchMap(() => this.reloadRelations()))
-      .subscribe(() => deleteEvent.callbackFn());
+      .deleteTransportCompanyRelation(
+        this.transportCompanyRelations[this.selectedTransportCompanyRelationIndex].id!
+      )
+      .pipe(
+        switchMap(() =>
+          this.reloadRelations().pipe(
+            tap(() => {
+              this.selectedTransportCompanyRelationIndex = -1;
+              this.notificationService.success('RELATION.DELETE_SUCCESS_MSG');
+            })
+          )
+        )
+      )
+      .subscribe();
   }
 
   private reloadRelations(): Observable<TransportCompanyBoRelation[]> {

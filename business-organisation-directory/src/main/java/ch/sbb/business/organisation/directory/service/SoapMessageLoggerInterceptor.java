@@ -43,8 +43,8 @@ public class SoapMessageLoggerInterceptor extends ClientInterceptorAdapter {
   public static class SoapMessagePrettyPrinter {
 
     public static void log(WebServiceMessage message) {
-      if (message instanceof SaajSoapMessage) {
-        SOAPMessage soapMessage = ((SaajSoapMessage) message).getSaajMessage();
+      if (message instanceof SaajSoapMessage saajSoapMessage) {
+        SOAPMessage soapMessage = saajSoapMessage.getSaajMessage();
 
         try {
           Source source = soapMessage.getSOAPPart().getContent();

@@ -375,5 +375,11 @@
       "BASIC_DATA": "Dettagli company",
       "ID_NAN_ERROR": "L'ID di una company di trasporto deve essere un numero"
     }
+  },
+  "RELATION": {
+    "ADD": "Aggiungere un collegamento",
+    "DELETE": "Eliminare il collegamento",
+    "ADD_SUCCESS_MSG": "Il collegamento desiderato è stato aggiunto.",
+    "DELETE_SUCCESS_MSG": "L'eliminazione del collegamento selezionato è avvenuta con successo."
   }
 }
