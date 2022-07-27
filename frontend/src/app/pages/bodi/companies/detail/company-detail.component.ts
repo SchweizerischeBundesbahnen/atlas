@@ -19,9 +19,10 @@ export class CompanyDetailComponent implements OnInit {
     if (!url) {
       return url;
     }
-    if (url.startsWith('http')) {
-      return url;
+    const trimmedUrl = url.trim();
+    if (trimmedUrl.startsWith('http')) {
+      return trimmedUrl;
     }
-    return 'http://' + url;
+    return 'http://' + trimmedUrl;
   }
 }
