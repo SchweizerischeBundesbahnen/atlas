@@ -13,7 +13,7 @@
     [dataSource]="tableData"
     matSort
     (matSortChange)="sortData($event)"
-    [matSortActive]="tableColumns[0].value"
+    [matSortActive]="tableColumns[0].value!"
     matSortDirection="asc"
   >
     <ng-container *ngFor="let column of tableColumns">

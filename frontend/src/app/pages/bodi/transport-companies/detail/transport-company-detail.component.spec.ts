@@ -23,13 +23,41 @@ const transportCompany: TransportCompany = {
 const transportCompanyRelations: TransportCompanyBoRelation[] = [
   {
     id: 1,
-    descriptionDe: 'Schweizerische Bundesbahnen',
-    organisationNumber: 50,
+    businessOrganisation: {
+      said: '100',
+      organisationNumber: 50,
+      abbreviationDe: 'abbreviation',
+      abbreviationIt: 'abbreviation',
+      abbreviationEn: 'abbreviation',
+      abbreviationFr: 'abbreviation',
+      descriptionDe: 'description',
+      descriptionEn: 'description',
+      descriptionFr: 'description',
+      descriptionIt: 'description',
+      validFrom: new Date(),
+      validTo: new Date(),
+    },
+    validFrom: new Date(),
+    validTo: new Date(),
   },
   {
     id: 2,
-    descriptionDe: 'BLS',
-    organisationNumber: 77,
+    businessOrganisation: {
+      said: '101',
+      organisationNumber: 51,
+      abbreviationDe: 'abbreviation',
+      abbreviationIt: 'abbreviation',
+      abbreviationEn: 'abbreviation',
+      abbreviationFr: 'abbreviation',
+      descriptionDe: 'description',
+      descriptionEn: 'description',
+      descriptionFr: 'description',
+      descriptionIt: 'description',
+      validFrom: new Date(),
+      validTo: new Date(),
+    },
+    validFrom: new Date(),
+    validTo: new Date(),
   },
 ];
 
@@ -56,18 +84,7 @@ describe('TransportCompanyDetailComponent', () => {
       id: 1234,
       description: 'SBB',
     });
-    expect(component.transportCompanyRelations).toEqual([
-      {
-        id: 1,
-        descriptionDe: 'Schweizerische Bundesbahnen',
-        organisationNumber: 50,
-      },
-      {
-        id: 2,
-        descriptionDe: 'BLS',
-        organisationNumber: 77,
-      },
-    ]);
+    expect(component.transportCompanyRelations).toEqual(transportCompanyRelations);
   });
 
   it('test selectOption function', () => {
@@ -75,8 +92,9 @@ describe('TransportCompanyDetailComponent', () => {
       component.selectOption({
         organisationNumber: 5,
         abbreviationDe: 'testAbbreviation',
+        descriptionDe: 'testDescription',
       } as BusinessOrganisation)
-    ).toBe('5 (testAbbreviation)');
+    ).toBe('5 - testAbbreviation - testDescription');
   });
 
   it('should call getAllBusinessOrganisations with correct params', () => {
@@ -92,15 +110,20 @@ describe('TransportCompanyDetailComponent', () => {
   });
 
   it('should call createTransportCompanyRelation and reloadRelations', () => {
+    component.editMode = true;
+
     component.form.setValue({
       businessOrganisation: { sboid: 'ch:1:sboid:100500' } as BusinessOrganisation,
       validFrom: moment('2020-05-05'),
       validTo: moment('2021-05-05'),
     });
 
+    expect(component.form.valid).toBeTrue();
+
     component.createRelation();
 
-    expect(component.form.touched).toBeTrue();
+    expect(component.form.untouched).toBeTrue();
+    expect((component.editMode = false));
     expect(
       transportCompanyRelationsServiceSpy.createTransportCompanyRelation
     ).toHaveBeenCalledOnceWith({
@@ -114,15 +137,12 @@ describe('TransportCompanyDetailComponent', () => {
     ).toHaveBeenCalledOnceWith(1234);
   });
 
-  it('should call deleteTransportCompanyRelation and reload relations', (done) => {
-    component.deleteRelation({
-      record: { id: 5 },
-      callbackFn: () => done(),
-    });
-
+  it('should call deleteTransportCompanyRelation and reload relations', () => {
+    component.selectedTransportCompanyRelationIndex = 0;
+    component.deleteRelation();
     expect(
       transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation
-    ).toHaveBeenCalledOnceWith(5);
+    ).toHaveBeenCalledOnceWith(1);
     expect(
       transportCompanyRelationsServiceSpy.getTransportCompanyRelations
     ).toHaveBeenCalledOnceWith(1234);
