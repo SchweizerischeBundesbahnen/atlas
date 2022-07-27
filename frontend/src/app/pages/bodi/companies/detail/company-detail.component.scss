@@ -48,3 +48,10 @@ svg path {
 a {
   padding-left: 0.3rem;
 }
+
+.isDisabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.5;
+  text-decoration: none;
+}

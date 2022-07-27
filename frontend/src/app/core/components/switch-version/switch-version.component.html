@@ -6,7 +6,7 @@
     </th>
     <ng-container *matCellDef="let value">
       <td mat-cell *ngIf="!value.placeholder">
-        {{ format(value[column.value], column) }}
+        {{ format(value[column.value!], column) }}
       </td>
     </ng-container>
   </ng-container>

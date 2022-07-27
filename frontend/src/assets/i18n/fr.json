@@ -375,5 +375,11 @@
       "BASIC_DATA": "Données relatives à la Company",
       "ID_NAN_ERROR": "L'identifiant d'un company de transport doit être un nombre"
     }
+  },
+  "RELATION": {
+    "ADD": "Ajouter un lien",
+    "DELETE": "Supprimer le lien",
+    "ADD_SUCCESS_MSG": "Le lien souhaité a été ajouté.",
+    "DELETE_SUCCESS_MSG": "La suppression du raccourci sélectionné a réussi."
   }
 }

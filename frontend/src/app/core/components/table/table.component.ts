@@ -40,7 +40,7 @@ export class TableComponent<DATATYPE> {
   constructor(private dateService: DateService, private translatePipe: TranslatePipe) {}
 
   getColumnValues(): string[] {
-    return this.tableColumns.map((i) => i.value);
+    return this.tableColumns.map((i) => i.value as string);
   }
 
   edit(row: DATATYPE) {

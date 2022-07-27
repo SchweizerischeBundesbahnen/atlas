@@ -122,16 +122,19 @@
     </div>
   </div>
 
-  <div class="mt-3">
+  <div class="mt-5">
     <app-relation
+      [selectedIndex]="selectedTransportCompanyRelationIndex"
+      [editMode]="editMode"
       [records]="transportCompanyRelations"
       [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
       [editable]="isAdmin()"
       [tableColumns]="transportCompanyRelationTableColumns"
-      (createRelation)="createRelation()"
-      (deleteRelation)="deleteRelation($event)"
+      (deleteRelation)="deleteRelation()"
+      (editModeChanged)="editMode = !editMode"
+      (selectedIndexChanged)="selectedTransportCompanyRelationIndex = $event"
     >
-      <form *ngIf="isAdmin()" class="col-12 d-flex">
+      <form *ngIf="editMode" class="col-12 d-flex">
         <form-search-select
           #searchSelectComponent
           class="col-6 me-3 mt-3"
@@ -153,10 +156,8 @@
             "
             class="mat-label-form-field-space-between"
           ></div>
-          <ng-template #notAllFoundItemsCanBeShowed
-            ><div
-              class="font-regular-sm color-gray-900 mat-label-subtitle-form-field-space-between"
-            >
+          <ng-template #notAllFoundItemsCanBeShowed>
+            <div class="font-regular-sm color-gray-900 mat-label-subtitle-form-field-space-between">
               {{
                 'FORM.DROPDOWN_SEARCH_RESULT_INFO'
                   | translate
@@ -165,8 +166,8 @@
                         totalCount: totalCountOfFoundBusinessOrganisations
                       }
               }}
-            </div></ng-template
-          >
+            </div>
+          </ng-template>
         </form-search-select>
         <form-date-range class="col-6" [formGroup]="form"></form-date-range>
       </form>
@@ -175,11 +176,27 @@
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
     <button
+      *ngIf="!editMode; else editModeButtons"
       class="atlas-primary-btn footer-btn"
       [mat-dialog-close]="true"
       data-cy="back-to-overview"
     >
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
+
+    <ng-template #editModeButtons>
+      <button class="atlas-primary-btn footer-btn" (click)="leaveEditMode()" data-cy="cancel">
+        {{ 'COMMON.CANCEL' | translate }}
+      </button>
+      <button
+        class="atlas-primary-btn footer-btn ms-3"
+        data-cy="save-item"
+        type="submit"
+        (click)="createRelation()"
+        [disabled]="!form.dirty"
+      >
+        {{ 'COMMON.SAVE' | translate }}
+      </button>
+    </ng-template>
   </div>
 </div>
