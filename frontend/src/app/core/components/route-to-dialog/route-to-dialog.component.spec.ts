@@ -18,7 +18,9 @@ class matDialogMock {
         void 0;
       },
       componentInstance: {
-        ngOnInit() {},
+        ngOnInit() {
+          // Nothing to do here
+        },
       },
     };
   }
