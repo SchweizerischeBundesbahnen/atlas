@@ -17,12 +17,11 @@ export class RelationComponent<RECORD_TYPE> {
   @Input() editable = false;
   @Input() tableColumns!: TableColumn<RECORD_TYPE>[];
   @Input() editMode = false;
+  @Input() selectedIndex = -1;
 
   @Output() deleteRelation = new EventEmitter<void>();
   @Output() editModeChanged = new EventEmitter<void>();
   @Output() selectedIndexChanged = new EventEmitter<number>();
-
-  @Input() selectedIndex = -1;
 
   columnValues(): string[] {
     return this.tableColumns.map((item) => item.columnDef!);
