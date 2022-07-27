@@ -62,7 +62,12 @@
       </div>
       <mat-form-field>
         <input matInput [value]="company.url" data-cy="url" disabled />
-        <a matSuffix target="_blank" [attr.href]="company.url">
+        <a
+          matSuffix
+          target="_blank"
+          [attr.href]="prependHttp(company.url)"
+          [ngClass]="{ isDisabled: !company.url }"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="18"

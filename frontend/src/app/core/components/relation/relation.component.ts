@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { TableColumn } from '../table/table-column';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DateService } from '../../date/date.service';
+import { TableColumn } from '../table/table-column';
+import { Sort } from '@angular/material/sort';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-relation',
@@ -8,22 +10,39 @@ import { DateService } from '../../date/date.service';
   styleUrls: ['./relation.component.scss'],
 })
 export class RelationComponent<RECORD_TYPE> {
+  @ViewChild(MatTable) table!: MatTable<any>;
+
   @Input() records: RECORD_TYPE[] = [];
   @Input() titleTranslationKey = '';
   @Input() editable = false;
-  @Input() tableColumns: TableColumn<RECORD_TYPE>[] = [];
+  @Input() tableColumns!: TableColumn<RECORD_TYPE>[];
+  @Input() editMode = false;
+  @Input() selectedIndex = -1;
 
-  @Output() createRelation = new EventEmitter<void>();
-  @Output() deleteRelation = new EventEmitter<{ record: RECORD_TYPE; callbackFn: () => void }>();
-
-  private selectedIndex = 0;
+  @Output() deleteRelation = new EventEmitter<void>();
+  @Output() editModeChanged = new EventEmitter<void>();
+  @Output() selectedIndexChanged = new EventEmitter<number>();
 
   columnValues(): string[] {
-    return this.tableColumns.map((item) => item.value);
+    return this.tableColumns.map((item) => item.columnDef!);
   }
 
   formatDate(date: Date): string {
     return DateService.getDateFormatted(date);
+  }
+
+  getValue(row: RECORD_TYPE, column: TableColumn<RECORD_TYPE>): string | Date | number {
+    if (column.formatAsDate) {
+      return this.formatDate(
+        this.readValueFromObject(row, column.value ?? column.valuePath!) as Date
+      );
+    }
+    return this.readValueFromObject(row, column.value ?? column.valuePath!);
+  }
+
+  private readValueFromObject(obj: RECORD_TYPE, path: string): string | Date | number {
+    const objectPath = path.split('.');
+    return objectPath.reduce((prev, curr) => prev[curr], obj as any);
   }
 
   isRowSelected(row: RECORD_TYPE): boolean {
@@ -32,20 +51,41 @@ export class RelationComponent<RECORD_TYPE> {
 
   selectRecord(record: RECORD_TYPE): void {
     if (this.editable) {
-      this.selectedIndex = this.records.indexOf(record);
+      this.selectedIndexChanged.emit(this.records.indexOf(record));
     }
   }
 
-  delete(): void {
-    if (this.records.length === 0) return;
+  sortChanged(sort: Sort): void {
+    const valuePathToSort = this.getValuePathFromColumnName(sort.active);
+    const nestedPath = valuePathToSort.split('.');
 
-    this.deleteRelation.emit({
-      record: this.records[this.selectedIndex],
-      callbackFn: () => (this.selectedIndex = 0),
+    this.records = this.records.sort((a, b) => {
+      let i = 0;
+      while (i < nestedPath.length) {
+        a = (a as any)[nestedPath[i]];
+        b = (b as any)[nestedPath[i]];
+        i++;
+      }
+
+      switch (sort.direction) {
+        case 'desc':
+          return -1 * RelationComponent.compare(a, b);
+        default:
+          return RelationComponent.compare(a, b);
+      }
     });
+
+    this.table.renderRows();
   }
 
-  create(): void {
-    this.createRelation.emit();
+  private getValuePathFromColumnName(column: string): string {
+    return this.tableColumns.filter((i) => i.columnDef == column)[0].valuePath!;
+  }
+
+  private static compare(a: any, b: any): number {
+    if (typeof a === 'string' && typeof b === 'string') {
+      return a.localeCompare(b);
+    }
+    return a > b ? 1 : -1;
   }
 }

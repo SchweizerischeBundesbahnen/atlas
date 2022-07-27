@@ -19,7 +19,7 @@ public interface TransportCompanyRelationApiV1 {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  TransportCompanyRelationModel createTransportCompanyRelation(@RequestBody @Valid TransportCompanyRelationModel model);
+  TransportCompanyBoRelationModel createTransportCompanyRelation(@RequestBody @Valid TransportCompanyRelationModel model);
 
   @GetMapping("{transportCompanyId}")
   List<TransportCompanyBoRelationModel> getTransportCompanyRelations(@PathVariable Long transportCompanyId);
