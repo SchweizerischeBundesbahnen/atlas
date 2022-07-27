@@ -72,12 +72,14 @@ export class TransportCompanyDetailComponent implements OnInit {
     {
       headerTitle: 'COMMON.VALID_FROM',
       value: 'validFrom',
+      valuePath: 'validFrom',
       columnDef: 'validFrom',
       formatAsDate: true,
     },
     {
       headerTitle: 'COMMON.VALID_TO',
       value: 'validTo',
+      valuePath: 'validTo',
       columnDef: 'validTo',
       formatAsDate: true,
     },
