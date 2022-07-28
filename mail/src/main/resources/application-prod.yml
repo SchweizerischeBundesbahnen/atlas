@@ -23,5 +23,5 @@ spring:
           config: org.apache.kafka.common.security.scram.ScramLoginModule required username="atlas.kafka.user" password="${KAFKA_SCRAM_PASSWORD}";
     atlas:
       mail:
-        topic: atlas.int.mail
+        topic: atlas.prod.mail
         groupId: atlas.kafka.user
