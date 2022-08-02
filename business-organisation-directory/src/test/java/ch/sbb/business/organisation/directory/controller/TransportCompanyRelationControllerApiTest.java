@@ -79,13 +79,9 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
         TransportCompanyRelation.builder()
                                 .sboid("ch:1:sboid:1000000")
                                 .transportCompany(
-                                    TransportCompany.builder()
-                                                    .id(5L)
-                                                    .build())
-                                .validFrom(
-                                    LocalDate.of(2020, 1, 1))
-                                .validTo(
-                                    LocalDate.of(2021, 1, 1))
+                                    TransportCompany.builder().id(5L).build())
+                                .validFrom(LocalDate.of(2020, 1, 1))
+                                .validTo(LocalDate.of(2021, 1, 1))
                                 .build());
 
     mvc.perform(delete("/v1/transport-company-relations/" + savedRelationEntity.getId()))
@@ -101,25 +97,17 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
         TransportCompanyRelation.builder()
                                 .sboid("ch:1:sboid:1000000")
                                 .transportCompany(
-                                    TransportCompany.builder()
-                                                    .id(5L)
-                                                    .build())
-                                .validFrom(
-                                    LocalDate.of(2020, 1, 1))
-                                .validTo(
-                                    LocalDate.of(2021, 1, 1))
+                                    TransportCompany.builder().id(5L).build())
+                                .validFrom(LocalDate.of(2020, 1, 1))
+                                .validTo(LocalDate.of(2021, 1, 1))
                                 .build());
     transportCompanyRelationRepository.save(
         TransportCompanyRelation.builder()
                                 .sboid("ch:1:sboid:1000000")
                                 .transportCompany(
-                                    TransportCompany.builder()
-                                                    .id(6L)
-                                                    .build())
-                                .validFrom(
-                                    LocalDate.of(2023, 1, 1))
-                                .validTo(
-                                    LocalDate.of(2024, 1, 1))
+                                    TransportCompany.builder().id(6L).build())
+                                .validFrom(LocalDate.of(2023, 1, 1))
+                                .validTo(LocalDate.of(2024, 1, 1))
                                 .build());
 
     mvc.perform(get("/v1/transport-company-relations/5"))

@@ -14,8 +14,9 @@ This is the repository for business relevant services for ATLAS.
   * [Running Python scripts](#running-python-scripts)
 - [Structure](#structure)
   * [APIM-configuration](#apim-configuration)
-  * [charts](#charts)
+  * [Charts](#charts)
   * [Gateway](#gateway)
+  * [Kafka](#kafka)
   * [Line-directory](#line-directory)
   * [Business-organisation-directory](#business-organisation-directory)
   * [Mail Service](#mail-service)
@@ -69,7 +70,7 @@ It's applications share the following architectural goal:
 ## Development
 ### Run locally
 
-- For an easy local development setup, we provide a `docker-compose.yml`, which can be used to start dependent infrastructure for atlas.
+- For an easy local development setup, we provide a [docker-compose.yml](docker-compose.yml), which can be used to start dependent infrastructure for atlas.
 - Make sure your needed business services are up
 - Start the gateway (the frontend Angular application uses it as a target for API calls)
 
@@ -99,7 +100,6 @@ a Jenkins pipiline is executed. The modules are versionied and deployed with the
 
 See the original file: [ATLAS-Monorepo drawio](https://confluence.sbb.ch/display/~e539196/ATLAS+Mono+Repo+migration)
 
-
 ### Running Python scripts
 
 The backend services include python scripts, which were used to generate SQL-Insert-Scripts from `xlsx` or `csv` files.
@@ -115,7 +115,7 @@ Module, which will be published to APIM and served on the SBB developer portal.
 
 The module combines the APIs from services into one composed API.
 
-### charts
+### Charts
 
 Contains helm charts for the entire ATLAS application. 
 We use one helm chart with a flat structure to publish multiple `Deployments`, `Services` and `Routes`.
@@ -136,7 +136,7 @@ See [Gateway documentation](gateway/README.md);
 
 ### Kafka
 
-This folder is used to store `json` files used to create topics using kafka-automation with estaCloudPipeline.
+This folder [kafka](kafka) is used to store `json` files that create topics using kafka-automation with estaCloudPipeline.
 More information can be found in the [kafka documentation](documentation/kafka.md).
 
 ### Line-directory
