@@ -33,8 +33,6 @@ lineDirectory:
   port: 8082
 
 businessOrganisationDirectory:
-  # Deploy BusinessOrganisations
-  enabled: true
   # Name of the Dockerimge in bin.sbb.ch/dockerrepo
   name: "business-organisation-directory"
   # LIVENESS_PROBE
