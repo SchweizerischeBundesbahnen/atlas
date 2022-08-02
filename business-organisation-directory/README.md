@@ -13,8 +13,11 @@
   * [Production](#production)
   * [Project Infrastructure](#project-infrastructure)
 - [Development](#development-1)
+- [CRD Certificate handling](#crd-certificate-handling)
+  * [From PEM to jks](#from-pem-to-jks)
   * [Tech Stack](#tech-stack)
   * [Test RESTful Web services](#test-restful-web-services)
+  * [Proxy configuration to load Transport Companies from within SBB Network](#proxy-configuration-to-load-transport-companies-from-within-sbb-network)
 
 <!-- tocstop -->
 

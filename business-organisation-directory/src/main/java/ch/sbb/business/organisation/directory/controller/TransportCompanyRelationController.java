@@ -49,8 +49,7 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
   public List<TransportCompanyBoRelationModel> getTransportCompanyRelations(
       Long transportCompanyId) {
 
-    TransportCompany transportCompany = transportCompanyService.findById(
-                                                                   transportCompanyId)
+    TransportCompany transportCompany = transportCompanyService.findById(transportCompanyId)
                                                                .orElseThrow(
                                                                    () -> new TransportCompanyNotFoundException(
                                                                        transportCompanyId));
@@ -65,8 +64,8 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
                                  return TransportCompanyBoRelationModel.toModel(
                                      businessOrganisation,
                                      transportCompanyRelation);
-                               }).collect(
-            Collectors.toList());
+                               })
+                           .collect(Collectors.toList());
   }
 
   @Override

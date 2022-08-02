@@ -8,6 +8,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 - [Development](#development)
   * [Node.js](#nodejs)
   * [Angular update](#angular-update)
+  * [Patch all used packages](#patch-all-used-packages)
   * [Cypress E2E](#cypress-e2e)
     + [Run cypress test locally](#run-cypress-test-locally)
     + [Cypress E2E CI-Jenkins](#cypress-e2e-ci-jenkins)
