@@ -49,7 +49,7 @@ class TransportCompanyServiceTest {
 
     when(transportCompanyClient.getTransportCompanies()).thenReturn(
         Response.builder()
-                .body(csv.getBytes())
+                .body(csv.getBytes(StandardCharsets.UTF_8))
                 .request(Request.create(HttpMethod.GET, "http://url.com",
                     Collections.emptyMap(), null, null, null))
                 .build());
