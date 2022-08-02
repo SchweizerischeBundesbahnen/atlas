@@ -28,4 +28,4 @@ logging:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
 mail:
   receiver:
-    tu-relations-report: didok@sbb.ch
+    tu-relations-report: atlas@sbb.ch
