@@ -22,12 +22,11 @@ public class CompanyController implements CompanyApiV1 {
 
   @Override
   public Container<CompanyModel> getCompanies(Pageable pageable, List<String> searchCriteria) {
-    Page<Company> companies = companyService.getCompanies(CompanySearchRestrictions.builder()
-                                                                                   .searchCriterias(
-                                                                                       searchCriteria)
-                                                                                   .pageable(
-                                                                                       pageable)
-                                                                                   .build());
+    Page<Company> companies = companyService.getCompanies(
+        CompanySearchRestrictions.builder()
+                                 .searchCriterias(searchCriteria)
+                                 .pageable(pageable)
+                                 .build());
     return Container.<CompanyModel>builder()
                     .objects(companies.stream()
                                       .map(CompanyModel::fromEntity)

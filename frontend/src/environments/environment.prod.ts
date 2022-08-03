@@ -33,7 +33,6 @@ const authConfig: AuthConfig = {
 
 export const environment: Environment = {
   production: process.env.PRODUCTION !== 'false',
-  pageBodiEnabled: process.env.PAGE_BODI_ENABLED !== 'false',
   label: process.env.ENVIRONMENT_LABEL!,
   appVersion: process.env.APP_VERSION!,
   atlasApiUrl: process.env.ATLAS_API_URL!,

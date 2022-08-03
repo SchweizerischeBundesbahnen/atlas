@@ -43,10 +43,15 @@ public class Company {
   private String countryCodeIso;
 
   private boolean passengerFlag;
+
   private boolean freightFlag;
+
   private boolean infrastructureFlag;
+
   private boolean otherCompanyFlag;
+
   private boolean neEntityFlag;
+
   private boolean ceEntityFlag;
 
   @Column(columnDefinition = "TIMESTAMP")
