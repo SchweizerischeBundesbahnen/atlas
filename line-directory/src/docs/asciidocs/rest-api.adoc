@@ -25,6 +25,9 @@
 |Build-Time| {buildTime}
 |=================================
 
+=== Release Notes
+include::../release-notes.adoc[]
+
 = Line
 
 == Get Line Overview - Successfully
