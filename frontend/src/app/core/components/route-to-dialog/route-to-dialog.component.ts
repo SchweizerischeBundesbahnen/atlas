@@ -4,7 +4,6 @@ import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RouteToDialogService } from './route-to-dialog.service';
-import { DialogReference } from './dialog-reference';
 
 const DIALOG_WIDTH = '1440px';
 
