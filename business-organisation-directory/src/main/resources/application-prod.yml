@@ -1,10 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://business-organisation-directory-int.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/business_organisation_directory
+    url: jdbc:postgresql://business-organisation-directory-prod.czdfgxj0x1zx.eu-central-1.rds.amazonaws.com:5432/business_organisation_directory
     username: ${DB_USER}
     password: ${DB_PWD}
   kafka:
-    bootstrap-servers: inte01.kafka.sbb.ch:9095
+    bootstrap-servers: prod01.kafka.sbb.ch:9095
     ssl:
       trust-store-location: ${KAFKA_TRUSTSTORE_LOCATION}
       trust-store-password: ${KAFKA_TRUSTSTORE_PASSWORD}
@@ -18,11 +18,14 @@ spring:
           config: org.apache.kafka.common.security.scram.ScramLoginModule required username="atlas.kafka.user" password="${KAFKA_SCRAM_PASSWORD}";
     atlas:
       mail:
-        topic: atlas.int.mail
+        topic: atlas.prod.mail
         groupId: atlas.kafka.user
 auth:
   audience:
-    service-name: 733b361e-a067-4882-bb00-6bbaf36a007f
+    service-name: f3cdcb3e-1e95-4591-b664-4526d00f5d66
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
+mail:
+  receiver:
+    tu-relations-report: atlas@sbb.ch
