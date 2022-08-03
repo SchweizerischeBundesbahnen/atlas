@@ -1,5 +1,4 @@
 import { Page } from '../core/model/page';
-import { environment } from '../../environments/environment';
 
 export class Pages {
   public static HOME: Page = {
@@ -83,10 +82,6 @@ export class Pages {
   private static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
 
   public static enabledPages(): Page[] {
-    let enabledPages = this.pages;
-    if (!environment.pageBodiEnabled) {
-      enabledPages = enabledPages.filter((page) => page !== Pages.BODI);
-    }
-    return enabledPages;
+    return this.pages;
   }
 }

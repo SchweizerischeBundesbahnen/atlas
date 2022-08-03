@@ -11,7 +11,6 @@
   * [Integration](#integration)
   * [Production](#production)
   * [Project Infrastructure](#project-infrastructure)
-- [Development](#development-1)
   * [Tech Stack](#tech-stack)
   * [Test RESTful Web services](#test-restful-web-services)
 
