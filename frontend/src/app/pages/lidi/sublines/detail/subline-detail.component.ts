@@ -25,6 +25,7 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { SublineDetailFormGroup } from './subline-detail-form-group';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -52,7 +53,8 @@ export class SublineDetailComponent
     protected dialogService: DialogService,
     private dateService: DateService,
     private validationService: ValidationService,
-    private linesService: LinesService
+    private linesService: LinesService,
+    private translateService: TranslateService
   ) {
     super(dialogRef, dialogService, notificationService);
   }
@@ -169,7 +171,19 @@ export class SublineDetailComponent
     return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
-  readonly selectOption = (item: Line) => `${item.swissLineNumber} (${item.description})`;
+  readonly selectOption = (item: Line) =>
+    `${item.swissLineNumber} ${this.getFormattedSelectOption(item)}`;
+
+  getFormattedSelectOption(item: Line): string {
+    if (item.description === null) {
+      this.translateService
+        .get('LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE')
+        .subscribe((res: string) => {
+          item.description = res;
+        });
+    }
+    return `(${item.description})`;
+  }
 
   getFormControlsToDisable(): string[] {
     return [this.mainlineSlnidFormControlName];
