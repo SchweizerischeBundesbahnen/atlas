@@ -1,4 +1,3 @@
-{{- if .Values.businessOrganisationDirectory.enabled }}
 kind: Service
 apiVersion: v1
 metadata:
@@ -14,4 +13,3 @@ spec:
     deploymentconfig: '{{ .Values.businessOrganisationDirectory.name }}'
   sessionAffinity: None
   type: ClusterIP
-{{- end }}
