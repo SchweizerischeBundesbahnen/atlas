@@ -254,6 +254,7 @@
       }
     },
     "SUBLINE": {
+      "NO_LINE_DESIGNATION_AVAILABLE": "aucune désignation de ligne disponible",
       "DETAIL_SUBLINE_INFORMATION": "Informations sur la ligne partielle",
       "NEW_SUBLINE_INFORMATION": "Informations sur la nouvelle ligne partielle",
       "SUBLINE": "Ligne partielle",

@@ -2,7 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { PaymentType, SublinesService, SublineType, SublineVersion } from '../../../../api';
+import {
+  Line,
+  LineType,
+  PaymentType,
+  SublinesService,
+  SublineType,
+  SublineVersion,
+} from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -152,6 +159,35 @@ describe('SublineDetailComponent for new sublineVersion', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should return translated not null description', () => {
+    const item: Line = {
+      swissLineNumber: 'ch:slnid:item:12345',
+      lineType: LineType.Operational,
+      validFrom: new Date('2021-06-01'),
+      validTo: new Date('2029-06-01'),
+      businessOrganisation: 'SBB',
+    };
+
+    fixture.componentInstance.getDescription(item);
+    fixture.detectChanges();
+    expect(item.description).toEqual('LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE');
+  });
+
+  it('should return description', () => {
+    const item: Line = {
+      description: 'description',
+      swissLineNumber: 'ch:slnid:item:12345',
+      lineType: LineType.Operational,
+      validFrom: new Date('2021-06-01'),
+      validTo: new Date('2029-06-01'),
+      businessOrganisation: 'SBB',
+    };
+
+    fixture.componentInstance.getDescription(item);
+    fixture.detectChanges();
+    expect(item.description).toEqual('description');
   });
 
   describe('create new Version', () => {

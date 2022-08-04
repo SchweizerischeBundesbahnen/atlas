@@ -254,6 +254,7 @@
       }
     },
     "SUBLINE": {
+      "NO_LINE_DESIGNATION_AVAILABLE": "keine Linienbezeichnung vorhanden",
       "DETAIL_SUBLINE_INFORMATION": "Angaben zur Teillinie",
       "NEW_SUBLINE_INFORMATION": "Angaben zur neuen Teillinie",
       "SUBLINE": "Teillinie",
