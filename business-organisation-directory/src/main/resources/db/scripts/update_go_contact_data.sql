@@ -25,6 +25,8 @@ update business_organisation_version set contact_enterprise_email = 'natalie.mat
 update business_organisation_version set contact_enterprise_email = 'comune@personico.ch' where sboid='ch:1:sboid:101812' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'peter.furrer@zentralbahn.ch' where sboid='ch:1:sboid:100105' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'betrieb@botg.ch' where sboid='ch:1:sboid:100642' and contact_enterprise_email is null;
+update business_organisation_version set contact_enterprise_email = 'christof.wyttenbach@bls.ch' where sboid='ch:1:sboid:101836' and contact_enterprise_email is null;
+update business_organisation_version set contact_enterprise_email = 'dominic.hurni@sunnbuel.ch' where sboid='ch:1:sboid:100186' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'andreas.deterling@busost.ch' where sboid='ch:1:sboid:100111' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'andreas.deterling@busost.ch' where sboid='ch:1:sboid:100625' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'Markus.hitz@sbb.ch' where sboid='ch:1:sboid:100336' and contact_enterprise_email is null;
@@ -44,6 +46,7 @@ update business_organisation_version set contact_enterprise_email = 'e-meier@his
 update business_organisation_version set contact_enterprise_email = 'marco.senn@autobus.ag' where sboid='ch:1:sboid:100610' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'gerold.zumofen@llbreisen.ch' where sboid='ch:1:sboid:100654' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'peter.baertschiger@busaarau.ch' where sboid='ch:1:sboid:100639' and contact_enterprise_email is null;
+update business_organisation_version set contact_enterprise_email = 'gboll@llob.ch' where sboid='ch:1:sboid:101835' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'burri.r@unireso.com' where sboid='ch:1:sboid:101759' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'markus.ms.sahli@sbb.ch' where sboid='ch:1:sboid:101764' and contact_enterprise_email is null;
 update business_organisation_version set contact_enterprise_email = 'markus.ms.sahli@sbb.ch' where sboid='ch:1:sboid:101766' and contact_enterprise_email is null;

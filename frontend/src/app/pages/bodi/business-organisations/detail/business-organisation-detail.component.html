@@ -10,7 +10,7 @@
 
     <!-- Organisation Number -->
     <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-6 pe-3">
+      <div class="d-flex flex-column col-3 pe-3">
         <div class="info-icon-position">
           <mat-label class="font-bold-lg required-indicator"
             >{{ 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER' | translate }}
@@ -28,9 +28,25 @@
       </div>
     </div>
 
-    <!-- Descriptions -->
     <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-6 pe-3">
+      <div class="d-flex flex-column col-3 pe-3">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_DE' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'STI' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 10 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="abbreviationDe" data-cy="abbreviationDe" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-9">
         <div class="info-icon-position">
           <mat-label class="font-bold-lg required-indicator"
             >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_DE' | translate }}
@@ -46,8 +62,27 @@
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
+    </div>
 
-      <div class="d-flex flex-column col-6">
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-3 pe-3">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_FR' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'STI' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 10 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="abbreviationFr" data-cy="abbreviationFr" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column col-9">
         <div class="info-icon-position">
           <mat-label class="font-bold-lg required-indicator"
             >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_FR' | translate }}
@@ -66,81 +101,7 @@
     </div>
 
     <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-6 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_IT' | translate }}
-          </mat-label>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }}
-          {{ 'Verkehrsbetriebe STI AG' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 60 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="descriptionIt" data-cy="descriptionIt" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-
-      <div class="d-flex flex-column col-6">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_EN' | translate }}
-          </mat-label>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }}
-          {{ 'Verkehrsbetriebe STI AG' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 60 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="descriptionEn" data-cy="descriptionEn" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-    <!-- Descriptions -->
-
-    <!-- Abbreviations -->
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-6 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_DE' | translate }}
-          </mat-label>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }}
-          {{ 'STI' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 10 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="abbreviationDe" data-cy="abbreviationDe" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-
-      <div class="d-flex flex-column col-6">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_FR' | translate }}
-          </mat-label>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }}
-          {{ 'STI' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 10 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="abbreviationFr" data-cy="abbreviationFr" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-6 pe-3">
+      <div class="d-flex flex-column col-3 pe-3">
         <div class="info-icon-position">
           <mat-label class="font-bold-lg required-indicator"
             >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_IT' | translate }}
@@ -157,7 +118,26 @@
         </mat-form-field>
       </div>
 
-      <div class="d-flex flex-column col-6">
+      <div class="d-flex flex-column col-9">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_IT' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Verkehrsbetriebe STI AG' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 60 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="descriptionIt" data-cy="descriptionIt" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-3 pe-3">
         <div class="info-icon-position">
           <mat-label class="font-bold-lg required-indicator"
             >{{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION_EN' | translate }}
@@ -173,8 +153,24 @@
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
+
+      <div class="d-flex flex-column col-9">
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg required-indicator"
+            >{{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION_EN' | translate }}
+          </mat-label>
+        </div>
+        <mat-label class="font-regular-sm">
+          {{ 'FORM.FOR_EXAMPLE' | translate }}
+          {{ 'Verkehrsbetriebe STI AG' }} |
+          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 60 } }}
+        </mat-label>
+        <mat-form-field>
+          <input matInput formControlName="descriptionEn" data-cy="descriptionEn" />
+          <mat-error fieldErrors></mat-error>
+        </mat-form-field>
+      </div>
     </div>
-    <!-- Abbreviations -->
 
     <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
     <div class="w-50">
