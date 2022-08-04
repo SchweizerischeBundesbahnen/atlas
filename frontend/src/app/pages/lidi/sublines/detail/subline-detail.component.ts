@@ -171,11 +171,10 @@ export class SublineDetailComponent
     return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
-  readonly selectOption = (item: Line) =>
-    `${item.swissLineNumber} ${this.getFormattedSelectOption(item)}`;
+  readonly selectOption = (item: Line) => `${item.swissLineNumber} ${this.getDescription(item)}`;
 
-  getFormattedSelectOption(item: Line): string {
-    if (item.description === null) {
+  getDescription(item: Line): string {
+    if (!item.description) {
       this.translateService
         .get('LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE')
         .subscribe((res: string) => {
