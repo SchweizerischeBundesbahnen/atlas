@@ -133,3 +133,10 @@ IntelliJ: Insert into VM options of your Spring Boot Run Configuration the follo
 ~~~
 -Dhttps.proxyHost=zscaler.sbb.ch -Dhttps.proxyPort=10465 -Dhttp.nonProxyHosts=login.microsoftonline.com
 ~~~
+
+### Import TU-GO Relations from csv
+
+```
+# From csv-import-tool dir
+npm start -- --token $TOKEN --url https://atlas-int.api.sbb.ch:443/business-organisation-directory/v1/transport-company-relations --csv ../../business-organisation-directory/scripts/220803_ATLAS_EXP_VERB_TU_GO.csv
+```
