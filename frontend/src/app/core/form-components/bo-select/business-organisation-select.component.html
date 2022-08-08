@@ -1,0 +1,14 @@
+<form-search-select
+  [items$]="businessOrganisations"
+  [controlName]="controlName"
+  [formGroup]="formGroup"
+  [getSelectOption]="displaySettings"
+  [bindValueInp]="valueExtraction"
+  (searchTrigger)="search($event)"
+  data-cy="businessOrganisation"
+>
+  <mat-label class="font-bold-lg required-indicator">{{
+    'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
+  }}</mat-label>
+  <div class="mat-label-form-field-space-between"></div>
+</form-search-select>
