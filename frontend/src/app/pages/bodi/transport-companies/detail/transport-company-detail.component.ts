@@ -14,14 +14,10 @@ import { Role } from '../../../../core/auth/role';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import moment, { Moment } from 'moment';
-import { TranslateService } from '@ngx-translate/core';
-import { Language } from '../../../../core/components/language-switcher/language';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
-
-type abbreviationType = 'abbreviationDe' | 'abbreviationFr' | 'abbreviationIt';
-type descriptionType = 'descriptionDe' | 'descriptionFr' | 'descriptionIt';
+import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
@@ -33,7 +29,7 @@ export class TransportCompanyDetailComponent implements OnInit {
     private readonly businessOrganisationsService: BusinessOrganisationsService,
     private readonly transportCompanyRelationsService: TransportCompanyRelationsService,
     private readonly authService: AuthService,
-    private readonly translateService: TranslateService,
+    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService
   ) {}
@@ -61,12 +57,12 @@ export class TransportCompanyDetailComponent implements OnInit {
     },
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
-      valuePath: `businessOrganisation.${this.getCurrentLanguageKey('abbreviation')}`,
+      valuePath: `businessOrganisation.${this.getCurrentLanguageAbbreviation()}`,
       columnDef: 'abbreviation',
     },
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
-      valuePath: `businessOrganisation.${this.getCurrentLanguageKey('description')}`,
+      valuePath: `businessOrganisation.${this.getCurrentLanguageDescription()}`,
       columnDef: 'description',
     },
     {
@@ -97,8 +93,8 @@ export class TransportCompanyDetailComponent implements OnInit {
   );
 
   readonly selectOption = (item: BusinessOrganisation) => {
-    return `${item.organisationNumber} - ${item[this.getCurrentLanguageKey('abbreviation')]} - ${
-      item[this.getCurrentLanguageKey('description')]
+    return `${item.organisationNumber} - ${item[this.getCurrentLanguageAbbreviation()]} - ${
+      item[this.getCurrentLanguageDescription()]
     }`;
   };
 
@@ -209,10 +205,11 @@ export class TransportCompanyDetailComponent implements OnInit {
       );
   }
 
-  private getCurrentLanguageKey<keyType extends descriptionType | abbreviationType>(
-    propertyName: 'description' | 'abbreviation'
-  ): keyType {
-    const selectedLanguage = this.translateService.currentLang ?? Language.DE;
-    return `${propertyName}${selectedLanguage[0].toUpperCase()}${selectedLanguage[1]}` as keyType;
+  private getCurrentLanguageAbbreviation() {
+    return this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation();
+  }
+
+  private getCurrentLanguageDescription() {
+    return this.businessOrganisationLanguageService.getCurrentLanguageDescription();
   }
 }
