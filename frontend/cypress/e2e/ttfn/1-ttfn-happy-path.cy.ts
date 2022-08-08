@@ -1,12 +1,17 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
 import CommonUtils from '../../support/util/common-utils';
 import { DataCy } from '../../support/data-cy';
+import BodiDependentUtils from '../../support/util/bodi-dependent-utils';
 
 describe('Fahrplanfeldnummer', () => {
   const firstVersion = TtfnUtils.getFirstVersion();
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
+  });
+
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
   });
 
   it('Step-2: Navigate to Fahrplanfeldnummer', () => {
@@ -82,5 +87,9 @@ describe('Fahrplanfeldnummer', () => {
     CommonUtils.deleteItem();
     cy.url().should('contain', '/timetable-field-number');
     TtfnUtils.checkHeaderTitle();
+  });
+
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 });

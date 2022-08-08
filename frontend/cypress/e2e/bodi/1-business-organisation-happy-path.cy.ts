@@ -2,7 +2,7 @@ import BodiUtils from '../../support/util/bodi-utils';
 import CommonUtils from '../../support/util/common-utils';
 
 describe('Business Organisation Directory', () => {
-  const organisation = BodiUtils.getFirstBusinessOrganisationVersion();
+  const organisation = BodiUtils.getBusinessOrganisationVersion();
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();

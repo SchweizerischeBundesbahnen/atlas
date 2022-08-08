@@ -1,11 +1,16 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
+import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
 describe('Linie', () => {
   const line = LidiUtils.getFirstLineVersion();
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
+  });
+
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
   });
 
   it('Step-2: Navigate to Linien', () => {
@@ -58,5 +63,9 @@ describe('Linie', () => {
     CommonUtils.deleteItem();
     LidiUtils.assertIsOnLines();
     LidiUtils.checkHeaderTitle();
+  });
+
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 });

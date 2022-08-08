@@ -1,5 +1,6 @@
 import CommonUtils from './common-utils';
 import { DataCy } from '../data-cy';
+import BodiDependentUtils from './bodi-dependent-utils';
 
 export default class TtfnUtils {
   static navigateToTimetableFieldNumber() {
@@ -49,7 +50,6 @@ export default class TtfnUtils {
     cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
       if (!$el.hasClass("mat-no-data-row")){
         $el.trigger('click');
-        TtfnUtils.assertContainsVersion(ttfn);
         CommonUtils.deleteItem();
       }
     });
@@ -62,7 +62,9 @@ export default class TtfnUtils {
     cy.get(DataCy.SWISS_TIMETABLE_FIELD_NUMBER)
       .clear()
       .type(version.swissTimetableFieldNumber);
-    cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
+
+    CommonUtils.typeAndSelectItemFromDropDown(DataCy.BUSINESS_ORGANISATION + ' ' + 'input', version.businessOrganisation);
+
     cy.get(DataCy.NUMBER).clear().type(version.number);
     cy.get(DataCy.DESCRIPTION).clear().type(version.description);
     cy.get(DataCy.COMMENT).clear().type(version.comment);
@@ -72,7 +74,7 @@ export default class TtfnUtils {
   static assertContainsVersion(version: any) {
     CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
     CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
-    CommonUtils.assertItemValue(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
+    cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
     CommonUtils.assertItemValue(DataCy.NUMBER, version.number);
     CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);
     CommonUtils.assertItemValue(DataCy.COMMENT, version.comment);
@@ -84,10 +86,10 @@ export default class TtfnUtils {
       swissTimetableFieldNumber: '00.AAA',
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
-      businessOrganisation: 'SBB',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       number: '1.1',
       description:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+        'First Version',
       comment: 'This is a comment',
     };
   }
@@ -97,10 +99,10 @@ export default class TtfnUtils {
       swissTimetableFieldNumber: '00.AAA',
       validFrom: '01.01.2001',
       validTo: '31.12.2002',
-      businessOrganisation: 'SBB1',
-      number: '1.1',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
+      number: '1.2',
       description:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+        'Second Version',
       comment: 'A new comment',
     };
   }
@@ -111,7 +113,7 @@ export default class TtfnUtils {
       swissTimetableFieldNumber: '01.AAA',
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
-      businessOrganisation: 'SBB',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       number: '0.1',
       description: 'Bern - Thun',
       comment: 'Beste',

@@ -1,28 +1,20 @@
 import BodiUtils from '../../support/util/bodi-utils';
 import CommonUtils from '../../support/util/common-utils';
 import { DataCy } from '../../support/data-cy';
+import BodiDependentUtils from '../../support/util/bodi-dependent-utils';
 
 describe('Transport Company', () => {
-  const organisation = BodiUtils.getFirstBusinessOrganisationVersion();
 
   it('Step-1: ATLAS Login', () => {
     cy.atlasLogin();
   });
 
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
+  });
+
   it('Step-2: Navigate to Business Organisation', () => {
     BodiUtils.navigateToBusinessOrganisation();
-  });
-
-  it('PreStep-3: check if business organisation already exists', () => {
-    BodiUtils.checkIfBoAlreadyExists(organisation);
-  });
-
-  it('Step-3: Add BusinessOrganisation to relate a TU', () => {
-    BodiUtils.clickOnAddBusinessOrganisationVersion();
-    BodiUtils.fillBusinessOrganisationVersionForm(organisation);
-    BodiUtils.saveBusinessOrganisation();
-    BodiUtils.readSboidFromForm(organisation);
-    BodiUtils.fromDetailBackToBusinessOrganisationOverview();
   });
 
   it('Step-4: switch tab to TU', () => {
@@ -62,12 +54,10 @@ describe('Transport Company', () => {
   });
 
   it('Step-7: add Relation with Business Organisation', () => {
+    cy.get('app-relation').scrollIntoView();
     cy.get(DataCy.TC_ADD_RELATION_BTN).click();
 
-    CommonUtils.typeAndSelectItemFromDropDown(
-      `${DataCy.BUSINESS_ORGANISATION_SEARCH_SELECT} input`,
-      String(organisation.descriptionDe)
-    );
+    CommonUtils.typeAndSelectItemFromDropDown(`${DataCy.BUSINESS_ORGANISATION} input`, BodiDependentUtils.BO_DESCRIPTION);
     CommonUtils.getClearType(DataCy.VALID_FROM, '01.01.2020', true);
     CommonUtils.getClearType(DataCy.VALID_TO, '01.01.2021', true);
     BodiUtils.interceptGetTransportCompanyRelations(DataCy.SAVE_ITEM);
@@ -80,9 +70,8 @@ describe('Transport Company', () => {
     BodiUtils.switchTabToBusinessOrganisations();
   });
 
-  it('Step-9: Cleanup BusinessOrganisation', () => {
-    BodiUtils.searchAndNavigateToBusinessOrganisation(organisation);
-    CommonUtils.deleteItem();
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 
 });

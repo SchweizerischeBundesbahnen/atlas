@@ -1,6 +1,7 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
 import { DataCy } from '../../../support/data-cy';
+import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
 /**
  * Szenario 4: Update, das über eine ganze Version hinausragt
@@ -21,6 +22,10 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
+  });
+
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
   });
 
   it('Step-2: Navigate to Linien', () => {
@@ -84,7 +89,6 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
     thirdLineVersion.validFrom = '01.01.2001';
     thirdLineVersion.validTo = '31.12.2001';
     thirdLineVersion.alternativeName = editedLineVersion.alternativeName;
-    thirdLineVersion.businessOrganisation = 'SBB-1';
     thirdLineVersion.comment = 'Kommentar-1';
     LidiUtils.assertContainsLineVersion(thirdLineVersion);
   });
@@ -95,7 +99,6 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
 
     secondLineVersion.validFrom = '01.06.2000';
     secondLineVersion.validTo = '31.12.2000';
-    secondLineVersion.businessOrganisation = 'SBB';
     secondLineVersion.alternativeName = editedLineVersion.alternativeName;
     secondLineVersion.comment = firstLinieVersion.comment;
     LidiUtils.assertContainsLineVersion(secondLineVersion);
@@ -112,5 +115,9 @@ describe('LiDi: Versioning Linie Scenario 4', () => {
   it('Step-12: Delete the item ', () => {
     CommonUtils.deleteItem();
     LidiUtils.checkHeaderTitle();
+  });
+
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 });
