@@ -68,25 +68,9 @@
       <form-date-range [formGroup]="form"></form-date-range>
     </div>
 
-    <div class="col-12 d-flex">
-      <div class="d-flex flex-column col-3 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'TTFN.BUSINESS_ORGANISATION' | translate }}
-          </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'LIDI.BUSINESS_ORGANISATION_INFO' | translate }}"
-          ></form-info-icon>
-        </div>
-
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '106 - SVB' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-        </mat-label>
-        <mat-form-field>
-          <input data-cy="businessOrganisation" matInput formControlName="businessOrganisation" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
+    <div class="col-12 d-flex pb-3">
+      <div class="d-flex flex-column col-6">
+        <bo-select controlName="businessOrganisation" [formGroup]="form"> </bo-select>
       </div>
     </div>
 

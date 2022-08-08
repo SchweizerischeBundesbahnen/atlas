@@ -120,26 +120,11 @@
     </div>
 
     <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-3 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg required-indicator"
-            >{{ 'LIDI.BUSINESS_ORGANISATION' | translate }}
-          </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'LIDI.BUSINESS_ORGANISATION_INFO' | translate }}"
-          ></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '146 - STI' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-        </mat-label>
-        <mat-form-field>
-          <input matInput formControlName="businessOrganisation" data-cy="businessOrganisation" />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
+      <div class="d-flex flex-column col-6 pe-3">
+        <bo-select controlName="businessOrganisation" [formGroup]="form"> </bo-select>
       </div>
 
-      <div class="d-flex flex-column col-6 pe-3">
+      <div class="d-flex flex-column col-3 pe-3">
         <div class="info-icon-position">
           <mat-label class="font-bold-lg required-indicator subtitle-margin"
             >{{ 'LIDI.TYPE' | translate }}
