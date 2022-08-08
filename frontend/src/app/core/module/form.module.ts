@@ -9,9 +9,11 @@ import { UrlComponent } from '../form-components/url/url.component';
 import { DateIconComponent } from '../form-components/date-icon/date-icon.component';
 import { InfoIconComponent } from '../form-components/info-icon/info-icon.component';
 import { SearchSelectComponent } from '../form-components/search-select/search-select.component';
+import { BusinessOrganisationSelectComponent } from '../form-components/bo-select/business-organisation-select.component';
 
 @NgModule({
   declarations: [
+    BusinessOrganisationSelectComponent,
     DateRangeComponent,
     FieldErrorComponent,
     CommentComponent,
@@ -22,6 +24,7 @@ import { SearchSelectComponent } from '../form-components/search-select/search-s
   ],
   imports: [CommonModule, MaterialModule, TranslateModule],
   exports: [
+    BusinessOrganisationSelectComponent,
     DateRangeComponent,
     FieldErrorComponent,
     CommentComponent,
