@@ -20,9 +20,8 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { Role } from '../../../../core/auth/role';
-import { Language } from '../../../../core/components/language-switcher/language';
-import { TranslateService } from '@ngx-translate/core';
 import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
+import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',
@@ -43,7 +42,7 @@ export class BusinessOrganisationDetailComponent
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    private translateService: TranslateService
+    private businessOrganisationLanguageService: BusinessOrganisationLanguageService
   ) {
     super(dialogRef, dialogService, notificationService);
   }
@@ -65,15 +64,7 @@ export class BusinessOrganisationDetailComponent
   }
 
   displayedAbbreviation() {
-    return ('abbreviation' + this.formatedLanguage()) as
-      | 'abbreviationDe'
-      | 'abbreviationFr'
-      | 'abbreviationIt';
-  }
-
-  private formatedLanguage() {
-    const currentLanguage = this.translateService.currentLang || Language.DE;
-    return currentLanguage.charAt(0).toUpperCase() + currentLanguage.slice(1);
+    return this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation();
   }
 
   getDetailSubheading(record: BusinessOrganisationVersion): string {
