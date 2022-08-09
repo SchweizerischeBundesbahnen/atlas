@@ -84,7 +84,8 @@ public class LineService {
   public void updateVersion(LineVersion currentVersion,
       LineVersion editedVersion) {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion()
+                                                             .equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
     }
 

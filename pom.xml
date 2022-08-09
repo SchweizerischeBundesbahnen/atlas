@@ -32,6 +32,7 @@
         <module>model</module>
         <module>versioning</module>
         <module>searching</module>
+        <module>amazon-s3</module>
         <!--  Services-->
         <module>mail</module>
         <module>line-directory</module>

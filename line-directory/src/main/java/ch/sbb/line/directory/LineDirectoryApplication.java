@@ -1,5 +1,6 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.model.configuration.AtlasExceptionHandler;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
@@ -26,6 +27,11 @@ public class LineDirectoryApplication {
   @Bean
   public AtlasExceptionHandler atlasExceptionHandler() {
     return new AtlasExceptionHandler();
+  }
+
+  @Bean
+  public FileService fileService() {
+    return new FileService();
   }
 
 }
