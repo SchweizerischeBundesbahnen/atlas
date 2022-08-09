@@ -42,6 +42,11 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
 
   @Query("SELECT lv FROM line_version as lv"
       + " ORDER BY lv.slnid, lv.validFrom ASC")
-  List<LineVersion> getAllLineVersions();
+  List<LineVersion> getFullLineVersions();
+
+  @Query("SELECT lv FROM line_version as lv"
+      + " WHERE  :actualDate >= lv.validFrom AND :actualDate <= lv.validTo"
+      + " ORDER BY lv.slnid, lv.validFrom ASC")
+  List<LineVersion> getActualLineVersions(@Param("actualDate") LocalDate actualDate);
 
 }
