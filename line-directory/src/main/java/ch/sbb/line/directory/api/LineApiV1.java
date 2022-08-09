@@ -79,10 +79,22 @@ public interface LineApiV1 {
   @GetMapping("line-coverage/{slnid}")
   CoverageModel getLineCoverage(@PathVariable String slnid);
 
-  @PostMapping(value = "/upload-csv/file", produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<URL> uploadFile();
+  @PostMapping(value = "/export-csv/full/csv", produces = MediaType.APPLICATION_JSON_VALUE)
+  ResponseEntity<URL> exportFullLineVersionsCsv();
 
-  @PostMapping(value = "/upload-csv/zip", produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<URL> uploadZpFile();
+  @PostMapping(value = "/export-csv/full/zip", produces = MediaType.APPLICATION_JSON_VALUE)
+  ResponseEntity<URL> exportFullLineVersionsCsvZip();
+
+  @PostMapping(value = "/export-csv/actual/csv", produces = MediaType.APPLICATION_JSON_VALUE)
+  ResponseEntity<URL> exportActualLineVersionsCsv();
+
+  @PostMapping(value = "/export-csv/actual/zip", produces = MediaType.APPLICATION_JSON_VALUE)
+  ResponseEntity<URL> exportActualLineVersionsCsvZip();
+
+  @PostMapping(value = "/export-csv/future-timetable/csv", produces = MediaType.APPLICATION_JSON_VALUE)
+  ResponseEntity<URL> exportFutureTimetableVersionsCsv();
+
+  @PostMapping(value = "/export-csv/future-timetable/zip", produces = MediaType.APPLICATION_JSON_VALUE)
+  ResponseEntity<URL> exportFutureTimetableLineVersionsCsvZip();
 
 }
