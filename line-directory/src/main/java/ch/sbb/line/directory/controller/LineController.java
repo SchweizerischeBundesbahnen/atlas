@@ -2,9 +2,10 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toList;
 
+import ch.sbb.atlas.amazon.controller.AmazonController;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
 import ch.sbb.line.directory.api.LineModel;
@@ -17,7 +18,10 @@ import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
+import ch.sbb.line.directory.service.ExportService;
 import ch.sbb.line.directory.service.LineService;
+import java.io.File;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,21 +39,24 @@ public class LineController implements LineApiV1 {
 
   private final LineService lineService;
   private final CoverageService coverageService;
+  private final AmazonController amazonController;
+  private final ExportService exportService;
 
   @Override
   public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
       List<String> searchCriteria, List<Status> statusRestrictions, List<LineType> typeRestrictions,
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
-    Page<Line> lines = lineService.findAll(LineSearchRestrictions.builder()
-                                                                 .pageable(pageable)
-                                                                 .searchCriterias(searchCriteria)
-                                                                 .statusRestrictions(
-                                                                     statusRestrictions)
-                                                                 .validOn(validOn)
-                                                                 .typeRestrictions(typeRestrictions)
-                                                                 .swissLineNumber(swissLineNumber)
-                                                                 .build());
+    Page<Line> lines = lineService.findAll(
+        LineSearchRestrictions.builder()
+                              .pageable(pageable)
+                              .searchCriterias(searchCriteria)
+                              .statusRestrictions(
+                                  statusRestrictions)
+                              .validOn(validOn)
+                              .typeRestrictions(typeRestrictions)
+                              .swissLineNumber(swissLineNumber)
+                              .build());
     List<LineModel> lineModels = lines.stream().map(this::toModel).collect(toList());
     return Container.<LineModel>builder()
                     .objects(lineModels)
@@ -83,20 +91,6 @@ public class LineController implements LineApiV1 {
     return lineVersionModels;
   }
 
-  private LineModel toModel(Line lineVersion) {
-    return LineModel.builder()
-                    .status(lineVersion.getStatus())
-                    .lineType(lineVersion.getLineType())
-                    .slnid(lineVersion.getSlnid())
-                    .number(lineVersion.getNumber())
-                    .description(lineVersion.getDescription())
-                    .validFrom(lineVersion.getValidFrom())
-                    .validTo(lineVersion.getValidTo())
-                    .businessOrganisation(lineVersion.getBusinessOrganisation())
-                    .swissLineNumber(lineVersion.getSwissLineNumber())
-                    .build();
-  }
-
   @Override
   public LineVersionModel createLineVersion(LineVersionModel newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
@@ -117,6 +111,18 @@ public class LineController implements LineApiV1 {
   @Override
   public CoverageModel getLineCoverage(String slnid) {
     return CoverageModel.toModel(coverageService.getSublineCoverageBySlnidAndLineModelType(slnid));
+  }
+
+  @Override
+  public ResponseEntity<URL> uploadFile() {
+    File csvFile = exportService.getAllLineVersionsCsv();
+    return amazonController.putFile(csvFile);
+  }
+
+  @Override
+  public ResponseEntity<URL> uploadZpFile() {
+    File csvFile = exportService.getAllLineVersionsCsv();
+    return amazonController.putZipFile(csvFile);
   }
 
   @Override
@@ -178,5 +184,20 @@ public class LineController implements LineApiV1 {
                       .version(lineVersionModel.getEtagVersion())
                       .build();
   }
+
+  private LineModel toModel(Line lineVersion) {
+    return LineModel.builder()
+                    .status(lineVersion.getStatus())
+                    .lineType(lineVersion.getLineType())
+                    .slnid(lineVersion.getSlnid())
+                    .number(lineVersion.getNumber())
+                    .description(lineVersion.getDescription())
+                    .validFrom(lineVersion.getValidFrom())
+                    .validTo(lineVersion.getValidTo())
+                    .businessOrganisation(lineVersion.getBusinessOrganisation())
+                    .swissLineNumber(lineVersion.getSwissLineNumber())
+                    .build();
+  }
+
 
 }

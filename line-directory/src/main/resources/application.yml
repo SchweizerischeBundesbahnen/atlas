@@ -39,3 +39,9 @@ logging:
   level:
     root: INFO
     org.hibernate: ERROR
+amazon:
+  accessKey: "AKIAYMD3XTPX7OPVN3L3"
+  secretKey: "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"
+  region: "eu-central-1"
+file:
+  dir: ""

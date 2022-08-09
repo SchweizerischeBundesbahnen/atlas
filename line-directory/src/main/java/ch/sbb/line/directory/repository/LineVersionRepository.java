@@ -40,4 +40,8 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
   @Query("update line_version v set v.version = (v.version + 1) where v.slnid = :slnid")
   void incrementVersion(@Param("slnid") String slnid);
 
+  @Query("SELECT lv FROM line_version as lv"
+      + " ORDER BY lv.slnid, lv.validFrom ASC")
+  List<LineVersion> getAllLineVersions();
+
 }
