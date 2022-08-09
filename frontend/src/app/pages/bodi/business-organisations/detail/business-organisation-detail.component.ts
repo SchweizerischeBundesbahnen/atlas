@@ -148,22 +148,22 @@ export class BusinessOrganisationDetailComponent
         abbreviationDe: new FormControl(version.abbreviationDe, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
-          AtlasCharsetsValidator.alphaNumeric,
+          AtlasCharsetsValidator.iso88591,
         ]),
         abbreviationFr: new FormControl(version.abbreviationFr, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
-          AtlasCharsetsValidator.alphaNumeric,
+          AtlasCharsetsValidator.iso88591,
         ]),
         abbreviationIt: new FormControl(version.abbreviationIt, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
-          AtlasCharsetsValidator.alphaNumeric,
+          AtlasCharsetsValidator.iso88591,
         ]),
         abbreviationEn: new FormControl(version.abbreviationEn, [
           Validators.required,
           AtlasFieldLengthValidator.length_10,
-          AtlasCharsetsValidator.alphaNumeric,
+          AtlasCharsetsValidator.iso88591,
         ]),
         organisationNumber: new FormControl(version.organisationNumber, [
           Validators.required,
