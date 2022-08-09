@@ -1,8 +1,9 @@
-package ch.sbb.line.directory.service;
+package ch.sbb.line.directory.service.export;
 
 import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionCsvModel;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -26,17 +27,32 @@ public class ExportService {
   private final LineVersionRepository lineVersionRepository;
   private final FileService fileService;
 
+  public File getFullLineVersionsCsv() {
+    List<LineVersion> fullLineVersions = lineVersionRepository.getFullLineVersions();
+    return createCsvFile(fullLineVersions, ExportType.FULL);
+  }
 
-  public File getAllLineVersionsCsv() {
+  public File getActualLineVersionsCsv() {
+    List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
+        LocalDate.now());
+    return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
+  }
+
+  public File getActualFutureTimetableLineVersionsCsv() {
+    List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
+        ExportHelper.getFutureTimetableDate(LocalDate.now()));
+    return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
+  }
+
+  private File createCsvFile(List<LineVersion> lineVersions, ExportType exportType) {
     try {
-      File csvFile = createCsvFile();
+      File csvFile = createFile(exportType);
       AtlasCsvMapper atlasCsvMapper = new AtlasCsvMapper(LineVersionCsvModel.class);
 
       List<LineVersionCsvModel> lineVersionCsvModels =
-          lineVersionRepository.getAllLineVersions()
-                               .stream()
-                               .map(LineVersionCsvModel::toCsvModel)
-                               .collect(toList());
+          lineVersions.stream()
+                      .map(LineVersionCsvModel::toCsvModel)
+                      .collect(toList());
 
       ObjectWriter objectWriter = atlasCsvMapper.getCsvMapper().writerFor(LineVersionCsvModel.class)
                                                 .with(atlasCsvMapper.getCsvSchema());
@@ -47,11 +63,10 @@ public class ExportService {
     }
   }
 
-
-  private File createCsvFile() {
+  private File createFile(ExportType exportType) {
     String dir = fileService.getDir();
     String actualDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    return new File(dir + "line_version_" + actualDate + ".csv");
+    return new File(dir + exportType.getFilePrefix() + "line_versions_" + actualDate + ".csv");
   }
 
   @Getter
@@ -60,7 +75,7 @@ public class ExportService {
     private final CsvMapper csvMapper;
     private final CsvSchema csvSchema;
 
-    AtlasCsvMapper(Class aClass) {
+    AtlasCsvMapper(Class<?> aClass) {
       this.csvMapper = createCsvMapper();
       this.csvSchema = this.csvMapper.schemaFor(aClass).withHeader();
     }
