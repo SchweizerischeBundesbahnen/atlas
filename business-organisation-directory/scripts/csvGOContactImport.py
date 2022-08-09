@@ -8,7 +8,7 @@ import pandas
 
 def main():
   print("Reading data")
-  go_data = pandas.read_excel(r'220719_GO_export_full.xls', header=0)
+  go_data = pandas.read_excel(r'220803_GO_export_full.xls', header=0)
 
   result_sql_file = open(
       "../src/main/resources/db/scripts/update_go_contact_data.sql",
