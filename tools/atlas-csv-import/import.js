@@ -110,6 +110,10 @@ async function main(args) {
         delete json[i].mainLineSwissLineNumber;
       }
     }
+    if (url.includes('transport-company-relations')) {
+      json[i].transportCompanyId = await getTransportCompanyId(url, token,
+        json[i].number);
+    }
     const apiResult = await postData(url, json[i], token);
     if (apiResult.status !== 201) {
       logToFile(apiResult, i + 2);
@@ -117,6 +121,32 @@ async function main(args) {
     }
   }
   return [failedImports, json.length];
+}
+
+async function getTransportCompanyId(url, token, number) {
+  const index = url.indexOf("transport-company-relations");
+  const hostUrl = url.substring(0, index);
+  number = number.replaceAll("#", "%23");
+  try {
+    const response = await axios.get(
+      `${hostUrl}transport-companies?searchCriteria=${number}&sort=number,ASC`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.objects[0].id;
+  } catch (e) {
+    const customError = {
+      status: e.response.status,
+      message: e.response.data.message ?? e.response.data,
+    };
+    console.log(
+      `Get-Request for transportCompanyId failed: ${JSON.stringify(customError)}\n`
+    );
+    return customError;
+  }
 }
 
 function getFormattedDate(dateString) {
