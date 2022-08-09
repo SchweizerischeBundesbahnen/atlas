@@ -18,8 +18,8 @@ import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
-import ch.sbb.line.directory.service.ExportService;
 import ch.sbb.line.directory.service.LineService;
+import ch.sbb.line.directory.service.export.ExportService;
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
@@ -114,14 +114,38 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public ResponseEntity<URL> uploadFile() {
-    File csvFile = exportService.getAllLineVersionsCsv();
+  public ResponseEntity<URL> exportFullLineVersionsCsv() {
+    File csvFile = exportService.getFullLineVersionsCsv();
     return amazonController.putFile(csvFile);
   }
 
   @Override
-  public ResponseEntity<URL> uploadZpFile() {
-    File csvFile = exportService.getAllLineVersionsCsv();
+  public ResponseEntity<URL> exportFullLineVersionsCsvZip() {
+    File csvFile = exportService.getFullLineVersionsCsv();
+    return amazonController.putZipFile(csvFile);
+  }
+
+  @Override
+  public ResponseEntity<URL> exportActualLineVersionsCsv() {
+    File csvFile = exportService.getActualLineVersionsCsv();
+    return amazonController.putFile(csvFile);
+  }
+
+  @Override
+  public ResponseEntity<URL> exportActualLineVersionsCsvZip() {
+    File csvFile = exportService.getActualLineVersionsCsv();
+    return amazonController.putZipFile(csvFile);
+  }
+
+  @Override
+  public ResponseEntity<URL> exportFutureTimetableVersionsCsv() {
+    File csvFile = exportService.getActualFutureTimetableLineVersionsCsv();
+    return amazonController.putFile(csvFile);
+  }
+
+  @Override
+  public ResponseEntity<URL> exportFutureTimetableLineVersionsCsvZip() {
+    File csvFile = exportService.getActualFutureTimetableLineVersionsCsv();
     return amazonController.putZipFile(csvFile);
   }
 

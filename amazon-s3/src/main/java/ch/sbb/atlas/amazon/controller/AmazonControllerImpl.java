@@ -25,7 +25,9 @@ public class AmazonControllerImpl implements AmazonController {
 
   @Override
   public ResponseEntity<URL> putFile(File file) {
-    URL url = putFileToBucket(file);
+    ObjectMetadata metadata = new ObjectMetadata();
+    metadata.setContentLength(file.length());
+    URL url = putFileToBucket(file, metadata);
     return new ResponseEntity<>(url, HttpStatus.OK);
   }
 
@@ -37,11 +39,11 @@ public class AmazonControllerImpl implements AmazonController {
     ObjectMetadata metadata = new ObjectMetadata();
     metadata.setContentType("application/zip");
     metadata.setContentLength(zipFile.length());
-    URL url = putFileToBucket(zipFile);
+    URL url = putFileToBucket(zipFile, metadata);
     return new ResponseEntity<>(url, HttpStatus.OK);
   }
 
-  private URL putFileToBucket(File file) {
+  private URL putFileToBucket(File file, ObjectMetadata metadata) {
     URL url;
     PutObjectRequest putObjectRequest;
     try {
@@ -50,7 +52,7 @@ public class AmazonControllerImpl implements AmazonController {
           bucket,
           file.getName(),
           new FileInputStream(file),
-          new ObjectMetadata());
+          metadata);
       amazonS3.putObject(putObjectRequest);
       url = amazonS3.getUrl(bucket, file.getName());
       return url;
