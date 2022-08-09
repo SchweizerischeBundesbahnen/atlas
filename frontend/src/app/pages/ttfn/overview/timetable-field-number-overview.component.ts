@@ -30,7 +30,6 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     { headerTitle: 'TTFN.NUMBER', value: 'number' },
     { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
     { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
-    { headerTitle: 'TTFN.BUSINESS_ORGANISATION', value: 'businessOrganisation' },
     { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
     {
       headerTitle: 'COMMON.STATUS',
