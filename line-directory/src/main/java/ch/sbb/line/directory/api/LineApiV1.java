@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,8 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,4 +78,11 @@ public interface LineApiV1 {
 
   @GetMapping("line-coverage/{slnid}")
   CoverageModel getLineCoverage(@PathVariable String slnid);
+
+  @PostMapping(value = "/upload-csv/file", produces = MediaType.APPLICATION_JSON_VALUE)
+  ResponseEntity<URL> uploadFile();
+
+  @PostMapping(value = "/upload-csv/zip", produces = MediaType.APPLICATION_JSON_VALUE)
+  ResponseEntity<URL> uploadZpFile();
+
 }
