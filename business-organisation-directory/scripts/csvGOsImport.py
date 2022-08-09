@@ -31,10 +31,16 @@ def insertTypesToTable(list_of_types, result_sql_file):
           .format(business_types.get(business_type)))
     result_sql_file.write("\n")
 
+def getDate(input_date):
+  dateSplit = input_date.split(".")
+  if len(dateSplit) == 3:
+    return f'{dateSplit[2]}-{dateSplit[1]}-{dateSplit[0]}'
+  return input_date
+
 
 def main():
   print("Reading GO Data")
-  go_data = pandas.read_csv(r'ATLAS_EXP_GOS.csv', sep=';', header=0)
+  go_data = pandas.read_csv(r'220803_ATLAS_EXP_GOS.csv', sep=';', header=0)
 
   result_sql_file = open(
       "../src/main/resources/db/scripts/initial_go_data.sql",
@@ -66,7 +72,7 @@ def main():
                   row.OrganisationNumber,
                   "null" if isinstance(row.ContactEnterpriseMail,
                                        float) else "'" + row.ContactEnterpriseMail + "'",
-                  row.validFrom, row.validTo
+                  getDate(row.validFrom), getDate(row.validTo)
                   ))
     result_sql_file.write("\n")
 
