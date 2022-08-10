@@ -23,8 +23,9 @@ public class FileService {
   @Value("${spring.profiles.active:local}")
   private String activeProfile;
 
-  public File zipFile(File file, String filename) {
-    File zipFile = new File(filename + ZIP);
+  public File zipFile(File file) {
+    String filename = file.getName();
+    File zipFile = new File(file.toPath().getParent() + "/" + file.getName() + ZIP);
 
     try (ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(zipFile));
         InputStream inputStream = new FileInputStream(file)) {
@@ -55,7 +56,11 @@ public class FileService {
 
   public String getDir() {
     if ("local".equals(activeProfile)) {
-      return "";
+      File dir = new File("./export");
+      if (!dir.exists()) {
+        dir.mkdirs();
+      }
+      return "./export/";
     }
     return DOCKER_FILE_DIRECTORY;
   }
