@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.line.directory.api.TimetableFieldNumberModel;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
@@ -17,6 +17,7 @@ import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -72,7 +73,8 @@ public class TimetableFieldNumberControllerTest {
 
     // When
     Container<TimetableFieldNumberModel> timetableFieldNumberContainer = timetableFieldNumberController.getOverview(
-        Pageable.unpaged(), null, null, null);
+        Pageable.unpaged(), Collections.emptyList(), Optional.empty(), Optional.empty(),
+        Collections.emptyList());
 
     // Then
     assertThat(timetableFieldNumberContainer).isNotNull();

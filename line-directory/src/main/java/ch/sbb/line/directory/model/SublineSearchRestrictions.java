@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.model;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.searching.SearchRestrictions;
+import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline_;
@@ -17,7 +17,8 @@ import org.springframework.data.jpa.domain.Specification;
 @Getter
 @ToString
 @SuperBuilder
-public class SublineSearchRestrictions extends SearchRestrictions<Subline> {
+public class SublineSearchRestrictions extends
+    BusinessOrganisationDependentSearchRestriction<Subline> {
 
   @Singular(ignoreNullCollections = true)
   private List<SublineType> typeRestrictions;
@@ -40,7 +41,6 @@ public class SublineSearchRestrictions extends SearchRestrictions<Subline> {
                                    List.of(Subline.Fields.swissSublineNumber,
                                        Subline.Fields.description,
                                        Subline.Fields.swissLineNumber,
-                                       Subline.Fields.businessOrganisation,
                                        Subline.Fields.slnid,
                                        Subline.Fields.number))
                                .validFromAttribute(Subline_.validFrom)
