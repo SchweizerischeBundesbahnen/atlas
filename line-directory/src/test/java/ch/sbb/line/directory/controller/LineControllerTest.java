@@ -16,8 +16,6 @@ import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.model.CmykColor;
-import ch.sbb.line.directory.model.RgbColor;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.export.ExportService;
@@ -35,9 +33,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 public class LineControllerTest {
-
-  private static final RgbColor RGB_COLOR = new RgbColor(0, 0, 0);
-  private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
 
   private static final String[] RECURSIVE_COMPARISION_IGNORE_FIELDS = {"editor", "creator",
       "editionDate", "creationDate", "version"};

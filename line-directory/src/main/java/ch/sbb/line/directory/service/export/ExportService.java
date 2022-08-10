@@ -35,7 +35,7 @@ public class ExportService {
   public File getActualLineVersionsCsv() {
     List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
         LocalDate.now());
-    return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
+    return createCsvFile(actualLineVersions, ExportType.ACTUAL_DATE);
   }
 
   public File getActualFutureTimetableLineVersionsCsv() {
