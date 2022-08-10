@@ -20,7 +20,6 @@ public class FileService {
   public static final int ZERO = 0;
   public static final String ZIP = ".zip";
   private static final String DOCKER_FILE_DIRECTORY = "/usr/local/atlas/tmp/";
-
   @Value("${spring.profiles.active:local}")
   private String activeProfile;
 

@@ -14,10 +14,10 @@
 :revnumber: {version}
 
 [[abstract]]
-
 = Overview
 
 === Project information
+
 [width="60%" cols="18%,35%" ]
 |=================================
 |Application Name | {name}
@@ -26,86 +26,138 @@
 |=================================
 
 === Release Notes
+
 include::../release-notes.adoc[]
 
 = Line
 
 == Get Line Overview - Successfully
+
 include::{snippets}/line-controller-api-test/should-get-line-overview/auto-section.adoc[]
 
 == Create Line - Successfully
+
 include::{snippets}/line-controller-api-test/should-create-line-version/auto-section.adoc[]
 
 == Covered Line - Successfully
+
 include::{snippets}/line-controller-api-test/should-get-covered-lines/auto-section.adoc[]
 
 == Covered LineVersion - Successfully
+
 include::{snippets}/line-controller-api-test/should-get-covered-line-versions/auto-section.adoc[]
 
 == Update Line - Successfully
+
 include::{snippets}/line-controller-api-test/should-update-line-version/auto-section.adoc[]
 
 == Update Line with conflict error
+
 include::{snippets}/line-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
 
 == Update Line with not found error
+
 include::{snippets}/line-controller-api-test/should-return-not-found-error-response/auto-section.adoc[]
 
 == Update Line with no changes after versioning error
+
 include::{snippets}/line-controller-api-test/should-return-validation-no-changes-error-response/auto-section.adoc[]
 
 == Delete Line with related subline
+
 include::{snippets}/line-controller-api-test/should-return-line-delete-conflict-error-response/auto-section.adoc[]
 
 == Get Line with not found error
+
 include::{snippets}/line-controller-api-test/should-return-not-found-error-response-when-no-found-lines/auto-section.adoc[]
 
 == Get Subline Coverage
+
 include::{snippets}/line-controller-api-test/should-get-subline-coverage/auto-section.adoc[]
+
+= Export Line
+
+== Export Full Line Versions Csv file to Amazon S3 Bucket
+
+include::{snippets}/line-controller-api-test/should-export-full-line-versions-csv/auto-section.adoc[]
+
+== Export Full Line Versions Zipped Csv file to Amazon S3 Bucket
+
+include::{snippets}/line-controller-api-test/should-export-full-line-versions-csv-zip/auto-section.adoc[]
+
+== Export Actual Line Versions Csv file to Amazon S3 Bucket
+
+include::{snippets}/line-controller-api-test/should-export-actual-line-versions-csv/auto-section.adoc[]
+
+== Export Actual Line Versions Zipped Csv file to Amazon S3 Bucket
+
+include::{snippets}/line-controller-api-test/should-export-actual-line-versions-csv-zip/auto-section.adoc[]
+
+== Export Future Timetable Line Versions Csv file to Amazon S3 Bucket
+
+include::{snippets}/line-controller-api-test/should-export-future-timetable-line-versions-csv/auto-section.adoc[]
+
+== Export  Future Timetable Line Versions Zipped Csv file to Amazon S3 Bucket
+
+include::{snippets}/line-controller-api-test/should-export-future-timetable-line-versions-csv/auto-section.adoc[]
 
 = Subline
 
 == Get Subline Overview - Successfully
+
 include::{snippets}/subline-controller-api-test/should-get-subline-overview/auto-section.adoc[]
 
 == Create Subline - Successfully
+
 include::{snippets}/subline-controller-api-test/should-create-subline/auto-section.adoc[]
 
 == Create Subline with conflict error
+
 include::{snippets}/subline-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
 
 == Get Subline with not found error
+
 include::{snippets}/subline-controller-api-test/should-return-not-found-error-response-when-no-found-lines/auto-section.adoc[]
 
 == Update Subline with optimistic locking error
+
 include::{snippets}/subline-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
 
 == Update Subline with no changes after versioning error
+
 include::{snippets}/subline-controller-api-test/should-return-validation-no-changes-error-response/auto-section.adoc[]
 
 == Update Subline with conflict error
+
 include::{snippets}/subline-controller-api-test/should-return-sub-line-assign-to-line-conflict-error-response/auto-section.adoc[]
 
 == Create Subline with line range error
+
 include::{snippets}/subline-controller-api-test/should-return-subline-outside-of-line-range/auto-section.adoc[]
 
 == Get Subline Coverage
+
 include::{snippets}/subline-controller-api-test/should-get-subline-coverage/auto-section.adoc[]
 
 = Timetable field number
 
 == Search versions - Successfully
+
 include::{snippets}/timetable-field-number-controller-api-test/should-return-one-timetable-field-number/auto-section.adoc[]
 
 == Create version - Successfully
+
 include::{snippets}/timetable-field-number-controller-api-test/should-create-timetable-field-number/auto-section.adoc[]
 
 == Update version with rest optimistic locking error
+
 include::{snippets}/timetable-field-number-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
 
 == Update version with no changes after versioning error
+
 include::{snippets}/timetable-field-number-controller-api-test/should-return-validation-no-changes-error-response/auto-section.adoc[]
 
 == Get versions with not found error
+
 include::{snippets}/timetable-field-number-controller-api-test/should-return-not-found-error-response-when-search-item-not-found/auto-section.adoc[]
 
