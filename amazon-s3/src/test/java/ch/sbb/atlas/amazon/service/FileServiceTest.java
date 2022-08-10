@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 
 public class FileServiceTest {
@@ -16,10 +17,17 @@ public class FileServiceTest {
   @Test
   public void shouldCreateZipFile() throws IOException {
     //given
-    Path tempFile = Files.createTempFile("tmp", ".csv");
+    File dir = new File("./export");
+    if (!dir.exists()) {
+      dir.mkdirs();
+    }
+    dir.deleteOnExit();
+    Path tempFile = Files.createFile(Paths.get("./export/tmp.csv"));
+    tempFile.toFile().deleteOnExit();
 
     //when
-    File zipFile = fileService.zipFile(tempFile.toFile(), "tmp.csv");
+    File zipFile = fileService.zipFile(tempFile.toFile());
+    zipFile.deleteOnExit();
 
     //then
     assertThat(zipFile).isNotNull();
