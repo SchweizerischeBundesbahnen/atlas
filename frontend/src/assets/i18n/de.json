@@ -134,6 +134,13 @@
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Geschäftsorganisationen.",
       "PATH_TEXT": "Geschäftsorganisationen"
     },
+    "USER_ADMIN": {
+      "TITLE": "Benutzer verwalten",
+      "TITLE_HEADER": "Benutzerverwaltung",
+      "TITLE_MENU": "Benutzerverwaltung",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zu den berechtigten Benutzern und können diese verwalten.",
+      "PATH_TEXT": "Benutzerverwaltung"
+    },
     "DETAILS": "Details"
   },
   "PAGINATOR": {
@@ -157,6 +164,14 @@
     "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
     "MIN": "Die Zahl muss mindestens {{min}} sein.",
     "MAX": "Die Zahl darf maximal {{max}} sein."
+  },
+  "USER_ADMIN": {
+    "TABLE_HEADER": "Benutzer",
+    "LAST_NAME": "Name",
+    "FIRST_NAME": "Vorname",
+    "MAIL": "E-Mail Adresse",
+    "USER_ID": "Benutzer-ID",
+    "ACCOUNT_STATUS": "Accountstatus"
   },
   "TTFN": {
     "TTFN": "Fahrplanfeldnummer",
