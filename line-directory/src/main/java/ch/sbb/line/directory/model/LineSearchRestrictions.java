@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.model;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.searching.SearchRestrictions;
+import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.Line_;
@@ -19,7 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 @Getter
 @ToString
 @SuperBuilder
-public class LineSearchRestrictions extends SearchRestrictions<Line> {
+public class LineSearchRestrictions extends BusinessOrganisationDependentSearchRestriction<Line> {
 
   @Builder.Default
   private Optional<String> swissLineNumber = Optional.empty();
@@ -48,7 +48,6 @@ public class LineSearchRestrictions extends SearchRestrictions<Line> {
                                    List.of(Line.Fields.swissLineNumber,
                                        Line.Fields.number,
                                        Line.Fields.description,
-                                       Line.Fields.businessOrganisation,
                                        Line.Fields.slnid))
                                .validFromAttribute(Line_.validFrom)
                                .validToAttribute(Line_.validTo)

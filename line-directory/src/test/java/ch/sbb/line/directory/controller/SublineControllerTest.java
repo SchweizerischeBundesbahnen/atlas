@@ -63,7 +63,7 @@ public class SublineControllerTest {
     // When
     Container<SublineModel> sublineContainer = sublineController.getSublines(
         Pageable.unpaged(), Collections.emptyList(), Collections.emptyList(),
-        Collections.emptyList(), Optional.of(LocalDate.now()));
+        Collections.emptyList(), Optional.empty(), Optional.of(LocalDate.now()));
 
     // Then
     assertThat(sublineContainer).isNotNull();

@@ -109,7 +109,7 @@ public class LineControllerTest {
     // When
     Container<LineModel> lineContainer = lineController.getLines(
         Pageable.unpaged(), Optional.empty(), Collections.emptyList(), Collections.emptyList(),
-        Collections.emptyList(), Optional.empty());
+        Collections.emptyList(), Optional.empty(), Optional.empty());
 
     // Then
     assertThat(lineContainer).isNotNull();
