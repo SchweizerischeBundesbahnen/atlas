@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
-@Controller
+@Component
 @RequiredArgsConstructor
 public class AmazonControllerImpl implements AmazonController {
 
@@ -34,7 +34,7 @@ public class AmazonControllerImpl implements AmazonController {
   @Override
   public ResponseEntity<URL> putZipFile(File file) {
 
-    File zipFile = fileService.zipFile(file, file.getName());
+    File zipFile = fileService.zipFile(file);
 
     ObjectMetadata metadata = new ObjectMetadata();
     metadata.setContentType("application/zip");
