@@ -55,6 +55,7 @@ public class AmazonControllerImpl implements AmazonController {
           metadata);
       amazonS3.putObject(putObjectRequest);
       url = amazonS3.getUrl(bucket, file.getName());
+
       return url;
     } catch (IOException e) {
       throw new RuntimeException(e);
