@@ -58,6 +58,15 @@ export class Pages {
     description: 'PAGES.BODI.DESCRIPTION',
   };
 
+  public static USER_ADMINISTRATION: Page = {
+    title: 'PAGES.USER_ADMIN.TITLE',
+    titleMenu: 'PAGES.USER_ADMIN.TITLE_MENU',
+    headerTitle: 'PAGES.USER_ADMIN.TITLE_HEADER',
+    path: 'user-administration',
+    pathText: 'PAGES.USER_ADMIN.PATH_TEXT',
+    description: 'PAGES.USER_ADMIN.DESCRIPTION',
+  };
+
   public static BUSINESS_ORGANISATIONS: Page = {
     title: 'PAGES.DETAILS',
     path: 'business-organisations',
@@ -80,8 +89,16 @@ export class Pages {
   };
 
   private static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
+  private static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
 
   public static enabledPages(): Page[] {
+    // if (){ TODO: check if user is admin
+    return [...this.pages, ...this.adminPages];
+    // }
     return this.pages;
+  }
+
+  public static enabledAdminPages(): Page[] {
+    return this.adminPages;
   }
 }

@@ -1,0 +1,14 @@
+<div class="white-container ms-5 mt-5">
+  <div class="font-bold-4xl color-gray-900 mb-5">
+    {{ 'USER_ADMIN.TABLE_HEADER' | translate }}
+  </div>
+
+  <app-table
+    [tableData]="users"
+    [tableColumns]="tableColumns"
+    [displayStatusSearch]="false"
+    [displayValidOnSearch]="false"
+    [searchTextColumnStyle]="'col-12'"
+    (editElementEvent)="({})"
+  ></app-table>
+</div>
