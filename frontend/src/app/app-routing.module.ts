@@ -24,6 +24,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: Pages.USER_ADMINISTRATION.path,
+    loadChildren: () =>
+      import('./pages/user-administration/user-administration.module').then(
+        (m) => m.UserAdministrationModule
+      ),
+    data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
+    canActivate: [AuthGuard],
+  },
+  {
     path: Pages.HOME.path,
     component: HomeComponent,
     data: {
