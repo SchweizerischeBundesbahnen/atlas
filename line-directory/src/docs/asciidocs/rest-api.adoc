@@ -77,6 +77,8 @@ include::{snippets}/line-controller-api-test/should-get-subline-coverage/auto-se
 
 = Export Line
 
+include::../../../../amazon-s3/documentaion/AMAZON_S3_BUCKET_USERS_ONBOARDING.md[]
+
 == Export Full Line Versions Csv file to Amazon S3 Bucket
 
 include::{snippets}/line-controller-api-test/should-export-full-line-versions-csv/auto-section.adoc[]
