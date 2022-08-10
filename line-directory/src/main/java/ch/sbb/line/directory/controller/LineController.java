@@ -6,6 +6,8 @@ import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.Container;
 import ch.sbb.atlas.model.exception.ExportException;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.api.Container;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
@@ -46,19 +48,21 @@ public class LineController implements LineApiV1 {
   @Override
   public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
       List<String> searchCriteria, List<Status> statusRestrictions, List<LineType> typeRestrictions,
+      Optional<String> businessOrganisation,
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
-    Page<Line> lines = lineService.findAll(
-        LineSearchRestrictions.builder()
-                              .pageable(pageable)
-                              .searchCriterias(searchCriteria)
-                              .statusRestrictions(
-                                  statusRestrictions)
-                              .validOn(validOn)
-                              .typeRestrictions(typeRestrictions)
-                              .swissLineNumber(swissLineNumber)
-                              .build());
-    List<LineModel> lineModels = lines.stream().map(this::toModel).collect(toList());
+    Page<Line> lines = lineService.findAll(LineSearchRestrictions.builder()
+                                                                 .pageable(pageable)
+                                                                 .searchCriterias(searchCriteria)
+                                                                 .statusRestrictions(
+                                                                     statusRestrictions)
+                                                                 .validOn(validOn)
+                                                                 .typeRestrictions(typeRestrictions)
+                                                                 .swissLineNumber(swissLineNumber)
+                                                                 .businessOrganisation(
+                                                                     businessOrganisation)
+                                                                 .build());
+    List<LineModel> lineModels = lines.stream().map(this::toModel).toList();
     return Container.<LineModel>builder()
                     .objects(lineModels)
                     .totalCount(lines.getTotalElements()).build();
@@ -73,19 +77,19 @@ public class LineController implements LineApiV1 {
 
   @Override
   public List<LineModel> getCoveredLines() {
-    return lineService.getAllCoveredLines().stream().map(this::toModel).collect(toList());
+    return lineService.getAllCoveredLines().stream().map(this::toModel).toList();
   }
 
   @Override
   public List<LineVersionModel> getCoveredVersionLines() {
-    return lineService.getAllCoveredLineVersions().stream().map(this::toModel).collect(toList());
+    return lineService.getAllCoveredLineVersions().stream().map(this::toModel).toList();
   }
 
   @Override
   public List<LineVersionModel> getLineVersions(String slnid) {
     List<LineVersionModel> lineVersionModels = lineService.findLineVersions(slnid).stream()
                                                           .map(this::toModel)
-                                                          .collect(toList());
+                                                          .toList();
     if (lineVersionModels.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
@@ -106,7 +110,7 @@ public class LineController implements LineApiV1 {
                                              .orElseThrow(() -> new IdNotFoundException(id));
     lineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
-                      .collect(toList());
+                      .toList();
   }
 
   @Override
