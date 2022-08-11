@@ -2,9 +2,10 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toList;
 
-import ch.sbb.atlas.amazon.controller.AmazonController;
+import ch.sbb.atlas.amazon.controller.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.model.exception.ExportException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
@@ -21,6 +22,7 @@ import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.export.ExportService;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,7 +40,7 @@ public class LineController implements LineApiV1 {
 
   private final LineService lineService;
   private final CoverageService coverageService;
-  private final AmazonController amazonController;
+  private final AmazonService amazonService;
   private final ExportService exportService;
 
   @Override
@@ -114,44 +115,60 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public ResponseEntity<URL> exportFullLineVersionsCsv() {
+  public URL exportFullLineVersionsCsv() {
     File csvFile = exportService.getFullLineVersionsCsv();
-    return amazonController.putFile(csvFile);
+    return putCsvFile(csvFile);
   }
 
   @Override
-  public ResponseEntity<URL> exportFullLineVersionsCsvZip() {
+  public URL exportFullLineVersionsCsvZip() {
     File csvFile = exportService.getFullLineVersionsCsv();
-    return amazonController.putZipFile(csvFile);
+    return putZipFile(csvFile);
   }
 
   @Override
-  public ResponseEntity<URL> exportActualLineVersionsCsv() {
+  public URL exportActualLineVersionsCsv() {
     File csvFile = exportService.getActualLineVersionsCsv();
-    return amazonController.putFile(csvFile);
+    return putCsvFile(csvFile);
   }
 
   @Override
-  public ResponseEntity<URL> exportActualLineVersionsCsvZip() {
+  public URL exportActualLineVersionsCsvZip() {
     File csvFile = exportService.getActualLineVersionsCsv();
-    return amazonController.putZipFile(csvFile);
+    return putZipFile(csvFile);
   }
 
   @Override
-  public ResponseEntity<URL> exportFutureTimetableVersionsCsv() {
+  public URL exportFutureTimetableVersionsCsv() {
     File csvFile = exportService.getActualFutureTimetableLineVersionsCsv();
-    return amazonController.putFile(csvFile);
+    return putCsvFile(csvFile);
   }
 
   @Override
-  public ResponseEntity<URL> exportFutureTimetableLineVersionsCsvZip() {
+  public URL exportFutureTimetableLineVersionsCsvZip() {
     File csvFile = exportService.getActualFutureTimetableLineVersionsCsv();
-    return amazonController.putZipFile(csvFile);
+    return putZipFile(csvFile);
   }
 
   @Override
   public void deleteLines(String slnid) {
     lineService.deleteAll(slnid);
+  }
+
+  private URL putCsvFile(File csvFile) {
+    try {
+      return amazonService.putFile(csvFile);
+    } catch (IOException e) {
+      throw new ExportException(csvFile);
+    }
+  }
+
+  private URL putZipFile(File zipFile) {
+    try {
+      return amazonService.putZipFile(zipFile);
+    } catch (IOException e) {
+      throw new ExportException(zipFile);
+    }
   }
 
   private LineVersionModel toModel(LineVersion lineVersion) {

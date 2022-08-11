@@ -32,9 +32,6 @@ public class FileServiceTest {
     //then
     assertThat(zipFile).isNotNull();
     assertThat(zipFile.getName()).isEqualTo("tmp.csv.zip");
-    String contentType = Files.probeContentType(zipFile.toPath());
-    assertThat(contentType).isEqualTo("application/x-zip-compressed");
-
   }
 
   @Test
