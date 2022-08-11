@@ -55,6 +55,7 @@ public class FileService {
   }
 
   public String getDir() {
+    String springprofilesactive = System.getenv("SPRING_PROFILES_ACTIVE");
     if ("local".equals(activeProfile)) {
       File dir = new File("./export");
       if (!dir.exists()) {
