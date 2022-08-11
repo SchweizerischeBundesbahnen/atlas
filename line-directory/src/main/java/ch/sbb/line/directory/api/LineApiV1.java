@@ -21,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -80,21 +79,21 @@ public interface LineApiV1 {
   CoverageModel getLineCoverage(@PathVariable String slnid);
 
   @PostMapping(value = "/export-csv/full/csv", produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<URL> exportFullLineVersionsCsv();
+  URL exportFullLineVersionsCsv();
 
   @PostMapping(value = "/export-csv/full/zip", produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<URL> exportFullLineVersionsCsvZip();
+  URL exportFullLineVersionsCsvZip();
 
   @PostMapping(value = "/export-csv/actual/csv", produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<URL> exportActualLineVersionsCsv();
+  URL exportActualLineVersionsCsv();
 
   @PostMapping(value = "/export-csv/actual/zip", produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<URL> exportActualLineVersionsCsvZip();
+  URL exportActualLineVersionsCsvZip();
 
   @PostMapping(value = "/export-csv/future-timetable/csv", produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<URL> exportFutureTimetableVersionsCsv();
+  URL exportFutureTimetableVersionsCsv();
 
   @PostMapping(value = "/export-csv/future-timetable/zip", produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<URL> exportFutureTimetableLineVersionsCsvZip();
+  URL exportFutureTimetableLineVersionsCsvZip();
 
 }
