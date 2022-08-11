@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.amazon.controller.AmazonService;
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.Container;
 import ch.sbb.line.directory.LineTestData;
