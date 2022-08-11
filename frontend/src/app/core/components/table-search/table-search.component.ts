@@ -11,10 +11,11 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DATE_PATTERN, MAX_DATE, MIN_DATE } from '../../date/date.service';
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Status } from '../../../api';
 import moment from 'moment/moment';
 import { ValidationService } from '../../validation/validation.service';
+import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 
 @Component({
   selector: 'app-table-search',
@@ -26,9 +27,15 @@ export class TableSearchComponent {
   @Input() additionalFieldTemplate!: TemplateRef<any>;
   @Input() displayStatus = true;
   @Input() displayValidOn = true;
+  @Input() displayBusinessOrganisationSearch = true;
   @Input() searchTextColumnStyle = 'col-4';
+
   @Output() searchEvent: EventEmitter<TableSearch> = new EventEmitter<TableSearch>();
   @ViewChild('validOnInput') validOnInput!: ElementRef;
+
+  @ViewChild(BusinessOrganisationSelectComponent, { static: true })
+  businessOrganisationSelectComponent!: BusinessOrganisationSelectComponent;
+  boSearchForm = new FormGroup({ businessOrganisation: new FormControl() });
 
   readonly STATUS_OPTIONS = Object.values(Status);
   searchStrings: string[] = [];
@@ -92,6 +99,19 @@ export class TableSearchComponent {
     this.activeSearch.searchCriteria = this.searchStrings;
     this.activeSearch.validOn = this.searchDate;
     this.activeSearch.statusChoices = this.activeStatuses;
+    this.activeSearch.boChoice = this.boSearchForm.get('businessOrganisation')?.value;
     this.searchEvent.emit(this.activeSearch);
+  }
+
+  businessOrganisationChanged($event: any) {
+    this.boSearchForm.patchValue($event, { emitEvent: false });
+    this.emitSearch();
+  }
+
+  restoreBusinessOrganisation(sboid: string) {
+    if (this.businessOrganisationSelectComponent) {
+      this.boSearchForm.patchValue({ businessOrganisation: sboid }, { emitEvent: false });
+      this.businessOrganisationSelectComponent.loadSboid(sboid);
+    }
   }
 }
