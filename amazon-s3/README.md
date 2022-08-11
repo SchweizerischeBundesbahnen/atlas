@@ -5,6 +5,7 @@
 - [Links](#links)
 - [Atlas Amazon S3 Client](#atlas-amazon-s3-client)
 - [Atlas Users onboarding](#atlas-users-onboarding)
+- [Development](#development)
 
 <!-- tocstop -->
 
@@ -31,4 +32,3 @@ See [Amazon S3 Bucket Users Onboarding](documentaion/AMAZON_S3_BUCKET_USERS_ONBO
 
 To browse on a Bucket
 install [AWS Toolkit IntelliJ Plugin](https://blog.jetbrains.com/idea/2022/02/aws-in-intellij-idea/)
-

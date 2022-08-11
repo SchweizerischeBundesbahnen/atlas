@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.configuration;
 
 import ch.sbb.atlas.amazon.config.AmazonAtlasConfig;
-import ch.sbb.atlas.amazon.controller.AmazonService;
-import ch.sbb.atlas.amazon.controller.AmazonServiceImpl;
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.amazon.service.AmazonServiceImpl;
 import ch.sbb.atlas.amazon.service.FileService;
 import com.amazonaws.services.s3.AmazonS3;
 import org.springframework.beans.factory.annotation.Value;
