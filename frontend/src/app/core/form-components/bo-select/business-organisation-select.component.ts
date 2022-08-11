@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { BusinessOrganisation, BusinessOrganisationsService } from '../../../api';
 import { BusinessOrganisationLanguageService } from './business-organisation-language.service';
@@ -10,12 +10,15 @@ import { map } from 'rxjs/operators';
   templateUrl: './business-organisation-select.component.html',
   styleUrls: ['./business-organisation-select.component.scss'],
 })
-export class BusinessOrganisationSelectComponent implements OnInit {
+export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy {
   @Input() valueExtraction = 'sboid';
   @Input() controlName!: string;
   @Input() formGroup!: FormGroup;
 
+  @Output() selectedBusinessOrganisationChanged = new EventEmitter();
+
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
+  private formSubscription!: Subscription;
 
   constructor(
     private businessOrganisationsService: BusinessOrganisationsService,
@@ -23,11 +26,24 @@ export class BusinessOrganisationSelectComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const currentSboid = this.formGroup.get(this.controlName)?.value;
-    if (currentSboid)
+    this.formSubscription = this.formGroup.valueChanges.subscribe((change) => {
+      this.selectedBusinessOrganisationChanged.emit(change);
+      this.loadSboid(change.businessOrganisation);
+    });
+
+    this.loadSboid(this.formGroup.get(this.controlName)?.value as string);
+  }
+
+  loadSboid(sboid: string) {
+    if (sboid) {
       this.businessOrganisations = this.businessOrganisationsService
-        .getAllBusinessOrganisations([currentSboid])
+        .getAllBusinessOrganisations([sboid])
         .pipe(map((value) => value.objects ?? []));
+    }
+  }
+
+  ngOnDestroy() {
+    this.formSubscription.unsubscribe();
   }
 
   readonly displaySettings = (item: BusinessOrganisation) => {
