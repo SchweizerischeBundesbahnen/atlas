@@ -76,6 +76,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
         $paginationAndSearch.searchCriteria,
         $paginationAndSearch.statusChoices,
         $paginationAndSearch.sublineTypes,
+        undefined,
         $paginationAndSearch.validOn,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
