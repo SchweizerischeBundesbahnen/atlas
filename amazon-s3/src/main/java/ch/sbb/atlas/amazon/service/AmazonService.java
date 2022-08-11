@@ -1,4 +1,4 @@
-package ch.sbb.atlas.amazon.controller;
+package ch.sbb.atlas.amazon.service;
 
 import java.io.File;
 import java.io.IOException;
