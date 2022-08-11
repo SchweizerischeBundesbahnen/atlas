@@ -195,7 +195,9 @@ export class SublineDetailComponent
 
   searchMainlines(searchString: string) {
     this.mainlines$ = this.linesService
-      .getLines(searchString, [], [], [], undefined, undefined, undefined, ['swissLineNumber,ASC'])
+      .getLines(searchString, [], [], [], undefined, undefined, undefined, undefined, [
+        'swissLineNumber,ASC',
+      ])
       .pipe(map((value) => value.objects ?? []));
   }
 }
