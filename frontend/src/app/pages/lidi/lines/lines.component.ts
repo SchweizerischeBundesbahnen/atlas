@@ -72,6 +72,7 @@ export class LinesComponent implements OnInit, OnDestroy {
         $paginationAndSearch.searchCriteria,
         $paginationAndSearch.statusChoices,
         $paginationAndSearch.lineTypes,
+        $paginationAndSearch.boChoice,
         $paginationAndSearch.validOn,
         $paginationAndSearch.page,
         $paginationAndSearch.size,

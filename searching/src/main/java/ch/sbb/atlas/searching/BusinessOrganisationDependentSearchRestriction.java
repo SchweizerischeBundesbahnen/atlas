@@ -1,5 +1,6 @@
 package ch.sbb.atlas.searching;
 
+import ch.sbb.atlas.searching.specification.SingleStringSpecification;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public abstract class BusinessOrganisationDependentSearchRestriction<T> extends
 
   @Override
   protected Specification<T> getBaseSpecification() {
-    return super.getBaseSpecification().and(specificationBuilder().singleStringSpecification(
-        businessOrganisation));
+    return super.getBaseSpecification()
+                .and(new SingleStringSpecification<>(businessOrganisation, "businessOrganisation"));
   }
 }
