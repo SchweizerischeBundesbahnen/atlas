@@ -42,5 +42,4 @@ public class FileServiceTest {
     assertThat(result).isEqualTo("/usr/local/atlas/tmp/");
   }
 
-
 }

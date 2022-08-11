@@ -2,7 +2,7 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toList;
 
-import ch.sbb.atlas.amazon.controller.AmazonService;
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.Container;
 import ch.sbb.atlas.model.exception.ExportException;
@@ -159,7 +159,7 @@ public class LineController implements LineApiV1 {
     try {
       return amazonService.putFile(csvFile);
     } catch (IOException e) {
-      throw new ExportException(csvFile);
+      throw new ExportException(csvFile, e);
     }
   }
 
@@ -167,7 +167,7 @@ public class LineController implements LineApiV1 {
     try {
       return amazonService.putZipFile(zipFile);
     } catch (IOException e) {
-      throw new ExportException(zipFile);
+      throw new ExportException(zipFile, e);
     }
   }
 
