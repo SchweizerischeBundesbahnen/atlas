@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.configuration;
 
 import ch.sbb.atlas.amazon.config.AmazonAtlasConfig;
-import ch.sbb.atlas.amazon.controller.AmazonController;
-import ch.sbb.atlas.amazon.controller.AmazonControllerImpl;
+import ch.sbb.atlas.amazon.controller.AmazonService;
+import ch.sbb.atlas.amazon.controller.AmazonServiceImpl;
 import ch.sbb.atlas.amazon.service.FileService;
 import com.amazonaws.services.s3.AmazonS3;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +27,8 @@ public class AmazonConfig {
   }
 
   @Bean
-  public AmazonController amazonController() {
-    return new AmazonControllerImpl(this.getAmazonS3Client(), new FileService());
+  public AmazonService amazonService() {
+    return new AmazonServiceImpl(this.getAmazonS3Client(), new FileService());
   }
 
 }

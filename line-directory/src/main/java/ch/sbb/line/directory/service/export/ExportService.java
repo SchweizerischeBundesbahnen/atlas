@@ -7,6 +7,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionCsvModel;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -45,18 +46,19 @@ public class ExportService {
   }
 
   private File createCsvFile(List<LineVersion> lineVersions, ExportType exportType) {
-    try {
-      File csvFile = createFile(exportType);
-      AtlasCsvMapper atlasCsvMapper = new AtlasCsvMapper(LineVersionCsvModel.class);
 
-      List<LineVersionCsvModel> lineVersionCsvModels =
-          lineVersions.stream()
-                      .map(LineVersionCsvModel::toCsvModel)
-                      .collect(toList());
+    File csvFile = createFile(exportType);
+    AtlasCsvMapper atlasCsvMapper = new AtlasCsvMapper(LineVersionCsvModel.class);
 
-      ObjectWriter objectWriter = atlasCsvMapper.getCsvMapper().writerFor(LineVersionCsvModel.class)
-                                                .with(atlasCsvMapper.getCsvSchema());
-      objectWriter.writeValues(csvFile).writeAll(lineVersionCsvModels);
+    List<LineVersionCsvModel> lineVersionCsvModels =
+        lineVersions.stream()
+                    .map(LineVersionCsvModel::toCsvModel)
+                    .collect(toList());
+
+    ObjectWriter objectWriter = atlasCsvMapper.getCsvMapper().writerFor(LineVersionCsvModel.class)
+                                              .with(atlasCsvMapper.getCsvSchema());
+    try (SequenceWriter sequenceWriter = objectWriter.writeValues(csvFile)) {
+      sequenceWriter.writeAll(lineVersionCsvModels);
       return csvFile;
     } catch (IOException e) {
       throw new RuntimeException(e);
