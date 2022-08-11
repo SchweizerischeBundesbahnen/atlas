@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.amazon.controller.AmazonController;
+import ch.sbb.atlas.amazon.controller.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.Container;
 import ch.sbb.line.directory.LineTestData;
@@ -42,7 +42,7 @@ public class LineControllerTest {
   @Mock
   private CoverageService coverageService;
   @Mock
-  private AmazonController amazonController;
+  private AmazonService amazonService;
   @Mock
   private ExportService exportService;
   private LineController lineController;
@@ -76,7 +76,7 @@ public class LineControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineController = new LineController(lineService, coverageService, amazonController,
+    lineController = new LineController(lineService, coverageService, amazonService,
         exportService);
     when(lineService.save(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
