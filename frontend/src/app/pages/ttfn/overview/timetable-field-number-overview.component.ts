@@ -73,6 +73,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     this.getVersionsSubscription = this.timetableFieldNumbersService
       .getOverview(
         $paginationAndSearch.searchCriteria,
+        undefined,
         $paginationAndSearch.validOn,
         $paginationAndSearch.statusChoices,
         $paginationAndSearch.page,
