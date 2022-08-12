@@ -111,7 +111,7 @@ export class TableSearchComponent {
   restoreBusinessOrganisation(sboid: string) {
     if (this.businessOrganisationSelectComponent) {
       this.boSearchForm.patchValue({ businessOrganisation: sboid }, { emitEvent: false });
-      this.businessOrganisationSelectComponent.loadSboid(sboid);
+      this.businessOrganisationSelectComponent.searchBusinessOrganisation(sboid);
     }
   }
 }
