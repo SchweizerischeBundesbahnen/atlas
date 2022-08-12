@@ -8,17 +8,18 @@ mat-select {
 }
 
 .ng-select {
+  margin-top: -1px;
   min-height: 32px;
   padding-bottom: inherit;
-  border-color: variables.$gray-400;
+  border-color: variables.$primary-400;
   border-style: solid;
   border-width: thin;
-  border-top: 0;
+  border-radius: 5px;
 
   &:hover:not(.ng-select-disabled),
   &.ng-select-focused {
     border-width: 3px;
-    border-color: variables.$primary-300;
+    border-color: variables.$primary-400;
 
     .ng-value {
       margin-left: -2px;
@@ -46,14 +47,19 @@ mat-select {
       border-bottom: unset;
     }
 
+    .ng-arrow-wrapper {
+      width: 36px;
+    }
+
     .ng-arrow,
     .ng-clear {
-      color: variables.$gray-400 !important;
+      color: variables.$primary-400 !important;
     }
 
     .ng-value-container {
       height: 32px;
       padding: 4.5px 0 4.5px 4.8px;
+      border-radius: 5px;
       border-top: 0;
 
       .ng-input {
