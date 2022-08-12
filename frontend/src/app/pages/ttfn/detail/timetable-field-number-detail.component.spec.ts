@@ -11,7 +11,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AppTestingModule } from '../../../app.testing.module';
+import { AppTestingModule, MockAppDetailWrapperComponent } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
 import { FormModule } from '../../../core/module/form.module';
 import { Component, Input } from '@angular/core';
@@ -79,15 +79,6 @@ const addTtfData = {
 class MockAppCoverageComponent {
   @Input() pageType!: any;
   @Input() currentRecord!: any;
-}
-
-@Component({
-  selector: 'app-detail-wrapper [controller][headingNew]',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppDetailWrapperComponent {
-  @Input() controller!: any;
-  @Input() headingNew!: any;
 }
 
 let component: TimetableFieldNumberDetailComponent;
