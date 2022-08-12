@@ -1,6 +1,6 @@
 <div class="d-flex flex-wrap">
   <div class="search-row">
-    <div [class]="'d-flex flex-column col-6 search-box' + searchTextColumnStyle">
+    <div [class]="'d-flex flex-column col-6 pe-3 search-box ' + searchTextColumnStyle">
       <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
       <mat-form-field appearance="outline">
         <mat-chip-list #chipList data-cy="table-search-strings">
@@ -26,13 +26,14 @@
         controlName="businessOrganisation"
         [formGroup]="boSearchForm"
         (selectedBusinessOrganisationChanged)="businessOrganisationChanged($event)"
+        [formModus]="false"
       >
       </bo-select>
     </div>
     <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
     <div class="d-flex flex-column col-3" *ngIf="displayStatus">
       <mat-label class="font-bold-lg">{{ 'COMMON.STATUS' | translate }}</mat-label>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="form-outline">
         <mat-select
           data-cy="table-search-status-input"
           (selectionChange)="statusSelectionChange()"
@@ -47,7 +48,7 @@
     </div>
     <div class="d-flex flex-column col-3" *ngIf="displayValidOn">
       <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="form-outline">
         <input
           #validOnInput
           data-cy="table-search-date-input"
