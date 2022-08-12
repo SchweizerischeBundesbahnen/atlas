@@ -4,8 +4,7 @@
   [formGroup]="formGroup"
   [getSelectOption]="displaySettings"
   [bindValueInp]="valueExtraction"
-  (searchTrigger)="search($event)"
-  data-cy="businessOrganisation"
+  (searchTrigger)="searchBusinessOrganisation($event)"
 >
   <mat-label class="font-bold-lg required-indicator">{{
     'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate

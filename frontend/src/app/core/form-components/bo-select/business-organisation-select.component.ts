@@ -26,18 +26,19 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.formSubscription = this.formGroup.valueChanges.subscribe((change) => {
+    const boControl = this.formGroup.get(this.controlName)!;
+    this.formSubscription = boControl.valueChanges.subscribe((change) => {
       this.selectedBusinessOrganisationChanged.emit(change);
-      this.loadSboid(change.businessOrganisation);
+      this.searchBusinessOrganisation(change);
     });
 
-    this.loadSboid(this.formGroup.get(this.controlName)?.value as string);
+    this.searchBusinessOrganisation(boControl.value as string);
   }
 
-  loadSboid(sboid: string) {
-    if (sboid) {
+  searchBusinessOrganisation(searchString: string) {
+    if (searchString) {
       this.businessOrganisations = this.businessOrganisationsService
-        .getAllBusinessOrganisations([sboid])
+        .getAllBusinessOrganisations([searchString])
         .pipe(map((value) => value.objects ?? []));
     }
   }
@@ -58,11 +59,5 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy {
 
   private getCurrentLanguageDescription() {
     return this.businessOrganisationLanguageService.getCurrentLanguageDescription();
-  }
-
-  search(searchString: string) {
-    this.businessOrganisations = this.businessOrganisationsService
-      .getAllBusinessOrganisations([searchString])
-      .pipe(map((value) => value.objects ?? []));
   }
 }
