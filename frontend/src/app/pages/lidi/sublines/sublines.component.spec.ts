@@ -4,7 +4,7 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { ContainerSubline, Status, SublinesService, SublineType } from '../../../api';
 import { SublinesComponent } from './sublines.component';
-import { AppTestingModule } from '../../../app.testing.module';
+import { AppTestingModule, MockAppTableSearchComponent } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Component, Input, TemplateRef } from '@angular/core';
 
@@ -23,17 +23,6 @@ const versionContainer: ContainerSubline = {
   ],
   totalCount: 1,
 };
-
-@Component({
-  selector: 'app-table-search',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppTableSearchComponent {
-  @Input() additionalFieldTemplate!: TemplateRef<any>;
-  @Input() displayStatus = true;
-  @Input() displayValidOn = true;
-  @Input() searchTextColumnStyle = 'col-4';
-}
 
 describe('SublinesComponent', () => {
   let component: SublinesComponent;
@@ -61,6 +50,7 @@ describe('SublinesComponent', () => {
 
   it('should create', () => {
     expect(sublinesService.getSublines).toHaveBeenCalledOnceWith(
+      undefined,
       undefined,
       undefined,
       undefined,

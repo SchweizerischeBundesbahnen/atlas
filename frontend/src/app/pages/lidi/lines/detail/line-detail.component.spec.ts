@@ -6,8 +6,7 @@ import { LinesService, LineType, LineVersion, PaymentType } from '../../../../ap
 import { LineDetailComponent } from './line-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AppTestingModule } from '../../../../app.testing.module';
-import { Component, Input } from '@angular/core';
+import { AppTestingModule, MockAppDetailWrapperComponent } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 
@@ -67,15 +66,6 @@ let component: LineDetailComponent;
 let fixture: ComponentFixture<LineDetailComponent>;
 let router: Router;
 let dialogRef: MatDialogRef<LineDetailComponent>;
-
-@Component({
-  selector: 'app-detail-wrapper [controller][headingNew]',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppDetailWrapperComponent {
-  @Input() controller!: any;
-  @Input() headingNew!: any;
-}
 
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
