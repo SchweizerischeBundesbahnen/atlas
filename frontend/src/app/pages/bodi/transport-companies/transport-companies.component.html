@@ -21,7 +21,7 @@
 <ng-template #transportCompanyTypeSelection>
   <div class="d-flex flex-column col-3 pe-3">
     <mat-label class="font-bold-lg">{{ 'BODI.TRANSPORT_COMPANIES.STATUS' | translate }}</mat-label>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="form-outline">
       <mat-select
         (selectionChange)="onStatusSelectionChange()"
         [(value)]="activeStatusTypes"
