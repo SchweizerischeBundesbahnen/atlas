@@ -14,13 +14,12 @@
   [displayStatusSearch]="false"
   [displayValidOnSearch]="false"
   [displayBusinessOrganisationSearch]="false"
-  searchTextColumnStyle="col-9"
   data-cy="bodi-transport-companies"
 >
 </app-table>
 <router-outlet></router-outlet>
 <ng-template #transportCompanyTypeSelection>
-  <div class="d-flex flex-column col pe-3">
+  <div class="d-flex flex-column col-3 pe-3">
     <mat-label class="font-bold-lg">{{ 'BODI.TRANSPORT_COMPANIES.STATUS' | translate }}</mat-label>
     <mat-form-field appearance="outline">
       <mat-select
