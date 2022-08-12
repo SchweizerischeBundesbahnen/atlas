@@ -6,8 +6,10 @@
   [bindValueInp]="valueExtraction"
   (searchTrigger)="searchBusinessOrganisation($event)"
 >
-  <mat-label class="font-bold-lg required-indicator">{{
+  <mat-label class="font-bold-lg" [ngClass]="formModus ? 'required-indicator' : ''">{{
     'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
   }}</mat-label>
-  <div class="mat-label-form-field-space-between"></div>
+  <div
+    [class]="formModus ? 'mat-label-form-field-space-between' : 'search-mode-space-between'"
+  ></div>
 </form-search-select>
