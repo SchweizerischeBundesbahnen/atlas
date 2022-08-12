@@ -93,7 +93,11 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-6 pe-3">
-        <bo-select controlName="businessOrganisation" [formGroup]="form"> </bo-select>
+        <bo-select
+          controlName="businessOrganisation"
+          [formGroup]="form"
+          data-cy="businessOrganisation"
+        ></bo-select>
       </div>
 
       <div class="d-flex flex-column col-3 pe-3">

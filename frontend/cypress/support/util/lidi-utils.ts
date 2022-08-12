@@ -6,6 +6,8 @@ export default class LidiUtils {
   private static LIDI_LINES_PATH = '/line-directory/lines';
   private static LIDI_SUBLINES_PATH = '/line-directory/sublines';
 
+  private static MAINLINE_SWISS_LINE_NUMBER = 'b0.IC2-E2E';
+
   static navigateToLines() {
     CommonUtils.navigateToHomeViaHomeLogo();
     this.interceptLines('#line-directory');
@@ -284,7 +286,7 @@ export default class LidiUtils {
       slnid: '',
       validFrom: '01.01.2000',
       validTo: '31.12.2002',
-      swissLineNumber: 'b0.IC2-E2E',
+      swissLineNumber: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Betrieblich',
       paymentType: 'International',
@@ -473,7 +475,7 @@ export default class LidiUtils {
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
       swissSublineNumber: 'b0.IC233',
-      mainline: 'b0.IC2',
+      mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Kompensation',
       paymentType: 'International',
@@ -489,7 +491,7 @@ export default class LidiUtils {
       validFrom: '01.01.2002',
       validTo: '31.12.2002',
       swissSublineNumber: 'b0.IC233',
-      mainline: 'b0.IC2',
+      mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Technisch',
       paymentType: 'International',

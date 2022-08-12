@@ -9,7 +9,7 @@ export default class BodiDependentUtils {
       body: BodiDependentUtils.getDependentBusinessOrganisation(),
       headers: {
         Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
-      }
+      },
     }).then((response) => {
       expect(response).property('status').to.equal(201);
       window.sessionStorage.setItem('sboid', response.body.sboid);
