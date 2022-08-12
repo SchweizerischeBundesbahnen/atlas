@@ -13,6 +13,7 @@ import { map } from 'rxjs/operators';
 export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy {
   @Input() valueExtraction = 'sboid';
   @Input() controlName!: string;
+  @Input() formModus = true;
   @Input() formGroup!: FormGroup;
 
   @Output() selectedBusinessOrganisationChanged = new EventEmitter();
