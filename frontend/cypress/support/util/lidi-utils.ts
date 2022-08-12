@@ -311,7 +311,7 @@ export default class LidiUtils {
       validFrom: '01.01.1700',
       validTo: '01.01.1700',
       swissLineNumber: 'minimal1',
-      businessOrganisation: 'BO1',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Ordentlich',
       paymentType: 'Regional',
       colorFontRgb: '#ABCDEF',
@@ -334,7 +334,7 @@ export default class LidiUtils {
       validFrom: '31.12.9999',
       validTo: '31.12.9999',
       swissLineNumber: 'minimal2',
-      businessOrganisation: 'BO2',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Temporär',
       paymentType: 'Keine',
       colorFontRgb: '#1FE23D',
@@ -448,6 +448,28 @@ export default class LidiUtils {
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
   }
 
+  static searchAndNavigateToSubline(subline: any) {
+    const pathToIntercept = '/line-directory/v1/sublines?**';
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      subline.swissSublineNumber
+    );
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      subline.slnid
+    );
+
+    // Check that the table contains 1 result
+    cy.get(DataCy.LIDI_SUBLINES + ' table tbody tr').should('have.length', 1);
+    // Click on the item
+    cy.contains('td', subline.swissSublineNumber).parents('tr').click({ force: true });
+    this.assertContainsSublineVersion(subline);
+  }
+
   static assertContainsSublineVersion(version: any) {
     CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
     CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
@@ -474,7 +496,7 @@ export default class LidiUtils {
       slnid: '',
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
-      swissSublineNumber: 'b0.IC233',
+      swissSublineNumber: 'b0.IC233-E2E',
       mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Kompensation',
@@ -490,7 +512,7 @@ export default class LidiUtils {
     return {
       validFrom: '01.01.2002',
       validTo: '31.12.2002',
-      swissSublineNumber: 'b0.IC233',
+      swissSublineNumber: 'b0.IC233-E2E',
       mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Technisch',
@@ -522,7 +544,7 @@ export default class LidiUtils {
       swissSublineNumber: 'r.31.001:x_',
       validFrom: '01.01.1700',
       validTo: '01.01.2000',
-      businessOrganisation: '146 - STI',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Kompensation',
       paymentType: 'Regional',
     };
@@ -538,7 +560,7 @@ export default class LidiUtils {
       swissSublineNumber: 'r.31.001:a_',
       validFrom: '01.01.2000',
       validTo: '31.12.2099',
-      businessOrganisation: 'abcdefghijklmnopqrstuvwxyabcdefghijklmnopqrstuvwxy',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Konzession',
       paymentType: 'Lokal',
     };

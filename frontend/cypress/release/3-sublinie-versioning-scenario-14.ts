@@ -1,6 +1,7 @@
 import LidiUtils from '../support/util/lidi-utils';
 import CommonUtils from '../support/util/common-utils';
 import { DataCy } from '../support/data-cy';
+import BodiDependentUtils from '../support/util/bodi-dependent-utils';
 
 /** Szenario 14: Linke Grenze ("Gültig von") auf gleichen Tag setzen, wie rechte Grenze ("Gültig bis")
  *
@@ -20,6 +21,10 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
     cy.atlasLogin();
   });
 
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
+  });
+
   it('Step-2: Add mainline', () => {
     mainline = LidiUtils.addMainLine();
   });
@@ -34,6 +39,7 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
     LidiUtils.clickOnAddNewSublineVersion();
     LidiUtils.fillSublineVersionForm(sublineVersion);
     CommonUtils.saveSubline();
+    LidiUtils.readSlnidFromForm(sublineVersion);
   });
 
   it('Step-5: Update Subline Version', () => {
@@ -55,8 +61,7 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
   });
 
   it('Step-8: Check the added is present on the table result and navigate to it ', () => {
-    cy.contains(sublineVersion.swissSublineNumber).parents('tr').click();
-    cy.contains(sublineVersion.number);
+    LidiUtils.searchAndNavigateToSubline(sublineVersion);
   });
 
   it('Step-9: Delete the subline item ', () => {
@@ -71,5 +76,9 @@ describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
 
     CommonUtils.deleteItem();
     LidiUtils.assertIsOnLines();
+  });
+
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 });
