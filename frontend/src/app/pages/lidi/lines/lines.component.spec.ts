@@ -4,9 +4,8 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { LinesComponent } from './lines.component';
 import { ContainerLine, LinesService, LineType } from '../../../api';
-import { AppTestingModule } from '../../../app.testing.module';
+import { AppTestingModule, MockAppTableSearchComponent } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Component, Input, TemplateRef } from '@angular/core';
 
 const versionContainer: ContainerLine = {
   objects: [
@@ -23,17 +22,6 @@ const versionContainer: ContainerLine = {
   ],
   totalCount: 1,
 };
-
-@Component({
-  selector: 'app-table-search',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppTableSearchComponent {
-  @Input() additionalFieldTemplate!: TemplateRef<any>;
-  @Input() displayStatus = true;
-  @Input() displayValidOn = true;
-  @Input() searchTextColumnStyle = 'col-4';
-}
 
 describe('LinesComponent', () => {
   let component: LinesComponent;
