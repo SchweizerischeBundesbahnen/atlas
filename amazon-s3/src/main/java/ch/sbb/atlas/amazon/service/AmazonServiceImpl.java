@@ -80,6 +80,7 @@ public class AmazonServiceImpl implements AmazonService {
 
   @Override
   public String getBucketNameFromActiveProfile() {
+    String profilesActive = System.getenv("SPRING_PROFILES_ACTIVE");
     if ("local".equals(activeProfile) || activeProfile == null) {
       activeProfile = "dev";
     }
