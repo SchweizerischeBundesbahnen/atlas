@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class FileService {
   public static final String ZIP = ".zip";
   private static final String DOCKER_FILE_DIRECTORY = "/usr/local/atlas/tmp/";
   @Value("${spring.profiles.active:local}")
+  @Setter
   private String activeProfile;
 
   public File zipFile(File file) {
@@ -55,8 +57,7 @@ public class FileService {
   }
 
   public String getDir() {
-    String springprofilesactive = System.getenv("SPRING_PROFILES_ACTIVE");
-    if ("local".equals(activeProfile)) {
+    if ("local".equals(activeProfile) || activeProfile == null) {
       File dir = new File("./export");
       if (!dir.exists()) {
         dir.mkdirs();
