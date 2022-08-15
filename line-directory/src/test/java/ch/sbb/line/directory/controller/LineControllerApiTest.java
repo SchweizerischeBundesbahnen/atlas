@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -60,6 +61,9 @@ public class LineControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private AmazonS3 amazonS3;
+
+  @Autowired
+  private AmazonService amazonServiceImpl;
 
   @AfterEach
   public void tearDown() {
@@ -202,8 +206,8 @@ public class LineControllerApiTest extends BaseControllerApiTest {
 
   private void deleteFileFromBucket(MvcResult mvcResult) throws UnsupportedEncodingException {
     String result = mvcResult.getResponse().getContentAsString();
-    String filePath = result.substring(result.lastIndexOf("/") + 1, result.length() - 1);
-    amazonS3.deleteObject("atlas-data-broker-dev", filePath);
+    String filePath = result.substring(result.lastIndexOf("/"), result.length() - 1);
+    amazonS3.deleteObject(amazonServiceImpl.getBucketNameFromActiveProfile(), "line" + filePath);
   }
 
   @Test

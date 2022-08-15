@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +17,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AmazonServiceImpl implements AmazonService {
 
+  public static final String ATLAS_DATA_EXPORT_PREFIX = "atlas-data-export-";
   private final AmazonS3 amazonS3;
   private final FileService fileService;
+
+  @Setter
   @Value("${spring.profiles.active:local}")
   private String activeProfile;
+
+  @Setter
+  @Value("${amazon.bucket.dir}")
+  private String bucketDir;
 
   @Override
   public URL putFile(File file) throws IOException {
@@ -47,20 +55,38 @@ public class AmazonServiceImpl implements AmazonService {
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
       String bucket = getBucketNameFromActiveProfile();
-      putObjectRequest = new PutObjectRequest(bucket, file.getName(), inputStream, metadata);
+      String filePathName = getFilePathName(file);
+      putObjectRequest = new PutObjectRequest(bucket, filePathName, inputStream,
+          metadata);
       amazonS3.putObject(putObjectRequest);
-      url = amazonS3.getUrl(bucket, file.getName());
+      url = amazonS3.getUrl(bucket, filePathName);
       return url;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  private String getBucketNameFromActiveProfile() {
-    if ("local".equals(activeProfile)) {
+  String getFilePathName(File file) {
+    if (bucketDir == null) {
+      throw new IllegalStateException(
+          "Please define the property '${amazon.bucket.dir}' in the appropriate properties file!");
+    }
+    return bucketDir + "/" + file.getName();
+  }
+
+  @Override
+  public String getBucketNameFromActiveProfile() {
+    if ("local".equals(activeProfile) || activeProfile == null) {
       activeProfile = "dev";
     }
-    return "atlas-data-broker-" + activeProfile;
+    if ("prod".equals(activeProfile)) {
+      return ATLAS_DATA_EXPORT_PREFIX + activeProfile;
+    }
+    if ("dev".equals(activeProfile) || "test".equals(activeProfile) ||
+        "int".equals(activeProfile)) {
+      return ATLAS_DATA_EXPORT_PREFIX + activeProfile + "-dev";
+    }
+    throw new IllegalStateException("Please define a valid [dev,test,int,prod] spring profile!");
   }
 
 }
