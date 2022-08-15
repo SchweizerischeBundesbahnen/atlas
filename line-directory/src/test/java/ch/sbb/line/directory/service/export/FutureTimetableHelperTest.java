@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service.export;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
@@ -9,14 +10,14 @@ import org.junit.jupiter.api.Test;
  * To check which day of the year should be the Actual Future Timetable
  * see <a href="https://www.fahrplanfelder.ch/en/explanations/timetable-year.html">Timetable year</a>
  */
-public class ExportHelperTest {
+public class FutureTimetableHelperTest {
 
   @Test
   public void shouldGetActualFutureTimetableDateForYear2022_12_9() {
     //given
     LocalDate futureTimetableDate2022 = LocalDate.of(2022, 12, 11);
     //when
-    LocalDate result = ExportHelper.getFutureTimetableDate(LocalDate.of(2022, 12, 9));
+    LocalDate result = FutureTimetableHelper.getFutureTimetableDate(LocalDate.of(2022, 12, 9));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2022);
   }
@@ -26,7 +27,7 @@ public class ExportHelperTest {
     //given
     LocalDate futureTimetableDate2022 = LocalDate.of(2022, 12, 11);
     //when
-    LocalDate result = ExportHelper.getFutureTimetableDate(LocalDate.of(2022, 12, 10));
+    LocalDate result = FutureTimetableHelper.getFutureTimetableDate(LocalDate.of(2022, 12, 10));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2022);
   }
@@ -36,7 +37,7 @@ public class ExportHelperTest {
     //given
     LocalDate futureTimetableDate2023 = LocalDate.of(2023, 12, 10);
     //when
-    LocalDate result = ExportHelper.getFutureTimetableDate(LocalDate.of(2022, 12, 11));
+    LocalDate result = FutureTimetableHelper.getFutureTimetableDate(LocalDate.of(2022, 12, 11));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2023);
   }
@@ -46,7 +47,7 @@ public class ExportHelperTest {
     //given
     LocalDate futureTimetableDate2023 = LocalDate.of(2023, 12, 10);
     //when
-    LocalDate result = ExportHelper.getFutureTimetableDate(LocalDate.of(2022, 12, 12));
+    LocalDate result = FutureTimetableHelper.getFutureTimetableDate(LocalDate.of(2022, 12, 12));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2023);
   }
@@ -56,7 +57,8 @@ public class ExportHelperTest {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2021, 12, 12);
     //when
-    LocalDate result = ExportHelper.getActualFutureTimetableDate(LocalDate.now().withYear(2021));
+    LocalDate result = FutureTimetableHelper.getActualFutureTimetableDate(
+        LocalDate.now().withYear(2021));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2021);
   }
@@ -66,7 +68,8 @@ public class ExportHelperTest {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2022, 12, 11);
     //when
-    LocalDate result = ExportHelper.getActualFutureTimetableDate(LocalDate.now().withYear(2022));
+    LocalDate result = FutureTimetableHelper.getActualFutureTimetableDate(
+        LocalDate.now().withYear(2022));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2021);
   }
@@ -76,7 +79,8 @@ public class ExportHelperTest {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2023, 12, 10);
     //when
-    LocalDate result = ExportHelper.getActualFutureTimetableDate(LocalDate.now().withYear(2023));
+    LocalDate result = FutureTimetableHelper.getActualFutureTimetableDate(
+        LocalDate.now().withYear(2023));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2021);
   }
@@ -86,7 +90,8 @@ public class ExportHelperTest {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2024, 12, 15);
     //when
-    LocalDate result = ExportHelper.getActualFutureTimetableDate(LocalDate.now().withYear(2024));
+    LocalDate result = FutureTimetableHelper.getActualFutureTimetableDate(
+        LocalDate.now().withYear(2024));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2021);
   }
@@ -96,7 +101,8 @@ public class ExportHelperTest {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2025, 12, 14);
     //when
-    LocalDate result = ExportHelper.getActualFutureTimetableDate(LocalDate.now().withYear(2025));
+    LocalDate result = FutureTimetableHelper.getActualFutureTimetableDate(
+        LocalDate.now().withYear(2025));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2021);
   }
