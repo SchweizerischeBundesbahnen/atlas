@@ -40,8 +40,8 @@ logging:
     root: INFO
     org.hibernate: ERROR
 amazon:
-  accessKey: ${AMAZON-ACCESS-KEY}
-  secretKey: ${AMAZON-SECRET-KEY}
+  accessKey: ${AMAZON_ACCESS_KEY}
+  secretKey: ${AMAZON_SECRET_KEY}
   region: "eu-central-1"
   bucket:
     dir: "line"

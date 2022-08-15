@@ -52,14 +52,14 @@
       "variable": "NPM_AUTH"
     },
     {
-      "id": "ssp-1706i9d9g-7xuk-91z1-b95l-ybgaqd59h59",
-      "type": "passwordVariable",
-      "variable": "AMAZON-ACCESS-KEY"
+      "id": "ssp-34cgkzm78-kob4-p39a-o911-4me0sc523n2",
+      "type": "string",
+      "variable": "AMAZON_ACCESS_KEY"
     },
     {
-      "id": "ssp-ns1048pd9-j1u8-c53r-4u04-86ko1jaf011",
-      "type": "passwordVariable",
-      "variable": "AMAZON-SECRET-KEY"
+      "id": "ssp-428jcqu46-30a4-3s29-987a-2l1okz49e0o",
+      "type": "string",
+      "variable": "AMAZON_SECRET_KEY"
     },
     {
       "id": "bin.sbb.ch",
