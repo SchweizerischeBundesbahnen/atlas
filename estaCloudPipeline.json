@@ -53,12 +53,12 @@
     },
     {
       "id": "ssp-1706i9d9g-7xuk-91z1-b95l-ybgaqd59h59",
-      "type": "string",
+      "type": "passwordVariable",
       "variable": "AMAZON-ACCESS-KEY"
     },
     {
       "id": "ssp-ns1048pd9-j1u8-c53r-4u04-86ko1jaf011",
-      "type": "string",
+      "type": "passwordVariable",
       "variable": "AMAZON-SECRET-KEY"
     },
     {
