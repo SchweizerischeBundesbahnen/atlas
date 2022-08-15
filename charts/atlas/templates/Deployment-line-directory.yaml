@@ -37,12 +37,12 @@ spec:
                 secretKeyRef:
                   name: db-secret-{{ .Values.lineDirectory.name }}
                   key: password
-            - name: AMAZON-ACCESS-KEY
+            - name: AMAZON-S3-ACCESS-KEY
               valueFrom:
                 secretKeyRef:
                   name: amazon-client-{{ .Values.lineDirectory.name }}
                   key: amazon-access-key
-            - name: AMAZON-SECRET-KEY
+            - name: AMAZON-S3-SECRET-KEY
               valueFrom:
                 secretKeyRef:
                   name: amazon-client-{{ .Values.lineDirectory.name }}
