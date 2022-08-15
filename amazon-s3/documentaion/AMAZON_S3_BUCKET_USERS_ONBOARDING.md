@@ -16,7 +16,7 @@ Once you have the credentials you can access the bucket via:
       SDKs: https://docs.aws.amazon.com/AmazonS3/latest/userguide/service_code_examples.html
 * S3 Browser: https://s3browser.com/
 
-For more info please contact with us: TechSupport-ATLAS@sbb.ch 
+For more information please contact us: TechSupport-ATLAS@sbb.ch 
 
 
         

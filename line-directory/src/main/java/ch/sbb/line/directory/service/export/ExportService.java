@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.model.exception.ExportException;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionCsvModel;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -62,7 +63,7 @@ public class ExportService {
       sequenceWriter.writeAll(lineVersionCsvModels);
       return csvFile;
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ExportException(csvFile, e);
     }
   }
 
