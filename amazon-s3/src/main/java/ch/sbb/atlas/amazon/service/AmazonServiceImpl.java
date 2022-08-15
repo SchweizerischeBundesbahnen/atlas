@@ -10,13 +10,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class AmazonServiceImpl implements AmazonService {
 
   public static final String ATLAS_DATA_EXPORT_PREFIX = "atlas-data-export-";
@@ -57,9 +55,7 @@ public class AmazonServiceImpl implements AmazonService {
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
       String bucket = getBucketNameFromActiveProfile();
-      log.info("Amazon Bucket Name: " + getBucketNameFromActiveProfile());
       String filePathName = getFilePathName(file);
-      log.info("File Name: " + getFilePathName(file));
       putObjectRequest = new PutObjectRequest(bucket, filePathName, inputStream,
           metadata);
       amazonS3.putObject(putObjectRequest);
@@ -80,7 +76,6 @@ public class AmazonServiceImpl implements AmazonService {
 
   @Override
   public String getBucketNameFromActiveProfile() {
-    String profilesActive = System.getenv("SPRING_PROFILES_ACTIVE");
     if ("local".equals(activeProfile) || activeProfile == null) {
       activeProfile = "dev";
     }
