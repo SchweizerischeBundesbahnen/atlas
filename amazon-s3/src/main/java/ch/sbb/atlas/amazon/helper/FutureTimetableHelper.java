@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.service.export;
+package ch.sbb.atlas.amazon.helper;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import lombok.experimental.UtilityClass;
  * see <a href="https://www.fahrplanfelder.ch/en/explanations/timetable-year.html">Timetable year</a>
  */
 @UtilityClass
-public class ExportHelper {
+public class FutureTimetableHelper {
 
   public static LocalDate getFutureTimetableDate(LocalDate localDate) {
     LocalDate actualFutureTimetableDate = getActualFutureTimetableDate(localDate);
@@ -20,7 +20,7 @@ public class ExportHelper {
     return getActualFutureTimetableDate(localDate.plusYears(1));
   }
 
-  static LocalDate getActualFutureTimetableDate(LocalDate localDate) {
+  public static LocalDate getActualFutureTimetableDate(LocalDate localDate) {
     return localDate
         .withMonth(12)
         .with(TemporalAdjusters.dayOfWeekInMonth(2, DayOfWeek.SATURDAY))

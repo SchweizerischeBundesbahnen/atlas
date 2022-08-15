@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service.export;
 
 import static java.util.stream.Collectors.toList;
 
+import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionCsvModel;
@@ -41,7 +42,7 @@ public class ExportService {
 
   public File getActualFutureTimetableLineVersionsCsv() {
     List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
-        ExportHelper.getFutureTimetableDate(LocalDate.now()));
+        FutureTimetableHelper.getFutureTimetableDate(LocalDate.now()));
     return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
   }
 
