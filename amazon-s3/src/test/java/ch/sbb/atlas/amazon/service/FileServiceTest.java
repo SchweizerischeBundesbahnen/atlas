@@ -35,11 +35,29 @@ public class FileServiceTest {
   }
 
   @Test
-  public void shouldGetDirWhenNoProfileIsActivated() {
+  public void shouldGetDirWhenActivatedProfileIsDefined() {
     //when
+    fileService.setActiveProfile("dev");
     String result = fileService.getDir();
     //then
     assertThat(result).isEqualTo("/usr/local/atlas/tmp/");
   }
+
+  @Test
+  public void shouldGetDirWhenActivatedProfileIsNull() {
+    //when
+    String result = fileService.getDir();
+    //then
+    assertThat(result).isEqualTo("./export/");
+  }
+
+  @Test
+  public void shouldGetDirWhenActivatedProfileIsLocal() {
+    //when
+    String result = fileService.getDir();
+    //then
+    assertThat(result).isEqualTo("./export/");
+  }
+
 
 }
