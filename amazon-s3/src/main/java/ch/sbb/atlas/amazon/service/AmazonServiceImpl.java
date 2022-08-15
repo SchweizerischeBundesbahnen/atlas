@@ -50,7 +50,7 @@ public class AmazonServiceImpl implements AmazonService {
     return url;
   }
 
-  private URL putFileToBucket(File file, ObjectMetadata metadata) {
+  private URL putFileToBucket(File file, ObjectMetadata metadata) throws IOException {
     URL url;
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
@@ -61,8 +61,6 @@ public class AmazonServiceImpl implements AmazonService {
       amazonS3.putObject(putObjectRequest);
       url = amazonS3.getUrl(bucket, filePathName);
       return url;
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
