@@ -6,9 +6,10 @@ import { BusinessOrganisationsService, BusinessOrganisationVersion } from '../..
 import { BusinessOrganisationDetailComponent } from './business-organisation-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AppTestingModule, MockAppDetailWrapperComponent } from '../../../../app.testing.module';
+import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
+import { MockAppDetailWrapperComponent } from '../../../../app.testing.mocks';
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,

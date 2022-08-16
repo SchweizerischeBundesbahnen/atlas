@@ -4,9 +4,9 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { BusinessOrganisationComponent } from './business-organisation.component';
 import { BusinessOrganisationsService, ContainerBusinessOrganisation } from '../../../api';
-import { AppTestingModule, MockAppTableSearchComponent } from '../../../app.testing.module';
+import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Component, Input, TemplateRef } from '@angular/core';
+import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
 
 const businessOrganisation: ContainerBusinessOrganisation = {
   objects: [
