@@ -4,8 +4,9 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { LinesComponent } from './lines.component';
 import { ContainerLine, LinesService, LineType } from '../../../api';
-import { AppTestingModule, MockAppTableSearchComponent } from '../../../app.testing.module';
+import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
+import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
 
 const versionContainer: ContainerLine = {
   objects: [
