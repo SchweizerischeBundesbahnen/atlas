@@ -19,10 +19,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.CoverageType;
@@ -32,6 +33,8 @@ import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import com.amazonaws.services.s3.AmazonS3;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -56,6 +59,12 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   @Autowired
   private CoverageRepository coverageRepository;
 
+  @Autowired
+  private AmazonS3 amazonS3;
+
+  @Autowired
+  private AmazonService amazonServiceImpl;
+
   @AfterEach
   public void tearDown() {
     sublineVersionRepository.deleteAll();
@@ -77,6 +86,128 @@ public class LineControllerApiTest extends BaseControllerApiTest {
        .andExpect(status().isOk())
        .andExpect(jsonPath("$.totalCount").value(1))
        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldExportFullLineVersionsCsv() throws Exception {
+    //given
+    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
+                                                     .validFrom(LocalDate.of(2022, 1, 1))
+                                                     .validTo(LocalDate.of(2022, 12, 31))
+                                                     .description("desc2")
+                                                     .build();
+    lineController.createLineVersion(lineVersionModel1);
+    lineController.createLineVersion(lineVersionModel2);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/full/csv"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult);
+  }
+
+  @Test
+  void shouldExportFullLineVersionsCsvZip() throws Exception {
+    //given
+    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
+                                                     .validFrom(LocalDate.of(2022, 1, 1))
+                                                     .validTo(LocalDate.of(2022, 12, 31))
+                                                     .description("desc2")
+                                                     .build();
+    lineController.createLineVersion(lineVersionModel1);
+    lineController.createLineVersion(lineVersionModel2);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/full/zip"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult);
+  }
+
+  @Test
+  void shouldExportActualLineVersionsCsv() throws Exception {
+    //given
+    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
+                                                     .validFrom(LocalDate.now()
+                                                                         .withMonth(1)
+                                                                         .withDayOfMonth(1))
+                                                     .validTo(LocalDate.now()
+                                                                       .withMonth(12)
+                                                                       .withDayOfMonth(31))
+                                                     .description("desc2")
+                                                     .build();
+    lineController.createLineVersion(lineVersionModel1);
+    lineController.createLineVersion(lineVersionModel2);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/actual/csv"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult);
+  }
+
+  @Test
+  void shouldExportActualLineVersionsCsvZip() throws Exception {
+    //given
+    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
+                                                     .validFrom(LocalDate.of(2022, 1, 1))
+                                                     .validTo(LocalDate.of(2022, 12, 31))
+                                                     .description("desc2")
+                                                     .build();
+    lineController.createLineVersion(lineVersionModel1);
+    lineController.createLineVersion(lineVersionModel2);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/actual/zip"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult);
+  }
+
+  @Test
+  void shouldExportFutureTimetableLineVersionsCsv() throws Exception {
+    //given
+    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
+                                                     .validFrom(LocalDate.now()
+                                                                         .withMonth(1)
+                                                                         .withDayOfMonth(1))
+                                                     .validTo(LocalDate.now()
+                                                                       .withMonth(12)
+                                                                       .withDayOfMonth(31))
+                                                     .description("desc2")
+                                                     .build();
+    lineController.createLineVersion(lineVersionModel1);
+    lineController.createLineVersion(lineVersionModel2);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/future-timetable/csv"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult);
+  }
+
+  @Test
+  void shouldExportFutureTimetableLineVersionsCsvZip() throws Exception {
+    //given
+    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
+                                                     .validFrom(LocalDate.of(2022, 1, 1))
+                                                     .validTo(LocalDate.of(2022, 12, 31))
+                                                     .description("desc2")
+                                                     .build();
+    lineController.createLineVersion(lineVersionModel1);
+    lineController.createLineVersion(lineVersionModel2);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/future-timetable/zip"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult);
+  }
+
+  private void deleteFileFromBucket(MvcResult mvcResult) throws UnsupportedEncodingException {
+    String result = mvcResult.getResponse().getContentAsString();
+    String filePath = result.substring(result.lastIndexOf("/"), result.length() - 1);
+    amazonS3.deleteObject(amazonServiceImpl.getBucketNameFromActiveProfile(), "line" + filePath);
   }
 
   @Test
