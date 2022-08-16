@@ -35,7 +35,9 @@ export class TableSearchComponent {
 
   @ViewChild(BusinessOrganisationSelectComponent, { static: true })
   businessOrganisationSelectComponent!: BusinessOrganisationSelectComponent;
-  boSearchForm = new FormGroup({ businessOrganisation: new FormControl() });
+  boSearchForm = new FormGroup<BusinessOrganisationSearch>({
+    businessOrganisation: new FormControl(),
+  });
 
   readonly STATUS_OPTIONS = Object.values(Status);
   searchStrings: string[] = [];
@@ -114,4 +116,8 @@ export class TableSearchComponent {
       this.businessOrganisationSelectComponent.searchBusinessOrganisation(sboid);
     }
   }
+}
+
+interface BusinessOrganisationSearch {
+  businessOrganisation: FormControl<string | undefined>;
 }
