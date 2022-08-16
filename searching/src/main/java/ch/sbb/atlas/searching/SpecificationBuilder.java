@@ -33,6 +33,6 @@ public class SpecificationBuilder<T> {
   }
 
   public Specification<T> singleStringSpecification(Optional<String> searchString) {
-    return new SingleStringSpecification<>(searchString, singleStringAttribute);
+    return new SingleStringSpecification<>(searchString, singleStringAttribute.getName());
   }
 }

@@ -110,15 +110,14 @@ public class TimetableFieldNumberServiceSearchTest {
     TimetableFieldNumberVersion versionWithUnderscore =
         TimetableFieldNumberVersion.builder()
                                    .ttfnid("ch:1:ttfnid:100011")
-                                   .description("3")
+                                   .description("_bls")
                                    .swissTimetableFieldNumber("a.2")
                                    .comment("Valid this month")
                                    .status(Status.ACTIVE)
                                    .number("1.0")
-                                   .comment("Valid this month")
                                    .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
                                    .validTo(END_OF_MONTH_AT_SEARCH_DATE)
-                                   .businessOrganisation("_bls")
+                                   .businessOrganisation("ch:1:sboid:23456789")
                                    .build();
     versionRepository.saveAndFlush(versionWithUnderscore);
 
@@ -139,15 +138,14 @@ public class TimetableFieldNumberServiceSearchTest {
     TimetableFieldNumberVersion versionWithUnderscore =
         TimetableFieldNumberVersion.builder()
                                    .ttfnid("ch:1:ttfnid:100011")
-                                   .description("3")
+                                   .description("__bls")
                                    .swissTimetableFieldNumber("a.2")
                                    .comment("Valid this month")
                                    .status(Status.ACTIVE)
                                    .number("1.0")
-                                   .comment("Valid this month")
                                    .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
                                    .validTo(END_OF_MONTH_AT_SEARCH_DATE)
-                                   .businessOrganisation("__bls")
+                                   .businessOrganisation("ch:1:sboid:1235345")
                                    .build();
     versionRepository.saveAndFlush(versionWithUnderscore);
 
@@ -168,7 +166,7 @@ public class TimetableFieldNumberServiceSearchTest {
     TimetableFieldNumberVersion versionWithUnderscore =
         TimetableFieldNumberVersion.builder()
                                    .ttfnid("ch:1:ttfnid:100011")
-                                   .description("3")
+                                   .description("%bls")
                                    .swissTimetableFieldNumber("a.2")
                                    .comment("Valid this month")
                                    .status(Status.ACTIVE)
@@ -176,7 +174,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                    .comment("Valid this month")
                                    .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
                                    .validTo(END_OF_MONTH_AT_SEARCH_DATE)
-                                   .businessOrganisation("%bls")
+                                   .businessOrganisation("ch:1:sboid:2345245")
                                    .build();
     versionRepository.saveAndFlush(versionWithUnderscore);
 
@@ -197,7 +195,7 @@ public class TimetableFieldNumberServiceSearchTest {
     TimetableFieldNumberVersion versionWithUnderscore =
         TimetableFieldNumberVersion.builder()
                                    .ttfnid("ch:1:ttfnid:100011")
-                                   .description("3")
+                                   .description("%%bls")
                                    .swissTimetableFieldNumber("a.2")
                                    .comment("Valid this month")
                                    .status(Status.ACTIVE)
@@ -205,7 +203,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                    .comment("Valid this month")
                                    .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
                                    .validTo(END_OF_MONTH_AT_SEARCH_DATE)
-                                   .businessOrganisation("%%bls")
+                                   .businessOrganisation("ch:1:sboid:36456154")
                                    .build();
     versionRepository.saveAndFlush(versionWithUnderscore);
 

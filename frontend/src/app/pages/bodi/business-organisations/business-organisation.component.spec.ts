@@ -6,7 +6,7 @@ import { BusinessOrganisationComponent } from './business-organisation.component
 import { BusinessOrganisationsService, ContainerBusinessOrganisation } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Component, Input, TemplateRef } from '@angular/core';
+import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
 
 const businessOrganisation: ContainerBusinessOrganisation = {
   objects: [
@@ -27,17 +27,6 @@ const businessOrganisation: ContainerBusinessOrganisation = {
   ],
   totalCount: 1,
 };
-
-@Component({
-  selector: 'app-table-search',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppTableSearchComponent {
-  @Input() additionalFieldTemplate!: TemplateRef<any>;
-  @Input() displayStatus = true;
-  @Input() displayValidOn = true;
-  @Input() searchTextColumnStyle = 'col-4';
-}
 
 describe('BusinessOrganisationComponent', () => {
   let component: BusinessOrganisationComponent;

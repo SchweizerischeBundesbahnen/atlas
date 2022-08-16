@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.TimetableFieldNumberApiV1;
 import ch.sbb.line.directory.api.TimetableFieldNumberModel;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
@@ -14,7 +14,6 @@ import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,7 +33,7 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
 
   @Override
   public Container<TimetableFieldNumberModel> getOverview(Pageable pageable,
-      List<String> searchCriteria, Optional<LocalDate> validOn, List<Status> statusChoices) {
+      List<String> searchCriteria, Optional<String> businessOrganisation,  Optional<LocalDate> validOn, List<Status> statusChoices) {
     log.info(
         "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
         pageable, searchCriteria, validOn, statusChoices);
@@ -44,10 +43,10 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
                                               .searchCriterias(searchCriteria)
                                               .statusRestrictions(statusChoices)
                                               .validOn(validOn)
+                                              .businessOrganisation(businessOrganisation)
                                               .build());
     List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(this::toModel)
-                                                                       .collect(
-                                                                           Collectors.toList());
+                                                                       .toList();
     return Container.<TimetableFieldNumberModel>builder()
                     .objects(versions)
                     .totalCount(timetableFieldNumberPage.getTotalElements())
@@ -75,8 +74,7 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
                                                                                                           .stream()
                                                                                                           .map(
                                                                                                               TimetableFieldNumberController::toModel)
-                                                                                                          .collect(
-                                                                                                              Collectors.toList());
+                                                                                                          .toList();
     if (timetableFieldNumberVersionModels.isEmpty()) {
       throw new TtfnidNotFoundException(ttfnId);
     }

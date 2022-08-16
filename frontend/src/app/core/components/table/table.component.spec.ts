@@ -7,6 +7,8 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
 import { TableSearchComponent } from '../table-search/table-search.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
+import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
+import { SearchSelectComponent } from '../../form-components/search-select/search-select.component';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -20,6 +22,8 @@ describe('TableComponent', () => {
         TableComponent,
         LoadingSpinnerComponent,
         TableSearchComponent,
+        BusinessOrganisationSelectComponent,
+        SearchSelectComponent,
         DateIconComponent,
       ],
       imports: [AppTestingModule],

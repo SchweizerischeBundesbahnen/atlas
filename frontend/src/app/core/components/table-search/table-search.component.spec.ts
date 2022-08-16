@@ -7,6 +7,7 @@ import moment from 'moment/moment';
 import { Status } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
+import { MockBoSelectComponent } from '../../../app.testing.mocks';
 
 describe('TableSearchComponent', () => {
   let component: TableSearchComponent;
@@ -14,7 +15,7 @@ describe('TableSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TableSearchComponent, DateIconComponent],
+      declarations: [TableSearchComponent, DateIconComponent, MockBoSelectComponent],
       imports: [AppTestingModule],
       providers: [TranslatePipe],
     }).compileComponents();
@@ -44,6 +45,7 @@ describe('TableSearchComponent', () => {
       searchCriteria: [],
       validOn: undefined,
       statusChoices: [Status.Active],
+      boChoice: null,
     });
 
     statusOption.nativeElement.click();
@@ -65,6 +67,7 @@ describe('TableSearchComponent', () => {
       searchCriteria: [],
       validOn: moment('31.12.2021', 'DD.MM.yyyy').toDate(),
       statusChoices: [],
+      boChoice: null,
     });
   });
 
@@ -94,6 +97,7 @@ describe('TableSearchComponent', () => {
       searchCriteria: ['Test'],
       validOn: undefined,
       statusChoices: [],
+      boChoice: null,
     });
   });
 
@@ -119,6 +123,7 @@ describe('TableSearchComponent', () => {
       searchCriteria: ['Test2'],
       validOn: undefined,
       statusChoices: [],
+      boChoice: null,
     });
   });
 });

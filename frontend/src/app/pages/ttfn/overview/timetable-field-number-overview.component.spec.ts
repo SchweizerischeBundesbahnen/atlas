@@ -7,8 +7,8 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Component, Input, TemplateRef } from '@angular/core';
 import { AuthService } from '../../../core/auth/auth.service';
+import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
 
 const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   objects: [
@@ -25,17 +25,6 @@ const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   ],
   totalCount: 1,
 };
-
-@Component({
-  selector: 'app-table-search',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppTableSearchComponent {
-  @Input() additionalFieldTemplate!: TemplateRef<any>;
-  @Input() displayStatus = true;
-  @Input() displayValidOn = true;
-  @Input() searchTextColumnStyle = 'col-4';
-}
 
 describe('TimetableFieldNumberOverviewComponent', () => {
   let component: TimetableFieldNumberOverviewComponent;

@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.model;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.searching.SearchRestrictions;
+import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumber_;
@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 public class TimetableFieldNumberSearchRestrictions extends
-    SearchRestrictions<TimetableFieldNumber> {
+    BusinessOrganisationDependentSearchRestriction<TimetableFieldNumber> {
 
   @Override
   protected SingularAttribute<TimetableFieldNumber, Status> getStatus() {
@@ -29,8 +29,7 @@ public class TimetableFieldNumberSearchRestrictions extends
                                    List.of(TimetableFieldNumber.Fields.swissTimetableFieldNumber,
                                        TimetableFieldNumber.Fields.description,
                                        TimetableFieldNumber.Fields.ttfnid,
-                                       TimetableFieldNumber.Fields.number,
-                                       TimetableFieldNumber.Fields.businessOrganisation))
+                                       TimetableFieldNumber.Fields.number))
                                .validFromAttribute(TimetableFieldNumber_.validFrom)
                                .validToAttribute(TimetableFieldNumber_.validTo)
                                .build();

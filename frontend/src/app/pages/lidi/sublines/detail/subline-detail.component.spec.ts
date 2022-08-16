@@ -14,10 +14,9 @@ import { SublineDetailComponent } from './subline-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { Component, Input } from '@angular/core';
-import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
+import { MockAppDetailWrapperComponent } from '../../../../app.testing.mocks';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -67,15 +66,6 @@ const error = new HttpErrorResponse({
     ],
   },
 });
-
-@Component({
-  selector: 'app-detail-wrapper [controller][headingNew]',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppDetailWrapperComponent {
-  @Input() controller!: any;
-  @Input() headingNew!: any;
-}
 
 let component: SublineDetailComponent;
 let fixture: ComponentFixture<SublineDetailComponent>;
