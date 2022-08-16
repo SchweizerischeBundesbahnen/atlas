@@ -49,3 +49,13 @@ amazon:
   region: "eu-central-1"
   bucket:
     dir: "line"
+scheduler:
+  export:
+    zone: "Europe/Zurich"
+    line:
+      full-export:
+        chron: "0 0 3 * * ?" #At 03:00:00am every day
+      actual-export:
+        chron: "0 5 3 * * ?" #At 03:05:00am every day
+      future-export:
+        chron: "0 10 3 * * ?" #At 03:10:00am every day
