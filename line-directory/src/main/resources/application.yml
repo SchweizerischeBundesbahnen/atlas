@@ -53,9 +53,9 @@ scheduler:
   export:
     zone: "Europe/Zurich"
     line:
-      full-export:
+      full:
         chron: "0 0 3 * * ?" #At 03:00:00am every day
-      actual-export:
+      actual:
         chron: "0 5 3 * * ?" #At 03:05:00am every day
-      future-export:
+      future:
         chron: "0 10 3 * * ?" #At 03:10:00am every day
