@@ -5,8 +5,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import moment from 'moment/moment';
 import { Status } from '../../../api';
-import { AppTestingModule, MockBoSelectComponent } from '../../../app.testing.module';
+import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
+import { MockBoSelectComponent } from '../../../app.testing.mocks';
 
 describe('TableSearchComponent', () => {
   let component: TableSearchComponent;
