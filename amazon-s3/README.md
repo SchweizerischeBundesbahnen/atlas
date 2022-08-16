@@ -6,11 +6,11 @@
 - [Atlas Amazon S3 Client](#atlas-amazon-s3-client)
 - [Atlas Users onboarding](#atlas-users-onboarding)
 - [Development](#development)
-  * [S3 Bucket](#s3-bucket)
-    + [Naming convention](#naming-convention)
-      - [Buckets name](#buckets-name)
-      - [Buckets directory](#buckets-directory)
-  * [Intellij Plugin](#intellij-plugin)
+    * [S3 Bucket](#s3-bucket)
+        + [Naming convention](#naming-convention)
+            - [Buckets name](#buckets-name)
+            - [Buckets directory](#buckets-directory)
+    * [Intellij Plugin](#intellij-plugin)
 
 <!-- tocstop -->
 
@@ -44,7 +44,8 @@ in: [Restricted passwords](https://confluence.sbb.ch/pages/viewpage.action?pageI
 
 ##### Buckets name
 
-Atlas Buckets name definition:
+Atlas Buckets name definition (
+see [Atlas S3 Buckets](https://self.sbb-cloud.net/tools/aws/s3/list)):
 
 * prefix: **atlas-data-export-**
 * env postfix:
