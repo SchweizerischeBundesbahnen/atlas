@@ -11,7 +11,7 @@ TechSupport-ATLAS@sbb.ch.
 
 Once you have the credentials you can access the bucket via:
 
-* Amzon S3 REST API: https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html
+* Amazon S3 REST API: https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html
     * Code examples for Amazon S3 using AWS
       SDKs: https://docs.aws.amazon.com/AmazonS3/latest/userguide/service_code_examples.html
 * S3 Browser: https://s3browser.com/
