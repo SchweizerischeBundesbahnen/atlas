@@ -120,3 +120,5 @@ frontend/.npmrc
 .idea/jsLibraryMappings.xml
 /.idea/sqldialects.xml
 /frontend/out-tsc/
+/export/
+/amazon-s3/export/
