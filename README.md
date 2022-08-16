@@ -9,28 +9,32 @@ This is the repository for business relevant services for ATLAS.
 - [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
 - [Development](#development)
-  * [Run locally](#run-locally)
-  * [Monorepo](#monorepo)
-  * [Running Python scripts](#running-python-scripts)
+    * [Run locally](#run-locally)
+    * [Monorepo](#monorepo)
+    * [Running Python scripts](#running-python-scripts)
 - [Structure](#structure)
-  * [APIM-configuration](#apim-configuration)
-  * [Charts](#charts)
-  * [Gateway](#gateway)
-  * [Kafka](#kafka)
-  * [Line-directory](#line-directory)
-  * [Business-organisation-directory](#business-organisation-directory)
-  * [Mail Service](#mail-service)
-  * [Versioning lib](#versioning-lib)
-  * [Frontend](#frontend)
+    * [APIM-configuration](#apim-configuration)
+    * [Charts](#charts)
+    * [Gateway](#gateway)
+    * [Kafka](#kafka)
+    * [Line-directory](#line-directory)
+    * [Business-organisation-directory](#business-organisation-directory)
+    * [Mail Service](#mail-service)
+    * [Versioning lib](#versioning-lib)
+    * [Amazon S3 Lib](#amazon-s3-lib)
+    * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
 
 <!-- tocstop -->
 
-Build Status: [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/)
+Build
+Status: [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/)
 
-E2E Status: [![Build Status E2E](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/job/master/)
+E2E
+Status: [![Build Status E2E](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/job/master/)
 
-Quality Gate: [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+Quality
+Gate: [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 
 ## Big Picture
 
@@ -47,62 +51,76 @@ It's applications share the following architectural goal:
 - **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/
 - **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
 - **JFrog Artifactory**:
-  - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Fatlas-frontend
-  - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker%2Fatlas-frontend
+    - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Fatlas-frontend
+    - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker%2Fatlas-frontend
 - **Openshift**:
-  - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-  - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
-  - **Int**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
-  - **Prod**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
+    - **
+      Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
+    - **
+      Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
+    - **
+      Int**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
+    - **
+      Prod**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 - **Deployment**:
-  - **Dev**: https://atlas.dev.sbb-cloud.net
-  - **Test**: https://atlas.test.sbb-cloud.net
-  - **Int**: https://atlas.int.sbb-cloud.net
-  - **Prod**: https://atlas.sbb-cloud.net
+    - **Dev**: https://atlas.dev.sbb-cloud.net
+    - **Test**: https://atlas.test.sbb-cloud.net
+    - **Int**: https://atlas.int.sbb-cloud.net
+    - **Prod**: https://atlas.sbb-cloud.net
 
 ## Stages and their purpose
+
 * [Stages](documentation/stages.md)
 
 ## Monitoring and Logging
+
 * [Monitoring (Instana and Actuator)](documentation/Monitoring.md)
 * [Logging to Splunk](documentation/Logging.md)
 
 ## Development
+
 ### Run locally
 
-- For an easy local development setup, we provide a [docker-compose.yml](docker-compose.yml), which can be used to start dependent infrastructure for atlas.
+- For an easy local development setup, we provide a [docker-compose.yml](docker-compose.yml), which
+  can be used to start dependent infrastructure for atlas.
 - Make sure your needed business services are up
 - Start the gateway (the frontend Angular application uses it as a target for API calls)
 
-
 Run needed services for atlas in docker:
+
 ~~~
 # -d to run in background
 docker-compose up -d
 ~~~
 
 Stop infrastructure container:
+
 ~~~
 docker-compose down
 ~~~
 
 Stop infrastructure container and remove volume (deletes persistent content):
+
 ~~~
 docker-compose down -v 
 ~~~
 
 ### Monorepo
 
-ATLAS has a Monorepo project structure. The CI/CD is execute on each module. For each push event on master
-a Jenkins pipiline is executed. The modules are versionied and deployed with the same version number.
+ATLAS has a Monorepo project structure. The CI/CD is execute on each module. For each push event on
+master
+a Jenkins pipiline is executed. The modules are versionied and deployed with the same version
+number.
 
 ![ATLAS Monorepo](documentation/ATLAS-Mono-Repo-Migration.png)
 
-See the original file: [ATLAS-Monorepo drawio](https://confluence.sbb.ch/display/~e539196/ATLAS+Mono+Repo+migration)
+See the original
+file: [ATLAS-Monorepo drawio](https://confluence.sbb.ch/display/~e539196/ATLAS+Mono+Repo+migration)
 
 ### Running Python scripts
 
-The backend services include python scripts, which were used to generate SQL-Insert-Scripts from `xlsx` or `csv` files.
+The backend services include python scripts, which were used to generate SQL-Insert-Scripts
+from `xlsx` or `csv` files.
 You can download and install python from https://www.python.org/downloads/.
 
 ## Structure
@@ -117,10 +135,11 @@ The module combines the APIs from services into one composed API.
 
 ### Charts
 
-Contains helm charts for the entire ATLAS application. 
-We use one helm chart with a flat structure to publish multiple `Deployments`, `Services` and `Routes`.
+Contains helm charts for the entire ATLAS application.
+We use one helm chart with a flat structure to publish multiple `Deployments`, `Services`
+and `Routes`.
 
-You can generate the helm charts yamls, which will be deployed by using helm from the commandline. 
+You can generate the helm charts yamls, which will be deployed by using helm from the commandline.
 This is useful for debugging and local inspection of value resolution.
 
 ```bash
@@ -131,36 +150,45 @@ helm template . -n atlas-dev -f values-atlas-dev.yaml
 
 ### Gateway
 
-Module to handle routing of API endpoints to the respective business applications. Start this locally, if you want to run the angular UI.
+Module to handle routing of API endpoints to the respective business applications. Start this
+locally, if you want to run the angular UI.
 See [Gateway documentation](gateway/README.md);
 
 ### Kafka
 
-This folder [kafka](kafka) is used to store `json` files that create topics using kafka-automation with estaCloudPipeline.
+This folder [kafka](kafka) is used to store `json` files that create topics using kafka-automation
+with estaCloudPipeline.
 More information can be found in the [kafka documentation](documentation/kafka.md).
 
 ### Line-directory
 
-Business service for lines, sublines and timetable field numbers. All of these business objects use the atlas own versioning.
+Business service for lines, sublines and timetable field numbers. All of these business objects use
+the atlas own versioning.
 See [Line-directory documentation](line-directory/README.md);
 
 ### Business-organisation-directory
 
-Business service for business organisations. All of these business objects use the atlas own versioning.
+Business service for business organisations. All of these business objects use the atlas own
+versioning.
 See [Business-Organisation-directory documentation](business-organisation-directory/README.md);
 
 ### Mail Service
 
 Service used by Atlas to send emails. See [Mail Service Documentation](mail/README.md)
 
-
 ### Versioning lib
 
-Library used to perform business object versioning according to the [documentation](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
+Library used to perform business object versioning according to
+the [documentation](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
 See [Versioning documentation](versioning/README.md);
 
+### Amazon S3 Lib
+
+Library used to perform REST Request to Amazon S3 according to
+the [documentaion](amazon-s3/README.md)
 
 ### Frontend
+
 ATLAS Angular App. See [Frontend documentation](frontend/README.md);
 
 ## Troubleshooting

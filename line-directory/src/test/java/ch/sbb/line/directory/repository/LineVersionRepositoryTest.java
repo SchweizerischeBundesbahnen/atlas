@@ -2,10 +2,11 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.enumaration.LineType;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -166,6 +167,63 @@ public class LineVersionRepositoryTest {
     assertThat(lineVersionRepository.findSwissLineNumberOverlaps(entity).isEmpty()).isTrue();
 
     // Then
+  }
+
+  @Test
+  void shouldGetFullLineVersions() {
+    //given
+    lineVersionRepository.save(LINE_VERSION);
+    LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
+                                           .description("desc2")
+                                           .lineType(LineType.OPERATIONAL)
+                                           .build();
+    LineVersion lineVersion3 = LineTestData.lineVersionBuilder()
+                                           .description("desc3")
+                                           .lineType(LineType.ORDERLY)
+                                           .build();
+    lineVersionRepository.save(lineVersion2);
+    lineVersionRepository.save(lineVersion3);
+    //when
+    List<LineVersion> result = lineVersionRepository.getFullLineVersions();
+
+    //then
+    assertThat(result.size()).isEqualTo(3);
+    assertThat(result).containsAll(result);
+
+  }
+
+  @Test
+  void shouldGetActualLineVersions() {
+    //given
+    LineVersion lineVersion1 = LineTestData.lineVersionBuilder()
+                                           .validFrom(LocalDate.of(2022, 1, 1))
+                                           .validTo(LocalDate.of(2022, 1, 31))
+                                           .description("desc1")
+                                           .lineType(LineType.OPERATIONAL)
+                                           .build();
+    LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
+                                           .validFrom(LocalDate.of(2022, 2, 1))
+                                           .validTo(LocalDate.of(2022, 12, 31))
+                                           .description("desc2")
+                                           .lineType(LineType.ORDERLY)
+                                           .build();
+    LineVersion lineVersion3 = LineTestData.lineVersionBuilder()
+                                           .validFrom(LocalDate.of(2021, 1, 1))
+                                           .validTo(LocalDate.of(2021, 12, 31))
+                                           .description("desc3")
+                                           .lineType(LineType.ORDERLY)
+                                           .build();
+    lineVersionRepository.save(lineVersion1);
+    lineVersionRepository.save(lineVersion2);
+    lineVersionRepository.save(lineVersion3);
+    //when
+    List<LineVersion> result = lineVersionRepository.getActualLineVersions(
+        LocalDate.of(2022, 1, 1));
+
+    //then
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).contains(lineVersion1);
+
   }
 
 }

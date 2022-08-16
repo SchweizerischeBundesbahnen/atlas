@@ -7,32 +7,41 @@ import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
+import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Slf4j
 @ControllerAdvice
 public class AtlasExceptionHandler {
 
   @ExceptionHandler(value = VersioningNoChangesException.class)
-  public ResponseEntity<ErrorResponse> versioningNoChangesException(VersioningNoChangesException ex){
+  public ResponseEntity<ErrorResponse> versioningNoChangesException(
+      VersioningNoChangesException ex) {
     List<Detail> details = List.of(
         Detail.builder()
               .message(ex.getMessage())
-              .displayInfo(DisplayInfo.builder().code("ERROR.WARNING.VERSIONING_NO_CHANGES").build())
+              .displayInfo(
+                  DisplayInfo.builder().code("ERROR.WARNING.VERSIONING_NO_CHANGES").build())
               .build());
 
     ErrorResponse errorResponse = ErrorResponse.builder()
                                                .message(ex.getMessage())
-                                               .status(ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
+                                               .status(
+                                                   ErrorResponse.VERSIONING_NO_CHANGES_HTTP_STATUS)
                                                .error("No changes after versioning")
                                                .details(details)
                                                .build();
@@ -134,6 +143,29 @@ public class AtlasExceptionHandler {
                                             .error("Method argument not valid error")
                                             .message("Constraint for requestbody was violated")
                                             .details(details)
+                                            .build());
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+    Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+    Set<String> messages = new HashSet<>(constraintViolations.size());
+    messages.addAll(constraintViolations.stream()
+                                        .map(
+                                            constraintViolation -> String.format(
+                                                "Path parameter '%s' value '%s' %s",
+                                                ((PathImpl) constraintViolation.getPropertyPath()).getLeafNode()
+                                                                                                  .getName(),
+                                                constraintViolation.getInvalidValue(),
+                                                constraintViolation.getMessage())).toList());
+
+    return ResponseEntity.badRequest()
+                         .body(ErrorResponse.builder()
+                                            .status(HttpStatus.BAD_REQUEST.value())
+                                            .error("Param argument not valid error")
+                                            .message("Constraint for Path parameter was violated: "
+                                                + messages)
                                             .build());
   }
 
