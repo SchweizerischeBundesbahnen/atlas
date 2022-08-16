@@ -171,11 +171,11 @@ For more information go to https://www.fahrplanfelder.ch/en/welcome.html
 
 include::{snippets}/future-timetable-controller-api-test/should-return-future-time-table/auto-section.adoc[]
 
-== Get Future Timetable - Erorr: param greater than 9999
+== Get Future Timetable - Eror: param greater than 9999
 
 include::{snippets}/future-timetable-controller-api-test/should-return-error-when-year-after9999/auto-section.adoc[]
 
-== Get Future Timetable - Erorr: param smaller than 1700
+== Get Future Timetable - Error: param smaller than 1700
 
 include::{snippets}/future-timetable-controller-api-test/should-return-error-when-year-before1700/auto-section.adoc[]
 
