@@ -31,7 +31,7 @@ To be able to put or get a file on SBB Amazon S3 Bucket we need to wxecute the f
 
 ## Atlas Users onboarding
 
-See [Amazon S3 Bucket Users Onboarding](documentaion/AMAZON_S3_BUCKET_USERS_ONBOARDING.md)
+See [Amazon S3 Bucket Users Onboarding](documentaion/Amazon_S3_Buckets_Users_Onboarding.md)
 
 ## Development
 
