@@ -1,0 +1,15 @@
+<form-search-select
+  [items$]="businessOrganisations"
+  [controlName]="controlName"
+  [formGroup]="formGroup"
+  [getSelectOption]="displaySettings"
+  [bindValueInp]="valueExtraction"
+  (searchTrigger)="searchBusinessOrganisation($event)"
+>
+  <mat-label class="font-bold-lg" [ngClass]="formModus ? 'required-indicator' : ''">{{
+    'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
+  }}</mat-label>
+  <div
+    [class]="formModus ? 'mat-label-form-field-space-between' : 'search-mode-space-between'"
+  ></div>
+</form-search-select>
