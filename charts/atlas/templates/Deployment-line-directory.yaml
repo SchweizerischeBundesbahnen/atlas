@@ -24,53 +24,63 @@ spec:
         deploymentconfig: '{{ .Values.lineDirectory.name }}'
     spec:
       containers:
-      - env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: '{{ .Values.common.springProfilesActive }}'
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: db-secret-{{ .Values.lineDirectory.name }}
-              key: user
-        - name: DB_PWD
-          valueFrom:
-            secretKeyRef:
-              name: db-secret-{{ .Values.lineDirectory.name }}
-              key: password
-        image: "atlas.docker.bin.sbb.ch/{{ .Values.lineDirectory.name }}:{{ .Chart.AppVersion }}"
-        imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
-        name: '{{ .Values.lineDirectory.name }}'
-        ports:
-        - containerPort: {{ .Values.lineDirectory.port }}
-          protocol: TCP
-        resources:
-          requests:
-            cpu: '{{ .Values.common.cpuMin }}'
-            memory: '{{ .Values.common.memoryMin }}'
-          limits:
-            cpu: '{{ .Values.common.cpuMax }}'
-            memory: '{{ .Values.common.memoryMax }}'
-        livenessProbe:
-          httpGet:
-            path: '{{ .Values.lineDirectory.livenessProbe }}'
-            port: {{ .Values.lineDirectory.port }}
-            scheme: HTTP
-          initialDelaySeconds: 40
-          timeoutSeconds: 90
-          periodSeconds: 20
-          successThreshold: 1
-          failureThreshold: 10
-        readinessProbe:
-          httpGet:
-            path: '{{ .Values.lineDirectory.readynessProbe }}'
-            port: {{ .Values.lineDirectory.port }}
-            scheme: HTTP
-          initialDelaySeconds: 30
-          timeoutSeconds: 90
-          periodSeconds: 20
-          successThreshold: 1
-          failureThreshold: 10
-        terminationMessagePath: /dev/termination-log
+        - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: '{{ .Values.common.springProfilesActive }}'
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.lineDirectory.name }}
+                  key: user
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.lineDirectory.name }}
+                  key: password
+            - name: AMAZON-S3-ACCESS-KEY
+              valueFrom:
+                secretKeyRef:
+                  name: amazon-client-{{ .Values.lineDirectory.name }}
+                  key: amazon-access-key
+            - name: AMAZON-S3-SECRET-KEY
+              valueFrom:
+                secretKeyRef:
+                  name: amazon-client-{{ .Values.lineDirectory.name }}
+                  key: amazon-secret-key
+          image: "atlas.docker.bin.sbb.ch/{{ .Values.lineDirectory.name }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
+          name: '{{ .Values.lineDirectory.name }}'
+          ports:
+            - containerPort: {{ .Values.lineDirectory.port }}
+              protocol: TCP
+          resources:
+            requests:
+              cpu: '{{ .Values.common.cpuMin }}'
+              memory: '{{ .Values.common.memoryMin }}'
+            limits:
+              cpu: '{{ .Values.common.cpuMax }}'
+              memory: '{{ .Values.common.memoryMax }}'
+          livenessProbe:
+            httpGet:
+              path: '{{ .Values.lineDirectory.livenessProbe }}'
+              port: {{ .Values.lineDirectory.port }}
+              scheme: HTTP
+            initialDelaySeconds: 40
+            timeoutSeconds: 90
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: '{{ .Values.lineDirectory.readynessProbe }}'
+              port: {{ .Values.lineDirectory.port }}
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 90
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 10
+          terminationMessagePath: /dev/termination-log
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
