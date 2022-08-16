@@ -65,6 +65,16 @@
       <groupId>com.fasterxml.jackson.dataformat</groupId>
     </dependency>
     <dependency>
+      <artifactId>shedlock-spring</artifactId>
+      <groupId>net.javacrumbs.shedlock</groupId>
+      <version>4.40.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>shedlock-provider-jdbc-template</artifactId>
+      <groupId>net.javacrumbs.shedlock</groupId>
+      <version>4.40.0</version>
+    </dependency>
+    <dependency>
       <artifactId>flyway-core</artifactId>
       <groupId>org.flywaydb</groupId>
     </dependency>
