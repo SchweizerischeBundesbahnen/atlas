@@ -5,9 +5,10 @@ import { of } from 'rxjs';
 import { ContainerTimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
-import { AppTestingModule, MockAppTableSearchComponent } from '../../../app.testing.module';
+import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
+import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
 
 const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   objects: [

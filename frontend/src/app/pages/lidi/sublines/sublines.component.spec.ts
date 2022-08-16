@@ -4,9 +4,10 @@ import { TableComponent } from '../../../core/components/table/table.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { ContainerSubline, Status, SublinesService, SublineType } from '../../../api';
 import { SublinesComponent } from './sublines.component';
-import { AppTestingModule, MockAppTableSearchComponent } from '../../../app.testing.module';
+import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Component, Input, TemplateRef } from '@angular/core';
+import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
 
 const versionContainer: ContainerSubline = {
   objects: [
