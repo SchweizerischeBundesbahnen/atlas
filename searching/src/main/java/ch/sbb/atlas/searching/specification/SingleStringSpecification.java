@@ -7,7 +7,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
 import org.springframework.data.jpa.domain.Specification;
 
 public class SingleStringSpecification<T> implements Specification<T> {
@@ -15,10 +14,10 @@ public class SingleStringSpecification<T> implements Specification<T> {
   private static final long serialVersionUID = 1;
 
   private final Optional<String> searchString;
-  private final SingularAttribute<T, String> stringAttribute;
+  private final String stringAttribute;
 
   public SingleStringSpecification(Optional<String> searchString,
-      SingularAttribute<T, String> stringAttribute) {
+      String stringAttribute) {
     this.searchString = Objects.requireNonNull(searchString);
     this.stringAttribute = stringAttribute;
   }
