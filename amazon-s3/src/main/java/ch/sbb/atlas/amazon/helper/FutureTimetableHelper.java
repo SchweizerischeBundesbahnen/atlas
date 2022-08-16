@@ -14,7 +14,13 @@ public class FutureTimetableHelper {
 
   public static final int DECEMBER_MONTH_AS_NUMER = 12;
 
-  public static LocalDate getFutureTimetableDate(LocalDate localDate) {
+
+  /**
+   * @param localDate
+   * @return the date to be used for the export data. For example on 12.11.2022 (Timetable year 2022) we
+   * export the Timetable year 2023 data: 10.12.2023
+   */
+  public static LocalDate getFutureTimetableExportDate(LocalDate localDate) {
     LocalDate actualFutureTimetableDate = getActualFutureTimetableDate(localDate);
     if (localDate.isBefore(actualFutureTimetableDate)) {
       return actualFutureTimetableDate;

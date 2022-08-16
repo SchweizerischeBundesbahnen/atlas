@@ -43,7 +43,7 @@ public class ExportService {
 
   public File getActualFutureTimetableLineVersionsCsv() {
     List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
-        FutureTimetableHelper.getFutureTimetableDate(LocalDate.now()));
+        FutureTimetableHelper.getFutureTimetableExportDate(LocalDate.now()));
     return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
   }
 
@@ -57,7 +57,8 @@ public class ExportService {
                     .map(LineVersionCsvModel::toCsvModel)
                     .collect(toList());
 
-    ObjectWriter objectWriter = atlasCsvMapper.getCsvMapper().writerFor(LineVersionCsvModel.class)
+    ObjectWriter objectWriter = atlasCsvMapper.getCsvMapper()
+                                              .writerFor(LineVersionCsvModel.class)
                                               .with(atlasCsvMapper.getCsvSchema());
     try (SequenceWriter sequenceWriter = objectWriter.writeValues(csvFile)) {
       sequenceWriter.writeAll(lineVersionCsvModels);
