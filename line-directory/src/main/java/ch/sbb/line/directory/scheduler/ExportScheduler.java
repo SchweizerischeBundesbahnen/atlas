@@ -15,7 +15,7 @@ public class ExportScheduler {
 
   private final ExportService exportService;
 
-  @Scheduled(cron = "${scheduler.export.line.full-export.chron}", zone = "${scheduler.export.zone}")
+  @Scheduled(cron = "${scheduler.export.line.full.chron}", zone = "${scheduler.export.zone}")
   @SchedulerLock(name = "exportFullLineVersions", lockAtMostFor = "PT3M", lockAtLeastFor = "PT2M")
   public void exportFullLineVersions() {
     logStartJob("FullLineVersions - CSV");
@@ -26,7 +26,7 @@ public class ExportScheduler {
     logEndJob("FullLineVersions - ZIP", urlZip);
   }
 
-  @Scheduled(cron = "${scheduler.export.line.actual-export.chron}", zone = "${scheduler.export.zone}")
+  @Scheduled(cron = "${scheduler.export.line.actual.chron}", zone = "${scheduler.export.zone}")
   @SchedulerLock(name = "exportActualLineVersions", lockAtMostFor = "PT3M", lockAtLeastFor = "PT2M")
   public void exportActualLineVersions() {
     logStartJob("ActualLineVersions - CSV");
@@ -37,7 +37,7 @@ public class ExportScheduler {
     logEndJob("ActualLineVersions - ZIP", urlZip);
   }
 
-  @Scheduled(cron = "${scheduler.export.line.future-export.chron}", zone = "${scheduler.export.zone}")
+  @Scheduled(cron = "${scheduler.export.line.future.chron}", zone = "${scheduler.export.zone}")
   @SchedulerLock(name = "exportFutureTimetableLineVersions", lockAtMostFor = "PT3M", lockAtLeastFor = "PT2M")
   public void exportFutureTimetableLineVersions() {
     logStartJob("FutureTimetableLineVersions - CSV");
@@ -49,11 +49,11 @@ public class ExportScheduler {
   }
 
   private void logStartJob(String jobName) {
-    log.info("LINE-EXPORT-SERVICE: starting export {}", jobName);
+    log.info("[SCHEDULER-LINE-EXPORT]: starting export {}", jobName);
   }
 
   private void logEndJob(String jobName, URL url) {
-    log.info("LINE-EXPORT-SERVICE: ended export {} - [{}]", jobName, url);
+    log.info("[SCHEDULER-LINE-EXPORT]: ended export {} - [{}]", jobName, url);
   }
 
 }
