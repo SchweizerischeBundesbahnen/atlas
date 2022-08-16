@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TableSearchComponent } from '../table-search/table-search.component';
 import { TableSearch } from '../table-search/table-search';
 import { TableSettings } from './table-settings';
+import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
@@ -32,6 +33,7 @@ export class TableComponent<DATATYPE> {
   @Input() searchTextColumnStyle = 'col-4';
   @Input() displayStatusSearch = true;
   @Input() displayValidOnSearch = true;
+  @Input() displayBusinessOrganisationSearch = true;
 
   loading = true;
 
@@ -127,6 +129,7 @@ export class TableComponent<DATATYPE> {
     this.tableSearchComponent.searchStrings = tableSettings.searchCriteria || [];
 
     this.tableSearchComponent.activeStatuses = tableSettings.statusChoices || [];
+    this.tableSearchComponent.restoreBusinessOrganisation(tableSettings.boChoice);
 
     this.tableSearchComponent.searchDate = tableSettings.validOn;
     this.tableSearchComponent.dateControl.setValue(tableSettings.validOn);

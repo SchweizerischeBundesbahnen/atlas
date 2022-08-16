@@ -1,6 +1,7 @@
 import CommonUtils from '../../../support/util/common-utils';
 import { DataCy } from '../../../support/data-cy';
 import LidiUtils from '../../../support/util/lidi-utils';
+import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
 describe('Sublines: TableSettings and Routing', () => {
   const minimalLine1 = LidiUtils.getFirstMinimalLineVersion();
@@ -35,6 +36,10 @@ describe('Sublines: TableSettings and Routing', () => {
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
+  });
+
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
   });
 
   it('Step-2: Navigate to Sublines', () => {
@@ -146,5 +151,9 @@ describe('Sublines: TableSettings and Routing', () => {
 
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.LIDI_LINES);
+  });
+
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 });

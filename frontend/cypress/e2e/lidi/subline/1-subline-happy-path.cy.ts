@@ -1,6 +1,7 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
 import { DataCy } from '../../../support/data-cy';
+import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
 describe('Teillinie', () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
@@ -8,6 +9,10 @@ describe('Teillinie', () => {
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
+  });
+
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
   });
 
   it('PreStep-2: check if subline and mainline already exists', () => {
@@ -29,20 +34,20 @@ describe('Teillinie', () => {
 
   it('Step-4: Check the Linienverzeichnis Line Table is visible', () => {
     CommonUtils.assertTableSearch(0, 0, 'Suche');
-    CommonUtils.assertTableSearch(0, 1, 'Teillinientyp');
-    CommonUtils.assertTableSearch(0, 2, 'Status');
-    CommonUtils.assertTableSearch(0, 3, 'Gültig am');
+    CommonUtils.assertTableSearch(0, 1, 'Geschäftsorganisation');
+    CommonUtils.assertTableSearch(0, 2, 'Teillinientyp');
+    CommonUtils.assertTableSearch(0, 3, 'Status');
+    CommonUtils.assertTableSearch(0, 4, 'Gültig am');
 
     CommonUtils.assertTableHeader(0, 0, 'Teilliniennummer');
     CommonUtils.assertTableHeader(0, 1, 'Teillinienbezeichnung');
     CommonUtils.assertTableHeader(0, 2, 'CH-Teilliniennummer');
     CommonUtils.assertTableHeader(0, 3, 'Gehört zu Linie (CHLNR)');
     CommonUtils.assertTableHeader(0, 4, 'Teillinientyp');
-    CommonUtils.assertTableHeader(0, 5, 'Geschäfts-');
-    CommonUtils.assertTableHeader(0, 6, 'SLNID');
-    CommonUtils.assertTableHeader(0, 7, 'Status');
-    CommonUtils.assertTableHeader(0, 8, 'Gültig von');
-    CommonUtils.assertTableHeader(0, 9, 'Gültig bis');
+    CommonUtils.assertTableHeader(0, 5, 'SLNID');
+    CommonUtils.assertTableHeader(0, 6, 'Status');
+    CommonUtils.assertTableHeader(0, 7, 'Gültig von');
+    CommonUtils.assertTableHeader(0, 8, 'Gültig bis');
   });
 
   it('Step-5: Go to page Add new Version', () => {
@@ -111,5 +116,9 @@ describe('Teillinie', () => {
   it('Step-10: Delete the mainline item', () => {
     CommonUtils.deleteItem();
     LidiUtils.assertIsOnLines();
+  });
+
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 });

@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
@@ -17,7 +17,6 @@ import ch.sbb.line.directory.service.SublineService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,6 +34,7 @@ public class SublineController implements SublinenApiV1 {
   @Override
   public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
       List<Status> statusRestrictions, List<SublineType> typeRestrictions,
+      Optional<String> businessOrganisation,
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
     Page<Subline> sublines = sublineService.findAll(SublineSearchRestrictions.builder()
@@ -46,9 +46,11 @@ public class SublineController implements SublinenApiV1 {
                                                                              .validOn(validOn)
                                                                              .typeRestrictions(
                                                                                  typeRestrictions)
+                                                                             .businessOrganisation(
+                                                                                 businessOrganisation)
                                                                              .build());
     return Container.<SublineModel>builder()
-                    .objects(sublines.stream().map(this::toModel).collect(Collectors.toList()))
+                    .objects(sublines.stream().map(this::toModel).toList())
                     .totalCount(sublines.getTotalElements())
                     .build();
   }
@@ -74,7 +76,7 @@ public class SublineController implements SublinenApiV1 {
     List<SublineVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
                                                                    .stream()
                                                                    .map(this::toModel)
-                                                                   .collect(Collectors.toList());
+                                                                   .toList();
     if (sublineVersionModels.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
@@ -95,7 +97,7 @@ public class SublineController implements SublinenApiV1 {
                                                    .orElseThrow(() -> new IdNotFoundException(id));
     sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
-                         .collect(Collectors.toList());
+                         .toList();
   }
 
   @Override

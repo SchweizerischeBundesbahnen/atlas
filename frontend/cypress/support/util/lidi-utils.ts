@@ -1,9 +1,12 @@
 import CommonUtils from './common-utils';
 import { DataCy } from '../data-cy';
+import BodiDependentUtils from './bodi-dependent-utils';
 
 export default class LidiUtils {
   private static LIDI_LINES_PATH = '/line-directory/lines';
   private static LIDI_SUBLINES_PATH = '/line-directory/sublines';
+
+  private static MAINLINE_SWISS_LINE_NUMBER = 'b0.IC2-E2E';
 
   static navigateToLines() {
     CommonUtils.navigateToHomeViaHomeLogo();
@@ -71,7 +74,7 @@ export default class LidiUtils {
     cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
       if (!$el.hasClass("mat-no-data-row")){
         $el.trigger('click');
-        LidiUtils.assertContainsLineVersion(line);
+        cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
         CommonUtils.deleteItem();
       }
     });
@@ -152,7 +155,8 @@ export default class LidiUtils {
     CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
     CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
     CommonUtils.getClearType(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber, true);
-    CommonUtils.getClearType(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
+
+    CommonUtils.typeAndSelectItemFromDropDown(DataCy.BUSINESS_ORGANISATION + ' ' + 'input', version.businessOrganisation);
 
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
@@ -222,7 +226,7 @@ export default class LidiUtils {
     CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
     CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
     CommonUtils.assertItemValue(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber);
-    CommonUtils.assertItemValue(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
+    cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
     CommonUtils.assertItemText(
       DataCy.TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.type
@@ -282,8 +286,8 @@ export default class LidiUtils {
       slnid: '',
       validFrom: '01.01.2000',
       validTo: '31.12.2002',
-      swissLineNumber: 'b0.IC2-E2E',
-      businessOrganisation: 'SBB',
+      swissLineNumber: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Betrieblich',
       paymentType: 'International',
       colorFontRgb: '#FFFFFF',
@@ -307,7 +311,7 @@ export default class LidiUtils {
       validFrom: '01.01.1700',
       validTo: '01.01.1700',
       swissLineNumber: 'minimal1',
-      businessOrganisation: 'BO1',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Ordentlich',
       paymentType: 'Regional',
       colorFontRgb: '#ABCDEF',
@@ -330,7 +334,7 @@ export default class LidiUtils {
       validFrom: '31.12.9999',
       validTo: '31.12.9999',
       swissLineNumber: 'minimal2',
-      businessOrganisation: 'BO2',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Temporär',
       paymentType: 'Keine',
       colorFontRgb: '#1FE23D',
@@ -353,7 +357,7 @@ export default class LidiUtils {
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
       swissLineNumber: 'b0.IC2-E2E',
-      businessOrganisation: 'SBB',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Betrieblich',
       paymentType: 'International',
       colorFontRgb: '#FFFFFF',
@@ -376,7 +380,7 @@ export default class LidiUtils {
       validFrom: '01.01.2001',
       validTo: '31.12.2001',
       swissLineNumber: 'b0.IC2-E2E',
-      businessOrganisation: 'SBB-1',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Betrieblich',
       paymentType: 'International',
       colorFontRgb: '#FFFFFF',
@@ -399,7 +403,7 @@ export default class LidiUtils {
       validFrom: '01.01.2002',
       validTo: '31.12.2002',
       swissLineNumber: 'b0.IC2-E2E',
-      businessOrganisation: 'SBB-2',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Betrieblich',
       paymentType: 'International',
       colorFontRgb: '#FFFFFF',
@@ -433,7 +437,9 @@ export default class LidiUtils {
     if (!skipMainline) {
       CommonUtils.typeAndSelectItemFromDropDown(DataCy.MAINLINE + ' ' + 'input', version.mainline);
     }
-    cy.get(DataCy.BUSINESS_ORGANISATION).clear().type(version.businessOrganisation);
+
+    CommonUtils.typeAndSelectItemFromDropDown(DataCy.BUSINESS_ORGANISATION + ' ' + 'input', version.businessOrganisation);
+
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
     cy.get(DataCy.DESCRIPTION).clear().type(version.description, { force: true });
@@ -442,12 +448,34 @@ export default class LidiUtils {
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
   }
 
+  static searchAndNavigateToSubline(subline: any) {
+    const pathToIntercept = '/line-directory/v1/sublines?**';
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      subline.swissSublineNumber
+    );
+
+    CommonUtils.typeSearchInput(
+      pathToIntercept,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      subline.slnid
+    );
+
+    // Check that the table contains 1 result
+    cy.get(DataCy.LIDI_SUBLINES + ' table tbody tr').should('have.length', 1);
+    // Click on the item
+    cy.contains('td', subline.swissSublineNumber).parents('tr').click({ force: true });
+    this.assertContainsSublineVersion(subline);
+  }
+
   static assertContainsSublineVersion(version: any) {
     CommonUtils.assertItemValue(DataCy.VALID_FROM, version.validFrom);
     CommonUtils.assertItemValue(DataCy.VALID_TO, version.validTo);
     CommonUtils.assertItemValue(DataCy.SWISS_SUBLINE_NUMBER, version.swissSublineNumber);
     cy.get(DataCy.MAINLINE).should('contain.text', version.mainline);
-    CommonUtils.assertItemValue(DataCy.BUSINESS_ORGANISATION, version.businessOrganisation);
+    cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
     CommonUtils.assertItemText(
       DataCy.TYPE + ' .mat-select-value-text > .mat-select-min-line',
       version.type
@@ -468,10 +496,10 @@ export default class LidiUtils {
       slnid: '',
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
-      swissSublineNumber: 'b0.IC233',
-      mainline: 'b0.IC2',
-      businessOrganisation: 'SBB-2',
-      type: 'Technisch',
+      swissSublineNumber: 'b0.IC233-E2E',
+      mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
+      type: 'Kompensation',
       paymentType: 'International',
       description: 'Lorem Ipus Linie',
       number: 'IC2',
@@ -484,9 +512,9 @@ export default class LidiUtils {
     return {
       validFrom: '01.01.2002',
       validTo: '31.12.2002',
-      swissSublineNumber: 'b0.IC233',
-      mainline: 'b0.IC2',
-      businessOrganisation: 'SBB-2-update',
+      swissSublineNumber: 'b0.IC233-E2E',
+      mainline: LidiUtils.MAINLINE_SWISS_LINE_NUMBER,
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Technisch',
       paymentType: 'International',
       description: 'Lorem Ipus Linie',
@@ -516,7 +544,7 @@ export default class LidiUtils {
       swissSublineNumber: 'r.31.001:x_',
       validFrom: '01.01.1700',
       validTo: '01.01.2000',
-      businessOrganisation: '146 - STI',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Kompensation',
       paymentType: 'Regional',
     };
@@ -532,7 +560,7 @@ export default class LidiUtils {
       swissSublineNumber: 'r.31.001:a_',
       validFrom: '01.01.2000',
       validTo: '31.12.2099',
-      businessOrganisation: 'abcdefghijklmnopqrstuvwxyabcdefghijklmnopqrstuvwxy',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Konzession',
       paymentType: 'Lokal',
     };

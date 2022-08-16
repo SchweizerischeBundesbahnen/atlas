@@ -18,7 +18,7 @@
 <ng-template #sublineTypeSelection>
   <div class="d-flex flex-column col pe-3">
     <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE_TYPE' | translate }}</mat-label>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="form-outline">
       <mat-select
         (selectionChange)="onSublineTypeSelectionChange()"
         [(value)]="activeSublineTypes"

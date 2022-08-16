@@ -8,6 +8,7 @@ pipeline {
   environment {
     CYPRESS_BASE_URL = 'https://atlas.test.sbb-cloud.net'
 
+    CYPRESS_API_URL = 'https://atlas-test-int.api.sbb.ch:443'
     CYPRESS_CLIENT_ID = 'f06799ef-d6a7-4d98-9e31-a51c60761e83'
     CYPRESS_CLIENT_SECRET = credentials('f696bc4f-0636-470c-aed3-f0d8fd17503d')
 

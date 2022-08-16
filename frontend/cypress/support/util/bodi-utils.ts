@@ -125,7 +125,7 @@ export default class BodiUtils {
     );
   }
 
-  static getFirstBusinessOrganisationVersion() {
+  static getBusinessOrganisationVersion() {
     return {
       sboid: 'ch:1:sboid:100000',
       said: 100000,

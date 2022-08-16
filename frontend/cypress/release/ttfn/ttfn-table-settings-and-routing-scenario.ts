@@ -1,6 +1,7 @@
 import CommonUtils from '../../support/util/common-utils';
 import TtfnUtils from '../../support/util/ttfn-utils';
 import { DataCy } from '../../support/data-cy';
+import BodiDependentUtils from '../../support/util/bodi-dependent-utils';
 
 describe('TTFN: TableSettings and Routing', () => {
   const ttfnBernThun = TtfnUtils.getTtfnBernThun();
@@ -18,6 +19,10 @@ describe('TTFN: TableSettings and Routing', () => {
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
+  });
+
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
   });
 
   it('Step-2: Navigate to TTFN', () => {
@@ -120,5 +125,9 @@ describe('TTFN: TableSettings and Routing', () => {
     cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(churGrenze.swissTimetableFieldNumber);
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.TTFN);
+  });
+
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 });

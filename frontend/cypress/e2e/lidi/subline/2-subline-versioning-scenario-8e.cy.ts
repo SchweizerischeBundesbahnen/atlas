@@ -1,6 +1,7 @@
 import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
 import { DataCy } from '../../../support/data-cy';
+import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
 /** Szenario 8e: Letzte Version validTo und props updated
  *  NEU:      |_______________________________________|
@@ -18,6 +19,10 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
+  });
+
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
   });
 
   it('PreStep-2: check if subline and mainline already exists', () => {
@@ -120,5 +125,9 @@ describe('LiDi: Versioning Teillinie Scenario 4', () => {
   it('Step-14: Delete the mainline item ', () => {
     CommonUtils.deleteItem();
     LidiUtils.assertIsOnLines();
+  });
+
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 });

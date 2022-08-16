@@ -1,6 +1,7 @@
 import TtfnUtils from '../../support/util/ttfn-utils';
 import CommonUtils from '../../support/util/common-utils';
 import { DataCy } from '../../support/data-cy';
+import BodiDependentUtils from '../../support/util/bodi-dependent-utils';
 
 /**
  * Szenario 3: Update, dass über Versionsgrenze geht
@@ -19,15 +20,19 @@ describe('Versioning: scenario 3', () => {
     swissTimetableFieldNumber: '00.AAA',
     validFrom: '01.06.2001',
     validTo: '01.06.2002',
-    businessOrganisation: 'SBB3',
+    businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
     number: '1.1',
     description:
-      'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+      'Update Description',
     comment: 'A new comment',
   };
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
+  });
+
+  it('Dependent BusinessOrganisation Preparation Step', () => {
+    BodiDependentUtils.createDependentBusinessOrganisation();
   });
 
   it('Step-2: Navigate to Fahrplanfeldnummer', () => {
@@ -97,5 +102,9 @@ describe('Versioning: scenario 3', () => {
   it('Step-10: Delete versions', () => {
     CommonUtils.deleteItem();
     TtfnUtils.checkHeaderTitle();
+  });
+
+  it('Dependent BusinessOrganisation Cleanup Step', () => {
+    BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
 });
