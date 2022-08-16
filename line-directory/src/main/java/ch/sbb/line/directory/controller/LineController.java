@@ -155,7 +155,7 @@ public class LineController implements LineApiV1 {
     lineService.deleteAll(slnid);
   }
 
-  private URL putCsvFile(File csvFile) {
+  URL putCsvFile(File csvFile) {
     try {
       return amazonService.putFile(csvFile);
     } catch (IOException e) {
@@ -163,7 +163,7 @@ public class LineController implements LineApiV1 {
     }
   }
 
-  private URL putZipFile(File zipFile) {
+  URL putZipFile(File zipFile) {
     try {
       return amazonService.putZipFile(zipFile);
     } catch (IOException e) {
