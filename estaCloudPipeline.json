@@ -39,7 +39,7 @@
       "artifactorySupressProjectSubfolderCreation": true
     }
   ],
-  "helm" : {
+  "helm": {
     "repository": "atlas.helm",
     "chartRootFolder": "./charts",
     "chart": "atlas",
@@ -50,6 +50,16 @@
       "id": "ssp-5y1zc40dv-j2u5-5cp4-9305-7bd11uoh6ch",
       "type": "string",
       "variable": "NPM_AUTH"
+    },
+    {
+      "id": "ssp-218f368q4-u33o-s74x-86i4-urodv5m7613",
+      "type": "string",
+      "variable": "AMAZON_S3_ACCESS_KEY"
+    },
+    {
+      "id": "ssp-851433h8y-160f-k00x-qrw6-i0fp0wg068h",
+      "type": "string",
+      "variable": "AMAZON_S3_SECRET_KEY"
     },
     {
       "id": "bin.sbb.ch",
@@ -223,7 +233,8 @@
       "staging": {
         "stagingType": "simple",
         "stages": [
-          "dev", "test"
+          "dev",
+          "test"
         ]
       },
       "dependencyCheckEnabled": true,

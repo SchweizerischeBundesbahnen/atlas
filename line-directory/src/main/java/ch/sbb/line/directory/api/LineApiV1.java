@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,4 +77,23 @@ public interface LineApiV1 {
 
   @GetMapping("line-coverage/{slnid}")
   CoverageModel getLineCoverage(@PathVariable String slnid);
+
+  @PostMapping(value = "/export-csv/full/csv", produces = MediaType.APPLICATION_JSON_VALUE)
+  URL exportFullLineVersionsCsv();
+
+  @PostMapping(value = "/export-csv/full/zip", produces = MediaType.APPLICATION_JSON_VALUE)
+  URL exportFullLineVersionsCsvZip();
+
+  @PostMapping(value = "/export-csv/actual/csv", produces = MediaType.APPLICATION_JSON_VALUE)
+  URL exportActualLineVersionsCsv();
+
+  @PostMapping(value = "/export-csv/actual/zip", produces = MediaType.APPLICATION_JSON_VALUE)
+  URL exportActualLineVersionsCsvZip();
+
+  @PostMapping(value = "/export-csv/future-timetable/csv", produces = MediaType.APPLICATION_JSON_VALUE)
+  URL exportFutureTimetableVersionsCsv();
+
+  @PostMapping(value = "/export-csv/future-timetable/zip", produces = MediaType.APPLICATION_JSON_VALUE)
+  URL exportFutureTimetableLineVersionsCsvZip();
+
 }

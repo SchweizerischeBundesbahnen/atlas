@@ -2,9 +2,11 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toList;
 
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.model.exception.ExportException;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
 import ch.sbb.line.directory.api.LineModel;
@@ -18,6 +20,10 @@ import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
+import ch.sbb.line.directory.service.export.ExportService;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -34,21 +40,24 @@ public class LineController implements LineApiV1 {
 
   private final LineService lineService;
   private final CoverageService coverageService;
+  private final AmazonService amazonService;
+  private final ExportService exportService;
 
   @Override
   public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
       List<String> searchCriteria, List<Status> statusRestrictions, List<LineType> typeRestrictions,
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
-    Page<Line> lines = lineService.findAll(LineSearchRestrictions.builder()
-                                                                 .pageable(pageable)
-                                                                 .searchCriterias(searchCriteria)
-                                                                 .statusRestrictions(
-                                                                     statusRestrictions)
-                                                                 .validOn(validOn)
-                                                                 .typeRestrictions(typeRestrictions)
-                                                                 .swissLineNumber(swissLineNumber)
-                                                                 .build());
+    Page<Line> lines = lineService.findAll(
+        LineSearchRestrictions.builder()
+                              .pageable(pageable)
+                              .searchCriterias(searchCriteria)
+                              .statusRestrictions(
+                                  statusRestrictions)
+                              .validOn(validOn)
+                              .typeRestrictions(typeRestrictions)
+                              .swissLineNumber(swissLineNumber)
+                              .build());
     List<LineModel> lineModels = lines.stream().map(this::toModel).collect(toList());
     return Container.<LineModel>builder()
                     .objects(lineModels)
@@ -83,20 +92,6 @@ public class LineController implements LineApiV1 {
     return lineVersionModels;
   }
 
-  private LineModel toModel(Line lineVersion) {
-    return LineModel.builder()
-                    .status(lineVersion.getStatus())
-                    .lineType(lineVersion.getLineType())
-                    .slnid(lineVersion.getSlnid())
-                    .number(lineVersion.getNumber())
-                    .description(lineVersion.getDescription())
-                    .validFrom(lineVersion.getValidFrom())
-                    .validTo(lineVersion.getValidTo())
-                    .businessOrganisation(lineVersion.getBusinessOrganisation())
-                    .swissLineNumber(lineVersion.getSwissLineNumber())
-                    .build();
-  }
-
   @Override
   public LineVersionModel createLineVersion(LineVersionModel newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
@@ -120,8 +115,60 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
+  public URL exportFullLineVersionsCsv() {
+    File csvFile = exportService.getFullLineVersionsCsv();
+    return putCsvFile(csvFile);
+  }
+
+  @Override
+  public URL exportFullLineVersionsCsvZip() {
+    File csvFile = exportService.getFullLineVersionsCsv();
+    return putZipFile(csvFile);
+  }
+
+  @Override
+  public URL exportActualLineVersionsCsv() {
+    File csvFile = exportService.getActualLineVersionsCsv();
+    return putCsvFile(csvFile);
+  }
+
+  @Override
+  public URL exportActualLineVersionsCsvZip() {
+    File csvFile = exportService.getActualLineVersionsCsv();
+    return putZipFile(csvFile);
+  }
+
+  @Override
+  public URL exportFutureTimetableVersionsCsv() {
+    File csvFile = exportService.getActualFutureTimetableLineVersionsCsv();
+    return putCsvFile(csvFile);
+  }
+
+  @Override
+  public URL exportFutureTimetableLineVersionsCsvZip() {
+    File csvFile = exportService.getActualFutureTimetableLineVersionsCsv();
+    return putZipFile(csvFile);
+  }
+
+  @Override
   public void deleteLines(String slnid) {
     lineService.deleteAll(slnid);
+  }
+
+  URL putCsvFile(File csvFile) {
+    try {
+      return amazonService.putFile(csvFile);
+    } catch (IOException e) {
+      throw new ExportException(csvFile, e);
+    }
+  }
+
+  URL putZipFile(File zipFile) {
+    try {
+      return amazonService.putZipFile(zipFile);
+    } catch (IOException e) {
+      throw new ExportException(zipFile, e);
+    }
   }
 
   private LineVersionModel toModel(LineVersion lineVersion) {
@@ -178,5 +225,20 @@ public class LineController implements LineApiV1 {
                       .version(lineVersionModel.getEtagVersion())
                       .build();
   }
+
+  private LineModel toModel(Line lineVersion) {
+    return LineModel.builder()
+                    .status(lineVersion.getStatus())
+                    .lineType(lineVersion.getLineType())
+                    .slnid(lineVersion.getSlnid())
+                    .number(lineVersion.getNumber())
+                    .description(lineVersion.getDescription())
+                    .validFrom(lineVersion.getValidFrom())
+                    .validTo(lineVersion.getValidTo())
+                    .businessOrganisation(lineVersion.getBusinessOrganisation())
+                    .swissLineNumber(lineVersion.getSwissLineNumber())
+                    .build();
+  }
+
 
 }
