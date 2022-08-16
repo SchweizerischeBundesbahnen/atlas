@@ -1,16 +1,13 @@
 package ch.sbb.line.directory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.Container;
-import ch.sbb.atlas.model.exception.ExportException;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.LineModel;
 import ch.sbb.line.directory.api.LineVersionModel;
@@ -21,7 +18,6 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.export.ExportService;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -44,8 +40,7 @@ public class LineControllerTest {
   private LineService lineService;
   @Mock
   private CoverageService coverageService;
-  @Mock
-  private AmazonService amazonService;
+
   @Mock
   private ExportService exportService;
   private LineController lineController;
@@ -79,8 +74,7 @@ public class LineControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineController = new LineController(lineService, coverageService, amazonService,
-        exportService);
+    lineController = new LineController(lineService, coverageService, exportService);
     when(lineService.save(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
 
@@ -182,26 +176,6 @@ public class LineControllerTest {
 
     // Then
     verify(lineService).updateVersion(any(), any());
-  }
-
-  @Test
-  void shouldThrowExportExceptionWhenPutCsvFile() throws IOException {
-    //given
-    when(amazonService.putFile(any())).thenThrow(IOException.class);
-    //when
-
-    assertThatExceptionOfType(ExportException.class).isThrownBy(
-        () -> lineController.putCsvFile(any()));
-  }
-
-  @Test
-  void shouldThrowExportExceptionWhenPutZipFile() throws IOException {
-    //given
-    when(amazonService.putZipFile(any())).thenThrow(IOException.class);
-    //when
-
-    assertThatExceptionOfType(ExportException.class).isThrownBy(
-        () -> lineController.putZipFile(any()));
   }
 
 
