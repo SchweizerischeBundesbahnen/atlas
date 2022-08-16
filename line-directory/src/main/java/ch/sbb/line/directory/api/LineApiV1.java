@@ -41,6 +41,7 @@ public interface LineApiV1 {
       @RequestParam(required = false) List<String> searchCriteria,
       @RequestParam(required = false) List<Status> statusRestrictions,
       @RequestParam(required = false) List<LineType> typeRestrictions,
+      @RequestParam(required = false) Optional<String> businessOrganisation,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
   @GetMapping("{slnid}")

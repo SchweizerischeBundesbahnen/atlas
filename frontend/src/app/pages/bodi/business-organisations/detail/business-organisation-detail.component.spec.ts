@@ -7,9 +7,9 @@ import { BusinessOrganisationDetailComponent } from './business-organisation-det
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
+import { MockAppDetailWrapperComponent } from '../../../../app.testing.mocks';
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,
@@ -66,15 +66,6 @@ let component: BusinessOrganisationDetailComponent;
 let fixture: ComponentFixture<BusinessOrganisationDetailComponent>;
 let router: Router;
 let dialogRef: MatDialogRef<BusinessOrganisationDetailComponent>;
-
-@Component({
-  selector: 'app-detail-wrapper [controller][headingNew]',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppDetailWrapperComponent {
-  @Input() controller!: any;
-  @Input() headingNew!: any;
-}
 
 describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationVersion', () => {
   const mockBusinessOrganisationsService = jasmine.createSpyObj('businessOrganisationsService', [

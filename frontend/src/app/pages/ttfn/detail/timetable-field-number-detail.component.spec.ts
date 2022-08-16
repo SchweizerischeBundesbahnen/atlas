@@ -17,6 +17,7 @@ import { FormModule } from '../../../core/module/form.module';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
+import { MockAppDetailWrapperComponent } from '../../../app.testing.mocks';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -79,15 +80,6 @@ const addTtfData = {
 class MockAppCoverageComponent {
   @Input() pageType!: any;
   @Input() currentRecord!: any;
-}
-
-@Component({
-  selector: 'app-detail-wrapper [controller][headingNew]',
-  template: '<p>Mock Product Editor Component</p>',
-})
-class MockAppDetailWrapperComponent {
-  @Input() controller!: any;
-  @Input() headingNew!: any;
 }
 
 let component: TimetableFieldNumberDetailComponent;
