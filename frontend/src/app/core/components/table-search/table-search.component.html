@@ -1,63 +1,77 @@
-<div class="col-12 d-flex">
-  <div [class]="'d-flex flex-column pe-3 search-box ' + searchTextColumnStyle">
-    <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
-    <mat-form-field appearance="outline">
-      <mat-chip-list #chipList data-cy="table-search-strings">
-        <mat-chip *ngFor="let search of searchStrings" (removed)="removeSearch(search)">
-          {{ search }}
-          <button matChipRemove>
-            <em class="bi bi-x-circle-fill"></em>
-          </button>
-        </mat-chip>
-        <input
-          data-cy="table-search-chip-input"
-          [matChipInputFor]="chipList"
-          (matChipInputTokenEnd)="addSearch($event)"
-        />
-        <em class="bi bi-search me-2"></em>
-      </mat-chip-list>
-    </mat-form-field>
+<div class="d-flex flex-wrap">
+  <div class="search-row">
+    <div [class]="'d-flex flex-column col-6 pe-3 search-box ' + searchTextColumnStyle">
+      <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
+      <mat-form-field appearance="outline">
+        <mat-chip-list #chipList data-cy="table-search-strings">
+          <mat-chip *ngFor="let search of searchStrings" (removed)="removeSearch(search)">
+            {{ search }}
+            <button matChipRemove>
+              <em class="bi bi-x-circle-fill"></em>
+            </button>
+          </mat-chip>
+          <input
+            data-cy="table-search-chip-input"
+            [matChipInputFor]="chipList"
+            (matChipInputTokenEnd)="addSearch($event)"
+          />
+          <em class="bi bi-search me-2"></em>
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
   </div>
-  <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
-  <div class="d-flex flex-column col pe-3" *ngIf="displayStatus">
-    <mat-label class="font-bold-lg">{{ 'COMMON.STATUS' | translate }}</mat-label>
-    <mat-form-field appearance="outline">
-      <mat-select
-        data-cy="table-search-status-input"
-        (selectionChange)="statusSelectionChange()"
-        [(value)]="activeStatuses"
-        multiple
+  <div class="search-row">
+    <div class="d-flex flex-column col-3" *ngIf="displayBusinessOrganisationSearch">
+      <bo-select
+        controlName="businessOrganisation"
+        [formGroup]="boSearchForm"
+        (selectedBusinessOrganisationChanged)="businessOrganisationChanged($event)"
+        [formModus]="false"
       >
-        <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status"
-          >{{ 'COMMON.STATUS_TYPES.' + status | translate }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="d-flex flex-column col" *ngIf="displayValidOn">
-    <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
-    <mat-form-field appearance="outline">
-      <input
-        #validOnInput
-        data-cy="table-search-date-input"
-        matInput
-        [formControl]="dateControl"
-        [matDatepicker]="picker"
-        (dateChange)="onDateChanged($event)"
-        [min]="MIN_DATE"
-        [max]="MAX_DATE"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker">
-        <mat-icon matDatepickerToggleIcon>
-          <form-date-icon [enabled]="true"></form-date-icon>
-        </mat-icon>
-      </mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngFor="let validationError of getDateControlValidation()">
-        {{
-          validationError.error | translate: { date: getMinOrMaxDateDisplay(validationError.value) }
-        }}
-      </mat-error>
-    </mat-form-field>
+      </bo-select>
+    </div>
+    <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
+    <div class="d-flex flex-column col-3" *ngIf="displayStatus">
+      <mat-label class="font-bold-lg">{{ 'COMMON.STATUS' | translate }}</mat-label>
+      <mat-form-field appearance="outline" class="form-outline">
+        <mat-select
+          data-cy="table-search-status-input"
+          (selectionChange)="statusSelectionChange()"
+          [(value)]="activeStatuses"
+          multiple
+        >
+          <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status"
+            >{{ 'COMMON.STATUS_TYPES.' + status | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="d-flex flex-column col-3" *ngIf="displayValidOn">
+      <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
+      <mat-form-field appearance="outline" class="form-outline">
+        <input
+          #validOnInput
+          data-cy="table-search-date-input"
+          matInput
+          [formControl]="dateControl"
+          [matDatepicker]="picker"
+          (dateChange)="onDateChanged($event)"
+          [min]="MIN_DATE"
+          [max]="MAX_DATE"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker">
+          <mat-icon matDatepickerToggleIcon>
+            <form-date-icon [enabled]="true"></form-date-icon>
+          </mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngFor="let validationError of getDateControlValidation()">
+          {{
+            validationError.error
+              | translate: { date: getMinOrMaxDateDisplay(validationError.value) }
+          }}
+        </mat-error>
+      </mat-form-field>
+    </div>
   </div>
 </div>

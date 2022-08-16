@@ -14,8 +14,7 @@ import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
-import { TranslateService } from '@ngx-translate/core';
-import { Language } from '../../../core/components/language-switcher/language';
+import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 
 @Component({
   selector: 'app-bodi-business-organisations',
@@ -41,15 +40,15 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private tableSettingsService: TableSettingsService,
     private routeToDialogService: RouteToDialogService,
-    public translateService: TranslateService
+    public businessOrganisationLanguageService: BusinessOrganisationLanguageService
   ) {
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
       .subscribe(() => this.ngOnInit());
 
-    this.langChangeSubscription = this.translateService.onLangChange.subscribe(
-      () => (this.tableColumns = this.getColumns())
-    );
+    this.langChangeSubscription = this.businessOrganisationLanguageService
+      .languageChanged()
+      .subscribe(() => (this.tableColumns = this.getColumns()));
   }
 
   ngOnInit(): void {
@@ -97,34 +96,26 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
   }
 
   getDefaultSort() {
-    return this.displayedDescription() + ',ASC';
+    return this.getCurrentLanguageDescription() + ',ASC';
   }
 
-  displayedDescription() {
-    return ('description' + this.formatedLanguage()) as
-      | 'descriptionDe'
-      | 'descriptionFr'
-      | 'descriptionIt';
+  private getCurrentLanguageAbbreviation() {
+    return this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation();
   }
 
-  displayedAbbreviation() {
-    return ('abbreviation' + this.formatedLanguage()) as
-      | 'abbreviationDe'
-      | 'abbreviationFr'
-      | 'abbreviationIt';
-  }
-
-  private formatedLanguage() {
-    const currentLanguage = this.translateService.currentLang || Language.DE;
-    return currentLanguage.charAt(0).toUpperCase() + currentLanguage.slice(1);
+  private getCurrentLanguageDescription() {
+    return this.businessOrganisationLanguageService.getCurrentLanguageDescription();
   }
 
   private getColumns(): TableColumn<BusinessOrganisation>[] {
     return [
-      { headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION', value: this.displayedDescription() },
+      {
+        headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
+        value: this.getCurrentLanguageDescription(),
+      },
       {
         headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
-        value: this.displayedAbbreviation(),
+        value: this.getCurrentLanguageAbbreviation(),
       },
       { headerTitle: 'BODI.BUSINESS_ORGANISATION.SBOID', value: 'sboid' },
       {

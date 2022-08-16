@@ -32,7 +32,6 @@ export class SublinesComponent implements OnInit, OnDestroy {
       value: 'sublineType',
       translate: { withPrefix: 'LIDI.SUBLINE.TYPES.' },
     },
-    { headerTitle: 'LIDI.OVERVIEW_BUSINESS_ORGANISATION', value: 'businessOrganisation' },
     { headerTitle: 'LIDI.SLNID', value: 'slnid' },
     {
       headerTitle: 'COMMON.STATUS',
@@ -77,6 +76,7 @@ export class SublinesComponent implements OnInit, OnDestroy {
         $paginationAndSearch.searchCriteria,
         $paginationAndSearch.statusChoices,
         $paginationAndSearch.sublineTypes,
+        $paginationAndSearch.boChoice,
         $paginationAndSearch.validOn,
         $paginationAndSearch.page,
         $paginationAndSearch.size,

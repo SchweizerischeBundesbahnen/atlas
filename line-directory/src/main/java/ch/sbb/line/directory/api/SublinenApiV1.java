@@ -38,6 +38,7 @@ public interface SublinenApiV1 {
       @RequestParam(required = false) List<String> searchCriteria,
       @RequestParam(required = false) List<Status> statusRestrictions,
       @RequestParam(required = false) List<SublineType> typeRestrictions,
+      @RequestParam(required = false) Optional<String> businessOrganisation,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
   @DeleteMapping("{slnid}")

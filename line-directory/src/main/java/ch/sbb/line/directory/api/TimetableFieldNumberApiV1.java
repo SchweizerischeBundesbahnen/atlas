@@ -36,6 +36,7 @@ public interface TimetableFieldNumberApiV1 {
   Container<TimetableFieldNumberModel> getOverview(
       @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
+      @RequestParam(required = false) Optional<String> businessOrganisation,
       @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
