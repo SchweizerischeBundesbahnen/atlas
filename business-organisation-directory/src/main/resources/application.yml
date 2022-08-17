@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5435/business-organisation-directory
+    url: jdbc:postgresql://localhost:5435/business-organisation-directory?currentSchema=business_organisation_directory
     username: user
     password: pwd
     driver-class-name: org.postgresql.Driver
