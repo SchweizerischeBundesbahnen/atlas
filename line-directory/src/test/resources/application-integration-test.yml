@@ -30,3 +30,10 @@ logging:
           test: error
         test: error
         web: error
+amazon:
+  accessKey: ${AMAZON_S3_ACCESS_KEY}
+  secretKey: ${AMAZON_S3_SECRET_KEY}
+  region: "eu-central-1"
+  bucket:
+    name: "atlas-data-export-dev-dev"
+    dir: "line-test"
