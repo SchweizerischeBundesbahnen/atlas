@@ -189,7 +189,10 @@ export default class BodiUtils {
 
   private static interceptBusinessOrganisations(visitSelector: string) {
     cy.intercept('GET', '/business-organisation-directory/v1/business-organisations?**').as('getBusinessOrganisations');
-    cy.get(visitSelector).click();
+    cy.get(visitSelector)
+    .should('be.visible')
+    .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
+    .click();
     cy.wait('@getBusinessOrganisations').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
       cy.url().should('contain', '/business-organisation-directory/business-organisations');

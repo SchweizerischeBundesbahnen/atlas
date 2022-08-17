@@ -6,7 +6,10 @@ export default class TtfnUtils {
   static navigateToTimetableFieldNumber() {
     CommonUtils.navigateToHomeViaHomeLogo();
     cy.intercept('GET', '/line-directory/v1/field-numbers?**').as('getFieldnumbers');
-    cy.get('#timetable-field-number').click();
+    cy.get('#timetable-field-number')
+    .should('be.visible')
+    .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
+    .click();
     cy.wait('@getFieldnumbers').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
       cy.url().should('contain', '/timetable-field-number');

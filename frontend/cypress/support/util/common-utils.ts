@@ -45,6 +45,7 @@ export default class CommonUtils {
 
   static navigateToHomeViaHomeLogo() {
     cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({ force: true });
+    cy.url().should('eq', Cypress.config().baseUrl + '/');
   }
 
   static navigateToHomepageViaSidemenu() {
@@ -246,16 +247,17 @@ export default class CommonUtils {
   }
 
   static typeAndSelectItemFromDropDown(selector: string, value: string) {
+    cy.intercept('GET', '*' + value + '*').as('searchIntercept');
     cy.get(selector)
-      .should('have.value', '')
-      .should(($el) => {
-        expect(Cypress.dom.isFocusable($el)).to.be.true;
-      })
-      .should('be.enabled')
-      .type(value, { delay: 0, force: true })
-      .should('have.value', value)
-      .wait(1500)
-      .type('{enter}');
+    .should('have.value', '')
+    .should(($el) => {
+      expect(Cypress.dom.isFocusable($el)).to.be.true;
+    })
+    .should('be.enabled')
+    .type(value, { delay: 0, force: true })
+    .wait('@searchIntercept')
+    .wait(100);
+    cy.get(selector).type('{enter}');
   }
 
   static visit(itemToDeleteUrl: string) {
