@@ -17,6 +17,7 @@ export class SearchSelectComponent<TYPE> {
   @Input() bindValueInp = '';
 
   @Output() searchTrigger = new EventEmitter<string>();
+  @Output() changeTrigger = new EventEmitter<TYPE>();
 
   @ViewChild('ngSelect') ngSelect?: NgSelectComponent;
 
