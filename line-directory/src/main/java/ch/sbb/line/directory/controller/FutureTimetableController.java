@@ -20,7 +20,7 @@ public class FutureTimetableController implements FutureTimetableApiV1 {
   @Override
   public List<LocalDate> getNextYearsFutureTimetables(int count) {
     List<LocalDate> nextYearsFutureTimetables = new ArrayList<>();
-    for (int i = 1; i <= count; i++) {
+    for (int i = 0; i < count; i++) {
       LocalDate nextYear = LocalDate.now().plusYears(i);
       nextYearsFutureTimetables.add(FutureTimetableHelper.getFutureTimetableExportDate(nextYear));
     }
