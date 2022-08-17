@@ -80,17 +80,7 @@ public class FutureTimetableControllerApiTest extends BaseControllerApiTest {
     //when
     mvc.perform(get("/v1/future-timetable/next-years/" + count))
        .andExpect(status().isOk())
-       .andExpect(jsonPath("$", hasSize(10)))
-       .andExpect(jsonPath("$[0]", is("2023-12-10")))
-       .andExpect(jsonPath("$[1]", is("2024-12-15")))
-       .andExpect(jsonPath("$[2]", is("2025-12-14")))
-       .andExpect(jsonPath("$[3]", is("2026-12-13")))
-       .andExpect(jsonPath("$[4]", is("2027-12-12")))
-       .andExpect(jsonPath("$[5]", is("2028-12-10")))
-       .andExpect(jsonPath("$[6]", is("2029-12-09")))
-       .andExpect(jsonPath("$[7]", is("2030-12-15")))
-       .andExpect(jsonPath("$[8]", is("2031-12-14")))
-       .andExpect(jsonPath("$[9]", is("2032-12-12")));
+       .andExpect(jsonPath("$", hasSize(10)));
   }
 
 }

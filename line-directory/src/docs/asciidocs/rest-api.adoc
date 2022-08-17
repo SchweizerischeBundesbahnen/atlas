@@ -165,7 +165,7 @@ include::{snippets}/timetable-field-number-controller-api-test/should-return-not
 
 = Future Timetable
 
-For more information go to https://www.fahrplanfelder.ch/en/welcome.html
+For more information go to  https://www.fahrplanfelder.ch/en/explanations/timetable-year.html#c202[Timetable year] definition.
 
 == Get Future Timetable
 
