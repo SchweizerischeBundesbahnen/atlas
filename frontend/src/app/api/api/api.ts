@@ -1,7 +1,11 @@
+export * from './atlasGraphApi.service';
+import { AtlasGraphApiService } from './atlasGraphApi.service';
 export * from './businessOrganisations.service';
 import { BusinessOrganisationsService } from './businessOrganisations.service';
 export * from './companies.service';
 import { CompaniesService } from './companies.service';
+export * from './liDiUserAdministration.service';
+import { LiDiUserAdministrationService } from './liDiUserAdministration.service';
 export * from './lines.service';
 import { LinesService } from './lines.service';
 export * from './sublines.service';
@@ -13,8 +17,10 @@ import { TransportCompaniesService } from './transportCompanies.service';
 export * from './transportCompanyRelations.service';
 import { TransportCompanyRelationsService } from './transportCompanyRelations.service';
 export const APIS = [
+  AtlasGraphApiService,
   BusinessOrganisationsService,
   CompaniesService,
+  LiDiUserAdministrationService,
   LinesService,
   SublinesService,
   TimetableFieldNumbersService,

@@ -55,7 +55,8 @@
       "lidi-writer": "LiDi Writer",
       "lidi-admin": "LiDi Admin",
       "bo-writer": "BoDi Writer",
-      "bo-admin": "BoDi Admin"
+      "bo-admin": "BoDi Admin",
+      "atlas-admin": "Atlas Admin"
     },
     "SEARCH": {
       "VALIDITY": "Gültig am",
@@ -171,7 +172,12 @@
     "FIRST_NAME": "Vorname",
     "MAIL": "E-Mail Adresse",
     "USER_ID": "Benutzer-ID",
-    "ACCOUNT_STATUS": "Accountstatus"
+    "ACCOUNT_STATUS": "Accountstatus",
+    "ACCOUNT_STATUS_TYPE": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv",
+      "DELETED": "Gelöscht"
+    }
   },
   "TTFN": {
     "TTFN": "Fahrplanfeldnummer",

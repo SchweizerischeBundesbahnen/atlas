@@ -88,17 +88,7 @@ export class Pages {
     description: '',
   };
 
-  private static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
-  private static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
-
-  public static enabledPages(): Page[] {
-    // if (){ TODO: check if user is admin
-    return [...this.pages, ...this.adminPages];
-    // }
-    return this.pages;
-  }
-
-  public static enabledAdminPages(): Page[] {
-    return this.adminPages;
-  }
+  public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
+  public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
+  public static enabledPages: Page[] = Pages.pages;
 }
