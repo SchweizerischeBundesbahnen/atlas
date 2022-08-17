@@ -22,7 +22,7 @@
 
 ## Atlas Amazon S3 Client
 
-To be able to put or get a file on SBB Amazon S3 Bucket we need to wxecute the following steps:
+To be able to put or get a file on SBB Amazon S3 Bucket we need to execute the following steps:
 
 1. [Create S3 Bucket](https://self.sbb-cloud.net/tools/aws/s3/new)
 2. [Create S3 Bucket User](https://self.sbb-cloud.net/tools/aws/s3/user/new):
@@ -54,7 +54,7 @@ see [Atlas S3 Buckets](https://self.sbb-cloud.net/tools/aws/s3/list)):
     * int: **int-dev**
     * prod: **prod**
 
-:warning: Disclaimer: the postfix for dev, test and int is always following by dev because of
+:warning: Disclaimer: the postfix for dev, test and int is always followed by "dev" because of
 the [SBB bucket name generation](https://self.sbb-cloud.net/tools/aws/s3/new), for more information
 see [AmazonServiceImpl.java](src/main/java/ch/sbb/atlas/amazon/service/AmazonServiceImpl.java)
 #getBucketNameFromActiveProfile()
@@ -71,7 +71,7 @@ atlas-data-export-prod
 │   │   file012.txt
 ```
 
-Each Service must define te property [**
+Each Service must define the property [**
 amazon.bucket.dir**](src/main/java/ch/sbb/atlas/amazon/service/AmazonServiceImpl.java)#bucketDir in
 its properties file.
 
