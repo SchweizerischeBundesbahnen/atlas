@@ -1,6 +1,7 @@
 <div class="overview-table">
   <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
   <app-table-search
+    *ngIf="loadTableSearch"
     [additionalFieldTemplate]="tableSearchFieldTemplate"
     (searchEvent)="searchData($event)"
     [displayStatus]="displayStatusSearch"
@@ -9,12 +10,14 @@
     [searchTextColumnStyle]="searchTextColumnStyle"
   >
   </app-table-search>
+  <ng-content></ng-content>
   <table
     mat-table
     [dataSource]="tableData"
     matSort
+    [matSortDisabled]="sortingDisabled"
     (matSortChange)="sortData($event)"
-    [matSortActive]="tableColumns[0].value!"
+    [matSortActive]="sortingDisabled ? '' : tableColumns[0].value!"
     matSortDirection="asc"
   >
     <ng-container *ngFor="let column of tableColumns">
@@ -51,7 +54,7 @@
   <mat-paginator
     [length]="totalCount"
     [pageSize]="10"
-    [pageSizeOptions]="[5, 10, 25, 100]"
+    [pageSizeOptions]="pageSizeOptions"
     (page)="pageChanged($event)"
     class="font-regular-base"
   >

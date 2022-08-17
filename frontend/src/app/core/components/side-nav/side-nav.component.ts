@@ -11,7 +11,6 @@ import { Subject } from 'rxjs';
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent implements OnDestroy {
-  readonly pages: Page[] = Pages.enabledPages();
   private readonly ngUnsubscribe = new Subject<void>();
   activePageIndex = 0;
 
@@ -25,11 +24,15 @@ export class SideNavComponent implements OnDestroy {
       .subscribe();
   }
 
+  get enabledPages(): Page[] {
+    return Pages.enabledPages;
+  }
+
   getActivePageIndex(currentUrl: string): number {
     if (currentUrl === '/') {
-      return this.pages.findIndex((value) => value.path.length === 0);
+      return this.enabledPages.findIndex((value) => value.path.length === 0);
     }
-    return this.pages.findIndex(
+    return this.enabledPages.findIndex(
       (value) => value.path.length > 0 && currentUrl.includes(value.path)
     );
   }

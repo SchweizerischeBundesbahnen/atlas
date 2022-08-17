@@ -1,14 +1,29 @@
-<div class="white-container ms-5 mt-5">
+<div class="white-table-container-no-tabs ms-5 mt-5">
   <div class="font-bold-4xl color-gray-900 mb-5">
     {{ 'USER_ADMIN.TABLE_HEADER' | translate }}
   </div>
 
   <app-table
-    [tableData]="users"
+    [loadTableSearch]="false"
+    [isLoading]="tableIsLoading"
+    [tableData]="userPageResult.users"
     [tableColumns]="tableColumns"
     [displayStatusSearch]="false"
     [displayValidOnSearch]="false"
     [searchTextColumnStyle]="'col-12'"
+    [pageSizeOptions]="[5, 10, 20]"
+    [totalCount]="userPageResult.totalCount"
+    [sortingDisabled]="true"
     (editElementEvent)="({})"
-  ></app-table>
+    (getTableElementsEvent)="loadUsers($event)"
+  >
+    <form-search-select
+      [items$]="userSearchResults$"
+      [formGroup]="form"
+      [controlName]="'userSearch'"
+      [getSelectOption]="selectOption"
+      (searchTrigger)="searchUser($event)"
+      (changeTrigger)="checkIfUserExists($event)"
+    ></form-search-select>
+  </app-table>
 </div>
