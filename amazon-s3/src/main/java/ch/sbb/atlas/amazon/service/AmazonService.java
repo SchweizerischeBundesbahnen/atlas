@@ -10,5 +10,4 @@ public interface AmazonService {
 
   URL putZipFile(File file) throws IOException;
 
-  String getBucketNameFromActiveProfile();
 }
