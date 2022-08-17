@@ -39,6 +39,7 @@ public class AmazonServiceTest {
     //given
     Path tempFile = createTempFile();
     amazonService.setBucketDir("line");
+    amazonService.setBucketName("bucket");
     //when
     amazonService.putFile(tempFile.toFile());
     //then
@@ -51,6 +52,7 @@ public class AmazonServiceTest {
     //given
     Path tempFile = createTempFile();
     amazonService.setBucketDir("line");
+    amazonService.setBucketName("bucket");
     when(fileService.zipFile(tempFile.toFile())).thenCallRealMethod();
     //when
     amazonService.putZipFile(tempFile.toFile());
@@ -58,65 +60,6 @@ public class AmazonServiceTest {
     verify(fileService).zipFile(tempFile.toFile());
     verify(amazonS3).putObject(Mockito.any(PutObjectRequest.class));
     verify(amazonS3).getUrl(Mockito.anyString(), Mockito.anyString());
-  }
-
-  @Test
-  public void shouldGetBucketNameFromActiveProfileProd() {
-    //given
-    amazonService.setActiveProfile("prod");
-    //when
-    String result = amazonService.getBucketNameFromActiveProfile();
-    //then
-    assertThat(result).isEqualTo("atlas-data-export-prod");
-  }
-
-  @Test
-  public void shouldGetBucketNameFromActiveProfileDev() {
-    //given
-    amazonService.setActiveProfile("dev");
-    //when
-    String result = amazonService.getBucketNameFromActiveProfile();
-    //then
-    assertThat(result).isEqualTo("atlas-data-export-dev-dev");
-  }
-
-  @Test
-  public void shouldGetBucketNameFromActiveProfileLocal() {
-    //given
-    amazonService.setActiveProfile("local");
-    //when
-    String result = amazonService.getBucketNameFromActiveProfile();
-    //then
-    assertThat(result).isEqualTo("atlas-data-export-dev-dev");
-  }
-
-  @Test
-  public void shouldGetBucketNameFromActiveProfileTest() {
-    //given
-    amazonService.setActiveProfile("test");
-    //when
-    String result = amazonService.getBucketNameFromActiveProfile();
-    //then
-    assertThat(result).isEqualTo("atlas-data-export-test-dev");
-  }
-
-  @Test
-  public void shouldGetBucketNameFromActiveProfileInt() {
-    //given
-    amazonService.setActiveProfile("int");
-    //when
-    String result = amazonService.getBucketNameFromActiveProfile();
-    //then
-    assertThat(result).isEqualTo("atlas-data-export-int-dev");
-  }
-
-  @Test
-  public void shouldThrowExceptionWhenUnkonwProfile() {
-    //given
-    amazonService.setActiveProfile("ciao");
-    //when
-    assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
-        () -> amazonService.getBucketNameFromActiveProfile());
   }
 
   @Test
