@@ -55,7 +55,8 @@
       "lidi-writer": "LiDi Writer",
       "lidi-admin": "LiDi Admin",
       "bo-writer": "BoDi Writer",
-      "bo-admin": "BoDi Admin"
+      "bo-admin": "BoDi Admin",
+      "atlas-admin": "Atlas Admin"
     },
     "SEARCH": {
       "VALIDITY": "Valable le",
@@ -134,6 +135,13 @@
       "DESCRIPTION": "Vers liste des organisations commerciales",
       "PATH_TEXT": "Organisations commerciales"
     },
+    "USER_ADMIN": {
+      "TITLE": "Gérer les utilisateurs",
+      "TITLE_HEADER": "Gestion des utilisateurs",
+      "TITLE_MENU": "Gestion des utilisateurs",
+      "DESCRIPTION": "Vous trouverez ici toutes les informations sur les utilisateurs autorisés et pourrez les gérer.",
+      "PATH_TEXT": "Gestion des utilisateurs"
+    },
     "DETAILS": "Précisions"
   },
   "PAGINATOR": {
@@ -157,6 +165,19 @@
     "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100",
     "MIN": "La valeur doit être au minimum {{min}}.",
     "MAX": "La valeur doit être au maximum {{max}}."
+  },
+  "USER_ADMIN": {
+    "TABLE_HEADER": "Utilisateur",
+    "LAST_NAME": "Nom",
+    "FIRST_NAME": "Prénom",
+    "MAIL": "Adresse e-mail",
+    "USER_ID": "ID d'utilisateur",
+    "ACCOUNT_STATUS": "Statut du compte",
+    "ACCOUNT_STATUS_TYPE": {
+      "ACTIVE": "Actif",
+      "INACTIVE": "Inactif",
+      "DELETED": "Supprimé"
+    }
   },
   "TTFN": {
     "TTFN": "Numéro du tableau-horaire",
