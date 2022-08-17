@@ -15,6 +15,7 @@ function createOauthServiceSpy() {
     'loadDiscoveryDocumentAndLogin',
     'logOut',
     'initCodeFlow',
+    'getAccessToken',
   ]);
   oauthServiceSpy.loadDiscoveryDocumentAndLogin.and.returnValue(
     new Promise((resolve: (v: boolean) => void): void => {

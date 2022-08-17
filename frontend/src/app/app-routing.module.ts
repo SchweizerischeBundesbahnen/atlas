@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { Pages } from './pages/pages';
 import { AuthGuard } from './core/auth/auth-guard';
+import { AdminGuard } from './core/auth/admin.guard';
 
 const routes: Routes = [
   {
@@ -30,7 +31,7 @@ const routes: Routes = [
         (m) => m.UserAdministrationModule
       ),
     data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, AdminGuard],
   },
   {
     path: Pages.HOME.path,
