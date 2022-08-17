@@ -1,5 +1,5 @@
 <div
-  *ngFor="let page of pages; let pageIndex = index"
+  *ngFor="let page of enabledPages; let pageIndex = index"
   class="link-border"
   [attr.data-cy]="page.path ? 'sidemenu-' + page.path : 'sidemenu-start'"
 >
