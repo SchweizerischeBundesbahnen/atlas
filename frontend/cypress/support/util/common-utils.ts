@@ -254,7 +254,7 @@ export default class CommonUtils {
       .should('be.enabled')
       .type(value, { delay: 0, force: true })
       .should('have.value', value)
-      .wait(1000)
+      .wait(1500)
       .type('{enter}');
   }
 
