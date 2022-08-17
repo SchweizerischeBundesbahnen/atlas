@@ -29,3 +29,18 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+.white-table-container {
+  background-color: white;
+  padding: 56px;
+  margin-right: 56px;
+
+  &-no-tabs {
+    @extend .white-table-container;
+    border-radius: variables.$border-radius;
+  }
+  &-tabs {
+    @extend .white-table-container;
+    border-radius: 0 variables.$border-radius variables.$border-radius variables.$border-radius;
+  }
+}

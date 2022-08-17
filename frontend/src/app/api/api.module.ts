@@ -2,8 +2,10 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { AtlasGraphApiService } from './api/atlasGraphApi.service';
 import { BusinessOrganisationsService } from './api/businessOrganisations.service';
 import { CompaniesService } from './api/companies.service';
+import { LiDiUserAdministrationService } from './api/liDiUserAdministration.service';
 import { LinesService } from './api/lines.service';
 import { SublinesService } from './api/sublines.service';
 import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
