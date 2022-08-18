@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
-import ch.sbb.line.directory.api.FutureTimetableApiV1;
+import ch.sbb.line.directory.api.TimetableYearChangeApiV1;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class FutureTimetableController implements FutureTimetableApiV1 {
+public class TimetableYearChangeController implements TimetableYearChangeApiV1 {
 
   @Override
-  public LocalDate getFutureTimetable(int year) {
-    return FutureTimetableHelper.getFutureTimetableExportDate(LocalDate.now().withYear(year));
+  public LocalDate getTimetableYearChange(int year) {
+    return FutureTimetableHelper.geTimetableYearChangeDateToExportData(
+        LocalDate.now().withYear(year));
   }
 
   @Override
-  public List<LocalDate> getNextYearsFutureTimetables(int count) {
+  public List<LocalDate> getNextTimetablesYearChange(int count) {
     List<LocalDate> nextYearsFutureTimetables = new ArrayList<>();
     for (int i = 0; i < count; i++) {
       LocalDate nextYear = LocalDate.now().plusYears(i);
-      nextYearsFutureTimetables.add(FutureTimetableHelper.getFutureTimetableExportDate(nextYear));
+      nextYearsFutureTimetables.add(
+          FutureTimetableHelper.geTimetableYearChangeDateToExportData(nextYear));
     }
     return nextYearsFutureTimetables;
   }

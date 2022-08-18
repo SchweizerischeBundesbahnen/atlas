@@ -185,7 +185,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     lineController.createLineVersion(lineVersionModel2);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/future-timetable/csv"))
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/timetable-year-change/csv"))
                              .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult);
   }
@@ -203,7 +203,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     lineController.createLineVersion(lineVersionModel2);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/future-timetable/zip"))
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/timetable-year-change/zip"))
                              .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult);
   }
