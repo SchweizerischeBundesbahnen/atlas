@@ -92,7 +92,7 @@ public class ExportService {
 
   private File getActualFutureTimetableLineVersionsCsv() {
     List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
-        FutureTimetableHelper.getFutureTimetableExportDate(LocalDate.now()));
+        FutureTimetableHelper.geTimetableYearChangeDateToExportData(LocalDate.now()));
     return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
   }
 
