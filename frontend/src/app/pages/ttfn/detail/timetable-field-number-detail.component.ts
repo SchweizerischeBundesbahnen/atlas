@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { DetailWrapperController } from '../../../core/components/detail-wrapper/detail-wrapper-controller';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { catchError, Subject } from 'rxjs';
 import moment from 'moment/moment';
@@ -33,7 +33,6 @@ export class TimetableFieldNumberDetailComponent
     private router: Router,
     protected dialogRef: MatDialogRef<TimetableFieldNumberDetailComponent>,
     private timetableFieldNumberService: TimetableFieldNumbersService,
-    private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
     protected dialogService: DialogService
   ) {
