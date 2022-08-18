@@ -35,6 +35,21 @@ mat-select {
     border-color: variables.$warnColor;
   }
 
+  &.ng-select-disabled {
+    border-color: variables.$gray-400;
+
+    .ng-select-container {
+      .ng-arrow,
+      .ng-clear {
+        color: variables.$gray-400 !important;
+      }
+
+      .ng-value-container .ng-value {
+        color: inherit;
+      }
+    }
+  }
+
   input {
     cursor: initial !important;
     padding-left: 4.8px !important;
