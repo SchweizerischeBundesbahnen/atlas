@@ -1,13 +1,9 @@
 package ch.sbb.line.directory.controller;
 
-import static java.util.stream.Collectors.toList;
-
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.Container;
 import ch.sbb.atlas.model.exception.ExportException;
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.api.Container;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
