@@ -9,14 +9,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import org.junit.jupiter.api.Test;
 
-public class FutureTimetableControllerApiTest extends BaseControllerApiTest {
+public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest {
 
   @Test
   public void shouldReturnFutureTimeTable() throws Exception {
     //given
     String year = "2022";
     //when
-    mvc.perform(get("/v1/future-timetable/" + year))
+    mvc.perform(get("/v1/timetable-year-change/" + year))
        .andExpect(status().isOk())
        .andExpect(jsonPath("$", is("2022-12-11")));
   }
@@ -26,7 +26,7 @@ public class FutureTimetableControllerApiTest extends BaseControllerApiTest {
     //given
     String year = "1699";
     //when
-    mvc.perform(get("/v1/future-timetable/" + year))
+    mvc.perform(get("/v1/timetable-year-change/" + year))
        .andExpect(status().isBadRequest())
        .andExpect(jsonPath("$.status", is(400)))
        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
@@ -39,7 +39,7 @@ public class FutureTimetableControllerApiTest extends BaseControllerApiTest {
     //given
     String year = "10000";
     //when
-    mvc.perform(get("/v1/future-timetable/" + year))
+    mvc.perform(get("/v1/timetable-year-change/" + year))
        .andExpect(status().isBadRequest())
        .andExpect(jsonPath("$.status", is(400)))
        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
@@ -52,7 +52,7 @@ public class FutureTimetableControllerApiTest extends BaseControllerApiTest {
     //given
     String count = "0";
     //when
-    mvc.perform(get("/v1/future-timetable/next-years/" + count))
+    mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
        .andExpect(status().isBadRequest())
        .andExpect(jsonPath("$.status", is(400)))
        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
@@ -65,7 +65,7 @@ public class FutureTimetableControllerApiTest extends BaseControllerApiTest {
     //given
     String count = "101";
     //when
-    mvc.perform(get("/v1/future-timetable/next-years/" + count))
+    mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
        .andExpect(status().isBadRequest())
        .andExpect(jsonPath("$.status", is(400)))
        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
@@ -78,7 +78,7 @@ public class FutureTimetableControllerApiTest extends BaseControllerApiTest {
     //given
     String count = "10";
     //when
-    mvc.perform(get("/v1/future-timetable/next-years/" + count))
+    mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
        .andExpect(status().isOk())
        .andExpect(jsonPath("$", hasSize(10)));
   }
