@@ -5,14 +5,14 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-  * [Localhost](#localhost)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
-  * [Project Infrastructure](#project-infrastructure)
-  * [Tech Stack](#tech-stack)
-  * [Test RESTful Web services](#test-restful-web-services)
+    * [Localhost](#localhost)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
+    * [Project Infrastructure](#project-infrastructure)
+    * [Tech Stack](#tech-stack)
+    * [Test RESTful Web services](#test-restful-web-services)
 - [Scheduler Export](#scheduler-export)
 
 <!-- tocstop -->
@@ -151,3 +151,8 @@ by [ExportScheduler.java](src/main/java/ch/sbb/line/directory/scheduler/ExportSc
 Since LiDi is deployed as multiple instances we
 use [ShedLock](https://github.com/lukas-krecan/ShedLock) to prevent a scheduling job from running
 multiple times.
+
+### Line Export Bucket expiration policy
+
+The **amazon.bucket.object-expiration-days** property defines that a file after n days will be
+deleted, see [application.yml](src/main/resources/application.yml)
