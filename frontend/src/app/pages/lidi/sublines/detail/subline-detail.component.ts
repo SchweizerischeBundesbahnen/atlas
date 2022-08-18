@@ -200,4 +200,16 @@ export class SublineDetailComponent
       ])
       .pipe(map((value) => value.objects ?? []));
   }
+
+  mainlineUrl(): string {
+    return (
+      location.origin +
+      '/' +
+      Pages.LIDI.path +
+      '/' +
+      Pages.LINES.path +
+      '/' +
+      this.form.get('mainlineSlnid')?.value
+    );
+  }
 }
