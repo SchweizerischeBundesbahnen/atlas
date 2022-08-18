@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { BusinessOrganisation, BusinessOrganisationsService } from '../../../api';
@@ -10,7 +19,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './business-organisation-select.component.html',
   styleUrls: ['./business-organisation-select.component.scss'],
 })
-export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy {
+export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'sboid';
   @Input() controlName!: string;
   @Input() formModus = true;
@@ -27,6 +36,19 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.init();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.formGroup) {
+      if (this.formSubscription) {
+        this.formSubscription.unsubscribe();
+      }
+      this.init();
+    }
+  }
+
+  init() {
     const boControl = this.formGroup.get(this.controlName)!;
     this.formSubscription = boControl.valueChanges.subscribe((change) => {
       this.selectedBusinessOrganisationChanged.emit(change);
