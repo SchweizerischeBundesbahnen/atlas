@@ -53,20 +53,39 @@
       </div>
 
       <div class="d-flex flex-column col-4">
-        <form-search-select
-          [items$]="mainlines$"
-          [controlName]="mainlineSlnidFormControlName"
-          [formGroup]="form"
-          [getSelectOption]="selectOption"
-          [bindValueInp]="'slnid'"
-          (searchTrigger)="searchMainlines($event)"
-          data-cy="mainline"
-        >
-          <mat-label class="font-bold-lg required-indicator">{{
-            'LIDI.SUBLINE.MAINLINE' | translate
-          }}</mat-label>
-          <div class="mat-label-form-field-space-between"></div>
-        </form-search-select>
+        <div class="mainline-container d-flex col-12">
+          <div class="mainline-select d-flex flex-column">
+            <form-search-select
+              [items$]="mainlines$"
+              [controlName]="mainlineSlnidFormControlName"
+              [formGroup]="form"
+              [getSelectOption]="selectOption"
+              [bindValueInp]="'slnid'"
+              (searchTrigger)="searchMainlines($event)"
+              data-cy="mainline"
+            >
+              <mat-label class="font-bold-lg required-indicator">{{
+                'LIDI.SUBLINE.MAINLINE' | translate
+              }}</mat-label>
+              <div class="mat-label-form-field-space-between"></div>
+            </form-search-select>
+          </div>
+          <div class="mainline-link d-flex flex-column">
+            <a target="_blank" [attr.href]="mainlineUrl()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="18"
+                viewBox="0 2 22 22"
+                width="18"
+                fill="#000000"
+              >
+                <path
+                  d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
 

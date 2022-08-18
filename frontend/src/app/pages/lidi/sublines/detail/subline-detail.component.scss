@@ -1,3 +1,22 @@
+@use 'src/styles/variables' as variables;
+
 .subtitle-margin {
   margin-bottom: 17.5px;
+}
+
+.mainline-select {
+  width: 95%;
+}
+
+.mainline-link {
+  width: 5%;
+
+  svg path {
+    fill: variables.$primary-400;
+  }
+
+  a {
+    margin-left: auto;
+    padding-top: 65px;
+  }
 }
