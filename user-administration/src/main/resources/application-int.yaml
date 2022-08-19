@@ -1,0 +1,6 @@
+auth:
+  audience:
+    service-name: 733b361e-a067-4882-bb00-6bbaf36a007f
+azure-config:
+  azure-ad-secret: ${AZURE_AD_SECRET}
+  app-registration-id: 733b361e-a067-4882-bb00-6bbaf36a007f

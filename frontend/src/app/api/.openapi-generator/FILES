@@ -5,6 +5,7 @@ api/api.ts
 api/atlasGraphApi.service.ts
 api/businessOrganisations.service.ts
 api/companies.service.ts
+api/futureTimetable.service.ts
 api/liDiUserAdministration.service.ts
 api/lines.service.ts
 api/sublines.service.ts

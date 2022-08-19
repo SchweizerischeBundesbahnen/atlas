@@ -43,6 +43,12 @@
       "openshiftAppName": "atlas-frontend",
       "dockerFile": "frontend/docker/Dockerfile",
       "artifactorySupressProjectSubfolderCreation": true
+    },
+    {
+      "artifactoryDockerRepo": "atlas.docker",
+      "openshiftAppName": "user-administration",
+      "dockerFile": "user-administration/docker/Dockerfile",
+      "artifactorySupressProjectSubfolderCreation": true
     }
   ],
   "helm": {

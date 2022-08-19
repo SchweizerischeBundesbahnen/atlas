@@ -60,10 +60,10 @@ export class Pages {
 
   public static USER_ADMINISTRATION: Page = {
     title: 'PAGES.USER_ADMIN.TITLE',
-    titleMenu: 'PAGES.USER_ADMIN.TITLE_MENU',
+    titleMenu: 'PAGES.USER_ADMIN.TITLE_HEADER',
     headerTitle: 'PAGES.USER_ADMIN.TITLE_HEADER',
     path: 'user-administration',
-    pathText: 'PAGES.USER_ADMIN.PATH_TEXT',
+    pathText: 'PAGES.USER_ADMIN.TITLE_HEADER',
     description: 'PAGES.USER_ADMIN.DESCRIPTION',
   };
 
