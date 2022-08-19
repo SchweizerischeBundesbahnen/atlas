@@ -138,9 +138,7 @@
     "USER_ADMIN": {
       "TITLE": "Benutzer verwalten",
       "TITLE_HEADER": "Benutzerverwaltung",
-      "TITLE_MENU": "Benutzerverwaltung",
-      "DESCRIPTION": "Hier finden Sie alle Informationen zu den berechtigten Benutzern und können diese verwalten.",
-      "PATH_TEXT": "Benutzerverwaltung"
+      "DESCRIPTION": "Hier finden Sie alle Informationen zu den berechtigten Benutzern und können diese verwalten."
     },
     "DETAILS": "Details"
   },

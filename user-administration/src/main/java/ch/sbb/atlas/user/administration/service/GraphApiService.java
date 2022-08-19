@@ -1,7 +1,7 @@
-package ch.sbb.atlas.useradministration.service;
+package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.atlas.useradministration.models.UserModel;
-import ch.sbb.atlas.useradministration.enums.UserAccountStatus;
+import ch.sbb.atlas.user.administration.models.UserModel;
+import ch.sbb.atlas.user.administration.enums.UserAccountStatus;
 import com.microsoft.graph.content.BatchRequestContent;
 import com.microsoft.graph.content.BatchResponseContent;
 import com.microsoft.graph.models.User;
