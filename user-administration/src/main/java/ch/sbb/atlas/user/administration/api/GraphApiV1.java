@@ -1,6 +1,6 @@
-package ch.sbb.atlas.useradministration.api;
+package ch.sbb.atlas.user.administration.api;
 
-import ch.sbb.atlas.useradministration.models.UserModel;
+import ch.sbb.atlas.user.administration.models.UserModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;

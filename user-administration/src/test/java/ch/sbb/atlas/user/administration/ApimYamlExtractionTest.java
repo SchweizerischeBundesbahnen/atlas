@@ -1,4 +1,4 @@
-package ch.sbb.atlas.useradministration;
+package ch.sbb.atlas.user.administration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

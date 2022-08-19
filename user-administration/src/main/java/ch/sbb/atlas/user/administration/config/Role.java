@@ -1,4 +1,4 @@
-package ch.sbb.atlas.useradministration.config;
+package ch.sbb.atlas.user.administration.config;
 
 public final class Role {
 
