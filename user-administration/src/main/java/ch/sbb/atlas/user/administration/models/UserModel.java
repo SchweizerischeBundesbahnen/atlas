@@ -1,6 +1,6 @@
-package ch.sbb.atlas.useradministration.models;
+package ch.sbb.atlas.user.administration.models;
 
-import ch.sbb.atlas.useradministration.enums.UserAccountStatus;
+import ch.sbb.atlas.user.administration.enums.UserAccountStatus;
 
 public record UserModel(String sbbUserId, String lastName, String firstName, String mail,
                         UserAccountStatus accountStatus, String displayName) {
