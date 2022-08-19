@@ -1,4 +1,4 @@
-package ch.sbb.atlas.useradministration;
+package ch.sbb.atlas.user.administration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

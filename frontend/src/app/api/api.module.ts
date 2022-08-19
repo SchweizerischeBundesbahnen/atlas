@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AtlasGraphApiService } from './api/atlasGraphApi.service';
 import { BusinessOrganisationsService } from './api/businessOrganisations.service';
 import { CompaniesService } from './api/companies.service';
+import { FutureTimetableService } from './api/futureTimetable.service';
 import { LiDiUserAdministrationService } from './api/liDiUserAdministration.service';
 import { LinesService } from './api/lines.service';
 import { SublinesService } from './api/sublines.service';

@@ -100,9 +100,3 @@ export class UserAdministrationOverviewComponent implements OnInit {
       .subscribe();
   }
 }
-
-// TODO: translations vereinfachen
-// TODO: restApidocs (lidi)
-// TODO: backend helm, docker, pipeline... + stage yamls
-// TODO: rbt groups azure ad connection
-// TODO: searchfield update (git merge)

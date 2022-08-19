@@ -1,4 +1,4 @@
-package ch.sbb.atlas.useradministration.config;
+package ch.sbb.atlas.user.administration.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class AzureConfig {
 
   private String tenantId;
-  private String clientId;
-  private String clientSecret;
+  private String appRegistrationId;
+  private String azureAdSecret;
 
 }

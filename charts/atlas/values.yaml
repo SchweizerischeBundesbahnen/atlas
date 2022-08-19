@@ -32,6 +32,12 @@ lineDirectory:
   # Application Port
   port: 8082
 
+userAdministration:
+  name: "user-administration"
+  port: 8084
+  livenessProbe: "actuator/health"
+  readynessProbe: "actuator/health"
+
 businessOrganisationDirectory:
   # Name of the Dockerimge in bin.sbb.ch/dockerrepo
   name: "business-organisation-directory"
