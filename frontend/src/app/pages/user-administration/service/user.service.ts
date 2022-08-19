@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   AtlasGraphApiService,
   LiDiUserAdministrationService,
@@ -22,9 +22,10 @@ export class UserService {
     return this.liDiUserAdministrationService.getUsers(page, size).pipe(
       switchMap((userIds) => {
         totalCount = userIds.totalCount ?? 0;
-        return this.atlasGraphApiService.resolveUsers(userIds.objects ?? []) as Observable<
-          UserModel[]
-        >;
+        if (userIds.objects && totalCount > 0) {
+          return this.atlasGraphApiService.resolveUsers(userIds.objects) as Observable<UserModel[]>;
+        }
+        return of([]);
       }),
       map((value) => {
         return { users: value, totalCount };

@@ -1,4 +1,4 @@
-package ch.sbb.atlas.useradministration.service;
+package ch.sbb.atlas.user.administration.service;
 
 import com.google.gson.JsonElement;
 import com.microsoft.graph.content.BatchRequestContent;

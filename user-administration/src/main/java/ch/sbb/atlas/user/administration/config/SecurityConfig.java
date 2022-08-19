@@ -1,4 +1,4 @@
-package ch.sbb.atlas.useradministration.config;
+package ch.sbb.atlas.user.administration.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
@@ -53,7 +53,6 @@ public class SecurityConfig {
                 .mvcMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .mvcMatchers("/swagger-ui/**").permitAll()
                 .mvcMatchers("/v3/api-docs/**").permitAll()
-                .mvcMatchers("/static/rest-api.html").permitAll()
 
                 // Method security may also be configured using the annotations <code>@PreAuthorize</code> and <code>@PostAuthorize</code>
                 // that permit to set fine grained control using the Spring Expression Language:

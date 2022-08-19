@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: '{{ .Values.userAdministration.name }}'
+spec:
+  ports:
+  - name: '{{ .Values.userAdministration.port }}-tcp'
+    port: {{ .Values.userAdministration.port }}
+    protocol: TCP
+    targetPort: {{ .Values.userAdministration.port }}
+  selector:
+    app: '{{ .Values.userAdministration.name }}'
+    deploymentconfig: '{{ .Values.userAdministration.name }}'
+  sessionAffinity: None
+  type: ClusterIP

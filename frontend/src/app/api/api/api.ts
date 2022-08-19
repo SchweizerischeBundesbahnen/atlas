@@ -4,6 +4,8 @@ export * from './businessOrganisations.service';
 import { BusinessOrganisationsService } from './businessOrganisations.service';
 export * from './companies.service';
 import { CompaniesService } from './companies.service';
+export * from './futureTimetable.service';
+import { FutureTimetableService } from './futureTimetable.service';
 export * from './liDiUserAdministration.service';
 import { LiDiUserAdministrationService } from './liDiUserAdministration.service';
 export * from './lines.service';
@@ -20,6 +22,7 @@ export const APIS = [
   AtlasGraphApiService,
   BusinessOrganisationsService,
   CompaniesService,
+  FutureTimetableService,
   LiDiUserAdministrationService,
   LinesService,
   SublinesService,

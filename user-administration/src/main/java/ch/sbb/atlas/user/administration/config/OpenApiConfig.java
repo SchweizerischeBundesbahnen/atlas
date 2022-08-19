@@ -1,4 +1,4 @@
-package ch.sbb.atlas.useradministration.config;
+package ch.sbb.atlas.user.administration.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -19,7 +19,7 @@ public class OpenApiConfig {
   public GroupedOpenApi defaultApi() {
     return GroupedOpenApi.builder()
                          .group("public")
-                         .packagesToScan("ch.sbb.atlas.useradministration")
+                         .packagesToScan("ch.sbb.atlas.user.administration")
                          .build();
   }
 

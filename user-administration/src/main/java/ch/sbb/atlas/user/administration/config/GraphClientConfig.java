@@ -1,4 +1,4 @@
-package ch.sbb.atlas.useradministration.config;
+package ch.sbb.atlas.user.administration.config;
 
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -21,8 +21,8 @@ public class GraphClientConfig {
   @Bean
   public GraphServiceClient<Request> initializeGraphServiceClient() {
     final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-        .clientId(azureConfig.getClientId())
-        .clientSecret(azureConfig.getClientSecret())
+        .clientId(azureConfig.getAppRegistrationId())
+        .clientSecret(azureConfig.getAzureAdSecret())
         .tenantId(azureConfig.getTenantId())
         .build();
     final TokenCredentialAuthProvider tokenCredentialAuthProvider = new TokenCredentialAuthProvider(
