@@ -79,24 +79,22 @@ export class UserAdministrationOverviewComponent implements OnInit {
   checkIfUserExists(selectedUser: UserModel): void {
     if (!selectedUser) {
       this.loadUsers({ page: 0, size: this.tableComponent.paginator.pageSize });
-      return;
-    }
-    if (!selectedUser.sbbUserId) {
+    } else if (!selectedUser.sbbUserId) {
       this.userPageResult = { users: [], totalCount: 0 };
-      return;
+    } else {
+      this.userService
+        .getUserPermissions(selectedUser.sbbUserId)
+        .pipe(
+          tap((userPermissions) => {
+            if (userPermissions.length === 0) {
+              this.userPageResult = { users: [], totalCount: 0 };
+            } else {
+              this.userPageResult = { users: [selectedUser], totalCount: 1 };
+              this.tableComponent.paginator.pageIndex = 0;
+            }
+          })
+        )
+        .subscribe();
     }
-    this.userService
-      .getUserPermissions(selectedUser.sbbUserId)
-      .pipe(
-        tap((userPermissions) => {
-          if (userPermissions.length === 0) {
-            this.userPageResult = { users: [], totalCount: 0 };
-          } else {
-            this.userPageResult = { users: [selectedUser], totalCount: 1 };
-            this.tableComponent.paginator.pageIndex = 0;
-          }
-        })
-      )
-      .subscribe();
   }
 }
