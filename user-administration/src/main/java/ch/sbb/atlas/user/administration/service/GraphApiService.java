@@ -35,8 +35,8 @@ public class GraphApiService {
   private static final String SBB_USER_ID_PROP = "onPremisesSamAccountName";
   private static final String DISPLAY_NAME_PROP = "displayName";
   private static final String MAIL_PROP = "mail";
-
   private static final byte SEARCH_QUERY_LIMIT = 10;
+  private static final byte BATCH_REQUEST_LIMIT = 20;
 
   // returns first 10 elements found by displayName + first 10 elements found by mail (distinct)
   public List<UserModel> searchUsersByDisplayNameAndMail(String searchQuery) {
@@ -63,11 +63,11 @@ public class GraphApiService {
   }
 
   public List<UserModel> resolveLdapUserDataFromUserIds(List<String> userIds) {
-    userIds = userIds.stream().limit(20).toList();
+    userIds = userIds.stream().limit(BATCH_REQUEST_LIMIT).toList();
     final List<String> requestIds = new ArrayList<>();
     final BatchRequestContent batchRequestContent = new BatchRequestContent();
     userIds.forEach(
-        (userId) -> requestIds.add(graphApiBatchRequestService.addBatchRequest(batchRequestContent,
+        userId -> requestIds.add(graphApiBatchRequestService.addBatchRequest(batchRequestContent,
             getUserSearchRequest(buildFilterQueryOption(SBB_USER_ID_PROP, userId)).count(true)
         )));
     BatchResponseContent batchResponseContent = graphApiBatchRequestService.sendBatchRequest(
@@ -116,8 +116,8 @@ public class GraphApiService {
   private List<UserModel> getUserModelsFromUserCollectionPages(
       UserCollectionPage... userCollectionPages) {
     return Arrays.stream(userCollectionPages)
-                 .flatMap((page) -> page.getCurrentPage().stream()
-                                        .map(UserModel::toModel)).toList();
+                 .flatMap(page -> page.getCurrentPage().stream().map(UserModel::toModel))
+                 .toList();
   }
 
 }
