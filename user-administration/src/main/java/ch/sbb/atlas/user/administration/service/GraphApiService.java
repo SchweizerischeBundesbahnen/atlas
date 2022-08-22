@@ -52,16 +52,6 @@ public class GraphApiService {
     return userResult.stream().distinct().toList();
   }
 
-  private QueryOption buildSearchQueryOption(String searchProperty, String searchQuery) {
-    return new QueryOption(SEARCH_PREFIX,
-        SEARCH_QUERY.formatted(searchProperty, searchQuery));
-  }
-
-  private QueryOption buildFilterQueryOption(String filterProperty, String filterQuery) {
-    return new QueryOption(FILTER_PREFIX,
-        FILTER_EQ_QUERY.formatted(filterProperty, filterQuery));
-  }
-
   public List<UserModel> resolveLdapUserDataFromUserIds(List<String> userIds) {
     userIds = userIds.stream().limit(BATCH_REQUEST_LIMIT).toList();
     final List<String> requestIds = new ArrayList<>();
@@ -90,6 +80,16 @@ public class GraphApiService {
       result.add(UserModel.toModel(user));
     }
     return result;
+  }
+
+  private QueryOption buildSearchQueryOption(String searchProperty, String searchQuery) {
+    return new QueryOption(SEARCH_PREFIX,
+        SEARCH_QUERY.formatted(searchProperty, searchQuery));
+  }
+
+  private QueryOption buildFilterQueryOption(String filterProperty, String filterQuery) {
+    return new QueryOption(FILTER_PREFIX,
+        FILTER_EQ_QUERY.formatted(filterProperty, filterQuery));
   }
 
   private UserCollectionRequest getDefaultUserCollectionRequest(LinkedList<Option> requestOptions) {
