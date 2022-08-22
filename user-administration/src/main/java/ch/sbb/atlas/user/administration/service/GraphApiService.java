@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import okhttp3.Request;
 import org.springframework.stereotype.Service;
@@ -42,74 +41,53 @@ public class GraphApiService {
   // returns first 10 elements found by displayName + first 10 elements found by mail (distinct)
   public List<UserModel> searchUsersByDisplayNameAndMail(String searchQuery) {
     // by displayName contains
-    final Optional<UserCollectionPage> usersByDisplayName = Optional.ofNullable(
-        getDefaultUserCollectionRequest(
-            getRequestOptionsWithConsistencyLevel(
-                new QueryOption(SEARCH_PREFIX,
-                    SEARCH_QUERY.formatted(DISPLAY_NAME_PROP, searchQuery))
-            )).top(SEARCH_QUERY_LIMIT).get()
-    );
+    final UserCollectionPage usersByDisplayName = getUserSearchRequest(
+        buildSearchQueryOption(DISPLAY_NAME_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
     // by mail startswith
-    final Optional<UserCollectionPage> usersByMail = Optional.ofNullable(
-        getDefaultUserCollectionRequest(
-            getRequestOptionsWithConsistencyLevel(
-                new QueryOption(SEARCH_PREFIX, SEARCH_QUERY.formatted(MAIL_PROP, searchQuery))
-            )).top(SEARCH_QUERY_LIMIT).get()
-    );
+    final UserCollectionPage usersByMail = getUserSearchRequest(
+        buildSearchQueryOption(MAIL_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
 
-    final List<UserModel> userResult = new ArrayList<>(
-        getUserModelsFromUserCollectionPage(usersByDisplayName));
-    userResult.addAll(getUserModelsFromUserCollectionPage(usersByMail));
+    final List<UserModel> userResult = getUserModelsFromUserCollectionPages(
+        usersByDisplayName, usersByMail);
     return userResult.stream().distinct().toList();
   }
 
-  private List<UserModel> getUserModelsFromUserCollectionPage(
-      Optional<UserCollectionPage> userCollectionPage) {
-    List<UserModel> userModels = new ArrayList<>();
-    userCollectionPage.ifPresent(
-        (collectionPage) -> userModels.addAll(collectionPage.getCurrentPage()
-                                                            .stream()
-                                                            .map((user) -> new UserModel(
-                                                                user.onPremisesSamAccountName,
-                                                                user.surname, user.givenName,
-                                                                user.mail,
-                                                                UserModel.getUserAccountStatusFromBoolean(
-                                                                    user.accountEnabled),
-                                                                user.displayName))
-                                                            .toList()));
-    return userModels;
+  private QueryOption buildSearchQueryOption(String searchProperty, String searchQuery) {
+    return new QueryOption(SEARCH_PREFIX,
+        SEARCH_QUERY.formatted(searchProperty, searchQuery));
+  }
+
+  private QueryOption buildFilterQueryOption(String filterProperty, String filterQuery) {
+    return new QueryOption(FILTER_PREFIX,
+        FILTER_EQ_QUERY.formatted(filterProperty, filterQuery));
   }
 
   public List<UserModel> resolveLdapUserDataFromUserIds(List<String> userIds) {
     userIds = userIds.stream().limit(20).toList();
     final List<String> requestIds = new ArrayList<>();
     final BatchRequestContent batchRequestContent = new BatchRequestContent();
-    userIds.forEach((userId) -> {
-      QueryOption filterUserOption = new QueryOption(FILTER_PREFIX,
-          FILTER_EQ_QUERY.formatted(SBB_USER_ID_PROP, userId));
-      requestIds.add(graphApiBatchRequestService.addBatchRequest(batchRequestContent,
-          getDefaultUserCollectionRequest(getRequestOptionsWithConsistencyLevel(filterUserOption))
-              .count(true)
-      ));
-    });
+    userIds.forEach(
+        (userId) -> requestIds.add(graphApiBatchRequestService.addBatchRequest(batchRequestContent,
+            getUserSearchRequest(buildFilterQueryOption(SBB_USER_ID_PROP, userId)).count(true)
+        )));
     BatchResponseContent batchResponseContent = graphApiBatchRequestService.sendBatchRequest(
         batchRequestContent);
     final List<UserModel> result = new ArrayList<>();
     for (int i = 0; i < requestIds.size(); i++) {
-      final UserCollectionResponse deserializedBody = graphApiBatchRequestService.getDeserializedBody(batchResponseContent,
+      final UserCollectionResponse deserializedBody = graphApiBatchRequestService.getDeserializedBody(
+          batchResponseContent,
           UserCollectionResponse.class, requestIds.get(i));
       if (deserializedBody == null || deserializedBody.value == null
           || deserializedBody.value.size() != 1) {
         result.add(
-            new UserModel(userIds.get(i), null, null, null, UserAccountStatus.DELETED, null));
+            UserModel.builder()
+                     .sbbUserId(userIds.get(i))
+                     .accountStatus(UserAccountStatus.DELETED)
+                     .build());
         continue;
       }
       final User user = deserializedBody.value.get(0);
-      result.add(
-          new UserModel(user.onPremisesSamAccountName, user.surname, user.givenName,
-              user.mail, UserModel.getUserAccountStatusFromBoolean(user.accountEnabled),
-              user.displayName)
-      );
+      result.add(UserModel.toModel(user));
     }
     return result;
   }
@@ -125,6 +103,21 @@ public class GraphApiService {
         List.of(new HeaderOption("ConsistencyLevel", "eventual")));
     requestOptions.addAll(Arrays.asList(options));
     return requestOptions;
+  }
+
+  private UserCollectionRequest getUserSearchRequest(QueryOption... queryOptions) {
+    return
+        getDefaultUserCollectionRequest(
+            getRequestOptionsWithConsistencyLevel(
+                queryOptions
+            ));
+  }
+
+  private List<UserModel> getUserModelsFromUserCollectionPages(
+      UserCollectionPage... userCollectionPages) {
+    return Arrays.stream(userCollectionPages)
+                 .flatMap((page) -> page.getCurrentPage().stream()
+                                        .map(UserModel::toModel)).toList();
   }
 
 }
