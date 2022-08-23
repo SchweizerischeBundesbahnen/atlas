@@ -331,7 +331,7 @@
         "ABBREVIATIONFR": "Le abbréviation FR {{abbreviationFr}} est déjà attribué de {{validFrom}} à {{validTo}} par {{sboid}}.",
         "ABBREVIATIONIT": "Le abbréviation IT {{abbreviationIt}} est déjà attribué de {{validFrom}} à {{validTo}} par {{sboid}}.",
         "ABBREVIATIONEN": "Le abbréviation EN {{abbreviationEn}} est déjà attribué de {{validFrom}} à {{validTo}} par {{sboid}}.",
-        "ORGANISATIONNUMBER": "Le Numéro {{organisationNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{sboid}}."
+        "ORGANISATIONNUMBER": "Le numéro {{organisationNumber}} est déjà attribué de {{validFrom}} à {{validTo}} par {{sboid}}."
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "L'organisation commerciale a été créée avec succès.",
