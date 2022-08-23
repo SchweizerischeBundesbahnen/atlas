@@ -331,7 +331,7 @@
         "ABBREVIATIONFR": "L'abbreviazione francese {{abbreviationFr}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{sboid}}.",
         "ABBREVIATIONIT": "L'abbreviazione italiano {{abbreviationIt}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{sboid}}.",
         "ABBREVIATIONEN": "L'abbreviazione inglese {{abbreviationEn}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{sboid}}.",
-        "ORGANISATIONNUMBER": "Il Numero {{organisationNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{sboid}}."
+        "ORGANISATIONNUMBER": "Il numero {{organisationNumber}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{sboid}}."
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "L'organizzazione commerciale è stata creata con successo.",
