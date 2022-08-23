@@ -28,9 +28,7 @@ public class BusinessOrganisationData {
                                       .descriptionFr("desc-fr")
                                       .descriptionIt("desc-it")
                                       .descriptionEn("desc-en")
-                                      .businessTypes(new HashSet<>(
-                                          Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
-                                              BusinessType.SHIP)))
+                                      .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
                                       .contactEnterpriseEmail("mail@mail.ch")
                                       .organisationNumber(123)
                                       .status(Status.ACTIVE)
@@ -52,10 +50,7 @@ public class BusinessOrganisationData {
                                            .descriptionFr("desc-fr")
                                            .descriptionIt("desc-it")
                                            .descriptionEn("desc-en")
-                                           .businessTypes(new HashSet<>(
-                                               Arrays.asList(BusinessType.RAILROAD,
-                                                   BusinessType.AIR,
-                                                   BusinessType.SHIP)))
+                                           .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
                                            .contactEnterpriseEmail("mail@mail.ch")
                                            .organisationNumber(123)
                                            .status(Status.ACTIVE)
