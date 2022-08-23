@@ -74,10 +74,10 @@ public class GraphApiService {
                      .sbbUserId(userIds.get(i))
                      .accountStatus(UserAccountStatus.DELETED)
                      .build());
-        continue;
+      } else {
+        final User user = deserializedBody.value.get(0);
+        result.add(UserModel.toModel(user));
       }
-      final User user = deserializedBody.value.get(0);
-      result.add(UserModel.toModel(user));
     }
     return result;
   }
