@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.exception.NotFoundException;
+import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
@@ -60,10 +61,10 @@ class LineServiceTest {
   private LineValidationService lineValidationService;
 
   @Mock
-  private Specification<Line> lineSpecification;
+  private CoverageService coverageService;
 
   @Mock
-  private CoverageService coverageService;
+  private LineSearchRestrictions lineSearchRestrictions;
 
   private LineService lineService;
 
@@ -77,11 +78,14 @@ class LineServiceTest {
   @Test
   void shouldGetPagableLinesFromRepository() {
     // Given
-    when(lineSpecification.and(any())).thenReturn(lineSpecification);
     Pageable pageable = Pageable.unpaged();
+    when(lineSearchRestrictions.getSpecification()).thenReturn(SpecificationBuilder.<Line>builder()
+                                                                                   .build()
+                                                                                   .searchCriteriaSpecification(List.of("test")));
+    when(lineSearchRestrictions.getPageable()).thenReturn(pageable);
 
     // When
-    lineService.findAll(LineSearchRestrictions.builder().pageable(pageable).build());
+    lineService.findAll(lineSearchRestrictions);
 
     // Then
     verify(lineRepository).findAll(ArgumentMatchers.<Specification<Line>>any(), eq(pageable));
