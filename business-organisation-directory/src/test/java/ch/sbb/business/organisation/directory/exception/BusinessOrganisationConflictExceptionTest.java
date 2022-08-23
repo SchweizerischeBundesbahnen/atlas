@@ -33,22 +33,19 @@ class BusinessOrganisationConflictExceptionTest {
                             .getDisplayInfo()
                             .getParameters()
                             .get(0)
-                            .getKey()).isEqualTo(
-        BusinessOrganisationConflictException.FIELD);
+                            .getKey()).isEqualTo(BusinessOrganisationConflictException.FIELD);
     assertThat(errorResponse.getDetails()
                             .get(0)
                             .getDisplayInfo()
                             .getParameters()
                             .get(0)
-                            .getValue()).isEqualTo(
-        Fields.abbreviationDe);
+                            .getValue()).isEqualTo(Fields.abbreviationDe);
     assertThat(errorResponse.getDetails()
                             .get(0)
                             .getDisplayInfo()
                             .getParameters()
                             .get(1)
-                            .getKey()).isEqualTo(
-        Fields.abbreviationDe);
+                            .getKey()).isEqualTo(Fields.abbreviationDe);
     assertThat(errorResponse.getDetails()
                             .get(0)
                             .getDisplayInfo()
