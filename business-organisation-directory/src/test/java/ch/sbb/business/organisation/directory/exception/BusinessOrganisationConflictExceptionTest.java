@@ -10,31 +10,51 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-class BusinessOrganisationAbbreviationConflictExceptionTest {
+class BusinessOrganisationConflictExceptionTest {
 
   private final BusinessOrganisationVersion version = BusinessOrganisationData.businessOrganisationVersion();
 
   @Test
   void shouldConvertToErrorMessageCorrectly() {
     // Given
-    BusinessOrganisationAbbreviationConflictException conflictException = new BusinessOrganisationAbbreviationConflictException(
+    BusinessOrganisationConflictException conflictException = new BusinessOrganisationConflictException(
         version, List.of(version));
     // When
     ErrorResponse errorResponse = conflictException.getErrorResponse();
 
     // Then
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
-    assertThat(errorResponse.getDetails()).hasSize(4);
+    assertThat(errorResponse.getDetails()).hasSize(5);
 
     assertThat(errorResponse.getDetails().get(0).getMessage()).isEqualTo(
         "abbreviationDe de already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
-    assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getParameters().get(0).getKey()).isEqualTo(
-        BusinessOrganisationAbbreviationConflictException.FIELD);
-    assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getParameters().get(0).getValue()).isEqualTo(
+    assertThat(errorResponse.getDetails()
+                            .get(0)
+                            .getDisplayInfo()
+                            .getParameters()
+                            .get(0)
+                            .getKey()).isEqualTo(
+        BusinessOrganisationConflictException.FIELD);
+    assertThat(errorResponse.getDetails()
+                            .get(0)
+                            .getDisplayInfo()
+                            .getParameters()
+                            .get(0)
+                            .getValue()).isEqualTo(
         Fields.abbreviationDe);
-    assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getParameters().get(1).getKey()).isEqualTo(
+    assertThat(errorResponse.getDetails()
+                            .get(0)
+                            .getDisplayInfo()
+                            .getParameters()
+                            .get(1)
+                            .getKey()).isEqualTo(
         Fields.abbreviationDe);
-    assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getParameters().get(1).getValue()).isEqualTo("de");
+    assertThat(errorResponse.getDetails()
+                            .get(0)
+                            .getDisplayInfo()
+                            .getParameters()
+                            .get(1)
+                            .getValue()).isEqualTo("de");
 
     assertThat(errorResponse.getDetails().get(1).getMessage()).isEqualTo(
         "abbreviationFr fr already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
@@ -45,6 +65,7 @@ class BusinessOrganisationAbbreviationConflictExceptionTest {
     assertThat(errorResponse.getDetails().get(3).getMessage()).isEqualTo(
         "abbreviationEn en already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
 
-
+    assertThat(errorResponse.getDetails().get(4).getMessage()).isEqualTo(
+        "organisationNumber 123 already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
   }
 }

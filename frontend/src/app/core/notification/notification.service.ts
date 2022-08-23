@@ -90,6 +90,7 @@ export class NotificationService implements OnDestroy {
   }
 
   arrayParametersToObject(displayInfo: DisplayInfo) {
+    console.log(Object.fromEntries(displayInfo.parameters.map((e) => [e.key, e.value])));
     return Object.fromEntries(displayInfo.parameters.map((e) => [e.key, e.value]));
   }
 
