@@ -330,7 +330,8 @@
         "ABBREVIATIONDE": "Die Abkürzung Deutsch {{abbreviationDe}} ist bereits von {{validFrom}} bis {{validTo}} durch {{sboid}} vergeben.",
         "ABBREVIATIONFR": "Die Abkürzung Französisch {{abbreviationFr}} ist bereits von {{validFrom}} bis {{validTo}} durch {{sboid}} vergeben.",
         "ABBREVIATIONIT": "Die Abkürzung Italienisch {{abbreviationIt}} ist bereits von {{validFrom}} bis {{validTo}} durch {{sboid}} vergeben.",
-        "ABBREVIATIONEN": "Die Abkürzung Englisch {{abbreviationEn}} ist bereits von {{validFrom}} bis {{validTo}} durch {{sboid}} vergeben."
+        "ABBREVIATIONEN": "Die Abkürzung Englisch {{abbreviationEn}} ist bereits von {{validFrom}} bis {{validTo}} durch {{sboid}} vergeben.",
+        "ORGANISATIONNUMBER": "Die GO-Nummer {{organisationNumber}} ist bereits von {{validFrom}} bis {{validTo}} durch {{sboid}} vergeben."
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich hinzugefügt.",
