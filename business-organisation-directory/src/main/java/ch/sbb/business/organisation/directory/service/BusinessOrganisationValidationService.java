@@ -1,11 +1,10 @@
 package ch.sbb.business.organisation.directory.service;
 
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.exception.BusinessOrganisationAbbreviationConflictException;
+import ch.sbb.business.organisation.directory.exception.BusinessOrganisationConflictException;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
+import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,36 +16,35 @@ public class BusinessOrganisationValidationService {
   private final BusinessOrganisationVersionRepository versionRepository;
 
   public void validatePreconditionBusinessRule(BusinessOrganisationVersion version) {
-    validateAbbreviationConflict(version);
+    validateAbbreviationAndOrganisationNumberConflict(version);
   }
 
-  private void validateAbbreviationConflict(BusinessOrganisationVersion version) {
-    List<BusinessOrganisationVersion> overlaps = findAbbreviationOverlaps(
+  private void validateAbbreviationAndOrganisationNumberConflict(BusinessOrganisationVersion version) {
+    List<BusinessOrganisationVersion> overlaps = findAbbreviationAndOrganisationNumberOverlaps(
         version);
     if (!overlaps.isEmpty()) {
-      throw new BusinessOrganisationAbbreviationConflictException(version, overlaps);
+      throw new BusinessOrganisationConflictException(version, overlaps);
     }
   }
 
-  List<BusinessOrganisationVersion> findAbbreviationOverlaps(
+  List<BusinessOrganisationVersion> findAbbreviationAndOrganisationNumberOverlaps(
       BusinessOrganisationVersion version) {
     return Stream.of(
                      versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationDe(
-                                          version.getValidFrom(), version.getValidTo(), version.getAbbreviationDe())
-                                      .stream(),
+                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationDe()),
                      versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationFr(
-                                          version.getValidFrom(), version.getValidTo(), version.getAbbreviationFr())
-                                      .stream(),
+                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationFr()),
                      versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationIt(
-                                          version.getValidFrom(), version.getValidTo(), version.getAbbreviationIt())
-                                      .stream(),
+                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationIt()),
                      versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEn(
-                                          version.getValidFrom(), version.getValidTo(), version.getAbbreviationEn())
-                                      .stream())
-                 .flatMap(Function.identity())
+                         version.getValidFrom(), version.getValidTo(), version.getAbbreviationEn()),
+                     versionRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndOrganisationNumber(
+                         version.getValidFrom(), version.getValidTo(), version.getOrganisationNumber())
+                 )
+                 .flatMap(Collection::stream)
                  .filter(i -> !i.getSboid().equals(version.getSboid()))
                  .distinct()
-                 .collect(Collectors.toList());
+                 .toList();
   }
 
 }

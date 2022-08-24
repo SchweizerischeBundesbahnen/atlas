@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class BusinessOrganisationAbbreviationConflictException extends AtlasException {
+public class BusinessOrganisationConflictException extends AtlasException {
 
   static final String FIELD = "field";
   private static final String CODE_PREFIX = "BODI.BUSINESS_ORGANISATION.CONFLICT.";
-  private static final String ERROR = "BO abbreviation conflict";
+  private static final String ERROR = "BO conflict";
 
   private final BusinessOrganisationVersion newVersion;
   private final List<BusinessOrganisationVersion> overlappingVersions;
@@ -55,6 +55,11 @@ public class BusinessOrganisationAbbreviationConflictException extends AtlasExce
       if (Objects.equals(version.getAbbreviationEn(), newVersion.getAbbreviationEn())) {
         details.add(toOverlapDetail(version, Fields.abbreviationEn,
             BusinessOrganisationVersion::getAbbreviationEn));
+      }
+
+      if (Objects.equals(version.getOrganisationNumber(), newVersion.getOrganisationNumber())) {
+        details.add(toOverlapDetail(version, Fields.organisationNumber,
+            v -> String.valueOf(v.getOrganisationNumber())));
       }
     }
     return details;

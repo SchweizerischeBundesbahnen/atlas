@@ -27,6 +27,9 @@ public interface BusinessOrganisationVersionRepository extends
   List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndAbbreviationEn(
       LocalDate validFrom, LocalDate validTo, String abbreviation);
 
+  List<BusinessOrganisationVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndOrganisationNumber(
+      LocalDate validFrom, LocalDate validTo, Integer organisationNumber);
+
   @Modifying(clearAutomatically = true)
   @Query("update business_organisation_version v set v.version = (v.version + 1) where v.sboid = :sboid")
   void incrementVersion(@Param("sboid") String sboid);
