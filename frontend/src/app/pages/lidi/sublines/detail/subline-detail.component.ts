@@ -202,14 +202,8 @@ export class SublineDetailComponent
   }
 
   mainlineUrl(): string {
-    return (
-      location.origin +
-      '/' +
-      Pages.LIDI.path +
-      '/' +
-      Pages.LINES.path +
-      '/' +
-      this.form.get('mainlineSlnid')?.value
-    );
+    return `${location.origin}/${Pages.LIDI.path}/${Pages.LINES.path}/${
+      this.form.get(this.mainlineSlnidFormControlName)?.value
+    }`;
   }
 }
