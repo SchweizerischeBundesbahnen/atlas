@@ -61,7 +61,9 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
   searchBusinessOrganisation(searchString: string) {
     if (searchString) {
       this.businessOrganisations = this.businessOrganisationsService
-        .getAllBusinessOrganisations([searchString])
+        .getAllBusinessOrganisations([searchString], undefined, undefined, undefined, undefined, [
+          'organisationNumber,ASC',
+        ])
         .pipe(map((value) => value.objects ?? []));
     }
   }
