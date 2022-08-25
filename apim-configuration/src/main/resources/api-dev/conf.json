@@ -18,7 +18,12 @@
     "lidi",
     "line",
     "linie",
-    "slnid"
+    "slnid",
+    "geschäftsorganisation",
+    "businessorganisation",
+    "transportunternehmen",
+    "rics",
+    "crd"
   ],
   "environment_tags": [
     "dev"
