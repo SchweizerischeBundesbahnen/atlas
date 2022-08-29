@@ -17,16 +17,16 @@ public class TemporaryLineValidationExceptionTest {
       throw new TemporaryLineValidationException(
           List.of(
               LineTestData.lineVersionBuilder()
+                          .validFrom(LocalDate.of(2021, 10, 2))
+                          .validTo(LocalDate.of(2022, 2, 1))
+                          .build(),
+              LineTestData.lineVersionBuilder()
                           .validFrom(LocalDate.of(2021, 1, 1))
                           .validTo(LocalDate.of(2021, 5, 1))
                           .build(),
               LineTestData.lineVersionBuilder()
                           .validFrom(LocalDate.of(2021, 5, 2))
                           .validTo(LocalDate.of(2021, 10, 1))
-                          .build(),
-              LineTestData.lineVersionBuilder()
-                          .validFrom(LocalDate.of(2021, 10, 2))
-                          .validTo(LocalDate.of(2022, 2, 1))
                           .build()
           )
       );

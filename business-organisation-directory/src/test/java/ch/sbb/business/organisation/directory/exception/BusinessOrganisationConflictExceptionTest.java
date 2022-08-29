@@ -6,6 +6,7 @@ import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion.Fields;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -13,21 +14,29 @@ import org.springframework.http.HttpStatus;
 class BusinessOrganisationConflictExceptionTest {
 
   private final BusinessOrganisationVersion version = BusinessOrganisationData.businessOrganisationVersion();
+  private final BusinessOrganisationVersion version2 = BusinessOrganisationData.businessOrganisationVersionBuilder()
+                                                                               .validFrom(
+                                                                                   LocalDate.of(
+                                                                                       1980, 1, 1))
+                                                                               .validTo(
+                                                                                   LocalDate.of(
+                                                                                       2020, 1, 1))
+                                                                               .build();
 
   @Test
   void shouldConvertToErrorMessageCorrectly() {
     // Given
     BusinessOrganisationConflictException conflictException = new BusinessOrganisationConflictException(
-        version, List.of(version));
+        version, List.of(version, version2));
     // When
     ErrorResponse errorResponse = conflictException.getErrorResponse();
 
     // Then
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
-    assertThat(errorResponse.getDetails()).hasSize(5);
+    assertThat(errorResponse.getDetails()).hasSize(10);
 
     assertThat(errorResponse.getDetails().get(0).getMessage()).isEqualTo(
-        "abbreviationDe de already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+        "abbreviationDe de already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
     assertThat(errorResponse.getDetails()
                             .get(0)
                             .getDisplayInfo()
@@ -54,15 +63,30 @@ class BusinessOrganisationConflictExceptionTest {
                             .getValue()).isEqualTo("de");
 
     assertThat(errorResponse.getDetails().get(1).getMessage()).isEqualTo(
-        "abbreviationFr fr already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+        "abbreviationFr fr already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
     assertThat(errorResponse.getDetails().get(2).getMessage()).isEqualTo(
-        "abbreviationIt it already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+        "abbreviationIt it already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
     assertThat(errorResponse.getDetails().get(3).getMessage()).isEqualTo(
-        "abbreviationEn en already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+        "abbreviationEn en already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
     assertThat(errorResponse.getDetails().get(4).getMessage()).isEqualTo(
+        "organisationNumber 123 already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
+
+    assertThat(errorResponse.getDetails().get(5).getMessage()).isEqualTo(
+        "abbreviationDe de already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+
+    assertThat(errorResponse.getDetails().get(6).getMessage()).isEqualTo(
+        "abbreviationFr fr already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+
+    assertThat(errorResponse.getDetails().get(7).getMessage()).isEqualTo(
+        "abbreviationIt it already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+
+    assertThat(errorResponse.getDetails().get(8).getMessage()).isEqualTo(
+        "abbreviationEn en already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+
+    assertThat(errorResponse.getDetails().get(9).getMessage()).isEqualTo(
         "organisationNumber 123 already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
   }
 }

@@ -25,12 +25,15 @@ public class BusinessOrganisationConflictException extends AtlasException {
 
   @Override
   public ErrorResponse getErrorResponse() {
-    return ErrorResponse.builder()
-                        .status(HttpStatus.CONFLICT.value())
-                        .message("A conflict occurred due to a business rule")
-                        .error(ERROR)
-                        .details(getErrorDetails())
-                        .build();
+    ErrorResponse errorResponse = ErrorResponse.builder()
+                                               .status(HttpStatus.CONFLICT.value())
+                                               .message(
+                                                   "A conflict occurred due to a business rule")
+                                               .error(ERROR)
+                                               .details(getErrorDetails())
+                                               .build();
+    errorResponse.setDetails(errorResponse.sortDetailsByValidFrom());
+    return errorResponse;
   }
 
   private List<Detail> getErrorDetails() {
