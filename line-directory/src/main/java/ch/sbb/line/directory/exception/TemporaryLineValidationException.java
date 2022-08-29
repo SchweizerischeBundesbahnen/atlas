@@ -29,12 +29,16 @@ public class TemporaryLineValidationException extends AtlasException {
 
   @Override
   public ErrorResponse getErrorResponse() {
-    return ErrorResponse.builder()
-                        .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
-                        .message("Business rule validation failed")
-                        .error(ERROR)
-                        .details(getErrorDetails())
-                        .build();
+    ErrorResponse errorResponse = ErrorResponse.builder()
+                                               .status(
+                                                   HttpStatus.UNPROCESSABLE_ENTITY.value())
+                                               .message(
+                                                   "Business rule validation failed")
+                                               .error(ERROR)
+                                               .details(getErrorDetails())
+                                               .build();
+    errorResponse.setDetails(errorResponse.sortDetailsByValidFrom());
+    return errorResponse;
   }
 
   private List<Detail> getErrorDetails() {
