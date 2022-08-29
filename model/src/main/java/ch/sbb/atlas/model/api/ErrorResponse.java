@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +24,8 @@ import lombok.RequiredArgsConstructor;
 @Schema(name = "ErrorResponse")
 public class ErrorResponse {
 
-  public static final  int VERSIONING_NO_CHANGES_HTTP_STATUS = 520;
+  public static final int VERSIONING_NO_CHANGES_HTTP_STATUS = 520;
+  private static final String VALID_FROM_KEY = "validFrom";
 
   @Schema(description = "HTTP Status Code", example = "400")
   private int status;
@@ -56,7 +59,8 @@ public class ErrorResponse {
     private DisplayInfo displayInfo;
 
     public String getMessage() {
-      return MessageFormat.format(message, displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
+      return MessageFormat.format(message,
+          displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
     }
   }
 
@@ -106,8 +110,36 @@ public class ErrorResponse {
   @RequiredArgsConstructor
   @Getter
   public static class Parameter {
+
     private final String key;
     private final String value;
+  }
+
+  public List<Detail> sortDetailsByValidFrom() {
+    return details.stream().sorted((next, current) -> {
+      LocalDate currentValidFrom = parseStringToLocalDate(
+          getValueFromParameterKey(current, VALID_FROM_KEY));
+      LocalDate nextValidFrom = parseStringToLocalDate(getValueFromParameterKey(next, VALID_FROM_KEY));
+      return nextValidFrom.compareTo(currentValidFrom);
+    }).toList();
+  }
+
+  private String getValueFromParameterKey(Detail detail, @NonNull String key) {
+    Optional<Parameter> keyParameter = detail.getDisplayInfo()
+                                             .getParameters()
+                                             .stream()
+                                             .filter(parameter -> key.equals(parameter.getKey()))
+                                             .findFirst();
+    if (keyParameter.isEmpty()) {
+      return null;
+    } else {
+      return keyParameter.get().getValue();
+    }
+  }
+
+  private LocalDate parseStringToLocalDate(String date) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    return LocalDate.parse(date, formatter);
   }
 
 }
