@@ -1,5 +1,6 @@
 package ch.sbb.scheduling.config;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +21,11 @@ public class OAuthClientCredentialsFeignManager {
   private final ClientRegistration clientRegistration;
 
   public String getAccessToken() {
+    FeignAuthentication feignAuthentication = new FeignAuthentication(clientRegistration);
     OAuth2AuthorizeRequest oAuth2AuthorizeRequest =
         OAuth2AuthorizeRequest
             .withClientRegistrationId(clientRegistration.getRegistrationId())
-            .principal(createPrincipal())
+            .principal(feignAuthentication)
             .build();
     OAuth2AuthorizedClient client = manager.authorize(oAuth2AuthorizeRequest);
     if (client == null) {
@@ -34,42 +36,49 @@ public class OAuthClientCredentialsFeignManager {
     return client.getAccessToken().getTokenValue();
   }
 
-  private Authentication createPrincipal() {
-    return new Authentication() {
-      @Override
-      public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptySet();
-      }
+  @RequiredArgsConstructor
+  public static class FeignAuthentication implements Authentication {
 
-      @Override
-      public Object getCredentials() {
-        return null;
-      }
+    @Serial
+    private static final long serialVersionUID = 1;
+    
+    private final ClientRegistration clientRegistration;
 
-      @Override
-      public Object getDetails() {
-        return null;
-      }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+      return Collections.emptySet();
+    }
 
-      @Override
-      public Object getPrincipal() {
-        return this;
-      }
+    @Override
+    public Object getCredentials() {
+      return null;
+    }
 
-      @Override
-      public boolean isAuthenticated() {
-        return false;
-      }
+    @Override
+    public Object getDetails() {
+      return null;
+    }
 
-      @Override
-      public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-      }
+    @Override
+    public Object getPrincipal() {
+      return this;
+    }
 
-      @Override
-      public String getName() {
-        return clientRegistration.getClientId();
-      }
-    };
+    @Override
+    public boolean isAuthenticated() {
+      return false;
+    }
+
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getName() {
+      return clientRegistration.getClientId();
+    }
+
   }
 
 }

@@ -9,7 +9,7 @@ public abstract class BaseSchedulerService {
 
   protected String clientName;
 
-  protected void executeRequest(Response clientCall, String jobName) {
+  protected Response executeRequest(Response clientCall, String jobName) {
     log.info("{}: Starting Export {}...", clientName, jobName);
     try (Response response = clientCall) {
       if (HttpStatus.OK.value() == response.status()) {
@@ -20,6 +20,7 @@ public abstract class BaseSchedulerService {
             clientName, jobName,
             response.status(), response);
       }
+      return response;
     }
   }
 

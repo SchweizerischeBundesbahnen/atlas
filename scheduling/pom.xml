@@ -81,6 +81,17 @@
       <groupId>org.springframework.boot</groupId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <artifactId>h2</artifactId>
+      <groupId>com.h2database</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>mockito-inline</artifactId>
+      <groupId>org.mockito</groupId>
+      <scope>test</scope>
+      <version>4.7.0</version>
+    </dependency>
   </dependencies>
   <description>Atlas Scheduling Service</description>
   <modelVersion>4.0.0</modelVersion>
