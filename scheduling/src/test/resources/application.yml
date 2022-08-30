@@ -1,0 +1,18 @@
+spring:
+  main:
+    banner-mode: OFF
+logging:
+  level:
+    root: ERROR
+    org:
+      hibernate: ERROR
+      jboss: ERROR
+      springframework:
+        core: fatal
+        beans: fatal
+        context: fatal
+        transaction: error
+        boot:
+          test: error
+        test: error
+        web: error

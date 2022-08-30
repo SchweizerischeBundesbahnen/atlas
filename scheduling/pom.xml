@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>scheduling</artifactId>
+  <build>
+		<plugins>
+			<plugin>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.springframework.boot</groupId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<groupId>org.jacoco</groupId>
+			</plugin>
+		</plugins>
+	</build>
+  <dependencies>
+    <dependency>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-mail</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+      <groupId>org.springframework.cloud</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-security</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-security-oauth2-client</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>shedlock-spring</artifactId>
+      <groupId>net.javacrumbs.shedlock</groupId>
+      <version>4.41.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>shedlock-provider-jdbc-template</artifactId>
+      <groupId>net.javacrumbs.shedlock</groupId>
+      <version>4.41.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>postgresql</artifactId>
+      <groupId>org.postgresql</groupId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <artifactId>flyway-core</artifactId>
+      <groupId>org.flywaydb</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <artifactId>model</artifactId>
+      <groupId>ch.sbb.atlas</groupId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <description>Atlas Scheduling Service</description>
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>Atlas Scheduling Service</name>
+
+	<parent>
+    <artifactId>atlas</artifactId>
+    <groupId>ch.sbb.atlas</groupId>
+    <relativePath>../pom.xml</relativePath>
+    <version>${revision}</version>
+  </parent>
+
+</project>
