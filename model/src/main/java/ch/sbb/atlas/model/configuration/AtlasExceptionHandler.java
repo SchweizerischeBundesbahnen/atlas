@@ -8,8 +8,9 @@ import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -31,7 +32,8 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(value = VersioningNoChangesException.class)
   public ResponseEntity<ErrorResponse> versioningNoChangesException(
       VersioningNoChangesException ex) {
-    List<Detail> details = List.of(
+    SortedSet<Detail> details = new TreeSet<>();
+    details.add(
         Detail.builder()
               .message(ex.getMessage())
               .displayInfo(
@@ -51,7 +53,8 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(value = VersioningException.class)
   public ResponseEntity<ErrorResponse> versioningException(
       VersioningException versioningException) {
-    List<Detail> details = List.of(
+    SortedSet<Detail> details = new TreeSet<>();
+    details.add(
         Detail.builder()
               .message(versioningException.getMessage())
               .displayInfo(DisplayInfo.builder()
@@ -99,13 +102,15 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(StaleObjectStateException.class)
   public ResponseEntity<ErrorResponse> staleObjectStateException(
       StaleObjectStateException exception) {
-    List<Detail> details = List.of(Detail.builder().message(exception.getMessage())
-                                         .field("etagVersion")
-                                         .displayInfo(DisplayInfo.builder()
-                                                                 .code(
-                                                                     "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR")
-                                                                 .build())
-                                         .build());
+    SortedSet<Detail> details = new TreeSet<>();
+    details.add(
+        Detail.builder().message(exception.getMessage())
+              .field("etagVersion")
+              .displayInfo(DisplayInfo.builder()
+                                      .code(
+                                          "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR")
+                                      .build())
+              .build());
     return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED)
                          .body(ErrorResponse.builder()
                                             .status(
@@ -121,22 +126,26 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> methodArgumentNotValidException(
       MethodArgumentNotValidException exception) {
-    List<Detail> details =
-        exception.getFieldErrors()
-                 .stream()
-                 .map(fieldError ->
-                     Detail.builder()
-                           .field(fieldError.getField())
-                           .message("Value {0} rejected due to {1}")
-                           .displayInfo(DisplayInfo.builder()
-                                                   .code("ERROR.CONSTRAINT")
-                                                   .with("rejectedValue",
-                                                       String.valueOf(
-                                                           fieldError.getRejectedValue()))
-                                                   .with("cause", fieldError.getDefaultMessage())
+    SortedSet<Detail> details = exception.getFieldErrors()
+                                         .stream()
+                                         .map(fieldError ->
+                                             Detail.builder()
+                                                   .field(fieldError.getField())
+                                                   .message(
+                                                       "Value {0} rejected due to {1}")
+                                                   .displayInfo(DisplayInfo.builder()
+                                                                           .code(
+                                                                               "ERROR.CONSTRAINT")
+                                                                           .with(
+                                                                               "rejectedValue",
+                                                                               String.valueOf(
+                                                                                   fieldError.getRejectedValue()))
+                                                                           .with(
+                                                                               "cause",
+                                                                               fieldError.getDefaultMessage())
+                                                                           .build())
                                                    .build())
-                           .build())
-                 .collect(Collectors.toList());
+                                         .collect(Collectors.toCollection(TreeSet::new));
     return ResponseEntity.badRequest()
                          .body(ErrorResponse.builder()
                                             .status(HttpStatus.BAD_REQUEST.value())

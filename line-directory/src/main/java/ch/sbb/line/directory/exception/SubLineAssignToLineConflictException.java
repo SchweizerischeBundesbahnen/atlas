@@ -8,6 +8,7 @@ import ch.sbb.atlas.model.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.Fields;
 import java.util.List;
+import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
@@ -25,7 +26,7 @@ public class SubLineAssignToLineConflictException extends AtlasException {
                         .status(HttpStatus.CONFLICT.value())
                         .message("A conflict occurred due to a business rule")
                         .error(ERROR)
-                        .details(getErrorDetails())
+                        .details(new TreeSet<>(getErrorDetails()))
                         .build();
   }
 
