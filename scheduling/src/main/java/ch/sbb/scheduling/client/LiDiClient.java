@@ -22,9 +22,9 @@ public interface LiDiClient {
   Response putLiDiExportActualZip();
 
   @PostMapping(value = "/line-directory/v1/lines/export-csv/timetable-year-change/csv", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response putLiDiExportFutureTimetableVersionsCsv();
+  Response putLiDiExportNextTimetableVersionsCsv();
 
   @PostMapping(value = "/line-directory/v1/lines/export-csv/timetable-year-change/zip", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response putLiDiExportFutureTimetableVersionsZip();
+  Response putLiDiExportNextTimetableVersionsZip();
 
 }
