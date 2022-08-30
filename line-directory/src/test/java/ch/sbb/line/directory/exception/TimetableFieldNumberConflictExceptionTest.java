@@ -27,13 +27,13 @@ public class TimetableFieldNumberConflictExceptionTest {
     assertThat(errorResponse.getMessage()).isEqualTo("A conflict occurred due to a business rule");
     assertThat(errorResponse.getDetails()).hasSize(4);
 
-    assertThat(errorResponse.getDetails().get(0).getMessage()).isEqualTo(
+    assertThat(errorResponse.getDetails().first().getMessage()).isEqualTo(
         "Number BEX already taken from 01.01.1990 to 12.12.2099 by ch:1:ttfnid:100000");
-    assertThat(errorResponse.getDetails().get(1).getMessage()).isEqualTo(
+    assertThat(errorResponse.getDetails().stream().toList().get(1).getMessage()).isEqualTo(
         "SwissTimetableFieldNumber b0.BEX already taken from 01.01.1990 to 12.12.2099 by ch:1:ttfnid:100000");
-    assertThat(errorResponse.getDetails().get(2).getMessage()).isEqualTo(
+    assertThat(errorResponse.getDetails().stream().toList().get(2).getMessage()).isEqualTo(
         "Number BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
-    assertThat(errorResponse.getDetails().get(3).getMessage()).isEqualTo(
+    assertThat(errorResponse.getDetails().stream().toList().get(3).getMessage()).isEqualTo(
         "SwissTimetableFieldNumber b0.BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
   }
 
