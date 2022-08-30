@@ -50,18 +50,6 @@ public class SecurityConfig {
         .authorizeRequests(authorizeRequests ->
             authorizeRequests
                 .mvcMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .mvcMatchers("/swagger-ui/**").permitAll()
-                .mvcMatchers("/v3/api-docs/**").permitAll()
-                .mvcMatchers("/static/rest-api.html").permitAll()
-
-                // Method security may also be configured using the annotations <code>@PreAuthorize</code> and <code>@PostAuthorize</code>
-                // that permit to set fine grained control using the Spring Expression Language:
-                // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#method-security-expressions">Method Security Expressions</a>
-                // In order to use these annotations, you have to enable global-method-security using <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
-                .mvcMatchers(HttpMethod.GET, "/**").authenticated()
-                .mvcMatchers(HttpMethod.POST, "/**").hasAnyRole("lidi-admin")
-                .mvcMatchers(HttpMethod.PUT, "/**").hasAnyRole("lidi-admin")
-                .mvcMatchers(HttpMethod.DELETE, "/**").hasRole("lidi-admin")
                 .anyRequest().authenticated()
         )
 
