@@ -62,10 +62,10 @@ class TransportCompanyRelationConflictExceptionTest {
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
     assertThat(errorResponse.getDetails()).hasSize(2);
 
-    assertThat(errorResponse.getDetails().get(0).getMessage()).isEqualTo(
+    assertThat(errorResponse.getDetails().first().getMessage()).isEqualTo(
         "TransportCompany #0005 already relates to ch:1:sboid:100500 from 01.01.2019 to 01.01.2021");
 
-    assertThat(errorResponse.getDetails().get(1).getMessage()).isEqualTo(
+    assertThat(errorResponse.getDetails().stream().toList().get(1).getMessage()).isEqualTo(
         "TransportCompany #0005 already relates to ch:1:sboid:100500 from 01.01.2020 to 01.01.2021");
   }
 }
