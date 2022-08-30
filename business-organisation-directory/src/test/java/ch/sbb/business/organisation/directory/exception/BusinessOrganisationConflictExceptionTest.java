@@ -3,6 +3,7 @@ package ch.sbb.business.organisation.directory.exception;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.api.ErrorResponse;
+import ch.sbb.atlas.model.api.ErrorResponse.Detail;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion.Fields;
@@ -30,63 +31,64 @@ class BusinessOrganisationConflictExceptionTest {
         version, List.of(version, version2));
     // When
     ErrorResponse errorResponse = conflictException.getErrorResponse();
+    List<Detail> detailList = errorResponse.getDetails().stream().toList();
 
     // Then
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
-    assertThat(errorResponse.getDetails()).hasSize(10);
+    assertThat(detailList).hasSize(10);
 
-    assertThat(errorResponse.getDetails().get(0).getMessage()).isEqualTo(
+    assertThat(detailList.get(0).getMessage()).isEqualTo(
         "abbreviationDe de already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
-    assertThat(errorResponse.getDetails()
+    assertThat(detailList
                             .get(0)
                             .getDisplayInfo()
                             .getParameters()
                             .get(0)
                             .getKey()).isEqualTo(BusinessOrganisationConflictException.FIELD);
-    assertThat(errorResponse.getDetails()
+    assertThat(detailList
                             .get(0)
                             .getDisplayInfo()
                             .getParameters()
                             .get(0)
                             .getValue()).isEqualTo(Fields.abbreviationDe);
-    assertThat(errorResponse.getDetails()
+    assertThat(detailList
                             .get(0)
                             .getDisplayInfo()
                             .getParameters()
                             .get(1)
                             .getKey()).isEqualTo(Fields.abbreviationDe);
-    assertThat(errorResponse.getDetails()
+    assertThat(detailList
                             .get(0)
                             .getDisplayInfo()
                             .getParameters()
                             .get(1)
                             .getValue()).isEqualTo("de");
 
-    assertThat(errorResponse.getDetails().get(1).getMessage()).isEqualTo(
+    assertThat(detailList.get(1).getMessage()).isEqualTo(
         "abbreviationFr fr already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
-    assertThat(errorResponse.getDetails().get(2).getMessage()).isEqualTo(
+    assertThat(detailList.get(2).getMessage()).isEqualTo(
         "abbreviationIt it already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
-    assertThat(errorResponse.getDetails().get(3).getMessage()).isEqualTo(
+    assertThat(detailList.get(3).getMessage()).isEqualTo(
         "abbreviationEn en already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
-    assertThat(errorResponse.getDetails().get(4).getMessage()).isEqualTo(
+    assertThat(detailList.get(4).getMessage()).isEqualTo(
         "organisationNumber 123 already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
-    assertThat(errorResponse.getDetails().get(5).getMessage()).isEqualTo(
+    assertThat(detailList.get(5).getMessage()).isEqualTo(
         "abbreviationDe de already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
 
-    assertThat(errorResponse.getDetails().get(6).getMessage()).isEqualTo(
+    assertThat(detailList.get(6).getMessage()).isEqualTo(
         "abbreviationFr fr already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
 
-    assertThat(errorResponse.getDetails().get(7).getMessage()).isEqualTo(
+    assertThat(detailList.get(7).getMessage()).isEqualTo(
         "abbreviationIt it already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
 
-    assertThat(errorResponse.getDetails().get(8).getMessage()).isEqualTo(
+    assertThat(detailList.get(8).getMessage()).isEqualTo(
         "abbreviationEn en already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
 
-    assertThat(errorResponse.getDetails().get(9).getMessage()).isEqualTo(
+    assertThat(detailList.get(9).getMessage()).isEqualTo(
         "organisationNumber 123 already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
   }
 }

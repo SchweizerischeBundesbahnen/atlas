@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +17,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.lang.NonNull;
 
 @AllArgsConstructor
@@ -39,12 +42,12 @@ public class ErrorResponse {
   private String error;
 
   @Schema(description = "List of error details", nullable = true)
-  private List<Detail> details = new ArrayList<>();
+  private SortedSet<Detail> details = new TreeSet<>();
 
   @AllArgsConstructor
   @NoArgsConstructor
   @Data
-  @Builder
+  @SuperBuilder
   @Schema(name = "ErrorDetail")
   public static class Detail implements Comparable<Detail> {
 
@@ -67,12 +70,34 @@ public class ErrorResponse {
 
     @Override
     public int compareTo(@NonNull Detail next) {
-      LocalDate currentValidFrom = parseStringToLocalDate(
-          displayInfo.getValueFromParameter(VALID_FROM_KEY));
-      LocalDate nextValidFrom = parseStringToLocalDate(
-          next.getDisplayInfo().getValueFromParameter(VALID_FROM_KEY));
-      return currentValidFrom.compareTo(nextValidFrom);
+      return 1;
     }
+  }
+
+  @SuperBuilder
+  public static class ValidFromDetail extends Detail {
+
+    @Override
+    public int compareTo(@NonNull Detail next) {
+      ValidFromDetail validFromDetail = (ValidFromDetail) next;
+      LocalDate currentValidFrom = parseStringToLocalDate(getValidFrom());
+      LocalDate nextValidFrom = parseStringToLocalDate(validFromDetail.getValidFrom());
+      final int comparison = currentValidFrom.compareTo(nextValidFrom);
+      if (comparison == 0) {
+        return 1;
+      }
+      return comparison;
+    }
+
+    public String getValidFrom() {
+      Optional<Parameter> parameter = getDisplayInfo().getParameters().stream()
+                                                      .filter(param -> VALID_FROM_KEY.equals(
+                                                          param.getKey()))
+                                                      .findFirst();
+      return parameter.orElseThrow(
+          () -> new RuntimeException("Not found validFrom parameter in DisplayInfo")).getValue();
+    }
+
   }
 
   @AllArgsConstructor
@@ -86,14 +111,6 @@ public class ErrorResponse {
     @Schema(description = "Parameters for messages")
     @NotNull
     private final List<Parameter> parameters;
-
-    public String getValueFromParameter(@NonNull String key) {
-      Optional<Parameter> parameter = parameters.stream()
-                                                .filter(param -> key.equals(param.getKey()))
-                                                .findFirst();
-      return parameter.orElseThrow(
-          () -> new RuntimeException("Requested Parameter not found in DisplayInfo")).getValue();
-    }
 
     public static DisplayInfoBuilder builder() {
       return new DisplayInfoBuilder();
@@ -132,10 +149,6 @@ public class ErrorResponse {
 
     private final String key;
     private final String value;
-  }
-
-  public List<Detail> sortDetailsByValidFrom() {
-    return details.stream().sorted().toList();
   }
 
   private static LocalDate parseStringToLocalDate(String date) {

@@ -346,7 +346,7 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
 
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
     assertThat(errorResponse.getDetails()).size().isEqualTo(1);
-    assertThat(errorResponse.getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
+    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
   }

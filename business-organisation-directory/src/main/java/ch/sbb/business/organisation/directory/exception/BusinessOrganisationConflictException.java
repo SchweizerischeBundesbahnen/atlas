@@ -3,12 +3,14 @@ package ch.sbb.business.organisation.directory.exception;
 import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.atlas.model.api.ErrorResponse.Detail;
 import ch.sbb.atlas.model.api.ErrorResponse.DisplayInfo;
+import ch.sbb.atlas.model.api.ErrorResponse.ValidFromDetail;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion.Fields;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,19 +27,17 @@ public class BusinessOrganisationConflictException extends AtlasException {
 
   @Override
   public ErrorResponse getErrorResponse() {
-    ErrorResponse errorResponse = ErrorResponse.builder()
-                                               .status(HttpStatus.CONFLICT.value())
-                                               .message(
-                                                   "A conflict occurred due to a business rule")
-                                               .error(ERROR)
-                                               .details(getErrorDetails())
-                                               .build();
-    errorResponse.setDetails(errorResponse.sortDetailsByValidFrom());
-    return errorResponse;
+    return ErrorResponse.builder()
+                        .status(HttpStatus.CONFLICT.value())
+                        .message(
+                            "A conflict occurred due to a business rule")
+                        .error(ERROR)
+                        .details(getErrorDetails())
+                        .build();
   }
 
-  private List<Detail> getErrorDetails() {
-    List<Detail> details = new ArrayList<>();
+  private SortedSet<Detail> getErrorDetails() {
+    SortedSet<Detail> details = new TreeSet<>();
 
     for (BusinessOrganisationVersion version : overlappingVersions) {
       if (Objects.equals(version.getAbbreviationDe(), newVersion.getAbbreviationDe())) {
@@ -65,12 +65,13 @@ public class BusinessOrganisationConflictException extends AtlasException {
             v -> String.valueOf(v.getOrganisationNumber())));
       }
     }
+
     return details;
   }
 
   private Detail toOverlapDetail(BusinessOrganisationVersion version, String field,
       Function<BusinessOrganisationVersion, String> valueExtractor) {
-    return Detail.builder()
+    return ValidFromDetail.builder()
                  .field(field)
                  .message("{0} {1} already taken from {2} to {3} by {4}")
                  .displayInfo(DisplayInfo.builder()

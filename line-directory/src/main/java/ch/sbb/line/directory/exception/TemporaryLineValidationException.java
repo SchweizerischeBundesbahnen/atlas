@@ -3,12 +3,14 @@ package ch.sbb.line.directory.exception;
 import static ch.sbb.atlas.model.api.ErrorResponse.DisplayInfo.builder;
 import static java.util.stream.Collectors.toList;
 
+import ch.sbb.atlas.model.api.ErrorResponse.ValidFromDetail;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.atlas.model.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersion.Fields;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,16 +31,14 @@ public class TemporaryLineValidationException extends AtlasException {
 
   @Override
   public ErrorResponse getErrorResponse() {
-    ErrorResponse errorResponse = ErrorResponse.builder()
-                                               .status(
-                                                   HttpStatus.UNPROCESSABLE_ENTITY.value())
-                                               .message(
-                                                   "Business rule validation failed")
-                                               .error(ERROR)
-                                               .details(getErrorDetails())
-                                               .build();
-    errorResponse.setDetails(errorResponse.sortDetailsByValidFrom());
-    return errorResponse;
+    return ErrorResponse.builder()
+                        .status(
+                            HttpStatus.UNPROCESSABLE_ENTITY.value())
+                        .message(
+                            "Business rule validation failed")
+                        .error(ERROR)
+                        .details(new TreeSet<>(getErrorDetails()))
+                        .build();
   }
 
   private List<Detail> getErrorDetails() {
@@ -52,14 +52,14 @@ public class TemporaryLineValidationException extends AtlasException {
   }
 
   private Function<LineVersion, Detail> toErrorDetail(String message, String code) {
-    return lineVersion -> Detail.builder()
-                                .field(Fields.validTo)
-                                .message(message)
-                                .displayInfo(builder()
-                                    .code(CODE_PREFIX + code)
-                                    .with(Fields.validFrom, lineVersion.getValidFrom())
-                                    .with(Fields.validTo, lineVersion.getValidTo())
-                                    .build()).build();
+    return lineVersion -> ValidFromDetail.builder()
+                                         .field(Fields.validTo)
+                                         .message(message)
+                                         .displayInfo(builder()
+                                             .code(CODE_PREFIX + code)
+                                             .with(Fields.validFrom, lineVersion.getValidFrom())
+                                             .with(Fields.validTo, lineVersion.getValidTo())
+                                             .build()).build();
   }
 
 }
