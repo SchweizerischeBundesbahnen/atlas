@@ -35,15 +35,15 @@ public class TemporaryLineValidationExceptionTest {
       assertThat(exception.getErrorResponse().getMessage()).isEqualTo(
           "Business rule validation failed");
       assertThat(exception.getErrorResponse().getDetails().size()).isEqualTo(3);
-      assertThat(exception.getErrorResponse().getDetails().get(0).getField()).isEqualTo("validTo");
-      assertThat(exception.getErrorResponse().getDetails().get(0).getMessage()).isEqualTo(
+      assertThat(exception.getErrorResponse().getDetails().first().getField()).isEqualTo("validTo");
+      assertThat(exception.getErrorResponse().getDetails().first().getMessage()).isEqualTo(
           "Temporary version from 01.01.2021 to 01.05.2021 is a part of relating temporary versions, which together exceed maximum validity of 12 months");
       assertThat(
-          exception.getErrorResponse().getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
+          exception.getErrorResponse().getDetails().first().getDisplayInfo().getCode()).isEqualTo(
           "LIDI.LINE.RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY");
       assertThat(exception.getErrorResponse()
                           .getDetails()
-                          .get(0)
+                          .first()
                           .getDisplayInfo()
                           .getParameters()).usingRecursiveComparison().isEqualTo(
           List.of(
@@ -70,15 +70,15 @@ public class TemporaryLineValidationExceptionTest {
       assertThat(exception.getErrorResponse().getMessage()).isEqualTo(
           "Business rule validation failed");
       assertThat(exception.getErrorResponse().getDetails().size()).isEqualTo(1);
-      assertThat(exception.getErrorResponse().getDetails().get(0).getField()).isEqualTo("validTo");
-      assertThat(exception.getErrorResponse().getDetails().get(0).getMessage()).isEqualTo(
+      assertThat(exception.getErrorResponse().getDetails().first().getField()).isEqualTo("validTo");
+      assertThat(exception.getErrorResponse().getDetails().first().getMessage()).isEqualTo(
           "Temporary version from 01.01.2021 to 01.05.2022 exceeds maximum validity of 12 months");
       assertThat(
-          exception.getErrorResponse().getDetails().get(0).getDisplayInfo().getCode()).isEqualTo(
+          exception.getErrorResponse().getDetails().first().getDisplayInfo().getCode()).isEqualTo(
           "LIDI.LINE.TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY");
       assertThat(exception.getErrorResponse()
                           .getDetails()
-                          .get(0)
+                          .first()
                           .getDisplayInfo()
                           .getParameters()).usingRecursiveComparison().isEqualTo(
           List.of(
