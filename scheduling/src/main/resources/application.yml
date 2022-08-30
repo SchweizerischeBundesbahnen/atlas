@@ -17,6 +17,8 @@ spring:
     driver-class-name: org.postgresql.Driver
     application:
       name: scheduling
+  jpa:
+    open-in-view: false
   security:
     oauth2:
       resourceserver:
@@ -44,9 +46,9 @@ scheduler:
       full:
         chron: "0 * * ? * *" #At 03:00:00am every day
       actual:
-        chron: "0 5 3 * * ?" #At 03:05:00am every day
+        chron: "0 * * ? * *" #At 03:05:00am every day
       future:
-        chron: "0 10 3 * * ?" #At 03:10:00am every day
+        chron: "0 * * ? * *" #At 03:10:00am every day
 atlas:
   client:
     gateway:
