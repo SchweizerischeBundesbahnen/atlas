@@ -26,6 +26,8 @@ public class ErrorResponse {
 
   public static final int VERSIONING_NO_CHANGES_HTTP_STATUS = 520;
   private static final String VALID_FROM_KEY = "validFrom";
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(
+      AtlasApiConstants.DATE_FORMAT_PATTERN_CH);
 
   @Schema(description = "HTTP Status Code", example = "400")
   private int status;
@@ -44,7 +46,7 @@ public class ErrorResponse {
   @Data
   @Builder
   @Schema(name = "ErrorDetail")
-  public static class Detail {
+  public static class Detail implements Comparable<Detail> {
 
     @Schema(description = "Errormessage in english for API purposes", example = "Resource not found")
     @NotNull
@@ -62,6 +64,15 @@ public class ErrorResponse {
       return MessageFormat.format(message,
           displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
     }
+
+    @Override
+    public int compareTo(@NonNull Detail next) {
+      LocalDate currentValidFrom = parseStringToLocalDate(
+          displayInfo.getValueFromParameter(VALID_FROM_KEY));
+      LocalDate nextValidFrom = parseStringToLocalDate(
+          next.getDisplayInfo().getValueFromParameter(VALID_FROM_KEY));
+      return currentValidFrom.compareTo(nextValidFrom);
+    }
   }
 
   @AllArgsConstructor
@@ -75,6 +86,14 @@ public class ErrorResponse {
     @Schema(description = "Parameters for messages")
     @NotNull
     private final List<Parameter> parameters;
+
+    public String getValueFromParameter(@NonNull String key) {
+      Optional<Parameter> parameter = parameters.stream()
+                                                .filter(param -> key.equals(param.getKey()))
+                                                .findFirst();
+      return parameter.orElseThrow(
+          () -> new RuntimeException("Requested Parameter not found in DisplayInfo")).getValue();
+    }
 
     public static DisplayInfoBuilder builder() {
       return new DisplayInfoBuilder();
@@ -116,30 +135,11 @@ public class ErrorResponse {
   }
 
   public List<Detail> sortDetailsByValidFrom() {
-    return details.stream().sorted((next, current) -> {
-      LocalDate currentValidFrom = parseStringToLocalDate(
-          getValueFromParameterKey(current, VALID_FROM_KEY));
-      LocalDate nextValidFrom = parseStringToLocalDate(getValueFromParameterKey(next, VALID_FROM_KEY));
-      return nextValidFrom.compareTo(currentValidFrom);
-    }).toList();
+    return details.stream().sorted().toList();
   }
 
-  private String getValueFromParameterKey(Detail detail, @NonNull String key) {
-    Optional<Parameter> keyParameter = detail.getDisplayInfo()
-                                             .getParameters()
-                                             .stream()
-                                             .filter(parameter -> key.equals(parameter.getKey()))
-                                             .findFirst();
-    if (keyParameter.isEmpty()) {
-      return null;
-    } else {
-      return keyParameter.get().getValue();
-    }
-  }
-
-  private LocalDate parseStringToLocalDate(String date) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    return LocalDate.parse(date, formatter);
+  private static LocalDate parseStringToLocalDate(String date) {
+    return LocalDate.parse(date, DATE_FORMATTER);
   }
 
 }
