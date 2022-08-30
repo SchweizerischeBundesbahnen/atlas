@@ -51,13 +51,3 @@ amazon:
     name: "atlas-data-export-dev-dev"
     dir: "line"
     object-expiration-days: 30
-scheduler:
-  export:
-    zone: "Europe/Zurich"
-    line:
-      full:
-        chron: "0 0 3 * * ?" #At 03:00:00am every day
-      actual:
-        chron: "0 5 3 * * ?" #At 03:05:00am every day
-      future:
-        chron: "0 10 3 * * ?" #At 03:10:00am every day

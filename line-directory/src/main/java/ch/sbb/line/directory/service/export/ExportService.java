@@ -131,7 +131,11 @@ public class ExportService {
 
     AtlasCsvMapper(Class<?> aClass) {
       this.csvMapper = createCsvMapper();
-      this.csvSchema = this.csvMapper.schemaFor(aClass).withHeader();
+      this.csvSchema = this.csvMapper
+          .schemaFor(aClass)
+          .withHeader()
+          .withColumnSeparator(';');
+
     }
 
     private CsvMapper createCsvMapper() {
