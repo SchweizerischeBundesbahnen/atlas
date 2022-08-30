@@ -52,7 +52,7 @@ scheduler:
     export:
       line:
         full:
-          chron: "0 0 3 * * ?" #At 03:00:00am every day
+          chron: "0 * * ? * *" #At 03:00:00am every day
         actual:
           chron: "0 5 3 * * ?" #At 03:05:00am every day
         future:
