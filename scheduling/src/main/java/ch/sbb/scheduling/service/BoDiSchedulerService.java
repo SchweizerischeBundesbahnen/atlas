@@ -1,6 +1,7 @@
 package ch.sbb.scheduling.service;
 
 import ch.sbb.scheduling.client.BoDiClient;
+import feign.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,14 +20,15 @@ public class BoDiSchedulerService extends BaseSchedulerService {
 
   @Scheduled(cron = "${scheduler.bodi.import.tu.crd.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "loadCompaniesFromCRD", lockAtMostFor = "PT3M", lockAtLeastFor = "PT2M")
-  public void postLoadCompaniesFromCRD() {
-    executeRequest(boDiClient.postLoadCompaniesFromCRD(), "Import Companies from CRD");
+  public Response postLoadCompaniesFromCRD() {
+    return executeRequest(boDiClient.postLoadCompaniesFromCRD(), "Import Companies from CRD");
   }
 
   @Scheduled(cron = "${scheduler.bodi.import.tu.bav.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "loadTransportCompaniesFromBav", lockAtMostFor = "PT3M", lockAtLeastFor = "PT2M")
-  public void postLoadTransportCompaniesFromBav() {
-    executeRequest(boDiClient.postLoadTransportCompaniesFromBav(), "Import Companies from BAV");
+  public Response postLoadTransportCompaniesFromBav() {
+    return executeRequest(boDiClient.postLoadTransportCompaniesFromBav(),
+        "Import Companies from BAV");
   }
 
 
