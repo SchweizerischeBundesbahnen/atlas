@@ -1,31 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.2</version>
-        <relativePath />
-    </parent>
-    <groupId>ch.sbb.atlas</groupId>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>atlas</artifactId>
-    <version>${revision}</version>
-    <packaging>pom</packaging>
-    <name>Atlas</name>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <configuration>
+                                <attributes>
+                                    <buildTime>${maven.build.timestamp}</buildTime>
+                                    <name>${project.name}</name>
+                                    <snippets>${project.build.directory}/generated-snippets</snippets>
+                                    <version>${project.version}</version>
+                                </attributes>
+                                <backend>html</backend>
+                                <doctype>book</doctype>
+                                <outputDirectory>target/classes/static</outputDirectory>
+                                <sourceDirectory>src/docs/asciidocs</sourceDirectory>
+                            </configuration>
+                            <goals>
+                                <goal>process-asciidoc</goal>
+                            </goals>
+                            <id>generate-docs</id>
+                            <phase>prepare-package</phase>
+                        </execution>
+                    </executions>
+                    <groupId>org.asciidoctor</groupId>
+                    <version>${asciidoctor-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <id>prepare-jacoco-agent</id>
+                        </execution>
+                        <execution>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <id>report-jacoco-post-unit-test</id>
+                            <phase>test</phase>
+                        </execution>
+                    </executions>
+                    <groupId>org.jacoco</groupId>
+                    <version>0.8.8</version>
+                </plugin>
+                <plugin>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <artifactId>lombok</artifactId>
+                                <groupId>org.projectlombok</groupId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                    <groupId>org.springframework.boot</groupId>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <version>${maven-compiler-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <id>attach-sources</id>
+                        </execution>
+                    </executions>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <version>${maven-source-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jaxb2-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <groupId>org.jvnet.jaxb2.maven2</groupId>
+                    <version>0.15.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Imported Poms -->
+            <dependency>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <groupId>org.springframework.cloud</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${spring-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>springdoc-openapi</artifactId>
+                <groupId>org.springdoc</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+
+            <!-- Third Party-->
+            <dependency>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <groupId>org.springdoc</groupId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>flyway-core</artifactId>
+                <groupId>org.flywaydb</groupId>
+                <version>8.5.12</version>
+            </dependency>
+            <dependency>
+                <artifactId>spring-restdocs-mockmvc</artifactId>
+                <groupId>org.springframework.restdocs</groupId>
+                <scope>test</scope>
+                <version>2.0.6.RELEASE</version>
+            </dependency>
+            <dependency>
+                <artifactId>spring-auto-restdocs-core</artifactId>
+                <groupId>capital.scalable</groupId>
+                <scope>test</scope>
+                <version>2.0.11</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <description>ATLAS - SKI Business Application</description>
-    <properties>
-        <revision>1.4.0-SNAPSHOT</revision>
-        <java.version>17</java.version>
-        <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-        <timestamp>${maven.build.timestamp}</timestamp>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-cloud.version>2021.0.3</spring-cloud.version>
-        <springdoc-openapi.version>1.6.9</springdoc-openapi.version>
-        <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
-        <!-- Spring Boot Overrides -->
-        <!-- https://github.com/projectlombok/lombok/issues/3180 -->
-        <lombok.version>1.18.22</lombok.version>
-    </properties>
+    <groupId>ch.sbb.atlas</groupId>
+    <modelVersion>4.0.0</modelVersion>
     <modules>
         <!-- Order is important here-->
         <!-- Libs first-->
@@ -35,6 +150,7 @@
         <module>amazon-s3</module>
         <!--  Services-->
         <module>mail</module>
+        <module>scheduling</module>
         <module>line-directory</module>
         <module>business-organisation-directory</module>
         <!-- Combine APIs-->
@@ -42,141 +158,26 @@
         <module>gateway</module>
         <module>frontend</module>
     </modules>
-    <dependencyManagement>
-        <dependencies>
-            <!-- Imported Poms -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi</artifactId>
-                <version>${springdoc-openapi.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Third Party-->
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-ui</artifactId>
-                <version>${springdoc-openapi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-core</artifactId>
-                <version>8.5.12</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.restdocs</groupId>
-                <artifactId>spring-restdocs-mockmvc</artifactId>
-                <version>2.0.6.RELEASE</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>capital.scalable</groupId>
-                <artifactId>spring-auto-restdocs-core</artifactId>
-                <version>2.0.11</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.asciidoctor</groupId>
-                    <artifactId>asciidoctor-maven-plugin</artifactId>
-                    <version>${asciidoctor-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>generate-docs</id>
-                            <phase>prepare-package</phase>
-                            <goals>
-                                <goal>process-asciidoc</goal>
-                            </goals>
-                            <configuration>
-                                <backend>html</backend>
-                                <doctype>book</doctype>
-                                <attributes>
-                                    <snippets>${project.build.directory}/generated-snippets</snippets>
-                                    <version>${project.version}</version>
-                                    <name>${project.name}</name>
-                                    <buildTime>${maven.build.timestamp}</buildTime>
-                                </attributes>
-                                <sourceDirectory>src/docs/asciidocs</sourceDirectory>
-                                <outputDirectory>target/classes/static</outputDirectory>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.8</version>
-                    <executions>
-                        <execution>
-                            <id>prepare-jacoco-agent</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>report-jacoco-post-unit-test</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
-                        <excludes>
-                            <exclude>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                            </exclude>
-                        </excludes>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>${maven-source-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.jvnet.jaxb2.maven2</groupId>
-                    <artifactId>maven-jaxb2-plugin</artifactId>
-                    <version>0.15.1</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+    <name>Atlas</name>
+    <packaging>pom</packaging>
+    <parent>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <relativePath />
+        <version>2.7.2</version>
+    </parent>
+    <properties>
+        <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
+        <java.version>17</java.version>
+        <lombok.version>1.18.22</lombok.version>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <revision>0.483.0-SNAPSHOT</revision>
+        <spring-cloud.version>2021.0.3</spring-cloud.version>
+        <springdoc-openapi.version>1.6.9</springdoc-openapi.version>
+        <!-- Spring Boot Overrides -->
+        <!-- https://github.com/projectlombok/lombok/issues/3180 -->
+        <timestamp>${maven.build.timestamp}</timestamp>
+    </properties>
+    <version>${revision}</version>
 </project>
