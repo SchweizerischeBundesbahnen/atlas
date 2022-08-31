@@ -1,9 +1,11 @@
 package ch.sbb.scheduling.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.scheduling.client.LiDiClient;
+import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Request;
 import feign.Request.HttpMethod;
 import feign.Response;
@@ -61,11 +63,8 @@ class LidiSchedulerServiceTest {
     when(liDiClient.putLiDiExportFullCsv()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportFullLineVersionsCsv();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(400);
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportFullLineVersionsCsv());
   }
 
   @Test
@@ -101,11 +100,8 @@ class LidiSchedulerServiceTest {
     when(liDiClient.putLiDiExportFullZip()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportFullLineVersionsZip();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(400);
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportFullLineVersionsZip());
   }
 
   @Test
@@ -141,11 +137,8 @@ class LidiSchedulerServiceTest {
     when(liDiClient.putLiDiExportActualCsv()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportActualLineVersionsCsv();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(400);
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportActualLineVersionsCsv());
   }
 
   @Test
@@ -181,11 +174,8 @@ class LidiSchedulerServiceTest {
     when(liDiClient.putLiDiExportActualZip()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportActualLineVersionsZip();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(400);
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportActualLineVersionsZip());
   }
 
   @Test
@@ -221,11 +211,8 @@ class LidiSchedulerServiceTest {
     when(liDiClient.putLiDiExportNextTimetableVersionsCsv()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportNextTimetableLineVersionsCsv();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(400);
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportNextTimetableLineVersionsCsv());
   }
 
   @Test
@@ -261,11 +248,8 @@ class LidiSchedulerServiceTest {
     when(liDiClient.putLiDiExportNextTimetableVersionsZip()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportNextTimetableLineVersionsZip();
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(400);
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportNextTimetableLineVersionsZip());
   }
 
 }
