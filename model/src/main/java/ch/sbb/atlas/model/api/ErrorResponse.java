@@ -5,8 +5,12 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +18,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.springframework.lang.NonNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +28,10 @@ import lombok.RequiredArgsConstructor;
 @Schema(name = "ErrorResponse")
 public class ErrorResponse {
 
-  public static final  int VERSIONING_NO_CHANGES_HTTP_STATUS = 520;
+  public static final int VERSIONING_NO_CHANGES_HTTP_STATUS = 520;
+  private static final String VALID_FROM_KEY = "validFrom";
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(
+      AtlasApiConstants.DATE_FORMAT_PATTERN_CH);
 
   @Schema(description = "HTTP Status Code", example = "400")
   private int status;
@@ -34,14 +43,14 @@ public class ErrorResponse {
   private String error;
 
   @Schema(description = "List of error details", nullable = true)
-  private List<Detail> details = new ArrayList<>();
+  private SortedSet<Detail> details = new TreeSet<>();
 
   @AllArgsConstructor
   @NoArgsConstructor
   @Data
-  @Builder
+  @SuperBuilder
   @Schema(name = "ErrorDetail")
-  public static class Detail {
+  public static class Detail implements Comparable<Detail> {
 
     @Schema(description = "Errormessage in english for API purposes", example = "Resource not found")
     @NotNull
@@ -56,8 +65,40 @@ public class ErrorResponse {
     private DisplayInfo displayInfo;
 
     public String getMessage() {
-      return MessageFormat.format(message, displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
+      return MessageFormat.format(message,
+          displayInfo.getParameters().stream().map(Parameter::getValue).toArray());
     }
+
+    @Override
+    public int compareTo(@NonNull Detail detailToCompare) {
+      return 1;
+    }
+  }
+
+  @SuperBuilder
+  public static class ValidFromDetail extends Detail {
+
+    @Override
+    public int compareTo(@NonNull Detail detailToCompare) {
+      if (detailToCompare instanceof ValidFromDetail validFromDetailToCompare) {
+        return Comparator.comparing(ValidFromDetail::getValidFrom)
+                         .thenComparing(ValidFromDetail::getMessage)
+                         .compare(this, validFromDetailToCompare);
+      }
+      throw new IllegalArgumentException("Can only compare ValidFromDetail type");
+    }
+
+    private LocalDate getValidFrom() {
+      Optional<Parameter> parameter = getDisplayInfo().getParameters().stream()
+                                                      .filter(param -> VALID_FROM_KEY.equals(
+                                                          param.getKey()))
+                                                      .findFirst();
+      String validFrom = parameter.orElseThrow(
+          () -> new RuntimeException("Not found validFrom parameter in DisplayInfo")).getValue();
+
+      return LocalDate.parse(validFrom, DATE_FORMATTER);
+    }
+
   }
 
   @AllArgsConstructor
@@ -106,6 +147,7 @@ public class ErrorResponse {
   @RequiredArgsConstructor
   @Getter
   public static class Parameter {
+
     private final String key;
     private final String value;
   }
