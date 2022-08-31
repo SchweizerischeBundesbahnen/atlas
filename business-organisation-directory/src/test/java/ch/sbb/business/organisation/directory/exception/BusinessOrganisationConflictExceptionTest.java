@@ -25,7 +25,7 @@ class BusinessOrganisationConflictExceptionTest {
                                                                                .build();
 
   @Test
-  void shouldConvertToErrorMessageCorrectly() {
+  void shouldConvertToErrorMessageCorrectlyUnsorted() {
     // Given
     BusinessOrganisationConflictException conflictException = new BusinessOrganisationConflictException(
         version, List.of(version, version2));
@@ -65,13 +65,13 @@ class BusinessOrganisationConflictExceptionTest {
                             .getValue()).isEqualTo("de");
 
     assertThat(detailList.get(1).getMessage()).isEqualTo(
-        "abbreviationFr fr already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
+        "abbreviationEn en already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
     assertThat(detailList.get(2).getMessage()).isEqualTo(
-        "abbreviationIt it already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
+        "abbreviationFr fr already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
     assertThat(detailList.get(3).getMessage()).isEqualTo(
-        "abbreviationEn en already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
+        "abbreviationIt it already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
 
     assertThat(detailList.get(4).getMessage()).isEqualTo(
         "organisationNumber 123 already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
@@ -80,15 +80,32 @@ class BusinessOrganisationConflictExceptionTest {
         "abbreviationDe de already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
 
     assertThat(detailList.get(6).getMessage()).isEqualTo(
-        "abbreviationFr fr already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+        "abbreviationEn en already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
 
     assertThat(detailList.get(7).getMessage()).isEqualTo(
-        "abbreviationIt it already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+        "abbreviationFr fr already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
 
     assertThat(detailList.get(8).getMessage()).isEqualTo(
-        "abbreviationEn en already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+        "abbreviationIt it already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
 
     assertThat(detailList.get(9).getMessage()).isEqualTo(
         "organisationNumber 123 already taken from 01.01.2000 to 31.12.2000 by ch:1:sboid:1000000");
+  }
+
+  @Test
+  void shouldConvertToErrorResponseCorrectlySorted(){
+    // Given
+    BusinessOrganisationConflictException conflictException = new BusinessOrganisationConflictException(
+        version, List.of(version2, version));
+    // When
+    ErrorResponse errorResponse = conflictException.getErrorResponse();
+    List<Detail> detailList = errorResponse.getDetails().stream().toList();
+
+    // Then
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
+    assertThat(detailList).hasSize(10);
+
+    assertThat(detailList.get(0).getMessage()).isEqualTo(
+        "abbreviationDe de already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
   }
 }
