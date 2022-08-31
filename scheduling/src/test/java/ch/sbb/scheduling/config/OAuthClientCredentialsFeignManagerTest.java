@@ -46,9 +46,8 @@ public class OAuthClientCredentialsFeignManagerTest {
     when(clientRegistration.getRegistrationId()).thenReturn("azure");
 
     //when
-    assertThrows(IllegalStateException.class, () -> {
-      oAuthClientCredentialsFeignManager.getAccessToken();
-    });
+    assertThrows(IllegalStateException.class,
+        () -> oAuthClientCredentialsFeignManager.getAccessToken());
   }
 
   @Test

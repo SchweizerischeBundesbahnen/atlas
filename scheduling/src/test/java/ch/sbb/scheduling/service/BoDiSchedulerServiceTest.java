@@ -1,9 +1,11 @@
 package ch.sbb.scheduling.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.scheduling.client.BoDiClient;
+import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Request;
 import feign.Request.HttpMethod;
 import feign.Response;
@@ -61,11 +63,10 @@ public class BoDiSchedulerServiceTest {
     when(boDiClient.postLoadCompaniesFromCRD()).thenReturn(response);
 
     //when
-    Response result = boDiSchedulerService.postLoadCompaniesFromCRD();
+    assertThrows(SchedulingExecutionException.class, () -> {
+      boDiSchedulerService.postLoadCompaniesFromCRD();
+    });
 
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(400);
   }
 
   @Test
@@ -101,11 +102,9 @@ public class BoDiSchedulerServiceTest {
     when(boDiClient.postLoadTransportCompaniesFromBav()).thenReturn(response);
 
     //when
-    Response result = boDiSchedulerService.postLoadTransportCompaniesFromBav();
+    assertThrows(SchedulingExecutionException.class,
+        () -> boDiSchedulerService.postLoadTransportCompaniesFromBav());
 
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.status()).isEqualTo(400);
   }
 
 }
