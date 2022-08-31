@@ -15,7 +15,9 @@ public class TimetableFieldNumberConflictExceptionTest {
   @Test
   void shouldConvertToErrorMessageCorrectly() {
     // Given
-    TimetableFieldNumberConflictException conflictException = new TimetableFieldNumberConflictException(version(), List.of(version()));
+    TimetableFieldNumberConflictException conflictException = new TimetableFieldNumberConflictException(
+        version(), List.of(
+        version(), versionBuilder().validFrom(LocalDate.of(1990, 1, 1)).build()));
 
     // When
     ErrorResponse errorResponse = conflictException.getErrorResponse();
@@ -23,17 +25,23 @@ public class TimetableFieldNumberConflictExceptionTest {
     // Then
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
     assertThat(errorResponse.getMessage()).isEqualTo("A conflict occurred due to a business rule");
-    assertThat(errorResponse.getDetails()).hasSize(2);
+    assertThat(errorResponse.getDetails()).hasSize(4);
 
-    assertThat(errorResponse.getDetails().get(0).getMessage()).isEqualTo("Number BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
-    assertThat(errorResponse.getDetails().get(1).getMessage()).isEqualTo("SwissTimetableFieldNumber b0.BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
+    assertThat(errorResponse.getDetails().first().getMessage()).isEqualTo(
+        "Number BEX already taken from 01.01.1990 to 12.12.2099 by ch:1:ttfnid:100000");
+    assertThat(errorResponse.getDetails().stream().toList().get(1).getMessage()).isEqualTo(
+        "SwissTimetableFieldNumber b0.BEX already taken from 01.01.1990 to 12.12.2099 by ch:1:ttfnid:100000");
+    assertThat(errorResponse.getDetails().stream().toList().get(2).getMessage()).isEqualTo(
+        "Number BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
+    assertThat(errorResponse.getDetails().stream().toList().get(3).getMessage()).isEqualTo(
+        "SwissTimetableFieldNumber b0.BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
   }
 
   private static TimetableFieldNumberVersion version() {
     return versionBuilder().build();
   }
 
-  private static TimetableFieldNumberVersionBuilder versionBuilder() {
+  private static TimetableFieldNumberVersionBuilder<?, ?> versionBuilder() {
     return TimetableFieldNumberVersion.builder()
                                       .ttfnid("ch:1:ttfnid:100000")
                                       .description("FPFN Description")
