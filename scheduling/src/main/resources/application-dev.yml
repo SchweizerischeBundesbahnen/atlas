@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: TBD
+    username: ${DB_USER}
+    password: ${DB_PWD}
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
