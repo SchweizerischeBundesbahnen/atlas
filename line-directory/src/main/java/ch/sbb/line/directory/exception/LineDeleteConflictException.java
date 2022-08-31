@@ -8,6 +8,8 @@ import ch.sbb.atlas.model.api.ErrorResponse.Detail;
 import ch.sbb.line.directory.entity.LineVersion.Fields;
 import ch.sbb.line.directory.entity.SublineVersion;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +34,12 @@ public class LineDeleteConflictException extends AtlasException {
                         .build();
   }
 
-  private List<Detail> getErrorDetails() {
+  private SortedSet<Detail> getErrorDetails() {
     List<String> sublineVersionSlnids = sublineVersions.stream()
                                                        .map(SublineVersion::getSlnid)
-                                                       .distinct()
-                                                       .collect(Collectors.toList());
-    return sublineVersionSlnids.stream().map(toErrorDetail()).collect(Collectors.toList());
+                                                       .distinct().toList();
+    return sublineVersionSlnids.stream().map(toErrorDetail()).collect(Collectors.toCollection(
+        TreeSet::new));
   }
 
   private Function<String, Detail> toErrorDetail() {

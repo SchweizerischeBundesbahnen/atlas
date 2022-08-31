@@ -2,7 +2,8 @@ package ch.sbb.atlas.model.exception;
 
 import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.atlas.model.api.ErrorResponse.Detail;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
@@ -25,7 +26,7 @@ public abstract class NotFoundException extends AtlasException {
                         .build();
   }
 
-  private List<Detail> getErrorDetails() {
+  private SortedSet<Detail> getErrorDetails() {
     Detail detail = Detail.builder()
                           .field(field)
                           .message("Object with {0} {1} not found")
@@ -35,7 +36,9 @@ public abstract class NotFoundException extends AtlasException {
                                                                 .with("value", value)
                                                                 .build())
                           .build();
-    return List.of(detail);
+    SortedSet<Detail> details = new TreeSet<>();
+    details.add(detail);
+    return details;
   }
 
   public static class IdNotFoundException extends NotFoundException {
@@ -46,6 +49,5 @@ public abstract class NotFoundException extends AtlasException {
       super(ID, String.valueOf(value));
     }
   }
-
 
 }
