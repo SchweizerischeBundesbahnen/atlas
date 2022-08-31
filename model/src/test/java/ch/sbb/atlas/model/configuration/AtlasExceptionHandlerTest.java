@@ -38,11 +38,11 @@ public class AtlasExceptionHandlerTest {
     assertThat(errorResponseResponseEntity.getBody().getMessage()).isEqualTo(
         "Constraint for requestbody was violated");
     assertThat(errorResponseResponseEntity.getBody().getDetails()).size().isEqualTo(1);
-    assertThat(errorResponseResponseEntity.getBody().getDetails().get(0).getMessage()).isEqualTo(
+    assertThat(errorResponseResponseEntity.getBody().getDetails().first().getMessage()).isEqualTo(
         "Value null rejected due to defaultMessage");
     assertThat(errorResponseResponseEntity.getBody()
                                           .getDetails()
-                                          .get(0)
+                                          .first()
                                           .getDisplayInfo()
                                           .getCode()).isEqualTo("ERROR.CONSTRAINT");
   }
