@@ -4,10 +4,13 @@ import static ch.sbb.atlas.model.api.ErrorResponse.DisplayInfo.builder;
 
 import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.atlas.model.api.ErrorResponse.Detail;
+import ch.sbb.atlas.model.api.ErrorResponse.ValidFromDetail;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersion.Fields;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -32,21 +35,24 @@ public class LineConflictException extends AtlasException {
                         .build();
   }
 
-  private List<Detail> getErrorDetails() {
-    return overlappingVersions.stream().map(toErrorDetail()).collect(Collectors.toList());
+  private SortedSet<Detail> getErrorDetails() {
+    return overlappingVersions.stream().map(toErrorDetail()).collect(Collectors.toCollection(
+        TreeSet::new));
   }
 
   private Function<LineVersion, Detail> toErrorDetail() {
-    return lineVersion -> Detail.builder()
-                                .field(Fields.swissLineNumber)
-                                .message("SwissLineNumber {0} already taken from {1} to {2} by {3}")
-                                .displayInfo(builder()
-                                    .code(CODE_PREFIX + "SWISS_NUMBER")
-                                    .with(Fields.swissLineNumber, newVersion.getSwissLineNumber())
-                                    .with(Fields.validFrom, lineVersion.getValidFrom())
-                                    .with(Fields.validTo, lineVersion.getValidTo())
-                                    .with(Fields.slnid, lineVersion.getSlnid())
-                                    .build()).build();
+    return lineVersion -> ValidFromDetail.builder()
+                                         .field(Fields.swissLineNumber)
+                                         .message(
+                                             "SwissLineNumber {0} already taken from {1} to {2} by {3}")
+                                         .displayInfo(builder()
+                                             .code(CODE_PREFIX + "SWISS_NUMBER")
+                                             .with(Fields.swissLineNumber,
+                                                 newVersion.getSwissLineNumber())
+                                             .with(Fields.validFrom, lineVersion.getValidFrom())
+                                             .with(Fields.validTo, lineVersion.getValidTo())
+                                             .with(Fields.slnid, lineVersion.getSlnid())
+                                             .build()).build();
   }
 
 }
