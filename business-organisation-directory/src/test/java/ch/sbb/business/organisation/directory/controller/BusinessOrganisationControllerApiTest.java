@@ -397,13 +397,13 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerApiTest
            "abbreviationDe de1 already taken from 01.01.2001 to 31.12.2001 by "
                + savedVersion.getSboid())))
        .andExpect(jsonPath("$.details[1].message", is(
-           "abbreviationFr fr1 already taken from 01.01.2001 to 31.12.2001 by "
+           "abbreviationEn en1 already taken from 01.01.2001 to 31.12.2001 by "
                + savedVersion.getSboid())))
        .andExpect(jsonPath("$.details[2].message", is(
-           "abbreviationIt it1 already taken from 01.01.2001 to 31.12.2001 by "
+           "abbreviationFr fr1 already taken from 01.01.2001 to 31.12.2001 by "
                + savedVersion.getSboid())))
        .andExpect(jsonPath("$.details[3].message", is(
-           "abbreviationEn en1 already taken from 01.01.2001 to 31.12.2001 by "
+           "abbreviationIt it1 already taken from 01.01.2001 to 31.12.2001 by "
                + savedVersion.getSboid())))
        .andExpect(jsonPath("$.details[4].message", is(
            "organisationNumber 1234 already taken from 01.01.2001 to 31.12.2001 by "
