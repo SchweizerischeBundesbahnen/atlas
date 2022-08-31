@@ -72,6 +72,15 @@
       <optional>true</optional>
     </dependency>
     <dependency>
+      <artifactId>spring-retry</artifactId>
+      <groupId>org.springframework.retry</groupId>
+      <version>1.3.3</version>
+    </dependency>
+    <dependency>
+      <artifactId>spring-aspects</artifactId>
+      <groupId>org.springframework</groupId>
+    </dependency>
+    <dependency>
       <artifactId>model</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <version>${revision}</version>
