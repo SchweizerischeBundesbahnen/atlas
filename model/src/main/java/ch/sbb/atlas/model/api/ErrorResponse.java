@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -69,7 +70,7 @@ public class ErrorResponse {
     }
 
     @Override
-    public int compareTo(@NonNull Detail next) {
+    public int compareTo(@NonNull Detail detailToCompare) {
       return 1;
     }
   }
@@ -78,24 +79,24 @@ public class ErrorResponse {
   public static class ValidFromDetail extends Detail {
 
     @Override
-    public int compareTo(@NonNull Detail next) {
-      ValidFromDetail validFromDetail = (ValidFromDetail) next;
-      LocalDate currentValidFrom = parseStringToLocalDate(getValidFrom());
-      LocalDate nextValidFrom = parseStringToLocalDate(validFromDetail.getValidFrom());
-      final int comparison = currentValidFrom.compareTo(nextValidFrom);
-      if (comparison == 0) {
-        return 1;
+    public int compareTo(@NonNull Detail detailToCompare) {
+      if (detailToCompare instanceof ValidFromDetail validFromDetailToCompare) {
+        return Comparator.comparing(ValidFromDetail::getValidFrom)
+                         .thenComparing(ValidFromDetail::getMessage)
+                         .compare(this, validFromDetailToCompare);
       }
-      return comparison;
+      throw new IllegalArgumentException("Can only compare ValidFromDetail type");
     }
 
-    public String getValidFrom() {
+    private LocalDate getValidFrom() {
       Optional<Parameter> parameter = getDisplayInfo().getParameters().stream()
                                                       .filter(param -> VALID_FROM_KEY.equals(
                                                           param.getKey()))
                                                       .findFirst();
-      return parameter.orElseThrow(
+      String validFrom = parameter.orElseThrow(
           () -> new RuntimeException("Not found validFrom parameter in DisplayInfo")).getValue();
+
+      return LocalDate.parse(validFrom, DATE_FORMATTER);
     }
 
   }
@@ -149,10 +150,6 @@ public class ErrorResponse {
 
     private final String key;
     private final String value;
-  }
-
-  private static LocalDate parseStringToLocalDate(String date) {
-    return LocalDate.parse(date, DATE_FORMATTER);
   }
 
 }
