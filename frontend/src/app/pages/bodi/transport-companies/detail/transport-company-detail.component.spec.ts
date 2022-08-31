@@ -14,6 +14,7 @@ import { RelationComponent } from '../../../../core/components/relation/relation
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import moment from 'moment';
 import { of } from 'rxjs';
+import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -163,7 +164,12 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
   transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.and.returnValue(of({}));
 
   TestBed.configureTestingModule({
-    declarations: [TransportCompanyDetailComponent, RelationComponent, SearchSelectComponent],
+    declarations: [
+      TransportCompanyDetailComponent,
+      RelationComponent,
+      SearchSelectComponent,
+      CommentComponent,
+    ],
     imports: [AppTestingModule],
     providers: [
       {

@@ -111,12 +111,13 @@ describe('TransportCompanyRelationComponent', () => {
     expect(selectedIndexChangedCalled).toBeFalse();
   });
 
-  it('test delete', (done) => {
+  it('test delete', () => {
     component.editable = true;
     component.selectedIndex = 0;
     fixture.detectChanges();
-    component.deleteRelation.subscribe(() => done());
     const deleteBtn = fixture.debugElement.queryAll(By.css('button'))[1];
+    spyOn(component.deleteRelation, 'emit');
     deleteBtn.nativeElement.click();
+    expect(component.deleteRelation.emit).toHaveBeenCalledOnceWith();
   });
 });
