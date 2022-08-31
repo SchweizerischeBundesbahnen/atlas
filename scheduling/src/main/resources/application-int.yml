@@ -9,3 +9,7 @@ auth:
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
+atlas:
+  client:
+    gateway:
+      url: "https://gateway:8888"
