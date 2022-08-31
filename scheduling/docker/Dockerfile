@@ -11,4 +11,4 @@ RUN chmod 777 /deploy/app.jar
 
 ENV JAVA_APP_JAR="deploy/app.jar"
 
-EXPOSE 8084
+EXPOSE 8085

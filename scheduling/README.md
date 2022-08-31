@@ -5,15 +5,14 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-  * [Localhost](#localhost)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
-  * [Project Infrastructure](#project-infrastructure)
+    * [Localhost](#localhost)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
+    * [Project Infrastructure](#project-infrastructure)
 - [Development](#development-1)
-  * [REST API](#rest-api)
-  * [Tech Stack](#tech-stack)
+    * [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
 
@@ -50,8 +49,6 @@ This project uses [Semantic Versioning](https://semver.org/).
   documentation: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+7.1.+Infrastruktur+Ebene+1
 
 ## Development
-
-### REST API
 
 ### Tech Stack
 
