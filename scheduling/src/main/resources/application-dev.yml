@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: TBD
+    url: jdbc:postgresql://scheduling-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com
     username: ${DB_USER}
     password: ${DB_PWD}
 logging:
@@ -9,4 +9,4 @@ logging:
 atlas:
   client:
     gateway:
-      url: "https://gateway:8888"
+      url: "http://gateway:8888"
