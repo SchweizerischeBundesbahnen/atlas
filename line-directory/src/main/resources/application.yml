@@ -48,4 +48,6 @@ amazon:
   secretKey: ${AMAZON_S3_SECRET_KEY}
   region: "eu-central-1"
   bucket:
+    name: "atlas-data-export-dev-dev"
     dir: "line"
+    object-expiration-days: 30

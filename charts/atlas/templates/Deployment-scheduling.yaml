@@ -1,0 +1,76 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: '{{ .Values.scheduling.name }}'
+spec:
+  replicas: {{ .Values.common.replicas }}
+  selector:
+    matchLabels:
+      app: '{{ .Values.scheduling.name }}'
+      deploymentconfig: '{{ .Values.scheduling.name }}'
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      annotations:
+        collectord.io/logs-index: '{{ .Values.common.splunkIndex }}'
+        collectord.io/logs-output: splunk::prod
+        collectord.io/logs-eventpattern: ^(timestamp=)
+      labels:
+        app: '{{ .Values.scheduling.name }}'
+        deploymentconfig: '{{ .Values.scheduling.name }}'
+    spec:
+      containers:
+        - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: '{{ .Values.common.springProfilesActive }}'
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.scheduling.name }}
+                  key: user
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.scheduling.name }}
+                  key: password
+          image: "atlas.docker.bin.sbb.ch/{{ .Values.scheduling.name }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
+          name: '{{ .Values.scheduling.name }}'
+          ports:
+            - containerPort: {{ .Values.scheduling.port }}
+              protocol: TCP
+          resources:
+            requests:
+              cpu: '{{ .Values.common.cpuMin }}'
+              memory: '{{ .Values.common.memoryMin }}'
+            limits:
+              cpu: '{{ .Values.common.cpuMax }}'
+              memory: '{{ .Values.common.memoryMax }}'
+          livenessProbe:
+            httpGet:
+              path: '{{ .Values.scheduling.livenessProbe }}'
+              port: {{ .Values.scheduling.port }}
+              scheme: HTTP
+            initialDelaySeconds: 40
+            timeoutSeconds: 90
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: '{{ .Values.scheduling.readynessProbe }}'
+              port: {{ .Values.scheduling.port }}
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 90
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 10
+          terminationMessagePath: /dev/termination-log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

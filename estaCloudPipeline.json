@@ -28,6 +28,12 @@
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
+      "openshiftAppName": "scheduling",
+      "dockerFile": "scheduling/docker/Dockerfile",
+      "artifactorySupressProjectSubfolderCreation": true
+    },
+    {
+      "artifactoryDockerRepo": "atlas.docker",
       "openshiftAppName": "gateway",
       "dockerFile": "gateway/docker/Dockerfile",
       "artifactorySupressProjectSubfolderCreation": true
