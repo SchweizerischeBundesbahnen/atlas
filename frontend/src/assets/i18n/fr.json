@@ -356,7 +356,6 @@
       "RICS_CODE": "RICS-Code",
       "GO_NUMBERS": "OC-Numéro",
       "ENTERPRISE_ID": "UID",
-      "COMMENT": "Commentaire",
       "STATUS": "Statut",
       "TRANSPORT_COMPANY_STATUS": {
         "OPERATOR": "Opérateur",
