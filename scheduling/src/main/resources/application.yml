@@ -45,18 +45,18 @@ scheduler:
     import:
       tu:
         crd:
-          chron: "0 * * ? * *" #At 02:00:00am every day
+          chron: "0 0 2 * * ?" #At 02:00:00am every day
         bav:
-          chron: "0 * * ? * *" #At 01:00:00am every day
+          chron: "0 0 1 * * ?" #At 01:00:00am every day
   lidi:
     export:
       line:
         full:
-          chron: "0 * * ? * *" #At 03:00:00am every day
+          chron: "0 0 3 * * ?" #At 03:00:00am every day
         actual:
-          chron: "0 * * ? * *" #At 03:05:00am every day
+          chron: "0 5 3 * * ?" #At 03:05:00am every day
         future:
-          chron: "0 * * ? * *" #At 03:10:00am every day
+          chron: "0 10 3 * * ?" #At 03:10:00am every day
 atlas:
   client:
     gateway:
