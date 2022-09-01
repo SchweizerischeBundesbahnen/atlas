@@ -20,7 +20,7 @@ public class FutureTimetableHelper {
    * @return the date to be used for the export data. For example on 12.11.2022 (Timetable year 2022) we
    * export the Timetable year 2023 data: 10.12.2023
    */
-  public static LocalDate geTimetableYearChangeDateToExportData(LocalDate localDate) {
+  public static LocalDate getTimetableYearChangeDateToExportData(LocalDate localDate) {
     LocalDate actualFutureTimetableDate = getActualTimetableYearChangeDate(localDate);
     if (localDate.isBefore(actualFutureTimetableDate)) {
       return actualFutureTimetableDate;
