@@ -52,6 +52,16 @@ mail:
   # Application Port
   port: 8084
 
+scheduling:
+  # Name of the Dockerimge in bin.sbb.ch/dockerrepo
+  name: "scheduling"
+  # LIVENESS_PROBE
+  livenessProbe: "actuator/health"
+  # READYNESS_PROBE
+  readynessProbe: "actuator/health"
+  # Application Port
+  port: 8085
+
 frontend:
   # Name of the Dockerimge in bin.sbb.ch/dockerrepoted"
   name: "atlas-frontend"
