@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://scheduling-test.cdv0rjtmldns.eu-central-1.rds.amazonaws.com
+    url: jdbc:postgresql://scheduling-test.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/scheduling
     username: ${DB_USER}
     password: ${DB_PWD}
 auth:
