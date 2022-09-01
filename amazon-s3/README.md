@@ -54,7 +54,7 @@ see [Atlas S3 Buckets](https://self.sbb-cloud.net/tools/aws/s3/list)):
     * int: **int-dev**
     * prod: **prod**
 
-:warning: Disclaimer: the postfix for dev, test and int is always followed by "dev" because of
+:warning: Disclaimer: the postfix for dev, test and int is always following by dev because of
 the [SBB bucket name generation](https://self.sbb-cloud.net/tools/aws/s3/new), for more information
 see [AmazonServiceImpl.java](src/main/java/ch/sbb/atlas/amazon/service/AmazonServiceImpl.java)
 #getBucketNameFromActiveProfile()
