@@ -17,13 +17,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AmazonServiceImpl implements AmazonService {
 
-  public static final String ATLAS_DATA_EXPORT_PREFIX = "atlas-data-export-";
   private final AmazonS3 amazonS3;
   private final FileService fileService;
 
   @Setter
-  @Value("${spring.profiles.active:local}")
-  private String activeProfile;
+  @Value("${amazon.bucket.name}")
+  private String bucketName;
 
   @Setter
   @Value("${amazon.bucket.dir}")
@@ -54,12 +53,11 @@ public class AmazonServiceImpl implements AmazonService {
     URL url;
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
-      String bucket = getBucketNameFromActiveProfile();
       String filePathName = getFilePathName(file);
-      putObjectRequest = new PutObjectRequest(bucket, filePathName, inputStream,
+      putObjectRequest = new PutObjectRequest(bucketName, filePathName, inputStream,
           metadata);
       amazonS3.putObject(putObjectRequest);
-      url = amazonS3.getUrl(bucket, filePathName);
+      url = amazonS3.getUrl(bucketName, filePathName);
       return url;
     }
   }
@@ -70,21 +68,6 @@ public class AmazonServiceImpl implements AmazonService {
           "Please define the property '${amazon.bucket.dir}' in the appropriate properties file!");
     }
     return bucketDir + "/" + file.getName();
-  }
-
-  @Override
-  public String getBucketNameFromActiveProfile() {
-    if ("local".equals(activeProfile) || activeProfile == null) {
-      activeProfile = "dev";
-    }
-    if ("prod".equals(activeProfile)) {
-      return ATLAS_DATA_EXPORT_PREFIX + activeProfile;
-    }
-    if ("dev".equals(activeProfile) || "test".equals(activeProfile) ||
-        "int".equals(activeProfile)) {
-      return ATLAS_DATA_EXPORT_PREFIX + activeProfile + "-dev";
-    }
-    throw new IllegalStateException("Please define a valid [dev,test,int,prod] spring profile!");
   }
 
 }

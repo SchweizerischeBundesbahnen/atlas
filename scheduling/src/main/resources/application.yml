@@ -1,0 +1,63 @@
+server:
+  port: 8085
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5436/scheduling
+    username: user
+    password: pwd
+    driver-class-name: org.postgresql.Driver
+    application:
+      name: scheduling
+  jpa:
+    open-in-view: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+      client:
+        provider:
+          azure:
+            issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+        registration:
+          azure:
+            authorization-grant-type: client_credentials
+            client-id: ${AMAZON_CLIENT_ID}
+            client-secret: ${AMAZON_CLIENT_SECRET}
+            scope:
+              - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
+auth:
+  audience:
+    service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
+
+scheduler:
+  zone: "Europe/Zurich"
+  bodi:
+    import:
+      tu:
+        crd:
+          chron: "0 0 2 * * ?" #At 02:00:00am every day
+        bav:
+          chron: "0 0 1 * * ?" #At 01:00:00am every day
+  lidi:
+    export:
+      line:
+        full:
+          chron: "0 0 3 * * ?" #At 03:00:00am every day
+        actual:
+          chron: "0 5 3 * * ?" #At 03:05:00am every day
+        future:
+          chron: "0 10 3 * * ?" #At 03:10:00am every day
+atlas:
+  client:
+    gateway:
+      url: "http://localhost:8888"
