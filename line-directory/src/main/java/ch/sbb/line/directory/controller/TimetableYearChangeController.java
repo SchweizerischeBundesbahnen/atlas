@@ -14,7 +14,7 @@ public class TimetableYearChangeController implements TimetableYearChangeApiV1 {
 
   @Override
   public LocalDate getTimetableYearChange(int year) {
-    return FutureTimetableHelper.geTimetableYearChangeDateToExportData(
+    return FutureTimetableHelper.getTimetableYearChangeDateToExportData(
         LocalDate.now().withYear(year));
   }
 
@@ -24,7 +24,7 @@ public class TimetableYearChangeController implements TimetableYearChangeApiV1 {
     for (int i = 0; i < count; i++) {
       LocalDate nextYear = LocalDate.now().plusYears(i);
       nextYearsFutureTimetables.add(
-          FutureTimetableHelper.geTimetableYearChangeDateToExportData(nextYear));
+          FutureTimetableHelper.getTimetableYearChangeDateToExportData(nextYear));
     }
     return nextYearsFutureTimetables;
   }

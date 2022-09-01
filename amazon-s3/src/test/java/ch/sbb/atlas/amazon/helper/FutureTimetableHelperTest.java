@@ -16,7 +16,7 @@ public class FutureTimetableHelperTest {
     //given
     LocalDate futureTimetableDate2022 = LocalDate.of(2022, 12, 11);
     //when
-    LocalDate result = FutureTimetableHelper.geTimetableYearChangeDateToExportData(
+    LocalDate result = FutureTimetableHelper.getTimetableYearChangeDateToExportData(
         LocalDate.of(2022, 12, 9));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2022);
@@ -27,7 +27,7 @@ public class FutureTimetableHelperTest {
     //given
     LocalDate futureTimetableDate2022 = LocalDate.of(2022, 12, 11);
     //when
-    LocalDate result = FutureTimetableHelper.geTimetableYearChangeDateToExportData(
+    LocalDate result = FutureTimetableHelper.getTimetableYearChangeDateToExportData(
         LocalDate.of(2022, 12, 10));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2022);
@@ -38,7 +38,7 @@ public class FutureTimetableHelperTest {
     //given
     LocalDate futureTimetableDate2023 = LocalDate.of(2023, 12, 10);
     //when
-    LocalDate result = FutureTimetableHelper.geTimetableYearChangeDateToExportData(
+    LocalDate result = FutureTimetableHelper.getTimetableYearChangeDateToExportData(
         LocalDate.of(2022, 12, 11));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2023);
@@ -49,7 +49,7 @@ public class FutureTimetableHelperTest {
     //given
     LocalDate futureTimetableDate2023 = LocalDate.of(2023, 12, 10);
     //when
-    LocalDate result = FutureTimetableHelper.geTimetableYearChangeDateToExportData(
+    LocalDate result = FutureTimetableHelper.getTimetableYearChangeDateToExportData(
         LocalDate.of(2022, 12, 12));
     //then
     assertThat(result).isEqualTo(futureTimetableDate2023);
