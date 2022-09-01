@@ -34,6 +34,8 @@ export class TransportCompanyDetailComponent implements OnInit {
     private readonly notificationService: NotificationService
   ) {}
 
+  private static readonly commentControlName = 'comment';
+
   transportCompany!: TransportCompany;
   transportCompanyRelations!: TransportCompanyBoRelation[];
   businessOrganisationSearchResults: Observable<BusinessOrganisation[]> = of([]);
@@ -81,6 +83,13 @@ export class TransportCompanyDetailComponent implements OnInit {
     },
   ];
 
+  readonly commentFormGroup = new FormGroup({
+    [TransportCompanyDetailComponent.commentControlName]: new FormControl<string | undefined>({
+      disabled: true,
+      value: undefined,
+    }),
+  });
+
   readonly form = new FormGroup(
     {
       businessOrganisation: new FormControl<BusinessOrganisation | null>(null, [
@@ -101,6 +110,9 @@ export class TransportCompanyDetailComponent implements OnInit {
   ngOnInit() {
     this.transportCompany = this.dialogData.transportCompanyDetail[0];
     this.transportCompanyRelations = this.dialogData.transportCompanyDetail[1];
+    this.commentFormGroup
+      .get(TransportCompanyDetailComponent.commentControlName)
+      ?.setValue(this.transportCompany.comment);
   }
 
   isAdmin(): boolean {

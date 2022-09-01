@@ -109,18 +109,11 @@
   </div>
 
   <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-6 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg"
-          >{{ 'BODI.TRANSPORT_COMPANIES.COMMENT' | translate }}
-        </mat-label>
-      </div>
-      <mat-form-field>
-        <input matInput [value]="transportCompany.comment" data-cy="comment" disabled />
-      </mat-form-field>
-    </div>
-  </div>
+  <form-comment
+    [formGroup]="commentFormGroup"
+    [displayInfoIcon]="false"
+    [displayLabel]="false"
+  ></form-comment>
 
   <div class="mt-5">
     <app-relation
