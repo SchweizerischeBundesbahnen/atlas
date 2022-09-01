@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -39,6 +38,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -62,8 +62,12 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   @Autowired
   private AmazonS3 amazonS3;
 
-  @Autowired
-  private AmazonService amazonServiceImpl;
+  @Value("${amazon.bucket.dir}")
+  private String bucketDir;
+
+  @Value("${amazon.bucket.name}")
+  private String bucketName;
+
 
   @AfterEach
   public void tearDown() {
@@ -181,7 +185,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     lineController.createLineVersion(lineVersionModel2);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/future-timetable/csv"))
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/timetable-year-change/csv"))
                              .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult);
   }
@@ -199,7 +203,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     lineController.createLineVersion(lineVersionModel2);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/future-timetable/zip"))
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/timetable-year-change/zip"))
                              .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult);
   }
@@ -207,7 +211,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   private void deleteFileFromBucket(MvcResult mvcResult) throws UnsupportedEncodingException {
     String result = mvcResult.getResponse().getContentAsString();
     String filePath = result.substring(result.lastIndexOf("/"), result.length() - 1);
-    amazonS3.deleteObject(amazonServiceImpl.getBucketNameFromActiveProfile(), "line" + filePath);
+    amazonS3.deleteObject(bucketName, bucketDir + filePath);
   }
 
   @Test

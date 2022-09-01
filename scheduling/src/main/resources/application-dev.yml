@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://scheduling-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com
+    username: ${DB_USER}
+    password: ${DB_PWD}
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
+atlas:
+  client:
+    gateway:
+      url: "http://gateway:8888"

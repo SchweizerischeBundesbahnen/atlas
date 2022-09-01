@@ -1,9 +1,7 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.Container;
-import ch.sbb.atlas.model.exception.ExportException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
@@ -19,8 +17,6 @@ import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.export.ExportService;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -38,7 +34,6 @@ public class LineController implements LineApiV1 {
 
   private final LineService lineService;
   private final CoverageService coverageService;
-  private final AmazonService amazonService;
   private final ExportService exportService;
 
   @Override
@@ -116,38 +111,32 @@ public class LineController implements LineApiV1 {
 
   @Override
   public URL exportFullLineVersionsCsv() {
-    File csvFile = exportService.getFullLineVersionsCsv();
-    return putCsvFile(csvFile);
+    return exportService.exportFullLineVersionsCsv();
   }
 
   @Override
   public URL exportFullLineVersionsCsvZip() {
-    File csvFile = exportService.getFullLineVersionsCsv();
-    return putZipFile(csvFile);
+    return exportService.exportFullLineVersionsCsvZip();
   }
 
   @Override
   public URL exportActualLineVersionsCsv() {
-    File csvFile = exportService.getActualLineVersionsCsv();
-    return putCsvFile(csvFile);
+    return exportService.exportActualLineVersionsCsv();
   }
 
   @Override
   public URL exportActualLineVersionsCsvZip() {
-    File csvFile = exportService.getActualLineVersionsCsv();
-    return putZipFile(csvFile);
+    return exportService.exportActualLineVersionsCsvZip();
   }
 
   @Override
-  public URL exportFutureTimetableVersionsCsv() {
-    File csvFile = exportService.getActualFutureTimetableLineVersionsCsv();
-    return putCsvFile(csvFile);
+  public URL exportFutureTimetableLineVersionsCsv() {
+    return exportService.exportFutureTimetableLineVersionsCsv();
   }
 
   @Override
   public URL exportFutureTimetableLineVersionsCsvZip() {
-    File csvFile = exportService.getActualFutureTimetableLineVersionsCsv();
-    return putZipFile(csvFile);
+    return exportService.exportFutureTimetableLineVersionsCsvZip();
   }
 
   @Override
@@ -155,21 +144,6 @@ public class LineController implements LineApiV1 {
     lineService.deleteAll(slnid);
   }
 
-  URL putCsvFile(File csvFile) {
-    try {
-      return amazonService.putFile(csvFile);
-    } catch (IOException e) {
-      throw new ExportException(csvFile, e);
-    }
-  }
-
-  URL putZipFile(File zipFile) {
-    try {
-      return amazonService.putZipFile(zipFile);
-    } catch (IOException e) {
-      throw new ExportException(zipFile, e);
-    }
-  }
 
   private LineVersionModel toModel(LineVersion lineVersion) {
     return LineVersionModel.builder()

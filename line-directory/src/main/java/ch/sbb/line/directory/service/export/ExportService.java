@@ -3,6 +3,7 @@ package ch.sbb.line.directory.service.export;
 import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.model.exception.ExportException;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -29,21 +31,68 @@ public class ExportService {
 
   private final LineVersionRepository lineVersionRepository;
   private final FileService fileService;
+  private final AmazonService amazonService;
 
-  public File getFullLineVersionsCsv() {
+  public URL exportFullLineVersionsCsv() {
+    File csvFile = getFullLineVersionsCsv();
+    return putCsvFile(csvFile);
+  }
+
+  public URL exportFullLineVersionsCsvZip() {
+    File csvFile = getFullLineVersionsCsv();
+    return putZipFile(csvFile);
+  }
+
+  public URL exportActualLineVersionsCsv() {
+    File csvFile = getActualLineVersionsCsv();
+    return putCsvFile(csvFile);
+  }
+
+  public URL exportActualLineVersionsCsvZip() {
+    File csvFile = getActualLineVersionsCsv();
+    return putZipFile(csvFile);
+  }
+
+  public URL exportFutureTimetableLineVersionsCsv() {
+    File csvFile = getActualFutureTimetableLineVersionsCsv();
+    return putCsvFile(csvFile);
+  }
+
+  public URL exportFutureTimetableLineVersionsCsvZip() {
+    File csvFile = getActualFutureTimetableLineVersionsCsv();
+    return putZipFile(csvFile);
+  }
+
+  URL putCsvFile(File csvFile) {
+    try {
+      return amazonService.putFile(csvFile);
+    } catch (IOException e) {
+      throw new ExportException(csvFile, e);
+    }
+  }
+
+  URL putZipFile(File zipFile) {
+    try {
+      return amazonService.putZipFile(zipFile);
+    } catch (IOException e) {
+      throw new ExportException(zipFile, e);
+    }
+  }
+
+  private File getFullLineVersionsCsv() {
     List<LineVersion> fullLineVersions = lineVersionRepository.getFullLineVersions();
     return createCsvFile(fullLineVersions, ExportType.FULL);
   }
 
-  public File getActualLineVersionsCsv() {
+  private File getActualLineVersionsCsv() {
     List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
         LocalDate.now());
     return createCsvFile(actualLineVersions, ExportType.ACTUAL_DATE);
   }
 
-  public File getActualFutureTimetableLineVersionsCsv() {
+  private File getActualFutureTimetableLineVersionsCsv() {
     List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
-        FutureTimetableHelper.getFutureTimetableExportDate(LocalDate.now()));
+        FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
     return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
   }
 
@@ -82,7 +131,11 @@ public class ExportService {
 
     AtlasCsvMapper(Class<?> aClass) {
       this.csvMapper = createCsvMapper();
-      this.csvSchema = this.csvMapper.schemaFor(aClass).withHeader();
+      this.csvSchema = this.csvMapper
+          .schemaFor(aClass)
+          .withHeader()
+          .withColumnSeparator(';');
+
     }
 
     private CsvMapper createCsvMapper() {
