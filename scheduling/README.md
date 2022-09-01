@@ -5,16 +5,25 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-    * [Localhost](#localhost)
-    * [Development](#development)
-    * [Test](#test)
-    * [Integration](#integration)
-    * [Production](#production)
-    * [Project Infrastructure](#project-infrastructure)
+  * [Localhost](#localhost)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
+  * [Project Infrastructure](#project-infrastructure)
 - [Development](#development-1)
-    * [Tech Stack](#tech-stack)
+  * [ShedLock](#shedlock)
+  * [Retry](#retry)
+  * [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
+
+The main task of the Atlas Scheduling Service is to provide a central API and a central
+configuration and schduling mechanism. This service is used by each Atlas Service that requires an
+import or export operation.
+With [ShedLock](#shedlock) and [Retry](#retry) libraries, this service is able to makes
+sure that our scheduled tasks run only once at the same time, and in case of a failure the scheduled
+tasks are able to automatic re-executed.
 
 ## ATLAS
 
@@ -49,6 +58,17 @@ This project uses [Semantic Versioning](https://semver.org/).
   documentation: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+7.1.+Infrastruktur+Ebene+1
 
 ## Development
+
+### ShedLock
+
+This project uses [ShedLock](https://github.com/lukas-krecan/ShedLock) - a Java library that makes
+sure our scheduled tasks run only once at the same time.
+
+### Retry
+
+This project
+uses [Spring Retry](https://docs.spring.io/spring-batch/docs/current/reference/html/retry.html)
+library to auto re-run a failed scheduled job.
 
 ### Tech Stack
 
