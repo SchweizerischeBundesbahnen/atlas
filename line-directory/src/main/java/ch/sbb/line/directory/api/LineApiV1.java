@@ -98,7 +98,7 @@ public interface LineApiV1 {
 
   @Operation(description = "Export all line versions for the current timetable year change as csv file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/timetable-year-change/csv", produces = MediaType.APPLICATION_JSON_VALUE)
-  URL exportFutureTimetableVersionsCsv();
+  URL exportFutureTimetableLineVersionsCsv();
 
   @Operation(description = "Export all line versions for the current timetable year change as zip file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/timetable-year-change/zip", produces = MediaType.APPLICATION_JSON_VALUE)
