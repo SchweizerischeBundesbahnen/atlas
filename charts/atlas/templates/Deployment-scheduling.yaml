@@ -37,6 +37,17 @@ spec:
                 secretKeyRef:
                   name: db-secret-{{ .Values.scheduling.name }}
                   key: password
+            - name: SCHEDULING_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: client-{{ .Values.scheduling.name }}
+                  key: scheduling-client-id
+            - name: SCHEDULING_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: client-{{ .Values.scheduling.name }}
+                  key: scheduling-client-secret
+
           image: "atlas.docker.bin.sbb.ch/{{ .Values.scheduling.name }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
           name: '{{ .Values.scheduling.name }}'

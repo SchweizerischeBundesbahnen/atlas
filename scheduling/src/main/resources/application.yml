@@ -31,8 +31,8 @@ spring:
         registration:
           azure:
             authorization-grant-type: client_credentials
-            client-id: ${AMAZON_CLIENT_ID}
-            client-secret: ${AMAZON_CLIENT_SECRET}
+            client-id: ${SCHEDULING_CLIENT_ID}
+            client-secret: ${SCHEDULING_CLIENT_SECRET}
             scope:
               - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
 auth:
