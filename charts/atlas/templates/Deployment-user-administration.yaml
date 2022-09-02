@@ -32,6 +32,16 @@ spec:
                 secretKeyRef:
                   name: azure-ad-{{ .Values.userAdministration.name }}
                   key: secret
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.userAdministration.name }}
+                  key: username
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.userAdministration.name }}
+                  key: password
           image: "atlas.docker.bin.sbb.ch/{{ .Values.userAdministration.name }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
           name: '{{ .Values.userAdministration.name }}'
