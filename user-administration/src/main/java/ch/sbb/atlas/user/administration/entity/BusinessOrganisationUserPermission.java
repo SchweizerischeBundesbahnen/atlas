@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.entity;
+package ch.sbb.atlas.user.administration.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

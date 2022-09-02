@@ -1,9 +1,9 @@
-package ch.sbb.line.directory.controller;
+package ch.sbb.atlas.user.administration.controller;
 
 import ch.sbb.atlas.model.api.Container;
-import ch.sbb.line.directory.api.UserAdministrationApiV1;
-import ch.sbb.line.directory.entity.UserPermission;
-import ch.sbb.line.directory.service.UserAdministrationService;
+import ch.sbb.atlas.user.administration.api.UserAdministrationApiV1;
+import ch.sbb.atlas.user.administration.entity.UserPermission;
+import ch.sbb.atlas.user.administration.service.UserAdministrationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

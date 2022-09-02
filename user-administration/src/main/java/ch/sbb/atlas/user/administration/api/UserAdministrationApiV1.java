@@ -1,7 +1,7 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.user.administration.api;
 
 import ch.sbb.atlas.model.api.Container;
-import ch.sbb.line.directory.entity.UserPermission;
+import ch.sbb.atlas.user.administration.entity.UserPermission;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "LiDi User Administration")
+@Tag(name = "User Administration")
 @RequestMapping("/v1/users")
 public interface UserAdministrationApiV1 {
 

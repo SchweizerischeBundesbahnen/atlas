@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import {
   AtlasGraphApiService,
   ContainerString,
-  LiDiUserAdministrationService,
+  UserAdministrationService,
   UserModel,
   UserPermission,
 } from '../../../api';
@@ -12,10 +12,10 @@ import { of } from 'rxjs';
 
 describe('UserService', () => {
   let service: UserService;
-  let liDiUserAdministrationServiceMock: LiDiUserAdministrationServiceMock;
+  let userAdministrationServiceMock: UserAdministrationServiceMock;
   let atlasGraphApiServiceMock: AtlasGraphApiServiceMock;
 
-  class LiDiUserAdministrationServiceMock {
+  class UserAdministrationServiceMock {
     getUsers: any = undefined;
     getUserPermissions: any = undefined;
   }
@@ -26,13 +26,13 @@ describe('UserService', () => {
   }
 
   beforeEach(() => {
-    liDiUserAdministrationServiceMock = new LiDiUserAdministrationServiceMock();
+    userAdministrationServiceMock = new UserAdministrationServiceMock();
     atlasGraphApiServiceMock = new AtlasGraphApiServiceMock();
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: LiDiUserAdministrationService,
-          useValue: liDiUserAdministrationServiceMock,
+          provide: UserAdministrationService,
+          useValue: userAdministrationServiceMock,
         },
         {
           provide: AtlasGraphApiService,
@@ -48,7 +48,7 @@ describe('UserService', () => {
   });
 
   it('test getUsers', (done) => {
-    liDiUserAdministrationServiceMock.getUsers = jasmine
+    userAdministrationServiceMock.getUsers = jasmine
       .createSpy()
       .and.returnValue(of<ContainerString>({ totalCount: 5, objects: ['u123456', 'u654321'] }));
     atlasGraphApiServiceMock.resolveUsers = jasmine
@@ -67,14 +67,12 @@ describe('UserService', () => {
   });
 
   it('test getUserPermissions', (done) => {
-    liDiUserAdministrationServiceMock.getUserPermissions = jasmine
+    userAdministrationServiceMock.getUserPermissions = jasmine
       .createSpy()
       .and.returnValue(of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]));
 
     service.getUserPermissions('u123456').subscribe((res) => {
-      expect(liDiUserAdministrationServiceMock.getUserPermissions).toHaveBeenCalledOnceWith(
-        'u123456'
-      );
+      expect(userAdministrationServiceMock.getUserPermissions).toHaveBeenCalledOnceWith('u123456');
       expect(res).toEqual([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }] as UserPermission[]);
       done();
     });
