@@ -1,6 +1,6 @@
-package ch.sbb.line.directory.repository;
+package ch.sbb.atlas.user.administration.repository;
 
-import ch.sbb.line.directory.entity.UserPermission;
+import ch.sbb.atlas.user.administration.entity.UserPermission;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

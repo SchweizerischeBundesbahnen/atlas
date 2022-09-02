@@ -4,3 +4,10 @@ auth:
 azure-config:
   azure-ad-secret: ${AZURE_AD_SECRET}
   app-registration-id: 2e8c6ce0-304d-42e1-9bce-600b3ea43aad
+
+spring:
+  datasource:
+    url: jdbc:postgresql://user-administration-test.cdv0rjtmldns.eu-central-1.rds.amazonaws.com/user_administration
+    username: ${DB_USER}
+    password: ${DB_PWD}
+    driver-class-name: org.postgresql.Driver
