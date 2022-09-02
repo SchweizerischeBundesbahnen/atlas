@@ -8,6 +8,15 @@ server:
     include-message: always
 
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5437/user-administration?currentSchema=user-administration
+    username: user
+    password: pwd
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: user-administration
+  jpa:
+    open-in-view: false
   security:
     oauth2:
       resourceserver:

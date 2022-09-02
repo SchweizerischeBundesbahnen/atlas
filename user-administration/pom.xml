@@ -16,8 +16,8 @@
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <microsoft-graph-sdk-version>5.31.0</microsoft-graph-sdk-version>
-    <azure-identity-version>1.5.3</azure-identity-version>
+    <microsoft-graph-sdk-version>5.33.0</microsoft-graph-sdk-version>
+    <azure-identity-version>1.5.4</azure-identity-version>
   </properties>
 
   <dependencies>
@@ -66,6 +66,38 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <artifactId>flyway-core</artifactId>
+      <groupId>org.flywaydb</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>model</artifactId>
+      <groupId>ch.sbb.atlas</groupId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
+      <artifactId>model</artifactId>
+      <classifier>tests</classifier>
+      <groupId>ch.sbb.atlas</groupId>
+      <scope>test</scope>
+      <type>test-jar</type>
+      <version>${revision}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>h2</artifactId>
+      <groupId>com.h2database</groupId>
       <scope>test</scope>
     </dependency>
   </dependencies>

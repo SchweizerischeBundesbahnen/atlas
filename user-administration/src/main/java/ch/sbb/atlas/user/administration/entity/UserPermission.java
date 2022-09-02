@@ -1,7 +1,7 @@
-package ch.sbb.line.directory.entity;
+package ch.sbb.atlas.user.administration.entity;
 
-import ch.sbb.line.directory.enumaration.ApplicationRole;
-import ch.sbb.line.directory.enumaration.ApplicationType;
+import ch.sbb.atlas.user.administration.enums.ApplicationRole;
+import ch.sbb.atlas.user.administration.enums.ApplicationType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

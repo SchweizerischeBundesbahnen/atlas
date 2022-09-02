@@ -4,12 +4,9 @@ public enum UserAccountStatus {
   ACTIVE,INACTIVE,DELETED;
 
   public static UserAccountStatus getUserAccountStatusFromBoolean(Boolean accountStatus) {
-    if (accountStatus == null) {
-      return null;
+    if (accountStatus == null || !accountStatus) {
+      return UserAccountStatus.INACTIVE;
     }
-    if (accountStatus) {
-      return UserAccountStatus.ACTIVE;
-    }
-    return UserAccountStatus.INACTIVE;
+    return UserAccountStatus.ACTIVE;
   }
 }
