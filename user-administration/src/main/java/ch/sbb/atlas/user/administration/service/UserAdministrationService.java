@@ -1,7 +1,7 @@
-package ch.sbb.line.directory.service;
+package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.line.directory.entity.UserPermission;
-import ch.sbb.line.directory.repository.UserPermissionRepository;
+import ch.sbb.atlas.user.administration.entity.UserPermission;
+import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

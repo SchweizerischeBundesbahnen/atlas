@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.controller;
+package ch.sbb.atlas.user.administration.controller;
 
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
@@ -6,18 +6,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.line.directory.entity.UserPermission;
-import ch.sbb.line.directory.enumaration.ApplicationRole;
-import ch.sbb.line.directory.enumaration.ApplicationType;
-import ch.sbb.line.directory.repository.UserPermissionRepository;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.user.administration.entity.UserPermission;
+import ch.sbb.atlas.user.administration.enums.ApplicationRole;
+import ch.sbb.atlas.user.administration.enums.ApplicationType;
+import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.test.web.servlet.MockMvc;
 
-public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
+@IntegrationTest
+@AutoConfigureMockMvc(addFilters = false)
+public class UserAdministrationControllerApiTest {
 
+  @Autowired
+  private MockMvc mvc;
   @Autowired
   private UserPermissionRepository userPermissionRepository;
 

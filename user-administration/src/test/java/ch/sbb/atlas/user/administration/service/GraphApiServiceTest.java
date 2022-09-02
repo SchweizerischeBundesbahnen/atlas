@@ -79,7 +79,7 @@ public class GraphApiServiceTest {
     assertThat(result.get(0).accountStatus()).isEqualTo(UserAccountStatus.ACTIVE);
 
     assertThat(result.get(1).sbbUserId()).isEqualTo("u123456");
-    assertThat(result.get(1).accountStatus()).isEqualTo(null);
+    assertThat(result.get(1).accountStatus()).isEqualTo(UserAccountStatus.INACTIVE);
 
     assertThat(result.get(2).sbbUserId()).isEqualTo("u654321");
     assertThat(result.get(2).accountStatus()).isEqualTo(UserAccountStatus.INACTIVE);
