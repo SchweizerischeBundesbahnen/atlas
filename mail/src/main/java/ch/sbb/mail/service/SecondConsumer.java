@@ -1,6 +1,6 @@
 package ch.sbb.mail.service;
 
-import ch.sbb.atlas.base.service.model.mail.MailNotification;
+import ch.sbb.atlas.model.mail.MailNotification;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,13 +16,11 @@ import org.springframework.stereotype.Component;
 @KafkaListener(topics = "${spring.kafka.atlas.mail.topic}", groupId = "${spring.kafka.atlas.mail.groupId}",
     topicPartitions = @TopicPartition(topic = "${spring.kafka.atlas.mail.topic}",
         partitionOffsets = @PartitionOffset(partition = "0", initialOffset = "0")))
-public class MailListener {
-
-  private final MailService mailService;
+public class SecondConsumer {
 
   @KafkaHandler
   public void receiveMailSendingRequest(@Valid MailNotification mailNotification) {
-    log.info("Receiving all mails, current={}", mailNotification);
+    log.info("Receiving on a second consumer, current={}", mailNotification);
   }
 
 }
