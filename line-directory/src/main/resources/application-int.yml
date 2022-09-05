@@ -15,4 +15,3 @@ amazon:
   region: "eu-central-1"
   bucket:
     name: "atlas-data-export-int-dev"
-    dir: "line"
