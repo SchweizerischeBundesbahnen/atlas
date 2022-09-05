@@ -14,6 +14,8 @@ import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.model.SublineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
+import ch.sbb.line.directory.service.export.SublineVersionExportService;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +32,9 @@ public class SublineController implements SublinenApiV1 {
 
   private final SublineService sublineService;
   private final CoverageService coverageService;
+
+  private final SublineVersionExportService sublineVersionExportService;
+
 
   @Override
   public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
@@ -104,6 +109,36 @@ public class SublineController implements SublinenApiV1 {
   public CoverageModel getSublineCoverage(String slnid) {
     return CoverageModel.toModel(
         coverageService.getSublineCoverageBySlnidAndSublineModelType(slnid));
+  }
+
+  @Override
+  public URL exportFullSublineVersionsCsv() {
+    return sublineVersionExportService.exportFullVersionsCsv();
+  }
+
+  @Override
+  public URL exportFullSublineVersionsCsvZip() {
+    return sublineVersionExportService.exportFullVersionsCsvZip();
+  }
+
+  @Override
+  public URL exportActualSublineVersionsCsv() {
+    return sublineVersionExportService.exportActualVersionsCsv();
+  }
+
+  @Override
+  public URL exportActualSublineVersionsCsvZip() {
+    return sublineVersionExportService.exportActualVersionsCsvZip();
+  }
+
+  @Override
+  public URL exportFutureTimetableSublineVersionsCsv() {
+    return sublineVersionExportService.exportFutureTimetableVersionsCsv();
+  }
+
+  @Override
+  public URL exportFutureTimetableSublineVersionsCsvZip() {
+    return sublineVersionExportService.exportFutureTimetableVersionsCsvZip();
   }
 
   @Override
