@@ -3,6 +3,22 @@ spring:
     url: jdbc:postgresql://scheduling-prod.czdfgxj0x1zx.eu-central-1.rds.amazonaws.com:5432/scheduling
     username: ${DB_USER}
     password: ${DB_PWD}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+      client:
+        provider:
+          azure:
+            issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+        registration:
+          azure:
+            authorization-grant-type: client_credentials
+            client-id: ${SCHEDULING_CLIENT_ID}
+            client-secret: ${SCHEDULING_CLIENT_SECRET}
+            scope:
+              - api://f3cdcb3e-1e95-4591-b664-4526d00f5d66/.default
 auth:
   audience:
     service-name: f3cdcb3e-1e95-4591-b664-4526d00f5d66
