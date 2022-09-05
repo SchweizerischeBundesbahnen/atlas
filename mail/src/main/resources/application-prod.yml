@@ -8,20 +8,3 @@ spring:
           auth: false
         starttls:
           enable: false
-  kafka:
-    bootstrap-servers: prod01.kafka.sbb.ch:9095
-    ssl:
-      trust-store-location: ${KAFKA_TRUSTSTORE_LOCATION}
-      trust-store-password: ${KAFKA_TRUSTSTORE_PASSWORD}
-      trust-store-type: PKCS12
-    properties:
-      security:
-        protocol: SASL_SSL
-      sasl:
-        mechanism: SCRAM-SHA-512
-        jaas:
-          config: org.apache.kafka.common.security.scram.ScramLoginModule required username="atlas.kafka.user" password="${KAFKA_SCRAM_PASSWORD}";
-    atlas:
-      mail:
-        topic: atlas.prod.mail
-        groupId: atlas.kafka.user
