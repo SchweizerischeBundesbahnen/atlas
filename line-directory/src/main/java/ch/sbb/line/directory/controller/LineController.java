@@ -16,7 +16,7 @@ import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
-import ch.sbb.line.directory.service.export.ExportService;
+import ch.sbb.line.directory.service.export.LineVersionExportService;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,7 +34,7 @@ public class LineController implements LineApiV1 {
 
   private final LineService lineService;
   private final CoverageService coverageService;
-  private final ExportService exportService;
+  private final LineVersionExportService lineVersionExportService;
 
   @Override
   public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
@@ -111,32 +111,32 @@ public class LineController implements LineApiV1 {
 
   @Override
   public URL exportFullLineVersionsCsv() {
-    return exportService.exportFullLineVersionsCsv();
+    return lineVersionExportService.exportFullVersionsCsv();
   }
 
   @Override
   public URL exportFullLineVersionsCsvZip() {
-    return exportService.exportFullLineVersionsCsvZip();
+    return lineVersionExportService.exportFullVersionsCsvZip();
   }
 
   @Override
   public URL exportActualLineVersionsCsv() {
-    return exportService.exportActualLineVersionsCsv();
+    return lineVersionExportService.exportActualVersionsCsv();
   }
 
   @Override
   public URL exportActualLineVersionsCsvZip() {
-    return exportService.exportActualLineVersionsCsvZip();
+    return lineVersionExportService.exportActualVersionsCsvZip();
   }
 
   @Override
   public URL exportFutureTimetableLineVersionsCsv() {
-    return exportService.exportFutureTimetableLineVersionsCsv();
+    return lineVersionExportService.exportFutureTimetableVersionsCsv();
   }
 
   @Override
   public URL exportFutureTimetableLineVersionsCsvZip() {
-    return exportService.exportFutureTimetableLineVersionsCsvZip();
+    return lineVersionExportService.exportFutureTimetableVersionsCsvZip();
   }
 
   @Override
