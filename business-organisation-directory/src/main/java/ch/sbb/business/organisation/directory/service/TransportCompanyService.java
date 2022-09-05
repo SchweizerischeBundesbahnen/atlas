@@ -91,7 +91,7 @@ public class TransportCompanyService {
 
   private void validateRelationsAndNotifyBusiness() {
     List<TransportCompany> transportCompaniesWithInvalidRelations = transportCompanyRepository.findTransportCompaniesWithInvalidRelations();
-    if (!transportCompaniesWithInvalidRelations.isEmpty()) {
+//    if (!transportCompaniesWithInvalidRelations.isEmpty()) {
       log.warn("TransportCompany with numbers={} have invalid relations",
           transportCompaniesWithInvalidRelations.stream()
                                                 .map(TransportCompany::getNumber)
@@ -103,7 +103,7 @@ public class TransportCompanyService {
                                                              transportCompaniesWithInvalidRelations))
                                                          .mailType(MailType.TU_IMPORT)
                                                          .build());
-    }
+//    }
   }
 
   private List<Map<String, Object>> buildProperties(
