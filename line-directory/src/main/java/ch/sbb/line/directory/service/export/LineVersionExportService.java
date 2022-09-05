@@ -1,0 +1,78 @@
+package ch.sbb.line.directory.service.export;
+
+import static java.util.stream.Collectors.toList;
+
+import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.model.exception.ExportException;
+import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.LineVersionCsvModel;
+import ch.sbb.line.directory.repository.LineVersionRepository;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SequenceWriter;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
+import org.springframework.stereotype.Service;
+
+@Service
+public class LineVersionExportService extends BaseExportService<LineVersion> {
+
+  private final LineVersionRepository lineVersionRepository;
+
+  public LineVersionExportService(FileService fileService, AmazonService amazonService,
+      LineVersionRepository lineVersionRepository) {
+    super(fileService, amazonService);
+    this.lineVersionRepository = lineVersionRepository;
+  }
+
+  @Override
+  public String getFileName() {
+    return "line_versions_";
+  }
+
+  @Override
+  protected File getFullVersionsCsv() {
+    List<LineVersion> fullLineVersions = lineVersionRepository.getFullLineVersions();
+    return createCsvFile(fullLineVersions, ExportType.FULL);
+  }
+
+  @Override
+  protected File getActualVersionsCsv() {
+    List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
+        LocalDate.now());
+    return createCsvFile(actualLineVersions, ExportType.ACTUAL_DATE);
+  }
+
+  @Override
+  protected File getFutureTimetableVersionsCsv() {
+    List<LineVersion> actualLineVersions = lineVersionRepository.getActualLineVersions(
+        FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
+    return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
+  }
+
+  private File createCsvFile(List<LineVersion> lineVersions, ExportType exportType) {
+
+    File csvFile = createFile(exportType);
+    AtlasCsvMapper atlasCsvMapper = new AtlasCsvMapper(LineVersionCsvModel.class);
+
+    List<LineVersionCsvModel> lineVersionCsvModels =
+        lineVersions.stream()
+                    .map(LineVersionCsvModel::toCsvModel)
+                    .collect(toList());
+
+    ObjectWriter objectWriter = atlasCsvMapper.getCsvMapper()
+                                              .writerFor(LineVersionCsvModel.class)
+                                              .with(atlasCsvMapper.getCsvSchema());
+    try (SequenceWriter sequenceWriter = objectWriter.writeValues(csvFile)) {
+      sequenceWriter.writeAll(lineVersionCsvModels);
+      return csvFile;
+    } catch (IOException e) {
+      throw new ExportException(csvFile, e);
+    }
+  }
+
+
+}
