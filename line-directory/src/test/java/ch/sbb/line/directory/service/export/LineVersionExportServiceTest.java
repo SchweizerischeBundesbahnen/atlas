@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service.export;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
@@ -39,7 +40,7 @@ class LineVersionExportServiceTest {
   @Test
   void shouldThrowExportExceptionWhenPutCsvFile() throws IOException {
     //given
-    when(amazonService.putFile(any(), any())).thenThrow(IOException.class);
+    when(amazonService.putFile(any(), eq("line"))).thenThrow(IOException.class);
     //when
 
     assertThatExceptionOfType(ExportException.class).isThrownBy(
@@ -49,7 +50,7 @@ class LineVersionExportServiceTest {
   @Test
   void shouldThrowExportExceptionWhenPutZipFile() throws IOException {
     //given
-    when(amazonService.putZipFile(any(), any())).thenThrow(IOException.class);
+    when(amazonService.putZipFile(any(), eq("line"))).thenThrow(IOException.class);
     //when
 
     assertThatExceptionOfType(ExportException.class).isThrownBy(
