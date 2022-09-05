@@ -7,8 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.atlas.model.api.Container;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.entity.Subline;
@@ -17,6 +17,7 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
+import ch.sbb.line.directory.service.export.SublineVersionExportService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -41,15 +42,36 @@ public class SublineControllerTest {
   @Mock
   private CoverageService coverageService;
 
+  @Mock
+  private SublineVersionExportService sublineVersionExportService;
+
   private SublineController sublineController;
 
   @Captor
   private ArgumentCaptor<SublineVersion> versionArgumentCaptor;
 
+  private static SublineVersionModel createModel() {
+    return SublineVersionModel.builder()
+                              .swissSublineNumber("swissSublineNumber")
+                              .mainlineSlnid("mainlineSlnid")
+                              .status(Status.ACTIVE)
+                              .sublineType(SublineType.TECHNICAL)
+                              .slnid("slnid")
+                              .description("description")
+                              .number("number")
+                              .longName("longName")
+                              .paymentType(PaymentType.INTERNATIONAL)
+                              .validFrom(LocalDate.of(2020, 12, 12))
+                              .validTo(LocalDate.of(2099, 12, 12))
+                              .businessOrganisation("businessOrganisation")
+                              .build();
+  }
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sublineController = new SublineController(sublineService, coverageService);
+    sublineController = new SublineController(sublineService, coverageService,
+        sublineVersionExportService);
     when(sublineService.save(any())).then(i -> i.getArgument(0, SublineVersion.class));
   }
 
@@ -133,22 +155,5 @@ public class SublineControllerTest {
 
     // Then
     verify(sublineService).updateVersion(any(), any());
-  }
-
-  private static SublineVersionModel createModel() {
-    return SublineVersionModel.builder()
-                              .swissSublineNumber("swissSublineNumber")
-                              .mainlineSlnid("mainlineSlnid")
-                              .status(Status.ACTIVE)
-                              .sublineType(SublineType.TECHNICAL)
-                              .slnid("slnid")
-                              .description("description")
-                              .number("number")
-                              .longName("longName")
-                              .paymentType(PaymentType.INTERNATIONAL)
-                              .validFrom(LocalDate.of(2020, 12, 12))
-                              .validTo(LocalDate.of(2099, 12, 12))
-                              .businessOrganisation("businessOrganisation")
-                              .build();
   }
 }
