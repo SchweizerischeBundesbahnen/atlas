@@ -6,8 +6,8 @@ import java.net.URL;
 
 public interface AmazonService {
 
-  URL putFile(File file) throws IOException;
+  URL putFile(File file, String dir) throws IOException;
 
-  URL putZipFile(File file) throws IOException;
+  URL putZipFile(File file, String dir) throws IOException;
 
 }
