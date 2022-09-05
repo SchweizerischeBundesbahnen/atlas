@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class ExportServiceTest {
+class LineVersionExportServiceTest {
 
   @Mock
   private LineVersionRepository lineVersionRepository;
@@ -26,12 +26,13 @@ class ExportServiceTest {
   private AmazonService amazonService;
 
 
-  private ExportService exportService;
+  private LineVersionExportService lineVersionExportService;
 
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    exportService = new ExportService(lineVersionRepository, fileService, amazonService);
+    lineVersionExportService = new LineVersionExportService(fileService, amazonService,
+        lineVersionRepository);
   }
 
 
@@ -42,7 +43,7 @@ class ExportServiceTest {
     //when
 
     assertThatExceptionOfType(ExportException.class).isThrownBy(
-        () -> exportService.putCsvFile(any()));
+        () -> lineVersionExportService.putCsvFile(any()));
   }
 
   @Test
@@ -52,7 +53,7 @@ class ExportServiceTest {
     //when
 
     assertThatExceptionOfType(ExportException.class).isThrownBy(
-        () -> exportService.putZipFile(any()));
+        () -> lineVersionExportService.putZipFile(any()));
   }
 
 
