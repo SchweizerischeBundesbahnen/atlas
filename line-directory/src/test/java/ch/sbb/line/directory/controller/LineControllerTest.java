@@ -17,7 +17,7 @@ import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
-import ch.sbb.line.directory.service.export.ExportService;
+import ch.sbb.line.directory.service.export.LineVersionExportService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +42,7 @@ public class LineControllerTest {
   private CoverageService coverageService;
 
   @Mock
-  private ExportService exportService;
+  private LineVersionExportService lineVersionExportService;
   private LineController lineController;
 
   @Captor
@@ -74,7 +74,7 @@ public class LineControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineController = new LineController(lineService, coverageService, exportService);
+    lineController = new LineController(lineService, coverageService, lineVersionExportService);
     when(lineService.save(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
 
