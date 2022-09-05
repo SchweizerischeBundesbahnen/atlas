@@ -39,7 +39,7 @@ class LineVersionExportServiceTest {
   @Test
   void shouldThrowExportExceptionWhenPutCsvFile() throws IOException {
     //given
-    when(amazonService.putFile(any())).thenThrow(IOException.class);
+    when(amazonService.putFile(any(), any())).thenThrow(IOException.class);
     //when
 
     assertThatExceptionOfType(ExportException.class).isThrownBy(
@@ -49,7 +49,7 @@ class LineVersionExportServiceTest {
   @Test
   void shouldThrowExportExceptionWhenPutZipFile() throws IOException {
     //given
-    when(amazonService.putZipFile(any())).thenThrow(IOException.class);
+    when(amazonService.putZipFile(any(), any())).thenThrow(IOException.class);
     //when
 
     assertThatExceptionOfType(ExportException.class).isThrownBy(
