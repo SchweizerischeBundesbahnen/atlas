@@ -34,6 +34,11 @@ public class LineVersionExportService extends BaseExportService<LineVersion> {
   }
 
   @Override
+  protected String getDirectory() {
+    return "line";
+  }
+
+  @Override
   protected File getFullVersionsCsv() {
     List<LineVersion> fullLineVersions = lineVersionRepository.getFullLineVersions();
     return createCsvFile(fullLineVersions, ExportType.FULL);

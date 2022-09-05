@@ -1,7 +1,6 @@
 package ch.sbb.atlas.amazon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,10 +37,9 @@ public class AmazonServiceTest {
   public void shouldPutFile() throws IOException {
     //given
     Path tempFile = createTempFile();
-    amazonService.setBucketDir("line");
     amazonService.setBucketName("bucket");
     //when
-    amazonService.putFile(tempFile.toFile());
+    amazonService.putFile(tempFile.toFile(), "dir");
     //then
     verify(amazonS3).putObject(Mockito.any(PutObjectRequest.class));
     verify(amazonS3).getUrl(Mockito.anyString(), Mockito.anyString());
@@ -51,11 +49,10 @@ public class AmazonServiceTest {
   public void shouldPutZipFile() throws IOException {
     //given
     Path tempFile = createTempFile();
-    amazonService.setBucketDir("line");
     amazonService.setBucketName("bucket");
     when(fileService.zipFile(tempFile.toFile())).thenCallRealMethod();
     //when
-    amazonService.putZipFile(tempFile.toFile());
+    amazonService.putZipFile(tempFile.toFile(), "dir");
     //then
     verify(fileService).zipFile(tempFile.toFile());
     verify(amazonS3).putObject(Mockito.any(PutObjectRequest.class));
@@ -63,18 +60,9 @@ public class AmazonServiceTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenBucketDirNull() {
-    //when
-    assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
-        () -> amazonService.getFilePathName(createTempFile().toFile()));
-  }
-
-  @Test
   public void shouldRetrunBucketDir() throws IOException {
-    //given
-    amazonService.setBucketDir("dev");
     //when
-    String result = amazonService.getFilePathName(createTempFile().toFile());
+    String result = amazonService.getFilePathName(createTempFile().toFile(), "dev");
     //then
     assertThat(result).contains("dev/");
   }

@@ -27,7 +27,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   URL putCsvFile(File csvFile) {
     try {
-      return amazonService.putFile(csvFile);
+      return amazonService.putFile(csvFile, getDirectory());
     } catch (IOException e) {
       throw new ExportException(csvFile, e);
     }
@@ -35,11 +35,13 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   URL putZipFile(File zipFile) {
     try {
-      return amazonService.putZipFile(zipFile);
+      return amazonService.putZipFile(zipFile, getDirectory());
     } catch (IOException e) {
       throw new ExportException(zipFile, e);
     }
   }
+
+  protected abstract String getDirectory();
 
   protected abstract File getFullVersionsCsv();
 
@@ -99,7 +101,6 @@ public abstract class BaseExportService<T extends BaseVersion> {
           .schemaFor(aClass)
           .withHeader()
           .withColumnSeparator(';');
-
     }
 
     private CsvMapper createCsvMapper() {
