@@ -5,14 +5,12 @@ import static java.util.stream.Collectors.toList;
 import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.model.exception.ExportException;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionCsvModel;
+import ch.sbb.line.directory.entity.VersionCsvModel;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SequenceWriter;
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -58,25 +56,16 @@ public class LineVersionExportService extends BaseExportService<LineVersion> {
     return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
   }
 
-  private File createCsvFile(List<LineVersion> lineVersions, ExportType exportType) {
+  @Override
+  protected ObjectWriter getObjectWriter() {
+    return new AtlasCsvMapper(LineVersionCsvModel.class).getObjectWriter();
+  }
 
-    File csvFile = createFile(exportType);
-    AtlasCsvMapper atlasCsvMapper = new AtlasCsvMapper(LineVersionCsvModel.class);
-
-    List<LineVersionCsvModel> lineVersionCsvModels =
-        lineVersions.stream()
-                    .map(LineVersionCsvModel::toCsvModel)
-                    .collect(toList());
-
-    ObjectWriter objectWriter = atlasCsvMapper.getCsvMapper()
-                                              .writerFor(LineVersionCsvModel.class)
-                                              .with(atlasCsvMapper.getCsvSchema());
-    try (SequenceWriter sequenceWriter = objectWriter.writeValues(csvFile)) {
-      sequenceWriter.writeAll(lineVersionCsvModels);
-      return csvFile;
-    } catch (IOException e) {
-      throw new ExportException(csvFile, e);
-    }
+  @Override
+  protected List<? extends VersionCsvModel> convertToCsvModel(List<LineVersion> versions) {
+    return versions.stream()
+                   .map(LineVersionCsvModel::toCsvModel)
+                   .collect(toList());
   }
 
 
