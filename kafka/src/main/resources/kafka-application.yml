@@ -1,0 +1,61 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+        max:
+          poll:
+            interval:
+              ms: 1200000
+    atlas:
+      mail:
+        topic: atlas.mail
+        groupId: atlas.kafka.user
+
+---
+
+spring:
+  profiles: dev
+  kafka:
+    bootstrap-servers: test01.kafka.sbb.ch:9095
+    atlas:
+      mail:
+        topic: atlas.dev.mail
+
+---
+
+spring:
+  profiles: test
+  kafka:
+    bootstrap-servers: test01.kafka.sbb.ch:9095
+    atlas:
+      mail:
+        topic: atlas.test.mail
+
+---
+
+spring:
+  profiles: int
+  kafka:
+    bootstrap-servers: inte01.kafka.sbb.ch:9095
+    atlas:
+      mail:
+        topic: atlas.int.mail
+
+---
+
+spring:
+  profiles: prod
+  kafka:
+    bootstrap-servers: prod01.kafka.sbb.ch:9095
+    atlas:
+      mail:
+        topic: atlas.prod.mail
