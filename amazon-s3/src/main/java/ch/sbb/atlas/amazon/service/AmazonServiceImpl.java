@@ -24,36 +24,32 @@ public class AmazonServiceImpl implements AmazonService {
   @Value("${amazon.bucket.name}")
   private String bucketName;
 
-  @Setter
-  @Value("${amazon.bucket.dir}")
-  private String bucketDir;
-
   @Override
-  public URL putFile(File file) throws IOException {
+  public URL putFile(File file, String dir) throws IOException {
     ObjectMetadata metadata = new ObjectMetadata();
     metadata.setContentLength(file.length());
-    URL url = putFileToBucket(file, metadata);
+    URL url = putFileToBucket(file, dir, metadata);
     Files.deleteIfExists(file.toPath());
     return url;
   }
 
   @Override
-  public URL putZipFile(File file) throws IOException {
+  public URL putZipFile(File file, String dir) throws IOException {
     File zipFile = fileService.zipFile(file);
     ObjectMetadata metadata = new ObjectMetadata();
     metadata.setContentType("application/zip");
     metadata.setContentLength(zipFile.length());
-    URL url = putFileToBucket(zipFile, metadata);
+    URL url = putFileToBucket(zipFile, dir, metadata);
     Files.deleteIfExists(file.toPath());
     Files.deleteIfExists(zipFile.toPath());
     return url;
   }
 
-  private URL putFileToBucket(File file, ObjectMetadata metadata) throws IOException {
+  private URL putFileToBucket(File file, String dir, ObjectMetadata metadata) throws IOException {
     URL url;
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
-      String filePathName = getFilePathName(file);
+      String filePathName = getFilePathName(file, dir);
       putObjectRequest = new PutObjectRequest(bucketName, filePathName, inputStream,
           metadata);
       amazonS3.putObject(putObjectRequest);
@@ -62,12 +58,8 @@ public class AmazonServiceImpl implements AmazonService {
     }
   }
 
-  String getFilePathName(File file) {
-    if (bucketDir == null) {
-      throw new IllegalStateException(
-          "Please define the property '${amazon.bucket.dir}' in the appropriate properties file!");
-    }
-    return bucketDir + "/" + file.getName();
+  String getFilePathName(File file, String dir) {
+    return dir + "/" + file.getName();
   }
 
 }
