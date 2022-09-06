@@ -253,4 +253,115 @@ class LidiSchedulerServiceTest {
         () -> lidiSchedulerService.exportNextTimetableSublineVersions());
   }
 
+  @Test
+  public void shouldExportFullTimetableFieldNumberVersionsSuccessfully() {
+    //given
+    Response response = Response.builder()
+                                .status(200)
+                                .reason("OK")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportFull()).thenReturn(response);
+
+    //when
+    Response result = lidiSchedulerService.exportFullTimetableFieldNumberVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldExportFullTimetableFieldNumberVersionsUnsuccessful() {
+    //given
+    Response response = Response.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .reason("Bad Request")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportFull()).thenReturn(response);
+
+    //when
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportFullTimetableFieldNumberVersions());
+  }
+
+  @Test
+  public void shouldExportActualTimetableFieldNumberVersionsSuccessfully() {
+    //given
+    Response response = Response.builder()
+                                .status(200)
+                                .reason("OK")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportActual()).thenReturn(response);
+
+    //when
+    Response result = lidiSchedulerService.exportActualTimetableFieldNumberVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldExportActualTimetableFieldNumberVersionsUnsuccessful() {
+    //given
+    Response response = Response.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .reason("Bad Request")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportActual()).thenReturn(response);
+
+    //when
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportActualTimetableFieldNumberVersions());
+  }
+
+  @Test
+  public void shouldNextTimetableTimetableFieldNumberVersionsSuccessfully() {
+    //given
+    Response response = Response.builder()
+                                .status(200)
+                                .reason("OK")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportNextTimetableVersions()).thenReturn(response);
+
+    //when
+    Response result = lidiSchedulerService.exportNextTimetableTimetableFieldNumberVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldExportNextTimetableTimetableFieldNumberVersionsUnsuccessful() {
+    //given
+    Response response = Response.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .reason("Bad Request")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportNextTimetableVersions()).thenReturn(response);
+
+    //when
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportNextTimetableTimetableFieldNumberVersions());
+  }
+
 }
