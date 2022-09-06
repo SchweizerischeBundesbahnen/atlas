@@ -9,10 +9,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.CoverageType;
@@ -23,6 +22,7 @@ import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.service.export.SublineVersionExportService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
-public class SublineControllerApiTest extends BaseControllerApiTest {
+public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
   @Autowired
   private LineController lineController;
@@ -46,6 +46,9 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   private CoverageRepository coverageRepository;
+
+  @Autowired
+  private SublineVersionExportService sublineVersionExportService;
 
   @AfterEach
   public void tearDown() {
@@ -453,4 +456,90 @@ public class SublineControllerApiTest extends BaseControllerApiTest {
            .content(mapper.writeValueAsString(sublineVersionModel)))
        .andExpect(status().isPreconditionFailed());
   }
+
+  @Test
+  void shouldExportFullSublineVersionsCsv() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
+                                                              .mainlineSlnid(
+                                                                  lineVersionModel.getSlnid())
+                                                              .build();
+    SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
+                                                              .mainlineSlnid(
+                                                                  lineVersionModel.getSlnid())
+                                                              .validFrom(LocalDate.of(2022, 1, 1))
+                                                              .validTo(LocalDate.of(2022, 12, 31))
+                                                              .description("desc2")
+                                                              .build();
+    sublineController.createSublineVersion(sublineVersionModel1);
+    sublineController.createSublineVersion(sublineVersionModel2);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/full"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory());
+  }
+
+  @Test
+  void shouldExportActualSublineVersionsCsv() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
+                                                              .mainlineSlnid(
+                                                                  lineVersionModel.getSlnid())
+                                                              .build();
+    SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
+                                                              .mainlineSlnid(
+                                                                  lineVersionModel.getSlnid())
+                                                              .validFrom(LocalDate.now()
+                                                                                  .withMonth(1)
+                                                                                  .withDayOfMonth(
+                                                                                      1))
+                                                              .validTo(LocalDate.now()
+                                                                                .withMonth(12)
+                                                                                .withDayOfMonth(31))
+                                                              .description("desc2")
+                                                              .build();
+    sublineController.createSublineVersion(sublineVersionModel1);
+    sublineController.createSublineVersion(sublineVersionModel2);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/actual"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory());
+  }
+
+  @Test
+  void shouldExportFutureTimetableLineVersionsCsv() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    lineVersionModel = lineController.createLineVersion(lineVersionModel);
+    SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
+                                                              .mainlineSlnid(
+                                                                  lineVersionModel.getSlnid())
+                                                              .build();
+    SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
+                                                              .mainlineSlnid(
+                                                                  lineVersionModel.getSlnid())
+                                                              .validFrom(LocalDate.now()
+                                                                                  .withMonth(1)
+                                                                                  .withDayOfMonth(
+                                                                                      1))
+                                                              .validTo(LocalDate.now()
+                                                                                .withMonth(12)
+                                                                                .withDayOfMonth(31))
+                                                              .description("desc2")
+                                                              .build();
+    sublineController.createSublineVersion(sublineVersionModel1);
+    sublineController.createSublineVersion(sublineVersionModel2);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/timetable-year-change"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory());
+  }
+
 }

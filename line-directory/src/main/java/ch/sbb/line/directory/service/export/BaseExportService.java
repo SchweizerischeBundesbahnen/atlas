@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
@@ -29,36 +30,30 @@ public abstract class BaseExportService<T extends BaseVersion> {
     this.amazonService = amazonService;
   }
 
-  public URL exportFullVersionsCsv() {
+  public List<URL> exportFullVersions() {
+    List<URL> urls = new ArrayList<>();
     File fullVersionsCsv = getFullVersionsCsv();
-    return putCsvFile(fullVersionsCsv);
+    urls.add(putCsvFile(fullVersionsCsv));
+    urls.add(putZipFile(fullVersionsCsv));
+    return urls;
   }
 
-  public URL exportFullVersionsCsvZip() {
-    File csvFile = getFullVersionsCsv();
-    return putZipFile(csvFile);
+  public List<URL> exportActualVersions() {
+    List<URL> urls = new ArrayList<>();
+    File actualVersionsCsv = getActualVersionsCsv();
+    urls.add(putCsvFile(actualVersionsCsv));
+    urls.add(putZipFile(actualVersionsCsv));
+    return urls;
   }
 
-  public URL exportActualVersionsCsv() {
-    File fullVersionsCsv = getActualVersionsCsv();
-    return putCsvFile(fullVersionsCsv);
+  public List<URL> exportFutureTimetableVersions() {
+    List<URL> urls = new ArrayList<>();
+    File futureTimetableVersionsCsv = getFutureTimetableVersionsCsv();
+    urls.add(putCsvFile(futureTimetableVersionsCsv));
+    urls.add(putZipFile(futureTimetableVersionsCsv));
+    return urls;
   }
-
-  public URL exportActualVersionsCsvZip() {
-    File csvFile = getActualVersionsCsv();
-    return putZipFile(csvFile);
-  }
-
-  public URL exportFutureTimetableVersionsCsv() {
-    File csvFile = getFutureTimetableVersionsCsv();
-    return putCsvFile(csvFile);
-  }
-
-  public URL exportFutureTimetableVersionsCsvZip() {
-    File csvFile = getFutureTimetableVersionsCsv();
-    return putZipFile(csvFile);
-  }
-
+ 
   URL putCsvFile(File csvFile) {
     try {
       return amazonService.putFile(csvFile, getDirectory());

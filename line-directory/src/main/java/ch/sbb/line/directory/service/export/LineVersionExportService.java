@@ -32,7 +32,7 @@ public class LineVersionExportService extends BaseExportService<LineVersion> {
   }
 
   @Override
-  protected String getDirectory() {
+  public String getDirectory() {
     return "line";
   }
 

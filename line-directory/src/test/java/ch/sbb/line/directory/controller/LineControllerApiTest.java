@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.ErrorResponse;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
@@ -32,17 +31,15 @@ import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
-import com.amazonaws.services.s3.AmazonS3;
-import java.io.UnsupportedEncodingException;
+import ch.sbb.line.directory.service.export.LineVersionExportService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
-public class LineControllerApiTest extends BaseControllerApiTest {
+public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
   @Autowired
   private LineController lineController;
@@ -60,14 +57,7 @@ public class LineControllerApiTest extends BaseControllerApiTest {
   private CoverageRepository coverageRepository;
 
   @Autowired
-  private AmazonS3 amazonS3;
-
-  @Value("${amazon.bucket.dir}")
-  private String bucketDir;
-
-  @Value("${amazon.bucket.name}")
-  private String bucketName;
-
+  private LineVersionExportService lineVersionExportService;
 
   @AfterEach
   public void tearDown() {
@@ -105,27 +95,9 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     lineController.createLineVersion(lineVersionModel2);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/full/csv"))
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/full"))
                              .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult);
-  }
-
-  @Test
-  void shouldExportFullLineVersionsCsvZip() throws Exception {
-    //given
-    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
-    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
-                                                     .validFrom(LocalDate.of(2022, 1, 1))
-                                                     .validTo(LocalDate.of(2022, 12, 31))
-                                                     .description("desc2")
-                                                     .build();
-    lineController.createLineVersion(lineVersionModel1);
-    lineController.createLineVersion(lineVersionModel2);
-
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/full/zip"))
-                             .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult);
+    deleteFileFromBucket(mvcResult, lineVersionExportService.getDirectory());
   }
 
   @Test
@@ -145,27 +117,9 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     lineController.createLineVersion(lineVersionModel2);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/actual/csv"))
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/actual"))
                              .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult);
-  }
-
-  @Test
-  void shouldExportActualLineVersionsCsvZip() throws Exception {
-    //given
-    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
-    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
-                                                     .validFrom(LocalDate.of(2022, 1, 1))
-                                                     .validTo(LocalDate.of(2022, 12, 31))
-                                                     .description("desc2")
-                                                     .build();
-    lineController.createLineVersion(lineVersionModel1);
-    lineController.createLineVersion(lineVersionModel2);
-
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/actual/zip"))
-                             .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult);
+    deleteFileFromBucket(mvcResult, lineVersionExportService.getDirectory());
   }
 
   @Test
@@ -185,33 +139,9 @@ public class LineControllerApiTest extends BaseControllerApiTest {
     lineController.createLineVersion(lineVersionModel2);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/timetable-year-change/csv"))
+    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/timetable-year-change"))
                              .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult);
-  }
-
-  @Test
-  void shouldExportFutureTimetableLineVersionsCsvZip() throws Exception {
-    //given
-    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
-    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
-                                                     .validFrom(LocalDate.of(2022, 1, 1))
-                                                     .validTo(LocalDate.of(2022, 12, 31))
-                                                     .description("desc2")
-                                                     .build();
-    lineController.createLineVersion(lineVersionModel1);
-    lineController.createLineVersion(lineVersionModel2);
-
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/timetable-year-change/zip"))
-                             .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult);
-  }
-
-  private void deleteFileFromBucket(MvcResult mvcResult) throws UnsupportedEncodingException {
-    String result = mvcResult.getResponse().getContentAsString();
-    String filePath = result.substring(result.lastIndexOf("/"), result.length() - 1);
-    amazonS3.deleteObject(bucketName, bucketDir + filePath);
+    deleteFileFromBucket(mvcResult, lineVersionExportService.getDirectory());
   }
 
   @Test
