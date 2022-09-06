@@ -30,7 +30,7 @@ public class TimetableFieldNumberVersionExportService extends
 
   @Override
   public String getDirectory() {
-    return "timetable";
+    return "timetable_field_number";
   }
 
   @Override
