@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service.export;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.model.api.AtlasApiConstants;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.exception.ExportException;
 import ch.sbb.line.directory.entity.VersionCsvModel;
@@ -20,8 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Slf4j
 public abstract class BaseExportService<T extends BaseVersion> {
 
   private final FileService fileService;
@@ -55,6 +58,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
     try {
       return amazonService.putFile(csvFile, getDirectory());
     } catch (IOException e) {
+      log.error(e.getMessage());
       throw new ExportException(csvFile, e);
     }
   }
@@ -63,6 +67,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
     try {
       return amazonService.putZipFile(zipFile, getDirectory());
     } catch (IOException e) {
+      log.error(e.getMessage());
       throw new ExportException(zipFile, e);
     }
   }
@@ -78,6 +83,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
       sequenceWriter.writeAll(versionCsvModels);
       return csvFile;
     } catch (IOException e) {
+      log.error(e.getMessage());
       throw new ExportException(csvFile, e);
     }
   }
@@ -98,7 +104,9 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   protected File createFile(ExportType exportType) {
     String dir = fileService.getDir();
-    String actualDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    String actualDate = LocalDate.now()
+                                 .format(DateTimeFormatter.ofPattern(
+                                     AtlasApiConstants.DATE_FORMAT_PATTERN));
     return new File(dir + exportType.getFilePrefix() + getFileName() + actualDate + ".csv");
   }
 
