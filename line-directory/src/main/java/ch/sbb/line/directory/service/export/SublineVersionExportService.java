@@ -26,9 +26,8 @@ public class SublineVersionExportService extends BaseExportService<SublineVersio
     this.sublineVersionRepository = sublineVersionRepository;
   }
 
-
   @Override
-  protected String getDirectory() {
+  public String getDirectory() {
     return "subline";
   }
 
