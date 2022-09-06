@@ -10,7 +10,7 @@ public final class UserService {
     return getAccessToken().getClaimAsString("sbbuid");
   }
 
-  private static Jwt getAccessToken() {
+  public static Jwt getAccessToken() {
     return (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 
