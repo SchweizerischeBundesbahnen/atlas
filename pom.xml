@@ -172,7 +172,7 @@
         <lombok.version>1.18.22</lombok.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <revision>1.9.0</revision>
+        <revision>1.10.0-SNAPSHOT</revision>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
         <springdoc-openapi.version>1.6.9</springdoc-openapi.version>
         <!-- Spring Boot Overrides -->
