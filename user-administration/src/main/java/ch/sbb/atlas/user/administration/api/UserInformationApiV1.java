@@ -7,14 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "Atlas GraphApi")
+@Tag(name = "User Information")
 @RequestMapping("v1")
-public interface GraphApiV1 {
+public interface UserInformationApiV1 {
 
   @GetMapping("search")
   List<UserModel> searchUsers(@RequestParam String searchQuery);
-
-  @GetMapping("resolve")
-  List<UserModel> resolveUsers(@RequestParam List<String> userIds);
 
 }

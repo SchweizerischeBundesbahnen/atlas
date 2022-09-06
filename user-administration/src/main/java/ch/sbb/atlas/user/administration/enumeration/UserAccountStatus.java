@@ -1,5 +1,8 @@
-package ch.sbb.atlas.user.administration.enums;
+package ch.sbb.atlas.user.administration.enumeration;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(enumAsRef = true)
 public enum UserAccountStatus {
   ACTIVE,INACTIVE,DELETED;
 
