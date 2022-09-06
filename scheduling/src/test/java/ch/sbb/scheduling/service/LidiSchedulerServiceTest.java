@@ -125,7 +125,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExporttNextTimetableLineVersionsUnsuccessful() {
+  public void shouldExportNextTimetableLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
                                 .status(HttpStatus.BAD_REQUEST.value())
