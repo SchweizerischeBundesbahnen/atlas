@@ -44,7 +44,7 @@ describe('UserAdministrationOverviewComponent', () => {
   class UserServiceMock {
     searchUsers: any = undefined;
     getUsers: any = jasmine.createSpy().and.returnValue(of({ users: [], totalCount: 0 }));
-    getUserPermissions: any = undefined;
+    getUser: any = undefined;
   }
 
   beforeEach(async () => {
@@ -125,11 +125,11 @@ describe('UserAdministrationOverviewComponent', () => {
   it('test checkIfUserExists normal', () => {
     component.tableComponent = { paginator: { pageIndex: 10 } } as any;
 
-    userServiceMock.getUserPermissions = jasmine
+    userServiceMock.getUser = jasmine
       .createSpy()
-      .and.returnValue(of([{ sbbUserId: 'u123456' }]));
+      .and.returnValue(of({ sbbUserId: 'u123456', permissions: [{ id: 1 }] }));
     component.checkIfUserExists({ sbbUserId: 'u123456' });
-    expect(userServiceMock.getUserPermissions).toHaveBeenCalledOnceWith('u123456');
+    expect(userServiceMock.getUser).toHaveBeenCalledOnceWith('u123456');
     expect(component.userPageResult).toEqual({ users: [{ sbbUserId: 'u123456' }], totalCount: 1 });
     expect(component.tableComponent.paginator.pageIndex).toBe(0);
   });
