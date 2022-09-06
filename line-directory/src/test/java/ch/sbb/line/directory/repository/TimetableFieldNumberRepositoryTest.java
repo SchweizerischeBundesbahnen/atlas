@@ -7,6 +7,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -239,6 +240,56 @@ public class TimetableFieldNumberRepositoryTest {
                                     .isEqualTo(validLastYear);
     assertThat(timetableFieldNumber.getValidFrom()).isEqualTo(validEarlier.getValidFrom());
     assertThat(timetableFieldNumber.getValidTo()).isEqualTo(validLastYear.getValidTo());
+  }
+
+
+  @Test
+  void shouldGetFullLineVersions() {
+    //given
+    TimetableFieldNumberVersion fieldNumberVersion =
+        TimetableFieldNumberVersion.builder()
+                                   .ttfnid(TTFNID)
+                                   .description("Earlier")
+                                   .swissTimetableFieldNumber("a.100")
+                                   .status(Status.ACTIVE)
+                                   .number("10.100")
+                                   .validFrom(LocalDate.now().minusYears(4))
+                                   .validTo(LocalDate.now().minusYears(3))
+                                   .businessOrganisation("sbb")
+                                   .build();
+    versionRepository.saveAndFlush(fieldNumberVersion);
+    //when
+    List<TimetableFieldNumberVersion> result = versionRepository.getFullTimeTableNumberVersions();
+
+    //then
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).containsAll(result);
+
+  }
+
+  @Test
+  void shouldGetActualLineVersions() {
+    //given
+    TimetableFieldNumberVersion fieldNumberVersion =
+        TimetableFieldNumberVersion.builder()
+                                   .ttfnid(TTFNID)
+                                   .description("Earlier")
+                                   .swissTimetableFieldNumber("a.100")
+                                   .status(Status.ACTIVE)
+                                   .number("10.100")
+                                   .validFrom(LocalDate.of(2022, 1, 1))
+                                   .validTo(LocalDate.of(2022, 1, 1))
+                                   .businessOrganisation("sbb")
+                                   .build();
+    versionRepository.saveAndFlush(fieldNumberVersion);
+    //when
+    List<TimetableFieldNumberVersion> result = versionRepository.getActualTimeTableNumberVersions(
+        LocalDate.of(2022, 1, 1));
+
+    //then
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).contains(fieldNumberVersion);
+
   }
 
 }
