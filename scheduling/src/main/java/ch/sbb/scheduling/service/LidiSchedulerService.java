@@ -66,5 +66,4 @@ public class LidiSchedulerService extends BaseSchedulerService {
         "Future Timetable Subline Versions CSV/ZIP");
   }
 
-
 }
