@@ -13,7 +13,7 @@ import lombok.Setter;
 @Builder
 @Setter
 @Getter
-@Schema(name = "User Model")
+@Schema(name = "UserModel")
 public class UserModel {
 
   @Schema(description = "SBB User Id", example = "u111111")

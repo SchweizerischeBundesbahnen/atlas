@@ -1,5 +1,3 @@
-export * from './atlasGraphApi.service';
-import { AtlasGraphApiService } from './atlasGraphApi.service';
 export * from './businessOrganisations.service';
 import { BusinessOrganisationsService } from './businessOrganisations.service';
 export * from './companies.service';
@@ -18,8 +16,9 @@ export * from './transportCompanyRelations.service';
 import { TransportCompanyRelationsService } from './transportCompanyRelations.service';
 export * from './userAdministration.service';
 import { UserAdministrationService } from './userAdministration.service';
+export * from './userInformation.service';
+import { UserInformationService } from './userInformation.service';
 export const APIS = [
-  AtlasGraphApiService,
   BusinessOrganisationsService,
   CompaniesService,
   LinesService,
@@ -29,4 +28,5 @@ export const APIS = [
   TransportCompaniesService,
   TransportCompanyRelationsService,
   UserAdministrationService,
+  UserInformationService,
 ];

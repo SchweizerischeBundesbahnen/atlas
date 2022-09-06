@@ -9,12 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApplicationType } from './applicationType';
-import { ApplicationRole } from './applicationRole';
+import { UserModel } from './userModel';
 
-export interface UserPermission {
-  id?: number;
-  role: ApplicationRole;
-  application: ApplicationType;
-  sbbUserId: string;
+export interface ContainerUserModel {
+  objects?: Array<UserModel>;
+  totalCount?: number;
 }
