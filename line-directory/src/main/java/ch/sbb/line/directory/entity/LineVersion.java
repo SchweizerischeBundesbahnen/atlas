@@ -6,6 +6,11 @@ import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.model.api.AtlasFieldLengths;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -44,7 +49,8 @@ import org.hibernate.annotations.GeneratorType;
 @FieldNameConstants
 @Entity(name = "line_version")
 @AtlasVersionable
-public class LineVersion extends BaseVersion implements Versionable {
+public class LineVersion extends BaseVersion implements Versionable,
+    BusinessOrganisationAssociated {
 
   private static final String VERSION_SEQ = "line_version_seq";
 
