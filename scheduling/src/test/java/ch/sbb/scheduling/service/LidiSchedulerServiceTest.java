@@ -31,7 +31,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportFullLineVersionsCsvSuccessfully() {
+  public void shouldExportFullLineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
                                 .status(200)
@@ -40,10 +40,10 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportFullCsv()).thenReturn(response);
+    when(liDiClient.putLiDiLineExportFull()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportFullLineVersionsCsv();
+    Response result = lidiSchedulerService.exportFullLineVersions();
 
     //then
     assertThat(result).isNotNull();
@@ -51,7 +51,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportFullLineVersionsCsvUnsuccessful() {
+  public void shouldExportFullLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
                                 .status(HttpStatus.BAD_REQUEST.value())
@@ -60,15 +60,15 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportFullCsv()).thenReturn(response);
+    when(liDiClient.putLiDiLineExportFull()).thenReturn(response);
 
     //when
     assertThrows(SchedulingExecutionException.class,
-        () -> lidiSchedulerService.exportFullLineVersionsCsv());
+        () -> lidiSchedulerService.exportFullLineVersions());
   }
 
   @Test
-  public void shouldExportFullLineVersionsZipSuccessfully() {
+  public void shouldExportActualLineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
                                 .status(200)
@@ -77,10 +77,10 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportFullZip()).thenReturn(response);
+    when(liDiClient.putLiDiLineExportActual()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportFullLineVersionsZip();
+    Response result = lidiSchedulerService.exportActualLineVersions();
 
     //then
     assertThat(result).isNotNull();
@@ -88,7 +88,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportFullLineVersionsZipUnsuccessful() {
+  public void shouldExportActualLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
                                 .status(HttpStatus.BAD_REQUEST.value())
@@ -97,15 +97,15 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportFullZip()).thenReturn(response);
+    when(liDiClient.putLiDiLineExportActual()).thenReturn(response);
 
     //when
     assertThrows(SchedulingExecutionException.class,
-        () -> lidiSchedulerService.exportFullLineVersionsZip());
+        () -> lidiSchedulerService.exportActualLineVersions());
   }
 
   @Test
-  public void shouldExportActualLineVersionsCsvSuccessfully() {
+  public void shouldNextTimetableLineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
                                 .status(200)
@@ -114,10 +114,10 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportActualCsv()).thenReturn(response);
+    when(liDiClient.putLiDiLineExportNextTimetableVersions()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportActualLineVersionsCsv();
+    Response result = lidiSchedulerService.exportNextTimetableLineVersions();
 
     //then
     assertThat(result).isNotNull();
@@ -125,7 +125,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportActualLineVersionsCsvUnsuccessful() {
+  public void shouldExportNextTimetableLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
                                 .status(HttpStatus.BAD_REQUEST.value())
@@ -134,15 +134,16 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportActualCsv()).thenReturn(response);
+    when(liDiClient.putLiDiLineExportNextTimetableVersions()).thenReturn(response);
 
     //when
     assertThrows(SchedulingExecutionException.class,
-        () -> lidiSchedulerService.exportActualLineVersionsCsv());
+        () -> lidiSchedulerService.exportNextTimetableLineVersions());
   }
 
+
   @Test
-  public void shouldExportActualLineVersionsZipSuccessfully() {
+  public void shouldExportFullSublineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
                                 .status(200)
@@ -151,10 +152,10 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportActualZip()).thenReturn(response);
+    when(liDiClient.putLiDiSublineExportFull()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportActualLineVersionsZip();
+    Response result = lidiSchedulerService.exportFullSublineVersions();
 
     //then
     assertThat(result).isNotNull();
@@ -162,7 +163,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportActualLineVersionsZipUnsuccessful() {
+  public void shouldExportFullSublineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
                                 .status(HttpStatus.BAD_REQUEST.value())
@@ -171,15 +172,15 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportActualZip()).thenReturn(response);
+    when(liDiClient.putLiDiSublineExportFull()).thenReturn(response);
 
     //when
     assertThrows(SchedulingExecutionException.class,
-        () -> lidiSchedulerService.exportActualLineVersionsZip());
+        () -> lidiSchedulerService.exportFullSublineVersions());
   }
 
   @Test
-  public void shouldNextTimetableLineVersionsCsvSuccessfully() {
+  public void shouldExportActualSublineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
                                 .status(200)
@@ -188,10 +189,10 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportNextTimetableVersionsCsv()).thenReturn(response);
+    when(liDiClient.putLiDiSublineExportActual()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportNextTimetableLineVersionsCsv();
+    Response result = lidiSchedulerService.exportActualSublineVersions();
 
     //then
     assertThat(result).isNotNull();
@@ -199,7 +200,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExporttNextTimetableLineVersionsCsvUnsuccessful() {
+  public void shouldExportActualSublineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
                                 .status(HttpStatus.BAD_REQUEST.value())
@@ -208,15 +209,15 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportNextTimetableVersionsCsv()).thenReturn(response);
+    when(liDiClient.putLiDiSublineExportActual()).thenReturn(response);
 
     //when
     assertThrows(SchedulingExecutionException.class,
-        () -> lidiSchedulerService.exportNextTimetableLineVersionsCsv());
+        () -> lidiSchedulerService.exportActualSublineVersions());
   }
 
   @Test
-  public void shouldExportNextTimetableLineVersionsZipSuccessfully() {
+  public void shouldNextTimetableSublineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
                                 .status(200)
@@ -225,10 +226,10 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportNextTimetableVersionsZip()).thenReturn(response);
+    when(liDiClient.putLiDiSublineExportNextTimetableVersions()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.exportNextTimetableLineVersionsZip();
+    Response result = lidiSchedulerService.exportNextTimetableSublineVersions();
 
     //then
     assertThat(result).isNotNull();
@@ -236,7 +237,7 @@ class LidiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportNextTimetableLineVersionsZipUnsuccessful() {
+  public void shouldExporttNextTimetableSublineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
                                 .status(HttpStatus.BAD_REQUEST.value())
@@ -245,11 +246,122 @@ class LidiSchedulerServiceTest {
                                     Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                                         null, Util.UTF_8, null))
                                 .build();
-    when(liDiClient.putLiDiExportNextTimetableVersionsZip()).thenReturn(response);
+    when(liDiClient.putLiDiSublineExportNextTimetableVersions()).thenReturn(response);
 
     //when
     assertThrows(SchedulingExecutionException.class,
-        () -> lidiSchedulerService.exportNextTimetableLineVersionsZip());
+        () -> lidiSchedulerService.exportNextTimetableSublineVersions());
+  }
+
+  @Test
+  public void shouldExportFullTimetableFieldNumberVersionsSuccessfully() {
+    //given
+    Response response = Response.builder()
+                                .status(200)
+                                .reason("OK")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportFull()).thenReturn(response);
+
+    //when
+    Response result = lidiSchedulerService.exportFullTimetableFieldNumberVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldExportFullTimetableFieldNumberVersionsUnsuccessful() {
+    //given
+    Response response = Response.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .reason("Bad Request")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportFull()).thenReturn(response);
+
+    //when
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportFullTimetableFieldNumberVersions());
+  }
+
+  @Test
+  public void shouldExportActualTimetableFieldNumberVersionsSuccessfully() {
+    //given
+    Response response = Response.builder()
+                                .status(200)
+                                .reason("OK")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportActual()).thenReturn(response);
+
+    //when
+    Response result = lidiSchedulerService.exportActualTimetableFieldNumberVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldExportActualTimetableFieldNumberVersionsUnsuccessful() {
+    //given
+    Response response = Response.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .reason("Bad Request")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportActual()).thenReturn(response);
+
+    //when
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportActualTimetableFieldNumberVersions());
+  }
+
+  @Test
+  public void shouldNextTimetableTimetableFieldNumberVersionsSuccessfully() {
+    //given
+    Response response = Response.builder()
+                                .status(200)
+                                .reason("OK")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportNextTimetableVersions()).thenReturn(response);
+
+    //when
+    Response result = lidiSchedulerService.exportNextTimetableTimetableFieldNumberVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldExportNextTimetableTimetableFieldNumberVersionsUnsuccessful() {
+    //given
+    Response response = Response.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .reason("Bad Request")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(liDiClient.putLiDiTimetableFieldNumberExportNextTimetableVersions()).thenReturn(response);
+
+    //when
+    assertThrows(SchedulingExecutionException.class,
+        () -> lidiSchedulerService.exportNextTimetableTimetableFieldNumberVersions());
   }
 
 }
