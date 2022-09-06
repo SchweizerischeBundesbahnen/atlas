@@ -1,10 +1,9 @@
 package ch.sbb.atlas.user.administration.api;
 
 import ch.sbb.atlas.model.api.Container;
-import ch.sbb.atlas.user.administration.entity.UserPermission;
+import ch.sbb.atlas.user.administration.models.UserModel;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +16,9 @@ public interface UserAdministrationApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  Container<String> getUsers(@Parameter(hidden = true) Pageable pageable);
+  Container<UserModel> getUsers(@Parameter(hidden = true) Pageable pageable);
 
-  @GetMapping("{userId}/permissions")
-  List<UserPermission> getUserPermissions(@PathVariable String userId);
+  @GetMapping("{userId}")
+  UserModel getUser(@PathVariable String userId);
 
 }
