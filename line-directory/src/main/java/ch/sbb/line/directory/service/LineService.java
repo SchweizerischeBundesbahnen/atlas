@@ -63,7 +63,7 @@ public class LineService {
 
   @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.user.administration.security.model.ApplicationType).LIDI)")
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
-    updateVersion(currentVersion, editedVersion, currentVersions);
+    updateVersion(currentVersion, editedVersion);
   }
 
   public void deleteById(Long id) {
@@ -105,12 +105,12 @@ public class LineService {
   }
 
   void updateVersion(LineVersion currentVersion, LineVersion editedVersion) {
+    lineVersionRepository.incrementVersion(currentVersion.getSlnid());
     updateVersion(currentVersion, editedVersion, findLineVersions(currentVersion.getSlnid()));
   }
 
   private void updateVersion(LineVersion currentVersion, LineVersion editedVersion,
       List<LineVersion> currentVersions) {
-    lineVersionRepository.incrementVersion(currentVersion.getSlnid());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion()
                                                              .equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
