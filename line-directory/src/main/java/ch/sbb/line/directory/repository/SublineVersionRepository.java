@@ -35,4 +35,14 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
   @Query("update subline_version v set v.version = (v.version + 1) where v.slnid = :slnid")
   void incrementVersion(@Param("slnid") String slnid);
 
+  @Query("SELECT v FROM subline_version as v"
+      + " ORDER BY v.slnid, v.validFrom ASC")
+  List<SublineVersion> getFullSublineVersions();
+
+  @Query("SELECT v FROM subline_version as v"
+      + " WHERE  :actualDate >= v.validFrom AND :actualDate <= v.validTo"
+      + " ORDER BY v.slnid, v.validFrom ASC")
+  List<SublineVersion> getActualSublineVersions(@Param("actualDate") LocalDate actualDate);
+
+
 }

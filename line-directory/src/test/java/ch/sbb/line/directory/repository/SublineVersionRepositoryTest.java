@@ -2,8 +2,8 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
 import java.time.LocalDate;
@@ -175,5 +175,36 @@ public class SublineVersionRepositoryTest {
         sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isTrue();
 
     // Then
+  }
+
+  @Test
+  void shouldGetFullLineVersions() {
+    //given
+    sublineVersionRepository.save(SUBLINE_VERSION);
+
+    //when
+    List<SublineVersion> result = sublineVersionRepository.getFullSublineVersions();
+
+    //then
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).containsAll(result);
+  }
+
+  @Test
+  void shouldGetActualLineVersions() {
+    //given
+    SublineVersion sublineVersion = SublineTestData.sublineVersion();
+    sublineVersion.setValidFrom(LocalDate.of(2021, 1, 1));
+    sublineVersion.setValidTo(LocalDate.of(2099, 1, 1));
+    sublineVersionRepository.save(sublineVersion);
+
+    //when
+    List<SublineVersion> result = sublineVersionRepository.getActualSublineVersions(
+        LocalDate.of(2022, 1, 1));
+
+    //then
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).containsAll(result);
+
   }
 }
