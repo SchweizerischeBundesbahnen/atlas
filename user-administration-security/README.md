@@ -1,4 +1,6 @@
-# Implemntation of UserAdministration for business services
+# Implementation of UserAdministration for business services
+
+Based on Specification: https://confluence.sbb.ch/pages/viewpage.action?pageId=2118124295
 
 ![Role Hierarchy](documentation/user-administration.png)
 

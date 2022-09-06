@@ -23,13 +23,14 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class LineService implements UserAdministrationAwareService<LineVersion> {
+public class LineService {
 
   private final LineVersionRepository lineVersionRepository;
   private final SublineVersionRepository sublineVersionRepository;
@@ -55,12 +56,14 @@ public class LineService implements UserAdministrationAwareService<LineVersion> 
     return lineVersionRepository.findById(id);
   }
 
-  public LineVersion save(LineVersion lineVersion) {
-    lineVersion.setStatus(Status.ACTIVE);
-    lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
-    lineVersionRepository.saveAndFlush(lineVersion);
-    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
-    return lineVersion;
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.user.administration.security.model.ApplicationType).LIDI)")
+  public LineVersion create(LineVersion businessObject) {
+    return save(businessObject);
+  }
+
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.user.administration.security.model.ApplicationType).LIDI)")
+  public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
+    updateVersion(currentVersion, editedVersion, currentVersions);
   }
 
   public void deleteById(Long id) {
@@ -85,24 +88,6 @@ public class LineService implements UserAdministrationAwareService<LineVersion> 
     lineVersionRepository.deleteAll(currentVersions);
   }
 
-  public void updateVersion(LineVersion currentVersion,
-      LineVersion editedVersion) {
-    lineVersionRepository.incrementVersion(currentVersion.getSlnid());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-                                                             .equals(editedVersion.getVersion())) {
-      throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
-    }
-
-    List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
-        currentVersion.getSlnid());
-
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
-        editedVersion, currentVersions);
-
-    versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save,
-        this::deleteById);
-  }
-
   public List<Line> getAllCoveredLines() {
     return lineRepository.getAllCoveredLines();
   }
@@ -111,19 +96,31 @@ public class LineService implements UserAdministrationAwareService<LineVersion> 
     return lineVersionRepository.getAllCoveredLineVersions();
   }
 
-  @Override
-  public LineVersion create(LineVersion businessObject) {
-    return save(businessObject);
+  LineVersion save(LineVersion lineVersion) {
+    lineVersion.setStatus(Status.ACTIVE);
+    lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
+    lineVersionRepository.saveAndFlush(lineVersion);
+    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
+    return lineVersion;
   }
 
-  @Override
-  public LineVersion update(LineVersion editedBusinessObject,
-      List<LineVersion> currentBusinessObjects) {
-    return null;
+  void updateVersion(LineVersion currentVersion, LineVersion editedVersion) {
+    updateVersion(currentVersion, editedVersion, findLineVersions(currentVersion.getSlnid()));
   }
 
-  @Override
-  public ApplicationType getAdministratedApplicationType() {
-    return ApplicationType.LIDI;
+  private void updateVersion(LineVersion currentVersion, LineVersion editedVersion,
+      List<LineVersion> currentVersions) {
+    lineVersionRepository.incrementVersion(currentVersion.getSlnid());
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion()
+                                                             .equals(editedVersion.getVersion())) {
+      throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
+    }
+
+    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+        editedVersion, currentVersions);
+
+    versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save,
+        this::deleteById);
   }
+
 }
