@@ -80,28 +80,16 @@ public interface LineApiV1 {
   @GetMapping("line-coverage/{slnid}")
   CoverageModel getLineCoverage(@PathVariable String slnid);
 
-  @Operation(description = "Export all line versions as csv file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/full/csv", produces = MediaType.APPLICATION_JSON_VALUE)
-  URL exportFullLineVersionsCsv();
+  @Operation(description = "Export all line versions as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
+  List<URL> exportFullLineVersions();
 
-  @Operation(description = "Export all line versions as zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/full/zip", produces = MediaType.APPLICATION_JSON_VALUE)
-  URL exportFullLineVersionsCsvZip();
+  @Operation(description = "Export all actual line versions as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
+  List<URL> exportActualLineVersions();
 
-  @Operation(description = "Export all actual line versions as csv file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/actual/csv", produces = MediaType.APPLICATION_JSON_VALUE)
-  URL exportActualLineVersionsCsv();
-
-  @Operation(description = "Export all actual line versions as zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/actual/zip", produces = MediaType.APPLICATION_JSON_VALUE)
-  URL exportActualLineVersionsCsvZip();
-
-  @Operation(description = "Export all line versions for the current timetable year change as csv file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/timetable-year-change/csv", produces = MediaType.APPLICATION_JSON_VALUE)
-  URL exportFutureTimetableLineVersionsCsv();
-
-  @Operation(description = "Export all line versions for the current timetable year change as zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/timetable-year-change/zip", produces = MediaType.APPLICATION_JSON_VALUE)
-  URL exportFutureTimetableLineVersionsCsvZip();
+  @Operation(description = "Export all line versions for the current timetable year change as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
+  List<URL> exportFutureTimetableLineVersions();
 
 }
