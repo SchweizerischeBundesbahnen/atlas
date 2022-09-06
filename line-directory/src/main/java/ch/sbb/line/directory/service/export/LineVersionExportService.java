@@ -68,5 +68,4 @@ public class LineVersionExportService extends BaseExportService<LineVersion> {
                    .collect(toList());
   }
 
-
 }

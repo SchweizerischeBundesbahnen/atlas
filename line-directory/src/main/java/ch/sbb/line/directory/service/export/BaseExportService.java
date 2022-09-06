@@ -19,16 +19,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public abstract class BaseExportService<T extends BaseVersion> {
 
   private final FileService fileService;
   private final AmazonService amazonService;
-
-  public BaseExportService(FileService fileService, AmazonService amazonService) {
-    this.fileService = fileService;
-    this.amazonService = amazonService;
-  }
 
   public List<URL> exportFullVersions() {
     List<URL> urls = new ArrayList<>();
@@ -53,7 +50,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
     urls.add(putZipFile(futureTimetableVersionsCsv));
     return urls;
   }
- 
+
   URL putCsvFile(File csvFile) {
     try {
       return amazonService.putFile(csvFile, getDirectory());
@@ -70,15 +67,15 @@ public abstract class BaseExportService<T extends BaseVersion> {
     }
   }
 
-  protected File createCsvFile(List<T> lineVersions, ExportType exportType) {
+  protected File createCsvFile(List<T> versions, ExportType exportType) {
 
     File csvFile = createFile(exportType);
 
-    List<? extends VersionCsvModel> lineVersionCsvModels = convertToCsvModel(lineVersions);
+    List<? extends VersionCsvModel> versionCsvModels = convertToCsvModel(versions);
 
     ObjectWriter objectWriter = getObjectWriter();
     try (SequenceWriter sequenceWriter = objectWriter.writeValues(csvFile)) {
-      sequenceWriter.writeAll(lineVersionCsvModels);
+      sequenceWriter.writeAll(versionCsvModels);
       return csvFile;
     } catch (IOException e) {
       throw new ExportException(csvFile, e);
@@ -97,13 +94,13 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   protected abstract File getFutureTimetableVersionsCsv();
 
+  protected abstract String getFileName();
+
   protected File createFile(ExportType exportType) {
     String dir = fileService.getDir();
     String actualDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     return new File(dir + exportType.getFilePrefix() + getFileName() + actualDate + ".csv");
   }
-
-  protected abstract String getFileName();
 
   @Getter
   protected static class AtlasCsvMapper {
@@ -112,13 +109,8 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
     AtlasCsvMapper(Class<?> aClass) {
       CsvMapper csvMapper = createCsvMapper();
-      CsvSchema csvSchema = csvMapper
-          .schemaFor(aClass)
-          .withHeader()
-          .withColumnSeparator(';');
-      this.objectWriter = csvMapper
-          .writerFor(aClass)
-          .with(csvSchema);
+      CsvSchema csvSchema = csvMapper.schemaFor(aClass).withHeader().withColumnSeparator(';');
+      this.objectWriter = csvMapper.writerFor(aClass).with(csvSchema);
     }
 
     private CsvMapper createCsvMapper() {
