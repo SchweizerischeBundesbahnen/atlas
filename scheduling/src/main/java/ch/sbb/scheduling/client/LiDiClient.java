@@ -12,7 +12,6 @@ public interface LiDiClient {
   @PostMapping(value = "/line-directory/v1/lines/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
   Response putLiDiLineExportFull();
 
-
   @PostMapping(value = "/line-directory/v1/lines/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   Response putLiDiLineExportActual();
 
