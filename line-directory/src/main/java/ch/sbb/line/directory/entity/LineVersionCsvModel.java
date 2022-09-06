@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
     "paymentType", "numer", "businessOrganisation", "alternativeName", "combinationName",
     "longName", "colorFontRgb", "colorBackRgb", "colorFontCmyk", "colorBackCmyk", "icon",
     "description", "comment", "editionTime", "creationTime"})
-public class LineVersionCsvModel {
+public class LineVersionCsvModel implements VersionCsvModel {
 
   @JsonProperty("slnid")
   private String slnid;

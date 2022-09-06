@@ -5,12 +5,14 @@ import ch.sbb.atlas.model.api.AtlasApiConstants;
 import ch.sbb.atlas.model.api.Container;
 import ch.sbb.atlas.model.api.ErrorResponse;
 import ch.sbb.line.directory.enumaration.SublineType;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,4 +70,17 @@ public interface SublinenApiV1 {
 
   @GetMapping("subline-coverage/{slnid}")
   CoverageModel getSublineCoverage(@PathVariable String slnid);
+
+  @Operation(description = "Export all subline versions as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
+  List<URL> exportFullSublineVersions();
+
+  @Operation(description = "Export all actual subline versions as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
+  List<URL> exportActualSublineVersions();
+
+  @Operation(description = "Export all subline versions for the current timetable year change as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
+  List<URL> exportFutureTimetableSublineVersions();
+
 }
