@@ -23,6 +23,7 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
+import { ErrorResponse } from '../model/models';
 import { UserModel } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -31,7 +32,7 @@ import { Configuration } from '../configuration';
 @Injectable({
   providedIn: 'root',
 })
-export class AtlasGraphApiService {
+export class UserInformationService {
   protected basePath = 'http://localhost';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
@@ -95,78 +96,6 @@ export class AtlasGraphApiService {
       throw Error('key may not be null if value is not object or array');
     }
     return httpParams;
-  }
-
-  /**
-   * @param userIds
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public resolveUsers(
-    userIds: Array<string>,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<Array<UserModel>>;
-  public resolveUsers(
-    userIds: Array<string>,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<Array<UserModel>>>;
-  public resolveUsers(
-    userIds: Array<string>,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<Array<UserModel>>>;
-  public resolveUsers(
-    userIds: Array<string>,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (userIds === null || userIds === undefined) {
-      throw new Error(
-        'Required parameter userIds was null or undefined when calling resolveUsers.'
-      );
-    }
-
-    let queryParameters = new HttpParams({ encoder: this.encoder });
-    if (userIds) {
-      userIds.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'userIds');
-      });
-    }
-
-    let headers = this.defaultHeaders;
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
-
-    return this.httpClient.get<Array<UserModel>>(
-      `${this.configuration.basePath}/user-administration/v1/resolve`,
-      {
-        params: queryParameters,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
   }
 
   /**
