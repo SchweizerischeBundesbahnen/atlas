@@ -4,12 +4,14 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.AtlasApiConstants;
 import ch.sbb.atlas.model.api.Container;
 import ch.sbb.atlas.model.api.ErrorResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,8 +61,21 @@ public interface TimetableFieldNumberApiV1 {
       @ApiResponse(responseCode = "201"),
       @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  TimetableFieldNumberVersionModel createVersion(@RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
+  TimetableFieldNumberVersionModel createVersion(
+      @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
   @DeleteMapping({"/{ttfnid}"})
   void deleteVersions(@PathVariable String ttfnid);
+
+  @Operation(description = "Export all Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
+  List<URL> exportFullTimetableFieldNumberVersions();
+
+  @Operation(description = "Export all actual Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
+  List<URL> exportActualTimetableFieldNumberVersions();
+
+  @Operation(description = "Export all Timetable Field Number versions for the current timetable year change as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
+  List<URL> exportTimetableYearChangeTimetableFieldNumberVersions();
 }
