@@ -6,7 +6,8 @@ create table user_permission (
     id bigint primary key,
     role varchar(20) not null,
     application varchar(20) not null,
-    sbb_user_id varchar(7) not null
+    sbb_user_id varchar(7) not null,
+    constraint user_application_unique unique (application, sbb_user_id)
 );
 
 create table business_organisation_user_permission (
