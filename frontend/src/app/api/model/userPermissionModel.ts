@@ -9,8 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ApplicationType } from './applicationType';
+import { ApplicationRole } from './applicationRole';
 
-export interface ContainerString {
-  objects?: Array<string>;
-  totalCount?: number;
+/**
+ * User permissions
+ */
+export interface UserPermissionModel {
+  id?: number;
+  role?: ApplicationRole;
+  application?: ApplicationType;
+  sboids?: Set<string>;
 }
