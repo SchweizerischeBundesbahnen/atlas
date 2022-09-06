@@ -18,5 +18,8 @@ public class UserAdministrationService {
     return false;
   }
 
+  private ApplicationRole getRole(){
+    return ApplicationRole.ADMIN;
+  }
   
 }
