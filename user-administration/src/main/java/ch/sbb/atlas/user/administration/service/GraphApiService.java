@@ -1,7 +1,7 @@
 package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.user.administration.models.UserModel;
-import ch.sbb.atlas.user.administration.enums.UserAccountStatus;
+import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
 import com.microsoft.graph.content.BatchRequestContent;
 import com.microsoft.graph.content.BatchResponseContent;
 import com.microsoft.graph.models.User;
@@ -36,7 +36,7 @@ public class GraphApiService {
   private static final String DISPLAY_NAME_PROP = "displayName";
   private static final String MAIL_PROP = "mail";
   private static final byte SEARCH_QUERY_LIMIT = 10;
-  private static final byte BATCH_REQUEST_LIMIT = 20;
+  public static final byte BATCH_REQUEST_LIMIT = 20;
 
   // returns first 10 elements found by displayName + first 10 elements found by mail (distinct)
   public List<UserModel> searchUsersByDisplayNameAndMail(String searchQuery) {
@@ -52,8 +52,10 @@ public class GraphApiService {
     return userResult.stream().distinct().toList();
   }
 
-  public List<UserModel> resolveLdapUserDataFromUserIds(List<String> userIds) {
-    userIds = userIds.stream().limit(BATCH_REQUEST_LIMIT).toList();
+  public List<UserModel> resolveUsers(List<String> userIds) {
+    if (userIds.size() > 20) {
+      throw new IllegalArgumentException("Max length of userIds is " + BATCH_REQUEST_LIMIT);
+    }
     final List<String> requestIds = new ArrayList<>();
     final BatchRequestContent batchRequestContent = new BatchRequestContent();
     userIds.forEach(
@@ -76,7 +78,7 @@ public class GraphApiService {
                      .build());
       } else {
         final User user = deserializedBody.value.get(0);
-        result.add(UserModel.toModel(user));
+        result.add(UserModel.userToModel(user));
       }
     }
     return result;
@@ -116,7 +118,7 @@ public class GraphApiService {
   private List<UserModel> getUserModelsFromUserCollectionPages(
       UserCollectionPage... userCollectionPages) {
     return Arrays.stream(userCollectionPages)
-                 .flatMap(page -> page.getCurrentPage().stream().map(UserModel::toModel))
+                 .flatMap(page -> page.getCurrentPage().stream().map(UserModel::userToModel))
                  .toList();
   }
 

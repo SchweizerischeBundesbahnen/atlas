@@ -1,6 +1,5 @@
 package ch.sbb.atlas.user.administration.controller;
 
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -8,8 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
-import ch.sbb.atlas.user.administration.enums.ApplicationRole;
-import ch.sbb.atlas.user.administration.enums.ApplicationType;
+import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
+import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -42,10 +41,10 @@ public class UserAdministrationControllerApiTest {
         UserPermission.builder()
                       .role(ApplicationRole.ADMIN)
                       .application(ApplicationType.TTFN)
-                      .sbbUserId("e678574").build(),
+                      .sbbUserId("e999999").build(),
         UserPermission.builder()
                       .role(ApplicationRole.ADMIN)
-                      .application(ApplicationType.TTFN)
+                      .application(ApplicationType.LIDI)
                       .sbbUserId("u236171").build()
     ));
 
@@ -55,11 +54,20 @@ public class UserAdministrationControllerApiTest {
        .andExpect(status().isOk())
        .andExpect(jsonPath("$.totalCount").value(2))
        .andExpect(jsonPath("$.objects", hasSize(2)))
-       .andExpect(jsonPath("$.objects", hasItems("e678574", "u236171")));
+       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'e999999')].accountStatus").value("DELETED"))
+       .andExpect(
+           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].role").value("ADMIN"))
+       .andExpect(
+           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].application").value(
+               "TTFN"))
+       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].accountStatus").value("ACTIVE"))
+       .andExpect(
+           jsonPath("$.objects[?(@.sbbUserId == 'u236171')].permissions[*]").value(hasSize(2)))
+       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].lastName").value("Ammann"));
   }
 
   @Test
-  void shouldGetUserPermissions() throws Exception {
+  void shouldGetUser() throws Exception {
     userPermissionRepository.saveAll(List.of(
         UserPermission.builder()
                       .role(ApplicationRole.ADMIN)
@@ -75,9 +83,25 @@ public class UserAdministrationControllerApiTest {
                       .sbbUserId("e678574").build()
     ));
 
-    mvc.perform(get("/v1/users/u236171/permissions"))
+    mvc.perform(get("/v1/users/u236171"))
        .andExpect(status().isOk())
-       .andExpect(jsonPath("$", hasSize(2)));
+       .andExpect(jsonPath("$.sbbUserId").value("u236171"))
+       .andExpect(jsonPath("$.lastName").value("Ammann"))
+       .andExpect(jsonPath("$.permissions").value(hasSize(1)))
+       .andExpect(jsonPath("$.permissions[0].role").value("ADMIN"))
+       .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
+  }
+
+  @Test
+  void shouldThrowPageSizeException() throws Exception {
+    mvc.perform(get("/v1/users")
+        .queryParam("page", "0")
+        .queryParam("size", "21"))
+        .andExpect(status().is(405))
+        .andExpect(jsonPath("$.status").value(405))
+        .andExpect(jsonPath("$.message").value("Page size 21 is bigger than max allowed page size 20"))
+        .andExpect(jsonPath("$.error").value("Page Request not allowed"))
+        .andExpect(jsonPath("$.details").value(hasSize(0)));
   }
 
 }
