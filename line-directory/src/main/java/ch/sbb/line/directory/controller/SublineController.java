@@ -35,7 +35,6 @@ public class SublineController implements SublinenApiV1 {
 
   private final SublineVersionExportService sublineVersionExportService;
 
-
   @Override
   public Container<SublineModel> getSublines(Pageable pageable, List<String> searchCriteria,
       List<Status> statusRestrictions, List<SublineType> typeRestrictions,
