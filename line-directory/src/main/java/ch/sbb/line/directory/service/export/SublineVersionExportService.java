@@ -32,14 +32,14 @@ public class SublineVersionExportService extends BaseExportService<SublineVersio
   }
 
   @Override
-  protected File getFullVersionsCsv() {
-    List<SublineVersion> fullLineVersions = sublineVersionRepository.getFullSublineVersions();
-    return createCsvFile(fullLineVersions, ExportType.FULL);
+  public String getFileName() {
+    return "subline_versions_";
   }
 
   @Override
-  public String getFileName() {
-    return "subline_versions_";
+  protected File getFullVersionsCsv() {
+    List<SublineVersion> fullLineVersions = sublineVersionRepository.getFullSublineVersions();
+    return createCsvFile(fullLineVersions, ExportType.FULL);
   }
 
   @Override
