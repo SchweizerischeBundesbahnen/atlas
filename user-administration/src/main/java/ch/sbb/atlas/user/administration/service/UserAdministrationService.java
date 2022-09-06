@@ -19,7 +19,7 @@ public class UserAdministrationService {
   }
 
   public List<UserPermission> getUserPermissions(String sbbUserId){
-    return userPermissionRepository.findBySbbUserIdEqualsIgnoreCase(sbbUserId);
+    return userPermissionRepository.findBySbbUserId(sbbUserId);
   }
 
 }
