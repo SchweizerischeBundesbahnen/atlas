@@ -87,11 +87,7 @@ include::{snippets}/line-controller-api-test/should-export-full-line-versions-cs
 
 include::{snippets}/line-controller-api-test/should-export-actual-line-versions-csv/auto-section.adoc[]
 
-== Export Timetable Year change Line Versions Csv file to Amazon S3 Bucket
-
-include::{snippets}/line-controller-api-test/should-export-future-timetable-line-versions-csv/auto-section.adoc[]
-
-== Export Timetable Year change Line Versions Zipped Csv file to Amazon S3 Bucket
+== Export Timetable Year change Line Versions Csv and Zip file to Amazon S3 Bucket
 
 include::{snippets}/line-controller-api-test/should-export-future-timetable-line-versions-csv/auto-section.adoc[]
 
@@ -170,6 +166,26 @@ include::{snippets}/timetable-field-number-controller-api-test/should-return-val
 == Get versions with not found error
 
 include::{snippets}/timetable-field-number-controller-api-test/should-return-not-found-error-response-when-search-item-not-found/auto-section.adoc[]
+
+== Get search versions with Invalid Sort Param
+
+include::{snippets}/timetable-field-number-controller-exception-handling-test/should-return-bad-request-exception-on-invalid-sort-param/auto-section.adoc[]
+
+= Export Timetable Field Number
+
+include::../../../../amazon-s3/documentaion/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+
+== Export Full Timetable Field Number Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/timetable-field-number-controller-api-test/should-export-full-timetable-field-number-versions-csv/auto-section.adoc[]
+
+== Export Actual Timetable Field Number Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/timetable-field-number-controller-api-test/should-export-actual-timetable-field-number-versions-csv/auto-section.adoc[]
+
+== Export Timetable Year change Timetable Field Number Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/timetable-field-number-controller-api-test/should-export-time-table-year-change-timetable-field-number-versions-csv/auto-section.adoc[]
 
 = Future Timetable
 

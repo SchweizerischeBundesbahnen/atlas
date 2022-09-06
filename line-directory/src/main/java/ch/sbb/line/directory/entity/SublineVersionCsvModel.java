@@ -64,22 +64,22 @@ public class SublineVersionCsvModel implements VersionCsvModel {
   private LocalDateTime creationTime;
 
   public static SublineVersionCsvModel toCsvModel(SublineVersion sublineVersion) {
-    SublineVersionCsvModel lineVersionCsvModel = new SublineVersionCsvModel();
-    lineVersionCsvModel.setSwissSublineNumber(sublineVersion.getSwissSublineNumber());
-    lineVersionCsvModel.setSwissSublineNumber(sublineVersion.getSwissSublineNumber());
-    lineVersionCsvModel.setSlnid(sublineVersion.getSlnid());
-    lineVersionCsvModel.setStatus(sublineVersion.getStatus());
-    lineVersionCsvModel.setSublineType(sublineVersion.getSublineType());
-    lineVersionCsvModel.setPaymentType(sublineVersion.getPaymentType());
-    lineVersionCsvModel.setNumber(sublineVersion.getNumber());
-    lineVersionCsvModel.setLongName(sublineVersion.getLongName());
-    lineVersionCsvModel.setDescription(sublineVersion.getDescription());
-    lineVersionCsvModel.setValidFrom(sublineVersion.getValidFrom());
-    lineVersionCsvModel.setValidTo(sublineVersion.getValidTo());
-    lineVersionCsvModel.setBusinessOrganisation(sublineVersion.getBusinessOrganisation());
-    lineVersionCsvModel.setEditionTime(sublineVersion.getEditionDate());
-    lineVersionCsvModel.setCreationTime(sublineVersion.getCreationDate());
-    return lineVersionCsvModel;
+    SublineVersionCsvModel sublineVersionCsvModel = new SublineVersionCsvModel();
+    sublineVersionCsvModel.setSwissSublineNumber(sublineVersion.getSwissSublineNumber());
+    sublineVersionCsvModel.setSwissSublineNumber(sublineVersion.getSwissSublineNumber());
+    sublineVersionCsvModel.setSlnid(sublineVersion.getSlnid());
+    sublineVersionCsvModel.setStatus(sublineVersion.getStatus());
+    sublineVersionCsvModel.setSublineType(sublineVersion.getSublineType());
+    sublineVersionCsvModel.setPaymentType(sublineVersion.getPaymentType());
+    sublineVersionCsvModel.setNumber(sublineVersion.getNumber());
+    sublineVersionCsvModel.setLongName(sublineVersion.getLongName());
+    sublineVersionCsvModel.setDescription(sublineVersion.getDescription());
+    sublineVersionCsvModel.setValidFrom(sublineVersion.getValidFrom());
+    sublineVersionCsvModel.setValidTo(sublineVersion.getValidTo());
+    sublineVersionCsvModel.setBusinessOrganisation(sublineVersion.getBusinessOrganisation());
+    sublineVersionCsvModel.setEditionTime(sublineVersion.getEditionDate());
+    sublineVersionCsvModel.setCreationTime(sublineVersion.getCreationDate());
+    return sublineVersionCsvModel;
   }
 
 }
