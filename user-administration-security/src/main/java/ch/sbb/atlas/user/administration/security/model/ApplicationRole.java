@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security;
+package ch.sbb.atlas.user.administration.security.model;
 
 public enum ApplicationRole {
   NONE,
