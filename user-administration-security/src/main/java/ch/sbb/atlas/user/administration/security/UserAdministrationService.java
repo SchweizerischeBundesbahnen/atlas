@@ -5,6 +5,7 @@ import ch.sbb.atlas.user.administration.security.model.ApplicationType;
 import ch.sbb.atlas.user.administration.security.model.UserPermissionModel;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,28 +19,27 @@ public class UserAdministrationService {
 
   public boolean hasUserPermissionsToCreate(BusinessOrganisationAssociated businessObject,
       ApplicationType applicationType) {
-    if (userPermissionHolder.isAdmin()) {
-      return true;
-    }
-    UserPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
-        applicationType);
+    return hasUserPermissions(applicationType, permissions -> permissions.getSboids()
+                                                                         .contains(
+                                                                             businessObject.getBusinessOrganisation()));
 
-    ApplicationRole roleForApplication = userPermissionsForApplication.getRole();
-    if (roleForApplication == ApplicationRole.SUPERVISOR ||
-        roleForApplication == ApplicationRole.SUPER_USER) {
-      return true;
-    }
-
-    if (roleForApplication == ApplicationRole.WRITER) {
-      return userPermissionsForApplication.getSboids()
-                                          .contains(businessObject.getBusinessOrganisation());
-    }
-    return false;
   }
 
   public boolean hasUserPermissionsToUpdate(BusinessOrganisationAssociated editedBusinessObject,
       List<BusinessOrganisationAssociated> currentBusinessObjects,
       ApplicationType applicationType) {
+    return hasUserPermissions(applicationType, permissions -> permissions.getSboids()
+                                                                         .containsAll(
+                                                                             findUpdateAffectedCurrentVersions(
+                                                                                 editedBusinessObject,
+                                                                                 currentBusinessObjects).stream()
+                                                                                                        .map(
+                                                                                                            BusinessOrganisationAssociated::getBusinessOrganisation)
+                                                                                                        .toList()));
+  }
+
+  private boolean hasUserPermissions(ApplicationType applicationType,
+      Predicate<UserPermissionModel> writerPermissionCheck) {
     if (userPermissionHolder.isAdmin()) {
       return true;
     }
@@ -53,12 +53,7 @@ public class UserAdministrationService {
     }
 
     if (roleForApplication == ApplicationRole.WRITER) {
-      return userPermissionsForApplication.getSboids()
-                                          .containsAll(findUpdateAffectedCurrentVersions(
-                                              editedBusinessObject, currentBusinessObjects).stream()
-                                                                                           .map(
-                                                                                               BusinessOrganisationAssociated::getBusinessOrganisation)
-                                                                                           .toList());
+      return writerPermissionCheck.test(userPermissionsForApplication);
     }
     return false;
   }
