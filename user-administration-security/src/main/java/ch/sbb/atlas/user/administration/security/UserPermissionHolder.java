@@ -18,7 +18,7 @@ public class UserPermissionHolder {
 
   public boolean isAdmin() {
     List<String> roles = UserService.getAccessToken().getClaim("roles");
-    return roles.contains("atlas-admin");
+    return roles.contains("ROLE_atlas-admin");
   }
 
 }

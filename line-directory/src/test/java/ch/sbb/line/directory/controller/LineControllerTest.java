@@ -175,7 +175,7 @@ public class LineControllerTest {
     lineController.updateLineVersion(1L, lineVersionModel);
 
     // Then
-    verify(lineService).updateVersion(any(), any());
+    verify(lineService).update(any(), any(), any());
   }
 
 
