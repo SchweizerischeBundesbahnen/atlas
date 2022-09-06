@@ -110,35 +110,20 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public URL exportFullLineVersionsCsv() {
-    return lineVersionExportService.exportFullVersionsCsv();
+  public List<URL> exportFullLineVersions() {
+    return lineVersionExportService.exportFullVersions();
   }
 
   @Override
-  public URL exportFullLineVersionsCsvZip() {
-    return lineVersionExportService.exportFullVersionsCsvZip();
+  public List<URL> exportActualLineVersions() {
+    return lineVersionExportService.exportActualVersions();
   }
 
   @Override
-  public URL exportActualLineVersionsCsv() {
-    return lineVersionExportService.exportActualVersionsCsv();
+  public List<URL> exportFutureTimetableLineVersions() {
+    return lineVersionExportService.exportFutureTimetableVersions();
   }
-
-  @Override
-  public URL exportActualLineVersionsCsvZip() {
-    return lineVersionExportService.exportActualVersionsCsvZip();
-  }
-
-  @Override
-  public URL exportFutureTimetableLineVersionsCsv() {
-    return lineVersionExportService.exportFutureTimetableVersionsCsv();
-  }
-
-  @Override
-  public URL exportFutureTimetableLineVersionsCsvZip() {
-    return lineVersionExportService.exportFutureTimetableVersionsCsvZip();
-  }
-
+  
   @Override
   public void deleteLines(String slnid) {
     lineService.deleteAll(slnid);
