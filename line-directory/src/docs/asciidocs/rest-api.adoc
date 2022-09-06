@@ -77,23 +77,15 @@ include::{snippets}/line-controller-api-test/should-get-subline-coverage/auto-se
 
 = Export Line
 
-include::../../../../amazon-s3/documentaion/Amazon_S3_Buckets_Users_Onboarding.md[]
+include::../../../../amazon-s3/documentaion/Amazon_S3_Buckets_Users_Onboarding.adoc[]
 
-== Export Full Line Versions Csv file to Amazon S3 Bucket
+== Export Full Line Versions Csv and Zip file to Amazon S3 Bucket
 
 include::{snippets}/line-controller-api-test/should-export-full-line-versions-csv/auto-section.adoc[]
 
-== Export Full Line Versions Zipped Csv file to Amazon S3 Bucket
-
-include::{snippets}/line-controller-api-test/should-export-full-line-versions-csv-zip/auto-section.adoc[]
-
-== Export Actual Line Versions Csv file to Amazon S3 Bucket
+== Export Actual Line Versions Csv and Zip file to Amazon S3 Bucket
 
 include::{snippets}/line-controller-api-test/should-export-actual-line-versions-csv/auto-section.adoc[]
-
-== Export Actual Line Versions Zipped Csv file to Amazon S3 Bucket
-
-include::{snippets}/line-controller-api-test/should-export-actual-line-versions-csv-zip/auto-section.adoc[]
 
 == Export Timetable Year change Line Versions Csv file to Amazon S3 Bucket
 
@@ -140,6 +132,22 @@ include::{snippets}/subline-controller-api-test/should-return-subline-outside-of
 == Get Subline Coverage
 
 include::{snippets}/subline-controller-api-test/should-get-subline-coverage/auto-section.adoc[]
+
+= Export Subline
+
+include::../../../../amazon-s3/documentaion/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+
+== Export Full Subline Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/subline-controller-api-test/should-export-full-subline-versions-csv/auto-section.adoc[]
+
+== Export Actual Subline Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/subline-controller-api-test/should-export-actual-subline-versions-csv/auto-section.adoc[]
+
+== Export Timetable Year change Subline Versions Csv file to Amazon S3 Bucket
+
+include::{snippets}/subline-controller-api-test/should-export-future-timetable-line-versions-csv/auto-section.adoc[]
 
 = Timetable field number
 
