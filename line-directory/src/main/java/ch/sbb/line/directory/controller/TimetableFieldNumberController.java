@@ -11,29 +11,47 @@ import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.TtfnidNotFoundException;
 import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
+import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @Slf4j
 public class TimetableFieldNumberController implements TimetableFieldNumberApiV1 {
 
   private final TimetableFieldNumberService timetableFieldNumberService;
 
-  @Autowired
-  public TimetableFieldNumberController(TimetableFieldNumberService timetableFieldNumberService) {
-    this.timetableFieldNumberService = timetableFieldNumberService;
+  private final TimetableFieldNumberVersionExportService versionExportService;
+
+  static TimetableFieldNumberVersionModel toModel(TimetableFieldNumberVersion version) {
+    return TimetableFieldNumberVersionModel.builder()
+                                           .id(version.getId())
+                                           .description(version.getDescription())
+                                           .number(version.getNumber())
+                                           .ttfnid(version.getTtfnid())
+                                           .swissTimetableFieldNumber(
+                                               version.getSwissTimetableFieldNumber())
+                                           .status(version.getStatus())
+                                           .validFrom(version.getValidFrom())
+                                           .validTo(version.getValidTo())
+                                           .businessOrganisation(version.getBusinessOrganisation())
+                                           .comment(version.getComment())
+                                           .etagVersion(version.getVersion())
+                                           .build();
   }
 
   @Override
   public Container<TimetableFieldNumberModel> getOverview(Pageable pageable,
-      List<String> searchCriteria, Optional<String> businessOrganisation,  Optional<LocalDate> validOn, List<Status> statusChoices) {
+      List<String> searchCriteria, Optional<String> businessOrganisation,
+      Optional<LocalDate> validOn, List<Status> statusChoices) {
     log.info(
         "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
         pageable, searchCriteria, validOn, statusChoices);
@@ -111,21 +129,19 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
     timetableFieldNumberService.deleteAll(allVersionsVersioned);
   }
 
-  static TimetableFieldNumberVersionModel toModel(TimetableFieldNumberVersion version) {
-    return TimetableFieldNumberVersionModel.builder()
-                                           .id(version.getId())
-                                           .description(version.getDescription())
-                                           .number(version.getNumber())
-                                           .ttfnid(version.getTtfnid())
-                                           .swissTimetableFieldNumber(
-                                               version.getSwissTimetableFieldNumber())
-                                           .status(version.getStatus())
-                                           .validFrom(version.getValidFrom())
-                                           .validTo(version.getValidTo())
-                                           .businessOrganisation(version.getBusinessOrganisation())
-                                           .comment(version.getComment())
-                                           .etagVersion(version.getVersion())
-                                           .build();
+  @Override
+  public List<URL> exportFullTimetableFieldNumberVersions() {
+    return versionExportService.exportFullVersions();
+  }
+
+  @Override
+  public List<URL> exportActualTimetableFieldNumberVersions() {
+    return versionExportService.exportActualVersions();
+  }
+
+  @Override
+  public List<URL> exportTimetableYearChangeTimetableFieldNumberVersions() {
+    return versionExportService.exportFutureTimetableVersions();
   }
 
   private TimetableFieldNumberVersion toEntity(
