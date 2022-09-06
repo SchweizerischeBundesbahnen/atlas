@@ -4,6 +4,7 @@ import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.base.service.versioning.model.VersionedObject;
 import ch.sbb.atlas.base.service.versioning.service.VersionableService;
+import ch.sbb.atlas.user.administration.security.UserAdministrationAwareService;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -25,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class LineService {
+public class LineService implements UserAdministrationAwareService<LineVersion> {
 
   private final LineVersionRepository lineVersionRepository;
   private final SublineVersionRepository sublineVersionRepository;
@@ -105,5 +106,16 @@ public class LineService {
 
   public List<LineVersion> getAllCoveredLineVersions() {
     return lineVersionRepository.getAllCoveredLineVersions();
+  }
+
+  @Override
+  public LineVersion create(LineVersion businessObject) {
+    return save(businessObject);
+  }
+
+  @Override
+  public LineVersion update(LineVersion editedBusinessObject,
+      List<LineVersion> currentBusinessObjects) {
+    return null;
   }
 }
