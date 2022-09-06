@@ -16,7 +16,7 @@ import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.model.LineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
-import ch.sbb.line.directory.service.export.ExportService;
+import ch.sbb.line.directory.service.export.LineVersionExportService;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,7 +34,7 @@ public class LineController implements LineApiV1 {
 
   private final LineService lineService;
   private final CoverageService coverageService;
-  private final ExportService exportService;
+  private final LineVersionExportService lineVersionExportService;
 
   @Override
   public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
@@ -110,35 +110,20 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public URL exportFullLineVersionsCsv() {
-    return exportService.exportFullLineVersionsCsv();
+  public List<URL> exportFullLineVersions() {
+    return lineVersionExportService.exportFullVersions();
   }
 
   @Override
-  public URL exportFullLineVersionsCsvZip() {
-    return exportService.exportFullLineVersionsCsvZip();
+  public List<URL> exportActualLineVersions() {
+    return lineVersionExportService.exportActualVersions();
   }
 
   @Override
-  public URL exportActualLineVersionsCsv() {
-    return exportService.exportActualLineVersionsCsv();
+  public List<URL> exportFutureTimetableLineVersions() {
+    return lineVersionExportService.exportFutureTimetableVersions();
   }
-
-  @Override
-  public URL exportActualLineVersionsCsvZip() {
-    return exportService.exportActualLineVersionsCsvZip();
-  }
-
-  @Override
-  public URL exportFutureTimetableLineVersionsCsv() {
-    return exportService.exportFutureTimetableLineVersionsCsv();
-  }
-
-  @Override
-  public URL exportFutureTimetableLineVersionsCsvZip() {
-    return exportService.exportFutureTimetableLineVersionsCsvZip();
-  }
-
+  
   @Override
   public void deleteLines(String slnid) {
     lineService.deleteAll(slnid);
