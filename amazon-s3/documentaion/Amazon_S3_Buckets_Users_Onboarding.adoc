@@ -6,7 +6,7 @@
 
 ### Atlas Amazon S3 Client
 
-In order to access the Atlas S3 Bucket it is necessary to request credential from
+In order to access the Atlas S3 Bucket it is necessary to request the credential from
 +++<a href="mailto:TechSupport-ATLAS@sbb.ch?subject=Amazon S3 Client Credential requests">TechSupport-ATLAS@sbb.ch</a>+++
 
 Once you have the credentials you can access the bucket via:

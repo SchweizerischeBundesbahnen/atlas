@@ -10,10 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.api.ErrorResponse;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
+import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.time.LocalDate;
@@ -27,10 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest {
-
-  @Autowired
-  private TimetableFieldNumberVersionRepository versionRepository;
+public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
   private final TimetableFieldNumberVersion version =
       TimetableFieldNumberVersion.builder()
@@ -43,6 +40,10 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
                                  .validTo(LocalDate.of(2020, 12, 31))
                                  .businessOrganisation("sbb")
                                  .build();
+  @Autowired
+  private TimetableFieldNumberVersionRepository versionRepository;
+  @Autowired
+  private TimetableFieldNumberVersionExportService versionExportService;
 
   @BeforeEach
   void createDefaultVersion() {
@@ -206,6 +207,30 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerApiTest
     version.setValidTo(LocalDate.of(2025, 12, 31));
     mvc.perform(createUpdateRequest(TimetableFieldNumberController.toModel(version)))
        .andExpect(status().isPreconditionFailed());
+  }
+
+  @Test
+  void shouldExportFullTimetableFieldNumberVersionsCsv() throws Exception {
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/full"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult, versionExportService.getDirectory());
+  }
+
+  @Test
+  void shouldExportActualTimetableFieldNumberVersionsCsv() throws Exception {
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/actual"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult, versionExportService.getDirectory());
+  }
+
+  @Test
+  void shouldExportTimeTableYearChangeTimetableFieldNumberVersionsCsv() throws Exception {
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/timetable-year-change"))
+                             .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult, versionExportService.getDirectory());
   }
 
   private MockHttpServletRequestBuilder createUpdateRequest(
