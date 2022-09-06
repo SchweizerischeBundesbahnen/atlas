@@ -28,9 +28,7 @@ public class AmazonServiceImpl implements AmazonService {
   public URL putFile(File file, String dir) throws IOException {
     ObjectMetadata metadata = new ObjectMetadata();
     metadata.setContentLength(file.length());
-    URL url = putFileToBucket(file, dir, metadata);
-    Files.deleteIfExists(file.toPath());
-    return url;
+    return putFileToBucket(file, dir, metadata);
   }
 
   @Override
