@@ -91,7 +91,7 @@ public class LineController implements LineApiV1 {
   public LineVersionModel createLineVersion(LineVersionModel newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
     newLineVersion.setStatus(Status.ACTIVE);
-    LineVersion createdVersion = lineService.save(newLineVersion);
+    LineVersion createdVersion = lineService.create(newLineVersion);
     return toModel(createdVersion);
   }
 
