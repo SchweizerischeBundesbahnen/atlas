@@ -2,7 +2,6 @@
 README.md
 api.module.ts
 api/api.ts
-api/atlasGraphApi.service.ts
 api/businessOrganisations.service.ts
 api/companies.service.ts
 api/lines.service.ts
@@ -12,6 +11,7 @@ api/timetableYearChange.service.ts
 api/transportCompanies.service.ts
 api/transportCompanyRelations.service.ts
 api/userAdministration.service.ts
+api/userInformation.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -25,10 +25,10 @@ model/company.ts
 model/containerBusinessOrganisation.ts
 model/containerCompany.ts
 model/containerLine.ts
-model/containerString.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTransportCompany.ts
+model/containerUserModel.ts
 model/coverage.ts
 model/coverageType.ts
 model/displayInfo.ts
@@ -50,6 +50,7 @@ model/transportCompany.ts
 model/transportCompanyBoRelation.ts
 model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
+model/userAccountStatus.ts
 model/userModel.ts
-model/userPermission.ts
+model/userPermissionModel.ts
 variables.ts

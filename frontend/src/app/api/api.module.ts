@@ -2,7 +2,6 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { AtlasGraphApiService } from './api/atlasGraphApi.service';
 import { BusinessOrganisationsService } from './api/businessOrganisations.service';
 import { CompaniesService } from './api/companies.service';
 import { LinesService } from './api/lines.service';
@@ -12,6 +11,7 @@ import { TimetableYearChangeService } from './api/timetableYearChange.service';
 import { TransportCompaniesService } from './api/transportCompanies.service';
 import { TransportCompanyRelationsService } from './api/transportCompanyRelations.service';
 import { UserAdministrationService } from './api/userAdministration.service';
+import { UserInformationService } from './api/userInformation.service';
 
 @NgModule({
   imports: [],

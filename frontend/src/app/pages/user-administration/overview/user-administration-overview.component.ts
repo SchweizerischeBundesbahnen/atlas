@@ -6,7 +6,7 @@ import { UserService } from '../service/user.service';
 import { tap } from 'rxjs/operators';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { UserModel } from '../../../api';
+import { UserModel, UserPermissionModel } from '../../../api';
 
 @Component({
   selector: 'app-user-administration-overview',
@@ -83,18 +83,22 @@ export class UserAdministrationOverviewComponent implements OnInit {
       this.userPageResult = { users: [], totalCount: 0 };
     } else {
       this.userService
-        .getUserPermissions(selectedUser.sbbUserId)
+        .getUser(selectedUser.sbbUserId)
         .pipe(
-          tap((userPermissions) => {
-            if (userPermissions.length === 0) {
-              this.userPageResult = { users: [], totalCount: 0 };
-            } else {
+          tap((user) => {
+            if (UserAdministrationOverviewComponent.hasPermissions(user)) {
               this.userPageResult = { users: [selectedUser], totalCount: 1 };
               this.tableComponent.paginator.pageIndex = 0;
+            } else {
+              this.userPageResult = { users: [], totalCount: 0 };
             }
           })
         )
         .subscribe();
     }
+  }
+
+  private static hasPermissions(user: UserModel): boolean {
+    return ((user.permissions as Array<UserPermissionModel> | undefined)?.length ?? 0) > 0;
   }
 }

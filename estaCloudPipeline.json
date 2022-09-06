@@ -83,6 +83,11 @@
       "type": "string",
       "id": "ssp-6slz1c1wa-b9r8-3t38-20bp-z8x1ch557uq",
       "variable": "KAFKA_AUTOMATION_CLIENT_SECRET"
+    },
+    {
+      "type": "string",
+      "id": "ssp-nv27fqu9h-u30t-e958-1i3d-08okh53f8i6",
+      "variable": "AZURE_AD_SECRET"
     }
   ],
   "npm": {
