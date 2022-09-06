@@ -23,8 +23,9 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ContainerString } from '../model/models';
-import { UserPermission } from '../model/models';
+import { ContainerUserModel } from '../model/models';
+import { ErrorResponse } from '../model/models';
+import { UserModel } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -103,34 +104,32 @@ export class UserAdministrationService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public getUserPermissions(
+  public getUser(
     userId: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<Array<UserPermission>>;
-  public getUserPermissions(
+  ): Observable<UserModel>;
+  public getUser(
     userId: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<Array<UserPermission>>>;
-  public getUserPermissions(
+  ): Observable<HttpResponse<UserModel>>;
+  public getUser(
     userId: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<Array<UserPermission>>>;
-  public getUserPermissions(
+  ): Observable<HttpEvent<UserModel>>;
+  public getUser(
     userId: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<any> {
     if (userId === null || userId === undefined) {
-      throw new Error(
-        'Required parameter userId was null or undefined when calling getUserPermissions.'
-      );
+      throw new Error('Required parameter userId was null or undefined when calling getUser.');
     }
 
     let headers = this.defaultHeaders;
@@ -150,10 +149,10 @@ export class UserAdministrationService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.get<Array<UserPermission>>(
+    return this.httpClient.get<UserModel>(
       `${this.configuration.basePath}/user-administration/v1/users/${encodeURIComponent(
         String(userId)
-      )}/permissions`,
+      )}`,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
@@ -178,7 +177,7 @@ export class UserAdministrationService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<ContainerString>;
+  ): Observable<ContainerUserModel>;
   public getUsers(
     page?: number,
     size?: number,
@@ -186,7 +185,7 @@ export class UserAdministrationService {
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<ContainerString>>;
+  ): Observable<HttpResponse<ContainerUserModel>>;
   public getUsers(
     page?: number,
     size?: number,
@@ -194,7 +193,7 @@ export class UserAdministrationService {
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<ContainerString>>;
+  ): Observable<HttpEvent<ContainerUserModel>>;
   public getUsers(
     page?: number,
     size?: number,
@@ -233,7 +232,7 @@ export class UserAdministrationService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.get<ContainerString>(
+    return this.httpClient.get<ContainerUserModel>(
       `${this.configuration.basePath}/user-administration/v1/users`,
       {
         params: queryParameters,

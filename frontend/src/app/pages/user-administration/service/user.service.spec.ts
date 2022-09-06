@@ -2,32 +2,29 @@ import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
 import {
-  AtlasGraphApiService,
-  ContainerString,
+  ContainerUserModel,
   UserAdministrationService,
-  UserModel,
-  UserPermission,
+  UserInformationService,
 } from '../../../api';
 import { of } from 'rxjs';
 
 describe('UserService', () => {
   let service: UserService;
   let userAdministrationServiceMock: UserAdministrationServiceMock;
-  let atlasGraphApiServiceMock: AtlasGraphApiServiceMock;
+  let userInformationServiceMock: UserInformationServiceMock;
 
   class UserAdministrationServiceMock {
     getUsers: any = undefined;
-    getUserPermissions: any = undefined;
+    getUser: any = undefined;
   }
 
-  class AtlasGraphApiServiceMock {
-    resolveUsers: any = undefined;
+  class UserInformationServiceMock {
     searchUsers: any = undefined;
   }
 
   beforeEach(() => {
     userAdministrationServiceMock = new UserAdministrationServiceMock();
-    atlasGraphApiServiceMock = new AtlasGraphApiServiceMock();
+    userInformationServiceMock = new UserInformationServiceMock();
     TestBed.configureTestingModule({
       providers: [
         {
@@ -35,8 +32,8 @@ describe('UserService', () => {
           useValue: userAdministrationServiceMock,
         },
         {
-          provide: AtlasGraphApiService,
-          useValue: atlasGraphApiServiceMock,
+          provide: UserInformationService,
+          useValue: userInformationServiceMock,
         },
       ],
     });
@@ -48,14 +45,12 @@ describe('UserService', () => {
   });
 
   it('test getUsers', (done) => {
-    userAdministrationServiceMock.getUsers = jasmine
-      .createSpy()
-      .and.returnValue(of<ContainerString>({ totalCount: 5, objects: ['u123456', 'u654321'] }));
-    atlasGraphApiServiceMock.resolveUsers = jasmine
-      .createSpy()
-      .and.callFake((userIds: string[]) =>
-        of(userIds.map((id) => ({ sbbUserId: id } as UserModel)))
-      );
+    userAdministrationServiceMock.getUsers = jasmine.createSpy().and.returnValue(
+      of<ContainerUserModel>({
+        totalCount: 5,
+        objects: [{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }],
+      })
+    );
 
     service.getUsers(10, 10).subscribe((res) => {
       expect(res).toEqual({
@@ -66,25 +61,25 @@ describe('UserService', () => {
     });
   });
 
-  it('test getUserPermissions', (done) => {
-    userAdministrationServiceMock.getUserPermissions = jasmine
+  it('test getUser', (done) => {
+    userAdministrationServiceMock.getUser = jasmine
       .createSpy()
-      .and.returnValue(of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]));
+      .and.returnValue(of({ sbbUserId: 'u123456' }));
 
-    service.getUserPermissions('u123456').subscribe((res) => {
-      expect(userAdministrationServiceMock.getUserPermissions).toHaveBeenCalledOnceWith('u123456');
-      expect(res).toEqual([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }] as UserPermission[]);
+    service.getUser('u123456').subscribe((res) => {
+      expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith('u123456');
+      expect(res).toEqual({ sbbUserId: 'u123456' });
       done();
     });
   });
 
   it('test searchUsers', (done) => {
-    atlasGraphApiServiceMock.searchUsers = jasmine
+    userInformationServiceMock.searchUsers = jasmine
       .createSpy()
       .and.returnValue(of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]));
 
     service.searchUsers('test').subscribe((res) => {
-      expect(atlasGraphApiServiceMock.searchUsers).toHaveBeenCalledOnceWith('test');
+      expect(userInformationServiceMock.searchUsers).toHaveBeenCalledOnceWith('test');
       expect(res).toEqual([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]);
       done();
     });

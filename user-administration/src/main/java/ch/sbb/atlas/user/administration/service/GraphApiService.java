@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import okhttp3.Request;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,8 +53,11 @@ public class GraphApiService {
     return userResult.stream().distinct().toList();
   }
 
-  public List<UserModel> resolveUsers(List<String> userIds) {
-    if (userIds.size() > 20) {
+  public List<UserModel> resolveUsers(@NonNull List<String> userIds) {
+    if (userIds.isEmpty()) {
+      return List.of();
+    }
+    if (userIds.size() > BATCH_REQUEST_LIMIT) {
       throw new IllegalArgumentException("Max length of userIds is " + BATCH_REQUEST_LIMIT);
     }
     final List<String> requestIds = new ArrayList<>();

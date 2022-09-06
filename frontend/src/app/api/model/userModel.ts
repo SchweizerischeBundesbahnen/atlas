@@ -9,20 +9,33 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserAccountStatus } from './userAccountStatus';
+import { UserPermissionModel } from './userPermissionModel';
 
 export interface UserModel {
+  /**
+   * SBB User Id
+   */
   sbbUserId?: string;
+  /**
+   * User lastname
+   */
   lastName?: string;
+  /**
+   * User firstname
+   */
   firstName?: string;
+  /**
+   * User E-Mail address
+   */
   mail?: string;
-  accountStatus?: UserModel.AccountStatusEnum;
+  /**
+   * User display name (azure)
+   */
   displayName?: string;
-}
-export namespace UserModel {
-  export type AccountStatusEnum = 'ACTIVE' | 'INACTIVE' | 'DELETED';
-  export const AccountStatusEnum = {
-    Active: 'ACTIVE' as AccountStatusEnum,
-    Inactive: 'INACTIVE' as AccountStatusEnum,
-    Deleted: 'DELETED' as AccountStatusEnum,
-  };
+  accountStatus?: UserAccountStatus;
+  /**
+   * User permissions
+   */
+  permissions?: Set<UserPermissionModel>;
 }
