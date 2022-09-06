@@ -112,33 +112,18 @@ public class SublineController implements SublinenApiV1 {
   }
 
   @Override
-  public URL exportFullSublineVersionsCsv() {
-    return sublineVersionExportService.exportFullVersionsCsv();
+  public List<URL> exportFullSublineVersions() {
+    return sublineVersionExportService.exportFullVersions();
   }
 
   @Override
-  public URL exportFullSublineVersionsCsvZip() {
-    return sublineVersionExportService.exportFullVersionsCsvZip();
+  public List<URL> exportActualSublineVersions() {
+    return sublineVersionExportService.exportActualVersions();
   }
 
   @Override
-  public URL exportActualSublineVersionsCsv() {
-    return sublineVersionExportService.exportActualVersionsCsv();
-  }
-
-  @Override
-  public URL exportActualSublineVersionsCsvZip() {
-    return sublineVersionExportService.exportActualVersionsCsvZip();
-  }
-
-  @Override
-  public URL exportFutureTimetableSublineVersionsCsv() {
-    return sublineVersionExportService.exportFutureTimetableVersionsCsv();
-  }
-
-  @Override
-  public URL exportFutureTimetableSublineVersionsCsvZip() {
-    return sublineVersionExportService.exportFutureTimetableVersionsCsvZip();
+  public List<URL> exportFutureTimetableSublineVersions() {
+    return sublineVersionExportService.exportFutureTimetableVersions();
   }
 
   @Override
