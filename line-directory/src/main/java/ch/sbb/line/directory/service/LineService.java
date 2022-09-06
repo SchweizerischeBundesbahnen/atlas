@@ -5,6 +5,9 @@ import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundExc
 import ch.sbb.atlas.base.service.versioning.model.VersionedObject;
 import ch.sbb.atlas.base.service.versioning.service.VersionableService;
 import ch.sbb.atlas.user.administration.security.UserAdministrationAwareService;
+import ch.sbb.atlas.user.administration.security.model.ApplicationType;
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -117,5 +120,10 @@ public class LineService implements UserAdministrationAwareService<LineVersion> 
   public LineVersion update(LineVersion editedBusinessObject,
       List<LineVersion> currentBusinessObjects) {
     return null;
+  }
+
+  @Override
+  public ApplicationType getAdministratedApplicationType() {
+    return ApplicationType.LIDI;
   }
 }
