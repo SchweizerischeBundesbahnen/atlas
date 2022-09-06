@@ -1,6 +1,6 @@
 package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.atlas.user.administration.enums.UserAccountStatus;
+import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
 import ch.sbb.atlas.user.administration.models.UserModel;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
@@ -75,20 +75,20 @@ public class GraphApiServiceTest {
 
     verify(userCollectionRequestMock.get(), times(2));
     assertThat(result).hasSize(3);
-    assertThat(result.get(0).sbbUserId()).isEqualTo("u236171");
-    assertThat(result.get(0).accountStatus()).isEqualTo(UserAccountStatus.ACTIVE);
+    assertThat(result.get(0).getSbbUserId()).isEqualTo("u236171");
+    assertThat(result.get(0).getAccountStatus()).isEqualTo(UserAccountStatus.ACTIVE);
 
-    assertThat(result.get(1).sbbUserId()).isEqualTo("u123456");
-    assertThat(result.get(1).accountStatus()).isEqualTo(UserAccountStatus.INACTIVE);
+    assertThat(result.get(1).getSbbUserId()).isEqualTo("u123456");
+    assertThat(result.get(1).getAccountStatus()).isEqualTo(UserAccountStatus.INACTIVE);
 
-    assertThat(result.get(2).sbbUserId()).isEqualTo("u654321");
-    assertThat(result.get(2).accountStatus()).isEqualTo(UserAccountStatus.INACTIVE);
+    assertThat(result.get(2).getSbbUserId()).isEqualTo("u654321");
+    assertThat(result.get(2).getAccountStatus()).isEqualTo(UserAccountStatus.INACTIVE);
   }
 
   @Test
   void shouldResolveLdapUserDataFromUserIds() {
     List<String> userIds = new ArrayList<>();
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 18; i++) {
       userIds.add("u1234" + i);
     }
 
@@ -110,19 +110,19 @@ public class GraphApiServiceTest {
     doReturn(userCollectionPageMockClass).when(graphApiBatchRequestService)
                                          .getDeserializedBody(any(), any(), anyString());
 
-    List<UserModel> userResult = graphApiService.resolveLdapUserDataFromUserIds(userIds);
+    List<UserModel> userResult = graphApiService.resolveUsers(userIds);
 
-    assertThat(userResult).hasSize(20);
-    assertThat(userResult.get(0).sbbUserId()).isEqualTo("u236171");
-    assertThat(userResult.get(0).accountStatus()).isEqualTo(UserAccountStatus.ACTIVE);
+    assertThat(userResult).hasSize(18);
+    assertThat(userResult.get(0).getSbbUserId()).isEqualTo("u236171");
+    assertThat(userResult.get(0).getAccountStatus()).isEqualTo(UserAccountStatus.ACTIVE);
 
     doReturn(null).when(graphApiBatchRequestService).getDeserializedBody(any(), any(), anyString());
 
-    userResult = graphApiService.resolveLdapUserDataFromUserIds(userIds);
+    userResult = graphApiService.resolveUsers(userIds);
 
-    assertThat(userResult).hasSize(20);
-    assertThat(userResult.get(0).sbbUserId()).isEqualTo("u12340");
-    assertThat(userResult.get(0).accountStatus()).isEqualTo(UserAccountStatus.DELETED);
+    assertThat(userResult).hasSize(18);
+    assertThat(userResult.get(0).getSbbUserId()).isEqualTo("u12340");
+    assertThat(userResult.get(0).getAccountStatus()).isEqualTo(UserAccountStatus.DELETED);
   }
 
   static class UserCollectionResponseMockClass extends UserCollectionResponse {
