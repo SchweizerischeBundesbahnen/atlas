@@ -64,6 +64,13 @@ scheduler:
           chron: "0 20 3 * * ?" #At 03:20:00am every day
         future:
           chron: "0 25 3 * * ?" #At 03:25:00am every day
+      timetable:
+        full:
+          chron: "0 30 3 * * ?" #At 03:15:00am every day
+        actual:
+          chron: "0 35 3 * * ?" #At 03:20:00am every day
+        future:
+          chron: "0 40 3 * * ?" #At 03:25:00am every day
 atlas:
   client:
     gateway:
