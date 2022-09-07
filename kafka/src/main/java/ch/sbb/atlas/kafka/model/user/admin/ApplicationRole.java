@@ -1,8 +1,11 @@
-package ch.sbb.atlas.user.administration.enumeration;
+package ch.sbb.atlas.kafka.model.user.admin;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true)
 public enum ApplicationRole {
-  WRITER,SUPER_USER,ADMIN
+  READER,
+  WRITER,
+  SUPER_USER,
+  SUPERVISOR
 }
