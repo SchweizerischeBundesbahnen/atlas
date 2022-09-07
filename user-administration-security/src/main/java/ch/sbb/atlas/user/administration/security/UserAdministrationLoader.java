@@ -1,6 +1,6 @@
 package ch.sbb.atlas.user.administration.security;
 
-import javax.annotation.PostConstruct;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -17,13 +17,10 @@ import org.springframework.stereotype.Component;
         partitionOffsets = @PartitionOffset(partition = "0", initialOffset = "0")))
 public class UserAdministrationLoader {
 
-  @PostConstruct
-  void setup(){
-    log.info("UserPermissions would be available");
-  }
+  private final UserPermissionHolder userPermissionHolder;
 
   @KafkaHandler
-  public void readUserPermissionsFromKafka() {
-    log.info("Receiving all mails, current={}");
+  public void readUserPermissionsFromKafka(UserAdministrationModel userAdministrationModel) {
+    userPermissionHolder.putUserPermissions(userAdministrationModel.getSbbUserId(), userAdministrationModel);
   }
 }
