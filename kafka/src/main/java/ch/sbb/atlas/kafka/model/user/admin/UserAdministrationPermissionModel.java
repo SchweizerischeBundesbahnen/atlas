@@ -1,17 +1,21 @@
-package ch.sbb.atlas.user.administration.security.model;
+package ch.sbb.atlas.kafka.model.user.admin;
 
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Builder
 @Setter
 @Getter
 @Data
-public class UserPermissionModel {
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserAdministrationPermissionModel {
 
   private ApplicationRole role;
 

@@ -3,10 +3,10 @@ package ch.sbb.atlas.user.administration.security;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.user.administration.security.model.ApplicationRole;
-import ch.sbb.atlas.user.administration.security.model.ApplicationType;
-import ch.sbb.atlas.user.administration.security.model.UserModel;
-import ch.sbb.atlas.user.administration.security.model.UserPermissionModel;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -46,16 +46,16 @@ class UserAdministrationServiceTest {
   @Test
   void shouldAllowCreateToSupervisor() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
-                                                                    .sbbUserId("e123456")
-                                                                    .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
+                                                                                  .sbbUserId("e123456")
+                                                                                  .permissions(Set.of(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.SUPERVISOR)
-                                                                                           .build()))
-                                                                    .build());
+                                                                                                         .build()))
+                                                                                  .build());
 
     // When
     boolean permissionsToCreate = userAdministrationService.hasUserPermissionsToCreate(
@@ -68,15 +68,15 @@ class UserAdministrationServiceTest {
   @Test
   void shouldAllowCreateToSuperUser() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.SUPER_USER)
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
@@ -90,15 +90,15 @@ class UserAdministrationServiceTest {
   @Test
   void shouldNotAllowCreateToWriterWithNoSboids() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.WRITER)
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
@@ -112,18 +112,18 @@ class UserAdministrationServiceTest {
   @Test
   void shouldAllowCreateToWriterCorrectSboids() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.WRITER)
-                                                                                           .sboids(
+                                                                                                         .sboids(
                                                                                                Set.of(
                                                                                                    "sboid"))
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
@@ -152,15 +152,15 @@ class UserAdministrationServiceTest {
   @Test
   void shouldAllowUpdateToSupervisor() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.SUPERVISOR)
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
@@ -176,15 +176,15 @@ class UserAdministrationServiceTest {
   @Test
   void shouldAllowUpdateToSuperUser() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.SUPER_USER)
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
@@ -200,15 +200,15 @@ class UserAdministrationServiceTest {
   @Test
   void shouldNotAllowUpdateToWriterWithoutSboids() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.WRITER)
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
@@ -224,18 +224,18 @@ class UserAdministrationServiceTest {
   @Test
   void shouldAllowUpdateToWriterWithSboid() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.WRITER)
-                                                                                           .sboids(
+                                                                                                         .sboids(
                                                                                                Set.of(
                                                                                                    "sboid"))
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
@@ -251,18 +251,18 @@ class UserAdministrationServiceTest {
   @Test
   void shouldNotAllowUpdateToWriterWithOnlyOneOfTwoRequired() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.WRITER)
-                                                                                           .sboids(
+                                                                                                         .sboids(
                                                                                                Set.of(
                                                                                                    "sboid1"))
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
@@ -286,19 +286,19 @@ class UserAdministrationServiceTest {
   @Test
   void shouldAllowUpdateToWriterWithTwoRequiredSboids() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.WRITER)
-                                                                                           .sboids(
+                                                                                                         .sboids(
                                                                                                Set.of(
                                                                                                    "sboid1",
                                                                                                    "sboid2"))
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
@@ -322,18 +322,18 @@ class UserAdministrationServiceTest {
   @Test
   void shouldAllowUpdateToWriterHandingOverObjectToOtherBusinessOrganisation() {
     // Given
-    when(userPermissionHolder.getCurrentUser()).thenReturn(UserModel.builder()
+    when(userPermissionHolder.getCurrentUser()).thenReturn(UserAdministrationModel.builder()
                                                                     .sbbUserId("e123456")
                                                                     .permissions(Set.of(
-                                                                        UserPermissionModel.builder()
-                                                                                           .application(
+                                                                        UserAdministrationPermissionModel.builder()
+                                                                                                         .application(
                                                                                                ApplicationType.LIDI)
-                                                                                           .role(
+                                                                                                         .role(
                                                                                                ApplicationRole.WRITER)
-                                                                                           .sboids(
+                                                                                                         .sboids(
                                                                                                Set.of(
                                                                                                    "sboid1"))
-                                                                                           .build()))
+                                                                                                         .build()))
                                                                     .build());
 
     // When
