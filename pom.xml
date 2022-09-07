@@ -144,10 +144,8 @@
     <modules>
         <!-- Order is important here-->
         <!-- Libs first-->
-        <module>model</module>
-        <module>versioning</module>
+        <module>base-service</module>
         <module>searching</module>
-        <module>amazon-s3</module>
         <!--  Services-->
         <module>mail</module>
         <module>scheduling</module>

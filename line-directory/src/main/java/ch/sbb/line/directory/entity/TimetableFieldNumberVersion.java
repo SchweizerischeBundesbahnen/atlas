@@ -1,12 +1,12 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.entity.BaseVersion;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
-import ch.sbb.atlas.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.entity.BaseVersion;
+import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.base.service.versioning.model.VersionableProperty.RelationType;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
