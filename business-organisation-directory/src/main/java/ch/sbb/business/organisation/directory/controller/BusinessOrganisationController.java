@@ -12,6 +12,8 @@ import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
+import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   private final BusinessOrganisationService service;
 
+  private final BusinessOrganisationVersionExportService exportService;
 
   @Override
   public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
@@ -43,7 +46,9 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
                                               .statusRestrictions(statusChoices)
                                               .validOn(validOn)
                                               .build());
-    List<BusinessOrganisationModel> versions = timetableFieldNumberPage.stream().map(BusinessOrganisationModel::toModel)
+    List<BusinessOrganisationModel> versions = timetableFieldNumberPage.stream()
+                                                                       .map(
+                                                                           BusinessOrganisationModel::toModel)
                                                                        .collect(
                                                                            Collectors.toList());
     return Container.<BusinessOrganisationModel>builder()
@@ -58,7 +63,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
         service.findBusinessOrganisationVersions(sboid).stream()
                .map(BusinessOrganisationVersionModel::toModel)
                .collect(toList());
-    if(organisationVersionModels.isEmpty()){
+    if (organisationVersionModels.isEmpty()) {
       throw new SboidNotFoundException(sboid);
     }
     return organisationVersionModels;
@@ -92,6 +97,21 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
       throw new SboidNotFoundException(sboid);
     }
     service.deleteAll(versions);
+  }
+
+  @Override
+  public List<URL> exportFullBusinessOrganisationVersions() {
+    return exportService.exportFullVersions();
+  }
+
+  @Override
+  public List<URL> exportActualBusinessOrganisationVersions() {
+    return exportService.exportActualVersions();
+  }
+
+  @Override
+  public List<URL> exportFutureTimetableBusinessOrganisationVersions() {
+    return exportService.exportFutureTimetableVersions();
   }
 
 }
