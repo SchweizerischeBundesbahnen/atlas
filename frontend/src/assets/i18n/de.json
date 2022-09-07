@@ -55,7 +55,8 @@
       "lidi-writer": "LiDi Writer",
       "lidi-admin": "LiDi Admin",
       "bo-writer": "BoDi Writer",
-      "bo-admin": "BoDi Admin"
+      "bo-admin": "BoDi Admin",
+      "atlas-admin": "Atlas Admin"
     },
     "SEARCH": {
       "VALIDITY": "Gültig am",
@@ -134,6 +135,11 @@
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Geschäftsorganisationen.",
       "PATH_TEXT": "Geschäftsorganisationen"
     },
+    "USER_ADMIN": {
+      "TITLE": "Benutzer verwalten",
+      "TITLE_HEADER": "Benutzerverwaltung",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zu den berechtigten Benutzern und können diese verwalten."
+    },
     "DETAILS": "Details"
   },
   "PAGINATOR": {
@@ -157,6 +163,19 @@
     "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
     "MIN": "Die Zahl muss mindestens {{min}} sein.",
     "MAX": "Die Zahl darf maximal {{max}} sein."
+  },
+  "USER_ADMIN": {
+    "TABLE_HEADER": "Benutzer",
+    "LAST_NAME": "Name",
+    "FIRST_NAME": "Vorname",
+    "MAIL": "E-Mail Adresse",
+    "USER_ID": "Benutzer-ID",
+    "ACCOUNT_STATUS": "Accountstatus",
+    "ACCOUNT_STATUS_TYPE": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv",
+      "DELETED": "Gelöscht"
+    }
   },
   "TTFN": {
     "TTFN": "Fahrplanfeldnummer",

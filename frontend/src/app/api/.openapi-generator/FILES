@@ -7,12 +7,17 @@ api/companies.service.ts
 api/lines.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
+api/timetableYearChange.service.ts
 api/transportCompanies.service.ts
 api/transportCompanyRelations.service.ts
+api/userAdministration.service.ts
+api/userInformation.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/applicationRole.ts
+model/applicationType.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
 model/businessType.ts
@@ -23,6 +28,7 @@ model/containerLine.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTransportCompany.ts
+model/containerUserModel.ts
 model/coverage.ts
 model/coverageType.ts
 model/displayInfo.ts
@@ -44,4 +50,7 @@ model/transportCompany.ts
 model/transportCompanyBoRelation.ts
 model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
+model/userAccountStatus.ts
+model/userModel.ts
+model/userPermissionModel.ts
 variables.ts
