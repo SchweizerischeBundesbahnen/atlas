@@ -1,9 +1,9 @@
 package ch.sbb.line.directory.service;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.versioning.model.VersionedObject;
-import ch.sbb.atlas.versioning.service.VersionableService;
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.base.service.versioning.model.VersionedObject;
+import ch.sbb.atlas.base.service.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -81,7 +81,8 @@ public class SublineService {
 
   public void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
     sublineVersionRepository.incrementVersion(currentVersion.getSlnid());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion()
+                                                             .equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(SublineVersion.class.getSimpleName(), "version");
     }
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(

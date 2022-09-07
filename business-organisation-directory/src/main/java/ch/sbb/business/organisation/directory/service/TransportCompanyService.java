@@ -1,7 +1,7 @@
 package ch.sbb.business.organisation.directory.service;
 
-import ch.sbb.atlas.model.mail.MailNotification;
-import ch.sbb.atlas.model.mail.MailType;
+import ch.sbb.atlas.base.service.model.mail.MailNotification;
+import ch.sbb.atlas.base.service.model.mail.MailType;
 import ch.sbb.business.organisation.directory.controller.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompany.Fields;
