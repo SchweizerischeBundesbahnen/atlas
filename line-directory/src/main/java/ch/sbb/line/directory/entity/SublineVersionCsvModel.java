@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

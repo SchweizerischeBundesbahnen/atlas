@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import com.amazonaws.services.s3.AmazonS3;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;

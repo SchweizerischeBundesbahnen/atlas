@@ -1,8 +1,8 @@
 package ch.sbb.business.organisation.directory.api;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.api.AtlasApiConstants;
-import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
+import ch.sbb.atlas.base.service.model.api.Container;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
