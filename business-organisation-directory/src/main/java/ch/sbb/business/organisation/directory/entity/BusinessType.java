@@ -1,9 +1,6 @@
 package ch.sbb.business.organisation.directory.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,15 +10,15 @@ import lombok.Getter;
 public enum BusinessType {
 
   STREET(30, "Strasse", "Route", "Strada"),
-  STREET_WITHOUT_TRAFFIC(32, "Strasse, ohne Verkehrsabrechnug",
-      "Route, sans rapport de circulation", "Strada, senza rapporto sul traffico"),
+  STREET_WITHOUT_TRAFFIC(32, "Strasse ohne Verkehrsabrechnug",
+      "Route sans rapport de circulation", "Strada senza rapporto sul traffico"),
   RAILROAD(10, "Eisenbahn", "Chemin de fer", "Ferrovia"),
   RAILROAD_UIC(11, "UIC Eisenbahn", "Chemin de fer UIC", "Ferrovia UIC"),
-  TRAIN_WITHOUT_TRAFFIC(12, "Bahn, ohne Verkehrsabrechnung",
-      "Chemin de fer, sans rapport de circulation", "Ferrovia, senza rapporto sul traffico"),
+  TRAIN_WITHOUT_TRAFFIC(12, "Bahn ohne Verkehrsabrechnung",
+      "Chemin de fer sans rapport de circulation", "Ferrovia senza rapporto sul traffico"),
   SHIP(20, "Schiff", "Bateau", "Nave"),
-  SHIP_WITHOUT_TRAFFIC(22, "Schiff, ohne Verkehrsabrechnung", "Bateau, sans rapport de circulation",
-      "Nave, senza rapporto sul traffico"),
+  SHIP_WITHOUT_TRAFFIC(22, "Schiff ohne Verkehrsabrechnung", "Bateau sans rapport de circulation",
+      "Nave senza rapporto sul traffico"),
   AIR(45, "Luft", "Air", "Aria"),
   LEISURE_ACTIVITIES(50, "Freizeitangebot", "Loisirs", "Ricreativo"),
   TARIFF_ASSOCIATION(51, "Tarifverbund", "Communauté tarifaire", "Comunità tariffaria"),
