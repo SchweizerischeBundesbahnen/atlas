@@ -56,7 +56,7 @@ public class UserAdministrationControllerApiTest {
        .andExpect(jsonPath("$.objects", hasSize(2)))
        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'e999999')].accountStatus").value("DELETED"))
        .andExpect(
-           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].role").value("UserAdministrationModel"))
+           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].role").value("SUPERVISOR"))
        .andExpect(
            jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].application").value(
                "TTFN"))
@@ -88,7 +88,7 @@ public class UserAdministrationControllerApiTest {
        .andExpect(jsonPath("$.sbbUserId").value("u236171"))
        .andExpect(jsonPath("$.lastName").value("Ammann"))
        .andExpect(jsonPath("$.permissions").value(hasSize(1)))
-       .andExpect(jsonPath("$.permissions[0].role").value("UserAdministrationModel"))
+       .andExpect(jsonPath("$.permissions[0].role").value("SUPERVISOR"))
        .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
   }
 
