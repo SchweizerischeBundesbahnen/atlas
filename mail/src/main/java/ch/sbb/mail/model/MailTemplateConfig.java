@@ -1,6 +1,6 @@
 package ch.sbb.mail.model;
 
-import ch.sbb.atlas.base.service.model.mail.MailType;
+import ch.sbb.atlas.kafka.model.mail.MailType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
