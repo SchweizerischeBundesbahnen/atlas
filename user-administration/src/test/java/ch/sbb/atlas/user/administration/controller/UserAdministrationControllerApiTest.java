@@ -31,66 +31,66 @@ public class UserAdministrationControllerApiTest {
         userPermissionRepository.deleteAll();
     }
 
-    @Test
-    void shouldGetUsers() throws Exception {
-        userPermissionRepository.saveAll(List.of(
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.TTFN)
-                .sbbUserId("***REMOVED***").build(),
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.TTFN)
-                .sbbUserId("e999999").build(),
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.LIDI)
-                .sbbUserId("***REMOVED***").build()
-        ));
+  @Test
+  void shouldGetUsers() throws Exception {
+    userPermissionRepository.saveAll(List.of(
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.TTFN)
+                      .sbbUserId("***REMOVED***").build(),
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.TTFN)
+                      .sbbUserId("e999999").build(),
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.LIDI)
+                      .sbbUserId("***REMOVED***").build()
+    ));
 
-        mvc.perform(get("/v1/users")
-                .queryParam("page", "0")
-                .queryParam("size", "5"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.totalCount").value(2))
-            .andExpect(jsonPath("$.objects", hasSize(2)))
-            .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'e999999')].accountStatus").value("DELETED"))
-            .andExpect(
-                jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].role").value("ADMIN"))
-            .andExpect(
-                jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].application").value(
-                    "TTFN"))
-            .andExpect(jsonPath("$.objects[?(@.sbbUserId == '***REMOVED***')].accountStatus").value("ACTIVE"))
-            .andExpect(
-                jsonPath("$.objects[?(@.sbbUserId == '***REMOVED***')].permissions[*]").value(hasSize(2)))
-            .andExpect(jsonPath("$.objects[?(@.sbbUserId == '***REMOVED***')].lastName").value("***REMOVED***"));
-    }
+    mvc.perform(get("/v1/users")
+           .queryParam("page", "0")
+           .queryParam("size", "5"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$.totalCount").value(2))
+       .andExpect(jsonPath("$.objects", hasSize(2)))
+       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'e999999')].accountStatus").value("DELETED"))
+       .andExpect(
+           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].role").value("UserAdministrationModel"))
+       .andExpect(
+           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].application").value(
+               "TTFN"))
+       .andExpect(jsonPath("$.objects[?(@.sbbUserId == '***REMOVED***')].accountStatus").value("ACTIVE"))
+       .andExpect(
+           jsonPath("$.objects[?(@.sbbUserId == '***REMOVED***')].permissions[*]").value(hasSize(2)))
+       .andExpect(jsonPath("$.objects[?(@.sbbUserId == '***REMOVED***')].lastName").value("***REMOVED***"));
+  }
 
-    @Test
-    void shouldGetUser() throws Exception {
-        userPermissionRepository.saveAll(List.of(
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.TTFN)
-                .sbbUserId("***REMOVED***").build(),
-            UserPermission.builder()
-                .role(ApplicationRole.WRITER)
-                .application(ApplicationType.LIDI)
-                .sbbUserId("***REMOVED***").build(),
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.TTFN)
-                .sbbUserId("e678574").build()
-        ));
+  @Test
+  void shouldGetUser() throws Exception {
+    userPermissionRepository.saveAll(List.of(
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.TTFN)
+                      .sbbUserId("***REMOVED***").build(),
+        UserPermission.builder()
+                      .role(ApplicationRole.WRITER)
+                      .application(ApplicationType.LIDI)
+                      .sbbUserId("***REMOVED***").build(),
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.TTFN)
+                      .sbbUserId("e678574").build()
+    ));
 
-        mvc.perform(get("/v1/users/***REMOVED***"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sbbUserId").value("***REMOVED***"))
-            .andExpect(jsonPath("$.lastName").value("***REMOVED***"))
-            .andExpect(jsonPath("$.permissions").value(hasSize(1)))
-            .andExpect(jsonPath("$.permissions[0].role").value("ADMIN"))
-            .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
-    }
+    mvc.perform(get("/v1/users/***REMOVED***"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$.sbbUserId").value("***REMOVED***"))
+       .andExpect(jsonPath("$.lastName").value("***REMOVED***"))
+       .andExpect(jsonPath("$.permissions").value(hasSize(1)))
+       .andExpect(jsonPath("$.permissions[0].role").value("UserAdministrationModel"))
+       .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
+  }
 
     @Test
     void shouldThrowPageSizeException() throws Exception {
