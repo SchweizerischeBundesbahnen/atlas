@@ -19,6 +19,10 @@ spring:
       mail:
         topic: atlas.mail
         groupId: atlas.kafka.user
+      user:
+        administration:
+          topic: atlas.user.administration
+          groupId: atlas.kafka.user
 
 ---
 
@@ -29,6 +33,9 @@ spring:
     atlas:
       mail:
         topic: atlas.dev.mail
+      user:
+        administration:
+          topic: atlas.dev.user.administration
 
 ---
 
@@ -39,6 +46,9 @@ spring:
     atlas:
       mail:
         topic: atlas.test.mail
+      user:
+        administration:
+          topic: atlas.test.user.administration
 
 ---
 
@@ -49,6 +59,9 @@ spring:
     atlas:
       mail:
         topic: atlas.int.mail
+      user:
+        administration:
+          topic: atlas.int.user.administration
 
 ---
 
@@ -59,3 +72,6 @@ spring:
     atlas:
       mail:
         topic: atlas.prod.mail
+      user:
+        administration:
+          topic: atlas.prod.user.administration
