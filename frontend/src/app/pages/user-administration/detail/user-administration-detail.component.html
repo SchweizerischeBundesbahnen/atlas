@@ -1,0 +1,19 @@
+<div>
+  <div class="dialog-close-panel">
+    <button mat-icon-button [disableRipple]="true" (click)="({})">
+      <em class="bi bi-x fs-2"></em>
+    </button>
+  </div>
+
+  <ng-content select="[title]"></ng-content>
+  <ng-content select="[subtitle]"></ng-content>
+  <ng-content select="[user-select]"></ng-content>
+  <ng-content select="[user-data]"></ng-content>
+
+  <h1 class="font-bold-4xl">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
+  <div *ngFor="let application of applications">
+    <app-user-administration-application-config
+      [titleTranslationKey]="application.title"
+    ></app-user-administration-application-config>
+  </div>
+</div>
