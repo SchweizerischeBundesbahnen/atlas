@@ -61,10 +61,6 @@
       <groupId>org.hibernate</groupId>
     </dependency>
     <dependency>
-      <artifactId>jackson-dataformat-csv</artifactId>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-    </dependency>
-    <dependency>
       <artifactId>flyway-core</artifactId>
       <groupId>org.flywaydb</groupId>
     </dependency>

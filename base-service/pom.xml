@@ -55,6 +55,10 @@
       <groupId>org.hibernate</groupId>
     </dependency>
     <dependency>
+      <artifactId>jackson-dataformat-csv</artifactId>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+    </dependency>
+    <dependency>
       <artifactId>aws-java-sdk</artifactId>
       <groupId>com.amazonaws</groupId>
       <version>1.12.279</version>
