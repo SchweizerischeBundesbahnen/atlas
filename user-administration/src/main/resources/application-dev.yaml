@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://user-administration-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com/user_administration
+    username: ${DB_USER}
+    password: ${DB_PWD}
+    driver-class-name: org.postgresql.Driver

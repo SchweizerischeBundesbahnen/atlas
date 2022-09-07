@@ -4,7 +4,7 @@
     <span class="title color-primary-500">atlas</span>
     <p class="font-regular-lg m-0">{{ 'PAGES.HOME_BUSINESS_PLATFORM' | translate }}</p>
   </div>
-  <a *ngFor="let page of pages" id="{{ page.path }}" class="card" [routerLink]="page.path">
+  <a *ngFor="let page of enabledPages" id="{{ page.path }}" class="card" [routerLink]="page.path">
     <div class="d-flex flex-column justify-content-between card-content-box">
       <h3 class="title color-gray-900 font-bold-xl m-0">{{ page.title | translate }}</h3>
       <p class="font-regular-base color-gray-900 m-0">{{ page.description | translate }}</p>

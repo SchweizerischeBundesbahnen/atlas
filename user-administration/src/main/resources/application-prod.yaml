@@ -1,0 +1,13 @@
+auth:
+  audience:
+    service-name: f3cdcb3e-1e95-4591-b664-4526d00f5d66
+azure-config:
+  azure-ad-secret: ${AZURE_AD_SECRET}
+  app-registration-id: f3cdcb3e-1e95-4591-b664-4526d00f5d66
+
+spring:
+  datasource:
+    url: # TODO: order prod db
+    username: ${DB_USER}
+    password: ${DB_PWD}
+    driver-class-name: org.postgresql.Driver

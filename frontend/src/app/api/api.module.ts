@@ -7,8 +7,11 @@ import { CompaniesService } from './api/companies.service';
 import { LinesService } from './api/lines.service';
 import { SublinesService } from './api/sublines.service';
 import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
+import { TimetableYearChangeService } from './api/timetableYearChange.service';
 import { TransportCompaniesService } from './api/transportCompanies.service';
 import { TransportCompanyRelationsService } from './api/transportCompanyRelations.service';
+import { UserAdministrationService } from './api/userAdministration.service';
+import { UserInformationService } from './api/userInformation.service';
 
 @NgModule({
   imports: [],
