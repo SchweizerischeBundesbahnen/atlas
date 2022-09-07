@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { UserModel, UserPermissionModel } from '../../../api';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-administration-overview',
@@ -46,7 +47,11 @@ export class UserAdministrationOverviewComponent implements OnInit {
     userSearch: new FormControl<string | null>(null),
   });
 
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers({ page: 0, size: 10 });
@@ -96,6 +101,12 @@ export class UserAdministrationOverviewComponent implements OnInit {
         )
         .subscribe();
     }
+  }
+
+  routeToCreate(): Promise<boolean> {
+    return this.router.navigate(['add'], {
+      relativeTo: this.route,
+    });
   }
 
   private static hasPermissions(user: UserModel): boolean {
