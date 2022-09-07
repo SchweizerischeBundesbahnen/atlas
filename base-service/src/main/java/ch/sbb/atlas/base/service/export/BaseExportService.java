@@ -1,11 +1,11 @@
-package ch.sbb.line.directory.service.export;
+package ch.sbb.atlas.base.service.export;
 
 import ch.sbb.atlas.base.service.amazon.service.AmazonService;
 import ch.sbb.atlas.base.service.amazon.service.FileService;
+import ch.sbb.atlas.base.service.export.model.VersionCsvModel;
 import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.ExportException;
-import ch.sbb.line.directory.entity.VersionCsvModel;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -111,11 +111,11 @@ public abstract class BaseExportService<T extends BaseVersion> {
   }
 
   @Getter
-  protected static class AtlasCsvMapper {
+  public static class AtlasCsvMapper {
 
     private final ObjectWriter objectWriter;
 
-    AtlasCsvMapper(Class<?> aClass) {
+    public AtlasCsvMapper(Class<?> aClass) {
       CsvMapper csvMapper = createCsvMapper();
       CsvSchema csvSchema = csvMapper.schemaFor(aClass).withHeader().withColumnSeparator(';');
       this.objectWriter = csvMapper.writerFor(aClass).with(csvSchema);
