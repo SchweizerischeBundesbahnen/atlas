@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.service.export;
+package ch.sbb.atlas.base.service.export;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
