@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,6 +34,16 @@ public class SublineService {
   private final LineService lineService;
   private final SublineValidationService sublineValidationService;
   private final CoverageService coverageService;
+
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  public SublineVersion create(SublineVersion businessObject) {
+    return save(businessObject);
+  }
+
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  public void update(SublineVersion currentVersion, SublineVersion editedVersion, List<SublineVersion> currentVersions) {
+    updateVersion(currentVersion, editedVersion);
+  }
 
   public Page<Subline> findAll(SublineSearchRestrictions searchRestrictions) {
     return sublineRepository.findAll(searchRestrictions.getSpecification(),
