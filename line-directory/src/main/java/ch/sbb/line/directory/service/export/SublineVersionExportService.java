@@ -9,7 +9,7 @@ import ch.sbb.atlas.base.service.export.BaseExportService;
 import ch.sbb.atlas.base.service.export.ExportType;
 import ch.sbb.atlas.base.service.export.model.VersionCsvModel;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.entity.SublineVersionCsvModel;
+import ch.sbb.line.directory.model.csv.SublineVersionCsvModel;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;

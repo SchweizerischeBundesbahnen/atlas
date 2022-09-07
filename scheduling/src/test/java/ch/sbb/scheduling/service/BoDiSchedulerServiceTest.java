@@ -107,4 +107,115 @@ public class BoDiSchedulerServiceTest {
 
   }
 
+  @Test
+  public void shouldExportFullBusinessOrganisationVersionsSuccessfully() {
+    //given
+    Response response = Response.builder()
+                                .status(200)
+                                .reason("OK")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(boDiClient.putBoDiBusinessOrganisationExportFull()).thenReturn(response);
+
+    //when
+    Response result = boDiSchedulerService.exportFullBusinessOrganisationVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldExportFullBusinessOrganisationVersionsUnsuccessful() {
+    //given
+    Response response = Response.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .reason("Bad Request")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(boDiClient.putBoDiBusinessOrganisationExportFull()).thenReturn(response);
+
+    //when
+    assertThrows(SchedulingExecutionException.class,
+        () -> boDiSchedulerService.exportFullBusinessOrganisationVersions());
+  }
+
+  @Test
+  public void shouldExportActualBusinessOrganisationVersionsSuccessfully() {
+    //given
+    Response response = Response.builder()
+                                .status(200)
+                                .reason("OK")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(boDiClient.putBoDiBusinessOrganisationExportActual()).thenReturn(response);
+
+    //when
+    Response result = boDiSchedulerService.exportActualBusinessOrganisationVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldExportActualBusinessOrganisationVersionsUnsuccessful() {
+    //given
+    Response response = Response.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .reason("Bad Request")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(boDiClient.putBoDiBusinessOrganisationExportActual()).thenReturn(response);
+
+    //when
+    assertThrows(SchedulingExecutionException.class,
+        () -> boDiSchedulerService.exportActualBusinessOrganisationVersions());
+  }
+
+  @Test
+  public void shouldNextTimetableBusinessOrganisationVersionsSuccessfully() {
+    //given
+    Response response = Response.builder()
+                                .status(200)
+                                .reason("OK")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(boDiClient.putBoDiBusinessOrganisationExportNextTimetableVersions()).thenReturn(response);
+
+    //when
+    Response result = boDiSchedulerService.exportNextTimetableBusinessOrganisationVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldExportNextTimetableBusinessOrganisationVersionsUnsuccessful() {
+    //given
+    Response response = Response.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .reason("Bad Request")
+                                .request(
+                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                                        null, Util.UTF_8, null))
+                                .build();
+    when(boDiClient.putBoDiBusinessOrganisationExportNextTimetableVersions()).thenReturn(response);
+
+    //when
+    assertThrows(SchedulingExecutionException.class,
+        () -> boDiSchedulerService.exportNextTimetableBusinessOrganisationVersions());
+  }
+
 }
