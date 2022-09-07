@@ -1,10 +1,11 @@
 package ch.sbb.atlas.user.administration.security;
 
-import ch.sbb.atlas.user.administration.security.model.ApplicationRole;
-import ch.sbb.atlas.user.administration.security.model.ApplicationType;
-import ch.sbb.atlas.user.administration.security.model.UserPermissionModel;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,16 +54,16 @@ public class UserAdministrationService {
   }
 
   private boolean hasUserPermissions(ApplicationType applicationType,
-      Predicate<UserPermissionModel> writerPermissionCheck) {
+      Predicate<UserAdministrationPermissionModel> writerPermissionCheck) {
     if (userPermissionHolder.isAdmin()) {
       return true;
     }
-    UserPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
+    UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
         applicationType);
 
     ApplicationRole roleForApplication = userPermissionsForApplication.getRole();
-    if (roleForApplication == ApplicationRole.SUPERVISOR ||
-        roleForApplication == ApplicationRole.SUPER_USER) {
+    if (Set.of(ApplicationRole.SUPERVISOR, ApplicationRole.SUPER_USER)
+           .contains(roleForApplication)) {
       return true;
     }
 
@@ -85,15 +86,16 @@ public class UserAdministrationService {
                                  .toList();
   }
 
-  private UserPermissionModel getUserPermissionsForApplication(ApplicationType applicationType) {
-    List<UserPermissionModel> userPermissionsForCurrentApplication = userPermissionHolder.getCurrentUser()
-                                                                                         .getPermissions()
-                                                                                         .stream()
-                                                                                         .filter(
-                                                                                             i -> i.getApplication()
-                                                                                                   .equals(
-                                                                                                       applicationType))
-                                                                                         .toList();
+  private UserAdministrationPermissionModel getUserPermissionsForApplication(
+      ApplicationType applicationType) {
+    List<UserAdministrationPermissionModel> userPermissionsForCurrentApplication = userPermissionHolder.getCurrentUser()
+                                                                                                       .getPermissions()
+                                                                                                       .stream()
+                                                                                                       .filter(
+                                                                                                           i -> i.getApplication()
+                                                                                                                 .equals(
+                                                                                                                     applicationType))
+                                                                                                       .toList();
     if (userPermissionsForCurrentApplication.size() == 1) {
       return userPermissionsForCurrentApplication.get(0);
     }
