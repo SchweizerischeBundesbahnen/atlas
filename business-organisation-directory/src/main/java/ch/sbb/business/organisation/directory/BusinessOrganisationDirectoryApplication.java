@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory;
 
+import ch.sbb.atlas.base.service.amazon.service.FileService;
 import ch.sbb.atlas.base.service.model.configuration.AtlasExceptionHandler;
 import ch.sbb.atlas.base.service.model.service.KafkaTruststorePreparation;
 import ch.sbb.atlas.base.service.versioning.service.VersionableService;
@@ -33,4 +34,8 @@ public class BusinessOrganisationDirectoryApplication {
     return new AtlasExceptionHandler();
   }
 
+  @Bean
+  public FileService fileService() {
+    return new FileService();
+  }
 }
