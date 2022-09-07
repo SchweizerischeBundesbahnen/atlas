@@ -39,7 +39,8 @@ import org.hibernate.annotations.GeneratorType;
 @FieldNameConstants
 @Entity(name = "subline_version")
 @AtlasVersionable
-public class SublineVersion extends BaseVersion implements Versionable {
+public class SublineVersion extends BaseVersion implements Versionable,
+    BusinessOrganisationAssociated {
 
   private static final String SUBLINE_VERSION_SEQ = "subline_version_seq";
 
