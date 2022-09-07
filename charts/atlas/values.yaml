@@ -34,7 +34,7 @@ lineDirectory:
 
 userAdministration:
   name: "user-administration"
-  port: 8084
+  port: 8086
   livenessProbe: "actuator/health"
   readynessProbe: "actuator/health"
 
