@@ -199,5 +199,4 @@ public class LineController implements LineApiV1 {
                     .build();
   }
 
-
 }

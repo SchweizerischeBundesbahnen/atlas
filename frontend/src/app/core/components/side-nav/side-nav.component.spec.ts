@@ -7,6 +7,7 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { Pages } from '../../../pages/pages';
 import { LidiOverviewComponent } from '../../../pages/lidi/overview/lidi-overview.component';
 import { TimetableFieldNumberOverviewComponent } from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
+import { AuthService } from '../../auth/auth.service';
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
@@ -31,6 +32,17 @@ describe('SideNavComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
       ],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: jasmine.createSpyObj<AuthService>(
+            {},
+            {
+              roles: [],
+            }
+          ),
+        },
+      ],
     }).compileComponents();
   });
 
@@ -48,8 +60,8 @@ describe('SideNavComponent', () => {
   it('should show side-nav', () => {
     const result = fixture.debugElement.queryAll(By.css('a'));
     expect(result).toBeDefined();
-    expect(result[0].nativeElement.textContent.trim()).toBe(component.pages[0].titleMenu);
-    expect(result[1].nativeElement.textContent.trim()).toBe(component.pages[1].titleMenu);
+    expect(result[0].nativeElement.textContent.trim()).toBe(component.enabledPages[0].titleMenu);
+    expect(result[1].nativeElement.textContent.trim()).toBe(component.enabledPages[1].titleMenu);
   });
 
   it('home route should be active', () => {
@@ -73,7 +85,9 @@ describe('SideNavComponent', () => {
     const activeNavItemIndex = navItems.findIndex((item) =>
       Object.keys(item.classes).includes('route-active')
     );
-    expect(activeNavItemIndex).toBe(component.pages.findIndex((page) => page.title === pageTitle));
+    expect(activeNavItemIndex).toBe(
+      component.enabledPages.findIndex((page) => page.title === pageTitle)
+    );
     expect(activeNavItemIndex).toBe(component.activePageIndex);
   };
 });

@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { By } from '@angular/platform-browser';
+import { AuthService } from '../../core/auth/auth.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -20,6 +21,17 @@ describe('HomeComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
+      ],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: jasmine.createSpyObj<AuthService>(
+            {},
+            {
+              roles: [],
+            }
+          ),
+        },
       ],
     }).compileComponents();
 

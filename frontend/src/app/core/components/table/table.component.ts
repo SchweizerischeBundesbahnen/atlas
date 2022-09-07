@@ -22,6 +22,8 @@ export class TableComponent<DATATYPE> {
   @Input() totalCount!: number;
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() tableSearchFieldTemplate!: TemplateRef<any>;
+  @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
+  @Input() sortingDisabled = false;
 
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() getTableElementsEvent = new EventEmitter<TableSettings>();
@@ -29,11 +31,12 @@ export class TableComponent<DATATYPE> {
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-  @ViewChild(TableSearchComponent, { static: true }) tableSearchComponent!: TableSearchComponent;
+  @ViewChild(TableSearchComponent) tableSearchComponent!: TableSearchComponent;
   @Input() searchTextColumnStyle = 'col-4';
   @Input() displayStatusSearch = true;
   @Input() displayValidOnSearch = true;
   @Input() displayBusinessOrganisationSearch = true;
+  @Input() loadTableSearch = true;
 
   loading = true;
 
@@ -54,7 +57,7 @@ export class TableComponent<DATATYPE> {
     const pageIndex = pageEvent.pageIndex;
     const pageSize = pageEvent.pageSize;
     this.getElementsSearched({
-      ...this.tableSearchComponent.activeSearch,
+      ...this.tableSearchComponent?.activeSearch,
       page: pageIndex,
       size: pageSize,
       sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
@@ -88,7 +91,9 @@ export class TableComponent<DATATYPE> {
   }
 
   private getElementsSearched(tableSettings: TableSettings) {
-    this.tableSearchComponent.activeSearch = tableSettings;
+    if (this.tableSearchComponent) {
+      this.tableSearchComponent.activeSearch = tableSettings;
+    }
     this.getTableElementsEvent.emit(tableSettings);
   }
 

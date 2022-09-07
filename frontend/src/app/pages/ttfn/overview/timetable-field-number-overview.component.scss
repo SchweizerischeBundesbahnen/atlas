@@ -1,9 +1,0 @@
-@use 'src/styles/variables' as variables;
-
-.white-container {
-  background-color: white;
-  border-radius: variables.$border-radius;
-
-  padding: 56px;
-  margin-right: 56px;
-}

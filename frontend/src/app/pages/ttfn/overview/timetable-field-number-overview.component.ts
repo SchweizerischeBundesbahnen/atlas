@@ -20,7 +20,6 @@ import { Role } from '../../../core/auth/role';
 @Component({
   selector: 'app-timetable-field-number-overview',
   templateUrl: './timetable-field-number-overview.component.html',
-  styleUrls: ['./timetable-field-number-overview.component.scss'],
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent, { static: true })

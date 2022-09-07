@@ -214,4 +214,3 @@ include::{snippets}/timetable-year-change-controller-api-test/should-return-erro
 == Get Next Timetable Years change - Error: param smaller than 1
 
 include::{snippets}/timetable-year-change-controller-api-test/should-return-error-when-next-future-time-tables-is-zero/auto-section.adoc[]
-
