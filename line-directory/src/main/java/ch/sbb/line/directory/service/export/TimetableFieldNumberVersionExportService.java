@@ -9,7 +9,7 @@ import ch.sbb.atlas.base.service.export.BaseExportService;
 import ch.sbb.atlas.base.service.export.ExportType;
 import ch.sbb.atlas.base.service.export.model.VersionCsvModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.entity.TimetableFieldNumberVersionCsvModel;
+import ch.sbb.line.directory.model.csv.TimetableFieldNumberVersionCsvModel;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;
