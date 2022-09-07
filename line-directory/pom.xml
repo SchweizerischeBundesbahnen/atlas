@@ -68,23 +68,14 @@
       <artifactId>flyway-core</artifactId>
       <groupId>org.flywaydb</groupId>
     </dependency>
-    <dependency>
-      <artifactId>versioning</artifactId>
-      <groupId>ch.sbb.atlas</groupId>
-      <version>${revision}</version>
-    </dependency>
+
     <dependency>
       <artifactId>searching</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <version>${revision}</version>
     </dependency>
     <dependency>
-      <artifactId>model</artifactId>
-      <groupId>ch.sbb.atlas</groupId>
-      <version>${revision}</version>
-    </dependency>
-    <dependency>
-      <artifactId>amazon-s3</artifactId>
+      <artifactId>base-service</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <version>${revision}</version>
     </dependency>
@@ -99,7 +90,7 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <artifactId>model</artifactId>
+      <artifactId>base-service</artifactId>
       <classifier>tests</classifier>
       <groupId>ch.sbb.atlas</groupId>
       <scope>test</scope>
