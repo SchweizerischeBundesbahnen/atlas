@@ -1,9 +1,9 @@
 package ch.sbb.business.organisation.directory;
 
-import ch.sbb.atlas.model.configuration.AtlasExceptionHandler;
-import ch.sbb.atlas.model.service.KafkaTruststorePreparation;
-import ch.sbb.atlas.versioning.service.VersionableService;
-import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
+import ch.sbb.atlas.base.service.model.configuration.AtlasExceptionHandler;
+import ch.sbb.atlas.base.service.model.service.KafkaTruststorePreparation;
+import ch.sbb.atlas.base.service.versioning.service.VersionableService;
+import ch.sbb.atlas.base.service.versioning.service.VersionableServiceImpl;
 import java.time.ZoneId;
 import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;

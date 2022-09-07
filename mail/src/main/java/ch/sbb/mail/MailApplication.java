@@ -1,6 +1,6 @@
 package ch.sbb.mail;
 
-import ch.sbb.atlas.model.service.KafkaTruststorePreparation;
+import ch.sbb.atlas.base.service.model.service.KafkaTruststorePreparation;
 import java.time.ZoneId;
 import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;

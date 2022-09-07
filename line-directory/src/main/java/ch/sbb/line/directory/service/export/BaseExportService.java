@@ -1,10 +1,10 @@
 package ch.sbb.line.directory.service.export;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.model.api.AtlasApiConstants;
-import ch.sbb.atlas.model.entity.BaseVersion;
-import ch.sbb.atlas.model.exception.ExportException;
+import ch.sbb.atlas.base.service.amazon.service.AmazonService;
+import ch.sbb.atlas.base.service.amazon.service.FileService;
+import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
+import ch.sbb.atlas.base.service.model.entity.BaseVersion;
+import ch.sbb.atlas.base.service.model.exception.ExportException;
 import ch.sbb.line.directory.entity.VersionCsvModel;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SequenceWriter;

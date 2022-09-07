@@ -81,7 +81,7 @@
       <groupId>org.springframework</groupId>
     </dependency>
     <dependency>
-      <artifactId>model</artifactId>
+      <artifactId>base-service</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <version>${revision}</version>
     </dependency>
