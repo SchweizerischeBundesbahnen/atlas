@@ -3,4 +3,5 @@ export enum Role {
   LidiWriter = 'lidi-writer',
   BoWriter = 'bo-writer',
   BoAdmin = 'bo-admin',
+  AtlasAdmin = 'atlas-admin',
 }

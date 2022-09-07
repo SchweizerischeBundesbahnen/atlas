@@ -58,6 +58,15 @@ export class Pages {
     description: 'PAGES.BODI.DESCRIPTION',
   };
 
+  public static USER_ADMINISTRATION: Page = {
+    title: 'PAGES.USER_ADMIN.TITLE',
+    titleMenu: 'PAGES.USER_ADMIN.TITLE_HEADER',
+    headerTitle: 'PAGES.USER_ADMIN.TITLE_HEADER',
+    path: 'user-administration',
+    pathText: 'PAGES.USER_ADMIN.TITLE_HEADER',
+    description: 'PAGES.USER_ADMIN.DESCRIPTION',
+  };
+
   public static BUSINESS_ORGANISATIONS: Page = {
     title: 'PAGES.DETAILS',
     path: 'business-organisations',
@@ -79,9 +88,7 @@ export class Pages {
     description: '',
   };
 
-  private static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
-
-  public static enabledPages(): Page[] {
-    return this.pages;
-  }
+  public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
+  public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
+  public static enabledPages: Page[] = Pages.pages;
 }

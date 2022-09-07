@@ -1,0 +1,81 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: '{{ .Values.userAdministration.name }}'
+spec:
+  replicas: {{ .Values.common.replicas }}
+  selector:
+    matchLabels:
+      app: '{{ .Values.userAdministration.name }}'
+      deploymentconfig: '{{ .Values.userAdministration.name }}'
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      annotations:
+        collectord.io/logs-index: '{{ .Values.common.splunkIndex }}'
+        collectord.io/logs-output: splunk::prod
+        collectord.io/logs-eventpattern: ^(timestamp=)
+      labels:
+        app: '{{ .Values.userAdministration.name }}'
+        deploymentconfig: '{{ .Values.userAdministration.name }}'
+    spec:
+      containers:
+        - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: '{{ .Values.common.springProfilesActive }}'
+            - name: AZURE_AD_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: azure-ad-{{ .Values.userAdministration.name }}
+                  key: secret
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.userAdministration.name }}
+                  key: username
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.userAdministration.name }}
+                  key: password
+          image: "atlas.docker.bin.sbb.ch/{{ .Values.userAdministration.name }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
+          name: '{{ .Values.userAdministration.name }}'
+          ports:
+            - containerPort: {{ .Values.userAdministration.port }}
+              protocol: TCP
+          resources:
+            requests:
+              cpu: '{{ .Values.common.cpuMin }}'
+              memory: '{{ .Values.common.memoryMin }}'
+            limits:
+              cpu: '{{ .Values.common.cpuMax }}'
+              memory: '{{ .Values.common.memoryMax }}'
+          livenessProbe:
+            httpGet:
+              path: '{{ .Values.userAdministration.livenessProbe }}'
+              port: {{ .Values.userAdministration.port }}
+              scheme: HTTP
+            initialDelaySeconds: 40
+            timeoutSeconds: 90
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: '{{ .Values.userAdministration.readynessProbe }}'
+              port: {{ .Values.userAdministration.port }}
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 90
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 10
+          terminationMessagePath: /dev/termination-log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
