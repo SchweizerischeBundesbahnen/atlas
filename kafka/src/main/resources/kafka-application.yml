@@ -15,6 +15,14 @@ spring:
           poll:
             interval:
               ms: 1200000
+    producer:
+      properties:
+        max:
+          request:
+            size: 3000000
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 1
     atlas:
       mail:
         topic: atlas.mail
