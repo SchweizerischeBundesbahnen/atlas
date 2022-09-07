@@ -2,12 +2,14 @@ package ch.sbb.atlas.user.administration.security;
 
 import java.time.LocalDate;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@Data
 public class BusinessObject implements BusinessOrganisationAssociated {
 
   private String anotherValue;
