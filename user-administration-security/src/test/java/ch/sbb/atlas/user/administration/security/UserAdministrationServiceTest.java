@@ -27,6 +27,7 @@ class UserAdministrationServiceTest {
     MockitoAnnotations.openMocks(this);
     userAdministrationService = new UserAdministrationService(userPermissionHolder);
     when(userPermissionHolder.isAdmin()).thenReturn(false);
+    when(userPermissionHolder.getCurrentUserSbbUid()).thenReturn("e123456");
   }
 
   @Test
