@@ -7,6 +7,7 @@ import ch.sbb.atlas.user.administration.models.UserModel;
 import ch.sbb.atlas.user.administration.models.UserPermissionModel;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
+import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
