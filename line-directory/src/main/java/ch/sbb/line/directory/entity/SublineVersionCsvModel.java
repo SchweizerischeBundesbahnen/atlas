@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.base.service.export.model.VersionCsvModel;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
