@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { Pages } from './pages/pages';
 import { AuthGuard } from './core/auth/auth-guard';
+import { AdminGuard } from './core/auth/admin.guard';
 
 const routes: Routes = [
   {
@@ -22,6 +23,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/bodi/bodi.module').then((m) => m.BodiModule),
     data: { headerTitle: Pages.BODI.headerTitle },
     canActivate: [AuthGuard],
+  },
+  {
+    path: Pages.USER_ADMINISTRATION.path,
+    loadChildren: () =>
+      import('./pages/user-administration/user-administration.module').then(
+        (m) => m.UserAdministrationModule
+      ),
+    data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
+    canActivate: [AuthGuard, AdminGuard],
   },
   {
     path: Pages.HOME.path,

@@ -8,7 +8,7 @@ import { Page } from '../../core/model/page';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  pages: Page[] = Pages.enabledPages().filter((page) => {
-    return page !== Pages.HOME;
-  });
+  get enabledPages(): Page[] {
+    return Pages.enabledPages.filter((page) => page !== Pages.HOME);
+  }
 }

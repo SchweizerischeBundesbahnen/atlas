@@ -37,6 +37,9 @@ export class AuthService {
     this.oauthService.loadDiscoveryDocumentAndLogin().then(() => {
       if (this.loggedIn) {
         this.eventUserComponentNotification.emit(this.claims);
+        if (this.hasRole(Role.AtlasAdmin)) {
+          Pages.enabledPages = [...Pages.pages, ...Pages.adminPages];
+        }
         this.router.navigate([sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY)]).then();
       }
     });
@@ -50,6 +53,7 @@ export class AuthService {
 
   logout() {
     this.oauthService.logOut(true);
+    Pages.enabledPages = Pages.pages;
     return this.router.navigate([Pages.HOME.path]);
   }
 
