@@ -11,9 +11,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.model.exception.NotFoundException;
+import ch.sbb.atlas.base.service.model.exception.NotFoundException;
+import ch.sbb.atlas.base.service.versioning.service.VersionableService;
 import ch.sbb.atlas.searching.SpecificationBuilder;
-import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -81,7 +81,9 @@ class LineServiceTest {
     Pageable pageable = Pageable.unpaged();
     when(lineSearchRestrictions.getSpecification()).thenReturn(SpecificationBuilder.<Line>builder()
                                                                                    .build()
-                                                                                   .searchCriteriaSpecification(List.of("test")));
+                                                                                   .searchCriteriaSpecification(
+                                                                                       List.of(
+                                                                                           "test")));
     when(lineSearchRestrictions.getPageable()).thenReturn(pageable);
 
     // When

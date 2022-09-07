@@ -1,9 +1,9 @@
 package ch.sbb.mail.service;
 
 import ch.sbb.mail.exception.MailSendException;
-import ch.sbb.atlas.model.mail.MailNotification;
+import ch.sbb.atlas.base.service.model.mail.MailNotification;
 import ch.sbb.mail.model.MailTemplateConfig;
-import ch.sbb.atlas.model.mail.MailType;
+import ch.sbb.atlas.base.service.model.mail.MailType;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
