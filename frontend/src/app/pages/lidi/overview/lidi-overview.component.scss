@@ -1,13 +1,5 @@
 @use 'src/styles/variables' as variables;
 
-.white-container {
-  background-color: white;
-  border-radius: 0 variables.$border-radius variables.$border-radius variables.$border-radius;
-
-  padding: 56px;
-  margin-right: 56px;
-}
-
 .tabs {
   margin-top: 80px;
 }

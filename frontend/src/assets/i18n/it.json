@@ -55,7 +55,8 @@
       "lidi-writer": "Autore LiDi",
       "lidi-admin": "Admin LiDi",
       "bo-writer": "BoDi Writer",
-      "bo-admin": "BoDi Admin"
+      "bo-admin": "BoDi Admin",
+      "atlas-admin": "Atlas Admin"
     },
     "SEARCH": {
       "VALIDITY": "Valido il",
@@ -134,6 +135,11 @@
       "DESCRIPTION": "Registrazione e gestione dei dati delle rganizzazioni aziendali.",
       "PATH_TEXT": "Organizzazioni aziendali"
     },
+    "USER_ADMIN": {
+      "TITLE": "Gestire gli utenti",
+      "TITLE_HEADER": "Amministrazione degli utenti",
+      "DESCRIPTION": "Qui troverete tutte le informazioni sugli utenti autorizzati e potrete gestirli."
+    },
     "DETAILS": "Precisazioni"
   },
   "PAGINATOR": {
@@ -157,6 +163,19 @@
     "CMYK_INVALID": "Colore CMYK previsto nel formato 0-100,0-100,0-100,0-100. Esempio 10,10,0,100",
     "MIN": "Il valore deve essere minimo {{min}}",
     "MAX": "Il valore può essere massimo {{max}}"
+  },
+  "USER_ADMIN": {
+    "TABLE_HEADER": "Utente",
+    "LAST_NAME": "Cognome",
+    "FIRST_NAME": "Nome",
+    "MAIL": "Indirizzo e-mail",
+    "USER_ID": "ID utente",
+    "ACCOUNT_STATUS": "Stato del conto",
+    "ACCOUNT_STATUS_TYPE": {
+      "ACTIVE": "Attivo",
+      "INACTIVE": "Inattivo",
+      "DELETED": "Soppresso"
+    }
   },
   "TTFN": {
     "TTFN": "Numero del quadro d’orario",
