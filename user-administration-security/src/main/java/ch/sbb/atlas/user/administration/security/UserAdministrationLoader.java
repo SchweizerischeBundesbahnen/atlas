@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-//@KafkaListener(topics = "${spring.kafka.atlas.user.administration.topic}", groupId = "${spring.kafka.atlas.mail.groupId}",
-//    topicPartitions = @TopicPartition(topic = "${spring.kafka.atlas.user.administration.topic}",
-//        partitionOffsets = @PartitionOffset(partition = "0", initialOffset = "0")))
+@KafkaListener(topics = "${spring.kafka.atlas.user.administration.topic}", groupId = "${spring.kafka.atlas.user.administration.groupId}",
+    topicPartitions = @TopicPartition(topic = "${spring.kafka.atlas.user.administration.topic}",
+        partitionOffsets = @PartitionOffset(partition = "0", initialOffset = "0")))
 public class UserAdministrationLoader {
 
   @PostConstruct
@@ -22,8 +22,8 @@ public class UserAdministrationLoader {
     log.info("UserPermissions would be available");
   }
 
-//  @KafkaHandler
-//  public void readUserPermissionsFromKafka() {
-//    log.info("Receiving all mails, current={}");
-//  }
+  @KafkaHandler
+  public void readUserPermissionsFromKafka() {
+    log.info("Receiving all mails, current={}");
+  }
 }

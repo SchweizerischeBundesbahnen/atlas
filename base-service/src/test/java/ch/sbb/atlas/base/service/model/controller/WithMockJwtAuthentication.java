@@ -31,7 +31,7 @@ public @interface WithMockJwtAuthentication {
     public SecurityContext createSecurityContext(WithMockJwtAuthentication annotation) {
       SecurityContext context = SecurityContextHolder.createEmptyContext();
       Authentication authentication = new JwtAuthenticationToken(createJwt(annotation.sbbuid()),
-          AuthorityUtils.createAuthorityList("ROLE_atlas-admin", "ROLE_lidi-admin"));
+          AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
       authentication.setAuthenticated(true);
       context.setAuthentication(authentication);
       return context;
@@ -41,7 +41,7 @@ public @interface WithMockJwtAuthentication {
       return Jwt.withTokenValue("token")
                 .header("header", "value")
                 .claim("sbbuid", sbbuid)
-                .claim("roles", List.of("ROLE_atlas-admin", "ROLE_lidi-admin"))
+                .claim("roles", List.of("ROLE_atlas-admin"))
                 .audience(Collections.singletonList("87e6e634-6ba1-4e7a-869d-3348b4c3eafc"))
                 .issuer(
                     "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0")
