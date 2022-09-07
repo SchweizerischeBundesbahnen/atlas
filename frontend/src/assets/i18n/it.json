@@ -165,6 +165,7 @@
     "MAX": "Il valore può essere massimo {{max}}"
   },
   "USER_ADMIN": {
+    "NEW": "Inserire nuovo utente",
     "TABLE_HEADER": "Utente",
     "LAST_NAME": "Cognome",
     "FIRST_NAME": "Nome",
