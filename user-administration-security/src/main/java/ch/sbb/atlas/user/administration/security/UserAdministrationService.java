@@ -1,6 +1,5 @@
 package ch.sbb.atlas.user.administration.security;
 
-import ch.sbb.atlas.model.service.UserService;
 import ch.sbb.atlas.user.administration.security.model.ApplicationRole;
 import ch.sbb.atlas.user.administration.security.model.ApplicationType;
 import ch.sbb.atlas.user.administration.security.model.UserPermissionModel;
@@ -20,13 +19,15 @@ public class UserAdministrationService {
 
   public boolean hasUserPermissionsToCreate(BusinessOrganisationAssociated businessObject,
       ApplicationType applicationType) {
-    log.info("Checking if user {} may create object with sboid {}", UserService.getSbbUid(),
+    log.info("Checking if user {} may create object with sboid {}",
+        userPermissionHolder.getCurrentUserSbbUid(),
         businessObject.getBusinessOrganisation());
     boolean permissionsToCreate = hasUserPermissions(applicationType,
         permissions -> permissions.getSboids()
                                   .contains(
                                       businessObject.getBusinessOrganisation()));
-    log.info("User {} has permissions: {}", UserService.getSbbUid(), permissionsToCreate);
+    log.info("User {} has permissions: {}", userPermissionHolder.getCurrentUserSbbUid(),
+        permissionsToCreate);
     return permissionsToCreate;
 
   }
@@ -34,7 +35,8 @@ public class UserAdministrationService {
   public boolean hasUserPermissionsToUpdate(BusinessOrganisationAssociated editedBusinessObject,
       List<BusinessOrganisationAssociated> currentBusinessObjects,
       ApplicationType applicationType) {
-    log.info("Checking if user {} may update object {}", UserService.getSbbUid(),
+    log.info("Checking if user {} may update object {}",
+        userPermissionHolder.getCurrentUserSbbUid(),
         editedBusinessObject);
     boolean permissionsToUpdate = hasUserPermissions(applicationType,
         permissions -> permissions.getSboids()
@@ -45,7 +47,8 @@ public class UserAdministrationService {
                                                                  .map(
                                                                      BusinessOrganisationAssociated::getBusinessOrganisation)
                                                                  .toList()));
-    log.info("User {} has permissions: {}", UserService.getSbbUid(), permissionsToUpdate);
+    log.info("User {} has permissions: {}", userPermissionHolder.getCurrentUserSbbUid(),
+        permissionsToUpdate);
     return permissionsToUpdate;
   }
 
