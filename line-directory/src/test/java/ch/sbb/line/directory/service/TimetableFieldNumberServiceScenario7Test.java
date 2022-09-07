@@ -3,8 +3,8 @@ package ch.sbb.line.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.versioning.exception.DateValidationException;
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.versioning.exception.DateValidationException;
 import ch.sbb.line.directory.entity.TimetableFieldLineRelation;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
@@ -46,11 +46,15 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
     editedVersion.setValidFrom(LocalDate.of(2025, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2025, 12, 31));
     editedVersion.getLineRelations()
-                 .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version3).build());
+                 .add(TimetableFieldLineRelation.builder()
+                                                .slnid("ch:1:ttfnid:111111")
+                                                .timetableFieldNumberVersion(version3)
+                                                .build());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
-    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(
+        version1.getTtfnid());
 
     //then
     assertThat(result).isNotNull();
@@ -104,7 +108,9 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
     Set<TimetableFieldLineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isNotEmpty();
     assertThat(lineRelationsFourthVersion.size()).isEqualTo(1);
-    TimetableFieldLineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream().iterator().next();
+    TimetableFieldLineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream()
+                                                                                     .iterator()
+                                                                                     .next();
     assertThat(lineRelationFourthVersion).isNotNull();
     assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
     assertThat(fourthTemporalVersion.getNumber()).isEqualTo("BEX3");
@@ -136,11 +142,15 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
     editedVersion.setValidFrom(LocalDate.of(2019, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2019, 12, 31));
     editedVersion.getLineRelations()
-                 .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version1).build());
+                 .add(TimetableFieldLineRelation.builder()
+                                                .slnid("ch:1:ttfnid:111111")
+                                                .timetableFieldNumberVersion(version1)
+                                                .build());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
-    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(
+        version1.getTtfnid());
 
     //then
     assertThat(result).isNotNull();
@@ -156,7 +166,9 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
     Set<TimetableFieldLineRelation> lineRelationsFirstVersion = firstTemporalVersion.getLineRelations();
     assertThat(lineRelationsFirstVersion).isNotEmpty();
     assertThat(lineRelationsFirstVersion.size()).isEqualTo(1);
-    TimetableFieldLineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream().iterator().next();
+    TimetableFieldLineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream()
+                                                                                   .iterator()
+                                                                                   .next();
     assertThat(lineRelationFirstVersion).isNotNull();
     assertThat(lineRelationFirstVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
@@ -225,11 +237,15 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
     editedVersion.setValidFrom(LocalDate.of(2025, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2025, 12, 31));
     editedVersion.getLineRelations()
-                 .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version3).build());
+                 .add(TimetableFieldLineRelation.builder()
+                                                .slnid("ch:1:ttfnid:111111")
+                                                .timetableFieldNumberVersion(version3)
+                                                .build());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
-    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(
+        version1.getTtfnid());
 
     //then
     assertThat(result).isNotNull();
@@ -283,7 +299,9 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
     Set<TimetableFieldLineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isNotEmpty();
     assertThat(lineRelationsFourthVersion.size()).isEqualTo(1);
-    TimetableFieldLineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream().iterator().next();
+    TimetableFieldLineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream()
+                                                                                     .iterator()
+                                                                                     .next();
     assertThat(lineRelationFourthVersion).isNotNull();
     assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
     assertThat(fourthTemporalVersion.getNumber()).isEqualTo("BEX3");
@@ -315,11 +333,15 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
     editedVersion.setValidFrom(LocalDate.of(2019, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2019, 5, 31));
     editedVersion.getLineRelations()
-                 .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version1).build());
+                 .add(TimetableFieldLineRelation.builder()
+                                                .slnid("ch:1:ttfnid:111111")
+                                                .timetableFieldNumberVersion(version1)
+                                                .build());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
-    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
+    List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(
+        version1.getTtfnid());
 
     //then
     assertThat(result).isNotNull();
@@ -335,7 +357,9 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
     Set<TimetableFieldLineRelation> lineRelationsFirstVersion = firstTemporalVersion.getLineRelations();
     assertThat(lineRelationsFirstVersion).isNotEmpty();
     assertThat(lineRelationsFirstVersion.size()).isEqualTo(1);
-    TimetableFieldLineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream().iterator().next();
+    TimetableFieldLineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream()
+                                                                                   .iterator()
+                                                                                   .next();
     assertThat(lineRelationFirstVersion).isNotNull();
     assertThat(lineRelationFirstVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
     assertThat(firstTemporalVersion.getNumber()).isEqualTo("BEX1");
@@ -397,7 +421,10 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
     editedVersion.setValidFrom(LocalDate.of(2029, 12, 9));
     editedVersion.setValidTo(version1.getValidTo());
     editedVersion.getLineRelations()
-                 .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version1).build());
+                 .add(TimetableFieldLineRelation.builder()
+                                                .slnid("ch:1:ttfnid:111111")
+                                                .timetableFieldNumberVersion(version1)
+                                                .build());
 
     //when
     assertThatThrownBy(() -> {
