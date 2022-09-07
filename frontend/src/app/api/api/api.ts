@@ -8,16 +8,25 @@ export * from './sublines.service';
 import { SublinesService } from './sublines.service';
 export * from './timetableFieldNumbers.service';
 import { TimetableFieldNumbersService } from './timetableFieldNumbers.service';
+export * from './timetableYearChange.service';
+import { TimetableYearChangeService } from './timetableYearChange.service';
 export * from './transportCompanies.service';
 import { TransportCompaniesService } from './transportCompanies.service';
 export * from './transportCompanyRelations.service';
 import { TransportCompanyRelationsService } from './transportCompanyRelations.service';
+export * from './userAdministration.service';
+import { UserAdministrationService } from './userAdministration.service';
+export * from './userInformation.service';
+import { UserInformationService } from './userInformation.service';
 export const APIS = [
   BusinessOrganisationsService,
   CompaniesService,
   LinesService,
   SublinesService,
   TimetableFieldNumbersService,
+  TimetableYearChangeService,
   TransportCompaniesService,
   TransportCompanyRelationsService,
+  UserAdministrationService,
+  UserInformationService,
 ];
