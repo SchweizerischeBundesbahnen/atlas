@@ -1,9 +1,9 @@
 package ch.sbb.line.directory.configuration;
 
-import ch.sbb.atlas.amazon.config.AmazonAtlasConfig;
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.AmazonServiceImpl;
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.base.service.amazon.config.AmazonAtlasConfig;
+import ch.sbb.atlas.base.service.amazon.service.AmazonService;
+import ch.sbb.atlas.base.service.amazon.service.AmazonServiceImpl;
+import ch.sbb.atlas.base.service.amazon.service.FileService;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.BucketLifecycleConfiguration;
 import com.amazonaws.services.s3.model.lifecycle.LifecycleFilter;

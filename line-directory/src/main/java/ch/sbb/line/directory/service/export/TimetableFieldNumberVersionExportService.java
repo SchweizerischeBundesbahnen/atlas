@@ -2,9 +2,9 @@ package ch.sbb.line.directory.service.export;
 
 import static java.util.stream.Collectors.toList;
 
-import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.base.service.amazon.helper.FutureTimetableHelper;
+import ch.sbb.atlas.base.service.amazon.service.AmazonService;
+import ch.sbb.atlas.base.service.amazon.service.FileService;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersionCsvModel;
 import ch.sbb.line.directory.entity.VersionCsvModel;

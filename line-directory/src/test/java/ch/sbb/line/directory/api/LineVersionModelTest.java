@@ -2,7 +2,7 @@ package ch.sbb.line.directory.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.line.directory.enumaration.LineType;

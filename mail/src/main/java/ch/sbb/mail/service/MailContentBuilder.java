@@ -3,7 +3,7 @@ package ch.sbb.mail.service;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED;
 
-import ch.sbb.atlas.model.mail.MailNotification;
+import ch.sbb.atlas.base.service.model.mail.MailNotification;
 import ch.sbb.mail.model.MailTemplateConfig;
 import java.util.List;
 import java.util.Map;

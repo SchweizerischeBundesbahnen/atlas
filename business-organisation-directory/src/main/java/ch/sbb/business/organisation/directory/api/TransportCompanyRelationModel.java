@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory.api;
 
-import ch.sbb.atlas.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import io.swagger.v3.oas.annotations.media.Schema;

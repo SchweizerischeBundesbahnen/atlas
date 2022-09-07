@@ -3,8 +3,8 @@ package ch.sbb.business.organisation.directory.controller;
 import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.toEntity;
 import static java.util.stream.Collectors.toList;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationApiV1;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationModel;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;

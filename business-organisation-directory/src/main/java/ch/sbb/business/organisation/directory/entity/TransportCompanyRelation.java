@@ -1,7 +1,7 @@
 package ch.sbb.business.organisation.directory.entity;
 
-import ch.sbb.atlas.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.model.entity.BaseVersion;
+import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
