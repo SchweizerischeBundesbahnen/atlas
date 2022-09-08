@@ -5,6 +5,8 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { Subject } from 'rxjs';
 import { Role } from './role';
 import { Component } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ApplicationRole, ApplicationType, UserAdministrationService } from '../../api';
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
@@ -43,13 +45,17 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{ path: 'mock', component: MockComponent }])],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule.withRoutes([{ path: 'mock', component: MockComponent }]),
+      ],
       providers: [
         AuthService,
         {
           provide: OAuthService,
           useValue: oauthService,
         },
+        UserAdministrationService,
       ],
     });
     authService = TestBed.inject(AuthService);
@@ -96,27 +102,168 @@ describe('AuthService', () => {
   });
 
   it('checks for roles correctly', () => {
-    let result = authService.containsAnyRole([Role.LidiWriter], [Role.LidiWriter, Role.LidiAdmin]);
+    let result = authService.containsAnyRole([Role.AtlasAdmin], [Role.AtlasAdmin]);
     expect(result).toBeTrue();
 
-    result = authService.containsAnyRole([Role.LidiWriter], [Role.LidiWriter]);
+    result = authService.containsAnyRole([Role.AtlasAdmin], []);
+    expect(result).toBeFalse();
+  });
+
+  it('Permissions for create Button BODI are set up correctly', () => {
+    let result = AuthService.hasPermissionsToCreateWithPermissions(ApplicationType.Bodi, [], true);
     expect(result).toBeTrue();
 
-    result = authService.containsAnyRole([Role.LidiWriter], [Role.LidiAdmin]);
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Bodi,
+      [
+        {
+          application: ApplicationType.Bodi,
+          role: ApplicationRole.SuperUser,
+        },
+      ],
+      false
+    );
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Bodi,
+      [
+        {
+          application: ApplicationType.Bodi,
+          role: ApplicationRole.Supervisor,
+        },
+      ],
+      false
+    );
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Bodi,
+      [
+        {
+          application: ApplicationType.Bodi,
+          role: ApplicationRole.Writer,
+        },
+      ],
+      false
+    );
     expect(result).toBeFalse();
 
-    result = authService.containsAnyRole([Role.LidiWriter, Role.LidiAdmin], [Role.LidiAdmin]);
-    expect(result).toBeTrue();
-
-    result = authService.containsAnyRole([Role.LidiWriter, Role.LidiAdmin], [Role.LidiWriter]);
-    expect(result).toBeTrue();
-
-    result = authService.containsAnyRole([Role.LidiWriter, Role.LidiAdmin], []);
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Bodi,
+      [
+        {
+          application: ApplicationType.Bodi,
+          role: ApplicationRole.Reader,
+        },
+      ],
+      false
+    );
     expect(result).toBeFalse();
+  });
 
-    result = authService.containsAnyRole(
-      [Role.LidiWriter, Role.LidiAdmin],
-      [Role.BoWriter, Role.BoAdmin]
+  it('Permissions for create Button LIDI are set up correctly', () => {
+    let result = AuthService.hasPermissionsToCreateWithPermissions(ApplicationType.Lidi, [], true);
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Lidi,
+      [
+        {
+          application: ApplicationType.Lidi,
+          role: ApplicationRole.SuperUser,
+        },
+      ],
+      false
+    );
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Lidi,
+      [
+        {
+          application: ApplicationType.Lidi,
+          role: ApplicationRole.Supervisor,
+        },
+      ],
+      false
+    );
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Lidi,
+      [
+        {
+          application: ApplicationType.Lidi,
+          role: ApplicationRole.Writer,
+        },
+      ],
+      false
+    );
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Lidi,
+      [
+        {
+          application: ApplicationType.Lidi,
+          role: ApplicationRole.Reader,
+        },
+      ],
+      false
+    );
+    expect(result).toBeFalse();
+  });
+
+  it('Permissions for create Button TTFN are set up correctly', () => {
+    let result = AuthService.hasPermissionsToCreateWithPermissions(ApplicationType.Ttfn, [], true);
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Ttfn,
+      [
+        {
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.SuperUser,
+        },
+      ],
+      false
+    );
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Ttfn,
+      [
+        {
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Supervisor,
+        },
+      ],
+      false
+    );
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Ttfn,
+      [
+        {
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Writer,
+        },
+      ],
+      false
+    );
+    expect(result).toBeTrue();
+
+    result = AuthService.hasPermissionsToCreateWithPermissions(
+      ApplicationType.Ttfn,
+      [
+        {
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Reader,
+        },
+      ],
+      false
     );
     expect(result).toBeFalse();
   });

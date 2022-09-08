@@ -15,6 +15,7 @@ import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ApplicationType } from 'src/app/api';
 
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
@@ -35,6 +36,10 @@ describe('DetailWrapperController', () => {
 
     getPageType(): Page {
       return dummyController.getPageType();
+    }
+
+    getApplicationType(): ApplicationType {
+      return ApplicationType.Lidi;
     }
 
     getDetailHeading(): string {
