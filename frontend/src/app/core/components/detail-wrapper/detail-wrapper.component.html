@@ -47,7 +47,7 @@
   </div>
   <div *ngIf="controller.isExistingRecord()" class="edit-section">
     <button
-      *ngIf="hasAdminOrWriterRole"
+      *ngIf="mayWrite"
       data-cy="edit-item"
       class="atlas-primary-btn me-3"
       (click)="controller.toggleEdit()"
@@ -56,7 +56,7 @@
       {{ 'COMMON.EDIT_VERSION' | translate }}
     </button>
     <button
-      *ngIf="hasAdminRole"
+      *ngIf="mayDelete"
       data-cy="delete-item"
       (click)="controller.delete()"
       [disabled]="controller.form.enabled"
