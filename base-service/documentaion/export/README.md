@@ -3,12 +3,12 @@
 <!-- toc -->
 
 - [How to export CSV to Amazon S3](#how-to-export-csv-to-amazon-s3)
-  * [Add base-service dependency](#add-base-service-dependency)
-  * [Configure Amazon Client](#configure-amazon-client)
-    + [Add Amazon Client Properties](#add-amazon-client-properties)
-    + [Configure Client](#configure-client)
-      - [Configure beans](#configure-beans)
-  * [Export Data](#export-data)
+    * [Add base-service dependency](#add-base-service-dependency)
+    * [Configure Amazon Client](#configure-amazon-client)
+        + [Add Amazon Client Properties](#add-amazon-client-properties)
+        + [Configure Client](#configure-client)
+            - [Configure beans](#configure-beans)
+    * [Export Data](#export-data)
 
 <!-- tocstop -->
 
@@ -25,9 +25,9 @@ library in your application pom:
 ~~~xml
 
 <dependency>
-  <artifactId>base-service</artifactId>
-  <groupId>ch.sbb.atlas</groupId>
-  <version>${revision}</version>
+   <artifactId>base-service</artifactId>
+   <groupId>ch.sbb.atlas</groupId>
+   <version>${revision}</version>
 </dependency>
 ~~~
 
@@ -40,9 +40,8 @@ amazon:
   accessKey: ${AMAZON_S3_ACCESS_KEY}
   secretKey: ${AMAZON_S3_SECRET_KEY}
   region: "eu-central-1"
-  bucket:
-    name: "atlas-data-export-dev-dev"
-    object-expiration-days: 30
+  bucketName: "atlas-data-export-dev-dev"
+  object-expiration-days: 30
 ~~~
 
 #### Configure Client

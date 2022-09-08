@@ -20,8 +20,6 @@ This is the repository for business relevant services for ATLAS.
     * [Line-directory](#line-directory)
     * [Business-organisation-directory](#business-organisation-directory)
     * [Mail Service](#mail-service)
-    * [Versioning lib](#versioning-lib)
-    * [Amazon S3 Lib](#amazon-s3-lib)
     * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
 
@@ -54,14 +52,10 @@ It's applications share the following architectural goal:
     - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Fatlas-frontend
     - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker%2Fatlas-frontend
 - **Openshift**:
-    - **
-      Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
-    - **
-      Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
-    - **
-      Int**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
-    - **
-      Prod**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
+    - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
+    - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
+    - **Int**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
+    - **Prod**: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 - **Deployment**:
     - **Dev**: https://atlas.dev.sbb-cloud.net
     - **Test**: https://atlas.test.sbb-cloud.net
@@ -176,16 +170,16 @@ See [Business-Organisation-directory documentation](business-organisation-direct
 
 Service used by Atlas to send emails. See [Mail Service Documentation](mail/README.md)
 
-### Versioning lib
+### Base Service lib
 
-Library used to perform business object versioning according to
-the [documentation](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
-See [Versioning documentation](versioning/README.md);
+Libraries used to perform:
 
-### Amazon S3 Lib
-
-Library used to perform REST Request to Amazon S3 according to
-the [documentaion](amazon-s3/README.md)
+* business object **versioning** according to
+  the [documentation](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
+  See [Versioning documentation](base-service/documentaion/versioning/README.md);
+* CSV and ZIP exports. See [Export documentation](base-service/documentaion/export/README.md);
+* Amazon REST Client operations.
+  See [Amazon documentation](base-service/documentaion/amazon/README.md);
 
 ### Frontend
 

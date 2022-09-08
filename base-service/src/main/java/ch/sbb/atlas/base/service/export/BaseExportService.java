@@ -27,107 +27,107 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class BaseExportService<T extends BaseVersion> {
 
-  private final FileService fileService;
-  private final AmazonService amazonService;
+    private final FileService fileService;
+    private final AmazonService amazonService;
 
-  public List<URL> exportFullVersions() {
-    List<URL> urls = new ArrayList<>();
-    File fullVersionsCsv = getFullVersionsCsv();
-    urls.add(putCsvFile(fullVersionsCsv));
-    urls.add(putZipFile(fullVersionsCsv));
-    return urls;
-  }
-
-  public List<URL> exportActualVersions() {
-    List<URL> urls = new ArrayList<>();
-    File actualVersionsCsv = getActualVersionsCsv();
-    urls.add(putCsvFile(actualVersionsCsv));
-    urls.add(putZipFile(actualVersionsCsv));
-    return urls;
-  }
-
-  public List<URL> exportFutureTimetableVersions() {
-    List<URL> urls = new ArrayList<>();
-    File futureTimetableVersionsCsv = getFutureTimetableVersionsCsv();
-    urls.add(putCsvFile(futureTimetableVersionsCsv));
-    urls.add(putZipFile(futureTimetableVersionsCsv));
-    return urls;
-  }
-
-  URL putCsvFile(File csvFile) {
-    try {
-      return amazonService.putFile(csvFile, getDirectory());
-    } catch (IOException e) {
-      log.error(e.getMessage());
-      throw new ExportException(csvFile, e);
-    }
-  }
-
-  URL putZipFile(File zipFile) {
-    try {
-      return amazonService.putZipFile(zipFile, getDirectory());
-    } catch (IOException e) {
-      log.error(e.getMessage());
-      throw new ExportException(zipFile, e);
-    }
-  }
-
-  protected File createCsvFile(List<T> versions, ExportType exportType) {
-
-    File csvFile = createFile(exportType);
-
-    List<? extends VersionCsvModel> versionCsvModels = convertToCsvModel(versions);
-
-    ObjectWriter objectWriter = getObjectWriter();
-    try (SequenceWriter sequenceWriter = objectWriter.writeValues(csvFile)) {
-      sequenceWriter.writeAll(versionCsvModels);
-      return csvFile;
-    } catch (IOException e) {
-      log.error(e.getMessage());
-      throw new ExportException(csvFile, e);
-    }
-  }
-
-  protected abstract ObjectWriter getObjectWriter();
-
-  protected abstract List<? extends VersionCsvModel> convertToCsvModel(List<T> versions);
-
-  protected abstract String getDirectory();
-
-  protected abstract File getFullVersionsCsv();
-
-  protected abstract File getActualVersionsCsv();
-
-  protected abstract File getFutureTimetableVersionsCsv();
-
-  protected abstract String getFileName();
-
-  protected File createFile(ExportType exportType) {
-    String dir = fileService.getDir();
-    String actualDate = LocalDate.now()
-                                 .format(DateTimeFormatter.ofPattern(
-                                     AtlasApiConstants.DATE_FORMAT_PATTERN));
-    return new File(dir + exportType.getFilePrefix() + getFileName() + actualDate + ".csv");
-  }
-
-  @Getter
-  public static class AtlasCsvMapper {
-
-    private final ObjectWriter objectWriter;
-
-    public AtlasCsvMapper(Class<?> aClass) {
-      CsvMapper csvMapper = createCsvMapper();
-      CsvSchema csvSchema = csvMapper.schemaFor(aClass).withHeader().withColumnSeparator(';');
-      this.objectWriter = csvMapper.writerFor(aClass).with(csvSchema);
+    public List<URL> exportFullVersions() {
+        List<URL> urls = new ArrayList<>();
+        File fullVersionsCsv = getFullVersionsCsv();
+        urls.add(putCsvFile(fullVersionsCsv));
+        urls.add(putZipFile(fullVersionsCsv));
+        return urls;
     }
 
-    private CsvMapper createCsvMapper() {
-      CsvMapper mapper = new CsvMapper();
-      mapper.registerModule(new JavaTimeModule());
-      mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-      return mapper;
+    public List<URL> exportActualVersions() {
+        List<URL> urls = new ArrayList<>();
+        File actualVersionsCsv = getActualVersionsCsv();
+        urls.add(putCsvFile(actualVersionsCsv));
+        urls.add(putZipFile(actualVersionsCsv));
+        return urls;
     }
 
-  }
+    public List<URL> exportFutureTimetableVersions() {
+        List<URL> urls = new ArrayList<>();
+        File futureTimetableVersionsCsv = getFutureTimetableVersionsCsv();
+        urls.add(putCsvFile(futureTimetableVersionsCsv));
+        urls.add(putZipFile(futureTimetableVersionsCsv));
+        return urls;
+    }
+
+    URL putCsvFile(File csvFile) {
+        try {
+            return amazonService.putFile(csvFile, getDirectory());
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new ExportException(csvFile, e);
+        }
+    }
+
+    URL putZipFile(File zipFile) {
+        try {
+            return amazonService.putZipFile(zipFile, getDirectory());
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new ExportException(zipFile, e);
+        }
+    }
+
+    protected File createCsvFile(List<T> versions, ExportType exportType) {
+
+        File csvFile = createFile(exportType);
+
+        List<? extends VersionCsvModel> versionCsvModels = convertToCsvModel(versions);
+
+        ObjectWriter objectWriter = getObjectWriter();
+        try (SequenceWriter sequenceWriter = objectWriter.writeValues(csvFile)) {
+            sequenceWriter.writeAll(versionCsvModels);
+            return csvFile;
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new ExportException(csvFile, e);
+        }
+    }
+
+    protected abstract ObjectWriter getObjectWriter();
+
+    protected abstract List<? extends VersionCsvModel> convertToCsvModel(List<T> versions);
+
+    protected abstract String getDirectory();
+
+    protected abstract File getFullVersionsCsv();
+
+    protected abstract File getActualVersionsCsv();
+
+    protected abstract File getFutureTimetableVersionsCsv();
+
+    protected abstract String getFileName();
+
+    protected File createFile(ExportType exportType) {
+        String dir = fileService.getDir();
+        String actualDate = LocalDate.now()
+            .format(DateTimeFormatter.ofPattern(
+                AtlasApiConstants.DATE_FORMAT_PATTERN));
+        return new File(dir + exportType.getFilePrefix() + getFileName() + actualDate + ".csv");
+    }
+
+    @Getter
+    public static class AtlasCsvMapper {
+
+        private final ObjectWriter objectWriter;
+
+        public AtlasCsvMapper(Class<?> aClass) {
+            CsvMapper csvMapper = createCsvMapper();
+            CsvSchema csvSchema = csvMapper.schemaFor(aClass).withHeader().withColumnSeparator(';');
+            this.objectWriter = csvMapper.writerFor(aClass).with(csvSchema);
+        }
+
+        private CsvMapper createCsvMapper() {
+            CsvMapper mapper = new CsvMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            return mapper;
+        }
+
+    }
 
 }
