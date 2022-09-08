@@ -6,15 +6,16 @@
   [bindValueInp]="valueExtraction"
   (searchTrigger)="searchBusinessOrganisation($event)"
 >
-  <mat-label class="font-bold-lg" [ngClass]="formModus ? 'required-indicator' : ''">{{
-    'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
-  }}</mat-label>
-  <br />
-  <mat-label *ngIf="formModus" class="font-regular-sm">
-    {{ 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER' | translate }} -
-    {{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION' | translate }} -
-    {{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION' | translate }} - SAID
-  </mat-label>
+  <div class="d-flex flex-column">
+    <mat-label class="font-bold-lg" [ngClass]="formModus ? 'required-indicator' : ''">{{
+      'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
+    }}</mat-label>
+    <mat-label *ngIf="formModus" class="font-regular-sm">
+      {{ 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER' | translate }} -
+      {{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION' | translate }} -
+      {{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION' | translate }} - SAID
+    </mat-label>
+  </div>
   <div
     [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"
   ></div>
