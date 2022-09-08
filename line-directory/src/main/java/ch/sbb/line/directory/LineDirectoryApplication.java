@@ -1,6 +1,6 @@
 package ch.sbb.line.directory;
 
-import ch.sbb.atlas.base.service.amazon.service.FileService;
+import ch.sbb.atlas.base.service.amazon.service.FileServiceImpl;
 import ch.sbb.atlas.base.service.model.configuration.AtlasExceptionHandler;
 import ch.sbb.atlas.base.service.versioning.service.VersionableService;
 import ch.sbb.atlas.base.service.versioning.service.VersionableServiceImpl;
@@ -13,25 +13,24 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class LineDirectoryApplication {
 
-  public static void main(String[] args) {
-    TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
-    SpringApplication.run(LineDirectoryApplication.class, args);
-  }
+    public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
+        SpringApplication.run(LineDirectoryApplication.class, args);
+    }
 
-  @Bean
-  public VersionableService versionableService() {
-    return new VersionableServiceImpl();
-  }
+    @Bean
+    public VersionableService versionableService() {
+        return new VersionableServiceImpl();
+    }
 
+    @Bean
+    public AtlasExceptionHandler atlasExceptionHandler() {
+        return new AtlasExceptionHandler();
+    }
 
-  @Bean
-  public AtlasExceptionHandler atlasExceptionHandler() {
-    return new AtlasExceptionHandler();
-  }
-
-  @Bean
-  public FileService fileService() {
-    return new FileService();
-  }
+    @Bean
+    public FileServiceImpl fileService() {
+        return new FileServiceImpl();
+    }
 
 }
