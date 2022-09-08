@@ -16,7 +16,7 @@ describe('BoDiOverviewComponent', () => {
       providers: [
         {
           provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasAnyRole']),
+          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasPermissionsToCreate']),
         },
       ],
     }).compileComponents();
