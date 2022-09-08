@@ -8,6 +8,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
 import { Component, Input } from '@angular/core';
+import { ApplicationType } from '../../../api';
 
 @Component({
   selector: 'app-coverage',
@@ -20,11 +21,16 @@ class MockAppCoverageComponent {
 
 describe('DetailWrapperComponent', () => {
   /*eslint-disable */
-  let component: DetailWrapperComponent<any>;
-  let fixture: ComponentFixture<DetailWrapperComponent<any>>;
+  let component: DetailWrapperComponent;
+  let fixture: ComponentFixture<DetailWrapperComponent>;
 
   const authServiceMock: Partial<AuthService> = {
-    claims: { name: 'Test (ITC)', email: 'test@test.ch', roles: ['lidi-admin', 'lidi-writer'] },
+    claims: {
+      name: 'Test (ITC)',
+      email: 'test@test.ch',
+      sbbuid: 'e123456',
+      roles: ['lidi-admin', 'lidi-writer'],
+    },
     logout: () => Promise.resolve(true),
     login: () => Promise.resolve(true),
     hasAnyRole(roles: Role[]): boolean {
@@ -35,6 +41,12 @@ describe('DetailWrapperComponent', () => {
     },
     hasRole(role: Role): boolean {
       return this.claims!.roles.includes(role);
+    },
+    get isAdmin(): boolean {
+      return true;
+    },
+    hasPermissionsToWrite(applicationType: ApplicationType, sboid: string | undefined): boolean {
+      return true;
     },
   };
 
@@ -75,50 +87,6 @@ describe('DetailWrapperComponent', () => {
 
       expect(dummyController.delete).toHaveBeenCalled();
     });
-
-    describe('role lidi-writer', (roles = ['lidi-writer']) => {
-      beforeAll(() => (authServiceMock.claims!.roles = roles));
-      afterAll(() => (authServiceMock.claims!.roles = ['lidi-admin', 'lidi-writer']));
-
-      it('edit-button should be visible', () => {
-        const editButton = fixture.debugElement.query(By.css('.edit-section button:first-child'));
-        expect(editButton).toBeDefined();
-        expect(editButton.nativeElement.textContent.includes('EDIT')).toBeTrue();
-      });
-
-      it('delete-button should not be visible', () => {
-        const buttons = fixture.debugElement.queryAll(By.css('.edit-section button'));
-        expect(buttons.length).toBe(1);
-      });
-    });
-
-    describe('role lidi-admin', (roles = ['lidi-admin']) => {
-      beforeAll(() => (authServiceMock.claims!.roles = roles));
-      afterAll(() => (authServiceMock.claims!.roles = ['lidi-admin', 'lidi-writer']));
-
-      it('edit-button should be visible', () => {
-        const editButton = fixture.debugElement.query(By.css('.edit-section button:first-child'));
-        expect(editButton).toBeDefined();
-        expect(editButton.nativeElement.textContent.includes('EDIT')).toBeTrue();
-      });
-
-      it('delete-button should be visible', () => {
-        const buttons = fixture.debugElement.queryAll(By.css('.edit-section button'));
-        expect(buttons.length).toBe(2);
-        const deleteButton = fixture.debugElement.query(By.css('.edit-section button:last-child'));
-        expect(deleteButton).toBeDefined();
-      });
-    });
-
-    describe('empty roles', (roles = []) => {
-      beforeAll(() => (authServiceMock.claims!.roles = roles));
-      afterAll(() => (authServiceMock.claims!.roles = ['lidi-admin', 'lidi-writer']));
-
-      it('no buttons should be visible', () => {
-        const buttons = fixture.debugElement.queryAll(By.css('.edit-section button'));
-        expect(buttons.length).toBe(0);
-      });
-    });
   });
 
   describe('enabled', (dummyController = createDummyForm(true)) => {
@@ -153,9 +121,8 @@ function createDummyForm(enabledForm: boolean) {
       'ngOnInit',
       'delete',
       'getPageType',
+      'getApplicationType',
       'disableUneditableFormFields',
-      'getRolesAllowedToEdit',
-      'getRolesAllowedToDelete',
     ],
     {
       heading: undefined,
@@ -169,12 +136,6 @@ function createDummyForm(enabledForm: boolean) {
   dummyController.save.and.callFake(DetailWrapperController.prototype.save);
   dummyController.toggleEdit.and.callFake(DetailWrapperController.prototype.toggleEdit);
   dummyController.confirmLeave.and.returnValue(of(true));
-  dummyController.getRolesAllowedToEdit.and.callFake(
-    DetailWrapperController.prototype.getRolesAllowedToEdit
-  );
-  dummyController.getRolesAllowedToDelete.and.callFake(
-    DetailWrapperController.prototype.getRolesAllowedToDelete
-  );
 
   return dummyController;
 }

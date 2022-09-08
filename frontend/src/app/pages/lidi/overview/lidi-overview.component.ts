@@ -3,6 +3,7 @@ import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { Role } from '../../../core/auth/role';
+import { ApplicationType } from '../../../api';
 
 @Component({
   templateUrl: './lidi-overview.component.html',
@@ -27,7 +28,7 @@ export class LidiOverviewComponent {
     private router: Router,
     private readonly authService: AuthService
   ) {
-    this.userAllowedToCreate = authService.hasAnyRole([Role.LidiWriter, Role.LidiAdmin]);
+    this.userAllowedToCreate = authService.hasPermissionsToCreate(ApplicationType.Lidi);
   }
 
   newLine() {
