@@ -21,56 +21,56 @@ import org.springframework.stereotype.Service;
 public class BusinessOrganisationVersionExportService extends
     BaseExportService<BusinessOrganisationVersion> {
 
-  private final BusinessOrganisationVersionRepository businessOrganisationVersionRepository;
+    private final BusinessOrganisationVersionRepository businessOrganisationVersionRepository;
 
-  public BusinessOrganisationVersionExportService(FileService fileService,
-      AmazonService amazonService,
-      BusinessOrganisationVersionRepository businessOrganisationVersionRepository) {
-    super(fileService, amazonService);
-    this.businessOrganisationVersionRepository = businessOrganisationVersionRepository;
-  }
+    public BusinessOrganisationVersionExportService(FileService fileService,
+        AmazonService amazonService,
+        BusinessOrganisationVersionRepository businessOrganisationVersionRepository) {
+        super(fileService, amazonService);
+        this.businessOrganisationVersionRepository = businessOrganisationVersionRepository;
+    }
 
-  @Override
-  public String getFileName() {
-    return "business_organisation_versions_";
-  }
+    @Override
+    public String getFileName() {
+        return "business_organisation_versions_";
+    }
 
-  @Override
-  public String getDirectory() {
-    return "business_organisation";
-  }
+    @Override
+    public String getDirectory() {
+        return "business_organisation";
+    }
 
-  @Override
-  protected File getFullVersionsCsv() {
-    List<BusinessOrganisationVersion> fullLineVersions = businessOrganisationVersionRepository.getFullLineVersions();
-    return createCsvFile(fullLineVersions, ExportType.FULL);
-  }
+    @Override
+    protected File getFullVersionsCsv() {
+        List<BusinessOrganisationVersion> fullLineVersions = businessOrganisationVersionRepository.getFullLineVersions();
+        return createCsvFile(fullLineVersions, ExportType.FULL);
+    }
 
-  @Override
-  protected File getActualVersionsCsv() {
-    List<BusinessOrganisationVersion> actualLineVersions = businessOrganisationVersionRepository.getActualLineVersions(
-        LocalDate.now());
-    return createCsvFile(actualLineVersions, ExportType.ACTUAL_DATE);
-  }
+    @Override
+    protected File getActualVersionsCsv() {
+        List<BusinessOrganisationVersion> actualLineVersions = businessOrganisationVersionRepository.getActualLineVersions(
+            LocalDate.now());
+        return createCsvFile(actualLineVersions, ExportType.ACTUAL_DATE);
+    }
 
-  @Override
-  protected File getFutureTimetableVersionsCsv() {
-    List<BusinessOrganisationVersion> actualLineVersions = businessOrganisationVersionRepository.getActualLineVersions(
-        FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-    return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
-  }
+    @Override
+    protected File getFutureTimetableVersionsCsv() {
+        List<BusinessOrganisationVersion> actualLineVersions = businessOrganisationVersionRepository.getActualLineVersions(
+            FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
+        return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
+    }
 
-  @Override
-  protected ObjectWriter getObjectWriter() {
-    return new AtlasCsvMapper(BusinessOrganisationVersionCsvModel.class).getObjectWriter();
-  }
+    @Override
+    protected ObjectWriter getObjectWriter() {
+        return new AtlasCsvMapper(BusinessOrganisationVersionCsvModel.class).getObjectWriter();
+    }
 
-  @Override
-  protected List<? extends VersionCsvModel> convertToCsvModel(
-      List<BusinessOrganisationVersion> versions) {
-    return versions.stream()
-                   .map(BusinessOrganisationVersionCsvModel::toCsvModel)
-                   .collect(toList());
-  }
+    @Override
+    protected List<? extends VersionCsvModel> convertToCsvModel(
+        List<BusinessOrganisationVersion> versions) {
+        return versions.stream()
+            .map(BusinessOrganisationVersionCsvModel::toCsvModel)
+            .collect(toList());
+    }
 
 }
