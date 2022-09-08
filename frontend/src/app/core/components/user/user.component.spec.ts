@@ -15,14 +15,21 @@ describe('UserComponent', () => {
   const user: User = {
     name: 'Test (ITC)',
     email: 'test@test.ch',
+    sbbuid: 'e123456',
     roles: ['role1', 'role2', 'role3'],
   };
   const eventEmitterUser: EventEmitter<User> = new EventEmitter<User>();
 
   const authServiceMock: Partial<AuthService> = {
-    claims: { name: 'Test (ITC)', email: 'test@test.ch', roles: ['role1', 'role2', 'role3'] },
+    claims: {
+      name: 'Test (ITC)',
+      email: 'test@test.ch',
+      sbbuid: 'e123456',
+      roles: ['role1', 'role2', 'role3'],
+    },
     logout: () => Promise.resolve(true),
     login: () => Promise.resolve(true),
+    getPermissions: () => [],
     eventUserComponentNotification: eventEmitterUser,
   };
 
