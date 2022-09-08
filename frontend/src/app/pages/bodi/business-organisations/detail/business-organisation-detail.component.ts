@@ -1,5 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {
+  ApplicationType,
   BusinessOrganisationsService,
   BusinessOrganisationVersion,
   BusinessType,
@@ -53,6 +54,10 @@ export class BusinessOrganisationDetailComponent
 
   getPageType(): Page {
     return Pages.BUSINESS_ORGANISATIONS;
+  }
+
+  getApplicationType(): ApplicationType {
+    return ApplicationType.Bodi;
   }
 
   readRecord(): BusinessOrganisationVersion {
@@ -177,14 +182,6 @@ export class BusinessOrganisationDetailComponent
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
-  }
-
-  getRolesAllowedToDelete(): Role[] {
-    return [Role.BoAdmin];
-  }
-
-  getRolesAllowedToEdit(): Role[] {
-    return [Role.BoWriter, Role.BoAdmin];
   }
 
   ngOnDestroy() {
