@@ -38,6 +38,7 @@
       <module>scheduling</module>
       <module>line-directory</module>
       <module>business-organisation-directory</module>
+      <module>user-administration</module>
       <!-- Combine APIs-->
       <module>apim-configuration</module>
       <module>gateway</module>
