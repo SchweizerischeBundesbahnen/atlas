@@ -41,7 +41,7 @@ amazon:
   secretKey: ${AMAZON_S3_SECRET_KEY}
   region: "eu-central-1"
   bucketName: "atlas-data-export-dev-dev"
-  object-expiration-days: 30
+  objectExpirationDays: 30
 ~~~
 
 #### Configure Client
