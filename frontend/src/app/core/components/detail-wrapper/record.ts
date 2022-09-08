@@ -5,6 +5,7 @@ export interface Record {
   validFrom?: Date;
   validTo?: Date;
   slnid?: string;
+  businessOrganisation?: string;
   status?: Status;
   versionNumber?: number;
 }

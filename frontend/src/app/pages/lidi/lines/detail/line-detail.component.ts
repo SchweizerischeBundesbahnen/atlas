@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
+import { ApplicationType, LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
 import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -47,6 +47,10 @@ export class LineDetailComponent
 
   getPageType(): Page {
     return Pages.LINES;
+  }
+
+  getApplicationType(): ApplicationType {
+    return ApplicationType.Lidi;
   }
 
   readRecord(): LineVersion {
