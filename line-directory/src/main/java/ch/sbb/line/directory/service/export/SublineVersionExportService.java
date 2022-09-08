@@ -20,54 +20,54 @@ import org.springframework.stereotype.Service;
 @Service
 public class SublineVersionExportService extends BaseExportService<SublineVersion> {
 
-  private final SublineVersionRepository sublineVersionRepository;
+    private final SublineVersionRepository sublineVersionRepository;
 
-  public SublineVersionExportService(FileService fileService, AmazonService amazonService,
-      SublineVersionRepository sublineVersionRepository) {
-    super(fileService, amazonService);
-    this.sublineVersionRepository = sublineVersionRepository;
-  }
+    public SublineVersionExportService(FileService fileService, AmazonService amazonService,
+        SublineVersionRepository sublineVersionRepository) {
+        super(fileService, amazonService);
+        this.sublineVersionRepository = sublineVersionRepository;
+    }
 
-  @Override
-  public String getDirectory() {
-    return "subline";
-  }
+    @Override
+    public String getDirectory() {
+        return "subline";
+    }
 
-  @Override
-  public String getFileName() {
-    return "subline_versions_";
-  }
+    @Override
+    public String getFileName() {
+        return "subline_versions_";
+    }
 
-  @Override
-  protected File getFullVersionsCsv() {
-    List<SublineVersion> fullLineVersions = sublineVersionRepository.getFullSublineVersions();
-    return createCsvFile(fullLineVersions, ExportType.FULL);
-  }
+    @Override
+    protected File getFullVersionsCsv() {
+        List<SublineVersion> fullLineVersions = sublineVersionRepository.getFullSublineVersions();
+        return createCsvFile(fullLineVersions, ExportType.FULL);
+    }
 
-  @Override
-  protected File getActualVersionsCsv() {
-    List<SublineVersion> actualLineVersions = sublineVersionRepository.getActualSublineVersions(
-        LocalDate.now());
-    return createCsvFile(actualLineVersions, ExportType.ACTUAL_DATE);
-  }
+    @Override
+    protected File getActualVersionsCsv() {
+        List<SublineVersion> actualLineVersions = sublineVersionRepository.getActualSublineVersions(
+            LocalDate.now());
+        return createCsvFile(actualLineVersions, ExportType.ACTUAL_DATE);
+    }
 
-  @Override
-  protected File getFutureTimetableVersionsCsv() {
-    List<SublineVersion> actualLineVersions = sublineVersionRepository.getActualSublineVersions(
-        FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-    return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
-  }
+    @Override
+    protected File getFutureTimetableVersionsCsv() {
+        List<SublineVersion> actualLineVersions = sublineVersionRepository.getActualSublineVersions(
+            FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
+        return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
+    }
 
-  @Override
-  protected ObjectWriter getObjectWriter() {
-    return new AtlasCsvMapper(SublineVersionCsvModel.class).getObjectWriter();
-  }
+    @Override
+    protected ObjectWriter getObjectWriter() {
+        return new AtlasCsvMapper(SublineVersionCsvModel.class).getObjectWriter();
+    }
 
-  @Override
-  protected List<? extends VersionCsvModel> convertToCsvModel(List<SublineVersion> versions) {
-    return versions.stream()
-                   .map(SublineVersionCsvModel::toCsvModel)
-                   .collect(toList());
-  }
+    @Override
+    protected List<? extends VersionCsvModel> convertToCsvModel(List<SublineVersion> versions) {
+        return versions.stream()
+            .map(SublineVersionCsvModel::toCsvModel)
+            .collect(toList());
+    }
 
 }
