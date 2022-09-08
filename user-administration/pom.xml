@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>ch.sbb.atlas</groupId>
@@ -82,12 +82,12 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
-      <artifactId>model</artifactId>
+      <artifactId>base-service</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <version>${revision}</version>
     </dependency>
     <dependency>
-      <artifactId>model</artifactId>
+      <artifactId>base-service</artifactId>
       <classifier>tests</classifier>
       <groupId>ch.sbb.atlas</groupId>
       <scope>test</scope>
