@@ -7,7 +7,7 @@ import moment from 'moment/moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
-import { Status } from '../../../api';
+import { ApplicationType, Status } from '../../../api';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Role } from '../../auth/role';
 
@@ -232,13 +232,7 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   abstract getPageType(): Page;
 
-  getRolesAllowedToDelete(): Role[] {
-    return [Role.LidiAdmin];
-  }
-
-  getRolesAllowedToEdit(): Role[] {
-    return [Role.LidiWriter, Role.LidiAdmin];
-  }
+  abstract getApplicationType(): ApplicationType;
 
   backToOverview(): void {
     this.dialogRef.close();

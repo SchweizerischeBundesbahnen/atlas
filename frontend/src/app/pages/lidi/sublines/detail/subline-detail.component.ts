@@ -1,5 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {
+  ApplicationType,
   Line,
   LinesService,
   PaymentType,
@@ -70,6 +71,10 @@ export class SublineDetailComponent
 
   getPageType(): Page {
     return Pages.SUBLINES;
+  }
+
+  getApplicationType(): ApplicationType {
+    return ApplicationType.Lidi;
   }
 
   readRecord(): SublineVersion {

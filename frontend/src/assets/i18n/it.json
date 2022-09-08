@@ -53,10 +53,9 @@
     "EDIT_VERSION": "Modificare la versione",
     "CREATE_VERSION": "Aggiungere versione",
     "ROLES": {
-      "lidi-writer": "Autore LiDi",
-      "lidi-admin": "Admin LiDi",
-      "bo-writer": "BoDi Writer",
-      "bo-admin": "BoDi Admin",
+      "SUPERVISOR": "Supervisor",
+      "SUPER_USER": "Super User",
+      "WRITER": "Writer",
       "atlas-admin": "Atlas Admin"
     },
     "SEARCH": {

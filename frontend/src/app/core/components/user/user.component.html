@@ -9,7 +9,7 @@
   </button>
   <mat-menu #profile="matMenu">
     <div class="ps-1 pe-1 flex-column">
-      <div *ngIf="roles" id="user-roles-modal">
+      <div *ngIf="roles || permissions" id="user-roles-modal">
         <div class="d-inline-block ps-2">
           <em class="bi bi-people-fill"></em>
         </div>
@@ -19,6 +19,10 @@
         <div class="user-role-item" *ngFor="let role of roles">
           <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
           {{ 'COMMON.ROLES.' + role | translate }}
+        </div>
+        <div class="user-role-item" *ngFor="let permission of permissions">
+          <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
+          {{ permission.application }}: {{ 'COMMON.ROLES.' + permission.role | translate }}
         </div>
       </div>
       <hr />
