@@ -9,7 +9,6 @@ import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
 import { ApplicationType, Status } from '../../../api';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Role } from '../../auth/role';
 
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
