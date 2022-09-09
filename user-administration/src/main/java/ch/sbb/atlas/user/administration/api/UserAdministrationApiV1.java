@@ -21,4 +21,7 @@ public interface UserAdministrationApiV1 {
     @GetMapping("{userId}")
     UserModel getUser(@PathVariable String userId);
 
+  @GetMapping("current")
+  UserModel getCurrentUser();
+
 }
