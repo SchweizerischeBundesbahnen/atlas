@@ -42,7 +42,7 @@ public class TimetableFieldNumberControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    when(timetableFieldNumberService.save(any())).then(
+    when(timetableFieldNumberService.create(any())).then(
         i -> i.getArgument(0, TimetableFieldNumberVersion.class));
   }
 
@@ -55,7 +55,7 @@ public class TimetableFieldNumberControllerTest {
     timetableFieldNumberController.createVersion(timetableFieldNumberVersionModel);
 
     // Then
-    verify(timetableFieldNumberService).save(versionArgumentCaptor.capture());
+    verify(timetableFieldNumberService).create(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields("editor", "creator", "editionDate",
                                                     "creationDate", "lineRelations", "ttfnid",
