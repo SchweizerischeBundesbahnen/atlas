@@ -73,12 +73,10 @@ export class AuthService {
   }
 
   loadPermissions() {
-    this.userAdministrationService
-      .getUser(this.decodeAccessToken().sbbuid)
-      .subscribe((response) => {
-        this.permissions = response.permissions ? Array.from(response.permissions) : [];
-        this.eventUserComponentNotification.emit(this.claims);
-      });
+    this.userAdministrationService.getCurrentUser().subscribe((response) => {
+      this.permissions = response.permissions ? Array.from(response.permissions) : [];
+      this.eventUserComponentNotification.emit(this.claims);
+    });
   }
 
   getPermissions() {
