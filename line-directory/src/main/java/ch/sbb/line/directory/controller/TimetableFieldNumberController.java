@@ -103,7 +103,7 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   public TimetableFieldNumberVersionModel createVersion(
       TimetableFieldNumberVersionModel newVersion) {
     newVersion.setStatus(Status.ACTIVE);
-    TimetableFieldNumberVersion createdVersion = timetableFieldNumberService.save(
+    TimetableFieldNumberVersion createdVersion = timetableFieldNumberService.create(
         toEntity(newVersion));
     return toModel(createdVersion);
   }
@@ -115,7 +115,8 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
                                                                              .orElseThrow(() ->
                                                                                  new IdNotFoundException(
                                                                                      id));
-    timetableFieldNumberService.updateVersion(versionToUpdate, toEntity(newVersion));
+    timetableFieldNumberService.update(versionToUpdate, toEntity(newVersion), timetableFieldNumberService.getAllVersionsVersioned(
+        versionToUpdate.getTtfnid()));
     return getAllVersionsVersioned(versionToUpdate.getTtfnid());
   }
 
