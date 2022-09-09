@@ -1,6 +1,6 @@
 package ch.sbb.atlas.user.administration.controller;
 
-import ch.sbb.atlas.base.service.model.api.Container;
+import ch.sbb.atlas.model.service.UserService;
 import ch.sbb.atlas.user.administration.api.UserAdministrationApiV1;
 import ch.sbb.atlas.user.administration.exception.LimitedPageSizeRequestException;
 import ch.sbb.atlas.user.administration.models.UserModel;
