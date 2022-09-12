@@ -33,4 +33,5 @@ export * from './transportCompanyRelation';
 export * from './transportCompanyStatus';
 export * from './userAccountStatus';
 export * from './userModel';
+export * from './userPermissionCreateModel';
 export * from './userPermissionModel';

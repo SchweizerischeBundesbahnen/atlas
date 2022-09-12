@@ -3,11 +3,15 @@ package ch.sbb.atlas.user.administration.controller;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.service.UserService;
 import ch.sbb.atlas.user.administration.api.UserAdministrationApiV1;
+import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
+import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.LimitedPageSizeRequestException;
 import ch.sbb.atlas.user.administration.models.UserModel;
 import ch.sbb.atlas.user.administration.models.UserPermissionModel;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -62,6 +66,34 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
                                         UserPermissionModel::toModel)
                                     .collect(
                                         Collectors.toSet());
+  }
+  @Override
+  public UserModel createUserPermission(UserPermissionCreateModel user) {
+    // validate
+    userAdministrationService.validateUserPermissionCreation(user);
+    // create
+    final List<UserPermission> toSave = new ArrayList<>();
+    for (UserPermissionModel permission : user.getPermissions()) {
+      UserPermission userPermission = UserPermission.builder()
+                                                    .sbbUserId(user.getSbbUserId().toLowerCase())
+                                                    .application(permission.getApplication())
+                                                    .role(permission.getRole())
+                                                    .sboid(new HashSet<>(permission.getSboids())).build();
+      toSave.add(userPermission);
+    }
+    List<UserPermission> savedUserPermissions = userAdministrationService.save(toSave);
+    // return created UserModel
+    final List<UserModel> userModels = graphApiService.resolveUsers(List.of(user.getSbbUserId()));
+    userModels.get(0).setPermissions(getUserPermissionModels(savedUserPermissions));
+    return userModels.get(0);
+  }
+
+  private Set<UserPermissionModel> getUserPermissionModels(String userId) {
+    return getUserPermissionModels(userAdministrationService.getUserPermissions(userId));
+  }
+
+  private Set<UserPermissionModel> getUserPermissionModels(List<UserPermission> userPermissions) {
+    return userPermissions.stream().map(UserPermissionModel::toModel).collect(Collectors.toSet());
   }
 
 }
