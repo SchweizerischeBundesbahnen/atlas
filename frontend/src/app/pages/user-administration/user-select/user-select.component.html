@@ -1,0 +1,8 @@
+<form-search-select
+  [items$]="userSearchResults$"
+  [formGroup]="form"
+  [controlName]="'userSearch'"
+  [getSelectOption]="selectOption"
+  (searchTrigger)="searchUser($event)"
+  (changeTrigger)="selectionChange.emit($event)"
+></form-search-select>
