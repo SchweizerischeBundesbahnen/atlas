@@ -22,7 +22,7 @@
     </dependency>
     <dependency>
       <groupId>ch.sbb.atlas</groupId>
-      <artifactId>model</artifactId>
+      <artifactId>base-service</artifactId>
       <version>${revision}</version>
     </dependency>
     <dependency>

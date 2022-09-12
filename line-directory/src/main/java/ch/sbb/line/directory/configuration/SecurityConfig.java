@@ -3,8 +3,8 @@ package ch.sbb.line.directory.configuration;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
-import ch.sbb.atlas.model.configuration.AtlasAccessDeniedHandler;
-import ch.sbb.atlas.model.configuration.Role;
+import ch.sbb.atlas.base.service.model.configuration.AtlasAccessDeniedHandler;
+import ch.sbb.atlas.base.service.model.configuration.Role;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
