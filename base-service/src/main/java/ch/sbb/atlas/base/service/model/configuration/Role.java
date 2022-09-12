@@ -1,4 +1,4 @@
-package ch.sbb.atlas.model.configuration;
+package ch.sbb.atlas.base.service.model.configuration;
 
 import lombok.experimental.UtilityClass;
 
