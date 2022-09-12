@@ -2,11 +2,12 @@ package ch.sbb.business.organisation.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -185,6 +186,67 @@ public class BusinessOrganisationRepositoryTest {
                                     .isEqualTo(validLastYear);
     assertThat(businessOrganisation.getValidFrom()).isEqualTo(validEarlier.getValidFrom());
     assertThat(businessOrganisation.getValidTo()).isEqualTo(validLastYear.getValidTo());
+  }
+
+  @Test
+  public void shouldReturnFullLineVersions() {
+    //given
+    BusinessOrganisationVersion version1 =
+        BusinessOrganisationData.businessOrganisationVersionBuilder()
+                                .sboid(SBOID)
+                                .descriptionDe("Earlier")
+                                .validFrom(LocalDate.now().minusYears(4))
+                                .validTo(LocalDate.now().minusYears(3))
+                                .build();
+    BusinessOrganisationVersion version2 =
+        BusinessOrganisationData.businessOrganisationVersionBuilder()
+                                .sboid("sboid2")
+                                .descriptionDe("after")
+                                .validFrom(LocalDate.now())
+                                .validTo(LocalDate.now())
+                                .build();
+    versionRepository.saveAndFlush(version1);
+    versionRepository.saveAndFlush(version2);
+    //when
+    List<BusinessOrganisationVersion> result = versionRepository.getFullLineVersions();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result).isNotEmpty();
+    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).containsAnyElementsOf(result);
+
+  }
+
+  @Test
+  public void shouldReturnActualLineVersions() {
+    //given
+    BusinessOrganisationVersion version1 =
+        BusinessOrganisationData.businessOrganisationVersionBuilder()
+                                .sboid(SBOID)
+                                .descriptionDe("Earlier")
+                                .validFrom(LocalDate.of(2000, 1, 1))
+                                .validTo(LocalDate.of(2000, 12, 31))
+                                .build();
+    BusinessOrganisationVersion version2 =
+        BusinessOrganisationData.businessOrganisationVersionBuilder()
+                                .sboid("sboid2")
+                                .descriptionDe("after")
+                                .validFrom(LocalDate.of(2001, 1, 1))
+                                .validTo(LocalDate.of(2001, 12, 31))
+                                .build();
+    versionRepository.saveAndFlush(version1);
+    versionRepository.saveAndFlush(version2);
+    //when
+    List<BusinessOrganisationVersion> result = versionRepository.getActualLineVersions(
+        LocalDate.of(2000, 6, 1));
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result).isNotEmpty();
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result.get(0)).isEqualTo(version1);
+
   }
 
 }

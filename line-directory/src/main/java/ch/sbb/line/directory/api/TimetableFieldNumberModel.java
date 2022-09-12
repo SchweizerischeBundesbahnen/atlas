@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.api;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.api.AtlasCharacterSetsRegex;
-import ch.sbb.atlas.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
