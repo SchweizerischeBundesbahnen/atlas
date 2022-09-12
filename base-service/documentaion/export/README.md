@@ -3,12 +3,14 @@
 <!-- toc -->
 
 - [How to export CSV to Amazon S3](#how-to-export-csv-to-amazon-s3)
-    * [Add base-service dependency](#add-base-service-dependency)
-    * [Configure Amazon Client](#configure-amazon-client)
-        + [Add Amazon Client Properties](#add-amazon-client-properties)
-        + [Configure Client](#configure-client)
-            - [Configure beans](#configure-beans)
-    * [Export Data](#export-data)
+  * [Add base-service dependency](#add-base-service-dependency)
+  * [Configure Amazon Client](#configure-amazon-client)
+    + [Add Amazon Client Properties](#add-amazon-client-properties)
+    + [Configure Amazon Client Secrets Chart](#configure-amazon-client-secrets-chart)
+    + [Add the Secrets to Open Shift](#add-the-secrets-to-open-shift)
+    + [Configure Client](#configure-client)
+      - [Configure beans](#configure-beans)
+  * [Export Data](#export-data)
 
 <!-- tocstop -->
 
@@ -43,6 +45,28 @@ amazon:
   bucketName: "atlas-data-export-dev-dev"
   objectExpirationDays: 30
 ~~~
+
+#### Configure Amazon Client Secrets Chart
+
+You have to define in the **Chart template** the following properties:
+
+~~~
+- name: AMAZON_S3_ACCESS_KEY
+  valueFrom:
+    secretKeyRef:
+        name: amazon-client-{{ .Values.YOUR-APPLICATION.name }}
+        key: amazon-access-key
+- name: AMAZON_S3_SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+        name: amazon-client-{{ .Values.YOUR-APPLICATION.name }}
+        key: amazon-secret-key
+~~~
+
+#### Add the Secrets to Open Shift
+
+Remember to store the secrets to our Open Shift for every envoronmentes (e.g.
+see [amazon-client-line-directory]https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/ns/atlas-dev/secrets/amazon-client-line-directory)
 
 #### Configure Client
 
