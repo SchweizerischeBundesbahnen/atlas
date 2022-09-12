@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.business.organisation.directory.api.CompanyApiV1;
 import ch.sbb.business.organisation.directory.api.CompanyModel;
 import ch.sbb.business.organisation.directory.entity.Company;

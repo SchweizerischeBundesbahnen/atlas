@@ -5,7 +5,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import ch.sbb.mail.exception.MailSendException;
-import ch.sbb.atlas.model.mail.MailNotification;
+import ch.sbb.atlas.base.service.model.mail.MailNotification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
