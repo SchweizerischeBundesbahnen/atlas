@@ -36,5 +36,6 @@ export class MockBoSelectComponent {
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
 @NgModule({
   declarations: [MockAppDetailWrapperComponent, MockBoSelectComponent, MockAppTableSearchComponent],
+  exports: [MockBoSelectComponent],
 })
 export class AppMockComponents {}

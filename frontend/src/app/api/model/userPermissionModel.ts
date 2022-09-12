@@ -12,12 +12,8 @@
 import { ApplicationType } from './applicationType';
 import { ApplicationRole } from './applicationRole';
 
-/**
- * User permissions
- */
 export interface UserPermissionModel {
-  id?: number;
-  role?: ApplicationRole;
-  application?: ApplicationType;
-  sboids?: Set<string>;
+  role: ApplicationRole;
+  application: ApplicationType;
+  sboids: Array<string>;
 }
