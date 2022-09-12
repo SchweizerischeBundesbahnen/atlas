@@ -42,6 +42,14 @@ auth:
 scheduler:
   zone: "Europe/Zurich"
   bodi:
+    export:
+      business-organisation:
+        full:
+          chron: "0 0 3 * * ?" #At 03:00:00am every day
+        actual:
+          chron: "0 5 3 * * ?" #At 03:05:00am every day
+        future:
+          chron: "0 10 3 * * ?" #At 03:10:00am every day
     import:
       tu:
         crd:
