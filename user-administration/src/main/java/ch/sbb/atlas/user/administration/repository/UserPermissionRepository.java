@@ -15,4 +15,6 @@ public interface UserPermissionRepository extends JpaRepository<UserPermission, 
   Page<String> findAllDistinctSbbUserId(Pageable pageable);
 
   List<UserPermission> findBySbbUserId(String sbbUserId);
+
+  boolean existsBySbbUserIdIgnoreCase(String userId);
 }
