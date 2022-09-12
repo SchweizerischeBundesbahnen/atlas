@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/v1/users")
 public interface UserAdministrationApiV1 {
 
-    @GetMapping
-    @PageableAsQueryParam
-    Container<UserModel> getUsers(@Parameter(hidden = true) Pageable pageable);
+  @GetMapping
+  @PageableAsQueryParam
+  Container<UserModel> getUsers(@Parameter(hidden = true) Pageable pageable);
 
-    @GetMapping("{userId}")
-    UserModel getUser(@PathVariable String userId);
+  @GetMapping("{userId}")
+  UserModel getUser(@PathVariable String userId);
 
   @GetMapping("current")
   UserModel getCurrentUser();
