@@ -5,9 +5,11 @@ import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
 import ch.sbb.atlas.base.service.model.configuration.AtlasAccessDeniedHandler;
 import ch.sbb.atlas.base.service.model.configuration.Role;
+import ch.sbb.atlas.user.administration.security.UserAdministrationConfig;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -27,6 +29,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+@Import(UserAdministrationConfig.class)
 @EnableWebSecurity
 public class SecurityConfig {
 
