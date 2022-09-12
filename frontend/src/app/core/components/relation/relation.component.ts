@@ -18,6 +18,8 @@ export class RelationComponent<RECORD_TYPE> {
   @Input() tableColumns!: TableColumn<RECORD_TYPE>[];
   @Input() editMode = false;
   @Input() selectedIndex = -1;
+  @Input() addBtnNameTranslationKey = 'RELATION.ADD';
+  @Input() deleteBtnNameTranslationKey = 'RELATION.DELETE';
 
   @Output() deleteRelation = new EventEmitter<void>();
   @Output() editModeChanged = new EventEmitter<void>();

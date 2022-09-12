@@ -1,6 +1,34 @@
-<h2 class="font-bold-xl">{{ titleTranslationKey | translate }}</h2>
-<h3>Rolle</h3>
-<!-- TODO: dropdown -->
-<h3>Geschäftsorganisationen</h3>
-<app-relation [tableColumns]="tableColumnDef"></app-relation>
-<!-- TODO: table, maybe use relation component -->
+<h2 class="font-bold-xl">
+  {{ 'USER_ADMIN.APPLICATION.' + userPermission.application | translate }}
+</h2>
+<h3 class="font-bold-lg">{{ 'USER_ADMIN.ROLE' | translate }}</h3>
+
+<!--TODO: on role change not writer not display table -->
+<mat-form-field>
+  <mat-select [(value)]="userPermission.role">
+    <mat-option *ngFor="let option of getRoleOptions()" [value]="option">{{ option }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<h3 class="font-bold-lg">{{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}</h3>
+
+<app-relation
+  [records]="currentRecords"
+  [tableColumns]="tableColumnDef"
+  [selectedIndex]="selectedIndex"
+  [editable]="true"
+  [addBtnNameTranslationKey]="'USER_ADMIN.ADD_BUSINESS_ORGANISATION'"
+  [deleteBtnNameTranslationKey]="'USER_ADMIN.DELETE_BUSINESS_ORGANISATION'"
+  (editModeChanged)="addBusinessOrganisation()"
+  (selectedIndexChanged)="selectedIndex = $event"
+  (deleteRelation)="removeBusinessOrganisation()"
+>
+  <div table-button-between class="mb-3">
+    <bo-select
+      [formGroup]="businessOrganisationForm"
+      [controlName]="'businessOrganisation'"
+    ></bo-select>
+  </div>
+</app-relation>
+
+<!--TODO: generic table-->
