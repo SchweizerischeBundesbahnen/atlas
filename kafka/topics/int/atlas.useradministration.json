@@ -1,0 +1,12 @@
+{
+  "name": "atlas.int.user.administration",
+  "replicas": 3,
+  "partitions": 1,
+  "configs": {
+    "cleanup.policy": "compact",
+    "message.timestamp.type": "CreateTime",
+    "min.insync.replicas": "2",
+    "retention.ms": "604800000",
+    "unclean.leader.election.enable": "false"
+  }
+}
