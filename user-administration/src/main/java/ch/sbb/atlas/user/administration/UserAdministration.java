@@ -2,7 +2,6 @@ package ch.sbb.atlas.user.administration;
 
 import ch.sbb.atlas.base.service.model.configuration.AtlasExceptionHandler;
 import ch.sbb.atlas.kafka.KafkaTruststorePreparation;
-import ch.sbb.atlas.model.configuration.AtlasExceptionHandler;
 import java.time.ZoneId;
 import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
@@ -18,8 +17,8 @@ public class UserAdministration {
     SpringApplication.run(UserAdministration.class, args);
   }
 
-    @Bean
-    public AtlasExceptionHandler atlasExceptionHandler() {
-        return new AtlasExceptionHandler();
-    }
+  @Bean
+  public AtlasExceptionHandler atlasExceptionHandler() {
+    return new AtlasExceptionHandler();
+  }
 }
