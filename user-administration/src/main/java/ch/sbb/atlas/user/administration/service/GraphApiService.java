@@ -40,16 +40,19 @@ public class GraphApiService {
   public static final byte BATCH_REQUEST_LIMIT = 20;
 
   // returns first 10 elements found by displayName + first 10 elements found by mail (distinct)
-  public List<UserModel> searchUsersByDisplayNameAndMail(String searchQuery) {
+  public List<UserModel> searchUsers(String searchQuery) {
     // by displayName contains
     final UserCollectionPage usersByDisplayName = getUserSearchRequest(
         buildSearchQueryOption(DISPLAY_NAME_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
     // by mail startswith
     final UserCollectionPage usersByMail = getUserSearchRequest(
         buildSearchQueryOption(MAIL_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
+    // by userId startswith
+    final UserCollectionPage usersByUserId = getUserSearchRequest(
+        buildSearchQueryOption(SBB_USER_ID_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
 
     final List<UserModel> userResult = getUserModelsFromUserCollectionPages(
-        usersByDisplayName, usersByMail);
+        usersByDisplayName, usersByMail, usersByUserId);
     return userResult.stream().distinct().toList();
   }
 
