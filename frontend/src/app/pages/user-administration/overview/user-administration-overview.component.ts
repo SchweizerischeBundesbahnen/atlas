@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, of } from 'rxjs';
 import { UserService } from '../service/user.service';
 import { tap } from 'rxjs/operators';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { UserModel, UserPermissionModel } from '../../../api';
+import { UserModel } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -15,7 +14,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class UserAdministrationOverviewComponent implements OnInit {
   @ViewChild(TableComponent) tableComponent!: TableComponent<UserModel>;
-  userSearchResults$: Observable<UserModel[]> = of([]);
   userPageResult: { users: UserModel[]; totalCount: number } = { users: [], totalCount: 0 };
   tableIsLoading = false;
   readonly tableColumns: TableColumn<UserModel>[] = [
@@ -57,16 +55,6 @@ export class UserAdministrationOverviewComponent implements OnInit {
     this.loadUsers({ page: 0, size: 10 });
   }
 
-  selectOption: (item: UserModel) => string = (item: UserModel): string =>
-    `${item.displayName} (${item.mail})`;
-
-  searchUser(searchQuery: string): void {
-    if (!searchQuery) {
-      return;
-    }
-    this.userSearchResults$ = this.userService.searchUsers(searchQuery);
-  }
-
   loadUsers(tableSettings: TableSettings): void {
     this.tableIsLoading = true;
     this.form.reset();
@@ -88,10 +76,10 @@ export class UserAdministrationOverviewComponent implements OnInit {
       this.userPageResult = { users: [], totalCount: 0 };
     } else {
       this.userService
-        .getUser(selectedUser.sbbUserId)
+        .hasUserPermissions(selectedUser.sbbUserId)
         .pipe(
-          tap((user) => {
-            if (UserAdministrationOverviewComponent.hasPermissions(user)) {
+          tap((hasPermission) => {
+            if (hasPermission) {
               this.userPageResult = { users: [selectedUser], totalCount: 1 };
               this.tableComponent.paginator.pageIndex = 0;
             } else {
@@ -107,9 +95,5 @@ export class UserAdministrationOverviewComponent implements OnInit {
     return this.router.navigate(['add'], {
       relativeTo: this.route,
     });
-  }
-
-  private static hasPermissions(user: UserModel): boolean {
-    return ((user.permissions as Array<UserPermissionModel> | undefined)?.length ?? 0) > 0;
   }
 }
