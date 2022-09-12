@@ -24,14 +24,7 @@
       (editElementEvent)="({})"
       (getTableElementsEvent)="loadUsers($event)"
     >
-      <form-search-select
-        [items$]="userSearchResults$"
-        [formGroup]="form"
-        [controlName]="'userSearch'"
-        [getSelectOption]="selectOption"
-        (searchTrigger)="searchUser($event)"
-        (changeTrigger)="checkIfUserExists($event)"
-      ></form-search-select>
+      <app-user-select (selectionChange)="checkIfUserExists($event)"></app-user-select>
     </app-table>
   </div>
 </div>
