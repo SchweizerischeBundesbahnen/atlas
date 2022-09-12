@@ -1,5 +1,6 @@
 # Implementation of UserAdministration for business services
 
+## Specification and Overview
 Based on Specification: https://confluence.sbb.ch/pages/viewpage.action?pageId=2118124295
 
 ![Role Hierarchy](documentation/user-administration.png)
@@ -20,3 +21,26 @@ The supervisor additionally may:
 
 The admin additionally may:
 - See and manage users for the atlas platform
+
+## Usage
+
+```xml
+<dependency>
+  <groupId>ch.sbb.atlas</groupId>
+  <artifactId>user-administration-security</artifactId>
+  <version>${revision}</version>
+</dependency>
+```
+
+The dependency will include `UserAdministrationConfig` to the autoconfiguration.
+
+```java
+@PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+public LineVersion create(LineVersion businessObject) {
+    return save(businessObject);
+}
+```
+
+This snippet will call the Bean with name `userAdministrationService` and execute the `hasUserPermissionsToCreate` function. 
+The parameter `businessObject` is passed along with the enum constant for the application type.
+If the function returns true, the user is allowed to proceed, if it returns false, spring will return an access denied (403 - Forbidden).
