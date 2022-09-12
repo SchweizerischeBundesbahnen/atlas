@@ -26,3 +26,9 @@ auth:
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
+amazon:
+  accessKey: ${AMAZON_S3_ACCESS_KEY}
+  secretKey: ${AMAZON_S3_SECRET_KEY}
+  region: "eu-central-1"
+  bucketName: "atlas-data-export-test-dev"
+  objectExpirationDays: 30
