@@ -2,7 +2,7 @@ import { Directive, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
-import { EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
 import moment from 'moment/moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
@@ -13,6 +13,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Directive()
 export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
   record!: TYPE;
+  selectedRecordChange = new Subject<Record>();
   records!: Array<TYPE>;
   form!: FormGroup;
   switchedIndex!: number | undefined;
@@ -49,14 +50,23 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
       this.records = records;
       this.sortRecords();
       if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
-        this.record = this.records[this.switchedIndex];
+        this.setSelectedRecord(this.records[this.switchedIndex]);
       } else {
-        this.record = this.getActualRecord(this.records);
+        this.setSelectedRecord(this.getActualRecord(this.records));
       }
     } else {
       //is creating a new version, prepare empty Form
-      this.record = records;
+      this.setSelectedRecord(records);
     }
+  }
+
+  getSelectedRecord(): TYPE {
+    return this.record;
+  }
+
+  setSelectedRecord(record: TYPE) {
+    this.record = record;
+    this.selectedRecordChange.next(record);
   }
 
   private isVersionSwitched() {
@@ -73,10 +83,6 @@ export abstract class DetailWrapperController<TYPE extends Record> implements On
 
   getId(): number {
     return this.record.id!;
-  }
-
-  getSelectedRecord(): TYPE {
-    return this.record;
   }
 
   isNewRecord() {
