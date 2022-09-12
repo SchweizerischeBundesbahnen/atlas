@@ -4,10 +4,13 @@ import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.user.administration.models.UserModel;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "User Administration")
@@ -23,5 +26,8 @@ public interface UserAdministrationApiV1 {
 
   @GetMapping("current")
   UserModel getCurrentUser();
+
+  @PostMapping
+  UserModel createUserPermission(@RequestBody @Valid UserPermissionCreateModel user);
 
 }
