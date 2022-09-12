@@ -23,11 +23,11 @@ public static void main(String[]args){
 }
 ```
 
+4. `@Import(AtlasKafkaConfiguration.class)` to include the config to the application context.
 3. Use this library for models which shall be sent over Kafka
 
 ## What it does
 
-By configuring the dependency Springs autoconfiguration will import `AtlasKafkaConfiguration` as a Spring configuration.
 This will configure the Kafka authorization settings for spring with truststore and passwords and also configure the standard producer and consumer settings.
 
 If you need more specific settings four your application, just override the properties in your `application.yml`

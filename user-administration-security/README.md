@@ -32,7 +32,7 @@ The admin additionally may:
 </dependency>
 ```
 
-The dependency will include `UserAdministrationConfig` to the autoconfiguration.
+`@Import(UserAdministrationConfig.class)` to include the config to the application context.
 
 ```java
 @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
