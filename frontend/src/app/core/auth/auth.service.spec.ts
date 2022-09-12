@@ -109,162 +109,242 @@ describe('AuthService', () => {
     expect(result).toBeFalse();
   });
 
-  it('Permissions for create Button BODI are set up correctly', () => {
-    let result = AuthService.hasPermissionsToCreateWithPermissions(ApplicationType.Bodi, [], true);
-    expect(result).toBeTrue();
+  describe('Permissions for create Button', () => {
+    it('Permissions for create Button BODI are set up correctly', () => {
+      let result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Bodi,
+        [],
+        true
+      );
+      expect(result).toBeTrue();
 
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Bodi,
-      [
-        {
-          application: ApplicationType.Bodi,
-          role: ApplicationRole.SuperUser,
-        },
-      ],
-      false
-    );
-    expect(result).toBeTrue();
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Bodi,
+        [
+          {
+            application: ApplicationType.Bodi,
+            role: ApplicationRole.SuperUser,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
 
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Bodi,
-      [
-        {
-          application: ApplicationType.Bodi,
-          role: ApplicationRole.Supervisor,
-        },
-      ],
-      false
-    );
-    expect(result).toBeTrue();
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Bodi,
+        [
+          {
+            application: ApplicationType.Bodi,
+            role: ApplicationRole.Supervisor,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
 
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Bodi,
-      [
-        {
-          application: ApplicationType.Bodi,
-          role: ApplicationRole.Writer,
-        },
-      ],
-      false
-    );
-    expect(result).toBeFalse();
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Bodi,
+        [
+          {
+            application: ApplicationType.Bodi,
+            role: ApplicationRole.Writer,
+          },
+        ],
+        false
+      );
+      expect(result).toBeFalse();
 
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Bodi,
-      [
-        {
-          application: ApplicationType.Bodi,
-          role: ApplicationRole.Reader,
-        },
-      ],
-      false
-    );
-    expect(result).toBeFalse();
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Bodi,
+        [
+          {
+            application: ApplicationType.Bodi,
+            role: ApplicationRole.Reader,
+          },
+        ],
+        false
+      );
+      expect(result).toBeFalse();
+    });
+
+    it('Permissions for create Button LIDI are set up correctly', () => {
+      let result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Lidi,
+        [],
+        true
+      );
+      expect(result).toBeTrue();
+
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Lidi,
+        [
+          {
+            application: ApplicationType.Lidi,
+            role: ApplicationRole.SuperUser,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
+
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Lidi,
+        [
+          {
+            application: ApplicationType.Lidi,
+            role: ApplicationRole.Supervisor,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
+
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Lidi,
+        [
+          {
+            application: ApplicationType.Lidi,
+            role: ApplicationRole.Writer,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
+
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Lidi,
+        [
+          {
+            application: ApplicationType.Lidi,
+            role: ApplicationRole.Reader,
+          },
+        ],
+        false
+      );
+      expect(result).toBeFalse();
+    });
+
+    it('Permissions for create Button TTFN are set up correctly', () => {
+      let result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Ttfn,
+        [],
+        true
+      );
+      expect(result).toBeTrue();
+
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Ttfn,
+        [
+          {
+            application: ApplicationType.Ttfn,
+            role: ApplicationRole.SuperUser,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
+
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Ttfn,
+        [
+          {
+            application: ApplicationType.Ttfn,
+            role: ApplicationRole.Supervisor,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
+
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Ttfn,
+        [
+          {
+            application: ApplicationType.Ttfn,
+            role: ApplicationRole.Writer,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
+
+      result = AuthService.hasPermissionsToCreateWithPermissions(
+        ApplicationType.Ttfn,
+        [
+          {
+            application: ApplicationType.Ttfn,
+            role: ApplicationRole.Reader,
+          },
+        ],
+        false
+      );
+      expect(result).toBeFalse();
+    });
   });
 
-  it('Permissions for create Button LIDI are set up correctly', () => {
-    let result = AuthService.hasPermissionsToCreateWithPermissions(ApplicationType.Lidi, [], true);
-    expect(result).toBeTrue();
+  describe('Permissions for edit Button', () => {
+    it('LIDI setup correctly', () => {
+      let result = AuthService.hasPermissionsToWriteWithPermissions(
+        ApplicationType.Lidi,
+        'ch:1:slnid:1000004',
+        [],
+        true
+      );
+      expect(result).toBeTrue();
 
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Lidi,
-      [
-        {
-          application: ApplicationType.Lidi,
-          role: ApplicationRole.SuperUser,
-        },
-      ],
-      false
-    );
-    expect(result).toBeTrue();
+      result = AuthService.hasPermissionsToWriteWithPermissions(
+        ApplicationType.Lidi,
+        'ch:1:slnid:1000004',
+        [
+          {
+            application: ApplicationType.Lidi,
+            role: ApplicationRole.Supervisor,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
 
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Lidi,
-      [
-        {
-          application: ApplicationType.Lidi,
-          role: ApplicationRole.Supervisor,
-        },
-      ],
-      false
-    );
-    expect(result).toBeTrue();
+      result = AuthService.hasPermissionsToWriteWithPermissions(
+        ApplicationType.Lidi,
+        'ch:1:slnid:1000004',
+        [
+          {
+            application: ApplicationType.Lidi,
+            role: ApplicationRole.SuperUser,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
 
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Lidi,
-      [
-        {
-          application: ApplicationType.Lidi,
-          role: ApplicationRole.Writer,
-        },
-      ],
-      false
-    );
-    expect(result).toBeTrue();
+      result = AuthService.hasPermissionsToWriteWithPermissions(
+        ApplicationType.Lidi,
+        'ch:1:slnid:1000004',
+        [
+          {
+            application: ApplicationType.Lidi,
+            role: ApplicationRole.Writer,
+            sboids: new Set([]),
+          },
+        ],
+        false
+      );
+      expect(result).toBeFalse();
 
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Lidi,
-      [
-        {
-          application: ApplicationType.Lidi,
-          role: ApplicationRole.Reader,
-        },
-      ],
-      false
-    );
-    expect(result).toBeFalse();
-  });
-
-  it('Permissions for create Button TTFN are set up correctly', () => {
-    let result = AuthService.hasPermissionsToCreateWithPermissions(ApplicationType.Ttfn, [], true);
-    expect(result).toBeTrue();
-
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Ttfn,
-      [
-        {
-          application: ApplicationType.Ttfn,
-          role: ApplicationRole.SuperUser,
-        },
-      ],
-      false
-    );
-    expect(result).toBeTrue();
-
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Ttfn,
-      [
-        {
-          application: ApplicationType.Ttfn,
-          role: ApplicationRole.Supervisor,
-        },
-      ],
-      false
-    );
-    expect(result).toBeTrue();
-
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Ttfn,
-      [
-        {
-          application: ApplicationType.Ttfn,
-          role: ApplicationRole.Writer,
-        },
-      ],
-      false
-    );
-    expect(result).toBeTrue();
-
-    result = AuthService.hasPermissionsToCreateWithPermissions(
-      ApplicationType.Ttfn,
-      [
-        {
-          application: ApplicationType.Ttfn,
-          role: ApplicationRole.Reader,
-        },
-      ],
-      false
-    );
-    expect(result).toBeFalse();
+      result = AuthService.hasPermissionsToWriteWithPermissions(
+        ApplicationType.Lidi,
+        'ch:1:slnid:1000004',
+        [
+          {
+            application: ApplicationType.Lidi,
+            role: ApplicationRole.Writer,
+            sboids: new Set(['ch:1:slnid:1000004']),
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
+    });
   });
 });

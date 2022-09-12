@@ -20,7 +20,7 @@ export class AuthService {
   readonly eventUserComponentNotification: EventEmitter<User> = new EventEmitter<User>();
   private readonly REQUESTED_ROUTE_STORAGE_KEY = 'requested_route';
 
-  private permissions!: UserPermissionModel[];
+  private permissions: UserPermissionModel[] = [];
 
   get claims() {
     return this.oauthService.getIdentityClaims() as User;
@@ -150,7 +150,7 @@ export class AuthService {
         return true;
       }
       if (sboid && ApplicationRole.Writer === applicationPermission.role!) {
-        return applicationPermission.sboids!.has(sboid);
+        return Array.from(applicationPermission.sboids!.values()).includes(sboid);
       }
     }
     return false;

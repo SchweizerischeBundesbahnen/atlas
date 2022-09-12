@@ -4,7 +4,6 @@ import { TimetableFieldNumberDetailComponent } from './timetable-field-number-de
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
-import { DetailWrapperComponent } from '../../../core/components/detail-wrapper/detail-wrapper.component';
 import moment from 'moment/moment';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -179,7 +178,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     await TestBed.configureTestingModule({
       declarations: [
         TimetableFieldNumberDetailComponent,
-        DetailWrapperComponent,
+        MockAppDetailWrapperComponent,
         MockAppCoverageComponent,
         ErrorNotificationComponent,
         InfoIconComponent,
