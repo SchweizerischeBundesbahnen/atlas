@@ -1,8 +1,8 @@
-package ch.sbb.atlas.model.configuration;
+package ch.sbb.atlas.base.service.model.configuration;
 
-import ch.sbb.atlas.model.api.ErrorResponse;
-import ch.sbb.atlas.model.api.ErrorResponse.Detail;
-import ch.sbb.atlas.model.api.ErrorResponse.DisplayInfo;
+import ch.sbb.atlas.base.service.model.api.ErrorResponse;
+import ch.sbb.atlas.base.service.model.api.ErrorResponse.Detail;
+import ch.sbb.atlas.base.service.model.api.ErrorResponse.DisplayInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.SortedSet;
