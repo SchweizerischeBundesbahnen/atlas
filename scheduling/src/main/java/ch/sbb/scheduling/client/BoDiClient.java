@@ -15,4 +15,12 @@ public interface BoDiClient {
   @PostMapping(value = "/business-organisation-directory/v1/transport-companies/loadFromBAV", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postLoadTransportCompaniesFromBav();
 
+  @PostMapping(value = "/business-organisation-directory/v1/business-organisations/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response putBoDiBusinessOrganisationExportFull();
+
+  @PostMapping(value = "/business-organisation-directory/v1/business-organisations/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response putBoDiBusinessOrganisationExportActual();
+
+  @PostMapping(value = "/business-organisation-directory/v1/business-organisations/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response putBoDiBusinessOrganisationExportNextTimetableVersions();
 }

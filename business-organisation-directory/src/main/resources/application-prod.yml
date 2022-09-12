@@ -29,3 +29,9 @@ logging:
 mail:
   receiver:
     tu-relations-report: atlas@sbb.ch
+amazon:
+  accessKey: ${AMAZON_S3_ACCESS_KEY}
+  secretKey: ${AMAZON_S3_SECRET_KEY}
+  region: "eu-central-1"
+  bucketName: "atlas-data-export-prod"
+  objectExpirationDays: 30
