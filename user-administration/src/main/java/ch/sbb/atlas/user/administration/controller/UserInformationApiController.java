@@ -14,7 +14,7 @@ public class UserInformationApiController implements UserInformationApiV1 {
 
   @Override
   public List<UserModel> searchUsers(String searchQuery) {
-    return graphApiService.searchUsersByDisplayNameAndMail(searchQuery);
+    return graphApiService.searchUsers(searchQuery);
   }
 
 }
