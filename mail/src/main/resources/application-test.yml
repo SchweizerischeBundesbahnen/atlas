@@ -8,3 +8,8 @@ spring:
           auth: false
         starttls:
           enable: false
+  kafka:
+    atlas:
+      mail:
+        topic: atlas.test.mail
+        groupId: atlas.kafka.user
