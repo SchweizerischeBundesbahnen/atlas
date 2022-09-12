@@ -1,8 +1,4 @@
-<<<<<<< HEAD:base-service/src/main/java/ch/sbb/atlas/base/service/model/service/KafkaTruststorePreparation.java
-package ch.sbb.atlas.base.service.model.service;
-=======
 package ch.sbb.atlas.kafka;
->>>>>>> ATLAS-827: kafka-lib as a base for all:kafka/src/main/java/ch/sbb/atlas/kafka/KafkaTruststorePreparation.java
 
 import java.io.IOException;
 import java.nio.file.Files;
