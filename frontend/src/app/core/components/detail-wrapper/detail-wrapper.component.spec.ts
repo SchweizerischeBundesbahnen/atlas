@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DetailWrapperComponent } from './detail-wrapper.component';
 import { By } from '@angular/platform-browser';
 import { DetailWrapperController } from './detail-wrapper-controller';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
@@ -107,6 +107,7 @@ function createDummyForm(enabledForm: boolean) {
     dirty: true,
     valid: true,
   });
+  const selectedRecordChange = new Subject();
   const dummyController = jasmine.createSpyObj(
     'dummyController',
     [
@@ -128,6 +129,7 @@ function createDummyForm(enabledForm: boolean) {
       heading: undefined,
       form: form,
       record: { id: 1 },
+      selectedRecordChange: selectedRecordChange,
     }
   );
   dummyController.getId.and.callFake(DetailWrapperController.prototype.getId);
