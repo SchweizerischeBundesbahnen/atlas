@@ -52,5 +52,6 @@ model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
 model/userAccountStatus.ts
 model/userModel.ts
+model/userPermissionCreateModel.ts
 model/userPermissionModel.ts
 variables.ts

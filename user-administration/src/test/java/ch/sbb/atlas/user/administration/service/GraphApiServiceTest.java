@@ -71,7 +71,7 @@ public class GraphApiServiceTest {
 
     doReturn(List.of(user, user2, user3)).when(userCollectionPageMock).getCurrentPage();
 
-    List<UserModel> result = graphApiService.searchUsersByDisplayNameAndMail("test");
+    List<UserModel> result = graphApiService.searchUsers("test");
 
     verify(userCollectionRequestMock.get(), times(2));
     assertThat(result).hasSize(3);
