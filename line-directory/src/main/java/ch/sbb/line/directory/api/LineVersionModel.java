@@ -1,9 +1,9 @@
 package ch.sbb.line.directory.api;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.api.AtlasCharacterSetsRegex;
-import ch.sbb.atlas.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.model.validation.DatesValidator;
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import io.swagger.v3.oas.annotations.media.Schema;

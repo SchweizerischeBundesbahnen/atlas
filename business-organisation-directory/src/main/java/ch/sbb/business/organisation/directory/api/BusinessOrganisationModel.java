@@ -1,8 +1,8 @@
 package ch.sbb.business.organisation.directory.api;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.api.AtlasCharacterSetsRegex;
-import ch.sbb.atlas.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
 import io.swagger.v3.oas.annotations.media.Schema;
