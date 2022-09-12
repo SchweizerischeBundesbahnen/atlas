@@ -34,4 +34,12 @@ public interface BusinessOrganisationVersionRepository extends
   @Query("update business_organisation_version v set v.version = (v.version + 1) where v.sboid = :sboid")
   void incrementVersion(@Param("sboid") String sboid);
 
+  @Query("SELECT bov FROM business_organisation_version as bov"
+      + " ORDER BY bov.sboid, bov.validFrom ASC")
+  List<BusinessOrganisationVersion> getFullLineVersions();
+
+  @Query("SELECT bov FROM business_organisation_version as bov"
+      + " WHERE  :actualDate >= bov.validFrom AND :actualDate <= bov.validTo"
+      + " ORDER BY bov.sboid, bov.validFrom ASC")
+  List<BusinessOrganisationVersion> getActualLineVersions(LocalDate actualDate);
 }

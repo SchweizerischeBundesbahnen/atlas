@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.api.ErrorResponse;
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.api.SublineVersionModel;

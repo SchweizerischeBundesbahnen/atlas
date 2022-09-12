@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory.service;
 
-import ch.sbb.atlas.model.mail.MailNotification;
+import ch.sbb.atlas.base.service.model.mail.MailNotification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
