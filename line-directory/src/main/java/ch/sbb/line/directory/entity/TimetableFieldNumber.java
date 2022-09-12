@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.base.service.model.Status;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;

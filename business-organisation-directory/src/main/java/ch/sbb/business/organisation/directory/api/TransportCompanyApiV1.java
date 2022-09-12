@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory.api;
 
-import ch.sbb.atlas.model.api.Container;
+import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.business.organisation.directory.configuration.Role;
 import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
 import io.swagger.v3.oas.annotations.Parameter;

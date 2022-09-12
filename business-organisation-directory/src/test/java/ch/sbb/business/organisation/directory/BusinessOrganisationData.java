@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.BusinessOrganisationVersionModelBuilder;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
