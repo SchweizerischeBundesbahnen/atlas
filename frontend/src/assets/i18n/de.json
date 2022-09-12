@@ -173,6 +173,7 @@
     "MAIL": "E-Mail Adresse",
     "USER_ID": "Benutzer-ID",
     "ACCOUNT_STATUS": "Accountstatus",
+    "DISPLAY_NAME": "Anzeigename",
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Aktiv",
       "INACTIVE": "Inaktiv",
@@ -182,7 +183,11 @@
     "APPLICATION": {
       "LIDI": "Linien- und Teillinien",
       "TTFN": "Fahrplanfeldnummern"
-    }
+    },
+    "ROLE": "Rolle",
+    "ADD_BUSINESS_ORGANISATION": "Geschäftsorganisation hinzufügen",
+    "DELETE_BUSINESS_ORGANISATION": "Geschäftsorganisation entfernen",
+    "NEW_USER_HAS_ALREADY_PERMISSIONS": "Gewählter Benutzer ist bereits hinterlegt"
   },
   "TTFN": {
     "TTFN": "Fahrplanfeldnummer",
