@@ -23,14 +23,6 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       retries: 1
-    atlas:
-      mail:
-        topic: atlas.mail
-        groupId: atlas.kafka.user
-      user:
-        administration:
-          topic: atlas.user.administration
-          groupId: atlas.kafka.user
 
 ---
 
@@ -38,12 +30,6 @@ spring:
   profiles: dev
   kafka:
     bootstrap-servers: test01.kafka.sbb.ch:9095
-    atlas:
-      mail:
-        topic: atlas.dev.mail
-      user:
-        administration:
-          topic: atlas.dev.user.administration
 
 ---
 
@@ -51,12 +37,6 @@ spring:
   profiles: test
   kafka:
     bootstrap-servers: test01.kafka.sbb.ch:9095
-    atlas:
-      mail:
-        topic: atlas.test.mail
-      user:
-        administration:
-          topic: atlas.test.user.administration
 
 ---
 
@@ -64,12 +44,6 @@ spring:
   profiles: int
   kafka:
     bootstrap-servers: inte01.kafka.sbb.ch:9095
-    atlas:
-      mail:
-        topic: atlas.int.mail
-      user:
-        administration:
-          topic: atlas.int.user.administration
 
 ---
 
@@ -77,9 +51,3 @@ spring:
   profiles: prod
   kafka:
     bootstrap-servers: prod01.kafka.sbb.ch:9095
-    atlas:
-      mail:
-        topic: atlas.prod.mail
-      user:
-        administration:
-          topic: atlas.prod.user.administration

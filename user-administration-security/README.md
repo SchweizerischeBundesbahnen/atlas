@@ -31,6 +31,14 @@ The admin additionally may:
   <version>${revision}</version>
 </dependency>
 ```
+Define the user administration topic.
+```yaml
+  kafka:
+      user:
+        administration:
+          topic: atlas.dev.user.administration
+          groupId: atlas.kafka.user
+```
 
 `@Import(UserAdministrationConfig.class)` to include the config to the application context.
 
