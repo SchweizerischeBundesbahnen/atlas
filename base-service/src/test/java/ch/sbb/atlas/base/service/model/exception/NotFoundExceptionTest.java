@@ -1,13 +1,9 @@
 package ch.sbb.atlas.base.service.model.exception;
 
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class NotFoundExceptionTest {
-
 
   @Test
   public void shouldGetNotFoundException() {
@@ -15,7 +11,7 @@ public class NotFoundExceptionTest {
 
     //when
     NotFoundException exception = Assertions.assertThrows(NotFoundException.class, () -> {
-      throw new NotFoundException.IdNotFoundException(123l);
+      throw new NotFoundException.IdNotFoundException(123L);
     });
 
     //then

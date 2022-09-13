@@ -28,12 +28,11 @@ public class BusinessOrganisationConflictException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .status(HttpStatus.CONFLICT.value())
-                        .message(
-                            "A conflict occurred due to a business rule")
-                        .error(ERROR)
-                        .details(getErrorDetails())
-                        .build();
+        .status(HttpStatus.CONFLICT.value())
+        .message("A conflict occurred due to a business rule")
+        .error(ERROR)
+        .details(getErrorDetails())
+        .build();
   }
 
   private SortedSet<Detail> getErrorDetails() {
@@ -72,16 +71,16 @@ public class BusinessOrganisationConflictException extends AtlasException {
   private Detail toOverlapDetail(BusinessOrganisationVersion version, String field,
       Function<BusinessOrganisationVersion, String> valueExtractor) {
     return ValidFromDetail.builder()
-                 .field(field)
-                 .message("{0} {1} already taken from {2} to {3} by {4}")
-                 .displayInfo(DisplayInfo.builder()
-                                         .code(CODE_PREFIX + field.toUpperCase())
-                                         .with(FIELD, field)
-                                         .with(field, valueExtractor.apply(newVersion))
-                                         .with(Fields.validFrom, version.getValidFrom())
-                                         .with(Fields.validTo, version.getValidTo())
-                                         .with(Fields.sboid, version.getSboid())
-                                         .build()).build();
+        .field(field)
+        .message("{0} {1} already taken from {2} to {3} by {4}")
+        .displayInfo(DisplayInfo.builder()
+            .code(CODE_PREFIX + field.toUpperCase())
+            .with(FIELD, field)
+            .with(field, valueExtractor.apply(newVersion))
+            .with(Fields.validFrom, version.getValidFrom())
+            .with(Fields.validTo, version.getValidTo())
+            .with(Fields.sboid, version.getSboid())
+            .build()).build();
   }
 
 }
