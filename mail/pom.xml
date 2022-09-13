@@ -51,6 +51,29 @@
          <version>${revision}</version>
       </dependency>
       <dependency>
+         <artifactId>base-service</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>${revision}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>org.hibernate</groupId>
+               <artifactId>hibernate-jpamodelgen</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-data-jpa</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-security</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
          <artifactId>spring-boot-starter-test</artifactId>
          <groupId>org.springframework.boot</groupId>
          <scope>test</scope>
