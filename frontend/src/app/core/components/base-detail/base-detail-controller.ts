@@ -11,7 +11,7 @@ import { ApplicationType, Status } from '../../../api';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Directive()
-export abstract class DetailWrapperController<TYPE extends Record> implements OnInit {
+export abstract class BaseDetailController<TYPE extends Record> implements OnInit {
   record!: TYPE;
   selectedRecordChange = new Subject<Record>();
   records!: Array<TYPE>;

@@ -9,7 +9,7 @@ import {
   SublineVersion,
 } from '../../../../api';
 import { DateService } from 'src/app/core/date/date.service';
-import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
+import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { catchError, Observable, of, Subject, takeUntil } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
@@ -33,7 +33,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./subline-detail.component.scss'],
 })
 export class SublineDetailComponent
-  extends DetailWrapperController<SublineVersion>
+  extends BaseDetailController<SublineVersion>
   implements OnInit, OnDestroy
 {
   TYPE_OPTIONS = Object.values(SublineType);

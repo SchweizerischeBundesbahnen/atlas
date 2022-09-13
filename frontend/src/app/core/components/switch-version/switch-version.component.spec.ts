@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SwitchVersionComponent } from './switch-version.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Record } from '../detail-wrapper/record';
+import { Record } from '../base-detail/record';
 import moment from 'moment';
 import { AppTestingModule } from '../../../app.testing.module';
 

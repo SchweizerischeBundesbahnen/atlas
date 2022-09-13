@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ApplicationType, LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
-import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
+import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
@@ -22,7 +22,7 @@ import { LineDetailFormGroup } from './line-detail-form-group';
   styleUrls: ['./line-detail.component.scss'],
 })
 export class LineDetailComponent
-  extends DetailWrapperController<LineVersion>
+  extends BaseDetailController<LineVersion>
   implements OnInit, OnDestroy
 {
   TYPE_OPTIONS = Object.values(LineType);

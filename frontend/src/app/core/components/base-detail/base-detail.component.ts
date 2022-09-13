@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { DetailWrapperController } from './detail-wrapper-controller';
+import { BaseDetailController } from './base-detail-controller';
 import { AuthService } from '../../auth/auth.service';
 import { KeepaliveService } from '../../keepalive/keepalive.service';
 import { Record } from './record';
@@ -7,11 +7,11 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
-  templateUrl: './detail-wrapper.component.html',
-  styleUrls: ['./detail-wrapper.component.scss'],
+  templateUrl: './base-detail.component.html',
+  styleUrls: ['./base-detail.component.scss'],
 })
-export class DetailWrapperComponent implements OnInit, OnDestroy {
-  @Input() controller!: DetailWrapperController<Record>;
+export class BaseDetailComponent implements OnInit, OnDestroy {
+  @Input() controller!: BaseDetailController<Record>;
   @Input() headingNew!: string;
   @Input() formDetailHeading!: string;
 
