@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DetailWrapperComponent } from './detail-wrapper.component';
+import { BaseDetailComponent } from './base-detail.component';
 import { By } from '@angular/platform-browser';
-import { DetailWrapperController } from './detail-wrapper-controller';
+import { BaseDetailController } from './base-detail-controller';
 import { of, Subject } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
@@ -19,10 +19,10 @@ class MockAppCoverageComponent {
   @Input() currentRecord!: any;
 }
 
-describe('DetailWrapperComponent', () => {
+describe('BaseDetailComponent', () => {
   /*eslint-disable */
-  let component: DetailWrapperComponent;
-  let fixture: ComponentFixture<DetailWrapperComponent>;
+  let component: BaseDetailComponent;
+  let fixture: ComponentFixture<BaseDetailComponent>;
 
   const authServiceMock: Partial<AuthService> = {
     claims: {
@@ -52,14 +52,14 @@ describe('DetailWrapperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DetailWrapperComponent, MockAppCoverageComponent],
+      declarations: [BaseDetailComponent, MockAppCoverageComponent],
       imports: [AppTestingModule],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
   });
 
-  function init(controller: DetailWrapperController<any>) {
-    fixture = TestBed.createComponent(DetailWrapperComponent);
+  function init(controller: BaseDetailController<any>) {
+    fixture = TestBed.createComponent(BaseDetailComponent);
     component = fixture.componentInstance;
     component.controller = controller;
     fixture.detectChanges();
@@ -132,11 +132,11 @@ function createDummyForm(enabledForm: boolean) {
       selectedRecordChange: selectedRecordChange,
     }
   );
-  dummyController.getId.and.callFake(DetailWrapperController.prototype.getId);
-  dummyController.isNewRecord.and.callFake(DetailWrapperController.prototype.isNewRecord);
-  dummyController.isExistingRecord.and.callFake(DetailWrapperController.prototype.isExistingRecord);
-  dummyController.save.and.callFake(DetailWrapperController.prototype.save);
-  dummyController.toggleEdit.and.callFake(DetailWrapperController.prototype.toggleEdit);
+  dummyController.getId.and.callFake(BaseDetailController.prototype.getId);
+  dummyController.isNewRecord.and.callFake(BaseDetailController.prototype.isNewRecord);
+  dummyController.isExistingRecord.and.callFake(BaseDetailController.prototype.isExistingRecord);
+  dummyController.save.and.callFake(BaseDetailController.prototype.save);
+  dummyController.toggleEdit.and.callFake(BaseDetailController.prototype.toggleEdit);
   dummyController.confirmLeave.and.returnValue(of(true));
 
   return dummyController;
