@@ -12,31 +12,29 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableFeignClients
-@EnableScheduling
 public class BusinessOrganisationDirectoryApplication {
 
-    public static void main(String[] args) {
-        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
-        KafkaTruststorePreparation.setupTruststore();
-        SpringApplication.run(BusinessOrganisationDirectoryApplication.class, args);
-    }
+  public static void main(String[] args) {
+    TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
+    KafkaTruststorePreparation.setupTruststore();
+    SpringApplication.run(BusinessOrganisationDirectoryApplication.class, args);
+  }
 
-    @Bean
-    public VersionableService versionableService() {
-        return new VersionableServiceImpl();
-    }
+  @Bean
+  public VersionableService versionableService() {
+    return new VersionableServiceImpl();
+  }
 
-    @Bean
-    public AtlasExceptionHandler atlasExceptionHandler() {
-        return new AtlasExceptionHandler();
-    }
+  @Bean
+  public AtlasExceptionHandler atlasExceptionHandler() {
+    return new AtlasExceptionHandler();
+  }
 
-    @Bean
-    public FileService fileService() {
-        return new FileServiceImpl();
-    }
+  @Bean
+  public FileService fileService() {
+    return new FileServiceImpl();
+  }
 }
