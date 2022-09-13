@@ -19,23 +19,23 @@ public abstract class NotFoundException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .message("Entity not found")
-                        .error(ERROR)
-                        .details(getErrorDetails())
-                        .build();
+        .status(HttpStatus.NOT_FOUND.value())
+        .message("Entity not found")
+        .error(ERROR)
+        .details(getErrorDetails())
+        .build();
   }
 
   private SortedSet<Detail> getErrorDetails() {
     Detail detail = Detail.builder()
-                          .field(field)
-                          .message("Object with {0} {1} not found")
-                          .displayInfo(ErrorResponse.DisplayInfo.builder()
-                                                                .code(CODE)
-                                                                .with("field", field)
-                                                                .with("value", value)
-                                                                .build())
-                          .build();
+        .field(field)
+        .message("Object with {0} {1} not found")
+        .displayInfo(ErrorResponse.DisplayInfo.builder()
+            .code(CODE)
+            .with("field", field)
+            .with("value", value)
+            .build())
+        .build();
     SortedSet<Detail> details = new TreeSet<>();
     details.add(detail);
     return details;
