@@ -91,6 +91,7 @@ export class AuthService {
     );
   }
 
+  // Determines if we show the create button
   static hasPermissionsToCreateWithPermissions(
     applicationType: ApplicationType,
     permissions: UserPermissionModel[],
@@ -99,24 +100,32 @@ export class AuthService {
     if (isAdmin) {
       return true;
     }
+    // Look up user permissions per for the applicationType
     const applicationPermissions = permissions.filter(
       (permission) => permission.application === applicationType
     );
     if (applicationPermissions.length === 1) {
       const applicationPermission = applicationPermissions[0];
-      let rolesAllowedToCreate = [
-        ApplicationRole.Supervisor,
-        ApplicationRole.SuperUser,
-        ApplicationRole.Writer,
-      ];
-      if (ApplicationType.Bodi === applicationType) {
-        rolesAllowedToCreate = [ApplicationRole.Supervisor, ApplicationRole.SuperUser];
-      }
-      if (rolesAllowedToCreate.includes(applicationPermission.role!)) {
+      if (
+        AuthService.getRolesAllowedToCreate(applicationType).includes(applicationPermission.role!)
+      ) {
         return true;
       }
     }
     return false;
+  }
+
+  private static getRolesAllowedToCreate(applicationType: ApplicationType) {
+    let rolesAllowedToCreate = [
+      ApplicationRole.Supervisor,
+      ApplicationRole.SuperUser,
+      ApplicationRole.Writer,
+    ];
+    // Writer is not allowed to create BusinessOrganisation
+    if (ApplicationType.Bodi === applicationType) {
+      rolesAllowedToCreate = [ApplicationRole.Supervisor, ApplicationRole.SuperUser];
+    }
+    return rolesAllowedToCreate;
   }
 
   hasPermissionsToWrite(applicationType: ApplicationType, sboid: string | undefined): boolean {
@@ -128,6 +137,7 @@ export class AuthService {
     );
   }
 
+  // Determines if we show the edit button
   static hasPermissionsToWriteWithPermissions(
     applicationType: ApplicationType,
     sboid: string | undefined,
@@ -137,11 +147,15 @@ export class AuthService {
     if (isAdmin) {
       return true;
     }
+
+    // Look up user permissions per for the applicationType
     const applicationPermissions = permissions.filter(
       (permission) => permission.application === applicationType
     );
     if (applicationPermissions.length === 1) {
       const applicationPermission = applicationPermissions[0];
+
+      // Supervisor and SuperUser may always edit a version
       if (
         [ApplicationRole.Supervisor, ApplicationRole.SuperUser].includes(
           applicationPermission.role!
@@ -149,6 +163,8 @@ export class AuthService {
       ) {
         return true;
       }
+
+      // Writer must be explicitely permitted to edit for a specific sboid
       if (sboid && ApplicationRole.Writer === applicationPermission.role!) {
         return Array.from(applicationPermission.sboids!.values()).includes(sboid);
       }
