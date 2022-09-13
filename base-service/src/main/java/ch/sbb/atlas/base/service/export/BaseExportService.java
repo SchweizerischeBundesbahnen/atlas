@@ -56,7 +56,9 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
     URL putCsvFile(File csvFile) {
         try {
-            return amazonService.putFile(csvFile, getDirectory());
+            URL url = amazonService.putFile(csvFile, getDirectory());
+            log.info("Export - CSV File {} Successfully Put to the directory {}: {}", csvFile.getName(), getDirectory(), url);
+            return url;
         } catch (IOException e) {
             log.error(e.getMessage());
             throw new ExportException(csvFile, e);
@@ -65,7 +67,9 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
     URL putZipFile(File zipFile) {
         try {
-            return amazonService.putZipFile(zipFile, getDirectory());
+            URL url = amazonService.putZipFile(zipFile, getDirectory());
+            log.info("Export - ZIP File {} Successfully Put to the directory {}: {}", zipFile.getName(), getDirectory(), url);
+            return url;
         } catch (IOException e) {
             log.error(e.getMessage());
             throw new ExportException(zipFile, e);
