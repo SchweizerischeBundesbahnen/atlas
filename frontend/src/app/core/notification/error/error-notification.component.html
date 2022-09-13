@@ -1,6 +1,6 @@
 <div class="snack-bar-error-container">
-  <div class="snack-bar-error-container-text" *ngIf="notificationService.showOnlyCode()">
-    <div class="data">
+  <div *ngIf="notificationService.showOnlyCode()" class="snack-bar-error-container-text">
+    <div class="data mb-3">
       <ul *ngFor="let detail of data.details">
         <li>
           {{
@@ -11,10 +11,13 @@
       </ul>
     </div>
   </div>
-  <div class="snack-bar-error-generic-text" *ngIf="!notificationService.showOnlyCode()">
+  <div *ngIf="!notificationService.showOnlyCode()" class="snack-bar-error-generic-text">
     {{ this.notificationService.displayCode | translate }}
   </div>
   <div class="dismiss">
-    <i class="bi bi-x-circle" (click)="this.snackBarRef.dismiss()"></i>
+    <i (click)="this.snackBarRef.dismiss()" class="bi bi-x-circle"></i>
   </div>
+</div>
+<div *ngIf="notificationService.correlationId" class="data ms-3">
+  {{ 'ERROR.CORRELATION_ID' | translate }} <b>{{ notificationService.correlationId }}</b>
 </div>
