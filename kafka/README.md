@@ -2,6 +2,14 @@
 
 Hello there and welcome to Atlas Kafka Library.
 
+<!-- toc -->
+
+- [How to use](#how-to-use)
+- [What it does](#what-it-does)
+- [Deploy new topics](#deploy-new-topics)
+
+<!-- tocstop -->
+
 ## How to use
 
 1. Add the library to the dependencies

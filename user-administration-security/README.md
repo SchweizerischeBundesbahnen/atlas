@@ -1,5 +1,12 @@
 # Implementation of UserAdministration for business services
 
+<!-- toc -->
+
+- [Specification and Overview](#specification-and-overview)
+- [Usage](#usage)
+
+<!-- tocstop -->
+
 ## Specification and Overview
 Based on Specification: https://confluence.sbb.ch/pages/viewpage.action?pageId=2118124295
 
