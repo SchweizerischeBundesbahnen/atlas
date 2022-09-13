@@ -10,6 +10,10 @@ management:
       show-details: always
 
 spring:
+  sleuth:
+    baggage:
+      remote-fields: Correlation-Id
+      correlation-fields: Correlation-Id
   mail:
     host: smtp-app.sbb.ch
     port: 25
