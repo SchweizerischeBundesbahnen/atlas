@@ -20,7 +20,7 @@ export class NotificationService implements OnDestroy {
     horizontalPosition: 'right',
     verticalPosition: 'top',
   };
-  private correlationId: string | null | undefined;
+  correlationId: string | null | undefined;
   private ngUnsubscribe = new Subject<void>();
   private routerEventSubscription?: Subscription;
   private readonly routerEventPipe = this.router.events.pipe(
