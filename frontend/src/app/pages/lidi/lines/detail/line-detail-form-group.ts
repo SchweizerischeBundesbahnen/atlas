@@ -1,4 +1,4 @@
-import { BaseDetailFormGroup } from '../../../../core/components/detail-wrapper/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import { FormControl } from '@angular/forms';
 import { LineType, PaymentType } from '../../../../api';
 
