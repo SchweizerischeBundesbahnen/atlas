@@ -5,7 +5,7 @@ import {
   BusinessOrganisationVersion,
   BusinessType,
 } from '../../../../api';
-import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
+import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
@@ -28,7 +28,7 @@ import { BusinessOrganisationLanguageService } from '../../../../core/form-compo
   styleUrls: ['./business-organisation-detail.component.scss'],
 })
 export class BusinessOrganisationDetailComponent
-  extends DetailWrapperController<BusinessOrganisationVersion>
+  extends BaseDetailController<BusinessOrganisationVersion>
   implements OnInit, OnDestroy
 {
   private ngUnsubscribe = new Subject<void>();

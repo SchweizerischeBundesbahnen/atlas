@@ -1,4 +1,4 @@
-import { DetailWrapperController } from './detail-wrapper-controller';
+import { BaseDetailController } from './base-detail-controller';
 import { OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { Record } from './record';
@@ -20,7 +20,7 @@ import { ApplicationType } from 'src/app/api';
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 
-describe('DetailWrapperController', () => {
+describe('BaseDetailController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
     'backToOverview',
     'createRecord',
@@ -29,7 +29,7 @@ describe('DetailWrapperController', () => {
   ]);
   let record: Record;
 
-  class DummyWrapperController extends DetailWrapperController<Record> implements OnInit {
+  class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
       super(dialogRef, dialogService, notificationService);
     }
@@ -77,7 +77,7 @@ describe('DetailWrapperController', () => {
     }
   }
 
-  let controller: DummyWrapperController;
+  let controller: DummyBaseDetailController;
   let dialogRef: MatDialogRef<any>;
   let dialogService: DialogService;
   let notificationService: NotificationService;
@@ -109,7 +109,7 @@ describe('DetailWrapperController', () => {
   describe('existing record', () => {
     beforeEach(() => {
       record = { id: 1 };
-      controller = new DummyWrapperController();
+      controller = new DummyBaseDetailController();
       controller.ngOnInit();
     });
 
@@ -164,7 +164,7 @@ describe('DetailWrapperController', () => {
   describe('new record', () => {
     beforeEach(() => {
       record = {};
-      controller = new DummyWrapperController();
+      controller = new DummyBaseDetailController();
       controller.ngOnInit();
     });
 
@@ -193,7 +193,7 @@ describe('DetailWrapperController', () => {
 });
 
 describe('Get actual versioned record', () => {
-  let controller: DetailWrapperController<Record>;
+  let controller: BaseDetailController<Record>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -208,14 +208,14 @@ describe('Get actual versioned record', () => {
         }),
       ],
       providers: [
-        { provide: DetailWrapperController },
+        { provide: BaseDetailController },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
       ],
     });
-    controller = TestBed.inject(DetailWrapperController);
+    controller = TestBed.inject(BaseDetailController);
   });
 
   const firstRecord: Record = {
