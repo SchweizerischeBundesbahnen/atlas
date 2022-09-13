@@ -15,7 +15,6 @@
    <artifactId>line-directory</artifactId>
    <description>LineDirectory</description>
 
-
    <dependencies>
       <dependency>
          <artifactId>spring-cloud-starter-sleuth</artifactId>

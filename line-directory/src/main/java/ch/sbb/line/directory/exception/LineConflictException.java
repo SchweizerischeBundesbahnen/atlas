@@ -28,11 +28,11 @@ public class LineConflictException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .status(HttpStatus.CONFLICT.value())
-                        .message("A conflict occurred due to a business rule")
-                        .error(ERROR)
-                        .details(getErrorDetails())
-                        .build();
+        .status(HttpStatus.CONFLICT.value())
+        .message("A conflict occurred due to a business rule")
+        .error(ERROR)
+        .details(getErrorDetails())
+        .build();
   }
 
   private SortedSet<Detail> getErrorDetails() {
@@ -42,17 +42,15 @@ public class LineConflictException extends AtlasException {
 
   private Function<LineVersion, Detail> toErrorDetail() {
     return lineVersion -> ValidFromDetail.builder()
-                                         .field(Fields.swissLineNumber)
-                                         .message(
-                                             "SwissLineNumber {0} already taken from {1} to {2} by {3}")
-                                         .displayInfo(builder()
-                                             .code(CODE_PREFIX + "SWISS_NUMBER")
-                                             .with(Fields.swissLineNumber,
-                                                 newVersion.getSwissLineNumber())
-                                             .with(Fields.validFrom, lineVersion.getValidFrom())
-                                             .with(Fields.validTo, lineVersion.getValidTo())
-                                             .with(Fields.slnid, lineVersion.getSlnid())
-                                             .build()).build();
+        .field(Fields.swissLineNumber)
+        .message("SwissLineNumber {0} already taken from {1} to {2} by {3}")
+        .displayInfo(builder()
+            .code(CODE_PREFIX + "SWISS_NUMBER")
+            .with(Fields.swissLineNumber, newVersion.getSwissLineNumber())
+            .with(Fields.validFrom, lineVersion.getValidFrom())
+            .with(Fields.validTo, lineVersion.getValidTo())
+            .with(Fields.slnid, lineVersion.getSlnid())
+            .build()).build();
   }
 
 }
