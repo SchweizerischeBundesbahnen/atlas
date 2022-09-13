@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Coverage, CoverageType, LinesService, SublinesService } from '../../../api';
 import { Pages } from '../../../pages/pages';
-import { Record } from '../detail-wrapper/record';
+import { Record } from '../base-detail/record';
 import { Page } from '../../model/page';
 
 const LINE_SUBLINE_HEADING = 'COMMON.COVERAGE.LINE_SUBLINE';
