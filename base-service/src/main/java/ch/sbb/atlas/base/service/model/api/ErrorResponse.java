@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.SortedSet;
-import java.util.TreeSet;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +18,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Slf4j
 @Data
 @Builder
 @Schema(name = "ErrorResponse")
@@ -43,7 +42,19 @@ public class ErrorResponse {
   private String error;
 
   @Schema(description = "List of error details", nullable = true)
-  private SortedSet<Detail> details = new TreeSet<>();
+  private SortedSet<Detail> details;
+
+  public ErrorResponse(int status, String message, String error, SortedSet<Detail> details) {
+    this.status = status;
+    this.message = message;
+    this.error = error;
+    this.details = details;
+    logError();
+  }
+
+  private void logError() {
+    log.error(this.toString());
+  }
 
   @AllArgsConstructor
   @NoArgsConstructor
@@ -82,17 +93,17 @@ public class ErrorResponse {
     public int compareTo(@NonNull Detail detailToCompare) {
       if (detailToCompare instanceof ValidFromDetail validFromDetailToCompare) {
         return Comparator.comparing(ValidFromDetail::getValidFrom)
-                         .thenComparing(ValidFromDetail::getMessage)
-                         .compare(this, validFromDetailToCompare);
+            .thenComparing(ValidFromDetail::getMessage)
+            .compare(this, validFromDetailToCompare);
       }
       throw new IllegalArgumentException("Can only compare ValidFromDetail type");
     }
 
     private LocalDate getValidFrom() {
       Optional<Parameter> parameter = getDisplayInfo().getParameters().stream()
-                                                      .filter(param -> VALID_FROM_KEY.equals(
-                                                          param.getKey()))
-                                                      .findFirst();
+          .filter(param -> VALID_FROM_KEY.equals(
+              param.getKey()))
+          .findFirst();
       String validFrom = parameter.orElseThrow(
           () -> new RuntimeException("Not found validFrom parameter in DisplayInfo")).getValue();
 
@@ -119,8 +130,8 @@ public class ErrorResponse {
 
     public static class DisplayInfoBuilder {
 
-      private String code;
       private final List<Parameter> parameters = new ArrayList<>();
+      private String code;
 
       public DisplayInfoBuilder code(String code) {
         this.code = code;
