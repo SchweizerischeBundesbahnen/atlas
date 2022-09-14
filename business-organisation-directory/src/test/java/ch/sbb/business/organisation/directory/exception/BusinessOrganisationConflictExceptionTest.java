@@ -16,13 +16,9 @@ class BusinessOrganisationConflictExceptionTest {
 
   private final BusinessOrganisationVersion version = BusinessOrganisationData.businessOrganisationVersion();
   private final BusinessOrganisationVersion version2 = BusinessOrganisationData.businessOrganisationVersionBuilder()
-                                                                               .validFrom(
-                                                                                   LocalDate.of(
-                                                                                       1980, 1, 1))
-                                                                               .validTo(
-                                                                                   LocalDate.of(
-                                                                                       2020, 1, 1))
-                                                                               .build();
+      .validFrom(LocalDate.of(1980, 1, 1))
+      .validTo(LocalDate.of(2020, 1, 1))
+      .build();
 
   @Test
   void shouldConvertToErrorMessageCorrectlyUnsorted() {
@@ -40,29 +36,29 @@ class BusinessOrganisationConflictExceptionTest {
     assertThat(detailList.get(0).getMessage()).isEqualTo(
         "abbreviationDe de already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
     assertThat(detailList
-                            .get(0)
-                            .getDisplayInfo()
-                            .getParameters()
-                            .get(0)
-                            .getKey()).isEqualTo(BusinessOrganisationConflictException.FIELD);
+        .get(0)
+        .getDisplayInfo()
+        .getParameters()
+        .get(0)
+        .getKey()).isEqualTo(BusinessOrganisationConflictException.FIELD);
     assertThat(detailList
-                            .get(0)
-                            .getDisplayInfo()
-                            .getParameters()
-                            .get(0)
-                            .getValue()).isEqualTo(Fields.abbreviationDe);
+        .get(0)
+        .getDisplayInfo()
+        .getParameters()
+        .get(0)
+        .getValue()).isEqualTo(Fields.abbreviationDe);
     assertThat(detailList
-                            .get(0)
-                            .getDisplayInfo()
-                            .getParameters()
-                            .get(1)
-                            .getKey()).isEqualTo(Fields.abbreviationDe);
+        .get(0)
+        .getDisplayInfo()
+        .getParameters()
+        .get(1)
+        .getKey()).isEqualTo(Fields.abbreviationDe);
     assertThat(detailList
-                            .get(0)
-                            .getDisplayInfo()
-                            .getParameters()
-                            .get(1)
-                            .getValue()).isEqualTo("de");
+        .get(0)
+        .getDisplayInfo()
+        .getParameters()
+        .get(1)
+        .getValue()).isEqualTo("de");
 
     assertThat(detailList.get(1).getMessage()).isEqualTo(
         "abbreviationEn en already taken from 01.01.1980 to 01.01.2020 by ch:1:sboid:1000000");
@@ -93,7 +89,7 @@ class BusinessOrganisationConflictExceptionTest {
   }
 
   @Test
-  void shouldConvertToErrorResponseCorrectlySorted(){
+  void shouldConvertToErrorResponseCorrectlySorted() {
     // Given
     BusinessOrganisationConflictException conflictException = new BusinessOrganisationConflictException(
         version, List.of(version2, version));

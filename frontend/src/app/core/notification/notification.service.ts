@@ -20,6 +20,7 @@ export class NotificationService implements OnDestroy {
     horizontalPosition: 'right',
     verticalPosition: 'top',
   };
+  correlationId: string | null | undefined;
   private ngUnsubscribe = new Subject<void>();
   private routerEventSubscription?: Subscription;
   private readonly routerEventPipe = this.router.events.pipe(
@@ -46,6 +47,9 @@ export class NotificationService implements OnDestroy {
 
   error(error: HttpErrorResponse | Error, code?: string) {
     this.displayCode = '';
+    if (error instanceof HttpErrorResponse) {
+      this.correlationId = error.headers.get('Correlation-Id');
+    }
     this.SNACK_BAR_CONFIG['duration'] = undefined;
     this.SNACK_BAR_CONFIG['panelClass'] = ['error', 'notification'];
     if (error instanceof HttpErrorResponse) {
@@ -93,6 +97,11 @@ export class NotificationService implements OnDestroy {
     return Object.fromEntries(displayInfo.parameters.map((e) => [e.key, e.value]));
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   private dismissOnNavigation(errorSnackBar: MatSnackBarRef<ErrorNotificationComponent>) {
     this.routerEventSubscription?.unsubscribe();
     this.routerEventSubscription = this.routerEventPipe.subscribe(() => errorSnackBar.dismiss());
@@ -132,10 +141,5 @@ export class NotificationService implements OnDestroy {
   private configureWarningNotification(errorResponse: HttpErrorResponse) {
     this.SNACK_BAR_CONFIG['panelClass'] = ['warning', 'notification'];
     this.displayCode = errorResponse.error.details[0].displayInfo.code;
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }
