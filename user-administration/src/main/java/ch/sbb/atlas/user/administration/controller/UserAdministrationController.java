@@ -96,4 +96,10 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     return userPermissions.stream().map(UserPermissionModel::toModel).collect(Collectors.toSet());
   }
 
+  @Override
+  public UserModel updateUserPermissions(UserPermissionCreateModel editedPermissions) {
+    userAdministrationService.updateUser(editedPermissions);
+    return getUser(editedPermissions.getSbbUserId());
+  }
+
 }
