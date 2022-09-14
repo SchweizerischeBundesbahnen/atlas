@@ -12,6 +12,20 @@ import org.springframework.http.HttpStatus;
 
 public class TimetableFieldNumberConflictExceptionTest {
 
+  private static TimetableFieldNumberVersion version() {
+    return versionBuilder().build();
+  }
+
+  private static TimetableFieldNumberVersionBuilder<?, ?> versionBuilder() {
+    return TimetableFieldNumberVersion.builder()
+        .ttfnid("ch:1:ttfnid:100000")
+        .description("FPFN Description")
+        .number("BEX")
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12));
+  }
+
   @Test
   void shouldConvertToErrorMessageCorrectly() {
     // Given
@@ -35,19 +49,5 @@ public class TimetableFieldNumberConflictExceptionTest {
         "Number BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
     assertThat(errorResponse.getDetails().stream().toList().get(3).getMessage()).isEqualTo(
         "SwissTimetableFieldNumber b0.BEX already taken from 12.12.2020 to 12.12.2099 by ch:1:ttfnid:100000");
-  }
-
-  private static TimetableFieldNumberVersion version() {
-    return versionBuilder().build();
-  }
-
-  private static TimetableFieldNumberVersionBuilder<?, ?> versionBuilder() {
-    return TimetableFieldNumberVersion.builder()
-                                      .ttfnid("ch:1:ttfnid:100000")
-                                      .description("FPFN Description")
-                                      .number("BEX")
-                                      .swissTimetableFieldNumber("b0.BEX")
-                                      .validFrom(LocalDate.of(2020, 12, 12))
-                                      .validTo(LocalDate.of(2099, 12, 12));
   }
 }

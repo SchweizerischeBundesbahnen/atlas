@@ -3,10 +3,10 @@ package ch.sbb.line.directory.exception;
 import static ch.sbb.atlas.base.service.model.api.ErrorResponse.DisplayInfo.builder;
 import static java.util.stream.Collectors.toList;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.ValidFromDetail;
-import ch.sbb.atlas.base.service.model.exception.AtlasException;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse.Detail;
+import ch.sbb.atlas.base.service.model.api.ErrorResponse.ValidFromDetail;
+import ch.sbb.atlas.base.service.model.exception.AtlasException;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersion.Fields;
 import java.util.List;
@@ -32,13 +32,11 @@ public class TemporaryLineValidationException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .status(
-                            HttpStatus.UNPROCESSABLE_ENTITY.value())
-                        .message(
-                            "Business rule validation failed")
-                        .error(ERROR)
-                        .details(new TreeSet<>(getErrorDetails()))
-                        .build();
+        .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+        .message("Business rule validation failed")
+        .error(ERROR)
+        .details(new TreeSet<>(getErrorDetails()))
+        .build();
   }
 
   private List<Detail> getErrorDetails() {
@@ -53,13 +51,13 @@ public class TemporaryLineValidationException extends AtlasException {
 
   private Function<LineVersion, Detail> toErrorDetail(String message, String code) {
     return lineVersion -> ValidFromDetail.builder()
-                                         .field(Fields.validTo)
-                                         .message(message)
-                                         .displayInfo(builder()
-                                             .code(CODE_PREFIX + code)
-                                             .with(Fields.validFrom, lineVersion.getValidFrom())
-                                             .with(Fields.validTo, lineVersion.getValidTo())
-                                             .build()).build();
+        .field(Fields.validTo)
+        .message(message)
+        .displayInfo(builder()
+            .code(CODE_PREFIX + code)
+            .with(Fields.validFrom, lineVersion.getValidFrom())
+            .with(Fields.validTo, lineVersion.getValidTo())
+            .build()).build();
   }
 
 }
