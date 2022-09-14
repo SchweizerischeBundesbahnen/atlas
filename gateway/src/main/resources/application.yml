@@ -1,6 +1,10 @@
 server:
   port: 8888
 spring:
+  sleuth:
+    baggage:
+      remote-fields: Correlation-Id
+      correlation-fields: Correlation-Id
   application:
     name: gateway
   cloud:
@@ -11,6 +15,8 @@ spring:
             allowed-origins: http://localhost:4200,https://developer-int.sbb.ch
             allowed-methods: GET,PUT,POST,DELETE
             allowed-headers: "*"
+            exposed-headers:
+              - "Correlation-Id"
 management:
   endpoint:
     health:
