@@ -24,7 +24,7 @@ metadata:
   annotations:
     clew.sbb.ch/cluster-independent-dns: 'true'
     external-dns.alpha.kubernetes.io/alias: 'true'
-    external-dns.alpha.kubernetes.io/target: '{{ .Values.frontend.clusterLoadBalancer }}'
+    external-dns.alpha.kubernetes.io/target: '{{ .Values.common.clusterLoadBalancer }}'
   name: {{ .Values.frontend.name }}-public
 spec:
   host: '{{ .Values.frontend.publicRoute }}'
