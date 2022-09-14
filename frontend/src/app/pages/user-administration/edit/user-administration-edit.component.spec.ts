@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationEditComponent } from './user-administration-edit.component';
 
-describe('EditComponent', () => {
+describe('UserAdministrationEditComponent', () => {
   let component: UserAdministrationEditComponent;
   let fixture: ComponentFixture<UserAdministrationEditComponent>;
 

@@ -19,4 +19,6 @@ describe('ApplicationConfigComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // TODO: tests
 });
