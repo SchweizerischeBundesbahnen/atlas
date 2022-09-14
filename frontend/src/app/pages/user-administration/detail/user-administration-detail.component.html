@@ -1,5 +1,9 @@
 <div class="dialog-close-panel">
-  <button mat-icon-button [disableRipple]="true" (click)="({})">
+  <button
+    mat-icon-button
+    [disableRipple]="true"
+    (click)="confirmCancel((userLoaded ?? false) && !userHasAlreadyPermissions)"
+  >
     <em class="bi bi-x fs-2"></em>
   </button>
 </div>
@@ -9,43 +13,18 @@
 <ng-content select="[user-select]"></ng-content>
 
 <ng-template [ngIf]="userLoaded && !userHasAlreadyPermissions">
-  <!-- TODO: @Directive, bo-select between table and button -->
-  <div class="d-flex flex-row fixed-space-between">
-    <div *ngFor="let row of readOnlyDataConfig">
-      <div *ngFor="let keyVal of row">
-        <span class="font-bold-base white-space-no-wrap">{{
-          keyVal.translationKey | translate
-        }}</span
-        >&nbsp;<span [ngClass]="keyVal.valueDisplayClass ?? []">{{
-          keyVal.formatValue
-            ? keyVal.formatValue(userLoaded[keyVal.value])
-            : userLoaded[keyVal.value]
-        }}</span>
-      </div>
-    </div>
-  </div>
+  <app-read-only-data [data]="userLoaded" [config]="readOnlyDataConfig"></app-read-only-data>
   <h1 class="font-bold-4xl">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
   <div *ngFor="let permission of applicationConfigManager.getPermissions()">
     <app-user-administration-application-config
-      [applicationConfig]="applicationConfigManager"
+      [applicationConfigManager]="applicationConfigManager"
       [application]="permission.application"
     ></app-user-administration-application-config>
   </div>
 </ng-template>
 
 <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-  <button
-    *ngIf="false; else editModeButtons"
-    class="atlas-primary-btn footer-btn"
-    [mat-dialog-close]="true"
-    data-cy="back-to-overview"
-  >
-    {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
-  </button>
-  <ng-template #editModeButtons>
-    <button class="atlas-primary-btn footer-btn" (click)="({})" data-cy="cancel">
-      {{ 'COMMON.CANCEL' | translate }}
-    </button>
-    <ng-content select="[save-btn]"></ng-content>
-  </ng-template>
+  <ng-container
+    *ngTemplateOutlet="footerButtons; context: { $implicit: confirmCancel }"
+  ></ng-container>
 </div>

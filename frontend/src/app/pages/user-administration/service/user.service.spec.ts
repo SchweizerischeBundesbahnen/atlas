@@ -5,6 +5,8 @@ import {
   ContainerUserModel,
   UserAdministrationService,
   UserInformationService,
+  UserModel,
+  UserPermissionCreateModel,
 } from '../../../api';
 import { of } from 'rxjs';
 
@@ -16,6 +18,7 @@ describe('UserService', () => {
   class UserAdministrationServiceMock {
     getUsers: any = undefined;
     getUser: any = undefined;
+    createUserPermission: any = undefined;
   }
 
   class UserInformationServiceMock {
@@ -81,6 +84,82 @@ describe('UserService', () => {
     service.searchUsers('test').subscribe((res) => {
       expect(userInformationServiceMock.searchUsers).toHaveBeenCalledOnceWith('test');
       expect(res).toEqual([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]);
+      done();
+    });
+  });
+
+  it('test hasUserPermissions false', (done) => {
+    userAdministrationServiceMock.getUser = jasmine
+      .createSpy()
+      .and.callFake((userId) => of({ sbbUserId: userId }));
+    const hasUserPermissions = service.hasUserPermissions('u123456');
+    hasUserPermissions.subscribe((val) => {
+      expect(val).toBe(false);
+      expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith('u123456');
+      done();
+    });
+  });
+
+  it('test hasUserPermissions true', (done) => {
+    userAdministrationServiceMock.getUser = jasmine.createSpy().and.callFake((userId) =>
+      of({
+        sbbUserId: userId,
+        permissions: [
+          {
+            application: 'TTFN',
+            role: 'WRITER',
+            sboids: [],
+          },
+        ],
+      } as UserPermissionCreateModel)
+    );
+    const hasUserPermissions = service.hasUserPermissions('u123456');
+    hasUserPermissions.subscribe((val) => {
+      expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith('u123456');
+      expect(val).toBe(true);
+      done();
+    });
+  });
+
+  it('test getPermissionsFromUserModelAsArray', () => {
+    let permissions = service.getPermissionsFromUserModelAsArray({});
+    expect(permissions).toEqual([]);
+    permissions = service.getPermissionsFromUserModelAsArray({
+      permissions: new Set([
+        {
+          application: 'TTFN',
+          role: 'WRITER',
+          sboids: [],
+        },
+      ]),
+    });
+    expect(permissions).toEqual([
+      {
+        application: 'TTFN',
+        role: 'WRITER',
+        sboids: [],
+      },
+    ]);
+  });
+
+  it('test createUserPermission', (done) => {
+    userAdministrationServiceMock.createUserPermission = jasmine.createSpy().and.returnValue(
+      of({
+        sbbUserId: 'u123456',
+      } as UserModel)
+    );
+    const createPermissionResult = service.createUserPermission({
+      sbbUserId: 'u123456',
+      permissions: [],
+    });
+    createPermissionResult.subscribe((val) => {
+      expect(userAdministrationServiceMock.createUserPermission).toHaveBeenCalledOnceWith({
+        sbbUserId: 'u123456',
+        permissions: [],
+      });
+      expect(val).toEqual({
+        sbbUserId: 'u123456',
+      });
       done();
     });
   });
