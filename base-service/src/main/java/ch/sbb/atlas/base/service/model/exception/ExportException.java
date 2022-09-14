@@ -17,12 +17,10 @@ public class ExportException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .message(
-                            "Error exporting file[" + file.getName() + "] to Amazon S3 Bucket: "
-                                + exception.getCause())
-                        .error(ERROR)
-                        .build();
+        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        .message("Error exporting file[" + file.getName() + "] to Amazon S3 Bucket: " + exception.getCause())
+        .error(ERROR)
+        .build();
   }
 
 }

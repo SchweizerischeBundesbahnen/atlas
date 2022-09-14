@@ -21,8 +21,8 @@
          <groupId>org.springframework.boot</groupId>
       </dependency>
       <dependency>
-         <artifactId>spring-boot-starter-actuator</artifactId>
-         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-cloud-starter-sleuth</artifactId>
+         <groupId>org.springframework.cloud</groupId>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-mail</artifactId>

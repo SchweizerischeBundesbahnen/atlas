@@ -2,10 +2,10 @@ package ch.sbb.line.directory.exception;
 
 import static ch.sbb.atlas.base.service.model.api.ErrorResponse.DisplayInfo.builder;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.ValidFromDetail;
-import ch.sbb.atlas.base.service.model.exception.AtlasException;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse.Detail;
+import ch.sbb.atlas.base.service.model.api.ErrorResponse.ValidFromDetail;
+import ch.sbb.atlas.base.service.model.exception.AtlasException;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.Fields;
 import java.util.List;
@@ -28,11 +28,11 @@ public class SublineConflictException extends AtlasException {
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-                        .status(HttpStatus.CONFLICT.value())
-                        .message("A conflict occurred due to a business rule")
-                        .error(ERROR)
-                        .details(getErrorDetails())
-                        .build();
+        .status(HttpStatus.CONFLICT.value())
+        .message("A conflict occurred due to a business rule")
+        .error(ERROR)
+        .details(getErrorDetails())
+        .build();
   }
 
   private SortedSet<Detail> getErrorDetails() {
@@ -42,17 +42,15 @@ public class SublineConflictException extends AtlasException {
 
   private Function<SublineVersion, Detail> toErrorDetail() {
     return lineVersion -> ValidFromDetail.builder()
-                                         .field(Fields.swissSublineNumber)
-                                         .message(
-                                             "SwissSublineNumber {0} already taken from {1} to {2} by {3}")
-                                         .displayInfo(builder()
-                                             .code(CODE_PREFIX + "SWISS_NUMBER")
-                                             .with(Fields.swissSublineNumber,
-                                                 newVersion.getSwissSublineNumber())
-                                             .with(Fields.validFrom, lineVersion.getValidFrom())
-                                             .with(Fields.validTo, lineVersion.getValidTo())
-                                             .with(Fields.slnid, lineVersion.getSlnid())
-                                             .build()).build();
+        .field(Fields.swissSublineNumber)
+        .message("SwissSublineNumber {0} already taken from {1} to {2} by {3}")
+        .displayInfo(builder()
+            .code(CODE_PREFIX + "SWISS_NUMBER")
+            .with(Fields.swissSublineNumber, newVersion.getSwissSublineNumber())
+            .with(Fields.validFrom, lineVersion.getValidFrom())
+            .with(Fields.validTo, lineVersion.getValidTo())
+            .with(Fields.slnid, lineVersion.getSlnid())
+            .build()).build();
   }
 
 }

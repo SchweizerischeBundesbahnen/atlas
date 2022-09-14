@@ -13,42 +13,17 @@ import org.springframework.http.HttpStatus;
 class TransportCompanyRelationConflictExceptionTest {
 
   private static final TransportCompanyRelation RELATION = TransportCompanyRelation.builder()
-                                                                                   .transportCompany(
-                                                                                       TransportCompany.builder()
-                                                                                                       .id(5L)
-                                                                                                       .number(
-                                                                                                           "#0005")
-                                                                                                       .build())
-                                                                                   .sboid(
-                                                                                       "ch:1:sboid:100500")
-                                                                                   .validFrom(
-                                                                                       LocalDate.of(
-                                                                                           2020, 1,
-                                                                                           1))
-                                                                                   .validTo(
-                                                                                       LocalDate.of(
-                                                                                           2021, 1,
-                                                                                           1))
-                                                                                   .build();
+      .transportCompany(TransportCompany.builder().id(5L).number("#0005").build())
+      .sboid("ch:1:sboid:100500").validFrom(LocalDate.of(2020, 1, 1))
+      .validTo(LocalDate.of(2021, 1, 1))
+      .build();
 
   private static final TransportCompanyRelation RELATION_2 = TransportCompanyRelation.builder()
-                                                                                     .transportCompany(
-                                                                                         TransportCompany.builder()
-                                                                                                         .id(5L)
-                                                                                                         .number(
-                                                                                                             "#0005")
-                                                                                                         .build())
-                                                                                     .sboid(
-                                                                                         "ch:1:sboid:100500")
-                                                                                     .validFrom(
-                                                                                         LocalDate.of(
-                                                                                             2019,
-                                                                                             1, 1))
-                                                                                     .validTo(
-                                                                                         LocalDate.of(
-                                                                                             2021,
-                                                                                             1, 1))
-                                                                                     .build();
+      .transportCompany(TransportCompany.builder().id(5L).number("#0005").build())
+      .sboid("ch:1:sboid:100500")
+      .validFrom(LocalDate.of(2019, 1, 1))
+      .validTo(LocalDate.of(2021, 1, 1))
+      .build();
 
   @Test
   void shouldConvertToErrorMessageCorrectly() {

@@ -13,24 +13,24 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class LineDirectoryApplication {
 
-    public static void main(String[] args) {
-        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
-        SpringApplication.run(LineDirectoryApplication.class, args);
-    }
+  public static void main(String[] args) {
+    TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
+    SpringApplication.run(LineDirectoryApplication.class, args);
+  }
 
-    @Bean
-    public VersionableService versionableService() {
-        return new VersionableServiceImpl();
-    }
+  @Bean
+  public VersionableService versionableService() {
+    return new VersionableServiceImpl();
+  }
 
-    @Bean
-    public AtlasExceptionHandler atlasExceptionHandler() {
-        return new AtlasExceptionHandler();
-    }
+  @Bean
+  public AtlasExceptionHandler atlasExceptionHandler() {
+    return new AtlasExceptionHandler();
+  }
 
-    @Bean
-    public FileServiceImpl fileService() {
-        return new FileServiceImpl();
-    }
+  @Bean
+  public FileServiceImpl fileService() {
+    return new FileServiceImpl();
+  }
 
 }
