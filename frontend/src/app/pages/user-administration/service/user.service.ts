@@ -43,7 +43,7 @@ export class UserService {
   }
 
   getPermissionsFromUserModelAsArray(user: UserModel): UserPermissionModel[] {
-    return (user.permissions as Array<UserPermissionModel> | undefined) ?? [];
+    return Array.from(user.permissions ?? []);
   }
 
   createUserPermission(userPermission: UserPermissionCreateModel): Observable<UserModel> {

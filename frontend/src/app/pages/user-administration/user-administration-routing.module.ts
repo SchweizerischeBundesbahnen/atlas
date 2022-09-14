@@ -3,14 +3,24 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserAdministrationOverviewComponent } from './overview/user-administration-overview.component';
 import { UserAdministrationCreateComponent } from './create/user-administration-create.component';
 import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
+import { UserAdministrationEditComponent } from './edit/user-administration-edit.component';
 
-// TODO: check security with AuthGuards
 const routes: Routes = [
-  { path: '', component: UserAdministrationOverviewComponent },
   {
-    path: 'add',
-    component: RouteToDialogComponent,
-    data: { component: UserAdministrationCreateComponent },
+    path: '',
+    component: UserAdministrationOverviewComponent,
+    children: [
+      {
+        path: 'add',
+        component: RouteToDialogComponent,
+        data: { component: UserAdministrationCreateComponent },
+      },
+      {
+        path: ':sbbUserId',
+        component: RouteToDialogComponent,
+        data: { component: UserAdministrationEditComponent },
+      },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];
