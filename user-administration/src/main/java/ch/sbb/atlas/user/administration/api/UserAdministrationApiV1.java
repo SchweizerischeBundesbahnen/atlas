@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,5 +30,8 @@ public interface UserAdministrationApiV1 {
 
   @PostMapping
   UserModel createUserPermission(@RequestBody @Valid UserPermissionCreateModel user);
+
+  @PutMapping
+  UserModel updateUserPermissions(@RequestBody @Valid UserPermissionCreateModel editedPermissions);
 
 }
