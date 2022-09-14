@@ -3,6 +3,7 @@ package ch.sbb.atlas.user.administration.models;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -23,7 +24,8 @@ public class UserPermissionModel {
   private ApplicationType application;
 
   @NotNull
-  private List<@NotEmpty String> sboids;
+  @Builder.Default
+  private List<@NotEmpty String> sboids = new ArrayList<>();
 
   public static UserPermissionModel toModel(UserPermission userPermission) {
     return UserPermissionModel.builder()
