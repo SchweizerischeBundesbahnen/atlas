@@ -46,7 +46,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health, info, metrics
 info:
   app:
     name: business-organisation-directory
