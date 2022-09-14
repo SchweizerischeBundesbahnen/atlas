@@ -24,6 +24,7 @@ import { CoverageComponent } from '../components/coverage/coverage.component';
 import { RouteToDialogComponent } from '../components/route-to-dialog/route-to-dialog.component';
 import { FormModule } from './form.module';
 import { RelationComponent } from '../components/relation/relation.component';
+import { ReadOnlyDataComponent } from '../components/read-only-data/read-only-data.component';
 
 const coreComponents = [
   BaseDetailComponent,
@@ -43,6 +44,7 @@ const coreComponents = [
   CoverageComponent,
   RouteToDialogComponent,
   RelationComponent,
+  ReadOnlyDataComponent,
 ];
 
 @NgModule({
