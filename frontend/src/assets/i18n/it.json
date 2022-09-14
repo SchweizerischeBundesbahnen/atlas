@@ -11,7 +11,7 @@
     "CONSTRAINT": "La richiesta non è stata effettuata nel formato corretto. Il valore {{rejectedValue}} non è consentito a causa di {{cause}}.",
     "ENTITY_NOT_FOUND": "Impossibile trovare l’oggetto con {{field}} {{value}}.",
     "VERSIONING": "Questa modifica nel controllo delle versioni non è supportata dal sistema. Contattare il servizio specializzato Atlas.",
-    "CORRELATION_ID": "Se i problemi persistono, contattare il reparto Atlas con il seguente numero di identificazione:"
+    "CORRELATION_ID": "Se i problemi persistono, contattare il reparto Atlas con il seguente numero di identificazione: {{correlationId}}"
   },
   "COMMON": {
     "BACK_TO_OVERVIEW": "Torna al sommario",
