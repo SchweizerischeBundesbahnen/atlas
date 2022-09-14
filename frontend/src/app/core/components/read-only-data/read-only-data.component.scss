@@ -1,0 +1,15 @@
+.fixed-space-between > :last-child {
+  margin-right: unset;
+}
+
+.fixed-space-between > * {
+  margin-right: 5px;
+}
+
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+
+.white-space-no-wrap {
+  white-space: nowrap;
+}

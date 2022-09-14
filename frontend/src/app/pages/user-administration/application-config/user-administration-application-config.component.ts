@@ -1,11 +1,9 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ApplicationRole, BusinessOrganisation, BusinessOrganisationsService } from '../../../api';
+import { ApplicationRole, ApplicationType, BusinessOrganisation } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, of, tap } from 'rxjs';
 import { RelationComponent } from '../../../core/components/relation/relation.component';
 import { UserPermissionManager } from '../user-permission-manager';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -15,15 +13,11 @@ import { map } from 'rxjs/operators';
 export class UserAdministrationApplicationConfigComponent {
   @ViewChild(RelationComponent) relationComponent!: RelationComponent<BusinessOrganisation>;
 
-  @Input() applicationConfig!: UserPermissionManager;
-  @Input() application!: string;
+  @Input() applicationConfigManager!: UserPermissionManager;
+  @Input() application!: ApplicationType;
 
-  @Output() add = new EventEmitter<string>();
-
-  currentRecords$: Observable<BusinessOrganisation[]> = of([]);
+  currentRecords: BusinessOrganisation[] = [];
   selectedIndex = -1;
-
-  constructor(private readonly boService: BusinessOrganisationsService) {}
 
   readonly businessOrganisationForm: FormGroup = new FormGroup({
     businessOrganisation: new FormControl<BusinessOrganisation | null>(null),
@@ -56,29 +50,30 @@ export class UserAdministrationApplicationConfigComponent {
     return Object.values(ApplicationRole);
   }
 
+  isCurrentRoleWriter(): boolean {
+    return this.applicationConfigManager.getCurrentRole(this.application) === 'WRITER';
+  }
+
   addBusinessOrganisation(): void {
     const value = this.businessOrganisationForm.get('businessOrganisation')?.value;
     if (!value) {
       return;
     }
-    this.applicationConfig.addSboidToPermission(this.application, value).pipe(
-      map((addedEl) => {
-        if (!addedEl) {
-          return;
+
+    this.applicationConfigManager
+      .addSboidToPermission(this.application, value)
+      .subscribe((value) => {
+        if (value) {
+          this.currentRecords.push(value);
+          this.relationComponent.table.renderRows();
         }
-        // TODO: push into observable / merge observables
-        this.currentRecords$.push(addedEl);
-        this.relationComponent.table.renderRows();
-      })
-    );
-    // this.add.emit(value);
+      });
   }
 
   removeBusinessOrganisation(): void {
-    const sboid = this.currentRecords[this.selectedIndex].sboid!;
+    this.applicationConfigManager.removeSboidFromPermission(this.application, this.selectedIndex);
     this.currentRecords.splice(this.selectedIndex, 1);
     this.relationComponent.table.renderRows();
     this.selectedIndex = -1;
-    this.userPermission.sboids.splice(this.selectedIndex, 1);
   }
 }
