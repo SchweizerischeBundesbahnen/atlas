@@ -3,6 +3,7 @@ common:
   splunkIndex: "sbb_atlas_internal_test_events"
   # spring profile for the environment
   springProfilesActive: "test"
+  clusterLoadBalancer: 'public-aws01t.app.sbb.ch'
 
 frontend:
   routeHost: 'atlas.test.sbb-cloud.net'
@@ -11,6 +12,5 @@ frontend:
   atlasApiUrl: 'https://atlas-test-int.api.sbb.ch:443'
   apiClientId: 'f06799ef-d6a7-4d98-9e31-a51c60761e83'
   apiScope: 'openid profile email offline_access api://2e8c6ce0-304d-42e1-9bce-600b3ea43aad/.default'
-  clusterLoadBalancer: 'public-aws01t.app.sbb.ch'
   instanaKey: 'CMqa9FL4QAq2q_YtED449w'
 
