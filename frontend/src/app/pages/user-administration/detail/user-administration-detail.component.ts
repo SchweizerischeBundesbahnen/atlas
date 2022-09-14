@@ -1,27 +1,47 @@
-import { Component, Input } from '@angular/core';
-import { UserModel, UserPermissionModel } from '../../../api';
+import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
+import { UserModel } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
-import { tap } from 'rxjs';
 import { UserPermissionManager } from '../user-permission-manager';
-
-interface ReadOnlyData<T> {
-  translationKey: string;
-  value: keyof T;
-  formatValue?: <P>(value: P) => string;
-  valueDisplayClass?: string;
-}
+import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ReadOnlyData } from '../../../core/components/read-only-data/read-only-data';
 
 @Component({
   selector: 'app-user-administration-detail',
   templateUrl: './user-administration-detail.component.html',
   styleUrls: ['./user-administration-detail.component.scss'],
 })
-export class UserAdministrationDetailComponent<T> {
+export class UserAdministrationDetailComponent {
   @Input() userLoaded?: UserModel;
   @Input() userHasAlreadyPermissions = false;
   @Input() applicationConfigManager!: UserPermissionManager;
 
-  constructor(private readonly translatePipe: TranslatePipe) {}
+  @ContentChild('footerButtons') footerButtons!: TemplateRef<any>;
+
+  constructor(
+    private readonly translatePipe: TranslatePipe,
+    private readonly dialogService: DialogService,
+    private readonly dialogRef: MatDialogRef<any>
+  ) {}
+
+  readonly confirmCancel = (showDialog: boolean) => {
+    if (!showDialog) {
+      this.dialogRef.close();
+      return;
+    }
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.DISCARD_CHANGES_TITLE',
+        message: 'DIALOG.LEAVE_SITE',
+      })
+      .subscribe((result) => {
+        if (result) {
+          this.dialogRef.close();
+        } else {
+          this.dialogService.closeConfirmDialog();
+        }
+      });
+  };
 
   readonly readOnlyDataConfig: ReadOnlyData<UserModel>[][] = [
     [

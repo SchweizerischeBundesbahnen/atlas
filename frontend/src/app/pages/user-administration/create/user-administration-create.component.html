@@ -1,7 +1,7 @@
 <app-user-administration-detail
   [userLoaded]="userLoaded"
   [userHasAlreadyPermissions]="userHasAlreadyPermissions"
-  [userApplicationPermissions]="userPermissionCreate.permissions"
+  [applicationConfigManager]="userPermissionManager"
 >
   <h1 title class="font-bold-4xl mb-5">{{ 'USER_ADMIN.NEW' | translate }}</h1>
   <h2 subtitle class="font-bold-xl mb-2">{{ 'USER_ADMIN.NEW_INFORMATION' | translate }}</h2>
@@ -14,19 +14,30 @@
       <mat-label class="font-regular-sm">{{ 'FORM.FOR_EXAMPLE' | translate }} u123456</mat-label>
     </div>
     <app-user-select (selectionChange)="selectUser($event)"></app-user-select>
-    <p *ngIf="userHasAlreadyPermissions">
-      {{ 'USER_ADMIN.NEW_USER_HAS_ALREADY_PERMISSIONS' | translate }}
+    <p *ngIf="userHasAlreadyPermissions" class="color-error">
+      {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
+    </p>
+    <p *ngIf="selectedUserHasNoUserId" class="color-error">
+      {{ 'USER_ADMIN.SELECTED_USER_HAS_NO_USER_ID' | translate }}
     </p>
   </div>
 
-  <button
-    save-btn
-    class="atlas-primary-btn footer-btn ms-3"
-    data-cy="save-item"
-    type="submit"
-    (click)="createUser()"
-    [disabled]="!userLoaded"
-  >
-    {{ 'COMMON.SAVE' | translate }}
-  </button>
+  <ng-template #footerButtons let-confirm>
+    <button
+      class="atlas-primary-btn footer-btn"
+      (click)="confirm(userLoaded && !userHasAlreadyPermissions)"
+      data-cy="cancel"
+    >
+      {{ 'COMMON.CANCEL' | translate }}
+    </button>
+    <button
+      class="atlas-primary-btn footer-btn ms-3"
+      data-cy="save"
+      type="submit"
+      (click)="createUser()"
+      [disabled]="!userLoaded || userHasAlreadyPermissions"
+    >
+      {{ 'COMMON.SAVE' | translate }}
+    </button>
+  </ng-template>
 </app-user-administration-detail>
