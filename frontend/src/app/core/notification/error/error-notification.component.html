@@ -19,5 +19,5 @@
   </div>
 </div>
 <div *ngIf="notificationService.correlationId" class="data ms-3">
-  {{ 'ERROR.CORRELATION_ID' | translate }} <b>{{ notificationService.correlationId }}</b>
+  {{ 'ERROR.CORRELATION_ID' | translate: { correlationId: notificationService.correlationId } }}
 </div>
