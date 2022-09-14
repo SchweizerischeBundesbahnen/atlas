@@ -174,20 +174,24 @@
     "USER_ID": "Benutzer-ID",
     "ACCOUNT_STATUS": "Accountstatus",
     "DISPLAY_NAME": "Anzeigename",
-    "ACCOUNT_STATUS_TYPE": {
-      "ACTIVE": "Aktiv",
-      "INACTIVE": "Inaktiv",
-      "DELETED": "Gelöscht"
-    },
     "APPLICATIONS": "Applikationen",
     "APPLICATION": {
       "LIDI": "Linien- und Teillinien",
       "TTFN": "Fahrplanfeldnummern"
     },
+    "ACCOUNT_STATUS_TYPE": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv",
+      "DELETED": "Gelöscht"
+    },
     "ROLE": "Rolle",
     "ADD_BUSINESS_ORGANISATION": "Geschäftsorganisation hinzufügen",
     "DELETE_BUSINESS_ORGANISATION": "Geschäftsorganisation entfernen",
-    "NEW_USER_HAS_ALREADY_PERMISSIONS": "Gewählter Benutzer ist bereits hinterlegt"
+    "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "Gewählter Benutzer ist bereits hinterlegt",
+    "SELECTED_USER_HAS_NO_USER_ID": "Gewählter Benutzer hat keine Benutzer-ID hinterlegt",
+    "NOTIFICATIONS": {
+      "ADD_SUCCESS": "Benutzer erfolgreich erfasst"
+    }
   },
   "TTFN": {
     "TTFN": "Fahrplanfeldnummer",
