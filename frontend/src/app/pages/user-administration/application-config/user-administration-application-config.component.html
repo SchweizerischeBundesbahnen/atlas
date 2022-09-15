@@ -1,39 +1,50 @@
-<h2 class="font-bold-xl">
-  {{ 'USER_ADMIN.APPLICATION.' + application | translate }}
-</h2>
-<h3 class="font-bold-lg">{{ 'USER_ADMIN.ROLE' | translate }}</h3>
+<div class="application-wrapper">
+  <h2 class="font-bold-xl mt-4">
+    {{ 'USER_ADMIN.APPLICATION.' + application | translate }}
+  </h2>
 
-<mat-form-field>
-  <mat-select
-    [value]="applicationConfigManager.getCurrentRole(application)"
-    (selectionChange)="applicationConfigManager.changePermissionRole(application, $event.value)"
-  >
-    <mat-option *ngFor="let option of getRoleOptions()" [value]="option">{{ option }}</mat-option>
-  </mat-select>
-</mat-form-field>
+  <div class="col-12 d-flex">
+    <div class="d-flex flex-column col-3 pe-5">
+      <h3 class="font-bold-lg">{{ 'USER_ADMIN.ROLE' | translate }}</h3>
 
-<ng-template [ngIf]="isCurrentRoleWriter()">
-  <h3 class="font-bold-lg">
-    {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}
-  </h3>
-  <app-relation
-    [records]="currentRecords"
-    [tableColumns]="tableColumnDef"
-    [selectedIndex]="selectedIndex"
-    [editable]="true"
-    [addBtnNameTranslationKey]="'USER_ADMIN.ADD_BUSINESS_ORGANISATION'"
-    [deleteBtnNameTranslationKey]="'USER_ADMIN.DELETE_BUSINESS_ORGANISATION'"
-    (editModeChanged)="addBusinessOrganisation()"
-    (selectedIndexChanged)="selectedIndex = $event"
-    (deleteRelation)="removeBusinessOrganisation()"
-  >
-    <div table-button-between class="mb-3">
-      <bo-select
-        [formGroup]="businessOrganisationForm"
-        [controlName]="'businessOrganisation'"
-      ></bo-select>
+      <mat-form-field>
+        <mat-select
+          [value]="applicationConfigManager.getCurrentRole(application)"
+          (selectionChange)="
+            applicationConfigManager.changePermissionRole(application, $event.value)
+          "
+        >
+          <mat-option *ngFor="let option of getRoleOptions()" [value]="option">{{
+            'COMMON.ROLES.' + option | translate
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-  </app-relation>
 
-  <!--TODO: generic table-->
-</ng-template>
+    <div class="d-flex flex-column col-9 pe-3">
+      <ng-template [ngIf]="isCurrentRoleWriter()">
+        <span class="font-bold-lg">
+          {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}
+        </span>
+        <app-relation
+          [records]="currentRecords"
+          [tableColumns]="tableColumnDef"
+          [selectedIndex]="selectedIndex"
+          [editable]="true"
+          [addBtnNameTranslationKey]="'USER_ADMIN.ADD_BUSINESS_ORGANISATION'"
+          [deleteBtnNameTranslationKey]="'USER_ADMIN.DELETE_BUSINESS_ORGANISATION'"
+          (editModeChanged)="addBusinessOrganisation()"
+          (selectedIndexChanged)="selectedIndex = $event"
+          (deleteRelation)="removeBusinessOrganisation()"
+        >
+          <div table-button-between class="mb-3">
+            <bo-select
+              [formGroup]="businessOrganisationForm"
+              [controlName]="'businessOrganisation'"
+            ></bo-select>
+          </div>
+        </app-relation>
+      </ng-template>
+    </div>
+  </div>
+</div>
