@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum MailType {
 
   ATLAS_STANDARD,
-  TU_IMPORT
+  TU_IMPORT,
+  SCHEDULING_ERROR_NOTIFICATION
 
 }
