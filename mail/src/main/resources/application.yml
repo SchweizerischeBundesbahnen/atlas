@@ -10,6 +10,8 @@ management:
       show-details: always
 
 spring:
+  application:
+    name: mail
   sleuth:
     baggage:
       remote-fields: Correlation-Id
