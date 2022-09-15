@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UserAdministrationCreateComponent } from './user-administration-create.component';
 import { UserService } from '../service/user.service';
@@ -10,6 +10,23 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { MaterialModule } from '../../../core/module/material.module';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-user-administration-detail',
+  template: '',
+})
+class MockUserAdministrationDetailComponent {
+  @Input() userLoaded = undefined;
+  @Input() userHasAlreadyPermissions = false;
+  @Input() applicationConfigManager = undefined;
+}
+
+@Component({
+  selector: 'app-user-select',
+  template: '',
+})
+class MockUserSelectComponent {}
 
 describe('UserAdministrationCreateComponent', () => {
   let component: UserAdministrationCreateComponent;
@@ -26,7 +43,11 @@ describe('UserAdministrationCreateComponent', () => {
     ]);
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationCreateComponent],
+      declarations: [
+        UserAdministrationCreateComponent,
+        MockUserAdministrationDetailComponent,
+        MockUserSelectComponent,
+      ],
       imports: [
         RouterTestingModule,
         TranslateModule.forRoot({
@@ -65,7 +86,6 @@ describe('UserAdministrationCreateComponent', () => {
     expect(component.userPermissionManager).toBeDefined();
   });
 
-  // TODO: tests
   it('test selectUser without userId', () => {
     component.selectUser({
       lastName: 'test',
@@ -99,7 +119,7 @@ describe('UserAdministrationCreateComponent', () => {
     });
   });
 
-  it('test createUser', () => {
+  it('test createUser', fakeAsync(() => {
     const router = TestBed.inject(Router);
     component.userLoaded = {
       sbbUserId: 'u236171',
@@ -109,12 +129,17 @@ describe('UserAdministrationCreateComponent', () => {
         sbbUserId: 'u236171',
       })
     );
-    spyOn(router, 'navigate').and.resolveTo();
+    spyOn(router, 'navigate').and.resolveTo(true);
     spyOn(component.userPermissionManager, 'setSbbUserId');
     spyOn(component.userPermissionManager, 'clearSboidsIfNotWriter');
     component.createUser();
     expect(component.userPermissionManager.setSbbUserId).toHaveBeenCalledOnceWith('u236171');
     expect(component.userPermissionManager.clearSboidsIfNotWriter).toHaveBeenCalledOnceWith();
-    // expect(userServiceSpy.createUserPermission).toHaveBeenCalledOnceWith()
-  });
+    expect(userServiceSpy.createUserPermission).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    tick();
+    expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
+      'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
+    );
+  }));
 });
