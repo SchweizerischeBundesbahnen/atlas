@@ -13,7 +13,9 @@
 <ng-content select="[user-select]"></ng-content>
 
 <ng-template [ngIf]="userLoaded && !userHasAlreadyPermissions">
-  <app-read-only-data [data]="userLoaded" [config]="readOnlyDataConfig"></app-read-only-data>
+  <div class="mt-2">
+    <app-read-only-data [data]="userLoaded" [config]="readOnlyDataConfig"></app-read-only-data>
+  </div>
   <h1 class="font-bold-4xl mt-5">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
   <div *ngFor="let permission of applicationConfigManager.getPermissions()">
     <app-user-administration-application-config
