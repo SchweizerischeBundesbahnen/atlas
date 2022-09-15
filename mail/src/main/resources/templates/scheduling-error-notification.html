@@ -64,6 +64,11 @@
             margin-top: 32px;
         }
 
+        .code {
+            display: inline-block;
+            background-color: orange;
+        }
+
     </style>
 </head>
 <body>
@@ -91,7 +96,9 @@
         <b>Error Detail Message:</b>
         <br/>
         <ul>
-            <li><span th:text="${properties.get(0).get('error')}"></span></li>
+            <li>
+                <span class="code" th:text="${properties.get(0).get('error')}"></span>
+            </li>
         </ul>
         Please check the log with the following CorrelationId:
         <b><span th:text="${properties.get(0).get('correlationId')}"></span></b>
