@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"sboid", "said", "validFrom", "validTo", "organisationNumber", "status",
     "descriptionDe", "descriptionFr", "descriptionIt", "descriptionEn", "abbreviationDe",
     "abbreviationFr", "abbreviationIt", "abbreviationEn", "businessTypesId", "businessTypesDe",
-    "businessTypesIt", "businessTypesFr"})
+    "businessTypesIt", "businessTypesFr", "creationTime", "editionTime"})
 public class BusinessOrganisationVersionCsvModel implements VersionCsvModel {
 
   @JsonProperty("sboid")
@@ -105,24 +105,24 @@ public class BusinessOrganisationVersionCsvModel implements VersionCsvModel {
     model.setAbbreviationEn(version.getAbbreviationEn());
     model.setBusinessTypesId(
         version.getBusinessTypes()
-               .stream()
-               .map(businessType -> String.valueOf(businessType.getId()))
-               .collect(Collectors.joining(",")));
+            .stream()
+            .map(businessType -> String.valueOf(businessType.getId()))
+            .collect(Collectors.joining(",")));
     model.setBusinessTypesDe(
         version.getBusinessTypes()
-               .stream()
-               .map(BusinessType::getTypeDe)
-               .collect(Collectors.joining(",")));
+            .stream()
+            .map(BusinessType::getTypeDe)
+            .collect(Collectors.joining(",")));
     model.setBusinessTypesFr(
         version.getBusinessTypes()
-               .stream()
-               .map(BusinessType::getTypeFr)
-               .collect(Collectors.joining(",")));
+            .stream()
+            .map(BusinessType::getTypeFr)
+            .collect(Collectors.joining(",")));
     model.setBusinessTypesIt(
         version.getBusinessTypes()
-               .stream()
-               .map(BusinessType::getTypeIt)
-               .collect(Collectors.joining(",")));
+            .stream()
+            .map(BusinessType::getTypeIt)
+            .collect(Collectors.joining(",")));
     model.setEditionTime(version.getEditionDate());
     model.setCreationTime(version.getCreationDate());
     return model;

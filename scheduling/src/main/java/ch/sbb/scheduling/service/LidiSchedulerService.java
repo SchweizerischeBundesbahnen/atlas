@@ -23,7 +23,7 @@ public class LidiSchedulerService extends BaseSchedulerService {
 
   @Retryable(label = "exportFullLineVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 5000))
   @Scheduled(cron = "${scheduler.lidi.export.line.full.chron}", zone = "${scheduler.zone}")
-  //    @SchedulerLock(name = "exportFullLineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  @SchedulerLock(name = "exportFullLineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportFullLineVersions() {
     return executeRequest(liDiClient.putLiDiLineExportFull(), "Full Line Versions CSV/ZIP");
   }
