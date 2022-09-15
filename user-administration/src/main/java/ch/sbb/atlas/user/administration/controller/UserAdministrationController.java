@@ -10,7 +10,6 @@ import ch.sbb.atlas.user.administration.models.UserModel;
 import ch.sbb.atlas.user.administration.models.UserPermissionModel;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -55,46 +54,40 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     return user;
   }
 
-  @Override
-  public UserModel getCurrentUser() {
-    return getUser(UserService.getSbbUid());
-  }
-
-  private Set<UserPermissionModel> getUserPermissionModels(String userId) {
-    return userAdministrationService.getUserPermissions(userId).stream()
-                                    .map(
-                                        UserPermissionModel::toModel)
-                                    .collect(
-                                        Collectors.toSet());
-  }
-  @Override
-  public UserModel createUserPermission(UserPermissionCreateModel user) {
-    // validate
-    userAdministrationService.validateUserPermissionCreation(user);
-    // create
-    final List<UserPermission> toSave = new ArrayList<>();
-    for (UserPermissionModel permission : user.getPermissions()) {
-      UserPermission userPermission = UserPermission.builder()
-                                                    .sbbUserId(user.getSbbUserId().toLowerCase())
-                                                    .application(permission.getApplication())
-                                                    .role(permission.getRole())
-                                                    .sboid(new HashSet<>(permission.getSboids())).build();
-      toSave.add(userPermission);
+    @Override
+    public UserModel getCurrentUser() {
+        return getUser(UserService.getSbbUid());
     }
-    List<UserPermission> savedUserPermissions = userAdministrationService.save(toSave);
-    // return created UserModel
-    final List<UserModel> userModels = graphApiService.resolveUsers(List.of(user.getSbbUserId()));
-    userModels.get(0).setPermissions(getUserPermissionModels(savedUserPermissions));
-    return userModels.get(0);
-  }
 
-  private Set<UserPermissionModel> getUserPermissionModels(String userId) {
-    return getUserPermissionModels(userAdministrationService.getUserPermissions(userId));
-  }
+    @Override
+    public UserModel createUserPermission(UserPermissionCreateModel user) {
+        userAdministrationService.validatePermissionExistence(user);
 
-  private Set<UserPermissionModel> getUserPermissionModels(List<UserPermission> userPermissions) {
-    return userPermissions.stream().map(UserPermissionModel::toModel).collect(Collectors.toSet());
-  }
+        final List<UserPermission> toSave = user.getPermissions()
+                .stream().map(permission -> toEntity(user.getSbbUserId().toLowerCase(), permission)).toList();
+
+        final List<UserPermission> savedUserPermissions = userAdministrationService.save(toSave);
+        final UserModel userModel = graphApiService.resolveUsers(List.of(user.getSbbUserId())).get(0);
+        userModel.setPermissions(getUserPermissionModels(savedUserPermissions));
+        return userModel;
+    }
+
+    private UserPermission toEntity(String sbbUserId, UserPermissionModel permissionModel) {
+        return UserPermission.builder()
+                .sbbUserId(sbbUserId)
+                .application(permissionModel.getApplication())
+                .role(permissionModel.getRole())
+                .sboid(new HashSet<>(permissionModel.getSboids()))
+                .build();
+    }
+
+    private Set<UserPermissionModel> getUserPermissionModels(String userId) {
+        return getUserPermissionModels(userAdministrationService.getUserPermissions(userId));
+    }
+
+    private Set<UserPermissionModel> getUserPermissionModels(List<UserPermission> userPermissions) {
+        return userPermissions.stream().map(UserPermissionModel::toModel).collect(Collectors.toSet());
+    }
 
   @Override
   public UserModel updateUserPermissions(UserPermissionCreateModel editedPermissions) {

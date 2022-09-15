@@ -7,12 +7,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "User Administration")
 @RequestMapping("/v1/users")
@@ -28,8 +30,9 @@ public interface UserAdministrationApiV1 {
   @GetMapping("current")
   UserModel getCurrentUser();
 
-  @PostMapping
-  UserModel createUserPermission(@RequestBody @Valid UserPermissionCreateModel user);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    UserModel createUserPermission(@RequestBody @Valid UserPermissionCreateModel user);
 
   @PutMapping
   UserModel updateUserPermissions(@RequestBody @Valid UserPermissionCreateModel editedPermissions);
