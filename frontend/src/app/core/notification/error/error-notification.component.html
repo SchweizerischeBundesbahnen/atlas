@@ -11,13 +11,16 @@
       </ul>
     </div>
   </div>
-  <div *ngIf="!notificationService.showOnlyCode()" class="snack-bar-error-generic-text">
+  <div
+    *ngIf="!notificationService.showOnlyCode()"
+    class="snack-bar-error-generic-text mt-3 mb-3 ms-3 me-3"
+  >
     {{ this.notificationService.displayCode | translate }}
   </div>
   <div class="dismiss">
     <i (click)="this.snackBarRef.dismiss()" class="bi bi-x-circle"></i>
   </div>
 </div>
-<div *ngIf="notificationService.correlationId" class="data ms-3">
+<div *ngIf="notificationService.correlationId" class="data ms-3 me-3 mb-3">
   {{ 'ERROR.CORRELATION_ID' | translate: { correlationId: notificationService.correlationId } }}
 </div>
