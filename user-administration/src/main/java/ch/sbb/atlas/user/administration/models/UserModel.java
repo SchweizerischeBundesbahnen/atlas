@@ -6,19 +6,23 @@ import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
 import com.microsoft.graph.models.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @Setter
 @Getter
 @Schema(name = "UserModel")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@FieldNameConstants
 public class UserModel {
 
+  @EqualsAndHashCode.Include
   @Schema(description = "SBB User Id", example = "u111111")
   private String sbbUserId;
 
@@ -70,25 +74,6 @@ public class UserModel {
                     .displayName(user.displayName)
                     .permissions(Collections.emptySet())
                     .build();
-  }
-
-  @Override
-  public boolean equals(final Object userModel) {
-    if (this == userModel) {
-      return true;
-    }
-    if (userModel == null) {
-      return false;
-    }
-    if (userModel instanceof UserModel model) {
-      return Objects.equals(getSbbUserId(), model.getSbbUserId());
-    }
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    return 1;
   }
 
 }
