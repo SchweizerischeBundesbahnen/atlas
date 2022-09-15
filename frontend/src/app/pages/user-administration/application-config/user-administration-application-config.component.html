@@ -37,7 +37,7 @@
           (selectedIndexChanged)="selectedIndex = $event"
           (deleteRelation)="removeBusinessOrganisation()"
         >
-          <div table-button-between class="mb-3">
+          <div table-button-between class="mb-3 bo-select-wrapper">
             <bo-select
               [formGroup]="businessOrganisationForm"
               [controlName]="'businessOrganisation'"
