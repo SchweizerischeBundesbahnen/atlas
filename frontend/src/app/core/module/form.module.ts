@@ -10,6 +10,7 @@ import { DateIconComponent } from '../form-components/date-icon/date-icon.compon
 import { InfoIconComponent } from '../form-components/info-icon/info-icon.component';
 import { SearchSelectComponent } from '../form-components/search-select/search-select.component';
 import { BusinessOrganisationSelectComponent } from '../form-components/bo-select/business-organisation-select.component';
+import { DialogCloseComponent } from '../form-components/dialog-close/dialog-close.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { BusinessOrganisationSelectComponent } from '../form-components/bo-selec
     DateIconComponent,
     InfoIconComponent,
     SearchSelectComponent,
+    DialogCloseComponent,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule],
   exports: [
@@ -32,6 +34,7 @@ import { BusinessOrganisationSelectComponent } from '../form-components/bo-selec
     DateIconComponent,
     InfoIconComponent,
     SearchSelectComponent,
+    DialogCloseComponent,
   ],
 })
 export class FormModule {}
