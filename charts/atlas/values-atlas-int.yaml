@@ -5,6 +5,7 @@ common:
   springProfilesActive: "int"
   # Pod Instances Count
   replicas: 2
+  clusterLoadBalancer: 'public-maggie.app.sbb.ch'
 
 frontend:
   routeHost: 'atlas.int.sbb-cloud.net'
@@ -13,6 +14,5 @@ frontend:
   atlasApiUrl: 'https://atlas-int.api.sbb.ch:443'
   apiClientId: 'cdb8ebf2-b69a-4b24-ae98-acef067eea20'
   apiScope: 'openid profile email offline_access api://733b361e-a067-4882-bb00-6bbaf36a007f/.default'
-  clusterLoadBalancer: 'public-maggie.app.sbb.ch'
   replicas: 2
   instanaKey: 'Js11t15bRk2gsL5e-dDM0w'
