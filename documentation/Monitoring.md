@@ -98,5 +98,5 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health, info, metrics
 ```
