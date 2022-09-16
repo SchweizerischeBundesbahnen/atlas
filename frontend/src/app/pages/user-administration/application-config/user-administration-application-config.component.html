@@ -9,14 +9,21 @@
 
       <mat-form-field>
         <mat-select
+          [disabled]="readOnly"
           [value]="applicationConfigManager.getCurrentRole(application)"
           (selectionChange)="
             applicationConfigManager.changePermissionRole(application, $event.value)
           "
         >
-          <mat-option *ngFor="let option of getRoleOptions()" [value]="option">{{
-            'COMMON.ROLES.' + option | translate
-          }}</mat-option>
+          <mat-option
+            *ngFor="
+              let option of applicationConfigManager.getAvailableApplicationRolesOfApplication(
+                application
+              )
+            "
+            [value]="option"
+            >{{ 'COMMON.ROLES.' + option | translate }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
     </div>
@@ -27,17 +34,17 @@
           {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}
         </span>
         <app-relation
-          [records]="currentRecords"
+          [records]="applicationConfigManager.businessOrganisationsOfApplication[this.application]"
           [tableColumns]="tableColumnDef"
           [selectedIndex]="selectedIndex"
-          [editable]="true"
+          [editable]="!readOnly"
           [addBtnNameTranslationKey]="'USER_ADMIN.ADD_BUSINESS_ORGANISATION'"
           [deleteBtnNameTranslationKey]="'USER_ADMIN.DELETE_BUSINESS_ORGANISATION'"
-          (editModeChanged)="addBusinessOrganisation()"
+          (editModeChanged)="add()"
           (selectedIndexChanged)="selectedIndex = $event"
-          (deleteRelation)="removeBusinessOrganisation()"
+          (deleteRelation)="remove()"
         >
-          <div table-button-between class="mb-3 bo-select-wrapper">
+          <div *ngIf="!readOnly" table-button-between class="mb-3 bo-select-wrapper">
             <bo-select
               [formGroup]="businessOrganisationForm"
               [controlName]="'businessOrganisation'"

@@ -34,7 +34,7 @@ public interface UserAdministrationApiV1 {
     @ResponseStatus(HttpStatus.CREATED)
     UserModel createUserPermission(@RequestBody @Valid UserPermissionCreateModel user);
 
-  @PutMapping
-  UserModel updateUserPermissions(@RequestBody @Valid UserPermissionCreateModel editedPermissions);
+    @PutMapping
+    UserModel updateUserPermissions(@RequestBody @Valid UserPermissionCreateModel editedPermissions);
 
 }

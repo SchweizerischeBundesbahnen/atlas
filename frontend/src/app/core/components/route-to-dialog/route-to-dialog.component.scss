@@ -10,6 +10,17 @@
   background: rgba(0, 0, 0, 0.7);
   /* background-blur */
   backdrop-filter: blur(10px);
+  z-index: 999;
+}
+
+.cdk-overlay-backdrop ~ .cdk-global-overlay-wrapper {
+  z-index: 999;
+  overflow: auto;
+  height: calc(100% - #{variables.$footerHeight});
+}
+
+.atlas-dialog-backdrop ~ .cdk-global-overlay-wrapper {
+  z-index: 1000;
 }
 
 .route-to-dialog-panel {

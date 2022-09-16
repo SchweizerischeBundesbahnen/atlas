@@ -6,7 +6,7 @@ import {
   UserPermissionCreateModel,
   UserPermissionModel,
 } from '../../api';
-import { Observable, take } from 'rxjs';
+import { take } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export class UserPermissionManager {
@@ -17,16 +17,41 @@ export class UserPermissionManager {
     permissions: [
       {
         application: 'TTFN',
-        role: 'WRITER',
+        role: 'READER',
         sboids: [],
       },
       {
         application: 'LIDI',
-        role: 'WRITER',
+        role: 'READER',
+        sboids: [],
+      },
+      {
+        application: 'BODI',
+        role: 'READER',
         sboids: [],
       },
     ],
   };
+
+  private readonly availableApplicationRolesConfig: {
+    [application in ApplicationType]: ApplicationRole[];
+  } = {
+    TTFN: Object.values(ApplicationRole),
+    LIDI: Object.values(ApplicationRole),
+    BODI: [ApplicationRole.Reader, ApplicationRole.SuperUser, ApplicationRole.Supervisor],
+  };
+
+  readonly businessOrganisationsOfApplication: {
+    [application in ApplicationType]: BusinessOrganisation[];
+  } = {
+    TTFN: [],
+    LIDI: [],
+    BODI: [],
+  };
+
+  getAvailableApplicationRolesOfApplication(application: ApplicationType): ApplicationRole[] {
+    return this.availableApplicationRolesConfig[application];
+  }
 
   clearSboidsIfNotWriter(): void {
     this.userPermission.permissions.forEach((permission) => {
@@ -58,7 +83,14 @@ export class UserPermissionManager {
   }
 
   setPermissions(permissions: UserPermissionModel[]): void {
-    this.userPermission.permissions = permissions;
+    permissions.forEach((permission) => {
+      const application = permission.application;
+      this.userPermission.permissions[this.getPermissionIndexFromApplication(application)].role =
+        permission.role;
+      permission.sboids.forEach((sboid) => {
+        this.addSboidToPermission(application, sboid);
+      });
+    });
   }
 
   changePermissionRole(application: ApplicationType, newRole: ApplicationRole): void {
@@ -69,15 +101,15 @@ export class UserPermissionManager {
   removeSboidFromPermission(application: ApplicationType, sboidIndex: number): void {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
     this.userPermission.permissions[permissionIndex].sboids.splice(sboidIndex, 1);
+    this.businessOrganisationsOfApplication[application] = this.businessOrganisationsOfApplication[
+      application
+    ].filter((_, index) => index !== sboidIndex);
   }
 
-  addSboidToPermission(
-    application: ApplicationType,
-    sboid: string
-  ): Observable<BusinessOrganisation | undefined> {
+  addSboidToPermission(application: ApplicationType, sboid: string): void {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
 
-    return this.boService
+    this.boService
       .getAllBusinessOrganisations([sboid], undefined, undefined, 0, 1, ['sboid,ASC'])
       .pipe(
         take(1),
@@ -91,9 +123,13 @@ export class UserPermissionManager {
             return;
           }
           this.userPermission.permissions[permissionIndex].sboids.push(sboid);
-          return result.objects[0];
+          this.businessOrganisationsOfApplication[application] = [
+            ...this.businessOrganisationsOfApplication[application],
+            result.objects[0],
+          ];
         })
-      );
+      )
+      .subscribe();
   }
 
   private getPermissionIndexFromApplication(application: ApplicationType): number {

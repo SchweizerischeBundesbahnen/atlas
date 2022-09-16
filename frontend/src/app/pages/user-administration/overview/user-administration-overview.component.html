@@ -21,7 +21,7 @@
       [pageSizeOptions]="[5, 10, 20]"
       [totalCount]="userPageResult.totalCount"
       [sortingDisabled]="true"
-      (editElementEvent)="({})"
+      (editElementEvent)="openUser($event)"
       (getTableElementsEvent)="loadUsers($event)"
     >
       <app-user-select (selectionChange)="checkIfUserExists($event)"></app-user-select>
