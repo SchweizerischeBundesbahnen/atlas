@@ -45,6 +45,11 @@ input[type='number'] {
   }
 }
 
+.footer {
+  height: variables.$footerHeight;
+  background-color: variables.$primary-500;
+}
+
 button.footer-btn {
   background-color: variables.$primary-500;
   color: variables.$white;
