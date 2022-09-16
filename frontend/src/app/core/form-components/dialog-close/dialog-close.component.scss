@@ -1,6 +1,5 @@
 @use 'src/styles/variables';
 
-/* TODO: generalize */
 .dialog-close-panel {
   width: 100%;
   text-align: right;
@@ -19,9 +18,4 @@
   .bi {
     color: variables.$primary-400;
   }
-}
-
-.footer {
-  height: variables.$footerHeight;
-  background-color: variables.$primary-500;
 }
