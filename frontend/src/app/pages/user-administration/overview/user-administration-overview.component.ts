@@ -55,6 +55,14 @@ export class UserAdministrationOverviewComponent implements OnInit {
     this.loadUsers({ page: 0, size: 10 });
   }
 
+  openUser(user: UserModel) {
+    this.router
+      .navigate([user.sbbUserId], {
+        relativeTo: this.route,
+      })
+      .then();
+  }
+
   loadUsers(tableSettings: TableSettings): void {
     this.tableIsLoading = true;
     this.form.reset();

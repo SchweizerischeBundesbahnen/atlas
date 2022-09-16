@@ -6,15 +6,11 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
-import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
@@ -36,7 +32,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
@@ -97,10 +92,6 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
                         .application(ApplicationType.TTFN)
                         .sbbUserId("***REMOVED***").build(),
                 UserPermission.builder()
-                        .role(ApplicationRole.WRITER)
-                        .application(ApplicationType.LIDI)
-                        .sbbUserId("***REMOVED***").build(),
-                UserPermission.builder()
                         .role(ApplicationRole.SUPERVISOR)
                         .application(ApplicationType.TTFN)
                         .sbbUserId("e678574").build()
@@ -156,8 +147,10 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$." + Fields.permissions + "[?(@.application == 'BODI')].sboids[*]").value(hasSize(0)))
                 .andExpect(jsonPath("$." + Fields.permissions + "[?(@.application == 'TTFN')].sboids[*]").value(hasItem("ch:1:sboid:test")));
 
-        assertThat(userPermissionRepository.findBySbbUserId("***REMOVED***")).hasSize(0);
-        assertThat(userPermissionRepository.findBySbbUserId("***REMOVED***")).hasSize(2);
+        List<UserPermission> savedPermissions = userPermissionRepository.findBySbbUserIdIgnoreCase("***REMOVED***");
+        assertThat(savedPermissions).hasSize(2);
+        assertThat(savedPermissions.get(0).getSbbUserId()).isEqualTo("***REMOVED***");
+        assertThat(savedPermissions.get(1).getSbbUserId()).isEqualTo("***REMOVED***");
     }
 
     @Test
