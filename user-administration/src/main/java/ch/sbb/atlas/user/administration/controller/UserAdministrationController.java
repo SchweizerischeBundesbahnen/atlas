@@ -64,17 +64,15 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
         userAdministrationService.validatePermissionExistence(user);
 
         final List<UserPermission> toSave = user.getPermissions()
-                .stream().map(permission -> toEntity(user.getSbbUserId().toLowerCase(), permission)).toList();
+                .stream().map(permission -> toEntity(user.getSbbUserId(), permission)).toList();
 
-        final List<UserPermission> savedUserPermissions = userAdministrationService.save(toSave);
-        final UserModel userModel = graphApiService.resolveUsers(List.of(user.getSbbUserId())).get(0);
-        userModel.setPermissions(getUserPermissionModels(savedUserPermissions));
-        return userModel;
+        userAdministrationService.save(toSave);
+        return getUser(user.getSbbUserId());
     }
 
     private UserPermission toEntity(String sbbUserId, UserPermissionModel permissionModel) {
         return UserPermission.builder()
-                .sbbUserId(sbbUserId)
+                .sbbUserId(sbbUserId.toLowerCase())
                 .application(permissionModel.getApplication())
                 .role(permissionModel.getRole())
                 .sboid(new HashSet<>(permissionModel.getSboids()))
