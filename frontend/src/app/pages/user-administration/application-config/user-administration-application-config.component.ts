@@ -1,8 +1,7 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ApplicationRole, ApplicationType, BusinessOrganisation } from '../../../api';
+import { ApplicationType, BusinessOrganisation } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
-import { RelationComponent } from '../../../core/components/relation/relation.component';
 import { UserPermissionManager } from '../user-permission-manager';
 
 @Component({
@@ -11,12 +10,10 @@ import { UserPermissionManager } from '../user-permission-manager';
   styleUrls: ['./user-administration-application-config.component.scss'],
 })
 export class UserAdministrationApplicationConfigComponent {
-  @ViewChild(RelationComponent) relationComponent!: RelationComponent<BusinessOrganisation>;
-
   @Input() applicationConfigManager!: UserPermissionManager;
   @Input() application!: ApplicationType;
+  @Input() readOnly = false;
 
-  currentRecords: BusinessOrganisation[] = [];
   selectedIndex = -1;
 
   readonly businessOrganisationForm: FormGroup = new FormGroup({
@@ -46,34 +43,19 @@ export class UserAdministrationApplicationConfigComponent {
     },
   ];
 
-  getRoleOptions(): ApplicationRole[] {
-    return Object.values(ApplicationRole);
-  }
-
   isCurrentRoleWriter(): boolean {
     return this.applicationConfigManager.getCurrentRole(this.application) === 'WRITER';
   }
 
-  addBusinessOrganisation(): void {
+  add(): void {
     const value = this.businessOrganisationForm.get('businessOrganisation')?.value;
-    if (!value) {
-      return;
+    if (value) {
+      this.applicationConfigManager.addSboidToPermission(this.application, value);
     }
-
-    this.applicationConfigManager
-      .addSboidToPermission(this.application, value)
-      .subscribe((value) => {
-        if (value) {
-          this.currentRecords.push(value);
-          this.relationComponent.table.renderRows();
-        }
-      });
   }
 
-  removeBusinessOrganisation(): void {
+  remove(): void {
     this.applicationConfigManager.removeSboidFromPermission(this.application, this.selectedIndex);
-    this.currentRecords.splice(this.selectedIndex, 1);
-    this.relationComponent.table.renderRows();
     this.selectedIndex = -1;
   }
 }

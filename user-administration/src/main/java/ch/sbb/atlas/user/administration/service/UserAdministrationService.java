@@ -5,15 +5,12 @@ import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
-import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
-import ch.sbb.atlas.user.administration.models.UserModel;
 import ch.sbb.atlas.user.administration.models.UserPermissionModel;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
-import javax.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +29,7 @@ public class UserAdministrationService {
   }
 
   public List<UserPermission> getUserPermissions(String sbbUserId) {
-    return userPermissionRepository.findBySbbUserId(sbbUserId);
+    return userPermissionRepository.findBySbbUserIdIgnoreCase(sbbUserId);
   }
 
   public void validatePermissionExistence(UserPermissionCreateModel user) {
@@ -67,7 +64,7 @@ public class UserAdministrationService {
   }
 
   Optional<UserPermission> getCurrentUserPermission(String sbbuid, ApplicationType applicationType) {
-    return userPermissionRepository.findBySbbUserId(sbbuid)
+    return userPermissionRepository.findBySbbUserIdIgnoreCase(sbbuid)
                                    .stream()
                                    .filter(userPermission -> userPermission.getApplication()
                                        == applicationType)
