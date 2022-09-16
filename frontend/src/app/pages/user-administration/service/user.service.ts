@@ -49,4 +49,8 @@ export class UserService {
   createUserPermission(userPermission: UserPermissionCreateModel): Observable<UserModel> {
     return this.userAdministrationService.createUserPermission(userPermission);
   }
+
+  updateUserPermission(userPermission: UserPermissionCreateModel): Observable<UserModel> {
+    return this.userAdministrationService.updateUserPermissions(userPermission);
+  }
 }
