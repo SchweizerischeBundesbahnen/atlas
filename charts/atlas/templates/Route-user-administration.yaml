@@ -16,3 +16,24 @@ spec:
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Allow
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    router.clew.sbb.ch/type: sbb-aws-alb-public
+  annotations:
+    clew.sbb.ch/cluster-independent-dns: 'true'
+    external-dns.alpha.kubernetes.io/alias: 'true'
+    external-dns.alpha.kubernetes.io/target: '{{ .Values.common.clusterLoadBalancer }}'
+  name: {{ .Values.userAdministration.name }}-public
+spec:
+  host: '{{ .Values.userAdministration.name }}.{{ .Values.common.springProfilesActive }}.app.sbb.ch'
+  port:
+    targetPort: '{{ .Values.userAdministration.port }}-tcp'
+  to:
+    kind: Service
+    name: '{{ .Values.userAdministration.name }}'
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
