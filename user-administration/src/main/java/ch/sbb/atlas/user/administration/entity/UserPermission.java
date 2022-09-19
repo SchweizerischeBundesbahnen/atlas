@@ -48,7 +48,6 @@ public class UserPermission {
   @Size(min = 7, max = 7)
   private String sbbUserId;
 
-  // TODO: integration-test
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "business_organisation_user_permission")
   private Set<String> sboid;

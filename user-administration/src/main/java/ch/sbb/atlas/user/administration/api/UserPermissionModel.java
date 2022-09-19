@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.models;
+package ch.sbb.atlas.user.administration.api;
 
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
