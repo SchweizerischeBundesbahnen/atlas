@@ -21,6 +21,7 @@ This is the repository for business relevant services for ATLAS.
   * [Line-directory](#line-directory)
   * [Business-organisation-directory](#business-organisation-directory)
   * [Mail Service](#mail-service)
+  * [User Administration](#user-administration)
   * [Base Service lib](#base-service-lib)
   * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
@@ -176,6 +177,11 @@ See [Business-Organisation-directory documentation](business-organisation-direct
 ### Mail Service
 
 Service used by Atlas to send emails. See [Mail Service Documentation](mail/README.md)
+
+### User Administration
+
+User Administration provides the backend for creating and maintaining role and business organisation assignments for user. See [UserAdministration Documentation](user-administration/README.md) for more.
+
 
 ### Base Service lib
 
