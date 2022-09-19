@@ -2,7 +2,6 @@ package ch.sbb.atlas.user.administration.api;
 
 import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
-import ch.sbb.atlas.user.administration.models.UserPermissionModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.HashSet;
