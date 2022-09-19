@@ -1,7 +1,6 @@
 package ch.sbb.atlas.user.administration.api;
 
 import ch.sbb.atlas.base.service.model.api.Container;
-import ch.sbb.atlas.user.administration.models.UserModel;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
