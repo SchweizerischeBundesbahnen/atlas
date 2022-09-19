@@ -25,3 +25,7 @@ logging:
           test: error
         test: error
         web: error
+
+mail:
+  receiver:
+    schduling: forza.napoli@sbb.ch
