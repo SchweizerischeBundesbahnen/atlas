@@ -4,13 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
+import ch.sbb.atlas.user.administration.api.UserPermissionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
-import ch.sbb.atlas.user.administration.api.UserPermissionModel;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -136,7 +135,7 @@ public class UserAdministrationServiceUpdateTest {
   }
 
   @Test
-  void shouldDeleteUserPermissionOnReaderDowngrade() {
+  void shouldUpdateUserPermissionOnReaderDowngrade() {
     // Given
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
                                                                            .sbbUserId(SBBUID)
@@ -153,8 +152,8 @@ public class UserAdministrationServiceUpdateTest {
     userAdministrationService.updateUser(editedPermissions);
 
     // Then
-    Optional<UserPermission> lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
-        ApplicationType.LIDI);
-    assertThat(lidiPermissions).isEmpty();
+    UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
+        ApplicationType.LIDI).orElseThrow();
+    assertThat(lidiPermissions.getRole()).isEqualTo(ApplicationRole.READER);
   }
 }
