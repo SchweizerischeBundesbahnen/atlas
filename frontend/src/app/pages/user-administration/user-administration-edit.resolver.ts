@@ -18,7 +18,7 @@ export class UserAdministrationEditResolver implements Resolve<UserModel | undef
     return this.userService.getUser(route.paramMap.get('sbbUserId')!).pipe(
       catchError(() => {
         this.router
-          .navigate([Pages.LIDI.path], {
+          .navigate([Pages.USER_ADMINISTRATION.path], {
             state: { notDismissSnackBar: true },
           })
           .then();
