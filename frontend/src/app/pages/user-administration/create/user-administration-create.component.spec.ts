@@ -6,11 +6,18 @@ import SpyObj = jasmine.SpyObj;
 import { BusinessOrganisationsService, UserModel } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslatePipe,
+} from '@ngx-translate/core';
 import { MaterialModule } from '../../../core/module/material.module';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component, Input } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AppTestingModule } from '../../../app.testing.module';
 
 @Component({
   selector: 'app-user-administration-detail',
@@ -27,6 +34,12 @@ class MockUserAdministrationDetailComponent {
   template: '',
 })
 class MockUserSelectComponent {}
+
+@Component({
+  selector: 'app-dialog-close',
+  template: '',
+})
+class MockDialogClose {}
 
 describe('UserAdministrationCreateComponent', () => {
   let component: UserAdministrationCreateComponent;
@@ -47,14 +60,9 @@ describe('UserAdministrationCreateComponent', () => {
         UserAdministrationCreateComponent,
         MockUserAdministrationDetailComponent,
         MockUserSelectComponent,
+        MockDialogClose,
       ],
-      imports: [
-        RouterTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
-        MaterialModule,
-      ],
+      imports: [AppTestingModule],
       providers: [
         {
           provide: UserService,
@@ -69,6 +77,11 @@ describe('UserAdministrationCreateComponent', () => {
         {
           provide: NotificationService,
           useValue: notificationServiceSpy,
+        },
+        TranslatePipe,
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { user: undefined },
         },
       ],
     }).compileComponents();
