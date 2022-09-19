@@ -9,20 +9,15 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 
 @Builder
-@Setter
-@Getter
-@Schema(name = "UserModel")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 @FieldNameConstants
+@Schema(name = "User")
 public class UserModel {
 
-  @EqualsAndHashCode.Include
   @Schema(description = "SBB User Id", example = "u111111")
   private String sbbUserId;
 
@@ -77,3 +72,5 @@ public class UserModel {
   }
 
 }
+
+
