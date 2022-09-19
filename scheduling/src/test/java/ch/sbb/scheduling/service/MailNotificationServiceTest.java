@@ -77,4 +77,10 @@ class MailNotificationServiceTest {
 
   }
 
+  @Test
+  public void shouldThrowIllegalStateExceptionWhenSpanIsNull() {
+    //when
+    assertThrows(IllegalStateException.class, () -> notificationService.getCurrentSpan());
+  }
+
 }
