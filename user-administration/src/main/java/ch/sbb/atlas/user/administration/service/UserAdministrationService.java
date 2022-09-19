@@ -5,7 +5,7 @@ import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
-import ch.sbb.atlas.user.administration.models.UserPermissionModel;
+import ch.sbb.atlas.user.administration.api.UserPermissionModel;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
 import java.util.List;
