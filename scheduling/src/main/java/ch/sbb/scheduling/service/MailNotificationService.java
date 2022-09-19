@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.sleuth.Tracer;
@@ -31,13 +30,28 @@ public class MailNotificationService {
   }
 
   private List<Map<String, Object>> buildMailContent(String jobName, Throwable throwable) {
+
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("jobName", jobName);
-    mailContentProperty.put("error", throwable.getLocalizedMessage());
-    mailContentProperty.put("correlationId", Objects.requireNonNull(tracer.currentSpan()).context().traceId());
+    mailContentProperty.put("error", getErrorDetails(throwable));
+    mailContentProperty.put("correlationId", getCurrentSpan());
     mailProperties.add(mailContentProperty);
     return mailProperties;
+  }
+
+  String getErrorDetails(Throwable throwable) {
+    if (throwable != null) {
+      return throwable.getLocalizedMessage();
+    }
+    return "No error details available";
+  }
+
+  String getCurrentSpan() {
+    if (tracer.currentSpan() != null && tracer.currentSpan().context() != null) {
+      return tracer.currentSpan().context().traceId();
+    }
+    throw new IllegalStateException("No Tracer found!");
   }
 
 }
