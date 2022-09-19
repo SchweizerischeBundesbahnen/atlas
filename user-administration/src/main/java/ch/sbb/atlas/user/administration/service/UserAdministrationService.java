@@ -54,12 +54,8 @@ public class UserAdministrationService {
 
   private Consumer<UserPermission> updateExistingPermissions(UserPermissionModel editedPermission) {
     return userPermission -> {
-      if (editedPermission.getRole() == ApplicationRole.READER) {
-        userPermissionRepository.delete(userPermission);
-      } else {
-        userPermission.setRole(editedPermission.getRole());
-        userPermission.setSboid(new HashSet<>(editedPermission.getSboids()));
-      }
+      userPermission.setRole(editedPermission.getRole());
+      userPermission.setSboid(new HashSet<>(editedPermission.getSboids()));
     };
   }
 
