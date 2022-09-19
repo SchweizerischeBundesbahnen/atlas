@@ -23,25 +23,27 @@ class RetryListener extends RetryListenerSupport {
   @ContinueSpan
   public <T, E extends Throwable> void close(RetryContext context,
       RetryCallback<T, E> callback, Throwable throwable) {
-    if (throwable != null) {
-      String jobName = ((MethodInvocationRetryCallback<?, ?>) callback).getLabel();
-      log.error("Unable to recover job {} from  Exception", jobName);
-      log.error("Sending Mail notification...");
-      MailNotification mailNotification = mailNotificationService.buildMailNotification(jobName, throwable);
-      service.produceMailNotification(mailNotification);
-      super.close(context, callback, throwable);
-    }
+    String jobName = getJobName(callback);
+    log.error("Unable to recover job {} from  Exception", jobName);
+    log.error("Sending Mail notification...");
+    MailNotification mailNotification = mailNotificationService.buildMailNotification(getJobName(callback), throwable);
+    service.produceMailNotification(mailNotification);
+    super.close(context, callback, throwable);
   }
 
   @ContinueSpan
   @Override
   public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback,
       Throwable throwable) {
-    if (throwable != null) {
-      log.error("Exception Occurred on {}, Retry Count {} ",
-          ((MethodInvocationRetryCallback<?, ?>) callback).getLabel(), context.getRetryCount());
-      super.onError(context, callback, throwable);
+    if (throwable == null) {
+      throwable = new Throwable("Something went wrong. No error details available!");
     }
+    log.error("Exception Occurred on {}, Retry Count {} ", getJobName(callback), context.getRetryCount());
+    super.onError(context, callback, throwable);
+  }
+
+  <T, E extends Throwable> String getJobName(RetryCallback<T, E> callback) {
+    return ((MethodInvocationRetryCallback<?, ?>) callback).getLabel();
   }
 
 }
