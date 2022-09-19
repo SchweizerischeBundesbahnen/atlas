@@ -166,16 +166,35 @@
   },
   "USER_ADMIN": {
     "NEW": "Inserire nuovo utente",
+    "NEW_INFORMATION": "Dettagli del nuovo utente",
+    "INFORMATION": "Dettagli utente",
+    "NOT_FOUND": "L'utente non è stato trovato",
     "TABLE_HEADER": "Utente",
     "LAST_NAME": "Cognome",
     "FIRST_NAME": "Nome",
     "MAIL": "Indirizzo e-mail",
     "USER_ID": "ID utente",
     "ACCOUNT_STATUS": "Stato del conto",
+    "DISPLAY_NAME": "Nome visualizzato",
+    "APPLICATIONS": "Applicazioni",
+    "APPLICATION": {
+      "LIDI": "Linee e linee parziali",
+      "TTFN": "Numeri di campo dell'orario",
+      "BODI": "Organizzazioni imprenditoriali"
+    },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Attivo",
       "INACTIVE": "Inattivo",
       "DELETED": "Soppresso"
+    },
+    "ROLE": "Rotolo",
+    "ADD_BUSINESS_ORGANISATION": "Aggiungere l'organizzazione aziendale",
+    "DELETE_BUSINESS_ORGANISATION": "Rimuovere l'organizzazione aziendale",
+    "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "L'utente selezionato è già memorizzato",
+    "SELECTED_USER_HAS_NO_USER_ID": "L'utente selezionato non ha memorizzato un ID utente",
+    "NOTIFICATIONS": {
+      "ADD_SUCCESS": "Utente registrato con successo",
+      "EDIT_SUCCESS": "Salvato con successo"
     }
   },
   "TTFN": {
