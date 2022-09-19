@@ -39,7 +39,7 @@ class MockUserSelectComponent {}
   selector: 'app-dialog-close',
   template: '',
 })
-class MockDialogClose {}
+class MockDialogCloseComponent {}
 
 describe('UserAdministrationCreateComponent', () => {
   let component: UserAdministrationCreateComponent;
@@ -60,7 +60,7 @@ describe('UserAdministrationCreateComponent', () => {
         UserAdministrationCreateComponent,
         MockUserAdministrationDetailComponent,
         MockUserSelectComponent,
-        MockDialogClose,
+        MockDialogCloseComponent,
       ],
       imports: [AppTestingModule],
       providers: [
