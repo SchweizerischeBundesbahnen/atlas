@@ -1,0 +1,2 @@
+DROP SEQUENCE business_organisation_user_permission_seq;
+ALTER TABLE business_organisation_user_permission DROP COLUMN id;
