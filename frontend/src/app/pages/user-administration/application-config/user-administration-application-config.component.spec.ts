@@ -18,6 +18,7 @@ describe('UserAdministrationApplicationConfigComponent', () => {
       'getCurrentRole',
       'addSboidToPermission',
       'removeSboidFromPermission',
+      'getAvailableApplicationRolesOfApplication',
     ]);
     await TestBed.configureTestingModule({
       declarations: [UserAdministrationApplicationConfigComponent],
