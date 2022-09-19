@@ -1,6 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationEditComponent } from './user-administration-edit.component';
+import { AppTestingModule } from '../../../app.testing.module';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-dialog-close',
+  template: '',
+})
+class MockDialogClose {}
 
 describe('UserAdministrationEditComponent', () => {
   let component: UserAdministrationEditComponent;
@@ -8,7 +18,15 @@ describe('UserAdministrationEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationEditComponent],
+      declarations: [UserAdministrationEditComponent, MockDialogClose],
+      imports: [AppTestingModule],
+      providers: [
+        TranslatePipe,
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { user: undefined },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationEditComponent);
