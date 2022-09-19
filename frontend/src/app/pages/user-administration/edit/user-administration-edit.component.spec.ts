@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
   selector: 'app-dialog-close',
   template: '',
 })
-class MockDialogClose {}
+class MockDialogCloseComponent {}
 
 describe('UserAdministrationEditComponent', () => {
   let component: UserAdministrationEditComponent;
@@ -18,7 +18,7 @@ describe('UserAdministrationEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationEditComponent, MockDialogClose],
+      declarations: [UserAdministrationEditComponent, MockDialogCloseComponent],
       imports: [AppTestingModule],
       providers: [
         TranslatePipe,
