@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
 import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
-import ch.sbb.atlas.user.administration.models.UserPermissionModel;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
