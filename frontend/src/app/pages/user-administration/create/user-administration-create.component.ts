@@ -89,7 +89,7 @@ export class UserAdministrationCreateComponent {
           .navigate([Pages.USER_ADMINISTRATION.path, this.userPermissionManager.getSbbUserId()], {
             relativeTo: this.route,
           })
-          .then(() => this.notificationService.success('test'));
+          .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
       });
   }
 }

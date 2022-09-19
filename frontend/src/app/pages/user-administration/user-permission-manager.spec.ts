@@ -9,6 +9,9 @@ describe('UserPermissionManager', () => {
 
   beforeEach(() => {
     userPermissionManager = new UserPermissionManager(businessOrganisationMockService);
+    businessOrganisationMockService.getAllBusinessOrganisations.and.returnValue(
+      of({ objects: [{ sboid: 'ch:1:sboid:test' }] })
+    );
   });
 
   it('test clearSboidsIfNotWriter, setPermissions and getPermissions', () => {
@@ -38,7 +41,7 @@ describe('UserPermissionManager', () => {
   });
 
   it('test getCurrentRole', () => {
-    expect(userPermissionManager.getCurrentRole('TTFN')).toEqual('WRITER');
+    expect(userPermissionManager.getCurrentRole('TTFN')).toEqual('READER');
   });
 
   it('test changePermissionRole, getCurrentRole', () => {
@@ -59,10 +62,6 @@ describe('UserPermissionManager', () => {
   });
 
   it('test addSboidToPermission', () => {
-    businessOrganisationMockService.getAllBusinessOrganisations.and.returnValue(
-      of({ objects: [{ sboid: 'ch:1:sboid:test' }] })
-    );
-
     userPermissionManager.addSboidToPermission('TTFN', 'ch:1:sboid:100000');
     expect(userPermissionManager.getPermissions()[0].sboids).toEqual(['ch:1:sboid:100000']);
   });
