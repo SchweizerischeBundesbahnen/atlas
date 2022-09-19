@@ -1,7 +1,7 @@
 package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
-import ch.sbb.atlas.user.administration.models.UserModel;
+import ch.sbb.atlas.user.administration.api.UserModel;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
 import com.microsoft.graph.requests.UserCollectionPage;
