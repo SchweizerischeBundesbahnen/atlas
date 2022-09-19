@@ -63,7 +63,7 @@ describe('UserPermissionManager', () => {
       of({ objects: [{ sboid: 'ch:1:sboid:test' }] })
     );
 
-    userPermissionManager.addSboidToPermission('TTFN', 'ch:1:sboid:100000').subscribe();
+    userPermissionManager.addSboidToPermission('TTFN', 'ch:1:sboid:100000');
     expect(userPermissionManager.getPermissions()[0].sboids).toEqual(['ch:1:sboid:100000']);
   });
 });
