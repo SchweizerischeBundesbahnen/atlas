@@ -14,4 +14,4 @@ frontend:
   apiClientId: 'ab56f386-eefb-4ea9-b3ad-6d8323ad4c1a'
   apiScope: 'openid profile email offline_access api://f3cdcb3e-1e95-4591-b664-4526d00f5d66/.default'
   replicas: 2
-  instanaKey: 'Crh7TVwYQhGC5pt_qhlWWg'
+  instanaKey: 'KYVhA85uS6CiOtFVzmkGEw'

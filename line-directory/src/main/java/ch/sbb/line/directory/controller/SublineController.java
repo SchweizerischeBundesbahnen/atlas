@@ -91,7 +91,7 @@ public class SublineController implements SublinenApiV1 {
   public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {
     SublineVersion sublineVersion = toEntity(newSublineVersion);
     sublineVersion.setStatus(Status.ACTIVE);
-    SublineVersion createdVersion = sublineService.save(sublineVersion);
+    SublineVersion createdVersion = sublineService.create(sublineVersion);
     return toModel(createdVersion);
   }
 
@@ -99,7 +99,8 @@ public class SublineController implements SublinenApiV1 {
   public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id)
                                                    .orElseThrow(() -> new IdNotFoundException(id));
-    sublineService.updateVersion(versionToUpdate, toEntity(newVersion));
+    sublineService.update(versionToUpdate, toEntity(newVersion), sublineService.findSubline(
+        versionToUpdate.getSlnid()));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
                          .toList();
   }

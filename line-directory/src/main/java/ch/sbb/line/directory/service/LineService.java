@@ -19,6 +19,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,12 +52,14 @@ public class LineService {
     return lineVersionRepository.findById(id);
   }
 
-  public LineVersion save(LineVersion lineVersion) {
-    lineVersion.setStatus(Status.ACTIVE);
-    lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
-    lineVersionRepository.saveAndFlush(lineVersion);
-    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
-    return lineVersion;
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  public LineVersion create(LineVersion businessObject) {
+    return save(businessObject);
+  }
+
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
+    updateVersion(currentVersion, editedVersion);
   }
 
   public void deleteById(Long id) {
@@ -81,16 +84,33 @@ public class LineService {
     lineVersionRepository.deleteAll(currentVersions);
   }
 
-  public void updateVersion(LineVersion currentVersion,
-      LineVersion editedVersion) {
+  public List<Line> getAllCoveredLines() {
+    return lineRepository.getAllCoveredLines();
+  }
+
+  public List<LineVersion> getAllCoveredLineVersions() {
+    return lineVersionRepository.getAllCoveredLineVersions();
+  }
+
+  LineVersion save(LineVersion lineVersion) {
+    lineVersion.setStatus(Status.ACTIVE);
+    lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
+    lineVersionRepository.saveAndFlush(lineVersion);
+    lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
+    return lineVersion;
+  }
+
+  void updateVersion(LineVersion currentVersion, LineVersion editedVersion) {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
+    updateVersion(currentVersion, editedVersion, findLineVersions(currentVersion.getSlnid()));
+  }
+
+  private void updateVersion(LineVersion currentVersion, LineVersion editedVersion,
+      List<LineVersion> currentVersions) {
     if (editedVersion.getVersion() != null && !currentVersion.getVersion()
                                                              .equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
     }
-
-    List<LineVersion> currentVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(
-        currentVersion.getSlnid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
@@ -99,11 +119,4 @@ public class LineService {
         this::deleteById);
   }
 
-  public List<Line> getAllCoveredLines() {
-    return lineRepository.getAllCoveredLines();
-  }
-
-  public List<LineVersion> getAllCoveredLineVersions() {
-    return lineVersionRepository.getAllCoveredLineVersions();
-  }
 }
