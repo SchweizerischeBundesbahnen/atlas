@@ -3,21 +3,21 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { UserAdministrationCreateComponent } from './user-administration-create.component';
 import { UserService } from '../service/user.service';
 import SpyObj = jasmine.SpyObj;
-import { BusinessOrganisationsService, UserModel } from '../../../api';
+import { BusinessOrganisationsService } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { RouterTestingModule } from '@angular/router/testing';
 import {
   TranslateFakeLoader,
   TranslateLoader,
   TranslateModule,
   TranslatePipe,
 } from '@ngx-translate/core';
-import { MaterialModule } from '../../../core/module/material.module';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component, Input } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AppTestingModule } from '../../../app.testing.module';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UserModel } from '../../../api/model/userModel';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MaterialModule } from '../../../core/module/material.module';
 
 @Component({
   selector: 'app-user-administration-detail',
@@ -62,7 +62,13 @@ describe('UserAdministrationCreateComponent', () => {
         MockUserSelectComponent,
         MockDialogCloseComponent,
       ],
-      imports: [AppTestingModule],
+      imports: [
+        RouterTestingModule,
+        MaterialModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+      ],
       providers: [
         {
           provide: UserService,
@@ -82,6 +88,14 @@ describe('UserAdministrationCreateComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: { user: undefined },
+        },
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: () => {
+              // mock implementation
+            },
+          },
         },
       ],
     }).compileComponents();
