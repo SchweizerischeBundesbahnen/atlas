@@ -10,8 +10,9 @@ import lombok.Getter;
 @Schema(enumAsRef = true)
 public enum MailTemplateConfig {
 
-  ATLAS_STANDARD_TEMPLATE("atlas-basic-html-template",null,null,true,true,false),
-  IMPORT_TU_TEMPLATE("import-tu","Import Transportunternehmen",new String[]{"didok@sbb.ch"},false,false,true);
+  ATLAS_STANDARD_TEMPLATE("atlas-basic-html-template", null, null, true, true, false),
+  IMPORT_TU_TEMPLATE("import-tu", "Import Transportunternehmen", new String[]{"didok@sbb.ch"}, false, false, true),
+  SCHEDULING_ERROR_NOTIFICATION_TEMPLATE("scheduling-error-notification", null, null, false, false, true);
 
   private final String template;
   private final String subject;
@@ -20,15 +21,18 @@ public enum MailTemplateConfig {
   private final boolean content;
   private final boolean templateProperties;
 
-  public static MailTemplateConfig getMailTemplateConfig(MailType mailType){
-    if(mailType == null){
+  public static MailTemplateConfig getMailTemplateConfig(MailType mailType) {
+    if (mailType == null) {
       throw new IllegalArgumentException("You have to provide a mailType");
     }
-    if(MailType.ATLAS_STANDARD == mailType){
+    if (MailType.ATLAS_STANDARD == mailType) {
       return ATLAS_STANDARD_TEMPLATE;
     }
-    if(MailType.TU_IMPORT == mailType){
+    if (MailType.TU_IMPORT == mailType) {
       return IMPORT_TU_TEMPLATE;
+    }
+    if (MailType.SCHEDULING_ERROR_NOTIFICATION == mailType) {
+      return SCHEDULING_ERROR_NOTIFICATION_TEMPLATE;
     }
     throw new IllegalArgumentException("No configuration provided for: " + mailType.name());
   }
