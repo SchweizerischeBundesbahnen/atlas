@@ -9,9 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BusinessOrganisation } from './businessOrganisation';
+import { User } from './user';
 
-export interface ContainerBusinessOrganisation {
-  objects?: Array<BusinessOrganisation>;
+export interface ContainerUser {
+  objects?: Array<User>;
   totalCount?: number;
 }

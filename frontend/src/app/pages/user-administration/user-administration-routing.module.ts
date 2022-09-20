@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserAdministrationOverviewComponent } from './overview/user-administration-overview.component';
 import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
-import { UserAdministrationEditResolver } from './user-administration-edit.resolver';
-import { UserAdministrationCreateComponent } from './create/user-administration-create.component';
-import { UserAdministrationEditComponent } from './edit/user-administration-edit.component';
+import { UserAdministrationResolver } from './user-administration.resolver';
+import { UserAdministrationBasicComponent } from './basic/user-administration-basic.component';
 
 const routes: Routes = [
   {
@@ -12,16 +11,11 @@ const routes: Routes = [
     component: UserAdministrationOverviewComponent,
     children: [
       {
-        path: 'add',
-        component: RouteToDialogComponent,
-        data: { component: UserAdministrationCreateComponent },
-      },
-      {
         path: ':sbbUserId',
         component: RouteToDialogComponent,
-        data: { component: UserAdministrationEditComponent },
+        data: { component: UserAdministrationBasicComponent },
         resolve: {
-          user: UserAdministrationEditResolver,
+          user: UserAdministrationResolver,
         },
         runGuardsAndResolvers: 'always',
       },
