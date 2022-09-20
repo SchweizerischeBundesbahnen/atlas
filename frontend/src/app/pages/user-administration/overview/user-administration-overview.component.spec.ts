@@ -5,8 +5,8 @@ import { UserService } from '../service/user.service';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
-import { UserModel } from '../../../api';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UserModel } from '../../../api/model/userModel';
 
 @Component({
   selector: 'app-table',
