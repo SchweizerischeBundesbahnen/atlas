@@ -1,15 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { UserPermissionManager } from '../user-permission-manager';
-import { BusinessOrganisationsService, UserModel } from '../../../api';
-import { ReadOnlyData } from '../../../core/components/read-only-data/read-only-data';
+import { BusinessOrganisationsService } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserService } from '../service/user.service';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { UserModel } from '../../../api/model/userModel';
 
 @Component({
-  selector: 'app-edit',
+  selector: 'app-user-administration-edit',
   templateUrl: './user-administration-edit.component.html',
   styleUrls: ['./user-administration-edit.component.scss'],
 })
@@ -17,26 +17,24 @@ export class UserAdministrationEditComponent implements OnInit {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly boService: BusinessOrganisationsService,
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private readonly translatePipe: TranslatePipe,
     private readonly userService: UserService,
     readonly dialogRef: MatDialogRef<any>,
     readonly dialogService: DialogService
   ) {}
 
-  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
-  user?: UserModel;
+  @Input() user?: UserModel;
   editMode = false;
+  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
 
   ngOnInit() {
-    const user: UserModel = this.dialogData.user ?? ({} as UserModel);
-    if (this.userService.getPermissionsFromUserModelAsArray(user).length === 0) {
+    if (this.userService.getPermissionsFromUserModelAsArray(this.user!).length === 0) {
+      this.user = undefined;
       return;
     }
-    this.user = user;
-    this.userPermissionManager.setSbbUserId(this.user.sbbUserId!);
+    this.userPermissionManager.setSbbUserId(this.user!.sbbUserId!);
     this.userPermissionManager.setPermissions(
-      this.userService.getPermissionsFromUserModelAsArray(this.user)
+      this.userService.getPermissionsFromUserModelAsArray(this.user!)
     );
   }
 
@@ -60,28 +58,4 @@ export class UserAdministrationEditComponent implements OnInit {
         this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
       });
   }
-
-  readonly readOnlyDataConfig: ReadOnlyData<UserModel>[][] = [
-    [
-      { translationKey: 'USER_ADMIN.FIRST_NAME', value: 'firstName' },
-      { translationKey: 'USER_ADMIN.LAST_NAME', value: 'lastName' },
-    ],
-    [
-      {
-        translationKey: 'USER_ADMIN.MAIL',
-        value: 'mail',
-        valueDisplayClass: 'overflow-wrap-anywhere',
-      },
-      { translationKey: 'USER_ADMIN.USER_ID', value: 'sbbUserId' },
-    ],
-    [
-      {
-        translationKey: 'USER_ADMIN.ACCOUNT_STATUS',
-        value: 'accountStatus',
-        formatValue: (value) =>
-          this.translatePipe.transform('USER_ADMIN.ACCOUNT_STATUS_TYPE.' + value),
-      },
-      { translationKey: 'USER_ADMIN.DISPLAY_NAME', value: 'displayName' },
-    ],
-  ];
 }
