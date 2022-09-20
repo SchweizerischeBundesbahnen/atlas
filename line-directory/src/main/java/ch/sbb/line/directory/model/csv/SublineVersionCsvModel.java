@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"slnid", "mainlineSlnid", "validFrom", "validTo", "swissSublineNumber",
     "status", "sublineType", "paymentType", "numer", "businessOrganisation", "longName",
-    "description", "editionTime", "creationTime"})
+    "description", "creationTime", "editionTime"})
 public class SublineVersionCsvModel implements VersionCsvModel {
 
   @JsonProperty("slnid")

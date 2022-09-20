@@ -1,4 +1,4 @@
-package ch.sbb.business.organisation.directory.service;
+package ch.sbb.scheduling.service;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.topic.KafkaKey;
@@ -14,7 +14,7 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MailClient {
+public class MailProducerService {
 
   private final KafkaTemplate<String, Object> kafkaTemplate;
 
@@ -41,4 +41,5 @@ public class MailClient {
       }
     });
   }
+
 }
