@@ -4,6 +4,7 @@ spring:
     username: ${DB_USER}
     password: ${DB_PWD}
   kafka:
+    atlas:
       user:
         administration:
           topic: atlas.dev.user.administration
