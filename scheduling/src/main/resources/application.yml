@@ -10,6 +10,8 @@ management:
       show-details: always
 
 spring:
+  application:
+    name: scheduling
   sleuth:
     baggage:
       remote-fields: Correlation-Id
@@ -21,6 +23,11 @@ spring:
     driver-class-name: org.postgresql.Driver
     application:
       name: scheduling
+  kafka:
+    atlas:
+      mail:
+        topic: atlas.mail
+        groupId: atlas.kafka.user
   jpa:
     open-in-view: false
   security:
@@ -87,3 +94,7 @@ atlas:
   client:
     gateway:
       url: "http://localhost:8888"
+
+mail:
+  receiver:
+    schduling: TechSupport-ATLAS@sbb.ch
