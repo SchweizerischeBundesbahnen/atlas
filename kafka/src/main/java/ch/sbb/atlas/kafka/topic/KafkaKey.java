@@ -5,10 +5,10 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum KafkaTopic {
+public enum KafkaKey {
 
   MAIL("mail");
 
-  private final String topic;
+  private final String value;
 
 }
