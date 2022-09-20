@@ -53,6 +53,7 @@
     "EDIT_VERSION": "Modificare la versione",
     "CREATE_VERSION": "Aggiungere versione",
     "ROLES": {
+      "READER": "Reader",
       "SUPERVISOR": "Supervisor",
       "SUPER_USER": "Super User",
       "WRITER": "Writer",
