@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { Record } from '../detail-wrapper/record';
+import { Record } from '../base-detail/record';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
 import { Status } from '../../../api';

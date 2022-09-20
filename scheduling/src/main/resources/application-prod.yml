@@ -3,6 +3,11 @@ spring:
     url: jdbc:postgresql://scheduling-prod.czdfgxj0x1zx.eu-central-1.rds.amazonaws.com:5432/scheduling
     username: ${DB_USER}
     password: ${DB_PWD}
+  kafka:
+    atlas:
+      mail:
+        topic: atlas.prod.mail
+        groupId: atlas.kafka.user
   security:
     oauth2:
       resourceserver:

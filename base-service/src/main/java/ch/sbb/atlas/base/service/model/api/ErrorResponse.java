@@ -17,6 +17,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -113,6 +114,7 @@ public class ErrorResponse {
   }
 
   @AllArgsConstructor
+  @ToString
   @Getter
   public static class DisplayInfo {
 
@@ -156,6 +158,7 @@ public class ErrorResponse {
   }
 
   @RequiredArgsConstructor
+  @ToString
   @Getter
   public static class Parameter {
 

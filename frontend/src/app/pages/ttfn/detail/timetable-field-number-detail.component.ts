@@ -1,7 +1,11 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
-import { DetailWrapperController } from '../../../core/components/detail-wrapper/detail-wrapper-controller';
+import {
+  ApplicationType,
+  TimetableFieldNumbersService,
+  TimetableFieldNumberVersion,
+} from '../../../api';
+import { BaseDetailController } from '../../../core/components/base-detail/base-detail-controller';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { catchError, Subject } from 'rxjs';
@@ -23,7 +27,7 @@ import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-de
   styleUrls: ['./timetable-field-number-detail.component.scss'],
 })
 export class TimetableFieldNumberDetailComponent
-  extends DetailWrapperController<TimetableFieldNumberVersion>
+  extends BaseDetailController<TimetableFieldNumberVersion>
   implements OnInit, OnDestroy
 {
   private ngUnsubscribe = new Subject<void>();
@@ -136,5 +140,9 @@ export class TimetableFieldNumberDetailComponent
 
   getPageType(): Page {
     return Pages.TTFN;
+  }
+
+  getApplicationType(): ApplicationType {
+    return ApplicationType.Ttfn;
   }
 }

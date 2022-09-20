@@ -1,0 +1,33 @@
+package ch.sbb.atlas.user.administration.security;
+
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
+import ch.sbb.atlas.base.service.model.service.UserService;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+public class UserPermissionHolder {
+
+  private final Map<String, UserAdministrationModel> userPermissions = new HashMap<>();
+
+  public UserAdministrationModel getCurrentUser() {
+    return userPermissions.get(UserService.getSbbUid());
+  }
+
+  public void putUserPermissions(String sbbuid, UserAdministrationModel userAdministrationModel) {
+    log.info("Adding {} with model {} to userpermissions", sbbuid, userAdministrationModel);
+    userPermissions.put(sbbuid, userAdministrationModel);
+  }
+
+  public String getCurrentUserSbbUid() {
+    return UserService.getSbbUid();
+  }
+
+  public boolean isAdmin() {
+    return UserService.getRoles().contains("atlas-admin");
+  }
+
+}

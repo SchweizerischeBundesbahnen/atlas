@@ -12,4 +12,4 @@ gateway:
   routes:
     line-directory: http://line-directory:8082
     business-organisation-directory: http://business-organisation-directory:8083
-    user-administration: http://user-administration:8084
+    user-administration: http://user-administration:8086
