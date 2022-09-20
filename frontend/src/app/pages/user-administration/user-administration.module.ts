@@ -7,6 +7,8 @@ import { UserAdministrationEditComponent } from './edit/user-administration-edit
 import { UserAdministrationCreateComponent } from './create/user-administration-create.component';
 import { UserAdministrationApplicationConfigComponent } from './application-config/user-administration-application-config.component';
 import { UserSelectComponent } from './user-select/user-select.component';
+import { UserAdministrationReadOnlyDataComponent } from './read-only-data/user-administration-read-only-data.component';
+import { UserAdministrationBasicComponent } from './basic/user-administration-basic.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { UserSelectComponent } from './user-select/user-select.component';
     UserAdministrationCreateComponent,
     UserAdministrationApplicationConfigComponent,
     UserSelectComponent,
+    UserAdministrationReadOnlyDataComponent,
+    UserAdministrationBasicComponent,
   ],
   imports: [UserAdministrationRoutingModule, CoreModule, FormModule],
 })

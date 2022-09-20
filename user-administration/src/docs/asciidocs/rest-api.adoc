@@ -39,3 +39,7 @@ include::{snippets}/user-administration-controller-api-test/should-get-user/auto
 == Update User Permissions - Successfully
 
 include::{snippets}/user-administration-controller-api-test/should-update-user/auto-section.adoc[]
+
+== Create User Permissions - Successfully
+
+include::{snippets}/user-administration-controller-api-test/should-create-user-permission/auto-section.adoc[]
