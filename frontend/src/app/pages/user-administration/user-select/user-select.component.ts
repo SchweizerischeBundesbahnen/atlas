@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { UserModel } from '../../../api';
 import { Observable, of } from 'rxjs';
 import { UserService } from '../service/user.service';
+import { UserModel } from '../../../api/model/userModel';
 
 @Component({
   selector: 'app-user-select',

@@ -3,11 +3,11 @@ package ch.sbb.atlas.user.administration.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
 import ch.sbb.atlas.user.administration.api.UserPermissionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
-import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
-import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.List;
 import java.util.Set;
