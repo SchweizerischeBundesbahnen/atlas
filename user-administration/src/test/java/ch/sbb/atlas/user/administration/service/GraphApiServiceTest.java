@@ -73,7 +73,7 @@ public class GraphApiServiceTest {
 
     List<UserModel> result = graphApiService.searchUsersByDisplayNameAndMail("test");
 
-    verify(userCollectionRequestMock.get(), times(2));
+    verify(userCollectionRequestMock, times(2)).get();
     assertThat(result).hasSize(3);
     assertThat(result.get(0).getSbbUserId()).isEqualTo("u236171");
     assertThat(result.get(0).getAccountStatus()).isEqualTo(UserAccountStatus.ACTIVE);
