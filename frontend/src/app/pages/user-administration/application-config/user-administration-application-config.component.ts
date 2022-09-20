@@ -3,6 +3,7 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ApplicationType, BusinessOrganisation } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../user-permission-manager';
+import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -13,6 +14,8 @@ export class UserAdministrationApplicationConfigComponent {
   @Input() applicationConfigManager!: UserPermissionManager;
   @Input() application!: ApplicationType;
   @Input() readOnly = false;
+
+  constructor(private readonly boLanguageService: BusinessOrganisationLanguageService) {}
 
   selectedIndex = -1;
 
@@ -34,12 +37,12 @@ export class UserAdministrationApplicationConfigComponent {
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
       columnDef: 'abbreviation',
-      value: 'abbreviationDe',
+      value: this.boLanguageService.getCurrentLanguageAbbreviation(),
     },
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.DESCRIPTION',
       columnDef: 'description',
-      value: 'descriptionDe',
+      value: this.boLanguageService.getCurrentLanguageDescription(),
     },
   ];
 
