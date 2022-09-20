@@ -4,10 +4,11 @@ spring:
     username: ${DB_USER}
     password: ${DB_PWD}
   kafka:
-    user:
-      administration:
-        topic: atlas.int.user.administration
-        groupId: atlas.kafka.user
+    atlas:
+      user:
+        administration:
+          topic: atlas.int.user.administration
+          groupId: atlas.kafka.user
 auth:
   audience:
     service-name: 733b361e-a067-4882-bb00-6bbaf36a007f
