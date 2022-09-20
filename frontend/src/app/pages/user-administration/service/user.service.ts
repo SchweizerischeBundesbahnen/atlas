@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 import {
   UserAdministrationService,
   UserInformationService,
-  UserModel,
   UserPermissionCreateModel,
   UserPermissionModel,
 } from '../../../api';
 import { map } from 'rxjs/operators';
+import { UserModel } from '../../../api/model/userModel';
 
 @Injectable({
   providedIn: 'root',
