@@ -15,4 +15,4 @@ frontend:
   apiScope: 'openid profile email offline_access api://733b361e-a067-4882-bb00-6bbaf36a007f/.default'
   clusterLoadBalancer: 'public-maggie.app.sbb.ch'
   replicas: 2
-  instanaKey: 'Js11t15bRk2gsL5e-dDM0w'
+  instanaKey: '54XyHWBhR7-Ilf72NExn4w'
