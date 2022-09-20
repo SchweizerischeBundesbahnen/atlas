@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
-import { BusinessOrganisationsService, UserModel } from '../../../api';
+import { BusinessOrganisationsService } from '../../../api';
 import { UserService } from '../service/user.service';
 import { UserPermissionManager } from '../user-permission-manager';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
-import { ReadOnlyData } from '../../../core/components/read-only-data/read-only-data';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TranslatePipe } from '@ngx-translate/core';
+import { UserModel } from '../../../api/model/userModel';
 
 @Component({
   selector: 'app-user-administration-create',
@@ -23,37 +22,12 @@ export class UserAdministrationCreateComponent {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     readonly dialogService: DialogService,
-    readonly dialogRef: MatDialogRef<any>,
-    private readonly translatePipe: TranslatePipe
+    readonly dialogRef: MatDialogRef<any>
   ) {}
 
   userLoaded?: UserModel;
   userHasAlreadyPermissions = false;
   selectedUserHasNoUserId = false;
-
-  readonly readOnlyDataConfig: ReadOnlyData<UserModel>[][] = [
-    [
-      { translationKey: 'USER_ADMIN.FIRST_NAME', value: 'firstName' },
-      { translationKey: 'USER_ADMIN.LAST_NAME', value: 'lastName' },
-    ],
-    [
-      {
-        translationKey: 'USER_ADMIN.MAIL',
-        value: 'mail',
-        valueDisplayClass: 'overflow-wrap-anywhere',
-      },
-      { translationKey: 'USER_ADMIN.USER_ID', value: 'sbbUserId' },
-    ],
-    [
-      {
-        translationKey: 'USER_ADMIN.ACCOUNT_STATUS',
-        value: 'accountStatus',
-        formatValue: (value) =>
-          this.translatePipe.transform('USER_ADMIN.ACCOUNT_STATUS_TYPE.' + value),
-      },
-      { translationKey: 'USER_ADMIN.DISPLAY_NAME', value: 'displayName' },
-    ],
-  ];
 
   readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
 

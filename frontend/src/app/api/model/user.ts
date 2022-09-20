@@ -9,38 +9,33 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserAccountStatus } from './userAccountStatus';
+import { UserPermissionModel } from './userPermissionModel';
 
-export interface Company {
+export interface User {
   /**
-   * Company UIC Code
+   * SBB User Id
    */
-  uicCode?: number;
+  sbbUserId?: string;
   /**
-   * Company Name
+   * User lastname
    */
-  name?: string;
+  lastName?: string;
   /**
-   * Company URL
+   * User firstname
    */
-  url?: string;
+  firstName?: string;
   /**
-   * Validity Start Date
+   * User E-Mail address
    */
-  startValidity?: Date;
+  mail?: string;
   /**
-   * Validity End Date
+   * User display name (azure)
    */
-  endValidity?: Date;
+  displayName?: string;
+  accountStatus?: UserAccountStatus;
   /**
-   * Company short name
+   * User permissions
    */
-  shortName?: string;
-  /**
-   * Free text
-   */
-  freeText?: string;
-  /**
-   * Country Code (ISO)
-   */
-  countryCodeIso?: string;
+  permissions?: Set<UserPermissionModel>;
 }

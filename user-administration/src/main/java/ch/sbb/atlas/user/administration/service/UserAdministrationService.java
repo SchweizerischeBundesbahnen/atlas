@@ -1,10 +1,9 @@
 package ch.sbb.atlas.user.administration.service;
 
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
-import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
-import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
 import ch.sbb.atlas.user.administration.api.UserPermissionModel;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;

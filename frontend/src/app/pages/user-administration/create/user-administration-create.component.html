@@ -22,7 +22,9 @@
 </p>
 
 <ng-template [ngIf]="userLoaded && !userHasAlreadyPermissions">
-  <app-read-only-data [data]="userLoaded" [config]="readOnlyDataConfig"></app-read-only-data>
+  <app-user-administration-read-only-data
+    [data]="userLoaded"
+  ></app-user-administration-read-only-data>
   <h1 class="font-bold-4xl mt-5">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
   <div *ngFor="let permission of userPermissionManager.getPermissions()">
     <app-user-administration-application-config

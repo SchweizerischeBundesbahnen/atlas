@@ -81,7 +81,8 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   private getValuePathFromColumnName(column: string): string {
-    return this.tableColumns.filter((i) => i.columnDef == column)[0].valuePath!;
+    const filteredColumn = this.tableColumns.filter((i) => i.columnDef == column)[0];
+    return filteredColumn.value ?? filteredColumn.valuePath!;
   }
 
   private static compare(a: any, b: any): number {
