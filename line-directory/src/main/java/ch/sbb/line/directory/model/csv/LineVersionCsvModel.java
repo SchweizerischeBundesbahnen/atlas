@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"slnid", "validFrom", "validTo", "swissLineNumber", "status", "lineType",
     "paymentType", "numer", "businessOrganisation", "alternativeName", "combinationName",
     "longName", "colorFontRgb", "colorBackRgb", "colorFontCmyk", "colorBackCmyk", "icon",
-    "description", "comment", "editionTime", "creationTime"})
+    "description", "comment", "creationTime", "editionTime"})
 public class LineVersionCsvModel implements VersionCsvModel {
 
   @JsonProperty("slnid")

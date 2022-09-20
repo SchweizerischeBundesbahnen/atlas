@@ -41,4 +41,4 @@ gateway:
   routes:
     line-directory: http://localhost:8082
     business-organisation-directory: http://localhost:8083
-    user-administration: http://localhost:8084
+    user-administration: http://localhost:8086

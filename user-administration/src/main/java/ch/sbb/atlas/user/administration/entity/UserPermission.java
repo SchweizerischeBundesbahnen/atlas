@@ -1,7 +1,7 @@
 package ch.sbb.atlas.user.administration.entity;
 
-import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
-import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
