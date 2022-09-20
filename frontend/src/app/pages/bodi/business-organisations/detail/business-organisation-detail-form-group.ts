@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { BusinessType } from '../../../../api';
-import { BaseDetailFormGroup } from '../../../../core/components/detail-wrapper/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 
 export interface BusinessOrganisationDetailFormGroup extends BaseDetailFormGroup {
   descriptionDe: FormControl<string | null>;

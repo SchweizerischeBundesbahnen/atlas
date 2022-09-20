@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
+  ApplicationType,
   BusinessOrganisation,
   BusinessOrganisationsService,
   TransportCompany,
@@ -116,7 +117,7 @@ export class TransportCompanyDetailComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.authService.hasRole(Role.BoAdmin);
+    return this.authService.hasPermissionsToCreate(ApplicationType.Bodi);
   }
 
   leaveEditMode(): void {

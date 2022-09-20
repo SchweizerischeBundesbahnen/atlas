@@ -5,7 +5,7 @@ import static ch.sbb.mail.model.MailTemplateConfig.getMailTemplateConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import ch.sbb.atlas.base.service.model.mail.MailType;
+import ch.sbb.atlas.kafka.model.mail.MailType;
 import org.junit.jupiter.api.Test;
 
 class MailTemplateConfigTest {

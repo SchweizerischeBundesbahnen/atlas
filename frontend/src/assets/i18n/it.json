@@ -7,7 +7,7 @@
       "VERSIONING_NO_CHANGES": "I dati inseriti sono stati verificati. Ne risulta che i dati inseriti non modificano i dati già memorizzati. Modificare i dati o terminare la modifica."
     },
     "GENERIC": "Si è verificato un errore generale! Ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato Atlas.",
-    "NOTALLOWED": "Non hai l’autorizzazione per modificare questo contenuto.",
+    "NOTALLOWED": "Non siete autorizzati a modificare i dati per tutta la durata della mutazione.",
     "CONSTRAINT": "La richiesta non è stata effettuata nel formato corretto. Il valore {{rejectedValue}} non è consentito a causa di {{cause}}.",
     "ENTITY_NOT_FOUND": "Impossibile trovare l’oggetto con {{field}} {{value}}.",
     "VERSIONING": "Questa modifica nel controllo delle versioni non è supportata dal sistema. Contattare il servizio specializzato Atlas.",
@@ -53,10 +53,9 @@
     "EDIT_VERSION": "Modificare la versione",
     "CREATE_VERSION": "Aggiungere versione",
     "ROLES": {
-      "lidi-writer": "Autore LiDi",
-      "lidi-admin": "Admin LiDi",
-      "bo-writer": "BoDi Writer",
-      "bo-admin": "BoDi Admin",
+      "SUPERVISOR": "Supervisor",
+      "SUPER_USER": "Super User",
+      "WRITER": "Writer",
       "atlas-admin": "Atlas Admin"
     },
     "SEARCH": {

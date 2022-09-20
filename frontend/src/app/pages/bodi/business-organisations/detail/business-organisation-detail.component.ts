@@ -1,10 +1,11 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {
+  ApplicationType,
   BusinessOrganisationsService,
   BusinessOrganisationVersion,
   BusinessType,
 } from '../../../../api';
-import { DetailWrapperController } from '../../../../core/components/detail-wrapper/detail-wrapper-controller';
+import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
@@ -19,7 +20,6 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { Role } from '../../../../core/auth/role';
 import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 
@@ -28,7 +28,7 @@ import { BusinessOrganisationLanguageService } from '../../../../core/form-compo
   styleUrls: ['./business-organisation-detail.component.scss'],
 })
 export class BusinessOrganisationDetailComponent
-  extends DetailWrapperController<BusinessOrganisationVersion>
+  extends BaseDetailController<BusinessOrganisationVersion>
   implements OnInit, OnDestroy
 {
   private ngUnsubscribe = new Subject<void>();
@@ -53,6 +53,10 @@ export class BusinessOrganisationDetailComponent
 
   getPageType(): Page {
     return Pages.BUSINESS_ORGANISATIONS;
+  }
+
+  getApplicationType(): ApplicationType {
+    return ApplicationType.Bodi;
   }
 
   readRecord(): BusinessOrganisationVersion {
@@ -177,14 +181,6 @@ export class BusinessOrganisationDetailComponent
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
-  }
-
-  getRolesAllowedToDelete(): Role[] {
-    return [Role.BoAdmin];
-  }
-
-  getRolesAllowedToEdit(): Role[] {
-    return [Role.BoWriter, Role.BoAdmin];
   }
 
   ngOnDestroy() {

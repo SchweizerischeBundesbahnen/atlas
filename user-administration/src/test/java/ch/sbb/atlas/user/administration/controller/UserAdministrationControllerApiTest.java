@@ -7,90 +7,97 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
-import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
-import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
+import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
 public class UserAdministrationControllerApiTest {
 
-    @Autowired
-    private MockMvc mvc;
-    @Autowired
-    private UserPermissionRepository userPermissionRepository;
+  @MockBean
+  private UserPermissionDistributor userPermissionDistributor;
+
+  @Autowired
+  private MockMvc mvc;
+
+  @Autowired
+  private UserPermissionRepository userPermissionRepository;
 
     @AfterEach
     void cleanup() {
         userPermissionRepository.deleteAll();
     }
 
-    @Test
-    void shouldGetUsers() throws Exception {
-        userPermissionRepository.saveAll(List.of(
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.TTFN)
-                .sbbUserId("u236171").build(),
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.TTFN)
-                .sbbUserId("e999999").build(),
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.LIDI)
-                .sbbUserId("u236171").build()
-        ));
+  @Test
+  void shouldGetUsers() throws Exception {
+    userPermissionRepository.saveAll(List.of(
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.TTFN)
+                      .sbbUserId("u236171").build(),
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.TTFN)
+                      .sbbUserId("e999999").build(),
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.LIDI)
+                      .sbbUserId("u236171").build()
+    ));
 
-        mvc.perform(get("/v1/users")
-                .queryParam("page", "0")
-                .queryParam("size", "5"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.totalCount").value(2))
-            .andExpect(jsonPath("$.objects", hasSize(2)))
-            .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'e999999')].accountStatus").value("DELETED"))
-            .andExpect(
-                jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].role").value("ADMIN"))
-            .andExpect(
-                jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].application").value(
-                    "TTFN"))
-            .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].accountStatus").value("ACTIVE"))
-            .andExpect(
-                jsonPath("$.objects[?(@.sbbUserId == 'u236171')].permissions[*]").value(hasSize(2)))
-            .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].lastName").value("Ammann"));
-    }
+    mvc.perform(get("/v1/users")
+           .queryParam("page", "0")
+           .queryParam("size", "5"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$.totalCount").value(2))
+       .andExpect(jsonPath("$.objects", hasSize(2)))
+       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'e999999')].accountStatus").value("DELETED"))
+       .andExpect(
+           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].role").value("SUPERVISOR"))
+       .andExpect(
+           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].application").value(
+               "TTFN"))
+       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].accountStatus").value("ACTIVE"))
+       .andExpect(
+           jsonPath("$.objects[?(@.sbbUserId == 'u236171')].permissions[*]").value(hasSize(2)))
+       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].lastName").value("Ammann"));
+  }
 
-    @Test
-    void shouldGetUser() throws Exception {
-        userPermissionRepository.saveAll(List.of(
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.TTFN)
-                .sbbUserId("u236171").build(),
-            UserPermission.builder()
-                .role(ApplicationRole.WRITER)
-                .application(ApplicationType.LIDI)
-                .sbbUserId("U236171").build(),
-            UserPermission.builder()
-                .role(ApplicationRole.ADMIN)
-                .application(ApplicationType.TTFN)
-                .sbbUserId("e678574").build()
-        ));
+  @Test
+  void shouldGetUser() throws Exception {
+    userPermissionRepository.saveAll(List.of(
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.TTFN)
+                      .sbbUserId("u236171").build(),
+        UserPermission.builder()
+                      .role(ApplicationRole.WRITER)
+                      .application(ApplicationType.LIDI)
+                      .sbbUserId("U236171").build(),
+        UserPermission.builder()
+                      .role(ApplicationRole.SUPERVISOR)
+                      .application(ApplicationType.TTFN)
+                      .sbbUserId("e678574").build()
+    ));
 
-        mvc.perform(get("/v1/users/u236171"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sbbUserId").value("u236171"))
-            .andExpect(jsonPath("$.lastName").value("Ammann"))
-            .andExpect(jsonPath("$.permissions").value(hasSize(1)))
-            .andExpect(jsonPath("$.permissions[0].role").value("ADMIN"))
-            .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
-    }
+    mvc.perform(get("/v1/users/u236171"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$.sbbUserId").value("u236171"))
+       .andExpect(jsonPath("$.lastName").value("Ammann"))
+       .andExpect(jsonPath("$.permissions").value(hasSize(1)))
+       .andExpect(jsonPath("$.permissions[0].role").value("SUPERVISOR"))
+       .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
+  }
 
     @Test
     void shouldThrowPageSizeException() throws Exception {

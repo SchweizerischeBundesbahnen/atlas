@@ -77,7 +77,7 @@ include::{snippets}/line-controller-api-test/should-get-subline-coverage/auto-se
 
 = Export Line
 
-include::../../../../amazon-s3/documentaion/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+include::../../../../base-service/documentaion/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
 
 == Export Full Line Versions Csv and Zip file to Amazon S3 Bucket
 
@@ -131,7 +131,7 @@ include::{snippets}/subline-controller-api-test/should-get-subline-coverage/auto
 
 = Export Subline
 
-include::../../../../amazon-s3/documentaion/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+include::../../../../base-service/documentaion/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc
 
 == Export Full Subline Versions Csv and Zip file to Amazon S3 Bucket
 
@@ -173,7 +173,7 @@ include::{snippets}/timetable-field-number-controller-exception-handling-test/sh
 
 = Export Timetable Field Number
 
-include::../../../../amazon-s3/documentaion/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+include::../../../../base-service/documentaion/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc
 
 == Export Full Timetable Field Number Versions Csv and Zip file to Amazon S3 Bucket
 
