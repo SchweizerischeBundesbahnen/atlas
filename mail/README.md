@@ -80,3 +80,9 @@ For CSS Compatibilty see [Campaign Monitor](https://www.campaignmonitor.com/css)
 |Infrastructure|	Openshift AWS 4.0| [ESTA-Cloud](https://confluence.sbb.ch/display/CLEW/ESTA-Cloud)|
 |Deployment	|ESTA Cloud Pipeline| [Esta Cloud Pipeline](https://confluence.sbb.ch/display/CLEW/Esta+Cloud+Pipeline)|
 |Interface|  API Management oder ähnliches Tool nach Entscheid KISPF-198 <br> REST & Json| [KISPF-198](https://flow.sbb.ch/browse/KISPF-198) - SKI/SKI+ API Strategie|
+
+### Authentication for SMTP
+
+According to https://sbb.sharepoint.com/sites/ict-workplace-training/SitePages/Mailversand-aus-Anwendungen.aspx we use SMTP with port 587 and use our functional user to authenticate to the server.
+
+To run the service locally, make sure you set the environment variable `FXATL_A_PASSWORD` on your machine.
