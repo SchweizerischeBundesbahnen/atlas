@@ -12,37 +12,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
-import ch.sbb.atlas.user.administration.enumeration.ApplicationRole;
-import ch.sbb.atlas.user.administration.enumeration.ApplicationType;
 import ch.sbb.atlas.user.administration.api.UserModel.Fields;
 import ch.sbb.atlas.user.administration.api.UserPermissionModel;
-import ch.sbb.atlas.user.administration.models.UserModel.Fields;
-import ch.sbb.atlas.user.administration.models.UserPermissionModel;
-import ch.sbb.atlas.user.administration.models.UserPermissionModel;
-import ch.sbb.atlas.user.administration.models.UserPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
-import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 
 public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
-
-  @MockBean
-  private UserPermissionDistributor userPermissionDistributor;
-
-  @Autowired
-  private MockMvc mvc;
 
   @Autowired
   private UserPermissionRepository userPermissionRepository;
