@@ -46,27 +46,32 @@
          <optional>true</optional>
       </dependency>
       <dependency>
-         <artifactId>base-service</artifactId>
-         <exclusions>
-            <exclusion>
-               <artifactId>hibernate-jpamodelgen</artifactId>
-               <groupId>org.hibernate</groupId>
-            </exclusion>
-            <exclusion>
-               <artifactId>spring-boot-starter-data-jpa</artifactId>
-               <groupId>org.springframework.boot</groupId>
-            </exclusion>
-            <exclusion>
-               <artifactId>spring-boot-starter-security</artifactId>
-               <groupId>org.springframework.boot</groupId>
-            </exclusion>
-            <exclusion>
-               <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-               <groupId>org.springframework.boot</groupId>
-            </exclusion>
-         </exclusions>
+         <artifactId>kafka</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>${revision}</version>
+      </dependency>
+      <dependency>
+         <artifactId>base-service</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>${revision}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>org.hibernate</groupId>
+               <artifactId>hibernate-jpamodelgen</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-data-jpa</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-security</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-test</artifactId>

@@ -75,7 +75,7 @@ public class LineControllerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineController = new LineController(lineService, coverageService, lineVersionExportService);
-    when(lineService.save(any())).then(i -> i.getArgument(0, LineVersion.class));
+    when(lineService.create(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
 
   @Test
@@ -87,7 +87,7 @@ public class LineControllerTest {
     lineController.createLineVersion(lineVersionModel);
 
     // Then
-    verify(lineService).save(versionArgumentCaptor.capture());
+    verify(lineService).create(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
                                                 .ignoringFieldsMatchingRegexes("color.*")
@@ -175,7 +175,7 @@ public class LineControllerTest {
     lineController.updateLineVersion(1L, lineVersionModel);
 
     // Then
-    verify(lineService).updateVersion(any(), any());
+    verify(lineService).update(any(), any(), any());
   }
 
 

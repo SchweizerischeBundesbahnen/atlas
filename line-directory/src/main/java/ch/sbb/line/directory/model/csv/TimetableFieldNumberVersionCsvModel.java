@@ -19,8 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"ttfnid", "validFrom", "validTo", "status", "swissTimetableFieldNumber",
-    "number", "businessOrganisation", "description", "comment", "lineRelations", "editionTime",
-    "creationTime"})
+    "number", "businessOrganisation", "description", "comment", "lineRelations", "creationTime", "editionTime"})
 public class TimetableFieldNumberVersionCsvModel implements VersionCsvModel {
 
   @JsonProperty("ttfnid")
@@ -76,8 +75,8 @@ public class TimetableFieldNumberVersionCsvModel implements VersionCsvModel {
     timetableFieldNumberVersionCsvModel.setComment(timetableFieldNumberVersion.getComment());
     timetableFieldNumberVersionCsvModel.setLineRelations(
         timetableFieldNumberVersion.getLineRelations().stream()
-                                   .map(TimetableFieldLineRelation::getSlnid)
-                                   .collect(Collectors.joining(",")));
+            .map(TimetableFieldLineRelation::getSlnid)
+            .collect(Collectors.joining(",")));
     timetableFieldNumberVersionCsvModel.setEditionTime(
         timetableFieldNumberVersion.getEditionDate());
     timetableFieldNumberVersionCsvModel.setCreationTime(

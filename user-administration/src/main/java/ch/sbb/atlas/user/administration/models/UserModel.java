@@ -1,11 +1,14 @@
 package ch.sbb.atlas.user.administration.models;
 
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
 import com.microsoft.graph.models.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +39,25 @@ public class UserModel {
 
   @Schema(description = "User permissions")
   private Set<UserPermissionModel> permissions;
+
+  public UserAdministrationModel toKafkaModel() {
+    Set<UserAdministrationPermissionModel> permissionModels = getPermissions().stream()
+                                                                              .map(
+                                                                                  permission -> UserAdministrationPermissionModel.builder()
+                                                                                                                                 .application(
+                                                                                                                                     permission.application())
+                                                                                                                                 .role(
+                                                                                                                                     permission.role())
+                                                                                                                                 .sboids(
+                                                                                                                                     permission.sboids())
+                                                                                                                                 .build())
+                                                                              .collect(
+                                                                                  Collectors.toSet());
+    return UserAdministrationModel.builder()
+                                  .sbbUserId(getSbbUserId())
+                                  .permissions(permissionModels)
+                                  .build();
+  }
 
   public static UserModel userToModel(User user) {
     return UserModel.builder()

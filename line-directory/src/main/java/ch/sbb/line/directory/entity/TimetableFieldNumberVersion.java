@@ -7,6 +7,7 @@ import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
 import ch.sbb.atlas.base.service.versioning.model.VersionableProperty.RelationType;
+import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +44,8 @@ import org.hibernate.annotations.GeneratorType;
 @Entity(name = "timetable_field_number_version")
 @FieldNameConstants
 @AtlasVersionable
-public class TimetableFieldNumberVersion extends BaseVersion implements Versionable {
+public class TimetableFieldNumberVersion extends BaseVersion implements Versionable,
+    BusinessOrganisationAssociated {
 
   private static final String VERSION_SEQ = "timetable_field_number_version_seq";
 

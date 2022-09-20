@@ -8,7 +8,7 @@ import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-s
 import { LanguageSwitcherComponent } from '../components/language-switcher/language-switcher.component';
 import { UserComponent } from '../components/user/user.component';
 import { TableComponent } from '../components/table/table.component';
-import { DetailWrapperComponent } from '../components/detail-wrapper/detail-wrapper.component';
+import { BaseDetailComponent } from '../components/base-detail/base-detail.component';
 import { SideNavComponent } from '../components/side-nav/side-nav.component';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
@@ -26,7 +26,7 @@ import { FormModule } from './form.module';
 import { RelationComponent } from '../components/relation/relation.component';
 
 const coreComponents = [
-  DetailWrapperComponent,
+  BaseDetailComponent,
   SwitchVersionComponent,
   DialogComponent,
   HeaderComponent,
