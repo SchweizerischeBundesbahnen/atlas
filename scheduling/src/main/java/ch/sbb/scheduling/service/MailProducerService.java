@@ -1,7 +1,7 @@
 package ch.sbb.scheduling.service;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.topic.KafkaTopic;
+import ch.sbb.atlas.kafka.topic.KafkaKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ public class MailProducerService {
   public void produceMailNotification(MailNotification mailNotification) {
 
     ListenableFuture<SendResult<String, Object>> future =
-        kafkaTemplate.send(mailTopic, KafkaTopic.MAIL.getTopic(), mailNotification);
+        kafkaTemplate.send(mailTopic, KafkaKey.MAIL.getValue(), mailNotification);
 
     future.addCallback(new ListenableFutureCallback<>() {
 
