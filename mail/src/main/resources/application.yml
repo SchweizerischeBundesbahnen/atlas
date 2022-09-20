@@ -18,13 +18,15 @@ spring:
       correlation-fields: Correlation-Id
   mail:
     host: smtp-app.sbb.ch
-    port: 25
+    port: 587
+    username: fxatl_a
+    password: ${FXATL_A_PASSWORD}
     properties:
       mail:
         smtp:
-          auth: false
-        starttls:
-          enable: false
+          auth: true
+          starttls:
+            enable: true
   kafka:
     atlas:
       mail:
