@@ -37,6 +37,11 @@ spec:
             secretKeyRef:
               name: kafka-secrets
               key: truststore-password
+        - name: FXATL_A_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: function-user-passwords
+              key: admin-password
         image: "atlas.docker.bin.sbb.ch/{{ .Values.mail.name }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
         name: '{{ .Values.mail.name }}'
