@@ -1,13 +1,4 @@
 spring:
-  mail:
-    host: smtp-app.sbb.ch
-    port: 25
-    properties:
-      mail:
-        smtp:
-          auth: false
-        starttls:
-          enable: false
   kafka:
     atlas:
       mail:
