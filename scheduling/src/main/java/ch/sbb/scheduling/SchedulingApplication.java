@@ -1,5 +1,6 @@
 package ch.sbb.scheduling;
 
+import ch.sbb.atlas.kafka.KafkaTruststorePreparation;
 import java.time.ZoneId;
 import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +15,7 @@ public class SchedulingApplication {
 
   public static void main(String[] args) {
     TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
+    KafkaTruststorePreparation.setupTruststore();
     SpringApplication.run(SchedulingApplication.class, args);
   }
 }

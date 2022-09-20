@@ -83,6 +83,11 @@
          <version>${revision}</version>
       </dependency>
       <dependency>
+         <groupId>ch.sbb.atlas</groupId>
+         <artifactId>kafka</artifactId>
+         <version>${revision}</version>
+      </dependency>
+      <dependency>
          <artifactId>spring-boot-starter-test</artifactId>
          <groupId>org.springframework.boot</groupId>
          <scope>test</scope>

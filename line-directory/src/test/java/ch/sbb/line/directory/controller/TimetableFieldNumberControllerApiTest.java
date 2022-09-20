@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
+import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
@@ -31,15 +32,15 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
 
   private final TimetableFieldNumberVersion version =
       TimetableFieldNumberVersion.builder()
-                                 .ttfnid("ch:1:ttfnid:100000")
-                                 .description("FPFN Description")
-                                 .number("10.100")
-                                 .status(Status.ACTIVE)
-                                 .swissTimetableFieldNumber("b0.100")
-                                 .validFrom(LocalDate.of(2020, 1, 1))
-                                 .validTo(LocalDate.of(2020, 12, 31))
-                                 .businessOrganisation("sbb")
-                                 .build();
+          .ttfnid("ch:1:ttfnid:100000")
+          .description("FPFN Description")
+          .number("10.100")
+          .status(Status.ACTIVE)
+          .swissTimetableFieldNumber("b0.100")
+          .validFrom(LocalDate.of(2020, 1, 1))
+          .validTo(LocalDate.of(2020, 12, 31))
+          .businessOrganisation("sbb")
+          .build();
   @Autowired
   private TimetableFieldNumberVersionRepository versionRepository;
   @Autowired
@@ -55,14 +56,14 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
     //given
     TimetableFieldNumberVersionModel timetableFieldNumberVersionModel =
         TimetableFieldNumberVersionModel.builder()
-                                        .validTo(LocalDate.of(2000, 12, 31))
-                                        .validFrom(LocalDate.of(2000, 1, 1))
-                                        .businessOrganisation("sbb")
-                                        .swissTimetableFieldNumber("swissLineNumber")
-                                        .number("123")
-                                        .description("description")
-                                        .ttfnid("123")
-                                        .status(Status.ACTIVE).build();
+            .validTo(LocalDate.of(2000, 12, 31))
+            .validFrom(LocalDate.of(2000, 1, 1))
+            .businessOrganisation("sbb")
+            .swissTimetableFieldNumber("swissLineNumber")
+            .number("123")
+            .description("description")
+            .ttfnid("123")
+            .status(Status.ACTIVE).build();
     //when && then
     mvc.perform(post("/v1/field-numbers/versions")
         .contentType(contentType)
@@ -73,22 +74,22 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   @Test
   void shouldReturnOneTimetableFieldNumber() throws Exception {
     mvc.perform(get("/v1/field-numbers")
-           .queryParam("page", "0")
-           .queryParam("size", "5")
-           .queryParam("sort", "swissTimetableFieldNumber,asc"))
-       .andExpect(status().isOk())
-       .andExpect(jsonPath("$.totalCount").value(1));
+            .queryParam("page", "0")
+            .queryParam("size", "5")
+            .queryParam("sort", "swissTimetableFieldNumber,asc"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1));
   }
 
   @Test
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     // Given
     String responseBody = mvc.perform(
-                                 get("/v1/field-numbers/versions/" + version.getTtfnid()))
-                             .andExpect(status().isOk())
-                             .andReturn()
-                             .getResponse()
-                             .getContentAsString();
+            get("/v1/field-numbers/versions/" + version.getTtfnid()))
+        .andExpect(status().isOk())
+        .andReturn()
+        .getResponse()
+        .getContentAsString();
     List<TimetableFieldNumberVersionModel> response = mapper.readValue(responseBody,
         new TypeReference<>() {
         });
@@ -103,8 +104,8 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
     // Then on a second update it has to return error for optimistic lock
     timetableFieldNumberVersionModel.setComment("Neuer Kommentar wurde erfasst");
     MvcResult mvcResult = mvc.perform(createUpdateRequest(timetableFieldNumberVersionModel))
-                             .andExpect(status().isPreconditionFailed())
-                             .andReturn();
+        .andExpect(status().isPreconditionFailed())
+        .andReturn();
     ErrorResponse errorResponse = mapper.readValue(
         mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
 
@@ -118,79 +119,78 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   void shouldReturnValidationNoChangesErrorResponse() throws Exception {
     // Given
     TimetableFieldNumberVersion secondVersion = TimetableFieldNumberVersion.builder()
-                                                                           .ttfnid(
-                                                                               "ch:1:ttfnid:100000")
-                                                                           .description(
-                                                                               "FPFN Description")
-                                                                           .number("10.100")
-                                                                           .status(Status.ACTIVE)
-                                                                           .swissTimetableFieldNumber(
-                                                                               "b0.100")
-                                                                           .validFrom(
-                                                                               LocalDate.of(2021, 1,
-                                                                                   1))
-                                                                           .validTo(
-                                                                               LocalDate.of(2021,
-                                                                                   12, 31))
-                                                                           .businessOrganisation(
-                                                                               "BLS")
-                                                                           .build();
+        .ttfnid(
+            "ch:1:ttfnid:100000")
+        .description(
+            "FPFN Description")
+        .number("10.100")
+        .status(Status.ACTIVE)
+        .swissTimetableFieldNumber(
+            "b0.100")
+        .validFrom(
+            LocalDate.of(2021, 1,
+                1))
+        .validTo(
+            LocalDate.of(2021,
+                12, 31))
+        .businessOrganisation(
+            "BLS")
+        .build();
     versionRepository.save(secondVersion);
     //When
     TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = TimetableFieldNumberVersionModel.builder()
-                                                                                                        .validFrom(
-                                                                                                            version.getValidFrom())
-                                                                                                        .validTo(
-                                                                                                            version.getValidTo())
-                                                                                                        .id(version.getId())
-                                                                                                        .ttfnid(
-                                                                                                            version.getTtfnid())
-                                                                                                        .description(
-                                                                                                            version.getDescription())
-                                                                                                        .number(
-                                                                                                            version.getNumber())
-                                                                                                        .status(
-                                                                                                            version.getStatus())
-                                                                                                        .swissTimetableFieldNumber(
-                                                                                                            version.getSwissTimetableFieldNumber())
-                                                                                                        .businessOrganisation(
-                                                                                                            version.getBusinessOrganisation())
-                                                                                                        .build();
+        .validFrom(
+            version.getValidFrom())
+        .validTo(
+            version.getValidTo())
+        .id(version.getId())
+        .ttfnid(
+            version.getTtfnid())
+        .description(
+            version.getDescription())
+        .number(
+            version.getNumber())
+        .status(
+            version.getStatus())
+        .swissTimetableFieldNumber(
+            version.getSwissTimetableFieldNumber())
+        .businessOrganisation(
+            version.getBusinessOrganisation())
+        .build();
 
     //Then
 
     mvc.perform(post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
-           .contentType(MediaType.APPLICATION_JSON)
-           .content(mapper.writeValueAsString(timetableFieldNumberVersionModel)))
-       .andExpect(jsonPath("$.status", is(520)))
-       .andExpect(
-           jsonPath("$.message", is("No entities were modified after versioning execution.")))
-       .andExpect(jsonPath("$.error", is("No changes after versioning")))
-       .andExpect(jsonPath("$.details[0].message",
-           is("No entities were modified after versioning execution.")))
-       .andExpect(jsonPath("$.details[0].field", is(nullValue())))
-       .andExpect(
-           jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(timetableFieldNumberVersionModel)))
+        .andExpect(jsonPath("$.status", is(520)))
+        .andExpect(
+            jsonPath("$.message", is("No entities were modified after versioning execution.")))
+        .andExpect(jsonPath("$.error", is("No changes after versioning")))
+        .andExpect(jsonPath("$.details[0].message",
+            is("No entities were modified after versioning execution.")))
+        .andExpect(jsonPath("$.details[0].field", is(nullValue())))
+        .andExpect(
+            jsonPath("$.details[0].displayInfo.code", is("ERROR.WARNING.VERSIONING_NO_CHANGES")));
   }
 
   @Test
   void shouldReturnNotFoundErrorResponseWhenSearchItemNotFound() throws Exception {
     // Given
     mvc.perform(get("/v1/field-numbers/versions/" + 123)
-           .contentType(contentType))
-       .andExpect(status().isNotFound())
-       .andExpect(jsonPath("$.status", is(404)))
-       .andExpect(jsonPath("$.message", is("Entity not found")))
-       .andExpect(jsonPath("$.error", is("Not found")))
-       .andExpect(jsonPath("$.details[0].message", is("Object with ttfnid 123 not found")))
-       .andExpect(jsonPath("$.details[0].field", is("ttfnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("ttfnid")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
-       .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
+            .contentType(contentType))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.message", is("Entity not found")))
+        .andExpect(jsonPath("$.error", is("Not found")))
+        .andExpect(jsonPath("$.details[0].message", is("Object with ttfnid 123 not found")))
+        .andExpect(jsonPath("$.details[0].field", is("ttfnid")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("ttfnid")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("123")));
   }
-
 
   @Test
   void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
@@ -200,20 +200,20 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
     version.setValidFrom(LocalDate.of(2025, 1, 1));
     version.setValidTo(LocalDate.of(2025, 12, 31));
     mvc.perform(createUpdateRequest(TimetableFieldNumberController.toModel(version)))
-       .andExpect(status().isOk());
+        .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
     version.setValidFrom(LocalDate.of(2000, 1, 1));
     version.setValidTo(LocalDate.of(2025, 12, 31));
     mvc.perform(createUpdateRequest(TimetableFieldNumberController.toModel(version)))
-       .andExpect(status().isPreconditionFailed());
+        .andExpect(status().isPreconditionFailed());
   }
 
   @Test
   void shouldExportFullTimetableFieldNumberVersionsCsv() throws Exception {
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/full"))
-                             .andExpect(status().isOk()).andReturn();
+        .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult, versionExportService.getDirectory());
   }
 
@@ -221,7 +221,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   void shouldExportActualTimetableFieldNumberVersionsCsv() throws Exception {
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/actual"))
-                             .andExpect(status().isOk()).andReturn();
+        .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult, versionExportService.getDirectory());
   }
 
@@ -229,7 +229,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   void shouldExportTimeTableYearChangeTimetableFieldNumberVersionsCsv() throws Exception {
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/timetable-year-change"))
-                             .andExpect(status().isOk()).andReturn();
+        .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult, versionExportService.getDirectory());
   }
 

@@ -7,7 +7,7 @@
       "VERSIONING_NO_CHANGES": "Les données que vous avez saisies ont été vérifiées. Il a été constaté que votre saisie n’entraîne aucune modification des données déjà enregistrées. Veuillez modifier les données ou terminer l’édition."
     },
     "GENERIC": "Une erreur générale est survenue! Veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé Atlas.",
-    "NOTALLOWED": "Vous n’avez pas l’autorisation de modifier ce contenu.",
+    "NOTALLOWED": "Ils ne sont pas autorisés à traiter les données pendant toute la durée de la mutation.",
     "CONSTRAINT": "La demande n’a pas été réalisée dans le bon format. La valeur {{rejectedValue}} n’est pas autorisée en raison de {{cause}}.",
     "ENTITY_NOT_FOUND": "L’objet avec {{field}} {{value}} n’a pas été trouvé.",
     "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé Atlas.",
@@ -53,10 +53,9 @@
     "EDIT_VERSION": "Modifier la version",
     "CREATE_VERSION": "Ajouter la version",
     "ROLES": {
-      "lidi-writer": "LiDi Writer",
-      "lidi-admin": "LiDi Admin",
-      "bo-writer": "BoDi Writer",
-      "bo-admin": "BoDi Admin",
+      "SUPERVISOR": "Supervisor",
+      "SUPER_USER": "Super User",
+      "WRITER": "Writer",
       "atlas-admin": "Atlas Admin"
     },
     "SEARCH": {
