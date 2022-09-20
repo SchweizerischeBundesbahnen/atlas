@@ -45,6 +45,7 @@ It's applications share the following architectural goal:
 
 ![ATLAS Big Picture](documentation/ATLAS_Infrastruktur.svg)
 
+
 ## Links
 
 - **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/
