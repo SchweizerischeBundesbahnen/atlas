@@ -3,6 +3,7 @@ import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { Role } from '../../../core/auth/role';
+import { ApplicationType } from '../../../api';
 
 @Component({
   templateUrl: './bodi-overview.component.html',
@@ -31,7 +32,7 @@ export class BodiOverviewComponent {
     private router: Router,
     private readonly authService: AuthService
   ) {
-    this.userAllowedToCreate = authService.hasAnyRole([Role.BoWriter, Role.BoAdmin]);
+    this.userAllowedToCreate = authService.hasPermissionsToCreate(ApplicationType.Bodi);
   }
 
   newBusinessOrganisation() {

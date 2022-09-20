@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,16 @@ public class TimetableFieldNumberService {
 
   public Optional<TimetableFieldNumberVersion> findById(Long id) {
     return versionRepository.findById(id);
+  }
+
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TTFN)")
+  public TimetableFieldNumberVersion create(TimetableFieldNumberVersion businessObject) {
+    return save(businessObject);
+  }
+
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TTFN)")
+  public void update(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion, List<TimetableFieldNumberVersion> currentVersions) {
+    updateVersion(currentVersion, editedVersion);
   }
 
   public TimetableFieldNumberVersion save(TimetableFieldNumberVersion newVersion) {

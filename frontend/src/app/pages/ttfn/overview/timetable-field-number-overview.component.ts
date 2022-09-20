@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
+import { ApplicationType, TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableSettingsService } from '../../../core/components/table/table-settings.service';
@@ -15,7 +15,6 @@ import {
 import { filter } from 'rxjs/operators';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { AuthService } from '../../../core/auth/auth.service';
-import { Role } from '../../../core/auth/role';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -55,7 +54,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     private routeToDialogService: RouteToDialogService,
     private readonly authService: AuthService
   ) {
-    this.userAllowedToCreate = authService.hasAnyRole([Role.LidiWriter, Role.LidiAdmin]);
+    this.userAllowedToCreate = authService.hasPermissionsToCreate(ApplicationType.Ttfn);
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
       .subscribe(() => this.ngOnInit());

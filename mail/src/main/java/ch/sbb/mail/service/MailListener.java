@@ -1,6 +1,6 @@
 package ch.sbb.mail.service;
 
-import ch.sbb.atlas.base.service.model.mail.MailNotification;
+import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

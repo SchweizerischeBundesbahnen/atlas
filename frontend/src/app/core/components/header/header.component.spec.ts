@@ -8,7 +8,8 @@ import { AppTestingModule } from '../../../app.testing.module';
 
 describe('HeaderComponent', () => {
   const authServiceMock: Partial<AuthService> = {
-    claims: { name: 'Test', email: 'test@test.ch', roles: [] },
+    claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
+    getPermissions: () => [],
     logout: () => Promise.resolve(true),
   };
 
