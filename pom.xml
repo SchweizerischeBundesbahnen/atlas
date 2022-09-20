@@ -31,8 +31,10 @@
    <modules>
       <!-- Order is important here-->
       <!-- Libs first-->
+      <module>kafka</module>
       <module>base-service</module>
       <module>searching</module>
+      <module>user-administration-security</module>
       <!--  Services-->
       <module>mail</module>
       <module>scheduling</module>

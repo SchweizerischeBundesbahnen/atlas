@@ -72,7 +72,7 @@ public class SublineControllerTest {
     MockitoAnnotations.openMocks(this);
     sublineController = new SublineController(sublineService, coverageService,
         sublineVersionExportService);
-    when(sublineService.save(any())).then(i -> i.getArgument(0, SublineVersion.class));
+    when(sublineService.create(any())).then(i -> i.getArgument(0, SublineVersion.class));
   }
 
   @Test
@@ -124,7 +124,7 @@ public class SublineControllerTest {
     sublineController.createSublineVersion(sublineVersionModel);
 
     // Then
-    verify(sublineService).save(versionArgumentCaptor.capture());
+    verify(sublineService).create(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
                                                 .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
                                                 .isEqualTo(sublineVersionModel);
@@ -154,6 +154,6 @@ public class SublineControllerTest {
     sublineController.updateSublineVersion(1L, sublineVersionModel);
 
     // Then
-    verify(sublineService).updateVersion(any(), any());
+    verify(sublineService).update(any(), any(), any());
   }
 }

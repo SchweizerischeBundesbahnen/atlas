@@ -178,7 +178,7 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
       },
       {
         provide: AuthService,
-        useValue: jasmine.createSpyObj<AuthService>(['hasRole']),
+        useValue: jasmine.createSpyObj<AuthService>(['hasPermissionsToCreate']),
       },
       {
         provide: TransportCompanyRelationsService,
