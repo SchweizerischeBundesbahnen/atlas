@@ -4,8 +4,13 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
 import java.util.List;
+
+import ch.sbb.atlas.base.service.model.configuration.AtlasAccessDeniedHandler;
+import ch.sbb.atlas.base.service.model.configuration.Role;
+import ch.sbb.atlas.user.administration.security.UserAdministrationConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -23,7 +28,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
+@Import(UserAdministrationConfig.class)
 @EnableWebSecurity
 public class SecurityConfig {
 
@@ -58,14 +65,12 @@ public class SecurityConfig {
                 // that permit to set fine grained control using the Spring Expression Language:
                 // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#method-security-expressions">Method Security Expressions</a>
                 // In order to use these annotations, you have to enable global-method-security using <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
-                .mvcMatchers(HttpMethod.GET, "/**").authenticated()
-                // TransportCompanyRelation POST
-                .mvcMatchers(HttpMethod.POST, "/*/transport-company-relations").hasRole(Role.BO_ADMIN)
-                .mvcMatchers(HttpMethod.POST, "/**").hasAnyRole(Role.BO_WRITER, Role.BO_ADMIN)
-                .mvcMatchers(HttpMethod.PUT, "/**").hasAnyRole(Role.BO_WRITER, Role.BO_ADMIN)
-                .mvcMatchers(HttpMethod.DELETE, "/**").hasRole(Role.BO_ADMIN)
+                .mvcMatchers(HttpMethod.DELETE, "/**").hasRole(Role.ATLAS_ADMIN)
                 .anyRequest().authenticated()
         )
+        .exceptionHandling()
+        .accessDeniedHandler(accessDeniedHandler())
+        .and()
 
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth 2.0 Resource Server</a>
         .oauth2ResourceServer()
@@ -108,5 +113,10 @@ public class SecurityConfig {
     roleConverter.setAuthorityPrefix(Role.ROLE_PREFIX);
     roleConverter.setAuthoritiesClaimName(ROLES_KEY);
     return roleConverter;
+  }
+
+  @Bean
+  public AccessDeniedHandler accessDeniedHandler() {
+    return new AtlasAccessDeniedHandler();
   }
 }

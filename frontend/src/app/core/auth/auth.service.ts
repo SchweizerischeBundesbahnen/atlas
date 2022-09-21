@@ -121,9 +121,9 @@ export class AuthService {
       ApplicationRole.SuperUser,
       ApplicationRole.Writer,
     ];
-    // Writer is not allowed to create BusinessOrganisation
+    // Supervisor is allowed to create BusinessOrganisation
     if (ApplicationType.Bodi === applicationType) {
-      rolesAllowedToCreate = [ApplicationRole.Supervisor, ApplicationRole.SuperUser];
+      rolesAllowedToCreate = [ApplicationRole.Supervisor];
     }
     return rolesAllowedToCreate;
   }
@@ -155,11 +155,8 @@ export class AuthService {
     if (applicationPermissions.length === 1) {
       const applicationPermission = applicationPermissions[0];
 
-      // Supervisor and SuperUser may always edit a version
       if (
-        [ApplicationRole.Supervisor, ApplicationRole.SuperUser].includes(
-          applicationPermission.role!
-        )
+        AuthService.getRolesAllowedToUpdate(applicationType).includes(applicationPermission.role!)
       ) {
         return true;
       }
@@ -170,6 +167,15 @@ export class AuthService {
       }
     }
     return false;
+  }
+
+  private static getRolesAllowedToUpdate(applicationType: ApplicationType) {
+    let rolesAllowedToUpdate = [ApplicationRole.Supervisor, ApplicationRole.SuperUser];
+    // Supervisor is allowed to update BusinessOrganisation
+    if (ApplicationType.Bodi === applicationType) {
+      rolesAllowedToUpdate = [ApplicationRole.Supervisor];
+    }
+    return rolesAllowedToUpdate;
   }
 
   get roles(): Role[] {

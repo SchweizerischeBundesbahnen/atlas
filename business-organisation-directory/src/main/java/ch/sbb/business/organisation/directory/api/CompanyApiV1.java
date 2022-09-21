@@ -1,7 +1,7 @@
 package ch.sbb.business.organisation.directory.api;
 
 import ch.sbb.atlas.base.service.model.api.Container;
-import ch.sbb.business.organisation.directory.configuration.Role;
+import ch.sbb.atlas.base.service.model.configuration.Role;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("v1/companies")
 public interface CompanyApiV1 {
 
-  @Secured(Role.ROLE_PREFIX + Role.BO_ADMIN)
+  @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
   @PostMapping("loadFromCRD")
   void loadCompaniesFromCrd();
 
