@@ -12,13 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@KafkaListener(topics = "${kafka.atlas.user.administration.topic}", groupId = "${kafka.atlas.user.administration.groupId}", topicPartitions = @TopicPartition(topic = "${kafka.atlas.user.administration.topic}", partitionOffsets = @PartitionOffset(partition = "0", initialOffset = "0")))
+@KafkaListener(topics = "${kafka.atlas.user.administration.topic}", groupId = "${kafka.atlas.user.administration.groupId}",
+    topicPartitions = @TopicPartition(topic = "${kafka.atlas.user.administration.topic}", partitionOffsets =
+    @PartitionOffset(partition = "0", initialOffset = "0")))
 public class UserAdministrationLoader {
 
-    private final UserPermissionHolder userPermissionHolder;
+  private final UserPermissionHolder userPermissionHolder;
 
-    @KafkaHandler
-    public void readUserPermissionsFromKafka(UserAdministrationModel userAdministrationModel) {
-        userPermissionHolder.putUserPermissions(userAdministrationModel.getSbbUserId(), userAdministrationModel);
-    }
+  @KafkaHandler
+  public void readUserPermissionsFromKafka(UserAdministrationModel userAdministrationModel) {
+    userPermissionHolder.putUserPermissions(userAdministrationModel.getSbbUserId(), userAdministrationModel);
+  }
 }
