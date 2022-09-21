@@ -180,7 +180,6 @@ Service used by Atlas to send emails. See [Mail Service Documentation](mail/READ
 
 User Administration provides the backend for creating and maintaining role and business organisation assignments for user. See [UserAdministration Documentation](user-administration/README.md) for more.
 
-
 ### Base Service lib
 
 Libraries used to perform:
