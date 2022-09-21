@@ -44,8 +44,7 @@ Applications on this platform share their tech stack and have the same monitorin
 
 It's applications share the following architectural goal:
 
-![ATLAS Big Picture](documentation/ATLAS_Infrastruktur.svg)
-
+![ATLAS Big Picture](documentation/image/ATLAS_Infrastruktur.svg)
 
 ## Links
 
@@ -80,6 +79,8 @@ It's applications share the following architectural goal:
 The Atlas services use [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth) to add to the log a
 **Correlation-Id** which spreads between the services up to the snack bar in the fronted.
 
+We can use the **Correlation-Id** to search it in [Splunk](documentation/Logging.md) or [Instana](documentation/Monitoring.md).
+
 ## Development
 
 ### Run locally
@@ -110,15 +111,11 @@ docker-compose down -v
 
 ### Monorepo
 
-ATLAS has a Monorepo project structure. The CI/CD is execute on each module. For each push event on
-master
-a Jenkins pipiline is executed. The modules are versionied and deployed with the same version
+ATLAS has a Monorepo project structure. The CI/CD is executed on each module. For each push event on
+master a Jenkins pipiline is executed. The modules are versionied and deployed with the same version
 number.
 
-![ATLAS Monorepo](documentation/ATLAS-Mono-Repo-Migration.png)
-
-See the original
-file: [ATLAS-Monorepo drawio](https://confluence.sbb.ch/display/~e539196/ATLAS+Mono+Repo+migration)
+![ATLAS Monorepo](documentation/image/ATLAS-Mono-Repo.svg)
 
 ### Running Python scripts
 

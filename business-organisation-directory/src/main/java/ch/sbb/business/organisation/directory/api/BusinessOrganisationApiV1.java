@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,7 @@ public interface BusinessOrganisationApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
   })
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
   BusinessOrganisationVersionModel createBusinessOrganisationVersion(
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
@@ -56,6 +58,8 @@ public interface BusinessOrganisationApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
+
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
   List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(
       @PathVariable Long id,
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
