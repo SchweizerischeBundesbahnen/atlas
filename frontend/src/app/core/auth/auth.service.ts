@@ -123,7 +123,7 @@ export class AuthService {
     ];
     // Writer is not allowed to create BusinessOrganisation
     if (ApplicationType.Bodi === applicationType) {
-      rolesAllowedToCreate = [ApplicationRole.Supervisor, ApplicationRole.SuperUser];
+      rolesAllowedToCreate = [ApplicationRole.Supervisor];
     }
     return rolesAllowedToCreate;
   }
