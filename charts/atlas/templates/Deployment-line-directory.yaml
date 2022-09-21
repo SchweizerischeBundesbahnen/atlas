@@ -47,6 +47,16 @@ spec:
                 secretKeyRef:
                   name: amazon-client-{{ .Values.lineDirectory.name }}
                   key: amazon-secret-key
+            - name: KAFKA_SCRAM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-secrets
+                  key: scram-password
+            - name: KAFKA_TRUSTSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-secrets
+                  key: truststore-password
           image: "atlas.docker.bin.sbb.ch/{{ .Values.lineDirectory.name }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
           name: '{{ .Values.lineDirectory.name }}'
