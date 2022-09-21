@@ -11,9 +11,12 @@ import { UserModel } from '../../../api/model/userModel';
 @Component({
   selector: 'app-user-administration-edit',
   templateUrl: './user-administration-edit.component.html',
-  styleUrls: ['./user-administration-edit.component.scss'],
 })
 export class UserAdministrationEditComponent implements OnInit {
+  @Input() user?: UserModel;
+  editMode = false;
+  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
+
   constructor(
     private readonly notificationService: NotificationService,
     private readonly boService: BusinessOrganisationsService,
@@ -22,10 +25,6 @@ export class UserAdministrationEditComponent implements OnInit {
     readonly dialogRef: MatDialogRef<any>,
     readonly dialogService: DialogService
   ) {}
-
-  @Input() user?: UserModel;
-  editMode = false;
-  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
 
   ngOnInit() {
     if (this.userService.getPermissionsFromUserModelAsArray(this.user!).length === 0) {
