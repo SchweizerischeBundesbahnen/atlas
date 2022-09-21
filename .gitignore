@@ -36,8 +36,6 @@ build/
 
 ### VS Code ###
 .vscode/
-.idea/sonarlint
-.idea/kubernetes-settings.xml
 /scripts/~$*
 http-requests/http-client.private.env.json
 /src/main/resources/static/docs/
@@ -62,20 +60,6 @@ http-requests/http-client.private.env.json
 chrome-profiler-events*.json
 
 # IDEs and editors
-.idea/dataSources.xml
-.idea/uiDesigner.xml
-.idea/libraries/
-.idea/dbnavigator.xml
-.idea/misc.xml
-.idea/runConfigurations.xml
-.idea/modules.xml
-.idea/compiler.xml
-.idea/encodings.xml
-.idea/inspectionProfiles/
-.idea/aws.xml
-.idea/jarRepositories.xml
-.idea/vcs.xml
-.idea/prettier.xml
 .c9/
 *.launch
 .settings/
@@ -116,9 +100,20 @@ frontend/node_modules
 frontend/coverage
 frontend/docker/package
 frontend/.npmrc
-.idea/jpa-buddy.xml
-.idea/jsLibraryMappings.xml
-/.idea/sqldialects.xml
 /frontend/out-tsc/
 /export/
 /amazon-s3/export/
+
+
+# IntelliJ
+.idea/aws.xml
+.idea/compiler.xml
+.idea/dataSources.xml
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/jarRepositories.xml
+.idea/libraries/
+.idea/misc.xml
+.idea/modules.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
