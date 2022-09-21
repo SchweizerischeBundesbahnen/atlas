@@ -129,7 +129,7 @@ describe('AuthService', () => {
         ],
         false
       );
-      expect(result).toBeTrue();
+      expect(result).toBeFalse();
 
       result = AuthService.hasPermissionsToCreateWithPermissions(
         ApplicationType.Bodi,
