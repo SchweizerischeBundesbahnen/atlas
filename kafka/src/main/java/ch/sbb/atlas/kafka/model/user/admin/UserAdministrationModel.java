@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +14,10 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAdministrationModel {
+public class UserAdministrationModel implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = 1;
 
   private String sbbUserId;
 
