@@ -18,6 +18,8 @@ export class RelationComponent<RECORD_TYPE> {
   @Input() tableColumns!: TableColumn<RECORD_TYPE>[];
   @Input() editMode = false;
   @Input() selectedIndex = -1;
+  @Input() addBtnNameTranslationKey = 'RELATION.ADD';
+  @Input() deleteBtnNameTranslationKey = 'RELATION.DELETE';
 
   @Output() deleteRelation = new EventEmitter<void>();
   @Output() editModeChanged = new EventEmitter<void>();
@@ -79,7 +81,8 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   private getValuePathFromColumnName(column: string): string {
-    return this.tableColumns.filter((i) => i.columnDef == column)[0].valuePath!;
+    const filteredColumn = this.tableColumns.filter((i) => i.columnDef == column)[0];
+    return filteredColumn.value ?? filteredColumn.valuePath!;
   }
 
   private static compare(a: any, b: any): number {
