@@ -7,18 +7,15 @@ import { UserModel } from '../../../api/model/userModel';
 @Component({
   selector: 'app-user-select',
   templateUrl: './user-select.component.html',
-  styleUrls: ['./user-select.component.scss'],
 })
 export class UserSelectComponent {
-  constructor(private readonly userService: UserService) {}
-
   @Output() selectionChange: EventEmitter<UserModel> = new EventEmitter<UserModel>();
-
   userSearchResults$: Observable<UserModel[]> = of([]);
-
   readonly form: FormGroup = new FormGroup({
     userSearch: new FormControl<UserModel | null>(null),
   });
+
+  constructor(private readonly userService: UserService) {}
 
   readonly selectOption: (item: UserModel) => string = (item: UserModel): string =>
     `${item.displayName} (${item.mail})`;
