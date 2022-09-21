@@ -39,6 +39,11 @@
          <groupId>org.springframework.boot</groupId>
       </dependency>
       <dependency>
+         <groupId>ch.sbb.atlas</groupId>
+         <artifactId>user-administration-security</artifactId>
+         <version>${revision}</version>
+      </dependency>
+      <dependency>
         <groupId>ch.sbb.atlas</groupId>
         <artifactId>kafka</artifactId>
         <version>${revision}</version>
