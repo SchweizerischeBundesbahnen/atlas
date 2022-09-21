@@ -14,5 +14,7 @@ public interface UserPermissionRepository extends JpaRepository<UserPermission, 
   @Query("select distinct up.sbbUserId from user_permission up")
   Page<String> findAllDistinctSbbUserId(Pageable pageable);
 
-  List<UserPermission> findBySbbUserId(String sbbUserId);
+  List<UserPermission> findBySbbUserIdIgnoreCase(String sbbUserId);
+
+  boolean existsBySbbUserIdIgnoreCase(String userId);
 }

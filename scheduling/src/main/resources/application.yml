@@ -23,11 +23,11 @@ spring:
     driver-class-name: org.postgresql.Driver
     application:
       name: scheduling
-  kafka:
-    atlas:
-      mail:
-        topic: atlas.mail
-        groupId: atlas.kafka.user
+kafka:
+  atlas:
+    mail:
+      topic: atlas.mail
+      groupId: atlas.kafka.mail.groupId
   jpa:
     open-in-view: false
   security:
@@ -97,4 +97,4 @@ atlas:
 
 mail:
   receiver:
-    schduling: TechSupport-ATLAS@sbb.ch
+    scheduling: TechSupport-ATLAS@sbb.ch

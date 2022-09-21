@@ -18,7 +18,7 @@ public class MailClient {
 
   private final KafkaTemplate<String, Object> kafkaTemplate;
 
-  @Value("${spring.kafka.atlas.mail.topic}")
+  @Value("${kafka.atlas.mail.topic}")
   private String mailTopic;
 
   public void produceMailNotification(MailNotification mailNotification) {

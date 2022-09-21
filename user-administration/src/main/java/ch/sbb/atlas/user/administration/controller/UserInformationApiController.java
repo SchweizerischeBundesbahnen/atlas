@@ -2,7 +2,7 @@ package ch.sbb.atlas.user.administration.controller;
 
 import ch.sbb.atlas.user.administration.api.UserInformationApiV1;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
-import ch.sbb.atlas.user.administration.models.UserModel;
+import ch.sbb.atlas.user.administration.api.UserModel;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +14,7 @@ public class UserInformationApiController implements UserInformationApiV1 {
 
   @Override
   public List<UserModel> searchUsers(String searchQuery) {
-    return graphApiService.searchUsersByDisplayNameAndMail(searchQuery);
+    return graphApiService.searchUsers(searchQuery);
   }
 
 }
