@@ -8,6 +8,7 @@ https://confluence.sbb.ch/pages/viewpage.action?pageId=1450380751
 ### Backend Configuration
 
 Add the following dependency to add [Spring Sleuth](https://spring.io/projects/spring-cloud-sleuth).
+
 ```xml
 <dependency>
     <groupId>org.springframework.cloud</groupId>
@@ -15,7 +16,9 @@ Add the following dependency to add [Spring Sleuth](https://spring.io/projects/s
 </dependency>
 ```
 
-Edit your application.properties or yml and add `traceid=%X{traceId}` and `spanid=%X{spanId}` to it. E.g. it should look like this:
+Edit your application.properties or yml and add `traceid=%X{traceId}` and `spanid=%X{spanId}` to it. E.g. it should look like
+this:
+
 ```yaml
 logging:
   pattern:
@@ -24,11 +27,13 @@ logging:
 
 ### Frontend Setup
 
-Go to Instana Websites and add a new Website to track. You will be presented with a piece of javascript to include in your application.
+Go to Instana Websites and add a new Website to track. You will be presented with a piece of javascript to include in your
+application.
 
 To support different instanakeys in various stages we modified the original script a little bit.
 
 Add this to the `head` of your `index.html`:
+
 ```html
 <!-- Instana Website Tracking -->
 <script type="text/javascript" src="assets/monitoring/instana.js"></script>
@@ -57,11 +62,13 @@ Instana Prod is used for Prod clusters (int + prod stages): https://sbb-sbb.inst
 
 ### Websites & Mobile Apps
 
-This view can be used to explore insight gathered on your configured frontend Websites. This includes page loads, load time as well as HTTP request performed by the user.
+This view can be used to explore insight gathered on your configured frontend Websites. This includes page loads, load time as
+well as HTTP request performed by the user.
 
 ### Applications
 
-This view shows your application consisting of all your services in the configured namespace. You can take a look at latency, processing times and much more.
+This view shows your application consisting of all your services in the configured namespace. You can take a look at latency,
+processing times and much more.
 
 ### Kubernetes
 
@@ -69,18 +76,22 @@ Here you can explore settings and resources of your cluster and namespace.
 
 ### Alerts
 
-Currently we set up an [alert](https://sbb-sbb.instana.io/#/config/team/alerting/alerts/yYqJcjocvPYUbHOO) to trigger on various events.
-This alert is triggered if the desired replicas are set to 0, available replicas is less than desired or pods report a state of 'not ready' for too long.
+Currently we set up an [alert](https://sbb-sbb.instana.io/#/config/team/alerting/alerts/yYqJcjocvPYUbHOO) to trigger on various
+events.
+This alert is triggered if the desired replicas are set to 0, available replicas is less than desired or pods report a state of '
+not ready' for too long.
 
-![ATLAS Monorepo](instana_alert.png)
+![ATLAS Monorepo](image/instana_alert.png)
 
 The alerts are configured to be reported in our Teams-Channel by using a webhook.
 
 # Actuator
 
-The [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) is available on `/actuator` and provides information about the running application.
+The [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) is available
+on `/actuator` and provides information about the running application.
 
 To use Spring Actuator include the dependency to your project:
+
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -90,6 +101,7 @@ To use Spring Actuator include the dependency to your project:
 
 We configured it to show details on the health endpoint (e.g. for DB Health indication) and exposed all actuator endpoints.
 This can be configured in the `application.yaml` or properties respectively
+
 ```yaml
 management:
   endpoint:

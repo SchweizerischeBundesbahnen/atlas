@@ -1,19 +1,22 @@
 # Atlas - Security and API Infrastructure
 
-Here we will explore topics regarding accessability to our API over the [SBB Developer Portal](https://developer.sbb.ch). 
+Here we will explore topics regarding accessability to our API over the [SBB Developer Portal](https://developer.sbb.ch).
 Further there are several steps necessary to secure our REST API using [RBT](https://rbt.sbb.ch/) Groups.
 
 ## API Management
 
-Is responsible for registring and publishing APIs to the SBB Developer Portal. You can find the registration repository [here](https://code.sbb.ch/projects/KI_ATLAS/repos/timetable-field-number-apim-configuration/browse).
+Is responsible for registring and publishing APIs to the SBB Developer Portal. You can find the registration
+repository [here](https://code.sbb.ch/projects/KI_ATLAS/repos/timetable-field-number-apim-configuration/browse).
 
-The APIM Team further provides a deployable gateway including a CloudWAF. Documentation is available [here](https://confluence.sbb.ch/display/AITG/52.+Gateway). 
+The APIM Team further provides a deployable gateway including a CloudWAF. Documentation is
+available [here](https://confluence.sbb.ch/display/AITG/52.+Gateway).
 
 We will use the gateway to redirect to an internal gateway, which will redirect requests to the appropriate services.
 
-![API and Routing](apim-structure.png)
+![API and Routing](image/apim-structure.png)
 
-## IAM 
+## IAM
+
 stands for Identity & Access Management.
 Visit their [confluence](https://confluence.sbb.ch/display/IAM/IAM+Space+Home).
 
@@ -24,7 +27,8 @@ Atlas shall approve modifying requests with defined RBT Groups.
 Now its time to get your hands dirty and set it up. Buckle up and stay with me...
 
 ### Deploy API
-1. Include the roles you want to check in your resource server in the API Configuration 
+
+1. Include the roles you want to check in your resource server in the API Configuration
 
  ```yaml
 "sso": {
@@ -34,10 +38,16 @@ Now its time to get your hands dirty and set it up. Buckle up and stay with me..
   ],
 }
    ```
+
 2. Build the configuration with Jenkins on your commit https://ci.sbb.ch/job/KI_ATLAS/job/atlas-apim-configuration/job/master/
-3. Deployment of API Configuration can be done with esta-cloud-pipeline. Follow this [guide](https://confluence.sbb.ch/display/AITG/22.+Update+der+API+Konfiguration) to automate the process or deploy your configuration manually on [Integration](https://api-deploy.int.app.ose.sbb-aws.net/swagger-ui.html) or [Production](https://api-deploy.prod.app.ose.sbb-aws.net/swagger-ui.html). For Jenkins make sure to use `clientJenkinsId` and store the credentials on Jenkins (https://self.sbb-cloud.net/tools/jenkins).
+3. Deployment of API Configuration can be done with esta-cloud-pipeline. Follow
+   this [guide](https://confluence.sbb.ch/display/AITG/22.+Update+der+API+Konfiguration) to automate the process or deploy your
+   configuration manually on [Integration](https://api-deploy.int.app.ose.sbb-aws.net/swagger-ui.html)
+   or [Production](https://api-deploy.prod.app.ose.sbb-aws.net/swagger-ui.html). For Jenkins make sure to use `clientJenkinsId`
+   and store the credentials on Jenkins (https://self.sbb-cloud.net/tools/jenkins).
 
 ### Register your client
+
 1. Visit your API on the developer portal e.g. https://developer-int.sbb.ch/apis/atlas-dev/information
 2. Signup with your desired plan
 3. Choose the OAuth Flow "Authorization Code"
@@ -46,12 +56,17 @@ Now its time to get your hands dirty and set it up. Buckle up and stay with me..
 You can use this client to perform operations on the REST API from Postman and other.
 
 ### Manual interactions required for SPA and AD groups
-Once the API client is created, we have to make some manual configuration updates, because APIM is not ready for the whole process we need.
 
-Visit IAM Swagger UI on [Integration](https://azure-ad-int.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config) or [Production](https://azure-ad.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config)
+Once the API client is created, we have to make some manual configuration updates, because APIM is not ready for the whole process
+we need.
+
+Visit IAM Swagger UI on [Integration](https://azure-ad-int.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config)
+or [Production](https://azure-ad.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config)
 
 You can export the configuration for your client as YAML, apply your changes and then upload it for an easy update.
+
 1. Add and modify your redirectUris e.g. add paths to your SPA
+
 ```yaml
 redirectUris:
 - uri: https://developer-int.sbb.ch/oauth2-redirect.html
@@ -61,9 +76,12 @@ redirectUris:
 - uri: https://atlas-frontend-dev.apps.aws01t.sbb-aws-test.net
   type: SPA
 ```
-2. Note and remember the `clientId` of the `requiredPermissions`: This is the id for the app of the API itself (this should be validated requiring this id as audience on your backend).
 
-Next step: look up the ID of the Azure AD group you want to assign to a role. Use the endpoint `/v1/groups` and look it up. E.g. filter for `DG_RBT_LIDI_ADMIN_DEV`.
+2. Note and remember the `clientId` of the `requiredPermissions`: This is the id for the app of the API itself (this should be
+   validated requiring this id as audience on your backend).
+
+Next step: look up the ID of the Azure AD group you want to assign to a role. Use the endpoint `/v1/groups` and look it up. E.g.
+filter for `DG_RBT_LIDI_ADMIN_DEV`.
 Remember this id as well
 
 Now that we modified the redirectUris for our client, we will add AD groups to the AppRegistration of our API.
@@ -105,7 +123,10 @@ Apply the updated configurations.
 2. Add role requirements to your security configuration
 
 ### Allow CORS Preflight request in CloudWAF Gateway
-https://confluence.sbb.ch/display/AITG/56.+CORS: To allow CORS preflight requests, we have to set an additional environment variable.
+
+https://confluence.sbb.ch/display/AITG/56.+CORS: To allow CORS preflight requests, we have to set an additional environment
+variable.
+
 ```yaml
 APIM_ADAPTER_EXCLUDE_FILTER_METHODS: OPTIONS
 ```
@@ -135,24 +156,29 @@ const authConfig: AuthConfig = {
 2. Setup functional users (`fxatl_a`) without Multi-Factor Authentication (MFA)
 3. Assign them the desired AD groups, for our case this will be the admin groups for dev and test
 4. Perform the login in cypress
-   1. grant_type: password
-   2. client_id (API client)
-   3. client_secret (API client)
-   4. username
-   5. password
-   6. scope (API client)
-5. Secrets stored on jenkins and `cypress.env.json`, which is also on `.gitignore` so we don't have to worry about credentials being leaked.
+    1. grant_type: password
+    2. client_id (API client)
+    3. client_secret (API client)
+    4. username
+    5. password
+    6. scope (API client)
+5. Secrets stored on jenkins and `cypress.env.json`, which is also on `.gitignore` so we don't have to worry about credentials
+   being leaked.
 
 #### Settings for Jenkins
 
-For Jenkins we set the cypress environment variables by naming them `CYPRESS_<name>`. They are currently defined in the Jenkinsfile of our cypress folder, with the secrets being stored as secrets on Jenkins.
+For Jenkins we set the cypress environment variables by naming them `CYPRESS_<name>`. They are currently defined in the
+Jenkinsfile of our cypress folder, with the secrets being stored as secrets on Jenkins.
 
 ## App registrations
 
 This will be a little excursion to Azure AD application description in `yaml`-format.
-We can download it from IAM `/v1/app-configs/export` with our `clientId` from [Integration](https://azure-ad-int.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config) or [Production](https://azure-ad.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config).
+We can download it from IAM `/v1/app-configs/export` with our `clientId`
+from [Integration](https://azure-ad-int.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config)
+or [Production](https://azure-ad.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config).
 
 So lets look at an API client for an examplary configuration and add some comments to it.
+
 ```yaml
 apiVersion: azure-ad-api/v1
 metadata:
@@ -203,6 +229,7 @@ appRegistrations:
 ```
 
 And an API app configuration:
+
 ```yaml
 apiVersion: azure-ad-api/v1
 metadata:
