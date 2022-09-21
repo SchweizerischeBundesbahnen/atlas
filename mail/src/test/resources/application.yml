@@ -8,11 +8,11 @@ spring:
     test-connection: false # avoid setting this to true when using a per-test-method GreenMail server
   main:
     banner-mode: OFF
-  kafka:
-    atlas:
-      mail:
-        topic: atlas.mail
-        groupId: atlas.kafka.user
+kafka:
+  atlas:
+    mail:
+      topic: atlas.mail
+      groupId: atlas.kafka.mail.groupId
 logging:
   level:
     root: ERROR
