@@ -3,11 +3,6 @@ spring:
     url: jdbc:postgresql://scheduling-test.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/scheduling
     username: ${DB_USER}
     password: ${DB_PWD}
-  kafka:
-    atlas:
-      mail:
-        topic: atlas.test.mail
-        groupId: atlas.kafka.user
   security:
     oauth2:
       resourceserver:
@@ -24,6 +19,11 @@ spring:
             client-secret: ${SCHEDULING_CLIENT_SECRET}
             scope:
               - api://2e8c6ce0-304d-42e1-9bce-600b3ea43aad/.default
+kafka:
+  atlas:
+    mail:
+      topic: atlas.test.mail
+      groupId: atlas.kafka.mail.groupId
 auth:
   audience:
     service-name: 2e8c6ce0-304d-42e1-9bce-600b3ea43aad
