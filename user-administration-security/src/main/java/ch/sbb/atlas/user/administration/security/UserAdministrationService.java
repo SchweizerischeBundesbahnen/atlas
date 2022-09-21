@@ -2,9 +2,11 @@ package ch.sbb.atlas.user.administration.security;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -88,7 +90,11 @@ public class UserAdministrationService {
 
   private UserAdministrationPermissionModel getUserPermissionsForApplication(
       ApplicationType applicationType) {
-    List<UserAdministrationPermissionModel> userPermissionsForCurrentApplication = userPermissionHolder.getCurrentUser()
+    Optional<UserAdministrationModel> currentUserPermissions = userPermissionHolder.getCurrentUser();
+    if (currentUserPermissions.isEmpty()) {
+      return UserAdministrationPermissionModel.builder().application(applicationType).role(ApplicationRole.READER).build();
+    }
+    List<UserAdministrationPermissionModel> userPermissionsForCurrentApplication = currentUserPermissions.orElseThrow()
                                                                                                        .getPermissions()
                                                                                                        .stream()
                                                                                                        .filter(
@@ -101,7 +107,21 @@ public class UserAdministrationService {
     }
     throw new IllegalStateException(
         "Found multiple Permissions for application " + applicationType + " and user "
-            + userPermissionHolder.getCurrentUser().getSbbUserId());
+            + userPermissionHolder.getCurrentUserSbbUid());
+  }
+
+  public boolean isAtLeastSupervisor(ApplicationType applicationType) {
+    log.info("Checking if user {} is at least supervisor for {}",
+            userPermissionHolder.getCurrentUserSbbUid(),
+            applicationType);
+    if (userPermissionHolder.isAdmin()) {
+      return true;
+    }
+    UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(
+            applicationType);
+
+    ApplicationRole roleForApplication = userPermissionsForApplication.getRole();
+    return ApplicationRole.SUPERVISOR == roleForApplication;
   }
 
 }
