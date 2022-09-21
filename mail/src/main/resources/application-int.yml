@@ -1,6 +1,5 @@
-spring:
-  kafka:
-    atlas:
-      mail:
-        topic: atlas.int.mail
-        groupId: atlas.kafka.user
+kafka:
+  atlas:
+    mail:
+      topic: atlas.int.mail
+      groupId: atlas.kafka.mail.groupId

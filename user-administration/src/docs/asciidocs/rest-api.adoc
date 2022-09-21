@@ -1,0 +1,45 @@
+= ATLAS - UserAdministration API Guide
+:doctype: book
+:compat-mode:
+:page-layout!:
+:toc: left
+:toclevels: 1
+:sectanchors:
+:sectlinks:
+:linkattrs:
+:icons: font
+:table-caption!:
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:revnumber: {version}
+
+[[abstract]]
+= Overview
+
+=== Project information
+
+[width="60%" cols="18%,35%" ]
+|=================================
+|Application Name | {name}
+|Version | {version}
+|Build-Time| {buildTime}
+|=================================
+
+
+= User Administration
+
+== Get Users Permissions - Successfully
+
+include::{snippets}/user-administration-controller-api-test/should-get-users/auto-section.adoc[]
+
+== Get User Permissions - Successfully
+
+include::{snippets}/user-administration-controller-api-test/should-get-user/auto-section.adoc[]
+
+== Update User Permissions - Successfully
+
+include::{snippets}/user-administration-controller-api-test/should-update-user/auto-section.adoc[]
+
+== Create User Permissions - Successfully
+
+include::{snippets}/user-administration-controller-api-test/should-create-user-permission/auto-section.adoc[]
