@@ -1,0 +1,4 @@
+spring:
+  kafka:
+    # consumer - only for testing
+    bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
