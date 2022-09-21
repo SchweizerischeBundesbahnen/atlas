@@ -12,9 +12,13 @@ import { UserModel } from '../../../api/model/userModel';
 @Component({
   selector: 'app-user-administration-create',
   templateUrl: './user-administration-create.component.html',
-  styleUrls: ['./user-administration-create.component.scss'],
 })
 export class UserAdministrationCreateComponent {
+  userLoaded?: UserModel;
+  userHasAlreadyPermissions = false;
+  selectedUserHasNoUserId = false;
+  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
+
   constructor(
     private readonly userService: UserService,
     private readonly boService: BusinessOrganisationsService,
@@ -24,12 +28,6 @@ export class UserAdministrationCreateComponent {
     readonly dialogService: DialogService,
     readonly dialogRef: MatDialogRef<any>
   ) {}
-
-  userLoaded?: UserModel;
-  userHasAlreadyPermissions = false;
-  selectedUserHasNoUserId = false;
-
-  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
 
   selectUser(user: UserModel | undefined): void {
     this.selectedUserHasNoUserId = false;
