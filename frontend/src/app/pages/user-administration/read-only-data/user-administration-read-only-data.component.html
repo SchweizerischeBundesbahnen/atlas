@@ -1,0 +1,10 @@
+<div class="d-flex flex-row fixed-space-between">
+  <div *ngFor="let row of userModelConfig">
+    <div *ngFor="let keyVal of row">
+      <span class="font-bold-base white-space-no-wrap">{{ keyVal.translationKey | translate }}</span
+      >&nbsp;<span [ngClass]="keyVal.valueDisplayClass ?? []">{{
+        keyVal.formatValue ? keyVal.formatValue(data[keyVal.value]) : data[keyVal.value]
+      }}</span>
+    </div>
+  </div>
+</div>

@@ -53,6 +53,7 @@
     "EDIT_VERSION": "Modifier la version",
     "CREATE_VERSION": "Ajouter la version",
     "ROLES": {
+      "READER": "Reader",
       "SUPERVISOR": "Supervisor",
       "SUPER_USER": "Super User",
       "WRITER": "Writer",
@@ -165,16 +166,36 @@
     "MAX": "La valeur doit être au maximum {{max}}."
   },
   "USER_ADMIN": {
+    "NEW": "Saisir un nouvel utilisateur",
+    "NEW_INFORMATION": "Informations sur le nouvel utilisateur",
+    "INFORMATION": "Données de l'utilisateur",
+    "NOT_FOUND": "L'utilisateur n'a pas été trouvé",
     "TABLE_HEADER": "Utilisateur",
     "LAST_NAME": "Nom",
     "FIRST_NAME": "Prénom",
     "MAIL": "Adresse e-mail",
     "USER_ID": "ID d'utilisateur",
     "ACCOUNT_STATUS": "Statut du compte",
+    "DISPLAY_NAME": "Nom d'affichage",
+    "APPLICATIONS": "Applications",
+    "APPLICATION": {
+      "LIDI": "Lignes et sous-lignes",
+      "TTFN": "Numéros de champs d'horaires",
+      "BODI": "Organisations commerciales"
+    },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Actif",
       "INACTIVE": "Inactif",
       "DELETED": "Supprimé"
+    },
+    "ROLE": "Rouleau",
+    "ADD_BUSINESS_ORGANISATION": "Ajouter une organisation commerciale",
+    "DELETE_BUSINESS_ORGANISATION": "Supprimer l'organisation commerciale",
+    "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "L'utilisateur sélectionné est déjà enregistré",
+    "SELECTED_USER_HAS_NO_USER_ID": "L'utilisateur sélectionné n'a pas d'ID utilisateur enregistré",
+    "NOTIFICATIONS": {
+      "ADD_SUCCESS": "Utilisateur enregistré avec succès",
+      "EDIT_SUCCESS": "Enregistré avec succès"
     }
   },
   "TTFN": {

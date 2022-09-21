@@ -1,4 +1,4 @@
-<h2 class="font-bold-2xl color-gray-900">
+<h2 *ngIf="titleTranslationKey" class="font-bold-2xl color-gray-900">
   {{ titleTranslationKey | translate }}
 </h2>
 
@@ -39,6 +39,8 @@
   </table>
 </div>
 
+<ng-content select="[table-button-between]"></ng-content>
+
 <div *ngIf="editable">
   <button
     [disabled]="editMode"
@@ -46,7 +48,7 @@
     class="atlas-primary-btn me-2"
     data-cy="add-relation-btn"
   >
-    {{ 'RELATION.ADD' | translate }}
+    {{ addBtnNameTranslationKey | translate }}
   </button>
   <button
     [disabled]="selectedIndex === -1"
@@ -54,7 +56,7 @@
     class="atlas-primary-btn"
     data-cy="delete-relation-btn"
   >
-    {{ 'RELATION.DELETE' | translate }}
+    {{ deleteBtnNameTranslationKey | translate }}
   </button>
 </div>
 

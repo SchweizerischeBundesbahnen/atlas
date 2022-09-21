@@ -30,15 +30,15 @@
   margin-bottom: 5rem;
 }
 
-.footer {
-  height: variables.$footerHeight;
-  background-color: variables.$primary-500;
-}
-
 .detail-title {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.footer {
+  height: variables.$footerHeight;
+  background-color: variables.$primary-500;
 }
 
 .footer-btn {

@@ -2,8 +2,9 @@
 
 .mat-snack-bar-container {
   margin: unset !important;
-  margin-top: 4.5rem !important;
-  margin-right: 24px !important;
+  position: absolute;
+  top: 4.5rem;
+  right: 24px;
 }
 
 snack-bar-container.success {

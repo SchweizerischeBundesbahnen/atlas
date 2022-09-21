@@ -1,6 +1,6 @@
 package ch.sbb.atlas.user.administration.api;
 
-import ch.sbb.atlas.user.administration.models.UserModel;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserInformationApiV1 {
 
   @GetMapping("search")
+  @Operation(description = "Look up Users in SBB Azure AD via Graph API")
   List<UserModel> searchUsers(@RequestParam String searchQuery);
 
 }
