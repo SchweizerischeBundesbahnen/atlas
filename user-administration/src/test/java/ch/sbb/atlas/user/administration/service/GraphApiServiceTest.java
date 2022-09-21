@@ -1,7 +1,7 @@
 package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
-import ch.sbb.atlas.user.administration.models.UserModel;
+import ch.sbb.atlas.user.administration.api.UserModel;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
 import com.microsoft.graph.requests.UserCollectionPage;
@@ -71,9 +71,9 @@ public class GraphApiServiceTest {
 
     doReturn(List.of(user, user2, user3)).when(userCollectionPageMock).getCurrentPage();
 
-    List<UserModel> result = graphApiService.searchUsersByDisplayNameAndMail("test");
+    List<UserModel> result = graphApiService.searchUsers("test");
 
-    verify(userCollectionRequestMock, times(2)).get();
+    verify(userCollectionRequestMock, times(3)).get();
     assertThat(result).hasSize(3);
     assertThat(result.get(0).getSbbUserId()).isEqualTo("u236171");
     assertThat(result.get(0).getAccountStatus()).isEqualTo(UserAccountStatus.ACTIVE);

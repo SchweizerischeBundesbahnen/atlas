@@ -30,12 +30,20 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
+      <artifactId>spring-cloud-starter-sleuth</artifactId>
+      <groupId>org.springframework.cloud</groupId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka-test</artifactId>
     </dependency>
 
     <dependency>
@@ -105,6 +113,16 @@
       <groupId>com.h2database</groupId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <artifactId>spring-restdocs-mockmvc</artifactId>
+      <groupId>org.springframework.restdocs</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>spring-auto-restdocs-core</artifactId>
+      <groupId>capital.scalable</groupId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -112,6 +130,17 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>asciidoctor-maven-plugin</artifactId>
+        <groupId>org.asciidoctor</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <groupId>org.jacoco</groupId>
       </plugin>
     </plugins>
   </build>

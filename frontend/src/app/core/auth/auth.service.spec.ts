@@ -124,6 +124,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Bodi,
             role: ApplicationRole.SuperUser,
+            sboids: [],
           },
         ],
         false
@@ -136,6 +137,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Bodi,
             role: ApplicationRole.Supervisor,
+            sboids: [],
           },
         ],
         false
@@ -148,6 +150,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Bodi,
             role: ApplicationRole.Writer,
+            sboids: [],
           },
         ],
         false
@@ -160,6 +163,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Bodi,
             role: ApplicationRole.Reader,
+            sboids: [],
           },
         ],
         false
@@ -181,6 +185,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.SuperUser,
+            sboids: [],
           },
         ],
         false
@@ -193,6 +198,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Supervisor,
+            sboids: [],
           },
         ],
         false
@@ -205,6 +211,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
+            sboids: [],
           },
         ],
         false
@@ -217,6 +224,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Reader,
+            sboids: [],
           },
         ],
         false
@@ -238,6 +246,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.SuperUser,
+            sboids: [],
           },
         ],
         false
@@ -250,6 +259,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.Supervisor,
+            sboids: [],
           },
         ],
         false
@@ -262,6 +272,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.Writer,
+            sboids: [],
           },
         ],
         false
@@ -274,6 +285,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.Reader,
+            sboids: [],
           },
         ],
         false
@@ -299,6 +311,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Supervisor,
+            sboids: [],
           },
         ],
         false
@@ -312,6 +325,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.SuperUser,
+            sboids: [],
           },
         ],
         false
@@ -325,7 +339,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
-            sboids: new Set([]),
+            sboids: [],
           },
         ],
         false
@@ -339,7 +353,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
-            sboids: new Set(['ch:1:slnid:1000004']),
+            sboids: ['ch:1:slnid:1000004'],
           },
         ],
         false

@@ -5,7 +5,8 @@ import { UserService } from '../service/user.service';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
-import { UserModel } from '../../../api';
+import { RouterTestingModule } from '@angular/router/testing';
+import { UserModel } from '../../../api/model/userModel';
 
 @Component({
   selector: 'app-table',
@@ -35,6 +36,12 @@ class MockFormSearchSelectComponent {
   @Input() getSelectOption = null;
 }
 
+@Component({
+  selector: 'app-user-select',
+  template: '<p>app-user-select</p>',
+})
+class MockUserSelectComponent {}
+
 describe('UserAdministrationOverviewComponent', () => {
   let component: UserAdministrationOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationOverviewComponent>;
@@ -42,9 +49,8 @@ describe('UserAdministrationOverviewComponent', () => {
   let userServiceMock: UserServiceMock;
 
   class UserServiceMock {
-    searchUsers: any = undefined;
     getUsers: any = jasmine.createSpy().and.returnValue(of({ users: [], totalCount: 0 }));
-    getUser: any = undefined;
+    hasUserPermissions: any = undefined;
   }
 
   beforeEach(async () => {
@@ -55,11 +61,13 @@ describe('UserAdministrationOverviewComponent', () => {
         UserAdministrationOverviewComponent,
         MockTableComponent,
         MockFormSearchSelectComponent,
+        MockUserSelectComponent,
       ],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
+        RouterTestingModule,
       ],
       providers: [
         {
@@ -76,15 +84,6 @@ describe('UserAdministrationOverviewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('test searchUser', () => {
-    const observable = of<UserModel[]>([{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }]);
-    userServiceMock.searchUsers = jasmine.createSpy().and.returnValue(observable);
-
-    component.searchUser('test');
-    expect(component.userSearchResults$).toBe(observable);
-    expect(userServiceMock.searchUsers).toHaveBeenCalledOnceWith('test');
   });
 
   it('test loadUsers', () => {
@@ -125,11 +124,8 @@ describe('UserAdministrationOverviewComponent', () => {
   it('test checkIfUserExists normal', () => {
     component.tableComponent = { paginator: { pageIndex: 10 } } as any;
 
-    userServiceMock.getUser = jasmine
-      .createSpy()
-      .and.returnValue(of({ sbbUserId: 'u123456', permissions: [{ id: 1 }] }));
+    userServiceMock.hasUserPermissions = jasmine.createSpy().and.returnValue(of(true));
     component.checkIfUserExists({ sbbUserId: 'u123456' });
-    expect(userServiceMock.getUser).toHaveBeenCalledOnceWith('u123456');
     expect(component.userPageResult).toEqual({ users: [{ sbbUserId: 'u123456' }], totalCount: 1 });
     expect(component.tableComponent.paginator.pageIndex).toBe(0);
   });

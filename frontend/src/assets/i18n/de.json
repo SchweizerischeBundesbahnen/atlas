@@ -53,6 +53,7 @@
     "EDIT_VERSION": "Version bearbeiten",
     "CREATE_VERSION": "Version hinzufügen",
     "ROLES": {
+      "READER": "Reader",
       "SUPERVISOR": "Supervisor",
       "SUPER_USER": "Super User",
       "WRITER": "Writer",
@@ -165,16 +166,36 @@
     "MAX": "Die Zahl darf maximal {{max}} sein."
   },
   "USER_ADMIN": {
+    "NEW": "Neuer Benutzer erfassen",
+    "NEW_INFORMATION": "Angaben zum neuen Benutzer",
+    "INFORMATION": "Angaben zum Benutzer",
+    "NOT_FOUND": "Benutzer wurde nicht gefunden",
     "TABLE_HEADER": "Benutzer",
     "LAST_NAME": "Name",
     "FIRST_NAME": "Vorname",
     "MAIL": "E-Mail Adresse",
     "USER_ID": "Benutzer-ID",
     "ACCOUNT_STATUS": "Accountstatus",
+    "DISPLAY_NAME": "Anzeigename",
+    "APPLICATIONS": "Applikationen",
+    "APPLICATION": {
+      "LIDI": "Linien- und Teillinien",
+      "TTFN": "Fahrplanfeldnummern",
+      "BODI": "Geschäftsorganisationen"
+    },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Aktiv",
       "INACTIVE": "Inaktiv",
       "DELETED": "Gelöscht"
+    },
+    "ROLE": "Rolle",
+    "ADD_BUSINESS_ORGANISATION": "Geschäftsorganisation hinzufügen",
+    "DELETE_BUSINESS_ORGANISATION": "Geschäftsorganisation entfernen",
+    "SELECTED_USER_HAS_ALREADY_PERMISSIONS": "Gewählter Benutzer ist bereits hinterlegt",
+    "SELECTED_USER_HAS_NO_USER_ID": "Gewählter Benutzer hat keine Benutzer-ID hinterlegt",
+    "NOTIFICATIONS": {
+      "ADD_SUCCESS": "Benutzer erfolgreich erfasst",
+      "EDIT_SUCCESS": "Erfolgreich gespeichert"
     }
   },
   "TTFN": {
