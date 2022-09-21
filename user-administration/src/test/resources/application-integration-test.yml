@@ -2,3 +2,18 @@ spring:
   kafka:
     # consumer - only for testing
     bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
+logging:
+  level:
+    root: ERROR
+    org:
+      hibernate: ERROR
+      jboss: ERROR
+      springframework:
+        core: fatal
+        beans: fatal
+        context: fatal
+        transaction: error
+        boot:
+          test: error
+        test: error
+        web: error
