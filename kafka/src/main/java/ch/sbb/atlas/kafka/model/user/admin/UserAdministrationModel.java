@@ -1,13 +1,12 @@
 package ch.sbb.atlas.kafka.model.user.admin;
 
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @Data
