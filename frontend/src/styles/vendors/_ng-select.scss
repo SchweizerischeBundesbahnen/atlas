@@ -11,7 +11,7 @@ mat-select {
 }
 
 .ng-select {
-  margin-top: -1px;
+  margin-top: -3px;
   min-height: $thin-border-height;
   padding-bottom: inherit;
   border-color: variables.$primary-400;
@@ -41,6 +41,7 @@ mat-select {
   &.ng-invalid.ng-touched {
     border-width: 3px;
     max-height: $thick-border-height;
+    margin-bottom: 2px;
 
     &.ng-select-single .ng-select-container .ng-clear-wrapper {
       bottom: 7px;

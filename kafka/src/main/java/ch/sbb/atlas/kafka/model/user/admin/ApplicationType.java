@@ -7,6 +7,4 @@ public enum ApplicationType {
   TTFN,
   LIDI,
   BODI,
-
-  ;
 }
