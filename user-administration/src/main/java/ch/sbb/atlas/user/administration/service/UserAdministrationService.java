@@ -2,19 +2,20 @@ package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
+import ch.sbb.atlas.user.administration.api.UserPermissionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
-import ch.sbb.atlas.user.administration.api.UserPermissionModel;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 @Service
 @Transactional
