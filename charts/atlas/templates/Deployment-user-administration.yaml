@@ -42,6 +42,16 @@ spec:
                 secretKeyRef:
                   name: db-secret-{{ .Values.userAdministration.name }}
                   key: password
+            - name: KAFKA_SCRAM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-secrets
+                  key: scram-password
+            - name: KAFKA_TRUSTSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-secrets
+                  key: truststore-password
           image: "atlas.docker.bin.sbb.ch/{{ .Values.userAdministration.name }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
           name: '{{ .Values.userAdministration.name }}'
