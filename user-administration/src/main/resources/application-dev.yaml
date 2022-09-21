@@ -4,9 +4,9 @@ spring:
     username: ${DB_USER}
     password: ${DB_PWD}
     driver-class-name: org.postgresql.Driver
-  kafka:
-    atlas:
-      user:
-        administration:
-          topic: atlas.dev.user.administration
-          groupId: atlas.kafka.user
+kafka:
+  atlas:
+    user:
+      administration:
+        topic: atlas.dev.user.administration
+        groupId: atlas.kafka.user.administration.groupId
