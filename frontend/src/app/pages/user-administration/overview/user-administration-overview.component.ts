@@ -1,65 +1,58 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { TableColumn } from '../../../core/components/table/table-column';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, of } from 'rxjs';
 import { UserService } from '../service/user.service';
-import { tap } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { UserModel, UserPermissionModel } from '../../../api';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserModel } from '../../../api/model/userModel';
+import {
+  DetailDialogEvents,
+  RouteToDialogService,
+} from '../../../core/components/route-to-dialog/route-to-dialog.service';
+import { Subscription } from 'rxjs';
+import { tableColumns } from './table-column-definition';
 
 @Component({
   selector: 'app-user-administration-overview',
   templateUrl: './user-administration-overview.component.html',
 })
-export class UserAdministrationOverviewComponent implements OnInit {
+export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent) tableComponent!: TableComponent<UserModel>;
-  userSearchResults$: Observable<UserModel[]> = of([]);
   userPageResult: { users: UserModel[]; totalCount: number } = { users: [], totalCount: 0 };
   tableIsLoading = false;
-  readonly tableColumns: TableColumn<UserModel>[] = [
-    {
-      headerTitle: 'USER_ADMIN.LAST_NAME',
-      value: 'lastName',
-    },
-    {
-      headerTitle: 'USER_ADMIN.FIRST_NAME',
-      value: 'firstName',
-    },
-    {
-      headerTitle: 'USER_ADMIN.MAIL',
-      value: 'mail',
-    },
-    {
-      headerTitle: 'USER_ADMIN.USER_ID',
-      value: 'sbbUserId',
-    },
-    {
-      headerTitle: 'USER_ADMIN.ACCOUNT_STATUS',
-      value: 'accountStatus',
-      translate: {
-        withPrefix: 'USER_ADMIN.ACCOUNT_STATUS_TYPE.',
-      },
-    },
-  ];
+
   readonly form: FormGroup = new FormGroup({
     userSearch: new FormControl<string | null>(null),
   });
+  readonly tableColumns = tableColumns;
+  private readonly dialogClosedEventSubscription: Subscription;
 
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly routeToDialogService: RouteToDialogService
+  ) {
+    this.dialogClosedEventSubscription = this.routeToDialogService.detailDialogEvent
+      .pipe(filter((e) => e === DetailDialogEvents.Closed))
+      .subscribe(() => this.ngOnInit());
+  }
 
   ngOnInit(): void {
     this.loadUsers({ page: 0, size: 10 });
   }
 
-  selectOption: (item: UserModel) => string = (item: UserModel): string =>
-    `${item.displayName} (${item.mail})`;
+  ngOnDestroy() {
+    this.dialogClosedEventSubscription.unsubscribe();
+  }
 
-  searchUser(searchQuery: string): void {
-    if (!searchQuery) {
-      return;
-    }
-    this.userSearchResults$ = this.userService.searchUsers(searchQuery);
+  openUser(user: UserModel) {
+    this.router
+      .navigate([user.sbbUserId], {
+        relativeTo: this.route,
+      })
+      .then();
   }
 
   loadUsers(tableSettings: TableSettings): void {
@@ -83,10 +76,10 @@ export class UserAdministrationOverviewComponent implements OnInit {
       this.userPageResult = { users: [], totalCount: 0 };
     } else {
       this.userService
-        .getUser(selectedUser.sbbUserId)
+        .hasUserPermissions(selectedUser.sbbUserId)
         .pipe(
-          tap((user) => {
-            if (UserAdministrationOverviewComponent.hasPermissions(user)) {
+          tap((hasPermission) => {
+            if (hasPermission) {
               this.userPageResult = { users: [selectedUser], totalCount: 1 };
               this.tableComponent.paginator.pageIndex = 0;
             } else {
@@ -98,7 +91,9 @@ export class UserAdministrationOverviewComponent implements OnInit {
     }
   }
 
-  private static hasPermissions(user: UserModel): boolean {
-    return ((user.permissions as Array<UserPermissionModel> | undefined)?.length ?? 0) > 0;
+  routeToCreate(): Promise<boolean> {
+    return this.router.navigate(['add'], {
+      relativeTo: this.route,
+    });
   }
 }

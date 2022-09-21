@@ -1,0 +1,56 @@
+<app-dialog-close
+  (clicked)="
+    dialogService.confirmLeave((userLoaded ?? false) && !userHasAlreadyPermissions, dialogRef)
+  "
+></app-dialog-close>
+
+<h1 class="font-bold-4xl mb-5">{{ 'USER_ADMIN.NEW' | translate }}</h1>
+<h2 class="font-bold-xl mb-2">{{ 'USER_ADMIN.NEW_INFORMATION' | translate }}</h2>
+
+<div class="d-flex flex-column mb-2">
+  <mat-label class="font-bold-lg required-indicator">{{
+    'USER_ADMIN.TABLE_HEADER' | translate
+  }}</mat-label>
+  <mat-label class="font-regular-sm">{{ 'FORM.FOR_EXAMPLE' | translate }} u123456</mat-label>
+</div>
+<app-user-select (selectionChange)="selectUser($event)"></app-user-select>
+<p *ngIf="userHasAlreadyPermissions" class="color-error">
+  {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
+</p>
+<p *ngIf="selectedUserHasNoUserId" class="color-error">
+  {{ 'USER_ADMIN.SELECTED_USER_HAS_NO_USER_ID' | translate }}
+</p>
+
+<ng-template [ngIf]="userLoaded && !userHasAlreadyPermissions">
+  <app-user-administration-read-only-data
+    [data]="userLoaded"
+  ></app-user-administration-read-only-data>
+  <h1 class="font-bold-4xl mt-5">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
+  <div *ngFor="let permission of userPermissionManager.getPermissions()">
+    <app-user-administration-application-config
+      [applicationConfigManager]="userPermissionManager"
+      [application]="permission.application"
+    ></app-user-administration-application-config>
+  </div>
+</ng-template>
+
+<footer class="footer fixed-bottom d-flex align-items-center justify-content-center">
+  <button
+    class="atlas-primary-btn footer-btn"
+    (click)="
+      dialogService.confirmLeave((userLoaded ?? false) && !userHasAlreadyPermissions, dialogRef)
+    "
+    data-cy="cancel"
+  >
+    {{ 'COMMON.CANCEL' | translate }}
+  </button>
+  <button
+    class="atlas-primary-btn footer-btn ms-3"
+    data-cy="save"
+    type="submit"
+    (click)="createUser()"
+    [disabled]="!userLoaded || userHasAlreadyPermissions"
+  >
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
+</footer>

@@ -17,7 +17,7 @@ public class UserPermissionDistributor {
 
   private final KafkaTemplate<String, Object> kafkaTemplate;
 
-  @Value("${spring.kafka.atlas.user.administration.topic}")
+  @Value("${kafka.atlas.user.administration.topic}")
   private String userPermissionTopic;
 
   public void pushUserPermissionToKafka(UserAdministrationModel userAdministrationModel) {

@@ -27,8 +27,8 @@ spring:
           auth: true
           starttls:
             enable: true
-  kafka:
-    atlas:
-      mail:
-        topic: atlas.mail
-        groupId: atlas.kafka.user
+kafka:
+  atlas:
+    mail:
+      topic: atlas.mail
+      groupId: atlas.kafka.mail.groupId

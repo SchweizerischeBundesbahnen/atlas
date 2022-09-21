@@ -3,12 +3,12 @@ spring:
     url: jdbc:postgresql://line-directory-prod.czdfgxj0x1zx.eu-central-1.rds.amazonaws.com/line_directory
     username: ${DB_USER}
     password: ${DB_PWD}
-  kafka:
-    atlas:
-      user:
-        administration:
-          topic: atlas.prod.user.administration
-          groupId: atlas.kafka.user
+kafka:
+  atlas:
+    user:
+      administration:
+        topic: atlas.prod.user.administration
+        groupId: atlas.kafka.user.administration.groupId
 auth:
   audience:
     service-name: f3cdcb3e-1e95-4591-b664-4526d00f5d66

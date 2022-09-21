@@ -28,7 +28,7 @@ model/containerLine.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTransportCompany.ts
-model/containerUserModel.ts
+model/containerUser.ts
 model/coverage.ts
 model/coverageType.ts
 model/displayInfo.ts
@@ -50,7 +50,8 @@ model/transportCompany.ts
 model/transportCompanyBoRelation.ts
 model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
+model/user.ts
 model/userAccountStatus.ts
-model/userModel.ts
+model/userPermissionCreateModel.ts
 model/userPermissionModel.ts
 variables.ts
