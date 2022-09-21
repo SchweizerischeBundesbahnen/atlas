@@ -4,6 +4,8 @@ import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.base.service.model.service.UserService;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,8 @@ public class UserPermissionHolder {
 
   private final Map<String, UserAdministrationModel> userPermissions = new HashMap<>();
 
-  public UserAdministrationModel getCurrentUser() {
-    return userPermissions.get(UserService.getSbbUid());
+  public Optional<UserAdministrationModel> getCurrentUser() {
+    return Optional.ofNullable(userPermissions.get(UserService.getSbbUid()));
   }
 
   public void putUserPermissions(String sbbuid, UserAdministrationModel userAdministrationModel) {
