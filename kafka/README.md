@@ -31,8 +31,22 @@ public static void main(String[]args){
 }
 ```
 
+3. Make sure your Deployment configures the Openshift Secrets correctly:
+```yaml
+            - name: KAFKA_SCRAM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-secrets
+                  key: scram-password
+            - name: KAFKA_TRUSTSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-secrets
+                  key: truststore-password
+```
+
 4. `@Import(AtlasKafkaConfiguration.class)` to include the config to the application context.
-3. Use this library for models which shall be sent over Kafka
+5. Use this library for models which shall be sent over Kafka
 
 ## What it does
 
