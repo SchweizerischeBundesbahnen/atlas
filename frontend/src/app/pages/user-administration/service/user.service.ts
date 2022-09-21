@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserAdministrationService, UserInformationService, UserModel } from '../../../api';
+import {
+  UserAdministrationService,
+  UserInformationService,
+  UserPermissionCreateModel,
+  UserPermissionModel,
+} from '../../../api';
 import { map } from 'rxjs/operators';
+import { UserModel } from '../../../api/model/userModel';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +32,25 @@ export class UserService {
 
   searchUsers(searchQuery: string): Observable<UserModel[]> {
     return this.userInformationService.searchUsers(searchQuery);
+  }
+
+  hasUserPermissions(userId: string): Observable<boolean> {
+    return this.getUser(userId).pipe(
+      map((user) => {
+        return this.getPermissionsFromUserModelAsArray(user).length > 0;
+      })
+    );
+  }
+
+  getPermissionsFromUserModelAsArray(user: UserModel): UserPermissionModel[] {
+    return Array.from(user.permissions ?? []);
+  }
+
+  createUserPermission(userPermission: UserPermissionCreateModel): Observable<UserModel> {
+    return this.userAdministrationService.createUserPermission(userPermission);
+  }
+
+  updateUserPermission(userPermission: UserPermissionCreateModel): Observable<UserModel> {
+    return this.userAdministrationService.updateUserPermissions(userPermission);
   }
 }

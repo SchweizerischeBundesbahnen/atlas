@@ -19,7 +19,7 @@ public class MailNotificationService {
 
   private final Tracer tracer;
 
-  @Value("${mail.receiver.schduling}")
+  @Value("${mail.receiver.scheduling}")
   private List<String> schedulingNotificationAddresses;
 
   public MailNotification buildMailNotification(String jobName, Throwable throwable) {

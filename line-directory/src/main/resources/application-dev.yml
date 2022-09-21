@@ -3,12 +3,12 @@ spring:
     url: jdbc:postgresql://line-directory-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/line_directory
     username: ${DB_USER}
     password: ${DB_PWD}
-  kafka:
-    atlas:
-      user:
-        administration:
-          topic: atlas.dev.user.administration
-          groupId: atlas.kafka.user
+kafka:
+  atlas:
+    user:
+      administration:
+        topic: atlas.dev.user.administration
+        groupId: atlas.kafka.user.administration.groupId
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n

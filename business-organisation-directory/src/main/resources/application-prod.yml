@@ -3,15 +3,15 @@ spring:
     url: jdbc:postgresql://business-organisation-directory-prod.czdfgxj0x1zx.eu-central-1.rds.amazonaws.com:5432/business_organisation_directory
     username: ${DB_USER}
     password: ${DB_PWD}
-  kafka:
-    atlas:
-      mail:
-        topic: atlas.prod.mail
-        groupId: atlas.kafka.user
-      user:
-        administration:
-          topic: atlas.prod.user.administration
-          groupId: atlas.kafka.user
+kafka:
+  atlas:
+    mail:
+      topic: atlas.prod.mail
+      groupId: atlas.kafka.mail.groupId
+    user:
+      administration:
+        topic: atlas.prod.user.administration
+        groupId: atlas.kafka.user.administration.groupId
 auth:
   audience:
     service-name: f3cdcb3e-1e95-4591-b664-4526d00f5d66
