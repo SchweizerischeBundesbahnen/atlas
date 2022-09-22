@@ -13,10 +13,14 @@
     (change)="changeTrigger.emit($event)"
   >
     <ng-template ng-label-tmp let-item="item">
-      {{ getSelectOption(item) }}
+      <ng-container
+        *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"
+      ></ng-container>
     </ng-template>
     <ng-template ng-option-tmp let-item="item">
-      {{ getSelectOption(item) }}
+      <ng-container
+        *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"
+      ></ng-container>
     </ng-template>
   </ng-select>
 
