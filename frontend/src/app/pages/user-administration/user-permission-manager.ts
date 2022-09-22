@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 export class UserPermissionManager {
   constructor(private readonly boService: BusinessOrganisationsService) {}
 
-  private readonly userPermission: UserPermissionCreateModel = {
+  readonly userPermission: UserPermissionCreateModel = {
     sbbUserId: '',
     permissions: [
       {
@@ -67,10 +67,6 @@ export class UserPermissionManager {
 
   getSbbUserId(): string {
     return this.userPermission.sbbUserId;
-  }
-
-  getPermissions(): UserPermissionModel[] {
-    return this.userPermission.permissions;
   }
 
   getCurrentRole(application: ApplicationType): ApplicationRole {

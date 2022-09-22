@@ -9,6 +9,8 @@ import { UserAdministrationApplicationConfigComponent } from './application-conf
 import { UserSelectComponent } from './user-select/user-select.component';
 import { UserAdministrationReadOnlyDataComponent } from './read-only-data/user-administration-read-only-data.component';
 import { UserAdministrationBasicComponent } from './basic/user-administration-basic.component';
+import { EditTitlePipe } from './edit/edit-title.pipe';
+import { UserSelectFormatPipe } from './user-select/user-select-format.pipe';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { UserAdministrationBasicComponent } from './basic/user-administration-ba
     UserSelectComponent,
     UserAdministrationReadOnlyDataComponent,
     UserAdministrationBasicComponent,
+    EditTitlePipe,
+    UserSelectFormatPipe,
   ],
   imports: [UserAdministrationRoutingModule, CoreModule, FormModule],
 })

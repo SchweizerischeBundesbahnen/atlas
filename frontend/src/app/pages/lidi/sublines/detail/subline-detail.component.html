@@ -59,7 +59,6 @@
               [items$]="mainlines$"
               [controlName]="mainlineSlnidFormControlName"
               [formGroup]="form"
-              [getSelectOption]="selectOption"
               [bindValueInp]="'slnid'"
               (searchTrigger)="searchMainlines($event)"
               data-cy="mainline"
@@ -68,6 +67,9 @@
                 'LIDI.SUBLINE.MAINLINE' | translate
               }}</mat-label>
               <div class="mat-label-form-field-space-between"></div>
+              <ng-template #labelOptionTemplates let-item>
+                {{ item | mainlineSelectOption }}
+              </ng-template>
             </form-search-select>
           </div>
           <div class="mainline-link d-flex flex-column">
