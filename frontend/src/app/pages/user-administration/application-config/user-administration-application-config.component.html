@@ -10,26 +10,20 @@
       <mat-form-field>
         <mat-select
           [disabled]="readOnly"
-          [value]="applicationConfigManager.getCurrentRole(application)"
+          [(value)]="selectedRole"
           (selectionChange)="
             applicationConfigManager.changePermissionRole(application, $event.value)
           "
         >
-          <mat-option
-            *ngFor="
-              let option of applicationConfigManager.getAvailableApplicationRolesOfApplication(
-                application
-              )
-            "
-            [value]="option"
-            >{{ 'COMMON.ROLES.' + option | translate }}</mat-option
-          >
+          <mat-option *ngFor="let option of availableOptions" [value]="option">{{
+            'COMMON.ROLES.' + option | translate
+          }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
     <div class="d-flex flex-column col-9 pe-3">
-      <ng-template [ngIf]="isCurrentRoleWriter()">
+      <ng-template [ngIf]="selectedRole === 'WRITER'">
         <span class="font-bold-lg">
           {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}
         </span>
