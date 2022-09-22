@@ -8,6 +8,7 @@ import { LineDetailComponent } from './lines/detail/line-detail.component';
 import { SublineDetailComponent } from './sublines/detail/subline-detail.component';
 import { ColorModule } from './color-picker/color.module';
 import { FormModule } from '../../core/module/form.module';
+import { MainlineSelectOptionPipe } from './sublines/detail/mainline-select-option.pipe';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FormModule } from '../../core/module/form.module';
     LineDetailComponent,
     SublinesComponent,
     SublineDetailComponent,
+    MainlineSelectOptionPipe,
   ],
   imports: [CoreModule, ColorModule, LidiRoutingModule, FormModule],
 })

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UserPermissionManager } from '../user-permission-manager';
@@ -11,12 +11,10 @@ import { UserModel } from '../../../api/model/userModel';
 @Component({
   selector: 'app-user-administration-edit',
   templateUrl: './user-administration-edit.component.html',
+  styleUrls: ['./user-administration-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserAdministrationEditComponent implements OnInit {
-  @Input() user?: UserModel;
-  editMode = false;
-  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
-
   constructor(
     private readonly notificationService: NotificationService,
     private readonly boService: BusinessOrganisationsService,
@@ -25,6 +23,10 @@ export class UserAdministrationEditComponent implements OnInit {
     readonly dialogRef: MatDialogRef<any>,
     readonly dialogService: DialogService
   ) {}
+
+  @Input() user?: UserModel;
+  editMode = false;
+  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
 
   ngOnInit() {
     if (this.userService.getPermissionsFromUserModelAsArray(this.user!).length === 0) {
@@ -35,13 +37,6 @@ export class UserAdministrationEditComponent implements OnInit {
     this.userPermissionManager.setPermissions(
       this.userService.getPermissionsFromUserModelAsArray(this.user!)
     );
-  }
-
-  getTitle(): string {
-    if (this.user) {
-      return `${this.user.firstName} ${this.user.lastName}`;
-    }
-    return this.translatePipe.transform('USER_ADMIN.NOT_FOUND');
   }
 
   saveEdits(): void {
