@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ApplicationType, BusinessOrganisation } from '../../../api';
+import { ApplicationRole, ApplicationType, BusinessOrganisation } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../user-permission-manager';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
@@ -9,14 +9,24 @@ import { BusinessOrganisationLanguageService } from '../../../core/form-componen
   selector: 'app-user-administration-application-config',
   templateUrl: './user-administration-application-config.component.html',
   styleUrls: ['./user-administration-application-config.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserAdministrationApplicationConfigComponent {
+export class UserAdministrationApplicationConfigComponent implements OnInit {
   @Input() applicationConfigManager!: UserPermissionManager;
   @Input() application!: ApplicationType;
   @Input() readOnly = false;
 
   constructor(private readonly boLanguageService: BusinessOrganisationLanguageService) {}
 
+  ngOnInit() {
+    this.selectedRole = this.applicationConfigManager.getCurrentRole(this.application);
+    this.availableOptions = this.applicationConfigManager.getAvailableApplicationRolesOfApplication(
+      this.application
+    );
+  }
+
+  selectedRole: ApplicationRole = 'READER';
+  availableOptions: ApplicationRole[] = [];
   selectedIndex = -1;
 
   readonly businessOrganisationForm: FormGroup = new FormGroup({
@@ -45,10 +55,6 @@ export class UserAdministrationApplicationConfigComponent {
       value: this.boLanguageService.getCurrentLanguageDescription(),
     },
   ];
-
-  isCurrentRoleWriter(): boolean {
-    return this.applicationConfigManager.getCurrentRole(this.application) === 'WRITER';
-  }
 
   add(): void {
     const value = this.businessOrganisationForm.get('businessOrganisation')?.value;
