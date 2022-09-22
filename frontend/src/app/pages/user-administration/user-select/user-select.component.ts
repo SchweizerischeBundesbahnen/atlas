@@ -9,16 +9,13 @@ import { UserModel } from '../../../api/model/userModel';
   templateUrl: './user-select.component.html',
 })
 export class UserSelectComponent {
+  constructor(private readonly userService: UserService) {}
+
   @Output() selectionChange: EventEmitter<UserModel> = new EventEmitter<UserModel>();
   userSearchResults$: Observable<UserModel[]> = of([]);
   readonly form: FormGroup = new FormGroup({
     userSearch: new FormControl<UserModel | null>(null),
   });
-
-  constructor(private readonly userService: UserService) {}
-
-  readonly selectOption: (item: UserModel) => string = (item: UserModel): string =>
-    `${item.displayName} (${item.mail})`;
 
   searchUser(searchQuery: string): void {
     if (!searchQuery) {
