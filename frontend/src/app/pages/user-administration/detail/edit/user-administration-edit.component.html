@@ -1,4 +1,4 @@
-<app-dialog-close (clicked)="dialogService.confirmLeave(editMode, dialogRef)"></app-dialog-close>
+<app-dialog-close (clicked)="cancelEdit(editMode)"></app-dialog-close>
 
 <h1 class="font-bold-4xl mb-5">{{ user | editTitle }}</h1>
 
@@ -10,6 +10,7 @@
     <app-user-administration-application-config
       [applicationConfigManager]="userPermissionManager"
       [application]="permission.application"
+      [role]="permission.role"
       [readOnly]="!editMode"
     ></app-user-administration-application-config>
   </div>
@@ -17,11 +18,7 @@
 
 <footer class="footer fixed-bottom d-flex align-items-center justify-content-center">
   <ng-container *ngIf="editMode; else readMode">
-    <button
-      class="atlas-primary-btn footer-btn"
-      (click)="dialogService.confirmLeave(true, dialogRef)"
-      data-cy="cancel"
-    >
+    <button class="atlas-primary-btn footer-btn" (click)="cancelEdit()" data-cy="cancel">
       {{ 'COMMON.CANCEL' | translate }}
     </button>
     <button
@@ -29,6 +26,7 @@
       data-cy="save"
       type="submit"
       (click)="saveEdits()"
+      [disabled]="!saveEnabled"
     >
       {{ 'COMMON.SAVE' | translate }}
     </button>
@@ -37,7 +35,7 @@
   <ng-template #readMode>
     <button
       class="atlas-primary-btn footer-btn"
-      (click)="dialogService.confirmLeave(false, dialogRef)"
+      (click)="dialogRef.close()"
       data-cy="backToOverview"
     >
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
@@ -45,7 +43,7 @@
     <button
       class="atlas-primary-btn footer-btn ms-3"
       data-cy="edit"
-      (click)="editMode = true"
+      (click)="editMode = true; saveEnabled = true"
       [disabled]="!user"
     >
       {{ 'COMMON.EDIT' | translate }}

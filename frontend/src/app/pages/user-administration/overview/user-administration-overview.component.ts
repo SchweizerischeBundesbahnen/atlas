@@ -22,7 +22,7 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
   userPageResult: { users: UserModel[]; totalCount: number } = { users: [], totalCount: 0 };
   tableIsLoading = false;
 
-  readonly form: FormGroup = new FormGroup({
+  readonly userSearchForm: FormGroup = new FormGroup({
     userSearch: new FormControl<string | null>(null),
   });
   readonly tableColumns = tableColumns;
@@ -57,7 +57,7 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
 
   loadUsers(tableSettings: TableSettings): void {
     this.tableIsLoading = true;
-    this.form.reset();
+    this.userSearchForm.reset();
     this.userService
       .getUsers(tableSettings.page, tableSettings.size)
       .pipe(
