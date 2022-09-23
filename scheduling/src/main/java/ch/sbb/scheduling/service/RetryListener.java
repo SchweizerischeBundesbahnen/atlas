@@ -24,7 +24,7 @@ class RetryListener extends RetryListenerSupport {
   public <T, E extends Throwable> void close(RetryContext context,
       RetryCallback<T, E> callback, Throwable throwable) {
     String jobName = getJobName(callback);
-    log.error("Unable to recover job {} from  Exception", jobName);
+    log.error("Unable to recover job {} from  Exception", jobName, throwable);
     log.error("Sending Mail notification...");
     MailNotification mailNotification = mailNotificationService.buildMailNotification(getJobName(callback), throwable);
     service.produceMailNotification(mailNotification);
@@ -38,7 +38,7 @@ class RetryListener extends RetryListenerSupport {
     if (throwable == null) {
       throwable = new Throwable("Something went wrong. No error details available!");
     }
-    log.error("Exception Occurred on {}, Retry Count {} ", getJobName(callback), context.getRetryCount());
+    log.error("Exception Occurred on {}, Retry Count {} ", getJobName(callback), context.getRetryCount(), throwable);
     super.onError(context, callback, throwable);
   }
 
