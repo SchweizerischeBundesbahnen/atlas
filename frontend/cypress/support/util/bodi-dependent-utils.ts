@@ -5,14 +5,21 @@ export default class BodiDependentUtils {
   static createDependentBusinessOrganisation() {
     cy.request({
       method: 'POST',
+      failOnStatusCode: false,
       url: Cypress.env('API_URL') + '/business-organisation-directory/v1/business-organisations/versions',
       body: BodiDependentUtils.getDependentBusinessOrganisation(),
       headers: {
         Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
       },
     }).then((response) => {
-      expect(response).property('status').to.equal(201);
-      window.sessionStorage.setItem('sboid', response.body.sboid);
+      if (response.status === 409) {
+        const sboidParameters = response.body.details[0].displayInfo.parameters.filter((parameter: { key: string; }) => parameter.key == "sboid");
+        const sboid = sboidParameters[0].value;
+        window.sessionStorage.setItem('sboid', sboid);
+      } else {
+        expect(response).property('status').to.equal(201);
+        window.sessionStorage.setItem('sboid', response.body.sboid);
+      }
     });
   }
 
