@@ -117,3 +117,4 @@ frontend/.npmrc
 .idea/modules.xml
 .idea/uiDesigner.xml
 .idea/vcs.xml
+.idea/sonarlint/
