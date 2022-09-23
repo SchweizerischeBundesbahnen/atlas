@@ -196,6 +196,9 @@
     "NOTIFICATIONS": {
       "ADD_SUCCESS": "Benutzer erfolgreich erfasst",
       "EDIT_SUCCESS": "Erfolgreich gespeichert"
+    },
+    "CONFLICT": {
+      "SBBUSERID": "Der Benutzer {{sbbUserId}} ist bereits hinterlegt."
     }
   },
   "TTFN": {

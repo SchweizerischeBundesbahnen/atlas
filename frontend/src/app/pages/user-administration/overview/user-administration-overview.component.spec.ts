@@ -87,8 +87,8 @@ describe('UserAdministrationOverviewComponent', () => {
   });
 
   it('test loadUsers', () => {
-    component.form.get('userSearch')?.setValue('test');
-    expect(component.form.get('userSearch')?.value).toBe('test');
+    component.userSearchForm.get('userSearch')?.setValue('test');
+    expect(component.userSearchForm.get('userSearch')?.value).toBe('test');
 
     userServiceMock.getUsers = jasmine.createSpy().and.returnValue(
       of({
@@ -100,7 +100,7 @@ describe('UserAdministrationOverviewComponent', () => {
     component.loadUsers({ page: 5, size: 5 });
 
     expect(userServiceMock.getUsers).toHaveBeenCalledOnceWith(5, 5);
-    expect(component.form.get('userSearch')?.value).toBeNull();
+    expect(component.userSearchForm.get('userSearch')?.value).toBeNull();
     expect(component.tableIsLoading).toBeFalse();
     expect(component.userPageResult).toEqual({
       users: [{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }],
