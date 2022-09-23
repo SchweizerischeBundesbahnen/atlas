@@ -33,8 +33,7 @@ class RetryListenerTest {
   @Mock
   private RetryCallback callback;
 
-  @Mock
-  private Throwable throwable;
+  private final Throwable throwable = new RuntimeException("Fatal exception");
 
   @Test
   public void shouldSendEmailOnClose() {
