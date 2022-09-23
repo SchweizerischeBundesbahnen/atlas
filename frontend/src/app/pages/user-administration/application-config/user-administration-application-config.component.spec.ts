@@ -14,12 +14,16 @@ describe('UserAdministrationApplicationConfigComponent', () => {
   let applicationConfigManagerMock: SpyObj<UserPermissionManager>;
 
   beforeEach(async () => {
-    applicationConfigManagerMock = jasmine.createSpyObj('UserPermissionManager', [
-      'getCurrentRole',
-      'addSboidToPermission',
-      'removeSboidFromPermission',
-      'getAvailableApplicationRolesOfApplication',
-    ]);
+    applicationConfigManagerMock = jasmine.createSpyObj(
+      'UserPermissionManager',
+      [
+        'getCurrentRole',
+        'addSboidToPermission',
+        'removeSboidFromPermission',
+        'getAvailableApplicationRolesOfApplication',
+      ],
+      ['boOfApplicationsSubject$']
+    );
     await TestBed.configureTestingModule({
       declarations: [UserAdministrationApplicationConfigComponent],
       imports: [
@@ -42,15 +46,6 @@ describe('UserAdministrationApplicationConfigComponent', () => {
     expect(component.selectedIndex).toBe(-1);
     expect(component.businessOrganisationForm).toBeDefined();
     expect(component.tableColumnDef).toBeDefined();
-  });
-
-  it('test isCurrentRoleWriter', () => {
-    applicationConfigManagerMock.getCurrentRole.withArgs('TTFN').and.returnValue('WRITER');
-    applicationConfigManagerMock.getCurrentRole.withArgs('LIDI').and.returnValue('SUPER_USER');
-    component.application = 'TTFN';
-    expect(component.isCurrentRoleWriter()).toBe(true);
-    component.application = 'LIDI';
-    expect(component.isCurrentRoleWriter()).toBe(false);
   });
 
   it('test addBusinessOrganisation', () => {
