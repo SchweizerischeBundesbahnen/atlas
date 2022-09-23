@@ -22,7 +22,6 @@ export class SearchSelectComponent<TYPE> {
   @Input() placeholderTextKey = '';
   @Input() controlName!: string;
   @Input() formGroup!: FormGroup;
-  // TODO: use everywhere individual pipe instead of this function
   @Input() bindValueInp = '';
   @Input() pipe?: TranslatePipe;
 

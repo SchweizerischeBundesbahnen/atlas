@@ -2,14 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import {
-  Line,
-  LineType,
-  PaymentType,
-  SublinesService,
-  SublineType,
-  SublineVersion,
-} from '../../../../api';
+import { PaymentType, SublinesService, SublineType, SublineVersion } from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -17,6 +10,8 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import { MockAppDetailWrapperComponent } from '../../../../app.testing.mocks';
+import { MainlineSelectOptionPipe } from './mainline-select-option.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -151,35 +146,6 @@ describe('SublineDetailComponent for new sublineVersion', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should return translated not null description', () => {
-    const item: Line = {
-      swissLineNumber: 'ch:slnid:item:12345',
-      lineType: LineType.Operational,
-      validFrom: new Date('2021-06-01'),
-      validTo: new Date('2029-06-01'),
-      businessOrganisation: 'SBB',
-    };
-
-    fixture.componentInstance.getDescription(item);
-    fixture.detectChanges();
-    expect(item.description).toEqual('LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE');
-  });
-
-  it('should return description', () => {
-    const item: Line = {
-      description: 'description',
-      swissLineNumber: 'ch:slnid:item:12345',
-      lineType: LineType.Operational,
-      validFrom: new Date('2021-06-01'),
-      validTo: new Date('2029-06-01'),
-      businessOrganisation: 'SBB',
-    };
-
-    fixture.componentInstance.getDescription(item);
-    fixture.detectChanges();
-    expect(item.description).toEqual('description');
-  });
-
   describe('create new Version', () => {
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
@@ -215,6 +181,7 @@ function setupTestBed(
       MockAppDetailWrapperComponent,
       InfoIconComponent,
       SearchSelectComponent,
+      MainlineSelectOptionPipe,
     ],
     imports: [AppTestingModule],
     providers: [
@@ -224,6 +191,7 @@ function setupTestBed(
         provide: MAT_DIALOG_DATA,
         useValue: data,
       },
+      TranslatePipe,
     ],
   })
     .compileComponents()

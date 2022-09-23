@@ -8,10 +8,11 @@ import {
   TranslatePipe,
 } from '@ngx-translate/core';
 import { Component } from '@angular/core';
-import { MaterialModule } from '../../../core/module/material.module';
+import { MaterialModule } from '../../../../core/module/material.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatDialogRef } from '@angular/material/dialog';
+import { EditTitlePipe } from './edit-title.pipe';
 
 @Component({
   selector: 'app-dialog-close',
@@ -31,7 +32,7 @@ describe('UserAdministrationEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationEditComponent, MockDialogCloseComponent],
+      declarations: [UserAdministrationEditComponent, MockDialogCloseComponent, EditTitlePipe],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },

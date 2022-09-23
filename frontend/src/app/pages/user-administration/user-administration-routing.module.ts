@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserAdministrationOverviewComponent } from './overview/user-administration-overview.component';
 import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
 import { UserAdministrationResolver } from './user-administration.resolver';
-import { UserAdministrationBasicComponent } from './basic/user-administration-basic.component';
+import { UserAdministrationComponent } from './detail/user-administration/user-administration.component';
 
 const routes: Routes = [
   {
@@ -13,7 +13,7 @@ const routes: Routes = [
       {
         path: ':sbbUserId',
         component: RouteToDialogComponent,
-        data: { component: UserAdministrationBasicComponent },
+        data: { component: UserAdministrationComponent },
         resolve: {
           user: UserAdministrationResolver,
         },
