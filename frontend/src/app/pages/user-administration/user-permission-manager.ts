@@ -6,8 +6,7 @@ import {
   UserPermissionCreateModel,
   UserPermissionModel,
 } from '../../api';
-import { take } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 
 export class UserPermissionManager {
   constructor(private readonly boService: BusinessOrganisationsService) {}
@@ -49,6 +48,12 @@ export class UserPermissionManager {
     BODI: [],
   };
 
+  readonly boOfApplicationsSubject$: BehaviorSubject<{
+    [application in ApplicationType]: BusinessOrganisation[];
+  }> = new BehaviorSubject<{ [application in ApplicationType]: BusinessOrganisation[] }>(
+    this.businessOrganisationsOfApplication
+  );
+
   getAvailableApplicationRolesOfApplication(application: ApplicationType): ApplicationRole[] {
     return this.availableApplicationRolesConfig[application];
   }
@@ -79,10 +84,13 @@ export class UserPermissionManager {
   }
 
   setPermissions(permissions: UserPermissionModel[]): void {
+    console.log('test');
     permissions.forEach((permission) => {
       const application = permission.application;
-      this.userPermission.permissions[this.getPermissionIndexFromApplication(application)].role =
-        permission.role;
+      const permissionIndex = this.getPermissionIndexFromApplication(application);
+      this.userPermission.permissions[permissionIndex].role = permission.role;
+      this.userPermission.permissions[permissionIndex].sboids = [];
+      this.businessOrganisationsOfApplication[application] = [];
       permission.sboids.forEach((sboid) => {
         this.addSboidToPermission(application, sboid);
       });
@@ -96,36 +104,39 @@ export class UserPermissionManager {
 
   removeSboidFromPermission(application: ApplicationType, sboidIndex: number): void {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
-    this.userPermission.permissions[permissionIndex].sboids.splice(sboidIndex, 1);
+    const sboidToDelete = this.businessOrganisationsOfApplication[application].filter(
+      (_, index) => index === sboidIndex
+    )[0].sboid;
+    this.userPermission.permissions[permissionIndex].sboids = this.userPermission.permissions[
+      permissionIndex
+    ].sboids.filter((sboid) => sboid !== sboidToDelete);
     this.businessOrganisationsOfApplication[application] = this.businessOrganisationsOfApplication[
       application
     ].filter((_, index) => index !== sboidIndex);
+    this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
   }
 
   addSboidToPermission(application: ApplicationType, sboid: string): void {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
 
-    this.boService
-      .getAllBusinessOrganisations([sboid], undefined, undefined, 0, 1, ['sboid,ASC'])
-      .pipe(
-        take(1),
-        map((result) => {
-          if (!result.objects || result.objects.length === 0) {
-            console.error('Could not resolve selected bo');
-            return;
-          }
-          if (this.userPermission.permissions[permissionIndex].sboids.includes(sboid)) {
-            console.error('Already added');
-            return;
-          }
-          this.userPermission.permissions[permissionIndex].sboids.push(sboid);
-          this.businessOrganisationsOfApplication[application] = [
-            ...this.businessOrganisationsOfApplication[application],
-            result.objects[0],
-          ];
-        })
-      )
-      .subscribe();
+    firstValueFrom(
+      this.boService.getAllBusinessOrganisations([sboid], undefined, undefined, 0, 1, ['sboid,ASC'])
+    ).then((result) => {
+      if (!result.objects || result.objects.length === 0) {
+        console.error('Could not resolve selected bo');
+        return;
+      }
+      if (this.userPermission.permissions[permissionIndex].sboids.includes(sboid)) {
+        console.error('Already added');
+        return;
+      }
+      this.userPermission.permissions[permissionIndex].sboids.push(sboid);
+      this.businessOrganisationsOfApplication[application] = [
+        ...this.businessOrganisationsOfApplication[application],
+        result.objects[0],
+      ];
+      this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
+    });
   }
 
   private getPermissionIndexFromApplication(application: ApplicationType): number {

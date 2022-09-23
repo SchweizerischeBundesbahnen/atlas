@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -56,22 +55,11 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     }
 
     @Override
-    public UserModel createUserPermission(UserPermissionCreateModel user) {
-        userAdministrationService.validatePermissionExistence(user);
-
-        final List<UserPermission> toSave = user.getPermissions().stream().map(permission -> toEntity(user.getSbbUserId(), permission)).toList();
-
-        userAdministrationService.save(toSave);
-        UserModel userModel = getUser(user.getSbbUserId());
+    public UserModel createUserPermission(UserPermissionCreateModel userPermissionCreate) {
+        userAdministrationService.save(userPermissionCreate);
+        UserModel userModel = getUser(userPermissionCreate.getSbbUserId());
         userPermissionDistributor.pushUserPermissionToKafka(userModel.toKafkaModel());
         return userModel;
-    }
-
-    private UserPermission toEntity(String sbbUserId, UserPermissionModel permissionModel) {
-        return UserPermission.builder().sbbUserId(sbbUserId.toLowerCase())
-                .application(permissionModel.getApplication())
-                .role(permissionModel.getRole())
-                .sboid(new HashSet<>(permissionModel.getSboids())).build();
     }
 
     private Set<UserPermissionModel> getUserPermissionModels(String userId) {

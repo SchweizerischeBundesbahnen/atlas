@@ -11,6 +11,7 @@ import { InfoIconComponent } from '../form-components/info-icon/info-icon.compon
 import { SearchSelectComponent } from '../form-components/search-select/search-select.component';
 import { BusinessOrganisationSelectComponent } from '../form-components/bo-select/business-organisation-select.component';
 import { DialogCloseComponent } from '../form-components/dialog-close/dialog-close.component';
+import { BoSelectionDisplayPipe } from '../form-components/bo-select/bo-selection-display.pipe';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DialogCloseComponent } from '../form-components/dialog-close/dialog-clo
     InfoIconComponent,
     SearchSelectComponent,
     DialogCloseComponent,
+    BoSelectionDisplayPipe,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule],
   exports: [
