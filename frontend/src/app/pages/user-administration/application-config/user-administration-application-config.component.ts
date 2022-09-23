@@ -4,6 +4,8 @@ import { ApplicationRole, ApplicationType, BusinessOrganisation } from '../../..
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../user-permission-manager';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -15,17 +17,21 @@ export class UserAdministrationApplicationConfigComponent implements OnInit {
   @Input() applicationConfigManager!: UserPermissionManager;
   @Input() application!: ApplicationType;
   @Input() readOnly = false;
+  @Input() role: ApplicationRole = 'READER';
+
+  boListener$: Observable<BusinessOrganisation[]> = of([]);
 
   constructor(private readonly boLanguageService: BusinessOrganisationLanguageService) {}
 
   ngOnInit() {
-    this.selectedRole = this.applicationConfigManager.getCurrentRole(this.application);
     this.availableOptions = this.applicationConfigManager.getAvailableApplicationRolesOfApplication(
       this.application
     );
+    this.boListener$ = this.applicationConfigManager.boOfApplicationsSubject$.pipe(
+      map((bosOfApplications) => bosOfApplications[this.application])
+    );
   }
 
-  selectedRole: ApplicationRole = 'READER';
   availableOptions: ApplicationRole[] = [];
   selectedIndex = -1;
 

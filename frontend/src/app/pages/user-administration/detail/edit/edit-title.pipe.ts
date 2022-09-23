@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { UserModel } from '../../../api/model/userModel';
+import { UserModel } from '../../../../api/model/userModel';
 
 @Pipe({
   name: 'editTitle',
