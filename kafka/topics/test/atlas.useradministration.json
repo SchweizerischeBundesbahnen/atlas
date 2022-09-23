@@ -1,5 +1,5 @@
 {
-  "name": "atlas.prod.user.administration",
+  "name": "atlas.test.user.administration",
   "replicas": 3,
   "partitions": 1,
   "configs": {
