@@ -4,6 +4,7 @@ import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.exception.AtlasException;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public class LimitedPageSizeRequestException extends AtlasException {
@@ -16,12 +17,12 @@ public class LimitedPageSizeRequestException extends AtlasException {
     @Override
     public ErrorResponse getErrorResponse() {
         return ErrorResponse.builder()
-            .status(405)
-            .message("Page size %s is bigger than max allowed page size %s".formatted(
-                requestedPageSize, maxAllowedPageSize))
-            .error(ERROR)
-            .details(new TreeSet<>())
-            .build();
+                .status(HttpStatus.METHOD_NOT_ALLOWED.value())
+                .message("Page size %s is bigger than max allowed page size %s".formatted(
+                        requestedPageSize, maxAllowedPageSize))
+                .error(ERROR)
+                .details(new TreeSet<>())
+                .build();
     }
 
 }
