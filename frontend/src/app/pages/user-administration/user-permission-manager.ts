@@ -84,7 +84,6 @@ export class UserPermissionManager {
   }
 
   setPermissions(permissions: UserPermissionModel[]): void {
-    console.log('test');
     permissions.forEach((permission) => {
       const application = permission.application;
       const permissionIndex = this.getPermissionIndexFromApplication(application);
@@ -104,9 +103,7 @@ export class UserPermissionManager {
 
   removeSboidFromPermission(application: ApplicationType, sboidIndex: number): void {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
-    const sboidToDelete = this.businessOrganisationsOfApplication[application].filter(
-      (_, index) => index === sboidIndex
-    )[0].sboid;
+    const sboidToDelete = this.businessOrganisationsOfApplication[application][sboidIndex].sboid;
     this.userPermission.permissions[permissionIndex].sboids = this.userPermission.permissions[
       permissionIndex
     ].sboids.filter((sboid) => sboid !== sboidToDelete);

@@ -7,6 +7,8 @@ import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserModel } from '../../../api/model/userModel';
+import { MaterialModule } from '../../../core/module/material.module';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-table',
@@ -40,7 +42,9 @@ class MockFormSearchSelectComponent {
   selector: 'app-user-select',
   template: '<p>app-user-select</p>',
 })
-class MockUserSelectComponent {}
+class MockUserSelectComponent {
+  @Input() form?: FormGroup;
+}
 
 describe('UserAdministrationOverviewComponent', () => {
   let component: UserAdministrationOverviewComponent;
@@ -68,6 +72,7 @@ describe('UserAdministrationOverviewComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
         RouterTestingModule,
+        MaterialModule,
       ],
       providers: [
         {

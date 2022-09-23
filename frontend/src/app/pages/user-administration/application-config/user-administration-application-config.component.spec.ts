@@ -6,6 +6,8 @@ import { UserPermissionManager } from '../user-permission-manager';
 import { MaterialModule } from '../../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import SpyObj = jasmine.SpyObj;
+import { BehaviorSubject } from 'rxjs';
+import { ApplicationType } from '../../../api';
 
 describe('UserAdministrationApplicationConfigComponent', () => {
   let component: UserAdministrationApplicationConfigComponent;
@@ -22,7 +24,15 @@ describe('UserAdministrationApplicationConfigComponent', () => {
         'removeSboidFromPermission',
         'getAvailableApplicationRolesOfApplication',
       ],
-      ['boOfApplicationsSubject$']
+      {
+        boOfApplicationsSubject$: new BehaviorSubject<{
+          [application in ApplicationType]: unknown[];
+        }>({
+          TTFN: [],
+          LIDI: [],
+          BODI: [],
+        }),
+      }
     );
     await TestBed.configureTestingModule({
       declarations: [UserAdministrationApplicationConfigComponent],
