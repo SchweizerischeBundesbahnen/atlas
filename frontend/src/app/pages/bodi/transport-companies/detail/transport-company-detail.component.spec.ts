@@ -15,6 +15,7 @@ import { SearchSelectComponent } from '../../../../core/form-components/search-s
 import moment from 'moment';
 import { of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import { Component } from '@angular/core';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -66,6 +67,12 @@ let component: TransportCompanyDetailComponent;
 let fixture: ComponentFixture<TransportCompanyDetailComponent>;
 
 let boService: BusinessOrganisationsService;
+
+@Component({
+  selector: 'app-dialog-close',
+  template: '',
+})
+class MockDialogCloseComponent {}
 
 describe('TransportCompanyDetailComponent', () => {
   const mockData = [transportCompany, transportCompanyRelations];
@@ -169,6 +176,7 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
       RelationComponent,
       SearchSelectComponent,
       CommentComponent,
+      MockDialogCloseComponent,
     ],
     imports: [AppTestingModule],
     providers: [
