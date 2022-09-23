@@ -18,6 +18,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserModel } from '../../../../api/model/userModel';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../core/module/material.module';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user-administration-detail',
@@ -33,7 +34,9 @@ class MockUserAdministrationDetailComponent {
   selector: 'app-user-select',
   template: '',
 })
-class MockUserSelectComponent {}
+class MockUserSelectComponent {
+  @Input() form?: FormGroup;
+}
 
 @Component({
   selector: 'app-dialog-close',
