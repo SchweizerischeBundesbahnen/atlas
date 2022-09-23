@@ -19,6 +19,12 @@ class MockAppCoverageComponent {
   @Input() currentRecord!: any;
 }
 
+@Component({
+  selector: 'app-dialog-close',
+  template: '',
+})
+class MockDialogCloseComponent {}
+
 describe('BaseDetailComponent', () => {
   /*eslint-disable */
   let component: BaseDetailComponent;
@@ -52,7 +58,7 @@ describe('BaseDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BaseDetailComponent, MockAppCoverageComponent],
+      declarations: [BaseDetailComponent, MockAppCoverageComponent, MockDialogCloseComponent],
       imports: [AppTestingModule],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
