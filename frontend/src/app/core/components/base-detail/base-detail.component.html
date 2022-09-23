@@ -1,13 +1,7 @@
 <div class="detail-wrapper">
-  <div class="dialog-close-panel">
-    <button
-      mat-icon-button
-      [disableRipple]="true"
-      (click)="controller.form.disabled ? controller.backToOverview() : controller.toggleEdit()"
-    >
-      <em class="bi bi-x fs-2"></em>
-    </button>
-  </div>
+  <app-dialog-close
+    (clicked)="controller.form.disabled ? controller.backToOverview() : controller.toggleEdit()"
+  ></app-dialog-close>
 
   <h1 *ngIf="!controller.showSwitch; else detailPageTitle" class="font-bold-4xl mb-5">
     {{ headingNew | translate }}

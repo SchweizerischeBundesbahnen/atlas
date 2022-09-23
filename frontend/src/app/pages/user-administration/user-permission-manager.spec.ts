@@ -30,8 +30,10 @@ describe('UserPermissionManager', () => {
 
     userPermissionManager.clearSboidsIfNotWriter();
 
-    expect(userPermissionManager.getPermissions()[0].sboids).toEqual(['ch:1:sboid:writer']);
-    expect(userPermissionManager.getPermissions()[1].sboids).toEqual([]);
+    expect(userPermissionManager.userPermission.permissions[0].sboids).toEqual([
+      'ch:1:sboid:writer',
+    ]);
+    expect(userPermissionManager.userPermission.permissions[1].sboids).toEqual([]);
   });
 
   it('test getSbbUserId, setSbbUserId, getUserPermission', () => {
@@ -58,11 +60,13 @@ describe('UserPermissionManager', () => {
       },
     ]);
     userPermissionManager.removeSboidFromPermission('TTFN', 0);
-    expect(userPermissionManager.getPermissions()[0].sboids).toEqual([]);
+    expect(userPermissionManager.userPermission.permissions[0].sboids).toEqual([]);
   });
 
   it('test addSboidToPermission', () => {
     userPermissionManager.addSboidToPermission('TTFN', 'ch:1:sboid:100000');
-    expect(userPermissionManager.getPermissions()[0].sboids).toEqual(['ch:1:sboid:100000']);
+    expect(userPermissionManager.userPermission.permissions[0].sboids).toEqual([
+      'ch:1:sboid:100000',
+    ]);
   });
 });

@@ -6,7 +6,7 @@
   <table
     matSort
     mat-table
-    [dataSource]="records"
+    [dataSource]="_records"
     [ngClass]="{ admin: editable }"
     (matSortChange)="sortChanged($event)"
   >
