@@ -15,35 +15,36 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 class RetryListener extends RetryListenerSupport {
 
-  private final MailProducerService service;
+    private final MailProducerService service;
 
-  private final MailNotificationService mailNotificationService;
+    private final MailNotificationService mailNotificationService;
 
-  @Override
-  @ContinueSpan
-  public <T, E extends Throwable> void close(RetryContext context,
-      RetryCallback<T, E> callback, Throwable throwable) {
-    String jobName = getJobName(callback);
-    log.error("Unable to recover job {} from  Exception", jobName, throwable);
-    log.error("Sending Mail notification...");
-    MailNotification mailNotification = mailNotificationService.buildMailNotification(getJobName(callback), throwable);
-    service.produceMailNotification(mailNotification);
-    super.close(context, callback, throwable);
-  }
-
-  @ContinueSpan
-  @Override
-  public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback,
-      Throwable throwable) {
-    if (throwable == null) {
-      throwable = new Throwable("Something went wrong. No error details available!");
+    @Override
+    @ContinueSpan
+    public <T, E extends Throwable> void close(RetryContext context,
+            RetryCallback<T, E> callback, Throwable throwable) {
+        if (throwable != null) {
+            String jobName = getJobName(callback);
+            log.error("Unable to recover job {} from  Exception", jobName, throwable);
+            log.error("Sending Mail notification...");
+            MailNotification mailNotification = mailNotificationService.buildMailNotification(getJobName(callback), throwable);
+            service.produceMailNotification(mailNotification);
+            super.close(context, callback, throwable);
+        }
     }
-    log.error("Exception Occurred on {}, Retry Count {} ", getJobName(callback), context.getRetryCount(), throwable);
-    super.onError(context, callback, throwable);
-  }
 
-  <T, E extends Throwable> String getJobName(RetryCallback<T, E> callback) {
-    return ((MethodInvocationRetryCallback<?, ?>) callback).getLabel();
-  }
+    @ContinueSpan
+    @Override
+    public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback,
+            Throwable throwable) {
+        if (throwable != null) {
+            log.error("Exception Occurred on {}, Retry Count {} ", getJobName(callback), context.getRetryCount(), throwable);
+            super.onError(context, callback, throwable);
+        }
+    }
+
+    <T, E extends Throwable> String getJobName(RetryCallback<T, E> callback) {
+        return ((MethodInvocationRetryCallback<?, ?>) callback).getLabel();
+    }
 
 }
