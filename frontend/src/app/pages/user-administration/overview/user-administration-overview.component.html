@@ -24,7 +24,15 @@
       (editElementEvent)="openUser($event)"
       (getTableElementsEvent)="loadUsers($event)"
     >
-      <app-user-select (selectionChange)="checkIfUserExists($event)"></app-user-select>
+      <div class="mb-1">
+        <mat-label class="font-bold-lg">{{
+          'COMMON.SEARCH.SEARCH_CRITERIA' | translate
+        }}</mat-label>
+      </div>
+      <app-user-select
+        [form]="userSearchForm"
+        (selectionChange)="checkIfUserExists($event)"
+      ></app-user-select>
     </app-table>
   </div>
 </div>

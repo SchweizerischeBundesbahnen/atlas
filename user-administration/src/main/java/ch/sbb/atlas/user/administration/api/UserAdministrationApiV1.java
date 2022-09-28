@@ -29,8 +29,8 @@ public interface UserAdministrationApiV1 {
     @Operation(description = "Retrieve User Information for a given user")
     UserModel getUser(@PathVariable String userId);
 
-  @GetMapping("current")
-  UserModel getCurrentUser();
+    @GetMapping("current")
+    UserModel getCurrentUser();
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

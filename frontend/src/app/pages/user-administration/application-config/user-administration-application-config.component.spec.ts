@@ -2,24 +2,37 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationApplicationConfigComponent } from './user-administration-application-config.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { UserPermissionManager } from '../user-permission-manager';
+import { UserPermissionManager } from '../service/user-permission-manager';
 import { MaterialModule } from '../../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import SpyObj = jasmine.SpyObj;
+import { BehaviorSubject } from 'rxjs';
+import { ApplicationType } from '../../../api';
 
 describe('UserAdministrationApplicationConfigComponent', () => {
   let component: UserAdministrationApplicationConfigComponent;
   let fixture: ComponentFixture<UserAdministrationApplicationConfigComponent>;
 
-  let applicationConfigManagerMock: SpyObj<UserPermissionManager>;
+  let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
 
   beforeEach(async () => {
-    applicationConfigManagerMock = jasmine.createSpyObj('UserPermissionManager', [
-      'getCurrentRole',
-      'addSboidToPermission',
-      'removeSboidFromPermission',
-      'getAvailableApplicationRolesOfApplication',
-    ]);
+    userPermissionManagerSpy = jasmine.createSpyObj(
+      'UserPermissionManager',
+      [
+        'addSboidToPermission',
+        'removeSboidFromPermission',
+        'getAvailableApplicationRolesOfApplication',
+      ],
+      {
+        boOfApplicationsSubject$: new BehaviorSubject<{
+          [application in ApplicationType]: unknown[];
+        }>({
+          TTFN: [],
+          LIDI: [],
+          BODI: [],
+        }),
+      }
+    );
     await TestBed.configureTestingModule({
       declarations: [UserAdministrationApplicationConfigComponent],
       imports: [
@@ -29,11 +42,16 @@ describe('UserAdministrationApplicationConfigComponent', () => {
         MaterialModule,
         BrowserAnimationsModule,
       ],
+      providers: [
+        {
+          provide: UserPermissionManager,
+          useValue: userPermissionManagerSpy,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationApplicationConfigComponent);
     component = fixture.componentInstance;
-    component.applicationConfigManager = applicationConfigManagerMock;
     fixture.detectChanges();
   });
 
@@ -44,36 +62,21 @@ describe('UserAdministrationApplicationConfigComponent', () => {
     expect(component.tableColumnDef).toBeDefined();
   });
 
-  it('test isCurrentRoleWriter', () => {
-    applicationConfigManagerMock.getCurrentRole.withArgs('TTFN').and.returnValue('WRITER');
-    applicationConfigManagerMock.getCurrentRole.withArgs('LIDI').and.returnValue('SUPER_USER');
-    component.application = 'TTFN';
-    expect(component.isCurrentRoleWriter()).toBe(true);
-    component.application = 'LIDI';
-    expect(component.isCurrentRoleWriter()).toBe(false);
-  });
-
   it('test addBusinessOrganisation', () => {
     component.add();
-    expect(applicationConfigManagerMock.addSboidToPermission).not.toHaveBeenCalled();
+    expect(userPermissionManagerSpy.addSboidToPermission).not.toHaveBeenCalled();
 
     component.businessOrganisationForm.get('businessOrganisation')?.setValue('test');
     component.application = 'TTFN';
     component.add();
-    expect(applicationConfigManagerMock.addSboidToPermission).toHaveBeenCalledOnceWith(
-      'TTFN',
-      'test'
-    );
+    expect(userPermissionManagerSpy.addSboidToPermission).toHaveBeenCalledOnceWith('TTFN', 'test');
   });
 
   it('test removeBusinessOrganisation', () => {
     component.application = 'LIDI';
     component.selectedIndex = 0;
     component.remove();
-    expect(applicationConfigManagerMock.removeSboidFromPermission).toHaveBeenCalledOnceWith(
-      'LIDI',
-      0
-    );
+    expect(userPermissionManagerSpy.removeSboidFromPermission).toHaveBeenCalledOnceWith('LIDI', 0);
     expect(component.selectedIndex).toBe(-1);
   });
 });

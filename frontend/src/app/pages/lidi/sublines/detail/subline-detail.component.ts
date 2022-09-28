@@ -176,19 +176,6 @@ export class SublineDetailComponent
     return this.validationService.getValidation(this.form?.controls[inputForm]?.errors);
   }
 
-  readonly selectOption = (item: Line) => `${item.swissLineNumber} ${this.getDescription(item)}`;
-
-  getDescription(item: Line): string {
-    if (!item.description) {
-      this.translateService
-        .get('LIDI.SUBLINE.NO_LINE_DESIGNATION_AVAILABLE')
-        .subscribe((res: string) => {
-          item.description = res;
-        });
-    }
-    return `(${item.description})`;
-  }
-
   getFormControlsToDisable(): string[] {
     return [this.mainlineSlnidFormControlName];
   }

@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
+import { Component } from '@angular/core';
 
 const company: Company = {
   uicCode: 1234,
@@ -16,6 +17,12 @@ let component: CompanyDetailComponent;
 let fixture: ComponentFixture<CompanyDetailComponent>;
 let router: Router;
 let dialogRef: MatDialogRef<CompanyDetailComponent>;
+
+@Component({
+  selector: 'app-dialog-close',
+  template: '',
+})
+class MockDialogCloseComponent {}
 
 describe('CompanyDetailComponent', () => {
   const mockData = {
@@ -52,7 +59,12 @@ describe('CompanyDetailComponent', () => {
 
 function setupTestBed(data: { companyDetail: string | Company }) {
   TestBed.configureTestingModule({
-    declarations: [CompanyDetailComponent, ErrorNotificationComponent, InfoIconComponent],
+    declarations: [
+      CompanyDetailComponent,
+      ErrorNotificationComponent,
+      InfoIconComponent,
+      MockDialogCloseComponent,
+    ],
     imports: [AppTestingModule],
     providers: [
       {

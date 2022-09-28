@@ -7,11 +7,10 @@ import {
   TransportCompanyBoRelation,
   TransportCompanyRelationsService,
 } from '../../../../api';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { Role } from '../../../../core/auth/role';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import moment, { Moment } from 'moment';
@@ -32,7 +31,8 @@ export class TransportCompanyDetailComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     private readonly dialogService: DialogService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    readonly dialogRef: MatDialogRef<any>
   ) {}
 
   private static readonly commentControlName = 'comment';
