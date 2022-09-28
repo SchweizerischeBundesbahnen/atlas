@@ -1,32 +1,37 @@
 import { Component } from '@angular/core';
-import { BusinessOrganisationsService } from '../../../api';
-import { UserService } from '../service/user.service';
-import { UserPermissionManager } from '../user-permission-manager';
-import { NotificationService } from '../../../core/notification/notification.service';
+import { BusinessOrganisationsService } from '../../../../api';
+import { UserService } from '../../service/user.service';
+import { UserPermissionManager } from '../../service/user-permission-manager';
+import { NotificationService } from '../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pages } from '../../pages';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { Pages } from '../../../pages';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UserModel } from '../../../api/model/userModel';
+import { UserModel } from '../../../../api/model/userModel';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user-administration-create',
   templateUrl: './user-administration-create.component.html',
+  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
 export class UserAdministrationCreateComponent {
   userLoaded?: UserModel;
   userHasAlreadyPermissions = false;
   selectedUserHasNoUserId = false;
-  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
+  saveEnabled = true;
+  readonly userSearchForm: FormGroup = new FormGroup({
+    userSearch: new FormControl<string | null>(null),
+  });
 
   constructor(
     private readonly userService: UserService,
-    private readonly boService: BusinessOrganisationsService,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    readonly dialogService: DialogService,
-    readonly dialogRef: MatDialogRef<any>
+    private readonly dialogService: DialogService,
+    private readonly dialogRef: MatDialogRef<any>,
+    readonly userPermissionManager: UserPermissionManager
   ) {}
 
   selectUser(user: UserModel | undefined): void {
@@ -48,20 +53,30 @@ export class UserAdministrationCreateComponent {
   }
 
   createUser(): void {
-    if (!this.userLoaded?.sbbUserId) {
-      console.error('No UserId');
-      return;
-    }
-    this.userPermissionManager.setSbbUserId(this.userLoaded.sbbUserId);
+    this.saveEnabled = false;
+    this.userPermissionManager.setSbbUserId(this.userLoaded!.sbbUserId!);
     this.userPermissionManager.clearSboidsIfNotWriter();
-    this.userService
-      .createUserPermission(this.userPermissionManager.getUserPermission())
-      .subscribe(() => {
+    this.userService.createUserPermission(this.userPermissionManager.getUserPermission()).subscribe(
+      () => {
         this.router
           .navigate([Pages.USER_ADMINISTRATION.path, this.userPermissionManager.getSbbUserId()], {
             relativeTo: this.route,
           })
           .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
-      });
+      },
+      () => (this.saveEnabled = true)
+    );
+  }
+
+  cancelCreation(showDialog = true): void {
+    if (!showDialog) {
+      this.dialogRef.close();
+      return;
+    }
+    this.dialogService.confirmLeave().subscribe((result) => {
+      if (result) {
+        this.dialogRef.close();
+      }
+    });
   }
 }
