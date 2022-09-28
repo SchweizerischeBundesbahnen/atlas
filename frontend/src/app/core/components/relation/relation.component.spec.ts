@@ -80,9 +80,9 @@ describe('TransportCompanyRelationComponent', () => {
       { id: 1, value: 'test1' },
       { id: 2, value: 'test2' },
     ];
-    component['selectedIndex'] = 1;
-    expect(component.isRowSelected(component.records[1])).toBeTrue();
-    expect(component.isRowSelected(component.records[0])).toBeFalse();
+    component.selectedIndex = 1;
+    expect(component.isRowSelected(component._records[1])).toBeTrue();
+    expect(component.isRowSelected(component._records[0])).toBeFalse();
   });
 
   it('edit mode changed should emit event', () => {
@@ -102,12 +102,12 @@ describe('TransportCompanyRelationComponent', () => {
     ];
     component.editable = true;
     component.selectedIndexChanged.subscribe((index) => expect(index).toBe(1));
-    component.selectRecord(component.records[1]);
+    component.selectRecord(component._records[1]);
 
     component.editable = false;
     let selectedIndexChangedCalled = false;
     component.selectedIndexChanged.subscribe(() => (selectedIndexChangedCalled = true));
-    component.selectRecord(component.records[0]);
+    component.selectRecord(component._records[0]);
     expect(selectedIndexChangedCalled).toBeFalse();
   });
 

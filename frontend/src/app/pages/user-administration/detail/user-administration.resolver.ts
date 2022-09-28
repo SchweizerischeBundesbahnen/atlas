@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { UserService } from './service/user.service';
-import { Pages } from '../pages';
-import { UserModel } from '../../api/model/userModel';
+import { UserService } from '../service/user.service';
+import { Pages } from '../../pages';
+import { UserModel } from '../../../api/model/userModel';
 
 @Injectable({
   providedIn: 'root',

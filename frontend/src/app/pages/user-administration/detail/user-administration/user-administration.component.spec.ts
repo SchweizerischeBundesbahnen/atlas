@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserAdministrationBasicComponent } from './user-administration-basic.component';
+import { UserAdministrationComponent } from './user-administration.component';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component } from '@angular/core';
 
@@ -8,15 +8,15 @@ import { Component } from '@angular/core';
   selector: 'app-user-administration-create',
   template: '',
 })
-class MockAppUserAdministrationComponent {}
+class MockAppUserAdministrationCreateComponent {}
 
-describe('UserAdministrationBasicComponent', () => {
-  let component: UserAdministrationBasicComponent;
-  let fixture: ComponentFixture<UserAdministrationBasicComponent>;
+describe('UserAdministrationComponent', () => {
+  let component: UserAdministrationComponent;
+  let fixture: ComponentFixture<UserAdministrationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationBasicComponent, MockAppUserAdministrationComponent],
+      declarations: [UserAdministrationComponent, MockAppUserAdministrationCreateComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
@@ -25,7 +25,7 @@ describe('UserAdministrationBasicComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UserAdministrationBasicComponent);
+    fixture = TestBed.createComponent(UserAdministrationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
