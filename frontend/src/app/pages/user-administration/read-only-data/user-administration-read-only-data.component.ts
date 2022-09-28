@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReadOnlyData } from './read-only-data';
 import { UserModel } from '../../../api/model/userModel';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-user-administration-read-only-data',
   templateUrl: './user-administration-read-only-data.component.html',
   styleUrls: ['user-administration-read-only-data.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserAdministrationReadOnlyDataComponent {
   @Input() data!: UserModel;
@@ -30,8 +31,9 @@ export class UserAdministrationReadOnlyDataComponent {
       {
         translationKey: 'USER_ADMIN.ACCOUNT_STATUS',
         value: 'accountStatus',
-        formatValue: (value) =>
-          this.translatePipe.transform('USER_ADMIN.ACCOUNT_STATUS_TYPE.' + value),
+        formatValue: (value) => {
+          return this.translatePipe.transform('USER_ADMIN.ACCOUNT_STATUS_TYPE.' + value);
+        },
       },
       { translationKey: 'USER_ADMIN.DISPLAY_NAME', value: 'displayName' },
     ],
