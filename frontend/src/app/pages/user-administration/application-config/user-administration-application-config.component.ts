@@ -14,20 +14,22 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserAdministrationApplicationConfigComponent implements OnInit {
-  @Input() applicationConfigManager!: UserPermissionManager;
   @Input() application!: ApplicationType;
   @Input() readOnly = false;
   @Input() role: ApplicationRole = 'READER';
 
   boListener$: Observable<BusinessOrganisation[]> = of([]);
 
-  constructor(private readonly boLanguageService: BusinessOrganisationLanguageService) {}
+  constructor(
+    private readonly boLanguageService: BusinessOrganisationLanguageService,
+    readonly userPermissionManager: UserPermissionManager
+  ) {}
 
   ngOnInit() {
-    this.availableOptions = this.applicationConfigManager.getAvailableApplicationRolesOfApplication(
+    this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
       this.application
     );
-    this.boListener$ = this.applicationConfigManager.boOfApplicationsSubject$.pipe(
+    this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
       map((bosOfApplications) => bosOfApplications[this.application])
     );
   }
@@ -65,12 +67,12 @@ export class UserAdministrationApplicationConfigComponent implements OnInit {
   add(): void {
     const value = this.businessOrganisationForm.get('businessOrganisation')?.value;
     if (value) {
-      this.applicationConfigManager.addSboidToPermission(this.application, value);
+      this.userPermissionManager.addSboidToPermission(this.application, value);
     }
   }
 
   remove(): void {
-    this.applicationConfigManager.removeSboidFromPermission(this.application, this.selectedIndex);
+    this.userPermissionManager.removeSboidFromPermission(this.application, this.selectedIndex);
     this.selectedIndex = -1;
   }
 }
