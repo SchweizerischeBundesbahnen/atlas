@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationApplicationConfigComponent } from './user-administration-application-config.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { UserPermissionManager } from '../user-permission-manager';
+import { UserPermissionManager } from '../service/user-permission-manager';
 import { MaterialModule } from '../../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import SpyObj = jasmine.SpyObj;
