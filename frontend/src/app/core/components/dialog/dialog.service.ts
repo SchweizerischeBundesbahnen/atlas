@@ -27,20 +27,10 @@ export class DialogService {
     this.confirmDialog = undefined;
   }
 
-  confirmLeave(showDialog: boolean, dialogRef: MatDialogRef<any>): void {
-    if (!showDialog) {
-      dialogRef.close();
-      return;
-    }
-    this.confirm({
+  confirmLeave(): Observable<boolean> {
+    return this.confirm({
       title: 'DIALOG.DISCARD_CHANGES_TITLE',
       message: 'DIALOG.LEAVE_SITE',
-    }).subscribe((result) => {
-      if (result) {
-        dialogRef.close();
-      } else {
-        this.closeConfirmDialog();
-      }
     });
   }
 }

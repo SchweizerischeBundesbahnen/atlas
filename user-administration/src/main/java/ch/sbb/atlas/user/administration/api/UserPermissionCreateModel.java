@@ -2,6 +2,7 @@ package ch.sbb.atlas.user.administration.api;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.user.administration.entity.UserPermission;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.HashSet;
@@ -44,6 +45,16 @@ public class UserPermissionCreateModel {
                         (permission.getRole() != ApplicationRole.WRITER || permission.getApplication() == ApplicationType.BODI)
                                 && permission.getSboids().size() > 0
         );
+    }
+
+    public List<UserPermission> toEntityList() {
+        return permissions.stream().map(permission -> UserPermission.builder()
+                .sbbUserId(sbbUserId.toLowerCase())
+                .application(permission.getApplication())
+                .role(permission.getRole())
+                .sboid(new HashSet<>(permission.getSboids()))
+                .build()
+        ).toList();
     }
 
 }

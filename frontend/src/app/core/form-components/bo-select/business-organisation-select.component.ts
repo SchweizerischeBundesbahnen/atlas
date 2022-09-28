@@ -11,7 +11,6 @@ import {
 import { Observable, of, Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { BusinessOrganisation, BusinessOrganisationsService } from '../../../api';
-import { BusinessOrganisationLanguageService } from './business-organisation-language.service';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -30,10 +29,7 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
   private formSubscription!: Subscription;
 
-  constructor(
-    private businessOrganisationsService: BusinessOrganisationsService,
-    private businessOrganisationLanguageService: BusinessOrganisationLanguageService
-  ) {}
+  constructor(private businessOrganisationsService: BusinessOrganisationsService) {}
 
   ngOnInit(): void {
     this.init();
@@ -70,19 +66,5 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
 
   ngOnDestroy() {
     this.formSubscription.unsubscribe();
-  }
-
-  readonly displaySettings = (item: BusinessOrganisation) => {
-    return `${item.organisationNumber} - ${item[this.getCurrentLanguageAbbreviation()]} - ${
-      item[this.getCurrentLanguageDescription()]
-    } - ${item.said}`;
-  };
-
-  private getCurrentLanguageAbbreviation() {
-    return this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation();
-  }
-
-  private getCurrentLanguageDescription() {
-    return this.businessOrganisationLanguageService.getCurrentLanguageDescription();
   }
 }
