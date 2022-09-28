@@ -196,6 +196,9 @@
     "NOTIFICATIONS": {
       "ADD_SUCCESS": "Utente registrato con successo",
       "EDIT_SUCCESS": "Salvato con successo"
+    },
+    "CONFLICT": {
+      "SBBUSERID": "L'utente {{sbbUserId}} è già memorizzato."
     }
   },
   "TTFN": {

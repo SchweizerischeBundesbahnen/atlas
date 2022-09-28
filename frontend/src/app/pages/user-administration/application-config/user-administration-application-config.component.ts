@@ -1,22 +1,40 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ApplicationType, BusinessOrganisation } from '../../../api';
+import { ApplicationRole, ApplicationType, BusinessOrganisation } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
-import { UserPermissionManager } from '../user-permission-manager';
+import { UserPermissionManager } from '../service/user-permission-manager';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-administration-application-config',
   templateUrl: './user-administration-application-config.component.html',
   styleUrls: ['./user-administration-application-config.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserAdministrationApplicationConfigComponent {
-  @Input() applicationConfigManager!: UserPermissionManager;
+export class UserAdministrationApplicationConfigComponent implements OnInit {
   @Input() application!: ApplicationType;
   @Input() readOnly = false;
+  @Input() role: ApplicationRole = 'READER';
 
-  constructor(private readonly boLanguageService: BusinessOrganisationLanguageService) {}
+  boListener$: Observable<BusinessOrganisation[]> = of([]);
 
+  constructor(
+    private readonly boLanguageService: BusinessOrganisationLanguageService,
+    readonly userPermissionManager: UserPermissionManager
+  ) {}
+
+  ngOnInit() {
+    this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
+      this.application
+    );
+    this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
+      map((bosOfApplications) => bosOfApplications[this.application])
+    );
+  }
+
+  availableOptions: ApplicationRole[] = [];
   selectedIndex = -1;
 
   readonly businessOrganisationForm: FormGroup = new FormGroup({
@@ -46,19 +64,15 @@ export class UserAdministrationApplicationConfigComponent {
     },
   ];
 
-  isCurrentRoleWriter(): boolean {
-    return this.applicationConfigManager.getCurrentRole(this.application) === 'WRITER';
-  }
-
   add(): void {
     const value = this.businessOrganisationForm.get('businessOrganisation')?.value;
     if (value) {
-      this.applicationConfigManager.addSboidToPermission(this.application, value);
+      this.userPermissionManager.addSboidToPermission(this.application, value);
     }
   }
 
   remove(): void {
-    this.applicationConfigManager.removeSboidFromPermission(this.application, this.selectedIndex);
+    this.userPermissionManager.removeSboidFromPermission(this.application, this.selectedIndex);
     this.selectedIndex = -1;
   }
 }
