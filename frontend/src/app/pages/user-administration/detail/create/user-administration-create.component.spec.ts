@@ -19,7 +19,7 @@ import { UserModel } from '../../../../api/model/userModel';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../core/module/material.module';
 import { FormGroup } from '@angular/forms';
-import { UserPermissionManager } from '../../user-permission-manager';
+import { UserPermissionManager } from '../../service/user-permission-manager';
 
 @Component({
   selector: 'app-user-select',
