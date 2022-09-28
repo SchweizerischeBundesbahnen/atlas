@@ -2,7 +2,10 @@
   [items$]="userSearchResults$"
   [formGroup]="form"
   [controlName]="'userSearch'"
-  [getSelectOption]="selectOption"
   (searchTrigger)="searchUser($event)"
   (changeTrigger)="selectionChange.emit($event)"
-></form-search-select>
+>
+  <ng-template #labelOptionTemplates let-item>
+    {{ item | userSelectFormat }}
+  </ng-template>
+</form-search-select>
