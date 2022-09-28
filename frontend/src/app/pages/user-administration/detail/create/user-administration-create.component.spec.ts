@@ -19,16 +19,7 @@ import { UserModel } from '../../../../api/model/userModel';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../core/module/material.module';
 import { FormGroup } from '@angular/forms';
-
-@Component({
-  selector: 'app-user-administration-detail',
-  template: '',
-})
-class MockUserAdministrationDetailComponent {
-  @Input() userLoaded = undefined;
-  @Input() userHasAlreadyPermissions = false;
-  @Input() applicationConfigManager = undefined;
-}
+import { UserPermissionManager } from '../../user-permission-manager';
 
 @Component({
   selector: 'app-user-select',
@@ -50,6 +41,8 @@ describe('UserAdministrationCreateComponent', () => {
 
   let userServiceSpy: SpyObj<UserService>;
   let notificationServiceSpy: SpyObj<NotificationService>;
+  let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
+  let boServiceSpy: SpyObj<BusinessOrganisationsService>;
 
   beforeEach(async () => {
     userServiceSpy = jasmine.createSpyObj('UserService', [
@@ -58,10 +51,27 @@ describe('UserAdministrationCreateComponent', () => {
       'createUserPermission',
     ]);
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
+    userPermissionManagerSpy = jasmine.createSpyObj<UserPermissionManager>(
+      'UserPermissionManager',
+      ['setSbbUserId', 'clearSboidsIfNotWriter', 'getUserPermission', 'getSbbUserId']
+    );
+    boServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
+      'BusinessOrganisationsService',
+      ['getAllBusinessOrganisations']
+    );
+    await TestBed.overrideComponent(UserAdministrationCreateComponent, {
+      set: {
+        viewProviders: [
+          {
+            provide: BusinessOrganisationsService,
+            useValue: boServiceSpy,
+          },
+        ],
+      },
+    });
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationCreateComponent,
-        MockUserAdministrationDetailComponent,
         MockUserSelectComponent,
         MockDialogCloseComponent,
       ],
@@ -78,10 +88,8 @@ describe('UserAdministrationCreateComponent', () => {
           useValue: userServiceSpy,
         },
         {
-          provide: BusinessOrganisationsService,
-          useValue: jasmine.createSpyObj('BusinessOrganisationsService', [
-            'getAllBusinessOrganisations',
-          ]),
+          provide: UserPermissionManager,
+          useValue: userPermissionManagerSpy,
         },
         {
           provide: NotificationService,
@@ -113,7 +121,7 @@ describe('UserAdministrationCreateComponent', () => {
     expect(component.userLoaded).toBeUndefined();
     expect(component.userHasAlreadyPermissions).toBe(false);
     expect(component.selectedUserHasNoUserId).toBe(false);
-    expect(component.userPermissionManager).toBeDefined();
+    expect(component.userPermissionManager).toBe(userPermissionManagerSpy);
   });
 
   it('test selectUser without userId', () => {
@@ -160,11 +168,9 @@ describe('UserAdministrationCreateComponent', () => {
       })
     );
     spyOn(router, 'navigate').and.resolveTo(true);
-    spyOn(component.userPermissionManager, 'setSbbUserId');
-    spyOn(component.userPermissionManager, 'clearSboidsIfNotWriter');
     component.createUser();
-    expect(component.userPermissionManager.setSbbUserId).toHaveBeenCalledOnceWith('u236171');
-    expect(component.userPermissionManager.clearSboidsIfNotWriter).toHaveBeenCalledOnceWith();
+    expect(userPermissionManagerSpy.setSbbUserId).toHaveBeenCalledOnceWith('u236171');
+    expect(userPermissionManagerSpy.clearSboidsIfNotWriter).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.createUserPermission).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
     tick();

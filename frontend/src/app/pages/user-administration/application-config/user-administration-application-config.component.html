@@ -11,9 +11,7 @@
         <mat-select
           [disabled]="readOnly"
           [value]="role"
-          (selectionChange)="
-            applicationConfigManager.changePermissionRole(application, $event.value)
-          "
+          (selectionChange)="userPermissionManager.changePermissionRole(application, $event.value)"
         >
           <mat-option *ngFor="let option of availableOptions" [value]="option">{{
             'COMMON.ROLES.' + option | translate

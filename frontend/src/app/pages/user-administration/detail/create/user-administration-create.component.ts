@@ -13,25 +13,25 @@ import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-user-administration-create',
   templateUrl: './user-administration-create.component.html',
+  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
 export class UserAdministrationCreateComponent {
   userLoaded?: UserModel;
   userHasAlreadyPermissions = false;
   selectedUserHasNoUserId = false;
   saveEnabled = true;
-  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
   readonly userSearchForm: FormGroup = new FormGroup({
     userSearch: new FormControl<string | null>(null),
   });
 
   constructor(
     private readonly userService: UserService,
-    private readonly boService: BusinessOrganisationsService,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly dialogService: DialogService,
-    private readonly dialogRef: MatDialogRef<any>
+    private readonly dialogRef: MatDialogRef<any>,
+    readonly userPermissionManager: UserPermissionManager
   ) {}
 
   selectUser(user: UserModel | undefined): void {
