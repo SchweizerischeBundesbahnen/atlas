@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BusinessOrganisationsService } from '../../../../api';
 import { UserService } from '../../service/user.service';
-import { UserPermissionManager } from '../../user-permission-manager';
+import { UserPermissionManager } from '../../service/user-permission-manager';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';

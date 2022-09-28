@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ApplicationRole, ApplicationType, BusinessOrganisation } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
-import { UserPermissionManager } from '../user-permission-manager';
+import { UserPermissionManager } from '../service/user-permission-manager';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
