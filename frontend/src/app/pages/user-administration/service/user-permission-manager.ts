@@ -5,7 +5,7 @@ import {
   BusinessOrganisationsService,
   UserPermissionCreateModel,
   UserPermissionModel,
-} from '../../api';
+} from '../../../api';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
 
