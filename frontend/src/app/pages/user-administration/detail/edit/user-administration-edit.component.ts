@@ -11,6 +11,7 @@ import { UserModel } from '../../../../api/model/userModel';
 @Component({
   selector: 'app-user-administration-edit',
   templateUrl: './user-administration-edit.component.html',
+  viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
 export class UserAdministrationEditComponent implements OnInit {
   constructor(
@@ -19,13 +20,13 @@ export class UserAdministrationEditComponent implements OnInit {
     private readonly translatePipe: TranslatePipe,
     private readonly userService: UserService,
     private readonly dialogService: DialogService,
-    readonly dialogRef: MatDialogRef<any>
+    readonly dialogRef: MatDialogRef<any>,
+    readonly userPermissionManager: UserPermissionManager
   ) {}
 
   @Input() user?: UserModel;
   editMode = false;
   saveEnabled = true;
-  readonly userPermissionManager: UserPermissionManager = new UserPermissionManager(this.boService);
 
   ngOnInit() {
     if (this.userService.getPermissionsFromUserModelAsArray(this.user!).length === 0) {
@@ -41,17 +42,19 @@ export class UserAdministrationEditComponent implements OnInit {
   saveEdits(): void {
     this.saveEnabled = false;
     this.userPermissionManager.clearSboidsIfNotWriter();
-    this.userService.updateUserPermission(this.userPermissionManager.getUserPermission()).subscribe(
-      (user) => {
-        this.user = user;
-        this.editMode = false;
-        this.userPermissionManager.setPermissions(
-          this.userService.getPermissionsFromUserModelAsArray(this.user)
-        );
-        this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
-      },
-      () => (this.saveEnabled = true)
-    );
+    this.userService
+      .updateUserPermission(this.userPermissionManager.getUserPermission())
+      .subscribe({
+        next: (user: UserModel) => {
+          this.user = user;
+          this.editMode = false;
+          this.userPermissionManager.setPermissions(
+            this.userService.getPermissionsFromUserModelAsArray(this.user)
+          );
+          this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
+        },
+        error: () => (this.saveEnabled = true),
+      });
   }
 
   cancelEdit(showDialog = true): void {

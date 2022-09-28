@@ -7,7 +7,9 @@ import {
   UserPermissionModel,
 } from '../../api';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class UserPermissionManager {
   constructor(private readonly boService: BusinessOrganisationsService) {}
 
