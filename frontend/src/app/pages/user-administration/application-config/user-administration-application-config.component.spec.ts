@@ -13,13 +13,12 @@ describe('UserAdministrationApplicationConfigComponent', () => {
   let component: UserAdministrationApplicationConfigComponent;
   let fixture: ComponentFixture<UserAdministrationApplicationConfigComponent>;
 
-  let applicationConfigManagerMock: SpyObj<UserPermissionManager>;
+  let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
 
   beforeEach(async () => {
-    applicationConfigManagerMock = jasmine.createSpyObj(
+    userPermissionManagerSpy = jasmine.createSpyObj(
       'UserPermissionManager',
       [
-        'getCurrentRole',
         'addSboidToPermission',
         'removeSboidFromPermission',
         'getAvailableApplicationRolesOfApplication',
@@ -43,11 +42,16 @@ describe('UserAdministrationApplicationConfigComponent', () => {
         MaterialModule,
         BrowserAnimationsModule,
       ],
+      providers: [
+        {
+          provide: UserPermissionManager,
+          useValue: userPermissionManagerSpy,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationApplicationConfigComponent);
     component = fixture.componentInstance;
-    component.applicationConfigManager = applicationConfigManagerMock;
     fixture.detectChanges();
   });
 
@@ -60,25 +64,19 @@ describe('UserAdministrationApplicationConfigComponent', () => {
 
   it('test addBusinessOrganisation', () => {
     component.add();
-    expect(applicationConfigManagerMock.addSboidToPermission).not.toHaveBeenCalled();
+    expect(userPermissionManagerSpy.addSboidToPermission).not.toHaveBeenCalled();
 
     component.businessOrganisationForm.get('businessOrganisation')?.setValue('test');
     component.application = 'TTFN';
     component.add();
-    expect(applicationConfigManagerMock.addSboidToPermission).toHaveBeenCalledOnceWith(
-      'TTFN',
-      'test'
-    );
+    expect(userPermissionManagerSpy.addSboidToPermission).toHaveBeenCalledOnceWith('TTFN', 'test');
   });
 
   it('test removeBusinessOrganisation', () => {
     component.application = 'LIDI';
     component.selectedIndex = 0;
     component.remove();
-    expect(applicationConfigManagerMock.removeSboidFromPermission).toHaveBeenCalledOnceWith(
-      'LIDI',
-      0
-    );
+    expect(userPermissionManagerSpy.removeSboidFromPermission).toHaveBeenCalledOnceWith('LIDI', 0);
     expect(component.selectedIndex).toBe(-1);
   });
 });
