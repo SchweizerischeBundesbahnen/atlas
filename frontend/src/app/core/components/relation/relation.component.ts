@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
-import { Sort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 
 @Component({
@@ -11,8 +11,17 @@ import { MatTable } from '@angular/material/table';
 })
 export class RelationComponent<RECORD_TYPE> {
   @ViewChild(MatTable) table!: MatTable<any>;
+  @ViewChild(MatSort) matSort!: MatSort;
 
-  @Input() records: RECORD_TYPE[] = [];
+  @Input() set records(value: RECORD_TYPE[] | null) {
+    this._records = value ?? [];
+    if (this.matSort?.active && this.matSort.direction) {
+      this.sortChanged({
+        active: this.matSort.active,
+        direction: this.matSort.direction,
+      });
+    }
+  }
   @Input() titleTranslationKey = '';
   @Input() editable = false;
   @Input() tableColumns!: TableColumn<RECORD_TYPE>[];
@@ -24,6 +33,8 @@ export class RelationComponent<RECORD_TYPE> {
   @Output() deleteRelation = new EventEmitter<void>();
   @Output() editModeChanged = new EventEmitter<void>();
   @Output() selectedIndexChanged = new EventEmitter<number>();
+
+  _records: RECORD_TYPE[] = [];
 
   columnValues(): string[] {
     return this.tableColumns.map((item) => item.columnDef!);
@@ -48,12 +59,12 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   isRowSelected(row: RECORD_TYPE): boolean {
-    return this.selectedIndex === this.records.indexOf(row);
+    return this.selectedIndex === this._records.indexOf(row);
   }
 
   selectRecord(record: RECORD_TYPE): void {
     if (this.editable) {
-      this.selectedIndexChanged.emit(this.records.indexOf(record));
+      this.selectedIndexChanged.emit(this._records.indexOf(record));
     }
   }
 
@@ -61,7 +72,7 @@ export class RelationComponent<RECORD_TYPE> {
     const valuePathToSort = this.getValuePathFromColumnName(sort.active);
     const nestedPath = valuePathToSort.split('.');
 
-    this.records = this.records.sort((a, b) => {
+    this._records = this._records.sort((a, b) => {
       let i = 0;
       while (i < nestedPath.length) {
         a = (a as any)[nestedPath[i]];

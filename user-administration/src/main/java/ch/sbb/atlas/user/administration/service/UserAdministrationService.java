@@ -22,48 +22,50 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class UserAdministrationService {
 
-  private final UserPermissionRepository userPermissionRepository;
+    private final UserPermissionRepository userPermissionRepository;
 
-  public Page<String> getUserPage(Pageable pageable) {
-    return userPermissionRepository.findAllDistinctSbbUserId(pageable);
-  }
-
-  public List<UserPermission> getUserPermissions(String sbbUserId) {
-    return userPermissionRepository.findBySbbUserIdIgnoreCase(sbbUserId);
-  }
-
-  public void validatePermissionExistence(UserPermissionCreateModel user) {
-    boolean exists = userPermissionRepository.existsBySbbUserIdIgnoreCase(user.getSbbUserId());
-    if (exists) {
-      throw new UserPermissionConflictException(user.getSbbUserId());
+    public Page<String> getUserPage(Pageable pageable) {
+        return userPermissionRepository.findAllDistinctSbbUserId(pageable);
     }
-  }
 
-  public List<UserPermission> save(List<UserPermission> userPermissions) {
-    return userPermissionRepository.saveAll(userPermissions);
-  }
+    public List<UserPermission> getUserPermissions(String sbbUserId) {
+        return userPermissionRepository.findBySbbUserIdIgnoreCase(sbbUserId);
+    }
 
-  public void updateUser(UserPermissionCreateModel editedPermissions) {
-    editedPermissions.getPermissions().forEach(editedPermission -> {
-      Optional<UserPermission> existingPermissions = getCurrentUserPermission(
-          editedPermissions.getSbbUserId(),
-          editedPermission.getApplication());
-      existingPermissions.ifPresent(updateExistingPermissions(editedPermission));
-    });
-  }
+    private void validatePermissionExistence(String sbbUserId) {
+        boolean exists = userPermissionRepository.existsBySbbUserIdIgnoreCase(sbbUserId);
+        if (exists) {
+            throw new UserPermissionConflictException(sbbUserId);
+        }
+    }
 
-  private Consumer<UserPermission> updateExistingPermissions(UserPermissionModel editedPermission) {
-    return userPermission -> {
-      userPermission.setRole(editedPermission.getRole());
-      userPermission.setSboid(new HashSet<>(editedPermission.getSboids()));
-    };
-  }
+    public void save(UserPermissionCreateModel userPermissionCreate) {
+        validatePermissionExistence(userPermissionCreate.getSbbUserId());
+        final List<UserPermission> toSave = userPermissionCreate.toEntityList();
+        userPermissionRepository.saveAll(toSave);
+    }
 
-  Optional<UserPermission> getCurrentUserPermission(String sbbuid, ApplicationType applicationType) {
-    return userPermissionRepository.findBySbbUserIdIgnoreCase(sbbuid)
-                                   .stream()
-                                   .filter(userPermission -> userPermission.getApplication()
-                                       == applicationType)
-                                   .findFirst();
-  }
+    public void updateUser(UserPermissionCreateModel editedPermissions) {
+        editedPermissions.getPermissions().forEach(editedPermission -> {
+            Optional<UserPermission> existingPermissions = getCurrentUserPermission(
+                    editedPermissions.getSbbUserId(),
+                    editedPermission.getApplication());
+            existingPermissions.ifPresent(updateExistingPermissions(editedPermission));
+        });
+    }
+
+    private Consumer<UserPermission> updateExistingPermissions(UserPermissionModel editedPermission) {
+        return userPermission -> {
+            userPermission.setRole(editedPermission.getRole());
+            userPermission.setSboid(new HashSet<>(editedPermission.getSboids()));
+        };
+    }
+
+    Optional<UserPermission> getCurrentUserPermission(String sbbuid, ApplicationType applicationType) {
+        return userPermissionRepository.findBySbbUserIdIgnoreCase(sbbuid)
+                .stream()
+                .filter(userPermission -> userPermission.getApplication()
+                        == applicationType)
+                .findFirst();
+    }
 }

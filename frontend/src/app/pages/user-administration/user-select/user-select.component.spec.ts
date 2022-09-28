@@ -37,14 +37,6 @@ describe('UserSelectComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('test selectOption', () => {
-    const selectOptionResult = component.selectOption({
-      displayName: 'displayName',
-      mail: 'mail',
-    });
-    expect(selectOptionResult).toEqual('displayName (mail)');
-  });
-
   it('test searchUser', (done) => {
     userServiceSpy.searchUsers.and.returnValue(
       of([

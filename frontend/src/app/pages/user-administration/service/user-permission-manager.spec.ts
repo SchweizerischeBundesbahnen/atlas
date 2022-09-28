@@ -1,5 +1,6 @@
 import { UserPermissionManager } from './user-permission-manager';
 import { of } from 'rxjs';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 describe('UserPermissionManager', () => {
   let userPermissionManager: UserPermissionManager;
@@ -14,7 +15,7 @@ describe('UserPermissionManager', () => {
     );
   });
 
-  it('test clearSboidsIfNotWriter, setPermissions and getPermissions', () => {
+  it('test clearSboidsIfNotWriter, setPermissions and getPermissions', fakeAsync(() => {
     userPermissionManager.setPermissions([
       {
         application: 'TTFN',
@@ -27,12 +28,13 @@ describe('UserPermissionManager', () => {
         sboids: ['ch:1:sboid:super_user'],
       },
     ]);
-
+    tick();
     userPermissionManager.clearSboidsIfNotWriter();
-
-    expect(userPermissionManager.getPermissions()[0].sboids).toEqual(['ch:1:sboid:writer']);
-    expect(userPermissionManager.getPermissions()[1].sboids).toEqual([]);
-  });
+    expect(userPermissionManager.userPermission.permissions[0].sboids).toEqual([
+      'ch:1:sboid:writer',
+    ]);
+    expect(userPermissionManager.userPermission.permissions[1].sboids).toEqual([]);
+  }));
 
   it('test getSbbUserId, setSbbUserId, getUserPermission', () => {
     userPermissionManager.setSbbUserId('u236171');
@@ -49,7 +51,7 @@ describe('UserPermissionManager', () => {
     expect(userPermissionManager.getCurrentRole('LIDI')).toEqual('SUPER_USER');
   });
 
-  it('test removeSboidFromPermission', () => {
+  it('test removeSboidFromPermission', fakeAsync(() => {
     userPermissionManager.setPermissions([
       {
         application: 'TTFN',
@@ -57,12 +59,16 @@ describe('UserPermissionManager', () => {
         sboids: ['ch:1:sboid:test'],
       },
     ]);
+    tick();
     userPermissionManager.removeSboidFromPermission('TTFN', 0);
-    expect(userPermissionManager.getPermissions()[0].sboids).toEqual([]);
-  });
+    expect(userPermissionManager.userPermission.permissions[0].sboids).toEqual([]);
+  }));
 
-  it('test addSboidToPermission', () => {
+  it('test addSboidToPermission', fakeAsync(() => {
     userPermissionManager.addSboidToPermission('TTFN', 'ch:1:sboid:100000');
-    expect(userPermissionManager.getPermissions()[0].sboids).toEqual(['ch:1:sboid:100000']);
-  });
+    tick();
+    expect(userPermissionManager.userPermission.permissions[0].sboids).toEqual([
+      'ch:1:sboid:100000',
+    ]);
+  }));
 });
