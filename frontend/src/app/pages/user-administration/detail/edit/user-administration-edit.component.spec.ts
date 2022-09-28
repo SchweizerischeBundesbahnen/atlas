@@ -14,7 +14,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { EditTitlePipe } from './edit-title.pipe';
 import SpyObj = jasmine.SpyObj;
 import { UserService } from '../../service/user.service';
-import { UserPermissionManager } from '../../user-permission-manager';
+import { UserPermissionManager } from '../../service/user-permission-manager';
 import { Observable, of } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { BusinessOrganisationsService } from '../../../../api';
