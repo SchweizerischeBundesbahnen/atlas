@@ -181,7 +181,7 @@ export class AuthService {
     if (applicationPermissions.length === 1) {
       return applicationPermissions[0];
     }
-    throw new Error('ApplicationPermission size was not one');
+    return { application: applicationType, role: ApplicationRole.Reader, sboids: [] };
   }
 
   get roles(): Role[] {

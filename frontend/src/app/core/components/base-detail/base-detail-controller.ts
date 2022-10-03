@@ -140,11 +140,16 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     this.validateAllFormFields(this.form);
     this.switchedIndex = undefined;
     if (this.form.valid) {
-      this.form.disable();
       if (this.getId()) {
-        this.updateRecord();
+        this.confirmBoTransfer().subscribe((confirmed) => {
+          if (confirmed) {
+            this.updateRecord();
+            this.form.disable();
+          }
+        });
       } else {
         this.createRecord();
+        this.form.disable();
       }
     }
   }
@@ -282,6 +287,23 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
         this.validateAllFormFields(control);
       }
     });
+  }
+
+  private confirmBoTransfer(): Observable<boolean> {
+    const currentlySelectedBo = this.form.value.businessOrganisation;
+    const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
+    if (
+      !this.authService.isAdmin &&
+      permission.role == ApplicationRole.Writer &&
+      currentlySelectedBo &&
+      !permission.sboids.includes(currentlySelectedBo)
+    ) {
+      return this.dialogService.confirm({
+        title: 'DIALOG.CONFIRM_BO_TRANSFER_TITLE',
+        message: 'DIALOG.CONFIRM_BO_TRANSFER',
+      });
+    }
+    return of(true);
   }
 
   getAdditionalBoSelectionCriteria() {
