@@ -7,8 +7,9 @@ import moment from 'moment/moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
-import { ApplicationType, Status } from '../../../api';
+import { ApplicationRole, ApplicationType, Status } from '../../../api';
 import { MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from '../../auth/auth.service';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record> implements OnInit {
@@ -23,7 +24,8 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
   protected constructor(
     protected dialogRef: MatDialogRef<any>,
     protected dialogService: DialogService,
-    protected notificationService: NotificationService
+    protected notificationService: NotificationService,
+    protected authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -280,5 +282,16 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
         this.validateAllFormFields(control);
       }
     });
+  }
+
+  getAdditionalBoSelectionCriteria() {
+    if (this.isExistingRecord() || this.authService.isAdmin) {
+      return [];
+    }
+    const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
+    if (permission.role == ApplicationRole.Writer) {
+      return permission.sboids;
+    }
+    return [];
   }
 }

@@ -1,6 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+  ApplicationRole,
   ApplicationType,
   TimetableFieldNumbersService,
   TimetableFieldNumberVersion,
@@ -20,6 +21,7 @@ import { WhitespaceValidator } from '../../../core/validation/whitespace/whitesp
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -38,9 +40,10 @@ export class TimetableFieldNumberDetailComponent
     protected dialogRef: MatDialogRef<TimetableFieldNumberDetailComponent>,
     private timetableFieldNumberService: TimetableFieldNumbersService,
     protected notificationService: NotificationService,
-    protected dialogService: DialogService
+    protected dialogService: DialogService,
+    protected authService: AuthService
   ) {
-    super(dialogRef, dialogService, notificationService);
+    super(dialogRef, dialogService, notificationService, authService);
   }
 
   ngOnInit() {
