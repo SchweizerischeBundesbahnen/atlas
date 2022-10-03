@@ -10,13 +10,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AppTestingModule } from '../../../app.testing.module';
+import { AppTestingModule, authServiceMock } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
 import { FormModule } from '../../../core/module/form.module';
 import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
-import { MockAppDetailWrapperComponent } from '../../../app.testing.mocks';
+import { MockAppDetailWrapperComponent, MockBoSelectComponent } from '../../../app.testing.mocks';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -97,6 +97,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
         TimetableFieldNumberDetailComponent,
         MockAppCoverageComponent,
         MockAppDetailWrapperComponent,
+        MockBoSelectComponent,
         ErrorNotificationComponent,
         InfoIconComponent,
       ],
@@ -104,6 +105,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
       providers: [
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
+        { provide: AuthService, useValue: authServiceMock },
         {
           provide: MAT_DIALOG_DATA,
           useValue: mockData,
@@ -197,7 +199,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         },
         {
           provide: AuthService,
-          useValue: {},
+          useValue: authServiceMock,
         },
       ],
     }).compileComponents();
