@@ -16,6 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ApplicationType } from 'src/app/api';
+import { AuthService } from '../../auth/auth.service';
+import { authServiceMock } from '../../../app.testing.module';
 
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
@@ -31,7 +33,7 @@ describe('BaseDetailController', () => {
 
   class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
-      super(dialogRef, dialogService, notificationService);
+      super(dialogRef, dialogService, notificationService, authService);
     }
 
     getPageType(): Page {
@@ -81,6 +83,7 @@ describe('BaseDetailController', () => {
   let dialogRef: MatDialogRef<any>;
   let dialogService: DialogService;
   let notificationService: NotificationService;
+  let authService: AuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -99,6 +102,7 @@ describe('BaseDetailController', () => {
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: AuthService, useValue: authServiceMock },
       ],
     });
     dialogService = TestBed.inject(DialogService);
@@ -213,6 +217,7 @@ describe('Get actual versioned record', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: AuthService, useValue: authServiceMock },
       ],
     });
     controller = TestBed.inject(BaseDetailController);

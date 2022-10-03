@@ -22,6 +22,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',
@@ -40,11 +41,12 @@ export class BusinessOrganisationDetailComponent
     protected dialogRef: MatDialogRef<BusinessOrganisationDetailComponent>,
     private businessOrganisationsService: BusinessOrganisationsService,
     private formBuilder: FormBuilder,
+    private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    private businessOrganisationLanguageService: BusinessOrganisationLanguageService
+    protected authService: AuthService
   ) {
-    super(dialogRef, dialogService, notificationService);
+    super(dialogRef, dialogService, notificationService, authService);
   }
 
   ngOnInit() {
