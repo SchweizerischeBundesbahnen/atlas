@@ -95,7 +95,9 @@
     "CONFIRM_DELETE": "Daten löschen",
     "DISCARD_CHANGES_TITLE": "Änderungen verwerfen?",
     "LEAVE_SITE": "Wenn Sie die Seite verlassen werden Ihre Daten nicht gespeichert.",
-    "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlieren Sie alle angepassten Daten."
+    "CANCEL_EDITMODE": "Beim Verlassen des Editiermodus verlieren Sie alle angepassten Daten.",
+    "CONFIRM_BO_TRANSFER_TITLE": "Hinweis",
+    "CONFIRM_BO_TRANSFER": "Durch die Änderung der Geschäftsorganisation verlieren Sie die Berechtigung für die Bearbeitung des Objektes ab dem Mutationszeitpunkt."
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Neue Version verfügbar",
