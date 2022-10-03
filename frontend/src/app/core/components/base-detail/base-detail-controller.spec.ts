@@ -108,6 +108,7 @@ describe('BaseDetailController', () => {
     dialogService = TestBed.inject(DialogService);
     notificationService = TestBed.inject(NotificationService);
     dialogRef = TestBed.inject(MatDialogRef);
+    authService = TestBed.inject(AuthService);
   });
 
   describe('existing record', () => {

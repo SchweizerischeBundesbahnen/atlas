@@ -95,7 +95,9 @@
     "CONFIRM_DELETE": "Cancellare i dati",
     "DISCARD_CHANGES_TITLE": "Annullare le modifiche?",
     "LEAVE_SITE": "Se si esce dalla pagina, i dati non verranno salvati.",
-    "CANCEL_EDITMODE": "All’uscita dalla modalità di modifica tutti i dati modificati andranno perduti."
+    "CANCEL_EDITMODE": "All’uscita dalla modalità di modifica tutti i dati modificati andranno perduti.",
+    "CONFIRM_BO_TRANSFER_TITLE": "Nota",
+    "CONFIRM_BO_TRANSFER": "Modificando l'organizzazione aziendale, si perde l'autorizzazione a modificare l'oggetto a partire dalla data di mutazione."
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Neue Version verfügbar__it__",
