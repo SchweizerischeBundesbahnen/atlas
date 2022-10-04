@@ -23,7 +23,7 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
   @Input() controlName!: string;
   @Input() formModus = true;
   @Input() formGroup!: FormGroup;
-  @Input() additionalSearchCriteria: string[] = [];
+  @Input() sboidsRestrictions: string[] = [];
 
   @Output() selectedBusinessOrganisationChanged = new EventEmitter();
 
@@ -59,7 +59,8 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
     if (searchString) {
       this.businessOrganisations = this.businessOrganisationsService
         .getAllBusinessOrganisations(
-          [searchString, ...this.additionalSearchCriteria],
+          [searchString],
+          this.sboidsRestrictions,
           undefined,
           undefined,
           undefined,
