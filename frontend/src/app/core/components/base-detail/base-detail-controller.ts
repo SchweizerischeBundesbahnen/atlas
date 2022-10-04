@@ -307,7 +307,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     return of(true);
   }
 
-  getAdditionalBoSelectionCriteria() {
+  getBoSboidRestriction() {
     if (this.isExistingRecord() || this.authService.isAdmin) {
       return [];
     }
