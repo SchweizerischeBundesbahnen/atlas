@@ -140,16 +140,17 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     this.validateAllFormFields(this.form);
     this.switchedIndex = undefined;
     if (this.form.valid) {
+      this.form.disable();
       if (this.getId()) {
         this.confirmBoTransfer().subscribe((confirmed) => {
           if (confirmed) {
             this.updateRecord();
-            this.form.disable();
+          } else {
+            this.form.enable();
           }
         });
       } else {
         this.createRecord();
-        this.form.disable();
       }
     }
   }
@@ -311,7 +312,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
       return [];
     }
     const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
-    if (permission.role == ApplicationRole.Writer) {
+    if (permission.role === ApplicationRole.Writer) {
       return permission.sboids;
     }
     return [];
