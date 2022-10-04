@@ -5,17 +5,24 @@ import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation_;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Singular;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.jpa.domain.Specification;
 
 @Getter
 @ToString
 @SuperBuilder
 public class BusinessOrganisationSearchRestrictions extends
     SearchRestrictions<BusinessOrganisation> {
+
+  @Singular(ignoreNullCollections = true)
+  private List<String> inSboids;
 
   @Override
   protected SingularAttribute<BusinessOrganisation, Status> getStatus() {
@@ -42,4 +49,10 @@ public class BusinessOrganisationSearchRestrictions extends
                                .build();
   }
 
+  @Override
+  public Specification<BusinessOrganisation> getSpecification() {
+    return super.getSpecification()
+                .and(specificationBuilder().stringInSpecification(inSboids,
+                    BusinessOrganisation_.sboid));
+  }
 }
