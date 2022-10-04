@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory.service;
 
-import static java.util.List.*;
+import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.Status;
@@ -128,6 +128,41 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
+  void shouldFindVersionWithSboidsIn() {
+    //given
+    repository.saveAndFlush(version1);
+    repository.saveAndFlush(version2);
+    repository.saveAndFlush(version3);
+    //when
+    Page<BusinessOrganisation> result = service.getBusinessOrganisations(
+        BusinessOrganisationSearchRestrictions.builder()
+                                              .pageable(Pageable.unpaged())
+                                              .inSboids(List.of(version1.getSboid()))
+                                              .build());
+
+    //then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldFindVersionsWithSboidsIn() {
+    //given
+    repository.saveAndFlush(version1);
+    repository.saveAndFlush(version2);
+    repository.saveAndFlush(version3);
+    //when
+    Page<BusinessOrganisation> result = service.getBusinessOrganisations(
+        BusinessOrganisationSearchRestrictions.builder()
+                                              .pageable(Pageable.unpaged())
+                                              .inSboids(
+                                                  List.of(version1.getSboid(), version2.getSboid()))
+                                              .build());
+
+    //then
+    assertThat(result.getContent()).hasSize(2);
+  }
+
+  @Test
   void shouldNotFindVersionWithValidOn() {
     //given
     repository.saveAndFlush(version1);
@@ -145,7 +180,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldFindAllVersionOnNoRestrictions()  {
+  void shouldFindAllVersionOnNoRestrictions() {
     //given
     repository.saveAndFlush(version1);
     repository.saveAndFlush(version2);
@@ -161,7 +196,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldFindOrderedVersionWithNoGivenValidOn()  {
+  void shouldFindOrderedVersionWithNoGivenValidOn() {
     //given
     repository.saveAndFlush(version1);
     repository.saveAndFlush(version2);
@@ -180,7 +215,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldFindDescOrderedVersionWithNoGivenValidOn()  {
+  void shouldFindDescOrderedVersionWithNoGivenValidOn() {
     //given
     repository.saveAndFlush(version1);
     repository.saveAndFlush(version2);
@@ -199,7 +234,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldFindVersionWithText()  {
+  void shouldFindVersionWithText() {
     //given
     repository.saveAndFlush(version1);
     //when
@@ -214,7 +249,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldFindVersionWithUnderscore()  {
+  void shouldFindVersionWithUnderscore() {
     //given
     version1.setDescriptionDe("de1_");
     repository.saveAndFlush(version1);
@@ -232,7 +267,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldFindVersionWithMultipleUnderscore()  {
+  void shouldFindVersionWithMultipleUnderscore() {
     //given
     version1.setDescriptionDe("de1__");
     repository.saveAndFlush(version1);
@@ -250,7 +285,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldFindVersionWithPercent()  {
+  void shouldFindVersionWithPercent() {
     //given
     version1.setDescriptionDe("de1%");
     repository.saveAndFlush(version1);
@@ -268,7 +303,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldFindVersionWithMultiplePercent()  {
+  void shouldFindVersionWithMultiplePercent() {
     //given
     version1.setDescriptionDe("de1%%");
     repository.saveAndFlush(version1);
@@ -286,7 +321,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldFindVersionWithMultipleTexts()  {
+  void shouldFindVersionWithMultipleTexts() {
     //given
     version1.setDescriptionDe("Forza Napoli sempre");
     repository.saveAndFlush(version1);
@@ -296,7 +331,7 @@ public class BusinessOrganisationServiceSearchTest {
     Page<BusinessOrganisation> result = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
                                               .pageable(Pageable.unpaged())
-                                              .searchCriterias(of("1","Napoli", "Forza"))
+                                              .searchCriterias(of("1", "Napoli", "Forza"))
                                               .build());
 
     //then
@@ -304,7 +339,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldNotFindVersionWithMultipleTexts()  {
+  void shouldNotFindVersionWithMultipleTexts() {
     //given
     repository.saveAndFlush(version1);
     repository.saveAndFlush(version2);
@@ -313,7 +348,7 @@ public class BusinessOrganisationServiceSearchTest {
     Page<BusinessOrganisation> result = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
                                               .pageable(Pageable.unpaged())
-                                              .searchCriterias(of("1","Napoli", "Forza"))
+                                              .searchCriterias(of("1", "Napoli", "Forza"))
                                               .build());
 
     //then
@@ -321,7 +356,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldNotFindVersionWithStatus()  {
+  void shouldNotFindVersionWithStatus() {
     //given
     version1.setDescriptionDe("Forza Napoli sempre");
     repository.saveAndFlush(version1);
@@ -331,7 +366,7 @@ public class BusinessOrganisationServiceSearchTest {
     Page<BusinessOrganisation> result = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
                                               .pageable(Pageable.unpaged())
-                                              .searchCriterias(of("1","Napoli", "Forza"))
+                                              .searchCriterias(of("1", "Napoli", "Forza"))
                                               .statusRestrictions(List.of(Status.ACTIVE))
                                               .build());
 
@@ -340,7 +375,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @Test
-  void shouldNotFindVersionWithMultipleStatus()  {
+  void shouldNotFindVersionWithMultipleStatus() {
     //given
     repository.saveAndFlush(version1);
     version2.setStatus(Status.REVIEWED);
@@ -351,7 +386,8 @@ public class BusinessOrganisationServiceSearchTest {
     Page<BusinessOrganisation> result = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
                                               .pageable(Pageable.unpaged())
-                                              .statusRestrictions(List.of(Status.INACTIVE, Status.REVIEWED))
+                                              .statusRestrictions(
+                                                  List.of(Status.INACTIVE, Status.REVIEWED))
                                               .build());
 
     //then
