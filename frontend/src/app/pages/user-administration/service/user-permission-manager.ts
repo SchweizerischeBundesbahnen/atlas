@@ -119,7 +119,9 @@ export class UserPermissionManager {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
 
     firstValueFrom(
-      this.boService.getAllBusinessOrganisations([sboid], undefined, undefined, 0, 1, ['sboid,ASC'])
+      this.boService.getAllBusinessOrganisations([sboid], undefined, undefined, undefined, 0, 1, [
+        'sboid,ASC',
+      ])
     ).then((result) => {
       if (!result.objects || result.objects.length === 0) {
         console.error('Could not resolve selected bo');

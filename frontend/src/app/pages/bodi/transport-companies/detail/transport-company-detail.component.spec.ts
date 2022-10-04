@@ -113,6 +113,7 @@ describe('TransportCompanyDetailComponent', () => {
       undefined,
       undefined,
       undefined,
+      undefined,
       100
     );
   });
