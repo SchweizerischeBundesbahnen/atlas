@@ -17,7 +17,7 @@ public class SublineTestData {
 
   public static SublineVersionBuilder<?,?> sublineVersionBuilder() {
     return SublineVersion.builder()
-                         .status(Status.ACTIVE)
+                         .status(Status.VALIDATED)
                          .sublineType(SublineType.TECHNICAL)
                          .paymentType(
                              PaymentType.INTERNATIONAL)
@@ -41,7 +41,7 @@ public class SublineTestData {
 
   public static SublineBuilder sublineBuilder() {
     return Subline.builder()
-                  .status(Status.ACTIVE)
+                  .status(Status.VALIDATED)
                   .sublineType(SublineType.TECHNICAL)
                   .description("description")
                   .slnid("slnid")
