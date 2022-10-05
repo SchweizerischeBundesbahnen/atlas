@@ -93,7 +93,7 @@ export class LineDetailComponent
 
   revokeRecord(): void {
     const selectedLineVersion: LineVersion = this.getSelectedRecord();
-    if (selectedLineVersion.slnid != null) {
+    if (selectedLineVersion.slnid) {
       this.linesService.revokeLine(selectedLineVersion.slnid).subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.REVOKE_SUCCESS');
         this.router
