@@ -10,7 +10,7 @@ const version: TimetableFieldNumberVersion = {
   ttfnid: 'ttfnid',
   description: 'description',
   swissTimetableFieldNumber: 'asdf',
-  status: 'ACTIVE',
+  status: 'VALIDATED',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   number: '1.1',
@@ -48,7 +48,7 @@ describe('TimetableFieldNumberDetailResolver', () => {
     resolvedVersion.subscribe((versions) => {
       expect(versions.length).toBe(1);
       expect(versions[0].id).toBe(1234);
-      expect(versions[0].status).toBe(Status.Active);
+      expect(versions[0].status).toBe(Status.Validated);
       expect(versions[0].ttfnid).toBe('ttfnid');
     });
   });
