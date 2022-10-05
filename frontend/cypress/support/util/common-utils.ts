@@ -186,7 +186,7 @@ export default class CommonUtils {
       .then((e) => {
         // Workaround so that no exception is thrown when textToType="" (meaning an empty string)
         if (textToType) {
-          cy.wrap(e).type(textToType, { force: force });
+          cy.wrap(e).type(textToType, { delay: 0, force: force });
         }
       });
   }
