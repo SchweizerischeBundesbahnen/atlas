@@ -308,7 +308,7 @@ public class LineServiceSearchTest {
                               .pageable(Pageable.unpaged())
                               .searchCriterias(
                                   List.of("1", "ch:SLNID:1", "yb", "Fan"))
-                              .statusRestrictions(List.of(Status.ACTIVE))
+                              .statusRestrictions(List.of(Status.VALIDATED))
                               .build());
 
     // Then
@@ -320,17 +320,17 @@ public class LineServiceSearchTest {
     // Given
     lineVersionRepository.saveAndFlush(version1);
 
-    version2.setStatus(Status.NEEDS_REVIEW);
+    version2.setStatus(Status.DRAFT);
     lineVersionRepository.saveAndFlush(version2);
 
-    version3.setStatus(Status.REVIEWED);
+    version3.setStatus(Status.WITHDRAWN);
     lineVersionRepository.saveAndFlush(version3);
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
                                                                   .pageable(Pageable.unpaged())
                                                                   .statusRestrictions(
-                                                                      List.of(Status.ACTIVE,
-                                                                          Status.NEEDS_REVIEW))
+                                                                      List.of(Status.VALIDATED,
+                                                                          Status.DRAFT))
                                                                   .build());
 
     // Then

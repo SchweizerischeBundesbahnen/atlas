@@ -59,7 +59,7 @@ public class SublineService {
   }
 
   public SublineVersion save(SublineVersion sublineVersion) {
-    sublineVersion.setStatus(Status.ACTIVE);
+    sublineVersion.setStatus(Status.VALIDATED);
     List<LineVersion> lineVersions = lineService.findLineVersions(
         sublineVersion.getMainlineSlnid());
     if (lineVersions.isEmpty()) {

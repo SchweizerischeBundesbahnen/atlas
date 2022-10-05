@@ -224,7 +224,7 @@ public class SublineServiceSearchTest {
         SublineSearchRestrictions.builder()
                                  .pageable(Pageable.unpaged())
                                  .searchCriterias(List.of("1", "ch:SLNID:1", "yb", "Fan"))
-                                 .statusRestrictions(List.of(Status.ACTIVE))
+                                 .statusRestrictions(List.of(Status.VALIDATED))
                                  .build());
 
     // Then
@@ -236,17 +236,17 @@ public class SublineServiceSearchTest {
     // Given
     sublineVersionRepository.saveAndFlush(version1);
 
-    version2.setStatus(Status.NEEDS_REVIEW);
+    version2.setStatus(Status.DRAFT);
     sublineVersionRepository.saveAndFlush(version2);
 
-    version3.setStatus(Status.REVIEWED);
+    version3.setStatus(Status.REVOKED);
     sublineVersionRepository.saveAndFlush(version3);
     // When
     Page<Subline> result = sublineService.findAll(
         SublineSearchRestrictions.builder()
                                  .pageable(Pageable.unpaged())
                                  .statusRestrictions(
-                                     List.of(Status.ACTIVE, Status.NEEDS_REVIEW))
+                                     List.of(Status.VALIDATED, Status.DRAFT))
                                  .build());
 
     // Then

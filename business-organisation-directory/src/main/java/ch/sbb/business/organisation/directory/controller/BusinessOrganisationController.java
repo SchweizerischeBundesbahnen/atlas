@@ -71,7 +71,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   public BusinessOrganisationVersionModel createBusinessOrganisationVersion(
       BusinessOrganisationVersionModel newVersion) {
     BusinessOrganisationVersion businessOrganisationVersion = toEntity(newVersion);
-    businessOrganisationVersion.setStatus(Status.ACTIVE);
+    businessOrganisationVersion.setStatus(Status.VALIDATED);
     BusinessOrganisationVersion organisationVersionSaved =
         service.save(businessOrganisationVersion);
     return BusinessOrganisationVersionModel.toModel(organisationVersionSaved);
