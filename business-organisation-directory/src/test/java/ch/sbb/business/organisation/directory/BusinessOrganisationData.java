@@ -31,7 +31,7 @@ public class BusinessOrganisationData {
                                       .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
                                       .contactEnterpriseEmail("mail@mail.ch")
                                       .organisationNumber(123)
-                                      .status(Status.ACTIVE)
+                                      .status(Status.VALIDATED)
                                       .validFrom(LocalDate.of(2000, 1, 1))
                                       .validTo(LocalDate.of(2000, 12, 31));
   }
@@ -53,7 +53,7 @@ public class BusinessOrganisationData {
                                            .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
                                            .contactEnterpriseEmail("mail@mail.ch")
                                            .organisationNumber(123)
-                                           .status(Status.ACTIVE)
+                                           .status(Status.VALIDATED)
                                            .validFrom(LocalDate.of(2000, 1, 1))
                                            .validTo(LocalDate.of(2000, 12, 31));
   }

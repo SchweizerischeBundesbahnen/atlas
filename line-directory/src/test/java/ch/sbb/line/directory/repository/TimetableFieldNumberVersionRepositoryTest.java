@@ -35,7 +35,7 @@ public class TimetableFieldNumberVersionRepositoryTest {
                                          .ttfnid("ch:1:ttfnid:100000")
                                          .description("FPFN Description")
                                          .number("BEX")
-                                         .status(Status.ACTIVE)
+                                         .status(Status.VALIDATED)
                                          .swissTimetableFieldNumber("b0.BEX")
                                          .validFrom(LocalDate.of(2020, 12, 12))
                                          .validTo(LocalDate.of(2020, 12, 12))
@@ -153,7 +153,7 @@ public class TimetableFieldNumberVersionRepositoryTest {
                                                                            .description(
                                                                                "FPFN Description2")
                                                                            .number("BEX2")
-                                                                           .status(Status.ACTIVE)
+                                                                           .status(Status.VALIDATED)
                                                                            .swissTimetableFieldNumber(
                                                                                "b0.BEX2")
                                                                            .validFrom(
