@@ -1,16 +1,20 @@
-<div class="card-container">
-  <div class="d-flex flex-column align-items-center justify-content-center logo-container">
-    <img src="assets/images/logo-atlas.svg" alt="Atlas Logo" />
-    <span class="title color-primary-500">atlas</span>
-    <p class="font-regular-lg m-0">{{ 'PAGES.HOME_BUSINESS_PLATFORM' | translate }}</p>
-  </div>
-  <a *ngFor="let page of enabledPages" id="{{ page.path }}" class="card" [routerLink]="page.path">
-    <div class="d-flex flex-column justify-content-between card-content-box">
-      <h3 class="title color-gray-900 font-bold-xl m-0">{{ page.title | translate }}</h3>
-      <p class="font-regular-base color-gray-900 m-0">{{ page.description | translate }}</p>
-      <span class="d-flex color-primary-400 font-bold-base"
-        >{{ page.pathText | translate }}<i class="bi bi-arrow-right-short color-primary-400"></i
-      ></span>
+<div class="home-wrapper d-flex">
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-column align-items-center justify-content-center logo-container">
+      <img src="assets/images/logo-atlas.svg" alt="Atlas Logo" />
+      <span class="title color-primary-500">atlas</span>
+      <p class="font-regular-lg m-0">{{ 'PAGES.HOME_BUSINESS_PLATFORM' | translate }}</p>
     </div>
-  </a>
+  </div>
+  <div class="card-container">
+    <a *ngFor="let page of enabledPages" id="{{ page.path }}" class="card" [routerLink]="page.path">
+      <div class="d-flex flex-column justify-content-between card-content-box">
+        <h3 class="title color-gray-900 font-bold-xl m-0">{{ page.title | translate }}</h3>
+        <p class="font-regular-base color-gray-900 m-0">{{ page.description | translate }}</p>
+        <span class="d-flex color-primary-400 font-bold-base"
+          >{{ page.pathText | translate }}<em class="bi bi-arrow-right-short color-primary-400"></em
+        ></span>
+      </div>
+    </a>
+  </div>
 </div>
