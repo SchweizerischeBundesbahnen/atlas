@@ -54,7 +54,7 @@ export interface SublineVersion {
    */
   validTo: Date;
   /**
-   * BusinessOrganisation
+   * BusinessOrganisation SBOID
    */
   businessOrganisation: string;
   /**

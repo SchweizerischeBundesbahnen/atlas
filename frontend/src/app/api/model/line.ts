@@ -40,7 +40,7 @@ export interface Line {
    */
   validTo: Date;
   /**
-   * BusinessOrganisation
+   * BusinessOrganisation SBOID
    */
   businessOrganisation: string;
 }
