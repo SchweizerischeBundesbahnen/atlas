@@ -16,7 +16,7 @@ const versionContainer: ContainerSubline = {
       description: 'asdf',
       validFrom: new Date('2021-06-01'),
       validTo: new Date('2029-06-01'),
-      status: Status.Active,
+      status: Status.Validated,
       businessOrganisation: 'SBB',
       swissSublineNumber: 'L1:2',
       sublineType: SublineType.Technical,
