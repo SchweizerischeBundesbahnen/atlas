@@ -43,11 +43,11 @@
     "VALID_TO": "Valido fino al",
     "STATUS": "Stato",
     "STATUS_TYPES": {
-      "ACTIVE": "Attivo",
-      "INACTIVE": "Inattivo",
-      "NEEDS_REVIEW": "Necessita di verifica",
-      "IN_REVIEW": "In fase di verifica",
-      "REVIEWED": "Verifica conclusa"
+      "DRAFT": "Bozza",
+      "VALIDATED": "Convalidato",
+      "IN_REVIEW": "In esame",
+      "WITHDRAWN": "Ritirato",
+      "REVOKED": "Revocato"
     },
     "OK": "OK",
     "EDIT_VERSION": "Modificare la versione",

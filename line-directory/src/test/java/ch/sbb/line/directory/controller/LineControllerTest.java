@@ -50,7 +50,7 @@ public class LineControllerTest {
 
   private static LineVersionModel createModel() {
     return LineTestData.lineVersionModelBuilder()
-                       .status(Status.ACTIVE)
+                       .status(Status.VALIDATED)
                        .lineType(LineType.ORDERLY)
                        .slnid("slnid")
                        .paymentType(PaymentType.INTERNATIONAL)

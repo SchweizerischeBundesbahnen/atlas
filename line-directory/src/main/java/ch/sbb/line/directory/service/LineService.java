@@ -93,7 +93,7 @@ public class LineService {
   }
 
   LineVersion save(LineVersion lineVersion) {
-    lineVersion.setStatus(Status.ACTIVE);
+    lineVersion.setStatus(Status.VALIDATED);
     lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
     lineVersionRepository.saveAndFlush(lineVersion);
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
