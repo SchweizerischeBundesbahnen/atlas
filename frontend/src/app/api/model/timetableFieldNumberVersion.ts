@@ -42,7 +42,7 @@ export interface TimetableFieldNumberVersion {
    */
   validTo: Date;
   /**
-   * Business organisation
+   * BusinessOrganisation SBOID
    */
   businessOrganisation: string;
   /**

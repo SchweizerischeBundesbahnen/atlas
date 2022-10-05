@@ -227,6 +227,7 @@
       "ADD_ERROR": "Une erreur est survenue lors de la saisie du tableau-horaire.",
       "EDIT_SUCCESS": "Le numéro de tableau-horaire a été enregistré avec succès.",
       "EDIT_ERROR": "Une erreur est survenue lors de l’édition du tableau-horaire.",
+      "REVOKE_SUCCESS": "Le numéro de champ d'horaire a été marqué avec succès comme version d'erreur.",
       "DELETE_SUCCESS": "Le numéro de tableau-horaire a été supprimé avec succès.",
       "DELETE_ERROR": "Une erreur est survenue lors de la suppression du tableau-horaire.",
       "SWISSNUMBER_NOT_UNIQUE": "Le numéro de tableau-horaire CH ou de tableau-horaire sélectionné est déjà attribué à cette période."
@@ -330,6 +331,7 @@
         "ADD_ERROR": "Une erreur est survenue lors de la saisie de la ligne partielle.",
         "EDIT_SUCCESS": "Le ligne partielle a été enregistrée avec succès.",
         "EDIT_ERROR": "Une erreur est survenue lors de l’édition de la ligne partielle.",
+        "REVOKE_SUCCESS": "La sous-ligne a été marquée avec succès comme saisie d'erreur.",
         "DELETE_SUCCESS": "Le ligne partielle a été supprimée avec succès.",
         "DELETE_ERROR": "Une erreur est survenue lors de la suppression de la ligne partielle."
       }
@@ -387,6 +389,7 @@
         "ADD_ERROR": "Une erreur s'est produite durant la création de l'organisation commerciale.",
         "EDIT_SUCCESS": "L'organisation commerciale a été sauvegardée avec succès.",
         "EDIT_ERROR": "Une erreur s'est produite durant l'édition de l'organisation commerciale",
+        "REVOKE_SUCCESS": "L'organisation de l'entreprise a été marquée avec succès comme étant une saisie d'erreur.",
         "DELETE_SUCCESS": "L'organisation commerciale a été supprimée avec succès.",
         "DELETE_ERROR": "Une erreur s'est produite durant la suppression de l'organisation commerciale."
       }
