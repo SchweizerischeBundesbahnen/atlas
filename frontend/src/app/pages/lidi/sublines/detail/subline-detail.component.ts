@@ -3,6 +3,7 @@ import {
   ApplicationType,
   Line,
   LinesService,
+  LineVersion,
   PaymentType,
   SublinesService,
   SublineType,
@@ -114,7 +115,17 @@ export class SublineDetailComponent
       });
   }
 
-  revokeRecord(): void {}
+  revokeRecord(): void {
+    const selectedRecord = this.getSelectedRecord();
+    if (selectedRecord.slnid) {
+      this.sublinesService.revokeSubline(selectedRecord.slnid).subscribe(() => {
+        this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.REVOKE_SUCCESS');
+        this.router
+          .navigate([Pages.LIDI.path, Pages.SUBLINES.path, selectedRecord.slnid])
+          .then(() => this.ngOnInit());
+      });
+    }
+  }
 
   deleteRecord(): void {
     const selectedSublineVersion = this.getSelectedRecord();

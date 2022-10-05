@@ -6,8 +6,8 @@ import { ContainerSubline, Status, SublinesService, SublineType } from '../../..
 import { SublinesComponent } from './sublines.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Component, Input, TemplateRef } from '@angular/core';
 import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
+import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 const versionContainer: ContainerSubline = {
   objects: [
@@ -52,7 +52,7 @@ describe('SublinesComponent', () => {
   it('should create', () => {
     expect(sublinesService.getSublines).toHaveBeenCalledOnceWith(
       undefined,
-      undefined,
+      DEFAULT_STATUS_SELECTION,
       undefined,
       undefined,
       undefined,

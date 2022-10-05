@@ -30,7 +30,7 @@ export interface TimetableFieldNumber {
   description?: string;
   status: Status;
   /**
-   * Business organisation
+   * BusinessOrganisation SBOID
    */
   businessOrganisation: string;
   /**
