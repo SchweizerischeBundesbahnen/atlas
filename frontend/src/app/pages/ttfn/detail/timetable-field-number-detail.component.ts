@@ -82,6 +82,8 @@ export class TimetableFieldNumberDetailComponent
       });
   }
 
+  revokeRecord(): void {}
+
   deleteRecord(): void {
     const selectedRecord: TimetableFieldNumberVersion = this.getSelectedRecord();
     if (selectedRecord.ttfnid != null) {

@@ -114,6 +114,8 @@ export class SublineDetailComponent
       });
   }
 
+  revokeRecord(): void {}
+
   deleteRecord(): void {
     const selectedSublineVersion = this.getSelectedRecord();
     if (selectedSublineVersion.slnid != null) {
