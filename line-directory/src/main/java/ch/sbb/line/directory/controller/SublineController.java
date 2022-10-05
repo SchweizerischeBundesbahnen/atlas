@@ -90,7 +90,7 @@ public class SublineController implements SublinenApiV1 {
   @Override
   public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {
     SublineVersion sublineVersion = toEntity(newSublineVersion);
-    sublineVersion.setStatus(Status.ACTIVE);
+    sublineVersion.setStatus(Status.VALIDATED);
     SublineVersion createdVersion = sublineService.create(sublineVersion);
     return toModel(createdVersion);
   }

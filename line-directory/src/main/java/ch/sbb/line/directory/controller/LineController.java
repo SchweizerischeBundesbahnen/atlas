@@ -90,7 +90,7 @@ public class LineController implements LineApiV1 {
   @Override
   public LineVersionModel createLineVersion(LineVersionModel newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
-    newLineVersion.setStatus(Status.ACTIVE);
+    newLineVersion.setStatus(Status.VALIDATED);
     LineVersion createdVersion = lineService.create(newLineVersion);
     return toModel(createdVersion);
   }
