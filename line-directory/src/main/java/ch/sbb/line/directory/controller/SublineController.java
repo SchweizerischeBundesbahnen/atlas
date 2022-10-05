@@ -4,9 +4,9 @@ import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.api.CoverageModel;
+import ch.sbb.line.directory.api.SublineApiV1;
 import ch.sbb.line.directory.api.SublineModel;
 import ch.sbb.line.directory.api.SublineVersionModel;
-import ch.sbb.line.directory.api.SublinenApiV1;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.SublineType;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class SublineController implements SublinenApiV1 {
+public class SublineController implements SublineApiV1 {
 
   private final SublineService sublineService;
   private final CoverageService coverageService;
@@ -76,9 +76,19 @@ public class SublineController implements SublinenApiV1 {
 
   @Override
   public List<SublineVersionModel> getSublineVersion(String slnid) {
-
     List<SublineVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
                                                                    .stream()
+                                                                   .map(this::toModel)
+                                                                   .toList();
+    if (sublineVersionModels.isEmpty()) {
+      throw new SlnidNotFoundException(slnid);
+    }
+    return sublineVersionModels;
+  }
+
+  @Override
+  public List<SublineVersionModel> revokeSubline(String slnid) {
+    List<SublineVersionModel> sublineVersionModels = sublineService.revokeSubline(slnid).stream()
                                                                    .map(this::toModel)
                                                                    .toList();
     if (sublineVersionModels.isEmpty()) {
