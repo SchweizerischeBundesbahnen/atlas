@@ -155,6 +155,21 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     }
   }
 
+  revoke() {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.revokeRecord();
+        }
+      });
+  }
+
   delete() {
     this.dialogService
       .confirm({
@@ -240,6 +255,8 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
   abstract updateRecord(): void;
 
   abstract createRecord(): void;
+
+  abstract revokeRecord(): void;
 
   abstract deleteRecord(): void;
 
