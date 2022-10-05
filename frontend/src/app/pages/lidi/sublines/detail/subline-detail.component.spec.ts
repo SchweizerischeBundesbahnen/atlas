@@ -6,12 +6,16 @@ import { PaymentType, SublinesService, SublineType, SublineVersion } from '../..
 import { SublineDetailComponent } from './subline-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AppTestingModule } from '../../../../app.testing.module';
+import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
-import { MockAppDetailWrapperComponent } from '../../../../app.testing.mocks';
+import {
+  MockAppDetailWrapperComponent,
+  MockBoSelectComponent,
+} from '../../../../app.testing.mocks';
 import { MainlineSelectOptionPipe } from './mainline-select-option.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -179,6 +183,7 @@ function setupTestBed(
     declarations: [
       SublineDetailComponent,
       MockAppDetailWrapperComponent,
+      MockBoSelectComponent,
       InfoIconComponent,
       SearchSelectComponent,
       MainlineSelectOptionPipe,
@@ -187,6 +192,7 @@ function setupTestBed(
     providers: [
       { provide: FormBuilder },
       { provide: SublinesService, useValue: sublinesService },
+      { provide: AuthService, useValue: authServiceMock },
       {
         provide: MAT_DIALOG_DATA,
         useValue: data,

@@ -100,19 +100,13 @@ export class AuthService {
     if (isAdmin) {
       return true;
     }
-    // Look up user permissions per for the applicationType
-    const applicationPermissions = permissions.filter(
-      (permission) => permission.application === applicationType
+    const applicationPermission = AuthService.getApplicationPermission(
+      permissions,
+      applicationType
     );
-    if (applicationPermissions.length === 1) {
-      const applicationPermission = applicationPermissions[0];
-      if (
-        AuthService.getRolesAllowedToCreate(applicationType).includes(applicationPermission.role!)
-      ) {
-        return true;
-      }
-    }
-    return false;
+    return AuthService.getRolesAllowedToCreate(applicationType).includes(
+      applicationPermission.role!
+    );
   }
 
   private static getRolesAllowedToCreate(applicationType: ApplicationType) {
@@ -147,24 +141,19 @@ export class AuthService {
     if (isAdmin) {
       return true;
     }
-
-    // Look up user permissions per for the applicationType
-    const applicationPermissions = permissions.filter(
-      (permission) => permission.application === applicationType
+    const applicationPermission = AuthService.getApplicationPermission(
+      permissions,
+      applicationType
     );
-    if (applicationPermissions.length === 1) {
-      const applicationPermission = applicationPermissions[0];
+    if (
+      AuthService.getRolesAllowedToUpdate(applicationType).includes(applicationPermission.role!)
+    ) {
+      return true;
+    }
 
-      if (
-        AuthService.getRolesAllowedToUpdate(applicationType).includes(applicationPermission.role!)
-      ) {
-        return true;
-      }
-
-      // Writer must be explicitely permitted to edit for a specific sboid
-      if (sboid && ApplicationRole.Writer === applicationPermission.role!) {
-        return Array.from(applicationPermission.sboids!.values()).includes(sboid);
-      }
+    // Writer must be explicitely permitted to edit for a specific sboid
+    if (sboid && ApplicationRole.Writer === applicationPermission.role!) {
+      return Array.from(applicationPermission.sboids!.values()).includes(sboid);
     }
     return false;
   }
@@ -176,6 +165,23 @@ export class AuthService {
       rolesAllowedToUpdate = [ApplicationRole.Supervisor];
     }
     return rolesAllowedToUpdate;
+  }
+
+  getApplicationUserPermission(applicationType: ApplicationType) {
+    return AuthService.getApplicationPermission(this.getPermissions(), applicationType);
+  }
+
+  private static getApplicationPermission(
+    permissions: UserPermissionModel[],
+    applicationType: ApplicationType
+  ): UserPermissionModel {
+    const applicationPermissions = permissions.filter(
+      (permission) => permission.application === applicationType
+    );
+    if (applicationPermissions.length === 1) {
+      return applicationPermissions[0];
+    }
+    return { application: applicationType, role: ApplicationRole.Reader, sboids: [] };
   }
 
   get roles(): Role[] {

@@ -37,6 +37,7 @@ public interface BusinessOrganisationApiV1 {
   Container<BusinessOrganisationModel> getAllBusinessOrganisations(
       @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
+      @Parameter @RequestParam(required = false) List<String> inSboids,
       @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
