@@ -139,7 +139,7 @@ export default class BodiUtils {
       abbreviationEn: 'en',
       organisationNumber: 91011,
       contactEnterpriseEmail: 'mail@mail.ch',
-      status: 'ACTIVE',
+      status: 'VALIDATED',
       businessTypes: ['Strasse', 'Eisenbahn', 'Luft'],
       validFrom: '01.01.2000',
       validTo: '31.12.2000',
