@@ -76,4 +76,9 @@ public class BusinessOrganisationService {
     versionRepository.deleteAll(versions);
   }
 
+  public List<BusinessOrganisationVersion> revokeBusinessOrganisation(String sboid) {
+    List<BusinessOrganisationVersion> versions = findBusinessOrganisationVersions(sboid);
+    versions.forEach(version -> version.setStatus(Status.REVOKED));
+    return versions;
+  }
 }
