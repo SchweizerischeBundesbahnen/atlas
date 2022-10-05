@@ -53,7 +53,7 @@ public class BusinessOrganisationVersioningTest {
                                                   BusinessType.SHIP)))
                                           .contactEnterpriseEmail("mail1@mail.ch")
                                           .organisationNumber(1234)
-                                          .status(Status.ACTIVE)
+                                          .status(Status.VALIDATED)
                                           .validFrom(LocalDate.of(2020, 1, 1))
                                           .validTo(LocalDate.of(2021, 12, 31))
                                           .build();
@@ -72,7 +72,7 @@ public class BusinessOrganisationVersioningTest {
                                                   BusinessType.SHIP)))
                                           .contactEnterpriseEmail("mail1@mail.ch")
                                           .organisationNumber(1234)
-                                          .status(Status.ACTIVE)
+                                          .status(Status.VALIDATED)
                                           .validFrom(LocalDate.of(2022, 1, 1))
                                           .validTo(LocalDate.of(2023, 12, 31))
                                           .build();
@@ -91,7 +91,7 @@ public class BusinessOrganisationVersioningTest {
                                                   BusinessType.SHIP)))
                                           .contactEnterpriseEmail("mail1@mail.ch")
                                           .organisationNumber(1234)
-                                          .status(Status.ACTIVE)
+                                          .status(Status.VALIDATED)
                                           .validFrom(LocalDate.of(2024, 1, 1))
                                           .validTo(LocalDate.of(2024, 12, 31))
                                           .build();
@@ -110,7 +110,7 @@ public class BusinessOrganisationVersioningTest {
                                                   BusinessType.SHIP)))
                                           .contactEnterpriseEmail("mail1@mail.ch")
                                           .organisationNumber(1234)
-                                          .status(Status.ACTIVE)
+                                          .status(Status.VALIDATED)
                                           .validFrom(LocalDate.of(2025, 1, 1))
                                           .validTo(LocalDate.of(2025, 12, 31))
                                           .build();
@@ -163,7 +163,7 @@ public class BusinessOrganisationVersioningTest {
     BusinessOrganisationVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
-    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getAbbreviationFr()).isEqualTo("fr1");
     assertThat(firstTemporalVersion.getAbbreviationIt()).isEqualTo("it1");
     assertThat(firstTemporalVersion.getAbbreviationEn()).isEqualTo("en1");
@@ -180,7 +180,7 @@ public class BusinessOrganisationVersioningTest {
     BusinessOrganisationVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 6, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
-    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getDescriptionDe()).isEqualTo("Description <changed>");
     assertThat(secondTemporalVersion.getAbbreviationFr()).isEqualTo("fr1");
     assertThat(secondTemporalVersion.getAbbreviationIt()).isEqualTo("it1");
@@ -197,7 +197,7 @@ public class BusinessOrganisationVersioningTest {
     BusinessOrganisationVersion thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
-    assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(thirdTemporalVersion.getDescriptionDe()).isEqualTo("Description <changed>");
     assertThat(thirdTemporalVersion.getAbbreviationFr()).isEqualTo("fr1");
     assertThat(thirdTemporalVersion.getAbbreviationIt()).isEqualTo("it1");
@@ -214,7 +214,7 @@ public class BusinessOrganisationVersioningTest {
     BusinessOrganisationVersion fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
-    assertThat(fourthTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(fourthTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(fourthTemporalVersion.getDescriptionDe()).isEqualTo("Description <changed>");
     assertThat(fourthTemporalVersion.getAbbreviationFr()).isEqualTo("fr1");
     assertThat(fourthTemporalVersion.getAbbreviationIt()).isEqualTo("it1");
@@ -231,7 +231,7 @@ public class BusinessOrganisationVersioningTest {
     BusinessOrganisationVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 1, 1));
     assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 6, 1));
-    assertThat(fifthTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(fifthTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(fifthTemporalVersion.getDescriptionDe()).isEqualTo("Description <changed>");
     assertThat(fifthTemporalVersion.getAbbreviationFr()).isEqualTo("fr1");
     assertThat(fifthTemporalVersion.getAbbreviationIt()).isEqualTo("it1");
@@ -248,7 +248,7 @@ public class BusinessOrganisationVersioningTest {
     BusinessOrganisationVersion sixthTemporalVersion = result.get(5);
     assertThat(sixthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 6, 2));
     assertThat(sixthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
-    assertThat(sixthTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(sixthTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(sixthTemporalVersion.getAbbreviationDe()).isEqualTo("de4");
     assertThat(sixthTemporalVersion.getAbbreviationFr()).isEqualTo("fr1");
     assertThat(sixthTemporalVersion.getAbbreviationIt()).isEqualTo("it1");

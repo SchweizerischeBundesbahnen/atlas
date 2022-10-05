@@ -48,7 +48,7 @@ public class TimetableFieldNumberService {
   }
 
   public TimetableFieldNumberVersion save(TimetableFieldNumberVersion newVersion) {
-    newVersion.setStatus(Status.ACTIVE);
+    newVersion.setStatus(Status.VALIDATED);
     List<TimetableFieldNumberVersion> overlappingVersions = getOverlapsOnNumberAndSttfn(newVersion);
     if (!overlappingVersions.isEmpty()) {
       throw new TimetableFieldNumberConflictException(newVersion, overlappingVersions);

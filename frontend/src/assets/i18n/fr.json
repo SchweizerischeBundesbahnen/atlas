@@ -43,11 +43,11 @@
     "VALID_TO": "Valable au",
     "STATUS": "Statut",
     "STATUS_TYPES": {
-      "ACTIVE": "Actif",
-      "INACTIVE": "Inactif",
-      "NEEDS_REVIEW": "Nécessite un contrôle",
-      "IN_REVIEW": "En cours d’étude",
-      "REVIEWED": "Examen terminé"
+      "DRAFT": "Projet",
+      "VALIDATED": "Validé",
+      "IN_REVIEW": "En cours d'examen",
+      "WITHDRAWN": "Retiré",
+      "REVOKED": "Saisie des erreurs"
     },
     "OK": "OK",
     "EDIT_VERSION": "Modifier la version",
