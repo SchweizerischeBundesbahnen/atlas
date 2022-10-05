@@ -18,6 +18,7 @@
     "SAVE": "Speichern",
     "ADD": "Hinzufügen",
     "EDIT": "Editieren",
+    "REVOKE": "Fehlerfassung",
     "DELETE": "Löschen",
     "CANCEL": "Abbrechen",
     "COVERAGE": {
@@ -91,6 +92,8 @@
     "CANCEL": "Abbrechen",
     "BACK": "Zurück zur Eingabemaske",
     "WARNING": "Warnung!",
+    "REVOKE": "Wollen Sie diesen Datensatz unwiderruflich als Fehlerfassung kennzeichnen?",
+    "CONFIRM_REVOKE": "Fehlerfassung bestätigen",
     "DELETE": "Wollen Sie diesen Datensatz unwiderruflich löschen?",
     "CONFIRM_DELETE": "Daten löschen",
     "DISCARD_CHANGES_TITLE": "Änderungen verwerfen?",
@@ -295,6 +298,7 @@
         "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
         "EDIT_SUCCESS": "Die Linie wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
+        "REVOKE_SUCCESS": "Die Linie wurde erfolgreich als Fehlerfassung gekennzeichnet.",
         "DELETE_SUCCESS": "Die Linie wurde erfolgreich gelöscht."
       }
     },
