@@ -62,6 +62,12 @@ public class LineService {
     updateVersion(currentVersion, editedVersion);
   }
 
+  public List<LineVersion> revokeLine(String slnid) {
+    List<LineVersion> lineVersions = lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
+    lineVersions.forEach(lineVersion -> lineVersion.setStatus(Status.REVOKED));
+    return lineVersions;
+  }
+
   public void deleteById(Long id) {
     LineVersion lineVersion = lineVersionRepository.findById(id).orElseThrow(
         () -> new IdNotFoundException(id));
