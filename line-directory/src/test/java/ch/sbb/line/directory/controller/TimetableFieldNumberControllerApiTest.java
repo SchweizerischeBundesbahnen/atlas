@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.line.directory.api.LineVersionModel.Fields;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
@@ -69,6 +70,13 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
         .contentType(contentType)
         .content(mapper.writeValueAsString(timetableFieldNumberVersionModel))
     ).andExpect(status().isCreated());
+  }
+
+  @Test
+  void shouldRevokeTimetableFieldNumber() throws Exception {
+    mvc.perform(post("/v1/field-numbers/" + version.getTtfnid() + "/revoke"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
   }
 
   @Test

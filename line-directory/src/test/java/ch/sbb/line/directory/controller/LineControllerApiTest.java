@@ -185,8 +185,6 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     //when
     mvc.perform(post("/v1/lines/" + lineVersionSaved.getSlnid() + "/revoke")
-           .contentType(contentType)
-           .content(mapper.writeValueAsString(lineVersionModel))
        ).andExpect(status().isOk())
        .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
   }
