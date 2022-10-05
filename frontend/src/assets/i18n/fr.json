@@ -18,6 +18,7 @@
     "SAVE": "Sauvegarder",
     "ADD": "Hinzufügen__fr__",
     "EDIT": "Modifier",
+    "REVOKE": "Saisie des erreurs",
     "DELETE": "Effacer",
     "CANCEL": "Annuler",
     "COVERAGE": {
@@ -91,6 +92,8 @@
     "CANCEL": "Annuler",
     "BACK": "Retour au formulaire de saisie",
     "WARNING": "Avertissement!",
+    "REVOKE": "Voulez-vous marquer irrévocablement cet enregistrement comme une saisie d'erreur?",
+    "CONFIRM_REVOKE": "Confirmer la saisie de l'erreur",
     "DELETE": "Voulez-vous supprimer définitivement ce bloc de données?",
     "CONFIRM_DELETE": "Supprimer les données",
     "DISCARD_CHANGES_TITLE": "Annuler les modifications?",
@@ -295,6 +298,7 @@
         "ADD_ERROR": "Une erreur est survenue lors de la saisie de la ligne.",
         "EDIT_SUCCESS": "La ligne a été enregistrée avec succès.",
         "EDIT_ERROR": "Une erreur est survenue lors de l’édition de la ligne.",
+        "REVOKE_SUCCESS": "La ligne a été marquée avec succès comme étant une saisie d'erreur.",
         "DELETE_SUCCESS": "La ligne a été supprimée avec succès."
       }
     },
