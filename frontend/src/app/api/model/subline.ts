@@ -44,7 +44,7 @@ export interface Subline {
    */
   validTo: Date;
   /**
-   * BusinessOrganisation
+   * BusinessOrganisation SBOID
    */
   businessOrganisation: string;
 }

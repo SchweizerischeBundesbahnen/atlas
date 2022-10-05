@@ -26,6 +26,7 @@ describe('BaseDetailController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
     'backToOverview',
     'createRecord',
+    'revokeRecord',
     'deleteRecord',
     'updateRecord',
   ]);
@@ -58,6 +59,10 @@ describe('BaseDetailController', () => {
 
     createRecord(): void {
       dummyController.createRecord();
+    }
+
+    revokeRecord(): void {
+      dummyController.revokeRecord();
     }
 
     deleteRecord(): void {

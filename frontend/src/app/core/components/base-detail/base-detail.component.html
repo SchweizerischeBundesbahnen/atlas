@@ -53,7 +53,7 @@
       *ngIf="mayRevoke"
       data-cy="revoke-item"
       (click)="controller.revoke()"
-      [disabled]="controller.form.enabled || controller.record.status == 'REVOKED'"
+      [disabled]="controller.form.enabled || controller.record.status === 'REVOKED'"
       class="atlas-primary-btn me-3"
     >
       {{ 'COMMON.REVOKE' | translate }}

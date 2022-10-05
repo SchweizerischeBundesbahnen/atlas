@@ -227,6 +227,7 @@
       "ADD_ERROR": "Si è verificato un errore durante la registrazione del numero del quadro d’orario.",
       "EDIT_SUCCESS": "Numero del quadro d’orario registrato con successo.",
       "EDIT_ERROR": "Si è verificato un errore durante la modifica del numero del quadro d’orario.",
+      "REVOKE_SUCCESS": "Il numero del campo orario è stato contrassegnato con successo come versione di errore.",
       "DELETE_SUCCESS": "Numero del quadro d’orario cancellato con successo.",
       "DELETE_ERROR": "Si è verificato un errore durante la cancellazione del numero del quadro d’orario.",
       "SWISSNUMBER_NOT_UNIQUE": "Il numero del quadro d’orario CH o il numero del quadro d’orario selezionato è già assegnato in questo intervallo di tempo."
@@ -330,6 +331,7 @@
         "ADD_ERROR": "Si è verificato un errore durante la registrazione della linea parziale.",
         "EDIT_SUCCESS": "Linea parziale memorizzata con successo.",
         "EDIT_ERROR": "Si è verificato un errore nella modifica della linea parziale.",
+        "REVOKE_SUCCESS": "La linea parziale è stata contrassegnata con successo come cattura di guasti.",
         "DELETE_SUCCESS": "Linea parziale cancellata con successo.",
         "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea parziale."
       }
@@ -387,6 +389,7 @@
         "ADD_ERROR": "Si è verificato un errore durante la creazione dell'organizzazione commerciale.",
         "EDIT_SUCCESS": "L'organizzazione commerciale è stata salvata correttamente.",
         "EDIT_ERROR": "Si è verificato un errore durante la modifica dell'organizzazione commerciale",
+        "REVOKE_SUCCESS": "L'organizzazione aziendale è stata contrassegnata con successo come versione di errore.",
         "DELETE_SUCCESS": "L'organizzazione commerciale è stata eliminata con successo.",
         "DELETE_ERROR": "Si è verificato un errore durante l'eliminazione dell'organizzazione commerciale."
       }

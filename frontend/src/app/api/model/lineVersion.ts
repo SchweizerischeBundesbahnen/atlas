@@ -78,7 +78,7 @@ export interface LineVersion {
    */
   validTo: Date;
   /**
-   * BusinessOrganisation
+   * BusinessOrganisation SBOID
    */
   businessOrganisation: string;
   /**
