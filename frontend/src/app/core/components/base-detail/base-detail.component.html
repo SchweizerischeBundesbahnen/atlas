@@ -50,6 +50,15 @@
       {{ 'COMMON.EDIT_VERSION' | translate }}
     </button>
     <button
+      *ngIf="mayRevoke"
+      data-cy="revoke-item"
+      (click)="controller.revoke()"
+      [disabled]="controller.form.enabled || controller.record.status == 'REVOKED'"
+      class="atlas-primary-btn me-3"
+    >
+      {{ 'COMMON.REVOKE' | translate }}
+    </button>
+    <button
       *ngIf="mayDelete"
       data-cy="delete-item"
       (click)="controller.delete()"
@@ -68,7 +77,7 @@
     <div>
       <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
       <span class="color-gray-900">{{
-        'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate | lowercase
+        'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
       }}</span>
     </div>
   </div>
