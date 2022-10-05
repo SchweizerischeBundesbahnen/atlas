@@ -23,7 +23,7 @@ const version: TimetableFieldNumberVersion = {
   ttfnid: 'ttfnid',
   description: 'description',
   swissTimetableFieldNumber: 'asdf',
-  status: 'ACTIVE',
+  status: 'VALIDATED',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   number: '1.1',
