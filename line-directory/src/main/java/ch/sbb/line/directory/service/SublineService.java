@@ -73,6 +73,12 @@ public class SublineService {
     return sublineVersion;
   }
 
+  public List<SublineVersion> revokeSubline(String slnid) {
+    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
+    sublineVersions.forEach(sublineVersion -> sublineVersion.setStatus(Status.REVOKED));
+    return sublineVersions;
+  }
+
   public void deleteById(Long id) {
     SublineVersion sublineVersion = sublineVersionRepository.findById(id)
                                                             .orElseThrow(
