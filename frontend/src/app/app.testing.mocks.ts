@@ -31,6 +31,7 @@ export class MockBoSelectComponent {
   @Input() controlName!: string;
   @Input() formModus = true;
   @Input() formGroup!: FormGroup;
+  @Input() additionalSearchCriteria: string[] = [];
 }
 
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
