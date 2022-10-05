@@ -18,6 +18,7 @@
     "SAVE": "Salva",
     "ADD": "Hinzufügen__it__",
     "EDIT": "Modifica",
+    "REVOKE": "Revocare",
     "DELETE": "Eliminare",
     "CANCEL": "Annulla",
     "COVERAGE": {
@@ -91,6 +92,8 @@
     "CANCEL": "Annulla",
     "BACK": "Tornare al modulo di immissione dati",
     "WARNING": "Attenzione!",
+    "REVOKE": "Si desidera contrassegnare irrevocabilmente questo record come un record di errore?",
+    "CONFIRM_REVOKE": "Revocare",
     "DELETE": "Eliminare definitivamente questo record?",
     "CONFIRM_DELETE": "Cancellare i dati",
     "DISCARD_CHANGES_TITLE": "Annullare le modifiche?",
@@ -295,6 +298,7 @@
         "ADD_ERROR": "Si è verificato un errore durante la registrazione della linea.",
         "EDIT_SUCCESS": "Linea memorizzata con successo.",
         "EDIT_ERROR": "Si è verificato un errore durante la modifica della linea.",
+        "REVOKE_SUCCESS": "La linea è stata contrassegnata con successo come versione di errore.",
         "DELETE_SUCCESS": "Linea cancellata con successo."
       }
     },

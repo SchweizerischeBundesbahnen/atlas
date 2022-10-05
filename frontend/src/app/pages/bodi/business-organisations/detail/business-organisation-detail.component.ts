@@ -4,6 +4,7 @@ import {
   BusinessOrganisationsService,
   BusinessOrganisationVersion,
   BusinessType,
+  LineVersion,
 } from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { Router } from '@angular/router';
@@ -100,6 +101,8 @@ export class BusinessOrganisationDetailComponent
           .then(() => this.ngOnInit());
       });
   }
+
+  revokeRecord(): void {}
 
   deleteRecord(): void {
     const selectedVersion: BusinessOrganisationVersion = this.getSelectedRecord();

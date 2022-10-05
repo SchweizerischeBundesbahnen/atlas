@@ -6,6 +6,7 @@ import { Record } from './record';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { NON_PROD_STAGES } from '../../constants/stages';
+import { ApplicationRole } from '../../../api';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -41,6 +42,15 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
     this.mayWrite = this.authService.hasPermissionsToWrite(
       this.controller.getApplicationType(),
       this.controller.record.businessOrganisation
+    );
+  }
+
+  get mayRevoke(): boolean {
+    const applicationUserPermission = this.authService.getApplicationUserPermission(
+      this.controller.getApplicationType()
+    );
+    return (
+      this.authService.isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor
     );
   }
 
