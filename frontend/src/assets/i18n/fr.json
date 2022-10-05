@@ -95,7 +95,9 @@
     "CONFIRM_DELETE": "Supprimer les données",
     "DISCARD_CHANGES_TITLE": "Annuler les modifications?",
     "LEAVE_SITE": "Si vous quittez le site, vos données ne sont pas enregistrées.",
-    "CANCEL_EDITMODE": "Si vous quittez le mode d’édition, vous perdez toutes les données adaptées."
+    "CANCEL_EDITMODE": "Si vous quittez le mode d’édition, vous perdez toutes les données adaptées.",
+    "CONFIRM_BO_TRANSFER_TITLE": "Remarque",
+    "CONFIRM_BO_TRANSFER": "La modification de l'organisation commerciale vous fait perdre l'autorisation de traiter l'objet à partir du moment de la mutation."
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nouvelle version disponible",

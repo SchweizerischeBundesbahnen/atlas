@@ -1,6 +1,7 @@
 package ch.sbb.atlas.searching;
 
 import ch.sbb.atlas.searching.specification.EnumSpecification;
+import ch.sbb.atlas.searching.specification.InSpecification;
 import ch.sbb.atlas.searching.specification.SearchCriteriaSpecification;
 import ch.sbb.atlas.searching.specification.SingleStringSpecification;
 import ch.sbb.atlas.searching.specification.ValidOnSpecification;
@@ -34,5 +35,9 @@ public class SpecificationBuilder<T> {
 
   public Specification<T> singleStringSpecification(Optional<String> searchString) {
     return new SingleStringSpecification<>(searchString, singleStringAttribute.getName());
+  }
+
+  public Specification<T> stringInSpecification(List<String> searchStrings, SingularAttribute<T, String> column) {
+    return new InSpecification<>(searchStrings, column.getName());
   }
 }

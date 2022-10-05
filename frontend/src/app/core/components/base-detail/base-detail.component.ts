@@ -4,6 +4,8 @@ import { AuthService } from '../../auth/auth.service';
 import { KeepaliveService } from '../../keepalive/keepalive.service';
 import { Record } from './record';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { NON_PROD_STAGES } from '../../constants/stages';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -43,7 +45,7 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   }
 
   get mayDelete(): boolean {
-    return this.authService.isAdmin;
+    return this.authService.isAdmin && NON_PROD_STAGES.includes(environment.label);
   }
 
   ngOnDestroy(): void {

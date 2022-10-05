@@ -27,6 +27,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { SublineDetailFormGroup } from './subline-detail-form-group';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -51,13 +52,13 @@ export class SublineDetailComponent
     private sublinesService: SublinesService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
-    protected dialogService: DialogService,
     private dateService: DateService,
     private validationService: ValidationService,
     private linesService: LinesService,
-    private translateService: TranslateService
+    protected dialogService: DialogService,
+    protected authService: AuthService
   ) {
-    super(dialogRef, dialogService, notificationService);
+    super(dialogRef, dialogService, notificationService, authService);
   }
 
   ngOnInit() {
