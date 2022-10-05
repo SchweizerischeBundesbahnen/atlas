@@ -222,7 +222,7 @@ public class LineServiceVersioningTest {
     assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
     assertThat(firstTemporalVersion.getDescription()).isEqualTo("description");
     assertThat(firstTemporalVersion.getComment()).isNull();
-    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(firstTemporalVersion.getSwissLineNumber()).isEqualTo("1");
 
     // new
@@ -231,7 +231,7 @@ public class LineServiceVersioningTest {
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     assertThat(secondTemporalVersion.getDescription()).isEqualTo("Name <changed>");
     assertThat(secondTemporalVersion.getComment()).isEqualTo("Scenario 4");
-    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(secondTemporalVersion.getSwissLineNumber()).isEqualTo("1");
 
     //update
@@ -240,7 +240,7 @@ public class LineServiceVersioningTest {
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     assertThat(thirdTemporalVersion.getDescription()).isEqualTo("Name <changed>");
     assertThat(thirdTemporalVersion.getComment()).isEqualTo("Scenario 4");
-    assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(thirdTemporalVersion.getSwissLineNumber()).isEqualTo("2");
 
     //new
@@ -249,7 +249,7 @@ public class LineServiceVersioningTest {
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
     assertThat(fourthTemporalVersion.getDescription()).isEqualTo("Name <changed>");
     assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 4");
-    assertThat(fourthTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(fourthTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(fourthTemporalVersion.getSwissLineNumber()).isEqualTo("3");
 
     //last current index updated
@@ -258,7 +258,7 @@ public class LineServiceVersioningTest {
     assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(fifthTemporalVersion.getDescription()).isEqualTo("description");
     assertThat(fifthTemporalVersion.getComment()).isNull();
-    assertThat(fifthTemporalVersion.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(fifthTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(fifthTemporalVersion.getSwissLineNumber()).isEqualTo("3");
 
   }
