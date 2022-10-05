@@ -68,6 +68,17 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   }
 
   @Override
+  public List<BusinessOrganisationVersionModel> revokeBusinessOrganisation(String sboid) {
+    List<BusinessOrganisationVersionModel> lineVersionModels = service.revokeBusinessOrganisation(sboid).stream()
+                                                          .map(BusinessOrganisationVersionModel::toModel)
+                                                          .toList();
+    if (lineVersionModels.isEmpty()) {
+      throw new SboidNotFoundException(sboid);
+    }
+    return lineVersionModels;
+  }
+
+  @Override
   public BusinessOrganisationVersionModel createBusinessOrganisationVersion(
       BusinessOrganisationVersionModel newVersion) {
     BusinessOrganisationVersion businessOrganisationVersion = toEntity(newVersion);

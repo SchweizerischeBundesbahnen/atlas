@@ -46,7 +46,7 @@ public class TimetableFieldNumberModel {
   @NotNull
   private Status status;
 
-  @Schema(description = "Business organisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
+  @Schema(description = "BusinessOrganisation SBOID", example = "ch:1:sboid:100001")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
