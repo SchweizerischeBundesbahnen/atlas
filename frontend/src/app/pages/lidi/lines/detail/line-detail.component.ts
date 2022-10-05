@@ -16,6 +16,7 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { LineDetailFormGroup } from './line-detail-form-group';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -36,9 +37,10 @@ export class LineDetailComponent
     protected dialogRef: MatDialogRef<LineDetailComponent>,
     private linesService: LinesService,
     protected notificationService: NotificationService,
-    protected dialogService: DialogService
+    protected dialogService: DialogService,
+    protected authService: AuthService
   ) {
-    super(dialogRef, dialogService, notificationService);
+    super(dialogRef, dialogService, notificationService, authService);
   }
 
   ngOnInit() {

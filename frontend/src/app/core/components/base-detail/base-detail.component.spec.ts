@@ -130,6 +130,7 @@ function createDummyForm(enabledForm: boolean) {
       'getPageType',
       'getApplicationType',
       'disableUneditableFormFields',
+      'confirmBoTransfer',
     ],
     {
       heading: undefined,
@@ -144,6 +145,7 @@ function createDummyForm(enabledForm: boolean) {
   dummyController.save.and.callFake(BaseDetailController.prototype.save);
   dummyController.toggleEdit.and.callFake(BaseDetailController.prototype.toggleEdit);
   dummyController.confirmLeave.and.returnValue(of(true));
+  dummyController.confirmBoTransfer.and.returnValue(of(true));
 
   return dummyController;
 }
