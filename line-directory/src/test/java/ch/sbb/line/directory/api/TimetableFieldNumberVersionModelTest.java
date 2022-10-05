@@ -240,7 +240,7 @@ public class TimetableFieldNumberVersionModelTest {
 
   private static TimetableFieldNumberVersionModelBuilder versionModel() {
     return TimetableFieldNumberVersionModel.builder()
-                                           .status(Status.ACTIVE)
+                                           .status(Status.VALIDATED)
                                            .swissTimetableFieldNumber("a.90")
                                            .number("10.100")
                                            .validFrom(LocalDate.of(2021, 12, 1))

@@ -278,7 +278,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
        ).andExpect(status().isOk())
        .andExpect(jsonPath("$[0].businessOrganisation", is("sbb")))
        .andExpect(jsonPath("$[0].lineType", is(LineType.TEMPORARY.toString())))
-       .andExpect(jsonPath("$[0].status", is(Status.ACTIVE.toString())))
+       .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
        .andExpect(jsonPath("$[0].slnid", is(lineVersion.getSlnid())))
        .andExpect(jsonPath("$[0].validFrom", is("2000-01-01")))
        .andExpect(jsonPath("$[0].validTo", is("2000-12-31")));

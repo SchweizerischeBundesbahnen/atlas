@@ -172,7 +172,7 @@ class SublineVersionModelTest {
 
   private static SublineVersionModelBuilder sublineVersionModel() {
     return SublineVersionModel.builder()
-                              .status(Status.ACTIVE)
+                              .status(Status.VALIDATED)
                               .sublineType(SublineType.TECHNICAL)
                               .paymentType(PaymentType.INTERNATIONAL)
                               .number("number")
