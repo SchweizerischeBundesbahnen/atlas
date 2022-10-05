@@ -1,7 +1,6 @@
 package ch.sbb.business.organisation.directory.controller;
 
 import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.toEntity;
-import static java.util.stream.Collectors.toList;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
@@ -17,7 +16,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,22 +33,22 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
-      List<String> searchCriteria, Optional<LocalDate> validOn, List<Status> statusChoices) {
+      List<String> searchCriteria, List<String> inSboids, Optional<LocalDate> validOn, List<Status> statusChoices) {
     log.info(
-        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
-        pageable, searchCriteria, validOn, statusChoices);
+        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, inSboids={} validOn={} and statusChoices={}",
+        pageable, searchCriteria, inSboids, validOn, statusChoices);
     Page<BusinessOrganisation> timetableFieldNumberPage = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
                                               .pageable(pageable)
                                               .searchCriterias(searchCriteria)
+                                              .inSboids(inSboids)
                                               .statusRestrictions(statusChoices)
                                               .validOn(validOn)
                                               .build());
     List<BusinessOrganisationModel> versions = timetableFieldNumberPage.stream()
                                                                        .map(
                                                                            BusinessOrganisationModel::toModel)
-                                                                       .collect(
-                                                                           Collectors.toList());
+                                                                       .toList();
     return Container.<BusinessOrganisationModel>builder()
                     .objects(versions)
                     .totalCount(timetableFieldNumberPage.getTotalElements())
@@ -62,7 +60,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
     List<BusinessOrganisationVersionModel> organisationVersionModels =
         service.findBusinessOrganisationVersions(sboid).stream()
                .map(BusinessOrganisationVersionModel::toModel)
-               .collect(toList());
+               .toList();
     if (organisationVersionModels.isEmpty()) {
       throw new SboidNotFoundException(sboid);
     }
@@ -87,7 +85,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
     return service.findBusinessOrganisationVersions(versionToUpdate.getSboid())
                   .stream()
                   .map(BusinessOrganisationVersionModel::toModel)
-                  .collect(Collectors.toList());
+                  .toList();
   }
 
   @Override
