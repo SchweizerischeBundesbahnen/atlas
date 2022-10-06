@@ -11,6 +11,7 @@ import { UserAdministrationReadOnlyDataComponent } from './read-only-data/user-a
 import { UserAdministrationComponent } from './detail/user-administration/user-administration.component';
 import { EditTitlePipe } from './detail/edit/edit-title.pipe';
 import { UserSelectFormatPipe } from './user-select/user-select-format.pipe';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,6 @@ import { UserSelectFormatPipe } from './user-select/user-select-format.pipe';
     EditTitlePipe,
     UserSelectFormatPipe,
   ],
-  imports: [UserAdministrationRoutingModule, CoreModule, FormModule],
+  imports: [UserAdministrationRoutingModule, CoreModule, FormModule, FormsModule],
 })
 export class UserAdministrationModule {}

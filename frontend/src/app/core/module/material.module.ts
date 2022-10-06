@@ -28,6 +28,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DateModule } from './date.module';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   imports: [CommonModule],
@@ -55,6 +56,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCheckboxModule,
     MatCardModule,
     MatTabsModule,
+    MatRadioModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: TranslatedPaginator },
