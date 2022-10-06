@@ -18,6 +18,7 @@ import { SearchType, SearchTypes } from './search-type';
 @Component({
   selector: 'app-user-administration-overview',
   templateUrl: './user-administration-overview.component.html',
+  styleUrls: ['./user-administration-overview.component.scss'],
 })
 export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent) tableComponent!: TableComponent<UserModel>;
