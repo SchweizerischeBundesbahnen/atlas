@@ -14,8 +14,6 @@
   <artifactId>user-administration</artifactId>
 
   <properties>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
     <microsoft-graph-sdk-version>5.33.0</microsoft-graph-sdk-version>
     <azure-identity-version>1.5.4</azure-identity-version>
   </properties>
