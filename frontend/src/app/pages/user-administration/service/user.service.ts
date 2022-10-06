@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
+  ApplicationType,
   UserAdministrationService,
   UserInformationService,
   UserPermissionCreateModel,
@@ -18,8 +19,13 @@ export class UserService {
     private readonly userInformationService: UserInformationService
   ) {}
 
-  getUsers(page: number, size: number): Observable<{ users: UserModel[]; totalCount: number }> {
-    return this.userAdministrationService.getUsers(page, size).pipe(
+  getUsers(
+    page: number,
+    size: number,
+    sboids: Set<string> | undefined = undefined,
+    applicationTypes: Set<ApplicationType> | undefined = undefined
+  ): Observable<{ users: UserModel[]; totalCount: number }> {
+    return this.userAdministrationService.getUsers(sboids, applicationTypes, page, size).pipe(
       map((value) => {
         return { users: value.objects!, totalCount: value.totalCount! };
       })
