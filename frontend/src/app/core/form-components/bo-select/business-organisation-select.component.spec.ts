@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BusinessOrganisationSelectComponent } from './business-organisation-select.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { MaterialModule } from '../../module/material.module';
