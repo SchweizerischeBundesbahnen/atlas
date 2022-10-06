@@ -19,42 +19,46 @@ import lombok.Data;
 @Builder
 public class UserPermissionCreateModel {
 
-    @NotNull
-    @Size(min = 7, max = 7)
-    private String sbbUserId;
+  @NotNull
+  @Size(min = 7, max = 7)
+  private String sbbUserId;
 
-    @NotNull
-    @Size(min = 1)
-    private List<@Valid @NotNull UserPermissionModel> permissions;
+  @NotNull
+  @Size(min = 1)
+  private List<@Valid @NotNull UserPermissionModel> permissions;
 
-    @Schema(hidden = true)
-    @JsonIgnore
-    @AssertTrue(message = "ApplicationType must be unique in permissions")
-    boolean isApplicationTypeUniqueInPermissions() {
-        Set<ApplicationType> applicationTypesInPermissions = new HashSet<>();
-        permissions.forEach(permission -> applicationTypesInPermissions.add(permission.getApplication()));
-        return applicationTypesInPermissions.size() == permissions.size();
-    }
+  @Schema(hidden = true)
+  @JsonIgnore
+  @AssertTrue(message = "ApplicationType must be unique in permissions")
+  boolean isApplicationTypeUniqueInPermissions() {
+    Set<ApplicationType> applicationTypesInPermissions = new HashSet<>();
+    permissions.forEach(
+        permission -> applicationTypesInPermissions.add(permission.getApplication()));
+    return applicationTypesInPermissions.size() == permissions.size();
+  }
 
-    @Schema(hidden = true)
-    @JsonIgnore
-    @AssertTrue(message = "Sboids must be empty when not WRITER role or BODI ApplicationType")
-    boolean isSboidsEmptyWhenNotWriterOrBodi() {
-        return permissions.stream().noneMatch(
-                permission ->
-                        (permission.getRole() != ApplicationRole.WRITER || permission.getApplication() == ApplicationType.BODI)
-                                && permission.getSboids().size() > 0
-        );
-    }
+  @Schema(hidden = true)
+  @JsonIgnore
+  @AssertTrue(message = "Sboids must be empty when not WRITER role or BODI ApplicationType")
+  boolean isSboidsEmptyWhenNotWriterOrBodi() {
+    return permissions.stream().noneMatch(
+        permission ->
+            (permission.getRole() != ApplicationRole.WRITER
+                || permission.getApplication() == ApplicationType.BODI)
+                && permission.getSboids().size() > 0
+    );
+  }
 
-    public List<UserPermission> toEntityList() {
-        return permissions.stream().map(permission -> UserPermission.builder()
-                .sbbUserId(sbbUserId.toLowerCase())
-                .application(permission.getApplication())
-                .role(permission.getRole())
-                .sboid(new HashSet<>(permission.getSboids()))
-                .build()
-        ).toList();
-    }
+  public List<UserPermission> toEntityList() {
+    return permissions.stream().map(permission -> UserPermission.builder()
+                                                                .sbbUserId(sbbUserId.toLowerCase())
+                                                                .application(
+                                                                    permission.getApplication())
+                                                                .role(permission.getRole())
+                                                                .sboid(new HashSet<>(
+                                                                    permission.getSboids()))
+                                                                .build()
+    ).toList();
+  }
 
 }

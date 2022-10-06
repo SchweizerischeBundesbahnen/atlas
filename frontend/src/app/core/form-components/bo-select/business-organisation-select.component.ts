@@ -26,6 +26,7 @@ export class BusinessOrganisationSelectComponent implements OnInit, OnDestroy, O
   @Input() sboidsRestrictions: string[] = [];
 
   @Output() selectedBusinessOrganisationChanged = new EventEmitter();
+  @Output() boSelectionChanged = new EventEmitter<BusinessOrganisation>();
 
   businessOrganisations: Observable<BusinessOrganisation[]> = of([]);
   private formSubscription!: Subscription;
