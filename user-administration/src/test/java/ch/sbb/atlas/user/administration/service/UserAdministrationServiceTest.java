@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,10 +20,13 @@ public class UserAdministrationServiceTest {
     @Mock
     private UserPermissionRepository userPermissionRepositoryMock;
 
+    @Mock
+    private EntityManager entityManagerMock;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userAdministrationService = new UserAdministrationService(userPermissionRepositoryMock);
+        userAdministrationService = new UserAdministrationService(userPermissionRepositoryMock, entityManagerMock);
     }
 
     @Test

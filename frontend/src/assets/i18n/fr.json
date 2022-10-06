@@ -62,7 +62,8 @@
     },
     "SEARCH": {
       "VALIDITY": "Valable le",
-      "SEARCH_CRITERIA": "Recherche"
+      "SEARCH_CRITERIA": "Recherche",
+      "SEARCH_FOR": "Recherche de"
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Soit l’objet a déjà été supprimé, soit il a été traité entre-temps. Veuillez recharger la page en appuyant sur la touche F5."
@@ -171,6 +172,7 @@
     "MAX": "La valeur doit être au maximum {{max}}."
   },
   "USER_ADMIN": {
+    "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
     "NEW": "Saisir un nouvel utilisateur",
     "NEW_INFORMATION": "Informations sur le nouvel utilisateur",
     "INFORMATION": "Données de l'utilisateur",

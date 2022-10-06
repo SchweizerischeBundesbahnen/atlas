@@ -12,6 +12,8 @@ import {
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
+import { ApplicationType } from '../../../api';
+import { SearchType, SearchTypes } from './search-type';
 
 @Component({
   selector: 'app-user-administration-overview',
@@ -22,8 +24,19 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
   userPageResult: { users: UserModel[]; totalCount: number } = { users: [], totalCount: 0 };
   tableIsLoading = false;
 
+  selectedSearch: SearchType = 'USER';
+  readonly searchOptions = SearchTypes;
+
+  selectedApplicationOptions: ApplicationType[] = [];
+  readonly applicationOptions: ApplicationType[] = Object.values(ApplicationType);
+
+  readonly userSearchCtrlName = 'userSearch';
   readonly userSearchForm: FormGroup = new FormGroup({
-    userSearch: new FormControl<string | null>(null),
+    [this.userSearchCtrlName]: new FormControl<string | null>(null),
+  });
+  readonly boSearchCtrlName = 'boSearch';
+  readonly boForm: FormGroup = new FormGroup({
+    [this.boSearchCtrlName]: new FormControl<string | null>(null),
   });
   readonly tableColumns = tableColumns;
   private readonly dialogClosedEventSubscription: Subscription;
@@ -36,7 +49,18 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
   ) {
     this.dialogClosedEventSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => this.ngOnInit());
+      .subscribe(() => this.reloadTableWithCurrentSettings());
+  }
+
+  reloadTableWithCurrentSettings(): void {
+    if (this.selectedSearch === 'USER') {
+      this.checkIfUserExists(
+        this.userSearchForm.get(this.userSearchCtrlName)?.value,
+        this.tableComponent.paginator.pageIndex
+      );
+    } else {
+      this.filterChanged(this.tableComponent.paginator.pageIndex);
+    }
   }
 
   ngOnInit(): void {
@@ -58,22 +82,27 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
   loadUsers(tableSettings: TableSettings): void {
     this.tableIsLoading = true;
     this.userSearchForm.reset();
+    this.boForm.reset();
+    this.selectedApplicationOptions = [];
     this.userService
       .getUsers(tableSettings.page, tableSettings.size)
       .pipe(
         tap((result) => {
           this.userPageResult = result;
+          this.tableComponent.paginator.pageIndex = tableSettings.page;
+          this.tableComponent.paginator.pageSize = tableSettings.size;
           this.tableIsLoading = false;
         })
       )
       .subscribe();
   }
 
-  checkIfUserExists(selectedUser: UserModel): void {
+  checkIfUserExists(selectedUser: UserModel, pageIndex = 0): void {
     if (!selectedUser) {
-      this.loadUsers({ page: 0, size: this.tableComponent.paginator.pageSize });
+      this.loadUsers({ page: pageIndex, size: this.tableComponent.paginator.pageSize });
     } else if (!selectedUser.sbbUserId) {
       this.userPageResult = { users: [], totalCount: 0 };
+      this.tableComponent.paginator.pageIndex = 0;
     } else {
       this.userService
         .hasUserPermissions(selectedUser.sbbUserId)
@@ -81,10 +110,10 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
           tap((hasPermission) => {
             if (hasPermission) {
               this.userPageResult = { users: [selectedUser], totalCount: 1 };
-              this.tableComponent.paginator.pageIndex = 0;
             } else {
               this.userPageResult = { users: [], totalCount: 0 };
             }
+            this.tableComponent.paginator.pageIndex = 0;
           })
         )
         .subscribe();
@@ -95,5 +124,29 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
     return this.router.navigate(['add'], {
       relativeTo: this.route,
     });
+  }
+
+  filterChanged(pageIndex = 0): void {
+    this.tableIsLoading = true;
+    const selectedSboid = this.boForm.get(this.boSearchCtrlName)?.value;
+    this.userService
+      .getUsers(
+        pageIndex,
+        this.tableComponent.paginator.pageSize,
+        new Set<string>([selectedSboid]),
+        new Set<ApplicationType>(this.selectedApplicationOptions)
+      )
+      .pipe(
+        tap((result) => {
+          this.userPageResult = result;
+          this.tableComponent.paginator.pageIndex = pageIndex;
+          this.tableIsLoading = false;
+        })
+      )
+      .subscribe();
+  }
+
+  selectedSearchChanged(): void {
+    this.ngOnInit();
   }
 }

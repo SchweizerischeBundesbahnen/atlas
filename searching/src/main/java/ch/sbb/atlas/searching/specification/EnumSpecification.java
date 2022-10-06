@@ -15,10 +15,18 @@ public class EnumSpecification<T> implements Specification<T> {
 
   private final List<?> enumRestrictions;
   private final SingularAttribute<T, ?> enumAttribute;
+  private final Boolean notIn;
 
   public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute) {
     this.enumRestrictions = Objects.requireNonNull(enumRestrictions);
     this.enumAttribute = enumAttribute;
+    this.notIn = false;
+  }
+
+  public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute, Boolean notIn){
+    this.enumRestrictions = Objects.requireNonNull(enumRestrictions);
+    this.enumAttribute = enumAttribute;
+    this.notIn = notIn;
   }
 
   @Override
@@ -27,6 +35,6 @@ public class EnumSpecification<T> implements Specification<T> {
     if (enumRestrictions.isEmpty()) {
       return criteriaBuilder.and();
     }
-    return root.get(enumAttribute).in(enumRestrictions);
+    return notIn ? root.get(enumAttribute).in(enumRestrictions).not() : root.get(enumAttribute).in(enumRestrictions);
   }
 }
