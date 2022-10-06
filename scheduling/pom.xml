@@ -47,12 +47,12 @@
       <dependency>
          <artifactId>shedlock-spring</artifactId>
          <groupId>net.javacrumbs.shedlock</groupId>
-         <version>4.41.0</version>
+         <version>4.42.0</version>
       </dependency>
       <dependency>
          <artifactId>shedlock-provider-jdbc-template</artifactId>
          <groupId>net.javacrumbs.shedlock</groupId>
-         <version>4.41.0</version>
+         <version>4.42.0</version>
       </dependency>
       <dependency>
          <artifactId>postgresql</artifactId>
@@ -101,7 +101,7 @@
          <artifactId>mockito-inline</artifactId>
          <groupId>org.mockito</groupId>
          <scope>test</scope>
-         <version>4.7.0</version>
+         <version>4.8.0</version>
       </dependency>
    </dependencies>
    <build>
