@@ -62,7 +62,8 @@
     },
     "SEARCH": {
       "VALIDITY": "Valido il",
-      "SEARCH_CRITERIA": "Ricerca"
+      "SEARCH_CRITERIA": "Ricerca",
+      "SEARCH_FOR": "Ricerca di"
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "L’oggetto è già stato cancellato o nel frattempo è stato modificato. Ricaricare la pagina premendo il tasto F5."
@@ -171,6 +172,7 @@
     "MAX": "Il valore può essere massimo {{max}}"
   },
   "USER_ADMIN": {
+    "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
     "NEW": "Inserire nuovo utente",
     "NEW_INFORMATION": "Dettagli del nuovo utente",
     "INFORMATION": "Dettagli utente",
