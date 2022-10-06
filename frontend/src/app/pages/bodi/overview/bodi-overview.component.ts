@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
-import { Role } from '../../../core/auth/role';
 import { ApplicationType } from '../../../api';
 
 @Component({
