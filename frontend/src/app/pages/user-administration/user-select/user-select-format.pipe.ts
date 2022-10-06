@@ -6,7 +6,7 @@ import { UserModel } from '../../../api/model/userModel';
   pure: true,
 })
 export class UserSelectFormatPipe implements PipeTransform {
-  transform(user: UserModel, ...args: unknown[]): string {
+  transform(user: UserModel): string {
     return `${user.displayName} (${user.mail})`;
   }
 }
