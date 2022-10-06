@@ -370,9 +370,10 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   @Test
   public void shouldRevokeBusinessOrganisationBySboid() throws Exception {
     //when and then
-    mvc.perform(post("/v1/business-organisations/" + version.getSboid()+"/revoke"))
+    mvc.perform(post("/v1/business-organisations/" + version.getSboid() + "/revoke"))
        .andExpect(status().isOk())
-       .andExpect(jsonPath("$[0]." + BusinessOrganisationVersionModel.Fields.status, is("REVOKED")));
+       .andExpect(
+           jsonPath("$[0]." + BusinessOrganisationVersionModel.Fields.status, is("REVOKED")));
   }
 
   @Test
