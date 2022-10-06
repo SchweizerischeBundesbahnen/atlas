@@ -62,7 +62,8 @@
     },
     "SEARCH": {
       "VALIDITY": "Gültig am",
-      "SEARCH_CRITERIA": "Suche"
+      "SEARCH_CRITERIA": "Suche",
+      "SEARCH_FOR": "Suche nach"
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken."
@@ -171,6 +172,7 @@
     "MAX": "Die Zahl darf maximal {{max}} sein."
   },
   "USER_ADMIN": {
+    "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
     "NEW": "Neuer Benutzer erfassen",
     "NEW_INFORMATION": "Angaben zum neuen Benutzer",
     "INFORMATION": "Angaben zum Benutzer",

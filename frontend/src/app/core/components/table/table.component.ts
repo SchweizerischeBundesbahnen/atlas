@@ -7,7 +7,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TableSearchComponent } from '../table-search/table-search.component';
 import { TableSearch } from '../table-search/table-search';
 import { TableSettings } from './table-settings';
-import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
