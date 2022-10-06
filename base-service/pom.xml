@@ -49,7 +49,7 @@
       <dependency>
          <artifactId>aws-java-sdk</artifactId>
          <groupId>com.amazonaws</groupId>
-         <version>1.12.279</version>
+         <version>1.12.316</version>
       </dependency>
       <dependency>
          <artifactId>jaxb-api</artifactId>
@@ -136,7 +136,7 @@
                </execution>
             </executions>
             <groupId>org.apache.maven.plugins</groupId>
-            <version>3.2.2</version>
+            <version>3.3.0</version>
          </plugin>
       </plugins>
    </build>
