@@ -90,6 +90,13 @@ describe('BaseDetailComponent', () => {
       expect(dummyController.toggleEdit).toHaveBeenCalled();
     });
 
+    it('should revoke record', () => {
+      const editButton = fixture.debugElement.query(By.css('.edit-section .revoke-btn'));
+      editButton.nativeElement.click();
+
+      expect(dummyController.revoke).toHaveBeenCalled();
+    });
+
     it('should delete record', () => {
       const deleteButton = fixture.debugElement.query(By.css('.edit-section button:last-child'));
       deleteButton.nativeElement.click();
@@ -129,6 +136,7 @@ function createDummyForm(enabledForm: boolean) {
       'confirmLeave',
       'validateAllFormFields',
       'ngOnInit',
+      'revoke',
       'delete',
       'getPageType',
       'getApplicationType',

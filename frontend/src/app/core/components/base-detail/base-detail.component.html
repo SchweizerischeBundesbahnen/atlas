@@ -43,7 +43,7 @@
     <button
       *ngIf="mayWrite"
       data-cy="edit-item"
-      class="atlas-primary-btn me-3"
+      class="write-btn atlas-primary-btn me-3"
       (click)="controller.toggleEdit()"
       [disabled]="controller.form.enabled"
     >
@@ -54,7 +54,7 @@
       data-cy="revoke-item"
       (click)="controller.revoke()"
       [disabled]="controller.form.enabled || controller.record.status === 'REVOKED'"
-      class="atlas-primary-btn me-3"
+      class="revoke-btn atlas-primary-btn me-3"
     >
       {{ 'COMMON.REVOKE' | translate }}
     </button>
@@ -63,7 +63,7 @@
       data-cy="delete-item"
       (click)="controller.delete()"
       [disabled]="controller.form.enabled"
-      class="atlas-primary-btn"
+      class="delete-btn atlas-primary-btn"
     >
       {{ 'COMMON.DELETE' | translate }}
     </button>
