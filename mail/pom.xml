@@ -82,7 +82,7 @@
          <artifactId>greenmail-junit5</artifactId>
          <groupId>com.icegreen</groupId>
          <scope>test</scope>
-         <version>1.6.9</version>
+         <version>1.6.11</version>
       </dependency>
    </dependencies>
    <build>
