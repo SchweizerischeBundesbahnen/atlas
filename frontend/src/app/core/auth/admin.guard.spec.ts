@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-
 import { AdminGuard } from './admin.guard';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from './auth.service';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
 
 describe('AdminGuard', () => {
   let guard: AdminGuard;
@@ -25,10 +24,7 @@ describe('AdminGuard', () => {
   });
 
   it('should return UrlTree', () => {
-    const canActivateResult = guard.canActivate(
-      {} as ActivatedRouteSnapshot,
-      {} as RouterStateSnapshot
-    );
+    const canActivateResult = guard.canActivate();
     expect(canActivateResult).toBeDefined();
     expect(canActivateResult).toEqual(router.parseUrl('/'));
   });
