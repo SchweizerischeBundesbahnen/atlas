@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { AuthService } from './auth.service';
 import { Role } from './role';
 
@@ -16,10 +9,7 @@ import { Role } from './role';
 export class AdminGuard implements CanActivate {
   constructor(private readonly authService: AuthService, private readonly router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(): boolean | UrlTree {
     if (this.authService.hasRole(Role.AtlasAdmin)) {
       return true;
     }
