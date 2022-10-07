@@ -67,6 +67,17 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
+  public List<LineVersionModel> revokeLine(String slnid) {
+    List<LineVersionModel> lineVersionModels = lineService.revokeLine(slnid).stream()
+                                                          .map(this::toModel)
+                                                          .toList();
+    if (lineVersionModels.isEmpty()) {
+      throw new SlnidNotFoundException(slnid);
+    }
+    return lineVersionModels;
+  }
+
+  @Override
   public List<LineModel> getCoveredLines() {
     return lineService.getAllCoveredLines().stream().map(this::toModel).toList();
   }
@@ -90,7 +101,7 @@ public class LineController implements LineApiV1 {
   @Override
   public LineVersionModel createLineVersion(LineVersionModel newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
-    newLineVersion.setStatus(Status.ACTIVE);
+    newLineVersion.setStatus(Status.VALIDATED);
     LineVersion createdVersion = lineService.create(newLineVersion);
     return toModel(createdVersion);
   }
