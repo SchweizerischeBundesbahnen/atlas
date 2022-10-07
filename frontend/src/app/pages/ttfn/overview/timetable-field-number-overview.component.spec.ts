@@ -18,7 +18,7 @@ const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
       swissTimetableFieldNumber: 'asdf',
       number: 'number',
       businessOrganisation: 'businessOrganisation',
-      status: 'ACTIVE',
+      status: 'VALIDATED',
       validFrom: new Date('2021-06-01'),
       validTo: new Date('2029-06-01'),
     },

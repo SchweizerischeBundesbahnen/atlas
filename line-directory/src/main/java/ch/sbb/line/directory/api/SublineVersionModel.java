@@ -78,7 +78,7 @@ public class SublineVersionModel implements DatesValidator {
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
+  @Schema(description = "BusinessOrganisation SBOID", example = "ch:1:sboid:100001")
   @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)

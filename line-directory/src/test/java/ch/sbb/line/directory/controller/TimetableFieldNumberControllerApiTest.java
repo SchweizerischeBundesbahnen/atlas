@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.line.directory.api.LineVersionModel.Fields;
 import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
@@ -35,7 +36,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
           .ttfnid("ch:1:ttfnid:100000")
           .description("FPFN Description")
           .number("10.100")
-          .status(Status.ACTIVE)
+          .status(Status.VALIDATED)
           .swissTimetableFieldNumber("b0.100")
           .validFrom(LocalDate.of(2020, 1, 1))
           .validTo(LocalDate.of(2020, 12, 31))
@@ -56,19 +57,26 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
     //given
     TimetableFieldNumberVersionModel timetableFieldNumberVersionModel =
         TimetableFieldNumberVersionModel.builder()
-            .validTo(LocalDate.of(2000, 12, 31))
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .businessOrganisation("sbb")
-            .swissTimetableFieldNumber("swissLineNumber")
-            .number("123")
-            .description("description")
-            .ttfnid("123")
-            .status(Status.ACTIVE).build();
+                                        .validTo(LocalDate.of(2000, 12, 31))
+                                        .validFrom(LocalDate.of(2000, 1, 1))
+                                        .businessOrganisation("sbb")
+                                        .swissTimetableFieldNumber("swissLineNumber")
+                                        .number("123")
+                                        .description("description")
+                                        .ttfnid("123")
+                                        .status(Status.VALIDATED).build();
     //when && then
     mvc.perform(post("/v1/field-numbers/versions")
         .contentType(contentType)
         .content(mapper.writeValueAsString(timetableFieldNumberVersionModel))
     ).andExpect(status().isCreated());
+  }
+
+  @Test
+  void shouldRevokeTimetableFieldNumber() throws Exception {
+    mvc.perform(post("/v1/field-numbers/" + version.getTtfnid() + "/revoke"))
+       .andExpect(status().isOk())
+       .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
   }
 
   @Test
@@ -124,7 +132,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
         .description(
             "FPFN Description")
         .number("10.100")
-        .status(Status.ACTIVE)
+        .status(Status.VALIDATED)
         .swissTimetableFieldNumber(
             "b0.100")
         .validFrom(

@@ -50,7 +50,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                    .ttfnid("ch:1:ttfnid:100000")
                                    .description("TimetableFieldNumberVersion 1")
                                    .swissTimetableFieldNumber("a.1")
-                                   .status(Status.ACTIVE)
+                                   .status(Status.VALIDATED)
                                    .number("1.0")
                                    .comment("Valid this month")
                                    .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
@@ -113,7 +113,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                    .description("_bls")
                                    .swissTimetableFieldNumber("a.2")
                                    .comment("Valid this month")
-                                   .status(Status.ACTIVE)
+                                   .status(Status.VALIDATED)
                                    .number("1.0")
                                    .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
                                    .validTo(END_OF_MONTH_AT_SEARCH_DATE)
@@ -141,7 +141,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                    .description("__bls")
                                    .swissTimetableFieldNumber("a.2")
                                    .comment("Valid this month")
-                                   .status(Status.ACTIVE)
+                                   .status(Status.VALIDATED)
                                    .number("1.0")
                                    .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
                                    .validTo(END_OF_MONTH_AT_SEARCH_DATE)
@@ -169,7 +169,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                    .description("%bls")
                                    .swissTimetableFieldNumber("a.2")
                                    .comment("Valid this month")
-                                   .status(Status.ACTIVE)
+                                   .status(Status.VALIDATED)
                                    .number("1.0")
                                    .comment("Valid this month")
                                    .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
@@ -198,7 +198,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                    .description("%%bls")
                                    .swissTimetableFieldNumber("a.2")
                                    .comment("Valid this month")
-                                   .status(Status.ACTIVE)
+                                   .status(Status.VALIDATED)
                                    .number("1.0")
                                    .comment("Valid this month")
                                    .validFrom(START_OF_MONTH_AT_SEARCH_DATE)
@@ -292,7 +292,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                               .searchCriterias(
                                                   List.of("TimetableFieldNumberVersion"))
                                               .validOn(Optional.of(SEARCH_DATE))
-                                              .statusRestrictions(List.of(Status.ACTIVE))
+                                              .statusRestrictions(List.of(Status.VALIDATED))
                                               .build()).toList();
     // Then
     assertThat(searchResult).hasSize(3);
@@ -333,7 +333,7 @@ public class TimetableFieldNumberServiceSearchTest {
                                               .pageable(Pageable.ofSize(5).withPage(0))
                                               .searchCriterias(List.of("a.1"))
                                               .validOn(Optional.of(SEARCH_DATE))
-                                              .statusRestrictions(List.of(Status.ACTIVE))
+                                              .statusRestrictions(List.of(Status.VALIDATED))
                                               .build()).toList();
     // Then
     assertThat(searchResult).hasSize(1);

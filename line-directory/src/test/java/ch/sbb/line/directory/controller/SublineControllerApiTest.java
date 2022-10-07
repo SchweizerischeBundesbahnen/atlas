@@ -14,6 +14,7 @@ import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiT
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.api.LineVersionModel.Fields;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -543,4 +544,20 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
     deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory());
   }
 
+  @Test
+  void shouldRevokeSubline() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = lineController.createLineVersion(
+        LineTestData.lineVersionModelBuilder().build());
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+        SublineTestData.sublineVersionModelBuilder()
+                       .mainlineSlnid(
+                           lineVersionModel.getSlnid())
+                       .build());
+
+    //when
+    mvc.perform(post("/v1/sublines/" + sublineVersionSaved.getSlnid() + "/revoke")
+       ).andExpect(status().isOk())
+       .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
+  }
 }
