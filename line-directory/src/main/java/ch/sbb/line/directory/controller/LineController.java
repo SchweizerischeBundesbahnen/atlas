@@ -135,7 +135,7 @@ public class LineController implements LineApiV1 {
   public List<URL> exportFutureTimetableLineVersions() {
     return lineVersionExportService.exportFutureTimetableVersions();
   }
-  
+
   @Override
   public void deleteLines(String slnid) {
     lineService.deleteAll(slnid);
@@ -167,6 +167,10 @@ public class LineController implements LineApiV1 {
                            .comment(lineVersion.getComment())
                            .swissLineNumber(lineVersion.getSwissLineNumber())
                            .etagVersion(lineVersion.getVersion())
+                           .creator(lineVersion.getCreator())
+                           .creationDate(lineVersion.getCreationDate())
+                           .editor(lineVersion.getEditor())
+                           .editionDate(lineVersion.getEditionDate())
                            .build();
   }
 
