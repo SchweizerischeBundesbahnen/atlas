@@ -69,6 +69,10 @@
       "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken."
     }
   },
+  "DETAIL_USER_EDITION": {
+    "LATEST_EDITION": "Zuletzt geändert am {{editionDate}}",
+    "LATEST_EDITOR": "von {{editor}}"
+  },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} Zeichen max.",
     "DROPDOWN_PLACEHOLDER": "auswählen",
