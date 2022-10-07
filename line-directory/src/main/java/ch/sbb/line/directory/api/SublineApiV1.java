@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Sublines")
 @RequestMapping("v1/sublines")
-public interface SublinenApiV1 {
+public interface SublineApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
@@ -43,6 +44,10 @@ public interface SublinenApiV1 {
       @RequestParam(required = false) List<SublineType> typeRestrictions,
       @RequestParam(required = false) Optional<String> businessOrganisation,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
+
+  @PostMapping("{slnid}/revoke")
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  List<SublineVersionModel> revokeSubline(@PathVariable String slnid);
 
   @DeleteMapping("{slnid}")
   void deleteSublines(@PathVariable String slnid);

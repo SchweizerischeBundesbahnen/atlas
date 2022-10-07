@@ -20,7 +20,7 @@ public class LineTestData {
 
   public static LineVersionBuilder<?,?> lineVersionBuilder() {
     return LineVersion.builder()
-                      .status(Status.ACTIVE)
+                      .status(Status.VALIDATED)
                       .lineType(LineType.ORDERLY)
                       .paymentType(PaymentType.INTERNATIONAL)
                       .number("number")
@@ -46,7 +46,7 @@ public class LineTestData {
 
   public static LineVersionModelBuilder lineVersionModelBuilder() {
     return LineVersionModel.builder()
-                      .status(Status.ACTIVE)
+                      .status(Status.VALIDATED)
                       .lineType(LineType.ORDERLY)
                       .paymentType(PaymentType.INTERNATIONAL)
                       .number("number")
@@ -68,7 +68,7 @@ public class LineTestData {
 
   public static LineBuilder lineBuilder() {
     return Line.builder()
-               .status(Status.ACTIVE)
+               .status(Status.VALIDATED)
                .lineType(LineType.ORDERLY)
                .number("number")
                .description("description")

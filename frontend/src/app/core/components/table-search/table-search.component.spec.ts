@@ -40,11 +40,11 @@ describe('TableSearchComponent', () => {
     const statusOption = fixture.debugElement.query(By.css('mat-option'));
     statusOption.nativeElement.click();
     fixture.detectChanges();
-    expect(component.activeStatuses).toEqual([Status.Active]);
+    expect(component.activeStatuses).toEqual([Status.Draft]);
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith({
       searchCriteria: [],
       validOn: undefined,
-      statusChoices: [Status.Active],
+      statusChoices: [Status.Draft],
       boChoice: null,
     });
 

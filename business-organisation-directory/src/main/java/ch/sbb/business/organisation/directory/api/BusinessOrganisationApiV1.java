@@ -45,6 +45,10 @@ public interface BusinessOrganisationApiV1 {
   List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(
       @PathVariable String sboid);
 
+  @PostMapping("{sboid}/revoke")
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  List<BusinessOrganisationVersionModel> revokeBusinessOrganisation(@PathVariable String sboid);
+
   @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {

@@ -18,6 +18,7 @@
     "SAVE": "Speichern",
     "ADD": "Hinzufügen",
     "EDIT": "Editieren",
+    "REVOKE": "Fehlerfassung",
     "DELETE": "Löschen",
     "CANCEL": "Abbrechen",
     "COVERAGE": {
@@ -43,11 +44,11 @@
     "VALID_TO": "Gültig bis",
     "STATUS": "Status",
     "STATUS_TYPES": {
-      "ACTIVE": "Aktiv",
-      "INACTIVE": "Inaktiv",
-      "NEEDS_REVIEW": "Benötigt Prüfung",
+      "DRAFT": "Entwurf",
+      "VALIDATED": "Validiert",
       "IN_REVIEW": "In Prüfung",
-      "REVIEWED": "Prüfung abgeschlossen"
+      "WITHDRAWN": "Zurückgezogen",
+      "REVOKED": "Fehlerfassung"
     },
     "OK": "Ok",
     "EDIT_VERSION": "Version bearbeiten",
@@ -91,6 +92,8 @@
     "CANCEL": "Abbrechen",
     "BACK": "Zurück zur Eingabemaske",
     "WARNING": "Warnung!",
+    "REVOKE": "Wollen Sie diesen Datensatz unwiderruflich als Fehlerfassung kennzeichnen?",
+    "CONFIRM_REVOKE": "Fehlerfassung bestätigen",
     "DELETE": "Wollen Sie diesen Datensatz unwiderruflich löschen?",
     "CONFIRM_DELETE": "Daten löschen",
     "DISCARD_CHANGES_TITLE": "Änderungen verwerfen?",
@@ -224,6 +227,7 @@
       "ADD_ERROR": "Beim Erfassen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "EDIT_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich gespeichert.",
       "EDIT_ERROR": "Beim Editieren der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
+      "REVOKE_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich als Fehlerfassung gekennzeichnet.",
       "DELETE_SUCCESS": "Die Fahrplanfeldnummer wurde erfolgreich gelöscht.",
       "DELETE_ERROR": "Beim Löschen der Fahrplanfeldnummer ist ein Fehler aufgetreten.",
       "SWISSNUMBER_NOT_UNIQUE": "Die gewählte CH-Fahrplanfeldnummer oder Fahrplanfeldnummer ist zu diesem Zeitraum bereits vergeben."
@@ -295,6 +299,7 @@
         "ADD_ERROR": "Beim Erfassen der Linie ist ein Fehler aufgetreten.",
         "EDIT_SUCCESS": "Die Linie wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Linie ist ein Fehler aufgetreten.",
+        "REVOKE_SUCCESS": "Die Linie wurde erfolgreich als Fehlerfassung gekennzeichnet.",
         "DELETE_SUCCESS": "Die Linie wurde erfolgreich gelöscht."
       }
     },
@@ -326,6 +331,7 @@
         "ADD_ERROR": "Beim Erfassen der Teillinie ist ein Fehler aufgetreten.",
         "EDIT_SUCCESS": "Die Teillinie wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Teillinie ist ein Fehler aufgetreten.",
+        "REVOKE_SUCCESS": "Die Teillinie wurde erfolgreich als Fehlerfassung gekennzeichnet.",
         "DELETE_SUCCESS": "Die Teillinie wurde erfolgreich gelöscht.",
         "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten."
       }
@@ -383,6 +389,7 @@
         "ADD_ERROR": "Beim Erfassen der Geschäftsorganisation ist ein Fehler aufgetreten.",
         "EDIT_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gespeichert.",
         "EDIT_ERROR": "Beim Editieren der Geschäftsorganisation ist ein Fehler aufgetreten.",
+        "REVOKE_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich als Fehlerfassung gekennzeichnet.",
         "DELETE_SUCCESS": "Die Geschäftsorganisation wurde erfolgreich gelöscht.",
         "DELETE_ERROR": "Beim Löschen der Geschäftsorganisation ist ein Fehler aufgetreten."
       }

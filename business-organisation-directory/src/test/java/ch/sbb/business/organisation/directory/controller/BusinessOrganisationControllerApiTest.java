@@ -55,7 +55,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
       .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
       .contactEnterpriseEmail("mail@mail.ch")
       .organisationNumber(123)
-      .status(Status.ACTIVE)
+      .status(Status.VALIDATED)
       .validFrom(LocalDate.of(2000, 1, 1))
       .validTo(LocalDate.of(2000, 12, 31))
       .build();
@@ -94,7 +94,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
         .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
         .contactEnterpriseEmail("mail@mail.ch")
         .organisationNumber(1234)
-        .status(Status.ACTIVE)
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .build();
@@ -122,7 +122,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
         .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
         .contactEnterpriseEmail("mail1@mail.ch")
         .organisationNumber(1234)
-        .status(Status.ACTIVE)
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
@@ -203,7 +203,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
         .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
         .contactEnterpriseEmail("mail1@mail.ch")
         .organisationNumber(1234)
-        .status(Status.ACTIVE)
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
@@ -262,7 +262,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
         .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
         .contactEnterpriseEmail("mail@mail.ch")
         .organisationNumber(123)
-        .status(Status.ACTIVE)
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .build();
@@ -300,7 +300,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
         .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
         .contactEnterpriseEmail("mail@mail.ch")
         .organisationNumber(123)
-        .status(Status.ACTIVE)
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .build();
@@ -339,7 +339,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
         .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
         .contactEnterpriseEmail("mail@mail.ch")
         .organisationNumber(123)
-        .status(Status.ACTIVE)
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .build();
@@ -365,6 +365,15 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     //when and then
     mvc.perform(delete("/v1/business-organisations/" + version.getSboid()))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  public void shouldRevokeBusinessOrganisationBySboid() throws Exception {
+    //when and then
+    mvc.perform(post("/v1/business-organisations/" + version.getSboid() + "/revoke"))
+       .andExpect(status().isOk())
+       .andExpect(
+           jsonPath("$[0]." + BusinessOrganisationVersionModel.Fields.status, is("REVOKED")));
   }
 
   @Test

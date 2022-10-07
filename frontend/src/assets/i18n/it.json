@@ -18,6 +18,7 @@
     "SAVE": "Salva",
     "ADD": "Hinzufügen__it__",
     "EDIT": "Modifica",
+    "REVOKE": "Revocare",
     "DELETE": "Eliminare",
     "CANCEL": "Annulla",
     "COVERAGE": {
@@ -43,11 +44,11 @@
     "VALID_TO": "Valido fino al",
     "STATUS": "Stato",
     "STATUS_TYPES": {
-      "ACTIVE": "Attivo",
-      "INACTIVE": "Inattivo",
-      "NEEDS_REVIEW": "Necessita di verifica",
-      "IN_REVIEW": "In fase di verifica",
-      "REVIEWED": "Verifica conclusa"
+      "DRAFT": "Bozza",
+      "VALIDATED": "Convalidato",
+      "IN_REVIEW": "In esame",
+      "WITHDRAWN": "Ritirato",
+      "REVOKED": "Revocato"
     },
     "OK": "OK",
     "EDIT_VERSION": "Modificare la versione",
@@ -91,6 +92,8 @@
     "CANCEL": "Annulla",
     "BACK": "Tornare al modulo di immissione dati",
     "WARNING": "Attenzione!",
+    "REVOKE": "Si desidera contrassegnare irrevocabilmente questo record come un record di errore?",
+    "CONFIRM_REVOKE": "Revocare",
     "DELETE": "Eliminare definitivamente questo record?",
     "CONFIRM_DELETE": "Cancellare i dati",
     "DISCARD_CHANGES_TITLE": "Annullare le modifiche?",
@@ -224,6 +227,7 @@
       "ADD_ERROR": "Si è verificato un errore durante la registrazione del numero del quadro d’orario.",
       "EDIT_SUCCESS": "Numero del quadro d’orario registrato con successo.",
       "EDIT_ERROR": "Si è verificato un errore durante la modifica del numero del quadro d’orario.",
+      "REVOKE_SUCCESS": "Il numero del campo orario è stato contrassegnato con successo come versione di errore.",
       "DELETE_SUCCESS": "Numero del quadro d’orario cancellato con successo.",
       "DELETE_ERROR": "Si è verificato un errore durante la cancellazione del numero del quadro d’orario.",
       "SWISSNUMBER_NOT_UNIQUE": "Il numero del quadro d’orario CH o il numero del quadro d’orario selezionato è già assegnato in questo intervallo di tempo."
@@ -295,6 +299,7 @@
         "ADD_ERROR": "Si è verificato un errore durante la registrazione della linea.",
         "EDIT_SUCCESS": "Linea memorizzata con successo.",
         "EDIT_ERROR": "Si è verificato un errore durante la modifica della linea.",
+        "REVOKE_SUCCESS": "La linea è stata contrassegnata con successo come versione di errore.",
         "DELETE_SUCCESS": "Linea cancellata con successo."
       }
     },
@@ -326,6 +331,7 @@
         "ADD_ERROR": "Si è verificato un errore durante la registrazione della linea parziale.",
         "EDIT_SUCCESS": "Linea parziale memorizzata con successo.",
         "EDIT_ERROR": "Si è verificato un errore nella modifica della linea parziale.",
+        "REVOKE_SUCCESS": "La linea parziale è stata contrassegnata con successo come cattura di guasti.",
         "DELETE_SUCCESS": "Linea parziale cancellata con successo.",
         "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea parziale."
       }
@@ -383,6 +389,7 @@
         "ADD_ERROR": "Si è verificato un errore durante la creazione dell'organizzazione commerciale.",
         "EDIT_SUCCESS": "L'organizzazione commerciale è stata salvata correttamente.",
         "EDIT_ERROR": "Si è verificato un errore durante la modifica dell'organizzazione commerciale",
+        "REVOKE_SUCCESS": "L'organizzazione aziendale è stata contrassegnata con successo come versione di errore.",
         "DELETE_SUCCESS": "L'organizzazione commerciale è stata eliminata con successo.",
         "DELETE_ERROR": "Si è verificato un errore durante l'eliminazione dell'organizzazione commerciale."
       }
