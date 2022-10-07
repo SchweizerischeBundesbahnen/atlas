@@ -82,6 +82,20 @@ export class TimetableFieldNumberDetailComponent
       });
   }
 
+  revokeRecord(): void {
+    const selectedRecord = this.getSelectedRecord();
+    if (selectedRecord.ttfnid) {
+      this.timetableFieldNumberService
+        .revokeTimetableFieldNumber(selectedRecord.ttfnid)
+        .subscribe(() => {
+          this.notificationService.success('TTFN.NOTIFICATION.REVOKE_SUCCESS');
+          this.router
+            .navigate([Pages.TTFN.path, selectedRecord.ttfnid])
+            .then(() => this.ngOnInit());
+        });
+    }
+  }
+
   deleteRecord(): void {
     const selectedRecord: TimetableFieldNumberVersion = this.getSelectedRecord();
     if (selectedRecord.ttfnid != null) {

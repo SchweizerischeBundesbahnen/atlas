@@ -24,6 +24,7 @@ import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.api.LineVersionModel.Fields;
 import ch.sbb.line.directory.api.SublineVersionModel;
 import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -177,6 +178,16 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
        .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")));
   }
 
+  @Test
+  void shouldRevokeLine() throws Exception {
+    //given
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    //when
+    mvc.perform(post("/v1/lines/" + lineVersionSaved.getSlnid() + "/revoke")
+       ).andExpect(status().isOk())
+       .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
+  }
 
   @Test
   void shouldTrimAllWhiteSpacesInLineVersion() throws Exception {
@@ -278,7 +289,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
        ).andExpect(status().isOk())
        .andExpect(jsonPath("$[0].businessOrganisation", is("sbb")))
        .andExpect(jsonPath("$[0].lineType", is(LineType.TEMPORARY.toString())))
-       .andExpect(jsonPath("$[0].status", is(Status.ACTIVE.toString())))
+       .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
        .andExpect(jsonPath("$[0].slnid", is(lineVersion.getSlnid())))
        .andExpect(jsonPath("$[0].validFrom", is("2000-01-01")))
        .andExpect(jsonPath("$[0].validTo", is("2000-12-31")));

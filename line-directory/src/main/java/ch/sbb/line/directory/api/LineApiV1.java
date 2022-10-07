@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,10 @@ public interface LineApiV1 {
 
   @GetMapping("{slnid}")
   LineModel getLine(@PathVariable String slnid);
+
+  @PostMapping("{slnid}/revoke")
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  List<LineVersionModel> revokeLine(@PathVariable String slnid);
 
   @GetMapping("/covered")
   List<LineModel> getCoveredLines();

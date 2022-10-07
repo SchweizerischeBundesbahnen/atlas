@@ -15,6 +15,7 @@ import {
 import { filter } from 'rxjs/operators';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { AuthService } from '../../../core/auth/auth.service';
+import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -62,7 +63,14 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
 
   ngOnInit(): void {
     const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.TTFN.path);
-    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'number,ASC' });
+    this.getOverview(
+      storedTableSettings || {
+        page: 0,
+        size: 10,
+        sort: 'number,ASC',
+        statusChoices: DEFAULT_STATUS_SELECTION,
+      }
+    );
   }
 
   getOverview($paginationAndSearch: TableSettings) {

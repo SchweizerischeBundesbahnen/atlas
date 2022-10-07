@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,10 @@ public interface TimetableFieldNumberApiV1 {
 
   @GetMapping("versions/{ttfnId}")
   List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
+
+  @PostMapping("{ttfnId}/revoke")
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TTFN)")
+  List<TimetableFieldNumberVersionModel> revokeTimetableFieldNumber(@PathVariable String ttfnId);
 
   @PostMapping({"versions/{id}"})
   @ApiResponses(value = {

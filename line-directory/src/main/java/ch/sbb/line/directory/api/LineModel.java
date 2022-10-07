@@ -53,7 +53,7 @@ public class LineModel implements DatesValidator {
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
+  @Schema(description = "BusinessOrganisation SBOID", example = "ch:1:sboid:100001")
   @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   private String businessOrganisation;

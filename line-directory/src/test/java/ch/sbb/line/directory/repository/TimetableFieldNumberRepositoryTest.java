@@ -40,7 +40,7 @@ public class TimetableFieldNumberRepositoryTest {
                                                                            .description("Last Year")
                                                                            .swissTimetableFieldNumber(
                                                                                "a.100")
-                                                                           .status(Status.ACTIVE)
+                                                                           .status(Status.VALIDATED)
                                                                            .number("10.100")
                                                                            .validFrom(
                                                                                LocalDate.now()
@@ -59,7 +59,7 @@ public class TimetableFieldNumberRepositoryTest {
                                                                         .description("Today")
                                                                         .swissTimetableFieldNumber(
                                                                             "a.100")
-                                                                        .status(Status.ACTIVE)
+                                                                        .status(Status.VALIDATED)
                                                                         .number("10.100")
                                                                         .validFrom(LocalDate.now()
                                                                                             .minusDays(
@@ -76,7 +76,7 @@ public class TimetableFieldNumberRepositoryTest {
                                                                            .description("Next Year")
                                                                            .swissTimetableFieldNumber(
                                                                                "a.100")
-                                                                           .status(Status.ACTIVE)
+                                                                           .status(Status.VALIDATED)
                                                                            .number("10.100")
                                                                            .validFrom(
                                                                                LocalDate.now()
@@ -116,7 +116,7 @@ public class TimetableFieldNumberRepositoryTest {
                                                                            .description("Last Year")
                                                                            .swissTimetableFieldNumber(
                                                                                "a.100")
-                                                                           .status(Status.ACTIVE)
+                                                                           .status(Status.VALIDATED)
                                                                            .number("10.100")
                                                                            .validFrom(
                                                                                LocalDate.now()
@@ -135,7 +135,7 @@ public class TimetableFieldNumberRepositoryTest {
                                                                            .description("Next Year")
                                                                            .swissTimetableFieldNumber(
                                                                                "a.100")
-                                                                           .status(Status.ACTIVE)
+                                                                           .status(Status.VALIDATED)
                                                                            .number("10.100")
                                                                            .validFrom(
                                                                                LocalDate.now()
@@ -154,7 +154,7 @@ public class TimetableFieldNumberRepositoryTest {
                                                                              .description("Later")
                                                                              .swissTimetableFieldNumber(
                                                                                  "a.100")
-                                                                             .status(Status.ACTIVE)
+                                                                             .status(Status.VALIDATED)
                                                                              .number("10.100")
                                                                              .validFrom(
                                                                                  LocalDate.now()
@@ -195,7 +195,7 @@ public class TimetableFieldNumberRepositoryTest {
                                                                           .description("Earlier")
                                                                           .swissTimetableFieldNumber(
                                                                               "a.100")
-                                                                          .status(Status.ACTIVE)
+                                                                          .status(Status.VALIDATED)
                                                                           .number("10.100")
                                                                           .validFrom(LocalDate.now()
                                                                                               .minusYears(
@@ -213,7 +213,7 @@ public class TimetableFieldNumberRepositoryTest {
                                                                            .description("Last Year")
                                                                            .swissTimetableFieldNumber(
                                                                                "a.100")
-                                                                           .status(Status.ACTIVE)
+                                                                           .status(Status.VALIDATED)
                                                                            .number("10.100")
                                                                            .validFrom(
                                                                                LocalDate.now()
@@ -251,7 +251,7 @@ public class TimetableFieldNumberRepositoryTest {
                                    .ttfnid(TTFNID)
                                    .description("Earlier")
                                    .swissTimetableFieldNumber("a.100")
-                                   .status(Status.ACTIVE)
+                                   .status(Status.VALIDATED)
                                    .number("10.100")
                                    .validFrom(LocalDate.now().minusYears(4))
                                    .validTo(LocalDate.now().minusYears(3))
@@ -275,7 +275,7 @@ public class TimetableFieldNumberRepositoryTest {
                                    .ttfnid(TTFNID)
                                    .description("Earlier")
                                    .swissTimetableFieldNumber("a.100")
-                                   .status(Status.ACTIVE)
+                                   .status(Status.VALIDATED)
                                    .number("10.100")
                                    .validFrom(LocalDate.of(2022, 1, 1))
                                    .validTo(LocalDate.of(2022, 1, 1))

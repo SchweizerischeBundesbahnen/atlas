@@ -37,7 +37,7 @@ public class BusinessOrganisationService {
   }
 
   public BusinessOrganisationVersion save(BusinessOrganisationVersion version) {
-    version.setStatus(Status.ACTIVE);
+    version.setStatus(Status.VALIDATED);
     validationService.validatePreconditionBusinessRule(version);
     return versionRepository.save(version);
   }
@@ -76,4 +76,9 @@ public class BusinessOrganisationService {
     versionRepository.deleteAll(versions);
   }
 
+  public List<BusinessOrganisationVersion> revokeBusinessOrganisation(String sboid) {
+    List<BusinessOrganisationVersion> versions = findBusinessOrganisationVersions(sboid);
+    versions.forEach(version -> version.setStatus(Status.REVOKED));
+    return versions;
+  }
 }
