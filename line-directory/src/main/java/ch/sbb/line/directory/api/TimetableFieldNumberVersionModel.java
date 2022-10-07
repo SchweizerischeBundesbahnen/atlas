@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Schema(name = "TimetableFieldNumberVersion")
 public class TimetableFieldNumberVersionModel implements DatesValidator {
 
-  @Schema(description = "Technical identifier")
+  @Schema(description = "Technical identifier", example = "1")
   private Long id;
 
   @Schema(description = "Timetable field number identifier", example = "ch:1:ttfnid:100000", accessMode = AccessMode.READ_ONLY)
@@ -39,7 +39,7 @@ public class TimetableFieldNumberVersionModel implements DatesValidator {
   @Pattern(regexp = AtlasCharacterSetsRegex.NUMERIC_WITH_DOT)
   private String number;
 
-  @Schema(description = "Timetable field number")
+  @Schema(description = "Timetable field number", example = "b0.123")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
@@ -56,7 +56,7 @@ public class TimetableFieldNumberVersionModel implements DatesValidator {
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "Business organisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
+  @Schema(description = "BusinessOrganisation SBOID", example = "ch:1:sboid:100001")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)

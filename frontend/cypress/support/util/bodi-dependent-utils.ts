@@ -47,7 +47,7 @@ export default class BodiDependentUtils {
       abbreviationEn: 'en-dep',
       organisationNumber: 91019,
       contactEnterpriseEmail: 'mail@mail.ch',
-      status: 'ACTIVE',
+      status: 'VALIDATED',
       businessTypes: ['STREET'],
       validFrom: '2000-01-01',
       validTo: '2000-12-31'

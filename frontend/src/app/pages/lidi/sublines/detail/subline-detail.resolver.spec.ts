@@ -10,7 +10,7 @@ const version: SublineVersion = {
   slnid: 'slnid',
   number: 'name',
   description: 'asdf',
-  status: 'ACTIVE',
+  status: 'VALIDATED',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
   businessOrganisation: 'SBB',
@@ -49,7 +49,7 @@ describe('SublineDetailResolver', () => {
     resolvedVersion.subscribe((versions) => {
       expect(versions.length).toBe(1);
       expect(versions[0].id).toBe(1234);
-      expect(versions[0].status).toBe(Status.Active);
+      expect(versions[0].status).toBe(Status.Validated);
       expect(versions[0].slnid).toBe('slnid');
     });
   });
