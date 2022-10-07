@@ -3,6 +3,7 @@ package ch.sbb.line.directory.api;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.api.BaseModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
@@ -14,18 +15,18 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 @FieldNameConstants
 @Schema(name = "LineVersion")
-public class LineVersionModel implements DatesValidator {
+public class LineVersionModel extends BaseModel implements DatesValidator {
 
   private static final String HEX_COLOR_PATTERN = "^#([a-fA-F0-9]{6})$";
   private static final String CMYK_COLOR_PATTERN = "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$";
@@ -93,7 +94,8 @@ public class LineVersionModel implements DatesValidator {
   @NotNull
   private String colorBackCmyk;
 
-  @Schema(description = "Icon", example = "https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg")
+  @Schema(description = "Icon", example = "https://commons.wikimedia"
+      + ".org/wiki/File:Metro_de_Bilbao_L1.svg")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String icon;
@@ -122,7 +124,8 @@ public class LineVersionModel implements DatesValidator {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see "
+      + "RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 }
 

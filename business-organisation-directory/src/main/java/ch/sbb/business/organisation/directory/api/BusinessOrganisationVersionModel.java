@@ -3,6 +3,7 @@ package ch.sbb.business.organisation.directory.api;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.api.BaseModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
@@ -16,26 +17,28 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 @FieldNameConstants
 @Schema(name = "BusinessOrganisationVersion")
-public class BusinessOrganisationVersionModel implements DatesValidator {
+public class BusinessOrganisationVersionModel extends BaseModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
-  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052",
+      accessMode = AccessMode.READ_ONLY)
   private String sboid;
 
-  @Schema(description = "Swiss Administration ID (SAID)", example = "100052", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Swiss Administration ID (SAID)", example = "100052", accessMode =
+      AccessMode.READ_ONLY)
   private String said;
 
   @Schema(description = "Description German", example = "Verkehrsbetriebe STI AG")
@@ -111,7 +114,8 @@ public class BusinessOrganisationVersionModel implements DatesValidator {
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see "
+      + "RFC7232:Section 2.3)", example = "5", accessMode = AccessMode.READ_ONLY)
   private Integer etagVersion;
 
   public static BusinessOrganisationVersion toEntity(BusinessOrganisationVersionModel model) {

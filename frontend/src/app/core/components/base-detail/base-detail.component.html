@@ -25,11 +25,11 @@
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-7 pe-3">
       <app-switch-version
-        *ngIf="controller.showSwitch"
-        [records]="controller.records!"
-        [currentRecord]="controller.record!"
-        [switchDisabled]="controller.form.enabled"
         (switchVersion)="controller.switchVersion($event)"
+        *ngIf="controller.showSwitch"
+        [currentRecord]="controller.record!"
+        [records]="controller.records!"
+        [switchDisabled]="controller.form.enabled"
       ></app-switch-version>
     </div>
     <div class="d-flex flex-column col-5 pe-3">
@@ -117,4 +117,8 @@
     >
     </atlas-button>
   </div>
+  <app-user-detail-info
+    *ngIf="controller.isExistingRecord()"
+    [record]="controller.record"
+  ></app-user-detail-info>
 </div>
