@@ -14,6 +14,7 @@ import {
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
+import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 @Component({
   selector: 'app-lidi-sublines',
@@ -65,7 +66,14 @@ export class SublinesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.SUBLINES.path);
-    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'number,ASC' });
+    this.getOverview(
+      storedTableSettings || {
+        page: 0,
+        size: 10,
+        sort: 'number,ASC',
+        statusChoices: DEFAULT_STATUS_SELECTION,
+      }
+    );
   }
 
   getOverview($paginationAndSearch: TableSettings) {

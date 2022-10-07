@@ -6,8 +6,8 @@ import { ContainerSubline, Status, SublinesService, SublineType } from '../../..
 import { SublinesComponent } from './sublines.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Component, Input, TemplateRef } from '@angular/core';
 import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
+import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 const versionContainer: ContainerSubline = {
   objects: [
@@ -16,7 +16,7 @@ const versionContainer: ContainerSubline = {
       description: 'asdf',
       validFrom: new Date('2021-06-01'),
       validTo: new Date('2029-06-01'),
-      status: Status.Active,
+      status: Status.Validated,
       businessOrganisation: 'SBB',
       swissSublineNumber: 'L1:2',
       sublineType: SublineType.Technical,
@@ -52,7 +52,7 @@ describe('SublinesComponent', () => {
   it('should create', () => {
     expect(sublinesService.getSublines).toHaveBeenCalledOnceWith(
       undefined,
-      undefined,
+      DEFAULT_STATUS_SELECTION,
       undefined,
       undefined,
       undefined,

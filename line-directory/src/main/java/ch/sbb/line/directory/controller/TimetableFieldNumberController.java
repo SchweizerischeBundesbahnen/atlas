@@ -100,9 +100,20 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   }
 
   @Override
+  public List<TimetableFieldNumberVersionModel> revokeTimetableFieldNumber(String ttfnId) {
+    List<TimetableFieldNumberVersionModel> versions = timetableFieldNumberService.revokeTimetableFieldNumber(ttfnId).stream()
+                                                          .map(TimetableFieldNumberController::toModel)
+                                                          .toList();
+    if (versions.isEmpty()) {
+      throw new TtfnidNotFoundException(ttfnId);
+    }
+    return versions;
+  }
+
+  @Override
   public TimetableFieldNumberVersionModel createVersion(
       TimetableFieldNumberVersionModel newVersion) {
-    newVersion.setStatus(Status.ACTIVE);
+    newVersion.setStatus(Status.VALIDATED);
     TimetableFieldNumberVersion createdVersion = timetableFieldNumberService.create(
         toEntity(newVersion));
     return toModel(createdVersion);
