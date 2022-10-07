@@ -3,6 +3,7 @@ package ch.sbb.line.directory.api;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.api.BaseModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -11,24 +12,26 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 @Schema(name = "TimetableFieldNumberVersion")
-public class TimetableFieldNumberVersionModel implements DatesValidator {
+public class TimetableFieldNumberVersionModel extends BaseModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", example = "1")
   private Long id;
 
-  @Schema(description = "Timetable field number identifier", example = "ch:1:ttfnid:100000", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Timetable field number identifier", example = "ch:1:ttfnid:100000",
+      accessMode = AccessMode.READ_ONLY)
   private String ttfnid;
 
-  @Schema(description = "Description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
+  @Schema(description = "Description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, "
+      + "Linien S1, S2)")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
@@ -62,11 +65,13 @@ public class TimetableFieldNumberVersionModel implements DatesValidator {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String businessOrganisation;
 
-  @Schema(description = "Additional comment", example = "Hier kann für interne Zwecke ein Kommentar welcher das Fahrplanfeld betrifft erfasst werden.")
+  @Schema(description = "Additional comment", example = "Hier kann für interne Zwecke ein "
+      + "Kommentar welcher das Fahrplanfeld betrifft erfasst werden.")
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see "
+      + "RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 }
