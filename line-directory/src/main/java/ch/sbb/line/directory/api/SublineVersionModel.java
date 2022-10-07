@@ -3,9 +3,10 @@ package ch.sbb.line.directory.api;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.api.BaseModel;
+import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
@@ -14,18 +15,18 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 @FieldNameConstants
 @Schema(name = "SublineVersion")
-public class SublineVersionModel implements DatesValidator {
+public class SublineVersionModel extends BaseModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY)
   private Long id;
@@ -84,6 +85,7 @@ public class SublineVersionModel implements DatesValidator {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String businessOrganisation;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see "
+      + "RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 }

@@ -28,10 +28,12 @@ import lombok.experimental.FieldNameConstants;
 @Schema(name = "BusinessOrganisation")
 public class BusinessOrganisationModel {
 
-  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052",
+      accessMode = AccessMode.READ_ONLY)
   private String sboid;
 
-  @Schema(description = "Swiss Administration ID (SAID)", example = "100052", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Swiss Administration ID (SAID)", example = "100052", accessMode =
+      AccessMode.READ_ONLY)
   private String said;
 
   @Schema(description = "Description German", example = "Verkehrsbetriebe STI AG")
