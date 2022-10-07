@@ -33,6 +33,15 @@ public class TimetableFieldNumberService {
     return versionRepository.getAllVersionsVersioned(ttfnId);
   }
 
+  public List<TimetableFieldNumberVersion> revokeTimetableFieldNumber(String ttfnId) {
+    List<TimetableFieldNumberVersion> timetableFieldNumberVersions =
+        versionRepository.getAllVersionsVersioned(
+        ttfnId);
+    timetableFieldNumberVersions.forEach(
+        timetableFieldNumberVersion -> timetableFieldNumberVersion.setStatus(Status.REVOKED));
+    return timetableFieldNumberVersions;
+  }
+
   public Optional<TimetableFieldNumberVersion> findById(Long id) {
     return versionRepository.findById(id);
   }
@@ -48,7 +57,7 @@ public class TimetableFieldNumberService {
   }
 
   public TimetableFieldNumberVersion save(TimetableFieldNumberVersion newVersion) {
-    newVersion.setStatus(Status.ACTIVE);
+    newVersion.setStatus(Status.VALIDATED);
     List<TimetableFieldNumberVersion> overlappingVersions = getOverlapsOnNumberAndSttfn(newVersion);
     if (!overlappingVersions.isEmpty()) {
       throw new TimetableFieldNumberConflictException(newVersion, overlappingVersions);

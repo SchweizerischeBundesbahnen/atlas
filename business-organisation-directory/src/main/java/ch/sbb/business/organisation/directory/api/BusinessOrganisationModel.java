@@ -34,60 +34,60 @@ public class BusinessOrganisationModel {
   @Schema(description = "Swiss Administration ID (SAID)", example = "100052", accessMode = AccessMode.READ_ONLY)
   private String said;
 
-  @Schema(description = "Description German")
+  @Schema(description = "Description German", example = "Verkehrsbetriebe STI AG")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_60)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String descriptionDe;
 
-  @Schema(description = "Description French")
+  @Schema(description = "Description French", example = "Verkehrsbetriebe STI AG")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_60)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String descriptionFr;
 
-  @Schema(description = "Description Italian")
+  @Schema(description = "Description Italian", example = "Verkehrsbetriebe STI AG")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_60)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String descriptionIt;
 
-  @Schema(description = "Description English")
+  @Schema(description = "Description English", example = "Verkehrsbetriebe STI AG")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_60)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String descriptionEn;
 
-  @Schema(description = "Abbreviation German")
+  @Schema(description = "Abbreviation German", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
   @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationDe;
 
-  @Schema(description = "Abbreviation French")
+  @Schema(description = "Abbreviation French", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
   @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationFr;
 
-  @Schema(description = "Abbreviation Italian")
+  @Schema(description = "Abbreviation Italian", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
   @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationIt;
 
-  @Schema(description = "Abbreviation English")
+  @Schema(description = "Abbreviation English", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
   @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationEn;
 
-  @Schema(description = "Organisation Number")
+  @Schema(description = "Organisation Number", example = "146")
   @Min(value = 0)
   @Max(value = 99999)
   private Integer organisationNumber;
 
-  @Schema(description = "Enterprise E-Mail address")
+  @Schema(description = "Enterprise E-Mail address", example = "hans.muster@enterprise.ch")
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   private String contactEnterpriseEmail;

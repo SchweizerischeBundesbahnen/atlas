@@ -101,6 +101,22 @@ export class BusinessOrganisationDetailComponent
       });
   }
 
+  revokeRecord(): void {
+    const selectedRecord = this.getSelectedRecord();
+    if (selectedRecord.sboid) {
+      this.businessOrganisationsService
+        .revokeBusinessOrganisation(selectedRecord.sboid)
+        .subscribe(() => {
+          this.notificationService.success(
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
+          );
+          this.router
+            .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, selectedRecord.sboid])
+            .then(() => this.ngOnInit());
+        });
+    }
+  }
+
   deleteRecord(): void {
     const selectedVersion: BusinessOrganisationVersion = this.getSelectedRecord();
     if (selectedVersion.sboid != null) {

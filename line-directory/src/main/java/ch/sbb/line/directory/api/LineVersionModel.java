@@ -30,7 +30,7 @@ public class LineVersionModel implements DatesValidator {
   private static final String HEX_COLOR_PATTERN = "^#([a-fA-F0-9]{6})$";
   private static final String CMYK_COLOR_PATTERN = "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$";
 
-  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
   @Schema(description = "SwissLineNumber", example = "b1.L1")
@@ -111,7 +111,7 @@ public class LineVersionModel implements DatesValidator {
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "BusinessOrganisation", example = "11 - SBB - Schweizerische Bundesbahnen - 100001")
+  @Schema(description = "BusinessOrganisation SBOID", example = "ch:1:sboid:100001")
   @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)

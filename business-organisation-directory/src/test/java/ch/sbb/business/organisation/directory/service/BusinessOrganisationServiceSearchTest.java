@@ -61,7 +61,7 @@ public class BusinessOrganisationServiceSearchTest {
                                                   BusinessType.SHIP)))
                                           .contactEnterpriseEmail("mail1@mail.ch")
                                           .organisationNumber(1234)
-                                          .status(Status.ACTIVE)
+                                          .status(Status.VALIDATED)
                                           .validFrom(LocalDate.of(2020, 1, 1))
                                           .validTo(LocalDate.of(2021, 12, 31))
                                           .build();
@@ -80,7 +80,7 @@ public class BusinessOrganisationServiceSearchTest {
                                                   BusinessType.SHIP)))
                                           .contactEnterpriseEmail("mail1@mail.ch")
                                           .organisationNumber(12345)
-                                          .status(Status.ACTIVE)
+                                          .status(Status.VALIDATED)
                                           .validFrom(LocalDate.of(2022, 1, 1))
                                           .validTo(LocalDate.of(2023, 12, 31))
                                           .build();
@@ -99,7 +99,7 @@ public class BusinessOrganisationServiceSearchTest {
                                                   BusinessType.SHIP)))
                                           .contactEnterpriseEmail("mail1@mail.ch")
                                           .organisationNumber(12346)
-                                          .status(Status.ACTIVE)
+                                          .status(Status.VALIDATED)
                                           .validFrom(LocalDate.of(2024, 1, 1))
                                           .validTo(LocalDate.of(2025, 12, 31))
                                           .build();
@@ -367,7 +367,7 @@ public class BusinessOrganisationServiceSearchTest {
         BusinessOrganisationSearchRestrictions.builder()
                                               .pageable(Pageable.unpaged())
                                               .searchCriterias(of("1", "Napoli", "Forza"))
-                                              .statusRestrictions(List.of(Status.ACTIVE))
+                                              .statusRestrictions(List.of(Status.VALIDATED))
                                               .build());
 
     //then
@@ -378,16 +378,16 @@ public class BusinessOrganisationServiceSearchTest {
   void shouldNotFindVersionWithMultipleStatus() {
     //given
     repository.saveAndFlush(version1);
-    version2.setStatus(Status.REVIEWED);
+    version2.setStatus(Status.REVOKED);
     repository.saveAndFlush(version2);
-    version3.setStatus(Status.INACTIVE);
+    version3.setStatus(Status.WITHDRAWN);
     repository.saveAndFlush(version3);
     //when
     Page<BusinessOrganisation> result = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
                                               .pageable(Pageable.unpaged())
                                               .statusRestrictions(
-                                                  List.of(Status.INACTIVE, Status.REVIEWED))
+                                                  List.of(Status.WITHDRAWN, Status.REVOKED))
                                               .build());
 
     //then
@@ -445,7 +445,7 @@ public class BusinessOrganisationServiceSearchTest {
                                                                                       .organisationNumber(
                                                                                           1234)
                                                                                       .status(
-                                                                                          Status.ACTIVE);
+                                                                                          Status.VALIDATED);
     BusinessOrganisationVersion currentVersion = baseBuilder
         .validFrom(
             LocalDate.of(2020, 1, 1))

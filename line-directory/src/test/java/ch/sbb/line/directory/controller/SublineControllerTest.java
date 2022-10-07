@@ -54,7 +54,7 @@ public class SublineControllerTest {
     return SublineVersionModel.builder()
                               .swissSublineNumber("swissSublineNumber")
                               .mainlineSlnid("mainlineSlnid")
-                              .status(Status.ACTIVE)
+                              .status(Status.VALIDATED)
                               .sublineType(SublineType.TECHNICAL)
                               .slnid("slnid")
                               .description("description")

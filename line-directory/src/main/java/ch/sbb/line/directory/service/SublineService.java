@@ -59,7 +59,7 @@ public class SublineService {
   }
 
   public SublineVersion save(SublineVersion sublineVersion) {
-    sublineVersion.setStatus(Status.ACTIVE);
+    sublineVersion.setStatus(Status.VALIDATED);
     List<LineVersion> lineVersions = lineService.findLineVersions(
         sublineVersion.getMainlineSlnid());
     if (lineVersions.isEmpty()) {
@@ -71,6 +71,12 @@ public class SublineService {
     sublineVersionRepository.saveAndFlush(sublineVersion);
     sublineValidationService.validateSublineAfterVersioningBusinessRule(sublineVersion);
     return sublineVersion;
+  }
+
+  public List<SublineVersion> revokeSubline(String slnid) {
+    List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(slnid);
+    sublineVersions.forEach(sublineVersion -> sublineVersion.setStatus(Status.REVOKED));
+    return sublineVersions;
   }
 
   public void deleteById(Long id) {

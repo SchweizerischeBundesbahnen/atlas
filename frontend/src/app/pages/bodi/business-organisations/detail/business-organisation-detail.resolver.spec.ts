@@ -17,7 +17,7 @@ const version: BusinessOrganisationVersion = {
   abbreviationFr: 'asdf',
   abbreviationIt: 'asdf',
   abbreviationEn: 'asdf',
-  status: 'ACTIVE',
+  status: 'VALIDATED',
   validFrom: new Date('2021-06-01'),
   validTo: new Date('2029-06-01'),
 };
@@ -53,7 +53,7 @@ describe('BusinessOrganisationDetailResolver', () => {
     resolvedVersion.subscribe((versions) => {
       expect(versions.length).toBe(1);
       expect(versions[0].id).toBe(1234);
-      expect(versions[0].status).toBe(Status.Active);
+      expect(versions[0].status).toBe(Status.Validated);
       expect(versions[0].sboid).toBe('sboid');
     });
   });

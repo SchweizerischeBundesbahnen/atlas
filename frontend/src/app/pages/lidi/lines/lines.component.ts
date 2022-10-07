@@ -4,7 +4,7 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { Line, LinesService, LineType } from '../../../api';
+import { Line, LinesService, LineType, Status } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableSettingsService } from '../../../core/components/table/table-settings.service';
@@ -14,6 +14,7 @@ import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
+import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 @Component({
   selector: 'app-lidi-lines',
@@ -60,7 +61,14 @@ export class LinesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.LINES.path);
-    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: 'number,ASC' });
+    this.getOverview(
+      storedTableSettings || {
+        page: 0,
+        size: 10,
+        sort: 'number,ASC',
+        statusChoices: DEFAULT_STATUS_SELECTION,
+      }
+    );
   }
 
   getOverview($paginationAndSearch: TableSettings) {
