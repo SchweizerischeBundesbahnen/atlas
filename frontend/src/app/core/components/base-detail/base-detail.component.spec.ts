@@ -8,7 +8,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
 import { Component, Input } from '@angular/core';
-import { ApplicationType } from '../../../api';
+import { ApplicationRole, ApplicationType, UserPermissionModel } from '../../../api';
 
 @Component({
   selector: 'app-coverage',
@@ -51,8 +51,11 @@ describe('BaseDetailComponent', () => {
     get isAdmin(): boolean {
       return true;
     },
-    hasPermissionsToWrite(applicationType: ApplicationType, sboid: string | undefined): boolean {
+    hasPermissionsToWrite(): boolean {
       return true;
+    },
+    getApplicationUserPermission(applicationType: ApplicationType): UserPermissionModel {
+      return { application: applicationType, role: ApplicationRole.Supervisor, sboids: [] };
     },
   };
 
@@ -85,6 +88,13 @@ describe('BaseDetailComponent', () => {
       editButton.nativeElement.click();
 
       expect(dummyController.toggleEdit).toHaveBeenCalled();
+    });
+
+    it('should revoke record', () => {
+      const editButton = fixture.debugElement.query(By.css('.edit-section .revoke-btn'));
+      editButton.nativeElement.click();
+
+      expect(dummyController.revoke).toHaveBeenCalled();
     });
 
     it('should delete record', () => {
@@ -126,6 +136,7 @@ function createDummyForm(enabledForm: boolean) {
       'confirmLeave',
       'validateAllFormFields',
       'ngOnInit',
+      'revoke',
       'delete',
       'getPageType',
       'getApplicationType',

@@ -15,6 +15,7 @@ import {
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
+import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 @Component({
   selector: 'app-bodi-business-organisations',
@@ -55,7 +56,14 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
     const storedTableSettings = this.tableSettingsService.getTableSettings(
       Pages.BUSINESS_ORGANISATIONS.path
     );
-    this.getOverview(storedTableSettings || { page: 0, size: 10, sort: this.getDefaultSort() });
+    this.getOverview(
+      storedTableSettings || {
+        page: 0,
+        size: 10,
+        sort: this.getDefaultSort(),
+        statusChoices: DEFAULT_STATUS_SELECTION,
+      }
+    );
   }
 
   getOverview($paginationAndSearch: TableSettings) {
