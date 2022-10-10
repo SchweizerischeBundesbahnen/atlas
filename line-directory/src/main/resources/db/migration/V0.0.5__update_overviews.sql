@@ -21,7 +21,7 @@ from (
                            from ((select distinct on (ttfnid) 1 as rank, *
                                   from timetable_field_number_version
                                   where valid_from <= current_date
-                                    and current_date <= valid_to::date+1)
+                                    and current_date <= valid_to)
                                  union all
                                  (select distinct on (ttfnid) 2 as rank, *
                                   from timetable_field_number_version
@@ -68,7 +68,7 @@ from (
                                                              valid_to
                                   from line_version
                                   where valid_from <= current_date
-                                    and current_date <= valid_to::date+1)
+                                    and current_date <= valid_to)
                                  union all
                                  (select distinct on (slnid) 2 as rank,
                                                              swiss_line_number,
