@@ -101,7 +101,7 @@ public class BusinessOrganisation {
           + "                           from ((select distinct on (sboid) 1 as rank, *"
           + "                                  from business_organisation_version"
           + "                                  where valid_from <= current_timestamp"
-          + "                                    and current_timestamp <= valid_to)"
+          + "                                    and current_timestamp <= valid_to::date+1)"
           + "                                 union all"
           + "                                 (select distinct on (sboid) 2 as rank, *"
           + "                                  from business_organisation_version"
