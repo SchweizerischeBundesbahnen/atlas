@@ -211,11 +211,7 @@ public class BusinessOrganisationRepositoryTest {
     List<BusinessOrganisationVersion> result = versionRepository.getFullLineVersions();
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isNotEmpty();
-    assertThat(result.size()).isEqualTo(2);
-    assertThat(result).containsAnyElementsOf(result);
-
+    assertThat(result).isNotNull().isNotEmpty().hasSize(2).containsAnyElementsOf(result);
   }
 
   @Test
@@ -242,11 +238,81 @@ public class BusinessOrganisationRepositoryTest {
         LocalDate.of(2000, 6, 1));
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isNotEmpty();
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).isNotNull().isNotEmpty().hasSize(1);
     assertThat(result.get(0)).isEqualTo(version1);
 
+  }
+
+  /**
+   * ATLAS-922:
+   * |--Today--||--Tomorrow--|
+   */
+  @Test
+  void shouldDisplayNameOfCurrentDayWhenThereIsTomorrow() {
+    // Given
+    BusinessOrganisationVersion validToday = BusinessOrganisationData.businessOrganisationVersionBuilder()
+                                                                     .sboid(SBOID)
+                                                                     .descriptionDe("Today")
+                                                                     .validFrom(LocalDate.now())
+                                                                     .validTo(LocalDate.now())
+                                                                     .build();
+    versionRepository.saveAndFlush(validToday);
+
+    BusinessOrganisationVersion validTomorrow = BusinessOrganisationData.businessOrganisationVersionBuilder()
+                                                                        .sboid(SBOID)
+                                                                        .descriptionDe("Tomorrow")
+                                                                        .validFrom(LocalDate.now().plusDays(1))
+                                                                        .validTo(LocalDate.now().plusDays(1))
+                                                                        .build();
+    versionRepository.saveAndFlush(validTomorrow);
+
+    // When
+    Page<BusinessOrganisation> result = businessOrganisationRepository.findAll(Pageable.unpaged());
+
+    // Then
+    assertThat(result.getTotalElements()).isEqualTo(1L);
+    assertThat(result.getContent()).hasSize(1);
+
+    BusinessOrganisation businessOrganisation = result.getContent().get(0);
+    assertThat(businessOrganisation).usingRecursiveComparison()
+                                    .ignoringFields(IGNORED_FIELDS)
+                                    .isEqualTo(validToday);
+  }
+
+  /**
+   * ATLAS-922:
+   * |--Today+Tomorrow--||--Later--|
+   */
+  @Test
+  void shouldDisplayNameOfCurrentVersion() {
+    // Given
+    BusinessOrganisationVersion validToday = BusinessOrganisationData.businessOrganisationVersionBuilder()
+                                                                     .sboid(SBOID)
+                                                                     .descriptionDe("Today+Tomorrow")
+                                                                     .validFrom(LocalDate.now())
+                                                                     .validTo(LocalDate.now().plusDays(1))
+                                                                     .build();
+    versionRepository.saveAndFlush(validToday);
+
+    BusinessOrganisationVersion validLater = BusinessOrganisationData.businessOrganisationVersionBuilder()
+                                                                        .sboid(SBOID)
+                                                                        .descriptionDe("Later")
+                                                                        .validFrom(LocalDate.now().plusDays(2))
+                                                                        .validTo(LocalDate.now().plusDays(2))
+                                                                        .build();
+    versionRepository.saveAndFlush(validLater);
+
+    // When
+    Page<BusinessOrganisation> result = businessOrganisationRepository.findAll(Pageable.unpaged());
+
+    // Then
+    assertThat(result.getTotalElements()).isEqualTo(1L);
+    assertThat(result.getContent()).hasSize(1);
+
+    BusinessOrganisation businessOrganisation = result.getContent().get(0);
+    assertThat(businessOrganisation).usingRecursiveComparison()
+                                    .ignoringFields(IGNORED_FIELDS)
+                                    .isEqualTo(validToday);
   }
 
 }
