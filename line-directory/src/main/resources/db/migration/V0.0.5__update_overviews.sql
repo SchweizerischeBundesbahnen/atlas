@@ -20,17 +20,17 @@ from (
                            select distinct on (ttfnid) *
                            from ((select distinct on (ttfnid) 1 as rank, *
                                   from timetable_field_number_version
-                                  where valid_from <= current_timestamp
-                                    and current_timestamp <= valid_to::date+1)
+                                  where valid_from <= current_date
+                                    and current_date <= valid_to::date+1)
                                  union all
                                  (select distinct on (ttfnid) 2 as rank, *
                                   from timetable_field_number_version
-                                  where valid_from >= current_timestamp
+                                  where valid_from >= current_date
                                   order by ttfnid, valid_from)
                                  union all
                                  (select distinct on (ttfnid) 3 as rank, *
                                   from timetable_field_number_version
-                                  where valid_to <= current_timestamp
+                                  where valid_to <= current_date
                                   order by ttfnid, valid_to desc)) as ranked order by ttfnid, rank
                        ) as chosen
               ) f
@@ -67,8 +67,8 @@ from (
                                                              valid_from,
                                                              valid_to
                                   from line_version
-                                  where valid_from <= current_timestamp
-                                    and current_timestamp <= valid_to::date+1)
+                                  where valid_from <= current_date
+                                    and current_date <= valid_to::date+1)
                                  union all
                                  (select distinct on (slnid) 2 as rank,
                                                              swiss_line_number,
@@ -81,7 +81,7 @@ from (
                                                              valid_from,
                                                              valid_to
                                   from line_version
-                                  where valid_from >= current_timestamp
+                                  where valid_from >= current_date
                                   order by slnid, valid_from)
                                  union all
                                  (select distinct on (slnid) 3 as rank,
@@ -95,7 +95,7 @@ from (
                                                              valid_from,
                                                              valid_to
                                   from line_version
-                                  where valid_to <= current_timestamp
+                                  where valid_to <= current_date
                                   order by slnid, valid_to desc)) as ranked order by slnid, rank
                        ) as chosen
               ) f
@@ -135,8 +135,8 @@ from (
                                                                s.valid_to
                                   from subline_version s
                                            join line l on s.mainline_slnid = l.slnid
-                                  where s.valid_from <= current_timestamp
-                                    and current_timestamp <= s.valid_to::date+1)
+                                  where s.valid_from <= current_date
+                                    and current_date <= s.valid_to)
                                  union all
                                  (select distinct on (s.slnid) 2 as rank,
                                                                s.swiss_subline_number,
@@ -151,7 +151,7 @@ from (
                                                                s.valid_to
                                   from subline_version s
                                            join line l on s.mainline_slnid = l.slnid
-                                  where s.valid_from >= current_timestamp
+                                  where s.valid_from >= current_date
                                   order by s.slnid, s.valid_from)
                                  union all
                                  (select distinct on (s.slnid) 3 as rank,
@@ -167,7 +167,7 @@ from (
                                                                s.valid_to
                                   from subline_version s
                                            join line l on s.mainline_slnid = l.slnid
-                                  where s.valid_to <= current_timestamp
+                                  where s.valid_to <= current_date
                                   order by s.slnid, s.valid_to desc)) as ranked order by slnid, rank
                        ) as chosen
               ) f
