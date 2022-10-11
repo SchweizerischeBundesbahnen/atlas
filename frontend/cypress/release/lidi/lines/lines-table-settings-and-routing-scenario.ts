@@ -8,7 +8,7 @@ describe('Lines: TableSettings and Routing', () => {
   const minimalLine2 = LidiUtils.getSecondMinimalLineVersion();
 
   const firstValidDate = '01.01.1700';
-  const statusAktiv = 'Aktiv';
+  const statusValidiert = 'Validiert';
 
   const lineDirectoryUrlPath = '/line-directory/lines';
   const lineDirectoryUrlPathToIntercept = '/line-directory/v1/lines?**';
@@ -22,7 +22,7 @@ describe('Lines: TableSettings and Routing', () => {
 
   function assertAllTableFiltersAreFilled() {
     cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalLine1.swissLineNumber);
-    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusAktiv]);
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusValidiert]);
 
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_LINE_TYPE, [
       minimalLine1.type
@@ -66,7 +66,7 @@ describe('Lines: TableSettings and Routing', () => {
       minimalLine1.swissLineNumber
     );
 
-    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, statusAktiv);
+    CommonUtils.chooseOneValueFromMultiselect(DataCy.TABLE_SEARCH_STATUS_INPUT, statusValidiert);
     CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_LINE_TYPE, minimalLine1.type);
 
     CommonUtils.typeSearchInput(

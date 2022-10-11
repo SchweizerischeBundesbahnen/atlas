@@ -176,6 +176,28 @@ export default class CommonUtils {
     });
   }
 
+  static chooseOneValueFromMultiselect(selector: string, value: string) {
+    cy.get(selector).first().click();
+    // deselect all
+    cy.get('mat-option').then((options) => {
+      for (const option of options) {
+        if (option.classList.contains('mat-selected')) {
+          option.click(); // this is jquery click() not cypress click()
+        }
+      }
+    });
+    // only select value
+    cy.get('.mat-option-text').then((options) => {
+      for (const option of options) {
+        if (option.innerText === value) {
+          option.click(); // this is jquery click() not cypress click()
+        }
+      }
+    });
+    // Leave multiselect
+    cy.get('.mat-select-panel').focus().type('{esc}');
+  }
+
   /**
    * Cypress.Chainable<JQuery<HTMLElement>>.type() throws an exception
    * when an empty string ("") is passed. This method only calls type() when textToType is filled.
