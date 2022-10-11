@@ -167,6 +167,10 @@ export default class CommonUtils {
   static selectItemFromDropDown(selector: string, value: string) {
     cy.get(selector).first().click();
     // simulate click event on the drop down item (mat-option)
+    CommonUtils.chooseMatOptionByText(value);
+  }
+
+  static chooseMatOptionByText(value: string) {
     cy.get('.mat-option-text').then((options) => {
       for (const option of options) {
         if (option.innerText === value) {
@@ -186,14 +190,8 @@ export default class CommonUtils {
         }
       }
     });
-    // only select value
-    cy.get('.mat-option-text').then((options) => {
-      for (const option of options) {
-        if (option.innerText === value) {
-          option.click(); // this is jquery click() not cypress click()
-        }
-      }
-    });
+    // only select given value
+    CommonUtils.chooseMatOptionByText(value);
     // Leave multiselect
     cy.get('.mat-select-panel').focus().type('{esc}');
   }
