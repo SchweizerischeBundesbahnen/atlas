@@ -4,10 +4,15 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
 import { ApplicationRole, ApplicationType, UserPermissionModel } from '../../../api';
+import { AtlasButtonType } from './atlas-button.type';
+import { By } from '@angular/platform-browser';
 
 let component: AtlasButtonComponent;
 let fixture: ComponentFixture<AtlasButtonComponent>;
 
+let isAdmin = true;
+let hasPermissionsToCreate = true;
+let hasPermissionsToWrite = true;
 const authServiceMock: Partial<AuthService> = {
   claims: {
     name: 'Test (ITC)',
@@ -27,13 +32,16 @@ const authServiceMock: Partial<AuthService> = {
     return this.claims!.roles.includes(role);
   },
   get isAdmin(): boolean {
-    return true;
+    return isAdmin;
   },
   hasPermissionsToWrite(): boolean {
-    return true;
+    return hasPermissionsToWrite;
+  },
+  hasPermissionsToCreate(): boolean {
+    return hasPermissionsToCreate;
   },
   getApplicationUserPermission(applicationType: ApplicationType): UserPermissionModel {
-    return { application: applicationType, role: ApplicationRole.Supervisor, sboids: [] };
+    return { application: applicationType, role: ApplicationRole.Reader, sboids: [] };
   },
 };
 
@@ -49,10 +57,100 @@ describe('AtlasButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AtlasButtonComponent);
     component = fixture.componentInstance;
+
+    isAdmin = true;
+    hasPermissionsToCreate = true;
+    hasPermissionsToWrite = true;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Visibility', () => {
+    it('should be visible for type CREATE', () => {
+      component.buttonType = AtlasButtonType.CREATE;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeTruthy();
+    });
+
+    it('should be visible for type CREATE_CHECKING_PERMISSION', () => {
+      component.buttonType = AtlasButtonType.CREATE_CHECKING_PERMISSION;
+      component.applicationType = ApplicationType.Bodi;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeTruthy();
+    });
+
+    it('should not be visible for type CREATE_CHECKING_PERMISSION', () => {
+      hasPermissionsToCreate = false;
+      component.buttonType = AtlasButtonType.CREATE_CHECKING_PERMISSION;
+      component.applicationType = ApplicationType.Bodi;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeFalsy();
+    });
+
+    it('should be visible for type EDIT', () => {
+      component.buttonType = AtlasButtonType.EDIT;
+      component.applicationType = ApplicationType.Bodi;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeTruthy();
+    });
+
+    it('should not be visible for type EDIT', () => {
+      hasPermissionsToWrite = false;
+      component.buttonType = AtlasButtonType.EDIT;
+      component.applicationType = ApplicationType.Bodi;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeFalsy();
+    });
+
+    it('should be visible for type REVOKE', () => {
+      component.buttonType = AtlasButtonType.REVOKE;
+      component.applicationType = ApplicationType.Bodi;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeTruthy();
+    });
+
+    it('should not be visible for type REVOKE', () => {
+      isAdmin = false;
+      component.buttonType = AtlasButtonType.REVOKE;
+      component.applicationType = ApplicationType.Bodi;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeFalsy();
+    });
+
+    it('should be visible for type DELETE', () => {
+      component.buttonType = AtlasButtonType.DELETE;
+      component.applicationType = ApplicationType.Bodi;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeTruthy();
+    });
+
+    it('should not be visible for type DELETE', () => {
+      isAdmin = false;
+      component.buttonType = AtlasButtonType.DELETE;
+      component.applicationType = ApplicationType.Bodi;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeFalsy();
+    });
   });
 });
