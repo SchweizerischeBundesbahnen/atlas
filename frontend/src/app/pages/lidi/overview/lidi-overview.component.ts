@@ -20,14 +20,14 @@ export class LidiOverviewComponent {
     },
   ];
 
-  readonly userAllowedToCreate;
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private readonly authService: AuthService
-  ) {
-    this.userAllowedToCreate = authService.hasPermissionsToCreate(ApplicationType.Lidi);
+  ) {}
+
+  isUserAllowedToCreate() {
+    return this.authService.hasPermissionsToCreate(ApplicationType.Lidi);
   }
 
   newLine() {
