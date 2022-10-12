@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.entity;
 
+import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import java.util.Set;
@@ -27,7 +28,7 @@ import lombok.experimental.FieldNameConstants;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class UserPermission {
+public class UserPermission extends BaseEntity {
 
   private static final String ID_SEQ = "user_permission_seq";
 

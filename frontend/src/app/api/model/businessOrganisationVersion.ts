@@ -14,6 +14,22 @@ import { BusinessType } from './businessType';
 
 export interface BusinessOrganisationVersion {
   /**
+   * Object creation date
+   */
+  creationDate?: string;
+  /**
+   * User creator
+   */
+  creator?: string;
+  /**
+   * Last edition date
+   */
+  editionDate?: string;
+  /**
+   * User editor
+   */
+  editor?: string;
+  /**
    * Technical identifier
    */
   readonly id?: number;
