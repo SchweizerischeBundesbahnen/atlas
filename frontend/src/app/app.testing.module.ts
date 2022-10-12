@@ -9,7 +9,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from './core/auth/auth.service';
 import { ApplicationRole } from './api';
-import { AtlasButtonComponent } from './core/components/button/atlas-button.component';
 
 const dialogMock = {
   close: () => {
