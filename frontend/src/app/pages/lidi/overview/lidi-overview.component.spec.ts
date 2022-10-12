@@ -5,6 +5,7 @@ import { LinesComponent } from '../lines/lines.component';
 import { SublinesComponent } from '../sublines/sublines.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 
 describe('LidiOverviewComponent', () => {
   let component: LidiOverviewComponent;
@@ -12,7 +13,12 @@ describe('LidiOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LidiOverviewComponent, LinesComponent, SublinesComponent],
+      declarations: [
+        LidiOverviewComponent,
+        LinesComponent,
+        SublinesComponent,
+        AtlasButtonComponent,
+      ],
       imports: [AppTestingModule],
       providers: [
         {
