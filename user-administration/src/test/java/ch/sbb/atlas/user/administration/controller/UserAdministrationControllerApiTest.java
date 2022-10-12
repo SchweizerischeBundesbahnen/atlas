@@ -9,13 +9,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.user.administration.entity.UserPermission;
-import ch.sbb.atlas.user.administration.api.UserModel.Fields;
-import ch.sbb.atlas.user.administration.api.UserPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.user.administration.api.UserModel.Fields;
+import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
+import ch.sbb.atlas.user.administration.api.UserPermissionModel;
+import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
 import java.util.List;
@@ -181,6 +181,7 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldUpdateUser() throws Exception {
+
     userPermissionRepository.save(UserPermission.builder()
                                                 .role(ApplicationRole.SUPERVISOR)
                                                 .application(ApplicationType.TTFN)
