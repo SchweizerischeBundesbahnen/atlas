@@ -19,10 +19,12 @@ import lombok.Data;
 @Builder
 public class UserPermissionCreateModel {
 
+  @Schema(description = "SBB User-ID", example = "u123456", required = true)
   @NotNull
   @Size(min = 7, max = 7)
   private String sbbUserId;
 
+  @Schema(description = "User permissions", required = true)
   @NotNull
   @Size(min = 1)
   private List<@Valid @NotNull UserPermissionModel> permissions;

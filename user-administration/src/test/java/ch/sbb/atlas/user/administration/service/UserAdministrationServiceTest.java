@@ -7,7 +7,6 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -15,28 +14,24 @@ import org.mockito.MockitoAnnotations;
 
 public class UserAdministrationServiceTest {
 
-    private UserAdministrationService userAdministrationService;
+  private UserAdministrationService userAdministrationService;
 
-    @Mock
-    private UserPermissionRepository userPermissionRepositoryMock;
+  @Mock
+  private UserPermissionRepository userPermissionRepositoryMock;
 
-    @Mock
-    private EntityManager entityManagerMock;
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+    userAdministrationService = new UserAdministrationService(userPermissionRepositoryMock);
+  }
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        userAdministrationService = new UserAdministrationService(userPermissionRepositoryMock, entityManagerMock);
-    }
+  @Test
+  void shouldThrowUserPemissionConflictExceptionOnValidatePermissionExistence() {
+    doReturn(true).when(userPermissionRepositoryMock).existsBySbbUserIdIgnoreCase(anyString());
+    UserPermissionCreateModel createModel = UserPermissionCreateModel.builder().sbbUserId("u123456").build();
 
-    @Test
-    void shouldThrowUserPemissionConflictExceptionOnValidatePermissionExistence() {
-        doReturn(true).when(userPermissionRepositoryMock).existsBySbbUserIdIgnoreCase(anyString());
-        UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
-                .sbbUserId("u123456").build();
-
-        assertThatExceptionOfType(UserPermissionConflictException.class).isThrownBy(
-                () -> userAdministrationService.save(createModel));
-    }
+    assertThatExceptionOfType(UserPermissionConflictException.class).isThrownBy(
+        () -> userAdministrationService.save(createModel));
+  }
 
 }
