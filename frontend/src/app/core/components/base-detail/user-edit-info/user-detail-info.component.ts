@@ -26,7 +26,7 @@ export class UserDetailInfoComponent<TYPE extends Record> implements OnInit, OnD
 
   getUserDetails() {
     if (this.record.editor) {
-      this.populateDitor(this.record.editor);
+      this.populateEditor(this.record.editor);
     }
     if (this.record.creator) {
       this.populateCreator(this.record.creator);
@@ -43,7 +43,7 @@ export class UserDetailInfoComponent<TYPE extends Record> implements OnInit, OnD
     }
   }
 
-  private populateDitor(editor: any) {
+  private populateEditor(editor: any) {
     this.getUserSubscription = this.userAdministrationService.getUser(editor).subscribe((user) => {
       if (!user.displayName) {
         this.editor = this.record.editor;
