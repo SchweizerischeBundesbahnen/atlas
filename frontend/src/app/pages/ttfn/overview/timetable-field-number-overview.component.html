@@ -1,5 +1,5 @@
 <div class="ms-5">
-  <div *ngIf="userAllowedToCreate" class="mt-5">
+  <div *ngIf="isUserAllowedToCreate()" class="mt-5">
     <button mat-raised-button data-cy="new-item" (click)="newVersion()">
       {{ 'TTFN.NEW' | translate }}
     </button>
