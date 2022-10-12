@@ -161,6 +161,10 @@ public class BusinessOrganisationVersionModel extends BaseModel implements Dates
         .etagVersion(entity.getVersion())
         .said(SboidToSaidConverter.toSaid(entity.getSboid()))
         .businessTypes(entity.getBusinessTypes())
+        .creator(entity.getCreator())
+        .creationDate(entity.getCreationDate())
+        .editor(entity.getEditor())
+        .editionDate(entity.getEditionDate())
         .build();
   }
 

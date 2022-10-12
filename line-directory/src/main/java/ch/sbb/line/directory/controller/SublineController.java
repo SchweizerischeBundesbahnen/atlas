@@ -157,6 +157,10 @@ public class SublineController implements SublineApiV1 {
                               .validTo(sublineVersion.getValidTo())
                               .businessOrganisation(sublineVersion.getBusinessOrganisation())
                               .etagVersion(sublineVersion.getVersion())
+                              .creator(sublineVersion.getCreator())
+                              .creationDate(sublineVersion.getCreationDate())
+                              .editor(sublineVersion.getEditor())
+                              .editionDate(sublineVersion.getEditionDate())
                               .build();
   }
 
