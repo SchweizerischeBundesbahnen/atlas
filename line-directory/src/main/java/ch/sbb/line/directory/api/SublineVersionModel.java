@@ -85,7 +85,6 @@ public class SublineVersionModel extends BaseModel implements DatesValidator {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String businessOrganisation;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see "
-      + "RFC7232:Section 2.3)", example = "5")
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 }

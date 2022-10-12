@@ -30,7 +30,7 @@ export class UserAdministrationEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
+    const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
       this.user!
     );
     if (permissionsFromUserModelAsArray.length === 0) {
@@ -78,7 +78,7 @@ export class UserAdministrationEditComponent implements OnInit {
   }
 
   private convertUserPermissionToRecord() {
-    let permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
+    const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
       this.user!
     );
     if (permissionsFromUserModelAsArray.length > 0) {
