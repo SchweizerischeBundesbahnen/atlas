@@ -40,88 +40,88 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   void shouldGetUsers() throws Exception {
     userPermissionRepository.saveAll(List.of(
         UserPermission.builder()
-                      .role(ApplicationRole.SUPERVISOR)
-                      .application(ApplicationType.TTFN)
-                      .sbbUserId("u236171").build(),
+            .role(ApplicationRole.SUPERVISOR)
+            .application(ApplicationType.TTFN)
+            .sbbUserId("u236171").build(),
         UserPermission.builder()
-                      .role(ApplicationRole.SUPERVISOR)
-                      .application(ApplicationType.TTFN)
-                      .sbbUserId("e999999").build(),
+            .role(ApplicationRole.SUPERVISOR)
+            .application(ApplicationType.TTFN)
+            .sbbUserId("e999999").build(),
         UserPermission.builder()
-                      .role(ApplicationRole.SUPERVISOR)
-                      .application(ApplicationType.LIDI)
-                      .sbbUserId("u236171").build()
+            .role(ApplicationRole.SUPERVISOR)
+            .application(ApplicationType.LIDI)
+            .sbbUserId("u236171").build()
     ));
 
     mvc.perform(get("/v1/users")
-           .queryParam("page", "0")
-           .queryParam("size", "5"))
-       .andExpect(status().isOk())
-       .andExpect(jsonPath("$.totalCount").value(2))
-       .andExpect(jsonPath("$.objects", hasSize(2)))
-       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'e999999')].accountStatus").value("DELETED"))
-       .andExpect(
-           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].role").value(
-               "SUPERVISOR"))
-       .andExpect(
-           jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].application").value(
-               "TTFN"))
-       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].accountStatus").value("ACTIVE"))
-       .andExpect(
-           jsonPath("$.objects[?(@.sbbUserId == 'u236171')].permissions[*]").value(hasSize(2)))
-       .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].lastName").value("Ammann"));
+            .queryParam("page", "0")
+            .queryParam("size", "5"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(2))
+        .andExpect(jsonPath("$.objects", hasSize(2)))
+        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'e999999')].accountStatus").value("DELETED"))
+        .andExpect(
+            jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].role").value(
+                "SUPERVISOR"))
+        .andExpect(
+            jsonPath("$.objects[?(@.sbbUserId == 'e999999')].permissions[0].application").value(
+                "TTFN"))
+        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].accountStatus").value("ACTIVE"))
+        .andExpect(
+            jsonPath("$.objects[?(@.sbbUserId == 'u236171')].permissions[*]").value(hasSize(2)))
+        .andExpect(jsonPath("$.objects[?(@.sbbUserId == 'u236171')].lastName").value("Ammann"));
   }
 
   @Test
   void shouldGetUser() throws Exception {
     userPermissionRepository.saveAll(List.of(
         UserPermission.builder()
-                      .role(ApplicationRole.SUPERVISOR)
-                      .application(ApplicationType.TTFN)
-                      .sbbUserId("u236171").build(),
+            .role(ApplicationRole.SUPERVISOR)
+            .application(ApplicationType.TTFN)
+            .sbbUserId("u236171").build(),
         UserPermission.builder()
-                      .role(ApplicationRole.SUPERVISOR)
-                      .application(ApplicationType.TTFN)
-                      .sbbUserId("e678574").build()
+            .role(ApplicationRole.SUPERVISOR)
+            .application(ApplicationType.TTFN)
+            .sbbUserId("e678574").build()
     ));
 
     mvc.perform(get("/v1/users/U236171"))
-       .andExpect(status().isOk())
-       .andExpect(jsonPath("$.sbbUserId").value("u236171"))
-       .andExpect(jsonPath("$.lastName").value("Ammann"))
-       .andExpect(jsonPath("$.permissions").value(hasSize(1)))
-       .andExpect(jsonPath("$.permissions[0].role").value("SUPERVISOR"))
-       .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.sbbUserId").value("u236171"))
+        .andExpect(jsonPath("$.lastName").value("Ammann"))
+        .andExpect(jsonPath("$.permissions").value(hasSize(1)))
+        .andExpect(jsonPath("$.permissions[0].role").value("SUPERVISOR"))
+        .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
   }
 
   @Test
   void shouldThrowPageSizeException() throws Exception {
     mvc.perform(get("/v1/users")
-           .queryParam("page", "0")
-           .queryParam("size", "21"))
-       .andExpect(status().is(405))
-       .andExpect(jsonPath("$.status").value(405))
-       .andExpect(
-           jsonPath("$.message").value("Page size 21 is bigger than max allowed page size 20"))
-       .andExpect(jsonPath("$.error").value("Page Request not allowed"))
-       .andExpect(jsonPath("$.details").value(hasSize(0)));
+            .queryParam("page", "0")
+            .queryParam("size", "21"))
+        .andExpect(status().is(405))
+        .andExpect(jsonPath("$.status").value(405))
+        .andExpect(
+            jsonPath("$.message").value("Page size 21 is bigger than max allowed page size 20"))
+        .andExpect(jsonPath("$.error").value("Page Request not allowed"))
+        .andExpect(jsonPath("$.details").value(hasSize(0)));
   }
 
   @Test
   void shouldCreateUserPermission() throws Exception {
     UserPermissionModel userPermissionModelWriter = UserPermissionModel.builder()
-                                                                       .role(ApplicationRole.WRITER)
-                                                                       .application(
-                                                                           ApplicationType.TTFN)
-                                                                       .sboids(List.of(
-                                                                           "ch:1:sboid:test"))
-                                                                       .build();
+        .role(ApplicationRole.WRITER)
+        .application(
+            ApplicationType.TTFN)
+        .sboids(List.of(
+            "ch:1:sboid:test"))
+        .build();
     UserPermissionModel userPermissionModelReader = UserPermissionModel.builder()
-                                                                       .role(ApplicationRole.READER)
-                                                                       .application(
-                                                                           ApplicationType.BODI)
-                                                                       .sboids(List.of())
-                                                                       .build();
+        .role(ApplicationRole.READER)
+        .application(
+            ApplicationType.BODI)
+        .sboids(List.of())
+        .build();
     UserPermissionCreateModel model = UserPermissionCreateModel
         .builder()
         .sbbUserId("U236171")
@@ -131,17 +131,17 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         .build();
 
     mvc.perform(post("/v1/users")
-           .content(mapper.writeValueAsString(model)).contentType(MediaType.APPLICATION_JSON))
-       .andExpect(status().isCreated())
-       .andExpect(jsonPath("$." + Fields.sbbUserId).value("u236171"))
-       .andExpect(jsonPath("$." + Fields.mail).value("luca.ammann2@sbb.ch"))
-       .andExpect(jsonPath("$." + Fields.permissions).value(hasSize(2)))
-       .andExpect(
-           jsonPath("$." + Fields.permissions + "[?(@.application == 'BODI')].sboids[*]").value(
-               hasSize(0)))
-       .andExpect(
-           jsonPath("$." + Fields.permissions + "[?(@.application == 'TTFN')].sboids[*]").value(
-               hasItem("ch:1:sboid:test")));
+            .content(mapper.writeValueAsString(model)).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + Fields.sbbUserId).value("u236171"))
+        .andExpect(jsonPath("$." + Fields.mail).value("luca.ammann2@sbb.ch"))
+        .andExpect(jsonPath("$." + Fields.permissions).value(hasSize(2)))
+        .andExpect(
+            jsonPath("$." + Fields.permissions + "[?(@.application == 'BODI')].sboids[*]").value(
+                hasSize(0)))
+        .andExpect(
+            jsonPath("$." + Fields.permissions + "[?(@.application == 'TTFN')].sboids[*]").value(
+                hasItem("ch:1:sboid:test")));
 
     List<UserPermission> savedPermissions = userPermissionRepository.findBySbbUserIdIgnoreCase(
         "U236171");
@@ -153,9 +153,9 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldThrowUserPermissionConflictExceptionOnCreateUserPermission() throws Exception {
     UserPermission userPermission = UserPermission.builder()
-                                                  .role(ApplicationRole.SUPERVISOR)
-                                                  .application(ApplicationType.TTFN)
-                                                  .sbbUserId("u236171").build();
+        .role(ApplicationRole.SUPERVISOR)
+        .application(ApplicationType.TTFN)
+        .sbbUserId("u236171").build();
     userPermissionRepository.save(userPermission);
 
     UserPermissionCreateModel createModel = UserPermissionCreateModel
@@ -163,52 +163,52 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         .sbbUserId("u236171")
         .permissions(List.of(
             UserPermissionModel.builder()
-                               .role(ApplicationRole.WRITER)
-                               .application(ApplicationType.TTFN)
-                               .sboids(List.of("ch:1:sboid:test"))
-                               .build()
+                .role(ApplicationRole.WRITER)
+                .application(ApplicationType.TTFN)
+                .sboids(List.of("ch:1:sboid:test"))
+                .build()
         ))
         .build();
 
     mvc.perform(post("/v1/users")
-           .content(mapper.writeValueAsString(createModel)).contentType(MediaType.APPLICATION_JSON))
-       .andExpect(status().isConflict())
-       .andExpect(jsonPath("$.status").value(409))
-       .andExpect(jsonPath("$.message").value("A conflict occurred on UserPermission"))
-       .andExpect(jsonPath("$.error").value("User Permission Conflict"))
-       .andExpect(jsonPath("$.details").value(hasSize(1)));
+            .content(mapper.writeValueAsString(createModel)).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.status").value(409))
+        .andExpect(jsonPath("$.message").value("A conflict occurred on UserPermission"))
+        .andExpect(jsonPath("$.error").value("User Permission Conflict"))
+        .andExpect(jsonPath("$.details").value(hasSize(1)));
   }
 
   @Test
   void shouldUpdateUser() throws Exception {
 
     userPermissionRepository.save(UserPermission.builder()
-                                                .role(ApplicationRole.SUPERVISOR)
-                                                .application(ApplicationType.TTFN)
-                                                .sbbUserId("u236171").build());
+        .role(ApplicationRole.SUPERVISOR)
+        .application(ApplicationType.TTFN)
+        .sbbUserId("u236171").build());
 
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-                                                                           .sbbUserId("u236171")
-                                                                           .permissions(List.of(
-                                                                               UserPermissionModel.builder()
-                                                                                                  .application(
-                                                                                                      ApplicationType.TTFN)
-                                                                                                  .role(
-                                                                                                      ApplicationRole.WRITER)
-                                                                                                  .sboids(
-                                                                                                      List.of(
-                                                                                                          "ch:1:sboid:10009"))
-                                                                                                  .build()))
-                                                                           .build();
+        .sbbUserId("u236171")
+        .permissions(List.of(
+            UserPermissionModel.builder()
+                .application(
+                    ApplicationType.TTFN)
+                .role(
+                    ApplicationRole.WRITER)
+                .sboids(
+                    List.of(
+                        "ch:1:sboid:10009"))
+                .build()))
+        .build();
 
     mvc.perform(put("/v1/users").contentType(contentType)
-                                .content(mapper.writeValueAsString(editedPermissions)))
-       .andExpect(status().isOk())
-       .andExpect(jsonPath("$.sbbUserId").value("u236171"))
-       .andExpect(jsonPath("$.lastName").value("Ammann"))
-       .andExpect(jsonPath("$.permissions").value(hasSize(1)))
-       .andExpect(jsonPath("$.permissions[0].role").value("WRITER"))
-       .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
+            .content(mapper.writeValueAsString(editedPermissions)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.sbbUserId").value("u236171"))
+        .andExpect(jsonPath("$.lastName").value("Ammann"))
+        .andExpect(jsonPath("$.permissions").value(hasSize(1)))
+        .andExpect(jsonPath("$.permissions[0].role").value("WRITER"))
+        .andExpect(jsonPath("$.permissions[0].application").value("TTFN"));
   }
 
   @Test
