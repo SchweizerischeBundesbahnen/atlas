@@ -1,0 +1,11 @@
+<div class="mb-5">
+  <button
+    *ngIf="isButtonVisible()"
+    [class]="getButtonStyleClass()"
+    (click)="buttonClicked.emit()"
+    [type]="submitButton ? 'submit' : 'button'"
+    [disabled]="disabled"
+  >
+    {{ buttonText | translate }}
+  </button>
+</div>

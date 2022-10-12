@@ -6,7 +6,6 @@ import { ApplicationType } from '../../../api';
 
 @Component({
   templateUrl: './bodi-overview.component.html',
-  styleUrls: ['./bodi-overview.component.scss'],
 })
 export class BodiOverviewComponent {
   TABS = [

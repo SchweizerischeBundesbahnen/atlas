@@ -1,16 +1,12 @@
-<div class="ms-5">
-  <div *ngIf="isUserAllowedToCreate()" class="d-flex flex-column mt-5">
-    <div>
-      <button
-        mat-raised-button
-        data-cy="new-business-organisation"
-        (click)="newBusinessOrganisation()"
-        class="mb-3"
-      >
-        {{ 'BODI.BUSINESS_ORGANISATION.NEW' | translate }}
-      </button>
-    </div>
-  </div>
+<div class="ps-5 pt-5">
+  <atlas-button
+    buttonType="createCheckingPermission"
+    applicationType="BODI"
+    data-cy="new-business-organisation"
+    (buttonClicked)="newBusinessOrganisation()"
+    buttonText="BODI.BUSINESS_ORGANISATION.NEW"
+  >
+  </atlas-button>
 
   <nav mat-tab-nav-bar class="tabs" data-cy="tabs">
     <a

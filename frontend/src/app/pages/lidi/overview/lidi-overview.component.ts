@@ -6,7 +6,6 @@ import { ApplicationType } from '../../../api';
 
 @Component({
   templateUrl: './lidi-overview.component.html',
-  styleUrls: ['./lidi-overview.component.scss'],
 })
 export class LidiOverviewComponent {
   TABS = [
