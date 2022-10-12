@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +16,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -41,7 +39,7 @@ public abstract class BaseEntity {
 
   @AtlasVersionableProperty(ignoreDiff = true)
   private String editor;
-  
+
   @PrePersist
   public void onPrePersist() {
     String sbbUid = UserService.getSbbUid();
