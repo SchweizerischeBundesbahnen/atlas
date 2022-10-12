@@ -24,9 +24,11 @@ import { CoverageComponent } from '../components/coverage/coverage.component';
 import { RouteToDialogComponent } from '../components/route-to-dialog/route-to-dialog.component';
 import { FormModule } from './form.module';
 import { RelationComponent } from '../components/relation/relation.component';
+import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 
 const coreComponents = [
   BaseDetailComponent,
+  AtlasButtonComponent,
   SwitchVersionComponent,
   DialogComponent,
   HeaderComponent,
