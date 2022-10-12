@@ -9,6 +9,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UserModel } from '../../../api/model/userModel';
 import { MaterialModule } from '../../../core/module/material.module';
 import { FormGroup, FormsModule } from '@angular/forms';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-table',
@@ -63,6 +65,7 @@ describe('UserAdministrationOverviewComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationOverviewComponent,
+        AtlasButtonComponent,
         MockTableComponent,
         MockFormSearchSelectComponent,
         MockUserSelectComponent,
@@ -79,6 +82,10 @@ describe('UserAdministrationOverviewComponent', () => {
         {
           provide: UserService,
           useValue: userServiceMock,
+        },
+        {
+          provide: AuthService,
+          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasPermissionsToCreate']),
         },
       ],
     }).compileComponents();
