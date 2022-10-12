@@ -69,6 +69,10 @@
       "OPTIMISTIC_LOCK_ERROR": "Soit l’objet a déjà été supprimé, soit il a été traité entre-temps. Veuillez recharger la page en appuyant sur la touche F5."
     }
   },
+  "DETAIL_USER_EDITION": {
+    "LATEST_EDITION": "Dernière modification à {{editionDate}}",
+    "LATEST_EDITOR": "de {{editor}}"
+  },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caractères max.",
     "DROPDOWN_PLACEHOLDER": "sélectionner",
