@@ -10,4 +10,6 @@ export interface Record {
   versionNumber?: number;
   editor?: string;
   editionDate?: string;
+  creator?: string;
+  creationDate?: string;
 }
