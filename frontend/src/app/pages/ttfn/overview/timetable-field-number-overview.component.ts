@@ -42,7 +42,6 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
   timetableFieldNumbers: TimetableFieldNumber[] = [];
   totalCount$ = 0;
   isLoading = false;
-  readonly userAllowedToCreate;
   private getVersionsSubscription!: Subscription;
   private routeSubscription!: Subscription;
 
@@ -55,7 +54,6 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     private routeToDialogService: RouteToDialogService,
     private readonly authService: AuthService
   ) {
-    this.userAllowedToCreate = authService.hasPermissionsToCreate(ApplicationType.Ttfn);
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
       .subscribe(() => this.ngOnInit());
@@ -92,6 +90,10 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
         this.tableComponent.setTableSettings($paginationAndSearch);
         this.isLoading = false;
       });
+  }
+
+  isUserAllowedToCreate() {
+    return this.authService.hasPermissionsToCreate(ApplicationType.Ttfn);
   }
 
   newVersion() {
