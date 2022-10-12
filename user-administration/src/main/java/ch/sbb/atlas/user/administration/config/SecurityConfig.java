@@ -40,8 +40,7 @@ public class SecurityConfig {
   @Bean
   protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-        // CORS: by default Spring uses a bean with the name of corsConfigurationSource: @see ch
-        // .sbb.esta.config.CorsConfig
+        // CORS: by default Spring uses a bean with the name of corsConfigurationSource: @see ch.sbb.esta.config.CorsConfig
         .cors(withDefaults())
 
         // for details about stateless authentication see e.g. https://golb.hplar.ch/2019/05/stateless.html
@@ -58,13 +57,13 @@ public class SecurityConfig {
                 .mvcMatchers("/v3/api-docs/**").permitAll()
                 .mvcMatchers("/static/rest-api.html").permitAll()
 
-                // Method security may also be configured using the annotations
-                // <code>@PreAuthorize</code> and <code>@PostAuthorize</code>
+                // Method security may also be configured using the annotations <code>@PreAuthorize</code> and
+                // <code>@PostAuthorize</code>
                 // that permit to set fine grained control using the Spring Expression Language:
                 // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#method-security-expressions">Method
                 // Security Expressions</a>
-                // In order to use these annotations, you have to enable global-method-security
-                // using <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
+                // In order to use these annotations, you have to enable global-method-security using
+                // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
                 .mvcMatchers(HttpMethod.GET, "/v1/users/current").authenticated()
                 .mvcMatchers("/**").hasAnyRole(Role.ATLAS_ADMIN)
                 .anyRequest().authenticated()

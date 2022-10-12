@@ -33,23 +33,23 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
 
   static TimetableFieldNumberVersionModel toModel(TimetableFieldNumberVersion version) {
     return TimetableFieldNumberVersionModel.builder()
-                                           .id(version.getId())
-                                           .description(version.getDescription())
-                                           .number(version.getNumber())
-                                           .ttfnid(version.getTtfnid())
-                                           .swissTimetableFieldNumber(
-                                               version.getSwissTimetableFieldNumber())
-                                           .status(version.getStatus())
-                                           .validFrom(version.getValidFrom())
-                                           .validTo(version.getValidTo())
-                                           .businessOrganisation(version.getBusinessOrganisation())
-                                           .comment(version.getComment())
-                                           .creator(version.getCreator())
-                                           .creationDate(version.getCreationDate())
-                                           .editor(version.getEditor())
-                                           .editionDate(version.getEditionDate())
-                                           .etagVersion(version.getVersion())
-                                           .build();
+        .id(version.getId())
+        .description(version.getDescription())
+        .number(version.getNumber())
+        .ttfnid(version.getTtfnid())
+        .swissTimetableFieldNumber(
+            version.getSwissTimetableFieldNumber())
+        .status(version.getStatus())
+        .validFrom(version.getValidFrom())
+        .validTo(version.getValidTo())
+        .businessOrganisation(version.getBusinessOrganisation())
+        .comment(version.getComment())
+        .creator(version.getCreator())
+        .creationDate(version.getCreationDate())
+        .editor(version.getEditor())
+        .editionDate(version.getEditionDate())
+        .etagVersion(version.getVersion())
+        .build();
   }
 
   @Override
@@ -57,49 +57,47 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
       List<String> searchCriteria, Optional<String> businessOrganisation,
       Optional<LocalDate> validOn, List<Status> statusChoices) {
     log.info(
-        "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={}"
-            + " and statusChoices={}",
+        "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
         pageable, searchCriteria, validOn, statusChoices);
-    Page<TimetableFieldNumber> timetableFieldNumberPage =
-        timetableFieldNumberService.getVersionsSearched(
+    Page<TimetableFieldNumber> timetableFieldNumberPage = timetableFieldNumberService.getVersionsSearched(
         TimetableFieldNumberSearchRestrictions.builder()
-                                              .pageable(pageable)
-                                              .searchCriterias(searchCriteria)
-                                              .statusRestrictions(statusChoices)
-                                              .validOn(validOn)
-                                              .businessOrganisation(businessOrganisation)
-                                              .build());
+            .pageable(pageable)
+            .searchCriterias(searchCriteria)
+            .statusRestrictions(statusChoices)
+            .validOn(validOn)
+            .businessOrganisation(businessOrganisation)
+            .build());
     List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(this::toModel)
-                                                                       .toList();
+        .toList();
     return Container.<TimetableFieldNumberModel>builder()
-                    .objects(versions)
-                    .totalCount(timetableFieldNumberPage.getTotalElements())
-                    .build();
+        .objects(versions)
+        .totalCount(timetableFieldNumberPage.getTotalElements())
+        .build();
   }
 
   private TimetableFieldNumberModel toModel(TimetableFieldNumber version) {
     return TimetableFieldNumberModel.builder()
-                                    .description(version.getDescription())
-                                    .number(version.getNumber())
-                                    .ttfnid(version.getTtfnid())
-                                    .swissTimetableFieldNumber(
-                                        version.getSwissTimetableFieldNumber())
-                                    .status(version.getStatus())
-                                    .businessOrganisation(version.getBusinessOrganisation())
-                                    .validFrom(version.getValidFrom())
-                                    .validTo(version.getValidTo())
-                                    .build();
+        .description(version.getDescription())
+        .number(version.getNumber())
+        .ttfnid(version.getTtfnid())
+        .swissTimetableFieldNumber(
+            version.getSwissTimetableFieldNumber())
+        .status(version.getStatus())
+        .businessOrganisation(version.getBusinessOrganisation())
+        .validFrom(version.getValidFrom())
+        .validTo(version.getValidTo())
+        .build();
   }
 
   @Override
   public List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(String ttfnId) {
     List<TimetableFieldNumberVersionModel> timetableFieldNumberVersionModels =
         timetableFieldNumberService.getAllVersionsVersioned(
-                                                                                                              ttfnId)
-                                                                                                          .stream()
-                                                                                                          .map(
-                                                                                                              TimetableFieldNumberController::toModel)
-                                                                                                          .toList();
+                ttfnId)
+            .stream()
+            .map(
+                TimetableFieldNumberController::toModel)
+            .toList();
     if (timetableFieldNumberVersionModels.isEmpty()) {
       throw new TtfnidNotFoundException(ttfnId);
     }
@@ -108,12 +106,9 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
 
   @Override
   public List<TimetableFieldNumberVersionModel> revokeTimetableFieldNumber(String ttfnId) {
-    List<TimetableFieldNumberVersionModel> versions =
-        timetableFieldNumberService.revokeTimetableFieldNumber(
-                                                                                     ttfnId).stream()
-                                                                                 .map(
-                                                                                     TimetableFieldNumberController::toModel)
-                                                                                 .toList();
+    List<TimetableFieldNumberVersionModel> versions = timetableFieldNumberService.revokeTimetableFieldNumber(ttfnId).stream()
+        .map(TimetableFieldNumberController::toModel)
+        .toList();
     if (versions.isEmpty()) {
       throw new TtfnidNotFoundException(ttfnId);
     }
@@ -133,19 +128,17 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   public List<TimetableFieldNumberVersionModel> updateVersionWithVersioning(Long id,
       TimetableFieldNumberVersionModel newVersion) {
     TimetableFieldNumberVersion versionToUpdate = timetableFieldNumberService.findById(id)
-                                                                             .orElseThrow(() ->
-                                                                                 new IdNotFoundException(
-                                                                                     id));
-    timetableFieldNumberService.update(versionToUpdate, toEntity(newVersion),
-        timetableFieldNumberService.getAllVersionsVersioned(
-            versionToUpdate.getTtfnid()));
+        .orElseThrow(() ->
+            new IdNotFoundException(
+                id));
+    timetableFieldNumberService.update(versionToUpdate, toEntity(newVersion), timetableFieldNumberService.getAllVersionsVersioned(
+        versionToUpdate.getTtfnid()));
     return getAllVersionsVersioned(versionToUpdate.getTtfnid());
   }
 
   @Override
   public void deleteVersions(String ttfnid) {
-    List<TimetableFieldNumberVersion> allVersionsVersioned =
-        timetableFieldNumberService.getAllVersionsVersioned(
+    List<TimetableFieldNumberVersion> allVersionsVersioned = timetableFieldNumberService.getAllVersionsVersioned(
         ttfnid);
     if (allVersionsVersioned.isEmpty()) {
       throw new TtfnidNotFoundException(ttfnid);
@@ -171,19 +164,19 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   private TimetableFieldNumberVersion toEntity(
       TimetableFieldNumberVersionModel timetableFieldNumberVersionModel) {
     return TimetableFieldNumberVersion.builder()
-                                      .id(timetableFieldNumberVersionModel.getId())
-                                      .description(
-                                          timetableFieldNumberVersionModel.getDescription())
-                                      .number(timetableFieldNumberVersionModel.getNumber())
-                                      .swissTimetableFieldNumber(
-                                          timetableFieldNumberVersionModel.getSwissTimetableFieldNumber())
-                                      .status(timetableFieldNumberVersionModel.getStatus())
-                                      .validFrom(timetableFieldNumberVersionModel.getValidFrom())
-                                      .validTo(timetableFieldNumberVersionModel.getValidTo())
-                                      .businessOrganisation(
-                                          timetableFieldNumberVersionModel.getBusinessOrganisation())
-                                      .comment(timetableFieldNumberVersionModel.getComment())
-                                      .version(timetableFieldNumberVersionModel.getEtagVersion())
-                                      .build();
+        .id(timetableFieldNumberVersionModel.getId())
+        .description(
+            timetableFieldNumberVersionModel.getDescription())
+        .number(timetableFieldNumberVersionModel.getNumber())
+        .swissTimetableFieldNumber(
+            timetableFieldNumberVersionModel.getSwissTimetableFieldNumber())
+        .status(timetableFieldNumberVersionModel.getStatus())
+        .validFrom(timetableFieldNumberVersionModel.getValidFrom())
+        .validTo(timetableFieldNumberVersionModel.getValidTo())
+        .businessOrganisation(
+            timetableFieldNumberVersionModel.getBusinessOrganisation())
+        .comment(timetableFieldNumberVersionModel.getComment())
+        .version(timetableFieldNumberVersionModel.getEtagVersion())
+        .build();
   }
 }
