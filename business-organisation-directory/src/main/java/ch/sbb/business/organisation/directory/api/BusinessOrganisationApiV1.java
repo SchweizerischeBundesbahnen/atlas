@@ -38,7 +38,8 @@ public interface BusinessOrganisationApiV1 {
       @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
       @Parameter @RequestParam(required = false) List<String> inSboids,
-      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
+      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern =
+          AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
   @GetMapping("versions/{sboid}")
@@ -46,7 +47,8 @@ public interface BusinessOrganisationApiV1 {
       @PathVariable String sboid);
 
   @PostMapping("{sboid}/revoke")
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user"
+      + ".admin.ApplicationType).BODI)")
   List<BusinessOrganisationVersionModel> revokeBusinessOrganisation(@PathVariable String sboid);
 
   @PostMapping("versions")
@@ -54,7 +56,8 @@ public interface BusinessOrganisationApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
   })
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user"
+      + ".admin.ApplicationType).BODI)")
   BusinessOrganisationVersionModel createBusinessOrganisationVersion(
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
@@ -64,7 +67,8 @@ public interface BusinessOrganisationApiV1 {
       @ApiResponse(responseCode = "200"),
   })
 
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user"
+      + ".admin.ApplicationType).BODI)")
   List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(
       @PathVariable Long id,
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
@@ -72,16 +76,20 @@ public interface BusinessOrganisationApiV1 {
   @DeleteMapping("{sboid}")
   void deleteBusinessOrganisation(@PathVariable String sboid);
 
-  @Operation(description = "Export all Business Organisations versions as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @Operation(description = "Export all Business Organisations versions as csv and zip file to the"
+      + " ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullBusinessOrganisationVersions();
 
-  @Operation(description = "Export all actual Business Organisations versions as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @Operation(description = "Export all actual Business Organisations versions as csv and zip file"
+      + " to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualBusinessOrganisationVersions();
 
-  @Operation(description = "Export all Business Organisations versions for the current timetable year change as csv and zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(description = "Export all Business Organisations versions for the current timetable "
+      + "year change as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export-csv/timetable-year-change", produces =
+      MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFutureTimetableBusinessOrganisationVersions();
 
 }
