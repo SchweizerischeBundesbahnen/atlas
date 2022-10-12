@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../core/auth/auth.service';
-import { ApplicationType } from '../../../api';
 
 @Component({
   templateUrl: './bodi-overview.component.html',
@@ -23,15 +21,7 @@ export class BodiOverviewComponent {
     },
   ];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private readonly authService: AuthService
-  ) {}
-
-  isUserAllowedToCreate() {
-    return this.authService.hasPermissionsToCreate(ApplicationType.Bodi);
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   newBusinessOrganisation() {
     this.router.navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, 'add']).then();
