@@ -14,6 +14,8 @@ export class UserDetailInfoComponent<TYPE extends Record> implements OnInit, OnD
   @Input() record!: TYPE;
   editor!: string | undefined;
   editionDate!: string | undefined;
+  creator!: string | undefined;
+  creationDate!: string | undefined;
   private getUserSubscription!: Subscription;
 
   constructor(private readonly userAdministrationService: UserAdministrationService) {}
@@ -24,16 +26,10 @@ export class UserDetailInfoComponent<TYPE extends Record> implements OnInit, OnD
 
   getUserDetails() {
     if (this.record.editor) {
-      this.getUserSubscription = this.userAdministrationService
-        .getUser(this.record.editor)
-        .subscribe((user) => {
-          if (!user.displayName) {
-            this.editor = this.record.editor;
-          } else {
-            this.editor = user.displayName;
-          }
-          this.editionDate = this.formatDateTime(this.record.editionDate);
-        });
+      this.populateDitor(this.record.editor);
+    }
+    if (this.record.creator) {
+      this.populateCreator(this.record.creator);
     }
   }
 
@@ -45,6 +41,28 @@ export class UserDetailInfoComponent<TYPE extends Record> implements OnInit, OnD
     if (changes) {
       this.ngOnInit();
     }
+  }
+
+  private populateDitor(editor: any) {
+    this.getUserSubscription = this.userAdministrationService.getUser(editor).subscribe((user) => {
+      if (!user.displayName) {
+        this.editor = this.record.editor;
+      } else {
+        this.editor = user.displayName;
+      }
+      this.editionDate = this.formatDateTime(this.record.editionDate);
+    });
+  }
+
+  private populateCreator(user: any) {
+    this.getUserSubscription = this.userAdministrationService.getUser(user).subscribe((user) => {
+      if (!user.displayName) {
+        this.creator = this.record.creator;
+      } else {
+        this.creator = user.displayName;
+      }
+      this.creationDate = this.formatDateTime(this.record.creationDate);
+    });
   }
 
   private formatDateTime(dateTime: string | undefined) {

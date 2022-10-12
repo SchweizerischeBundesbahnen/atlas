@@ -26,12 +26,10 @@ public class TimetableFieldNumberVersionModel extends BaseModel implements Dates
   @Schema(description = "Technical identifier", example = "1")
   private Long id;
 
-  @Schema(description = "Timetable field number identifier", example = "ch:1:ttfnid:100000",
-      accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Timetable field number identifier", example = "ch:1:ttfnid:100000", accessMode = AccessMode.READ_ONLY)
   private String ttfnid;
 
-  @Schema(description = "Description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, "
-      + "Linien S1, S2)")
+  @Schema(description = "Description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
@@ -65,13 +63,12 @@ public class TimetableFieldNumberVersionModel extends BaseModel implements Dates
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String businessOrganisation;
 
-  @Schema(description = "Additional comment", example = "Hier kann für interne Zwecke ein "
-      + "Kommentar welcher das Fahrplanfeld betrifft erfasst werden.")
+  @Schema(description = "Additional comment", example = "Hier kann für interne Zwecke ein Kommentar welcher das Fahrplanfeld "
+      + "betrifft erfasst werden.")
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see "
-      + "RFC7232:Section 2.3)", example = "5")
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 }
