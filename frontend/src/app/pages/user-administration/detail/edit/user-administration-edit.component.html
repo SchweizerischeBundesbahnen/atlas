@@ -9,23 +9,23 @@
   <div *ngFor="let permission of userPermissionManager.userPermission.permissions">
     <app-user-administration-application-config
       [application]="permission.application"
-      [role]="permission.role"
       [readOnly]="!editMode"
+      [role]="permission.role"
     ></app-user-administration-application-config>
   </div>
 </ng-template>
-
+<app-user-detail-info [record]="userRecord"></app-user-detail-info>
 <footer class="footer fixed-bottom d-flex align-items-center justify-content-center">
   <ng-container *ngIf="editMode; else readMode">
-    <button class="atlas-primary-btn footer-btn" (click)="cancelEdit()" data-cy="cancel">
+    <button (click)="cancelEdit()" class="atlas-primary-btn footer-btn" data-cy="cancel">
       {{ 'COMMON.CANCEL' | translate }}
     </button>
     <button
+      (click)="saveEdits()"
+      [disabled]="!saveEnabled"
       class="atlas-primary-btn footer-btn ms-3"
       data-cy="save"
       type="submit"
-      (click)="saveEdits()"
-      [disabled]="!saveEnabled"
     >
       {{ 'COMMON.SAVE' | translate }}
     </button>
@@ -33,17 +33,17 @@
 
   <ng-template #readMode>
     <button
-      class="atlas-primary-btn footer-btn"
       (click)="dialogRef.close()"
+      class="atlas-primary-btn footer-btn"
       data-cy="backToOverview"
     >
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
     <button
-      class="atlas-primary-btn footer-btn ms-3"
-      data-cy="edit"
       (click)="editMode = true; saveEnabled = true"
       [disabled]="!user"
+      class="atlas-primary-btn footer-btn ms-3"
+      data-cy="edit"
     >
       {{ 'COMMON.EDIT' | translate }}
     </button>
