@@ -40,8 +40,10 @@ describe('UserDetailComponent', () => {
     fixture = TestBed.createComponent(UserDetailInfoComponent);
     component = fixture.componentInstance;
     component.record = {
-      editor: 'u123456',
-      editionDate: '2022-10-10T16:58:52.462939',
+      creator: 'u123456',
+      creationDate: '2022-10-10T16:58:52.462939',
+      editor: 'u678910',
+      editionDate: '2022-11-10T16:58:52.462939',
     };
     fixture.detectChanges();
   });
@@ -55,7 +57,9 @@ describe('UserDetailComponent', () => {
     component.getUserDetails();
 
     //then
+    expect(component.creator).toBe('Marek Hamsik');
+    expect(component.creationDate).toBe('10.10.2022 16:58:52');
     expect(component.editor).toBe('Marek Hamsik');
-    expect(component.editionDate).toBe('10.10.2022 16:58:52');
+    expect(component.editionDate).toBe('10.11.2022 16:58:52');
   });
 });

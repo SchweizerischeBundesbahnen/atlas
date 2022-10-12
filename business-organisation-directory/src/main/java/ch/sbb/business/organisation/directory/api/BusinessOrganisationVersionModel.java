@@ -33,12 +33,11 @@ public class BusinessOrganisationVersionModel extends BaseModel implements Dates
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
-  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052",
-      accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052", accessMode =
+      AccessMode.READ_ONLY)
   private String sboid;
 
-  @Schema(description = "Swiss Administration ID (SAID)", example = "100052", accessMode =
-      AccessMode.READ_ONLY)
+  @Schema(description = "Swiss Administration ID (SAID)", example = "100052", accessMode = AccessMode.READ_ONLY)
   private String said;
 
   @Schema(description = "Description German", example = "Verkehrsbetriebe STI AG")
@@ -114,30 +113,30 @@ public class BusinessOrganisationVersionModel extends BaseModel implements Dates
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see "
-      + "RFC7232:Section 2.3)", example = "5", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5",
+      accessMode = AccessMode.READ_ONLY)
   private Integer etagVersion;
 
   public static BusinessOrganisationVersion toEntity(BusinessOrganisationVersionModel model) {
     return BusinessOrganisationVersion.builder()
-                                      .id(model.getId())
-                                      .status(model.getStatus())
-                                      .descriptionDe(model.getDescriptionDe())
-                                      .descriptionFr(model.getDescriptionFr())
-                                      .descriptionIt(model.getDescriptionIt())
-                                      .descriptionEn(model.getDescriptionEn())
-                                      .abbreviationDe(model.getAbbreviationDe())
-                                      .abbreviationFr(model.getAbbreviationFr())
-                                      .abbreviationIt(model.getAbbreviationIt())
-                                      .abbreviationEn(model.getAbbreviationEn())
-                                      .validFrom(model.getValidFrom())
-                                      .validTo(model.getValidTo())
-                                      .organisationNumber(model.getOrganisationNumber())
-                                      .contactEnterpriseEmail(model.getContactEnterpriseEmail())
-                                      .sboid(model.getSboid())
-                                      .businessTypes(model.getBusinessTypes())
-                                      .version(model.getEtagVersion())
-                                      .build();
+        .id(model.getId())
+        .status(model.getStatus())
+        .descriptionDe(model.getDescriptionDe())
+        .descriptionFr(model.getDescriptionFr())
+        .descriptionIt(model.getDescriptionIt())
+        .descriptionEn(model.getDescriptionEn())
+        .abbreviationDe(model.getAbbreviationDe())
+        .abbreviationFr(model.getAbbreviationFr())
+        .abbreviationIt(model.getAbbreviationIt())
+        .abbreviationEn(model.getAbbreviationEn())
+        .validFrom(model.getValidFrom())
+        .validTo(model.getValidTo())
+        .organisationNumber(model.getOrganisationNumber())
+        .contactEnterpriseEmail(model.getContactEnterpriseEmail())
+        .sboid(model.getSboid())
+        .businessTypes(model.getBusinessTypes())
+        .version(model.getEtagVersion())
+        .build();
   }
 
   public static BusinessOrganisationVersionModel toModel(BusinessOrganisationVersion entity) {

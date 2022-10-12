@@ -70,8 +70,10 @@
     }
   },
   "DETAIL_USER_EDITION": {
-    "LATEST_EDITION": "Dernière modification à {{editionDate}}",
-    "LATEST_EDITOR": "de {{editor}}"
+    "LATEST_EDITION_DATE": "Dernière modification à {{editionDate}}",
+    "LATEST_EDITOR": "de {{editor}}",
+    "CREATION_DATE": "Créé sur {{creationDate}}",
+    "CREATOR": "de {{creator}}"
   },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caractères max.",

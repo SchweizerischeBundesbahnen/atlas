@@ -94,8 +94,7 @@ public class LineVersionModel extends BaseModel implements DatesValidator {
   @NotNull
   private String colorBackCmyk;
 
-  @Schema(description = "Icon", example = "https://commons.wikimedia"
-      + ".org/wiki/File:Metro_de_Bilbao_L1.svg")
+  @Schema(description = "Icon", example = "https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg")
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String icon;
@@ -124,8 +123,7 @@ public class LineVersionModel extends BaseModel implements DatesValidator {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String comment;
 
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see "
-      + "RFC7232:Section 2.3)", example = "5")
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 }
 
