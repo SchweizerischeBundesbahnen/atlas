@@ -8,11 +8,11 @@ describe('TTFN: TableSettings and Routing', () => {
   const churGrenze = TtfnUtils.getFirstVersion();
 
   const firstJune2000 = '01.06.2000';
-  const statusAktiv = 'Aktiv';
+  const statusValidiert = 'Validiert';
 
   function assertAllTableFiltersAreFilled() {
     cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(ttfnBernThun.swissTimetableFieldNumber);
-    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusAktiv]);
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusValidiert]);
     CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, firstJune2000);
     CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
   }
@@ -56,7 +56,7 @@ describe('TTFN: TableSettings and Routing', () => {
       firstJune2000
     );
 
-    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, statusAktiv);
+    CommonUtils.chooseOneValueFromMultiselect(DataCy.TABLE_SEARCH_STATUS_INPUT, statusValidiert);
 
     // Check that the table contains 1 result
     CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);

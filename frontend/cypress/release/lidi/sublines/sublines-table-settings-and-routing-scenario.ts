@@ -9,7 +9,7 @@ describe('Sublines: TableSettings and Routing', () => {
   const minimalSubline2 = LidiUtils.getSecondMinimalSubline();
 
   const commonValidDate = '01.01.2000';
-  const statusAktiv = 'Aktiv';
+  const statusValidiert = 'Validiert';
 
   const sublineDirectoryUrlPath = '/line-directory/sublines';
   const sublineDirectoryUrlPathToIntercept = '/line-directory/v1/sublines?**';
@@ -23,7 +23,7 @@ describe('Sublines: TableSettings and Routing', () => {
 
   function assertAllTableFiltersAreFilled() {
     cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalSubline1.swissSublineNumber);
-    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusAktiv]);
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusValidiert]);
 
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_SUBLINE_TYPE, [
       minimalSubline1.type
@@ -71,7 +71,7 @@ describe('Sublines: TableSettings and Routing', () => {
       minimalSubline1.swissSublineNumber
     );
 
-    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, statusAktiv);
+    CommonUtils.chooseOneValueFromMultiselect(DataCy.TABLE_SEARCH_STATUS_INPUT, statusValidiert);
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.TABLE_SEARCH_SUBLINE_TYPE,
       minimalSubline1.type

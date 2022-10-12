@@ -41,6 +41,7 @@ describe('Transport Company', () => {
       DataCy.TABLE_SEARCH_CHIP_INPUT,
       'Bern'
     );
+    cy.wait(500);
     cy.get('table tbody')
       .find('tr')
       .first()
