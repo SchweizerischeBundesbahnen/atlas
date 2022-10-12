@@ -1,19 +1,25 @@
 package ch.sbb.atlas.user.administration.api;
 
+import ch.sbb.atlas.base.service.model.api.BaseModel;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 @Data
-public class UserPermissionModel {
+public class UserPermissionModel extends BaseModel {
 
   @NotNull
   private ApplicationRole role;
@@ -31,7 +37,11 @@ public class UserPermissionModel {
         .role(userPermission.getRole())
         .application(userPermission.getApplication())
         .sboids(userPermission.getSboid().stream().toList())
-        .build();
+        .editor(userPermission.getEditor())
+                              .editionDate(userPermission.getEditionDate())
+                              .creator(userPermission.getCreator())
+                              .creationDate(userPermission.getEditionDate())
+                              .build();
   }
 
 }
