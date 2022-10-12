@@ -1,6 +1,5 @@
-<div [ngClass]="wrapperStyleClass + ' btn-' + buttonType">
+<div *ngIf="isButtonVisible()" [ngClass]="wrapperStyleClass + ' btn-' + buttonType">
   <button
-    *ngIf="isButtonVisible()"
     [class]="getButtonStyleClass()"
     (click)="buttonClicked.emit()"
     [type]="submitButton ? 'submit' : 'button'"
