@@ -138,28 +138,33 @@
   </div>
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-    <button
-      *ngIf="!editMode; else editModeButtons"
-      class="atlas-primary-btn footer-btn"
-      [mat-dialog-close]="true"
-      data-cy="back-to-overview"
-    >
-      {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
-    </button>
-
-    <ng-template #editModeButtons>
-      <button class="atlas-primary-btn footer-btn" (click)="leaveEditMode()" data-cy="cancel">
-        {{ 'COMMON.CANCEL' | translate }}
-      </button>
-      <button
-        class="atlas-primary-btn footer-btn ms-3"
-        data-cy="save-item"
-        type="submit"
+    <ng-template [ngIf]="!editMode">
+      <atlas-button
+        buttonType="footer"
+        [mat-dialog-close]="true"
+        buttonDataCy="back-to-overview"
+        buttonText="COMMON.BACK_TO_OVERVIEW"
+      >
+      </atlas-button>
+    </ng-template>
+    <ng-template [ngIf]="editMode">
+      <atlas-button
+        buttonType="footer"
+        (buttonClicked)="leaveEditMode()"
+        buttonDataCy="cancel"
+        buttonText="COMMON.CANCEL"
+        wrapperStyleClass="me-3"
+      >
+      </atlas-button>
+      <atlas-button
+        buttonType="footer"
+        buttonDataCy="save-item"
+        [submitButton]="true"
         (click)="createRelation()"
         [disabled]="!form.dirty"
+        buttonText="COMMON.SAVE"
       >
-        {{ 'COMMON.SAVE' | translate }}
-      </button>
+      </atlas-button>
     </ng-template>
   </div>
 </div>

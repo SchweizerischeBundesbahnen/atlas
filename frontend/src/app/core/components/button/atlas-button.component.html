@@ -1,10 +1,11 @@
-<div class="mb-5">
+<div [ngClass]="wrapperStyleClass + ' btn-' + buttonType">
   <button
     *ngIf="isButtonVisible()"
     [class]="getButtonStyleClass()"
     (click)="buttonClicked.emit()"
     [type]="submitButton ? 'submit' : 'button'"
     [disabled]="disabled"
+    [attr.data-cy]="buttonDataCy"
   >
     {{ buttonText | translate }}
   </button>
