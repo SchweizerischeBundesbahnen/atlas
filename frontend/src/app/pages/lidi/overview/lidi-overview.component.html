@@ -1,5 +1,5 @@
 <div class="ms-5">
-  <div *ngIf="userAllowedToCreate" class="d-flex flex-column mt-5">
+  <div *ngIf="isUserAllowedToCreate()" class="d-flex flex-column mt-5">
     <div>
       <button mat-raised-button data-cy="new-line" (click)="newLine()" class="mb-3">
         {{ 'LIDI.LINE.NEW' | translate }}
