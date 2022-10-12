@@ -9,6 +9,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
 import { Component, Input } from '@angular/core';
 import { ApplicationRole, ApplicationType, UserPermissionModel } from '../../../api';
+import { AtlasButtonComponent } from '../button/atlas-button.component';
 
 @Component({
   selector: 'app-coverage',
@@ -61,7 +62,12 @@ describe('BaseDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BaseDetailComponent, MockAppCoverageComponent, MockDialogCloseComponent],
+      declarations: [
+        BaseDetailComponent,
+        MockAppCoverageComponent,
+        MockDialogCloseComponent,
+        AtlasButtonComponent,
+      ],
       imports: [AppTestingModule],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
@@ -84,21 +90,27 @@ describe('BaseDetailComponent', () => {
     });
 
     it('should switch from disabled to enabled', () => {
-      const editButton = fixture.debugElement.query(By.css('.edit-section button:first-child'));
+      const editButton = fixture.debugElement.query(
+        By.css('.edit-section .btn-edit .atlas-primary-btn')
+      );
       editButton.nativeElement.click();
 
       expect(dummyController.toggleEdit).toHaveBeenCalled();
     });
 
     it('should revoke record', () => {
-      const editButton = fixture.debugElement.query(By.css('.edit-section .revoke-btn'));
+      const editButton = fixture.debugElement.query(
+        By.css('.edit-section .btn-revoke .atlas-primary-btn')
+      );
       editButton.nativeElement.click();
 
       expect(dummyController.revoke).toHaveBeenCalled();
     });
 
     it('should delete record', () => {
-      const deleteButton = fixture.debugElement.query(By.css('.edit-section button:last-child'));
+      const deleteButton = fixture.debugElement.query(
+        By.css('.edit-section .btn-delete .atlas-primary-btn')
+      );
       deleteButton.nativeElement.click();
 
       expect(dummyController.delete).toHaveBeenCalled();
@@ -157,6 +169,7 @@ function createDummyForm(enabledForm: boolean) {
   dummyController.toggleEdit.and.callFake(BaseDetailController.prototype.toggleEdit);
   dummyController.confirmLeave.and.returnValue(of(true));
   dummyController.confirmBoTransfer.and.returnValue(of(true));
+  dummyController.getApplicationType.and.returnValue(ApplicationType.Bodi);
 
   return dummyController;
 }

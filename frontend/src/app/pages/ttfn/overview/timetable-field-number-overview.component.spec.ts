@@ -9,6 +9,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 
 const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   objects: [
@@ -40,6 +41,7 @@ describe('TimetableFieldNumberOverviewComponent', () => {
       declarations: [
         TimetableFieldNumberOverviewComponent,
         TableComponent,
+        AtlasButtonComponent,
         LoadingSpinnerComponent,
         MockAppTableSearchComponent,
       ],

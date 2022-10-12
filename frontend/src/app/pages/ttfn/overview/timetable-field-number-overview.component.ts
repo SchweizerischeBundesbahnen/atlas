@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ApplicationType, TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
+import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableSettingsService } from '../../../core/components/table/table-settings.service';
@@ -14,7 +14,6 @@ import {
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { AuthService } from '../../../core/auth/auth.service';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 @Component({
@@ -51,8 +50,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     private router: Router,
     private notificationService: NotificationService,
     private tableSettingsService: TableSettingsService,
-    private routeToDialogService: RouteToDialogService,
-    private readonly authService: AuthService
+    private routeToDialogService: RouteToDialogService
   ) {
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
@@ -90,10 +88,6 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
         this.tableComponent.setTableSettings($paginationAndSearch);
         this.isLoading = false;
       });
-  }
-
-  isUserAllowedToCreate() {
-    return this.authService.hasPermissionsToCreate(ApplicationType.Ttfn);
   }
 
   newVersion() {
