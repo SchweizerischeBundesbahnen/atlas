@@ -8,7 +8,6 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'atlas-button[buttonType]',
   templateUrl: './atlas-button.component.html',
-  styleUrls: ['./atlas-button.component.scss'],
 })
 export class AtlasButtonComponent {
   @Input() applicationType!: ApplicationType;
