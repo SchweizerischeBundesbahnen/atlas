@@ -6,21 +6,20 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.api.UserAdministrationApiV1;
 import ch.sbb.atlas.user.administration.api.UserModel;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
-import ch.sbb.atlas.user.administration.api.UserPermissionModel;
+import ch.sbb.atlas.user.administration.api.UserPermissionVersionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.LimitedPageSizeRequestException;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
 import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -71,12 +70,12 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     return userModel;
   }
 
-  private Set<UserPermissionModel> getUserPermissionModels(String userId) {
+  private Set<UserPermissionVersionModel> getUserPermissionModels(String userId) {
     return getUserPermissionModels(userAdministrationService.getUserPermissions(userId));
   }
 
-  private Set<UserPermissionModel> getUserPermissionModels(List<UserPermission> userPermissions) {
-    return userPermissions.stream().map(UserPermissionModel::toModel).collect(Collectors.toSet());
+  private Set<UserPermissionVersionModel> getUserPermissionModels(List<UserPermission> userPermissions) {
+    return userPermissions.stream().map(UserPermissionVersionModel::toModel).collect(Collectors.toSet());
   }
 
   @Override

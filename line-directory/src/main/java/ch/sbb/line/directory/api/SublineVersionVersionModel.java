@@ -3,7 +3,7 @@ package ch.sbb.line.directory.api;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.api.BaseModel;
+import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
@@ -26,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "SublineVersion")
-public class SublineVersionModel extends BaseModel implements DatesValidator {
+public class SublineVersionVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY)
   private Long id;
