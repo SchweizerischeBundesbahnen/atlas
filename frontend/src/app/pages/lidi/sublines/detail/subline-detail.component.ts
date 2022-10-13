@@ -3,7 +3,6 @@ import {
   ApplicationType,
   Line,
   LinesService,
-  LineVersion,
   PaymentType,
   SublinesService,
   SublineType,
