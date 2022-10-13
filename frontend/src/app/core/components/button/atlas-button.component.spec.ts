@@ -3,7 +3,7 @@ import { AtlasButtonComponent } from './atlas-button.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
-import { ApplicationRole, ApplicationType, UserPermissionModel } from '../../../api';
+import { ApplicationRole, ApplicationType, UserPermissionVersionModel } from '../../../api';
 import { AtlasButtonType } from './atlas-button.type';
 import { By } from '@angular/platform-browser';
 
@@ -40,7 +40,7 @@ const authServiceMock: Partial<AuthService> = {
   hasPermissionsToCreate(): boolean {
     return hasPermissionsToCreate;
   },
-  getApplicationUserPermission(applicationType: ApplicationType): UserPermissionModel {
+  getApplicationUserPermission(applicationType: ApplicationType): UserPermissionVersionModel {
     return { application: applicationType, role: ApplicationRole.Reader, sboids: [] };
   },
 };

@@ -5,7 +5,7 @@ import {
   UserAdministrationService,
   UserInformationService,
   UserPermissionCreateModel,
-  UserPermissionModel,
+  UserPermissionVersionModel,
 } from '../../../api';
 import { map } from 'rxjs/operators';
 import { UserModel } from '../../../api/model/userModel';
@@ -48,7 +48,7 @@ export class UserService {
     );
   }
 
-  getPermissionsFromUserModelAsArray(user: UserModel): UserPermissionModel[] {
+  getPermissionsFromUserModelAsArray(user: UserModel): UserPermissionVersionModel[] {
     return Array.from(user.permissions ?? []);
   }
 
