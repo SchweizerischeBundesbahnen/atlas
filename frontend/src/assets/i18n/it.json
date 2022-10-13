@@ -62,11 +62,18 @@
     },
     "SEARCH": {
       "VALIDITY": "Valido il",
-      "SEARCH_CRITERIA": "Ricerca"
+      "SEARCH_CRITERIA": "Ricerca",
+      "SEARCH_FOR": "Ricerca di"
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "L’oggetto è già stato cancellato o nel frattempo è stato modificato. Ricaricare la pagina premendo il tasto F5."
     }
+  },
+  "DETAIL_USER_EDITION": {
+    "LATEST_EDITION_DATE": "Ultima modifica alle {{editionDate}}",
+    "LATEST_EDITOR": "da {{editor}}",
+    "CREATION_DATE": "Creato il {{creationDate}}",
+    "CREATOR": "da {{creator}}"
   },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caratteri max.",
@@ -171,6 +178,7 @@
     "MAX": "Il valore può essere massimo {{max}}"
   },
   "USER_ADMIN": {
+    "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
     "NEW": "Inserire nuovo utente",
     "NEW_INFORMATION": "Dettagli del nuovo utente",
     "INFORMATION": "Dettagli utente",

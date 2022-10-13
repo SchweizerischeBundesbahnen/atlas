@@ -47,7 +47,7 @@ public interface SublineApiV1 {
 
   @PostMapping("{slnid}/revoke")
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
-  List<SublineVersionModel> revokeSubline(@PathVariable String slnid);
+  List<SublineVersionVersionModel> revokeSubline(@PathVariable String slnid);
 
   @DeleteMapping("{slnid}")
   void deleteSublines(@PathVariable String slnid);
@@ -56,22 +56,25 @@ public interface SublineApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
   })
-  SublineVersionModel createSublineVersion(
-      @RequestBody @Valid SublineVersionModel newSublineVersion);
+  SublineVersionVersionModel createSublineVersion(
+      @RequestBody @Valid SublineVersionVersionModel newSublineVersion);
 
   @GetMapping("versions/{slnid}")
-  List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
+  List<SublineVersionVersionModel> getSublineVersion(@PathVariable String slnid);
 
   @PostMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  List<SublineVersionModel> updateSublineVersion(@PathVariable Long id,
-      @RequestBody @Valid SublineVersionModel newVersion);
+  List<SublineVersionVersionModel> updateSublineVersion(@PathVariable Long id,
+      @RequestBody @Valid SublineVersionVersionModel newVersion);
 
   @GetMapping("subline-coverage/{slnid}")
   CoverageModel getSublineCoverage(@PathVariable String slnid);
@@ -84,7 +87,8 @@ public interface SublineApiV1 {
   @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualSublineVersions();
 
-  @Operation(description = "Export all subline versions for the current timetable year change as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @Operation(description = "Export all subline versions for the current timetable year change as csv and zip file to the ATLAS "
+      + "Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFutureTimetableSublineVersions();
 

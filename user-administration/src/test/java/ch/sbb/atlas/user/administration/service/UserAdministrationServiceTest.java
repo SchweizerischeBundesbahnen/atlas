@@ -14,25 +14,24 @@ import org.mockito.MockitoAnnotations;
 
 public class UserAdministrationServiceTest {
 
-    private UserAdministrationService userAdministrationService;
+  private UserAdministrationService userAdministrationService;
 
-    @Mock
-    private UserPermissionRepository userPermissionRepositoryMock;
+  @Mock
+  private UserPermissionRepository userPermissionRepositoryMock;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        userAdministrationService = new UserAdministrationService(userPermissionRepositoryMock);
-    }
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+    userAdministrationService = new UserAdministrationService(userPermissionRepositoryMock);
+  }
 
-    @Test
-    void shouldThrowUserPemissionConflictExceptionOnValidatePermissionExistence() {
-        doReturn(true).when(userPermissionRepositoryMock).existsBySbbUserIdIgnoreCase(anyString());
-        UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
-                .sbbUserId("u123456").build();
+  @Test
+  void shouldThrowUserPemissionConflictExceptionOnValidatePermissionExistence() {
+    doReturn(true).when(userPermissionRepositoryMock).existsBySbbUserIdIgnoreCase(anyString());
+    UserPermissionCreateModel createModel = UserPermissionCreateModel.builder().sbbUserId("u123456").build();
 
-        assertThatExceptionOfType(UserPermissionConflictException.class).isThrownBy(
-                () -> userAdministrationService.save(createModel));
-    }
+    assertThatExceptionOfType(UserPermissionConflictException.class).isThrownBy(
+        () -> userAdministrationService.save(createModel));
+  }
 
 }

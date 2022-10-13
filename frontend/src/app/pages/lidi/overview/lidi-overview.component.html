@@ -1,16 +1,20 @@
-<div class="ms-5">
-  <div *ngIf="userAllowedToCreate" class="d-flex flex-column mt-5">
-    <div>
-      <button mat-raised-button data-cy="new-line" (click)="newLine()" class="mb-3">
-        {{ 'LIDI.LINE.NEW' | translate }}
-      </button>
-    </div>
-    <div>
-      <button mat-raised-button data-cy="new-subline" (click)="newSubline()">
-        {{ 'LIDI.SUBLINE.NEW' | translate }}
-      </button>
-    </div>
-  </div>
+<div class="ps-5 pt-5">
+  <atlas-button
+    buttonType="createCheckingPermission"
+    applicationType="LIDI"
+    buttonDataCy="new-line"
+    wrapperStyleClass="mb-3"
+    (buttonClicked)="newLine()"
+    buttonText="LIDI.LINE.NEW"
+  ></atlas-button>
+  <atlas-button
+    buttonType="createCheckingPermission"
+    applicationType="LIDI"
+    buttonDataCy="new-subline"
+    wrapperStyleClass="mb-5"
+    (buttonClicked)="newSubline()"
+    buttonText="LIDI.SUBLINE.NEW"
+  ></atlas-button>
 
   <nav mat-tab-nav-bar class="tabs" data-cy="tabs">
     <a

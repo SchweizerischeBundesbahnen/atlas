@@ -1,9 +1,11 @@
-<div class="ms-5">
-  <div *ngIf="userAllowedToCreate" class="mt-5">
-    <button mat-raised-button data-cy="new-item" (click)="newVersion()">
-      {{ 'TTFN.NEW' | translate }}
-    </button>
-  </div>
+<div class="ps-5 pt-5">
+  <atlas-button
+    buttonType="createCheckingPermission"
+    applicationType="TTFN"
+    buttonDataCy="new-item"
+    (buttonClicked)="newVersion()"
+    buttonText="TTFN.NEW"
+  ></atlas-button>
 
   <div class="white-table-container-no-tabs mt-5">
     <div class="table-heading font-bold-4xl color-gray-900 mb-5">
