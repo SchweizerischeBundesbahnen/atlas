@@ -8,7 +8,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
 import { Component, Input } from '@angular/core';
-import { ApplicationRole, ApplicationType, UserPermissionModel } from '../../../api';
+import { ApplicationRole, ApplicationType, UserPermissionVersionModel } from '../../../api';
 import { AtlasButtonComponent } from '../button/atlas-button.component';
 
 @Component({
@@ -55,7 +55,7 @@ describe('BaseDetailComponent', () => {
     hasPermissionsToWrite(): boolean {
       return true;
     },
-    getApplicationUserPermission(applicationType: ApplicationType): UserPermissionModel {
+    getApplicationUserPermission(applicationType: ApplicationType): UserPermissionVersionModel {
       return { application: applicationType, role: ApplicationRole.Supervisor, sboids: [] };
     },
   };
