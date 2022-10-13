@@ -38,7 +38,20 @@ public class UserModel {
   private UserAccountStatus accountStatus;
 
   @Schema(description = "User permissions")
-  private Set<UserPermissionModel> permissions;
+  private Set<UserPermissionVersionModel> permissions;
+
+  public static UserModel userToModel(User user) {
+    return UserModel.builder()
+        .sbbUserId(user.onPremisesSamAccountName)
+        .lastName(user.surname)
+        .firstName(user.givenName)
+        .mail(user.mail)
+        .accountStatus(
+            UserAccountStatus.getUserAccountStatusFromBoolean(user.accountEnabled))
+        .displayName(user.displayName)
+        .permissions(Collections.emptySet())
+        .build();
+  }
 
   public UserAdministrationModel toKafkaModel() {
     Set<UserAdministrationPermissionModel> permissionModels = getPermissions().stream()
@@ -56,19 +69,6 @@ public class UserModel {
     return UserAdministrationModel.builder()
         .sbbUserId(getSbbUserId())
         .permissions(permissionModels)
-        .build();
-  }
-
-  public static UserModel userToModel(User user) {
-    return UserModel.builder()
-        .sbbUserId(user.onPremisesSamAccountName)
-        .lastName(user.surname)
-        .firstName(user.givenName)
-        .mail(user.mail)
-        .accountStatus(
-            UserAccountStatus.getUserAccountStatusFromBoolean(user.accountEnabled))
-        .displayName(user.displayName)
-        .permissions(Collections.emptySet())
         .build();
   }
 
