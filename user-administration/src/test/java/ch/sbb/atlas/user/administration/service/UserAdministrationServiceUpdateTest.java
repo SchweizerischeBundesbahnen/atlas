@@ -6,7 +6,7 @@ import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
-import ch.sbb.atlas.user.administration.api.UserPermissionModel;
+import ch.sbb.atlas.user.administration.api.UserPermissionVersionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.List;
@@ -30,20 +30,20 @@ public class UserAdministrationServiceUpdateTest {
   @BeforeEach
   void setUp() {
     userPermissionRepository.saveAll(List.of(UserPermission.builder()
-                                                           .role(ApplicationRole.SUPERVISOR)
-                                                           .application(ApplicationType.TTFN)
-                                                           .sbbUserId(SBBUID)
-                                                           .build(), UserPermission.builder()
-                                                                                   .role(
-                                                                                       ApplicationRole.WRITER)
-                                                                                   .application(
-                                                                                       ApplicationType.LIDI)
-                                                                                   .sboid(Set.of(
-                                                                                       "ch:1:sboid:1000000",
-                                                                                       "ch:1:sboid:1000012"))
-                                                                                   .sbbUserId(
-                                                                                       SBBUID)
-                                                                                   .build()));
+        .role(ApplicationRole.SUPERVISOR)
+        .application(ApplicationType.TTFN)
+        .sbbUserId(SBBUID)
+        .build(), UserPermission.builder()
+        .role(
+            ApplicationRole.WRITER)
+        .application(
+            ApplicationType.LIDI)
+        .sboid(Set.of(
+            "ch:1:sboid:1000000",
+            "ch:1:sboid:1000012"))
+        .sbbUserId(
+            SBBUID)
+        .build()));
   }
 
   @AfterEach
@@ -55,15 +55,15 @@ public class UserAdministrationServiceUpdateTest {
   void shouldDegradeTtfnSuperVisorToSuperuser() {
     // Given
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-                                                                           .sbbUserId(SBBUID)
-                                                                           .permissions(List.of(
-                                                                               UserPermissionModel.builder()
-                                                                                                  .application(
-                                                                                                      ApplicationType.TTFN)
-                                                                                                  .role(
-                                                                                                      ApplicationRole.SUPER_USER)
-                                                                                                  .build()))
-                                                                           .build();
+        .sbbUserId(SBBUID)
+        .permissions(List.of(
+            UserPermissionVersionModel.builder()
+                .application(
+                    ApplicationType.TTFN)
+                .role(
+                    ApplicationRole.SUPER_USER)
+                .build()))
+        .build();
 
     // When
     userAdministrationService.updateUser(editedPermissions);
@@ -83,18 +83,18 @@ public class UserAdministrationServiceUpdateTest {
   void shouldDegradeTtfnSuperVisorToWriter() {
     // Given
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-                                                                           .sbbUserId(SBBUID)
-                                                                           .permissions(List.of(
-                                                                               UserPermissionModel.builder()
-                                                                                                  .application(
-                                                                                                      ApplicationType.TTFN)
-                                                                                                  .role(
-                                                                                                      ApplicationRole.WRITER)
-                                                                                                  .sboids(
-                                                                                                      List.of(
-                                                                                                          "ch:1:sboid:10009"))
-                                                                                                  .build()))
-                                                                           .build();
+        .sbbUserId(SBBUID)
+        .permissions(List.of(
+            UserPermissionVersionModel.builder()
+                .application(
+                    ApplicationType.TTFN)
+                .role(
+                    ApplicationRole.WRITER)
+                .sboids(
+                    List.of(
+                        "ch:1:sboid:10009"))
+                .build()))
+        .build();
 
     // When
     userAdministrationService.updateUser(editedPermissions);
@@ -110,15 +110,15 @@ public class UserAdministrationServiceUpdateTest {
   void shouldUpgradeFromWriterToSuperUserAndClearSboids() {
     // Given
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-                                                                           .sbbUserId(SBBUID)
-                                                                           .permissions(List.of(
-                                                                               UserPermissionModel.builder()
-                                                                                                  .application(
-                                                                                                      ApplicationType.LIDI)
-                                                                                                  .role(
-                                                                                                      ApplicationRole.SUPER_USER)
-                                                                                                  .build()))
-                                                                           .build();
+        .sbbUserId(SBBUID)
+        .permissions(List.of(
+            UserPermissionVersionModel.builder()
+                .application(
+                    ApplicationType.LIDI)
+                .role(
+                    ApplicationRole.SUPER_USER)
+                .build()))
+        .build();
 
     // When
     userAdministrationService.updateUser(editedPermissions);
@@ -138,15 +138,15 @@ public class UserAdministrationServiceUpdateTest {
   void shouldUpdateUserPermissionOnReaderDowngrade() {
     // Given
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
-                                                                           .sbbUserId(SBBUID)
-                                                                           .permissions(List.of(
-                                                                               UserPermissionModel.builder()
-                                                                                                  .application(
-                                                                                                      ApplicationType.LIDI)
-                                                                                                  .role(
-                                                                                                      ApplicationRole.READER)
-                                                                                                  .build()))
-                                                                           .build();
+        .sbbUserId(SBBUID)
+        .permissions(List.of(
+            UserPermissionVersionModel.builder()
+                .application(
+                    ApplicationType.LIDI)
+                .role(
+                    ApplicationRole.READER)
+                .build()))
+        .build();
 
     // When
     userAdministrationService.updateUser(editedPermissions);

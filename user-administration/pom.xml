@@ -1,91 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>ch.sbb.atlas</groupId>
+    <artifactId>atlas</artifactId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>Atlas User Administration</name>
   <artifactId>user-administration</artifactId>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <groupId>org.springframework.boot</groupId>
-      </plugin>
-      <plugin>
-        <artifactId>asciidoctor-maven-plugin</artifactId>
-        <groupId>org.asciidoctor</groupId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <groupId>org.jacoco</groupId>
-      </plugin>
-    </plugins>
-  </build>
+
+  <properties>
+    <microsoft-graph-sdk-version>5.33.0</microsoft-graph-sdk-version>
+    <azure-identity-version>1.5.4</azure-identity-version>
+  </properties>
 
   <dependencies>
     <dependency>
-      <artifactId>spring-boot-starter</artifactId>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-      <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
       <groupId>org.springframework.cloud</groupId>
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-      <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
-      <artifactId>spring-kafka-test</artifactId>
       <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka-test</artifactId>
     </dependency>
 
     <dependency>
-      <artifactId>microsoft-graph</artifactId>
       <groupId>com.microsoft.graph</groupId>
+      <artifactId>microsoft-graph</artifactId>
       <version>${microsoft-graph-sdk-version}</version>
     </dependency>
     <dependency>
-      <artifactId>azure-identity</artifactId>
       <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
       <version>${azure-identity-version}</version>
     </dependency>
 
     <dependency>
-      <artifactId>lombok</artifactId>
       <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
     </dependency>
 
     <dependency>
+      <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-common</artifactId>
-      <groupId>org.springdoc</groupId>
     </dependency>
     <dependency>
+      <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <groupId>org.springdoc</groupId>
     </dependency>
+
     <dependency>
-      <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <artifactId>spring-security-test</artifactId>
-      <groupId>org.springframework.security</groupId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <artifactId>postgresql</artifactId>
       <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -107,11 +98,6 @@
       <version>${revision}</version>
     </dependency>
     <dependency>
-      <artifactId>searching</artifactId>
-      <groupId>ch.sbb.atlas</groupId>
-      <version>${revision}</version>
-    </dependency>
-    <dependency>
       <artifactId>base-service</artifactId>
       <classifier>tests</classifier>
       <groupId>ch.sbb.atlas</groupId>
@@ -119,7 +105,11 @@
       <type>test-jar</type>
       <version>${revision}</version>
     </dependency>
-
+    <dependency>
+      <artifactId>spring-security-test</artifactId>
+      <groupId>org.springframework.security</groupId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <artifactId>h2</artifactId>
       <groupId>com.h2database</groupId>
@@ -136,20 +126,25 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <modelVersion>4.0.0</modelVersion>
 
-  <name>Atlas User Administration</name>
-
-  <parent>
-    <artifactId>atlas</artifactId>
-    <groupId>ch.sbb.atlas</groupId>
-    <relativePath>../pom.xml</relativePath>
-    <version>${revision}</version>
-  </parent>
-
-  <properties>
-    <azure-identity-version>1.5.4</azure-identity-version>
-    <microsoft-graph-sdk-version>5.33.0</microsoft-graph-sdk-version>
-  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>asciidoctor-maven-plugin</artifactId>
+        <groupId>org.asciidoctor</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <groupId>org.jacoco</groupId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
