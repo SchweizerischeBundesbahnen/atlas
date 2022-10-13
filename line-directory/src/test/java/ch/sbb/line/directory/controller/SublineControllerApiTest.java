@@ -13,9 +13,9 @@ import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.LineVersionModel.Fields;
-import ch.sbb.line.directory.api.SublineVersionModel;
+import ch.sbb.line.directory.api.LineVersionVersionModel;
+import ch.sbb.line.directory.api.LineVersionVersionModel.Fields;
+import ch.sbb.line.directory.api.SublineVersionVersionModel;
 import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.ModelType;
@@ -62,7 +62,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldCreateSubline() throws Exception {
     //given
-    LineVersionModel lineVersionModel =
+    LineVersionVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -74,9 +74,9 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne")
             .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
+    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    SublineVersionVersionModel sublineVersionModel =
+        SublineVersionVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -96,9 +96,9 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldGetSublineOverview() throws Exception {
     //given
-    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel = SublineTestData.sublineVersionModelBuilder()
+    LineVersionVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    SublineVersionVersionModel sublineVersionModel = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(
             lineVersionSaved.getSlnid())
         .build();
@@ -117,7 +117,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldGetSublineCoverage() throws Exception {
     //given
-    LineVersionModel lineVersionModel =
+    LineVersionVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -129,9 +129,9 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne")
             .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
+    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    SublineVersionVersionModel sublineVersionModel =
+        SublineVersionVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -140,7 +140,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+    SublineVersionVersionModel sublineVersionSaved = sublineController.createSublineVersion(
         sublineVersionModel);
     //when
     mvc.perform(get("/v1/sublines/subline-coverage/" + sublineVersionSaved.getSlnid())
@@ -157,7 +157,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldReturnConflictErrorResponse() throws Exception {
     //given
-    LineVersionModel lineVersionModel =
+    LineVersionVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -169,9 +169,9 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne")
             .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
+    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    SublineVersionVersionModel sublineVersionModel =
+        SublineVersionVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -180,7 +180,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+    SublineVersionVersionModel sublineVersionSaved = sublineController.createSublineVersion(
         sublineVersionModel);
 
     //when
@@ -211,7 +211,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldReturnSubLineAssignToLineConflictErrorResponse() throws Exception {
     //given
-    LineVersionModel lineVersionModel =
+    LineVersionVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -223,8 +223,8 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne")
             .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    LineVersionModel changedLineVersionModel =
+    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    LineVersionVersionModel changedLineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -236,10 +236,10 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne-changed")
             .build();
-    LineVersionModel changedlineVersionSaved = lineController.createLineVersion(
+    LineVersionVersionModel changedlineVersionSaved = lineController.createLineVersion(
         changedLineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
+    SublineVersionVersionModel sublineVersionModel =
+        SublineVersionVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -248,7 +248,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+    SublineVersionVersionModel sublineVersionSaved = sublineController.createSublineVersion(
         sublineVersionModel);
 
     //when
@@ -273,7 +273,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldReturnSublineOutsideOfLineRange() throws Exception {
     //given
-    LineVersionModel lineVersionModel =
+    LineVersionVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -285,9 +285,9 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne")
             .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
+    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    SublineVersionVersionModel sublineVersionModel =
+        SublineVersionVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2001, 1, 1))
             .businessOrganisation("sbb")
@@ -307,7 +307,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     //given
-    LineVersionModel lineVersionModel =
+    LineVersionVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -320,8 +320,8 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .swissLineNumber("b0.IC2-libne")
             .build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
-        SublineVersionModel.builder()
+    SublineVersionVersionModel sublineVersionModel =
+        SublineVersionVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -359,7 +359,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldReturnValidationNoChangesErrorResponse() throws Exception {
     //given
-    LineVersionModel lineVersionModel =
+    LineVersionVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2001, 12, 31))
@@ -372,8 +372,8 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .swissLineNumber("b0.IC2-libne")
             .build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel firstSublineVersionModel =
-        SublineVersionModel.builder()
+    SublineVersionVersionModel firstSublineVersionModel =
+        SublineVersionVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -384,8 +384,8 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .build();
     firstSublineVersionModel = sublineController.createSublineVersion(firstSublineVersionModel);
 
-    SublineVersionModel secondSublineVersionModel =
-        SublineVersionModel.builder()
+    SublineVersionVersionModel secondSublineVersionModel =
+        SublineVersionVersionModel.builder()
             .validFrom(LocalDate.of(2001, 1, 1))
             .validTo(LocalDate.of(2001, 12, 31))
             .businessOrganisation("bls")
@@ -432,9 +432,9 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
     //given
-    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    LineVersionVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel =
+    SublineVersionVersionModel sublineVersionModel =
         SublineTestData.sublineVersionModelBuilder()
             .mainlineSlnid(lineVersionModel.getSlnid())
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -462,13 +462,13 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldExportFullSublineVersionsCsv() throws Exception {
     //given
-    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    LineVersionVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
+    SublineVersionVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(
             lineVersionModel.getSlnid())
         .build();
-    SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
+    SublineVersionVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(
             lineVersionModel.getSlnid())
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -487,13 +487,13 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldExportActualSublineVersionsCsv() throws Exception {
     //given
-    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    LineVersionVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
+    SublineVersionVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(
             lineVersionModel.getSlnid())
         .build();
-    SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
+    SublineVersionVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(
             lineVersionModel.getSlnid())
         .validFrom(LocalDate.now()
@@ -517,13 +517,13 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldExportFutureTimetableLineVersionsCsv() throws Exception {
     //given
-    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    LineVersionVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
     lineVersionModel = lineController.createLineVersion(lineVersionModel);
-    SublineVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
+    SublineVersionVersionModel sublineVersionModel1 = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(
             lineVersionModel.getSlnid())
         .build();
-    SublineVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
+    SublineVersionVersionModel sublineVersionModel2 = SublineTestData.sublineVersionModelBuilder()
         .mainlineSlnid(
             lineVersionModel.getSlnid())
         .validFrom(LocalDate.now()
@@ -547,17 +547,17 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Test
   void shouldRevokeSubline() throws Exception {
     //given
-    LineVersionModel lineVersionModel = lineController.createLineVersion(
+    LineVersionVersionModel lineVersionModel = lineController.createLineVersion(
         LineTestData.lineVersionModelBuilder().build());
-    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+    SublineVersionVersionModel sublineVersionSaved = sublineController.createSublineVersion(
         SublineTestData.sublineVersionModelBuilder()
-                       .mainlineSlnid(
-                           lineVersionModel.getSlnid())
-                       .build());
+            .mainlineSlnid(
+                lineVersionModel.getSlnid())
+            .build());
 
     //when
     mvc.perform(post("/v1/sublines/" + sublineVersionSaved.getSlnid() + "/revoke")
-       ).andExpect(status().isOk())
-       .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
+        ).andExpect(status().isOk())
+        .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
   }
 }

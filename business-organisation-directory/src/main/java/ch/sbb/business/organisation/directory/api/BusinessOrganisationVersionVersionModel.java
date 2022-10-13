@@ -3,7 +3,7 @@ package ch.sbb.business.organisation.directory.api;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.api.BaseModel;
+import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "BusinessOrganisationVersion")
-public class BusinessOrganisationVersionModel extends BaseModel implements DatesValidator {
+public class BusinessOrganisationVersionVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
@@ -117,7 +117,7 @@ public class BusinessOrganisationVersionModel extends BaseModel implements Dates
       accessMode = AccessMode.READ_ONLY)
   private Integer etagVersion;
 
-  public static BusinessOrganisationVersion toEntity(BusinessOrganisationVersionModel model) {
+  public static BusinessOrganisationVersion toEntity(BusinessOrganisationVersionVersionModel model) {
     return BusinessOrganisationVersion.builder()
         .id(model.getId())
         .status(model.getStatus())
@@ -139,8 +139,8 @@ public class BusinessOrganisationVersionModel extends BaseModel implements Dates
         .build();
   }
 
-  public static BusinessOrganisationVersionModel toModel(BusinessOrganisationVersion entity) {
-    return BusinessOrganisationVersionModel
+  public static BusinessOrganisationVersionVersionModel toModel(BusinessOrganisationVersion entity) {
+    return BusinessOrganisationVersionVersionModel
         .builder()
         .id(entity.getId())
         .status(entity.getStatus())

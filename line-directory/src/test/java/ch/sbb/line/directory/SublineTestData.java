@@ -1,8 +1,8 @@
 package ch.sbb.line.directory;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.line.directory.api.SublineVersionModel;
-import ch.sbb.line.directory.api.SublineVersionModel.SublineVersionModelBuilder;
+import ch.sbb.line.directory.api.SublineVersionVersionModel;
+import ch.sbb.line.directory.api.SublineVersionVersionModel.SublineVersionVersionModelBuilder;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline.SublineBuilder;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -15,24 +15,24 @@ public class SublineTestData {
 
   public static final String MAINLINE_SLNID = "mainlineSlnid";
 
-  public static SublineVersionBuilder<?,?> sublineVersionBuilder() {
+  public static SublineVersionBuilder<?, ?> sublineVersionBuilder() {
     return SublineVersion.builder()
-                         .status(Status.VALIDATED)
-                         .sublineType(SublineType.TECHNICAL)
-                         .paymentType(
-                             PaymentType.INTERNATIONAL)
-                         .number("number")
-                         .longName("longName")
-                         .description("description")
-                         .validFrom(
-                             LocalDate.of(2020, 1, 1))
-                         .validTo(
-                             LocalDate.of(2020, 12, 31))
-                         .businessOrganisation(
-                             "businessOrganisation")
-                         .mainlineSlnid(MAINLINE_SLNID)
-                         .swissSublineNumber(
-                             "swissSublineNumber");
+        .status(Status.VALIDATED)
+        .sublineType(SublineType.TECHNICAL)
+        .paymentType(
+            PaymentType.INTERNATIONAL)
+        .number("number")
+        .longName("longName")
+        .description("description")
+        .validFrom(
+            LocalDate.of(2020, 1, 1))
+        .validTo(
+            LocalDate.of(2020, 12, 31))
+        .businessOrganisation(
+            "businessOrganisation")
+        .mainlineSlnid(MAINLINE_SLNID)
+        .swissSublineNumber(
+            "swissSublineNumber");
   }
 
   public static SublineVersion sublineVersion() {
@@ -41,32 +41,32 @@ public class SublineTestData {
 
   public static SublineBuilder sublineBuilder() {
     return Subline.builder()
-                  .status(Status.VALIDATED)
-                  .sublineType(SublineType.TECHNICAL)
-                  .description("description")
-                  .slnid("slnid")
-                  .swissSublineNumber("swissSublineNumber")
-                  .validFrom(LocalDate.of(2020, 1, 1))
-                  .validTo(LocalDate.of(2020, 12, 31))
-                  .businessOrganisation(
-                      "businessOrganisation")
-                  .swissLineNumber("swissLineNumber");
+        .status(Status.VALIDATED)
+        .sublineType(SublineType.TECHNICAL)
+        .description("description")
+        .slnid("slnid")
+        .swissSublineNumber("swissSublineNumber")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .businessOrganisation(
+            "businessOrganisation")
+        .swissLineNumber("swissLineNumber");
   }
 
   public static Subline subline() {
     return sublineBuilder().build();
   }
 
-  public static SublineVersionModelBuilder sublineVersionModelBuilder() {
-    return SublineVersionModel.builder()
-                              .validFrom(LocalDate.of(2000, 1, 1))
-                              .validTo(LocalDate.of(2000, 12, 31))
-                              .businessOrganisation("sbb")
-                              .swissSublineNumber("b0.Ic2-sibline")
-                              .number("number")
-                              .description("description")
-                              .sublineType(SublineType.TECHNICAL)
-                              .paymentType(PaymentType.LOCAL)
-                              .mainlineSlnid(MAINLINE_SLNID);
+  public static SublineVersionVersionModelBuilder sublineVersionModelBuilder() {
+    return SublineVersionVersionModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .businessOrganisation("sbb")
+        .swissSublineNumber("b0.Ic2-sibline")
+        .number("number")
+        .description("description")
+        .sublineType(SublineType.TECHNICAL)
+        .paymentType(PaymentType.LOCAL)
+        .mainlineSlnid(MAINLINE_SLNID);
   }
 }
