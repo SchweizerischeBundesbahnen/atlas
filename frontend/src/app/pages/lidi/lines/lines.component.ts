@@ -4,7 +4,7 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { Line, LinesService, LineType, Status } from '../../../api';
+import { Line, LinesService, LineType } from '../../../api';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableSettingsService } from '../../../core/components/table/table-settings.service';
