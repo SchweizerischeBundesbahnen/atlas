@@ -8,4 +8,8 @@ export interface Record {
   businessOrganisation?: string;
   status?: Status;
   versionNumber?: number;
+  editor?: string;
+  editionDate?: string;
+  creator?: string;
+  creationDate?: string;
 }

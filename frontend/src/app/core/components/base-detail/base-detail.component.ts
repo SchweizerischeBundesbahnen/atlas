@@ -1,12 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BaseDetailController } from './base-detail-controller';
-import { AuthService } from '../../auth/auth.service';
 import { KeepaliveService } from '../../keepalive/keepalive.service';
 import { Record } from './record';
 import { Subscription } from 'rxjs';
-import { environment } from '../../../../environments/environment';
-import { NON_PROD_STAGES } from '../../constants/stages';
-import { ApplicationRole } from '../../../api';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -18,13 +14,10 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() headingNew!: string;
   @Input() formDetailHeading!: string;
 
-  mayWrite = false;
   private recordSubscription!: Subscription;
+  selectedRecord!: Record;
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly keepaliveService: KeepaliveService
-  ) {
+  constructor(private readonly keepaliveService: KeepaliveService) {
     keepaliveService.startWatching(() => {
       this.controller.closeConfirmDialog();
       this.controller.backToOverview();
@@ -32,30 +25,10 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.evaluateWritePermissions();
-    this.recordSubscription = this.controller.selectedRecordChange.subscribe(() =>
-      this.evaluateWritePermissions()
+    this.selectedRecord = this.controller.record;
+    this.recordSubscription = this.controller.selectedRecordChange.subscribe(
+      (value) => (this.selectedRecord = value)
     );
-  }
-
-  evaluateWritePermissions() {
-    this.mayWrite = this.authService.hasPermissionsToWrite(
-      this.controller.getApplicationType(),
-      this.controller.record.businessOrganisation
-    );
-  }
-
-  get mayRevoke(): boolean {
-    const applicationUserPermission = this.authService.getApplicationUserPermission(
-      this.controller.getApplicationType()
-    );
-    return (
-      this.authService.isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor
-    );
-  }
-
-  get mayDelete(): boolean {
-    return this.authService.isAdmin && NON_PROD_STAGES.includes(environment.label);
   }
 
   ngOnDestroy(): void {

@@ -62,11 +62,18 @@
     },
     "SEARCH": {
       "VALIDITY": "Gültig am",
-      "SEARCH_CRITERIA": "Suche"
+      "SEARCH_CRITERIA": "Suche",
+      "SEARCH_FOR": "Suche nach"
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken."
     }
+  },
+  "DETAIL_USER_EDITION": {
+    "LATEST_EDITION_DATE": "Zuletzt geändert am {{editionDate}}",
+    "LATEST_EDITOR": "von {{editor}}",
+    "CREATION_DATE": "Erstellt am {{creationDate}}",
+    "CREATOR": "von {{creator}}"
   },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} Zeichen max.",
@@ -171,6 +178,7 @@
     "MAX": "Die Zahl darf maximal {{max}} sein."
   },
   "USER_ADMIN": {
+    "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
     "NEW": "Neuer Benutzer erfassen",
     "NEW_INFORMATION": "Angaben zum neuen Benutzer",
     "INFORMATION": "Angaben zum Benutzer",

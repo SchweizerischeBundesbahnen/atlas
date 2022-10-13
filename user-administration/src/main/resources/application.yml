@@ -40,6 +40,9 @@ info:
 logging:
   level:
     root: INFO
+    com:
+      azure:
+        identity: WARN
 
 management:
   endpoint:

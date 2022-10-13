@@ -11,7 +11,7 @@ export class BoSelectionDisplayPipe implements PipeTransform {
     private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService
   ) {}
 
-  transform(value: BusinessOrganisation, ...args: unknown[]): string {
+  transform(value: BusinessOrganisation): string {
     return `${value.organisationNumber} - ${
       value[this.businessOrganisationLanguageService.getCurrentLanguageAbbreviation()]
     } - ${value[this.businessOrganisationLanguageService.getCurrentLanguageDescription()]} - ${
