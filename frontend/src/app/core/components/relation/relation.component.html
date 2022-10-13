@@ -15,7 +15,7 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
+        [mat-sort-header]="column.columnDef!"
         class="font-bold-base color-primary-400"
       >
         {{ column.headerTitle | translate }}

@@ -16,6 +16,7 @@ import moment from 'moment';
 import { of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { Component } from '@angular/core';
+import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -132,7 +133,7 @@ describe('TransportCompanyDetailComponent', () => {
     component.createRelation();
 
     expect(component.form.untouched).toBeTrue();
-    expect((component.editMode = false));
+    expect(component.editMode).toBeFalse();
     expect(
       transportCompanyRelationsServiceSpy.createTransportCompanyRelation
     ).toHaveBeenCalledOnceWith({
@@ -178,6 +179,7 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
       SearchSelectComponent,
       CommentComponent,
       MockDialogCloseComponent,
+      MockAtlasButtonComponent,
     ],
     imports: [AppTestingModule],
     providers: [

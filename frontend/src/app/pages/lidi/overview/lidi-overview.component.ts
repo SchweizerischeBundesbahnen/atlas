@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
 import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../core/auth/auth.service';
-import { Role } from '../../../core/auth/role';
-import { ApplicationType } from '../../../api';
 
 @Component({
   templateUrl: './lidi-overview.component.html',
-  styleUrls: ['./lidi-overview.component.scss'],
 })
 export class LidiOverviewComponent {
   TABS = [
@@ -21,15 +17,7 @@ export class LidiOverviewComponent {
     },
   ];
 
-  readonly userAllowedToCreate;
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private readonly authService: AuthService
-  ) {
-    this.userAllowedToCreate = authService.hasPermissionsToCreate(ApplicationType.Lidi);
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   newLine() {
     this.router
