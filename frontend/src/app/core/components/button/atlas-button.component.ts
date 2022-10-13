@@ -12,11 +12,13 @@ import { environment } from '../../../../environments/environment';
 export class AtlasButtonComponent {
   @Input() applicationType!: ApplicationType;
   @Input() businessOrganisation!: string;
+  @Input() disabled!: boolean;
+
   @Input() wrapperStyleClass!: string;
   @Input() buttonDataCy!: string;
   @Input() buttonType!: AtlasButtonType;
+  @Input() footerEdit = false;
   @Input() submitButton!: boolean;
-  @Input() disabled!: boolean;
   @Input() buttonText!: string;
 
   @Output() buttonClicked = new EventEmitter<void>();
@@ -35,6 +37,12 @@ export class AtlasButtonComponent {
     }
     if (this.buttonType === AtlasButtonType.DELETE) {
       return this.mayDelete();
+    }
+    if (this.buttonType === AtlasButtonType.FOOTER_NON_EDIT) {
+      return !this.footerEdit;
+    }
+    if (this.buttonType === AtlasButtonType.FOOTER_EDIT_MODE) {
+      return this.footerEdit;
     }
     return true;
   }
@@ -78,7 +86,9 @@ export class AtlasButtonComponent {
     ) {
       return 'mat-raised-button';
     }
-    if (this.buttonType === AtlasButtonType.FOOTER) {
+    if (
+      [AtlasButtonType.FOOTER_NON_EDIT, AtlasButtonType.FOOTER_EDIT_MODE].includes(this.buttonType)
+    ) {
       return 'atlas-primary-btn footer-btn';
     }
     return 'atlas-primary-btn';
