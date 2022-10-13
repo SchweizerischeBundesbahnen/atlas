@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException;
 import ch.sbb.line.directory.api.TimetableFieldNumberModel;
-import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
+import ch.sbb.line.directory.api.TimetableFieldNumberVersionVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
@@ -39,6 +39,38 @@ public class TimetableFieldNumberControllerTest {
   @Captor
   private ArgumentCaptor<TimetableFieldNumberVersion> versionArgumentCaptor;
 
+  private static TimetableFieldNumber createOverviewEntity() {
+    return TimetableFieldNumber.builder()
+        .ttfnid("ch:1:ttfnid:100000")
+        .description("FPFN Description")
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12))
+        .build();
+  }
+
+  private static TimetableFieldNumberVersion createEntity() {
+    return TimetableFieldNumberVersion.builder()
+        .ttfnid("ch:1:ttfnid:100000")
+        .description("FPFN Description")
+        .number("BEX")
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12))
+        .build();
+  }
+
+  private static TimetableFieldNumberVersionVersionModel createModel() {
+    return TimetableFieldNumberVersionVersionModel.builder()
+        .ttfnid("ch:1:ttfnid:100000")
+        .description("FPFN Description")
+        .number("BEX")
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12))
+        .build();
+  }
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
@@ -49,7 +81,7 @@ public class TimetableFieldNumberControllerTest {
   @Test
   public void shouldSaveNewVersion() {
     // Given
-    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = createModel();
+    TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel = createModel();
 
     // When
     timetableFieldNumberController.createVersion(timetableFieldNumberVersionModel);
@@ -57,10 +89,10 @@ public class TimetableFieldNumberControllerTest {
     // Then
     verify(timetableFieldNumberService).create(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-                                                .ignoringFields("editor", "creator", "editionDate",
-                                                    "creationDate", "lineRelations", "ttfnid",
-                                                    "version")
-                                                .isEqualTo(timetableFieldNumberVersionModel);
+        .ignoringFields("editor", "creator", "editionDate",
+            "creationDate", "lineRelations", "ttfnid",
+            "version")
+        .isEqualTo(timetableFieldNumberVersionModel);
   }
 
   @Test
@@ -79,9 +111,9 @@ public class TimetableFieldNumberControllerTest {
     // Then
     assertThat(timetableFieldNumberContainer).isNotNull();
     assertThat(timetableFieldNumberContainer.getObjects()).hasSize(1)
-                                                          .first()
-                                                          .usingRecursiveComparison()
-                                                          .isEqualTo(version);
+        .first()
+        .usingRecursiveComparison()
+        .isEqualTo(version);
     assertThat(timetableFieldNumberContainer.getTotalCount()).isEqualTo(1);
   }
 
@@ -113,37 +145,5 @@ public class TimetableFieldNumberControllerTest {
     // Then
     assertThatExceptionOfType(NotFoundException.class).isThrownBy(
         () -> timetableFieldNumberController.deleteVersions(ttfnid));
-  }
-
-  private static TimetableFieldNumber createOverviewEntity() {
-    return TimetableFieldNumber.builder()
-                               .ttfnid("ch:1:ttfnid:100000")
-                               .description("FPFN Description")
-                               .swissTimetableFieldNumber("b0.BEX")
-                               .validFrom(LocalDate.of(2020, 12, 12))
-                               .validTo(LocalDate.of(2099, 12, 12))
-                               .build();
-  }
-
-  private static TimetableFieldNumberVersion createEntity() {
-    return TimetableFieldNumberVersion.builder()
-                                      .ttfnid("ch:1:ttfnid:100000")
-                                      .description("FPFN Description")
-                                      .number("BEX")
-                                      .swissTimetableFieldNumber("b0.BEX")
-                                      .validFrom(LocalDate.of(2020, 12, 12))
-                                      .validTo(LocalDate.of(2099, 12, 12))
-                                      .build();
-  }
-
-  private static TimetableFieldNumberVersionModel createModel() {
-    return TimetableFieldNumberVersionModel.builder()
-                                           .ttfnid("ch:1:ttfnid:100000")
-                                           .description("FPFN Description")
-                                           .number("BEX")
-                                           .swissTimetableFieldNumber("b0.BEX")
-                                           .validFrom(LocalDate.of(2020, 12, 12))
-                                           .validTo(LocalDate.of(2099, 12, 12))
-                                           .build();
   }
 }
