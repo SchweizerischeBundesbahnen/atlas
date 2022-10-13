@@ -11,8 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
-import ch.sbb.line.directory.api.LineVersionModel.Fields;
-import ch.sbb.line.directory.api.TimetableFieldNumberVersionModel;
+import ch.sbb.line.directory.api.LineVersionVersionModel.Fields;
+import ch.sbb.line.directory.api.TimetableFieldNumberVersionVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;
@@ -55,16 +55,16 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   @Test
   void shouldCreateTimetableFieldNumber() throws Exception {
     //given
-    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel =
-        TimetableFieldNumberVersionModel.builder()
-                                        .validTo(LocalDate.of(2000, 12, 31))
-                                        .validFrom(LocalDate.of(2000, 1, 1))
-                                        .businessOrganisation("sbb")
-                                        .swissTimetableFieldNumber("swissLineNumber")
-                                        .number("123")
-                                        .description("description")
-                                        .ttfnid("123")
-                                        .status(Status.VALIDATED).build();
+    TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel =
+        TimetableFieldNumberVersionVersionModel.builder()
+            .validTo(LocalDate.of(2000, 12, 31))
+            .validFrom(LocalDate.of(2000, 1, 1))
+            .businessOrganisation("sbb")
+            .swissTimetableFieldNumber("swissLineNumber")
+            .number("123")
+            .description("description")
+            .ttfnid("123")
+            .status(Status.VALIDATED).build();
     //when && then
     mvc.perform(post("/v1/field-numbers/versions")
         .contentType(contentType)
@@ -75,8 +75,8 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   @Test
   void shouldRevokeTimetableFieldNumber() throws Exception {
     mvc.perform(post("/v1/field-numbers/" + version.getTtfnid() + "/revoke"))
-       .andExpect(status().isOk())
-       .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0]." + Fields.status, is("REVOKED")));
   }
 
   @Test
@@ -98,12 +98,12 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
         .andReturn()
         .getResponse()
         .getContentAsString();
-    List<TimetableFieldNumberVersionModel> response = mapper.readValue(responseBody,
+    List<TimetableFieldNumberVersionVersionModel> response = mapper.readValue(responseBody,
         new TypeReference<>() {
         });
 
     assertThat(response).size().isEqualTo(1);
-    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = response.get(0);
+    TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel = response.get(0);
 
     // When first update it is ok
     timetableFieldNumberVersionModel.setComment("Neuer Kommentar");
@@ -146,7 +146,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
         .build();
     versionRepository.save(secondVersion);
     //When
-    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = TimetableFieldNumberVersionModel.builder()
+    TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel = TimetableFieldNumberVersionVersionModel.builder()
         .validFrom(
             version.getValidFrom())
         .validTo(
@@ -242,7 +242,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   }
 
   private MockHttpServletRequestBuilder createUpdateRequest(
-      TimetableFieldNumberVersionModel timetableFieldNumberVersionModel)
+      TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel)
       throws JsonProcessingException {
     return post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
         .contentType(MediaType.APPLICATION_JSON)

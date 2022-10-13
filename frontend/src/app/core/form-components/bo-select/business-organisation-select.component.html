@@ -4,6 +4,7 @@
   [formGroup]="formGroup"
   [bindValueInp]="valueExtraction"
   (searchTrigger)="searchBusinessOrganisation($event)"
+  (changeTrigger)="boSelectionChanged.emit($event)"
 >
   <div class="d-flex flex-column">
     <mat-label class="font-bold-lg" [ngClass]="formModus ? 'required-indicator' : ''">{{

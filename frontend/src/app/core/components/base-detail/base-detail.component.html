@@ -25,11 +25,11 @@
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-7 pe-3">
       <app-switch-version
-        *ngIf="controller.showSwitch"
-        [records]="controller.records!"
-        [currentRecord]="controller.record!"
-        [switchDisabled]="controller.form.enabled"
         (switchVersion)="controller.switchVersion($event)"
+        *ngIf="controller.showSwitch"
+        [currentRecord]="controller.record!"
+        [records]="controller.records!"
+        [switchDisabled]="controller.form.enabled"
       ></app-switch-version>
     </div>
     <div class="d-flex flex-column col-5 pe-3">
@@ -40,33 +40,35 @@
     </div>
   </div>
   <div *ngIf="controller.isExistingRecord()" class="edit-section">
-    <button
-      *ngIf="mayWrite"
-      data-cy="edit-item"
-      class="write-btn atlas-primary-btn me-3"
-      (click)="controller.toggleEdit()"
+    <atlas-button
+      buttonType="edit"
+      [applicationType]="this.controller.getApplicationType()"
+      [businessOrganisation]="selectedRecord.businessOrganisation!"
+      buttonDataCy="edit-item"
+      (buttonClicked)="controller.toggleEdit()"
       [disabled]="controller.form.enabled"
+      buttonText="COMMON.EDIT_VERSION"
+      wrapperStyleClass="me-3"
     >
-      {{ 'COMMON.EDIT_VERSION' | translate }}
-    </button>
-    <button
-      *ngIf="mayRevoke"
-      data-cy="revoke-item"
-      (click)="controller.revoke()"
+    </atlas-button>
+    <atlas-button
+      buttonType="revoke"
+      [applicationType]="this.controller.getApplicationType()"
+      buttonDataCy="revoke-item"
+      (buttonClicked)="controller.revoke()"
       [disabled]="controller.form.enabled || controller.record.status === 'REVOKED'"
-      class="revoke-btn atlas-primary-btn me-3"
+      buttonText="COMMON.REVOKE"
+      wrapperStyleClass="me-3"
     >
-      {{ 'COMMON.REVOKE' | translate }}
-    </button>
-    <button
-      *ngIf="mayDelete"
-      data-cy="delete-item"
-      (click)="controller.delete()"
+    </atlas-button>
+    <atlas-button
+      buttonType="delete"
+      buttonDataCy="delete-item"
+      (buttonClicked)="controller.delete()"
       [disabled]="controller.form.enabled"
-      class="delete-btn atlas-primary-btn"
+      buttonText="COMMON.DELETE"
     >
-      {{ 'COMMON.DELETE' | translate }}
-    </button>
+    </atlas-button>
   </div>
 
   <div *ngIf="controller.isExistingRecord()" class="form-title-section">
@@ -87,31 +89,36 @@
   </div>
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-    <button
-      *ngIf="controller.form.disabled; else editModeButtons"
-      class="atlas-primary-btn footer-btn"
+    <atlas-button
+      buttonType="footerNonEdit"
+      [footerEdit]="controller.form.enabled"
       [mat-dialog-close]="true"
-      data-cy="back-to-overview"
+      buttonDataCy="back-to-overview"
+      buttonText="COMMON.BACK_TO_OVERVIEW"
     >
-      {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
-    </button>
-    <ng-template #editModeButtons>
-      <button
-        class="atlas-primary-btn footer-btn"
-        (click)="controller.toggleEdit()"
-        data-cy="cancel"
-      >
-        {{ 'COMMON.CANCEL' | translate }}
-      </button>
-      <button
-        class="atlas-primary-btn footer-btn ms-3"
-        data-cy="save-item"
-        type="submit"
-        (click)="controller.save()"
-        [disabled]="!controller.form.dirty"
-      >
-        {{ 'COMMON.SAVE' | translate }}
-      </button>
-    </ng-template>
+    </atlas-button>
+    <atlas-button
+      [footerEdit]="controller.form.enabled"
+      buttonType="footerEdit"
+      (buttonClicked)="controller.toggleEdit()"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
+    <atlas-button
+      buttonType="footerEdit"
+      [footerEdit]="controller.form.enabled"
+      buttonDataCy="save-item"
+      [submitButton]="true"
+      (click)="controller.save()"
+      [disabled]="!controller.form.dirty"
+      buttonText="COMMON.SAVE"
+    >
+    </atlas-button>
   </div>
+  <app-user-detail-info
+    *ngIf="controller.isExistingRecord()"
+    [record]="controller.record"
+  ></app-user-detail-info>
 </div>
