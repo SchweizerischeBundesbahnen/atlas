@@ -9,42 +9,33 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Status } from './status';
-import { SublineType } from './sublineType';
+import { ApplicationType } from './applicationType';
+import { ApplicationRole } from './applicationRole';
 
-export interface Subline {
+/**
+ * User permissions
+ */
+export interface UserPermissionVersionModel {
   /**
-   * SwissSublineNumber
+   * Object creation date
    */
-  swissSublineNumber: string;
+  readonly creationDate?: string;
   /**
-   * SwissLineNumber
+   * User creator
    */
-  swissLineNumber?: string;
+  readonly creator?: string;
   /**
-   * Number
+   * Last edition date
    */
-  number?: string;
-  status?: Status;
-  sublineType: SublineType;
+  readonly editionDate?: string;
   /**
-   * SLNID
+   * User editor
    */
-  readonly slnid?: string;
+  readonly editor?: string;
+  role: ApplicationRole;
+  application: ApplicationType;
   /**
-   * Description
+   * Business Organisation - sboids
    */
-  description?: string;
-  /**
-   * Valid from
-   */
-  validFrom: Date;
-  /**
-   * Valid to
-   */
-  validTo: Date;
-  /**
-   * BusinessOrganisation SBOID
-   */
-  businessOrganisation: string;
+  sboids: Array<string>;
 }
