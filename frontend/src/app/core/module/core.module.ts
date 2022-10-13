@@ -25,10 +25,12 @@ import { RouteToDialogComponent } from '../components/route-to-dialog/route-to-d
 import { FormModule } from './form.module';
 import { RelationComponent } from '../components/relation/relation.component';
 import { UserDetailInfoComponent } from '../components/base-detail/user-edit-info/user-detail-info.component';
+import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 
 const coreComponents = [
   BaseDetailComponent,
   UserDetailInfoComponent,
+  AtlasButtonComponent,
   SwitchVersionComponent,
   DialogComponent,
   HeaderComponent,
