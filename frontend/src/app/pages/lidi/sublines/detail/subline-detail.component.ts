@@ -3,7 +3,6 @@ import {
   ApplicationType,
   Line,
   LinesService,
-  LineVersion,
   PaymentType,
   SublinesService,
   SublineType,
@@ -27,7 +26,6 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { SublineDetailFormGroup } from './subline-detail-form-group';
-import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({

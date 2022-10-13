@@ -4,7 +4,7 @@ import { UserAdministrationResolver } from './user-administration.resolver';
 import SpyObj = jasmine.SpyObj;
 import { UserService } from '../service/user.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRouteSnapshot, ParamMap, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, ParamMap } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
 
 describe('UserAdministrationResolver', () => {
@@ -34,14 +34,14 @@ describe('UserAdministrationResolver', () => {
     const routeMock: ActivatedRouteSnapshot = {
       get paramMap(): ParamMap {
         return {
-          get(name: string): string | null {
+          get(name): string | null {
             return 'add';
           },
         } as ParamMap;
       },
     } as ActivatedRouteSnapshot;
 
-    const userModel = await firstValueFrom(resolver.resolve(routeMock, {} as RouterStateSnapshot));
+    const userModel = await firstValueFrom(resolver.resolve(routeMock));
     expect(userServiceSpy.getUser).not.toHaveBeenCalled();
     expect(userModel).toEqual({});
   });
@@ -50,7 +50,7 @@ describe('UserAdministrationResolver', () => {
     const routeMock: ActivatedRouteSnapshot = {
       get paramMap(): ParamMap {
         return {
-          get(name: string): string | null {
+          get(name): string | null {
             return 'userId';
           },
         } as ParamMap;
@@ -62,7 +62,7 @@ describe('UserAdministrationResolver', () => {
         sbbUserId: 'userId',
       })
     );
-    const userModel = await firstValueFrom(resolver.resolve(routeMock, {} as RouterStateSnapshot));
+    const userModel = await firstValueFrom(resolver.resolve(routeMock));
     expect(userServiceSpy.getUser).toHaveBeenCalledOnceWith('userId');
     expect(userModel).toEqual({
       sbbUserId: 'userId',

@@ -4,6 +4,7 @@ import { BodiOverviewComponent } from './bodi-overview.component';
 import { BusinessOrganisationComponent } from '../business-organisations/business-organisation.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
+import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 
 describe('BoDiOverviewComponent', () => {
   let component: BodiOverviewComponent;
@@ -11,7 +12,7 @@ describe('BoDiOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BodiOverviewComponent, BusinessOrganisationComponent],
+      declarations: [BodiOverviewComponent, BusinessOrganisationComponent, AtlasButtonComponent],
       imports: [AppTestingModule],
       providers: [
         {

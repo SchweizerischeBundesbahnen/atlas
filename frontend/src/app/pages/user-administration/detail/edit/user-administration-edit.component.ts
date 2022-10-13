@@ -14,6 +14,11 @@ import { UserModel } from '../../../../api/model/userModel';
   viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
 export class UserAdministrationEditComponent implements OnInit {
+  @Input() user?: UserModel;
+  editMode = false;
+  saveEnabled = true;
+  userRecord: any | undefined;
+
   constructor(
     private readonly notificationService: NotificationService,
     private readonly boService: BusinessOrganisationsService,
@@ -24,19 +29,18 @@ export class UserAdministrationEditComponent implements OnInit {
     readonly userPermissionManager: UserPermissionManager
   ) {}
 
-  @Input() user?: UserModel;
-  editMode = false;
-  saveEnabled = true;
-
   ngOnInit() {
-    if (this.userService.getPermissionsFromUserModelAsArray(this.user!).length === 0) {
+    const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
+      this.user!
+    );
+    if (permissionsFromUserModelAsArray.length === 0) {
       this.user = undefined;
       return;
     }
+    this.convertUserPermissionToRecord();
+
     this.userPermissionManager.setSbbUserId(this.user!.sbbUserId!);
-    this.userPermissionManager.setPermissions(
-      this.userService.getPermissionsFromUserModelAsArray(this.user!)
-    );
+    this.userPermissionManager.setPermissions(permissionsFromUserModelAsArray);
   }
 
   saveEdits(): void {
@@ -52,6 +56,7 @@ export class UserAdministrationEditComponent implements OnInit {
             this.userService.getPermissionsFromUserModelAsArray(this.user)
           );
           this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
+          this.convertUserPermissionToRecord();
         },
         error: () => (this.saveEnabled = true),
       });
@@ -70,5 +75,19 @@ export class UserAdministrationEditComponent implements OnInit {
         );
       }
     });
+  }
+
+  private convertUserPermissionToRecord() {
+    const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
+      this.user!
+    );
+    if (permissionsFromUserModelAsArray.length > 0) {
+      this.userRecord = {
+        editor: permissionsFromUserModelAsArray[0].editor,
+        editionDate: permissionsFromUserModelAsArray[0].editionDate,
+        creator: permissionsFromUserModelAsArray[0].creator,
+        creationDate: permissionsFromUserModelAsArray[0].creationDate,
+      };
+    }
   }
 }

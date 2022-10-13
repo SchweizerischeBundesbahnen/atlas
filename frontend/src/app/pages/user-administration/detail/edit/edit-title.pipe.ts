@@ -9,7 +9,7 @@ import { UserModel } from '../../../../api/model/userModel';
 export class EditTitlePipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}
 
-  transform(user: UserModel | undefined, ...args: unknown[]): string {
+  transform(user: UserModel | undefined): string {
     if (user) {
       return `${user.firstName} ${user.lastName}`;
     }
