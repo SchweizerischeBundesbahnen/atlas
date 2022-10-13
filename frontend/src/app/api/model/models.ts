@@ -34,4 +34,4 @@ export * from './transportCompanyStatus';
 export * from './user';
 export * from './userAccountStatus';
 export * from './userPermissionCreateModel';
-export * from './userPermissionModel';
+export * from './userPermissionVersionModel';
