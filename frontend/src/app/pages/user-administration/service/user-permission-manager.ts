@@ -4,15 +4,13 @@ import {
   BusinessOrganisation,
   BusinessOrganisationsService,
   UserPermissionCreateModel,
-  UserPermissionModel,
+  UserPermissionVersionModel,
 } from '../../../api';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserPermissionManager {
-  constructor(private readonly boService: BusinessOrganisationsService) {}
-
   readonly userPermission: UserPermissionCreateModel = {
     sbbUserId: '',
     permissions: [
@@ -33,7 +31,18 @@ export class UserPermissionManager {
       },
     ],
   };
-
+  readonly businessOrganisationsOfApplication: {
+    [application in ApplicationType]: BusinessOrganisation[];
+  } = {
+    TTFN: [],
+    LIDI: [],
+    BODI: [],
+  };
+  readonly boOfApplicationsSubject$: BehaviorSubject<{
+    [application in ApplicationType]: BusinessOrganisation[];
+  }> = new BehaviorSubject<{ [application in ApplicationType]: BusinessOrganisation[] }>(
+    this.businessOrganisationsOfApplication
+  );
   private readonly availableApplicationRolesConfig: {
     [application in ApplicationType]: ApplicationRole[];
   } = {
@@ -42,19 +51,7 @@ export class UserPermissionManager {
     BODI: [ApplicationRole.Reader, ApplicationRole.SuperUser, ApplicationRole.Supervisor],
   };
 
-  readonly businessOrganisationsOfApplication: {
-    [application in ApplicationType]: BusinessOrganisation[];
-  } = {
-    TTFN: [],
-    LIDI: [],
-    BODI: [],
-  };
-
-  readonly boOfApplicationsSubject$: BehaviorSubject<{
-    [application in ApplicationType]: BusinessOrganisation[];
-  }> = new BehaviorSubject<{ [application in ApplicationType]: BusinessOrganisation[] }>(
-    this.businessOrganisationsOfApplication
-  );
+  constructor(private readonly boService: BusinessOrganisationsService) {}
 
   getAvailableApplicationRolesOfApplication(application: ApplicationType): ApplicationRole[] {
     return this.availableApplicationRolesConfig[application];
@@ -85,7 +82,7 @@ export class UserPermissionManager {
     this.userPermission.sbbUserId = userId;
   }
 
-  setPermissions(permissions: UserPermissionModel[]): void {
+  setPermissions(permissions: UserPermissionVersionModel[]): void {
     permissions.forEach((permission) => {
       const application = permission.application;
       const permissionIndex = this.getPermissionIndexFromApplication(application);

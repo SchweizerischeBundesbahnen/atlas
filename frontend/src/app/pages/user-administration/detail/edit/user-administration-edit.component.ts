@@ -85,6 +85,8 @@ export class UserAdministrationEditComponent implements OnInit {
       this.userRecord = {
         editor: permissionsFromUserModelAsArray[0].editor,
         editionDate: permissionsFromUserModelAsArray[0].editionDate,
+        creator: permissionsFromUserModelAsArray[0].creator,
+        creationDate: permissionsFromUserModelAsArray[0].creationDate,
       };
     }
   }
