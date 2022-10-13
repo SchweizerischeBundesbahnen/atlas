@@ -6,7 +6,7 @@ import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundExc
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.SublineApiV1;
 import ch.sbb.line.directory.api.SublineModel;
-import ch.sbb.line.directory.api.SublineVersionModel;
+import ch.sbb.line.directory.api.SublineVersionVersionModel;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.SublineType;
@@ -42,44 +42,44 @@ public class SublineController implements SublineApiV1 {
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
     Page<Subline> sublines = sublineService.findAll(SublineSearchRestrictions.builder()
-                                                                             .pageable(pageable)
-                                                                             .searchCriterias(
-                                                                                 searchCriteria)
-                                                                             .statusRestrictions(
-                                                                                 statusRestrictions)
-                                                                             .validOn(validOn)
-                                                                             .typeRestrictions(
-                                                                                 typeRestrictions)
-                                                                             .businessOrganisation(
-                                                                                 businessOrganisation)
-                                                                             .build());
+        .pageable(pageable)
+        .searchCriterias(
+            searchCriteria)
+        .statusRestrictions(
+            statusRestrictions)
+        .validOn(validOn)
+        .typeRestrictions(
+            typeRestrictions)
+        .businessOrganisation(
+            businessOrganisation)
+        .build());
     return Container.<SublineModel>builder()
-                    .objects(sublines.stream().map(this::toModel).toList())
-                    .totalCount(sublines.getTotalElements())
-                    .build();
+        .objects(sublines.stream().map(this::toModel).toList())
+        .totalCount(sublines.getTotalElements())
+        .build();
   }
 
   private SublineModel toModel(Subline sublineVersion) {
     return SublineModel.builder()
-                       .swissSublineNumber(sublineVersion.getSwissSublineNumber())
-                       .number(sublineVersion.getNumber())
-                       .swissLineNumber(sublineVersion.getSwissLineNumber())
-                       .status(sublineVersion.getStatus())
-                       .sublineType(sublineVersion.getSublineType())
-                       .slnid(sublineVersion.getSlnid())
-                       .description(sublineVersion.getDescription())
-                       .validFrom(sublineVersion.getValidFrom())
-                       .validTo(sublineVersion.getValidTo())
-                       .businessOrganisation(sublineVersion.getBusinessOrganisation())
-                       .build();
+        .swissSublineNumber(sublineVersion.getSwissSublineNumber())
+        .number(sublineVersion.getNumber())
+        .swissLineNumber(sublineVersion.getSwissLineNumber())
+        .status(sublineVersion.getStatus())
+        .sublineType(sublineVersion.getSublineType())
+        .slnid(sublineVersion.getSlnid())
+        .description(sublineVersion.getDescription())
+        .validFrom(sublineVersion.getValidFrom())
+        .validTo(sublineVersion.getValidTo())
+        .businessOrganisation(sublineVersion.getBusinessOrganisation())
+        .build();
   }
 
   @Override
-  public List<SublineVersionModel> getSublineVersion(String slnid) {
-    List<SublineVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
-                                                                   .stream()
-                                                                   .map(this::toModel)
-                                                                   .toList();
+  public List<SublineVersionVersionModel> getSublineVersion(String slnid) {
+    List<SublineVersionVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
+        .stream()
+        .map(this::toModel)
+        .toList();
     if (sublineVersionModels.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
@@ -87,10 +87,10 @@ public class SublineController implements SublineApiV1 {
   }
 
   @Override
-  public List<SublineVersionModel> revokeSubline(String slnid) {
-    List<SublineVersionModel> sublineVersionModels = sublineService.revokeSubline(slnid).stream()
-                                                                   .map(this::toModel)
-                                                                   .toList();
+  public List<SublineVersionVersionModel> revokeSubline(String slnid) {
+    List<SublineVersionVersionModel> sublineVersionModels = sublineService.revokeSubline(slnid).stream()
+        .map(this::toModel)
+        .toList();
     if (sublineVersionModels.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
@@ -98,7 +98,7 @@ public class SublineController implements SublineApiV1 {
   }
 
   @Override
-  public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {
+  public SublineVersionVersionModel createSublineVersion(SublineVersionVersionModel newSublineVersion) {
     SublineVersion sublineVersion = toEntity(newSublineVersion);
     sublineVersion.setStatus(Status.VALIDATED);
     SublineVersion createdVersion = sublineService.create(sublineVersion);
@@ -106,13 +106,13 @@ public class SublineController implements SublineApiV1 {
   }
 
   @Override
-  public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
+  public List<SublineVersionVersionModel> updateSublineVersion(Long id, SublineVersionVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id)
-                                                   .orElseThrow(() -> new IdNotFoundException(id));
+        .orElseThrow(() -> new IdNotFoundException(id));
     sublineService.update(versionToUpdate, toEntity(newVersion), sublineService.findSubline(
         versionToUpdate.getSlnid()));
     return sublineService.findSubline(versionToUpdate.getSlnid()).stream().map(this::toModel)
-                         .toList();
+        .toList();
   }
 
   @Override
@@ -141,44 +141,44 @@ public class SublineController implements SublineApiV1 {
     sublineService.deleteAll(slnid);
   }
 
-  private SublineVersionModel toModel(SublineVersion sublineVersion) {
-    return SublineVersionModel.builder()
-                              .id(sublineVersion.getId())
-                              .swissSublineNumber(sublineVersion.getSwissSublineNumber())
-                              .mainlineSlnid(sublineVersion.getMainlineSlnid())
-                              .status(sublineVersion.getStatus())
-                              .sublineType(sublineVersion.getSublineType())
-                              .slnid(sublineVersion.getSlnid())
-                              .description(sublineVersion.getDescription())
-                              .number(sublineVersion.getNumber())
-                              .longName(sublineVersion.getLongName())
-                              .paymentType(sublineVersion.getPaymentType())
-                              .validFrom(sublineVersion.getValidFrom())
-                              .validTo(sublineVersion.getValidTo())
-                              .businessOrganisation(sublineVersion.getBusinessOrganisation())
-                              .etagVersion(sublineVersion.getVersion())
-                              .creator(sublineVersion.getCreator())
-                              .creationDate(sublineVersion.getCreationDate())
-                              .editor(sublineVersion.getEditor())
-                              .editionDate(sublineVersion.getEditionDate())
-                              .build();
+  private SublineVersionVersionModel toModel(SublineVersion sublineVersion) {
+    return SublineVersionVersionModel.builder()
+        .id(sublineVersion.getId())
+        .swissSublineNumber(sublineVersion.getSwissSublineNumber())
+        .mainlineSlnid(sublineVersion.getMainlineSlnid())
+        .status(sublineVersion.getStatus())
+        .sublineType(sublineVersion.getSublineType())
+        .slnid(sublineVersion.getSlnid())
+        .description(sublineVersion.getDescription())
+        .number(sublineVersion.getNumber())
+        .longName(sublineVersion.getLongName())
+        .paymentType(sublineVersion.getPaymentType())
+        .validFrom(sublineVersion.getValidFrom())
+        .validTo(sublineVersion.getValidTo())
+        .businessOrganisation(sublineVersion.getBusinessOrganisation())
+        .etagVersion(sublineVersion.getVersion())
+        .creator(sublineVersion.getCreator())
+        .creationDate(sublineVersion.getCreationDate())
+        .editor(sublineVersion.getEditor())
+        .editionDate(sublineVersion.getEditionDate())
+        .build();
   }
 
-  private SublineVersion toEntity(SublineVersionModel sublineVersionModel) {
+  private SublineVersion toEntity(SublineVersionVersionModel sublineVersionModel) {
     return SublineVersion.builder()
-                         .id(sublineVersionModel.getId())
-                         .swissSublineNumber(sublineVersionModel.getSwissSublineNumber())
-                         .mainlineSlnid(sublineVersionModel.getMainlineSlnid())
-                         .sublineType(sublineVersionModel.getSublineType())
-                         .slnid(sublineVersionModel.getSlnid())
-                         .description(sublineVersionModel.getDescription())
-                         .number(sublineVersionModel.getNumber())
-                         .longName(sublineVersionModel.getLongName())
-                         .paymentType(sublineVersionModel.getPaymentType())
-                         .validFrom(sublineVersionModel.getValidFrom())
-                         .validTo(sublineVersionModel.getValidTo())
-                         .businessOrganisation(sublineVersionModel.getBusinessOrganisation())
-                         .version(sublineVersionModel.getEtagVersion())
-                         .build();
+        .id(sublineVersionModel.getId())
+        .swissSublineNumber(sublineVersionModel.getSwissSublineNumber())
+        .mainlineSlnid(sublineVersionModel.getMainlineSlnid())
+        .sublineType(sublineVersionModel.getSublineType())
+        .slnid(sublineVersionModel.getSlnid())
+        .description(sublineVersionModel.getDescription())
+        .number(sublineVersionModel.getNumber())
+        .longName(sublineVersionModel.getLongName())
+        .paymentType(sublineVersionModel.getPaymentType())
+        .validFrom(sublineVersionModel.getValidFrom())
+        .validTo(sublineVersionModel.getValidTo())
+        .businessOrganisation(sublineVersionModel.getBusinessOrganisation())
+        .version(sublineVersionModel.getEtagVersion())
+        .build();
   }
 }

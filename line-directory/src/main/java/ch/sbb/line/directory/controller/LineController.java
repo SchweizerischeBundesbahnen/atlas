@@ -6,7 +6,7 @@ import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundExc
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
 import ch.sbb.line.directory.api.LineModel;
-import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.api.LineVersionVersionModel;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.Line;
@@ -43,34 +43,34 @@ public class LineController implements LineApiV1 {
       Optional<LocalDate> validOn) {
     log.info("Load Versions using pageable={}", pageable);
     Page<Line> lines = lineService.findAll(LineSearchRestrictions.builder()
-                                                                 .pageable(pageable)
-                                                                 .searchCriterias(searchCriteria)
-                                                                 .statusRestrictions(
-                                                                     statusRestrictions)
-                                                                 .validOn(validOn)
-                                                                 .typeRestrictions(typeRestrictions)
-                                                                 .swissLineNumber(swissLineNumber)
-                                                                 .businessOrganisation(
-                                                                     businessOrganisation)
-                                                                 .build());
+        .pageable(pageable)
+        .searchCriterias(searchCriteria)
+        .statusRestrictions(
+            statusRestrictions)
+        .validOn(validOn)
+        .typeRestrictions(typeRestrictions)
+        .swissLineNumber(swissLineNumber)
+        .businessOrganisation(
+            businessOrganisation)
+        .build());
     List<LineModel> lineModels = lines.stream().map(this::toModel).toList();
     return Container.<LineModel>builder()
-                    .objects(lineModels)
-                    .totalCount(lines.getTotalElements()).build();
+        .objects(lineModels)
+        .totalCount(lines.getTotalElements()).build();
   }
 
   @Override
   public LineModel getLine(String slnid) {
     return lineService.findLine(slnid)
-                      .map(this::toModel)
-                      .orElseThrow(() -> new SlnidNotFoundException(slnid));
+        .map(this::toModel)
+        .orElseThrow(() -> new SlnidNotFoundException(slnid));
   }
 
   @Override
-  public List<LineVersionModel> revokeLine(String slnid) {
-    List<LineVersionModel> lineVersionModels = lineService.revokeLine(slnid).stream()
-                                                          .map(this::toModel)
-                                                          .toList();
+  public List<LineVersionVersionModel> revokeLine(String slnid) {
+    List<LineVersionVersionModel> lineVersionModels = lineService.revokeLine(slnid).stream()
+        .map(this::toModel)
+        .toList();
     if (lineVersionModels.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
@@ -83,15 +83,15 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineVersionModel> getCoveredVersionLines() {
+  public List<LineVersionVersionModel> getCoveredVersionLines() {
     return lineService.getAllCoveredLineVersions().stream().map(this::toModel).toList();
   }
 
   @Override
-  public List<LineVersionModel> getLineVersions(String slnid) {
-    List<LineVersionModel> lineVersionModels = lineService.findLineVersions(slnid).stream()
-                                                          .map(this::toModel)
-                                                          .toList();
+  public List<LineVersionVersionModel> getLineVersions(String slnid) {
+    List<LineVersionVersionModel> lineVersionModels = lineService.findLineVersions(slnid).stream()
+        .map(this::toModel)
+        .toList();
     if (lineVersionModels.isEmpty()) {
       throw new SlnidNotFoundException(slnid);
     }
@@ -99,7 +99,7 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public LineVersionModel createLineVersion(LineVersionModel newVersion) {
+  public LineVersionVersionModel createLineVersion(LineVersionVersionModel newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
     newLineVersion.setStatus(Status.VALIDATED);
     LineVersion createdVersion = lineService.create(newLineVersion);
@@ -107,13 +107,13 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
+  public List<LineVersionVersionModel> updateLineVersion(Long id, LineVersionVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id)
-                                             .orElseThrow(() -> new IdNotFoundException(id));
+        .orElseThrow(() -> new IdNotFoundException(id));
     lineService.update(versionToUpdate, toEntity(newVersion), lineService.findLineVersions(
         versionToUpdate.getSlnid()));
     return lineService.findLineVersions(versionToUpdate.getSlnid()).stream().map(this::toModel)
-                      .toList();
+        .toList();
   }
 
   @Override
@@ -141,78 +141,77 @@ public class LineController implements LineApiV1 {
     lineService.deleteAll(slnid);
   }
 
-
-  private LineVersionModel toModel(LineVersion lineVersion) {
-    return LineVersionModel.builder()
-                           .id(lineVersion.getId())
-                           .status(lineVersion.getStatus())
-                           .lineType(lineVersion.getLineType())
-                           .slnid(lineVersion.getSlnid())
-                           .paymentType(lineVersion.getPaymentType())
-                           .number(lineVersion.getNumber())
-                           .alternativeName(lineVersion.getAlternativeName())
-                           .combinationName(lineVersion.getCombinationName())
-                           .longName(lineVersion.getLongName())
-                           .colorFontRgb(RgbColorConverter.toHex(lineVersion.getColorFontRgb()))
-                           .colorBackRgb(RgbColorConverter.toHex(lineVersion.getColorBackRgb()))
-                           .colorFontCmyk(CmykColorConverter.toCmykString(
-                               lineVersion.getColorFontCmyk()))
-                           .colorBackCmyk(
-                               CmykColorConverter.toCmykString(lineVersion.getColorBackCmyk()))
-                           .description(lineVersion.getDescription())
-                           .icon(lineVersion.getIcon())
-                           .validFrom(lineVersion.getValidFrom())
-                           .validTo(lineVersion.getValidTo())
-                           .businessOrganisation(lineVersion.getBusinessOrganisation())
-                           .comment(lineVersion.getComment())
-                           .swissLineNumber(lineVersion.getSwissLineNumber())
-                           .etagVersion(lineVersion.getVersion())
-                           .creator(lineVersion.getCreator())
-                           .creationDate(lineVersion.getCreationDate())
-                           .editor(lineVersion.getEditor())
-                           .editionDate(lineVersion.getEditionDate())
-                           .build();
+  private LineVersionVersionModel toModel(LineVersion lineVersion) {
+    return LineVersionVersionModel.builder()
+        .id(lineVersion.getId())
+        .status(lineVersion.getStatus())
+        .lineType(lineVersion.getLineType())
+        .slnid(lineVersion.getSlnid())
+        .paymentType(lineVersion.getPaymentType())
+        .number(lineVersion.getNumber())
+        .alternativeName(lineVersion.getAlternativeName())
+        .combinationName(lineVersion.getCombinationName())
+        .longName(lineVersion.getLongName())
+        .colorFontRgb(RgbColorConverter.toHex(lineVersion.getColorFontRgb()))
+        .colorBackRgb(RgbColorConverter.toHex(lineVersion.getColorBackRgb()))
+        .colorFontCmyk(CmykColorConverter.toCmykString(
+            lineVersion.getColorFontCmyk()))
+        .colorBackCmyk(
+            CmykColorConverter.toCmykString(lineVersion.getColorBackCmyk()))
+        .description(lineVersion.getDescription())
+        .icon(lineVersion.getIcon())
+        .validFrom(lineVersion.getValidFrom())
+        .validTo(lineVersion.getValidTo())
+        .businessOrganisation(lineVersion.getBusinessOrganisation())
+        .comment(lineVersion.getComment())
+        .swissLineNumber(lineVersion.getSwissLineNumber())
+        .etagVersion(lineVersion.getVersion())
+        .creator(lineVersion.getCreator())
+        .creationDate(lineVersion.getCreationDate())
+        .editor(lineVersion.getEditor())
+        .editionDate(lineVersion.getEditionDate())
+        .build();
   }
 
-  private LineVersion toEntity(LineVersionModel lineVersionModel) {
+  private LineVersion toEntity(LineVersionVersionModel lineVersionModel) {
     return LineVersion.builder()
-                      .id(lineVersionModel.getId())
-                      .lineType(lineVersionModel.getLineType())
-                      .slnid(lineVersionModel.getSlnid())
-                      .paymentType(lineVersionModel.getPaymentType())
-                      .number(lineVersionModel.getNumber())
-                      .alternativeName(lineVersionModel.getAlternativeName())
-                      .combinationName(lineVersionModel.getCombinationName())
-                      .longName(lineVersionModel.getLongName())
-                      .colorFontRgb(RgbColorConverter.fromHex(lineVersionModel.getColorFontRgb()))
-                      .colorBackRgb(RgbColorConverter.fromHex(lineVersionModel.getColorBackRgb()))
-                      .colorFontCmyk(
-                          CmykColorConverter.fromCmykString(lineVersionModel.getColorFontCmyk()))
-                      .colorBackCmyk(
-                          CmykColorConverter.fromCmykString(lineVersionModel.getColorBackCmyk()))
-                      .description(lineVersionModel.getDescription())
-                      .icon(lineVersionModel.getIcon())
-                      .validFrom(lineVersionModel.getValidFrom())
-                      .validTo(lineVersionModel.getValidTo())
-                      .businessOrganisation(lineVersionModel.getBusinessOrganisation())
-                      .comment(lineVersionModel.getComment())
-                      .swissLineNumber(lineVersionModel.getSwissLineNumber())
-                      .version(lineVersionModel.getEtagVersion())
-                      .build();
+        .id(lineVersionModel.getId())
+        .lineType(lineVersionModel.getLineType())
+        .slnid(lineVersionModel.getSlnid())
+        .paymentType(lineVersionModel.getPaymentType())
+        .number(lineVersionModel.getNumber())
+        .alternativeName(lineVersionModel.getAlternativeName())
+        .combinationName(lineVersionModel.getCombinationName())
+        .longName(lineVersionModel.getLongName())
+        .colorFontRgb(RgbColorConverter.fromHex(lineVersionModel.getColorFontRgb()))
+        .colorBackRgb(RgbColorConverter.fromHex(lineVersionModel.getColorBackRgb()))
+        .colorFontCmyk(
+            CmykColorConverter.fromCmykString(lineVersionModel.getColorFontCmyk()))
+        .colorBackCmyk(
+            CmykColorConverter.fromCmykString(lineVersionModel.getColorBackCmyk()))
+        .description(lineVersionModel.getDescription())
+        .icon(lineVersionModel.getIcon())
+        .validFrom(lineVersionModel.getValidFrom())
+        .validTo(lineVersionModel.getValidTo())
+        .businessOrganisation(lineVersionModel.getBusinessOrganisation())
+        .comment(lineVersionModel.getComment())
+        .swissLineNumber(lineVersionModel.getSwissLineNumber())
+        .version(lineVersionModel.getEtagVersion())
+        .build();
   }
 
   private LineModel toModel(Line lineVersion) {
     return LineModel.builder()
-                    .status(lineVersion.getStatus())
-                    .lineType(lineVersion.getLineType())
-                    .slnid(lineVersion.getSlnid())
-                    .number(lineVersion.getNumber())
-                    .description(lineVersion.getDescription())
-                    .validFrom(lineVersion.getValidFrom())
-                    .validTo(lineVersion.getValidTo())
-                    .businessOrganisation(lineVersion.getBusinessOrganisation())
-                    .swissLineNumber(lineVersion.getSwissLineNumber())
-                    .build();
+        .status(lineVersion.getStatus())
+        .lineType(lineVersion.getLineType())
+        .slnid(lineVersion.getSlnid())
+        .number(lineVersion.getNumber())
+        .description(lineVersion.getDescription())
+        .validFrom(lineVersion.getValidFrom())
+        .validTo(lineVersion.getValidTo())
+        .businessOrganisation(lineVersion.getBusinessOrganisation())
+        .swissLineNumber(lineVersion.getSwissLineNumber())
+        .build();
   }
 
 }
