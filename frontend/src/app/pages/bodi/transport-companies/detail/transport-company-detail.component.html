@@ -138,33 +138,32 @@
   </div>
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-    <ng-template [ngIf]="!editMode">
-      <atlas-button
-        buttonType="footer"
-        [mat-dialog-close]="true"
-        buttonDataCy="back-to-overview"
-        buttonText="COMMON.BACK_TO_OVERVIEW"
-      >
-      </atlas-button>
-    </ng-template>
-    <ng-template [ngIf]="editMode">
-      <atlas-button
-        buttonType="footer"
-        (buttonClicked)="leaveEditMode()"
-        buttonDataCy="cancel"
-        buttonText="COMMON.CANCEL"
-        wrapperStyleClass="me-3"
-      >
-      </atlas-button>
-      <atlas-button
-        buttonType="footer"
-        buttonDataCy="save-item"
-        [submitButton]="true"
-        (click)="createRelation()"
-        [disabled]="!form.dirty"
-        buttonText="COMMON.SAVE"
-      >
-      </atlas-button>
-    </ng-template>
+    <atlas-button
+      buttonType="footerNonEdit"
+      [footerEdit]="editMode"
+      [mat-dialog-close]="true"
+      buttonDataCy="back-to-overview"
+      buttonText="COMMON.BACK_TO_OVERVIEW"
+    >
+    </atlas-button>
+    <atlas-button
+      buttonType="footerEdit"
+      [footerEdit]="editMode"
+      (buttonClicked)="leaveEditMode()"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
+    <atlas-button
+      buttonType="footerEdit"
+      [footerEdit]="editMode"
+      buttonDataCy="save-item"
+      [submitButton]="true"
+      (click)="createRelation()"
+      [disabled]="!form.dirty"
+      buttonText="COMMON.SAVE"
+    >
+    </atlas-button>
   </div>
 </div>
