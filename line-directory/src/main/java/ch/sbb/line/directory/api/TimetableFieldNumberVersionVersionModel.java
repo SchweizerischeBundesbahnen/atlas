@@ -3,7 +3,7 @@ package ch.sbb.line.directory.api;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.api.BaseModel;
+import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @Schema(name = "TimetableFieldNumberVersion")
-public class TimetableFieldNumberVersionModel extends BaseModel implements DatesValidator {
+public class TimetableFieldNumberVersionVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", example = "1")
   private Long id;

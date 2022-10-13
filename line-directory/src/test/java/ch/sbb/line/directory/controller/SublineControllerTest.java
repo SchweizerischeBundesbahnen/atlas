@@ -10,7 +10,7 @@ import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.api.SublineModel;
-import ch.sbb.line.directory.api.SublineVersionModel;
+import ch.sbb.line.directory.api.SublineVersionVersionModel;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.PaymentType;
@@ -50,21 +50,21 @@ public class SublineControllerTest {
   @Captor
   private ArgumentCaptor<SublineVersion> versionArgumentCaptor;
 
-  private static SublineVersionModel createModel() {
-    return SublineVersionModel.builder()
-                              .swissSublineNumber("swissSublineNumber")
-                              .mainlineSlnid("mainlineSlnid")
-                              .status(Status.VALIDATED)
-                              .sublineType(SublineType.TECHNICAL)
-                              .slnid("slnid")
-                              .description("description")
-                              .number("number")
-                              .longName("longName")
-                              .paymentType(PaymentType.INTERNATIONAL)
-                              .validFrom(LocalDate.of(2020, 12, 12))
-                              .validTo(LocalDate.of(2099, 12, 12))
-                              .businessOrganisation("businessOrganisation")
-                              .build();
+  private static SublineVersionVersionModel createModel() {
+    return SublineVersionVersionModel.builder()
+        .swissSublineNumber("swissSublineNumber")
+        .mainlineSlnid("mainlineSlnid")
+        .status(Status.VALIDATED)
+        .sublineType(SublineType.TECHNICAL)
+        .slnid("slnid")
+        .description("description")
+        .number("number")
+        .longName("longName")
+        .paymentType(PaymentType.INTERNATIONAL)
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12))
+        .businessOrganisation("businessOrganisation")
+        .build();
   }
 
   @BeforeEach
@@ -90,10 +90,10 @@ public class SublineControllerTest {
     // Then
     assertThat(sublineContainer).isNotNull();
     assertThat(sublineContainer.getObjects()).hasSize(1)
-                                             .first()
-                                             .usingRecursiveComparison()
-                                             .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
-                                             .isEqualTo(subline);
+        .first()
+        .usingRecursiveComparison()
+        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .isEqualTo(subline);
     assertThat(sublineContainer.getTotalCount()).isEqualTo(1);
   }
 
@@ -104,21 +104,21 @@ public class SublineControllerTest {
     when(sublineService.findSubline(any())).thenReturn(Collections.singletonList(sublineVersion));
 
     // When
-    List<SublineVersionModel> subline = sublineController.getSublineVersion("slnid");
+    List<SublineVersionVersionModel> subline = sublineController.getSublineVersion("slnid");
 
     // Then
     assertThat(subline).isNotNull();
     assertThat(subline).hasSize(1)
-                       .first()
-                       .usingRecursiveComparison()
-                       .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
-                       .isEqualTo(sublineVersion);
+        .first()
+        .usingRecursiveComparison()
+        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .isEqualTo(sublineVersion);
   }
 
   @Test
   public void shouldSaveNewVersion() {
     // Given
-    SublineVersionModel sublineVersionModel = createModel();
+    SublineVersionVersionModel sublineVersionModel = createModel();
 
     // When
     sublineController.createSublineVersion(sublineVersionModel);
@@ -126,8 +126,8 @@ public class SublineControllerTest {
     // Then
     verify(sublineService).create(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-                                                .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
-                                                .isEqualTo(sublineVersionModel);
+        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .isEqualTo(sublineVersionModel);
   }
 
   @Test
@@ -145,7 +145,7 @@ public class SublineControllerTest {
   void shouldUpdateVersionWithVersioning() {
     // Given
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    SublineVersionModel sublineVersionModel = createModel();
+    SublineVersionVersionModel sublineVersionModel = createModel();
     sublineVersionModel.setNumber("New name");
 
     when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));

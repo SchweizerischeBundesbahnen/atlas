@@ -10,7 +10,7 @@ import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.LineModel;
-import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.api.LineVersionVersionModel;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
@@ -48,27 +48,27 @@ public class LineControllerTest {
   @Captor
   private ArgumentCaptor<LineVersion> versionArgumentCaptor;
 
-  private static LineVersionModel createModel() {
+  private static LineVersionVersionModel createModel() {
     return LineTestData.lineVersionModelBuilder()
-                       .status(Status.VALIDATED)
-                       .lineType(LineType.ORDERLY)
-                       .slnid("slnid")
-                       .paymentType(PaymentType.INTERNATIONAL)
-                       .number("number")
-                       .alternativeName("alternativeName")
-                       .combinationName("combinationName")
-                       .longName("longName")
-                       .colorFontRgb("#FFFFFF")
-                       .colorBackRgb("#FFFFFF")
-                       .colorFontCmyk("10,0,100,7")
-                       .colorBackCmyk("10,0,100,7")
-                       .description("description")
-                       .validFrom(LocalDate.of(2020, 12, 12))
-                       .validTo(LocalDate.of(2099, 12, 12))
-                       .businessOrganisation("businessOrganisation")
-                       .comment("comment")
-                       .swissLineNumber("swissLineNumber")
-                       .build();
+        .status(Status.VALIDATED)
+        .lineType(LineType.ORDERLY)
+        .slnid("slnid")
+        .paymentType(PaymentType.INTERNATIONAL)
+        .number("number")
+        .alternativeName("alternativeName")
+        .combinationName("combinationName")
+        .longName("longName")
+        .colorFontRgb("#FFFFFF")
+        .colorBackRgb("#FFFFFF")
+        .colorFontCmyk("10,0,100,7")
+        .colorBackCmyk("10,0,100,7")
+        .description("description")
+        .validFrom(LocalDate.of(2020, 12, 12))
+        .validTo(LocalDate.of(2099, 12, 12))
+        .businessOrganisation("businessOrganisation")
+        .comment("comment")
+        .swissLineNumber("swissLineNumber")
+        .build();
   }
 
   @BeforeEach
@@ -81,7 +81,7 @@ public class LineControllerTest {
   @Test
   public void shouldSaveNewVersion() {
     // Given
-    LineVersionModel lineVersionModel = createModel();
+    LineVersionVersionModel lineVersionModel = createModel();
 
     // When
     lineController.createLineVersion(lineVersionModel);
@@ -89,9 +89,9 @@ public class LineControllerTest {
     // Then
     verify(lineService).create(versionArgumentCaptor.capture());
     assertThat(versionArgumentCaptor.getValue()).usingRecursiveComparison()
-                                                .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
-                                                .ignoringFieldsMatchingRegexes("color.*")
-                                                .isEqualTo(lineVersionModel);
+        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .ignoringFieldsMatchingRegexes("color.*")
+        .isEqualTo(lineVersionModel);
   }
 
   @Test
@@ -108,10 +108,10 @@ public class LineControllerTest {
     // Then
     assertThat(lineContainer).isNotNull();
     assertThat(lineContainer.getObjects()).hasSize(1)
-                                          .first()
-                                          .usingRecursiveComparison()
-                                          .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
-                                          .isEqualTo(line);
+        .first()
+        .usingRecursiveComparison()
+        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .isEqualTo(line);
     assertThat(lineContainer.getTotalCount()).isEqualTo(1);
   }
 
@@ -127,9 +127,9 @@ public class LineControllerTest {
     // Then
     assertThat(result).isNotNull();
     assertThat(result).usingRecursiveComparison()
-                      .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
-                      .ignoringFieldsMatchingRegexes("color.*")
-                      .isEqualTo(line);
+        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .ignoringFieldsMatchingRegexes("color.*")
+        .isEqualTo(line);
   }
 
   @Test
@@ -139,16 +139,16 @@ public class LineControllerTest {
     when(lineService.findLineVersions(any())).thenReturn(Collections.singletonList(lineVersion));
 
     // When
-    List<LineVersionModel> line = lineController.getLineVersions("slnid");
+    List<LineVersionVersionModel> line = lineController.getLineVersions("slnid");
 
     // Then
     assertThat(line).isNotNull();
     assertThat(line).hasSize(1)
-                    .first()
-                    .usingRecursiveComparison()
-                    .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
-                    .ignoringFieldsMatchingRegexes("color.*", "etagVersion")
-                    .isEqualTo(lineVersion);
+        .first()
+        .usingRecursiveComparison()
+        .ignoringFields(RECURSIVE_COMPARISION_IGNORE_FIELDS)
+        .ignoringFieldsMatchingRegexes("color.*", "etagVersion")
+        .isEqualTo(lineVersion);
   }
 
   @Test
@@ -166,7 +166,7 @@ public class LineControllerTest {
   void shouldUpdateVersionWithVersioning() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
-    LineVersionModel lineVersionModel = createModel();
+    LineVersionVersionModel lineVersionModel = createModel();
     lineVersionModel.setNumber("New name");
 
     when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));
@@ -177,6 +177,5 @@ public class LineControllerTest {
     // Then
     verify(lineService).update(any(), any(), any());
   }
-
 
 }

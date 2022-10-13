@@ -1,12 +1,12 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.toEntity;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.toEntity;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationApiV1;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationModel;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
+import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
@@ -35,32 +35,33 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
       List<String> searchCriteria, List<String> inSboids, Optional<LocalDate> validOn, List<Status> statusChoices) {
     log.info(
-        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, inSboids={} validOn={} and statusChoices={}",
+        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, inSboids={} validOn={} and "
+            + "statusChoices={}",
         pageable, searchCriteria, inSboids, validOn, statusChoices);
     Page<BusinessOrganisation> timetableFieldNumberPage = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
-                                              .pageable(pageable)
-                                              .searchCriterias(searchCriteria)
-                                              .inSboids(inSboids)
-                                              .statusRestrictions(statusChoices)
-                                              .validOn(validOn)
-                                              .build());
+            .pageable(pageable)
+            .searchCriterias(searchCriteria)
+            .inSboids(inSboids)
+            .statusRestrictions(statusChoices)
+            .validOn(validOn)
+            .build());
     List<BusinessOrganisationModel> versions = timetableFieldNumberPage.stream()
-                                                                       .map(
-                                                                           BusinessOrganisationModel::toModel)
-                                                                       .toList();
+        .map(
+            BusinessOrganisationModel::toModel)
+        .toList();
     return Container.<BusinessOrganisationModel>builder()
-                    .objects(versions)
-                    .totalCount(timetableFieldNumberPage.getTotalElements())
-                    .build();
+        .objects(versions)
+        .totalCount(timetableFieldNumberPage.getTotalElements())
+        .build();
   }
 
   @Override
-  public List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(String sboid) {
-    List<BusinessOrganisationVersionModel> organisationVersionModels =
+  public List<BusinessOrganisationVersionVersionModel> getBusinessOrganisationVersions(String sboid) {
+    List<BusinessOrganisationVersionVersionModel> organisationVersionModels =
         service.findBusinessOrganisationVersions(sboid).stream()
-               .map(BusinessOrganisationVersionModel::toModel)
-               .toList();
+            .map(BusinessOrganisationVersionVersionModel::toModel)
+            .toList();
     if (organisationVersionModels.isEmpty()) {
       throw new SboidNotFoundException(sboid);
     }
@@ -68,11 +69,11 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   }
 
   @Override
-  public List<BusinessOrganisationVersionModel> revokeBusinessOrganisation(String sboid) {
-    List<BusinessOrganisationVersionModel> businessOrganisationVersionModels =
+  public List<BusinessOrganisationVersionVersionModel> revokeBusinessOrganisation(String sboid) {
+    List<BusinessOrganisationVersionVersionModel> businessOrganisationVersionModels =
         service.revokeBusinessOrganisation(sboid).stream()
-               .map(BusinessOrganisationVersionModel::toModel)
-               .toList();
+            .map(BusinessOrganisationVersionVersionModel::toModel)
+            .toList();
     if (businessOrganisationVersionModels.isEmpty()) {
       throw new SboidNotFoundException(sboid);
     }
@@ -80,24 +81,24 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   }
 
   @Override
-  public BusinessOrganisationVersionModel createBusinessOrganisationVersion(
-      BusinessOrganisationVersionModel newVersion) {
+  public BusinessOrganisationVersionVersionModel createBusinessOrganisationVersion(
+      BusinessOrganisationVersionVersionModel newVersion) {
     BusinessOrganisationVersion businessOrganisationVersion = toEntity(newVersion);
     businessOrganisationVersion.setStatus(Status.VALIDATED);
     BusinessOrganisationVersion organisationVersionSaved =
         service.save(businessOrganisationVersion);
-    return BusinessOrganisationVersionModel.toModel(organisationVersionSaved);
+    return BusinessOrganisationVersionVersionModel.toModel(organisationVersionSaved);
   }
 
   @Override
-  public List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(Long id,
-      BusinessOrganisationVersionModel newVersion) {
+  public List<BusinessOrganisationVersionVersionModel> updateBusinessOrganisationVersion(Long id,
+      BusinessOrganisationVersionVersionModel newVersion) {
     BusinessOrganisationVersion versionToUpdate = service.findById(id);
     service.updateBusinessOrganisationVersion(versionToUpdate, toEntity(newVersion));
     return service.findBusinessOrganisationVersions(versionToUpdate.getSboid())
-                  .stream()
-                  .map(BusinessOrganisationVersionModel::toModel)
-                  .toList();
+        .stream()
+        .map(BusinessOrganisationVersionVersionModel::toModel)
+        .toList();
   }
 
   @Override

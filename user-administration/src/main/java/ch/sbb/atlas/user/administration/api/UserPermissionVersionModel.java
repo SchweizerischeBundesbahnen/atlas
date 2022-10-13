@@ -1,6 +1,6 @@
 package ch.sbb.atlas.user.administration.api;
 
-import ch.sbb.atlas.base.service.model.api.BaseModel;
+import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @Data
-public class UserPermissionModel extends BaseModel {
+public class UserPermissionVersionModel extends BaseVersionModel {
 
   @NotNull
   private ApplicationRole role;
@@ -32,16 +32,16 @@ public class UserPermissionModel extends BaseModel {
   @Builder.Default
   private List<@NotEmpty String> sboids = new ArrayList<>();
 
-  public static UserPermissionModel toModel(UserPermission userPermission) {
-    return UserPermissionModel.builder()
+  public static UserPermissionVersionModel toModel(UserPermission userPermission) {
+    return UserPermissionVersionModel.builder()
         .role(userPermission.getRole())
         .application(userPermission.getApplication())
         .sboids(userPermission.getSboid().stream().toList())
         .editor(userPermission.getEditor())
-                              .editionDate(userPermission.getEditionDate())
-                              .creator(userPermission.getCreator())
-                              .creationDate(userPermission.getEditionDate())
-                              .build();
+        .editionDate(userPermission.getEditionDate())
+        .creator(userPermission.getCreator())
+        .creationDate(userPermission.getEditionDate())
+        .build();
   }
 
 }
