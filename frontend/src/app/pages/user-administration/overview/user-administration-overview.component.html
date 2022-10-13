@@ -1,9 +1,12 @@
-<div class="ms-5">
-  <div class="mt-5 mb-5">
-    <button mat-raised-button data-cy="new-user" (click)="routeToCreate()">
-      {{ 'USER_ADMIN.NEW' | translate }}
-    </button>
-  </div>
+<div class="ps-5 pt-5">
+  <atlas-button
+    buttonType="create"
+    buttonDataCy="new-user"
+    wrapperStyleClass="mb-5"
+    (buttonClicked)="routeToCreate()"
+    buttonText="USER_ADMIN.NEW"
+  >
+  </atlas-button>
 
   <div class="white-table-container-no-tabs">
     <div class="font-bold-4xl color-gray-900 mb-5">
@@ -22,17 +25,63 @@
       [totalCount]="userPageResult.totalCount"
       [sortingDisabled]="true"
       (editElementEvent)="openUser($event)"
-      (getTableElementsEvent)="loadUsers($event)"
+      (getTableElementsEvent)="reloadTableWithCurrentSettings()"
     >
-      <div class="mb-1">
-        <mat-label class="font-bold-lg">{{
-          'COMMON.SEARCH.SEARCH_CRITERIA' | translate
-        }}</mat-label>
+      <div class="d-flex flex-column mb-1">
+        <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_FOR' | translate }}</mat-label>
+        <mat-radio-group (change)="selectedSearchChanged()" [(ngModel)]="selectedSearch">
+          <mat-radio-button
+            class="pe-2"
+            *ngFor="let option of searchOptions"
+            [value]="option.value"
+          >
+            {{ option.translationKey | translate }}
+          </mat-radio-button>
+        </mat-radio-group>
       </div>
-      <app-user-select
-        [form]="userSearchForm"
-        (selectionChange)="checkIfUserExists($event)"
-      ></app-user-select>
+
+      <div class="col-12 search-section-height">
+        <ng-container *ngIf="selectedSearch === 'USER'; else filterTemplate">
+          <div class="mb-1">
+            <mat-label class="font-bold-lg">{{ 'USER_ADMIN.TABLE_HEADER' | translate }}</mat-label>
+          </div>
+          <app-user-select
+            [form]="userSearchForm"
+            (selectionChange)="checkIfUserExists($event)"
+          ></app-user-select>
+        </ng-container>
+
+        <ng-template #filterTemplate>
+          <div class="d-flex flex-row">
+            <bo-select
+              class="col-6 pe-1"
+              [formGroup]="boForm"
+              [controlName]="boSearchCtrlName"
+              [formModus]="false"
+              (boSelectionChanged)="filterChanged()"
+            ></bo-select>
+
+            <div class="d-flex flex-column col-6 ps-1">
+              <mat-label class="font-bold-lg">{{
+                'USER_ADMIN.APPLICATIONS' | translate
+              }}</mat-label>
+              <mat-form-field appearance="outline" class="form-outline">
+                <mat-select
+                  (selectionChange)="filterChanged()"
+                  multiple
+                  [(ngModel)]="selectedApplicationOptions"
+                >
+                  <mat-option
+                    *ngFor="let application of applicationOptions"
+                    [value]="application"
+                    >{{ 'USER_ADMIN.APPLICATION.' + application | translate }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </ng-template>
+      </div>
     </app-table>
   </div>
 </div>
