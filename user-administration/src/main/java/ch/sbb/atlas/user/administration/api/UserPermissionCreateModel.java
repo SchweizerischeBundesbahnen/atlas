@@ -27,7 +27,7 @@ public class UserPermissionCreateModel {
   @Schema(description = "User permissions", required = true)
   @NotNull
   @Size(min = 1)
-  private List<@Valid @NotNull UserPermissionModel> permissions;
+  private List<@Valid @NotNull UserPermissionVersionModel> permissions;
 
   @Schema(hidden = true)
   @JsonIgnore
@@ -53,13 +53,11 @@ public class UserPermissionCreateModel {
 
   public List<UserPermission> toEntityList() {
     return permissions.stream().map(permission -> UserPermission.builder()
-                                                                .sbbUserId(sbbUserId.toLowerCase())
-                                                                .application(
-                                                                    permission.getApplication())
-                                                                .role(permission.getRole())
-                                                                .sboid(new HashSet<>(
-                                                                    permission.getSboids()))
-                                                                .build()
+        .sbbUserId(sbbUserId.toLowerCase())
+        .application(permission.getApplication())
+        .role(permission.getRole())
+        .sboid(new HashSet<>(permission.getSboids()))
+        .build()
     ).toList();
   }
 

@@ -51,13 +51,13 @@ public interface LineApiV1 {
 
   @PostMapping("{slnid}/revoke")
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
-  List<LineVersionModel> revokeLine(@PathVariable String slnid);
+  List<LineVersionVersionModel> revokeLine(@PathVariable String slnid);
 
   @GetMapping("/covered")
   List<LineModel> getCoveredLines();
 
   @GetMapping("/versions/covered")
-  List<LineVersionModel> getCoveredVersionLines();
+  List<LineVersionVersionModel> getCoveredVersionLines();
 
   @DeleteMapping("{slnid}")
   void deleteLines(@PathVariable String slnid);
@@ -66,21 +66,24 @@ public interface LineApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
   })
-  LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
+  LineVersionVersionModel createLineVersion(@RequestBody @Valid LineVersionVersionModel newVersion);
 
   @GetMapping("versions/{slnid}")
-  List<LineVersionModel> getLineVersions(@PathVariable String slnid);
+  List<LineVersionVersionModel> getLineVersions(@PathVariable String slnid);
 
   @PostMapping({"versions/{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+      @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  List<LineVersionModel> updateLineVersion(@PathVariable Long id,
-      @RequestBody @Valid LineVersionModel newVersion);
+  List<LineVersionVersionModel> updateLineVersion(@PathVariable Long id,
+      @RequestBody @Valid LineVersionVersionModel newVersion);
 
   @GetMapping("line-coverage/{slnid}")
   CoverageModel getLineCoverage(@PathVariable String slnid);
@@ -93,7 +96,8 @@ public interface LineApiV1 {
   @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualLineVersions();
 
-  @Operation(description = "Export all line versions for the current timetable year change as csv and zip file to the ATLAS Amazon S3 Bucket")
+  @Operation(description = "Export all line versions for the current timetable year change as csv and zip file to the ATLAS "
+      + "Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFutureTimetableLineVersions();
 
