@@ -23,7 +23,7 @@ const authServiceMock: Partial<AuthService> = {
   logout: () => Promise.resolve(true),
   login: () => Promise.resolve(true),
   hasAnyRole(roles: Role[]): boolean {
-    for (let role of roles) {
+    for (const role of roles) {
       if (this.claims?.roles.includes(role)) return true;
     }
     return false;
