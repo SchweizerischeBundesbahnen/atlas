@@ -89,33 +89,32 @@
   </div>
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-    <ng-template [ngIf]="controller.form.disabled">
-      <atlas-button
-        buttonType="footer"
-        [mat-dialog-close]="true"
-        buttonDataCy="back-to-overview"
-        buttonText="COMMON.BACK_TO_OVERVIEW"
-      >
-      </atlas-button>
-    </ng-template>
-    <ng-template [ngIf]="!controller.form.disabled">
-      <atlas-button
-        buttonType="footer"
-        (buttonClicked)="controller.toggleEdit()"
-        buttonDataCy="cancel"
-        buttonText="COMMON.CANCEL"
-        wrapperStyleClass="me-3"
-      >
-      </atlas-button>
-      <atlas-button
-        buttonType="footer"
-        buttonDataCy="save-item"
-        [submitButton]="true"
-        (click)="controller.save()"
-        [disabled]="!controller.form.dirty"
-        buttonText="COMMON.SAVE"
-      >
-      </atlas-button>
-    </ng-template>
+    <atlas-button
+      buttonType="footerNonEdit"
+      [footerEdit]="controller.form.enabled"
+      [mat-dialog-close]="true"
+      buttonDataCy="back-to-overview"
+      buttonText="COMMON.BACK_TO_OVERVIEW"
+    >
+    </atlas-button>
+    <atlas-button
+      [footerEdit]="controller.form.enabled"
+      buttonType="footerEdit"
+      (buttonClicked)="controller.toggleEdit()"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
+    <atlas-button
+      buttonType="footerEdit"
+      [footerEdit]="controller.form.enabled"
+      buttonDataCy="save-item"
+      [submitButton]="true"
+      (click)="controller.save()"
+      [disabled]="!controller.form.dirty"
+      buttonText="COMMON.SAVE"
+    >
+    </atlas-button>
   </div>
 </div>

@@ -1,5 +1,7 @@
 import { Component, Input, NgModule, TemplateRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ApplicationType } from './api';
+import { AtlasButtonType } from './core/components/button/atlas-button.type';
 
 @Component({
   selector: 'app-table-search',
@@ -34,9 +36,31 @@ export class MockBoSelectComponent {
   @Input() sboidsRestrictions: string[] = [];
 }
 
+@Component({
+  selector: 'atlas-button',
+  template: '',
+})
+export class MockAtlasButtonComponent {
+  @Input() applicationType!: ApplicationType;
+  @Input() businessOrganisation!: string;
+  @Input() disabled!: boolean;
+
+  @Input() wrapperStyleClass!: string;
+  @Input() buttonDataCy!: string;
+  @Input() buttonType!: AtlasButtonType;
+  @Input() footerEdit = false;
+  @Input() submitButton!: boolean;
+  @Input() buttonText!: string;
+}
+
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
 @NgModule({
-  declarations: [MockAppDetailWrapperComponent, MockBoSelectComponent, MockAppTableSearchComponent],
+  declarations: [
+    MockAppDetailWrapperComponent,
+    MockBoSelectComponent,
+    MockAppTableSearchComponent,
+    MockAtlasButtonComponent,
+  ],
   exports: [MockBoSelectComponent],
 })
 export class AppMockComponents {}
