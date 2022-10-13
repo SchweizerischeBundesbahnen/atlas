@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { Company } from '../../../../api';
 import { CompanyDetailComponent } from './company-detail.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
@@ -15,8 +14,6 @@ const company: Company = {
 
 let component: CompanyDetailComponent;
 let fixture: ComponentFixture<CompanyDetailComponent>;
-let router: Router;
-let dialogRef: MatDialogRef<CompanyDetailComponent>;
 
 @Component({
   selector: 'app-dialog-close',
@@ -35,8 +32,6 @@ describe('CompanyDetailComponent', () => {
     fixture = TestBed.createComponent(CompanyDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    router = TestBed.inject(Router);
-    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should be created', () => {
