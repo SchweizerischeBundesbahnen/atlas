@@ -98,6 +98,11 @@
       <version>${revision}</version>
     </dependency>
     <dependency>
+      <artifactId>searching</artifactId>
+      <groupId>ch.sbb.atlas</groupId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
       <artifactId>base-service</artifactId>
       <classifier>tests</classifier>
       <groupId>ch.sbb.atlas</groupId>
