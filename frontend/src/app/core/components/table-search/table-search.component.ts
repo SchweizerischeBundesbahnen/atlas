@@ -33,7 +33,7 @@ export class TableSearchComponent {
   @Output() searchEvent: EventEmitter<TableSearch> = new EventEmitter<TableSearch>();
   @ViewChild('validOnInput') validOnInput!: ElementRef;
 
-  @ViewChild(BusinessOrganisationSelectComponent, { static: true })
+  @ViewChild(BusinessOrganisationSelectComponent)
   businessOrganisationSelectComponent!: BusinessOrganisationSelectComponent;
   boSearchForm = new FormGroup<BusinessOrganisationSearch>({
     businessOrganisation: new FormControl(),
