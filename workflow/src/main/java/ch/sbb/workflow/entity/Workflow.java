@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,6 +44,7 @@ public class Workflow {
   private Long id;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   private BusinessObjectType businessObjectType;
 
   @NotNull
@@ -52,10 +55,24 @@ public class Workflow {
   private String swissId;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   private WorkflowType workflowType;
 
+  @NotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_500)
+  private String description;
+
   @NotNull
+  @Enumerated(EnumType.STRING)
   private WorkflowStatus status;
+
+  @NotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  private String workflowComment;
+
+  @NotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  private String checkComment;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "client_id", referencedColumnName = "id")
