@@ -11,7 +11,7 @@ export class EditTitlePipe implements PipeTransform {
 
   transform(user: UserModel | undefined): string {
     if (user) {
-      return `${user.firstName} ${user.lastName}`;
+      return `${user.firstName ?? ''} ${user.lastName ?? ''}`;
     }
     return this.translatePipe.transform('USER_ADMIN.NOT_FOUND');
   }

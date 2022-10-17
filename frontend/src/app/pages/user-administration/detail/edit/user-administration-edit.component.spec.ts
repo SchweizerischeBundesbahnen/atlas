@@ -20,6 +20,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { BusinessOrganisationsService } from '../../../../api';
 import { UserModel } from '../../../../api/model/userModel';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { MockUserDetailInfoComponent } from '../../../../app.testing.mocks';
 
 @Component({
   selector: 'app-dialog-close',
@@ -77,7 +78,12 @@ describe('UserAdministrationEditComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationEditComponent, MockDialogCloseComponent, EditTitlePipe],
+      declarations: [
+        UserAdministrationEditComponent,
+        MockDialogCloseComponent,
+        EditTitlePipe,
+        MockUserDetailInfoComponent,
+      ],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
