@@ -37,8 +37,15 @@ public class WorkflowModel {
   @NotNull
   private WorkflowType workflowType;
 
+  @NotNull
+  private String description;
+
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus workflowStatus;
+
+  private String workflowComment;
+
+  private String checkComment;
 
   @Schema(description = "Client")
   private PersonModel client;
@@ -58,6 +65,9 @@ public class WorkflowModel {
         .businessObjectId(model.getBusinessObjectId())
         .businessObjectType(model.getBusinessObjectType())
         .swissId(model.getSwissId())
+        .description(model.getDescription())
+        .workflowComment(model.getWorkflowComment())
+        .checkComment(model.getCheckComment())
         .client(PersonModel.toEntity(model.getClient()))
         .examinant(PersonModel.toEntity(model.getExaminant()))
         .build();
@@ -69,7 +79,10 @@ public class WorkflowModel {
         .businessObjectId(entity.getBusinessObjectId())
         .businessObjectType(entity.getBusinessObjectType())
         .swissId(entity.getSwissId())
+        .description(entity.getDescription())
         .workflowStatus(entity.getStatus())
+        .workflowComment(entity.getWorkflowComment())
+        .checkComment(entity.getCheckComment())
         .client(PersonModel.toModel(entity.getClient()))
         .examinant(PersonModel.toModel(entity.getExaminant()))
         .build();
