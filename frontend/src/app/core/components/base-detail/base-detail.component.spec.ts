@@ -9,6 +9,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
 import { Component, Input } from '@angular/core';
 import { ApplicationRole, ApplicationType, UserPermissionVersionModel } from '../../../api';
+import { MockUserDetailInfoComponent } from '../../../app.testing.mocks';
 import { AtlasButtonComponent } from '../button/atlas-button.component';
 
 @Component({
@@ -67,6 +68,7 @@ describe('BaseDetailComponent', () => {
         MockAppCoverageComponent,
         MockDialogCloseComponent,
         AtlasButtonComponent,
+        MockUserDetailInfoComponent,
       ],
       imports: [AppTestingModule],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
