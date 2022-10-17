@@ -53,6 +53,14 @@ export class MockAtlasButtonComponent {
   @Input() buttonText!: string;
 }
 
+@Component({
+  selector: 'app-user-detail-info [record]',
+  template: '',
+})
+export class MockUserDetailInfoComponent {
+  @Input() record: any;
+}
+
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
 @NgModule({
   declarations: [
@@ -60,6 +68,7 @@ export class MockAtlasButtonComponent {
     MockBoSelectComponent,
     MockAppTableSearchComponent,
     MockAtlasButtonComponent,
+    MockUserDetailInfoComponent,
   ],
   exports: [MockBoSelectComponent],
 })
