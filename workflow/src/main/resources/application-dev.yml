@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url:
+    username: ${DB_USER}
+    password: ${DB_PWD}
+kafka:
+  atlas:
+    mail:
+      topic: atlas.workflow
+      groupId: atlas.kafka.workflow.groupId
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
