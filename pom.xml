@@ -41,6 +41,7 @@
       <module>line-directory</module>
       <module>business-organisation-directory</module>
       <module>user-administration</module>
+      <module>workflow</module>
       <!-- Combine APIs-->
       <module>apim-configuration</module>
       <module>gateway</module>
