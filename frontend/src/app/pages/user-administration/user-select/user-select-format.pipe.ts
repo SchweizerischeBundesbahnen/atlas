@@ -7,6 +7,6 @@ import { UserModel } from '../../../api/model/userModel';
 })
 export class UserSelectFormatPipe implements PipeTransform {
   transform(user: UserModel): string {
-    return `${user.displayName} (${user.mail})`;
+    return `${user.displayName} ${user.mail ? '(' + user.mail + ')' : ''}`;
   }
 }
