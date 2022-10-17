@@ -1,4 +1,4 @@
-package ch.sbb.scheduling.service;
+package ch.sbb.workflow.kafka;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.producer.BaseProducer;
