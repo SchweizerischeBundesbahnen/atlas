@@ -4,7 +4,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,6 +43,9 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
     WorkflowModel workflowModel = WorkflowModel.builder()
         .client(person)
         .swissId("CH123456")
+        .description("ch:123:431")
+        .workflowComment("comment")
+        .checkComment("comment")
         .examinant(person)
         .workflowType(WorkflowType.LINE)
         .businessObjectId(123456L)
@@ -71,6 +73,9 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .status(WorkflowStatus.ADDED)
         .examinant(person)
         .workflowType(WorkflowType.LINE)
+        .description("ch:123:431")
+        .workflowComment("comment")
+        .checkComment("comment")
         .businessObjectId(123456L)
         .businessObjectType(BusinessObjectType.SLNID)
         .build();
@@ -95,6 +100,9 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .examinant(person)
         .swissId("CH123456")
         .examinant(person)
+        .description("ch:123:431")
+        .workflowComment("comment")
+        .checkComment("comment")
         .workflowType(WorkflowType.LINE)
         .businessObjectId(123456L)
         .businessObjectType(BusinessObjectType.SLNID)
@@ -128,8 +136,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/workflows/")
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
-        ).andDo(print())
-        .andExpect(status().isBadRequest())
+        ).andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
         .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
         .andExpect(jsonPath("$.error", is("Method argument not valid error")))
