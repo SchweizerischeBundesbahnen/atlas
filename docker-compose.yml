@@ -85,16 +85,18 @@ services:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
+
   kafka:
     image: wurstmeister/kafka
     ports:
       - "9092:9092"
     depends_on:
       - zookeeper
+    restart: on-failure
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
       # atlas.mail will have 1 partition and 1 replicas
-      KAFKA_CREATE_TOPICS: "atlas.mail:1:1, atlas.user.administration:1:1, atlas.workflow:1:1"
+      KAFKA_CREATE_TOPICS: "atlas.mail:1:1,atlas.user.administration:1:1,atlas.workflow:1:1"

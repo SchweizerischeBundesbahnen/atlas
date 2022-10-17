@@ -41,6 +41,9 @@ spring:
 kafka:
   atlas:
     mail:
+      topic: atlas.mail
+      groupId: atlas.kafka.mail.groupId
+    workflow:
       topic: atlas.workflow
       groupId: atlas.kafka.workflow.groupId
     user:
