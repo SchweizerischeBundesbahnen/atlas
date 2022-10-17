@@ -38,7 +38,6 @@ public class WorkflowModel {
   private WorkflowType workflowType;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
-  @NotNull
   private WorkflowStatus workflowStatus;
 
   @Schema(description = "Client")

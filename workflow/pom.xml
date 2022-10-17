@@ -79,6 +79,29 @@
          <scope>test</scope>
       </dependency>
       <dependency>
+      <artifactId>spring-security-test</artifactId>
+      <groupId>org.springframework.security</groupId>
+      <scope>test</scope>
+   </dependency>
+      <dependency>
+         <artifactId>spring-restdocs-mockmvc</artifactId>
+         <groupId>org.springframework.restdocs</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>spring-auto-restdocs-core</artifactId>
+         <groupId>capital.scalable</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>base-service</artifactId>
+         <classifier>tests</classifier>
+         <groupId>ch.sbb.atlas</groupId>
+         <scope>test</scope>
+         <type>test-jar</type>
+         <version>${revision}</version>
+      </dependency>
+      <dependency>
          <artifactId>h2</artifactId>
          <groupId>com.h2database</groupId>
          <scope>test</scope>
