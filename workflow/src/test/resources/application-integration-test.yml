@@ -10,6 +10,9 @@ spring:
       path: /h2-console
   main:
     banner-mode: OFF
+  kafka:
+    # consumer - only for testing
+    bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
 logging:
   level:
     root: ERROR
