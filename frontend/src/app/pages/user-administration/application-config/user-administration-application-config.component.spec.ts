@@ -6,7 +6,7 @@ import { UserPermissionManager } from '../service/user-permission-manager';
 import { MaterialModule } from '../../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import SpyObj = jasmine.SpyObj;
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ApplicationType } from '../../../api';
 
 describe('UserAdministrationApplicationConfigComponent', () => {
@@ -31,6 +31,7 @@ describe('UserAdministrationApplicationConfigComponent', () => {
           LIDI: [],
           BODI: [],
         }),
+        boFormResetEvent$: of(),
       }
     );
     await TestBed.configureTestingModule({
@@ -66,10 +67,11 @@ describe('UserAdministrationApplicationConfigComponent', () => {
     component.add();
     expect(userPermissionManagerSpy.addSboidToPermission).not.toHaveBeenCalled();
 
-    component.businessOrganisationForm.get('businessOrganisation')?.setValue('test');
+    component.businessOrganisationForm.get(component.boFormCtrlName)?.setValue('test');
     component.application = 'TTFN';
     component.add();
     expect(userPermissionManagerSpy.addSboidToPermission).toHaveBeenCalledOnceWith('TTFN', 'test');
+    expect(component.businessOrganisationForm.get(component.boFormCtrlName)?.value).toBe(null);
   });
 
   it('test removeBusinessOrganisation', () => {
