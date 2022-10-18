@@ -14,6 +14,7 @@ import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.LineValidationService;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class LineService {
   private final VersionableService versionableService;
   private final LineValidationService lineValidationService;
   private final CoverageService coverageService;
+  private final LineStatusDecider lineStatusDecider;
 
   public Page<Line> findAll(LineSearchRestrictions searchRestrictions) {
     return lineRepository.findAll(searchRestrictions.getSpecification(),
@@ -54,7 +56,7 @@ public class LineService {
 
   @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
   public LineVersion create(LineVersion businessObject) {
-    return save(businessObject);
+    return save(businessObject, Collections.emptyList());
   }
 
   @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
@@ -98,8 +100,8 @@ public class LineService {
     return lineVersionRepository.getAllCoveredLineVersions();
   }
 
-  LineVersion save(LineVersion lineVersion) {
-    lineVersion.setStatus(Status.VALIDATED);
+  LineVersion save(LineVersion lineVersion, List<LineVersion> currentLineVersions) {
+    lineVersion.setStatus(lineStatusDecider.getStatusForLine(lineVersion, currentLineVersions));
     lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
     lineVersionRepository.saveAndFlush(lineVersion);
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
@@ -121,7 +123,7 @@ public class LineService {
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
 
-    versionableService.applyVersioning(LineVersion.class, versionedObjects, this::save,
+    versionableService.applyVersioning(LineVersion.class, versionedObjects, version -> save(version, currentVersions),
         this::deleteById);
   }
 
