@@ -1,0 +1,87 @@
+package ch.sbb.line.directory.service;
+
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.enumaration.LineType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+public class LineStatusDecider {
+
+  public Status getStatusForLine(LineVersion newLineVersion, List<LineVersion> currentLineVersions) {
+    // Only for ORDERLY Lines there may be a workflow
+    if (newLineVersion.getLineType() != LineType.ORDERLY) {
+      return Status.VALIDATED;
+    }
+
+    Optional<LineVersion> previousVersionOnSameTimeslot = findPreviousVersionOnSameTimeslot(newLineVersion, currentLineVersions);
+    log.debug("Deciding on Line.Status with previousVersionOnSameTimeslot={} and newLineVersion={}",
+        previousVersionOnSameTimeslot, newLineVersion);
+
+    // If there was no version previously on the timeline of the saving version, a workflow is mandatory
+    if (previousVersionOnSameTimeslot.isEmpty()) {
+      return Status.DRAFT;
+    }
+
+    return getStatusWithPreviousVersion(newLineVersion, previousVersionOnSameTimeslot.orElseThrow());
+  }
+
+  /**
+   * Pre-Save Versions: |------||------||------|
+   *                               ^
+   * Saving Version             |------|
+   */
+  private Optional<LineVersion> findPreviousVersionOnSameTimeslot(LineVersion newLineVersion,
+      List<LineVersion> currentLineVersions) {
+    return currentLineVersions.stream().filter(currentLineVersion ->
+        !currentLineVersion.getValidTo().isBefore(newLineVersion.getValidFrom()) &&
+            !currentLineVersion.getValidFrom().isAfter(newLineVersion.getValidTo())).findFirst();
+  }
+
+  private Status getStatusWithPreviousVersion(LineVersion newLineVersion, LineVersion currentLineVersion) {
+    boolean attributeChange = new LineRelevantAttributeChange().test(newLineVersion, currentLineVersion);
+    boolean prolongation = new LineProlongation().test(newLineVersion, currentLineVersion);
+    log.debug("Deciding on Line.Status with previousVersion. attributeChange={}, prolongation={}", attributeChange, prolongation);
+    return attributeChange || prolongation ? Status.DRAFT : Status.VALIDATED;
+  }
+
+  private static class LineRelevantAttributeChange implements BiPredicate<LineVersion, LineVersion> {
+
+    private final List<Function<LineVersion, Object>> worflowRelevantAttributes = new ArrayList<>();
+
+    LineRelevantAttributeChange() {
+      worflowRelevantAttributes.add(LineVersion::getNumber);
+      worflowRelevantAttributes.add(LineVersion::getDescription);
+      worflowRelevantAttributes.add(LineVersion::getLongName);
+      worflowRelevantAttributes.add(LineVersion::getAlternativeName);
+      worflowRelevantAttributes.add(LineVersion::getCombinationName);
+    }
+
+    @Override
+    public boolean test(LineVersion newLineVersion, LineVersion currentLineVersion) {
+      for (Function<LineVersion, Object> attribute : worflowRelevantAttributes) {
+        if (!attribute.apply(currentLineVersion).equals(attribute.apply(newLineVersion))) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+
+  private static class LineProlongation implements BiPredicate<LineVersion, LineVersion> {
+
+    @Override
+    public boolean test(LineVersion newLineVersion, LineVersion currentLineVersion) {
+      return newLineVersion.getValidFrom().isBefore(currentLineVersion.getValidFrom())
+          || newLineVersion.getValidTo().isAfter(currentLineVersion.getValidTo());
+    }
+  }
+
+}
