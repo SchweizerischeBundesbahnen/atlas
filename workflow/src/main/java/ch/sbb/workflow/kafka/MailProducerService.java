@@ -23,5 +23,5 @@ public class MailProducerService extends BaseProducer<MailNotification> {
   public void produceMailNotification(MailNotification mailNotification) {
     produceEvent(mailNotification);
   }
-
+  
 }
