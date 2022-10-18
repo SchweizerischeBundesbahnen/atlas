@@ -11,7 +11,10 @@
         <mat-select
           [disabled]="readOnly"
           [value]="role"
-          (selectionChange)="userPermissionManager.changePermissionRole(application, $event.value)"
+          (selectionChange)="
+            userPermissionManager.changePermissionRole(application, $event.value);
+            businessOrganisationForm.reset()
+          "
         >
           <mat-option *ngFor="let option of availableOptions" [value]="option">{{
             'COMMON.ROLES.' + option | translate
@@ -39,7 +42,7 @@
           <div *ngIf="!readOnly" table-button-between class="mb-3 bo-select-wrapper">
             <bo-select
               [formGroup]="businessOrganisationForm"
-              [controlName]="'businessOrganisation'"
+              [controlName]="boFormCtrlName"
             ></bo-select>
           </div>
         </app-relation>
