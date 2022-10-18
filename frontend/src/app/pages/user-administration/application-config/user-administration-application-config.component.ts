@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ApplicationRole, ApplicationType, BusinessOrganisation } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../service/user-permission-manager';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -13,32 +13,19 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./user-administration-application-config.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserAdministrationApplicationConfigComponent implements OnInit {
+export class UserAdministrationApplicationConfigComponent implements OnInit, OnDestroy {
   @Input() application!: ApplicationType;
   @Input() readOnly = false;
   @Input() role: ApplicationRole = 'READER';
 
   boListener$: Observable<BusinessOrganisation[]> = of([]);
 
-  constructor(
-    private readonly boLanguageService: BusinessOrganisationLanguageService,
-    readonly userPermissionManager: UserPermissionManager
-  ) {}
-
-  ngOnInit() {
-    this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
-      this.application
-    );
-    this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
-      map((bosOfApplications) => bosOfApplications[this.application])
-    );
-  }
-
   availableOptions: ApplicationRole[] = [];
   selectedIndex = -1;
 
+  readonly boFormCtrlName = 'businessOrganisation';
   readonly businessOrganisationForm: FormGroup = new FormGroup({
-    businessOrganisation: new FormControl<BusinessOrganisation | null>(null),
+    [this.boFormCtrlName]: new FormControl<BusinessOrganisation | null>(null),
   });
 
   readonly tableColumnDef: TableColumn<BusinessOrganisation>[] = [
@@ -64,10 +51,35 @@ export class UserAdministrationApplicationConfigComponent implements OnInit {
     },
   ];
 
+  private readonly boFormResetEventSubscription: Subscription;
+
+  constructor(
+    private readonly boLanguageService: BusinessOrganisationLanguageService,
+    readonly userPermissionManager: UserPermissionManager
+  ) {
+    this.boFormResetEventSubscription = userPermissionManager.boFormResetEvent$.subscribe(() =>
+      this.businessOrganisationForm.reset()
+    );
+  }
+
+  ngOnInit() {
+    this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
+      this.application
+    );
+    this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
+      map((bosOfApplications) => bosOfApplications[this.application])
+    );
+  }
+
+  ngOnDestroy() {
+    this.boFormResetEventSubscription.unsubscribe();
+  }
+
   add(): void {
-    const value = this.businessOrganisationForm.get('businessOrganisation')?.value;
+    const value = this.businessOrganisationForm.get(this.boFormCtrlName)?.value;
     if (value) {
       this.userPermissionManager.addSboidToPermission(this.application, value);
+      this.businessOrganisationForm.reset();
     }
   }
 

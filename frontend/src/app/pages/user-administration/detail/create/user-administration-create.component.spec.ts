@@ -53,7 +53,7 @@ describe('UserAdministrationCreateComponent', () => {
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
     userPermissionManagerSpy = jasmine.createSpyObj<UserPermissionManager>(
       'UserPermissionManager',
-      ['setSbbUserId', 'clearSboidsIfNotWriter', 'getUserPermission', 'getSbbUserId']
+      ['setSbbUserId', 'clearSboidsIfNotWriter', 'getSbbUserId']
     );
     boServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
       'BusinessOrganisationsService',
