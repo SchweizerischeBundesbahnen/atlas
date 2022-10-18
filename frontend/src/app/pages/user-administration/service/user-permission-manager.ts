@@ -31,6 +31,7 @@ export class UserPermissionManager {
       },
     ],
   };
+
   readonly businessOrganisationsOfApplication: {
     [application in ApplicationType]: BusinessOrganisation[];
   } = {
@@ -38,11 +39,13 @@ export class UserPermissionManager {
     LIDI: [],
     BODI: [],
   };
+
   readonly boOfApplicationsSubject$: BehaviorSubject<{
     [application in ApplicationType]: BusinessOrganisation[];
   }> = new BehaviorSubject<{ [application in ApplicationType]: BusinessOrganisation[] }>(
     this.businessOrganisationsOfApplication
   );
+
   private readonly availableApplicationRolesConfig: {
     [application in ApplicationType]: ApplicationRole[];
   } = {
@@ -72,10 +75,6 @@ export class UserPermissionManager {
     });
   }
 
-  getUserPermission(): UserPermissionCreateModel {
-    return this.userPermission;
-  }
-
   getSbbUserId(): string {
     return this.userPermission.sbbUserId;
   }
@@ -96,7 +95,7 @@ export class UserPermissionManager {
       this.userPermission.permissions[permissionIndex].role = permission.role;
       this.userPermission.permissions[permissionIndex].sboids = [];
       this.businessOrganisationsOfApplication[application] = [];
-      // TODO: what when sboids empty
+      this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
       permission.sboids.forEach((sboid) => {
         this.addSboidToPermission(application, sboid);
       });
