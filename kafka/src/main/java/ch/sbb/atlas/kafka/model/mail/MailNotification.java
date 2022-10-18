@@ -2,6 +2,8 @@ package ch.sbb.atlas.kafka.model.mail;
 
 import ch.sbb.atlas.kafka.model.AtlasEvent;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.Email;
@@ -17,7 +19,10 @@ import org.apache.commons.lang3.ArrayUtils;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class MailNotification implements AtlasEvent {
+public class MailNotification implements Serializable, AtlasEvent {
+
+  @Serial
+  private static final long serialVersionUID = 1;
 
   private String from;
 

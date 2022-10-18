@@ -1,6 +1,9 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
