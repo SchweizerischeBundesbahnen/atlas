@@ -56,16 +56,16 @@ export class UserAdministrationCreateComponent {
     this.saveEnabled = false;
     this.userPermissionManager.setSbbUserId(this.userLoaded!.sbbUserId!);
     this.userPermissionManager.clearSboidsIfNotWriter();
-    this.userService.createUserPermission(this.userPermissionManager.getUserPermission()).subscribe(
-      () => {
+    this.userService.createUserPermission(this.userPermissionManager.userPermission).subscribe({
+      next: () => {
         this.router
           .navigate([Pages.USER_ADMINISTRATION.path, this.userPermissionManager.getSbbUserId()], {
             relativeTo: this.route,
           })
           .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
       },
-      () => (this.saveEnabled = true)
-    );
+      error: () => (this.saveEnabled = true),
+    });
   }
 
   cancelCreation(showDialog = true): void {
