@@ -6,7 +6,7 @@ import {
   UserPermissionCreateModel,
   UserPermissionVersionModel,
 } from '../../../api';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable()
@@ -31,6 +31,7 @@ export class UserPermissionManager {
       },
     ],
   };
+
   readonly businessOrganisationsOfApplication: {
     [application in ApplicationType]: BusinessOrganisation[];
   } = {
@@ -38,11 +39,13 @@ export class UserPermissionManager {
     LIDI: [],
     BODI: [],
   };
+
   readonly boOfApplicationsSubject$: BehaviorSubject<{
     [application in ApplicationType]: BusinessOrganisation[];
   }> = new BehaviorSubject<{ [application in ApplicationType]: BusinessOrganisation[] }>(
     this.businessOrganisationsOfApplication
   );
+
   private readonly availableApplicationRolesConfig: {
     [application in ApplicationType]: ApplicationRole[];
   } = {
@@ -52,6 +55,13 @@ export class UserPermissionManager {
   };
 
   constructor(private readonly boService: BusinessOrganisationsService) {}
+
+  private boFormResetEventSource = new Subject<void>();
+  readonly boFormResetEvent$ = this.boFormResetEventSource.asObservable();
+
+  emitBoFormResetEvent(): void {
+    this.boFormResetEventSource.next();
+  }
 
   getAvailableApplicationRolesOfApplication(application: ApplicationType): ApplicationRole[] {
     return this.availableApplicationRolesConfig[application];
@@ -63,10 +73,6 @@ export class UserPermissionManager {
         permission.sboids = [];
       }
     });
-  }
-
-  getUserPermission(): UserPermissionCreateModel {
-    return this.userPermission;
   }
 
   getSbbUserId(): string {
@@ -89,6 +95,7 @@ export class UserPermissionManager {
       this.userPermission.permissions[permissionIndex].role = permission.role;
       this.userPermission.permissions[permissionIndex].sboids = [];
       this.businessOrganisationsOfApplication[application] = [];
+      this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
       permission.sboids.forEach((sboid) => {
         this.addSboidToPermission(application, sboid);
       });
