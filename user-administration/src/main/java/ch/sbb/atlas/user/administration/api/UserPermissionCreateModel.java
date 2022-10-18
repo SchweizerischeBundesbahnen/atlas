@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Builder;
@@ -20,8 +21,7 @@ import lombok.Data;
 public class UserPermissionCreateModel {
 
   @Schema(description = "SBB User-ID", example = "u123456", required = true)
-  @NotNull
-  @Size(min = 7, max = 7)
+  @NotEmpty
   private String sbbUserId;
 
   @Schema(description = "User permissions", required = true)
@@ -53,11 +53,13 @@ public class UserPermissionCreateModel {
 
   public List<UserPermission> toEntityList() {
     return permissions.stream().map(permission -> UserPermission.builder()
-        .sbbUserId(sbbUserId.toLowerCase())
-        .application(permission.getApplication())
-        .role(permission.getRole())
-        .sboid(new HashSet<>(permission.getSboids()))
-        .build()
+                                                                .sbbUserId(sbbUserId.toLowerCase())
+                                                                .application(
+                                                                    permission.getApplication())
+                                                                .role(permission.getRole())
+                                                                .sboid(new HashSet<>(
+                                                                    permission.getSboids()))
+                                                                .build()
     ).toList();
   }
 
