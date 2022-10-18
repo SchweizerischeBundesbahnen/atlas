@@ -11,6 +11,9 @@ import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * Documentation at LineStatusDecision.puml
+ */
 @Slf4j
 @Service
 public class LineStatusDecider {
@@ -57,6 +60,7 @@ public class LineStatusDecider {
     private final List<Function<LineVersion, Object>> worflowRelevantAttributes = new ArrayList<>();
 
     LineRelevantAttributeChange() {
+      worflowRelevantAttributes.add(LineVersion::getSwissLineNumber);
       worflowRelevantAttributes.add(LineVersion::getNumber);
       worflowRelevantAttributes.add(LineVersion::getDescription);
       worflowRelevantAttributes.add(LineVersion::getLongName);
