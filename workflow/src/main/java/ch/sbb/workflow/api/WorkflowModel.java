@@ -1,9 +1,9 @@
 package ch.sbb.workflow.api;
 
-import ch.sbb.workflow.entity.BusinessObjectType;
+import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
-import ch.sbb.workflow.entity.WorkflowStatus;
-import ch.sbb.workflow.entity.WorkflowType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDateTime;

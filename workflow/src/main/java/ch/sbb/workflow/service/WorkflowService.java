@@ -1,8 +1,8 @@
 package ch.sbb.workflow.service;
 
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Workflow;
-import ch.sbb.workflow.entity.WorkflowStatus;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import java.util.List;
@@ -22,8 +22,8 @@ public class WorkflowService {
   public Workflow createWorkflow(Workflow workflow) {
     workflow.setStatus(WorkflowStatus.ADDED);
     Workflow entity = repository.save(workflow);
-    notificationService.sendEventToLidi(workflow);
-    notificationService.sendEventToMail(workflow);
+    notificationService.sendEventToLidi(entity);
+    notificationService.sendEventToMail(entity);
     return entity;
   }
 
