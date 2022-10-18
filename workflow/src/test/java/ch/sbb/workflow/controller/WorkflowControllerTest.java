@@ -8,18 +8,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.api.PersonModel;
 import ch.sbb.workflow.api.WorkflowModel;
-import ch.sbb.workflow.entity.BusinessObjectType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
-import ch.sbb.workflow.entity.WorkflowStatus;
-import ch.sbb.workflow.entity.WorkflowType;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 
+@EmbeddedKafka(topics = {"atlas.mail", "atlas.workflow"})
 public class WorkflowControllerTest extends BaseControllerApiTest {
 
   @Autowired
@@ -126,6 +128,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
     WorkflowModel workflowModel = WorkflowModel.builder()
         .client(person)
         .examinant(person)
+        .description("desc")
         .swissId("CH123456")
         .examinant(person)
         .businessObjectId(123456L)
