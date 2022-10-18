@@ -15,7 +15,10 @@ import java.time.LocalDate;
 
 public class LineTestData {
 
-  private static final RgbColor RGB_COLOR = new RgbColor(0, 0, 0);
+  public static final RgbColor RBG_YELLOW = new RgbColor(255, 255, 0);
+  public static final RgbColor RBG_RED = new RgbColor(255, 0, 0);
+  public static final RgbColor RGB_BLACK = new RgbColor(0, 0, 0);
+
   private static final CmykColor CYMK_COLOR = new CmykColor(0, 0, 0, 0);
 
   public static LineVersionBuilder<?, ?> lineVersionBuilder() {
@@ -27,8 +30,8 @@ public class LineTestData {
         .alternativeName("alternativeName")
         .combinationName("combinationName")
         .longName("longName")
-        .colorFontRgb(RGB_COLOR)
-        .colorBackRgb(RGB_COLOR)
+        .colorFontRgb(RGB_BLACK)
+        .colorBackRgb(RGB_BLACK)
         .colorFontCmyk(CYMK_COLOR)
         .colorBackCmyk(CYMK_COLOR)
         .description("description")
