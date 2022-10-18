@@ -45,21 +45,20 @@ export class UserAdministrationEditComponent implements OnInit {
 
   saveEdits(): void {
     this.saveEnabled = false;
+    this.userPermissionManager.emitBoFormResetEvent();
     this.userPermissionManager.clearSboidsIfNotWriter();
-    this.userService
-      .updateUserPermission(this.userPermissionManager.getUserPermission())
-      .subscribe({
-        next: (user: UserModel) => {
-          this.user = user;
-          this.editMode = false;
-          this.userPermissionManager.setPermissions(
-            this.userService.getPermissionsFromUserModelAsArray(this.user)
-          );
-          this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
-          this.convertUserPermissionToRecord();
-        },
-        error: () => (this.saveEnabled = true),
-      });
+    this.userService.updateUserPermission(this.userPermissionManager.userPermission).subscribe({
+      next: (user: UserModel) => {
+        this.user = user;
+        this.editMode = false;
+        this.userPermissionManager.setPermissions(
+          this.userService.getPermissionsFromUserModelAsArray(this.user)
+        );
+        this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
+        this.convertUserPermissionToRecord();
+      },
+      error: () => (this.saveEnabled = true),
+    });
   }
 
   cancelEdit(showDialog = true): void {
@@ -73,6 +72,7 @@ export class UserAdministrationEditComponent implements OnInit {
         this.userPermissionManager.setPermissions(
           this.userService.getPermissionsFromUserModelAsArray(this.user!)
         );
+        this.userPermissionManager.emitBoFormResetEvent();
       }
     });
   }
