@@ -36,10 +36,10 @@ describe('UserPermissionManager', () => {
     expect(userPermissionManager.userPermission.permissions[1].sboids).toEqual([]);
   }));
 
-  it('test getSbbUserId, setSbbUserId, getUserPermission', () => {
+  it('test getSbbUserId, setSbbUserId', () => {
     userPermissionManager.setSbbUserId('***REMOVED***');
     expect(userPermissionManager.getSbbUserId()).toEqual('***REMOVED***');
-    expect(userPermissionManager.getUserPermission().sbbUserId).toEqual('***REMOVED***');
+    expect(userPermissionManager.userPermission.sbbUserId).toEqual('***REMOVED***');
   });
 
   it('test getCurrentRole', () => {

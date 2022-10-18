@@ -19,29 +19,6 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   @Input() role: ApplicationRole = 'READER';
 
   boListener$: Observable<BusinessOrganisation[]> = of([]);
-  private readonly boFormResetEventSubscription: Subscription;
-
-  constructor(
-    private readonly boLanguageService: BusinessOrganisationLanguageService,
-    readonly userPermissionManager: UserPermissionManager
-  ) {
-    this.boFormResetEventSubscription = userPermissionManager.boFormResetEvent$.subscribe(() =>
-      this.businessOrganisationForm.reset()
-    );
-  }
-
-  ngOnInit() {
-    this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
-      this.application
-    );
-    this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
-      map((bosOfApplications) => bosOfApplications[this.application])
-    );
-  }
-
-  ngOnDestroy() {
-    this.boFormResetEventSubscription.unsubscribe();
-  }
 
   availableOptions: ApplicationRole[] = [];
   selectedIndex = -1;
@@ -73,6 +50,30 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
       value: this.boLanguageService.getCurrentLanguageDescription(),
     },
   ];
+
+  private readonly boFormResetEventSubscription: Subscription;
+
+  constructor(
+    private readonly boLanguageService: BusinessOrganisationLanguageService,
+    readonly userPermissionManager: UserPermissionManager
+  ) {
+    this.boFormResetEventSubscription = userPermissionManager.boFormResetEvent$.subscribe(() =>
+      this.businessOrganisationForm.reset()
+    );
+  }
+
+  ngOnInit() {
+    this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
+      this.application
+    );
+    this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
+      map((bosOfApplications) => bosOfApplications[this.application])
+    );
+  }
+
+  ngOnDestroy() {
+    this.boFormResetEventSubscription.unsubscribe();
+  }
 
   add(): void {
     const value = this.businessOrganisationForm.get(this.boFormCtrlName)?.value;
