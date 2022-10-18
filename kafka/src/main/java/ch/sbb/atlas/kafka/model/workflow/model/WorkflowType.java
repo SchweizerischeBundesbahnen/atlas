@@ -1,4 +1,4 @@
-package ch.sbb.workflow.entity;
+package ch.sbb.atlas.kafka.model.workflow.model;
 
 public enum WorkflowType {
 
