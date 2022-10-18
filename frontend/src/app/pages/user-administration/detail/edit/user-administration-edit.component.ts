@@ -73,6 +73,7 @@ export class UserAdministrationEditComponent implements OnInit {
         this.userPermissionManager.setPermissions(
           this.userService.getPermissionsFromUserModelAsArray(this.user!)
         );
+        this.userPermissionManager.emitBoFormResetEvent();
       }
     });
   }
