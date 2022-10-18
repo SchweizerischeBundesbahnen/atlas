@@ -14,8 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,8 +45,7 @@ public class UserPermission extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private ApplicationType application;
 
-  @NotNull
-  @Size(min = 7, max = 7)
+  @NotEmpty
   private String sbbUserId;
 
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
