@@ -51,12 +51,16 @@ describe('UserAdministrationEditComponent', () => {
       'getPermissionsFromUserModelAsArray',
       'updateUserPermission',
     ]);
-    userPermissionManagerSpy = jasmine.createSpyObj('UserPermissionManager', [
-      'setSbbUserId',
-      'setPermissions',
-      'clearSboidsIfNotWriter',
-      'getUserPermission',
-    ]);
+    userPermissionManagerSpy = jasmine.createSpyObj(
+      'UserPermissionManager',
+      ['setSbbUserId', 'setPermissions', 'clearSboidsIfNotWriter', 'emitBoFormResetEvent'],
+      {
+        userPermission: {
+          sbbUserId: 'u123456',
+          permissions: [],
+        },
+      }
+    );
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
     boServiceSpy = jasmine.createSpyObj('BusinessOrganisationService', [
       'getAllBusinessOrganisations',
@@ -128,10 +132,6 @@ describe('UserAdministrationEditComponent', () => {
   });
 
   it('test saveEdits', () => {
-    userPermissionManagerSpy.getUserPermission.and.returnValue({
-      permissions: [],
-      sbbUserId: 'u123456',
-    });
     userServiceSpy.updateUserPermission.and.returnValue(
       of({
         sbbUserId: 'u123456',
@@ -141,6 +141,7 @@ describe('UserAdministrationEditComponent', () => {
     component.saveEdits();
 
     expect(userPermissionManagerSpy.clearSboidsIfNotWriter).toHaveBeenCalledOnceWith();
+    expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.updateUserPermission).toHaveBeenCalledOnceWith({
       permissions: [],
       sbbUserId: 'u123456',
@@ -173,6 +174,7 @@ describe('UserAdministrationEditComponent', () => {
     expect(dialogMock.closeCalled).toBeFalse();
     expect(component.editMode).toBeFalse();
     expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledOnceWith([]);
+    expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();
   });
 
   it('test cancelEdit showDialog=true,confirmLeaveResult=false', () => {
