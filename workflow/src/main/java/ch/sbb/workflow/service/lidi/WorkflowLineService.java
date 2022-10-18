@@ -1,4 +1,4 @@
-package ch.sbb.workflow.service;
+package ch.sbb.workflow.service.lidi;
 
 import ch.sbb.atlas.base.service.helper.AtlasFrontendBaseUrl;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;

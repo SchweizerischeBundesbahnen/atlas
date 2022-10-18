@@ -2,9 +2,9 @@ package ch.sbb.workflow.kafka;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.workflow.WorkflowEvent;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
-import ch.sbb.workflow.entity.WorkflowType;
-import ch.sbb.workflow.service.WorkflowLineService;
+import ch.sbb.workflow.service.lidi.WorkflowLineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +19,22 @@ public class WorkflowNotificationService {
   private final WorkflowLineService workflowLineService;
 
   public void sendEventToMail(Workflow workflow) {
-    MailNotification mailNotification = null;
+    MailNotification mailNotification;
     if (WorkflowType.LINE == workflow.getWorkflowType()) {
       mailNotification = workflowLineService.buildMailNotification(workflow);
+      mailProducerService.produceMailNotification(mailNotification);
     }
-    mailProducerService.produceMailNotification(mailNotification);
   }
 
   public void sendEventToLidi(Workflow workflow) {
-    WorkflowEvent workflowEvent = WorkflowEvent.builder().workflowId(workflow.getId()).build();
+    WorkflowEvent workflowEvent = WorkflowEvent.builder()
+        .workflowId(workflow.getId())
+        .businessObjectId(workflow.getBusinessObjectId())
+        .businessObjectType(workflow.getBusinessObjectType())
+        .workflowStatus(workflow.getStatus())
+        .workflowType(workflow.getWorkflowType())
+        .swissId(workflow.getSwissId())
+        .build();
     workflowProducerService.produceWorkflowNotification(workflowEvent);
   }
 }
