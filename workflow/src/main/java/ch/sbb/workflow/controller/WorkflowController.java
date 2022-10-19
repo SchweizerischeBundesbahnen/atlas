@@ -17,7 +17,7 @@ public class WorkflowController implements WorkflowApiV1 {
   private final WorkflowService service;
 
   @Override
-  public WorkflowModel getWorkflows(Long id) {
+  public WorkflowModel getWorkflow(Long id) {
     return WorkflowModel.toModel(service.getWorkflow(id));
   }
 
