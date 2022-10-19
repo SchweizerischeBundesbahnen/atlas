@@ -44,8 +44,9 @@ public class LineStatusDecider {
   private Optional<LineVersion> findPreviousVersionOnSameTimeslot(LineVersion newLineVersion,
       List<LineVersion> currentLineVersions) {
     return currentLineVersions.stream().filter(currentLineVersion ->
-        !currentLineVersion.getValidTo().isBefore(newLineVersion.getValidFrom()) &&
-            !currentLineVersion.getValidFrom().isAfter(newLineVersion.getValidTo())).findFirst();
+            !currentLineVersion.getValidTo().isBefore(newLineVersion.getValidFrom()) &&
+                !currentLineVersion.getValidFrom().isAfter(newLineVersion.getValidTo()))
+        .filter(lineVersion -> lineVersion.getStatus() == Status.VALIDATED).findFirst();
   }
 
   private Status getStatusWithPreviousVersion(LineVersion newLineVersion, LineVersion currentLineVersion) {
