@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface WorkflowApiV1 {
 
   @GetMapping("{id}")
-  WorkflowModel getWorkflows(@PathVariable Long id);
+  WorkflowModel getWorkflow(@PathVariable Long id);
 
   @GetMapping()
   List<WorkflowModel> getWorkflows();
