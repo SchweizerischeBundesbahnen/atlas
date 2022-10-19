@@ -17,15 +17,19 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
     return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(
         lineVersion.getValidFrom(), lineVersion.getValidTo(),
         lineVersion.getSwissLineNumber()).stream()
-                                         .filter(
-                                             i -> !i.getSlnid().equals(lineVersion.getSlnid()))
-                                         .collect(
-                                             Collectors.toList());
+        .filter(
+            i -> !i.getSlnid().equals(lineVersion.getSlnid()))
+        .collect(
+            Collectors.toList());
   }
 
   List<LineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
+  //  @Query("SELECT lv FROM line_version as lv"
+  //      + " JOIN line_version_workflow as lvw "
+  //      + " ON lv.id = lvw.lineVersion.id"
+  //      + " ORDER BY lv.validFrom ASC")
   List<LineVersion> findAllBySlnidOrderByValidFrom(String slnid);
 
   @Query("SELECT lv FROM line_version as lv"
