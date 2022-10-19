@@ -107,6 +107,51 @@ public class LineServiceStatusDecisionTest {
     assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
   }
 
+  @Test
+  public void updateCreatingNewFeatureVersionAndReupdateShouldStayAsDraft() {
+    //given
+    version1 = lineVersionRepository.save(version1);
+    LineVersion editedVersion = new LineVersion();
+    editedVersion.setDescription("Description <changed>");
+    editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
+
+    //when
+    lineService.updateVersion(version1, editedVersion);
+    List<LineVersion> result = lineVersionRepository.findAllBySlnidOrderByValidFrom(
+        version1.getSlnid());
+
+    //then
+
+    assertThat(result).isNotNull().hasSize(2);
+
+    // Version 1
+    LineVersion firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
+
+    // Version 2
+    LineVersion secondTemporalVersion = result.get(1);
+    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
+    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2022, 12, 31));
+    assertThat(secondTemporalVersion.getDescription()).isEqualTo("Description <changed>");
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.DRAFT);
+
+    editedVersion = new LineVersion();
+    editedVersion.setColorBackRgb(LineTestData.RBG_RED);
+    editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
+
+    // when DRAFT Version gets updated again
+    lineService.updateVersion(version1, editedVersion);
+    result = lineVersionRepository.findAllBySlnidOrderByValidFrom(
+        version1.getSlnid());
+
+    secondTemporalVersion = result.get(1);
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.DRAFT);
+  }
+
   /**
    * Szenario 1: Neue Version mit neuem Namen wird hinzugefügt
    * Vorher:      |-------------|
