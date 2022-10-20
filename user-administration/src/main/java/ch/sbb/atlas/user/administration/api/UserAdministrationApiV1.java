@@ -34,6 +34,10 @@ public interface UserAdministrationApiV1 {
   @Operation(description = "Retrieve User Information for a given user")
   UserModel getUser(@PathVariable String userId);
 
+  @GetMapping("{userId}/displayname")
+  @Operation(description = "Retrieve Users DisplayName for a given user")
+  UserDisplayNameModel getUserDisplayName(@PathVariable String userId);
+
   @GetMapping("current")
   UserModel getCurrentUser();
 
