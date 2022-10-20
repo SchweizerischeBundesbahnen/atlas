@@ -1,5 +1,7 @@
 package ch.sbb.line.directory.controller;
 
+import static java.util.stream.Collectors.toSet;
+
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
@@ -7,6 +9,7 @@ import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
 import ch.sbb.line.directory.api.LineModel;
 import ch.sbb.line.directory.api.LineVersionVersionModel;
+import ch.sbb.line.directory.api.LineVersionWorkflowModel;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.Line;
@@ -166,6 +169,10 @@ public class LineController implements LineApiV1 {
         .comment(lineVersion.getComment())
         .swissLineNumber(lineVersion.getSwissLineNumber())
         .etagVersion(lineVersion.getVersion())
+        .lineVersionWorkflows(
+            lineVersion.getLineVersionWorkflows()
+                .stream()
+                .map(LineVersionWorkflowModel::toModel).collect(toSet()))
         .creator(lineVersion.getCreator())
         .creationDate(lineVersion.getCreationDate())
         .editor(lineVersion.getEditor())
