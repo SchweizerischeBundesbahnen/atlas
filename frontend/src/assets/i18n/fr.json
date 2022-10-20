@@ -29,7 +29,7 @@
       "INCOMPLETE": "Incomplet"
     },
     "NODATAFOUND": "Aucune donnée n’a été trouvée.",
-    "TYPE_TO_SEARCH": "Entrez un texte pour commencer la recherche.",
+    "TYPE_TO_SEARCH": "Entrez au moins 2 caractères pour commencer la recherche.",
     "JA": "Oui",
     "NEIN": "Non",
     "ACHTUNG": "Attention!",
