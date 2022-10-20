@@ -1,6 +1,7 @@
 import { Status } from '../../../api';
+import { CreationEditionRecord } from './user-edit-info/creation-edition-record';
 
-export interface Record {
+export interface Record extends CreationEditionRecord {
   id?: number;
   validFrom?: Date;
   validTo?: Date;
@@ -8,8 +9,4 @@ export interface Record {
   businessOrganisation?: string;
   status?: Status;
   versionNumber?: number;
-  editor?: string;
-  editionDate?: string;
-  creator?: string;
-  creationDate?: string;
 }
