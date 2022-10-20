@@ -4,6 +4,7 @@ import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.service.UserService;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.api.UserAdministrationApiV1;
+import ch.sbb.atlas.user.administration.api.UserDisplayNameModel;
 import ch.sbb.atlas.user.administration.api.UserModel;
 import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
 import ch.sbb.atlas.user.administration.api.UserPermissionVersionModel;
@@ -42,19 +43,27 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     List<UserModel> userModels = graphApiService.resolveUsers(userPage.getContent());
     userModels.forEach(user -> user.setPermissions(getUserPermissionModels(user.getSbbUserId())));
     return Container.<UserModel>builder()
-                    .totalCount(userPage.getTotalElements())
-                    .objects(userModels)
-                    .build();
+        .totalCount(userPage.getTotalElements())
+        .objects(userModels)
+        .build();
   }
 
   @Override
   public UserModel getUser(String userId) {
     Optional<UserModel> userModel = graphApiService.resolveUsers(List.of(userId))
-                                                   .stream()
-                                                   .findFirst();
+        .stream()
+        .findFirst();
     UserModel user = userModel.orElseThrow(() -> new IllegalStateException("User is missing"));
     user.setPermissions(getUserPermissionModels(userId));
     return user;
+  }
+
+  @Override
+  public UserDisplayNameModel getUserDisplayName(String userId) {
+    UserModel userModel = graphApiService.resolveUsers(List.of(userId))
+        .stream()
+        .findFirst().orElseThrow(() -> new IllegalStateException("User is missing"));
+    return UserDisplayNameModel.toModel(userModel);
   }
 
   @Override
