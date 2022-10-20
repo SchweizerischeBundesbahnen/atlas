@@ -27,5 +27,5 @@ public interface WorkflowApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201")})
-  WorkflowModel createWorkflow(@RequestBody @Valid WorkflowModel newWorkflow);
+  WorkflowModel startWorkflow(@RequestBody @Valid WorkflowModel newWorkflow);
 }
