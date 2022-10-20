@@ -1,10 +1,14 @@
-<div>
-  <span>{{ 'DETAIL_USER_EDITION.CREATION_DATE' | translate: { creationDate: creationDate } }}</span>
-  <span>{{ 'DETAIL_USER_EDITION.CREATOR' | translate: { creator: creator } }}</span>
-</div>
-<div>
-  <span>{{
-    'DETAIL_USER_EDITION.LATEST_EDITION_DATE' | translate: { editionDate: editionDate }
-  }}</span>
-  <span>{{ 'DETAIL_USER_EDITION.LATEST_EDITOR' | translate: { editor: editor } }}</span>
-</div>
+<ng-container *ngIf="_record$ | async as rec">
+  <div>
+    <span>{{
+      'DETAIL_USER_EDITION.CREATION_DATE' | translate: { creationDate: rec.creationDate }
+    }}</span>
+    <span>{{ 'DETAIL_USER_EDITION.CREATOR' | translate: { creator: rec.creator } }}</span>
+  </div>
+  <div>
+    <span>{{
+      'DETAIL_USER_EDITION.LATEST_EDITION_DATE' | translate: { editionDate: rec.editionDate }
+    }}</span>
+    <span>{{ 'DETAIL_USER_EDITION.LATEST_EDITOR' | translate: { editor: rec.editor } }}</span>
+  </div>
+</ng-container>
