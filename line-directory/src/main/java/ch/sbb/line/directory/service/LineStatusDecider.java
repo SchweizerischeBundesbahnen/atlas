@@ -49,9 +49,9 @@ public class LineStatusDecider {
         .filter(lineVersion -> lineVersion.getStatus() == Status.VALIDATED).findFirst();
   }
 
-  private Status getStatusWithPreviousVersion(LineVersion newLineVersion, LineVersion currentLineVersion) {
-    boolean attributeChange = new LineRelevantAttributeChange().test(newLineVersion, currentLineVersion);
-    boolean prolongation = new LineProlongation().test(newLineVersion, currentLineVersion);
+  private Status getStatusWithPreviousVersion(LineVersion newLineVersion, LineVersion previousLineVersion) {
+    boolean attributeChange = new LineRelevantAttributeChange().test(newLineVersion, previousLineVersion);
+    boolean prolongation = new LineProlongation().test(newLineVersion, previousLineVersion);
     log.debug("Deciding on Line.Status with previousVersion. attributeChange={}, prolongation={}", attributeChange, prolongation);
     return attributeChange || prolongation ? Status.DRAFT : Status.VALIDATED;
   }
@@ -70,9 +70,9 @@ public class LineStatusDecider {
     }
 
     @Override
-    public boolean test(LineVersion newLineVersion, LineVersion currentLineVersion) {
+    public boolean test(LineVersion newLineVersion, LineVersion previousLineVersion) {
       for (Function<LineVersion, Object> attribute : worflowRelevantAttributes) {
-        if (!attribute.apply(currentLineVersion).equals(attribute.apply(newLineVersion))) {
+        if (!attribute.apply(previousLineVersion).equals(attribute.apply(newLineVersion))) {
           return true;
         }
       }
@@ -83,9 +83,9 @@ public class LineStatusDecider {
   private static class LineProlongation implements BiPredicate<LineVersion, LineVersion> {
 
     @Override
-    public boolean test(LineVersion newLineVersion, LineVersion currentLineVersion) {
-      return newLineVersion.getValidFrom().isBefore(currentLineVersion.getValidFrom())
-          || newLineVersion.getValidTo().isAfter(currentLineVersion.getValidTo());
+    public boolean test(LineVersion newLineVersion, LineVersion previousLineVersion) {
+      return newLineVersion.getValidFrom().isBefore(previousLineVersion.getValidFrom())
+          || newLineVersion.getValidTo().isAfter(previousLineVersion.getValidTo());
     }
   }
 
