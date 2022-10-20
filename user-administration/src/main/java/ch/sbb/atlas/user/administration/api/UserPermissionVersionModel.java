@@ -40,7 +40,7 @@ public class UserPermissionVersionModel extends BaseVersionModel {
         .editor(userPermission.getEditor())
         .editionDate(userPermission.getEditionDate())
         .creator(userPermission.getCreator())
-        .creationDate(userPermission.getEditionDate())
+        .creationDate(userPermission.getCreationDate())
         .build();
   }
 

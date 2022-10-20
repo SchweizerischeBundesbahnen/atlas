@@ -13,8 +13,8 @@
       [role]="permission.role"
     ></app-user-administration-application-config>
   </div>
+  <app-user-detail-info [record]="userRecord!"></app-user-detail-info>
 </ng-template>
-<app-user-detail-info [record]="userRecord"></app-user-detail-info>
 <footer class="footer fixed-bottom d-flex align-items-center justify-content-center">
   <ng-container *ngIf="editMode; else readMode">
     <button (click)="cancelEdit()" class="atlas-primary-btn footer-btn" data-cy="cancel">
