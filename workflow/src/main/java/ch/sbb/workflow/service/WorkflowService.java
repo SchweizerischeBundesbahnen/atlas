@@ -19,8 +19,8 @@ public class WorkflowService {
 
   private final WorkflowNotificationService notificationService;
 
-  public Workflow createWorkflow(Workflow workflow) {
-    workflow.setStatus(WorkflowStatus.ADDED);
+  public Workflow startWorkflow(Workflow workflow) {
+    workflow.setStatus(WorkflowStatus.STARTED);
     Workflow entity = repository.save(workflow);
     notificationService.sendEventToLidi(entity);
     notificationService.sendEventToMail(entity);

@@ -1,6 +1,9 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.line.directory.enumaration.WorkflowProcessingStatus;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,9 +35,12 @@ public class LineVersionWorkflow {
   private Long id;
 
   @ToString.Exclude
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "line_version_id")
-  private LineVersion lineVersionId;
+  private LineVersion lineVersion;
+
+  @Enumerated(EnumType.STRING)
+  private WorkflowProcessingStatus workflowProcessingStatus;
 
   private Long workflowId;
 
