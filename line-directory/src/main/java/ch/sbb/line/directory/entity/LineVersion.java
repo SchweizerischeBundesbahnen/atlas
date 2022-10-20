@@ -147,7 +147,7 @@ public class LineVersion extends BaseVersion implements Versionable,
   private String comment;
 
   @Builder.Default
-  @OneToMany(mappedBy = "lineVersionId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "lineVersion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<LineVersionWorkflow> lineVersionWorkflows = new HashSet<>();
 
 }

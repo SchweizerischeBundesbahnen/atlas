@@ -26,10 +26,6 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
   List<LineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String swissNumber);
 
-  //  @Query("SELECT lv FROM line_version as lv"
-  //      + " JOIN line_version_workflow as lvw "
-  //      + " ON lv.id = lvw.lineVersion.id"
-  //      + " ORDER BY lv.validFrom ASC")
   List<LineVersion> findAllBySlnidOrderByValidFrom(String slnid);
 
   @Query("SELECT lv FROM line_version as lv"
