@@ -48,11 +48,11 @@ public class WorkflowServiceTest {
     when(repository.save(workflow)).thenReturn(workflow);
 
     //when
-    Workflow result = service.createWorkflow(workflow);
+    Workflow result = service.startWorkflow(workflow);
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.ADDED);
+    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.STARTED);
     verify(notificationService).sendEventToMail(workflow);
     verify(notificationService).sendEventToLidi(workflow);
 
