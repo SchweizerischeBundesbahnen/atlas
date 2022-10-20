@@ -54,7 +54,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .businessObjectType(BusinessObjectType.SLNID)
         .build();
 
-    controller.createWorkflow(workflowModel);
+    controller.startWorkflow(workflowModel);
 
     mvc.perform(get("/v1/workflows/"))
         .andExpect(status().isOk())

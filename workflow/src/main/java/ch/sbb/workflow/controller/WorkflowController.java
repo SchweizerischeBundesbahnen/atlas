@@ -27,8 +27,8 @@ public class WorkflowController implements WorkflowApiV1 {
   }
 
   @Override
-  public WorkflowModel createWorkflow(WorkflowModel newWorkflow) {
-    Workflow workflow = service.createWorkflow(WorkflowModel.toEntity(newWorkflow));
+  public WorkflowModel startWorkflow(WorkflowModel newWorkflow) {
+    Workflow workflow = service.startWorkflow(WorkflowModel.toEntity(newWorkflow));
     return WorkflowModel.toModel(workflow);
   }
 }
