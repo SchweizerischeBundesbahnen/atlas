@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.kafka;
 
 import ch.sbb.atlas.kafka.model.workflow.WorkflowEvent;
-import ch.sbb.line.directory.service.WorkflowProcessingService;
+import ch.sbb.line.directory.service.workflow.LineWorkflowProcessingService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
 @KafkaListener(topics = "${kafka.atlas.workflow.topic}", groupId = "${kafka.atlas.workflow.groupId}")
 public class WorkflowListener {
 
-  private final WorkflowProcessingService workflowProcessingService;
+  private final LineWorkflowProcessingService lineWorkflowProcessingService;
 
   @KafkaHandler
   public void receiveWorkflowNotification(@Valid WorkflowEvent workflowEvent) {
     log.info("Consumed: {}", workflowEvent);
-    workflowProcessingService.processLineWorkflow(workflowEvent);
+    lineWorkflowProcessingService.processLineWorkflow(workflowEvent);
   }
 
 }

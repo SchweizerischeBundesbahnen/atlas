@@ -4,7 +4,7 @@ import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.workflow.WorkflowEvent;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
-import ch.sbb.workflow.service.lidi.WorkflowLineService;
+import ch.sbb.workflow.service.lidi.LineWorkflowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +16,12 @@ public class WorkflowNotificationService {
 
   private final MailProducerService mailProducerService;
 
-  private final WorkflowLineService workflowLineService;
+  private final LineWorkflowService lineWorkflowService;
 
   public void sendEventToMail(Workflow workflow) {
     MailNotification mailNotification;
     if (WorkflowType.LINE == workflow.getWorkflowType()) {
-      mailNotification = workflowLineService.buildMailNotification(workflow);
+      mailNotification = lineWorkflowService.buildMailNotification(workflow);
       mailProducerService.produceMailNotification(mailNotification);
     }
   }
