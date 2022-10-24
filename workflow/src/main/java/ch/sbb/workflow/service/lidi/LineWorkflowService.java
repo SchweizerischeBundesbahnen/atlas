@@ -1,9 +1,9 @@
 package ch.sbb.workflow.service.lidi;
 
-import ch.sbb.atlas.base.service.helper.AtlasFrontendBaseUrl;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.helper.AtlasFrontendBaseUrl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WorkflowLineService {
+public class LineWorkflowService {
 
   private static final String LINE_URL = "line-directory/lines/";
 
@@ -51,7 +51,6 @@ public class WorkflowLineService {
   }
 
   private String getUrl(Workflow workflow) {
-    //TODO: redirect to the version -> modify frontend
     return AtlasFrontendBaseUrl.getUrl(activeProfile) + LINE_URL + workflow.getSwissId();
   }
 

@@ -1,4 +1,4 @@
-package ch.sbb.atlas.base.service.helper;
+package ch.sbb.workflow.helper;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -67,6 +67,11 @@
          <groupId>ch.sbb.atlas</groupId>
          <version>${revision}</version>
       </dependency>
+      <dependency>
+         <artifactId>base-workflow</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>${revision}</version>
+      </dependency>
      <dependency>
        <groupId>ch.sbb.atlas</groupId>
        <artifactId>user-administration-security</artifactId>
