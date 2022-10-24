@@ -1,0 +1,101 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: '{{ .Values.workflow.name }}'
+spec:
+  replicas: {{ .Values.common.replicas }}
+  selector:
+    matchLabels:
+      app: '{{ .Values.workflow.name }}'
+      deploymentconfig: '{{ .Values.workflow.name }}'
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      annotations:
+        collectord.io/logs-index: '{{ .Values.common.splunkIndex }}'
+        collectord.io/logs-output: splunk::prod
+        collectord.io/logs-eventpattern: ^(timestamp=)
+      labels:
+        app: '{{ .Values.workflow.name }}'
+        deploymentconfig: '{{ .Values.workflow.name }}'
+    spec:
+      containers:
+        - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: '{{ .Values.common.springProfilesActive }}'
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.workflow.name }}
+                  key: user
+            - name: DB_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret-{{ .Values.workflow.name }}
+                  key: password
+            - name: CRD_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: crd-secrets
+                  key: password
+            - name: CRD_KEYSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: crd-secrets
+                  key: keystore-password
+            - name: CRD_TRUSTSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: crd-secrets
+                  key: truststore-password
+            - name: KAFKA_SCRAM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-secrets
+                  key: scram-password
+            - name: KAFKA_TRUSTSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-secrets
+                  key: truststore-password
+          image: "atlas.docker.bin.sbb.ch/{{ .Values.workflow.name }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: '{{ .Values.common.imagePullPolicy }}'
+          name: '{{ .Values.workflow.name }}'
+          ports:
+            - containerPort: {{ .Values.workflow.port }}
+              protocol: TCP
+          resources:
+            requests:
+              cpu: '{{ .Values.common.cpuMin }}'
+              memory: '{{ .Values.common.memoryMin }}'
+            limits:
+              cpu: '{{ .Values.common.cpuMax }}'
+              memory: '{{ .Values.common.memoryMax }}'
+          livenessProbe:
+            httpGet:
+              path: '{{ .Values.workflow.livenessProbe }}'
+              port: {{ .Values.workflow.port }}
+              scheme: HTTP
+            initialDelaySeconds: 40
+            timeoutSeconds: 90
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: '{{ .Values.workflow.readynessProbe }}'
+              port: {{ .Values.workflow.port }}
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 90
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 10
+          terminationMessagePath: /dev/termination-log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
