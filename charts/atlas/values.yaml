@@ -32,12 +32,6 @@ lineDirectory:
   # Application Port
   port: 8082
 
-userAdministration:
-  name: "user-administration"
-  port: 8086
-  livenessProbe: "actuator/health"
-  readynessProbe: "actuator/health"
-
 businessOrganisationDirectory:
   # Name of the Dockerimge in bin.sbb.ch/dockerrepo
   name: "business-organisation-directory"
@@ -67,6 +61,28 @@ scheduling:
   readynessProbe: "actuator/health"
   # Application Port
   port: 8085
+
+userAdministration:
+  # Name of the Dockerimge in bin.sbb.ch/dockerrepo
+  name: "user-administration"
+  # LIVENESS_PROBE
+  livenessProbe: "actuator/health"
+  # READYNESS_PROBE
+  readynessProbe: "actuator/health"
+  # Application Port
+  port: 8086
+
+workflow:
+  # Deploy Workflow
+  enabled: true
+  # Name of the Dockerimge in bin.sbb.ch/dockerrepo
+  name: "workflow"
+  # LIVENESS_PROBE
+  livenessProbe: "actuator/health"
+  # READYNESS_PROBE
+  readynessProbe: "actuator/health"
+  # Application Port
+  port: 8087
 
 frontend:
   # Name of the Dockerimge in bin.sbb.ch/dockerrepoted"

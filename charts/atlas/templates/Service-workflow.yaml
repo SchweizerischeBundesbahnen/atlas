@@ -1,0 +1,17 @@
+{{- if .Values.workflow.enabled }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: '{{ .Values.workflow.name }}'
+spec:
+  ports:
+    - name: '{{ .Values.userAdministration.port }}-tcp'
+      port: {{ .Values.userAdministration.port }}
+      protocol: TCP
+      targetPort: {{ .Values.userAdministration.port }}
+  selector:
+    app: '{{ .Values.workflow.name }}'
+    deploymentconfig: '{{ .Values.workflow.name }}'
+  sessionAffinity: None
+  type: ClusterIP
+{{- end }}
