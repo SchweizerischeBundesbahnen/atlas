@@ -49,6 +49,12 @@
       "openshiftAppName": "user-administration",
       "dockerFile": "user-administration/docker/Dockerfile",
       "artifactorySupressProjectSubfolderCreation": true
+    },
+    {
+      "artifactoryDockerRepo": "atlas.docker",
+      "openshiftAppName": "workflow",
+      "dockerFile": "workflow/docker/Dockerfile",
+      "artifactorySupressProjectSubfolderCreation": true
     }
   ],
   "helm": {
