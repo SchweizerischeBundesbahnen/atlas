@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
@@ -70,10 +69,6 @@ public class LineVersion extends BaseVersion implements Versionable,
   @Column(updatable = false)
   @AtlasVersionableProperty
   private String slnid;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private Status status;
 
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -148,6 +143,6 @@ public class LineVersion extends BaseVersion implements Versionable,
 
   @Builder.Default
   @OneToMany(mappedBy = "lineVersion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<LineVersionWorkflow> lineVersionWorkflows = new HashSet<>();
+  private Set<LineVersionWorkflowEntity> lineVersionWorkflows = new HashSet<>();
 
 }

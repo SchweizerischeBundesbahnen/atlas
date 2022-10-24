@@ -20,9 +20,16 @@ import org.springframework.stereotype.Component;
 public class RunAsUserAspect {
 
   @Around("@annotation(ch.sbb.atlas.base.service.aspect.annotation.RunAsUser)")
-  public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+  public Object executeRunAsUser(ProceedingJoinPoint joinPoint) throws Throwable {
     RunAsUser runAsUser = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(RunAsUser.class);
     FakeUserType fakeUserType = runAsUser.fakeUserType();
+    if (FakeUserType.KAFKA == fakeUserType) {
+      return runAsKafkaUser(joinPoint, fakeUserType);
+    }
+    throw new IllegalStateException("Please provide an implementation for the given FakeUserType:" + fakeUserType);
+  }
+
+  private Object runAsKafkaUser(ProceedingJoinPoint joinPoint, FakeUserType fakeUserType) throws Throwable {
     log.info("Create fake authentication for {} with username: {}", fakeUserType.name(), fakeUserType.getUserName());
     Authentication fakeAuth = new UsernamePasswordAuthenticationToken(fakeUserType.getUserName(), emptyList(), NO_AUTHORITIES);
     SecurityContextHolder.getContext().setAuthentication(fakeAuth);
