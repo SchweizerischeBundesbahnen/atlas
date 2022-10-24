@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.enumaration;
+package ch.sbb.atlas.workflow.model;
 
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
