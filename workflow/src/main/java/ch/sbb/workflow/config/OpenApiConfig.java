@@ -19,7 +19,7 @@ public class OpenApiConfig {
   public GroupedOpenApi defaultApi() {
     return GroupedOpenApi.builder()
         .group("public")
-        .packagesToScan("ch.sbb.line.directory")
+        .packagesToScan("ch.sbb.workflow")
         .build();
   }
 
