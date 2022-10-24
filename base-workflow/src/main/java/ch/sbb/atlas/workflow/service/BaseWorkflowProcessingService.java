@@ -15,16 +15,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class BaseWorkflowProcessingService<T extends BaseVersion, T1 extends BaseWorkflowEntity> {
+public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y extends BaseWorkflowEntity> {
 
   protected final JpaRepository<T, Long> objectVersionRepository;
-  protected final JpaRepository<T1, Long> objectWorkflowRepository;
+  protected final JpaRepository<Y, Long> objectWorkflowRepository;
 
   @RunAsUser(fakeUserType = KAFKA)
   public void processWorkflow(WorkflowEvent workflowEvent) {
     T objectVersion = getObjectVerision(workflowEvent);
     evaluateWorkflowProcessingStatus(workflowEvent, objectVersion);
-    T1 objectVersionWorkflow = buildObjectVersionWorkflow(workflowEvent, objectVersion);
+    Y objectVersionWorkflow = buildObjectVersionWorkflow(workflowEvent, objectVersion);
     objectWorkflowRepository.save(objectVersionWorkflow);
     log.info("Workflow entity saved: {}", objectVersionWorkflow);
     objectVersionRepository.save(objectVersion);
@@ -46,6 +46,6 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, T1 ex
         .orElseThrow(() -> new IdNotFoundException(workflowEvent.getBusinessObjectId()));
   }
 
-  protected abstract T1 buildObjectVersionWorkflow(WorkflowEvent workflowEvent, T object);
+  protected abstract Y buildObjectVersionWorkflow(WorkflowEvent workflowEvent, T object);
 
 }
