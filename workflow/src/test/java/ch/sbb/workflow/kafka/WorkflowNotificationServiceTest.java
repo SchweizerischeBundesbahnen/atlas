@@ -10,7 +10,7 @@ import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
-import ch.sbb.workflow.service.lidi.WorkflowLineService;
+import ch.sbb.workflow.service.lidi.LineWorkflowService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,12 +28,12 @@ public class WorkflowNotificationServiceTest {
   private MailProducerService mailProducerService;
 
   @Mock
-  private WorkflowLineService workflowLineService;
+  private LineWorkflowService lineWorkflowService;
 
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    notificationService = new WorkflowNotificationService(workflowProducerService, mailProducerService, workflowLineService);
+    notificationService = new WorkflowNotificationService(workflowProducerService, mailProducerService, lineWorkflowService);
   }
 
   @Test
@@ -43,7 +43,7 @@ public class WorkflowNotificationServiceTest {
         .workflowType(WorkflowType.LINE)
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-    when(workflowLineService.buildMailNotification(workflow)).thenReturn(mailNotification);
+    when(lineWorkflowService.buildMailNotification(workflow)).thenReturn(mailNotification);
 
     //when
     notificationService.sendEventToMail(workflow);
@@ -58,7 +58,7 @@ public class WorkflowNotificationServiceTest {
     Workflow workflow = Workflow.builder()
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-    when(workflowLineService.buildMailNotification(workflow)).thenReturn(mailNotification);
+    when(lineWorkflowService.buildMailNotification(workflow)).thenReturn(mailNotification);
     //when
     notificationService.sendEventToMail(workflow);
     //then

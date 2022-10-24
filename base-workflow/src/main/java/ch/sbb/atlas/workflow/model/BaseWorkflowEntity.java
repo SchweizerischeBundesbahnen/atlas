@@ -1,11 +1,8 @@
-package ch.sbb.atlas.base.service.model.entity;
+package ch.sbb.atlas.workflow.model;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,10 +15,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @MappedSuperclass
-public abstract class BaseVersion extends BaseEntity implements DatesValidator {
+public abstract class BaseWorkflowEntity {
 
-  @NotNull
   @Enumerated(EnumType.STRING)
-  private Status status;
+  private WorkflowProcessingStatus workflowProcessingStatus;
+
+  private Long workflowId;
 
 }
