@@ -1,9 +1,7 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.enumaration.WorkflowProcessingStatus;
+import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @Entity(name = "line_version_workflow")
-public class LineVersionWorkflow {
+public class LineVersionWorkflowEntity extends BaseWorkflowEntity {
 
   private static final String VERSION_SEQ = "line_version_workflow_seq";
 
@@ -38,10 +36,5 @@ public class LineVersionWorkflow {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "line_version_id")
   private LineVersion lineVersion;
-
-  @Enumerated(EnumType.STRING)
-  private WorkflowProcessingStatus workflowProcessingStatus;
-
-  private Long workflowId;
 
 }

@@ -1,6 +1,5 @@
 package ch.sbb.business.organisation.directory.entity;
 
-import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
@@ -14,8 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,7 +30,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GeneratorType;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -49,7 +45,8 @@ public class BusinessOrganisationVersion extends BaseVersion implements Versiona
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = BUSINESS_ORGANISATION_VERSION_SEQ)
-  @SequenceGenerator(name = BUSINESS_ORGANISATION_VERSION_SEQ, sequenceName = BUSINESS_ORGANISATION_VERSION_SEQ, allocationSize = 1, initialValue = 1000)
+  @SequenceGenerator(name = BUSINESS_ORGANISATION_VERSION_SEQ, sequenceName = BUSINESS_ORGANISATION_VERSION_SEQ,
+      allocationSize = 1, initialValue = 1000)
   private Long id;
 
   @GeneratorType(type = SboidGenerator.class, when = GenerationTime.INSERT)
@@ -104,10 +101,6 @@ public class BusinessOrganisationVersion extends BaseVersion implements Versiona
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String contactEnterpriseEmail;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private Status status;
 
   @AtlasVersionableProperty
   @ElementCollection(targetClass = BusinessType.class, fetch = FetchType.EAGER)
