@@ -23,6 +23,7 @@ This is the repository for business relevant services for ATLAS.
   * [Mail Service](#mail-service)
   * [User Administration](#user-administration)
   * [Base Service lib](#base-service-lib)
+  * [Base Workflow lib](#base-workflow-lib)
   * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
 
@@ -178,7 +179,8 @@ Service used by Atlas to send emails. See [Mail Service Documentation](mail/READ
 
 ### User Administration
 
-User Administration provides the backend for creating and maintaining role and business organisation assignments for user. See [UserAdministration Documentation](user-administration/README.md) for more.
+User Administration provides the backend for creating and maintaining role and business organisation assignments for user.
+See [UserAdministration Documentation](user-administration/README.md) for more.
 
 ### Base Service lib
 
@@ -190,6 +192,10 @@ Libraries used to perform:
 * CSV and ZIP exports. See [Export documentation](base-service/documentaion/export/README.md);
 * Amazon REST Client operations.
   See [Amazon documentation](base-service/documentaion/amazon/README.md);
+
+### Base Workflow lib
+
+Libraries used to implement ATLAS Workflows. See [documentation](base-workflow/README.md)
 
 ### Frontend
 
