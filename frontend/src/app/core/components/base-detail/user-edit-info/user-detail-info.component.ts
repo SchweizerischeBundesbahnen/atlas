@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { UserAdministrationService } from '../../../../api';
 import moment from 'moment/moment';
 import { DATE_TIME_FORMAT } from '../../../date/date.service';
@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
   selector: 'app-user-detail-info [record]',
   templateUrl: './user-detail-info.component.html',
   styleUrls: ['./user-detail-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserDetailInfoComponent {
   @Input()
@@ -17,7 +18,11 @@ export class UserDetailInfoComponent {
     this._record$ = this.getProcessedCreationEdition(record);
   }
 
-  _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
+  get processedRecord(): Observable<CreationEditionRecord | undefined> {
+    return this._record$;
+  }
+
+  private _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
 
   constructor(private readonly userAdministrationService: UserAdministrationService) {}
 
