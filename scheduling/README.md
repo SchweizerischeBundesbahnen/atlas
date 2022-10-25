@@ -5,16 +5,16 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-  * [Localhost](#localhost)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
-  * [Project Infrastructure](#project-infrastructure)
+    * [Localhost](#localhost)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
+    * [Project Infrastructure](#project-infrastructure)
 - [Development](#development-1)
-  * [ShedLock](#shedlock)
-  * [Retry](#retry)
-  * [Tech Stack](#tech-stack)
+    * [ShedLock](#shedlock)
+    * [Retry](#retry)
+    * [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
 
@@ -24,6 +24,8 @@ import or export operation.
 With [ShedLock](#shedlock) and [Retry](#retry) libraries, this service is able to makes
 sure that our scheduled tasks run only once at the same time, and in case of a failure the scheduled
 tasks are able to automatic re-executed.
+
+*This service does not expose any API.*
 
 ## ATLAS
 
@@ -39,13 +41,32 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ### Localhost
 
+* Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
+* Project deploy: https://scheduling.dev.sbb-cloud.net
+
 ### Development
+
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=scheduling-dev
+* Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
+* Project deploy: https://scheduling.dev.sbb-cloud.net
 
 ### Test
 
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=scheduling-test
+* Openshift Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
+* Project deploy: https://scheduling.test.sbb-cloud.net
+
 ### Integration
 
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=scheduling-int
+* Openshift Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
+* Project deploy: https://scheduling.int.sbb-cloud.net
+
 ### Production
+
+* DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=scheduling-prod
+* Openshift
+  Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
 
 ### Project Infrastructure
 
@@ -72,14 +93,4 @@ library to auto re-run a failed scheduled job.
 
 ### Tech Stack
 
-| Layer     |  Technologie    |  Link     |
-|-----------|------------|-----------|
-|Frontend   | Angular9 + | [ESTA-Web](https://confluence.sbb.ch/display/CLEW/ESTA-Web) |
-|Backend    |Java Spring Boot 2.5 | [ESTA-Backend (Spring-Boot)](https://confluence.sbb.ch/pages/viewpage.action?pageId=1306395091) |
-|           |Lombok | https://projectlombok.org/ |
-|           |OpenAPI | https://swagger.io/specification/ |
-|Database    |PostgreSQL| [Service PostgreSQL](https://confluence.sbb.ch/display/PLA/Service+PostgreSQL)|
-|Messaging    |Apache Kafka| [KAFKA Home](https://confluence.sbb.ch/display/KAFKA/KAFKA+Home)|
-|Infrastructure|    Openshift AWS 4.0| [ESTA-Cloud](https://confluence.sbb.ch/display/CLEW/ESTA-Cloud)|
-|Deployment    |ESTA Cloud Pipeline| [Esta Cloud Pipeline](https://confluence.sbb.ch/display/CLEW/Esta+Cloud+Pipeline)|
-|Interface|  API Management oder ähnliches Tool nach Entscheid KISPF-198 <br> REST & Json| [KISPF-198](https://flow.sbb.ch/browse/KISPF-198) - SKI/SKI+ API Strategie|
+See [Tech Stack Documentation](../documentation/tech-stack-service.md)
