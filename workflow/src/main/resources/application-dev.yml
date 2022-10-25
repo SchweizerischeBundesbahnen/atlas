@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url:
+    url: jdbc:postgresql://workflow-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/workflow
     username: ${DB_USER}
     password: ${DB_PWD}
 kafka:
