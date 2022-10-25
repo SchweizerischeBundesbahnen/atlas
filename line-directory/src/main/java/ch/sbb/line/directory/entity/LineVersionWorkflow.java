@@ -23,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @Entity(name = "line_version_workflow")
-public class LineVersionWorkflowEntity extends BaseWorkflowEntity {
+public class LineVersionWorkflow extends BaseWorkflowEntity {
 
   private static final String VERSION_SEQ = "line_version_workflow_seq";
 
