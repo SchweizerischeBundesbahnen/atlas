@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { UserService } from '../../service/user.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { UserModel } from '../../../../api/model/userModel';
+import { CreationEditionRecord } from '../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 
 @Component({
   selector: 'app-user-administration-edit',
@@ -17,7 +18,7 @@ export class UserAdministrationEditComponent implements OnInit {
   @Input() user?: UserModel;
   editMode = false;
   saveEnabled = true;
-  userRecord: any | undefined;
+  userRecord?: CreationEditionRecord;
 
   constructor(
     private readonly notificationService: NotificationService,
@@ -77,7 +78,7 @@ export class UserAdministrationEditComponent implements OnInit {
     });
   }
 
-  private convertUserPermissionToRecord() {
+  private convertUserPermissionToRecord(): void {
     const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
       this.user!
     );

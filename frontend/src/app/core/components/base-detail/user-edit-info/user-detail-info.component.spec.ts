@@ -5,24 +5,18 @@ import { UserAdministrationService } from '../../../../api';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-const stub = {
-  getUser() {
-    return of({ displayName: 'Marek Hamsik' });
-  },
-};
-
 describe('UserDetailComponent', () => {
   /*eslint-disable */
-  let component: UserDetailInfoComponent<any>;
-  let fixture: ComponentFixture<UserDetailInfoComponent<any>>;
-  let userAdministrationServiceMock: any;
+  let component: UserDetailInfoComponent;
+  let fixture: ComponentFixture<UserDetailInfoComponent>;
+
+  const userAdminServiceMock = {
+    getUserDisplayName() {
+      return of({ displayName: 'Marek Hamsik' });
+    },
+  };
 
   beforeEach(async () => {
-    userAdministrationServiceMock = jasmine.createSpy('userAdministrationService');
-    userAdministrationServiceMock.getUser = {
-      displayName: 'Marek Hamsik',
-    };
-
     await TestBed.configureTestingModule({
       declarations: [UserDetailInfoComponent],
       imports: [
@@ -31,7 +25,7 @@ describe('UserDetailComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
       ],
-      providers: [{ provide: UserAdministrationService, useValue: stub }],
+      providers: [{ provide: UserAdministrationService, useValue: userAdminServiceMock }],
     }).compileComponents();
   });
 
@@ -52,14 +46,13 @@ describe('UserDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should return editor and edition', function () {
-    //when
-    component.getUserDetails();
-
-    //then
-    expect(component.creator).toBe('Marek Hamsik');
-    expect(component.creationDate).toBe('10.10.2022 16:58:52');
-    expect(component.editor).toBe('Marek Hamsik');
-    expect(component.editionDate).toBe('10.11.2022 16:58:52');
+  it('should have processed creationEditionRecord', (done) => {
+    component.processedRecord.subscribe((value) => {
+      expect(value?.creator).toBe('Marek Hamsik');
+      expect(value?.creationDate).toBe('10.10.2022 16:58:52');
+      expect(value?.editor).toBe('Marek Hamsik');
+      expect(value?.editionDate).toBe('10.11.2022 16:58:52');
+      done();
+    });
   });
 });
