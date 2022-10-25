@@ -1,0 +1,54 @@
+@startuml
+
+title Line Status Decision Process
+
+start
+
+:NewLineVersion created/updated;
+
+:Retrieve CurrentLineVersions for Versioning;
+
+:Apply Versioning by saving each **newLineVersion**;
+
+partition "LineStatusDecider"{
+    if (NewLineVersion.LineType == ORDERLY) then (yes)
+      :Find **previousVersionOnSameTimeslot** in CurrentLineVersions
+      for same timeslot as saving NewLineVersion;
+
+      if (previousVersionOnSameTimeslot exists) then (yes)
+        if (Relevant attribute change or prolongation?) then (yes)
+        floating note
+              Relevant attributes are:
+               - swissLineNumber
+               - number
+               - desciption
+               - longName
+               - alternativeName
+               - combinationName
+        endnote
+        :Status = DRAFT;
+        stop
+        else(no)
+        :Status = VALIDATED;
+        stop
+        endif
+      else (no)
+        :Status = DRAFT;
+        note right
+            If there was no Version on
+            the same timeslot we want the workflow
+        endnote
+        stop
+      endif
+
+    else (no)
+      :Status = VALIDATED;
+      note right
+        Only Lines of type ORDERLY
+        are considered for a workflow
+      endnote
+      stop
+    endif
+}
+
+@enduml
