@@ -1,68 +1,54 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Record } from '../record';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { UserAdministrationService } from '../../../../api';
 import moment from 'moment/moment';
 import { DATE_TIME_FORMAT } from '../../../date/date.service';
-import { Subscription } from 'rxjs';
+import { catchError, forkJoin, Observable, of } from 'rxjs';
+import { CreationEditionRecord } from './creation-edition-record';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-detail-info [record]',
   templateUrl: './user-detail-info.component.html',
   styleUrls: ['./user-detail-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserDetailInfoComponent<TYPE extends Record> implements OnInit, OnDestroy, OnChanges {
-  @Input() record!: TYPE;
-  editor!: string | undefined;
-  editionDate!: string | undefined;
-  creator!: string | undefined;
-  creationDate!: string | undefined;
-  private getUserSubscription!: Subscription;
+export class UserDetailInfoComponent {
+  @Input()
+  set record(record: CreationEditionRecord) {
+    this._record$ = this.getProcessedCreationEdition(record);
+  }
+
+  get processedRecord(): Observable<CreationEditionRecord | undefined> {
+    return this._record$;
+  }
+
+  private _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
 
   constructor(private readonly userAdministrationService: UserAdministrationService) {}
 
-  ngOnInit(): void {
-    this.getUserDetails();
-  }
-
-  getUserDetails() {
-    if (this.record.editor) {
-      this.populateEditor(this.record.editor);
-    }
-    if (this.record.creator) {
-      this.populateCreator(this.record.creator);
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.getUserSubscription.unsubscribe();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes) {
-      this.ngOnInit();
-    }
-  }
-
-  private populateEditor(editor: any) {
-    this.getUserSubscription = this.userAdministrationService.getUser(editor).subscribe((user) => {
-      if (!user.displayName) {
-        this.editor = this.record.editor;
-      } else {
-        this.editor = user.displayName;
+  private getProcessedCreationEdition(
+    record: CreationEditionRecord
+  ): Observable<CreationEditionRecord | undefined> {
+    const displayNames$: Observable<string | undefined>[] = [record.editor, record.creator].map(
+      (value) => {
+        if (!value) {
+          return of(undefined);
+        }
+        return this.userAdministrationService
+          .getUserDisplayName(value)
+          .pipe(map((userDisplayName) => userDisplayName.displayName ?? value));
       }
-      this.editionDate = this.formatDateTime(this.record.editionDate);
-    });
-  }
+    );
 
-  private populateCreator(user: any) {
-    this.getUserSubscription = this.userAdministrationService.getUser(user).subscribe((user) => {
-      if (!user.displayName) {
-        this.creator = this.record.creator;
-      } else {
-        this.creator = user.displayName;
-      }
-      this.creationDate = this.formatDateTime(this.record.creationDate);
-    });
+    return forkJoin(displayNames$).pipe(
+      map(([editor, creator]) => ({
+        editionDate: this.formatDateTime(record.editionDate),
+        creationDate: this.formatDateTime(record.creationDate),
+        editor,
+        creator,
+      })),
+      catchError(() => of(undefined))
+    );
   }
 
   private formatDateTime(dateTime: string | undefined) {
