@@ -66,13 +66,16 @@ class LineServiceTest {
   @Mock
   private LineSearchRestrictions lineSearchRestrictions;
 
+  @Mock
+  private LineStatusDecider lineStatusDecider;
+
   private LineService lineService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
-        versionableService, lineValidationService, coverageService);
+        versionableService, lineValidationService, coverageService, lineStatusDecider);
   }
 
   @Test
@@ -137,7 +140,7 @@ class LineServiceTest {
         Collections.emptyList());
     LineVersion lineVersion = LineTestData.lineVersion();
     // When
-    LineVersion result = lineService.save(lineVersion);
+    LineVersion result = lineService.save(lineVersion, Collections.emptyList());
 
     // Then
     verify(lineValidationService).validateLinePreconditionBusinessRule(lineVersion);
@@ -233,7 +236,7 @@ class LineServiceTest {
 
     // When
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
-        () -> lineService.save(lineVersion));
+        () -> lineService.save(lineVersion, Collections.emptyList()));
 
     verify(lineVersionRepository, never()).save(lineVersion);
 
@@ -249,7 +252,7 @@ class LineServiceTest {
 
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineService.save(lineVersion));
+        () -> lineService.save(lineVersion, Collections.emptyList()));
 
     verify(lineVersionRepository, never()).save(lineVersion);
 
