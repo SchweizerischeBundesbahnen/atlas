@@ -25,7 +25,6 @@
 |Build-Time| {buildTime}
 |=================================
 
-
 = User Administration
 
 == Get Users Permissions - Successfully
@@ -43,3 +42,7 @@ include::{snippets}/user-administration-controller-api-test/should-update-user/a
 == Create User Permissions - Successfully
 
 include::{snippets}/user-administration-controller-api-test/should-create-user-permission/auto-section.adoc[]
+
+== Get Users filtered with applicationTypes and sboids
+
+include::{snippets}/user-administration-controller-api-test/get-users-with-sboids-and-application-types-found/auto-section.adoc[]
