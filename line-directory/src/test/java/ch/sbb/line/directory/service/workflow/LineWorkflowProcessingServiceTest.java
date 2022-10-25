@@ -1,8 +1,6 @@
 package ch.sbb.line.directory.service.workflow;
 
-import static ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType.SLNID;
 import static ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus.STARTED;
-import static ch.sbb.atlas.kafka.model.workflow.model.WorkflowType.LINE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,10 +38,7 @@ public class LineWorkflowProcessingServiceTest {
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
-        .businessObjectType(SLNID)
         .workflowStatus(STARTED)
-        .workflowType(LINE)
-        .swissId("ch:slnid:1000")
         .build();
     LineVersion lineVersion = LineVersion.builder().id(1000L).build();
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));

@@ -7,9 +7,7 @@ import static org.mockito.Mockito.verify;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.kafka.model.workflow.WorkflowEvent;
-import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import java.time.LocalDate;
@@ -45,10 +43,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .workflowStatus(WorkflowStatus.STARTED)
-        .workflowType(WorkflowType.LINE)
-        .swissId("ch:slnid:1000")
         .build();
     ObjectVersion objectVersion = ObjectVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -77,10 +72,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .workflowStatus(WorkflowStatus.STARTED)
-        .workflowType(WorkflowType.LINE)
-        .swissId("ch:slnid:1000")
         .build();
 
     Mockito.when(objectVersionRepository.findById(1000L)).thenReturn(Optional.empty());
@@ -98,10 +90,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .workflowStatus(WorkflowStatus.HEARING)
-        .workflowType(WorkflowType.LINE)
-        .swissId("ch:slnid:1000")
         .build();
     ObjectVersion objectVersion = ObjectVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
