@@ -21,7 +21,6 @@ class MailTemplateConfigTest {
   public void shouldReturnAtlasStandardTemplate() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.ATLAS_STANDARD);
-
     //then
     assertThat(result).isEqualTo(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE);
   }
@@ -30,7 +29,6 @@ class MailTemplateConfigTest {
   public void shouldReturnTuImportTemplate() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.TU_IMPORT);
-
     //then
     assertThat(result).isEqualTo(MailTemplateConfig.IMPORT_TU_TEMPLATE);
   }
@@ -39,7 +37,6 @@ class MailTemplateConfigTest {
   public void shouldReturnSchedulingErrorNotificationTemplate() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.SCHEDULING_ERROR_NOTIFICATION);
-
     //then
     assertThat(result).isEqualTo(MailTemplateConfig.SCHEDULING_ERROR_NOTIFICATION_TEMPLATE);
   }
@@ -48,7 +45,6 @@ class MailTemplateConfigTest {
   public void shouldReturnWorkflowNotification() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.WORKFLOW_NOTIFICATION);
-
     //then
     assertThat(result).isEqualTo(MailTemplateConfig.WORKFLOW_NOTIFICATION_TEMPLATE);
   }
