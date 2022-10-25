@@ -80,10 +80,7 @@ public class WorkflowNotificationServiceTest {
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(workflow.getId())
         .businessObjectId(workflow.getBusinessObjectId())
-        .businessObjectType(workflow.getBusinessObjectType())
         .workflowStatus(workflow.getStatus())
-        .workflowType(workflow.getWorkflowType())
-        .swissId(workflow.getSwissId())
         .build();
 
     //when
