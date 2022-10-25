@@ -59,6 +59,7 @@ mail:
   workflow:
     line:
       receiver: TechSupport-ATLAS@sbb.ch
+      from: no-replay-atlas@sbb.ch
       mail-html-title: Antrag für eine neue/geänderte Linie überprüfen.
 
 
