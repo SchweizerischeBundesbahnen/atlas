@@ -46,7 +46,7 @@
       [businessOrganisation]="selectedRecord.businessOrganisation!"
       buttonDataCy="edit-item"
       (buttonClicked)="controller.toggleEdit()"
-      [disabled]="controller.form.enabled"
+      [disabled]="controller.form.enabled || selectedRecord.status === 'REVOKED'"
       buttonText="COMMON.EDIT_VERSION"
       wrapperStyleClass="me-3"
     >
