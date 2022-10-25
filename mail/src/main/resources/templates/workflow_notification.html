@@ -53,12 +53,13 @@
 
         .content-container {
             margin-top: 20px;
+            margin-left: 20px;
         }
 
         .header-right {
             float: left;
             width: 79%;
-            padding-top: 35px;
+            padding-top: 132px;
             font-weight: bold;
             text-align: center;
             display: inline-block;
@@ -66,36 +67,47 @@
 
         .footer {
             margin-top: 32px;
+            margin-left: 20px;
         }
 
+        .mb-1 {
+            margin-bottom: 48px;
+        }
+
+        .mail-container {
+            padding-bottom: 30px;
+        }
     </style>
 </head>
 <body>
-<div class='header-container'>
-    <div class='logo-container'>
-        <div class='logo'>
-            <img src='cid:logo.svg' th:width='45'/>
-            <div class='logo-title'>
-                atlas
+<div class="mail-container">
+    <div class='header-container'>
+        <div class='logo-container'>
+            <div class='logo'>
+                <img src='cid:logo.svg' th:width='45'/>
+                <div class='logo-title'>
+                    atlas
+                </div>
             </div>
         </div>
+        <div class='header-right mb-1'>
+            <span class='header-title' th:text="${properties.get(0).get('title')}">asdasdasd</span>
+        </div>
     </div>
-    <div class='header-right'>
-        <span class='header-title' th:text="${properties.get(0).get('title')}"></span>
+    <div class='content-container'>
+        <div>
+            Es wurde eine neue Linie bzw. eine Änderung an einer bestehenden Linie erfasst welche eine Freigabe erfordert.
+            <br/>
+            <br/>
+            Durch einen Klick auf <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
+            gelangen Sie direkt zur Linie <b>[(${properties.get(0).get('swissId')})]</b> -
+            <b>[(${properties.get(0).get('description')})].</b>
+        </div>
     </div>
-</div>
-<div class='content-container'>
-    <div class='message mt-1'>
-        Es wurde eine neue Linie bzw. eine Änderung an einer bestehenden Linie erfasst welche eine Freigabe erfordert.
-        <br/>
-        <br/>
-        Durch einen Klick auf <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
-        gelangen Sie direkt zur Linie [(${properties.get(0).get('swissId')})] [(${properties.get(0).get('description')})].
+    <div class='footer'>
+        Digitale Grüsse,<br/>
+        atlas - Linienverzeichnis
     </div>
-</div>
-<div class='footer'>
-    Digitale Grüsse,<br/>
-    atlas - Linienverzeichnis
 </div>
 </body>
 </html>
