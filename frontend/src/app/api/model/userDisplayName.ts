@@ -10,10 +10,9 @@
  * Do not edit the class manually.
  */
 
-/**
- * Parameters for messages
- */
-export interface Parameter {
-  key?: string;
-  value?: string;
+export interface UserDisplayName {
+  /**
+   * User display name (azure)
+   */
+  displayName?: string;
 }
