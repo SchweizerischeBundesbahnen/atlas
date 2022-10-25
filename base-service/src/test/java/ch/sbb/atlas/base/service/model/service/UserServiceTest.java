@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.core.Authentication;
@@ -54,6 +55,23 @@ public class UserServiceTest {
     SecurityContextHolder.setContext(securityContext);
     //when
     assertThrows(IllegalStateException.class, UserService::getSbbUid);
+  }
+
+  @Test
+  public void shouldReturnRoles() {
+    //given
+    Authentication authentication = Mockito.mock(Authentication.class);
+    Jwt jwt = Mockito.mock(Jwt.class);
+    when(jwt.getClaim("roles")).thenReturn(List.of("role1", "role2", "role3"));
+    when(authentication.getPrincipal()).thenReturn(jwt);
+    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    SecurityContextHolder.setContext(securityContext);
+    //when
+    List<String> result = UserService.getRoles();
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(3).contains("role1", "role2", "role3");
   }
 
 }
