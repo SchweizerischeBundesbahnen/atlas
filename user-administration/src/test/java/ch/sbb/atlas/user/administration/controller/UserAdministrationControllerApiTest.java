@@ -215,63 +215,77 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   void getUsersWithSboidsAndApplicationTypesNonFound() throws Exception {
     userPermissionRepository.saveAll(List.of(
         UserPermission.builder()
-                      .role(ApplicationRole.WRITER)
-                      .application(ApplicationType.TTFN)
-                      .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
-                      .sbbUserId("u236171").build(),
+            .role(ApplicationRole.WRITER)
+            .application(ApplicationType.TTFN)
+            .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
+            .sbbUserId("u236171").build(),
         UserPermission.builder()
-                      .role(ApplicationRole.READER)
-                      .application(ApplicationType.LIDI)
-                      .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
-                      .sbbUserId("u236171").build()
+            .role(ApplicationRole.READER)
+            .application(ApplicationType.LIDI)
+            .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
+            .sbbUserId("u236171").build()
     ));
 
     mvc.perform(get("/v1/users")
-           .queryParam("page", "0")
-           .queryParam("size", "5")
-           .queryParam("applicationTypes", "LIDI", "TTFN")
-           .queryParam("sboids", "ch:1:sboid:1"))
-       .andExpect(status().isOk())
-       .andExpect(jsonPath("$.totalCount").value(0))
-       .andExpect(jsonPath("$.objects", hasSize(0)));
+            .queryParam("page", "0")
+            .queryParam("size", "5")
+            .queryParam("applicationTypes", "LIDI", "TTFN")
+            .queryParam("sboids", "ch:1:sboid:1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(0))
+        .andExpect(jsonPath("$.objects", hasSize(0)));
   }
 
   @Test
   void getUsersWithSboidsAndApplicationTypesFound() throws Exception {
     userPermissionRepository.saveAll(List.of(
         UserPermission.builder()
-                      .role(ApplicationRole.WRITER)
-                      .application(ApplicationType.TTFN)
-                      .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
-                      .sbbUserId("u654321").build(),
+            .role(ApplicationRole.WRITER)
+            .application(ApplicationType.TTFN)
+            .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
+            .sbbUserId("u654321").build(),
         UserPermission.builder()
-                      .role(ApplicationRole.WRITER)
-                      .application(ApplicationType.LIDI)
-                      .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
-                      .sbbUserId("u654321").build(),
+            .role(ApplicationRole.WRITER)
+            .application(ApplicationType.LIDI)
+            .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
+            .sbbUserId("u654321").build(),
         UserPermission.builder()
-                      .role(ApplicationRole.SUPER_USER)
-                      .application(ApplicationType.LIDI)
-                      .sbbUserId("u123456").build(),
+            .role(ApplicationRole.SUPER_USER)
+            .application(ApplicationType.LIDI)
+            .sbbUserId("u123456").build(),
         UserPermission.builder()
-                      .role(ApplicationRole.SUPERVISOR)
-                      .application(ApplicationType.TTFN)
-                      .sbbUserId("u123456").build()
+            .role(ApplicationRole.SUPERVISOR)
+            .application(ApplicationType.TTFN)
+            .sbbUserId("u123456").build()
     ));
 
     mvc.perform(get("/v1/users")
-           .queryParam("page", "0")
-           .queryParam("size", "10")
-           .queryParam("applicationTypes", "LIDI", "TTFN")
-           .queryParam("sboids", "ch:1:sboid:1"))
-       .andExpect(status().isOk())
-       .andExpect(jsonPath("$.totalCount").value(1))
-       .andExpect(jsonPath("$.objects", hasSize(1)))
-       .andExpect(
-           jsonPath("$.objects[0].sbbUserId").value(
-               "u654321"))
-       .andExpect(
-           jsonPath("$.objects[0].permissions", hasSize(2)));
+            .queryParam("page", "0")
+            .queryParam("size", "10")
+            .queryParam("applicationTypes", "LIDI", "TTFN")
+            .queryParam("sboids", "ch:1:sboid:1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1))
+        .andExpect(jsonPath("$.objects", hasSize(1)))
+        .andExpect(
+            jsonPath("$.objects[0].sbbUserId").value(
+                "u654321"))
+        .andExpect(
+            jsonPath("$.objects[0].permissions", hasSize(2)));
+  }
+
+  @Test
+  void getUserDisplayNameExisting() throws Exception {
+    mvc.perform(get("/v1/users/u236171/displayname"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.displayName").value("Ammann Luca (IT-PTR-CEN2-YPT)"));
+  }
+
+  @Test
+  void getUserDisplayNameNotExisting() throws Exception {
+    mvc.perform(get("/v1/users/ATLAS_SYSTEM_USER/displayname"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.displayName").doesNotExist());
   }
 
 }
