@@ -21,11 +21,15 @@ public class LineWorkflowService {
   @Value("${mail.workflow.line.receiver}")
   private String workflowLineReceiver;
 
+  @Value("${mail.workflow.line.from}")
+  private String from;
+
   @Value("${mail.workflow.line.mail-html-title}")
   private String mailHtmlTitle;
 
   public MailNotification buildMailNotification(Workflow workflow) {
     return MailNotification.builder()
+        .from(from)
         .mailType(MailType.WORKFLOW_NOTIFICATION)
         .subject(buildSubject(workflow))
         .to(List.of(workflowLineReceiver))
