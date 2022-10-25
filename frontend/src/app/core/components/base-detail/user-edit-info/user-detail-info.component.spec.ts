@@ -47,7 +47,7 @@ describe('UserDetailComponent', () => {
   });
 
   it('should have processed creationEditionRecord', (done) => {
-    component._record$.subscribe((value) => {
+    component.processedRecord.subscribe((value) => {
       expect(value?.creator).toBe('Marek Hamsik');
       expect(value?.creationDate).toBe('10.10.2022 16:58:52');
       expect(value?.editor).toBe('Marek Hamsik');
