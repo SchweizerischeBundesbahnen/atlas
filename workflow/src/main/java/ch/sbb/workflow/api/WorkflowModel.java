@@ -85,6 +85,8 @@ public class WorkflowModel {
         .checkComment(entity.getCheckComment())
         .client(PersonModel.toModel(entity.getClient()))
         .examinant(PersonModel.toModel(entity.getExaminant()))
+        .creationDate(entity.getCreationDate())
+        .editionDate(entity.getEditionDate())
         .build();
   }
 
