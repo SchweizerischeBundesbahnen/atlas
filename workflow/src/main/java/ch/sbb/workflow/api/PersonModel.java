@@ -45,6 +45,8 @@ public class PersonModel {
         .lastName(person.getLastName())
         .function(person.getFunction())
         .mail(person.getMail())
+        .creationDate(person.getCreationDate())
+        .editionDate(person.getEditionDate())
         .build();
   }
 

@@ -1,9 +1,7 @@
 package ch.sbb.atlas.kafka.model.workflow;
 
 import ch.sbb.atlas.kafka.model.AtlasEvent;
-import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serial;
 import java.io.Serializable;
@@ -26,11 +24,6 @@ public class WorkflowEvent implements Serializable, AtlasEvent {
 
   private Long businessObjectId;
 
-  private BusinessObjectType businessObjectType;
-
   private WorkflowStatus workflowStatus;
 
-  private WorkflowType workflowType;
-
-  private String swissId;
 }
