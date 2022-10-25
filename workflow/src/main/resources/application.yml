@@ -58,7 +58,7 @@ auth:
 mail:
   workflow:
     line:
-      receiver: antonio.romano@sbb.ch
+      receiver: TechSupport-ATLAS@sbb.ch
       mail-html-title: Antrag für eine neue/geänderte Linie überprüfen.
 
 
