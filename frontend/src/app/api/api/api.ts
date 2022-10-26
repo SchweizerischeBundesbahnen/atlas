@@ -18,6 +18,8 @@ export * from './userAdministration.service';
 import { UserAdministrationService } from './userAdministration.service';
 export * from './userInformation.service';
 import { UserInformationService } from './userInformation.service';
+export * from './workflow.service';
+import { WorkflowService } from './workflow.service';
 export const APIS = [
   BusinessOrganisationsService,
   CompaniesService,
@@ -29,4 +31,5 @@ export const APIS = [
   TransportCompanyRelationsService,
   UserAdministrationService,
   UserInformationService,
+  WorkflowService,
 ];
