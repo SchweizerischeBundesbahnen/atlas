@@ -2,6 +2,7 @@ package ch.sbb.workflow.kafka;
 
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.kafka.producer.BaseProducer;
+import ch.sbb.atlas.kafka.topic.KafkaKey;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +22,7 @@ public class LineWorkflowProducerService extends BaseProducer<LineWorkflowEvent>
   }
 
   public void produceWorkflowNotification(LineWorkflowEvent lineWorkflowEvent) {
-    produceEvent(lineWorkflowEvent);
+    produceEvent(lineWorkflowEvent, KafkaKey.WORKFLOW.getValue());
   }
 
 }
