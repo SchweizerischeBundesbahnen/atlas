@@ -38,21 +38,6 @@ spec:
                 secretKeyRef:
                   name: db-secret-{{ .Values.workflow.name }}
                   key: password
-            - name: CRD_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: crd-secrets
-                  key: password
-            - name: CRD_KEYSTORE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: crd-secrets
-                  key: keystore-password
-            - name: CRD_TRUSTSTORE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: crd-secrets
-                  key: truststore-password
             - name: KAFKA_SCRAM_PASSWORD
               valueFrom:
                 secretKeyRef:

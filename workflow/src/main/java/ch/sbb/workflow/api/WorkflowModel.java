@@ -1,6 +1,5 @@
 package ch.sbb.workflow.api;
 
-import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
@@ -20,10 +19,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Schema(name = "Workflow")
 public class WorkflowModel {
-
-  @Schema(description = "Business Object Type", example = "SLNID")
-  @NotNull
-  private BusinessObjectType businessObjectType;
 
   @Schema(description = "Business Object Id: the generated DB id")
   @NotNull
@@ -63,7 +58,6 @@ public class WorkflowModel {
     return Workflow.builder()
         .workflowType(model.getWorkflowType())
         .businessObjectId(model.getBusinessObjectId())
-        .businessObjectType(model.getBusinessObjectType())
         .swissId(model.getSwissId())
         .description(model.getDescription())
         .workflowComment(model.getWorkflowComment())
@@ -77,7 +71,6 @@ public class WorkflowModel {
     return WorkflowModel.builder()
         .workflowType(entity.getWorkflowType())
         .businessObjectId(entity.getBusinessObjectId())
-        .businessObjectType(entity.getBusinessObjectType())
         .swissId(entity.getSwissId())
         .description(entity.getDescription())
         .workflowStatus(entity.getStatus())
