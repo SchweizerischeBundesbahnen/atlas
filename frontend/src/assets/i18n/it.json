@@ -422,6 +422,7 @@
         "CURRENT": "Attuale",
         "SUPERVISION": "Supervisione",
         "OPERATING_PART": "Sezione operativa",
+        "FORMER_OPERATING_PART": "Ex sezione operativa",
         "LIQUIDATED": "Liquidato",
         "INACTIVE": "Inattivo"
       },
