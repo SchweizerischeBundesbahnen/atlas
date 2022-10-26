@@ -22,7 +22,7 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
 
   @RunAsUser(fakeUserType = KAFKA)
   public void processWorkflow(WorkflowEvent workflowEvent) {
-    T objectVersion = getObjectVerision(workflowEvent);
+    T objectVersion = getObjectVersion(workflowEvent);
     evaluateWorkflowProcessingStatus(workflowEvent, objectVersion);
     Y objectVersionWorkflow = buildObjectVersionWorkflow(workflowEvent, objectVersion);
     objectWorkflowRepository.save(objectVersionWorkflow);
@@ -35,13 +35,13 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
     if (WorkflowStatus.STARTED == workflowEvent.getWorkflowStatus()) {
       objectVersion.setStatus(Status.IN_REVIEW);
       // CREATE SNAPHOT
-      log.info("Changed Workflow status from {} to {}", Status.IN_REVIEW, Status.IN_REVIEW);
+      log.info("Changed Object status from {} to {}", Status.DRAFT, Status.IN_REVIEW);
     } else {
       throw new IllegalStateException("Use case not yet implemented!!");
     }
   }
 
-  T getObjectVerision(WorkflowEvent workflowEvent) {
+  T getObjectVersion(WorkflowEvent workflowEvent) {
     return objectVersionRepository.findById(workflowEvent.getBusinessObjectId())
         .orElseThrow(() -> new IdNotFoundException(workflowEvent.getBusinessObjectId()));
   }
