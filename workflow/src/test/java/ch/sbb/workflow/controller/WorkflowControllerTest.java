@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.api.PersonModel;
@@ -51,7 +50,6 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .examinant(person)
         .workflowType(WorkflowType.LINE)
         .businessObjectId(123456L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .build();
 
     controller.startWorkflow(workflowModel);
@@ -79,7 +77,6 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .workflowComment("comment")
         .checkComment("comment")
         .businessObjectId(123456L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .build();
 
     Workflow entity = workflowRepository.save(workflow);
@@ -107,7 +104,6 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .checkComment("comment")
         .workflowType(WorkflowType.LINE)
         .businessObjectId(123456L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .build();
 
     //given
@@ -132,7 +128,6 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .swissId("CH123456")
         .examinant(person)
         .businessObjectId(123456L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .build();
 
     //given
