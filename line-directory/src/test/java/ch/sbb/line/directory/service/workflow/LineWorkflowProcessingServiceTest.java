@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.kafka.model.workflow.WorkflowEvent;
+import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionWorkflow;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -35,7 +35,7 @@ public class LineWorkflowProcessingServiceTest {
   @Test
   public void shouldExecuteProcessLineWorkflow() {
     //given
-    WorkflowEvent workflowEvent = WorkflowEvent.builder()
+    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(STARTED)
@@ -44,7 +44,7 @@ public class LineWorkflowProcessingServiceTest {
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
 
     //when
-    workflowProcessingService.processLineWorkflow(workflowEvent);
+    workflowProcessingService.processLineWorkflow(lineWorkflowEvent);
 
     //then
     verify(lineVersionRepository).save(lineVersion);

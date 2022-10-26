@@ -1,6 +1,6 @@
 package ch.sbb.atlas.kafka.model.mail;
 
-import ch.sbb.atlas.kafka.model.AtlasEvent;
+import ch.sbb.atlas.kafka.model.workflow.event.AtlasEvent;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serial;
 import java.io.Serializable;
