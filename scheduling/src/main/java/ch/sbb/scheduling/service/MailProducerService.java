@@ -2,6 +2,7 @@ package ch.sbb.scheduling.service;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.producer.BaseProducer;
+import ch.sbb.atlas.kafka.topic.KafkaKey;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +22,7 @@ public class MailProducerService extends BaseProducer<MailNotification> {
   }
 
   public void produceMailNotification(MailNotification mailNotification) {
-    produceEvent(mailNotification);
+    produceEvent(mailNotification, KafkaKey.MAIL.getValue());
   }
 
 }

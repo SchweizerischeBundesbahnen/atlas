@@ -17,7 +17,7 @@ public abstract class BaseProducer<T extends AtlasEvent> {
 
   protected abstract String getTopic();
 
-  public void produceEvent(T event) {
+  public void produceEvent(T event, String kafkaKey) {
 
     ListenableFuture<SendResult<String, Object>> future =
         kafkaTemplate.send(getTopic(), KafkaKey.MAIL.getValue(), event);
