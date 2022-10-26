@@ -12,8 +12,15 @@ spring:
 kafka:
   atlas:
     mail:
-      topic: atlas.workflow
+      topic: atlas.test.workflow
       groupId: atlas.kafka.workflow.groupId
+    workflow:
+      topic: atlas.test.workflow
+      groupId: atlas.kafka.workflow.groupId
+    user:
+      administration:
+        topic: atlas.test.user.administration
+        groupId: atlas.kafka.lidi.user.administration.groupId
 auth:
   audience:
     service-name: 2e8c6ce0-304d-42e1-9bce-600b3ea43aad
