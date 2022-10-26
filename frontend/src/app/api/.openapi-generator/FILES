@@ -38,6 +38,7 @@ model/errorResponse.ts
 model/line.ts
 model/lineType.ts
 model/lineVersion.ts
+model/lineVersionWorkflow.ts
 model/models.ts
 model/parameter.ts
 model/paymentType.ts
@@ -58,4 +59,5 @@ model/userDisplayName.ts
 model/userPermissionCreateModel.ts
 model/userPermissionVersionModel.ts
 model/workflow.ts
+model/workflowProcessingStatus.ts
 variables.ts
