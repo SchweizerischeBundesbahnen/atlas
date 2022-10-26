@@ -9,15 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserPermissionVersionModel } from './userPermissionVersionModel';
+import { WorkflowProcessingStatus } from './workflowProcessingStatus';
 
-export interface UserPermissionCreateModel {
+/**
+ * Workflows related to the line version
+ */
+export interface LineVersionWorkflow {
   /**
-   * SBB User-ID
+   * Workflow Id
    */
-  sbbUserId: string;
-  /**
-   * User permissions
-   */
-  permissions: Array<UserPermissionVersionModel>;
+  readonly workflowId?: number;
+  workflowProcessingStatus?: WorkflowProcessingStatus;
 }

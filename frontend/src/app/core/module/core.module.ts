@@ -26,8 +26,10 @@ import { FormModule } from './form.module';
 import { RelationComponent } from '../components/relation/relation.component';
 import { UserDetailInfoComponent } from '../components/base-detail/user-edit-info/user-detail-info.component';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
+import { WorkflowComponent } from '../workflow/workflow.component';
 
 const coreComponents = [
+  WorkflowComponent,
   BaseDetailComponent,
   UserDetailInfoComponent,
   AtlasButtonComponent,
