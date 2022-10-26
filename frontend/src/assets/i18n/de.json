@@ -422,6 +422,7 @@
         "CURRENT": "Aktuell",
         "SUPERVISION": "Aufsicht",
         "OPERATING_PART": "Betriebsteil",
+        "FORMER_OPERATING_PART": "Ehemaliger Betriebsteil",
         "LIQUIDATED": "Liquidiert",
         "INACTIVE": "Inaktiv"
       },
