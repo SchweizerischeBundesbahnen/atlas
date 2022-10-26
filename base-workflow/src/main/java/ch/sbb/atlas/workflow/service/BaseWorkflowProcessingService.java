@@ -6,7 +6,7 @@ import ch.sbb.atlas.base.service.aspect.annotation.RunAsUser;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.kafka.model.workflow.WorkflowEvent;
+import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import lombok.RequiredArgsConstructor;
@@ -21,18 +21,18 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
   protected final JpaRepository<Y, Long> objectWorkflowRepository;
 
   @RunAsUser(fakeUserType = KAFKA)
-  public void processWorkflow(WorkflowEvent workflowEvent) {
-    T objectVersion = getObjectVersion(workflowEvent);
-    evaluateWorkflowProcessingStatus(workflowEvent, objectVersion);
-    Y objectVersionWorkflow = buildObjectVersionWorkflow(workflowEvent, objectVersion);
+  public void processWorkflow(LineWorkflowEvent lineWorkflowEvent) {
+    T objectVersion = getObjectVersion(lineWorkflowEvent);
+    evaluateWorkflowProcessingStatus(lineWorkflowEvent, objectVersion);
+    Y objectVersionWorkflow = buildObjectVersionWorkflow(lineWorkflowEvent, objectVersion);
     objectWorkflowRepository.save(objectVersionWorkflow);
     log.info("Workflow entity saved: {}", objectVersionWorkflow);
     objectVersionRepository.save(objectVersion);
     log.info("Object entity saved: {}", objectVersion);
   }
 
-  void evaluateWorkflowProcessingStatus(WorkflowEvent workflowEvent, T objectVersion) {
-    if (WorkflowStatus.STARTED == workflowEvent.getWorkflowStatus()) {
+  void evaluateWorkflowProcessingStatus(LineWorkflowEvent lineWorkflowEvent, T objectVersion) {
+    if (WorkflowStatus.STARTED == lineWorkflowEvent.getWorkflowStatus()) {
       objectVersion.setStatus(Status.IN_REVIEW);
       // CREATE SNAPHOT
       log.info("Changed Object status from {} to {}", Status.DRAFT, Status.IN_REVIEW);
@@ -41,11 +41,11 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
     }
   }
 
-  T getObjectVersion(WorkflowEvent workflowEvent) {
-    return objectVersionRepository.findById(workflowEvent.getBusinessObjectId())
-        .orElseThrow(() -> new IdNotFoundException(workflowEvent.getBusinessObjectId()));
+  T getObjectVersion(LineWorkflowEvent lineWorkflowEvent) {
+    return objectVersionRepository.findById(lineWorkflowEvent.getBusinessObjectId())
+        .orElseThrow(() -> new IdNotFoundException(lineWorkflowEvent.getBusinessObjectId()));
   }
 
-  protected abstract Y buildObjectVersionWorkflow(WorkflowEvent workflowEvent, T object);
+  protected abstract Y buildObjectVersionWorkflow(LineWorkflowEvent lineWorkflowEvent, T object);
 
 }
