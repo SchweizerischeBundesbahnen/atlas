@@ -1,10 +1,12 @@
 package ch.sbb.workflow.api;
 
+import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.workflow.entity.Person;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +31,7 @@ public class PersonModel {
   @NotBlank
   private String function;
 
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   @Schema(description = "mail", example = "mail@sbb.ch")
   @NotBlank
   private String mail;

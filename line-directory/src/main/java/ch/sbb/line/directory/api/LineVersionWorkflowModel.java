@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "LineVersion")
+@Schema(name = "LineVersionWorkflow")
 public class LineVersionWorkflowModel {
 
   @Schema(description = "Workflow Id", accessMode = AccessMode.READ_ONLY)
