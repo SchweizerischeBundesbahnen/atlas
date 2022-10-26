@@ -5,7 +5,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.workflow.WorkflowEvent;
+import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
@@ -22,7 +22,7 @@ public class WorkflowNotificationServiceTest {
   private WorkflowNotificationService notificationService;
 
   @Mock
-  private WorkflowProducerService workflowProducerService;
+  private LineWorkflowProducerService lineWorkflowProducerService;
 
   @Mock
   private MailProducerService mailProducerService;
@@ -33,7 +33,7 @@ public class WorkflowNotificationServiceTest {
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    notificationService = new WorkflowNotificationService(workflowProducerService, mailProducerService, lineWorkflowService);
+    notificationService = new WorkflowNotificationService(lineWorkflowProducerService, mailProducerService, lineWorkflowService);
   }
 
   @Test
@@ -77,7 +77,7 @@ public class WorkflowNotificationServiceTest {
         .swissId("ch:slnid:123")
         .build();
 
-    WorkflowEvent workflowEvent = WorkflowEvent.builder()
+    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
         .workflowId(workflow.getId())
         .businessObjectId(workflow.getBusinessObjectId())
         .workflowStatus(workflow.getStatus())
@@ -87,6 +87,6 @@ public class WorkflowNotificationServiceTest {
     notificationService.sendEventToLidi(workflow);
 
     //then
-    Mockito.verify(workflowProducerService).produceWorkflowNotification(workflowEvent);
+    Mockito.verify(lineWorkflowProducerService).produceWorkflowNotification(lineWorkflowEvent);
   }
 }
