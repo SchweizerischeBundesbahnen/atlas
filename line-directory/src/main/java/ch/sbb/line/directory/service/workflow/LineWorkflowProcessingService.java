@@ -4,7 +4,7 @@ import static ch.sbb.atlas.base.service.aspect.FakeUserType.KAFKA;
 import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.getProcessingStatus;
 
 import ch.sbb.atlas.base.service.aspect.annotation.RunAsUser;
-import ch.sbb.atlas.kafka.model.workflow.WorkflowEvent;
+import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.atlas.workflow.service.BaseWorkflowProcessingService;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -23,18 +23,18 @@ public class LineWorkflowProcessingService extends BaseWorkflowProcessingService
   }
 
   @RunAsUser(fakeUserType = KAFKA)
-  public void processLineWorkflow(WorkflowEvent workflowEvent) {
-    log.info("Started Workflow processing: {}", workflowEvent);
-    processWorkflow(workflowEvent);
-    log.info("Ended Workflow processing: {}", workflowEvent);
+  public void processLineWorkflow(LineWorkflowEvent lineWorkflowEvent) {
+    log.info("Started Workflow processing: {}", lineWorkflowEvent);
+    processWorkflow(lineWorkflowEvent);
+    log.info("Ended Workflow processing: {}", lineWorkflowEvent);
   }
 
   @Override
-  protected LineVersionWorkflow buildObjectVersionWorkflow(WorkflowEvent workflowEvent, LineVersion object) {
-    WorkflowProcessingStatus workflowProcessingStatus = getProcessingStatus(workflowEvent.getWorkflowStatus());
+  protected LineVersionWorkflow buildObjectVersionWorkflow(LineWorkflowEvent lineWorkflowEvent, LineVersion object) {
+    WorkflowProcessingStatus workflowProcessingStatus = getProcessingStatus(lineWorkflowEvent.getWorkflowStatus());
 
     return LineVersionWorkflow.builder()
-        .workflowId(workflowEvent.getWorkflowId())
+        .workflowId(lineWorkflowEvent.getWorkflowId())
         .lineVersion(object)
         .workflowProcessingStatus(workflowProcessingStatus)
         .build();

@@ -1,6 +1,6 @@
 package ch.sbb.atlas.kafka.producer;
 
-import ch.sbb.atlas.kafka.model.AtlasEvent;
+import ch.sbb.atlas.kafka.model.workflow.event.AtlasEvent;
 import ch.sbb.atlas.kafka.topic.KafkaKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
