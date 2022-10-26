@@ -9,15 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserPermissionVersionModel } from './userPermissionVersionModel';
 
-export interface UserPermissionCreateModel {
-  /**
-   * SBB User-ID
-   */
-  sbbUserId: string;
-  /**
-   * User permissions
-   */
-  permissions: Array<UserPermissionVersionModel>;
-}
+/**
+ * WorkflowProcessingStatus
+ */
+export type WorkflowProcessingStatus = 'EVALUATED' | 'IN_PROGRESS';
+
+export const WorkflowProcessingStatus = {
+  Evaluated: 'EVALUATED' as WorkflowProcessingStatus,
+  InProgress: 'IN_PROGRESS' as WorkflowProcessingStatus,
+};
