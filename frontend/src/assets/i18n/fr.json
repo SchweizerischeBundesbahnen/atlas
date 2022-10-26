@@ -422,6 +422,7 @@
         "CURRENT": "Actuel",
         "SUPERVISION": "Supervision",
         "OPERATING_PART": "Partie opérationnelle",
+        "FORMER_OPERATING_PART": "Ancienne partie de l'entreprise",
         "LIQUIDATED": "Liquidé",
         "INACTIVE": "Inactif"
       },

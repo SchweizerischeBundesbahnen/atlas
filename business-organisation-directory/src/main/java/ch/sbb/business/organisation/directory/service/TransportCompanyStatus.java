@@ -9,6 +9,12 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 public enum TransportCompanyStatus {
 
-  OPERATOR, CURRENT, SUPERVISION, OPERATING_PART, LIQUIDATED, INACTIVE
+  OPERATOR,
+  CURRENT,
+  SUPERVISION,
+  OPERATING_PART,
+  LIQUIDATED,
+  INACTIVE,
+  FORMER_OPERATING_PART
 
 }
