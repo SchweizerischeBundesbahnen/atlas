@@ -1,5 +1,5 @@
 {
-  "name": "atlas.workflow.mail",
+  "name": "atlas.test.workflow",
   "replicas": 3,
   "partitions": 1,
   "configs": {
