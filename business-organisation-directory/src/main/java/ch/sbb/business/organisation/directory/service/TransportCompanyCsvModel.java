@@ -74,7 +74,8 @@ public class TransportCompanyCsvModel {
     @JsonProperty("3") SUPERVISION,
     @JsonProperty("4") OPERATING_PART,
     @JsonProperty("5") LIQUIDATED,
-    @JsonProperty("6") INACTIVE;
+    @JsonProperty("6") INACTIVE,
+    @JsonProperty("7") FORMER_OPERATING_PART;
 
     public TransportCompanyStatus toTransportCompanyStatus() {
       return TransportCompanyStatus.valueOf(name());
