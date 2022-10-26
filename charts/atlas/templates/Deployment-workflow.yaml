@@ -1,3 +1,4 @@
+{{- if .Values.workflow.enabled }}
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -99,3 +100,4 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+{{- end }}
