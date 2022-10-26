@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.base.service.model.exception.NotFoundException;
-import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
@@ -41,7 +40,6 @@ public class WorkflowServiceTest {
     Workflow workflow = Workflow.builder()
         .id(123L)
         .businessObjectId(123L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .build();
@@ -64,7 +62,6 @@ public class WorkflowServiceTest {
     Workflow workflow = Workflow.builder()
         .id(123L)
         .businessObjectId(123L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .build();
@@ -85,7 +82,6 @@ public class WorkflowServiceTest {
     Workflow workflow = Workflow.builder()
         .id(123L)
         .businessObjectId(123L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .build();
@@ -102,7 +98,6 @@ public class WorkflowServiceTest {
     Workflow workflow = Workflow.builder()
         .id(123L)
         .businessObjectId(123L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .build();
