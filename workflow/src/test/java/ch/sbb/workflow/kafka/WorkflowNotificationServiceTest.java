@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
-import ch.sbb.atlas.kafka.model.workflow.model.BusinessObjectType;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
@@ -71,7 +70,6 @@ public class WorkflowNotificationServiceTest {
     Workflow workflow = Workflow.builder()
         .id(123L)
         .businessObjectId(123L)
-        .businessObjectType(BusinessObjectType.SLNID)
         .status(WorkflowStatus.ADDED)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")

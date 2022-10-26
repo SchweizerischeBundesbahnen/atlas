@@ -15,19 +15,18 @@ CREATE SEQUENCE person_seq START WITH 1000 INCREMENT BY 1;
 
 CREATE TABLE workflow
 (
-    id                   BIGINT    NOT NULL PRIMARY KEY,
-    business_object_type VARCHAR(500),
-    business_object_id   BIGINT,
-    workflow_type        VARCHAR(50),
-    swiss_id             VARCHAR(50),
-    description          VARCHAR(50),
-    status               VARCHAR(50),
-    workflow_comment     VARCHAR(1500),
-    check_comment        VARCHAR(1500),
-    client_id            BIGINT,
-    examinant_id         BIGINT,
-    creation_date        TIMESTAMP NOT NULL,
-    edition_date         TIMESTAMP NOT NULL,
+    id                 BIGINT    NOT NULL PRIMARY KEY,
+    business_object_id BIGINT,
+    workflow_type      VARCHAR(50),
+    swiss_id           VARCHAR(50),
+    description        VARCHAR(50),
+    status             VARCHAR(50),
+    workflow_comment   VARCHAR(1500),
+    check_comment      VARCHAR(1500),
+    client_id          BIGINT,
+    examinant_id       BIGINT,
+    creation_date      TIMESTAMP NOT NULL,
+    edition_date       TIMESTAMP NOT NULL,
     CONSTRAINT fk_client
         FOREIGN KEY (client_id)
             REFERENCES person (id),
