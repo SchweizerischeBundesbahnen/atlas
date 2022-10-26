@@ -5,6 +5,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.mail.model.MailTemplateConfig;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import javax.mail.MessagingException;
@@ -35,11 +36,10 @@ public class MailContentBuilder {
   private String activeProfile;
 
   public void prepareMessageHelper(MailNotification mailNotification, MimeMessage mimeMessage)
-      throws MessagingException, IOException {
+      throws MessagingException {
     MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, UTF_8.name());
     MailTemplateConfig mailTemplateConfig = MailTemplateConfig.getMailTemplateConfig(
         mailNotification.getMailType());
-    final InputStreamSource inputStreamSource = new ByteArrayResource(LOGO_ATALAS_PATH_RESOURCE.getInputStream().readAllBytes());
     messageHelper.setFrom(getFrom(mailTemplateConfig, mailNotification));
     messageHelper.setTo(getTo(mailTemplateConfig, mailNotification));
     messageHelper.setCc(mailNotification.ccAsArray());
@@ -47,7 +47,8 @@ public class MailContentBuilder {
     messageHelper.setSubject(getSubject(mailTemplateConfig, mailNotification));
     String htmlContent = getHtmlContent(mailTemplateConfig, mailNotification);
     messageHelper.setText(htmlContent, true);
-    messageHelper.addInline(LOGO, inputStreamSource, "image/jpeg");
+    final InputStreamSource logoInputStreamSource = getLogoInputStreamSource();
+    messageHelper.addInline(LOGO, logoInputStreamSource, "image/jpeg");
   }
 
   public String[] getTo(MailTemplateConfig mailTemplateConfig, MailNotification mailNotification) {
@@ -79,15 +80,6 @@ public class MailContentBuilder {
     }
   }
 
-  private String getSubjectPrefix() {
-    String subjectPrefix = "[ATLAS";
-    if (!activeProfile.equals("prod")) {
-      subjectPrefix += "-" + activeProfile.toUpperCase();
-    }
-    subjectPrefix += "] ";
-    return subjectPrefix;
-  }
-
   String getHtmlContent(MailTemplateConfig mailTemplateConfig,
       MailNotification mailNotification) {
     if (mailTemplateConfig.isContent() && mailTemplateConfig.isTemplateProperties()) {
@@ -98,6 +90,15 @@ public class MailContentBuilder {
     } else {
       return buildtHtmlWithProperties(mailTemplateConfig, mailNotification.getTemplateProperties());
     }
+  }
+
+  private String getSubjectPrefix() {
+    String subjectPrefix = "[ATLAS";
+    if (!activeProfile.equals("prod")) {
+      subjectPrefix += "-" + activeProfile.toUpperCase();
+    }
+    subjectPrefix += "] ";
+    return subjectPrefix;
   }
 
   private String buildHtmlContent(MailTemplateConfig mailTemplateConfig, String content) {
@@ -122,5 +123,13 @@ public class MailContentBuilder {
     context.setVariable("properties", properties);
     context.setVariable(LOGO, LOGO);
     return templateEngine.process(mailTemplateConfig.getTemplate(), context);
+  }
+
+  private InputStreamSource getLogoInputStreamSource() {
+    try (InputStream inputStream = LOGO_ATALAS_PATH_RESOURCE.getInputStream()) {
+      return new ByteArrayResource(inputStream.readAllBytes());
+    } catch (IOException e) {
+      throw new IllegalArgumentException("The given path resource is wrog!", e);
+    }
   }
 }
