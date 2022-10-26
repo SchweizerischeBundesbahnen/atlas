@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.kafka;
 
-import ch.sbb.atlas.kafka.model.workflow.WorkflowEvent;
+import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.line.directory.service.workflow.LineWorkflowProcessingService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +18,9 @@ public class WorkflowListener {
   private final LineWorkflowProcessingService lineWorkflowProcessingService;
 
   @KafkaHandler
-  public void receiveWorkflowNotification(@Valid WorkflowEvent workflowEvent) {
-    log.info("Consumed: {}", workflowEvent);
-    lineWorkflowProcessingService.processLineWorkflow(workflowEvent);
+  public void receiveLineWorkflowNotification(@Valid LineWorkflowEvent lineWorkflowEvent) {
+    log.info("Consumed: {}", lineWorkflowEvent);
+    lineWorkflowProcessingService.processLineWorkflow(lineWorkflowEvent);
   }
 
 }
