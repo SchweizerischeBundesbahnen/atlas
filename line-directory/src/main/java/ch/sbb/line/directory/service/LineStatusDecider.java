@@ -5,6 +5,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -72,7 +73,7 @@ public class LineStatusDecider {
     @Override
     public boolean test(LineVersion newLineVersion, LineVersion previousLineVersion) {
       for (Function<LineVersion, Object> attribute : worflowRelevantAttributes) {
-        if (!attribute.apply(previousLineVersion).equals(attribute.apply(newLineVersion))) {
+        if (!Objects.equals(attribute.apply(previousLineVersion), attribute.apply(newLineVersion))) {
           return true;
         }
       }

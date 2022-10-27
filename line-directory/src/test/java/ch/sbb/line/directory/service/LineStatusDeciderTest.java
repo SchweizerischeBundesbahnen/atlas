@@ -48,6 +48,30 @@ class LineStatusDeciderTest {
   }
 
   @Test
+  void shouldSetStatusToDraftOnUpdateOrderlyNameChangeFromNull() {
+    // Given
+    LineVersion currentLineVersion =
+        LineTestData.lineVersionBuilder().longName(null).build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().longName("new name").build();
+    // When
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, List.of(currentLineVersion));
+    // Then
+    assertThat(result).isEqualTo(Status.DRAFT);
+  }
+
+  @Test
+  void shouldSetStatusToDraftOnUpdateOrderlyNameChangeToNull() {
+    // Given
+    LineVersion currentLineVersion =
+        LineTestData.lineVersionBuilder().longName("something").build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().longName(null).build();
+    // When
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, List.of(currentLineVersion));
+    // Then
+    assertThat(result).isEqualTo(Status.DRAFT);
+  }
+
+  @Test
   void shouldSetStatusToDraftOnUpdateTemporaryNameChange() {
     // Given
     LineVersion currentLineVersion =
