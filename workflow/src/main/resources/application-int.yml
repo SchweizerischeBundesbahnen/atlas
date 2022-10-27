@@ -20,7 +20,7 @@ kafka:
     user:
       administration:
         topic: atlas.int.user.administration
-        groupId: atlas.kafka.lidi.user.administration.groupId
+        groupId: atlas.kafka.workflow.user.administration.groupId
 auth:
   audience:
     service-name: 733b361e-a067-4882-bb00-6bbaf36a007f
