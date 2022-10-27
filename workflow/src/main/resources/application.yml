@@ -49,7 +49,7 @@ kafka:
     user:
       administration:
         topic: atlas.user.administration
-        groupId: atlas.kafka.lidi.user.administration.groupId
+        groupId: atlas.kafka.workflow.user.administration.groupId
 
 auth:
   audience:
