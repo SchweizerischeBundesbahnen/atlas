@@ -41,6 +41,8 @@ spec:
               value: '{{ .Values.frontend.apiScope }}'
             - name: INSTANA_KEY
               value: '{{ .Values.frontend.instanaKey }}'
+            - name: WORKFLOW_ENABLED
+              value: '{{ .Values.workflow.enabled }}'
           ports:
             - containerPort: 8080
           livenessProbe:

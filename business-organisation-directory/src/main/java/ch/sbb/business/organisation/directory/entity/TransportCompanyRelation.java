@@ -1,7 +1,7 @@
 package ch.sbb.business.organisation.directory.entity;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.entity.BaseVersion;
+import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,13 +26,14 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Entity(name = "transport_company_relation")
-public class TransportCompanyRelation extends BaseVersion {
+public class TransportCompanyRelation extends BaseEntity {
 
   private static final String TRANSPORT_COMPANY_RELATION_SEQ = "transport_company_relation_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = TRANSPORT_COMPANY_RELATION_SEQ)
-  @SequenceGenerator(name = TRANSPORT_COMPANY_RELATION_SEQ, sequenceName = TRANSPORT_COMPANY_RELATION_SEQ, allocationSize = 1, initialValue = 1000)
+  @SequenceGenerator(name = TRANSPORT_COMPANY_RELATION_SEQ, sequenceName = TRANSPORT_COMPANY_RELATION_SEQ, allocationSize = 1,
+      initialValue = 1000)
   private Long id;
 
   @ManyToOne
