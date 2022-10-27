@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,6 +41,11 @@ public abstract class BaseEntity {
 
   @AtlasVersionableProperty(ignoreDiff = true)
   private String editor;
+
+  @Version
+  @NotNull
+  @AtlasVersionableProperty(ignoreDiff = true)
+  private Integer version;
 
   @PrePersist
   public void onPrePersist() {
