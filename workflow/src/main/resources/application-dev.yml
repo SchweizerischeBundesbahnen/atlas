@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://workflow-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/workflow
+    username: ${DB_USER}
+    password: ${DB_PWD}
+kafka:
+  atlas:
+    mail:
+      topic: atlas.dev.mail
+      groupId: atlas.kafka.mail.groupId
+    workflow:
+      topic: atlas.dev.workflow
+      groupId: atlas.kafka.workflow.line.groupId
+    user:
+      administration:
+        topic: atlas.dev.user.administration
+        groupId: atlas.kafka.workflow.user.administration.groupId
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n

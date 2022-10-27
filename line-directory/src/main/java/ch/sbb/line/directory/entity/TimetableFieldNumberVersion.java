@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
@@ -14,8 +13,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -79,10 +76,6 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
   private String swissTimetableFieldNumber;
-
-  @Enumerated(EnumType.STRING)
-  @NotNull
-  private Status status;
 
   @Column(columnDefinition = "TIMESTAMP")
   @NotNull

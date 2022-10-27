@@ -10,6 +10,7 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
+import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -125,6 +126,9 @@ public class LineVersionVersionModel extends BaseVersionModel implements DatesVa
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
+
+  @Schema(description = "Workflows related to the line version", accessMode = AccessMode.READ_ONLY)
+  private Set<LineVersionWorkflowModel> lineVersionWorkflows;
 }
 
 
