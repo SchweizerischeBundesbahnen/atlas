@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Gets serialized to kafka with class and package-name. Do care.
+ */
 @Builder
 @Data
 @NoArgsConstructor
