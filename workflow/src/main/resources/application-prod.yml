@@ -32,5 +32,5 @@ mail:
   workflow:
     line:
       receiver: info_tuv@bav.admin.ch
-      from: no-replay-atlas@sbb.ch
+      from: no-reply-atlas@sbb.ch
       mail-html-title: Antrag für eine neue/geänderte Linie überprüfen.
