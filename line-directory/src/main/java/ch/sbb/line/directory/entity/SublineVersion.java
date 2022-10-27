@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
@@ -64,10 +63,6 @@ public class SublineVersion extends BaseVersion implements Versionable,
   @Column(updatable = false)
   @AtlasVersionableProperty
   private String slnid;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private Status status;
 
   @NotNull
   @Enumerated(EnumType.STRING)

@@ -1,0 +1,65 @@
+server:
+  port: 8087
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+  endpoint:
+    health:
+      show-details: always
+info:
+  app:
+    name: workflow
+    version: @version@
+    buildtime: @timestamp@
+
+spring:
+  application:
+    name: workflow
+  sleuth:
+    baggage:
+      remote-fields: Correlation-Id
+      correlation-fields: Correlation-Id
+  datasource:
+    url: jdbc:postgresql://localhost:5438/workflow
+    username: user
+    password: pwd
+    driver-class-name: org.postgresql.Driver
+    application:
+      name: workflow
+  jpa:
+    open-in-view: false
+  jmx:
+    enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+
+kafka:
+  atlas:
+    mail:
+      topic: atlas.mail
+      groupId: atlas.kafka.mail.groupId
+    workflow:
+      topic: atlas.workflow
+      groupId: atlas.kafka.workflow.line.groupId
+    user:
+      administration:
+        topic: atlas.user.administration
+        groupId: atlas.kafka.workflow.user.administration.groupId
+
+auth:
+  audience:
+    service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
+
+mail:
+  workflow:
+    line:
+      receiver: TechSupport-ATLAS@sbb.ch
+      from: no-reply-atlas@sbb.ch
+      mail-html-title: Antrag für eine neue/geänderte Linie überprüfen.
+
+

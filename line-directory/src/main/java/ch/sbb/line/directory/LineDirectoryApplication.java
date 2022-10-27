@@ -1,6 +1,7 @@
 package ch.sbb.line.directory;
 
 import ch.sbb.atlas.base.service.amazon.service.FileServiceImpl;
+import ch.sbb.atlas.base.service.aspect.RunAsUserAspect;
 import ch.sbb.atlas.base.service.model.configuration.AtlasExceptionHandler;
 import ch.sbb.atlas.base.service.versioning.service.VersionableService;
 import ch.sbb.atlas.base.service.versioning.service.VersionableServiceImpl;
@@ -18,6 +19,11 @@ public class LineDirectoryApplication {
     TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
     KafkaTruststorePreparation.setupTruststore();
     SpringApplication.run(LineDirectoryApplication.class, args);
+  }
+
+  @Bean
+  public RunAsUserAspect runAsUseAspect() {
+    return new RunAsUserAspect();
   }
 
   @Bean

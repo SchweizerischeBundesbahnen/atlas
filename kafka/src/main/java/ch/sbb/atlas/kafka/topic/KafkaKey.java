@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 public enum KafkaKey {
 
-  MAIL("mail");
+  MAIL("mail"),
+  WORKFLOW("workflow");
 
   private final String value;
 
