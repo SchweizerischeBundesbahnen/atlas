@@ -45,7 +45,7 @@ kafka:
       groupId: atlas.kafka.mail.groupId
     workflow:
       topic: atlas.workflow
-      groupId: atlas.kafka.workflow.groupId
+      groupId: atlas.kafka.workflow.line.groupId
     user:
       administration:
         topic: atlas.user.administration
