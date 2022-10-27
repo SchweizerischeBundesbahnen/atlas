@@ -1,7 +1,6 @@
 package ch.sbb.atlas.kafka.producer;
 
 import ch.sbb.atlas.kafka.model.workflow.event.AtlasEvent;
-import ch.sbb.atlas.kafka.topic.KafkaKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,7 +19,7 @@ public abstract class BaseProducer<T extends AtlasEvent> {
   public void produceEvent(T event, String kafkaKey) {
 
     ListenableFuture<SendResult<String, Object>> future =
-        kafkaTemplate.send(getTopic(), KafkaKey.MAIL.getValue(), event);
+        kafkaTemplate.send(getTopic(), kafkaKey, event);
 
     future.addCallback(new ListenableFutureCallback<>() {
 
