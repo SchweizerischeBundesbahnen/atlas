@@ -6,11 +6,11 @@ spring:
 kafka:
   atlas:
     mail:
-      topic: atlas.dev.workflow
-      groupId: atlas.kafka.workflow.groupId
+      topic: atlas.dev.mail
+      groupId: atlas.kafka.mail.groupId
     workflow:
       topic: atlas.dev.workflow
-      groupId: atlas.kafka.workflow.groupId
+      groupId: atlas.kafka.workflow.line.groupId
     user:
       administration:
         topic: atlas.dev.user.administration
