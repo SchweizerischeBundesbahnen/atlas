@@ -10,5 +10,6 @@ public interface CoverageRepository extends JpaRepository<Coverage, Long> {
 
   Coverage findSublineCoverageBySlnidAndModelType(String slnId, ModelType modelType);
 
+  @Override
   void deleteById(Long aLong);
 }
