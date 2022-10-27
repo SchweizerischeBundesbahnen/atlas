@@ -12,6 +12,7 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import java.time.LocalDate;
+import java.util.Collections;
 
 public class LineTestData {
 
@@ -66,6 +67,7 @@ public class LineTestData {
         .businessOrganisation(
             "businessOrganisation")
         .comment("comment")
+        .lineVersionWorkflows(Collections.emptySet())
         .swissLineNumber("swissLineNumber");
   }
 

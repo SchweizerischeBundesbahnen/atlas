@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
@@ -14,19 +13,25 @@ import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -64,10 +69,6 @@ public class LineVersion extends BaseVersion implements Versionable,
   @Column(updatable = false)
   @AtlasVersionableProperty
   private String slnid;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private Status status;
 
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -139,5 +140,9 @@ public class LineVersion extends BaseVersion implements Versionable,
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @AtlasVersionableProperty
   private String comment;
+
+  @Builder.Default
+  @OneToMany(mappedBy = "lineVersion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private Set<LineVersionWorkflow> lineVersionWorkflows = new HashSet<>();
 
 }
