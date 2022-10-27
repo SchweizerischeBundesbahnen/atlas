@@ -4,6 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests the Kafka Serialization and Deserialization of UserAdministration relevant models
+ * The classname gets serialized and stored to kafka
+ */
 class KafkaSerializationUserAdministrationModelTest {
 
   @Test
