@@ -10,6 +10,7 @@ import { DateService } from '../../date/date.service';
 import { ApplicationRole, ApplicationType, Status } from '../../../api';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth/auth.service';
+import { Pages } from '../../../pages/pages';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record> implements OnInit {
@@ -60,6 +61,10 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
       //is creating a new version, prepare empty Form
       this.setSelectedRecord(records);
     }
+  }
+
+  isDetailWorkflowable(): boolean {
+    return this.getPageType() === Pages.LINES;
   }
 
   getSelectedRecord(): TYPE {

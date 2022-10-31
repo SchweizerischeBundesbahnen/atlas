@@ -67,7 +67,40 @@ public class WorkflowModel {
         .build();
   }
 
+  public static Workflow toNewEntity(WorkflowModel model) {
+    return Workflow.builder()
+        .workflowType(model.getWorkflowType())
+        .businessObjectId(model.getBusinessObjectId())
+        .swissId(model.getSwissId())
+        .description(model.getDescription())
+        .workflowComment(model.getWorkflowComment())
+        .checkComment(model.getCheckComment())
+        .client(PersonModel.toEntity(model.getClient()))
+        .build();
+  }
+
   public static WorkflowModel toModel(Workflow entity) {
+    WorkflowModelBuilder builder = WorkflowModel.builder()
+        .workflowType(entity.getWorkflowType())
+        .businessObjectId(entity.getBusinessObjectId())
+        .swissId(entity.getSwissId())
+        .description(entity.getDescription())
+        .workflowStatus(entity.getStatus())
+        .workflowComment(entity.getWorkflowComment())
+        .checkComment(entity.getCheckComment())
+        .creationDate(entity.getCreationDate())
+        .editionDate(entity.getEditionDate());
+    if (entity.getClient() != null) {
+      builder.client(PersonModel.toModel(entity.getClient()));
+    }
+    if (entity.getExaminant() != null) {
+      builder.examinant(PersonModel.toModel(entity.getExaminant()));
+    }
+
+    return builder.build();
+  }
+
+  public static WorkflowModel toNewModel(Workflow entity) {
     return WorkflowModel.builder()
         .workflowType(entity.getWorkflowType())
         .businessObjectId(entity.getBusinessObjectId())
@@ -77,7 +110,6 @@ public class WorkflowModel {
         .workflowComment(entity.getWorkflowComment())
         .checkComment(entity.getCheckComment())
         .client(PersonModel.toModel(entity.getClient()))
-        .examinant(PersonModel.toModel(entity.getExaminant()))
         .creationDate(entity.getCreationDate())
         .editionDate(entity.getEditionDate())
         .build();
