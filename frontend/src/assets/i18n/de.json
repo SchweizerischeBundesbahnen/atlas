@@ -444,5 +444,17 @@
     "DELETE": "Verknüpfung löschen",
     "ADD_SUCCESS_MSG": "Die gewünschte Verknüpfung wurde hinzugefügt.",
     "DELETE_SUCCESS_MSG": "Das Löschen der ausgewählten Verknüpfung war erfolgreich."
+  },
+  "WORKFLOW": {
+    "ADD": "Anhörung erfassen",
+    "START": "Anhörung starten",
+    "COMMENT": "Begründung für Antrag",
+    "PERSON": {
+      "DATA": "Antragstellende Person",
+      "FIRSTNAME": "Vorname",
+      "LASTNAME": "Nachname",
+      "FUNCTION": "Funktion",
+      "MAIL": "E-Mail Adresee"
+    }
   }
 }

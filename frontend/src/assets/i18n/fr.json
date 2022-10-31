@@ -444,5 +444,17 @@
     "DELETE": "Supprimer le lien",
     "ADD_SUCCESS_MSG": "Le lien souhaité a été ajouté.",
     "DELETE_SUCCESS_MSG": "La suppression du raccourci sélectionné a réussi."
+  },
+  "WORKFLOW": {
+    "ADD": "Anhörung erfassen",
+    "START": "Anhörung starten",
+    "COMMENT": "Begründung für Antrag",
+    "PERSON": {
+      "DATA": "Antragstellende Person",
+      "FIRSTNAME": "Vorname",
+      "LASTNAME": "Nachname",
+      "FUNCTION": "Funktion",
+      "MAIL": "E-Mail Adresee"
+    }
   }
 }
