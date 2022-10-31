@@ -23,9 +23,9 @@ export interface Person {
    */
   lastName: string;
   /**
-   * Function
+   * Person Function
    */
-  _function: string;
+  personFunction: string;
   /**
    * mail
    */
