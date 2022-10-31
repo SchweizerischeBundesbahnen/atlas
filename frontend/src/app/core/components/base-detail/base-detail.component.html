@@ -82,7 +82,10 @@
         'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
       }}</span>
     </div>
-    <app-workflow [lineRecord]="this.controller.record"></app-workflow>
+    <app-workflow
+      *ngIf="controller.isDetailWorkflowable()"
+      [lineRecord]="this.controller.record"
+    ></app-workflow>
   </div>
 
   <div>
