@@ -444,5 +444,17 @@
     "DELETE": "Eliminare il collegamento",
     "ADD_SUCCESS_MSG": "Il collegamento desiderato è stato aggiunto.",
     "DELETE_SUCCESS_MSG": "L'eliminazione del collegamento selezionato è avvenuta con successo."
+  },
+  "WORKFLOW": {
+    "ADD": "Anhörung erfassen",
+    "START": "Anhörung starten",
+    "COMMENT": "Begründung für Antrag",
+    "PERSON": {
+      "DATA": "Antragstellende Person",
+      "FIRSTNAME": "Vorname",
+      "LASTNAME": "Nachname",
+      "FUNCTION": "Funktion",
+      "MAIL": "E-Mail Adresee"
+    }
   }
 }

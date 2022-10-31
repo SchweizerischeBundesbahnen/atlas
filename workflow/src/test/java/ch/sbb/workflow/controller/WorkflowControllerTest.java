@@ -39,7 +39,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
     PersonModel person = PersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
-        .function("Centrocampista")
+        .personFunction("Centrocampista")
         .mail("a@b.c").build();
     WorkflowModel workflowModel = WorkflowModel.builder()
         .client(person)
@@ -92,7 +92,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
     PersonModel person = PersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
-        .function("Centrocampista")
+        .personFunction("Centrocampista")
         .mail("a@b.c").build();
     WorkflowModel workflowModel = WorkflowModel.builder()
         .client(person)
@@ -119,7 +119,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
     PersonModel person = PersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
-        .function("Centrocampista")
+        .personFunction("Centrocampista")
         .mail("a@b.c").build();
     WorkflowModel workflowModel = WorkflowModel.builder()
         .client(person)

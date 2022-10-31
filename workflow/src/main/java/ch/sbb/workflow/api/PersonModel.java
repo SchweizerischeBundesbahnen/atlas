@@ -27,9 +27,9 @@ public class PersonModel {
   @NotBlank
   private String lastName;
 
-  @Schema(description = "Function", example = "Officer")
+  @Schema(description = "Person Function", example = "Officer")
   @NotBlank
-  private String function;
+  private String personFunction;
 
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   @Schema(description = "mail", example = "mail@sbb.ch")
@@ -46,7 +46,7 @@ public class PersonModel {
     return PersonModel.builder()
         .firstName(person.getFirstName())
         .lastName(person.getLastName())
-        .function(person.getFunction())
+        .personFunction(person.getFunction())
         .mail(person.getMail())
         .creationDate(person.getCreationDate())
         .editionDate(person.getEditionDate())
@@ -57,7 +57,7 @@ public class PersonModel {
     return Person.builder()
         .firstName(model.getFirstName())
         .lastName(model.getLastName())
-        .function(model.getFunction())
+        .function(model.getPersonFunction())
         .mail(model.getMail())
         .build();
   }
