@@ -67,6 +67,15 @@ export class LineDetailComponent
     return record.slnid!;
   }
 
+  getDecriptionForWorkflow(): string {
+    if (this.record) {
+      if (this.record.description) {
+        return this.record.description;
+      }
+    }
+    return '';
+  }
+
   updateRecord(): void {
     this.linesService
       .updateLineVersion(this.getId(), this.form.value)
