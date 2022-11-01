@@ -1,6 +1,6 @@
 import { BaseDetailController } from './base-detail-controller';
 import { OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { TestBed } from '@angular/core/testing';
@@ -29,6 +29,7 @@ describe('BaseDetailController', () => {
     'revokeRecord',
     'deleteRecord',
     'updateRecord',
+    'isDetailWorkflowable',
   ]);
   let record: Record;
 
@@ -81,6 +82,10 @@ describe('BaseDetailController', () => {
 
     updateRecord(): void {
       dummyController.updateRecord();
+    }
+
+    isDetailWorkflowable(): boolean {
+      return true;
     }
   }
 
