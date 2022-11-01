@@ -27,8 +27,11 @@ import { RelationComponent } from '../components/relation/relation.component';
 import { UserDetailInfoComponent } from '../components/base-detail/user-edit-info/user-detail-info.component';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 import { WorkflowComponent } from '../workflow/workflow.component';
+import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const coreComponents = [
+  WorkflowFormComponent,
   WorkflowComponent,
   BaseDetailComponent,
   UserDetailInfoComponent,
@@ -70,6 +73,7 @@ const coreComponents = [
         sendAccessToken: true,
       },
     }),
+    MatExpansionModule,
   ],
   exports: [...coreComponents, CommonModule, MaterialModule, TranslateModule],
   providers: [TranslatePipe],
