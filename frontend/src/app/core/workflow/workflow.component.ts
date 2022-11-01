@@ -26,10 +26,10 @@ import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 export class WorkflowComponent implements OnInit, OnDestroy {
   @Input() lineRecord!: LineRecord;
   @Input() descriptionForWorkflow!: string;
-  isAddWorkflowButtonDisabled: boolean = false;
-  isStartWorkflowButtonDisabled: boolean = false;
-  isWorkflowFormEditable: boolean = false;
-  isReadMode: boolean = false;
+  isAddWorkflowButtonDisabled = false;
+  isStartWorkflowButtonDisabled = false;
+  isWorkflowFormEditable = false;
+  isReadMode = false;
   workflow!: Workflow;
   workflowStatusTranslated!: string;
   workflowFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
@@ -53,7 +53,9 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     private readonly translateService: TranslateService
   ) {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    console.log('destroy');
+  }
 
   ngOnInit(): void {
     this.initWorkflowForm();
@@ -69,8 +71,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     console.log(this.workflowFormGroup.getRawValue());
     this.validateForm();
     if (this.workflowFormGroup.valid) {
-      let workflowStart: Workflow;
-      workflowStart = {
+      const workflowStart: Workflow = {
         businessObjectId: this.getBusinessObjectId(),
         swissId: this.getStringValue(this.lineRecord.slnid),
         workflowType: WorkflowTypeEnum.Line,
@@ -152,7 +153,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       this.workflowFormGroup.disable();
       this.populateStartWorkflowFormGroupReadMode(this.workflow);
     } else {
-      let workflowsInProgress = this.getWorkflowsInProgress();
+      const workflowsInProgress = this.getWorkflowsInProgress();
       if (workflowsInProgress.length === 0) {
         this.populateStartWorkflowFormGroup();
         this.workflowFormGroup.enable();
@@ -161,7 +162,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
         this.isAddWorkflowButtonDisabled = true;
         this.isStartWorkflowButtonDisabled = true;
         this.workflowFormGroup.disable();
-        let workflowId = workflowsInProgress[0].workflowId;
+        const workflowId = workflowsInProgress[0].workflowId;
         if (workflowId) {
           this.workflowServise.getWorkflow(workflowId).subscribe((workflow: Workflow) => {
             this.workflow = workflow;
@@ -173,7 +174,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   private getWorkflowsInProgress() {
-    let lineVersionWorkflows: LineVersionWorkflow[] = [];
+    const lineVersionWorkflows: LineVersionWorkflow[] = [];
     this.lineRecord.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
     return lineVersionWorkflows.filter(
       (lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress
@@ -181,10 +182,10 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   private populateStartWorkflowFormGroup() {
-    let user: User = this.authService.claims;
-    let userName = user?.name.substr(0, user.name.indexOf('(')).trim();
-    let lastName = user?.name.substr(0, user.name.indexOf(' ')).trim();
-    let firstName = userName.substr(userName.lastIndexOf(' '), userName.length).trim();
+    const user: User = this.authService.claims;
+    const userName = user?.name.substr(0, user.name.indexOf('(')).trim();
+    const lastName = user?.name.substr(0, user.name.indexOf(' ')).trim();
+    const firstName = userName.substr(userName.lastIndexOf(' '), userName.length).trim();
     this.workflowFormGroup.controls['firstName'].setValue(firstName);
     this.workflowFormGroup.controls['lastName'].setValue(lastName);
     this.workflowFormGroup.controls['function'].setValue('');
