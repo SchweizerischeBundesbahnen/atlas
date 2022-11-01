@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { LineRecord } from './line-record';
 import {
   LineVersionWorkflow,
@@ -14,6 +14,8 @@ import { AtlasFieldLengthValidator } from '../validation/field-lengths/atlas-fie
 import { AtlasCharsetsValidator } from '../validation/charsets/atlas-charsets-validator';
 import { NotificationService } from '../notification/notification.service';
 import { DialogService } from '../components/dialog/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
@@ -21,14 +23,15 @@ import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.scss'],
 })
-export class WorkflowComponent implements OnInit {
+export class WorkflowComponent implements OnInit, OnDestroy {
   @Input() lineRecord!: LineRecord;
+  @Input() descriptionForWorkflow!: string;
   isAddWorkflowButtonDisabled: boolean = false;
   isStartWorkflowButtonDisabled: boolean = false;
   isWorkflowFormEditable: boolean = false;
   isReadMode: boolean = false;
   workflow!: Workflow;
-
+  workflowStatusTranslated!: string;
   workflowFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
     comment: new FormControl('', [Validators.required, AtlasFieldLengthValidator.comments]),
     firstName: new FormControl('', [Validators.required, AtlasFieldLengthValidator.length_50]),
@@ -40,13 +43,17 @@ export class WorkflowComponent implements OnInit {
       AtlasCharsetsValidator.email,
     ]),
   });
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private readonly workflowServise: WorkflowService,
     private readonly authService: AuthService,
     private readonly notificationService: NotificationService,
-    private readonly dialogService: DialogService
+    private readonly dialogService: DialogService,
+    private readonly translateService: TranslateService
   ) {}
+
+  ngOnDestroy(): void {}
 
   ngOnInit(): void {
     this.initWorkflowForm();
@@ -65,10 +72,10 @@ export class WorkflowComponent implements OnInit {
       let workflowStart: Workflow;
       workflowStart = {
         businessObjectId: this.getBusinessObjectId(),
-        description: this.getStringValue(this.lineRecord.businessOrganisation),
         swissId: this.getStringValue(this.lineRecord.slnid),
         workflowType: WorkflowTypeEnum.Line,
         workflowComment: this.getFormControlValue('comment'),
+        description: this.descriptionForWorkflow,
         client: this.populatePerson(),
       };
       this.workflowServise.startWorkflow(workflowStart).subscribe((workflow) => {
@@ -84,25 +91,28 @@ export class WorkflowComponent implements OnInit {
 
   cancelWorkflow() {
     if (this.workflowFormGroup.dirty) {
-      this.dialogService
-        .confirm({
-          title: 'DIALOG.DISCARD_CHANGES_TITLE',
-          message: 'DIALOG.LEAVE_SITE',
-        })
-        .subscribe((confirmed) => {
-          if (confirmed) {
-            this.isAddWorkflowButtonDisabled = false;
-            this.isReadMode = false;
-            this.isWorkflowFormEditable = false;
-            this.workflowFormGroup.reset();
-            this.initWorkflowForm();
-          }
-        });
+      this.dialogService.confirmLeave().subscribe((confirmed) => {
+        if (confirmed) {
+          this.isAddWorkflowButtonDisabled = false;
+          this.isReadMode = false;
+          this.isWorkflowFormEditable = false;
+          this.workflowFormGroup.reset();
+          this.initWorkflowForm();
+        }
+      });
     } else {
       this.isAddWorkflowButtonDisabled = false;
       this.isReadMode = false;
       this.isWorkflowFormEditable = false;
     }
+  }
+
+  getWorkflowStatusTranslated(workflow: Workflow) {
+    return this.translateService
+      .get('WORKFLOW.STATUS.' + workflow.workflowStatus)
+      .subscribe((translation) => {
+        this.workflowStatusTranslated = translation;
+      });
   }
 
   private getFormControlValue(controlName: string): string {
@@ -183,6 +193,7 @@ export class WorkflowComponent implements OnInit {
 
   //read mode
   private populateStartWorkflowFormGroupReadMode(workflow: Workflow) {
+    this.getWorkflowStatusTranslated(workflow);
     this.workflowFormGroup.controls['comment'].setValue(workflow.workflowComment);
     this.workflowFormGroup.controls['firstName'].setValue(workflow.client?.firstName);
     this.workflowFormGroup.controls['lastName'].setValue(workflow.client?.lastName);
