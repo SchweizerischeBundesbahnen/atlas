@@ -446,9 +446,11 @@
     "DELETE_SUCCESS_MSG": "La suppression du raccourci sélectionné a réussi."
   },
   "WORKFLOW": {
+    "TITLE": "Anhörung",
     "BUTTON": {
       "ADD": "Anhörung erfassen",
-      "START": "Anhörung starten"
+      "START": "Anhörung starten",
+      "CANCEL": "Anhörung abbrechen"
     },
     "START": {
       "COMMENT": "Begründung für Antrag",
