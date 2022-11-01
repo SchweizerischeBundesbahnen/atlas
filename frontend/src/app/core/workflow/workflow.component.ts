@@ -12,6 +12,8 @@ import { AuthService } from '../auth/auth.service';
 import { User } from '../components/user/user';
 import { AtlasFieldLengthValidator } from '../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../validation/charsets/atlas-charsets-validator';
+import { NotificationService } from '../notification/notification.service';
+import { DialogService } from '../components/dialog/dialog.service';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
@@ -23,11 +25,12 @@ export class WorkflowComponent implements OnInit {
   @Input() lineRecord!: LineRecord;
   isAddWorkflowButtonDisabled: boolean = false;
   isStartWorkflowButtonDisabled: boolean = false;
-  showWorkflowData: boolean = false;
+  isWorkflowFormEditable: boolean = false;
+  isReadMode: boolean = false;
   workflow!: Workflow;
 
-  workflowForm: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
-    comment: new FormControl('', [Validators.maxLength(1500), Validators.required]),
+  workflowFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
+    comment: new FormControl('', [Validators.required, AtlasFieldLengthValidator.comments]),
     firstName: new FormControl('', [Validators.required, AtlasFieldLengthValidator.length_50]),
     lastName: new FormControl('', [Validators.required, AtlasFieldLengthValidator.length_50]),
     function: new FormControl('', [Validators.required, AtlasFieldLengthValidator.length_50]),
@@ -40,50 +43,91 @@ export class WorkflowComponent implements OnInit {
 
   constructor(
     private readonly workflowServise: WorkflowService,
-    private authService: AuthService
+    private readonly authService: AuthService,
+    private readonly notificationService: NotificationService,
+    private readonly dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
     this.initWorkflowForm();
   }
 
-  showWorflow() {
-    this.showWorkflowData = true;
+  showWorflowForm() {
+    this.isReadMode = false;
     this.isAddWorkflowButtonDisabled = true;
+    this.isWorkflowFormEditable = true;
   }
 
   startWorflow() {
-    console.log(this.workflowForm.getRawValue());
+    console.log(this.workflowFormGroup.getRawValue());
     this.validateForm();
-    if (this.workflowForm.valid) {
-      let workflow: Workflow;
-      workflow = {
-        businessObjectId: this.lineRecord.id !== undefined ? this.lineRecord.id : NaN,
-        description:
-          this.lineRecord.businessOrganisation !== undefined
-            ? this.lineRecord.businessOrganisation
-            : '',
-        swissId: this.lineRecord!.slnid !== undefined ? this.lineRecord!.slnid : '',
+    if (this.workflowFormGroup.valid) {
+      let workflowStart: Workflow;
+      workflowStart = {
+        businessObjectId: this.getBusinessObjectId(),
+        description: this.getStringValue(this.lineRecord.businessOrganisation),
+        swissId: this.getStringValue(this.lineRecord.slnid),
         workflowType: WorkflowTypeEnum.Line,
-        workflowComment: this.workflowForm.controls['comment'].value,
-        client: {
-          firstName: this.workflowForm.controls['firstName'].value,
-          lastName: this.workflowForm.controls['lastName'].value,
-          mail: this.workflowForm.controls['mail'].value,
-          personFunction: this.workflowForm.controls['function'].value,
-        },
+        workflowComment: this.getFormControlValue('comment'),
+        client: this.populatePerson(),
       };
-      this.workflowServise.startWorkflow(workflow).subscribe((result) => {
-        console.log(result);
-        this.workflow = result;
+      this.workflowServise.startWorkflow(workflowStart).subscribe((workflow) => {
+        this.workflow = workflow;
+        this.isAddWorkflowButtonDisabled = true;
+        this.isReadMode = true;
+        this.isWorkflowFormEditable = false;
         this.initWorkflowForm();
+        this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
       });
     }
   }
 
+  cancelWorkflow() {
+    if (this.workflowFormGroup.dirty) {
+      this.dialogService
+        .confirm({
+          title: 'DIALOG.DISCARD_CHANGES_TITLE',
+          message: 'DIALOG.LEAVE_SITE',
+        })
+        .subscribe((confirmed) => {
+          if (confirmed) {
+            this.isAddWorkflowButtonDisabled = false;
+            this.isReadMode = false;
+            this.isWorkflowFormEditable = false;
+            this.workflowFormGroup.reset();
+            this.initWorkflowForm();
+          }
+        });
+    } else {
+      this.isAddWorkflowButtonDisabled = false;
+      this.isReadMode = false;
+      this.isWorkflowFormEditable = false;
+    }
+  }
+
+  private getFormControlValue(controlName: string): string {
+    if (this.workflowFormGroup.get(controlName)) {
+      return this.workflowFormGroup.get(controlName)?.value;
+    }
+    return '';
+  }
+
+  private populatePerson() {
+    return {
+      firstName: this.getFormControlValue('firstName'),
+      lastName: this.getFormControlValue('lastName'),
+      mail: this.getFormControlValue('mail'),
+      personFunction: this.getFormControlValue('function'),
+    };
+  }
+
+  private getBusinessObjectId() {
+    return this.lineRecord.id !== undefined ? this.lineRecord.id : NaN;
+  }
+
   private validateForm() {
-    Object.keys(this.workflowForm.controls).forEach((field) => {
-      const control = this.workflowForm.get(field);
+    Object.keys(this.workflowFormGroup.controls).forEach((field) => {
+      const control = this.workflowFormGroup.get(field);
       if (control) {
         control.markAsTouched({ onlySelf: true });
       }
@@ -92,25 +136,25 @@ export class WorkflowComponent implements OnInit {
 
   private initWorkflowForm() {
     if (this.workflow) {
-      this.showWorkflowData = true;
+      this.isReadMode = true;
       this.isAddWorkflowButtonDisabled = true;
       this.isStartWorkflowButtonDisabled = true;
-      this.workflowForm.disable();
+      this.workflowFormGroup.disable();
       this.populateStartWorkflowFormGroupReadMode(this.workflow);
     } else {
       let workflowsInProgress = this.getWorkflowsInProgress();
       if (workflowsInProgress.length === 0) {
         this.populateStartWorkflowFormGroup();
-        this.showWorkflowData = false;
-        this.workflowForm.enable();
+        this.workflowFormGroup.enable();
       } else if (workflowsInProgress.length === 1) {
-        this.showWorkflowData = true;
+        this.isReadMode = true;
         this.isAddWorkflowButtonDisabled = true;
         this.isStartWorkflowButtonDisabled = true;
-        this.workflowForm.disable();
+        this.workflowFormGroup.disable();
         let workflowId = workflowsInProgress[0].workflowId;
         if (workflowId) {
           this.workflowServise.getWorkflow(workflowId).subscribe((workflow: Workflow) => {
+            this.workflow = workflow;
             this.populateStartWorkflowFormGroupReadMode(workflow);
           });
         }
@@ -131,18 +175,22 @@ export class WorkflowComponent implements OnInit {
     let userName = user?.name.substr(0, user.name.indexOf('(')).trim();
     let lastName = user?.name.substr(0, user.name.indexOf(' ')).trim();
     let firstName = userName.substr(userName.lastIndexOf(' '), userName.length).trim();
-    this.workflowForm.controls['firstName'].setValue(firstName);
-    this.workflowForm.controls['lastName'].setValue(lastName);
-    this.workflowForm.controls['function'].setValue('');
-    this.workflowForm.controls['mail'].setValue(user.email);
+    this.workflowFormGroup.controls['firstName'].setValue(firstName);
+    this.workflowFormGroup.controls['lastName'].setValue(lastName);
+    this.workflowFormGroup.controls['function'].setValue('');
+    this.workflowFormGroup.controls['mail'].setValue(user.email);
   }
 
   //read mode
   private populateStartWorkflowFormGroupReadMode(workflow: Workflow) {
-    this.workflowForm.controls['comment'].setValue(workflow.workflowComment);
-    this.workflowForm.controls['firstName'].setValue(workflow.client?.firstName);
-    this.workflowForm.controls['lastName'].setValue(workflow.client?.lastName);
-    this.workflowForm.controls['function'].setValue(workflow.client?.personFunction);
-    this.workflowForm.controls['mail'].setValue(workflow.client?.mail);
+    this.workflowFormGroup.controls['comment'].setValue(workflow.workflowComment);
+    this.workflowFormGroup.controls['firstName'].setValue(workflow.client?.firstName);
+    this.workflowFormGroup.controls['lastName'].setValue(workflow.client?.lastName);
+    this.workflowFormGroup.controls['function'].setValue(workflow.client?.personFunction);
+    this.workflowFormGroup.controls['mail'].setValue(workflow.client?.mail);
+  }
+
+  private getStringValue(value: string | undefined) {
+    return value !== undefined ? value : '';
   }
 }
