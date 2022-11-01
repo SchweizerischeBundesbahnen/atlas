@@ -446,15 +446,34 @@
     "DELETE_SUCCESS_MSG": "Das Löschen der ausgewählten Verknüpfung war erfolgreich."
   },
   "WORKFLOW": {
-    "ADD": "Anhörung erfassen",
-    "START": "Anhörung starten",
-    "COMMENT": "Begründung für Antrag",
+    "TITLE": "Anhörung",
+    "BUTTON": {
+      "ADD": "Anhörung erfassen",
+      "START": "Anhörung starten",
+      "CANCEL": "Anhörung abbrechen"
+    },
+    "START": {
+      "COMMENT": "Begründung für Antrag",
+      "KEY_DATA": "Antragstellende Person"
+    },
     "PERSON": {
-      "DATA": "Antragstellende Person",
       "FIRSTNAME": "Vorname",
       "LASTNAME": "Nachname",
       "FUNCTION": "Funktion",
       "MAIL": "E-Mail Adresee"
+    },
+    "STATUS": {
+      "ADDED": "Erfasst",
+      "STARTED": "Gestartet",
+      "REVISION": "In Überarbeitung",
+      "HEARING": "In Anhörung",
+      "APPROVED": "Genehmigt",
+      "REJECTED": "Abgelehnt"
+    },
+    "NOTIFICATION": {
+      "START": {
+        "SUCCESS": "Ihr Antrag wurde erfolgreich übermittel"
+      }
     }
   }
 }
