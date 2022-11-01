@@ -82,47 +82,50 @@
         'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
       }}</span>
     </div>
-    <app-workflow
-      *ngIf="controller.isDetailWorkflowable()"
-      [lineRecord]="this.controller.record"
-    ></app-workflow>
-  </div>
+    <div>
+      <app-workflow
+        *ngIf="controller.isDetailWorkflowable()"
+        [descriptionForWorkflow]="this.controller.getDecriptionForWorkflow()"
+        [lineRecord]="this.controller.record"
+      ></app-workflow>
+    </div>
 
-  <div>
-    <ng-content></ng-content>
-  </div>
+    <div>
+      <ng-content></ng-content>
+    </div>
 
-  <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-    <atlas-button
-      [footerEdit]="controller.form.enabled"
-      [mat-dialog-close]="true"
-      buttonDataCy="back-to-overview"
-      buttonText="COMMON.BACK_TO_OVERVIEW"
-      buttonType="footerNonEdit"
-    >
-    </atlas-button>
-    <atlas-button
-      (buttonClicked)="controller.toggleEdit()"
-      [footerEdit]="controller.form.enabled"
-      buttonDataCy="cancel"
-      buttonText="COMMON.CANCEL"
-      buttonType="footerEdit"
-      wrapperStyleClass="me-3"
-    >
-    </atlas-button>
-    <atlas-button
-      (click)="controller.save()"
-      [disabled]="!controller.form.dirty"
-      [footerEdit]="controller.form.enabled"
-      [submitButton]="true"
-      buttonDataCy="save-item"
-      buttonText="COMMON.SAVE"
-      buttonType="footerEdit"
-    >
-    </atlas-button>
+    <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
+      <atlas-button
+        [footerEdit]="controller.form.enabled"
+        [mat-dialog-close]="true"
+        buttonDataCy="back-to-overview"
+        buttonText="COMMON.BACK_TO_OVERVIEW"
+        buttonType="footerNonEdit"
+      >
+      </atlas-button>
+      <atlas-button
+        (buttonClicked)="controller.toggleEdit()"
+        [footerEdit]="controller.form.enabled"
+        buttonDataCy="cancel"
+        buttonText="COMMON.CANCEL"
+        buttonType="footerEdit"
+        wrapperStyleClass="me-3"
+      >
+      </atlas-button>
+      <atlas-button
+        (click)="controller.save()"
+        [disabled]="!controller.form.dirty"
+        [footerEdit]="controller.form.enabled"
+        [submitButton]="true"
+        buttonDataCy="save-item"
+        buttonText="COMMON.SAVE"
+        buttonType="footerEdit"
+      >
+      </atlas-button>
+    </div>
+    <app-user-detail-info
+      *ngIf="controller.isExistingRecord()"
+      [record]="controller.record"
+    ></app-user-detail-info>
   </div>
-  <app-user-detail-info
-    *ngIf="controller.isExistingRecord()"
-    [record]="controller.record"
-  ></app-user-detail-info>
 </div>
