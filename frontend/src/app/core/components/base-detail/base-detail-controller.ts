@@ -268,7 +268,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
   abstract getPageType(): Page;
 
   reloadRecord(): void {
-    new Error("'You have to override me'");
+    new Error('You have to override me');
   }
 
   getDecriptionForWorkflow(): string {
