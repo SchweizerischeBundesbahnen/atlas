@@ -12,6 +12,7 @@ import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.api.PersonModel;
 import ch.sbb.workflow.api.WorkflowModel;
+import ch.sbb.workflow.api.WorkflowStartModel;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.workflow.WorkflowRepository;
@@ -41,13 +42,11 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .lastName("Hamsik")
         .personFunction("Centrocampista")
         .mail("a@b.c").build();
-    WorkflowModel workflowModel = WorkflowModel.builder()
+    WorkflowStartModel workflowModel = WorkflowStartModel.builder()
         .client(person)
         .swissId("CH123456")
         .description("ch:123:431")
         .workflowComment("comment")
-        .checkComment("comment")
-        .examinant(person)
         .workflowType(WorkflowType.LINE)
         .businessObjectId(123456L)
         .build();

@@ -3,6 +3,7 @@ import { BaseDetailController } from './base-detail-controller';
 import { KeepaliveService } from '../../keepalive/keepalive.service';
 import { Record } from './record';
 import { Subscription } from 'rxjs';
+import { WorkflowEvent } from '../../workflow/workflow-event';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -13,15 +14,22 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() controller!: BaseDetailController<Record>;
   @Input() headingNew!: string;
   @Input() formDetailHeading!: string;
-
-  private recordSubscription!: Subscription;
   selectedRecord!: Record;
+  private recordSubscription!: Subscription;
 
   constructor(private readonly keepaliveService: KeepaliveService) {
     keepaliveService.startWatching(() => {
       this.controller.closeConfirmDialog();
       this.controller.backToOverview();
     });
+  }
+
+  receiveWorkflowEvent($event: WorkflowEvent) {
+    if ($event.reload) {
+      this.controller.reloadRecord();
+    } else if ($event.formDirty) {
+      this.controller.form.markAsDirty();
+    }
   }
 
   ngOnInit(): void {

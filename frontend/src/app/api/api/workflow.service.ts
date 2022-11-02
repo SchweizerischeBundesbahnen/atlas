@@ -25,6 +25,7 @@ import { Observable } from 'rxjs';
 
 import { ErrorResponse } from '../model/models';
 import { Workflow } from '../model/models';
+import { WorkflowStart } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -214,37 +215,37 @@ export class WorkflowService {
   }
 
   /**
-   * @param workflow
+   * @param workflowStart
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public startWorkflow(
-    workflow: Workflow,
+    workflowStart: WorkflowStart,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<Workflow>;
   public startWorkflow(
-    workflow: Workflow,
+    workflowStart: WorkflowStart,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpResponse<Workflow>>;
   public startWorkflow(
-    workflow: Workflow,
+    workflowStart: WorkflowStart,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpEvent<Workflow>>;
   public startWorkflow(
-    workflow: Workflow,
+    workflowStart: WorkflowStart,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<any> {
-    if (workflow === null || workflow === undefined) {
+    if (workflowStart === null || workflowStart === undefined) {
       throw new Error(
-        'Required parameter workflow was null or undefined when calling startWorkflow.'
+        'Required parameter workflowStart was null or undefined when calling startWorkflow.'
       );
     }
 
@@ -275,7 +276,7 @@ export class WorkflowService {
 
     return this.httpClient.post<Workflow>(
       `${this.configuration.basePath}/workflow/v1/workflows`,
-      workflow,
+      workflowStart,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
