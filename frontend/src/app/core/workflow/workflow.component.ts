@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { LineRecord } from './line-record';
+import { LineRecord } from './model/line-record';
 import {
   LineVersionWorkflow,
   UserAdministrationService,
@@ -15,7 +15,7 @@ import { AtlasCharsetsValidator } from '../validation/charsets/atlas-charsets-va
 import { NotificationService } from '../notification/notification.service';
 import { DialogService } from '../components/dialog/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
-import { WorkflowEvent } from './workflow-event';
+import { WorkflowEvent } from './model/workflow-event';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
@@ -33,7 +33,6 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   isAddWorkflowButtonDisabled = false;
   isWorkflowFormEditable = false;
   isReadMode = false;
-  workflowStart!: WorkflowStart;
   workflowStatusTranslated!: string;
 
   workflowFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
@@ -79,8 +78,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       this.workflowServise
         .startWorkflow(workflowStart)
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((workflow) => {
-          this.workflowStart = workflow;
+        .subscribe(() => {
           this.isAddWorkflowButtonDisabled = true;
           this.isReadMode = true;
           this.isWorkflowFormEditable = false;
@@ -99,7 +97,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     }
   }
 
-  getWorkflowStatusTranslated(workflow: Workflow) {
+  getTranslatedWorkflowStatus(workflow: Workflow) {
     return this.translateService
       .get('WORKFLOW.STATUS.' + workflow.workflowStatus)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -120,8 +118,8 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       businessObjectId: this.getBusinessObjectId(),
       swissId: this.getStringValue(this.lineRecord.slnid),
       workflowType: WorkflowTypeEnum.Line,
-      workflowComment: this.getFormControlValue('comment'),
       description: this.descriptionForWorkflow,
+      workflowComment: this.getFormControlValue('comment'),
       client: this.populatePerson(),
     };
   }
@@ -172,35 +170,31 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   private initWorkflowForm() {
-    if (this.workflowStart) {
-      this.isReadMode = true;
-      this.isAddWorkflowButtonDisabled = true;
-      this.workflowFormGroup.disable();
-      this.populateStartWorkflowFormGroupReadMode(this.workflowStart);
-    } else {
-      const workflowsInProgress = this.getWorkflowsInProgress();
-      if (workflowsInProgress.length === 0) {
-        this.populateStartWorkflowFormGroup();
-        this.workflowFormGroup.enable();
-      } else if (workflowsInProgress.length === 1) {
-        this.isReadMode = true;
-        this.isAddWorkflowButtonDisabled = true;
-        this.workflowFormGroup.disable();
-        const workflowId = workflowsInProgress[0].workflowId;
-        if (workflowId) {
-          this.workflowServise
-            .getWorkflow(workflowId)
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((workflow: Workflow) => {
-              this.workflowStart = workflow;
-              this.populateStartWorkflowFormGroupReadMode(workflow);
-            });
-        }
+    const workflowsInProgress = this.filterWorkflowsInProgress();
+    if (workflowsInProgress.length === 0) {
+      this.populateUserDataFormFromAuthenticatedUser();
+    } else if (workflowsInProgress.length === 1) {
+      const workflowId = workflowsInProgress[0].workflowId;
+      if (workflowId) {
+        this.initWorkflowReadMode(workflowId);
       }
     }
   }
 
-  private getWorkflowsInProgress() {
+  private initWorkflowReadMode(workflowId: number) {
+    this.isReadMode = true;
+    this.isAddWorkflowButtonDisabled = true;
+    this.workflowFormGroup.disable();
+
+    this.workflowServise
+      .getWorkflow(workflowId)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((workflow: Workflow) => {
+        this.populateWorkflowStartFormGroupFromPersistence(workflow);
+      });
+  }
+
+  private filterWorkflowsInProgress() {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
     this.lineRecord.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
     return lineVersionWorkflows.filter(
@@ -208,21 +202,20 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     );
   }
 
-  private populateStartWorkflowFormGroup() {
+  private populateUserDataFormFromAuthenticatedUser() {
     this.userAdministrationService
       .getCurrentUser()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((user) => {
         this.workflowFormGroup.controls['firstName'].setValue(user.firstName);
         this.workflowFormGroup.controls['lastName'].setValue(user.lastName);
-        this.workflowFormGroup.controls['function'].setValue('');
         this.workflowFormGroup.controls['mail'].setValue(user.mail);
       });
   }
 
   //read mode
-  private populateStartWorkflowFormGroupReadMode(workflow: Workflow) {
-    this.getWorkflowStatusTranslated(workflow);
+  private populateWorkflowStartFormGroupFromPersistence(workflow: Workflow) {
+    this.getTranslatedWorkflowStatus(workflow);
     this.workflowFormGroup.controls['comment'].setValue(workflow.workflowComment);
     this.workflowFormGroup.controls['firstName'].setValue(workflow.client?.firstName);
     this.workflowFormGroup.controls['lastName'].setValue(workflow.client?.lastName);

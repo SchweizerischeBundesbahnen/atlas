@@ -3,7 +3,7 @@ import { BaseDetailController } from './base-detail-controller';
 import { KeepaliveService } from '../../keepalive/keepalive.service';
 import { Record } from './record';
 import { Subscription } from 'rxjs';
-import { WorkflowEvent } from '../../workflow/workflow-event';
+import { WorkflowEvent } from '../../workflow/model/workflow-event';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
