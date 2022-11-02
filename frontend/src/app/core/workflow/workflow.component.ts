@@ -1,10 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { LineRecord } from './line-record';
 import {
   LineVersionWorkflow,
   Workflow,
   WorkflowProcessingStatus,
   WorkflowService,
+  WorkflowStart,
 } from '../../api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { WorkflowFormGroup } from './workflow-form-group';
@@ -16,6 +17,7 @@ import { NotificationService } from '../notification/notification.service';
 import { DialogService } from '../components/dialog/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
+import { WorkflowEvent } from './workflow-event';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
@@ -26,12 +28,15 @@ import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 export class WorkflowComponent implements OnInit, OnDestroy {
   @Input() lineRecord!: LineRecord;
   @Input() descriptionForWorkflow!: string;
+  @Output() workflowEvent = new EventEmitter<WorkflowEvent>();
+
   isAddWorkflowButtonDisabled = false;
   isStartWorkflowButtonDisabled = false;
   isWorkflowFormEditable = false;
   isReadMode = false;
-  workflow!: Workflow;
+  workflowStart!: WorkflowStart;
   workflowStatusTranslated!: string;
+
   workflowFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
     comment: new FormControl('', [Validators.required, AtlasFieldLengthValidator.comments]),
     firstName: new FormControl('', [Validators.required, AtlasFieldLengthValidator.length_50]),
@@ -62,6 +67,11 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   showWorflowForm() {
+    const workflowEvent: WorkflowEvent = {
+      formDirty: true,
+      reload: false,
+    };
+    this.workflowEvent.emit(workflowEvent);
     this.isReadMode = false;
     this.isAddWorkflowButtonDisabled = true;
     this.isWorkflowFormEditable = true;
@@ -71,7 +81,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     console.log(this.workflowFormGroup.getRawValue());
     this.validateForm();
     if (this.workflowFormGroup.valid) {
-      const workflowStart: Workflow = {
+      const workflowStart: WorkflowStart = {
         businessObjectId: this.getBusinessObjectId(),
         swissId: this.getStringValue(this.lineRecord.slnid),
         workflowType: WorkflowTypeEnum.Line,
@@ -80,11 +90,16 @@ export class WorkflowComponent implements OnInit, OnDestroy {
         client: this.populatePerson(),
       };
       this.workflowServise.startWorkflow(workflowStart).subscribe((workflow) => {
-        this.workflow = workflow;
+        this.workflowStart = workflow;
         this.isAddWorkflowButtonDisabled = true;
         this.isReadMode = true;
         this.isWorkflowFormEditable = false;
         this.initWorkflowForm();
+        const workflowEvent: WorkflowEvent = {
+          formDirty: false,
+          reload: true,
+        };
+        this.workflowEvent.emit(workflowEvent);
         this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
       });
     }
@@ -146,12 +161,12 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   private initWorkflowForm() {
-    if (this.workflow) {
+    if (this.workflowStart) {
       this.isReadMode = true;
       this.isAddWorkflowButtonDisabled = true;
       this.isStartWorkflowButtonDisabled = true;
       this.workflowFormGroup.disable();
-      this.populateStartWorkflowFormGroupReadMode(this.workflow);
+      this.populateStartWorkflowFormGroupReadMode(this.workflowStart);
     } else {
       const workflowsInProgress = this.getWorkflowsInProgress();
       if (workflowsInProgress.length === 0) {
@@ -165,7 +180,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
         const workflowId = workflowsInProgress[0].workflowId;
         if (workflowId) {
           this.workflowServise.getWorkflow(workflowId).subscribe((workflow: Workflow) => {
-            this.workflow = workflow;
+            this.workflowStart = workflow;
             this.populateStartWorkflowFormGroupReadMode(workflow);
           });
         }
