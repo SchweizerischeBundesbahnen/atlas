@@ -11,7 +11,7 @@
  */
 
 /**
- * Examinant
+ * Client
  */
 export interface Person {
   /**

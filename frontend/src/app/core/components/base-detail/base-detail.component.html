@@ -84,7 +84,8 @@
     </div>
     <div>
       <app-workflow
-        *ngIf="controller.isDetailWorkflowable()"
+        (workflowEvent)="this.receiveWorkflowEvent($event)"
+        *ngIf="controller.isWorkflowable()"
         [descriptionForWorkflow]="this.controller.getDecriptionForWorkflow()"
         [lineRecord]="this.controller.record"
       ></app-workflow>
