@@ -84,7 +84,7 @@ describe('BaseDetailController', () => {
       dummyController.updateRecord();
     }
 
-    isDetailWorkflowable(): boolean {
+    isWorkflowable(): boolean {
       return true;
     }
   }

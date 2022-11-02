@@ -1,5 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { ApplicationType, LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
+import {
+  ApplicationType,
+  LinesService,
+  LineType,
+  LineVersion,
+  PaymentType,
+  Status,
+} from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -76,6 +83,15 @@ export class LineDetailComponent
     return '';
   }
 
+  isWorkflowable(): boolean {
+    if (this.getPageType() === Pages.LINES) {
+      if (this.record.status === Status.Draft || this.record.status === Status.InReview) {
+        if (this.record.lineType === LineType.Orderly) return true;
+      }
+    }
+    return false;
+  }
+
   updateRecord(): void {
     this.linesService
       .updateLineVersion(this.getId(), this.form.value)
@@ -86,6 +102,12 @@ export class LineDetailComponent
           .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
           .then(() => this.ngOnInit());
       });
+  }
+
+  reloadRecord() {
+    this.router
+      .navigate([Pages.LIDI.path, Pages.LINES.path, this.record.slnid])
+      .then(() => this.ngOnInit());
   }
 
   createRecord(): void {
