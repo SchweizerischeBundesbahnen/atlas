@@ -67,11 +67,6 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   showWorflowForm() {
-    const workflowEvent: WorkflowEvent = {
-      formDirty: true,
-      reload: false,
-    };
-    this.workflowEvent.emit(workflowEvent);
     this.isAddWorkflowButtonDisabled = true;
     this.isWorkflowFormEditable = true;
   }
@@ -79,14 +74,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   startWorflow() {
     this.validateForm();
     if (this.workflowFormGroup.valid) {
-      const workflowStart: WorkflowStart = {
-        businessObjectId: this.getBusinessObjectId(),
-        swissId: this.getStringValue(this.lineRecord.slnid),
-        workflowType: WorkflowTypeEnum.Line,
-        workflowComment: this.getFormControlValue('comment'),
-        description: this.descriptionForWorkflow,
-        client: this.populatePerson(),
-      };
+      const workflowStart: WorkflowStart = this.populateWorkflowStart();
       this.workflowServise
         .startWorkflow(workflowStart)
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -96,31 +84,17 @@ export class WorkflowComponent implements OnInit, OnDestroy {
           this.isReadMode = true;
           this.isWorkflowFormEditable = false;
           this.initWorkflowForm();
-          const workflowEvent: WorkflowEvent = {
-            formDirty: false,
-            reload: true,
-          };
-          this.workflowEvent.emit(workflowEvent);
+          this.eventReloadParent();
           this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
         });
     }
   }
 
-  cancelWorkflow() {
+  toggleWorkflow() {
     if (this.workflowFormGroup.dirty) {
-      this.dialogService.confirmLeave().subscribe((confirmed) => {
-        if (confirmed) {
-          this.isAddWorkflowButtonDisabled = false;
-          this.isReadMode = false;
-          this.isWorkflowFormEditable = false;
-          this.workflowFormGroup.reset();
-          this.initWorkflowForm();
-        }
-      });
+      this.leaveWorkflowEditionWhenForIsDirty();
     } else {
-      this.isAddWorkflowButtonDisabled = false;
-      this.isReadMode = false;
-      this.isWorkflowFormEditable = false;
+      this.resetToAddWorkflow();
     }
   }
 
@@ -131,6 +105,40 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       .subscribe((translation) => {
         this.workflowStatusTranslated = translation;
       });
+  }
+
+  private eventReloadParent() {
+    const workflowEvent: WorkflowEvent = {
+      reload: true,
+    };
+    this.workflowEvent.emit(workflowEvent);
+  }
+
+  private populateWorkflowStart() {
+    return {
+      businessObjectId: this.getBusinessObjectId(),
+      swissId: this.getStringValue(this.lineRecord.slnid),
+      workflowType: WorkflowTypeEnum.Line,
+      workflowComment: this.getFormControlValue('comment'),
+      description: this.descriptionForWorkflow,
+      client: this.populatePerson(),
+    };
+  }
+
+  private resetToAddWorkflow() {
+    this.workflowFormGroup.reset();
+    this.isAddWorkflowButtonDisabled = false;
+    this.isReadMode = false;
+    this.isWorkflowFormEditable = false;
+  }
+
+  private leaveWorkflowEditionWhenForIsDirty() {
+    this.dialogService.confirmLeave().subscribe((confirmed) => {
+      if (confirmed) {
+        this.resetToAddWorkflow();
+        this.initWorkflowForm();
+      }
+    });
   }
 
   private getFormControlValue(controlName: string): string {
