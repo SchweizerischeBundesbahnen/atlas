@@ -9,4 +9,12 @@ export class CommentComponent {
   @Input() formGroup!: FormGroup;
   @Input() displayInfoIcon = true;
   @Input() displayLabel = true;
+  @Input() label!: string;
+
+  getLabel(): string {
+    if (this.label) {
+      return this.label;
+    }
+    return 'FORM.COMMENT';
+  }
 }
