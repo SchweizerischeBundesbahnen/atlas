@@ -67,18 +67,6 @@ public class WorkflowModel {
         .build();
   }
 
-  public static Workflow toNewEntity(WorkflowModel model) {
-    return Workflow.builder()
-        .workflowType(model.getWorkflowType())
-        .businessObjectId(model.getBusinessObjectId())
-        .swissId(model.getSwissId())
-        .description(model.getDescription())
-        .workflowComment(model.getWorkflowComment())
-        .checkComment(model.getCheckComment())
-        .client(PersonModel.toEntity(model.getClient()))
-        .build();
-  }
-
   public static WorkflowModel toModel(Workflow entity) {
     WorkflowModelBuilder builder = WorkflowModel.builder()
         .workflowType(entity.getWorkflowType())
