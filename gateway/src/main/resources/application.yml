@@ -42,3 +42,4 @@ gateway:
     line-directory: http://localhost:8082
     business-organisation-directory: http://localhost:8083
     user-administration: http://localhost:8086
+    workflow: http://localhost:8087
