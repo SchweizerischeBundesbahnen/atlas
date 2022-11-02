@@ -29,7 +29,6 @@
     <div class="d-flex align-items-center">
       <atlas-button
         (buttonClicked)="startWorflow()"
-        [disabled]="isStartWorkflowButtonDisabled"
         buttonDataCy="workflow-start"
         buttonText="WORKFLOW.BUTTON.START"
         buttonType="create"
@@ -37,7 +36,6 @@
       ></atlas-button>
       <atlas-button
         (buttonClicked)="cancelWorkflow()"
-        [disabled]="isStartWorkflowButtonDisabled"
         buttonDataCy="workflow-cancel"
         buttonText="WORKFLOW.BUTTON.CANCEL"
         buttonType="create"
