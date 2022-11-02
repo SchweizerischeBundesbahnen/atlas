@@ -27,8 +27,6 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   receiveWorkflowEvent($event: WorkflowEvent) {
     if ($event.reload) {
       this.controller.reloadRecord();
-    } else if ($event.formDirty) {
-      this.controller.form.markAsDirty();
     }
   }
 
