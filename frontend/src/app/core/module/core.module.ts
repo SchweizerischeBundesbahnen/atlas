@@ -28,7 +28,6 @@ import { UserDetailInfoComponent } from '../components/base-detail/user-edit-inf
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 import { WorkflowComponent } from '../workflow/workflow.component';
 import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.component';
-import { MatExpansionModule } from '@angular/material/expansion';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -73,7 +72,6 @@ const coreComponents = [
         sendAccessToken: true,
       },
     }),
-    MatExpansionModule,
   ],
   exports: [...coreComponents, CommonModule, MaterialModule, TranslateModule],
   providers: [TranslatePipe],
