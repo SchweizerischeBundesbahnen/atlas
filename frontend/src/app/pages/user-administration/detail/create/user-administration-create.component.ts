@@ -40,7 +40,6 @@ export class UserAdministrationCreateComponent {
       this.userHasAlreadyPermissions = false;
       this.userLoaded = undefined;
       if (user) {
-        console.error('No UserId');
         this.selectedUserHasNoUserId = true;
       }
       return;

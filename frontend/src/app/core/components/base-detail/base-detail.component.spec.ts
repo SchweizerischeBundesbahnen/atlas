@@ -156,7 +156,7 @@ function createDummyForm(enabledForm: boolean) {
       'getApplicationType',
       'disableUneditableFormFields',
       'confirmBoTransfer',
-      'isDetailWorkflowable',
+      'isWorkflowable',
     ],
     {
       heading: undefined,
