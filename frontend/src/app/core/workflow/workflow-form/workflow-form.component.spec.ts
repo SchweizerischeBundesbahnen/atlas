@@ -5,6 +5,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
 import { WorkflowFormGroup } from '../workflow-form-group';
 import { InfoIconComponent } from '../../form-components/info-icon/info-icon.component';
+import { CommentComponent } from '../../form-components/comment/comment.component';
 
 describe('WorkflowFormComponent', () => {
   let component: WorkflowFormComponent;
@@ -12,7 +13,7 @@ describe('WorkflowFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WorkflowFormComponent, InfoIconComponent],
+      declarations: [WorkflowFormComponent, InfoIconComponent, CommentComponent],
       imports: [AppTestingModule],
     }).compileComponents();
     fixture = TestBed.createComponent(WorkflowFormComponent);

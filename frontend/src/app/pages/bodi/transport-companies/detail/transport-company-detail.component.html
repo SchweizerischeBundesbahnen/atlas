@@ -27,7 +27,7 @@
         </mat-label>
       </div>
       <mat-form-field>
-        <input matInput [value]="transportCompany.number" data-cy="number" disabled />
+        <input [value]="transportCompany.number" data-cy="number" disabled matInput />
       </mat-form-field>
     </div>
 
@@ -38,7 +38,7 @@
         </mat-label>
       </div>
       <mat-form-field>
-        <input matInput [value]="transportCompany.abbreviation" data-cy="abbreviation" disabled />
+        <input [value]="transportCompany.abbreviation" data-cy="abbreviation" disabled matInput />
       </mat-form-field>
     </div>
   </div>
@@ -51,7 +51,7 @@
         </mat-label>
       </div>
       <mat-form-field>
-        <input matInput [value]="transportCompany.description" data-cy="description" disabled />
+        <input [value]="transportCompany.description" data-cy="description" disabled matInput />
       </mat-form-field>
     </div>
 
@@ -62,7 +62,7 @@
         </mat-label>
       </div>
       <mat-form-field>
-        <input matInput [value]="transportCompany.enterpriseId" data-cy="enterpriseId" disabled />
+        <input [value]="transportCompany.enterpriseId" data-cy="enterpriseId" disabled matInput />
       </mat-form-field>
     </div>
   </div>
@@ -77,10 +77,10 @@
       </div>
       <mat-form-field>
         <input
-          matInput
           [value]="transportCompany.businessRegisterName"
           data-cy="businessRegisterName"
           disabled
+          matInput
         />
       </mat-form-field>
     </div>
@@ -95,74 +95,78 @@
       </div>
       <mat-form-field>
         <input
-          matInput
           [value]="transportCompany.businessRegisterNumber"
           data-cy="businessRegisterNumber"
           disabled
+          matInput
         />
       </mat-form-field>
     </div>
   </div>
 
   <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
-  <form-comment
-    [formGroup]="commentFormGroup"
-    [displayInfoIcon]="false"
-    [displayLabel]="false"
-  ></form-comment>
+  <div class="col-12 d-flex mt-3">
+    <div class="d-flex flex-column col-6">
+      <form-comment
+        [displayInfoIcon]="false"
+        [displayLabel]="false"
+        [formGroup]="commentFormGroup"
+      ></form-comment>
+    </div>
+  </div>
 
   <div class="mt-5">
     <app-relation
-      [selectedIndex]="selectedTransportCompanyRelationIndex"
-      [editMode]="editMode"
-      [records]="transportCompanyRelations"
-      [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
-      [editable]="isAdmin()"
-      [tableColumns]="transportCompanyRelationTableColumns"
       (deleteRelation)="deleteRelation()"
       (editModeChanged)="editMode = !editMode"
       (selectedIndexChanged)="selectedTransportCompanyRelationIndex = $event"
+      [editMode]="editMode"
+      [editable]="isAdmin()"
+      [records]="transportCompanyRelations"
+      [selectedIndex]="selectedTransportCompanyRelationIndex"
+      [tableColumns]="transportCompanyRelationTableColumns"
+      [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
     >
       <form *ngIf="editMode" class="col-12 d-flex">
         <bo-select
+          [formGroup]="form"
           class="col-6 me-3 mt-3"
           controlName="businessOrganisation"
-          [formGroup]="form"
-          valueExtraction=""
           data-cy="businessOrganisation"
+          valueExtraction=""
         >
         </bo-select>
-        <form-date-range class="col-6" [formGroup]="form"></form-date-range>
+        <form-date-range [formGroup]="form" class="col-6"></form-date-range>
       </form>
     </app-relation>
   </div>
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
     <atlas-button
-      buttonType="footerNonEdit"
       [footerEdit]="editMode"
       [mat-dialog-close]="true"
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
+      buttonType="footerNonEdit"
     >
     </atlas-button>
     <atlas-button
-      buttonType="footerEdit"
-      [footerEdit]="editMode"
       (buttonClicked)="leaveEditMode()"
+      [footerEdit]="editMode"
       buttonDataCy="cancel"
       buttonText="COMMON.CANCEL"
+      buttonType="footerEdit"
       wrapperStyleClass="me-3"
     >
     </atlas-button>
     <atlas-button
-      buttonType="footerEdit"
-      [footerEdit]="editMode"
-      buttonDataCy="save-item"
-      [submitButton]="true"
       (click)="createRelation()"
       [disabled]="!form.dirty"
+      [footerEdit]="editMode"
+      [submitButton]="true"
+      buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
+      buttonType="footerEdit"
     >
     </atlas-button>
   </div>
