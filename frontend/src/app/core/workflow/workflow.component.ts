@@ -69,6 +69,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   showWorflowForm() {
     this.isAddWorkflowButtonDisabled = true;
     this.isWorkflowFormEditable = true;
+    this.initWorkflowForm();
   }
 
   startWorflow() {
