@@ -1,23 +1,14 @@
 <form [formGroup]="formGroup">
   <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-5 pe-5">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'WORKFLOW.START.COMMENT' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'FORM.COMMENT_INFO' | translate }}"></form-info-icon>
+    <div class="d-flex flex-column col-5">
+      <div class="d-flex flex-column col-11 me-3">
+        <form-comment [formGroup]="formGroup" [label]="'WORKFLOW.START.COMMENT'"></form-comment>
       </div>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.TEXT' | translate }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 1500 } }}
-      </mat-label>
-      <mat-form-field appearance="outline" class="atlas-text-area">
-        <textarea data-cy="comment" formControlName="comment" matInput rows="7"></textarea>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
     </div>
     <div>
       <span class="font-bold-lg">{{ 'WORKFLOW.START.KEY_DATA' | translate }}</span>
       <div class="col-12 d-flex">
-        <div class="d-flex flex-column col-5 pe-3">
+        <div class="d-flex flex-column col-11 pe-3">
           <div class="info-icon-position">
             <mat-label class="font-bold-lg"
               >{{ 'WORKFLOW.PERSON.FIRSTNAME' | translate }}
@@ -28,7 +19,7 @@
             <mat-error fieldErrors></mat-error>
           </mat-form-field>
         </div>
-        <div class="d-flex flex-column col-5 pe-3">
+        <div class="d-flex flex-column col-11 pe-3">
           <div class="info-icon-position">
             <mat-label class="font-bold-lg"
               >{{ 'WORKFLOW.PERSON.LASTNAME' | translate }}
@@ -39,7 +30,9 @@
             <mat-error fieldErrors></mat-error>
           </mat-form-field>
         </div>
-        <div class="d-flex flex-column col-5 pe-3">
+      </div>
+      <div class="col-12 d-flex">
+        <div class="d-flex flex-column col-11 pe-3">
           <div class="info-icon-position">
             <mat-label class="font-bold-lg"
               >{{ 'WORKFLOW.PERSON.FUNCTION' | translate }}
@@ -50,9 +43,7 @@
             <mat-error fieldErrors></mat-error>
           </mat-form-field>
         </div>
-      </div>
-      <div class="col-12 d-flex">
-        <div class="d-flex flex-column col-5 pe-3">
+        <div class="d-flex flex-column col-11 pe-3">
           <div class="info-icon-position">
             <mat-label class="font-bold-lg">{{ 'WORKFLOW.PERSON.MAIL' | translate }} </mat-label>
           </div>
