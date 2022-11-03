@@ -13,3 +13,4 @@ gateway:
     line-directory: http://line-directory:8082
     business-organisation-directory: http://business-organisation-directory:8083
     user-administration: http://user-administration:8086
+    workflow: http://workflow:8087
