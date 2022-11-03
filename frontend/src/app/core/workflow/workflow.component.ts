@@ -78,12 +78,14 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       this.workflowServise
         .startWorkflow(workflowStart)
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => {
+        .subscribe((workflow) => {
           this.isAddWorkflowButtonDisabled = true;
+          this.workflowFormGroup.disable();
           this.isReadMode = true;
           this.isWorkflowFormEditable = false;
           this.initWorkflowForm();
           this.eventReloadParent();
+          this.getTranslatedWorkflowStatus(workflow);
           this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
         });
     }
@@ -106,7 +108,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       });
   }
 
-  private eventReloadParent() {
+  eventReloadParent() {
     const workflowEvent: WorkflowEvent = {
       reload: true,
     };
