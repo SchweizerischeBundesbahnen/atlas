@@ -101,12 +101,17 @@
           },
           "configurations": {
             "ci": {
+              "karmaConfig": "karma.conf.js",
               "browsers": "ChromeHeadless",
               "codeCoverage": true,
               "sourceMap": false,
               "progress": false,
               "watch": false,
-              "codeCoverageExclude": ["src/app/api/**", "charts/**", "src/polyfills.ts"],
+              "codeCoverageExclude": [
+                "src/app/api/**",
+                "charts/**",
+                "src/polyfills.ts"
+              ],
               "reporters": [
                 "dots",
                 "sonarqube"
@@ -126,7 +131,9 @@
         "ngsscbuild": {
           "builder": "angular-server-side-configuration:ngsscbuild",
           "options": {
-            "additionalEnvironmentVariables": ["INSTANA_KEY"],
+            "additionalEnvironmentVariables": [
+              "INSTANA_KEY"
+            ],
             "browserTarget": "atlas-frontend:build",
             "ngsscEnvironmentFile": "src/environments/environment.prod.ts",
             "filePattern": "**/index.html"
