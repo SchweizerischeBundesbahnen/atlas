@@ -41,8 +41,8 @@
       "artifactoryDockerRepo": "atlas.docker"
     },
     {
-      "dockerFile": "workflow/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "pomArtifactId": "workflow"
     }
   ],
   "helm": {
@@ -62,7 +62,7 @@
       ],
       "build": {
         "buildDockerImage": false,
-        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
+        "additionalBuildParams": "--debug -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
         "sonarScan": {
           "enabled": true,
           "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
@@ -70,20 +70,42 @@
       }
     },
     {
+      "name": "manualRelease",
+      "branchNamePrefixes": [
+        "master"
+      ],
+      "triggerType": [
+        "USER"
+      ],
+      "build": {
+        "buildDockerImage": true,
+        "additionalBuildParams": "--debug  -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
+        "sonarScan": {
+          "enabled": true,
+          "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
+        },
+        "owaspDependencyCheck": {
+          "enabled": true
+        }
+      },
+      "stages": [
+        "dev"
+      ]
+    },
+    {
       "name": "release",
       "branchNamePrefixes": [
         "master"
       ],
       "triggerType": [
-        "GITEVENT",
-        "USER"
+        "GITEVENT"
       ],
       "versionTagEventPatterns": [
         "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
       ],
       "build": {
         "buildDockerImage": true,
-        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
+        "additionalBuildParams": "--debug -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
         "sonarScan": {
           "enabled": true,
           "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
