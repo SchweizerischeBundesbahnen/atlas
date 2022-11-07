@@ -1,10 +1,10 @@
 {
   "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
-  "productName": "add-your-name-here",
+  "productName": "atlas",
   "npm": {
     "targetRepo": "atlas.npm",
     "packageJson": "frontend/package.json",
-    "additionalNpmScripts": "lint build:ngssc test"
+    "additionalNpmScripts": "lint,build:ngssc,test"
   },
   "mvn": {
     "parentPom": "pom.xml",
@@ -62,10 +62,10 @@
       ],
       "build": {
         "buildDockerImage": false,
-        "additionalBuildParams": "--debug -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
         "sonarScan": {
           "enabled": true,
-          "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
+          "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
         }
       }
     },
@@ -79,7 +79,7 @@
       ],
       "build": {
         "buildDockerImage": true,
-        "additionalBuildParams": "--debug  -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
         "sonarScan": {
           "enabled": true,
           "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
@@ -88,6 +88,19 @@
           "enabled": true
         }
       },
+      "tasks": [
+        {
+          "name": "npm-publish",
+          "taskRef": "esta-npm-build",
+          "params": {
+            "NPM_COMMANDS": "publish-frontend",
+            "NODE_BUILDER_IMAGE": "esta.docker.bin.sbb.ch/esta/esta-tekton-pipeline-java-builderimage:1.6.11",
+            "BUILDER_NODE_VERSION": "16",
+            "CONTEXT_DIR": "npm build"
+          },
+          "runAfter": "maven-build"
+        }
+      ],
       "stages": [
         "dev"
       ]
@@ -105,7 +118,7 @@
       ],
       "build": {
         "buildDockerImage": true,
-        "additionalBuildParams": "--debug -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
         "sonarScan": {
           "enabled": true,
           "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
