@@ -109,33 +109,6 @@
   },
   "stages": [
     {
-      "stageName": "dev",
-      "isOpenshiftDeploymentEnabled": true,
-      "openshiftProject": "atlas-dev",
-      "openshiftCluster": "aws_aws01t",
-      "openshiftJenkinsCredentialsId": "e499fd92-711c-469b-9bc3-a67c748341d9",
-      "preCiDeploymentJob": "",
-      "postCiDeploymentJob": "",
-      "api": {
-        "artifactId": "apim-configuration",
-        "instance": "int",
-        "clientJenkinsId": "ssp-f1tqg4s8z-53a6-4h5d-0r0k-33j211k08b4",
-        "clientId": "client-atlas-jenkins-dev",
-        "classifier": "dev"
-      },
-      "kafkaDeployParameters": [
-        {
-          "environmentId": "test",
-          "type": "topics",
-          "fileGlob": "kafka/topics/dev/*.json",
-          "clientId": "825e4030",
-          "clientSecret": "${KAFKA_AUTOMATION_CLIENT_SECRET}",
-          "providerId": "sc",
-          "kafkaAutomationUrl": "https://automation-ng.kafka.sbb.ch"
-        }
-      ]
-    },
-    {
       "stageName": "test",
       "isOpenshiftDeploymentEnabled": true,
       "openshiftProject": "atlas-test",
@@ -256,7 +229,6 @@
       "staging": {
         "stagingType": "simple",
         "stages": [
-          "dev",
           "test"
         ]
       },
