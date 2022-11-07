@@ -29,8 +29,8 @@
       "artifactoryDockerRepo": "atlas.docker"
     },
     {
-      "dockerFile": "gateway/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "pomArtifactId": "gateway"
     },
     {
       "dockerFile": "frontend/docker/Dockerfile",
@@ -71,6 +71,9 @@
     },
     {
       "name": "release",
+      "branchNamePrefixes": [
+        "master"
+      ],
       "triggerType": [
         "GITEVENT",
         "USER"
