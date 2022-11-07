@@ -72,7 +72,8 @@
     {
       "name": "release",
       "triggerType": [
-        "GITEVENT"
+        "GITEVENT",
+        "USER"
       ],
       "versionTagEventPatterns": [
         "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
