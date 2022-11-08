@@ -112,6 +112,9 @@
       "triggerType": [
         "GITEVENT"
       ],
+      "branchNamePrefixes": [
+        "master"
+      ],
       "versionTagEventPatterns": [
         "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
       ],
