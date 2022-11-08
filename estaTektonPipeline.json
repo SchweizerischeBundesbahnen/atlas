@@ -107,9 +107,6 @@
     },
     {
       "name": "release",
-      "branchNamePrefixes": [
-        "master"
-      ],
       "triggerType": [
         "GITEVENT"
       ],
