@@ -3,7 +3,7 @@ FROM docker.bin.sbb.ch/cloud/sbb-base-rhel-java:17-LATEST
 MAINTAINER techsupport-atlas@sbb.ch
 
 RUN mkdir /deploy
-COPY mail/target/mail-*.jar deply/app.jar
+COPY ../mail/target/mail-*.jar deply/app.jar
 
 RUN chmod 777 /deploy/app.jar
 

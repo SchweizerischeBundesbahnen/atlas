@@ -14,14 +14,16 @@
   "docker": [
     {
       "dockerFile": "line-directory/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "line-directory/docker"
     },
     {
       "dockerFile": "business-organisation-directory/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "business-directory/docker"
     },
     {
-      "dockerFile": "mail/docker/Dockerfile",
+      "pomArtifactId": "mail",
       "artifactoryDockerRepo": "atlas.docker"
     },
     {

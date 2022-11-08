@@ -4,7 +4,7 @@ MAINTAINER techsupport-atlas@sbb.ch
 
 RUN mkdir /deploy
 
-COPY user-administration/target/user-administration-*.jar deply/app.jar
+COPY ../user-administration/target/user-administration-*.jar deply/app.jar
 
 RUN chmod 777 /deploy/app.jar
 

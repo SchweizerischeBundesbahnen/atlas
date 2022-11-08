@@ -4,7 +4,7 @@ MAINTAINER techsupport-atlas@sbb.ch
 
 RUN mkdir /deploy
 
-COPY businses-organisation-directory/target/businses-organisation-directory-*.jar deply/app.jar
+COPY ../target/businses-organisation-directory-*.jar deply/app.jar
 
 RUN chmod 777 /deploy/app.jar
 

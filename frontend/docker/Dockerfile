@@ -12,7 +12,7 @@ RUN chmod +x /usr/sbin/ngssc
 ADD docker/ngssc.sh ./nginx-start/
 
 # Copy dist files to nginx html folder
-COPY dist/atlas-frontend .
+COPY ../dist/atlas-frontend .
 RUN shopt -s nullglob && \
     # ngssc requires write permission for html and ngsw.json files
     find . -name "index.html" -exec chmod a+w {} \; && \
