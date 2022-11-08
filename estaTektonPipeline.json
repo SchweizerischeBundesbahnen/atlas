@@ -1,10 +1,8 @@
 {
   "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
   "productName": "atlas",
-  "npm": {
-    "targetRepo": "atlas.npm",
-    "packageJson": "frontend/package.json",
-    "additionalNpmScripts": "lint,build:ngssc,test"
+  "advancedBuildSettings": {
+    "buildWorkspaceSize": "4Gi"
   },
   "mvn": {
     "parentPom": "pom.xml",
@@ -14,37 +12,51 @@
   "docker": [
     {
       "dockerFile": "line-directory/docker/Dockerfile",
+      "imageName": "line-directory",
       "artifactoryDockerRepo": "atlas.docker",
-      "contextDir": "line-directory/docker"
+      "contextDir": "."
     },
     {
       "dockerFile": "business-organisation-directory/docker/Dockerfile",
+      "imageName": "business-organisation-directory",
       "artifactoryDockerRepo": "atlas.docker",
-      "contextDir": "business-directory/docker"
+      "contextDir": "."
     },
     {
       "pomArtifactId": "mail",
-      "artifactoryDockerRepo": "atlas.docker"
+      "imageName": "mail",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
       "pomArtifactId": "scheduling",
-      "artifactoryDockerRepo": "atlas.docker"
+      "imageName": "scheduling",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
-      "pomArtifactId": "gateway"
-    },
-    {
-      "dockerFile": "frontend/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "imageName": "gateway",
+      "pomArtifactId": "gateway",
+      "contextDir": "."
     },
     {
       "dockerFile": "user-administration/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "imageName": "user-adminitration",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
-      "pomArtifactId": "workflow"
+      "imageName": "workflow",
+      "pomArtifactId": "workflow",
+      "contextDir": "."
+    },
+    {
+      "dockerFile": "frontend/docker/Dockerfile",
+      "imageName": "frontend",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "frontend"
     }
   ],
   "helm": {
@@ -90,19 +102,6 @@
           "enabled": true
         }
       },
-      "tasks": [
-        {
-          "name": "npm-publish",
-          "taskRef": "esta-npm-build",
-          "params": {
-            "NPM_COMMANDS": "publish-frontend",
-            "NODE_BUILDER_IMAGE": "esta.docker.bin.sbb.ch/esta/esta-tekton-pipeline-java-builderimage:1.6.11",
-            "BUILDER_NODE_VERSION": "16",
-            "CONTEXT_DIR": "npm build"
-          },
-          "runAfter": "maven-build"
-        }
-      ],
       "stages": [
         "dev"
       ]

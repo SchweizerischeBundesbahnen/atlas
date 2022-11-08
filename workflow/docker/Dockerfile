@@ -4,7 +4,8 @@ MAINTAINER techsupport-atlas@sbb.ch
 
 RUN mkdir /deploy
 
-COPY ../workflow/target/workflow-*.jar deply/app.jar
+COPY target/workflow-*.jar deploy/app.jar
+
 RUN chmod 777 /deploy/app.jar
 
 ENV JAVA_APP_JAR="deploy/app.jar"
