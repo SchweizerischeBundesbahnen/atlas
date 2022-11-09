@@ -17,10 +17,6 @@ RUN shopt -s nullglob && \
     # ngssc requires write permission for html and ngsw.json files
     find . -name "index.html" -exec chmod a+w {} \; && \
     find . -name "ngsw.json" -exec chmod a+w {} \; && \
-    # Rename directories from de-CH, en-CH, fr-CH, it-CH to de, en, fr, it
-    for dir in ./*-CH; do mv "$dir" "${dir%-*}"; done && \
-    rm -f app.tar.gz && \
-    rm -rf ./package && \
     ls -R -la
 
 # If you want to define your own location / rule, you have to enable this line to avoid a duplication of this rule.
