@@ -46,7 +46,7 @@ public class LineStatusDecider {
       List<LineVersion> currentLineVersions) {
     return currentLineVersions.stream().filter(currentLineVersion ->
             !currentLineVersion.getValidTo().isBefore(newLineVersion.getValidFrom()) &&
-                !currentLineVersion.getValidFrom().isAfter(newLineVersion.getValidTo()))
+                !currentLineVersion.getValidFrom().isAfter(newLineVersion.getValidFrom()))
         .filter(lineVersion -> lineVersion.getStatus() == Status.VALIDATED).findFirst();
   }
 

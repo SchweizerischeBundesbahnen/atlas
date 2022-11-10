@@ -242,6 +242,50 @@ public class LineServiceStatusDecisionTest {
   }
 
   /**
+   * Szenario 1: Name wird "vorne" geändert
+   * Vorher:      |-------------|
+   * Version:            1
+   * <p>
+   * Nachher:     |______|------|
+   * Version:        1       2
+   * <p>
+   * Resultat:
+   *  - Worflow auf 1 nötig, da Name im Vergleich zu vorher geändert hat.
+   *  - Worflow auf 2 nicht nötig, da nur eingekürzt.
+   */
+  @Test
+  public void updateScenario1a() {
+    //given
+    version1 = lineVersionRepository.save(version1);
+    LineVersion editedVersion = new LineVersion();
+    editedVersion.setDescription("Description <changed>");
+    editedVersion.setComment("Scenario 1");
+    editedVersion.setValidFrom(LocalDate.of(2020, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2020, 1, 1));
+
+    //when
+    lineService.updateVersion(version1, editedVersion);
+    List<LineVersion> result = lineVersionRepository.findAllBySlnidOrderByValidFrom(
+        version1.getSlnid());
+
+    //then
+
+    assertThat(result).isNotNull().hasSize(2);
+
+    // Version 1
+    LineVersion firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.DRAFT);
+
+    // Version 2
+    LineVersion secondTemporalVersion = result.get(1);
+    assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 2));
+    assertThat(secondTemporalVersion.getValidTo()).isEqualTo(version1.getValidTo());
+    assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
+  }
+
+  /**
    * Szenario: Name wird "hinten" geändert und verlängert
    * Vorher:      |-------------|
    * Version:            1
