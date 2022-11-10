@@ -54,7 +54,7 @@
     },
     {
       "dockerFile": "frontend/docker/Dockerfile",
-      "imageName": "frontend",
+      "imageName": "atlas-frontend",
       "artifactoryDockerRepo": "atlas.docker",
       "contextDir": "frontend"
     }
@@ -137,28 +137,7 @@
     {
       "stageName": "dev",
       "argoCD": {
-        "argoCdAppName": "your-dev-app-name",
-        "autoSync": true
-      }
-    },
-    {
-      "stageName": "test",
-      "argoCD": {
-        "argoCdAppName": "your-test-app-name",
-        "autoSync": true
-      }
-    },
-    {
-      "stageName": "int",
-      "argoCD": {
-        "argoCdAppName": "your-int-app-name",
-        "autoSync": true
-      }
-    },
-    {
-      "stageName": "prod",
-      "argoCD": {
-        "argoCdAppName": "your-prod-app-name",
+        "argoCdAppName": "atlas",
         "autoSync": true
       }
     }
