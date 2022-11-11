@@ -42,7 +42,7 @@
     },
     {
       "dockerFile": "user-administration/docker/Dockerfile",
-      "imageName": "user-adminitration",
+      "imageName": "user-administration",
       "artifactoryDockerRepo": "atlas.docker",
       "contextDir": "."
     },
