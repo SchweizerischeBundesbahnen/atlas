@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum FakeUserType {
 
-  KAFKA("kafka_system_user");
+  KAFKA("fxatlka");
 
   private final String userName;
 }
