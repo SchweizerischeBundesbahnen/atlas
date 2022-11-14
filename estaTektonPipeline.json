@@ -136,9 +136,14 @@
   "stages": [
     {
       "stageName": "dev",
-      "argoCD": {
-        "argoCdAppName": "atlas",
-        "autoSync": true
+      "helm": {
+        "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
+        "chartName": "values",
+        "chartRootFolder": "clusters/aws01t",
+        "chartFile": "values-dev.yaml",
+        "versionProperties": [
+          ".appVersion"
+        ]
       }
     }
   ],
