@@ -123,8 +123,39 @@ public class LineService {
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
 
-    versionableService.applyVersioning(LineVersion.class, versionedObjects, version -> save(version, currentVersions),
+    List<LineVersion> preSaveVersions = currentVersions.stream().map(this::copyLineVersion).toList();
+    versionableService.applyVersioning(LineVersion.class, versionedObjects, version -> save(version, preSaveVersions),
         this::deleteById);
+  }
+
+  private LineVersion copyLineVersion(LineVersion lineVersion) {
+    return LineVersion.builder()
+        .id(lineVersion.getId())
+        .status(lineVersion.getStatus())
+        .lineType(lineVersion.getLineType())
+        .slnid(lineVersion.getSlnid())
+        .paymentType(lineVersion.getPaymentType())
+        .number(lineVersion.getNumber())
+        .alternativeName(lineVersion.getAlternativeName())
+        .combinationName(lineVersion.getCombinationName())
+        .longName(lineVersion.getLongName())
+        .colorFontRgb(lineVersion.getColorFontRgb())
+        .colorBackRgb(lineVersion.getColorBackRgb())
+        .colorFontCmyk(lineVersion.getColorFontCmyk())
+        .colorBackCmyk(lineVersion.getColorBackCmyk())
+        .description(lineVersion.getDescription())
+        .icon(lineVersion.getIcon())
+        .validFrom(lineVersion.getValidFrom())
+        .validTo(lineVersion.getValidTo())
+        .businessOrganisation(lineVersion.getBusinessOrganisation())
+        .comment(lineVersion.getComment())
+        .swissLineNumber(lineVersion.getSwissLineNumber())
+        .version(lineVersion.getVersion())
+        .creator(lineVersion.getCreator())
+        .creationDate(lineVersion.getCreationDate())
+        .editor(lineVersion.getEditor())
+        .editionDate(lineVersion.getEditionDate())
+        .build();
   }
 
 }
