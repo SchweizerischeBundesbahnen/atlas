@@ -138,7 +138,7 @@
       "stageName": "dev",
       "helm": {
         "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
-        "chartName": "values",
+        "chartName": "applications",
         "chartRootFolder": "clusters/aws01t",
         "chartFile": "values-dev.yaml",
         "versionProperties": [
