@@ -66,6 +66,7 @@ It's applications share the following architectural goal:
     - **Int**: https://atlas.int.sbb-cloud.net
     - **Prod**: https://atlas.sbb-cloud.net
 
+
 ## Stages and their purpose
 
 * [Stages](documentation/stages.md)
