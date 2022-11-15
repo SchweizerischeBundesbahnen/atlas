@@ -9,10 +9,10 @@
 
 ## Sonar Exclusions on Esta Cloud Pipeline for Frontend Project
 
-For some reason the ```<sonar.exclusions>``` property is not working correctly. In our case the 
+For some reason the ```<sonar.exclusions>``` property is not working correctly. In our case the
 directory ``` **/src/app/api/**``` is not excluded even if it is declared, see [frontend/pom.xml](../frontend/pom.xml).
 
-The workaround is to pass in the [estaCloudPipeline.json](../estaCloudPipeline.json) 
+The workaround is to pass in the [estaCloudPipeline.json](../old_estaCloudPipeline.json)
 as ```"additionalBuildParamsForSonarScan"``` the files and directories to be excluded:
 
 ~~~json
