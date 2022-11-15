@@ -7,7 +7,7 @@
     "docker": "sh ./prepare-docker.sh",
     "publish-frontend": "sh ./npm_publish.sh",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test -c ci",
+    "test": "ng test --watch=false --browsers=ChromeHeadlessNoSandbox",
     "test-debug": "ng test --watch true",
     "lint": "ng lint",
     "prepare": "cd .. && husky install frontend/.husky",
@@ -77,8 +77,10 @@
     "@angular/localize": "^14.2.10",
     "@cypress/schematic": "^2.3.0",
     "@openapitools/openapi-generator-cli": "^2.5.2",
+    "@playwright/test": "^1.27.1",
     "@types/jasmine": "~4.3.0",
     "@types/node": "^18.11.9",
+    "@types/puppeteer": "^7.0.4",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "cypress": "^11.0.1",
@@ -97,6 +99,7 @@
     "karma-sonarqube-reporter": "^1.4.0",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
+    "puppeteer": "^19.2.2",
     "typescript": "~4.8.4"
   }
 }

@@ -1,14 +1,11 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
-
-// Jenkins has a BUILD_NUMBER environment variable. So when
-// this variable is set, we use the chromium browser downloaded
-// by puppeteer.
-if (process.env.BUILD_NUMBER) {
-  process.env.CHROME_BIN = require('puppeteer').executablePath();
-}
+process.env.CHROMIUM_BIN = require('@playwright/test').chromium.executablePath();
+process.env.CHROME_BIN = require('puppeteer').executablePath();
 
 module.exports = function (config) {
+  process.env.CHROMIUM_BIN = require('@playwright/test').chromium.executablePath();
+  process.env.CHROME_BIN = require('puppeteer').executablePath();
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
@@ -28,10 +25,12 @@ module.exports = function (config) {
         // for example, you can disable the random execution with `random: false`
         // or set a specific seed with `seed: 4321`
       },
-      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+      // leave Jasmine Spec Runner output visible in browser
+      clearContext: false,
     },
     jasmineHtmlReporter: {
-      suppressAll: true, // removes the duplicated traces
+      // removes the duplicated traces
+      suppressAll: true,
     },
     angularCLI: {
       config: './angular.json',
@@ -46,19 +45,29 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/atlas-frontend'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' },
-        { type: 'lcovonly' },
-        { type: 'cobertura' },
+        {type: 'html'},
+        {type: 'text-summary'},
+        {type: 'lcovonly'},
+        {type: 'cobertura'},
       ],
     },
-    browserConsoleLogOptions: { level: 'error' },
+    browserConsoleLogOptions: {level: 'error'},
+    browsers: ['Chrome', 'ChromeHeadless', 'ChromiumHeadlessNoSandbox'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      },
+      ChromeHeadlessNoSandbox: {
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox"]
+      }
+    },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_ERROR,
     autoWatch: true,
-    browsers: ['Chrome'],
     singleRun: false,
     restartOnFileChange: true,
   });
