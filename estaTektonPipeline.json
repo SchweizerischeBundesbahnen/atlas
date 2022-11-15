@@ -1,10 +1,8 @@
 {
   "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
-  "productName": "add-your-name-here",
-  "npm": {
-    "targetRepo": "atlas.npm",
-    "packageJson": "frontend/package.json",
-    "additionalNpmScripts": "lint build:ngssc test"
+  "productName": "atlas",
+  "advancedBuildSettings": {
+    "buildWorkspaceSize": "4Gi"
   },
   "mvn": {
     "parentPom": "pom.xml",
@@ -14,35 +12,51 @@
   "docker": [
     {
       "dockerFile": "line-directory/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "imageName": "line-directory",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
       "dockerFile": "business-organisation-directory/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "imageName": "business-organisation-directory",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
-      "dockerFile": "mail/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "pomArtifactId": "mail",
+      "imageName": "mail",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
-      "dockerFile": "scheduling/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "pomArtifactId": "scheduling",
+      "imageName": "scheduling",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
-      "dockerFile": "gateway/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
-    },
-    {
-      "dockerFile": "frontend/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "imageName": "gateway",
+      "pomArtifactId": "gateway",
+      "contextDir": "."
     },
     {
       "dockerFile": "user-administration/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "imageName": "user-administration",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
-      "dockerFile": "workflow/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "imageName": "workflow",
+      "pomArtifactId": "workflow",
+      "contextDir": "."
+    },
+    {
+      "dockerFile": "frontend/docker/Dockerfile",
+      "imageName": "atlas-frontend",
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "frontend"
     }
   ],
   "helm": {
@@ -65,14 +79,41 @@
         "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
         "sonarScan": {
           "enabled": true,
-          "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
+          "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
         }
       }
+    },
+    {
+      "name": "manualRelease",
+      "branchNamePrefixes": [
+        "master"
+      ],
+      "triggerType": [
+        "USER"
+      ],
+      "build": {
+        "buildDockerImage": true,
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
+        "sonarScan": {
+          "enabled": true,
+          "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
+        },
+        "owaspDependencyCheck": {
+          "enabled": true
+        }
+      },
+      "stages": [
+        "dev",
+        "test"
+      ]
     },
     {
       "name": "release",
       "triggerType": [
         "GITEVENT"
+      ],
+      "branchNamePrefixes": [
+        "master"
       ],
       "versionTagEventPatterns": [
         "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
@@ -82,44 +123,41 @@
         "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
         "sonarScan": {
           "enabled": true,
-          "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=true -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
+          "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
         },
         "owaspDependencyCheck": {
           "enabled": true
         }
       },
       "stages": [
-        "dev"
+        "dev",
+        "test"
       ]
     }
   ],
   "stages": [
     {
       "stageName": "dev",
-      "argoCD": {
-        "argoCdAppName": "your-dev-app-name",
-        "autoSync": true
+      "helm": {
+        "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
+        "chartName": "applications",
+        "chartRootFolder": "clusters/aws01t",
+        "chartFile": "values-dev.yaml",
+        "versionProperties": [
+          ".appVersion"
+        ]
       }
     },
     {
       "stageName": "test",
-      "argoCD": {
-        "argoCdAppName": "your-test-app-name",
-        "autoSync": true
-      }
-    },
-    {
-      "stageName": "int",
-      "argoCD": {
-        "argoCdAppName": "your-int-app-name",
-        "autoSync": true
-      }
-    },
-    {
-      "stageName": "prod",
-      "argoCD": {
-        "argoCdAppName": "your-prod-app-name",
-        "autoSync": true
+      "helm": {
+        "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
+        "chartName": "applications",
+        "chartRootFolder": "clusters/aws01t",
+        "chartFile": "values-test.yaml",
+        "versionProperties": [
+          ".appVersion"
+        ]
       }
     }
   ],
