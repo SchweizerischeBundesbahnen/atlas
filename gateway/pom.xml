@@ -6,7 +6,7 @@
    <parent>
       <groupId>ch.sbb.atlas</groupId>
       <artifactId>atlas</artifactId>
-      <version>1.55.3</version>
+      <version>${revision}</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
    <artifactId>gateway</artifactId>
