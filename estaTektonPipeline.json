@@ -129,7 +129,8 @@
         }
       },
       "stages": [
-        "dev"
+        "dev",
+        "test"
       ]
     }
   ],
@@ -141,6 +142,18 @@
         "chartName": "applications",
         "chartRootFolder": "clusters/aws01t",
         "chartFile": "values-dev.yaml",
+        "versionProperties": [
+          ".appVersion"
+        ]
+      }
+    },
+    {
+      "stageName": "test",
+      "helm": {
+        "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
+        "chartName": "applications",
+        "chartRootFolder": "clusters/aws01t",
+        "chartFile": "values-test.yaml",
         "versionProperties": [
           ".appVersion"
         ]
