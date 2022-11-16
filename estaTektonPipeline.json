@@ -115,6 +115,9 @@
       "branchNamePrefixes": [
         "master"
       ],
+      "tagging": {
+        "versionIncrementPosition": "minor"
+      },
       "versionTagEventPatterns": [
         "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
       ],
