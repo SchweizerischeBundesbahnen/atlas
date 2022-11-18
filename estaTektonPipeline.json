@@ -177,7 +177,8 @@
       "argoCD": {
         "waitUntilHealthy": true,
         "argoCdAppName": "applications.argoproj.io/app-name=atlas",
-        "argoCdAppSyncFlags": "-l"
+        "argoCdAppSyncFlags": "-l",
+        "autoSync": true
       },
       "helm": {
         "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
