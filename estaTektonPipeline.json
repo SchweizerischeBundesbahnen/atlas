@@ -108,12 +108,23 @@
       ]
     },
     {
+      "name": "taggingMinor",
+      "enabled": true,
+      "tagging": {
+        "updateHelmChart": true,
+        "versionIncrementPosition": "minor"
+      },
+      "branchNamePrefixes": [
+        "master"
+      ],
+      "triggerType": [
+        "GITEVENT"
+      ]
+    },
+    {
       "name": "release",
       "triggerType": [
         "GITEVENT"
-      ],
-      "branchNamePrefixes": [
-        "master"
       ],
       "tagging": {
         "versionIncrementPosition": "minor"
@@ -163,6 +174,11 @@
     },
     {
       "stageName": "test",
+      "argoCD": {
+        "waitUntilHealthy": true,
+        "argoCdAppName": "applications.argoproj.io/app-name=atlas",
+        "argoCdAppSyncFlags": "-l"
+      },
       "helm": {
         "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
         "chartName": "applications",
