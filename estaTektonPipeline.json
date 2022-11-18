@@ -140,6 +140,11 @@
             "ARGO_CD_APP_NAME": "atlas"
           },
           "runAfter": "git-commit"
+        },
+        {
+          "name": "atlas-e2e-tests",
+          "taskRef": "e2e-tests",
+          "runAfter": "argocd-sync-and-wait"
         }
       ],
       "build": {
