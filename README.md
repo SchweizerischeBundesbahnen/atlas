@@ -50,8 +50,6 @@ It's applications share the following architectural goal:
 
 ## ArgoCD
 
-See
-
 ## Links
 
 - **Tekton**: https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
