@@ -132,13 +132,6 @@
       "versionTagEventPatterns": [
         "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
       ],
-      "tasks": [
-        {
-          "name": "atlas-e2e-tests",
-          "taskRef": "e2e-tests",
-          "runAfter": "argocd-sync-and-wait"
-        }
-      ],
       "build": {
         "buildDockerImage": true,
         "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
