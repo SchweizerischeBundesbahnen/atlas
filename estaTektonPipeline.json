@@ -111,7 +111,6 @@
       "name": "taggingMinor",
       "enabled": true,
       "tagging": {
-        "updateHelmChart": true,
         "versionIncrementPosition": "minor"
       },
       "branchNamePrefixes": [
