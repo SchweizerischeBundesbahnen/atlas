@@ -444,5 +444,36 @@
     "DELETE": "Supprimer le lien",
     "ADD_SUCCESS_MSG": "Le lien souhaité a été ajouté.",
     "DELETE_SUCCESS_MSG": "La suppression du raccourci sélectionné a réussi."
+  },
+  "WORKFLOW": {
+    "TITLE": "Audience",
+    "BUTTON": {
+      "ADD": "Saisir une audience",
+      "START": "Lancer l'audience",
+      "CANCEL": "Annuler l'audience"
+    },
+    "START": {
+      "COMMENT": "Motivation de la demande",
+      "KEY_DATA": "Demandeur"
+    },
+    "PERSON": {
+      "FIRSTNAME": "Prénom",
+      "LASTNAME": "Nom de famille",
+      "FUNCTION": "Fonction",
+      "MAIL": "Adresse e-mail"
+    },
+    "STATUS": {
+      "ADDED": "Saisit",
+      "STARTED": "Lancé",
+      "REVISION": "En révision",
+      "HEARING": "En audience",
+      "APPROVED": "Approuvé",
+      "REJECTED": "Refusé"
+    },
+    "NOTIFICATION": {
+      "START": {
+        "SUCCESS": "Votre demande a été transmise avec succès"
+      }
+    }
   }
 }
