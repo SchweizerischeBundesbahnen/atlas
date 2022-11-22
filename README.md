@@ -30,7 +30,7 @@ This is the repository for business relevant services for ATLAS.
 <!-- tocstop -->
 
 Tekton CI/CD
-Status: [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/ki-atlas--atlas/build)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/)
+Status: [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/ki-atlas--atlas/build)](https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas)
 
 Build
 Status: [![Build Status](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/badge/icon)](https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/)
