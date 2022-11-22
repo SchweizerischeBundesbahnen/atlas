@@ -1,6 +1,7 @@
 # ATLAS Frontend
 
-This project was generated from [esta-cloud-angular](https://code.sbb.ch/projects/KD_ESTA_BLUEPRINTS/repos/esta-cloud-angular/browse).
+This project was generated
+from [esta-cloud-angular](https://code.sbb.ch/projects/KD_ESTA_BLUEPRINTS/repos/esta-cloud-angular/browse).
 See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 <!-- toc -->
@@ -11,7 +12,6 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
   * [Patch all used packages](#patch-all-used-packages)
   * [Cypress E2E](#cypress-e2e)
     + [Run cypress test locally](#run-cypress-test-locally)
-    + [Cypress E2E CI-Jenkins](#cypress-e2e-ci-jenkins)
       - [Release-Tests (Used by Tester)](#release-tests-used-by-tester)
       - [Cypress Tests results for troubleshooting](#cypress-tests-results-for-troubleshooting)
   * [Set SBB Artifactory as npm registry](#set-sbb-artifactory-as-npm-registry)
@@ -21,6 +21,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 <!-- tocstop -->
 
 ## Development
+
 ### Node.js
 
 This project requires Node.js Version **16.13.2**. It has to be a LTS version.
@@ -53,6 +54,7 @@ To update the angular packages:
 ```
 
 For more information see:
+
 * [ng update](https://docs.angular.lat/cli/update)
 * [Angular Update Guide](https://update.angular.io/)
 
@@ -69,20 +71,11 @@ npm install
 #### Run cypress test locally
 
 1. Create the file `cypress.env.json`
-2. Paste the json from the [credentials site](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050). This is excluded from git, so the credentials are not commited.
+2. Paste the json from the [credentials site](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050). This is excluded
+   from git, so the credentials are not commited.
 3. run cypress:
-   1. with the console for debugging: `npm run cypress:open` or `cypress open`
-   2. as headless test: `npm run cypress:run` or `cypress run`
-
-#### Cypress E2E CI-Jenkins
-
-In [Jenkins](https://ci.sbb.ch/) under the organization Folder [ATLAS_Cypress_E2E](https://ci.sbb.ch/job/KI_ATLAS_E2E/)
-the Cypress E2E tests are defined in the job [atlas-frontend](https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas-frontend/).
-
-This job is executed only when is triggered by **postCiDeploymentJob** defined in the main [Jenkins pipeline](https://ci.sbb.ch/job/KI_ATLAS/job/atlas-frontend/),
-see the [Jenkinsfile](Jenkinsfile). On this job the commit push notification is disabled.
-
-The Jenkinsfile is stored in [cypress/Jenkinsfile](cypress/Jenkinsfile)
+  1. with the console for debugging: `npm run cypress:open` or `cypress open`
+  2. as headless test: `npm run cypress:run` or `cypress run`
 
 ##### Release-Tests (Used by Tester)
 
@@ -110,8 +103,10 @@ See [set SBB Artifactory as npm registry](https://confluence.sbb.ch/display/CLEW
 
 So you want to use AzureAD to login your users?
 
-1. Create azure-app-registration.yml ([Dokumentation](https://confluence.sbb.ch/display/IAM/Azure+AD+API%3A+Self-Service+API+for+App+Registrations+with+Azure+AD#AzureADAPI:SelfServiceAPIforAppRegistrationswithAzureAD-1.1.Createapp-registrationsusingthefile-basedAPIendpoint))
-2. Use the [REST-API](https://azure-ad.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#) to POST/create your application
+1. Create
+   azure-app-registration.yml ([Dokumentation](https://confluence.sbb.ch/display/IAM/Azure+AD+API%3A+Self-Service+API+for+App+Registrations+with+Azure+AD#AzureADAPI:SelfServiceAPIforAppRegistrationswithAzureAD-1.1.Createapp-registrationsusingthefile-basedAPIendpoint))
+2. Use the [REST-API](https://azure-ad.api.sbb.ch/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#) to POST/create
+   your application
 3. The configured owner may edit it with the same REST-API using PUT
 
 Finding an application within the registry is best performed by using the GET /v1/applications and look for a name.
