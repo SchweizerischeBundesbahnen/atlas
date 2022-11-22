@@ -446,29 +446,29 @@
     "DELETE_SUCCESS_MSG": "L'eliminazione del collegamento selezionato è avvenuta con successo."
   },
   "WORKFLOW": {
-    "TITLE": "Anhörung",
+    "TITLE": "Audizione",
     "BUTTON": {
-      "ADD": "Anhörung erfassen",
-      "START": "Anhörung starten",
-      "CANCEL": "Anhörung abbrechen"
+      "ADD": "Registrazione dell'audizione",
+      "START": "Avviare audizione",
+      "CANCEL": "Annullare audizione"
     },
     "START": {
-      "COMMENT": "Begründung für Antrag",
-      "KEY_DATA": "Antragstellende Person"
+      "COMMENT": "Motivazione della richiesta",
+      "KEY_DATA": "Richiedente"
     },
     "PERSON": {
-      "FIRSTNAME": "Vorname",
-      "LASTNAME": "Nachname",
-      "FUNCTION": "Funktion",
-      "MAIL": "E-Mail Adresee"
+      "FIRSTNAME": "Nome",
+      "LASTNAME": "Cognome",
+      "FUNCTION": "Funzione",
+      "MAIL": "Indirizzo E-Mail"
     },
     "STATUS": {
-      "ADDED": "Erfasst",
-      "STARTED": "Gestartet",
-      "REVISION": "In Überarbeitung",
-      "HEARING": "In Anhörung",
-      "APPROVED": "Genehmigt",
-      "REJECTED": "Abgelehnt"
+      "ADDED": "Inizializzato",
+      "STARTED": "Avviato",
+      "REVISION": "In Revisione",
+      "HEARING": "In audizionr",
+      "APPROVED": "Approvato",
+      "REJECTED": "Respinto"
     },
     "NOTIFICATION": {
       "START": {

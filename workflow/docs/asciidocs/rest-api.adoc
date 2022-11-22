@@ -29,7 +29,7 @@
 
 include::../release-notes.adoc[]
 
-= Line
+= Workflow
 
 == Get Workflows - Successfully
 

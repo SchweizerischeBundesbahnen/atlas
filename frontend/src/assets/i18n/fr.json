@@ -446,33 +446,33 @@
     "DELETE_SUCCESS_MSG": "La suppression du raccourci sélectionné a réussi."
   },
   "WORKFLOW": {
-    "TITLE": "Anhörung",
+    "TITLE": "Audience",
     "BUTTON": {
-      "ADD": "Anhörung erfassen",
-      "START": "Anhörung starten",
-      "CANCEL": "Anhörung abbrechen"
+      "ADD": "Saisir une audience",
+      "START": "Lancer l'audience",
+      "CANCEL": "Annuler l'audience"
     },
     "START": {
-      "COMMENT": "Begründung für Antrag",
-      "KEY_DATA": "Antragstellende Person"
+      "COMMENT": "Motivation de la demande",
+      "KEY_DATA": "Demandeur"
     },
     "PERSON": {
-      "FIRSTNAME": "Vorname",
-      "LASTNAME": "Nachname",
-      "FUNCTION": "Funktion",
-      "MAIL": "E-Mail Adresee"
+      "FIRSTNAME": "Prénom",
+      "LASTNAME": "Nom de famille",
+      "FUNCTION": "Fonction",
+      "MAIL": "Adresse e-mail"
     },
     "STATUS": {
-      "ADDED": "Erfasst",
-      "STARTED": "Gestartet",
-      "REVISION": "In Überarbeitung",
-      "HEARING": "In Anhörung",
-      "APPROVED": "Genehmigt",
-      "REJECTED": "Abgelehnt"
+      "ADDED": "Saisit",
+      "STARTED": "Lancé",
+      "REVISION": "En révision",
+      "HEARING": "En audience",
+      "APPROVED": "Approuvé",
+      "REJECTED": "Refusé"
     },
     "NOTIFICATION": {
       "START": {
-        "SUCCESS": "Ihr Antrag wurde erfolgreich übermittel"
+        "SUCCESS": "Votre demande a été transmise avec succès"
       }
     }
   }
