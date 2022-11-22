@@ -460,7 +460,7 @@
       "FIRSTNAME": "Vorname",
       "LASTNAME": "Nachname",
       "FUNCTION": "Funktion",
-      "MAIL": "E-Mail Adresee"
+      "MAIL": "E-Mail Adresse"
     },
     "STATUS": {
       "ADDED": "Erfasst",
@@ -472,7 +472,7 @@
     },
     "NOTIFICATION": {
       "START": {
-        "SUCCESS": "Ihr Antrag wurde erfolgreich übermittel"
+        "SUCCESS": "Ihr Antrag wurde erfolgreich übermittelt"
       }
     }
   }
