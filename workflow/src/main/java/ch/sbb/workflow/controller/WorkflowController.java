@@ -2,6 +2,7 @@ package ch.sbb.workflow.controller;
 
 import ch.sbb.workflow.api.WorkflowApiV1;
 import ch.sbb.workflow.api.WorkflowModel;
+import ch.sbb.workflow.api.WorkflowStartModel;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.service.WorkflowService;
 import java.util.List;
@@ -27,8 +28,9 @@ public class WorkflowController implements WorkflowApiV1 {
   }
 
   @Override
-  public WorkflowModel startWorkflow(WorkflowModel newWorkflow) {
-    Workflow workflow = service.startWorkflow(WorkflowModel.toEntity(newWorkflow));
-    return WorkflowModel.toModel(workflow);
+  public WorkflowModel startWorkflow(WorkflowStartModel workflowStartModel) {
+    Workflow workflow = service.startWorkflow(WorkflowStartModel.toEntity(workflowStartModel));
+    return WorkflowModel.toNewModel(workflow);
   }
+
 }

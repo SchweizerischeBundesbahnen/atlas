@@ -1,0 +1,46 @@
+<div class="mt-2 mb-5">
+  <div *ngIf="!isAddWorkflowButtonDisabled">
+    <atlas-button
+      (buttonClicked)="showWorflowForm()"
+      [disabled]="isAddWorkflowButtonDisabled"
+      buttonDataCy="workflow-add"
+      buttonText="WORKFLOW.BUTTON.ADD"
+      buttonType="create"
+      wrapperStyleClass="me-3"
+    ></atlas-button>
+  </div>
+  <div *ngIf="isReadMode">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span class="font-bold-lg">{{ 'WORKFLOW.TITLE' | translate }}</span>
+        </mat-panel-title>
+        <mat-panel-description>
+          <span class="font-bold-lg me-2">{{ 'COMMON.STATUS' | translate }}</span>
+          <span class="font-bold-lg">{{ this.workflowStatusTranslated }}</span>
+        </mat-panel-description>
+        <i class="fs-2 bi bi-diagram-3-fill me-2 mt-1 icon-color"></i>
+      </mat-expansion-panel-header>
+      <app-workflow-form [formGroup]="workflowFormGroup"></app-workflow-form>
+    </mat-expansion-panel>
+  </div>
+  <div *ngIf="isWorkflowFormEditable">
+    <app-workflow-form [formGroup]="workflowFormGroup"></app-workflow-form>
+    <div class="d-flex align-items-center">
+      <atlas-button
+        (buttonClicked)="startWorflow()"
+        buttonDataCy="workflow-start"
+        buttonText="WORKFLOW.BUTTON.START"
+        buttonType="create"
+        wrapperStyleClass="me-3"
+      ></atlas-button>
+      <atlas-button
+        (buttonClicked)="toggleWorkflow()"
+        buttonDataCy="workflow-cancel"
+        buttonText="WORKFLOW.BUTTON.CANCEL"
+        buttonType="create"
+        wrapperStyleClass="me-3"
+      ></atlas-button>
+    </div>
+  </div>
+</div>

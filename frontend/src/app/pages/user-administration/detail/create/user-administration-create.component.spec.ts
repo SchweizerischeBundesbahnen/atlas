@@ -2,7 +2,6 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 
 import { UserAdministrationCreateComponent } from './user-administration-create.component';
 import { UserService } from '../../service/user.service';
-import SpyObj = jasmine.SpyObj;
 import { BusinessOrganisationsService } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import {
@@ -20,6 +19,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../core/module/material.module';
 import { FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../../service/user-permission-manager';
+import SpyObj = jasmine.SpyObj;
 
 @Component({
   selector: 'app-user-select',
