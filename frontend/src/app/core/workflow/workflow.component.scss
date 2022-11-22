@@ -1,0 +1,10 @@
+@use 'src/styles/variables' as variables;
+
+.icon-color {
+  color: variables.$primary-300;
+}
+
+.mat-expansion-panel {
+  border-style: solid;
+  border-color: variables.$primary-300;
+}
