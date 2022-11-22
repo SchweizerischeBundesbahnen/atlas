@@ -46,6 +46,7 @@
     <skip.npm.exec.ci>true</skip.npm.exec.ci>
     <skip.npm.exec.build>true</skip.npm.exec.build>
     <skip.npm.exec.publish>true</skip.npm.exec.publish>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
   <build>
     <plugins>
