@@ -12,6 +12,7 @@ import { TransportCompaniesService } from './api/transportCompanies.service';
 import { TransportCompanyRelationsService } from './api/transportCompanyRelations.service';
 import { UserAdministrationService } from './api/userAdministration.service';
 import { UserInformationService } from './api/userInformation.service';
+import { WorkflowService } from './api/workflow.service';
 
 @NgModule({
   imports: [],
