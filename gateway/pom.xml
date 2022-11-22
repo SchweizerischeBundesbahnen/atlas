@@ -13,6 +13,9 @@
 
    <name>Atlas Gateway</name>
    <description>Atlas Gateway for unified API</description>
+   <properties>
+      <maven.deploy.skip>true</maven.deploy.skip>
+   </properties>
 
    <dependencies>
       <dependency>
