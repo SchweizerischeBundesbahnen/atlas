@@ -88,6 +88,18 @@ mat-form-field.form-outline {
   }
 }
 
+.mat-form-field-invalid,
+.mat-form-field-invalid:hover,
+.mat-form-field-invalid.mat-focused {
+  .mat-form-field-outline,
+  .mat-form-field-outline-thick .mat-form-field-outline-start,
+  .mat-form-field-outline-thick .mat-form-field-outline-end,
+  .mat-form-field-outline-thick .mat-form-field-outline-gap {
+    color: variables.$warnColor;
+    border-width: 3px;
+  }
+}
+
 .mat-form-field-appearance-outline.mat-form-field-disabled,
 .mat-form-field-appearance-outline:hover.mat-form-field-disabled {
   .mat-form-field-flex .mat-form-field-outline {
