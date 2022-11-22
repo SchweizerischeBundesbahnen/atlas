@@ -133,6 +133,7 @@
         "^(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
       ],
       "build": {
+        "deployArtifacts": true,
         "buildDockerImage": true,
         "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
         "sonarScan": {
