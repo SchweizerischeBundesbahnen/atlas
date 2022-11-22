@@ -49,7 +49,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private readonly workflowServise: WorkflowService,
+    private readonly workflowService: WorkflowService,
     private readonly userAdministrationService: UserAdministrationService,
     private readonly notificationService: NotificationService,
     private readonly dialogService: DialogService,
@@ -75,7 +75,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     this.validateForm();
     if (this.workflowFormGroup.valid) {
       const workflowStart: WorkflowStart = this.populateWorkflowStart();
-      this.workflowServise
+      this.workflowService
         .startWorkflow(workflowStart)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((workflow) => {
@@ -188,7 +188,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     this.isAddWorkflowButtonDisabled = true;
     this.workflowFormGroup.disable();
 
-    this.workflowServise
+    this.workflowService
       .getWorkflow(workflowId)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((workflow: Workflow) => {
@@ -209,23 +209,23 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       .getCurrentUser()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((user) => {
-        this.workflowFormGroup.controls['firstName'].setValue(user.firstName);
-        this.workflowFormGroup.controls['lastName'].setValue(user.lastName);
-        this.workflowFormGroup.controls['mail'].setValue(user.mail);
+        this.workflowFormGroup.controls.firstName.setValue(user.firstName);
+        this.workflowFormGroup.controls.lastName.setValue(user.lastName);
+        this.workflowFormGroup.controls.mail.setValue(user.mail);
       });
   }
 
   //read mode
   private populateWorkflowStartFormGroupFromPersistence(workflow: Workflow) {
     this.getTranslatedWorkflowStatus(workflow);
-    this.workflowFormGroup.controls['comment'].setValue(workflow.workflowComment);
-    this.workflowFormGroup.controls['firstName'].setValue(workflow.client?.firstName);
-    this.workflowFormGroup.controls['lastName'].setValue(workflow.client?.lastName);
-    this.workflowFormGroup.controls['function'].setValue(workflow.client?.personFunction);
-    this.workflowFormGroup.controls['mail'].setValue(workflow.client?.mail);
+    this.workflowFormGroup.controls.comment.setValue(workflow.workflowComment);
+    this.workflowFormGroup.controls.firstName.setValue(workflow.client?.firstName);
+    this.workflowFormGroup.controls.lastName.setValue(workflow.client?.lastName);
+    this.workflowFormGroup.controls.function.setValue(workflow.client?.personFunction);
+    this.workflowFormGroup.controls.mail.setValue(workflow.client?.mail);
   }
 
   private getStringValue(value: string | undefined) {
-    return value !== undefined ? value : '';
+    return value ?? '';
   }
 }
