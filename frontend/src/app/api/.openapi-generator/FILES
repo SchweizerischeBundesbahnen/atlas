@@ -12,6 +12,7 @@ api/transportCompanies.service.ts
 api/transportCompanyRelations.service.ts
 api/userAdministration.service.ts
 api/userInformation.service.ts
+api/workflow.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -37,9 +38,11 @@ model/errorResponse.ts
 model/line.ts
 model/lineType.ts
 model/lineVersion.ts
+model/lineVersionWorkflow.ts
 model/models.ts
 model/parameter.ts
 model/paymentType.ts
+model/person.ts
 model/status.ts
 model/subline.ts
 model/sublineType.ts
@@ -55,4 +58,7 @@ model/userAccountStatus.ts
 model/userDisplayName.ts
 model/userPermissionCreateModel.ts
 model/userPermissionVersionModel.ts
+model/workflow.ts
+model/workflowProcessingStatus.ts
+model/workflowStart.ts
 variables.ts
