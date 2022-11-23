@@ -36,7 +36,6 @@ public class OpenApiMerger {
                 .append(api.getInfo().getVersion())
                 .append(NEWLINE));
         return new OpenAPI()
-                .addServersItem(new Server().url("/"))
                 .info(new Info()
                         .title("Atlas API")
                         .description(description.toString())

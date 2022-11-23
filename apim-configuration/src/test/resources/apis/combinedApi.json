@@ -10,11 +10,6 @@
     },
     "version": null
   },
-  "servers": [
-    {
-      "url": "/"
-    }
-  ],
   "paths": {
     "/line-directory/v1/sublines/version/{id}": {
       "get": {
