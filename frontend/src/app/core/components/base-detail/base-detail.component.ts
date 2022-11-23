@@ -4,6 +4,7 @@ import { KeepaliveService } from '../../keepalive/keepalive.service';
 import { Record } from './record';
 import { Subscription } from 'rxjs';
 import { WorkflowEvent } from '../../workflow/model/workflow-event';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -15,6 +16,7 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() headingNew!: string;
   @Input() formDetailHeading!: string;
   selectedRecord!: Record;
+  workflowEnabled = environment.workflowEnabled;
   private recordSubscription!: Subscription;
 
   constructor(private readonly keepaliveService: KeepaliveService) {
