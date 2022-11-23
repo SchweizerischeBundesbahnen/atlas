@@ -45,7 +45,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <skip.npm.exec.ci>true</skip.npm.exec.ci>
     <skip.npm.exec.build>true</skip.npm.exec.build>
-    <skip.npm.exec.publish>true</skip.npm.exec.publish>
+    <skip.npm.exec.lint>false</skip.npm.exec.lint>
+    <skip.npm.exec.test>false</skip.npm.exec.test>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
   <build>
@@ -76,6 +77,7 @@
             </goals>
             <phase>generate-sources</phase>
             <configuration>
+              <skip>${skip.npm.exec.lint}</skip>
               <executable>npm</executable>
               <arguments>
                 <argument>run</argument>
@@ -103,8 +105,9 @@
             <goals>
               <goal>exec</goal>
             </goals>
-            <phase>verify</phase>
+            <phase>package</phase>
             <configuration>
+              <skip>${skip.npm.exec.test}</skip>
               <executable>npm</executable>
               <arguments>
                 <argument>run</argument>
