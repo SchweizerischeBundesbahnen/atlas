@@ -75,7 +75,7 @@
       ],
       "build": {
         "buildDockerImage": false,
-        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false",
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false",
         "sonarScan": {
           "enabled": true,
           "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
@@ -92,7 +92,7 @@
       ],
       "build": {
         "buildDockerImage": true,
-        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false -DskipITs",
         "sonarScan": {
           "enabled": true,
           "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
@@ -134,7 +134,7 @@
       "build": {
         "deployArtifacts": true,
         "buildDockerImage": true,
-        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -DskipITs",
+        "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false -DskipITs",
         "sonarScan": {
           "releaseBranchName": "master",
           "enabled": true,
