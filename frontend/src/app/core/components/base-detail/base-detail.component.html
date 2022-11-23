@@ -82,7 +82,7 @@
         'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
       }}</span>
     </div>
-    <div>
+    <div *ngIf="workflowEnabled">
       <app-workflow
         (workflowEvent)="this.receiveWorkflowEvent($event)"
         *ngIf="controller.isWorkflowable()"
