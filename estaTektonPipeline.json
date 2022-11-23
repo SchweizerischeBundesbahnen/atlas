@@ -71,8 +71,7 @@
         "GITEVENT"
       ],
       "branchNamePrefixes": [
-        "feature",
-        "bugfix"
+        "feature"
       ],
       "build": {
         "buildDockerImage": false,

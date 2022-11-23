@@ -64,11 +64,9 @@ public class Workflow {
   @Enumerated(EnumType.STRING)
   private WorkflowStatus status;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String workflowComment;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String checkComment;
 

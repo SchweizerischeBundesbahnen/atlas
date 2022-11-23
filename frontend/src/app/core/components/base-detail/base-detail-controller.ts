@@ -62,6 +62,11 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     }
   }
 
+  //override me in the child component
+  isWorkflowable(): boolean {
+    return false;
+  }
+
   getSelectedRecord(): TYPE {
     return this.record;
   }
@@ -261,6 +266,14 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
   abstract deleteRecord(): void;
 
   abstract getPageType(): Page;
+
+  reloadRecord(): void {
+    new Error('You have to override me');
+  }
+
+  getDecriptionForWorkflow(): string {
+    throw new Error('You have to override me');
+  }
 
   abstract getApplicationType(): ApplicationType;
 
