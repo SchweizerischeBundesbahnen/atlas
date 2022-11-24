@@ -72,7 +72,6 @@
     },
     {
       "name": "manualRelease",
-      "envSecret": "pipeline-env-cypress-ci",
       "branchNamePrefixes": [
         "master"
       ],
@@ -111,7 +110,6 @@
     },
     {
       "name": "release",
-      "envSecret": "pipeline-env-cypress-ci",
       "triggerType": [
         "GITEVENT"
       ],
