@@ -9,7 +9,7 @@
       <relativePath>../pom.xml</relativePath>
       <version>1.94.0</version>
    </parent>
-   <artifactId>base-wf</artifactId>
+   <artifactId>base-workflow</artifactId>
    <name>Atlas Base Workflow Library</name>
    <description>Atlas Base Workflow Library</description>
    <properties>
