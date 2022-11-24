@@ -2,3 +2,4 @@ production:
   apis:
     - line-directory
     - business-organisation-directory
+    - user-administration

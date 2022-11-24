@@ -15,15 +15,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class OpenApiLoader {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiLoader.class);
 
   private final ProductionConfiguration productiveApiConfiguration;
 
@@ -38,9 +38,8 @@ public class OpenApiLoader {
     Map<String, OpenAPI> result = new HashMap<>();
     try (Stream<Path> pathStream = Files.walk(Paths.get("src/main/resources/apis"))) {
       List<File> apiSpecs = pathStream.filter(Files::isRegularFile)
-                                      .map(Path::toFile)
-                                      .collect(Collectors.toList());
-      LOGGER.info("Found {} OpenAPI specs", apiSpecs.size());
+              .map(Path::toFile).toList();
+      log.info("Found {} OpenAPI specs", apiSpecs.size());
       if (apiSpecs.isEmpty()) {
         throw new IllegalStateException("No OpenAPI specs found!");
       }
@@ -50,7 +49,7 @@ public class OpenApiLoader {
         String apiServiceName = apiSpec.getParentFile().getName();
         if (!includeProductiveApisOnly || productiveApiConfiguration.getApis()
                                                                     .contains(apiServiceName)) {
-          LOGGER.info("Loaded OpenAPI spec for {}", apiServiceName);
+          log.info("Loaded OpenAPI spec for {}", apiServiceName);
           result.put(apiServiceName, openAPI);
         }
       }
