@@ -32,7 +32,7 @@
       <!-- Libs first-->
       <module>kafka</module>
       <module>base-service</module>
-      <module>base-wf</module>
+      <module>base-workflow</module>
       <module>searching</module>
       <module>user-administration-security</module>
       <!--  Services-->
