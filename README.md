@@ -57,7 +57,7 @@ It's applications share the following architectural goal:
 - **Tekton**: https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
 - **ArgoCD**:
     - **DEV/TEST**: https://argocd-server-atlas-argocd.apps.aws01t.sbb-aws-test.net/
-    - **INT**: https://argocd-server-atlas-argocd.apps.maggie.sbb-aws.net/
+    - **INT/PROD**: https://argocd-server-atlas-argocd.apps.maggie.sbb-aws.net/
 - **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/ :warning: **deprecated**
 - **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/ :warning: **deprecated**
 - **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
