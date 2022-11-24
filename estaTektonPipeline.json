@@ -22,17 +22,17 @@
     },
     {
       "pomArtifactId": "mail",
-      "imageName": "mail",
+      "dockerFile": "mail/docker/Dockerfile",
       "artifactoryDockerRepo": "atlas.docker"
     },
     {
       "pomArtifactId": "scheduling",
-      "imageName": "scheduling",
+      "dockerFile": "scheduling/docker/Dockerfile",
       "artifactoryDockerRepo": "atlas.docker"
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
-      "imageName": "gateway",
+      "dockerFile": "gateway/docker/Dockerfile",
       "pomArtifactId": "gateway"
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
-      "imageName": "workflow",
+      "dockerFile": "workflow/docker/Dockerfile",
       "pomArtifactId": "workflow"
     },
     {
