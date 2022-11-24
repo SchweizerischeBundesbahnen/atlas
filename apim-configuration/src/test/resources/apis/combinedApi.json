@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Atlas API",
-    "description": "This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/>line-directory:0.17.0-SNAPSHOT<br/>timetable-field-number:0.49.0-SNAPSHOT<br/>",
+    "description": "This is the API for all your needs SKI core data<br/><br/>Atlas serves the following applications:<br/><ul><li>line-directory:0.17.0-SNAPSHOT<br/>RestDoc: <a href='https://line-directory.dev.app.sbb.ch/static/rest-api.html' target='_blank'>https://line-directory.dev.app.sbb.ch/static/rest-api.html</a></li><li>timetable-field-number:0.49.0-SNAPSHOT<br/>RestDoc: <a href='https://timetable-field-number.dev.app.sbb.ch/static/rest-api.html' target='_blank'>https://timetable-field-number.dev.app.sbb.ch/static/rest-api.html</a></li></ul>",
     "contact": {
       "name": "ATLAS Team",
       "url": "https://confluence.sbb.ch/display/ATLAS/ATLAS+-+SKI+Business+Platform",
