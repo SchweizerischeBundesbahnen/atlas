@@ -58,8 +58,6 @@ It's applications share the following architectural goal:
 - **ArgoCD**:
     - **DEV/TEST**: https://argocd-server-atlas-argocd.apps.aws01t.sbb-aws-test.net/
     - **INT/PROD**: https://argocd-server-atlas-argocd.apps.maggie.sbb-aws.net/
-- **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/ :warning: **deprecated**
-- **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/ :warning: **deprecated**
 - **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
 - **JFrog Artifactory**:
     - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Fatlas-frontend
@@ -74,6 +72,8 @@ It's applications share the following architectural goal:
     - **Test**: https://atlas.test.sbb-cloud.net
     - **Int**: https://atlas.int.sbb-cloud.net
     - **Prod**: https://atlas.sbb-cloud.net
+- **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/ :warning: **deprecated**
+- **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/ :warning: **deprecated**
 
 ## Stages and their purpose
 
