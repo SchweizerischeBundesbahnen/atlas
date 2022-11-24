@@ -23,13 +23,13 @@
       "contextDir": "."
     },
     {
-      "pomArtifactId": "mail",
+      "imageName": "mail",
       "dockerFile": "mail/docker/Dockerfile",
       "artifactoryDockerRepo": "atlas.docker",
       "contextDir": "."
     },
     {
-      "pomArtifactId": "scheduling",
+      "imageName": "scheduling",
       "dockerFile": "scheduling/docker/Dockerfile",
       "artifactoryDockerRepo": "atlas.docker",
       "contextDir": "."
@@ -37,7 +37,7 @@
     {
       "artifactoryDockerRepo": "atlas.docker",
       "dockerFile": "gateway/docker/Dockerfile",
-      "pomArtifactId": "gateway",
+      "imageName": "gateway",
       "contextDir": "."
     },
     {
@@ -49,7 +49,7 @@
     {
       "artifactoryDockerRepo": "atlas.docker",
       "dockerFile": "workflow/docker/Dockerfile",
-      "pomArtifactId": "workflow",
+      "imageName": "workflow",
       "contextDir": "."
     },
     {
