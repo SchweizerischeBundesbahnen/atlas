@@ -13,44 +13,37 @@
     {
       "dockerFile": "line-directory/docker/Dockerfile",
       "imageName": "line-directory",
-      "artifactoryDockerRepo": "atlas.docker",
-      "contextDir": "."
+      "artifactoryDockerRepo": "atlas.docker"
     },
     {
       "dockerFile": "business-organisation-directory/docker/Dockerfile",
       "imageName": "business-organisation-directory",
-      "artifactoryDockerRepo": "atlas.docker",
-      "contextDir": "."
+      "artifactoryDockerRepo": "atlas.docker"
     },
     {
       "pomArtifactId": "mail",
       "imageName": "mail",
-      "artifactoryDockerRepo": "atlas.docker",
-      "contextDir": "."
+      "artifactoryDockerRepo": "atlas.docker"
     },
     {
       "pomArtifactId": "scheduling",
       "imageName": "scheduling",
-      "artifactoryDockerRepo": "atlas.docker",
-      "contextDir": "."
+      "artifactoryDockerRepo": "atlas.docker"
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
       "imageName": "gateway",
-      "pomArtifactId": "gateway",
-      "contextDir": "."
+      "pomArtifactId": "gateway"
     },
     {
       "dockerFile": "user-administration/docker/Dockerfile",
       "imageName": "user-administration",
-      "artifactoryDockerRepo": "atlas.docker",
-      "contextDir": "."
+      "artifactoryDockerRepo": "atlas.docker"
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
       "imageName": "workflow",
-      "pomArtifactId": "workflow",
-      "contextDir": "."
+      "pomArtifactId": "workflow"
     },
     {
       "dockerFile": "frontend/docker/Dockerfile",
