@@ -52,11 +52,6 @@
       "contextDir": "frontend"
     }
   ],
-  "helm": {
-    "chartName": "atlas",
-    "chartRootFolder": "./charts",
-    "chartRepository": "atlas.helm"
-  },
   "pipelines": [
     {
       "name": "continuous",
