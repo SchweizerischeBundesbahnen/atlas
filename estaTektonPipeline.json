@@ -13,37 +13,44 @@
     {
       "dockerFile": "line-directory/docker/Dockerfile",
       "imageName": "line-directory",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
       "dockerFile": "business-organisation-directory/docker/Dockerfile",
       "imageName": "business-organisation-directory",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
       "pomArtifactId": "mail",
       "dockerFile": "mail/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
       "pomArtifactId": "scheduling",
       "dockerFile": "scheduling/docker/Dockerfile",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
       "dockerFile": "gateway/docker/Dockerfile",
-      "pomArtifactId": "gateway"
+      "pomArtifactId": "gateway",
+      "contextDir": "."
     },
     {
       "dockerFile": "user-administration/docker/Dockerfile",
       "imageName": "user-administration",
-      "artifactoryDockerRepo": "atlas.docker"
+      "artifactoryDockerRepo": "atlas.docker",
+      "contextDir": "."
     },
     {
       "artifactoryDockerRepo": "atlas.docker",
       "dockerFile": "workflow/docker/Dockerfile",
-      "pomArtifactId": "workflow"
+      "pomArtifactId": "workflow",
+      "contextDir": "."
     },
     {
       "dockerFile": "frontend/docker/Dockerfile",
@@ -125,11 +132,11 @@
         "additionalBuildParams": "-Dskip.npm.exec.ci=false -Dskip.npm.exec.build=false -Dskip.npm.exec.publish=false -Dskip.npm.exec.test=false -Dskip.npm.exec.ci=false -DskipITs",
         "sonarScan": {
           "releaseBranchName": "master",
-          "enabled": true,
+          "enabled": false,
           "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
         },
         "owaspDependencyCheck": {
-          "enabled": true
+          "enabled": false
         }
       },
       "stages": [
