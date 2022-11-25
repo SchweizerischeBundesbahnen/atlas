@@ -1,12 +1,12 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.toEntity;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.toEntity;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationApiV1;
 import ch.sbb.business.organisation.directory.api.BusinessOrganisationModel;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel;
+import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
@@ -57,10 +57,10 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   }
 
   @Override
-  public List<BusinessOrganisationVersionVersionModel> getBusinessOrganisationVersions(String sboid) {
-    List<BusinessOrganisationVersionVersionModel> organisationVersionModels =
+  public List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(String sboid) {
+    List<BusinessOrganisationVersionModel> organisationVersionModels =
         service.findBusinessOrganisationVersions(sboid).stream()
-            .map(BusinessOrganisationVersionVersionModel::toModel)
+            .map(BusinessOrganisationVersionModel::toModel)
             .toList();
     if (organisationVersionModels.isEmpty()) {
       throw new SboidNotFoundException(sboid);
@@ -69,10 +69,10 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   }
 
   @Override
-  public List<BusinessOrganisationVersionVersionModel> revokeBusinessOrganisation(String sboid) {
-    List<BusinessOrganisationVersionVersionModel> businessOrganisationVersionModels =
+  public List<BusinessOrganisationVersionModel> revokeBusinessOrganisation(String sboid) {
+    List<BusinessOrganisationVersionModel> businessOrganisationVersionModels =
         service.revokeBusinessOrganisation(sboid).stream()
-            .map(BusinessOrganisationVersionVersionModel::toModel)
+            .map(BusinessOrganisationVersionModel::toModel)
             .toList();
     if (businessOrganisationVersionModels.isEmpty()) {
       throw new SboidNotFoundException(sboid);
@@ -81,23 +81,23 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   }
 
   @Override
-  public BusinessOrganisationVersionVersionModel createBusinessOrganisationVersion(
-      BusinessOrganisationVersionVersionModel newVersion) {
+  public BusinessOrganisationVersionModel createBusinessOrganisationVersion(
+      BusinessOrganisationVersionModel newVersion) {
     BusinessOrganisationVersion businessOrganisationVersion = toEntity(newVersion);
     businessOrganisationVersion.setStatus(Status.VALIDATED);
     BusinessOrganisationVersion organisationVersionSaved =
         service.save(businessOrganisationVersion);
-    return BusinessOrganisationVersionVersionModel.toModel(organisationVersionSaved);
+    return BusinessOrganisationVersionModel.toModel(organisationVersionSaved);
   }
 
   @Override
-  public List<BusinessOrganisationVersionVersionModel> updateBusinessOrganisationVersion(Long id,
-      BusinessOrganisationVersionVersionModel newVersion) {
+  public List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(Long id,
+      BusinessOrganisationVersionModel newVersion) {
     BusinessOrganisationVersion versionToUpdate = service.findById(id);
     service.updateBusinessOrganisationVersion(versionToUpdate, toEntity(newVersion));
     return service.findBusinessOrganisationVersions(versionToUpdate.getSboid())
         .stream()
-        .map(BusinessOrganisationVersionVersionModel::toModel)
+        .map(BusinessOrganisationVersionModel::toModel)
         .toList();
   }
 
