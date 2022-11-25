@@ -1,6 +1,7 @@
 package ch.sbb.workflow.controller;
 
 import ch.sbb.workflow.api.WorkflowApiV1;
+import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
 import ch.sbb.workflow.api.WorkflowModel;
 import ch.sbb.workflow.api.WorkflowStartModel;
 import ch.sbb.workflow.entity.Workflow;
@@ -30,6 +31,12 @@ public class WorkflowController implements WorkflowApiV1 {
   @Override
   public WorkflowModel startWorkflow(WorkflowStartModel workflowStartModel) {
     Workflow workflow = service.startWorkflow(WorkflowStartModel.toEntity(workflowStartModel));
+    return WorkflowModel.toNewModel(workflow);
+  }
+
+  @Override
+  public WorkflowModel examinantCheck(Long id, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
+    Workflow workflow = service.examinantCheck(service.getWorkflow(id), examinantWorkflowCheckModel);
     return WorkflowModel.toNewModel(workflow);
   }
 
