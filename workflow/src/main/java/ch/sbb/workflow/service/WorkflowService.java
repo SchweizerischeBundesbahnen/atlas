@@ -2,6 +2,8 @@ package ch.sbb.workflow.service;
 
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.api.PersonModel;
+import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.workflow.WorkflowRepository;
@@ -33,5 +35,16 @@ public class WorkflowService {
 
   public List<Workflow> getWorkflows() {
     return repository.findAll();
+  }
+
+  public Workflow examinantCheck(Workflow workflow, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
+    workflow.setCheckComment(workflow.getCheckComment());
+    workflow.setExaminant(PersonModel.toEntity(examinantWorkflowCheckModel.getExaminant()));
+    workflow.setStatus(
+        examinantWorkflowCheckModel.isAccepted() ? WorkflowStatus.APPROVED : WorkflowStatus.REJECTED);
+
+    notificationService.sendEventToLidi(workflow);
+    notificationService.sendMailToExaminantAndClient(workflow);
+    return workflow;
   }
 }

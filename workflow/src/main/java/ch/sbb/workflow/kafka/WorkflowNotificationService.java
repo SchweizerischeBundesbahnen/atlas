@@ -34,4 +34,8 @@ public class WorkflowNotificationService {
         .build();
     lineWorkflowProducerService.produceWorkflowNotification(lineWorkflowEvent);
   }
+
+  public void sendMailToExaminantAndClient(Workflow workflow) {
+    //TODO: implement
+  }
 }
