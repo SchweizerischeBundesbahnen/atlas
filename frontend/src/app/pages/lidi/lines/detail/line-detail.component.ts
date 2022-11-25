@@ -213,6 +213,10 @@ export class LineDetailComponent
     );
   }
 
+  getFormControlsToDisable(): string[] {
+    return this.record.status === Status.InReview ? ['validFrom', 'validTo'] : [];
+  }
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
