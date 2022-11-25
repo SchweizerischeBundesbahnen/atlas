@@ -78,7 +78,7 @@ It's applications share the following architectural goal:
 
 ## Stages and their purpose
 
-GitOp
+GitOps
 
 * [Stages](documentation/stages.md)
 
