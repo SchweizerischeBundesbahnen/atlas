@@ -152,6 +152,7 @@ describe('AtlasButtonComponent', () => {
 
     it('should not be visible for type REVOKE', () => {
       isAdmin = false;
+      role = ApplicationRole.Reader;
       component.buttonType = AtlasButtonType.REVOKE;
       component.applicationType = ApplicationType.Bodi;
       fixture.detectChanges();
