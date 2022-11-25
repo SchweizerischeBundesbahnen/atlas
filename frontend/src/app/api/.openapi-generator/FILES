@@ -35,6 +35,7 @@ model/coverageType.ts
 model/displayInfo.ts
 model/errorDetail.ts
 model/errorResponse.ts
+model/examinantWorkflowCheck.ts
 model/line.ts
 model/lineType.ts
 model/lineVersion.ts
