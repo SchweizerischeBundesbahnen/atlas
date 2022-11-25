@@ -9,22 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Person } from './person';
 
-export interface TransportCompanyRelation {
+export interface ExaminantWorkflowCheck {
   /**
-   * Transport Company Id
+   * Workflow was acceptable to the BAV
    */
-  transportCompanyId: number;
+  accepted?: boolean;
   /**
-   * Swiss Business Organisation ID (SBOID)
+   * Comment from the BAV for the workflow progress
    */
-  sboid: string;
-  /**
-   * Valid From
-   */
-  validFrom: Date;
-  /**
-   * Valid To
-   */
-  validTo: Date;
+  checkComment?: string;
+  examinant: Person;
 }
