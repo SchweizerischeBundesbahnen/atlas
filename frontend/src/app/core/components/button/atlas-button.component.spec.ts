@@ -3,7 +3,7 @@ import { AtlasButtonComponent } from './atlas-button.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
-import { ApplicationRole, ApplicationType, UserPermissionVersionModel } from '../../../api';
+import { ApplicationRole, ApplicationType, Status, UserPermissionVersionModel } from '../../../api';
 import { AtlasButtonType } from './atlas-button.type';
 import { By } from '@angular/platform-browser';
 
@@ -13,6 +13,7 @@ let fixture: ComponentFixture<AtlasButtonComponent>;
 let isAdmin = true;
 let hasPermissionsToCreate = true;
 let hasPermissionsToWrite = true;
+let role = ApplicationRole.Reader;
 const authServiceMock: Partial<AuthService> = {
   claims: {
     name: 'Test (ITC)',
@@ -41,7 +42,7 @@ const authServiceMock: Partial<AuthService> = {
     return hasPermissionsToCreate;
   },
   getApplicationUserPermission(applicationType: ApplicationType): UserPermissionVersionModel {
-    return { application: applicationType, role: ApplicationRole.Reader, sboids: [] };
+    return { application: applicationType, role: role, sboids: [] };
   },
 };
 
@@ -57,6 +58,7 @@ describe('AtlasButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AtlasButtonComponent);
     component = fixture.componentInstance;
+    component.objectStatus = Status.Validated;
 
     isAdmin = true;
     hasPermissionsToCreate = true;
@@ -113,6 +115,30 @@ describe('AtlasButtonComponent', () => {
 
       const button = fixture.debugElement.query(By.css('button'));
       expect(button).toBeFalsy();
+    });
+
+    it('should not be visible for type EDIT on WorkflowInProgress', () => {
+      isAdmin = false;
+      role = ApplicationRole.SuperUser;
+      component.buttonType = AtlasButtonType.EDIT;
+      component.applicationType = ApplicationType.Bodi;
+      component.objectStatus = Status.InReview;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeFalsy();
+    });
+
+    it('should be visible for type EDIT on WorkflowInProgress for Supervisor', () => {
+      isAdmin = false;
+      role = ApplicationRole.Supervisor;
+      component.buttonType = AtlasButtonType.EDIT;
+      component.applicationType = ApplicationType.Bodi;
+      component.objectStatus = Status.InReview;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeTruthy();
     });
 
     it('should be visible for type REVOKE', () => {
