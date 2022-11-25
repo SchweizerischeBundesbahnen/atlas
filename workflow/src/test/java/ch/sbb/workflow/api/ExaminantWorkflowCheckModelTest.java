@@ -52,7 +52,7 @@ class ExaminantWorkflowCheckModelTest {
     List<String> violationMessages = constraintViolations.stream()
                                                          .map(ConstraintViolation::getMessage)
                                                          .collect(Collectors.toList());
-    assertThat(violationMessages).contains("BAV did not accept without comment");
+    assertThat(violationMessages).contains("Examinant did not accept without comment");
   }
 
   @Test

@@ -1,9 +1,11 @@
 package ch.sbb.workflow.api;
 
+import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +23,7 @@ public class ExaminantWorkflowCheckModel {
   private boolean accepted;
 
   @Schema(description = "Comment from the BAV for the workflow progress")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String checkComment;
 
   @NotNull
