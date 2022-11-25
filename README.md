@@ -78,7 +78,7 @@ It's applications share the following architectural goal:
 
 ## Stages and their purpose
 
-GitOps->ArgoCD
+GitOps->ArgoCD->Tekton
 
 * [Stages](documentation/stages.md)
 
