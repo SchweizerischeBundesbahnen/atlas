@@ -1,9 +1,11 @@
 package ch.sbb.atlas.workflow.service;
 
 import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.IN_PROGRESS;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
@@ -64,6 +66,64 @@ public class BaseWorkflowEntityProcessingServiceTest {
     verify(objectWorkflowRepository).save(objectWorkflowVersion);
     verify(objectVersionRepository).save(objectVersion);
 
+  }
+
+  @Test
+  public void shouldUpdateObjectStatusToValidated() {
+    //given
+    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
+                                                           .workflowId(1000L)
+                                                           .businessObjectId(1000L)
+                                                           .workflowStatus(WorkflowStatus.APPROVED)
+                                                           .build();
+    ObjectVersion objectVersion = ObjectVersion.builder()
+                                               .validFrom(LocalDate.of(2000, 1, 1))
+                                               .validTo(LocalDate.of(2000, 2, 1))
+                                               .build();
+    Mockito.when(objectVersionRepository.findById(1000L)).thenReturn(Optional.of(objectVersion));
+
+    ObjectWorkflowEntityVersion objectWorkflowVersion = ObjectWorkflowEntityVersion.builder()
+                                                                                   .workflowId(lineWorkflowEvent.getWorkflowId())
+                                                                                   .workflowProcessingStatus(WorkflowProcessingStatus.getProcessingStatus(lineWorkflowEvent.getWorkflowStatus()))
+                                                                                   .objectVersion(objectVersion)
+                                                                                   .build();
+
+    //when
+    workflowProcessingService.processWorkflow(lineWorkflowEvent);
+    //then
+    verify(objectVersionRepository).findById(1000L);
+    verify(objectWorkflowRepository).save(objectWorkflowVersion);
+    verify(objectVersionRepository).save(objectVersion);
+    assertThat(objectVersion.getStatus()).isEqualTo(Status.VALIDATED);
+  }
+
+  @Test
+  public void shouldUpdateObjectStatusToDraft() {
+    //given
+    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
+                                                           .workflowId(1000L)
+                                                           .businessObjectId(1000L)
+                                                           .workflowStatus(WorkflowStatus.REJECTED)
+                                                           .build();
+    ObjectVersion objectVersion = ObjectVersion.builder()
+                                               .validFrom(LocalDate.of(2000, 1, 1))
+                                               .validTo(LocalDate.of(2000, 2, 1))
+                                               .build();
+    Mockito.when(objectVersionRepository.findById(1000L)).thenReturn(Optional.of(objectVersion));
+
+    ObjectWorkflowEntityVersion objectWorkflowVersion = ObjectWorkflowEntityVersion.builder()
+                                                                                   .workflowId(lineWorkflowEvent.getWorkflowId())
+                                                                                   .workflowProcessingStatus(WorkflowProcessingStatus.getProcessingStatus(lineWorkflowEvent.getWorkflowStatus()))
+                                                                                   .objectVersion(objectVersion)
+                                                                                   .build();
+
+    //when
+    workflowProcessingService.processWorkflow(lineWorkflowEvent);
+    //then
+    verify(objectVersionRepository).findById(1000L);
+    verify(objectWorkflowRepository).save(objectWorkflowVersion);
+    verify(objectVersionRepository).save(objectVersion);
+    assertThat(objectVersion.getStatus()).isEqualTo(Status.DRAFT);
   }
 
   @Test
