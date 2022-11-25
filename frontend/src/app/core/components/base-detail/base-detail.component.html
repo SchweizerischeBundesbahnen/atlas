@@ -45,6 +45,7 @@
       [applicationType]="this.controller.getApplicationType()"
       [businessOrganisation]="selectedRecord.businessOrganisation!"
       [disabled]="controller.form.enabled || selectedRecord.status === 'REVOKED'"
+      [objectStatus]="selectedRecord.status"
       buttonDataCy="edit-item"
       buttonText="COMMON.EDIT_VERSION"
       buttonType="edit"
