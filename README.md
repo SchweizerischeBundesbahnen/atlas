@@ -8,23 +8,24 @@ This is the repository for business relevant services for ATLAS.
 - [Links](#links)
 - [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
-    * [Correlation-Id](#correlation-id)
+  * [Correlation-Id](#correlation-id)
 - [Development](#development)
-    * [Run locally](#run-locally)
-    * [Monorepo](#monorepo)
-    * [Running Python scripts](#running-python-scripts)
+  * [Run locally](#run-locally)
+  * [Monorepo](#monorepo)
+  * [Running Python scripts](#running-python-scripts)
 - [Structure](#structure)
-    * [APIM-configuration](#apim-configuration)
-    * [Charts](#charts)
-    * [Gateway](#gateway)
-    * [Kafka](#kafka)
-    * [Line-directory](#line-directory)
-    * [Business-organisation-directory](#business-organisation-directory)
-    * [Mail Service](#mail-service)
-    * [User Administration](#user-administration)
-    * [Base Service lib](#base-service-lib)
-    * [Base Workflow lib](#base-workflow-lib)
-    * [Frontend](#frontend)
+  * [APIM-configuration](#apim-configuration)
+  * [Charts](#charts)
+  * [Gateway](#gateway)
+  * [Kafka](#kafka)
+  * [Line-directory](#line-directory)
+  * [Business-organisation-directory](#business-organisation-directory)
+  * [Mail Service](#mail-service)
+  * [Workflow](#workflow)
+  * [User Administration](#user-administration)
+  * [Base Service lib](#base-service-lib)
+  * [Base Workflow lib](#base-workflow-lib)
+  * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
 
 <!-- tocstop -->
@@ -185,6 +186,10 @@ See [Business-Organisation-directory documentation](business-organisation-direct
 ### Mail Service
 
 Service used by Atlas to send emails. See [Mail Service Documentation](mail/README.md)
+
+### Workflow
+
+Service used to implement ATLAS Workflows. See [documentation](workflow/README.md)
 
 ### User Administration
 
