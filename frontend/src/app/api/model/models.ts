@@ -16,6 +16,7 @@ export * from './coverageType';
 export * from './displayInfo';
 export * from './errorDetail';
 export * from './errorResponse';
+export * from './examinantWorkflowCheck';
 export * from './line';
 export * from './lineType';
 export * from './lineVersion';
