@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ApplicationRole, ApplicationType } from '../../../api';
+import { ApplicationRole, ApplicationType, Status } from '../../../api';
 import { AuthService } from '../../auth/auth.service';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
@@ -12,6 +12,7 @@ import { environment } from '../../../../environments/environment';
 export class AtlasButtonComponent {
   @Input() applicationType!: ApplicationType;
   @Input() businessOrganisation!: string;
+  @Input() objectStatus!: Status | undefined;
   @Input() disabled!: boolean;
 
   @Input() wrapperStyleClass!: string;
@@ -61,6 +62,12 @@ export class AtlasButtonComponent {
     if (this.applicationType !== ApplicationType.Bodi && !this.businessOrganisation) {
       throw new Error('Edit button needs businessOrganisation');
     }
+    if (!this.objectStatus) {
+      throw new Error('Edit button needs objectStatus');
+    }
+    if (this.objectStatus === Status.InReview) {
+      return this.isAtLeastSupervisor();
+    }
     return this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation);
   }
 
@@ -68,6 +75,10 @@ export class AtlasButtonComponent {
     if (!this.applicationType) {
       throw new Error('Revoke button needs applicationtype');
     }
+    return this.isAtLeastSupervisor();
+  }
+
+  isAtLeastSupervisor() {
     const applicationUserPermission = this.authService.getApplicationUserPermission(
       this.applicationType
     );
