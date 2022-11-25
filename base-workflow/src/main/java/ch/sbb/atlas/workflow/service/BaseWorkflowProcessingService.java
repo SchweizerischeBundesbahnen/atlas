@@ -32,13 +32,17 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
   }
 
   void evaluateWorkflowProcessingStatus(LineWorkflowEvent lineWorkflowEvent, T objectVersion) {
-    if (WorkflowStatus.STARTED == lineWorkflowEvent.getWorkflowStatus()) {
-      objectVersion.setStatus(Status.IN_REVIEW);
-      // CREATE SNAPHOT
-      log.info("Changed Object status from {} to {}", Status.DRAFT, Status.IN_REVIEW);
-    } else {
-      throw new IllegalStateException("Use case not yet implemented!!");
+    Status preUpdateStatus = objectVersion.getStatus();
+
+    switch (lineWorkflowEvent.getWorkflowStatus()){
+      case STARTED -> objectVersion.setStatus(Status.IN_REVIEW);
+      case APPROVED -> objectVersion.setStatus(Status.VALIDATED);
+      case REJECTED -> objectVersion.setStatus(Status.DRAFT);
+      default -> throw new IllegalStateException("Use case not yet implemented!!");
     }
+
+    //TODO: ATLAS-894: Create Snapshot on start/approved/rejected
+    log.info("Changed Object status from {} to {}", preUpdateStatus, objectVersion.getStatus());
   }
 
   T getObjectVersion(LineWorkflowEvent lineWorkflowEvent) {
