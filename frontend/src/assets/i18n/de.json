@@ -453,7 +453,7 @@
       "CANCEL": "Anhörung abbrechen"
     },
     "START": {
-      "COMMENT": "Begründung für Antrag",
+      "COMMENT": "Begründung",
       "KEY_DATA": "Antragstellende Person"
     },
     "PERSON": {
