@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { LineRecord } from './model/line-record';
 import {
+  LinesService,
   LineVersionWorkflow,
   UserAdministrationService,
   Workflow,
@@ -53,7 +54,8 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     private readonly userAdministrationService: UserAdministrationService,
     private readonly notificationService: NotificationService,
     private readonly dialogService: DialogService,
-    private readonly translateService: TranslateService
+    private readonly translateService: TranslateService,
+    private readonly lineService: LinesService
   ) {}
 
   ngOnDestroy(): void {
@@ -83,7 +85,15 @@ export class WorkflowComponent implements OnInit, OnDestroy {
           this.workflowFormGroup.disable();
           this.isReadMode = true;
           this.isWorkflowFormEditable = false;
-          this.initWorkflowForm();
+          if (this.lineRecord.slnid) {
+            this.lineService.getLineVersions(this.lineRecord.slnid).subscribe((lineVersion) => {
+              let lineVersionUpdated = lineVersion.filter(
+                (value) => value.id === this.lineRecord.id
+              );
+              this.lineRecord.lineVersionWorkflows = lineVersionUpdated[0].lineVersionWorkflows;
+              this.initWorkflowForm();
+            });
+          }
           this.eventReloadParent();
           this.getTranslatedWorkflowStatus(workflow);
           this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
