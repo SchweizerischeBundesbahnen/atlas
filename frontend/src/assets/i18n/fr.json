@@ -453,7 +453,7 @@
       "CANCEL": "Annuler l'audience"
     },
     "START": {
-      "COMMENT": "Motivation de la demande",
+      "COMMENT": "Motivation",
       "KEY_DATA": "Demandeur"
     },
     "PERSON": {
