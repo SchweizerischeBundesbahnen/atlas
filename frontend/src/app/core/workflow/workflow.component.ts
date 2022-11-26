@@ -87,7 +87,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
           this.isWorkflowFormEditable = false;
           if (this.lineRecord.slnid) {
             this.lineService.getLineVersions(this.lineRecord.slnid).subscribe((lineVersion) => {
-              let lineVersionUpdated = lineVersion.filter(
+              const lineVersionUpdated = lineVersion.filter(
                 (value) => value.id === this.lineRecord.id
               );
               this.lineRecord.lineVersionWorkflows = lineVersionUpdated[0].lineVersionWorkflows;
