@@ -7,6 +7,7 @@ export const AtlasButtonType = {
   REVOKE: 'revoke' as AtlasButtonType,
   DELETE: 'delete' as AtlasButtonType,
   CLOSE_ICON: 'closeIcon' as AtlasButtonType,
+  DEFAULT_PRIMARY: 'defaultPrimary' as AtlasButtonType,
 };
 
 export type AtlasButtonType =
@@ -16,4 +17,5 @@ export type AtlasButtonType =
   | 'footerEdit'
   | 'edit'
   | 'revoke'
-  | 'delete';
+  | 'delete'
+  | 'defaultPrimary';
