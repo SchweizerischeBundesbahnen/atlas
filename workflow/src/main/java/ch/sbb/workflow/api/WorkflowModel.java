@@ -1,5 +1,6 @@
 package ch.sbb.workflow.api;
 
+import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +26,8 @@ public class WorkflowModel {
   @NotNull
   private Long businessObjectId;
 
-  @Schema(description = "Swiss Id: the generated DB id", example = "CHLNR")
+  @Schema(description = "Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow", example = "b1.L1")
+  @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   @NotBlank
   private String swissId;
 
@@ -33,13 +36,16 @@ public class WorkflowModel {
   private WorkflowType workflowType;
 
   @NotNull
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus workflowStatus;
 
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String workflowComment;
 
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String checkComment;
 
   @Schema(description = "Client")
@@ -53,19 +59,6 @@ public class WorkflowModel {
 
   @Schema(description = "Last edition date", example = "01.01.2000", accessMode = AccessMode.READ_ONLY)
   private LocalDateTime editionDate;
-
-  public static Workflow toEntity(WorkflowModel model) {
-    return Workflow.builder()
-        .workflowType(model.getWorkflowType())
-        .businessObjectId(model.getBusinessObjectId())
-        .swissId(model.getSwissId())
-        .description(model.getDescription())
-        .workflowComment(model.getWorkflowComment())
-        .checkComment(model.getCheckComment())
-        .client(PersonModel.toEntity(model.getClient()))
-        .examinant(PersonModel.toEntity(model.getExaminant()))
-        .build();
-  }
 
   public static WorkflowModel toModel(Workflow entity) {
     WorkflowModelBuilder builder = WorkflowModel.builder()

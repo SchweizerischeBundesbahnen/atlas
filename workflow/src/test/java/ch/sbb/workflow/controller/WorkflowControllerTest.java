@@ -146,4 +146,76 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must not be null")));
   }
 
+  @Test
+  public void shouldNotCreateWorkflowWhenWorkflowPersonNameHasWrongEncoding() throws Exception {
+    //when
+    PersonModel person = PersonModel.builder()
+        .firstName("\uD83D\uDE00\uD83D\uDE01\uD83D")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail("a@b.c").build();
+    WorkflowModel workflowModel = WorkflowModel.builder()
+        .client(person)
+        .workflowType(WorkflowType.LINE)
+        .examinant(person)
+        .description("desc")
+        .swissId("CH123456")
+        .examinant(person)
+        .businessObjectId(123456L)
+        .build();
+
+    //given
+    mvc.perform(post("/v1/workflows/")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(workflowModel))
+        ).andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
+        .andExpect(jsonPath("$.details[0].message", is("Value \uD83D\uDE00\uD83D\uDE01? rejected due to must match "
+            + "\"[\\u0000-\\u00ff]*\"")))
+        .andExpect(jsonPath("$.details[0].field", is("client.firstName")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("\uD83D\uDE00\uD83D\uDE01?")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must match \"[\\u0000-\\u00ff]*\"")));
+  }
+
+  @Test
+  public void shouldNotCreateWorkflowWhenWorkflowWorkflowDescriptionHasWrongEncoding() throws Exception {
+    //when
+    PersonModel person = PersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail("a@b.c").build();
+    WorkflowModel workflowModel = WorkflowModel.builder()
+        .client(person)
+        .workflowType(WorkflowType.LINE)
+        .examinant(person)
+        .description("\uD83D\uDE00\uD83D\uDE01\uD83D")
+        .swissId("CH123456")
+        .examinant(person)
+        .businessObjectId(123456L)
+        .build();
+
+    //given
+    mvc.perform(post("/v1/workflows/")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(workflowModel))
+        ).andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
+        .andExpect(jsonPath("$.details[0].message", is("Value \uD83D\uDE00\uD83D\uDE01? rejected due to must match "
+            + "\"[\\u0000-\\u00ff]*\"")))
+        .andExpect(jsonPath("$.details[0].field", is("description")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("\uD83D\uDE00\uD83D\uDE01?")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must match \"[\\u0000-\\u00ff]*\"")));
+  }
+
 }
