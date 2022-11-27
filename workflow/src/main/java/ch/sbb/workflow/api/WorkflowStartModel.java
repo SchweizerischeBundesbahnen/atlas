@@ -1,12 +1,15 @@
 package ch.sbb.workflow.api;
 
+import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +26,8 @@ public class WorkflowStartModel {
   @NotNull
   private Long businessObjectId;
 
-  @Schema(description = "Swiss Id: the generated DB id", example = "CHLNR")
+  @Schema(description = "Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow", example = "b1.L1")
+  @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   @NotBlank
   private String swissId;
 
@@ -32,14 +36,17 @@ public class WorkflowStartModel {
   private WorkflowType workflowType;
 
   @NotNull
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String description;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus workflowStatus;
 
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String workflowComment;
 
   @Schema(description = "Client")
+  @Valid
   private PersonModel client;
 
   public static Workflow toEntity(WorkflowStartModel model) {
