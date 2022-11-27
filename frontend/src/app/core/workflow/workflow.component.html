@@ -5,8 +5,7 @@
       [disabled]="isAddWorkflowButtonDisabled"
       buttonDataCy="workflow-add"
       buttonText="WORKFLOW.BUTTON.ADD"
-      buttonType="create"
-      wrapperStyleClass="me-3"
+      buttonType="defaultPrimary"
     ></atlas-button>
   </div>
   <div *ngIf="isReadMode">
@@ -31,14 +30,14 @@
         (buttonClicked)="startWorflow()"
         buttonDataCy="workflow-start"
         buttonText="WORKFLOW.BUTTON.START"
-        buttonType="create"
+        buttonType="defaultPrimary"
         wrapperStyleClass="me-3"
       ></atlas-button>
       <atlas-button
         (buttonClicked)="toggleWorkflow()"
         buttonDataCy="workflow-cancel"
         buttonText="WORKFLOW.BUTTON.CANCEL"
-        buttonType="create"
+        buttonType="defaultPrimary"
         wrapperStyleClass="me-3"
       ></atlas-button>
     </div>
