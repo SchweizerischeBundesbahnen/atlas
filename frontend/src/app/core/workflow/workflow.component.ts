@@ -37,14 +37,31 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   workflowStatusTranslated!: string;
 
   workflowFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
-    comment: new FormControl('', [Validators.required, AtlasFieldLengthValidator.comments]),
-    firstName: new FormControl('', [Validators.required, AtlasFieldLengthValidator.length_50]),
-    lastName: new FormControl('', [Validators.required, AtlasFieldLengthValidator.length_50]),
-    function: new FormControl('', [Validators.required, AtlasFieldLengthValidator.length_50]),
+    comment: new FormControl('', [
+      Validators.required,
+      AtlasFieldLengthValidator.comments,
+      AtlasCharsetsValidator.iso88591,
+    ]),
+    firstName: new FormControl('', [
+      Validators.required,
+      AtlasFieldLengthValidator.length_50,
+      AtlasCharsetsValidator.iso88591,
+    ]),
+    lastName: new FormControl('', [
+      Validators.required,
+      AtlasFieldLengthValidator.length_50,
+      AtlasCharsetsValidator.iso88591,
+    ]),
+    function: new FormControl('', [
+      Validators.required,
+      AtlasFieldLengthValidator.length_50,
+      AtlasCharsetsValidator.iso88591,
+    ]),
     mail: new FormControl('', [
       Validators.required,
       AtlasFieldLengthValidator.length_255,
       AtlasCharsetsValidator.email,
+      AtlasCharsetsValidator.iso88591,
     ]),
   });
   private ngUnsubscribe = new Subject<void>();
