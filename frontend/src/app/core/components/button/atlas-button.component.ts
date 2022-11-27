@@ -81,6 +81,9 @@ export class AtlasButtonComponent {
   }
 
   getButtonStyleClass() {
+    if (this.buttonType === AtlasButtonType.DEFAULT_PRIMARY) {
+      return 'atlas-primary-btn';
+    }
     if (
       [AtlasButtonType.CREATE, AtlasButtonType.CREATE_CHECKING_PERMISSION].includes(this.buttonType)
     ) {
