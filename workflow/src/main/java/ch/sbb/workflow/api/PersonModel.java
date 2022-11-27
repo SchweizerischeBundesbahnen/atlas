@@ -20,14 +20,17 @@ import lombok.NoArgsConstructor;
 public class PersonModel {
 
   @Schema(description = "Firstname", example = "John")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotBlank
   private String firstName;
 
   @Schema(description = "Second", example = "Doe")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotBlank
   private String lastName;
 
   @Schema(description = "Person Function", example = "Officer")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotBlank
   private String personFunction;
 

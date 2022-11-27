@@ -46,3 +46,11 @@ include::{snippets}/workflow-controller-test/should-create-workflow/auto-section
 == Create Workflow - Unsuccessfully
 
 include::{snippets}/workflow-controller-test/should-not-create-workflow-when-workflow-type-is-null/auto-section.adoc[]
+
+== Create Workflow - Unsuccessfully when Person Name has wrong encoding
+
+include::{snippets}/workflow-controller-test/should-not-create-workflow-when-workflow-person-name-has-wrong-encoding/auto-section.adoc[]
+
+== Create Workflow - Unsuccessfully when Workflow description has wrong encoding
+
+include::{snippets}/workflow-controller-test/should-not-create-workflow-when-workflow-person-name-has-wrong-encoding/auto-section.adoc[]
