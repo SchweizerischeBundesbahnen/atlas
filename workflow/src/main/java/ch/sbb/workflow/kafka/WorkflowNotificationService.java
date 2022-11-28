@@ -35,7 +35,7 @@ public class WorkflowNotificationService {
     lineWorkflowProducerService.produceWorkflowNotification(lineWorkflowEvent);
   }
 
-  public void sendMailToExaminantAndClient(Workflow workflow) {
+  public void sendResultMailToClient(Workflow workflow) {
     if (WorkflowType.LINE == workflow.getWorkflowType()) {
       MailNotification mailNotification = lineWorkflowService.buildWorkflowCompletedMailNotification(workflow);
       mailProducerService.produceMailNotification(mailNotification);
