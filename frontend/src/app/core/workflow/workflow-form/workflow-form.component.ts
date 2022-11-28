@@ -7,4 +7,6 @@ import { FormGroup } from '@angular/forms';
 })
 export class WorkflowFormComponent {
   @Input() formGroup!: FormGroup;
+  @Input() commentLabel!: string;
+  @Input() personLabel!: string;
 }
