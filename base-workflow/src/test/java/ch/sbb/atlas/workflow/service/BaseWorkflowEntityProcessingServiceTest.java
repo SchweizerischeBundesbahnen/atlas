@@ -189,11 +189,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
     }
   }
 
-  @NoArgsConstructor
-  @AllArgsConstructor
-  @Getter
-  @Setter
-  @ToString
+  @Data
   @SuperBuilder
   public static class ObjectVersion extends BaseVersion {
 
@@ -211,11 +207,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
     }
   }
 
-  @NoArgsConstructor
-  @AllArgsConstructor
-  @Getter
-  @Setter
-  @ToString
+  @Data
   @SuperBuilder
   public static class ObjectWorkflowEntityVersion extends BaseWorkflowEntity {
 
