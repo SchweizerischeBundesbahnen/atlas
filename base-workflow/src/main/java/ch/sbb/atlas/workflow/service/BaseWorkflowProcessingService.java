@@ -9,6 +9,7 @@ import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundExc
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
+import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +19,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y extends BaseWorkflowEntity> {
 
   protected final JpaRepository<T, Long> objectVersionRepository;
-  protected final JpaRepository<Y, Long> objectWorkflowRepository;
+  protected final ObjectWorkflowRepository<Y> objectWorkflowRepository;
 
   @RunAsUser(fakeUserType = KAFKA)
   public void processWorkflow(LineWorkflowEvent lineWorkflowEvent) {

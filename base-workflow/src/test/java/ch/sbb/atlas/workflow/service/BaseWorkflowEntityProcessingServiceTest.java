@@ -1,10 +1,5 @@
 package ch.sbb.atlas.workflow.service;
 
-import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.IN_PROGRESS;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
@@ -12,9 +7,8 @@ import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
-import java.time.LocalDate;
-import java.util.Optional;
-import lombok.Data;
+import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,13 +17,21 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
+import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.IN_PROGRESS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+
 public class BaseWorkflowEntityProcessingServiceTest {
 
   @Mock
   private ObjectVersionRepository objectVersionRepository;
 
   @Mock
-  private ObjectWorkflowRepository objectWorkflowRepository;
+  private ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository;
 
   private ObjectWorkflowProcessingService workflowProcessingService;
 
@@ -169,15 +171,11 @@ public class BaseWorkflowEntityProcessingServiceTest {
 
   }
 
-  public interface ObjectWorkflowRepository extends JpaRepository<ObjectWorkflowEntityVersion, Long> {
-
-  }
-
   public static class ObjectWorkflowProcessingService extends
       BaseWorkflowProcessingService<ObjectVersion, ObjectWorkflowEntityVersion> {
 
     public ObjectWorkflowProcessingService(JpaRepository<ObjectVersion, Long> objectVersionRepository,
-        JpaRepository<ObjectWorkflowEntityVersion, Long> objectWorkflowRepository) {
+        ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository) {
       super(objectVersionRepository, objectWorkflowRepository);
     }
 
@@ -191,7 +189,11 @@ public class BaseWorkflowEntityProcessingServiceTest {
     }
   }
 
-  @Data
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Getter
+  @Setter
+  @ToString
   @SuperBuilder
   public static class ObjectVersion extends BaseVersion {
 
@@ -209,7 +211,11 @@ public class BaseWorkflowEntityProcessingServiceTest {
     }
   }
 
-  @Data
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Getter
+  @Setter
+  @ToString
   @SuperBuilder
   public static class ObjectWorkflowEntityVersion extends BaseWorkflowEntity {
 
