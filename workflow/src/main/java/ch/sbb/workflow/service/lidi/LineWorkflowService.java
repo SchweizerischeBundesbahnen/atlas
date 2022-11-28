@@ -24,34 +24,67 @@ public class LineWorkflowService {
   @Value("${mail.workflow.line.from}")
   private String from;
 
+  @Value("${mail.workflow.atlas.business}")
+  private String atlasBusiness;
+
   @Value("${mail.workflow.line.mail-html-title}")
   private String mailHtmlTitle;
 
-  public MailNotification buildMailNotification(Workflow workflow) {
+  public MailNotification buildWorkflowStartedMailNotification(Workflow workflow) {
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.WORKFLOW_NOTIFICATION)
         .subject(buildSubject(workflow))
         .to(List.of(workflowLineReceiver))
         .cc(List.of(workflow.getClient().getMail()))
-        .templateProperties(buildMailPropeties(workflow))
+        .templateProperties(buildMailProperties(workflow))
         .build();
   }
 
-  private String buildSubject(Workflow workflow) {
-    return "Betreff: Antrag zu " + workflow.getSwissId() + " " + workflow.getDescription() + " prüfen";
+  public MailNotification buildWorkflowCompletedMailNotification(Workflow workflow) {
+    return MailNotification.builder()
+            .from(from)
+            .mailType(MailType.WORKFLOW_NOTIFICATION)
+            .subject(buildSubject(workflow))
+            .to(List.of(workflow.getClient().getMail(), workflow.getExaminant().getMail()))
+            .cc(List.of(atlasBusiness))
+            .templateProperties(buildMailProperties(workflow))
+            .build();
   }
 
-  private List<Map<String, Object>> buildMailPropeties(Workflow workflow) {
+  private String buildSubject(Workflow workflow) {
+    String subject =  "Antrag zu " + workflow.getSwissId() + " " + workflow.getDescription();
+    switch (workflow.getStatus()) {
+      case STARTED -> subject+=" prüfen";
+      case APPROVED -> subject+=" genehmigt";
+      case REJECTED -> subject+=" zurückgewiesen";
+    }
+    return subject;
+  }
 
+  private List<Map<String, Object>> buildMailProperties(Workflow workflow) {
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("title", mailHtmlTitle);
+    mailContentProperty.put("teaser", getTeaser(workflow));
     mailContentProperty.put("swissId", workflow.getSwissId());
     mailContentProperty.put("description", workflow.getDescription());
+    mailContentProperty.put("checkComment", workflow.getCheckComment());
     mailContentProperty.put("url", getUrl(workflow));
     mailProperties.add(mailContentProperty);
     return mailProperties;
+  }
+
+  private String getTeaser(Workflow workflow) {
+    return switch (workflow.getStatus()) {
+      case STARTED ->
+              "Es wurde eine neue Linie bzw. eine Änderung an einer bestehenden Linie erfasst welche eine Freigabe erfordert.";
+      case APPROVED ->
+              "Der von Ihnen gestellte Antrag für die " + workflow.getSwissId() + " " + workflow.getDescription() + " wurde überprüft und genehmigt.";
+      case REJECTED ->
+              "Der von Ihnen gestellte Antrag für die " + workflow.getSwissId() + " " + workflow.getDescription() + " wurde überprüft und zurückgewiesen.";
+      default -> throw new IllegalArgumentException();
+    };
   }
 
   private String getUrl(Workflow workflow) {

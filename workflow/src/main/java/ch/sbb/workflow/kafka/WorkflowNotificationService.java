@@ -21,7 +21,7 @@ public class WorkflowNotificationService {
   public void sendEventToMail(Workflow workflow) {
     MailNotification mailNotification;
     if (WorkflowType.LINE == workflow.getWorkflowType()) {
-      mailNotification = lineWorkflowService.buildMailNotification(workflow);
+      mailNotification = lineWorkflowService.buildWorkflowStartedMailNotification(workflow);
       mailProducerService.produceMailNotification(mailNotification);
     }
   }
@@ -36,6 +36,9 @@ public class WorkflowNotificationService {
   }
 
   public void sendMailToExaminantAndClient(Workflow workflow) {
-    //TODO: implement
+    if (WorkflowType.LINE == workflow.getWorkflowType()) {
+      MailNotification mailNotification = lineWorkflowService.buildWorkflowCompletedMailNotification(workflow);
+      mailProducerService.produceMailNotification(mailNotification);
+    }
   }
 }
