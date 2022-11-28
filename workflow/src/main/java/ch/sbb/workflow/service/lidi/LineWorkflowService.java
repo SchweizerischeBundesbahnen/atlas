@@ -46,7 +46,7 @@ public class LineWorkflowService {
             .from(from)
             .mailType(MailType.WORKFLOW_NOTIFICATION)
             .subject(buildSubject(workflow))
-            .to(List.of(workflow.getClient().getMail(), workflow.getExaminant().getMail()))
+            .to(List.of(workflow.getClient().getMail()))
             .cc(List.of(atlasBusiness))
             .templateProperties(buildMailProperties(workflow))
             .build();
