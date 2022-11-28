@@ -45,7 +45,7 @@ public class WorkflowService {
         examinantWorkflowCheckModel.isAccepted() ? WorkflowStatus.APPROVED : WorkflowStatus.REJECTED);
 
     notificationService.sendEventToLidi(workflow);
-    notificationService.sendMailToExaminantAndClient(workflow);
+    notificationService.sendResultMailToClient(workflow);
     return workflow;
   }
 }
