@@ -20,11 +20,23 @@
         </mat-panel-description>
         <i class="fs-2 bi bi-diagram-3-fill me-2 mt-1 icon-color"></i>
       </mat-expansion-panel-header>
-      <app-workflow-form [formGroup]="workflowFormGroup"></app-workflow-form>
+      <app-workflow-form
+        [formGroup]="workflowFormGroup"
+        commentLabel="WORKFLOW.START.COMMENT"
+        personLabel="WORKFLOW.START.KEY_DATA"
+      ></app-workflow-form>
+      <app-workflow-check-form
+        *ngIf="lineRecord.status === 'IN_REVIEW'"
+        [workflowId]="workflowId"
+      ></app-workflow-check-form>
     </mat-expansion-panel>
   </div>
   <div *ngIf="isWorkflowFormEditable">
-    <app-workflow-form [formGroup]="workflowFormGroup"></app-workflow-form>
+    <app-workflow-form
+      [formGroup]="workflowFormGroup"
+      commentLabel="WORKFLOW.START.COMMENT"
+      personLabel="WORKFLOW.START.KEY_DATA"
+    ></app-workflow-form>
     <div class="d-flex align-items-center">
       <atlas-button
         (buttonClicked)="startWorflow()"
