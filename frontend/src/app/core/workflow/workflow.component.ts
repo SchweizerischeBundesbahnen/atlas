@@ -36,6 +36,8 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   isWorkflowFormEditable = false;
   isReadMode = false;
   workflowStatusTranslated!: string;
+  workflowId: number | undefined;
+
   workflowFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
     comment: new FormControl('', [
       Validators.required,
@@ -220,6 +222,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     this.isReadMode = true;
     this.isAddWorkflowButtonDisabled = true;
     this.workflowFormGroup.disable();
+    this.workflowId = workflowId;
 
     this.workflowService
       .getWorkflow(workflowId)
