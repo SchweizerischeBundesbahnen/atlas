@@ -36,8 +36,8 @@ public class WorkflowController implements WorkflowApiV1 {
 
   @Override
   public WorkflowModel examinantCheck(Long id, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
-    Workflow workflow = service.examinantCheck(service.getWorkflow(id), examinantWorkflowCheckModel);
-    return WorkflowModel.toNewModel(workflow);
+    Workflow workflow = service.examinantCheck(id, examinantWorkflowCheckModel);
+    return WorkflowModel.toModel(workflow);
   }
 
 }
