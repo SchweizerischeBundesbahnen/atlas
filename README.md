@@ -6,26 +6,28 @@ This is the repository for business relevant services for ATLAS.
 
 - [Big Picture](#big-picture)
 - [Links](#links)
+- [ATLAS CI/CD](#atlas-cicd)
+  * [E2E Videos Results](#e2e-videos-results)
 - [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
-    * [Correlation-Id](#correlation-id)
+  * [Correlation-Id](#correlation-id)
 - [Development](#development)
-    * [Run locally](#run-locally)
-    * [Monorepo](#monorepo)
-    * [Running Python scripts](#running-python-scripts)
+  * [Run locally](#run-locally)
+  * [Monorepo](#monorepo)
+  * [Running Python scripts](#running-python-scripts)
 - [Structure](#structure)
-    * [APIM-configuration](#apim-configuration)
-    * [Charts](#charts)
-    * [Gateway](#gateway)
-    * [Kafka](#kafka)
-    * [Line-directory](#line-directory)
-    * [Business-organisation-directory](#business-organisation-directory)
-    * [Mail Service](#mail-service)
-    * [Workflow](#workflow)
-    * [User Administration](#user-administration)
-    * [Base Service lib](#base-service-lib)
-    * [Base Workflow lib](#base-workflow-lib)
-    * [Frontend](#frontend)
+  * [APIM-configuration](#apim-configuration)
+  * [Charts](#charts)
+  * [Gateway](#gateway)
+  * [Kafka](#kafka)
+  * [Line-directory](#line-directory)
+  * [Business-organisation-directory](#business-organisation-directory)
+  * [Mail Service](#mail-service)
+  * [Workflow](#workflow)
+  * [User Administration](#user-administration)
+  * [Base Service lib](#base-service-lib)
+  * [Base Workflow lib](#base-workflow-lib)
+  * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
 
 <!-- tocstop -->
@@ -76,9 +78,28 @@ It's applications share the following architectural goal:
 - **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/ :warning: **deprecated**
 - **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/ :warning: **deprecated**
 
-## Stages and their purpose
+## ATLAS CI/CD
 
-GitOps->ArgoCD->Tekton
+![ATLAS CI/CD](documentation/image/ATLAS-CI-CD.svg)
+
+To apply the CI/CD we use the following additional repository:
+
+* [atlas-tekton-pipeline-templates](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-tekton-pipeline-templates/browse): Custom
+  templates for esta-tekton which will be automatically applied to the atlas-tekton. See
+  the [documentation](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-tekton-pipeline-templates/browse/README.md)
+* [docker](https://code.sbb.ch/projects/KI_ATLAS/repos/docker/browse): Atlas custom docker images. See
+  the [documentation](https://code.sbb.ch/projects/KI_ATLAS/repos/docker/browse/README.md)
+* [atlas-argocd](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse): contains the Charts used to deploy atlas Apps,
+  Jobs, Atlas ArgoCD, etc... See the [documentation](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse/README.md)
+
+### E2E Videos Results
+
+The Cypress Videos results are stored to the following Amazon S3 Bucket:
+
+* Bucket name: **atlas-cypress-ci-dev**
+* [Credentials](https://vault-nonprod.sbb.ch/ui/vault/secrets/kv/show/SKI/ATLAS/amazon_s3/cypress-ci)
+
+## Stages and their purpose
 
 * [Stages](documentation/stages.md)
 
