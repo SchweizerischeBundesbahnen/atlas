@@ -96,7 +96,12 @@
     </div>
     <div class='content-container'>
         <div>
-            Es wurde eine neue Linie bzw. eine Änderung an einer bestehenden Linie erfasst welche eine Freigabe erfordert.
+            [(${properties.get(0).get('teaser')})]
+            <span th:if="${properties.get(0).get('checkComment')}">
+                Bitte beachten Sie dazu die nachfolgende Bemerkung der prüfenden Person:
+                <br/>
+                [(${properties.get(0).get('checkComment')})]
+            </span>
             <br/>
             <br/>
             Durch einen Klick auf <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
