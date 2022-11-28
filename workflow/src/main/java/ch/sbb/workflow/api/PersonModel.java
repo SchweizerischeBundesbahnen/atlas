@@ -1,12 +1,14 @@
 package ch.sbb.workflow.api;
 
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.workflow.entity.Person;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,21 +23,25 @@ public class PersonModel {
 
   @Schema(description = "Firstname", example = "John")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotBlank
   private String firstName;
 
   @Schema(description = "Second", example = "Doe")
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotBlank
   private String lastName;
 
   @Schema(description = "Person Function", example = "Officer")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotBlank
   private String personFunction;
 
-  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   @Schema(description = "mail", example = "mail@sbb.ch")
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   @NotBlank
   private String mail;
 
