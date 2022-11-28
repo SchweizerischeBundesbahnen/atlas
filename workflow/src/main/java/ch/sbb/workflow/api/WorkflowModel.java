@@ -1,6 +1,7 @@
 package ch.sbb.workflow.api;
 
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +30,7 @@ public class WorkflowModel {
 
   @Schema(description = "Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow", example = "b1.L1")
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotBlank
   private String swissId;
 
@@ -37,15 +40,18 @@ public class WorkflowModel {
 
   @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   private String description;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus workflowStatus;
 
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   private String workflowComment;
 
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   private String checkComment;
 
   @Schema(description = "Client")
