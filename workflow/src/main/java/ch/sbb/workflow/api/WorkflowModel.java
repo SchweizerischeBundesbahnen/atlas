@@ -24,6 +24,10 @@ import lombok.NoArgsConstructor;
 @Schema(name = "Workflow")
 public class WorkflowModel {
 
+  @Schema(description = "Workflow ID", accessMode = AccessMode.READ_ONLY)
+  @NotNull
+  private Long id;
+
   @Schema(description = "Business Object Id: the generated DB id")
   @NotNull
   private Long businessObjectId;
@@ -68,6 +72,7 @@ public class WorkflowModel {
 
   public static WorkflowModel toModel(Workflow entity) {
     WorkflowModelBuilder builder = WorkflowModel.builder()
+        .id(entity.getId())
         .workflowType(entity.getWorkflowType())
         .businessObjectId(entity.getBusinessObjectId())
         .swissId(entity.getSwissId())
@@ -89,6 +94,7 @@ public class WorkflowModel {
 
   public static WorkflowModel toNewModel(Workflow entity) {
     return WorkflowModel.builder()
+        .id(entity.getId())
         .workflowType(entity.getWorkflowType())
         .businessObjectId(entity.getBusinessObjectId())
         .swissId(entity.getSwissId())
