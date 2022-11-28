@@ -37,8 +37,9 @@ public class WorkflowService {
     return repository.findAll();
   }
 
-  public Workflow examinantCheck(Workflow workflow, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
-    workflow.setCheckComment(workflow.getCheckComment());
+  public Workflow examinantCheck(Long workflowId, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
+    Workflow workflow = getWorkflow(workflowId);
+    workflow.setCheckComment(examinantWorkflowCheckModel.getCheckComment());
     workflow.setExaminant(PersonModel.toEntity(examinantWorkflowCheckModel.getExaminant()));
     workflow.setStatus(
         examinantWorkflowCheckModel.isAccepted() ? WorkflowStatus.APPROVED : WorkflowStatus.REJECTED);
