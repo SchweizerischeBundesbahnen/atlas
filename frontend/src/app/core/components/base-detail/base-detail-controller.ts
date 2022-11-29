@@ -18,8 +18,8 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
   records!: Array<TYPE>;
   form!: FormGroup;
   switchedIndex!: number | undefined;
-
   showSwitch: boolean | undefined;
+  switchVersionEvent = new Subject<Record>();
 
   protected constructor(
     protected dialogRef: MatDialogRef<any>,
@@ -35,8 +35,11 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
 
   private init() {
     this.getRecord();
-    if (this.records) this.records.forEach((item, index) => (item.versionNumber = index + 1));
+    if (this.records) {
+      this.records.forEach((item, index) => (item.versionNumber = index + 1));
+    }
     this.form = this.getFormGroup(this.record);
+    this.switchVersionEvent.next(this.record);
     if (this.isExistingRecord()) {
       this.form.disable();
     } else {
