@@ -479,6 +479,10 @@
     "NOTIFICATION": {
       "START": {
         "SUCCESS": "Votre demande a été transmise avec succès"
+      },
+      "CHECK": {
+        "ACCEPTED": "La demande a été approuvée avec succès.",
+        "REJECTED": "La demande a été rejetée avec succès."
       }
     }
   }
