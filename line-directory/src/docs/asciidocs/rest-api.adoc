@@ -25,7 +25,14 @@
 |Build-Time| {buildTime}
 |=================================
 
-=== Release Notes
+=== Developer Portal
+
+This API is available as a part of the ATLAS API on the SBB developer portal.
+
+- Production: https://developer.sbb.ch/apis/atlas/information
+- Lower Stages are available here: https://developer-int.sbb.ch/apis?all=&text=atlas&scopes=PUBLIC;INTERNAL
+
+== Release Notes
 
 include::../release-notes.adoc[]
 
