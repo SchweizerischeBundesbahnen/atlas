@@ -5,19 +5,26 @@ import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.workflow.entity.Person;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+=======
+>>>>>>> b0f37240 (ATLAS-836: Frontend component)
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@SuperBuilder
 @Schema(name = "Person")
 public class PersonModel {
 
@@ -42,12 +49,6 @@ public class PersonModel {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String personFunction;
 
-  @Schema(description = "mail", example = "mail@sbb.ch")
-  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
-  @NotBlank
-  private String mail;
-
   @Schema(description = "Object creation date", example = "01.01.2000", accessMode = AccessMode.READ_ONLY)
   private LocalDateTime creationDate;
 
@@ -59,7 +60,6 @@ public class PersonModel {
         .firstName(person.getFirstName())
         .lastName(person.getLastName())
         .personFunction(person.getFunction())
-        .mail(person.getMail())
         .creationDate(person.getCreationDate())
         .editionDate(person.getEditionDate())
         .build();
@@ -70,7 +70,6 @@ public class PersonModel {
         .firstName(model.getFirstName())
         .lastName(model.getLastName())
         .function(model.getPersonFunction())
-        .mail(model.getMail())
         .build();
   }
 
