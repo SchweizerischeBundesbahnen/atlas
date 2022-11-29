@@ -80,7 +80,7 @@ export class WorkflowCheckFormComponent implements OnInit {
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
-          this.router.navigate([this.router.url]);
+          this.router.navigate([this.router.url]).then();
           this.notificationService.success(
             accepted
               ? 'WORKFLOW.NOTIFICATION.CHECK.ACCEPTED'
