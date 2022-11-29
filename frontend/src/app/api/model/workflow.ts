@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Client } from './client';
 import { Person } from './person';
 
 export interface Workflow {
@@ -35,7 +36,7 @@ export interface Workflow {
   readonly workflowStatus?: Workflow.WorkflowStatusEnum;
   workflowComment?: string;
   checkComment?: string;
-  client?: Person;
+  client?: Client;
   examinant?: Person;
   /**
    * Object creation date
