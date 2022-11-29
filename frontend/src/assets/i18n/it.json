@@ -479,6 +479,10 @@
     "NOTIFICATION": {
       "START": {
         "SUCCESS": "Ihr Antrag wurde erfolgreich übermittel"
+      },
+      "CHECK": {
+        "ACCEPTED": "La domanda è stata approvata con successo.",
+        "REJECTED": "La domanda è stata respinta con successo."
       }
     }
   }
