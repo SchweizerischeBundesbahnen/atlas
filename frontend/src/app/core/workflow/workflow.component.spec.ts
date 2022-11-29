@@ -4,10 +4,13 @@ import { WorkflowComponent } from './workflow.component';
 import { AppTestingModule } from '../../app.testing.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {
+  ApplicationRole,
+  ApplicationType,
   LineVersionWorkflow,
   Status,
   User,
   UserAdministrationService,
+  UserPermissionVersionModel,
   Workflow,
   WorkflowProcessingStatus,
   WorkflowService,
@@ -19,6 +22,16 @@ import { AuthService } from '../auth/auth.service';
 import { DialogService } from '../components/dialog/dialog.service';
 import WorkflowStatusEnum = WorkflowStart.WorkflowStatusEnum;
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
+import { Component, Input } from '@angular/core';
+import { Role } from '../auth/role';
+
+@Component({
+  selector: 'app-workflow-check-form',
+  template: '',
+})
+export class MockWorkflowCheckFormComponent {
+  @Input() workflowId: number | undefined;
+}
 
 const authServiceMock: Partial<AuthService> = {
   claims: {
@@ -26,6 +39,18 @@ const authServiceMock: Partial<AuthService> = {
     email: 'test@test.ch',
     sbbuid: 'e123456',
     roles: ['lidi-admin', 'lidi-writer'],
+  },
+  hasRole(role: Role): boolean {
+    return this.claims!.roles.includes(role);
+  },
+  get isAdmin(): boolean {
+    return true;
+  },
+  hasPermissionsToWrite(): boolean {
+    return true;
+  },
+  getApplicationUserPermission(applicationType: ApplicationType): UserPermissionVersionModel {
+    return { application: applicationType, role: ApplicationRole.Supervisor, sboids: [] };
   },
 };
 const user: User = {
@@ -35,6 +60,7 @@ const user: User = {
   mail: 'a@b.cd',
 };
 const workflow: Workflow = {
+  id: 1,
   workflowStatus: WorkflowStatusEnum.Started,
   client: {
     firstName: 'Marek',
@@ -66,7 +92,7 @@ describe('WorkflowComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule, MatExpansionModule],
-      declarations: [WorkflowComponent, AtlasButtonComponent],
+      declarations: [WorkflowComponent, AtlasButtonComponent, MockWorkflowCheckFormComponent],
       providers: [
         { provide: UserAdministrationService, useValue: userAdministrationServiceMock },
         { provide: WorkflowService, useValue: workflowServiceMock },
