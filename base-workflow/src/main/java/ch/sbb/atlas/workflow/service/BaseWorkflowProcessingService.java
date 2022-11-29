@@ -8,6 +8,7 @@ import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +17,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y extends BaseWorkflowEntity> {
+public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y extends BaseWorkflowEntity,
+    Z extends BaseVersionSnapshot> {
 
   protected final JpaRepository<T, Long> objectVersionRepository;
   protected final ObjectWorkflowRepository<Y> objectWorkflowRepository;
+  protected final JpaRepository<Z, Long> objectVersionSnapshotRepository;
 
   @RunAsUser(fakeUserType = KAFKA)
-  public void processWorkflow(LineWorkflowEvent lineWorkflowEvent) {
+  public void processWorkflow(LineWorkflowEvent lineWorkflowEvent, Z versionSnapshot) {
     T objectVersion = getObjectVersion(lineWorkflowEvent);
-    evaluateWorkflowProcessingStatus(lineWorkflowEvent, objectVersion);
+    evaluateWorkflowProcessingStatus(lineWorkflowEvent, objectVersion, versionSnapshot);
     Y objectVersionWorkflow = buildObjectVersionWorkflow(lineWorkflowEvent, objectVersion);
     objectWorkflowRepository.save(objectVersionWorkflow);
     log.info("Workflow entity saved: {}", objectVersionWorkflow);
@@ -32,7 +35,7 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
     log.info("Object entity saved: {}", objectVersion);
   }
 
-  void evaluateWorkflowProcessingStatus(LineWorkflowEvent lineWorkflowEvent, T objectVersion) {
+  void evaluateWorkflowProcessingStatus(LineWorkflowEvent lineWorkflowEvent, T objectVersion, Z versionSnapshot) {
     Status preUpdateStatus = objectVersion.getStatus();
 
     switch (lineWorkflowEvent.getWorkflowStatus()){
@@ -41,8 +44,7 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
       case REJECTED -> objectVersion.setStatus(Status.DRAFT);
       default -> throw new IllegalStateException("Use case not yet implemented!!");
     }
-
-    //TODO: ATLAS-894: Create Snapshot on start/approved/rejected
+    objectVersionSnapshotRepository.save(versionSnapshot);
     log.info("Changed Object status from {} to {}", preUpdateStatus, objectVersion.getStatus());
   }
 
