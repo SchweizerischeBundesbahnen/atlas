@@ -53,6 +53,9 @@ describe('BaseDetailComponent', () => {
     get isAdmin(): boolean {
       return true;
     },
+    isAtLeastSupervisor(): boolean {
+      return true;
+    },
     hasPermissionsToWrite(): boolean {
       return true;
     },
