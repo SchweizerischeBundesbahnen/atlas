@@ -3,6 +3,7 @@ export * from './applicationType';
 export * from './businessOrganisation';
 export * from './businessOrganisationVersion';
 export * from './businessType';
+export * from './client';
 export * from './company';
 export * from './containerBusinessOrganisation';
 export * from './containerCompany';
