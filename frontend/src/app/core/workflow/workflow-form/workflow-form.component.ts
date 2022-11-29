@@ -9,4 +9,5 @@ export class WorkflowFormComponent {
   @Input() formGroup!: FormGroup;
   @Input() commentLabel!: string;
   @Input() personLabel!: string;
+  @Input() hasMail = true;
 }
