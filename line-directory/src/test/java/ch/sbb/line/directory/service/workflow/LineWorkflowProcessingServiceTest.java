@@ -12,6 +12,7 @@ import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionWorkflow;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
 import ch.sbb.line.directory.repository.LineVersionWorkflowRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,9 @@ public class LineWorkflowProcessingServiceTest {
   @Mock
   private LineVersionWorkflowRepository lineWorkflowRepository;
 
+  @Mock
+  private LineVersionSnapshotRepository lineVersionSnapshotRepository;
+
   @Captor
   private ArgumentCaptor<LineVersionWorkflow> lineVersionWorkflowArgumentCaptor;
 
@@ -37,7 +41,8 @@ public class LineWorkflowProcessingServiceTest {
   @BeforeEach
   public void init() {
     MockitoAnnotations.openMocks(this);
-    workflowProcessingService = new LineWorkflowProcessingService(lineVersionRepository, lineWorkflowRepository);
+    workflowProcessingService = new LineWorkflowProcessingService(lineVersionRepository, lineWorkflowRepository,
+        lineVersionSnapshotRepository);
   }
 
   @Test
