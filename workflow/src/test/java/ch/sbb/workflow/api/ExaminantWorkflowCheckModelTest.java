@@ -18,7 +18,6 @@ class ExaminantWorkflowCheckModelTest {
                                                           .firstName("Marek")
                                                           .lastName("Hamsik")
                                                           .personFunction("Centrocampista")
-                                                          .mail("a@b.c")
                                                           .build();
 
   @Test

@@ -450,11 +450,17 @@
     "BUTTON": {
       "ADD": "Registrazione dell'audizione",
       "START": "Avviare audizione",
+      "ACCEPT": "Approva",
+      "REJECT": "Rifiuto",
       "CANCEL": "Annullare audizione"
     },
     "START": {
       "COMMENT": "Motivazione",
       "KEY_DATA": "Richiedente"
+    },
+    "CHECK": {
+      "COMMENT": "Commento sul rilascio / rifiuto",
+      "KEY_DATA": "Revisore"
     },
     "PERSON": {
       "FIRSTNAME": "Nome",

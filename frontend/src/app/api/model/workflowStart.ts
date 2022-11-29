@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Person } from './person';
+import { Client } from './client';
 
 export interface WorkflowStart {
   /**
@@ -33,7 +33,7 @@ export interface WorkflowStart {
    * Comment accompanying the start of the workflow
    */
   workflowComment?: string;
-  client?: Person;
+  client?: Client;
 }
 export namespace WorkflowStart {
   export type WorkflowTypeEnum = 'LINE' | 'SUBLINE';
