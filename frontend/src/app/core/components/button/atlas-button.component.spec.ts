@@ -11,6 +11,7 @@ let component: AtlasButtonComponent;
 let fixture: ComponentFixture<AtlasButtonComponent>;
 
 let isAdmin = true;
+let isAtLeastSupervisor = true;
 let hasPermissionsToCreate = true;
 let hasPermissionsToWrite = true;
 let role = ApplicationRole.Reader;
@@ -41,6 +42,9 @@ const authServiceMock: Partial<AuthService> = {
   hasPermissionsToCreate(): boolean {
     return hasPermissionsToCreate;
   },
+  isAtLeastSupervisor(applicationType: ApplicationType): boolean {
+    return isAtLeastSupervisor;
+  },
   getApplicationUserPermission(applicationType: ApplicationType): UserPermissionVersionModel {
     return { application: applicationType, role: role, sboids: [] };
   },
@@ -61,6 +65,7 @@ describe('AtlasButtonComponent', () => {
     component.objectStatus = Status.Validated;
 
     isAdmin = true;
+    isAtLeastSupervisor = true;
     hasPermissionsToCreate = true;
     hasPermissionsToWrite = true;
     fixture.detectChanges();
@@ -119,6 +124,7 @@ describe('AtlasButtonComponent', () => {
 
     it('should not be visible for type EDIT on WorkflowInProgress', () => {
       isAdmin = false;
+      isAtLeastSupervisor = false;
       role = ApplicationRole.SuperUser;
       component.buttonType = AtlasButtonType.EDIT;
       component.applicationType = ApplicationType.Bodi;
@@ -131,6 +137,7 @@ describe('AtlasButtonComponent', () => {
 
     it('should be visible for type EDIT on WorkflowInProgress for Supervisor', () => {
       isAdmin = false;
+      isAtLeastSupervisor = true;
       role = ApplicationRole.Supervisor;
       component.buttonType = AtlasButtonType.EDIT;
       component.applicationType = ApplicationType.Bodi;
@@ -152,6 +159,7 @@ describe('AtlasButtonComponent', () => {
 
     it('should not be visible for type REVOKE', () => {
       isAdmin = false;
+      isAtLeastSupervisor = false;
       role = ApplicationRole.Reader;
       component.buttonType = AtlasButtonType.REVOKE;
       component.applicationType = ApplicationType.Bodi;
