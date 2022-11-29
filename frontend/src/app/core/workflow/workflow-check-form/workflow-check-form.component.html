@@ -1,21 +1,23 @@
-<div>
+<div *ngIf="authService.isAtLeastSupervisor('LIDI')">
   <app-workflow-form
     [formGroup]="formGroup"
     commentLabel="WORKFLOW.CHECK.COMMENT"
     personLabel="WORKFLOW.CHECK.KEY_DATA"
+    [hasMail]="false"
   ></app-workflow-form>
-  <atlas-button
-    (buttonClicked)="acceptWorkflow()"
-    buttonDataCy="workflow-start"
-    buttonText="WORKFLOW.BUTTON.ACCEPT"
-    buttonType="create"
-    wrapperStyleClass="me-3"
-  ></atlas-button>
-  <atlas-button
-    (buttonClicked)="rejectWorkflow()"
-    buttonDataCy="workflow-start"
-    buttonText="WORKFLOW.BUTTON.REJECT"
-    buttonType="create"
-    wrapperStyleClass="me-3"
-  ></atlas-button>
+  <div class="d-flex">
+    <atlas-button
+      (buttonClicked)="acceptWorkflow()"
+      buttonDataCy="workflow-accept"
+      buttonText="WORKFLOW.BUTTON.ACCEPT"
+      buttonType="defaultPrimary"
+      wrapperStyleClass="me-3"
+    ></atlas-button>
+    <atlas-button
+      (buttonClicked)="rejectWorkflow()"
+      buttonDataCy="workflow-reject"
+      buttonText="WORKFLOW.BUTTON.REJECT"
+      buttonType="defaultPrimary"
+    ></atlas-button>
+  </div>
 </div>

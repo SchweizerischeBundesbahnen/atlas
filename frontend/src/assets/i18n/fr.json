@@ -450,11 +450,17 @@
     "BUTTON": {
       "ADD": "Saisir une audience",
       "START": "Lancer l'audience",
+      "ACCEPT": "Approuver",
+      "REJECT": "Rejeter",
       "CANCEL": "Annuler l'audience"
     },
     "START": {
       "COMMENT": "Motivation",
       "KEY_DATA": "Demandeur"
+    },
+    "CHECK": {
+      "COMMENT": "Remarque sur la validation / le refus",
+      "KEY_DATA": "Personne chargée de l'examen"
     },
     "PERSON": {
       "FIRSTNAME": "Prénom",
