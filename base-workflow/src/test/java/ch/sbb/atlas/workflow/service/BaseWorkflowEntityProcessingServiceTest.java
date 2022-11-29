@@ -5,6 +5,7 @@ import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
@@ -32,6 +33,9 @@ public class BaseWorkflowEntityProcessingServiceTest {
 
   @Mock
   private ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository;
+
+  @Mock
+  private ObjectVersionSnapshotRepository objectVersionSnapshotRepository;
 
   private ObjectWorkflowProcessingService workflowProcessingService;
 
@@ -61,8 +65,13 @@ public class BaseWorkflowEntityProcessingServiceTest {
         .objectVersion(objectVersion)
         .build();
 
+    ObjectVersionSnapshot objectVersionSnapshot = ObjectVersionSnapshot.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 2, 1))
+        .build();
+
     //when
-    workflowProcessingService.processWorkflow(lineWorkflowEvent);
+    workflowProcessingService.processWorkflow(lineWorkflowEvent, objectVersionSnapshot);
     //then
     verify(objectVersionRepository).findById(1000L);
     verify(objectWorkflowRepository).save(objectWorkflowVersion);
@@ -137,11 +146,16 @@ public class BaseWorkflowEntityProcessingServiceTest {
         .workflowStatus(WorkflowStatus.STARTED)
         .build();
 
+    ObjectVersionSnapshot objectVersionSnapshot = ObjectVersionSnapshot.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 2, 1))
+        .build();
+
     Mockito.when(objectVersionRepository.findById(1000L)).thenReturn(Optional.empty());
 
     //when
     assertThrows(IdNotFoundException.class, () -> {
-      workflowProcessingService.processWorkflow(lineWorkflowEvent);
+      workflowProcessingService.processWorkflow(lineWorkflowEvent, objectVersionSnapshot);
     });
 
   }
@@ -160,9 +174,14 @@ public class BaseWorkflowEntityProcessingServiceTest {
         .build();
     Mockito.when(objectVersionRepository.findById(1000L)).thenReturn(Optional.of(objectVersion));
 
+    ObjectVersionSnapshot objectVersionSnapshot = ObjectVersionSnapshot.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 2, 1))
+        .build();
+
     //when
     assertThrows(IllegalStateException.class, () -> {
-      workflowProcessingService.processWorkflow(lineWorkflowEvent);
+      workflowProcessingService.processWorkflow(lineWorkflowEvent, objectVersionSnapshot);
     });
 
   }
@@ -171,12 +190,21 @@ public class BaseWorkflowEntityProcessingServiceTest {
 
   }
 
+  public interface ObjectVersionSnapshotRepository extends JpaRepository<ObjectVersionSnapshot, Long> {
+
+  }
+
+  public interface ObjectWorkflowRepository extends JpaRepository<ObjectWorkflowEntityVersion, Long> {
+
+  }
+
   public static class ObjectWorkflowProcessingService extends
-      BaseWorkflowProcessingService<ObjectVersion, ObjectWorkflowEntityVersion> {
+      BaseWorkflowProcessingService<ObjectVersion, ObjectWorkflowEntityVersion, ObjectVersionSnapshot> {
 
     public ObjectWorkflowProcessingService(JpaRepository<ObjectVersion, Long> objectVersionRepository,
-        ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository) {
-      super(objectVersionRepository, objectWorkflowRepository);
+        ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository,
+        JpaRepository<ObjectVersionSnapshot, Long> objectVerionsSnapshotRepository) {
+      super(objectVersionRepository, objectWorkflowRepository, objectVerionsSnapshotRepository);
     }
 
     @Override
@@ -192,6 +220,24 @@ public class BaseWorkflowEntityProcessingServiceTest {
   @Data
   @SuperBuilder
   public static class ObjectVersion extends BaseVersion {
+
+    private LocalDate validFrom;
+    private LocalDate validTo;
+
+    @Override
+    public LocalDate getValidFrom() {
+      return this.validFrom;
+    }
+
+    @Override
+    public LocalDate getValidTo() {
+      return this.validTo;
+    }
+  }
+
+  @Data
+  @SuperBuilder
+  public static class ObjectVersionSnapshot extends BaseVersionSnapshot {
 
     private LocalDate validFrom;
     private LocalDate validTo;
