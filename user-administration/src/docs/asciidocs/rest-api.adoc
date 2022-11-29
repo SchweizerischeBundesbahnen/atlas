@@ -27,6 +27,13 @@
 
 = User Administration
 
+=== Developer Portal
+
+This API is available as a part of the ATLAS API on the SBB developer portal.
+
+- Production: https://developer.sbb.ch/apis/atlas/information
+- Lower Stages are available here: https://developer-int.sbb.ch/apis?all=&text=atlas&scopes=PUBLIC;INTERNAL
+
 == Get Users Permissions - Successfully
 
 include::{snippets}/user-administration-controller-api-test/should-get-users/auto-section.adoc[]
