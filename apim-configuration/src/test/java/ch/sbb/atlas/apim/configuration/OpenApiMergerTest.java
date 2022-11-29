@@ -3,7 +3,10 @@ package ch.sbb.atlas.apim.configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +39,7 @@ public class OpenApiMergerTest {
     OpenAPI expected = getOpenApiFromResource(combinedApi);
 
     // When
-    OpenAPI combinedApi = new OpenApiMerger(null).getCombinedApi(openApis);
+    OpenAPI combinedApi = new OpenApiMerger(null, OpenApiExportConfig.DEV).getCombinedApi(openApis);
 
     // Then
     assertThat(combinedApi).isEqualTo(expected);

@@ -5,17 +5,16 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.servers.Server;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class OpenApiMerger {
 
     private static final String NEWLINE = "<br/>";
     private final String version;
-
-    public OpenApiMerger(String version) {
-        this.version = version;
-    }
+    private final OpenApiExportConfig openApiExportConfig;
 
     public OpenAPI getCombinedApi(Map<String, OpenAPI> openApis) {
         return createAtlasApi(openApis).components(combineComponents(openApis))
@@ -27,14 +26,23 @@ public class OpenApiMerger {
                         "This is the API for all your needs SKI core data")
                 .append(NEWLINE)
                 .append(NEWLINE)
-                .append(
-                        "Atlas serves the following applications:")
-                .append(
-                        NEWLINE);
-        apis.forEach((application, api) -> description.append(application)
-                .append(":")
-                .append(api.getInfo().getVersion())
-                .append(NEWLINE));
+                .append("Atlas serves the following applications:")
+                .append(NEWLINE);
+        description.append("<ul>");
+        apis.forEach((application, api) -> {
+            String restDocLocation = "https://" + application + "." + openApiExportConfig.getStage() + ".app.sbb.ch/static/rest-api.html";
+            description
+                    .append("<li>")
+                    .append(application)
+                    .append(":")
+                    .append(api.getInfo().getVersion())
+                    .append(NEWLINE)
+                    .append("RestDoc: ")
+                    .append("<a href='").append(restDocLocation).append("' target='_blank'>").append(restDocLocation).append("</a>")
+                    .append("</li>");
+        });
+        description.append("</ul>");
+
         return new OpenAPI()
                 .info(new Info()
                         .title("Atlas API")
