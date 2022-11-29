@@ -53,7 +53,7 @@ public class WorkflowStartModel {
 
   @Schema(description = "Client")
   @Valid
-  private PersonModel client;
+  private ClientPersonModel client;
 
   public static Workflow toEntity(WorkflowStartModel model) {
     return Workflow.builder()
@@ -62,19 +62,7 @@ public class WorkflowStartModel {
         .swissId(model.getSwissId())
         .description(model.getDescription())
         .workflowComment(model.getWorkflowComment())
-        .client(PersonModel.toEntity(model.getClient()))
-        .build();
-  }
-
-  public static WorkflowStartModel toModel(Workflow entity) {
-    return WorkflowStartModel.builder()
-        .workflowType(entity.getWorkflowType())
-        .businessObjectId(entity.getBusinessObjectId())
-        .swissId(entity.getSwissId())
-        .description(entity.getDescription())
-        .workflowStatus(entity.getStatus())
-        .workflowComment(entity.getWorkflowComment())
-        .client(PersonModel.toModel(entity.getClient()))
+        .client(ClientPersonModel.toEntity(model.getClient()))
         .build();
   }
 

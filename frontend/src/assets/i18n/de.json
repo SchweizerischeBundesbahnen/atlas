@@ -450,11 +450,17 @@
     "BUTTON": {
       "ADD": "Anhörung erfassen",
       "START": "Anhörung starten",
+      "ACCEPT": "Genehmigen",
+      "REJECT": "Zurückweisen",
       "CANCEL": "Anhörung abbrechen"
     },
     "START": {
       "COMMENT": "Begründung",
       "KEY_DATA": "Antragstellende Person"
+    },
+    "CHECK": {
+      "COMMENT": "Bemerkung zur Freigabe / Ablehnung",
+      "KEY_DATA": "Prüfende Person"
     },
     "PERSON": {
       "FIRSTNAME": "Vorname",
@@ -473,6 +479,10 @@
     "NOTIFICATION": {
       "START": {
         "SUCCESS": "Ihr Antrag wurde erfolgreich übermittelt"
+      },
+      "CHECK": {
+        "ACCEPTED": "Der Antrag wurde erfolgreich genehmigt.",
+        "REJECTED": "Der Antrag wurde erfolgreich zurückgewiesen."
       }
     }
   }

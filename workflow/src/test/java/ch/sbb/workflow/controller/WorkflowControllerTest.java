@@ -3,10 +3,7 @@ package ch.sbb.workflow.controller;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
-import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
-import ch.sbb.workflow.api.PersonModel;
-import ch.sbb.workflow.api.WorkflowModel;
-import ch.sbb.workflow.api.WorkflowStartModel;
+import ch.sbb.workflow.api.*;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.workflow.WorkflowRepository;
@@ -14,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -39,7 +35,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
 
   @Test
   public void shouldGetWorkflows() throws Exception {
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
@@ -90,7 +86,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   @Test
   public void shouldCreateWorkflow() throws Exception {
     //when
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
@@ -117,7 +113,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   @Test
   public void shouldNotCreateWorkflowWhenWorkflowTypeIsNull() throws Exception {
     //when
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
@@ -151,7 +147,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   @Test
   public void shouldNotCreateWorkflowWhenWorkflowPersonNameHasWrongEncoding() throws Exception {
     //when
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel person = ClientPersonModel.builder()
         .firstName("\uD83D\uDE00\uD83D\uDE01\uD83D")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
@@ -187,7 +183,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   @Test
   public void shouldNotCreateWorkflowWhenWorkflowWorkflowDescriptionHasWrongEncoding() throws Exception {
     //when
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel person = ClientPersonModel.builder()
             .firstName("Marek")
             .lastName("Hamsik")
             .personFunction("Centrocampista")
@@ -223,13 +219,14 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   @Test
   public void shouldAcceptWorkflow() throws Exception {
     //when
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel client = ClientPersonModel.builder()
             .firstName("Marek")
             .lastName("Hamsik")
             .personFunction("Centrocampista")
-            .mail("a@b.c").build();
+            .mail("a@b.c")
+            .build();
     WorkflowStartModel workflowModel = WorkflowStartModel.builder()
-            .client(person)
+            .client(client)
             .swissId("CH123456")
             .description("ch:123:431")
             .workflowComment("comment")
@@ -239,15 +236,18 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
     WorkflowModel startedWorkflow = controller.startWorkflow(workflowModel);
 
     ExaminantWorkflowCheckModel workflowCheck = ExaminantWorkflowCheckModel.builder()
-            .accepted(true).checkComment("ok").examinant(person).build();
+            .accepted(true).checkComment("ok").examinant(PersonModel.builder()
+                    .firstName("Marek")
+                    .lastName("Hamsik")
+                    .personFunction("Centrocampista")
+                    .build())
+            .build();
 
     //given
     mvc.perform(post("/v1/workflows/" + startedWorkflow.getId() + "/examinant-check")
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(workflowCheck)))
-            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.checkComment", is("ok")));
   }
-
 }
