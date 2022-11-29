@@ -1,21 +1,23 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { WorkflowFormGroup } from '../workflow-form-group';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
 import { Subject } from 'rxjs';
-import { WorkflowService } from '../../../api';
+import { UserAdministrationService, WorkflowService } from '../../../api';
 import { takeUntil } from 'rxjs/operators';
-import { Record } from '../../components/base-detail/record';
+import { WorkflowCheckFormGroup } from './workflow-check-form-group';
+import { Router } from '@angular/router';
+import { NotificationService } from '../../notification/notification.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-workflow-check-form',
   templateUrl: './workflow-check-form.component.html',
 })
-export class WorkflowCheckFormComponent {
+export class WorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;
 
-  formGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
+  formGroup: FormGroup<WorkflowCheckFormGroup> = new FormGroup<WorkflowCheckFormGroup>({
     comment: new FormControl('', [
       AtlasFieldLengthValidator.comments,
       AtlasCharsetsValidator.iso88591,
@@ -35,17 +37,20 @@ export class WorkflowCheckFormComponent {
       AtlasFieldLengthValidator.length_50,
       AtlasCharsetsValidator.iso88591,
     ]),
-
-    // TODO: mail required by db, but not by requirement
-    mail: new FormControl('', [
-      Validators.required,
-      AtlasFieldLengthValidator.length_255,
-      AtlasCharsetsValidator.email,
-    ]),
   });
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private workflowService: WorkflowService) {}
+  constructor(
+    private readonly workflowService: WorkflowService,
+    private readonly router: Router,
+    private readonly notificationService: NotificationService,
+    private readonly userAdministrationService: UserAdministrationService,
+    public authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    this.fillDefaultExaminant();
+  }
 
   acceptWorkflow() {
     this.checkWorkflow(true);
@@ -61,6 +66,7 @@ export class WorkflowCheckFormComponent {
       this.formGroup.controls.comment.updateValueAndValidity();
     }
     this.validateForm();
+
     if (this.formGroup.valid) {
       this.workflowService
         .examinantCheck(this.workflowId!, {
@@ -69,13 +75,17 @@ export class WorkflowCheckFormComponent {
           examinant: {
             firstName: this.formGroup.value.firstName!,
             lastName: this.formGroup.value.lastName!,
-            mail: this.formGroup.value.mail!,
             personFunction: this.formGroup.value.function!,
           },
         })
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((workflow) => {
-          console.log(workflow);
+        .subscribe(() => {
+          this.router.navigate([this.router.url]);
+          this.notificationService.success(
+            accepted
+              ? 'WORKFLOW.NOTIFICATION.CHECK.ACCEPTED'
+              : 'WORKFLOW.NOTIFICATION.CHECK.REJECTED'
+          );
         });
     }
   }
@@ -87,5 +97,15 @@ export class WorkflowCheckFormComponent {
         control.markAsTouched({ onlySelf: true });
       }
     });
+  }
+
+  private fillDefaultExaminant() {
+    this.userAdministrationService
+      .getCurrentUser()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((user) => {
+        this.formGroup.controls.firstName.setValue(user.firstName);
+        this.formGroup.controls.lastName.setValue(user.lastName);
+      });
   }
 }

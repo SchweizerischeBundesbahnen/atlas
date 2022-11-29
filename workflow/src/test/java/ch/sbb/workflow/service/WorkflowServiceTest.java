@@ -128,7 +128,8 @@ public class WorkflowServiceTest {
                     .firstName("Marek")
                     .lastName("Hamsik")
                     .personFunction("Centrocampista")
-                    .mail("a@b.c").build()).build());
+                    .build())
+            .build());
 
     //then
     assertThat(result).isNotNull();
@@ -156,7 +157,8 @@ public class WorkflowServiceTest {
                     .firstName("Marek")
                     .lastName("Hamsik")
                     .personFunction("Centrocampista")
-                    .mail("a@b.c").build()).build());
+                    .build())
+            .build());
 
     //then
     assertThat(result).isNotNull();

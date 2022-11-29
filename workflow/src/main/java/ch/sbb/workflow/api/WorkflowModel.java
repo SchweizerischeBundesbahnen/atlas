@@ -59,7 +59,7 @@ public class WorkflowModel {
   private String checkComment;
 
   @Schema(description = "Client")
-  private PersonModel client;
+  private ClientPersonModel client;
 
   @Schema(description = "Examinant")
   private PersonModel examinant;
@@ -83,7 +83,7 @@ public class WorkflowModel {
         .creationDate(entity.getCreationDate())
         .editionDate(entity.getEditionDate());
     if (entity.getClient() != null) {
-      builder.client(PersonModel.toModel(entity.getClient()));
+      builder.client(ClientPersonModel.toModel(entity.getClient()));
     }
     if (entity.getExaminant() != null) {
       builder.examinant(PersonModel.toModel(entity.getExaminant()));
@@ -102,7 +102,7 @@ public class WorkflowModel {
         .workflowStatus(entity.getStatus())
         .workflowComment(entity.getWorkflowComment())
         .checkComment(entity.getCheckComment())
-        .client(PersonModel.toModel(entity.getClient()))
+        .client(ClientPersonModel.toModel(entity.getClient()))
         .creationDate(entity.getCreationDate())
         .editionDate(entity.getEditionDate())
         .build();
