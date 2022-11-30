@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ValidationError } from './validation-error';
-import { ValidationErrors } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
 
 @Injectable({
@@ -49,5 +49,16 @@ export class ValidationService {
     if (validationError?.max && typeof validationError?.max.format === 'function') {
       return validationError.max.format(DATE_PATTERN);
     }
+  }
+
+  public static validateForm(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach((field) => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        ValidationService.validateForm(control);
+      }
+    });
   }
 }
