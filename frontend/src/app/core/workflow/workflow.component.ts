@@ -17,8 +17,9 @@ import { NotificationService } from '../notification/notification.service';
 import { DialogService } from '../components/dialog/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WorkflowEvent } from './model/workflow-event';
-import { Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Record } from '../components/base-detail/record';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
@@ -30,12 +31,11 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   @Input() lineRecord!: LineRecord;
   @Input() descriptionForWorkflow!: string;
   @Output() workflowEvent = new EventEmitter<WorkflowEvent>();
-
+  @Input() switchVersionEvent!: Observable<Record>;
   isAddWorkflowButtonDisabled = false;
   isWorkflowFormEditable = false;
   isReadMode = false;
   workflowStatusTranslated!: string;
-
   workflowFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
     comment: new FormControl('', [
       Validators.required,
@@ -64,6 +64,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       AtlasCharsetsValidator.iso88591,
     ]),
   });
+  private eventsSubscription!: Subscription;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -81,6 +82,11 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.eventsSubscription = this.switchVersionEvent
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((record) => {
+        this.reloadWorkflowAfterSwitchEvent(record);
+      });
     this.initWorkflowForm();
   }
 
@@ -232,6 +238,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   private populateUserDataFormFromAuthenticatedUser() {
+    this.workflowFormGroup.reset();
     this.userAdministrationService
       .getCurrentUser()
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -254,5 +261,27 @@ export class WorkflowComponent implements OnInit, OnDestroy {
 
   private getStringValue(value: string | undefined) {
     return value ?? '';
+  }
+
+  //this method will be extremly simplified as soon as we migrate to Pages instead of Modal Dialog!!
+  private reloadWorkflowAfterSwitchEvent(record: Record) {
+    //reset all
+    this.isReadMode = false;
+    this.isAddWorkflowButtonDisabled = false;
+    this.isWorkflowFormEditable = false;
+    this.workflowFormGroup.enable();
+    this.lineRecord = record;
+    const workflowsInProgress = this.filterWorkflowsInProgress();
+    if (workflowsInProgress.length === 0) {
+      //show only add workflow button
+      this.isAddWorkflowButtonDisabled = false;
+      this.isReadMode = false;
+    } else if (workflowsInProgress.length === 1) {
+      //show workflow expansion-panel
+      this.isReadMode = true;
+      this.isAddWorkflowButtonDisabled = true;
+      this.isWorkflowFormEditable = false;
+      this.initWorkflowForm();
+    }
   }
 }
