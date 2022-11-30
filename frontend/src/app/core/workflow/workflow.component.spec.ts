@@ -14,7 +14,7 @@ import {
   WorkflowStart,
 } from '../../api';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { DialogService } from '../components/dialog/dialog.service';
 import WorkflowStatusEnum = WorkflowStart.WorkflowStatusEnum;
@@ -87,6 +87,7 @@ describe('WorkflowComponent', () => {
     };
 
     component = fixture.componentInstance;
+    fixture.componentInstance.switchVersionEvent = new Observable();
     fixture.detectChanges();
   });
 
@@ -103,8 +104,8 @@ describe('WorkflowComponent', () => {
     component.showWorflowForm();
     //then
     const form = component.workflowFormGroup.value;
-    expect(form.comment).toEqual('');
-    expect(form.function).toEqual('');
+    expect(form.comment).toBeNull();
+    expect(form.function).toBeNull();
     expect(form.firstName).toEqual('Hamsik');
     expect(form.lastName).toEqual('Marek');
     expect(form.mail).toEqual('a@b.cd');
