@@ -32,7 +32,6 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   @Input() descriptionForWorkflow!: string;
   @Output() workflowEvent = new EventEmitter<WorkflowEvent>();
   @Input() switchVersionEvent!: Observable<Record>;
-  isSwitchEventHappend = false;
   isAddWorkflowButtonDisabled = false;
   isWorkflowFormEditable = false;
   isReadMode = false;
