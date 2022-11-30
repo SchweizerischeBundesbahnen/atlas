@@ -40,6 +40,7 @@ public class WorkflowNotificationServiceTest {
     //given
     Workflow workflow = Workflow.builder()
         .workflowType(WorkflowType.LINE)
+        .status(WorkflowStatus.STARTED)
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
     when(lineWorkflowService.buildWorkflowStartedMailNotification(workflow)).thenReturn(mailNotification);
