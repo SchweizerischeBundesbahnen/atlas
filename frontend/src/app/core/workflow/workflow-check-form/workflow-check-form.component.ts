@@ -9,6 +9,7 @@ import { WorkflowCheckFormGroup } from './workflow-check-form-group';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../notification/notification.service';
 import { AuthService } from '../../auth/auth.service';
+import { ValidationService } from '../../validation/validation.service';
 
 @Component({
   selector: 'app-workflow-check-form',
@@ -65,7 +66,7 @@ export class WorkflowCheckFormComponent implements OnInit {
       this.formGroup.controls.comment.addValidators(Validators.required);
       this.formGroup.controls.comment.updateValueAndValidity();
     }
-    this.validateForm();
+    ValidationService.validateForm(this.formGroup);
 
     if (this.formGroup.valid) {
       this.workflowService
@@ -88,15 +89,6 @@ export class WorkflowCheckFormComponent implements OnInit {
           );
         });
     }
-  }
-
-  private validateForm() {
-    Object.keys(this.formGroup.controls).forEach((field) => {
-      const control = this.formGroup.get(field);
-      if (control) {
-        control.markAsTouched({ onlySelf: true });
-      }
-    });
   }
 
   private fillDefaultExaminant() {
