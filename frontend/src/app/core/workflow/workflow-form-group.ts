@@ -5,5 +5,5 @@ export interface WorkflowFormGroup {
   firstName: FormControl<string | null | undefined>;
   lastName: FormControl<string | null | undefined>;
   function: FormControl<string | null | undefined>;
-  mail: FormControl<string | null | undefined>;
+  mail?: FormControl<string | null | undefined>;
 }
