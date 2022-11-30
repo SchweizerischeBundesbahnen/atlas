@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BaseDetailController } from './base-detail-controller';
 import { KeepaliveService } from '../../keepalive/keepalive.service';
 import { Record } from './record';
-import { Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { WorkflowEvent } from '../../workflow/model/workflow-event';
 import { environment } from '../../../../environments/environment';
 
