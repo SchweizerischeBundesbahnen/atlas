@@ -52,12 +52,8 @@ module.exports = function (config) {
       ],
     },
     browserConsoleLogOptions: {level: 'error'},
-    browsers: ['Chrome', 'ChromeHeadless', 'ChromiumHeadlessNoSandbox'],
+    browsers: ['Chrome', 'ChromiumHeadlessNoSandbox'],
     customLaunchers: {
-      ChromeHeadlessCI: {
-        base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
-      },
       ChromeHeadlessNoSandbox: {
         base: "ChromeHeadless",
         flags: ["--no-sandbox"]
