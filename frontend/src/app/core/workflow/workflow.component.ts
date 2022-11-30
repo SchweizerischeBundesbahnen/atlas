@@ -21,6 +21,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Record } from '../components/base-detail/record';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
+import { ValidationService } from '../validation/validation.service';
 
 @Component({
   selector: 'app-workflow [lineRecord]',
@@ -99,7 +100,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   }
 
   startWorflow() {
-    this.validateForm();
+    ValidationService.validateForm(this.workflowFormGroup);
     if (this.workflowFormGroup.valid) {
       const workflowStart: WorkflowStart = this.populateWorkflowStart();
       this.workflowService
@@ -195,15 +196,6 @@ export class WorkflowComponent implements OnInit, OnDestroy {
 
   private getBusinessObjectId() {
     return this.lineRecord.id !== undefined ? this.lineRecord.id : NaN;
-  }
-
-  private validateForm() {
-    Object.keys(this.workflowFormGroup.controls).forEach((field) => {
-      const control = this.workflowFormGroup.get(field);
-      if (control) {
-        control.markAsTouched({ onlySelf: true });
-      }
-    });
   }
 
   private initWorkflowForm() {
