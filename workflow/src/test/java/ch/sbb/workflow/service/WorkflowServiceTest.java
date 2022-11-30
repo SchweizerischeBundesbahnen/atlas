@@ -136,7 +136,7 @@ public class WorkflowServiceTest {
     assertThat(result.getCheckComment()).isEqualTo("Great Job");
     assertThat(result.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
     verify(notificationService).sendEventToLidi(workflow);
-    verify(notificationService).sendResultMailToClient(workflow);
+    verify(notificationService).sendEventToMail(workflow);
   }
   @Test
   public void shouldRejectWorkflow() {
@@ -165,7 +165,7 @@ public class WorkflowServiceTest {
     assertThat(result.getCheckComment()).isEqualTo("Bad Job");
     assertThat(result.getStatus()).isEqualTo(WorkflowStatus.REJECTED);
     verify(notificationService).sendEventToLidi(workflow);
-    verify(notificationService).sendResultMailToClient(workflow);
+    verify(notificationService).sendEventToMail(workflow);
 
   }
 }
