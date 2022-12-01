@@ -1,0 +1,36 @@
+server:
+  port: 8088
+  error:
+    include-message: always
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service-point-directory
+    username: user
+    password: pwd
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: service-point-directory
+  jpa:
+    open-in-view: false
+
+info:
+  app:
+    name: service-point-directory
+    version: @version@
+    buildtime: @timestamp@
+logging:
+  level:
+    root: INFO
+    com:
+      azure:
+        identity: WARN
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
