@@ -214,7 +214,7 @@ export class LineDetailComponent
   }
 
   getFormControlsToDisable(): string[] {
-    return this.record.status === Status.InReview ? ['validFrom', 'validTo'] : [];
+    return this.record.status === Status.InReview ? ['validFrom', 'validTo', 'lineType'] : [];
   }
 
   ngOnDestroy() {
