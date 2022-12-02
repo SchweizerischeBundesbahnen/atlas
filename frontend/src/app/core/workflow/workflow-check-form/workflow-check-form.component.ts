@@ -5,11 +5,11 @@ import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets
 import { Subject } from 'rxjs';
 import { UserAdministrationService, WorkflowService } from '../../../api';
 import { takeUntil } from 'rxjs/operators';
+import { WorkflowCheckFormGroup } from './workflow-check-form-group';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../notification/notification.service';
 import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
-import { WorkflowFormGroup } from '../workflow-form-group';
 
 @Component({
   selector: 'app-workflow-check-form',
@@ -18,7 +18,7 @@ import { WorkflowFormGroup } from '../workflow-form-group';
 export class WorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;
 
-  formGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
+  formGroup: FormGroup<WorkflowCheckFormGroup> = new FormGroup<WorkflowCheckFormGroup>({
     comment: new FormControl('', [
       AtlasFieldLengthValidator.comments,
       AtlasCharsetsValidator.iso88591,
