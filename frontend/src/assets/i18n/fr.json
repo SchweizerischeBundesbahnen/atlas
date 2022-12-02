@@ -284,6 +284,7 @@
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La ligne temporaire valide de {{validFrom}} à {{validTo}} dépasse la validité maximale de 12 mois.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La version de {{validFrom}} à {{validTo}} fait partie de versions temporaires connexes. Ensemble, elles dépassent la validité maximale de 12 mois.",
+      "UPDATE_IN_REVIEW": "Il n'est pas possible de modifier le type ou la validité pendant une audition.",
       "NUMBER": "Numéro de ligne",
       "NUMBER_INFO": "Tooltip numéro de ligne à remplacer",
       "DESCRIPTION": "Désignation de la ligne",

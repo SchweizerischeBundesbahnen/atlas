@@ -284,6 +284,7 @@
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Die temporäre Linie mit der Gültigkeit von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Die Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen. Diese überschreiten zusammen die maximale Gültigkeit von 12 Monaten.",
+      "UPDATE_IN_REVIEW": "Während einer Anhörung ist es nicht möglich den Typ oder die Gültigkeit zu verändern",
       "NUMBER": "Liniennummer",
       "NUMBER_INFO": "Liniennummer Tooltip to replace",
       "DESCRIPTION": "Linienbezeichnung",
