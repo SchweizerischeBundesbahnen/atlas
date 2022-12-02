@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://service-point-directory-int.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/service_point_directory
+    username: ${DB_USER}
+    password: ${DB_PWD}
+kafka:
+  atlas:
+    user:
+      administration:
+        topic: atlas.int.user.administration
+        groupId: atlas.kafka.spdi.user.administration.groupId
+    workflow:
+      topic: atlas.int.workflow
+      groupId: atlas.int.kafka.workflow.groupId
+auth:
+  audience:
+    service-name: 733b361e-a067-4882-bb00-6bbaf36a007f
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
