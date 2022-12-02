@@ -6,7 +6,7 @@ CREATE TABLE service_point_version
 (
     id                   BIGINT      NOT NULL PRIMARY KEY,
     number               INTEGER     NOT NULL,
-    check_digit          INTEGER     NOT NULL,
+    check_digit          SMALLINT    NOT NULL,
     number_short         INTEGER     NOT NULL,
     uic_country_code     INTEGER     NOT NULL,
     designation_long     VARCHAR(50) NULL,
