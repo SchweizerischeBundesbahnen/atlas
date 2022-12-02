@@ -26,7 +26,7 @@ CREATE TABLE service_point_version
 
 CREATE SEQUENCE service_point_version_seq START WITH 1000 INCREMENT BY 1;
 
-CREATE TABLE service_point_geolocation_version
+CREATE TABLE service_point_version_geolocation
 (
     id                      BIGINT      NOT NULL PRIMARY KEY,
     service_point_version   BIGINT      NOT NULL,
