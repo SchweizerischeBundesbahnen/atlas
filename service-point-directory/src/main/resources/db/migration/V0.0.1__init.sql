@@ -12,7 +12,7 @@ CREATE TABLE service_point_version
     designation_long     VARCHAR(50) NULL,
     designation_official VARCHAR(30) NOT NULL,
     abbreviation         VARCHAR(6) NULL,
-    status_didok         INTEGER     NOT NULL,
+    status_didok         SMALLINT    NOT NULL,
     said                 VARCHAR(38) NULL,
     has_geolocation      BOOLEAN NULL DEFAULT FALSE,
     valid_from           DATE        NOT NULL,
