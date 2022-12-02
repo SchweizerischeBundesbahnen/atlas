@@ -8,7 +8,7 @@ CREATE TABLE service_point_version
     number               INTEGER     NOT NULL,
     check_digit          SMALLINT    NOT NULL,
     number_short         INTEGER     NOT NULL,
-    uic_country_code     INTEGER     NOT NULL,
+    uic_country_code     SMALLINT    NOT NULL,
     designation_long     VARCHAR(50) NULL,
     designation_official VARCHAR(30) NOT NULL,
     abbreviation         VARCHAR(6) NULL,
