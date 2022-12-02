@@ -1,8 +1,10 @@
 package ch.sbb.line.directory.validation;
 
+import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
+import ch.sbb.line.directory.exception.LineInReviewValidationException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
@@ -99,4 +101,14 @@ public class LineValidationService {
     return getDaysBetween(date1, date2) == 1;
   }
 
+  public void validateLineForUpdate(LineVersion currentVersion, LineVersion editedVersion) {
+    if (currentVersion.getStatus() == Status.IN_REVIEW) {
+      if (!currentVersion.getValidFrom().isEqual(editedVersion.getValidFrom())
+              || !currentVersion.getValidTo().isEqual(editedVersion.getValidTo())
+              || currentVersion.getLineType() != editedVersion.getLineType()
+      ) {
+        throw new LineInReviewValidationException();
+      }
+    }
+  }
 }
