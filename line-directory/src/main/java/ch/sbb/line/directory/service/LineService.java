@@ -120,6 +120,7 @@ public class LineService {
       throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
     }
 
+    lineValidationService.validateLineForUpdate(currentVersion, editedVersion);
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
 
