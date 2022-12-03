@@ -132,24 +132,30 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>asciidoctor-maven-plugin</artifactId>
-        <groupId>org.asciidoctor</groupId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <groupId>org.jacoco</groupId>
-      </plugin>
-    </plugins>
-  </build>
+   <build>
+      <testResources>
+         <testResource>
+            <directory>src/test/resources</directory>
+            <filtering>true</filtering>
+         </testResource>
+      </testResources>
+      <plugins>
+         <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+         </plugin>
+         <plugin>
+            <artifactId>asciidoctor-maven-plugin</artifactId>
+            <groupId>org.asciidoctor</groupId>
+         </plugin>
+         <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+         </plugin>
+         <plugin>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <groupId>org.jacoco</groupId>
+         </plugin>
+      </plugins>
+   </build>
 
 </project>
