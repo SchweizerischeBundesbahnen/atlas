@@ -81,10 +81,10 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-      <artifactId>spring-security-test</artifactId>
-      <groupId>org.springframework.security</groupId>
-      <scope>test</scope>
-   </dependency>
+         <artifactId>spring-security-test</artifactId>
+         <groupId>org.springframework.security</groupId>
+         <scope>test</scope>
+      </dependency>
       <dependency>
          <artifactId>spring-restdocs-mockmvc</artifactId>
          <groupId>org.springframework.restdocs</groupId>
@@ -114,6 +114,12 @@
       </dependency>
    </dependencies>
    <build>
+      <testResources>
+         <testResource>
+            <directory>src/test/resources</directory>
+            <filtering>true</filtering>
+         </testResource>
+      </testResources>
       <plugins>
          <plugin>
             <artifactId>asciidoctor-maven-plugin</artifactId>
