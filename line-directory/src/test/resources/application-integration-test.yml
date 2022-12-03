@@ -30,6 +30,10 @@ logging:
           test: error
         test: error
         web: error
+info:
+  app:
+    name: line-directory
+    version: @version@
 amazon:
   accessKey: ${AMAZON_S3_ACCESS_KEY}
   secretKey: ${AMAZON_S3_SECRET_KEY}
