@@ -49,6 +49,9 @@ const authServiceMock: Partial<AuthService> = {
   hasPermissionsToWrite(): boolean {
     return true;
   },
+  isAtLeastSupervisor(): boolean {
+    return true;
+  },
   getApplicationUserPermission(applicationType: ApplicationType): UserPermissionVersionModel {
     return { application: applicationType, role: ApplicationRole.Supervisor, sboids: [] };
   },
