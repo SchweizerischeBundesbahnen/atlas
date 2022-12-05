@@ -241,7 +241,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         this.workflowFormGroup.controls.firstName.setValue(user.firstName);
         this.workflowFormGroup.controls.lastName.setValue(user.lastName);
-        this.workflowFormGroup.controls.mail!.setValue(user.mail);
+        this.workflowFormGroup.controls.mail.setValue(user.mail);
       });
   }
 
@@ -252,7 +252,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     this.workflowFormGroup.controls.firstName.setValue(workflow.client?.firstName);
     this.workflowFormGroup.controls.lastName.setValue(workflow.client?.lastName);
     this.workflowFormGroup.controls.function.setValue(workflow.client?.personFunction);
-    this.workflowFormGroup.controls.mail!.setValue(workflow.client?.mail);
+    this.workflowFormGroup.controls.mail.setValue(workflow.client?.mail);
   }
 
   private getStringValue(value: string | undefined) {
