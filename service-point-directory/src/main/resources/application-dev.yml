@@ -9,9 +9,6 @@ kafka:
       administration:
         topic: atlas.dev.user.administration
         groupId: atlas.kafka.spdi.user.administration.groupId
-    workflow:
-      topic: atlas.dev.workflow
-      groupId: atlas.kafka.workflow.groupId
 logging:
   pattern:
     console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
