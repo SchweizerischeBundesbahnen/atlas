@@ -3,15 +3,15 @@ import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { UserService } from '../service/user.service';
 import { Pages } from '../../pages';
-import { UserModel } from '../../../api/model/userModel';
+import { User } from '../../../api';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserAdministrationResolver implements Resolve<UserModel> {
+export class UserAdministrationResolver implements Resolve<User> {
   constructor(private readonly userService: UserService, private readonly router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<UserModel> {
+  resolve(route: ActivatedRouteSnapshot): Observable<User> {
     const sbbUserIdParam = route.paramMap.get('sbbUserId');
     if (sbbUserIdParam === 'add') {
       return of({});
