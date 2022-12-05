@@ -120,6 +120,11 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
+  public void skipWorkflow(Long id) {
+    lineService.skipWorkflow(id);
+  }
+
+  @Override
   public CoverageModel getLineCoverage(String slnid) {
     return CoverageModel.toModel(coverageService.getSublineCoverageBySlnidAndLineModelType(slnid));
   }
