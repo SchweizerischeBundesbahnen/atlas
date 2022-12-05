@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "BusinessOrganisationVersion")
-public class BusinessOrganisationVersionVersionModel extends BaseVersionModel implements DatesValidator {
+public class BusinessOrganisationVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
@@ -117,7 +117,7 @@ public class BusinessOrganisationVersionVersionModel extends BaseVersionModel im
       accessMode = AccessMode.READ_ONLY)
   private Integer etagVersion;
 
-  public static BusinessOrganisationVersion toEntity(BusinessOrganisationVersionVersionModel model) {
+  public static BusinessOrganisationVersion toEntity(BusinessOrganisationVersionModel model) {
     return BusinessOrganisationVersion.builder()
         .id(model.getId())
         .status(model.getStatus())
@@ -139,8 +139,8 @@ public class BusinessOrganisationVersionVersionModel extends BaseVersionModel im
         .build();
   }
 
-  public static BusinessOrganisationVersionVersionModel toModel(BusinessOrganisationVersion entity) {
-    return BusinessOrganisationVersionVersionModel
+  public static BusinessOrganisationVersionModel toModel(BusinessOrganisationVersion entity) {
+    return BusinessOrganisationVersionModel
         .builder()
         .id(entity.getId())
         .status(entity.getStatus())
