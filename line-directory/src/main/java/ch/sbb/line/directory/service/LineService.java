@@ -70,6 +70,11 @@ public class LineService {
     return lineVersions;
   }
 
+  public void skipWorkflow(Long lineVersionId) {
+    LineVersion lineVersion = findById(lineVersionId).orElseThrow(() -> new IdNotFoundException(lineVersionId));
+    lineVersion.setStatus(Status.VALIDATED);
+  }
+
   public void deleteById(Long id) {
     LineVersion lineVersion = lineVersionRepository.findById(id).orElseThrow(
         () -> new IdNotFoundException(id));

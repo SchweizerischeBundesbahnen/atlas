@@ -453,7 +453,8 @@
       "START": "Anhörung starten",
       "ACCEPT": "Genehmigen",
       "REJECT": "Zurückweisen",
-      "CANCEL": "Anhörung abbrechen"
+      "CANCEL": "Anhörung abbrechen",
+      "SKIP": "Anhörung überspringen"
     },
     "START": {
       "COMMENT": "Begründung",
@@ -484,6 +485,9 @@
       "CHECK": {
         "ACCEPTED": "Der Antrag wurde erfolgreich genehmigt.",
         "REJECTED": "Der Antrag wurde erfolgreich zurückgewiesen."
+      },
+      "SKIP": {
+        "SUCCESS": "Die Änhörung wurde erfolgreich übersprungen."
       }
     }
   }
