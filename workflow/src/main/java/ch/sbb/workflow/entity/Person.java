@@ -49,7 +49,6 @@ public class Person {
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String function;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String mail;
 

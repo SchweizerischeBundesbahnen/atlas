@@ -40,9 +40,10 @@ public class WorkflowNotificationServiceTest {
     //given
     Workflow workflow = Workflow.builder()
         .workflowType(WorkflowType.LINE)
+        .status(WorkflowStatus.STARTED)
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-    when(lineWorkflowService.buildMailNotification(workflow)).thenReturn(mailNotification);
+    when(lineWorkflowService.buildWorkflowStartedMailNotification(workflow)).thenReturn(mailNotification);
 
     //when
     notificationService.sendEventToMail(workflow);
@@ -57,7 +58,7 @@ public class WorkflowNotificationServiceTest {
     Workflow workflow = Workflow.builder()
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-    when(lineWorkflowService.buildMailNotification(workflow)).thenReturn(mailNotification);
+    when(lineWorkflowService.buildWorkflowStartedMailNotification(workflow)).thenReturn(mailNotification);
     //when
     notificationService.sendEventToMail(workflow);
     //then
