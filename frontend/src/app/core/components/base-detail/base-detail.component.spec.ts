@@ -8,7 +8,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
 import { Component, Input } from '@angular/core';
-import { ApplicationRole, ApplicationType, UserPermissionVersionModel } from '../../../api';
+import { ApplicationRole, ApplicationType, Status, UserPermissionVersionModel } from '../../../api';
 import { MockUserDetailInfoComponent } from '../../../app.testing.mocks';
 import { AtlasButtonComponent } from '../button/atlas-button.component';
 
@@ -51,6 +51,9 @@ describe('BaseDetailComponent', () => {
       return this.claims!.roles.includes(role);
     },
     get isAdmin(): boolean {
+      return true;
+    },
+    isAtLeastSupervisor(): boolean {
       return true;
     },
     hasPermissionsToWrite(): boolean {
@@ -161,7 +164,7 @@ function createDummyForm(enabledForm: boolean) {
     {
       heading: undefined,
       form: form,
-      record: { id: 1 },
+      record: { id: 1, status: Status.Validated },
       selectedRecordChange: selectedRecordChange,
     }
   );
