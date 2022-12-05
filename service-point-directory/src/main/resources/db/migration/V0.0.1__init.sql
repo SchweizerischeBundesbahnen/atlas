@@ -55,5 +55,5 @@ CREATE TABLE service_point_version_geolocation
             REFERENCES service_point_version (version)
 );
 
-CREATE SEQUENCE service_point_geolocation_version_seq START WITH 1000 INCREMENT BY 1;
+CREATE SEQUENCE service_point_version_geolocation_seq START WITH 1000 INCREMENT BY 1;
 
