@@ -9,9 +9,6 @@ kafka:
       administration:
         topic: atlas.test.user.administration
         groupId: atlas.kafka.spdi.user.administration.groupId
-    workflow:
-      topic: atlas.test.workflow
-      groupId: atlas.test.kafka.workflow.groupId
 auth:
   audience:
     service-name: 2e8c6ce0-304d-42e1-9bce-600b3ea43aad
