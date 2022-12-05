@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../../notification/notification.service';
 import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
+import { WorkflowEvent } from '../model/workflow-event';
 
 @Component({
   selector: 'app-workflow-check-form',
@@ -17,6 +18,7 @@ import { ValidationService } from '../../validation/validation.service';
 })
 export class WorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;
+  @Output() workflowEvent = new EventEmitter<WorkflowEvent>();
 
   formGroup: FormGroup<WorkflowCheckFormGroup> = new FormGroup<WorkflowCheckFormGroup>({
     comment: new FormControl('', [
@@ -81,7 +83,7 @@ export class WorkflowCheckFormComponent implements OnInit {
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
-          this.router.navigate([this.router.url]).then();
+          this.workflowEvent.emit({ reload: true });
           this.notificationService.success(
             accepted
               ? 'WORKFLOW.NOTIFICATION.CHECK.ACCEPTED'
