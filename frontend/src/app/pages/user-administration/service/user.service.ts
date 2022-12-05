@@ -8,7 +8,7 @@ import {
   UserPermissionVersionModel,
 } from '../../../api';
 import { map } from 'rxjs/operators';
-import { UserModel } from '../../../api/model/userModel';
+import { User } from '../../../api/model/user';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,7 @@ export class UserService {
     size: number,
     sboids: Set<string> | undefined = undefined,
     applicationTypes: Set<ApplicationType> | undefined = undefined
-  ): Observable<{ users: UserModel[]; totalCount: number }> {
+  ): Observable<{ users: User[]; totalCount: number }> {
     return this.userAdministrationService.getUsers(sboids, applicationTypes, page, size).pipe(
       map((value) => {
         return { users: value.objects!, totalCount: value.totalCount! };
@@ -32,11 +32,11 @@ export class UserService {
     );
   }
 
-  getUser(userId: string): Observable<UserModel> {
+  getUser(userId: string): Observable<User> {
     return this.userAdministrationService.getUser(userId);
   }
 
-  searchUsers(searchQuery: string): Observable<UserModel[]> {
+  searchUsers(searchQuery: string): Observable<User[]> {
     return this.userInformationService.searchUsers(searchQuery);
   }
 
@@ -48,15 +48,15 @@ export class UserService {
     );
   }
 
-  getPermissionsFromUserModelAsArray(user: UserModel): UserPermissionVersionModel[] {
+  getPermissionsFromUserModelAsArray(user: User): UserPermissionVersionModel[] {
     return Array.from(user.permissions ?? []);
   }
 
-  createUserPermission(userPermission: UserPermissionCreateModel): Observable<UserModel> {
+  createUserPermission(userPermission: UserPermissionCreateModel): Observable<User> {
     return this.userAdministrationService.createUserPermission(userPermission);
   }
 
-  updateUserPermission(userPermission: UserPermissionCreateModel): Observable<UserModel> {
+  updateUserPermission(userPermission: UserPermissionCreateModel): Observable<User> {
     return this.userAdministrationService.updateUserPermissions(userPermission);
   }
 }

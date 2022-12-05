@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserModel } from '../../../../api/model/userModel';
+import { User } from '../../../../api';
 
 @Component({
   selector: 'app-user-administration',
@@ -9,7 +9,7 @@ import { UserModel } from '../../../../api/model/userModel';
 export class UserAdministrationComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any) {}
 
-  user: UserModel = {};
+  user: User = {};
 
   ngOnInit(): void {
     this.user = this.dialogData.user;
