@@ -26,6 +26,7 @@ CREATE TABLE line_version_snapshot
     editor                VARCHAR(50),
     version               BIGINT       NOT NULL DEFAULT 0,
     workflow_id           BIGINT       NOT NULL,
+    workflow_status       VARCHAR(50)  NOT NULL,
     parent_object_id      BIGINT       NOT NULL
 );
 

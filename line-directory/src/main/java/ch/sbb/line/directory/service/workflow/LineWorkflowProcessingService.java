@@ -82,6 +82,11 @@ public class LineWorkflowProcessingService extends
         .description(lineVersion.getDescription())
         .businessOrganisation(lineVersion.getBusinessOrganisation())
         .comment(lineVersion.getComment())
+        .creator(lineVersion.getCreator())
+        .creationDate(lineVersion.getCreationDate())
+        .editor(lineVersion.getEditor())
+        .editionDate(lineVersion.getEditionDate())
+        .version(lineVersion.getVersion())
         .build();
     return lineVersionSnapshot;
   }

@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.model;
+package ch.sbb.line.directory.model.search;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
@@ -27,7 +27,6 @@ public class LineSearchRestrictions extends BusinessOrganisationDependentSearchR
   @Singular(ignoreNullCollections = true)
   private List<LineType> typeRestrictions;
 
-
   @Override
   protected SingularAttribute<Line, Status> getStatus() {
     return Line_.status;
@@ -36,22 +35,22 @@ public class LineSearchRestrictions extends BusinessOrganisationDependentSearchR
   @Override
   public Specification<Line> getSpecification() {
     return getBaseSpecification().and(
-                                     specificationBuilder().enumSpecification(typeRestrictions, Line_.lineType))
-                                 .and(specificationBuilder().singleStringSpecification(
-                                     swissLineNumber));
+            specificationBuilder().enumSpecification(typeRestrictions, Line_.lineType))
+        .and(specificationBuilder().singleStringSpecification(
+            swissLineNumber));
   }
 
   @Override
   protected SpecificationBuilder<Line> specificationBuilder() {
     return SpecificationBuilder.<Line>builder()
-                               .stringAttributes(
-                                   List.of(Line.Fields.swissLineNumber,
-                                       Line.Fields.number,
-                                       Line.Fields.description,
-                                       Line.Fields.slnid))
-                               .validFromAttribute(Line_.validFrom)
-                               .validToAttribute(Line_.validTo)
-                               .singleStringAttribute(Line_.swissLineNumber)
-                               .build();
+        .stringAttributes(
+            List.of(Line.Fields.swissLineNumber,
+                Line.Fields.number,
+                Line.Fields.description,
+                Line.Fields.slnid))
+        .validFromAttribute(Line_.validFrom)
+        .validToAttribute(Line_.validTo)
+        .singleStringAttribute(Line_.swissLineNumber)
+        .build();
   }
 }
