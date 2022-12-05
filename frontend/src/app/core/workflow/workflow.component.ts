@@ -259,7 +259,6 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     return value ?? '';
   }
 
-<<<<<<< HEAD
   //this method will be extremly simplified as soon as we migrate to Pages instead of Modal Dialog!!
   private reloadWorkflowAfterSwitchEvent(record: Record) {
     //reset all
