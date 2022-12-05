@@ -42,12 +42,12 @@ public interface BusinessOrganisationApiV1 {
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
   @GetMapping("versions/{sboid}")
-  List<BusinessOrganisationVersionVersionModel> getBusinessOrganisationVersions(
+  List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(
       @PathVariable String sboid);
 
   @PostMapping("{sboid}/revoke")
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
-  List<BusinessOrganisationVersionVersionModel> revokeBusinessOrganisation(@PathVariable String sboid);
+  List<BusinessOrganisationVersionModel> revokeBusinessOrganisation(@PathVariable String sboid);
 
   @PostMapping("versions")
   @ResponseStatus(HttpStatus.CREATED)
@@ -55,8 +55,8 @@ public interface BusinessOrganisationApiV1 {
       @ApiResponse(responseCode = "201"),
   })
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
-  BusinessOrganisationVersionVersionModel createBusinessOrganisationVersion(
-      @RequestBody @Valid BusinessOrganisationVersionVersionModel newVersion);
+  BusinessOrganisationVersionModel createBusinessOrganisationVersion(
+      @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
   @PostMapping("versions/{id}")
   @ApiResponses(value = {
@@ -64,9 +64,9 @@ public interface BusinessOrganisationApiV1 {
   })
 
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
-  List<BusinessOrganisationVersionVersionModel> updateBusinessOrganisationVersion(
+  List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(
       @PathVariable Long id,
-      @RequestBody @Valid BusinessOrganisationVersionVersionModel newVersion);
+      @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
   @DeleteMapping("{sboid}")
   void deleteBusinessOrganisation(@PathVariable String sboid);

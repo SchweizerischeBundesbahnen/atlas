@@ -197,6 +197,11 @@ export class AuthService {
     return AuthService.getApplicationPermission(this.getPermissions(), applicationType);
   }
 
+  isAtLeastSupervisor(applicationType: ApplicationType) {
+    const applicationUserPermission = this.getApplicationUserPermission(applicationType);
+    return this.isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor;
+  }
+
   hasRole(role: Role): boolean {
     return this.hasAnyRole([role]);
   }

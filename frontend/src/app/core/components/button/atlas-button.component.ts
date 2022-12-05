@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ApplicationRole, ApplicationType } from '../../../api';
+import { ApplicationType } from '../../../api';
 import { AuthService } from '../../auth/auth.service';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
@@ -68,12 +68,7 @@ export class AtlasButtonComponent {
     if (!this.applicationType) {
       throw new Error('Revoke button needs applicationtype');
     }
-    const applicationUserPermission = this.authService.getApplicationUserPermission(
-      this.applicationType
-    );
-    return (
-      this.authService.isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor
-    );
+    return this.authService.isAtLeastSupervisor(this.applicationType);
   }
 
   mayDelete(): boolean {
