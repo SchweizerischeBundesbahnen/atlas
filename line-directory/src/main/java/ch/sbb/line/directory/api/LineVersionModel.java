@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "LineVersion")
-public class LineVersionVersionModel extends BaseVersionModel implements DatesValidator {
+public class LineVersionModel extends BaseVersionModel implements DatesValidator {
 
   private static final String HEX_COLOR_PATTERN = "^#([a-fA-F0-9]{6})$";
   private static final String CMYK_COLOR_PATTERN = "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$";
