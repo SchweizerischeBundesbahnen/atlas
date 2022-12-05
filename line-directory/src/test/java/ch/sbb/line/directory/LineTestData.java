@@ -1,8 +1,8 @@
 package ch.sbb.line.directory;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.line.directory.api.LineVersionVersionModel;
-import ch.sbb.line.directory.api.LineVersionVersionModel.LineVersionVersionModelBuilder;
+import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.api.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.Line.LineBuilder;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -13,7 +13,9 @@ import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import java.time.LocalDate;
 import java.util.Collections;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class LineTestData {
 
   public static final RgbColor RBG_YELLOW = new RgbColor(255, 255, 0);
@@ -48,8 +50,8 @@ public class LineTestData {
     return lineVersionBuilder().build();
   }
 
-  public static LineVersionVersionModelBuilder lineVersionModelBuilder() {
-    return LineVersionVersionModel.builder()
+  public static LineVersionModelBuilder lineVersionModelBuilder() {
+    return LineVersionModel.builder()
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
         .paymentType(PaymentType.INTERNATIONAL)

@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
-import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
+import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
@@ -33,13 +33,13 @@ public class TimetableFieldNumberControllerExceptionHandlingTest extends BaseCon
     // When
     // Then
     mvc.perform(get("/v1/field-numbers")
-           .queryParam("page", "0")
-           .queryParam("size", "5")
-           .queryParam("sort", "nam,asc"))
-       .andExpect(status().isBadRequest())
-       .andExpect(jsonPath("$.status").value(400))
-       .andExpect(jsonPath("$.message").value(
-           "Supplied sort field nam not found on TimetableFieldNumber"));
+            .queryParam("page", "0")
+            .queryParam("size", "5")
+            .queryParam("sort", "nam,asc"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.message").value(
+            "Supplied sort field nam not found on TimetableFieldNumber"));
   }
 
 }

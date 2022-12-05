@@ -5,20 +5,25 @@ import static java.util.stream.Collectors.toSet;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.api.CoverageModel;
 import ch.sbb.line.directory.api.LineApiV1;
 import ch.sbb.line.directory.api.LineModel;
-import ch.sbb.line.directory.api.LineVersionVersionModel;
+import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.api.LineVersionSnapshotModel;
 import ch.sbb.line.directory.api.LineVersionWorkflowModel;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
-import ch.sbb.line.directory.model.LineSearchRestrictions;
+import ch.sbb.line.directory.model.search.LineSearchRestrictions;
+import ch.sbb.line.directory.model.search.LineVersionSnapshotSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
+import ch.sbb.line.directory.service.LineVersionSnapshotService;
 import ch.sbb.line.directory.service.export.LineVersionExportService;
 import java.net.URL;
 import java.time.LocalDate;
@@ -38,6 +43,8 @@ public class LineController implements LineApiV1 {
   private final LineService lineService;
   private final CoverageService coverageService;
   private final LineVersionExportService lineVersionExportService;
+
+  private final LineVersionSnapshotService lineVersionSnapshotService;
 
   @Override
   public Container<LineModel> getLines(Pageable pageable, Optional<String> swissLineNumber,
@@ -70,8 +77,8 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineVersionVersionModel> revokeLine(String slnid) {
-    List<LineVersionVersionModel> lineVersionModels = lineService.revokeLine(slnid).stream()
+  public List<LineVersionModel> revokeLine(String slnid) {
+    List<LineVersionModel> lineVersionModels = lineService.revokeLine(slnid).stream()
         .map(this::toModel)
         .toList();
     if (lineVersionModels.isEmpty()) {
@@ -86,13 +93,13 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineVersionVersionModel> getCoveredVersionLines() {
+  public List<LineVersionModel> getCoveredVersionLines() {
     return lineService.getAllCoveredLineVersions().stream().map(this::toModel).toList();
   }
 
   @Override
-  public List<LineVersionVersionModel> getLineVersions(String slnid) {
-    List<LineVersionVersionModel> lineVersionModels = lineService.findLineVersions(slnid).stream()
+  public List<LineVersionModel> getLineVersions(String slnid) {
+    List<LineVersionModel> lineVersionModels = lineService.findLineVersions(slnid).stream()
         .map(this::toModel)
         .toList();
     if (lineVersionModels.isEmpty()) {
@@ -102,7 +109,7 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public LineVersionVersionModel createLineVersion(LineVersionVersionModel newVersion) {
+  public LineVersionModel createLineVersion(LineVersionModel newVersion) {
     LineVersion newLineVersion = toEntity(newVersion);
     newLineVersion.setStatus(Status.VALIDATED);
     LineVersion createdVersion = lineService.create(newLineVersion);
@@ -110,7 +117,7 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public List<LineVersionVersionModel> updateLineVersion(Long id, LineVersionVersionModel newVersion) {
+  public List<LineVersionModel> updateLineVersion(Long id, LineVersionModel newVersion) {
     LineVersion versionToUpdate = lineService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
     lineService.update(versionToUpdate, toEntity(newVersion), lineService.findLineVersions(
@@ -145,12 +152,33 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
+  public Container<LineVersionSnapshotModel> getLineVersionSnapshotModels(Pageable pageable, List<String> searchCriteria,
+      Optional<LocalDate> validOn, List<WorkflowStatus> statusChoices) {
+    log.info(
+        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, validOn={} and "
+            + "statusChoices={}", pageable, searchCriteria, validOn, statusChoices);
+    Page<LineVersionSnapshot> lineVersionSnapshotPage = lineVersionSnapshotService.findAll(
+        LineVersionSnapshotSearchRestrictions.builder()
+            .pageable(pageable)
+            .searchCriterias(searchCriteria)
+            .statusRestrictions(statusChoices)
+            .validOn(validOn)
+            .build());
+    List<LineVersionSnapshotModel> lineVersionSnapshotModels = lineVersionSnapshotPage.stream()
+        .map(LineVersionSnapshotModel::toModel).toList();
+    return Container.<LineVersionSnapshotModel>builder()
+        .objects(lineVersionSnapshotModels)
+        .totalCount(lineVersionSnapshotPage.getTotalElements())
+        .build();
+  }
+
+  @Override
   public void deleteLines(String slnid) {
     lineService.deleteAll(slnid);
   }
 
-  private LineVersionVersionModel toModel(LineVersion lineVersion) {
-    return LineVersionVersionModel.builder()
+  private LineVersionModel toModel(LineVersion lineVersion) {
+    return LineVersionModel.builder()
         .id(lineVersion.getId())
         .status(lineVersion.getStatus())
         .lineType(lineVersion.getLineType())
@@ -185,7 +213,7 @@ public class LineController implements LineApiV1 {
         .build();
   }
 
-  private LineVersion toEntity(LineVersionVersionModel lineVersionModel) {
+  private LineVersion toEntity(LineVersionModel lineVersionModel) {
     return LineVersion.builder()
         .id(lineVersionModel.getId())
         .lineType(lineVersionModel.getLineType())
