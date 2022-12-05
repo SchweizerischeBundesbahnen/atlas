@@ -1,8 +1,7 @@
 package ch.sbb.atlas.user.administration.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -277,8 +276,8 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   @Test
   void getUserDisplayNameExisting() throws Exception {
     mvc.perform(get("/v1/users/u236171/displayname"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.displayName").value("Ammann Luca (IT-PTR-CEN2-YPT)"));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.displayName").value(startsWith("Ammann Luca")));
   }
 
   @Test
