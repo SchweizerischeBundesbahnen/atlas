@@ -14,7 +14,7 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UserModel } from '../../../../api/model/userModel';
+import { User } from '../../../../api';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../core/module/material.module';
 import { FormGroup } from '@angular/forms';
@@ -140,7 +140,7 @@ describe('UserAdministrationCreateComponent', () => {
         sbbUserId: userId,
       })
     );
-    userServiceSpy.getPermissionsFromUserModelAsArray.and.callFake((user: UserModel) =>
+    userServiceSpy.getPermissionsFromUserModelAsArray.and.callFake((user: User) =>
       Array.from(user.permissions ?? [])
     );
     component.selectUser({

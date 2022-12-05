@@ -9,55 +9,63 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Client } from './client';
 import { Person } from './person';
 
-
-export interface Workflow { 
-    /**
-     * Business Object Id: the generated DB id
-     */
-    businessObjectId: number;
-    /**
-     * Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow
-     */
-    swissId: string;
-    /**
-     * Workflow Type
-     */
-    workflowType: Workflow.WorkflowTypeEnum;
-    description: string;
-    /**
-     * Workflow Status
-     */
-    readonly workflowStatus?: Workflow.WorkflowStatusEnum;
-    workflowComment?: string;
-    checkComment?: string;
-    client?: Person;
-    examinant?: Person;
-    /**
-     * Object creation date
-     */
-    readonly creationDate?: string;
-    /**
-     * Last edition date
-     */
-    readonly editionDate?: string;
+export interface Workflow {
+  /**
+   * Workflow ID
+   */
+  readonly id: number;
+  /**
+   * Business Object Id: the generated DB id
+   */
+  businessObjectId: number;
+  /**
+   * Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow
+   */
+  swissId: string;
+  /**
+   * Workflow Type
+   */
+  workflowType: Workflow.WorkflowTypeEnum;
+  description: string;
+  /**
+   * Workflow Status
+   */
+  readonly workflowStatus?: Workflow.WorkflowStatusEnum;
+  workflowComment?: string;
+  checkComment?: string;
+  client?: Client;
+  examinant?: Person;
+  /**
+   * Object creation date
+   */
+  readonly creationDate?: string;
+  /**
+   * Last edition date
+   */
+  readonly editionDate?: string;
 }
 export namespace Workflow {
-    export type WorkflowTypeEnum = 'LINE' | 'SUBLINE';
-    export const WorkflowTypeEnum = {
-        Line: 'LINE' as WorkflowTypeEnum,
-        Subline: 'SUBLINE' as WorkflowTypeEnum
-    };
-    export type WorkflowStatusEnum = 'ADDED' | 'STARTED' | 'REVISION' | 'HEARING' | 'APPROVED' | 'REJECTED';
-    export const WorkflowStatusEnum = {
-        Added: 'ADDED' as WorkflowStatusEnum,
-        Started: 'STARTED' as WorkflowStatusEnum,
-        Revision: 'REVISION' as WorkflowStatusEnum,
-        Hearing: 'HEARING' as WorkflowStatusEnum,
-        Approved: 'APPROVED' as WorkflowStatusEnum,
-        Rejected: 'REJECTED' as WorkflowStatusEnum
-    };
+  export type WorkflowTypeEnum = 'LINE' | 'SUBLINE';
+  export const WorkflowTypeEnum = {
+    Line: 'LINE' as WorkflowTypeEnum,
+    Subline: 'SUBLINE' as WorkflowTypeEnum,
+  };
+  export type WorkflowStatusEnum =
+    | 'ADDED'
+    | 'STARTED'
+    | 'REVISION'
+    | 'HEARING'
+    | 'APPROVED'
+    | 'REJECTED';
+  export const WorkflowStatusEnum = {
+    Added: 'ADDED' as WorkflowStatusEnum,
+    Started: 'STARTED' as WorkflowStatusEnum,
+    Revision: 'REVISION' as WorkflowStatusEnum,
+    Hearing: 'HEARING' as WorkflowStatusEnum,
+    Approved: 'APPROVED' as WorkflowStatusEnum,
+    Rejected: 'REJECTED' as WorkflowStatusEnum,
+  };
 }
-
-

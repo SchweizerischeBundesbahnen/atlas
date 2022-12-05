@@ -9,29 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Person } from './person';
 
-/**
- * Examinant
- */
-export interface Person {
+export interface ExaminantWorkflowCheck {
   /**
-   * Firstname
+   * Workflow was acceptable to the BAV
    */
-  firstName: string;
+  accepted?: boolean;
   /**
-   * Second
+   * Comment from the BAV for the workflow progress
    */
-  lastName: string;
-  /**
-   * Person Function
-   */
-  personFunction: string;
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
+  checkComment?: string;
+  examinant: Person;
 }

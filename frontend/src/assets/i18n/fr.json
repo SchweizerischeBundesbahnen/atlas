@@ -453,6 +453,7 @@
       "START": "Lancer l'audience",
       "ACCEPT": "Approuver",
       "REJECT": "Rejeter",
+      "CANCEL": "Annuler l'audience",
       "SKIP": "Passer l'audition"
     },
     "START": {
