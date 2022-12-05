@@ -47,4 +47,11 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
     this.keepaliveService.stopWatching();
     this.recordSubscription.unsubscribe();
   }
+
+  isEditButtonVisible() {
+    return (
+      this.selectedRecord.status !== 'IN_REVIEW' ||
+      this.authService.isAtLeastSupervisor(this.controller.getApplicationType())
+    );
+  }
 }

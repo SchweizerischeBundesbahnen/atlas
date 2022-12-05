@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { LinesService, LineType, LineVersion, PaymentType } from '../../../../api';
+import { LinesService, LineType, LineVersion, PaymentType, Status } from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -93,6 +93,24 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should disable form parts when in review', () => {
+    lineVersion.status = Status.InReview;
+    fixture.detectChanges();
+
+    const formControlsToDisable = component.getFormControlsToDisable();
+    expect(formControlsToDisable).toContain('validFrom');
+    expect(formControlsToDisable).toContain('validTo');
+    expect(formControlsToDisable).toContain('lineType');
+  });
+
+  it('should not disable form parts when in draft/validated', () => {
+    lineVersion.status = Status.Draft;
+    fixture.detectChanges();
+
+    const formControlsToDisable = component.getFormControlsToDisable();
+    expect(formControlsToDisable).toEqual([]);
   });
 
   it('should update LineVersion successfully', () => {
