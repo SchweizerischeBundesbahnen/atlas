@@ -23,6 +23,7 @@ model/applicationType.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
 model/businessType.ts
+model/client.ts
 model/company.ts
 model/containerBusinessOrganisation.ts
 model/containerCompany.ts
@@ -36,6 +37,7 @@ model/coverageType.ts
 model/displayInfo.ts
 model/errorDetail.ts
 model/errorResponse.ts
+model/examinantWorkflowCheck.ts
 model/line.ts
 model/lineType.ts
 model/lineVersion.ts
