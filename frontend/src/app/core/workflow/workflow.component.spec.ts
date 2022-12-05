@@ -127,7 +127,7 @@ describe('WorkflowComponent', () => {
 
     //when
     component.lineRecord.lineVersionWorkflows?.clear();
-    component.showWorflowForm();
+    component.showWorkflowForm();
     //then
     const form = component.workflowFormGroup.value;
     expect(form.comment).toBeNull();
@@ -172,7 +172,7 @@ describe('WorkflowComponent', () => {
     form.controls['mail']!.setValue('ma@am.ma');
     workflowServiceMock.startWorkflow.and.returnValue(of(workflow));
     //when
-    component.startWorflow();
+    component.startWorkflow();
     //then
     expect(eventReloadParentSpy).toHaveBeenCalledWith({
       reload: true,
