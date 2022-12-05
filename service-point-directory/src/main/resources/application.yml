@@ -40,9 +40,6 @@ kafka:
       administration:
         topic: atlas.user.administration
         groupId: atlas.kafka.spdi.user.administration.groupId
-    workflow:
-      topic: atlas.workflow
-      groupId: atlas.kafka.workflow.groupId
 
 auth:
   audience:
