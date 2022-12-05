@@ -9,7 +9,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
-import ch.sbb.line.directory.model.LineSearchRestrictions;
+import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -54,12 +54,14 @@ public class LineService {
     return lineVersionRepository.findById(id);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).LIDI)")
   public LineVersion create(LineVersion businessObject) {
     return save(businessObject);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
+      + ".model.user.admin.ApplicationType).LIDI)")
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);
   }
@@ -125,7 +127,7 @@ public class LineService {
   private void updateVersion(LineVersion currentVersion, LineVersion editedVersion,
       List<LineVersion> currentVersions) {
     if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-                                                             .equals(editedVersion.getVersion())) {
+        .equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
     }
 

@@ -4,6 +4,7 @@ import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.enumaration.LineType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -51,13 +52,13 @@ public interface LineApiV1 {
 
   @PostMapping("{slnid}/revoke")
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
-  List<LineVersionVersionModel> revokeLine(@PathVariable String slnid);
+  List<LineVersionModel> revokeLine(@PathVariable String slnid);
 
   @GetMapping("/covered")
   List<LineModel> getCoveredLines();
 
   @GetMapping("/versions/covered")
-  List<LineVersionVersionModel> getCoveredVersionLines();
+  List<LineVersionModel> getCoveredVersionLines();
 
   @DeleteMapping("{slnid}")
   void deleteLines(@PathVariable String slnid);
@@ -69,10 +70,10 @@ public interface LineApiV1 {
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  LineVersionVersionModel createLineVersion(@RequestBody @Valid LineVersionVersionModel newVersion);
+  LineVersionModel createLineVersion(@RequestBody @Valid LineVersionModel newVersion);
 
   @GetMapping("versions/{slnid}")
-  List<LineVersionVersionModel> getLineVersions(@PathVariable String slnid);
+  List<LineVersionModel> getLineVersions(@PathVariable String slnid);
 
   @PostMapping({"versions/{id}"})
   @ApiResponses(value = {
@@ -82,8 +83,8 @@ public interface LineApiV1 {
       @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  List<LineVersionVersionModel> updateLineVersion(@PathVariable Long id,
-      @RequestBody @Valid LineVersionVersionModel newVersion);
+  List<LineVersionModel> updateLineVersion(@PathVariable Long id,
+      @RequestBody @Valid LineVersionModel newVersion);
 
   @PostMapping({"versions/{id}/skip-workflow"})
   @ApiResponses(value = {
@@ -107,5 +108,14 @@ public interface LineApiV1 {
       + "Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFutureTimetableLineVersions();
+
+  @Operation(description = "Returns all line versions with its related workflow id")
+  @GetMapping("/workflows")
+  @PageableAsQueryParam
+  Container<LineVersionSnapshotModel> getLineVersionSnapshotModels(
+      @Parameter(hidden = true) Pageable pageable,
+      @Parameter @RequestParam(required = false) List<String> searchCriteria,
+      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
+      @Parameter @RequestParam(required = false) List<WorkflowStatus> statusChoices);
 
 }
