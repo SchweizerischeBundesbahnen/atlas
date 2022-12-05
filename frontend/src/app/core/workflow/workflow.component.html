@@ -1,7 +1,7 @@
 <div class="mt-2 mb-5">
   <div *ngIf="!isAddWorkflowButtonDisabled">
     <atlas-button
-      (buttonClicked)="showWorflowForm()"
+      (buttonClicked)="showWorkflowForm()"
       [disabled]="isAddWorkflowButtonDisabled"
       buttonDataCy="workflow-add"
       buttonText="WORKFLOW.BUTTON.ADD"
@@ -28,7 +28,7 @@
       <app-workflow-check-form
         *ngIf="lineRecord.status === 'IN_REVIEW'"
         [workflowId]="workflowId"
-        (workflowEvent)="eventReloadParent()"
+        (workflowEvent)="workflowChecked()"
       ></app-workflow-check-form>
     </mat-expansion-panel>
   </div>
@@ -40,7 +40,7 @@
     ></app-workflow-form>
     <div class="d-flex align-items-center">
       <atlas-button
-        (buttonClicked)="startWorflow()"
+        (buttonClicked)="startWorkflow()"
         buttonDataCy="workflow-start"
         buttonText="WORKFLOW.BUTTON.START"
         buttonType="defaultPrimary"
