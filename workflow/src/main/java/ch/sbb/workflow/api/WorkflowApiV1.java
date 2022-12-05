@@ -29,4 +29,7 @@ public interface WorkflowApiV1 {
       @ApiResponse(responseCode = "201")})
   WorkflowModel startWorkflow(@RequestBody @Valid WorkflowStartModel workflowStartModel);
 
+  @PostMapping("{id}/examinant-check")
+  WorkflowModel examinantCheck(@PathVariable Long id, @RequestBody @Valid ExaminantWorkflowCheckModel examinantWorkflowCheckModel);
+
 }

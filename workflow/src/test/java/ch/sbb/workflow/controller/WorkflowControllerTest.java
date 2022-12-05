@@ -1,18 +1,9 @@
 package ch.sbb.workflow.controller;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
-import ch.sbb.workflow.api.PersonModel;
-import ch.sbb.workflow.api.WorkflowModel;
-import ch.sbb.workflow.api.WorkflowStartModel;
+import ch.sbb.workflow.api.*;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.workflow.WorkflowRepository;
@@ -20,6 +11,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @EmbeddedKafka(topics = {"atlas.mail", "atlas.workflow"})
 public class WorkflowControllerTest extends BaseControllerApiTest {
@@ -37,7 +35,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
 
   @Test
   public void shouldGetWorkflows() throws Exception {
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
@@ -88,7 +86,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   @Test
   public void shouldCreateWorkflow() throws Exception {
     //when
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
@@ -115,7 +113,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   @Test
   public void shouldNotCreateWorkflowWhenWorkflowTypeIsNull() throws Exception {
     //when
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
@@ -149,7 +147,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   @Test
   public void shouldNotCreateWorkflowWhenWorkflowPersonNameHasWrongEncoding() throws Exception {
     //when
-    PersonModel person = PersonModel.builder()
+    ClientPersonModel person = ClientPersonModel.builder()
         .firstName("\uD83D\uDE00\uD83D\uDE01\uD83D")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
@@ -185,37 +183,71 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   @Test
   public void shouldNotCreateWorkflowWhenWorkflowWorkflowDescriptionHasWrongEncoding() throws Exception {
     //when
-    PersonModel person = PersonModel.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .personFunction("Centrocampista")
-        .mail("a@b.c").build();
+    ClientPersonModel person = ClientPersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .mail("a@b.c").build();
     WorkflowModel workflowModel = WorkflowModel.builder()
-        .client(person)
-        .workflowType(WorkflowType.LINE)
-        .examinant(person)
-        .description("\uD83D\uDE00\uD83D\uDE01\uD83D")
-        .swissId("CH123456")
-        .examinant(person)
-        .businessObjectId(123456L)
-        .build();
+            .client(person)
+            .workflowType(WorkflowType.LINE)
+            .examinant(person)
+            .description("\uD83D\uDE00\uD83D\uDE01\uD83D")
+            .swissId("CH123456")
+            .examinant(person)
+            .businessObjectId(123456L)
+            .build();
 
     //given
     mvc.perform(post("/v1/workflows/")
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(workflowModel))
-        ).andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
-        .andExpect(jsonPath("$.details[0].message", is("Value \uD83D\uDE00\uD83D\uDE01? rejected due to must match "
-            + "\"[\\u0000-\\u00ff]*\"")))
-        .andExpect(jsonPath("$.details[0].field", is("description")))
-        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("\uD83D\uDE00\uD83D\uDE01?")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
-        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must match \"[\\u0000-\\u00ff]*\"")));
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(workflowModel))
+            ).andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.status", is(400)))
+            .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+            .andExpect(jsonPath("$.error", is("Method argument not valid error")))
+            .andExpect(jsonPath("$.details[0].message", is("Value \uD83D\uDE00\uD83D\uDE01? rejected due to must match "
+                    + "\"[\\u0000-\\u00ff]*\"")))
+            .andExpect(jsonPath("$.details[0].field", is("description")))
+            .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
+            .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
+            .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("\uD83D\uDE00\uD83D\uDE01?")))
+            .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
+            .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must match \"[\\u0000-\\u00ff]*\"")));
   }
 
+  @Test
+  public void shouldAcceptWorkflow() throws Exception {
+    //when
+    ClientPersonModel client = ClientPersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .mail("a@b.c")
+            .build();
+    WorkflowStartModel workflowModel = WorkflowStartModel.builder()
+            .client(client)
+            .swissId("CH123456")
+            .description("ch:123:431")
+            .workflowComment("comment")
+            .workflowType(WorkflowType.LINE)
+            .businessObjectId(123456L)
+            .build();
+    WorkflowModel startedWorkflow = controller.startWorkflow(workflowModel);
+
+    ExaminantWorkflowCheckModel workflowCheck = ExaminantWorkflowCheckModel.builder()
+            .accepted(true).checkComment("ok").examinant(PersonModel.builder()
+                    .firstName("Marek")
+                    .lastName("Hamsik")
+                    .personFunction("Centrocampista")
+                    .build())
+            .build();
+
+    //given
+    mvc.perform(post("/v1/workflows/" + startedWorkflow.getId() + "/examinant-check")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(workflowCheck)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.checkComment", is("ok")));
+  }
 }

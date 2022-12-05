@@ -284,6 +284,7 @@
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La linea temporanea con validità dal {{validFrom}} al {{validTo}} supera la validità massima di 12 mesi.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La versione dal {{validFrom}} al {{validTo}} è parte di versioni temporanee contigue. Insieme, esse superano la validità massima di 12 mesi.",
+      "UPDATE_IN_REVIEW": "Nel corso dell'udienza non è possibile modificare il tipo o la validità della linea.",
       "NUMBER": "Numero di linea",
       "NUMBER_INFO": "Liniennummer Tooltip to replace __IT__",
       "DESCRIPTION": "Denominazione linea",
@@ -450,11 +451,17 @@
     "BUTTON": {
       "ADD": "Registrazione dell'audizione",
       "START": "Avviare audizione",
+      "ACCEPT": "Approva",
+      "REJECT": "Rifiuto",
       "CANCEL": "Annullare audizione"
     },
     "START": {
       "COMMENT": "Motivazione",
       "KEY_DATA": "Richiedente"
+    },
+    "CHECK": {
+      "COMMENT": "Commento sul rilascio / rifiuto",
+      "KEY_DATA": "Revisore"
     },
     "PERSON": {
       "FIRSTNAME": "Nome",
@@ -473,6 +480,10 @@
     "NOTIFICATION": {
       "START": {
         "SUCCESS": "Ihr Antrag wurde erfolgreich übermittel"
+      },
+      "CHECK": {
+        "ACCEPTED": "La domanda è stata approvata con successo.",
+        "REJECTED": "La domanda è stata respinta con successo."
       }
     }
   }
