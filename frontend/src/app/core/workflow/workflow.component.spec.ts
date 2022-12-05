@@ -169,7 +169,7 @@ describe('WorkflowComponent', () => {
     form.controls['firstName'].setValue('Ciovanni');
     form.controls['lastName'].setValue('Stazione');
     form.controls['function'].setValue('Zug Fahrer');
-    form.controls['mail']!.setValue('ma@am.ma');
+    form.controls['mail'].setValue('ma@am.ma');
     workflowServiceMock.startWorkflow.and.returnValue(of(workflow));
     //when
     component.startWorkflow();
