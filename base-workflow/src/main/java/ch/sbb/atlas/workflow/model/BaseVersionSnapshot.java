@@ -1,8 +1,8 @@
 package ch.sbb.atlas.workflow.model;
 
-import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +15,8 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @MappedSuperclass
-public abstract class BaseVersionSnapshot extends BaseVersion {
+@AllArgsConstructor
+public abstract class BaseVersionSnapshot {
 
   @NotNull
   private Long workflowId;
