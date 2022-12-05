@@ -41,11 +41,14 @@
   </div>
   <div *ngIf="controller.isExistingRecord()" class="edit-section">
     <atlas-button
+      *ngIf="
+        selectedRecord.status !== 'IN_REVIEW' ||
+        authService.isAtLeastSupervisor(controller.getApplicationType())
+      "
       (buttonClicked)="controller.toggleEdit()"
       [applicationType]="this.controller.getApplicationType()"
       [businessOrganisation]="selectedRecord.businessOrganisation!"
       [disabled]="controller.form.enabled || selectedRecord.status === 'REVOKED'"
-      [objectStatus]="selectedRecord.status"
       buttonDataCy="edit-item"
       buttonText="COMMON.EDIT_VERSION"
       buttonType="edit"
