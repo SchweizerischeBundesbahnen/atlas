@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.api.LineVersionVersionModel.LineVersionVersionModelBuilder;
+import ch.sbb.line.directory.api.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import java.time.LocalDate;
@@ -25,7 +25,7 @@ class LineVersionModelTest {
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-  private static LineVersionVersionModelBuilder lineVersionModel() {
+  private static LineVersionModelBuilder lineVersionModel() {
     return LineTestData.lineVersionModelBuilder()
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
@@ -50,10 +50,10 @@ class LineVersionModelTest {
   @Test
   void shouldBuildValidLineVersion() {
     // Given
-    LineVersionVersionModel lineVersion = lineVersionModel().build();
+    LineVersionModel lineVersionModel = lineVersionModel().build();
     // When
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        lineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     // Then
     assertThat(constraintViolations).isEmpty();
@@ -62,10 +62,10 @@ class LineVersionModelTest {
   @Test
   void shouldHaveSwissLineNumber() {
     // Given
-    LineVersionVersionModel LineVersion = lineVersionModel().swissLineNumber("").build();
+    LineVersionModel lineVersionModel = lineVersionModel().swissLineNumber("").build();
     // When
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        LineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     // Then
     assertThat(constraintViolations).hasSize(2);
@@ -76,10 +76,10 @@ class LineVersionModelTest {
   @Test
   void shouldHaveBusinessOrganisation() {
     // Given
-    LineVersionVersionModel LineVersion = lineVersionModel().businessOrganisation(null).build();
+    LineVersionModel lineVersionModel = lineVersionModel().businessOrganisation(null).build();
     // When
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        LineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -90,11 +90,11 @@ class LineVersionModelTest {
   @Test
   void shouldHaveQuoVadisConformDescription() {
     // Given
-    LineVersionVersionModel LineVersion = lineVersionModel().description(
+    LineVersionModel lineVersionModel = lineVersionModel().description(
         THREE_HUNDRED_CHAR_STRING).build();
     // When
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        LineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -105,10 +105,10 @@ class LineVersionModelTest {
   @Test
   void shouldHaveValidFromBeforeValidTo() {
     // Given
-    LineVersionVersionModel LineVersion = lineVersionModel().validTo(VALID_FROM.minusDays(1)).build();
+    LineVersionModel lineVersionModel = lineVersionModel().validTo(VALID_FROM.minusDays(1)).build();
     // When
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        LineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -119,10 +119,10 @@ class LineVersionModelTest {
   @Test
   void shouldAllowOneDayValidLines() {
     // Given
-    LineVersionVersionModel LineVersion = lineVersionModel().validTo(VALID_FROM).build();
+    LineVersionModel lineVersionModel = lineVersionModel().validTo(VALID_FROM).build();
     // When
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        LineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     // Then
     assertThat(constraintViolations).isEmpty();
@@ -131,12 +131,12 @@ class LineVersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
     //given
-    LineVersionVersionModel lineVersion = lineVersionModel()
+    LineVersionModel lineVersionModel = lineVersionModel()
         .validFrom(LocalDate.of(1699, 12, 31))
         .build();
     //when
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        lineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     //then
     assertThat(constraintViolations).hasSize(1);
@@ -147,12 +147,12 @@ class LineVersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidFromIsAfter2099_12_31() {
     //given
-    LineVersionVersionModel lineVersion = lineVersionModel()
+    LineVersionModel lineVersionModel = lineVersionModel()
         .validFrom(LocalDate.of(10000, 1, 1))
         .build();
     //when
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        lineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     //then
     assertThat(constraintViolations).isNotEmpty().hasSize(2);
@@ -167,12 +167,12 @@ class LineVersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
     //given
-    LineVersionVersionModel lineVersion = lineVersionModel()
+    LineVersionModel lineVersionModel = lineVersionModel()
         .validTo(LocalDate.of(1699, 12, 31))
         .build();
     //when
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        lineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     //then
     assertThat(constraintViolations).isNotEmpty().hasSize(2);
@@ -187,12 +187,12 @@ class LineVersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
     //given
-    LineVersionVersionModel lineVersion = lineVersionModel()
+    LineVersionModel lineVersionModel = lineVersionModel()
         .validTo(LocalDate.of(10000, 1, 1))
         .build();
     //when
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        lineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     //then
     assertThat(constraintViolations).isNotEmpty().hasSize(1);
@@ -205,10 +205,10 @@ class LineVersionModelTest {
   @Test
   void shouldFailOnInvalidRgbColor() {
     // Given
-    LineVersionVersionModel LineVersion = lineVersionModel().colorFontRgb("FFFFFF").build();
+    LineVersionModel lineVersionModel = lineVersionModel().colorFontRgb("FFFFFF").build();
     // When
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        LineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     // Then
     assertThat(constraintViolations).hasSize(1);
@@ -219,10 +219,10 @@ class LineVersionModelTest {
   @Test
   void shouldFailOnInvalidCmykColor() {
     // Given
-    LineVersionVersionModel LineVersion = lineVersionModel().colorFontCmyk("101,0,1,100").build();
+    LineVersionModel lineVersionModel = lineVersionModel().colorFontCmyk("101,0,1,100").build();
     // When
-    Set<ConstraintViolation<LineVersionVersionModel>> constraintViolations = validator.validate(
-        LineVersion);
+    Set<ConstraintViolation<LineVersionModel>> constraintViolations = validator.validate(
+        lineVersionModel);
 
     // Then
     assertThat(constraintViolations).hasSize(1);

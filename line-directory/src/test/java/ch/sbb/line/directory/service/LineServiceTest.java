@@ -22,7 +22,7 @@ import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.LineDeleteConflictException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
-import ch.sbb.line.directory.model.LineSearchRestrictions;
+import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -83,10 +83,10 @@ class LineServiceTest {
     // Given
     Pageable pageable = Pageable.unpaged();
     when(lineSearchRestrictions.getSpecification()).thenReturn(SpecificationBuilder.<Line>builder()
-                                                                                   .build()
-                                                                                   .searchCriteriaSpecification(
-                                                                                       List.of(
-                                                                                           "test")));
+        .build()
+        .searchCriteriaSpecification(
+            List.of(
+                "test")));
     when(lineSearchRestrictions.getPageable()).thenReturn(pageable);
 
     // When
@@ -164,17 +164,17 @@ class LineServiceTest {
     // Given
     String slnid = "ch:1:ttfnid:1000083";
     LineVersion lineVersion = LineVersion.builder()
-                                         .validFrom(LocalDate.of(2000, 1, 1))
-                                         .validTo(LocalDate.of(2001, 12, 31))
-                                         .description("desc")
-                                         .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .description("desc")
+        .build();
     List<LineVersion> lineVersions = List.of(lineVersion);
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(lineVersions);
     SublineVersion sublineVersion = SublineVersion.builder()
-                                                  .validFrom(LocalDate.of(2000, 1, 1))
-                                                  .validTo(LocalDate.of(2001, 12, 31))
-                                                  .description("desc")
-                                                  .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .description("desc")
+        .build();
     List<SublineVersion> sublineVersions = List.of(sublineVersion);
     when(sublineVersionRepository.getSublineVersionByMainlineSlnid(slnid)).thenReturn(
         sublineVersions);
@@ -189,10 +189,10 @@ class LineServiceTest {
     // Given
     String slnid = "ch:1:ttfnid:1000083";
     LineVersion lineVersion = LineVersion.builder()
-                                         .validFrom(LocalDate.of(2000, 1, 1))
-                                         .validTo(LocalDate.of(2001, 12, 31))
-                                         .description("desc")
-                                         .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .description("desc")
+        .build();
     List<LineVersion> lineVersions = List.of(lineVersion);
     when(lineVersionRepository.findAllBySlnidOrderByValidFrom(slnid)).thenReturn(lineVersions);
 
@@ -231,8 +231,8 @@ class LineServiceTest {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
     doThrow(LineConflictException.class).when(lineValidationService)
-                                        .validateLinePreconditionBusinessRule(
-                                            lineVersion);
+        .validateLinePreconditionBusinessRule(
+            lineVersion);
 
     // When
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
@@ -247,8 +247,8 @@ class LineServiceTest {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
     doThrow(TemporaryLineValidationException.class).when(lineValidationService)
-                                                   .validateLinePreconditionBusinessRule(
-                                                       lineVersion);
+        .validateLinePreconditionBusinessRule(
+            lineVersion);
 
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
