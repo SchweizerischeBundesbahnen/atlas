@@ -61,5 +61,7 @@ mail:
       receiver: TechSupport-ATLAS@sbb.ch
       from: no-reply-atlas@sbb.ch
       mail-html-title: Antrag für eine neue/geänderte Linie überprüfen.
+    atlas:
+      business: TechSupport-ATLAS@sbb.ch
 
 
