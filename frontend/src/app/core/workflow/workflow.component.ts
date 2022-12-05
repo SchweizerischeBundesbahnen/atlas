@@ -93,13 +93,14 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     this.initWorkflowForm();
   }
 
-  showWorflowForm() {
+  showWorkflowForm() {
     this.isAddWorkflowButtonDisabled = true;
     this.isWorkflowFormEditable = true;
+    this.workflowFormGroup.enable();
     this.initWorkflowForm();
   }
 
-  startWorflow() {
+  startWorkflow() {
     ValidationService.validateForm(this.workflowFormGroup);
     if (this.workflowFormGroup.valid) {
       const workflowStart: WorkflowStart = this.populateWorkflowStart();
@@ -258,6 +259,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     return value ?? '';
   }
 
+<<<<<<< HEAD
   //this method will be extremly simplified as soon as we migrate to Pages instead of Modal Dialog!!
   private reloadWorkflowAfterSwitchEvent(record: Record) {
     //reset all
@@ -278,5 +280,10 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       this.isWorkflowFormEditable = false;
       this.initWorkflowForm();
     }
+  }
+
+  workflowChecked() {
+    this.eventReloadParent();
+    this.resetToAddWorkflow();
   }
 }
