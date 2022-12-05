@@ -11,9 +11,9 @@
  */
 
 /**
- * Examinant
+ * Client
  */
-export interface Person {
+export interface Client {
   /**
    * Firstname
    */
@@ -34,4 +34,8 @@ export interface Person {
    * Last edition date
    */
   readonly editionDate?: string;
+  /**
+   * mail
+   */
+  mail: string;
 }
