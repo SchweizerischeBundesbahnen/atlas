@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
+import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
+import ch.sbb.workflow.api.PersonModel;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.workflow.WorkflowRepository;
@@ -79,12 +81,6 @@ public class WorkflowServiceTest {
   @Test
   public void shouldNotGetWorkflow() {
     //given
-    Workflow workflow = Workflow.builder()
-        .id(123L)
-        .businessObjectId(123L)
-        .workflowType(WorkflowType.LINE)
-        .swissId("ch:slnid:123")
-        .build();
     when(repository.findById(1L)).thenReturn(Optional.empty());
 
     //when
@@ -113,4 +109,63 @@ public class WorkflowServiceTest {
 
   }
 
+  @Test
+  public void shouldApproveWorkflow() {
+    //given
+    Workflow workflow = Workflow.builder()
+            .id(1L)
+            .businessObjectId(123L)
+            .workflowType(WorkflowType.LINE)
+            .swissId("ch:slnid:123")
+            .build();
+    when(repository.findById(1L)).thenReturn(Optional.of(workflow));
+
+    //when
+    Workflow result = service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
+            .accepted(true)
+            .checkComment("Great Job")
+            .examinant(PersonModel.builder()
+                    .firstName("Marek")
+                    .lastName("Hamsik")
+                    .personFunction("Centrocampista")
+                    .build())
+            .build());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getCheckComment()).isEqualTo("Great Job");
+    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
+    verify(notificationService).sendEventToLidi(workflow);
+    verify(notificationService).sendEventToMail(workflow);
+  }
+  @Test
+  public void shouldRejectWorkflow() {
+    //given
+    Workflow workflow = Workflow.builder()
+            .id(1L)
+            .businessObjectId(123L)
+            .workflowType(WorkflowType.LINE)
+            .swissId("ch:slnid:123")
+            .build();
+    when(repository.findById(1L)).thenReturn(Optional.of(workflow));
+
+    //when
+    Workflow result = service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
+            .accepted(false)
+            .checkComment("Bad Job")
+            .examinant(PersonModel.builder()
+                    .firstName("Marek")
+                    .lastName("Hamsik")
+                    .personFunction("Centrocampista")
+                    .build())
+            .build());
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getCheckComment()).isEqualTo("Bad Job");
+    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.REJECTED);
+    verify(notificationService).sendEventToLidi(workflow);
+    verify(notificationService).sendEventToMail(workflow);
+
+  }
 }
