@@ -28,6 +28,7 @@
       <app-workflow-check-form
         *ngIf="lineRecord.status === 'IN_REVIEW'"
         [workflowId]="workflowId"
+        (workflowEvent)="eventReloadParent()"
       ></app-workflow-check-form>
     </mat-expansion-panel>
   </div>
