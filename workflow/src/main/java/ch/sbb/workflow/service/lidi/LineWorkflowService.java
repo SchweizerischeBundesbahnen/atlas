@@ -88,7 +88,7 @@ public class LineWorkflowService {
   }
 
   private String getUrl(Workflow workflow) {
-    return AtlasFrontendBaseUrl.getUrl(activeProfile) + LINE_URL + workflow.getSwissId();
+    return AtlasFrontendBaseUrl.getUrl(activeProfile) + LINE_URL + workflow.getSwissId() + "?id=" + workflow.getBusinessObjectId();
   }
 
 }
