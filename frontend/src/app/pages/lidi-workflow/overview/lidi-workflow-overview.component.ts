@@ -64,7 +64,7 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   getOverview($paginationAndSearch: TableSettingsWorkflow) {
     this.isLoading = true;
     this.lineVersionSnapshotsSubscription = this.linesService
-      .getLineVersionSnapshotModels(
+      .getLineVersionSnapshot(
         $paginationAndSearch.searchCriteria,
         $paginationAndSearch.validOn,
         $paginationAndSearch.statusChoices,
