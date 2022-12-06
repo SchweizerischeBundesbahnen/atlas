@@ -28,6 +28,7 @@ model/company.ts
 model/containerBusinessOrganisation.ts
 model/containerCompany.ts
 model/containerLine.ts
+model/containerLineVersionSnapshot.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTransportCompany.ts
@@ -41,6 +42,7 @@ model/examinantWorkflowCheck.ts
 model/line.ts
 model/lineType.ts
 model/lineVersion.ts
+model/lineVersionSnapshot.ts
 model/lineVersionWorkflow.ts
 model/models.ts
 model/parameter.ts
