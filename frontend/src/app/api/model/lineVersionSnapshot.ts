@@ -12,6 +12,7 @@
 import { Status } from './status';
 import { PaymentType } from './paymentType';
 import { LineType } from './lineType';
+import { WorkflowStatus } from './workflowStatus';
 
 export interface LineVersionSnapshot {
   /**
@@ -38,10 +39,7 @@ export interface LineVersionSnapshot {
    * Workflow Technical identifier
    */
   readonly workflowId?: number;
-  /**
-   * Workflow Status
-   */
-  readonly workflowStatus?: LineVersionSnapshot.WorkflowStatusEnum;
+  workflowStatus?: WorkflowStatus;
   /**
    * Parent Object identifier
    */
@@ -113,21 +111,4 @@ export interface LineVersionSnapshot {
    * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
    */
   readonly etagVersion?: number;
-}
-export namespace LineVersionSnapshot {
-  export type WorkflowStatusEnum =
-    | 'ADDED'
-    | 'STARTED'
-    | 'REVISION'
-    | 'HEARING'
-    | 'APPROVED'
-    | 'REJECTED';
-  export const WorkflowStatusEnum = {
-    Added: 'ADDED' as WorkflowStatusEnum,
-    Started: 'STARTED' as WorkflowStatusEnum,
-    Revision: 'REVISION' as WorkflowStatusEnum,
-    Hearing: 'HEARING' as WorkflowStatusEnum,
-    Approved: 'APPROVED' as WorkflowStatusEnum,
-    Rejected: 'REJECTED' as WorkflowStatusEnum,
-  };
 }
