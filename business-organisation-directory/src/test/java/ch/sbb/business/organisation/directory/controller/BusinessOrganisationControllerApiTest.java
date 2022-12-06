@@ -1,18 +1,18 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.abbreviationDe;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.abbreviationEn;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.abbreviationFr;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.abbreviationIt;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.businessTypes;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.contactEnterpriseEmail;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.descriptionDe;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.descriptionEn;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.descriptionFr;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.descriptionIt;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.organisationNumber;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.validFrom;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel.Fields.validTo;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.abbreviationDe;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.abbreviationEn;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.abbreviationFr;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.abbreviationIt;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.businessTypes;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.contactEnterpriseEmail;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionDe;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionEn;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionFr;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionIt;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.organisationNumber;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.validFrom;
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.validTo;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionVersionModel;
+import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessType;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
@@ -80,7 +80,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   @Test
   public void shouldCreateBusinessOrganisationVersion() throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel model = BusinessOrganisationVersionVersionModel
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
         .sboid("ch:1:sboid:100000")
         .abbreviationDe("abkde")
@@ -108,7 +108,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   @Test
   public void shouldGetBusinessOrganisationVersions() throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel model = BusinessOrganisationVersionVersionModel
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
         .sboid("ch:1:sboid:1000001")
         .abbreviationDe("de1")
@@ -126,7 +126,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
-    BusinessOrganisationVersionVersionModel businessOrganisationVersion = controller.createBusinessOrganisationVersion(model);
+    BusinessOrganisationVersionModel businessOrganisationVersion = controller.createBusinessOrganisationVersion(model);
 
     model.setDescriptionDe("desc-de1-changed");
     model.setValidFrom(LocalDate.of(2002, 1, 1));
@@ -189,7 +189,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   @Test
   public void shouldGetAllBusinessOrganisationVersions() throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel model = BusinessOrganisationVersionVersionModel
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
         .sboid("ch:1:sboid:1000001")
         .abbreviationDe("de1")
@@ -248,7 +248,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   public void shouldNotCreateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldProvidedIsTooLong()
       throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel model = BusinessOrganisationVersionVersionModel
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
         .sboid("ch:1:sboid:100000")
         .abbreviationDe("de")
@@ -288,7 +288,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   public void shouldNotUpdateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldNotProvided()
       throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel model = BusinessOrganisationVersionVersionModel
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
         .sboid("ch:1:sboid:100000")
         .abbreviationFr("fr")
@@ -326,7 +326,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   public void shouldNotUpdateBusinessOrganisationVersionWhenProvidedIdDoesNotExists()
       throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel model = BusinessOrganisationVersionVersionModel
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
         .sboid("ch:1:sboid:100000")
         .abbreviationDe("de")
@@ -374,13 +374,13 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     mvc.perform(post("/v1/business-organisations/" + version.getSboid() + "/revoke"))
         .andExpect(status().isOk())
         .andExpect(
-            jsonPath("$[0]." + BusinessOrganisationVersionVersionModel.Fields.status, is("REVOKED")));
+            jsonPath("$[0]." + BusinessOrganisationVersionModel.Fields.status, is("REVOKED")));
   }
 
   @Test
   public void shouldReturnConflictErrorResponse() throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel model = BusinessOrganisationVersionVersionModel
+    BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
         .abbreviationDe("de1")
         .abbreviationFr("fr1")
@@ -396,7 +396,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .build();
-    BusinessOrganisationVersionVersionModel savedVersion = controller.createBusinessOrganisationVersion(model);
+    BusinessOrganisationVersionModel savedVersion = controller.createBusinessOrganisationVersion(model);
 
     //when and then
     mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
@@ -426,10 +426,10 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   @Test
   void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-        .validFrom(LocalDate.of(2001, 1, 1))
-        .validTo(LocalDate.of(2001, 12, 31))
-        .build();
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+                                                                            .validFrom(LocalDate.of(2001, 1, 1))
+                                                                            .validTo(LocalDate.of(2001, 12, 31))
+                                                                            .build();
     versionModel = controller.createBusinessOrganisationVersion(versionModel);
 
     // When first update it is ok
@@ -452,10 +452,10 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   @Test
   void shouldExportFullBusinessOrganisationVersionsCsv() throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-        .validFrom(LocalDate.of(2001, 1, 1))
-        .validTo(LocalDate.of(2001, 12, 31))
-        .build();
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+                                                                            .validFrom(LocalDate.of(2001, 1, 1))
+                                                                            .validTo(LocalDate.of(2001, 12, 31))
+                                                                            .build();
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when
@@ -467,10 +467,10 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   @Test
   void shouldExportActualBusinessOrganisationVersionsCsv() throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-        .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-        .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-        .build();
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+                                                                            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+                                                                            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+                                                                            .build();
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when
@@ -482,10 +482,10 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   @Test
   void shouldExportFutureTimetableBusinessOrganisationVersionsCsv() throws Exception {
     //given
-    BusinessOrganisationVersionVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-        .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-        .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-        .build();
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+                                                                            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+                                                                            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+                                                                            .build();
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when

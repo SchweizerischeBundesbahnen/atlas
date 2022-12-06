@@ -12,26 +12,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class WorkflowNotificationService {
 
-  private final LineWorkflowProducerService lineWorkflowProducerService;
+    private final LineWorkflowProducerService lineWorkflowProducerService;
 
-  private final MailProducerService mailProducerService;
+    private final MailProducerService mailProducerService;
 
-  private final LineWorkflowService lineWorkflowService;
+    private final LineWorkflowService lineWorkflowService;
 
-  public void sendEventToMail(Workflow workflow) {
-    MailNotification mailNotification;
-    if (WorkflowType.LINE == workflow.getWorkflowType()) {
-      mailNotification = lineWorkflowService.buildMailNotification(workflow);
-      mailProducerService.produceMailNotification(mailNotification);
+    public void sendEventToMail(Workflow workflow) {
+        if (WorkflowType.LINE == workflow.getWorkflowType()) {
+            mailProducerService.produceMailNotification(getMailNotificationByStatus(workflow));
+        }
     }
-  }
 
-  public void sendEventToLidi(Workflow workflow) {
-    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
-        .workflowId(workflow.getId())
-        .businessObjectId(workflow.getBusinessObjectId())
-        .workflowStatus(workflow.getStatus())
-        .build();
-    lineWorkflowProducerService.produceWorkflowNotification(lineWorkflowEvent);
-  }
+    private MailNotification getMailNotificationByStatus(Workflow workflow) {
+        return switch (workflow.getStatus()) {
+            case STARTED -> lineWorkflowService.buildWorkflowStartedMailNotification(workflow);
+            case APPROVED, REJECTED -> lineWorkflowService.buildWorkflowCompletedMailNotification(workflow);
+            default -> throw new IllegalArgumentException();
+        };
+    }
+
+    public void sendEventToLidi(Workflow workflow) {
+        LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
+                .workflowId(workflow.getId())
+                .businessObjectId(workflow.getBusinessObjectId())
+                .workflowStatus(workflow.getStatus())
+                .build();
+        lineWorkflowProducerService.produceWorkflowNotification(lineWorkflowEvent);
+    }
 }

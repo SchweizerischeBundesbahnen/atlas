@@ -284,6 +284,7 @@
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La ligne temporaire valide de {{validFrom}} à {{validTo}} dépasse la validité maximale de 12 mois.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La version de {{validFrom}} à {{validTo}} fait partie de versions temporaires connexes. Ensemble, elles dépassent la validité maximale de 12 mois.",
+      "UPDATE_IN_REVIEW": "Il n'est pas possible de modifier le type ou la validité pendant une audition.",
       "NUMBER": "Numéro de ligne",
       "NUMBER_INFO": "Tooltip numéro de ligne à remplacer",
       "DESCRIPTION": "Désignation de la ligne",
@@ -450,11 +451,17 @@
     "BUTTON": {
       "ADD": "Saisir une audience",
       "START": "Lancer l'audience",
+      "ACCEPT": "Approuver",
+      "REJECT": "Rejeter",
       "CANCEL": "Annuler l'audience"
     },
     "START": {
       "COMMENT": "Motivation",
       "KEY_DATA": "Demandeur"
+    },
+    "CHECK": {
+      "COMMENT": "Remarque sur la validation / le refus",
+      "KEY_DATA": "Personne chargée de l'examen"
     },
     "PERSON": {
       "FIRSTNAME": "Prénom",
@@ -473,6 +480,10 @@
     "NOTIFICATION": {
       "START": {
         "SUCCESS": "Votre demande a été transmise avec succès"
+      },
+      "CHECK": {
+        "ACCEPTED": "La demande a été approuvée avec succès.",
+        "REJECTED": "La demande a été rejetée avec succès."
       }
     }
   }

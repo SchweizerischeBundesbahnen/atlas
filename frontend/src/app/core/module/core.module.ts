@@ -28,9 +28,11 @@ import { UserDetailInfoComponent } from '../components/base-detail/user-edit-inf
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 import { WorkflowComponent } from '../workflow/workflow.component';
 import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.component';
+import { WorkflowCheckFormComponent } from '../workflow/workflow-check-form/workflow-check-form.component';
 
 const coreComponents = [
   WorkflowFormComponent,
+  WorkflowCheckFormComponent,
   WorkflowComponent,
   BaseDetailComponent,
   UserDetailInfoComponent,
