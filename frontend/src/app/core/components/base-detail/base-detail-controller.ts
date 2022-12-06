@@ -57,11 +57,14 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     if (Array.isArray(records) && records.length > 0) {
       this.records = records;
       this.sortRecords();
-      const preferedSelectionId = Number(this.activatedRoute.snapshot.queryParams.id);
-      if (preferedSelectionId) {
-        this.setSelectedRecord(
-          this.records.filter((record) => record.id === preferedSelectionId)[0]
-        );
+      const preferredSelectionId = Number(this.activatedRoute.snapshot.queryParams.id);
+      if (preferredSelectionId) {
+        const preferredRecord = this.records.filter((record) => record.id === preferredSelectionId);
+        if (preferredRecord.length == 1) {
+          this.setSelectedRecord(preferredRecord[0]);
+        } else {
+          this.setSelectedRecord(this.getActualRecord(this.records));
+        }
       } else if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
         this.setSelectedRecord(this.records[this.switchedIndex]);
       } else {
