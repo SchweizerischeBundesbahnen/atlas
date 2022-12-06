@@ -164,6 +164,7 @@ public class LineVersionSnapshotSearchTest {
   @Test
   void shouldFindVersionWithText() {
     // Given
+    version1.setNumber("1");
     lineVersionSnapshotRepository.saveAndFlush(version1);
     // When
     Page<LineVersionSnapshot> result = lineVersionSnapshotService.findAll(LineVersionSnapshotSearchRestrictions.builder()
@@ -182,7 +183,7 @@ public class LineVersionSnapshotSearchTest {
     lineVersionSnapshotRepository.saveAndFlush(version2);
     lineVersionSnapshotRepository.saveAndFlush(version3);
     LineVersionSnapshot versionWithUnderscore = getBaseVersionBuilder().slnid("ch:slnid:4")
-        .swissLineNumber("1_")
+        .number("1_")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
         .build();
@@ -205,7 +206,7 @@ public class LineVersionSnapshotSearchTest {
     lineVersionSnapshotRepository.saveAndFlush(version2);
     lineVersionSnapshotRepository.saveAndFlush(version3);
     LineVersionSnapshot versionWithUnderscore = getBaseVersionBuilder().slnid("ch:slnid:4")
-        .swissLineNumber("1__")
+        .number("1__")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
         .build();
@@ -228,7 +229,7 @@ public class LineVersionSnapshotSearchTest {
     lineVersionSnapshotRepository.saveAndFlush(version2);
     lineVersionSnapshotRepository.saveAndFlush(version3);
     LineVersionSnapshot versionWithUnderscore = getBaseVersionBuilder().slnid("ch:slnid:4")
-        .swissLineNumber("1%")
+        .number("1%")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
         .build();
@@ -251,7 +252,7 @@ public class LineVersionSnapshotSearchTest {
     lineVersionSnapshotRepository.saveAndFlush(version2);
     lineVersionSnapshotRepository.saveAndFlush(version3);
     LineVersionSnapshot versionWithUnderscore = getBaseVersionBuilder().slnid("ch:slnid:4")
-        .swissLineNumber("1%%")
+        .number("1%%")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
         .build();
@@ -278,7 +279,7 @@ public class LineVersionSnapshotSearchTest {
     Page<LineVersionSnapshot> result = lineVersionSnapshotService.findAll(LineVersionSnapshotSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
         .searchCriterias(
-            List.of("1", "Fan",
+            List.of("Luca", "Fan",
                 "yb", "grösste"))
         .build());
 

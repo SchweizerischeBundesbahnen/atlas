@@ -29,8 +29,8 @@ describe('LidiWorkflowOverviewComponent', () => {
   let component: LidiWorkflowOverviewComponent;
   let fixture: ComponentFixture<LidiWorkflowOverviewComponent>;
 
-  const linesService = jasmine.createSpyObj('linesService', ['getLineVersionSnapshotModels']);
-  linesService.getLineVersionSnapshotModels.and.returnValue(of(versionContainer));
+  const linesService = jasmine.createSpyObj('linesService', ['getLineVersionSnapshot']);
+  linesService.getLineVersionSnapshot.and.returnValue(of(versionContainer));
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -50,7 +50,7 @@ describe('LidiWorkflowOverviewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(linesService.getLineVersionSnapshotModels).toHaveBeenCalled();
+    expect(linesService.getLineVersionSnapshot).toHaveBeenCalled();
 
     expect(component.lineVersionSnapshots.length).toBe(1);
     expect(component.totalCount$).toBe(1);
