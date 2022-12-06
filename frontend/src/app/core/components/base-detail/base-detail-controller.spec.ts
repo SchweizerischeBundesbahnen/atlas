@@ -9,7 +9,7 @@ import moment from 'moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,7 +35,7 @@ describe('BaseDetailController', () => {
 
   class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
-      super(dialogRef, dialogService, notificationService, authService);
+      super(dialogRef, dialogService, notificationService, authService, activatedRoute);
     }
 
     getPageType(): Page {
@@ -94,6 +94,7 @@ describe('BaseDetailController', () => {
   let dialogService: DialogService;
   let notificationService: NotificationService;
   let authService: AuthService;
+  let activatedRoute: ActivatedRoute;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -119,6 +120,7 @@ describe('BaseDetailController', () => {
     notificationService = TestBed.inject(NotificationService);
     dialogRef = TestBed.inject(MatDialogRef);
     authService = TestBed.inject(AuthService);
+    activatedRoute = TestBed.inject(ActivatedRoute);
   });
 
   describe('existing record', () => {

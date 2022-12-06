@@ -1,5 +1,5 @@
 import { Directive, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
@@ -11,6 +11,7 @@ import { ApplicationRole, ApplicationType, Status } from '../../../api';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record> implements OnInit {
@@ -26,7 +27,8 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     protected dialogRef: MatDialogRef<any>,
     protected dialogService: DialogService,
     protected notificationService: NotificationService,
-    protected authService: AuthService
+    protected authService: AuthService,
+    protected activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +57,12 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     if (Array.isArray(records) && records.length > 0) {
       this.records = records;
       this.sortRecords();
-      if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
+      const preferedSelectionId = Number(this.activatedRoute.snapshot.queryParams.id);
+      if (preferedSelectionId) {
+        this.setSelectedRecord(
+          this.records.filter((record) => record.id === preferedSelectionId)[0]
+        );
+      } else if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
         this.setSelectedRecord(this.records[this.switchedIndex]);
       } else {
         this.setSelectedRecord(this.getActualRecord(this.records));
