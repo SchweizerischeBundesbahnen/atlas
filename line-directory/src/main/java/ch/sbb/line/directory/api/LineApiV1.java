@@ -112,7 +112,7 @@ public interface LineApiV1 {
   @Operation(description = "Returns all line versions with its related workflow id")
   @GetMapping("/workflows")
   @PageableAsQueryParam
-  Container<LineVersionSnapshotModel> getLineVersionSnapshotModels(
+  Container<LineVersionSnapshotModel> getLineVersionSnapshot(
       @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
       @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
