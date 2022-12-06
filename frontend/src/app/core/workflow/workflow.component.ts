@@ -21,6 +21,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Record } from '../components/base-detail/record';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
+import { ValidationService } from '../validation/validation.service';
 
 @Component({
   selector: 'app-workflow [lineRecord]',
@@ -36,6 +37,8 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   isWorkflowFormEditable = false;
   isReadMode = false;
   workflowStatusTranslated!: string;
+  workflowId: number | undefined;
+
   workflowFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
     comment: new FormControl('', [
       Validators.required,
@@ -90,14 +93,15 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     this.initWorkflowForm();
   }
 
-  showWorflowForm() {
+  showWorkflowForm() {
     this.isAddWorkflowButtonDisabled = true;
     this.isWorkflowFormEditable = true;
+    this.workflowFormGroup.enable();
     this.initWorkflowForm();
   }
 
-  startWorflow() {
-    this.validateForm();
+  startWorkflow() {
+    ValidationService.validateForm(this.workflowFormGroup);
     if (this.workflowFormGroup.valid) {
       const workflowStart: WorkflowStart = this.populateWorkflowStart();
       this.workflowService
@@ -195,15 +199,6 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     return this.lineRecord.id !== undefined ? this.lineRecord.id : NaN;
   }
 
-  private validateForm() {
-    Object.keys(this.workflowFormGroup.controls).forEach((field) => {
-      const control = this.workflowFormGroup.get(field);
-      if (control) {
-        control.markAsTouched({ onlySelf: true });
-      }
-    });
-  }
-
   private initWorkflowForm() {
     const workflowsInProgress = this.filterWorkflowsInProgress();
     if (workflowsInProgress.length === 0) {
@@ -220,6 +215,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     this.isReadMode = true;
     this.isAddWorkflowButtonDisabled = true;
     this.workflowFormGroup.disable();
+    this.workflowId = workflowId;
 
     this.workflowService
       .getWorkflow(workflowId)
@@ -283,5 +279,10 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       this.isWorkflowFormEditable = false;
       this.initWorkflowForm();
     }
+  }
+
+  workflowChecked() {
+    this.eventReloadParent();
+    this.resetToAddWorkflow();
   }
 }

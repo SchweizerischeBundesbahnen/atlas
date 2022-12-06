@@ -5,6 +5,7 @@ import { Record } from './record';
 import { Subscription } from 'rxjs';
 import { WorkflowEvent } from '../../workflow/model/workflow-event';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -19,7 +20,10 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   workflowEnabled = environment.workflowEnabled;
   private recordSubscription!: Subscription;
 
-  constructor(private readonly keepaliveService: KeepaliveService) {
+  constructor(
+    private readonly keepaliveService: KeepaliveService,
+    public authService: AuthService
+  ) {
     keepaliveService.startWatching(() => {
       this.controller.closeConfirmDialog();
       this.controller.backToOverview();
@@ -42,5 +46,12 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.keepaliveService.stopWatching();
     this.recordSubscription.unsubscribe();
+  }
+
+  isEditButtonVisible() {
+    return (
+      this.selectedRecord.status !== 'IN_REVIEW' ||
+      this.authService.isAtLeastSupervisor(this.controller.getApplicationType())
+    );
   }
 }
