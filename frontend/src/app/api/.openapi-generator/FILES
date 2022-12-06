@@ -66,4 +66,5 @@ model/userPermissionVersionModel.ts
 model/workflow.ts
 model/workflowProcessingStatus.ts
 model/workflowStart.ts
+model/workflowStatus.ts
 variables.ts

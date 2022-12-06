@@ -52,6 +52,7 @@ public class LineVersionSnapshot extends BaseVersionSnapshot {
   private Long id;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   private WorkflowStatus workflowStatus;
 
   @NotBlank

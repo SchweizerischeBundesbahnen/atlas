@@ -135,6 +135,12 @@
       "DESCRIPTION": "Registrazione e gestione dei dati del quadro d’orario.",
       "PATH_TEXT": "Dai quadri d’orario"
     },
+    "LIDI_WORKFLOW": {
+      "TITLE": "Cartella ricerca e consultazione audizioni",
+      "TITLE_MENU": "Audizioni delle linee",
+      "DESCRIPTION": "Qui troverete tutte le informazioni sulle audizioni delle linee.",
+      "PATH_TEXT": "Audizioni di linea"
+    },
     "LIDI": {
       "TITLE": "Cartella delle linee",
       "TITLE_MENU": "Cartella delle linee",
@@ -343,6 +349,14 @@
         "REVOKE_SUCCESS": "La linea parziale è stata contrassegnata con successo come cattura di guasti.",
         "DELETE_SUCCESS": "Linea parziale cancellata con successo.",
         "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea parziale."
+      }
+    },
+    "LINE_WORKFLOW": {
+      "TABLE_HEADER": "Audizioni delle linee",
+      "TABLE": {
+        "NUMBER": "Numero di linea",
+        "DESCRIPTION": "Denominazione linea",
+        "STATUS": "Stato dell'audizione"
       }
     }
   },
