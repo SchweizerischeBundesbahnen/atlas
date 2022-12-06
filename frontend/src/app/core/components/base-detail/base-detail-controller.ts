@@ -10,6 +10,7 @@ import { DateService } from '../../date/date.service';
 import { ApplicationRole, ApplicationType, Status } from '../../../api';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth/auth.service';
+import { ValidationService } from '../../validation/validation.service';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record> implements OnInit {
@@ -145,7 +146,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
   }
 
   save() {
-    this.validateAllFormFields(this.form);
+    ValidationService.validateForm(this.form);
     this.switchedIndex = undefined;
     if (this.form.valid) {
       this.form.disable();
@@ -310,17 +311,6 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
       });
     }
     return of(true);
-  }
-
-  private validateAllFormFields(formGroup: FormGroup) {
-    Object.keys(formGroup.controls).forEach((field) => {
-      const control = formGroup.get(field);
-      if (control instanceof FormControl) {
-        control.markAsTouched({ onlySelf: true });
-      } else if (control instanceof FormGroup) {
-        this.validateAllFormFields(control);
-      }
-    });
   }
 
   private confirmBoTransfer(): Observable<boolean> {

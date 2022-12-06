@@ -284,6 +284,7 @@
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Die temporäre Linie mit der Gültigkeit von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Die Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen. Diese überschreiten zusammen die maximale Gültigkeit von 12 Monaten.",
+      "UPDATE_IN_REVIEW": "Während einer Anhörung ist es nicht möglich den Typ oder die Gültigkeit zu verändern",
       "NUMBER": "Liniennummer",
       "NUMBER_INFO": "Liniennummer Tooltip to replace",
       "DESCRIPTION": "Linienbezeichnung",
@@ -450,11 +451,17 @@
     "BUTTON": {
       "ADD": "Anhörung erfassen",
       "START": "Anhörung starten",
+      "ACCEPT": "Genehmigen",
+      "REJECT": "Zurückweisen",
       "CANCEL": "Anhörung abbrechen"
     },
     "START": {
       "COMMENT": "Begründung",
       "KEY_DATA": "Antragstellende Person"
+    },
+    "CHECK": {
+      "COMMENT": "Bemerkung zur Freigabe / Ablehnung",
+      "KEY_DATA": "Prüfende Person"
     },
     "PERSON": {
       "FIRSTNAME": "Vorname",
@@ -473,6 +480,10 @@
     "NOTIFICATION": {
       "START": {
         "SUCCESS": "Ihr Antrag wurde erfolgreich übermittelt"
+      },
+      "CHECK": {
+        "ACCEPTED": "Der Antrag wurde erfolgreich genehmigt.",
+        "REJECTED": "Der Antrag wurde erfolgreich zurückgewiesen."
       }
     }
   }

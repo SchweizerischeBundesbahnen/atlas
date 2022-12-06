@@ -11,8 +11,10 @@ let component: AtlasButtonComponent;
 let fixture: ComponentFixture<AtlasButtonComponent>;
 
 let isAdmin = true;
+let isAtLeastSupervisor = true;
 let hasPermissionsToCreate = true;
 let hasPermissionsToWrite = true;
+let role = ApplicationRole.Reader;
 const authServiceMock: Partial<AuthService> = {
   claims: {
     name: 'Test (ITC)',
@@ -40,8 +42,11 @@ const authServiceMock: Partial<AuthService> = {
   hasPermissionsToCreate(): boolean {
     return hasPermissionsToCreate;
   },
+  isAtLeastSupervisor(): boolean {
+    return isAtLeastSupervisor;
+  },
   getApplicationUserPermission(applicationType: ApplicationType): UserPermissionVersionModel {
-    return { application: applicationType, role: ApplicationRole.Reader, sboids: [] };
+    return { application: applicationType, role: role, sboids: [] };
   },
 };
 
@@ -59,6 +64,7 @@ describe('AtlasButtonComponent', () => {
     component = fixture.componentInstance;
 
     isAdmin = true;
+    isAtLeastSupervisor = true;
     hasPermissionsToCreate = true;
     hasPermissionsToWrite = true;
     fixture.detectChanges();
@@ -126,6 +132,8 @@ describe('AtlasButtonComponent', () => {
 
     it('should not be visible for type REVOKE', () => {
       isAdmin = false;
+      isAtLeastSupervisor = false;
+      role = ApplicationRole.Reader;
       component.buttonType = AtlasButtonType.REVOKE;
       component.applicationType = ApplicationType.Bodi;
       fixture.detectChanges();
