@@ -41,11 +41,7 @@ public class LineVersionSnapshotSearchRestrictions {
 
   protected SpecificationBuilder<LineVersionSnapshot> specificationBuilder() {
     return SpecificationBuilder.<LineVersionSnapshot>builder()
-        .stringAttributes(
-            List.of(Fields.swissLineNumber,
-                Fields.description,
-                LineVersionSnapshot.Fields.workflowStatus
-            ))
+        .stringAttributes(List.of(Fields.swissLineNumber, Fields.description))
         .validFromAttribute(LineVersionSnapshot_.validFrom)
         .validToAttribute(LineVersionSnapshot_.validTo)
         .singleStringAttribute(LineVersionSnapshot_.swissLineNumber)

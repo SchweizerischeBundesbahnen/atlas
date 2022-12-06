@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
-import { LinesComponent } from './lines.component';
-import { ContainerLine, LinesService, LineType } from '../../../api';
+
+import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ContainerLineVersionSnapshot, LinesService, LineType } from '../../../api';
+import { of } from 'rxjs';
+import { TableComponent } from '../../../core/components/table/table.component';
 import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
+import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 
-const versionContainer: ContainerLine = {
+const versionContainer: ContainerLineVersionSnapshot = {
   objects: [
     {
       slnid: 'slnid',
@@ -17,25 +18,24 @@ const versionContainer: ContainerLine = {
       validFrom: new Date('2021-06-01'),
       validTo: new Date('2029-06-01'),
       businessOrganisation: 'SBB',
-      swissLineNumber: 'L1',
+      workflowStatus: 'ADDED',
       lineType: LineType.Orderly,
     },
   ],
   totalCount: 1,
 };
 
-describe('LinesComponent', () => {
-  let component: LinesComponent;
-  let fixture: ComponentFixture<LinesComponent>;
+describe('LidiWorkflowOverviewComponent', () => {
+  let component: LidiWorkflowOverviewComponent;
+  let fixture: ComponentFixture<LidiWorkflowOverviewComponent>;
 
-  // With Spy
-  const linesService = jasmine.createSpyObj('linesService', ['getLines']);
-  linesService.getLines.and.returnValue(of(versionContainer));
+  const linesService = jasmine.createSpyObj('linesService', ['getLineVersionSnapshotModels']);
+  linesService.getLineVersionSnapshotModels.and.returnValue(of(versionContainer));
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        LinesComponent,
         TableComponent,
+        LidiWorkflowOverviewComponent,
         LoadingSpinnerComponent,
         MockAppTableSearchComponent,
       ],
@@ -43,16 +43,16 @@ describe('LinesComponent', () => {
       providers: [{ provide: LinesService, useValue: linesService }, TranslatePipe],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LinesComponent);
+    fixture = TestBed.createComponent(LidiWorkflowOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(linesService.getLines).toHaveBeenCalled();
+    expect(linesService.getLineVersionSnapshotModels).toHaveBeenCalled();
 
-    expect(component.lineVersions.length).toBe(1);
+    expect(component.lineVersionSnapshots.length).toBe(1);
     expect(component.totalCount$).toBe(1);
   });
 });

@@ -36,6 +36,7 @@ export class TableComponent<DATATYPE> {
   @Input() displayValidOnSearch = true;
   @Input() displayBusinessOrganisationSearch = true;
   @Input() loadTableSearch = true;
+  @Input() searchStatusType = 'default';
 
   loading = true;
 
@@ -89,13 +90,6 @@ export class TableComponent<DATATYPE> {
     }
   }
 
-  private getElementsSearched(tableSettings: TableSettings) {
-    if (this.tableSearchComponent) {
-      this.tableSearchComponent.activeSearch = tableSettings;
-    }
-    this.getTableElementsEvent.emit(tableSettings);
-  }
-
   showTitle(column: TableColumn<DATATYPE>, value: string | Date): string {
     const content = this.format(column, value);
     const hideTooltip = this.hideTooltip(content);
@@ -139,5 +133,12 @@ export class TableComponent<DATATYPE> {
     this.tableSearchComponent.dateControl.setValue(tableSettings.validOn);
 
     this.tableSearchComponent.activeSearch = tableSettings;
+  }
+
+  private getElementsSearched(tableSettings: TableSettings) {
+    if (this.tableSearchComponent) {
+      this.tableSearchComponent.activeSearch = tableSettings;
+    }
+    this.getTableElementsEvent.emit(tableSettings);
   }
 }

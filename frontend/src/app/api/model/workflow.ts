@@ -11,6 +11,7 @@
  */
 import { Client } from './client';
 import { Person } from './person';
+import { WorkflowStatus } from './workflowStatus';
 
 export interface Workflow {
   /**
@@ -30,10 +31,7 @@ export interface Workflow {
    */
   workflowType: Workflow.WorkflowTypeEnum;
   description: string;
-  /**
-   * Workflow Status
-   */
-  readonly workflowStatus?: Workflow.WorkflowStatusEnum;
+  workflowStatus?: WorkflowStatus;
   workflowComment?: string;
   checkComment?: string;
   client?: Client;
@@ -52,20 +50,5 @@ export namespace Workflow {
   export const WorkflowTypeEnum = {
     Line: 'LINE' as WorkflowTypeEnum,
     Subline: 'SUBLINE' as WorkflowTypeEnum,
-  };
-  export type WorkflowStatusEnum =
-    | 'ADDED'
-    | 'STARTED'
-    | 'REVISION'
-    | 'HEARING'
-    | 'APPROVED'
-    | 'REJECTED';
-  export const WorkflowStatusEnum = {
-    Added: 'ADDED' as WorkflowStatusEnum,
-    Started: 'STARTED' as WorkflowStatusEnum,
-    Revision: 'REVISION' as WorkflowStatusEnum,
-    Hearing: 'HEARING' as WorkflowStatusEnum,
-    Approved: 'APPROVED' as WorkflowStatusEnum,
-    Rejected: 'REJECTED' as WorkflowStatusEnum,
   };
 }

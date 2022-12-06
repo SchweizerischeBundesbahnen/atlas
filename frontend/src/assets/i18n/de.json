@@ -135,6 +135,12 @@
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Fahrplanfeldern.",
       "PATH_TEXT": "Fahrplanfelder"
     },
+    "LIDI_WORKFLOW": {
+      "TITLE": "Linien Anhörungen suchen und anschauen",
+      "TITLE_MENU": "Linien Anhörungen",
+      "DESCRIPTION": "Hier finden Sie alle Informationen über Linien Anhörungen.",
+      "PATH_TEXT": "Linienanhörungen"
+    },
     "LIDI": {
       "TITLE": "Linien und Teillinien bearbeiten und erstellen",
       "TITLE_MENU": "Linien und Teillinien",
@@ -343,6 +349,14 @@
         "REVOKE_SUCCESS": "Die Teillinie wurde erfolgreich als Fehlerfassung gekennzeichnet.",
         "DELETE_SUCCESS": "Die Teillinie wurde erfolgreich gelöscht.",
         "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten."
+      }
+    },
+    "LINE_WORKFLOW": {
+      "TABLE_HEADER": "Linien Anhörungen",
+      "TABLE": {
+        "NUMBER": "Liniennummer",
+        "DESCRIPTION": "Linienbezeichnung",
+        "STATUS": "Anhörungsstatus"
       }
     }
   },

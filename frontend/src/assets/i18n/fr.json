@@ -135,6 +135,12 @@
       "DESCRIPTION": "Saisie et gestion des données des tableaux-horaires.",
       "PATH_TEXT": "Vers tableaux-horaires"
     },
+    "LIDI_WORKFLOW": {
+      "TITLE": "Lignes Rechercher et visionner les auditions",
+      "TITLE_MENU": "Lignes Auditions",
+      "DESCRIPTION": "Vous trouverez ici toutes les informations relatives aux auditions de lignes.",
+      "PATH_TEXT": "Auditions de ligne"
+    },
     "LIDI": {
       "TITLE": "Liste des lignes",
       "TITLE_MENU": "Lignes et lignes partielles",
@@ -343,6 +349,14 @@
         "REVOKE_SUCCESS": "La sous-ligne a été marquée avec succès comme saisie d'erreur.",
         "DELETE_SUCCESS": "Le ligne partielle a été supprimée avec succès.",
         "DELETE_ERROR": "Une erreur est survenue lors de la suppression de la ligne partielle."
+      }
+    },
+    "LINE_WORKFLOW": {
+      "TABLE_HEADER": "Lignes Auditions",
+      "TABLE": {
+        "NUMBER": "Numéro de ligne",
+        "DESCRIPTION": "Désignation de la ligne",
+        "STATUS": "Statut d'audition"
       }
     }
   },
