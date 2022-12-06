@@ -14,13 +14,12 @@ import {
   Workflow,
   WorkflowProcessingStatus,
   WorkflowService,
-  WorkflowStart,
+  WorkflowStatus,
 } from '../../api';
 import { AtlasButtonComponent } from '../components/button/atlas-button.component';
 import { Observable, of } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { DialogService } from '../components/dialog/dialog.service';
-import WorkflowStatusEnum = WorkflowStart.WorkflowStatusEnum;
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 import { Component, Input } from '@angular/core';
 import { Role } from '../auth/role';
@@ -64,7 +63,7 @@ const user: User = {
 };
 const workflow: Workflow = {
   id: 1,
-  workflowStatus: WorkflowStatusEnum.Started,
+  workflowStatus: WorkflowStatus.Started,
   client: {
     firstName: 'Marek',
     lastName: 'Hamsik',
