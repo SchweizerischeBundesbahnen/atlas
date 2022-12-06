@@ -9,6 +9,7 @@ import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundExc
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
+import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +19,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y extends BaseWorkflowEntity> {
 
   protected final JpaRepository<T, Long> objectVersionRepository;
-  protected final JpaRepository<Y, Long> objectWorkflowRepository;
+  protected final ObjectWorkflowRepository<Y> objectWorkflowRepository;
 
   @RunAsUser(fakeUserType = KAFKA)
   public void processWorkflow(LineWorkflowEvent lineWorkflowEvent) {
@@ -32,13 +33,17 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
   }
 
   void evaluateWorkflowProcessingStatus(LineWorkflowEvent lineWorkflowEvent, T objectVersion) {
-    if (WorkflowStatus.STARTED == lineWorkflowEvent.getWorkflowStatus()) {
-      objectVersion.setStatus(Status.IN_REVIEW);
-      // CREATE SNAPHOT
-      log.info("Changed Object status from {} to {}", Status.DRAFT, Status.IN_REVIEW);
-    } else {
-      throw new IllegalStateException("Use case not yet implemented!!");
+    Status preUpdateStatus = objectVersion.getStatus();
+
+    switch (lineWorkflowEvent.getWorkflowStatus()){
+      case STARTED -> objectVersion.setStatus(Status.IN_REVIEW);
+      case APPROVED -> objectVersion.setStatus(Status.VALIDATED);
+      case REJECTED -> objectVersion.setStatus(Status.DRAFT);
+      default -> throw new IllegalStateException("Use case not yet implemented!!");
     }
+
+    //TODO: ATLAS-894: Create Snapshot on start/approved/rejected
+    log.info("Changed Object status from {} to {}", preUpdateStatus, objectVersion.getStatus());
   }
 
   T getObjectVersion(LineWorkflowEvent lineWorkflowEvent) {
