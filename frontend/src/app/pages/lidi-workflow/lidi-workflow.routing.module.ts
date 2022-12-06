@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: LidiWorkflowOverviewComponent,
   },
-  { path: '**', redirectTo: Pages.LIDI_WORKFLOW.path },
+  { path: '**', redirectTo: Pages.LIDI.child?.path },
 ];
 
 @NgModule({
