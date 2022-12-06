@@ -47,9 +47,9 @@
          <version>1.121.0</version>
       </dependency>
       <dependency>
-        <groupId>ch.sbb.atlas</groupId>
-        <artifactId>kafka</artifactId>
-        <version>1.121.0</version>
+         <groupId>ch.sbb.atlas</groupId>
+         <artifactId>kafka</artifactId>
+         <version>1.121.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -150,6 +150,12 @@
       </dependency>
    </dependencies>
    <build>
+      <testResources>
+         <testResource>
+            <directory>src/test/resources</directory>
+            <filtering>true</filtering>
+         </testResource>
+      </testResources>
       <plugins>
          <plugin>
             <artifactId>asciidoctor-maven-plugin</artifactId>

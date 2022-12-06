@@ -13,6 +13,9 @@ spring:
   kafka:
     # consumer - only for testing
     bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   security:
     oauth2:
       resourceserver:
