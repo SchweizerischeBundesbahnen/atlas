@@ -42,6 +42,22 @@ export class Pages {
     description: '',
   };
 
+  public static LIDI_WORKFLOW: Page = {
+    title: 'PAGES.LIDI_WORKFLOW.TITLE',
+    titleMenu: 'PAGES.LIDI_WORKFLOW.TITLE_MENU',
+    headerTitle: 'PAGES.LIDI_WORKFLOW.TITLE_MENU',
+    path: 'workflows',
+    pathText: 'PAGES.LIDI_WORKFLOW.PATH_TEXT',
+    description: 'PAGES.LIDI_WORKFLOW.DESCRIPTION',
+  };
+
+  public static LIDI_WORKFLOW_LINES: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'lines',
+    pathText: '',
+    description: '',
+  };
+
   public static SUBLINES: Page = {
     title: 'PAGES.DETAILS',
     path: 'sublines',
@@ -88,7 +104,13 @@ export class Pages {
     description: '',
   };
 
-  public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
+  public static pages: Page[] = [
+    Pages.HOME,
+    Pages.TTFN,
+    Pages.LIDI,
+    Pages.LIDI_WORKFLOW,
+    Pages.BODI,
+  ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
   public static enabledPages: Page[] = Pages.pages;
 }

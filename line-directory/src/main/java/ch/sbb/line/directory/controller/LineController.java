@@ -155,8 +155,8 @@ public class LineController implements LineApiV1 {
   public Container<LineVersionSnapshotModel> getLineVersionSnapshotModels(Pageable pageable, List<String> searchCriteria,
       Optional<LocalDate> validOn, List<WorkflowStatus> statusChoices) {
     log.info(
-        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, validOn={} and "
-            + "statusChoices={}", pageable, searchCriteria, validOn, statusChoices);
+        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, validOn={}", pageable, searchCriteria,
+        validOn);
     Page<LineVersionSnapshot> lineVersionSnapshotPage = lineVersionSnapshotService.findAll(
         LineVersionSnapshotSearchRestrictions.builder()
             .pageable(pageable)

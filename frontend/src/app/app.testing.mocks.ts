@@ -13,6 +13,7 @@ export class MockAppTableSearchComponent {
   @Input() displayValidOn = true;
   @Input() displayBusinessOrganisationSearch = true;
   @Input() searchTextColumnStyle = 'col-4';
+  @Input() searchStatusType = 'default';
 }
 
 @Component({

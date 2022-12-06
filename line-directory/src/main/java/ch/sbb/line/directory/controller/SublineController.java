@@ -43,10 +43,8 @@ public class SublineController implements SublineApiV1 {
     log.info("Load Versions using pageable={}", pageable);
     Page<Subline> sublines = sublineService.findAll(SublineSearchRestrictions.builder()
         .pageable(pageable)
-        .searchCriterias(
-            searchCriteria)
-        .statusRestrictions(
-            statusRestrictions)
+        .searchCriterias(searchCriteria)
+        .statusRestrictions(statusRestrictions)
         .validOn(validOn)
         .typeRestrictions(
             typeRestrictions)

@@ -45,3 +45,4 @@ export * from './userPermissionVersionModel';
 export * from './workflow';
 export * from './workflowProcessingStatus';
 export * from './workflowStart';
+export * from './workflowStatus';
