@@ -6,7 +6,7 @@ import {
   BusinessType,
 } from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
@@ -44,9 +44,10 @@ export class BusinessOrganisationDetailComponent
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    protected authService: AuthService
+    protected authService: AuthService,
+    protected activatedRoute: ActivatedRoute
   ) {
-    super(dialogRef, dialogService, notificationService, authService);
+    super(dialogRef, dialogService, notificationService, authService, activatedRoute);
   }
 
   ngOnInit() {
