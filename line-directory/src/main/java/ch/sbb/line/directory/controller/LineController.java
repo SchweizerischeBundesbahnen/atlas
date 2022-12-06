@@ -152,7 +152,7 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
-  public Container<LineVersionSnapshotModel> getLineVersionSnapshotModels(Pageable pageable, List<String> searchCriteria,
+  public Container<LineVersionSnapshotModel> getLineVersionSnapshot(Pageable pageable, List<String> searchCriteria,
       Optional<LocalDate> validOn, List<WorkflowStatus> statusChoices) {
     log.info(
         "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, validOn={}", pageable, searchCriteria,
