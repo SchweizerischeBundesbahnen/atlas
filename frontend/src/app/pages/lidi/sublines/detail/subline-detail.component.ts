@@ -14,7 +14,7 @@ import { catchError, Observable, of, Subject, takeUntil } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from '../../../../core/model/page';
 import { Pages } from '../../../pages';
 import moment from 'moment';
@@ -55,9 +55,10 @@ export class SublineDetailComponent
     private validationService: ValidationService,
     private linesService: LinesService,
     protected dialogService: DialogService,
-    protected authService: AuthService
+    protected authService: AuthService,
+    protected activatedRoute: ActivatedRoute
   ) {
-    super(dialogRef, dialogService, notificationService, authService);
+    super(dialogRef, dialogService, notificationService, authService, activatedRoute);
   }
 
   ngOnInit() {
