@@ -60,9 +60,10 @@ public class LineWorkflowProcessingService extends
   }
 
   private LineVersionSnapshot buildLineVersionSnapshot(LineWorkflowEvent lineWorkflowEvent, LineVersion lineVersion) {
-    LineVersionSnapshot lineVersionSnapshot = LineVersionSnapshot.builder()
+    return LineVersionSnapshot.builder()
         .parentObjectId(lineVersion.getId())
         .workflowId(lineWorkflowEvent.getWorkflowId())
+        .workflowStatus(lineWorkflowEvent.getWorkflowStatus())
         .validFrom(lineVersion.getValidFrom())
         .validTo(lineVersion.getValidTo())
         .status(lineVersion.getStatus())
@@ -88,6 +89,5 @@ public class LineWorkflowProcessingService extends
         .editionDate(lineVersion.getEditionDate())
         .version(lineVersion.getVersion())
         .build();
-    return lineVersionSnapshot;
   }
 }
