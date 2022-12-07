@@ -38,19 +38,19 @@ export interface LineVersionSnapshot {
   /**
    * Workflow Technical identifier
    */
-  readonly workflowId?: number;
-  workflowStatus?: WorkflowStatus;
+  readonly workflowId: number;
+  workflowStatus: WorkflowStatus;
   /**
    * Parent Object identifier
    */
-  readonly parentObjectId?: number;
+  readonly parentObjectId: number;
   status?: Status;
   lineType: LineType;
   /**
    * SLNID
    */
   readonly slnid?: string;
-  paymentType?: PaymentType;
+  paymentType: PaymentType;
   /**
    * Number
    */
@@ -70,19 +70,19 @@ export interface LineVersionSnapshot {
   /**
    * Color of the font in RGB
    */
-  readonly colorFontRgb?: string;
+  readonly colorFontRgb: string;
   /**
    * Color of the background in RGB
    */
-  readonly colorBackRgb?: string;
+  readonly colorBackRgb: string;
   /**
    * Color of the font in CMYK
    */
-  readonly colorFontCmyk?: string;
+  readonly colorFontCmyk: string;
   /**
    * Color of the background in CMYK
    */
-  readonly colorBackCmyk?: string;
+  readonly colorBackCmyk: string;
   /**
    * Icon
    */
@@ -94,15 +94,15 @@ export interface LineVersionSnapshot {
   /**
    * Valid from
    */
-  readonly validFrom?: Date;
+  readonly validFrom: Date;
   /**
    * Valid to
    */
-  readonly validTo?: Date;
+  readonly validTo: Date;
   /**
    * BusinessOrganisation SBOID
    */
-  readonly businessOrganisation?: string;
+  readonly businessOrganisation: string;
   /**
    * Comment
    */
