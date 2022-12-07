@@ -3,28 +3,13 @@
   [attr.data-cy]="page.path ? 'sidemenu-' + page.path : 'sidemenu-start'"
   class="link-border"
 >
-  <div>
-    <a
-      (click)="showChild(page.path)"
-      [ngClass]="activePageIndex === pageIndex ? 'route-active' : ''"
-      class="font-bold-base color-primary-400"
-      mat-list-item
-      routerLink="{{ page.path }}"
-    >
-      {{ page.titleMenu ?? '' | translate }}
-      <em class="bi bi-arrow-right ms-auto"></em>
-    </a>
-    <div *ngIf="page.child && isShowChild" class="ms-3">
-      <a
-        (click)="activeItem()"
-        [ngClass]="isChildItemActive ? 'route-active' : ''"
-        class="font-bold-base color-primary-400"
-        mat-list-item
-        routerLink="{{ page.child?.path }}"
-      >
-        {{ page.child.titleMenu ?? '' | translate }}
-        <em class="bi bi-arrow-right ms-auto"></em>
-      </a>
-    </div>
-  </div>
+  <a
+    [ngClass]="activePageIndex === pageIndex ? 'route-active' : ''"
+    class="font-bold-base color-primary-400"
+    mat-list-item
+    routerLink="{{ page.path }}"
+  >
+    {{ page.titleMenu ?? '' | translate }}
+    <em class="bi bi-arrow-right ms-auto"></em>
+  </a>
 </div>
