@@ -7,10 +7,8 @@ import java.util.List;
 
 import ch.sbb.atlas.base.service.model.configuration.AtlasAccessDeniedHandler;
 import ch.sbb.atlas.base.service.model.configuration.Role;
-import ch.sbb.atlas.user.administration.security.UserAdministrationConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -30,7 +28,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-@Import(UserAdministrationConfig.class)
 @EnableWebSecurity
 public class SecurityConfig {
 
@@ -53,7 +50,8 @@ public class SecurityConfig {
 
         .and()
 
-        // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authorize-requests">Authorize Requests</a>
+        // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authorize-requests">Authorize
+        // Requests</a>
         .authorizeRequests(authorizeRequests ->
             authorizeRequests
                 .mvcMatchers(HttpMethod.GET, "/actuator/**").permitAll()
@@ -61,10 +59,13 @@ public class SecurityConfig {
                 .mvcMatchers("/v3/api-docs/**").permitAll()
                 .mvcMatchers("/static/rest-api.html").permitAll()
 
-                // Method security may also be configured using the annotations <code>@PreAuthorize</code> and <code>@PostAuthorize</code>
+                // Method security may also be configured using the annotations <code>@PreAuthorize</code> and
+                // <code>@PostAuthorize</code>
                 // that permit to set fine grained control using the Spring Expression Language:
-                // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#method-security-expressions">Method Security Expressions</a>
-                // In order to use these annotations, you have to enable global-method-security using <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
+                // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#method-security-expressions">Method
+                // Security Expressions</a>
+                // In order to use these annotations, you have to enable global-method-security using
+                // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
                 .mvcMatchers(HttpMethod.DELETE, "/**").hasRole(Role.ATLAS_ADMIN)
                 .anyRequest().authenticated()
         )
@@ -72,7 +73,8 @@ public class SecurityConfig {
         .accessDeniedHandler(accessDeniedHandler())
         .and()
 
-        // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth 2.0 Resource Server</a>
+        // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth
+        // 2.0 Resource Server</a>
         .oauth2ResourceServer()
         .jwt()
         .jwtAuthenticationConverter(jwtAuthenticationConverter());
