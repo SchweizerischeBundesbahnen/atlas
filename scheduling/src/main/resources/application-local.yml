@@ -41,6 +41,31 @@ spring:
             client-secret: ${SCHEDULING_CLIENT_SECRET}
             scope:
               - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+        max:
+          poll:
+            interval:
+              ms: 1200000
+    producer:
+      properties:
+        max:
+          request:
+            size: 3000000
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 1
+
 kafka:
   atlas:
     mail:

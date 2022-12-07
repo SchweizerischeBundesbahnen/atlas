@@ -10,11 +10,26 @@ spring:
       path: /h2-console
   main:
     banner-mode: OFF
-#  jpa:
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
+  #  jpa:
+  #    show-sql: true
+  #    properties:
+  #      hibernate:
+  #        format_sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+auth:
+  audience:
+    service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
+info:
+  app:
+    name: business-organisation-directory
+    version: @version@
+external:
+  bav:
+    url: https://www.output.tu-verzeichnisse.bav.admin.ch
 logging:
   level:
     root: ERROR
@@ -36,3 +51,16 @@ amazon:
   region: "eu-central-1"
   bucketName: "atlas-data-export-dev-dev"
   objectExpirationDays: 30
+
+kafka:
+  atlas:
+    mail:
+      topic: atlas.mail
+      groupId: atlas.kafka.mail.groupId
+    user:
+      administration:
+        topic: atlas.user.administration
+        groupId: atlas.kafka.bodi.user.administration.groupId
+mail:
+  receiver:
+    tu-relations-report: TechSupport-ATLAS@sbb.ch

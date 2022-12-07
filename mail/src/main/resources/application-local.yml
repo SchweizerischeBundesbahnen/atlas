@@ -1,4 +1,32 @@
+server:
+  port: 8084
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+  endpoint:
+    health:
+      show-details: always
+
 spring:
+  application:
+    name: mail
+  sleuth:
+    baggage:
+      remote-fields: Correlation-Id
+      correlation-fields: Correlation-Id
+  mail:
+    host: smtp-app.sbb.ch
+    port: 587
+    username: fxatl_a
+    password: ${FXATL_A_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
@@ -24,30 +52,8 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       retries: 1
 
----
-
-spring:
-  profiles: dev
-  kafka:
-    bootstrap-servers: test01.kafka.sbb.ch:9095
-
----
-
-spring:
-  profiles: test
-  kafka:
-    bootstrap-servers: test01.kafka.sbb.ch:9095
-
----
-
-spring:
-  profiles: int
-  kafka:
-    bootstrap-servers: inte01.kafka.sbb.ch:9095
-
----
-
-spring:
-  profiles: prod
-  kafka:
-    bootstrap-servers: prod01.kafka.sbb.ch:9095
+kafka:
+  atlas:
+    mail:
+      topic: atlas.mail
+      groupId: atlas.kafka.mail.groupId

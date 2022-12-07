@@ -37,6 +37,30 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+        max:
+          poll:
+            interval:
+              ms: 1200000
+    producer:
+      properties:
+        max:
+          request:
+            size: 3000000
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 1
 
 kafka:
   atlas:
@@ -63,5 +87,3 @@ mail:
       mail-html-title: Antrag für eine neue/geänderte Linie überprüfen.
     atlas:
       business: TechSupport-ATLAS@sbb.ch
-
-
