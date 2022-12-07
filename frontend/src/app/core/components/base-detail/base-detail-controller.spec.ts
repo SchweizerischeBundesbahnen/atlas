@@ -212,6 +212,8 @@ describe('BaseDetailController', () => {
 describe('Get actual versioned record', () => {
   let controller: BaseDetailController<Record>;
 
+  const activatedRouteMock: { snapshot?: object } = {};
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -231,6 +233,7 @@ describe('Get actual versioned record', () => {
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: AuthService, useValue: authServiceMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
       ],
     });
     controller = TestBed.inject(BaseDetailController);
@@ -242,12 +245,12 @@ describe('Get actual versioned record', () => {
     validTo: moment('31.12.2000', 'DD.MM.YYYY').toDate(),
   };
   const secondRecord: Record = {
-    id: 1,
+    id: 2,
     validFrom: moment('1.1.2001', 'DD.MM.YYYY').toDate(),
     validTo: moment('31.12.2001', 'DD.MM.YYYY').toDate(),
   };
   const thirdRecord: Record = {
-    id: 1,
+    id: 3,
     validFrom: moment('1.1.2002', 'DD.MM.YYYY').toDate(),
     validTo: moment('31.12.2002', 'DD.MM.YYYY').toDate(),
   };
@@ -408,5 +411,41 @@ describe('Get actual versioned record', () => {
 
     //then
     expect(result).toBe('04.01.2004');
+  });
+
+  it('should return the specified version when id parameter is found', () => {
+    //given
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const today = moment('1.2.2002', 'DD.MM.YYYY').toDate();
+    jasmine.clock().mockDate(today);
+    activatedRouteMock.snapshot = {
+      queryParams: {
+        id: 1,
+      },
+    };
+
+    //when
+    const record: Record = controller.evaluateSelectedRecord(records);
+
+    //then
+    expect(record.id).toBe(firstRecord.id);
+  });
+
+  it('should return the default version when id parameter is not found', () => {
+    //given
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const today = moment('1.2.2002', 'DD.MM.YYYY').toDate();
+    jasmine.clock().mockDate(today);
+    activatedRouteMock.snapshot = {
+      queryParams: {
+        id: 1000,
+      },
+    };
+
+    //when
+    const record: Record = controller.evaluateSelectedRecord(records);
+
+    //then
+    expect(record.id).toBe(thirdRecord.id);
   });
 });
