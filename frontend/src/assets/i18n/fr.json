@@ -346,6 +346,7 @@
       }
     },
     "LINE_WORKFLOW": {
+      "DETAIL_WORKFLOW_INFORMATION": "Informations sur les auditions",
       "TAB_HEADER": "Lignes Auditions",
       "TABLE_HEADER": "Lignes Auditions",
       "TABLE": {
@@ -479,6 +480,7 @@
       "FUNCTION": "Fonction",
       "MAIL": "Adresse e-mail"
     },
+    "STATUS_DETAIL": "Statut d'audience",
     "STATUS": {
       "ADDED": "Saisit",
       "STARTED": "Lancé",
