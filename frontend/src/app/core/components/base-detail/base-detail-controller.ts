@@ -57,22 +57,26 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     if (Array.isArray(records) && records.length > 0) {
       this.records = records;
       this.sortRecords();
-      const preferredSelectionId = Number(this.activatedRoute.snapshot.queryParams.id);
-      if (preferredSelectionId) {
-        const preferredRecord = this.records.filter((record) => record.id === preferredSelectionId);
-        if (preferredRecord.length == 1) {
-          this.setSelectedRecord(preferredRecord[0]);
-        } else {
-          this.setSelectedRecord(this.getActualRecord(this.records));
-        }
-      } else if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
-        this.setSelectedRecord(this.records[this.switchedIndex]);
-      } else {
-        this.setSelectedRecord(this.getActualRecord(this.records));
-      }
+      this.setSelectedRecord(this.evaluateSelectedRecord(this.records));
     } else {
       //is creating a new version, prepare empty Form
       this.setSelectedRecord(records);
+    }
+  }
+
+  evaluateSelectedRecord(records: Array<TYPE>) {
+    const preferredSelectionId = Number(this.activatedRoute.snapshot.queryParams.id);
+    if (preferredSelectionId) {
+      const preferredRecord = records.filter((record) => record.id === preferredSelectionId);
+      if (preferredRecord.length == 1) {
+        return preferredRecord[0];
+      } else {
+        return this.getActualRecord(records);
+      }
+    } else if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
+      return records[this.switchedIndex];
+    } else {
+      return this.getActualRecord(records);
     }
   }
 
