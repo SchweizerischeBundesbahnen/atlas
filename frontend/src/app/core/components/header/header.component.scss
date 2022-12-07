@@ -57,14 +57,14 @@ $navigationDefaultSize: 139px;
 
 @include variables.default-screen() {
   .header-container {
-    padding-left: 177px;
+    padding-left: 155px;
     margin-left: 0 !important;
   }
 }
 
 @include variables.large-screen() {
   .header-container {
-    padding-left: 467px;
+    padding-left: 285px;
     margin-left: 0 !important;
   }
 }
