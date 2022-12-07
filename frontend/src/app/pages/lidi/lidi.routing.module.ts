@@ -9,6 +9,7 @@ import { SublineDetailResolver } from './sublines/detail/subline-detail.resolver
 import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
 import { LinesComponent } from './lines/lines.component';
 import { SublinesComponent } from './sublines/sublines.component';
+import { LidiWorkflowOverviewComponent } from './workflow/overview/lidi-workflow-overview.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,10 @@ const routes: Routes = [
           sublineDetail: SublineDetailResolver,
         },
         runGuardsAndResolvers: 'always',
+      },
+      {
+        path: Pages.WORKFLOWS.path,
+        component: LidiWorkflowOverviewComponent,
       },
       { path: '**', redirectTo: Pages.LINES.path },
     ],
