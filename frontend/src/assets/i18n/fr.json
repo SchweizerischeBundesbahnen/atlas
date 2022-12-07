@@ -135,12 +135,6 @@
       "DESCRIPTION": "Saisie et gestion des données des tableaux-horaires.",
       "PATH_TEXT": "Vers tableaux-horaires"
     },
-    "LIDI_WORKFLOW": {
-      "TITLE": "Lignes Rechercher et visionner les auditions",
-      "TITLE_MENU": "Lignes Auditions",
-      "DESCRIPTION": "Vous trouverez ici toutes les informations relatives aux auditions de lignes.",
-      "PATH_TEXT": "Auditions de ligne"
-    },
     "LIDI": {
       "TITLE": "Liste des lignes",
       "TITLE_MENU": "Lignes et lignes partielles",
@@ -352,6 +346,7 @@
       }
     },
     "LINE_WORKFLOW": {
+      "TAB_HEADER": "Lignes Auditions",
       "TABLE_HEADER": "Lignes Auditions",
       "TABLE": {
         "NUMBER": "Numéro de ligne",

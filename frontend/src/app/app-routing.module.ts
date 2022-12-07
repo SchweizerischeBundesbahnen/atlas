@@ -19,13 +19,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: Pages.LIDI.child?.path,
-    loadChildren: () =>
-      import('./pages/lidi-workflow/lidi-workflow.module').then((m) => m.LidiWorkflowModule),
-    data: { headerTitle: Pages.LIDI.child?.headerTitle },
-    canActivate: [AuthGuard],
-  },
-  {
     path: Pages.BODI.path,
     loadChildren: () => import('./pages/bodi/bodi.module').then((m) => m.BodiModule),
     data: { headerTitle: Pages.BODI.headerTitle },
