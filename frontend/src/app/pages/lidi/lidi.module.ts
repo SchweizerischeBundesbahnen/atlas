@@ -10,9 +10,11 @@ import { ColorModule } from './color-picker/color.module';
 import { FormModule } from '../../core/module/form.module';
 import { MainlineSelectOptionPipe } from './sublines/detail/mainline-select-option.pipe';
 import { LidiWorkflowOverviewComponent } from './workflow/overview/lidi-workflow-overview.component';
+import { LineVersionSnapshotDetailComponent } from './workflow/detail/line-version-snapshot-detail.component';
 
 @NgModule({
   declarations: [
+    LineVersionSnapshotDetailComponent,
     LidiWorkflowOverviewComponent,
     LidiOverviewComponent,
     LinesComponent,

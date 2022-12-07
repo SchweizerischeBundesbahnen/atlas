@@ -346,6 +346,7 @@
       }
     },
     "LINE_WORKFLOW": {
+      "DETAIL_WORKFLOW_INFORMATION": "Informationen zur Anhörung",
       "TAB_HEADER": "Linien Anhörungen",
       "TABLE_HEADER": "Linien Anhörungen",
       "TABLE": {
@@ -479,6 +480,7 @@
       "FUNCTION": "Funktion",
       "MAIL": "E-Mail Adresse"
     },
+    "STATUS_DETAIL": "Anhörung Status",
     "STATUS": {
       "ADDED": "Erfasst",
       "STARTED": "Gestartet",

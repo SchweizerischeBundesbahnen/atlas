@@ -346,6 +346,7 @@
       }
     },
     "LINE_WORKFLOW": {
+      "DETAIL_WORKFLOW_INFORMATION": "Informazioni sulle audizioni",
       "TAB_HEADER": "Audizioni delle linee",
       "TABLE_HEADER": "Audizioni delle linee",
       "TABLE": {
@@ -479,11 +480,12 @@
       "FUNCTION": "Funzione",
       "MAIL": "Indirizzo E-Mail"
     },
+    "STATUS_DETAIL": "Stato dell'audizione",
     "STATUS": {
       "ADDED": "Inizializzato",
       "STARTED": "Avviato",
       "REVISION": "In Revisione",
-      "HEARING": "In audizionr",
+      "HEARING": "In audizione",
       "APPROVED": "Approvato",
       "REJECTED": "Respinto"
     },
