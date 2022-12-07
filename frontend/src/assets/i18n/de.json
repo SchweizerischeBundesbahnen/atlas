@@ -135,12 +135,6 @@
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Fahrplanfeldern.",
       "PATH_TEXT": "Fahrplanfelder"
     },
-    "LIDI_WORKFLOW": {
-      "TITLE": "Linien Anhörungen suchen und anschauen",
-      "TITLE_MENU": "Linien Anhörungen",
-      "DESCRIPTION": "Hier finden Sie alle Informationen über Linien Anhörungen.",
-      "PATH_TEXT": "Linienanhörungen"
-    },
     "LIDI": {
       "TITLE": "Linien und Teillinien bearbeiten und erstellen",
       "TITLE_MENU": "Linien und Teillinien",
@@ -352,6 +346,7 @@
       }
     },
     "LINE_WORKFLOW": {
+      "TAB_HEADER": "Linien Anhörungen",
       "TABLE_HEADER": "Linien Anhörungen",
       "TABLE": {
         "NUMBER": "Liniennummer",

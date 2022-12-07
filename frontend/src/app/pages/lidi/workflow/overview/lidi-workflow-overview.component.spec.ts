@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ContainerLineVersionSnapshot } from 'src/app/api/model/containerLineVersionSnapshot';
+import { LinesService, LineType } from '../../../../api';
 import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { TranslatePipe } from '@ngx-translate/core';
-import { ContainerLineVersionSnapshot, LinesService, LineType } from '../../../api';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
-import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { LoadingSpinnerComponent } from '../../../../core/components/loading-spinner/loading-spinner.component';
+import { MockAppTableSearchComponent } from '../../../../app.testing.mocks';
+import { AppTestingModule } from '../../../../app.testing.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const versionContainer: ContainerLineVersionSnapshot = {
   objects: [

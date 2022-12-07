@@ -1,18 +1,18 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { LinesService, LineVersionSnapshot } from '../../../api';
-import { TableColumn } from '../../../core/components/table/table-column';
+import { TableComponent } from '../../../../core/components/table/table.component';
+import { LinesService, LineVersionSnapshot } from '../../../../api';
+import { TableColumn } from '../../../../core/components/table/table-column';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationService } from '../../../core/notification/notification.service';
-import { TableSettingsService } from '../../../core/components/table/table-settings.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { TableSettingsService } from '../../../../core/components/table/table-settings.service';
 import {
   DetailDialogEvents,
   RouteToDialogService,
-} from '../../../core/components/route-to-dialog/route-to-dialog.service';
+} from '../../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { TableSettingsWorkflow } from '../../../core/components/table/table-settings-workflow';
-import { DEFAULT_WORKFLOW_STATUS_SELECTION } from '../../../core/constants/workflow-status.choices';
+import { DEFAULT_WORKFLOW_STATUS_SELECTION } from '../../../../core/constants/workflow-status.choices';
+import { TableSettingsWorkflow } from '../../../../core/components/table/table-settings-workflow';
 
 @Component({
   selector: 'app-lidi-workflow-overview',
