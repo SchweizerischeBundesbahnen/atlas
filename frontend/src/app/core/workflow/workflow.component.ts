@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { LineRecord } from './model/line-record';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {LineRecord} from './model/line-record';
 import {
   LinesService,
   LineVersionWorkflow,
@@ -9,19 +9,19 @@ import {
   WorkflowService,
   WorkflowStart,
 } from '../../api';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { WorkflowFormGroup } from './workflow-form-group';
-import { AtlasFieldLengthValidator } from '../validation/field-lengths/atlas-field-length-validator';
-import { AtlasCharsetsValidator } from '../validation/charsets/atlas-charsets-validator';
-import { NotificationService } from '../notification/notification.service';
-import { DialogService } from '../components/dialog/dialog.service';
-import { TranslateService } from '@ngx-translate/core';
-import { WorkflowEvent } from './model/workflow-event';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Record } from '../components/base-detail/record';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {WorkflowFormGroup} from './workflow-form-group';
+import {AtlasFieldLengthValidator} from '../validation/field-lengths/atlas-field-length-validator';
+import {AtlasCharsetsValidator} from '../validation/charsets/atlas-charsets-validator';
+import {NotificationService} from '../notification/notification.service';
+import {DialogService} from '../components/dialog/dialog.service';
+import {TranslateService} from '@ngx-translate/core';
+import {WorkflowEvent} from './model/workflow-event';
+import {Observable, Subject, Subscription} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {Record} from '../components/base-detail/record';
+import {ValidationService} from '../validation/validation.service';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
-import { ValidationService } from '../validation/validation.service';
 
 @Component({
   selector: 'app-workflow [lineRecord]',
@@ -77,7 +77,8 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     private readonly dialogService: DialogService,
     private readonly translateService: TranslateService,
     private readonly lineService: LinesService
-  ) {}
+  ) {
+  }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
@@ -150,6 +151,11 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       reload: true,
     };
     this.workflowEvent.emit(workflowEvent);
+  }
+
+  workflowChecked() {
+    this.eventReloadParent();
+    this.resetToAddWorkflow();
   }
 
   private populateWorkflowStart() {
@@ -279,11 +285,6 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       this.isWorkflowFormEditable = false;
       this.initWorkflowForm();
     }
-  }
-
-  workflowChecked() {
-    this.eventReloadParent();
-    this.resetToAddWorkflow();
   }
 
   skipWorkflow() {
