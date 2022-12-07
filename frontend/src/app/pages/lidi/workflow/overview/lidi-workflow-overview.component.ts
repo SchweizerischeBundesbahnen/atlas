@@ -82,7 +82,7 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
 
   editVersion($event: LineVersionSnapshot) {
     this.router
-      .navigate([$event.slnid], {
+      .navigate([$event.id], {
         relativeTo: this.route,
       })
       .then();
