@@ -12,8 +12,6 @@ import { Subject } from 'rxjs';
 })
 export class SideNavComponent implements OnDestroy {
   activePageIndex = 0;
-  isShowChild = false;
-  isChildItemActive = false;
   private readonly ngUnsubscribe = new Subject<void>();
 
   constructor(private readonly router: Router) {
@@ -41,14 +39,5 @@ export class SideNavComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.complete();
-  }
-
-  showChild(pagePath: string) {
-    this.isChildItemActive = false;
-    this.isShowChild = Pages.LIDI.path === pagePath;
-  }
-
-  activeItem() {
-    this.isChildItemActive = true;
   }
 }

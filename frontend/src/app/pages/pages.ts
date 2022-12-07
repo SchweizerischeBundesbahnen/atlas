@@ -33,14 +33,6 @@ export class Pages {
     path: 'line-directory',
     pathText: 'PAGES.LIDI.PATH_TEXT',
     description: 'PAGES.LIDI.DESCRIPTION',
-    child: {
-      title: 'PAGES.LIDI_WORKFLOW.TITLE',
-      titleMenu: 'PAGES.LIDI_WORKFLOW.TITLE_MENU',
-      headerTitle: 'PAGES.LIDI_WORKFLOW.TITLE_MENU',
-      path: 'workflows',
-      pathText: 'PAGES.LIDI_WORKFLOW.PATH_TEXT',
-      description: 'PAGES.LIDI_WORKFLOW.DESCRIPTION',
-    },
   };
 
   public static LINES: Page = {
@@ -53,6 +45,13 @@ export class Pages {
   public static SUBLINES: Page = {
     title: 'PAGES.DETAILS',
     path: 'sublines',
+    pathText: '',
+    description: '',
+  };
+
+  public static WORKFLOWS: Page = {
+    title: 'PAGES.LIDI_WORKFLOW.TITLE',
+    path: 'workflows',
     pathText: '',
     description: '',
   };
