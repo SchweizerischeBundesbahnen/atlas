@@ -14,6 +14,8 @@ import { Pages } from '../../../pages';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-detail-form-group';
 import { takeUntil } from 'rxjs/operators';
+import { WorkflowFormGroup } from '../../../../core/workflow/workflow-form-group';
+import { WorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check-form/workflow-check-form-group';
 
 @Component({
   templateUrl: './line-version-snapshot-detail.component.html',
@@ -23,8 +25,25 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
   TYPE_OPTIONS = Object.values(LineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   lineVersionSnapshot!: LineVersionSnapshot;
+  showWorkflowCheckForm = false;
   workflow!: Workflow;
   form!: FormGroup;
+  workflowStartedFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
+    comment: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    function: new FormControl(''),
+    mail: new FormControl(''),
+  });
+
+  workflowCheckFormGroup: FormGroup<WorkflowCheckFormGroup> = new FormGroup<WorkflowCheckFormGroup>(
+    {
+      comment: new FormControl(''),
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+      function: new FormControl(''),
+    }
+  );
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -43,6 +62,29 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((workflow) => {
         this.workflow = workflow;
+        this.workflowStartedFormGroup.controls.firstName.setValue(this.workflow.client?.firstName);
+        this.workflowStartedFormGroup.controls.lastName.setValue(this.workflow.client?.lastName);
+        this.workflowStartedFormGroup.controls.mail.setValue(this.workflow.client?.mail);
+        this.workflowStartedFormGroup.controls.function.setValue(
+          this.workflow.client?.personFunction
+        );
+        this.workflowStartedFormGroup.controls.comment.setValue(this.workflow.workflowComment);
+        this.workflowStartedFormGroup.disable();
+        if (
+          this.lineVersionSnapshot.workflowStatus === 'APPROVED' ||
+          this.lineVersionSnapshot.workflowStatus === 'REJECTED'
+        ) {
+          this.showWorkflowCheckForm = true;
+          this.workflowCheckFormGroup.controls.firstName.setValue(
+            this.workflow.examinant?.firstName
+          );
+          this.workflowCheckFormGroup.controls.lastName.setValue(this.workflow.examinant?.lastName);
+          this.workflowCheckFormGroup.controls.function.setValue(
+            this.workflow.examinant?.personFunction
+          );
+          this.workflowCheckFormGroup.controls.comment.setValue(this.workflow.checkComment);
+          this.workflowCheckFormGroup.disable();
+        }
       });
   }
 
