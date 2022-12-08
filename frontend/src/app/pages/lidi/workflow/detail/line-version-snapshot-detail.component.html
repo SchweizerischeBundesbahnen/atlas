@@ -1,266 +1,57 @@
 <app-dialog-close (clicked)="backToOverview()"></app-dialog-close>
+
+<h2 class="font-bold-2xl">
+  {{ 'LIDI.LINE_WORKFLOW.DETAIL_WORKFLOW_INFORMATION' | translate }}
+</h2>
+<div class="mb-2">
+  <span class="font-bold-lg color-gray-900">{{ 'WORKFLOW.STATUS_DETAIL' | translate }} </span>
+  <span class="color-gray-900">{{
+    'WORKFLOW.STATUS.' + this.lineVersionSnapshot.workflowStatus | translate
+  }}</span>
+</div>
+<app-workflow-form
+  [formGroup]="workflowStartedFormGroup"
+  commentLabel="WORKFLOW.START.COMMENT"
+  personLabel="WORKFLOW.START.KEY_DATA"
+></app-workflow-form>
+<app-workflow-form
+  *ngIf="showWorkflowCheckForm"
+  [formGroup]="workflowCheckFormGroup"
+  [hasMail]="false"
+  commentLabel="WORKFLOW.CHECK.COMMENT"
+  personLabel="WORKFLOW.CHECK.KEY_DATA"
+></app-workflow-form>
+
+<div class="mt-5 mb-3">
+  <span class="font-bold-2xl">{{ 'LIDI.LINE_WORKFLOW.DETAIL_LINE_SNAPSHOT' | translate }}</span>
+</div>
+<div class="mb-2">
+  <a
+    (click)="this.navigateToLineVersion()"
+    class="font-bold-base color-primary-400 mb-2"
+    target="_blank"
+    >{{ 'LIDI.LINE_WORKFLOW.NAVIGATE_TO_VERSION' | translate }}
+    <svg
+      fill="#000000"
+      height="18"
+      viewBox="0 2 22 22"
+      width="18"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+      />
+    </svg>
+  </a>
+</div>
+<div class="mb-2">
+  <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+  <span class="color-gray-900">{{
+    'COMMON.STATUS_TYPES.' + this.lineVersionSnapshot.status | translate
+  }}</span>
+</div>
 <form [formGroup]="form">
-  <h2 class="font-bold-2xl">
-    {{ 'LIDI.LINE_WORKFLOW.DETAIL_WORKFLOW_INFORMATION' | translate }}
-  </h2>
-  <div class="mb-2">
-    <a (click)="this.navigateToLineVersion()" class="font-bold-base color-primary-400 MB-2">{{
-      'WORKFLOW.NAVIGATE_TO_VERSION' | translate
-    }}</a>
-  </div>
-  <div class="mb-2">
-    <span class="font-bold-lg color-gray-900">{{ 'WORKFLOW.STATUS_DETAIL' | translate }} </span>
-    <span class="color-gray-900">{{
-      'WORKFLOW.STATUS.' + this.lineVersionSnapshot.workflowStatus | translate
-    }}</span>
-  </div>
-  <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-3 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'LIDI.LINE.NUMBER' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.LINE.NUMBER_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '50.391' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="number" formControlName="number" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-    <div class="d-flex flex-column col-9">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'LIDI.LINE.DESCRIPTION' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.LINE.DESCRIPTION_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.FOR_EXAMPLE' | translate }}
-        {{ 'Lenzburg Langsamstig - Bahnhof - Lenzburg Schloss' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="description" formControlName="description" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-12">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'LIDI.LONG_NAME' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.LONG_NAME_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.FOR_EXAMPLE' | translate }}
-        {{ 'Lenzburg Langsamstig - Lenzburg Bahnhof - Lenzburg Schloss' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="longName" formControlName="longName" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-4 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}
-        </mat-label>
-        <form-info-icon
-          infoTitle="{{ 'LIDI.SWISS_LINE_NUMBER_INFO' | translate }}"
-        ></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.50.391' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="swissLineNumber" formControlName="swissLineNumber" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="d-flex flex-column col-4 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'LIDI.ALTERNATIVE_NAME' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.ALTERNATIVE_NAME_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="alternativeName" formControlName="alternativeName" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="d-flex flex-column col-4">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'LIDI.COMBINATION_NAME' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.COMBINATION_NAME_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="combinationName" formControlName="combinationName" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
-
-  <div class="w-50">
-    <form-date-range [formGroup]="form"></form-date-range>
-  </div>
-
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-6 pe-3">
-      <bo-select
-        [formGroup]="form"
-        controlName="businessOrganisation"
-        data-cy="businessOrganisation"
-      ></bo-select>
-    </div>
-
-    <div class="d-flex flex-column col-3 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg required-indicator subtitle-margin"
-          >{{ 'LIDI.TYPE' | translate }}
-        </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.TYPE_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-form-field appearance="outline" class="form-outline">
-        <mat-select
-          data-cy="type"
-          formControlName="lineType"
-          placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-        >
-          <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
-            {{ 'LIDI.LINE.TYPES.' + type | translate }}
-          </mat-option>
-        </mat-select>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-
-    <div class="d-flex flex-column col-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg required-indicator subtitle-margin"
-          >{{ 'LIDI.PAYMENT.TYPE' | translate }}
-        </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.PAYMENT.TYPE_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-form-field appearance="outline" class="form-outline">
-        <mat-select
-          data-cy="paymentType"
-          formControlName="paymentType"
-          placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-        >
-          <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
-            {{ 'LIDI.PAYMENT.' + type | translate }}
-          </mat-option>
-        </mat-select>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <span class="font-bold-2xl">{{ 'FORM.DESIGN_INFORMATION' | translate }}</span>
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-6 pe-3">
-      <form-url-component [formGroup]="form"></form-url-component>
-    </div>
-    <div class="d-flex flex-column col-3 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.LINE.FONT_RGB' | translate }}
-        </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.LINE.FONT_RGB_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
-      >
-      <app-rgb-picker
-        [formGroup]="form"
-        attributeName="colorFontRgb"
-        data-cy="colorFontRgb"
-        defaultColor="#000000"
-      ></app-rgb-picker>
-    </div>
-
-    <div class="d-flex flex-column col-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.LINE.FONT_CMYK' | translate }}
-        </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.LINE.FONT_CMYK_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '0,0,0,100' }}</mat-label
-      >
-      <app-cmyk-picker
-        [formGroup]="form"
-        attributeName="colorFontCmyk"
-        data-cy="colorFontCmyk"
-        defaultColor="100,100,100,100"
-      ></app-cmyk-picker>
-    </div>
-  </div>
-
-  <div class="col-12 d-flex justify-content-end mt-3">
-    <div class="d-flex flex-column col-3 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.LINE.BACKGROUND_RGB' | translate }}
-        </mat-label>
-        <form-info-icon
-          infoTitle="{{ 'LIDI.LINE.BACKGROUND_RGB_INFO' | translate }}"
-        ></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
-      >
-      <app-rgb-picker
-        [formGroup]="form"
-        attributeName="colorBackRgb"
-        data-cy="colorBackRgb"
-        defaultColor="#FFFFFF"
-      ></app-rgb-picker>
-    </div>
-
-    <div class="d-flex flex-column col-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.LINE.BACKGROUND_CMYK' | translate }}
-        </mat-label>
-        <form-info-icon
-          infoTitle="{{ 'LIDI.LINE.BACKGROUND_CMYK_INFO' | translate }}"
-        ></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '85,10,65,0' }}</mat-label
-      >
-      <app-cmyk-picker
-        [formGroup]="form"
-        attributeName="colorBackCmyk"
-        data-cy="colorBackCmyk"
-        defaultColor="0,0,0,0"
-      ></app-cmyk-picker>
-    </div>
-  </div>
-
-  <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-6">
-      <form-comment [formGroup]="form"></form-comment>
-    </div>
-  </div>
+  <line-deatil-form [form]="form" [newRecord]="false"></line-deatil-form>
 </form>
 
 <div class="footer fixed-bottom d-flex align-items-center justify-content-center">

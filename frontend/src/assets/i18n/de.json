@@ -347,6 +347,8 @@
     },
     "LINE_WORKFLOW": {
       "DETAIL_WORKFLOW_INFORMATION": "Informationen zur Anhörung",
+      "DETAIL_LINE_SNAPSHOT": "Historisierte Linien Detail",
+      "NAVIGATE_TO_VERSION": "Gehe zur Linie Detail Ansicht",
       "TAB_HEADER": "Linien Anhörungen",
       "TABLE_HEADER": "Linien Anhörungen",
       "TABLE": {
