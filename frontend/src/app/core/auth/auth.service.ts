@@ -39,7 +39,9 @@ export class AuthService {
         if (this.hasRole(Role.AtlasAdmin)) {
           Pages.enabledPages = [...Pages.pages, ...Pages.adminPages];
         }
-        this.router.navigate([sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY)]).then();
+        this.router
+          .navigateByUrl(sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY) ?? '')
+          .then();
       }
     });
   }
