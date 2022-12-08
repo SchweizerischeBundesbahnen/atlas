@@ -1,21 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.config;
 
-import ch.sbb.atlas.kafka.AtlasKafkaConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
 @Configuration
-@ComponentScan
-@Import(AtlasKafkaConfiguration.class)
 @RequiredArgsConstructor
 public class KafkaConfig {
 
