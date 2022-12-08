@@ -62,7 +62,7 @@ CREATE TABLE service_point_version_geolocation
     e_wgs84                 NUMERIC      NULL,
     n_wgs84                 NUMERIC      NULL,
     height                  NUMERIC      NULL,
-    country_code            VARCHAR(2)   NULL,
+    iso_country_code        VARCHAR(2)   NULL,
     swiss_canton_fso_number SMALLINT     NULL,
     swiss_canton_name       VARCHAR(50)  NULL,
     swiss_canton_number     SMALLINT     NULL,
@@ -86,4 +86,4 @@ CREATE INDEX spvgeo_spatialref_idx ON service_point_version_geolocation (source_
 CREATE INDEX spvgeo_coordlv03_idx ON service_point_version_geolocation (e_lv03, n_lv03);
 CREATE INDEX spvgeo_coordlv95_idx ON service_point_version_geolocation (e_lv95, n_lv95);
 CREATE INDEX spvgeo_coordwgs84_idx ON service_point_version_geolocation (e_wgs84, n_wgs84);
-CREATE INDEX spvgeo_countrycode_idx ON service_point_version_geolocation (country_code);
+CREATE INDEX spvgeo_countrycode_idx ON service_point_version_geolocation (iso_country_code);
