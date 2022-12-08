@@ -9,7 +9,7 @@ import moment from 'moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,7 +35,7 @@ describe('BaseDetailController', () => {
 
   class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
-      super(dialogRef, dialogService, notificationService, authService);
+      super(dialogRef, dialogService, notificationService, authService, activatedRoute);
     }
 
     getPageType(): Page {
@@ -94,6 +94,7 @@ describe('BaseDetailController', () => {
   let dialogService: DialogService;
   let notificationService: NotificationService;
   let authService: AuthService;
+  let activatedRoute: ActivatedRoute;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -119,6 +120,7 @@ describe('BaseDetailController', () => {
     notificationService = TestBed.inject(NotificationService);
     dialogRef = TestBed.inject(MatDialogRef);
     authService = TestBed.inject(AuthService);
+    activatedRoute = TestBed.inject(ActivatedRoute);
   });
 
   describe('existing record', () => {
@@ -210,6 +212,8 @@ describe('BaseDetailController', () => {
 describe('Get actual versioned record', () => {
   let controller: BaseDetailController<Record>;
 
+  const activatedRouteMock: { snapshot?: object } = {};
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -229,6 +233,7 @@ describe('Get actual versioned record', () => {
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: AuthService, useValue: authServiceMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
       ],
     });
     controller = TestBed.inject(BaseDetailController);
@@ -240,12 +245,12 @@ describe('Get actual versioned record', () => {
     validTo: moment('31.12.2000', 'DD.MM.YYYY').toDate(),
   };
   const secondRecord: Record = {
-    id: 1,
+    id: 2,
     validFrom: moment('1.1.2001', 'DD.MM.YYYY').toDate(),
     validTo: moment('31.12.2001', 'DD.MM.YYYY').toDate(),
   };
   const thirdRecord: Record = {
-    id: 1,
+    id: 3,
     validFrom: moment('1.1.2002', 'DD.MM.YYYY').toDate(),
     validTo: moment('31.12.2002', 'DD.MM.YYYY').toDate(),
   };
@@ -406,5 +411,41 @@ describe('Get actual versioned record', () => {
 
     //then
     expect(result).toBe('04.01.2004');
+  });
+
+  it('should return the specified version when id parameter is found', () => {
+    //given
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const today = moment('1.2.2002', 'DD.MM.YYYY').toDate();
+    jasmine.clock().mockDate(today);
+    activatedRouteMock.snapshot = {
+      queryParams: {
+        id: 1,
+      },
+    };
+
+    //when
+    const record: Record = controller.evaluateSelectedRecord(records);
+
+    //then
+    expect(record.id).toBe(firstRecord.id);
+  });
+
+  it('should return the default version when id parameter is not found', () => {
+    //given
+    const records: Array<Record> = [firstRecord, secondRecord, thirdRecord];
+    const today = moment('1.2.2002', 'DD.MM.YYYY').toDate();
+    jasmine.clock().mockDate(today);
+    activatedRouteMock.snapshot = {
+      queryParams: {
+        id: 1000,
+      },
+    };
+
+    //when
+    const record: Record = controller.evaluateSelectedRecord(records);
+
+    //then
+    expect(record.id).toBe(thirdRecord.id);
   });
 });
