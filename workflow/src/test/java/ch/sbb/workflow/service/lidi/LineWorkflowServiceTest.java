@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationTest
 @EmbeddedKafka(topics = {"atlas.mail", "atlas.workflow"})
@@ -25,6 +24,7 @@ class LineWorkflowServiceTest {
                 .status(WorkflowStatus.STARTED)
                 .workflowComment("Wee need this workflow")
                         .swissId("ch:1:slnid:123")
+                        .businessObjectId(1100L)
                         .description("Linie 1")
                 .client(Person.builder().firstName("Hai").lastName("Fisch").function("Schwimmer").mail("hai@meer.com").build())
                 .build());
@@ -32,7 +32,7 @@ class LineWorkflowServiceTest {
         assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
         assertThat(mailNotification.getSubject()).isEqualTo("Antrag zu ch:1:slnid:123 Linie 1 prüfen");
         assertThat(mailNotification.getTemplateProperties().get(0).get("description")).isEqualTo("Linie 1");
-        assertThat(mailNotification.getTemplateProperties().get(0).get("url")).isEqualTo("http://localhost:4200/line-directory/lines/ch:1:slnid:123");
+        assertThat(mailNotification.getTemplateProperties().get(0).get("url")).isEqualTo("http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
     }
 
     @Test
@@ -41,6 +41,7 @@ class LineWorkflowServiceTest {
                 .status(WorkflowStatus.APPROVED)
                 .workflowComment("Wee need this workflow")
                 .swissId("ch:1:slnid:123")
+                .businessObjectId(1100L)
                 .description("Linie 1")
                         .checkComment("This is great")
                         .examinant(Person.builder().firstName("Mr").lastName("Crabbs").function("Dinerbesitzer").mail("crabbs@meer.com").build())
@@ -50,6 +51,6 @@ class LineWorkflowServiceTest {
         assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
         assertThat(mailNotification.getSubject()).isEqualTo("Antrag zu ch:1:slnid:123 Linie 1 genehmigt");
         assertThat(mailNotification.getTemplateProperties().get(0).get("description")).isEqualTo("Linie 1");
-        assertThat(mailNotification.getTemplateProperties().get(0).get("url")).isEqualTo("http://localhost:4200/line-directory/lines/ch:1:slnid:123");
+        assertThat(mailNotification.getTemplateProperties().get(0).get("url")).isEqualTo("http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
     }
 }
