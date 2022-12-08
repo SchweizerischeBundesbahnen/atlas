@@ -10,7 +10,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.121.0</version>
+      <version>1.122.0</version>
    </parent>
    <description>Atlas Workflow Service</description>
    <artifactId>workflow</artifactId>
@@ -63,17 +63,17 @@
       <dependency>
          <artifactId>base-service</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.121.0</version>
+         <version>1.122.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>kafka</artifactId>
-         <version>1.121.0</version>
+         <version>1.122.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>user-administration-security</artifactId>
-         <version>1.121.0</version>
+         <version>1.122.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-test</artifactId>
@@ -81,10 +81,10 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-      <artifactId>spring-security-test</artifactId>
-      <groupId>org.springframework.security</groupId>
-      <scope>test</scope>
-   </dependency>
+         <artifactId>spring-security-test</artifactId>
+         <groupId>org.springframework.security</groupId>
+         <scope>test</scope>
+      </dependency>
       <dependency>
          <artifactId>spring-restdocs-mockmvc</artifactId>
          <groupId>org.springframework.restdocs</groupId>
@@ -101,7 +101,7 @@
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
          <type>test-jar</type>
-         <version>1.121.0</version>
+         <version>1.122.0</version>
       </dependency>
       <dependency>
          <artifactId>h2</artifactId>
@@ -114,6 +114,12 @@
       </dependency>
    </dependencies>
    <build>
+      <testResources>
+         <testResource>
+            <directory>src/test/resources</directory>
+            <filtering>true</filtering>
+         </testResource>
+      </testResources>
       <plugins>
          <plugin>
             <artifactId>asciidoctor-maven-plugin</artifactId>
