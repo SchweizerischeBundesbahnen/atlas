@@ -7,8 +7,7 @@ import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
-import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
+import ch.sbb.atlas.workflow.model.AtlasVersionSnapshoatble;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Slf4j
 @RequiredArgsConstructor
 public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y extends BaseWorkflowEntity,
-    Z extends BaseVersionSnapshot> {
+    Z extends AtlasVersionSnapshoatble> {
 
   protected final JpaRepository<T, Long> objectVersionRepository;
   protected final ObjectWorkflowRepository<Y> objectWorkflowRepository;
@@ -28,22 +27,24 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
   public void processWorkflow(LineWorkflowEvent lineWorkflowEvent, Z versionSnapshot) {
     T objectVersion = getObjectVersion(lineWorkflowEvent);
     evaluateWorkflowProcessingStatus(lineWorkflowEvent, objectVersion, versionSnapshot);
+    objectVersionRepository.save(objectVersion);
+    log.info("Object entity saved: {}", objectVersion);
     Y objectVersionWorkflow = buildObjectVersionWorkflow(lineWorkflowEvent, objectVersion);
     objectWorkflowRepository.save(objectVersionWorkflow);
     log.info("Workflow entity saved: {}", objectVersionWorkflow);
-    objectVersionRepository.save(objectVersion);
-    log.info("Object entity saved: {}", objectVersion);
+
   }
 
   void evaluateWorkflowProcessingStatus(LineWorkflowEvent lineWorkflowEvent, T objectVersion, Z versionSnapshot) {
     Status preUpdateStatus = objectVersion.getStatus();
 
-    switch (lineWorkflowEvent.getWorkflowStatus()){
+    switch (lineWorkflowEvent.getWorkflowStatus()) {
       case STARTED -> objectVersion.setStatus(Status.IN_REVIEW);
       case APPROVED -> objectVersion.setStatus(Status.VALIDATED);
       case REJECTED -> objectVersion.setStatus(Status.DRAFT);
       default -> throw new IllegalStateException("Use case not yet implemented!!");
     }
+    versionSnapshot.setStatus(objectVersion.getStatus());
     objectVersionSnapshotRepository.save(versionSnapshot);
     log.info("Changed Object status from {} to {}", preUpdateStatus, objectVersion.getStatus());
   }

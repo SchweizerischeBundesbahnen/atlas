@@ -251,12 +251,24 @@ public class BaseWorkflowEntityProcessingServiceTest {
     private LocalDate validFrom;
     private LocalDate validTo;
 
+    private Status status;
+
     public LocalDate getValidFrom() {
       return this.validFrom;
     }
 
     public LocalDate getValidTo() {
       return this.validTo;
+    }
+
+    @Override
+    public Status getStatus() {
+      return status;
+    }
+
+    @Override
+    public void setStatus(Status status) {
+      this.status = status;
     }
   }
 
