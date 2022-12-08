@@ -144,8 +144,8 @@
       "helm": {
         "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
         "chartName": "applications",
-        "chartRootFolder": "clusters/aws01t",
-        "chartFile": "values-dev.yaml",
+        "chartRootFolder": "clusters/aws01t/atlas-dev",
+        "chartFile": "values.yaml",
         "versionProperties": [
           ".appVersion"
         ]
@@ -162,8 +162,8 @@
       "helm": {
         "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
         "chartName": "applications",
-        "chartRootFolder": "clusters/aws01t",
-        "chartFile": "values-test.yaml",
+        "chartRootFolder": "clusters/aws01t/atlas-test",
+        "chartFile": "values.yaml",
         "versionProperties": [
           ".appVersion"
         ]
