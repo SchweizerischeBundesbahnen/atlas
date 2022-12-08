@@ -4,8 +4,10 @@ import {
   LinesService,
   LineType,
   LineVersion,
+  LineVersionWorkflow,
   PaymentType,
   Status,
+  WorkflowProcessingStatus,
 } from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -35,7 +37,7 @@ export class LineDetailComponent
 {
   TYPE_OPTIONS = Object.values(LineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
-
+  isShowLineSnapshotHistory = false;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -53,6 +55,7 @@ export class LineDetailComponent
 
   ngOnInit() {
     super.ngOnInit();
+    this.isShowLineSnapshotHistory = this.showSnapshotHistoryLink();
   }
 
   getPageType(): Page {
@@ -84,6 +87,17 @@ export class LineDetailComponent
     return '';
   }
 
+  navigateToSnapshot() {
+    this.router
+      .navigate([Pages.LIDI.path, Pages.WORKFLOWS.path], {
+        queryParams: {
+          description: this.record.description,
+          number: this.record.number,
+        },
+      })
+      .then();
+  }
+
   isWorkflowable(): boolean {
     if (this.getPageType() === Pages.LINES) {
       if (this.record.status === Status.Draft || this.record.status === Status.InReview) {
@@ -91,6 +105,16 @@ export class LineDetailComponent
       }
     }
     return false;
+  }
+
+  showSnapshotHistoryLink(): boolean {
+    const lineVersionWorkflows: LineVersionWorkflow[] = [];
+    this.record.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
+    return (
+      lineVersionWorkflows.filter(
+        (lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.Evaluated
+      ).length > 0
+    );
   }
 
   updateRecord(): void {

@@ -5,6 +5,7 @@ import { LineType, PaymentType } from '../../../../../api';
 @Component({
   selector: 'line-deatil-form',
   templateUrl: './line-detail-form.component.html',
+  styleUrls: ['./line-detail-form.component.scss'],
 })
 export class LineDetailFormComponent {
   @Input() form!: FormGroup;
