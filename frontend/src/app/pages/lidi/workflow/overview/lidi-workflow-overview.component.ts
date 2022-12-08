@@ -53,11 +53,21 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const searchCriteria: string[] = [];
+    const number = this.route.snapshot.queryParams.number;
+    if (number) {
+      searchCriteria.push(number);
+    }
+    const description = this.route.snapshot.queryParams.description;
+    if (description) {
+      searchCriteria.push(description);
+    }
     this.getOverview({
       page: 0,
       size: 10,
       sort: 'number,ASC',
       statusChoices: DEFAULT_WORKFLOW_STATUS_SELECTION,
+      searchCriteria: searchCriteria,
     });
   }
 
