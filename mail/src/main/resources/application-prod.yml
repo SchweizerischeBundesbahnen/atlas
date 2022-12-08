@@ -1,5 +1,0 @@
-kafka:
-  atlas:
-    mail:
-      topic: atlas.prod.mail
-      groupId: atlas.kafka.mail.groupId
