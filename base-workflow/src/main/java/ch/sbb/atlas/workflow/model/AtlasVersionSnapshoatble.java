@@ -1,0 +1,18 @@
+package ch.sbb.atlas.workflow.model;
+
+import ch.sbb.atlas.base.service.model.Status;
+
+public interface AtlasVersionSnapshoatble {
+
+  Status getStatus();
+
+  void setStatus(Status status);
+
+  Long getWorkflowId();
+
+  void setWorkflowId(Long id);
+
+  Long getParentObjectId();
+
+  void setParentObjectId(Long id);
+}

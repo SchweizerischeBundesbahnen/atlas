@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @MappedSuperclass
 @AllArgsConstructor
-public abstract class BaseVersionSnapshot {
+public abstract class BaseVersionSnapshot implements AtlasVersionSnapshoatble {
 
   @NotNull
   private Long workflowId;

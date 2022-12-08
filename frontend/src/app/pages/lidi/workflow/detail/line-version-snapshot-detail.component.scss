@@ -1,3 +1,9 @@
-.subtitle-margin {
-  margin-bottom: 17.5px;
+@use 'src/styles/variables' as variables;
+
+svg path {
+  fill: variables.$primary-400;
+}
+
+a:hover {
+  cursor: pointer;
 }
