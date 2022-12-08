@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApplicationType,
   TimetableFieldNumbersService,
@@ -40,9 +40,10 @@ export class TimetableFieldNumberDetailComponent
     private timetableFieldNumberService: TimetableFieldNumbersService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    protected authService: AuthService
+    protected authService: AuthService,
+    protected activatedRoute: ActivatedRoute
   ) {
-    super(dialogRef, dialogService, notificationService, authService);
+    super(dialogRef, dialogService, notificationService, authService, activatedRoute);
   }
 
   ngOnInit() {
