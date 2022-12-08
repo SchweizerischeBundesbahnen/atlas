@@ -145,4 +145,4 @@ multiple times.
 ### Line Export Bucket expiration policy
 
 The **amazon.bucket.object-expiration-days** property defines that a file after n days will be
-deleted, see [application.yml](src/main/resources/application.yml)
+deleted, see [application.yml](src/main/resources/application-local.yml)
