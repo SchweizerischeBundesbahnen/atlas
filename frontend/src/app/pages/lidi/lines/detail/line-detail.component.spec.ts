@@ -14,6 +14,7 @@ import {
   MockBoSelectComponent,
 } from '../../../../app.testing.mocks';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -198,6 +199,7 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
   TestBed.configureTestingModule({
     declarations: [
       LineDetailComponent,
+      LineDetailFormComponent,
       MockAppDetailWrapperComponent,
       MockBoSelectComponent,
       ErrorNotificationComponent,

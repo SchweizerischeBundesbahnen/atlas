@@ -349,6 +349,7 @@
       "DETAIL_WORKFLOW_INFORMATION": "Informazioni sulle audizioni",
       "DETAIL_LINE_SNAPSHOT": "Dettagli storici della linea",
       "NAVIGATE_TO_VERSION": "Vai alla visualizzazione dei dettagli della linea",
+      "NAVIGATE_TO_SNAPHOT": "Vai alla visualizzazione del dettaglio della linea storicizzata",
       "TAB_HEADER": "Audizioni delle linee",
       "TABLE_HEADER": "Audizioni delle linee",
       "TABLE": {

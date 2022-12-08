@@ -12,6 +12,7 @@ import { SearchSelectComponent } from '../form-components/search-select/search-s
 import { BusinessOrganisationSelectComponent } from '../form-components/bo-select/business-organisation-select.component';
 import { DialogCloseComponent } from '../form-components/dialog-close/dialog-close.component';
 import { BoSelectionDisplayPipe } from '../form-components/bo-select/bo-selection-display.pipe';
+import { LinkIconComponent } from '../form-components/link-icon/link-icon.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { BoSelectionDisplayPipe } from '../form-components/bo-select/bo-selectio
     UrlComponent,
     DateIconComponent,
     InfoIconComponent,
+    LinkIconComponent,
     SearchSelectComponent,
     DialogCloseComponent,
     BoSelectionDisplayPipe,
@@ -37,6 +39,7 @@ import { BoSelectionDisplayPipe } from '../form-components/bo-select/bo-selectio
     InfoIconComponent,
     SearchSelectComponent,
     DialogCloseComponent,
+    LinkIconComponent,
   ],
 })
 export class FormModule {}
