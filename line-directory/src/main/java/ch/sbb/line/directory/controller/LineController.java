@@ -173,6 +173,11 @@ public class LineController implements LineApiV1 {
   }
 
   @Override
+  public LineVersionSnapshotModel getLineVersionSnapshotById(Long id) {
+    return LineVersionSnapshotModel.toModel(lineVersionSnapshotService.getLineVersionSnapshotById(id));
+  }
+
+  @Override
   public void deleteLines(String slnid) {
     lineService.deleteAll(slnid);
   }

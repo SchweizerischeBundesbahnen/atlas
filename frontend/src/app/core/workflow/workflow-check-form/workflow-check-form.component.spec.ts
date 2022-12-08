@@ -8,7 +8,7 @@ import { AuthService } from '../../auth/auth.service';
 import { By } from '@angular/platform-browser';
 import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
-import { Workflow, WorkflowService, WorkflowStart } from '../../../api';
+import { WorkflowService } from '../../../api';
 import { of } from 'rxjs';
 
 let isAtLeastSupervisor = true;

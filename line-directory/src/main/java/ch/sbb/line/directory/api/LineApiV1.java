@@ -118,4 +118,8 @@ public interface LineApiV1 {
       @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
       @Parameter @RequestParam(required = false) List<WorkflowStatus> statusChoices);
 
+  @GetMapping("/workflows/{id}")
+  @Operation(description = "Returns a versions with its related workflow id")
+  LineVersionSnapshotModel getLineVersionSnapshotById(@PathVariable Long id);
+
 }
