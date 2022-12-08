@@ -13,6 +13,8 @@ import {
 } from '../../../../app.testing.mocks';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { Component } from '@angular/core';
+import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/line-detail-form.component';
+import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -74,6 +76,8 @@ function setupTestBed(
     declarations: [
       LineVersionSnapshotDetailComponent,
       MockAppDetailWrapperComponent,
+      LineDetailFormComponent,
+      LinkIconComponent,
       MockBoSelectComponent,
       ErrorNotificationComponent,
       InfoIconComponent,
