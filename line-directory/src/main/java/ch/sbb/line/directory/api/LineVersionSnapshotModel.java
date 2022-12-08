@@ -31,13 +31,16 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
   private Long id;
 
   @Schema(description = "Workflow Technical identifier", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private Long workflowId;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private WorkflowStatus workflowStatus;
 
   @Schema(description = "Parent Object identifier", example = "Technical Parent Object identifier", accessMode =
       AccessMode.READ_ONLY)
+  @NotNull
   private Long parentObjectId;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
@@ -51,6 +54,7 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
   private String slnid;
 
   @Schema(description = "PaymentType", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private PaymentType paymentType;
 
   @Schema(description = "Number", example = "L1", accessMode = AccessMode.READ_ONLY)
@@ -67,15 +71,19 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
   private String longName;
 
   @Schema(description = "Color of the font in RGB", example = "#FF0000", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private String colorFontRgb;
 
   @Schema(description = "Color of the background in RGB", example = "#FF0000", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private String colorBackRgb;
 
   @Schema(description = "Color of the font in CMYK", example = "10,100,0,50", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private String colorFontCmyk;
 
   @Schema(description = "Color of the background in CMYK", example = "10,100,0,50", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private String colorBackCmyk;
 
   @Schema(description = "Icon", example = "https://commons.wikimedia.org/wiki/File:Metro_de_Bilbao_L1.svg", accessMode =
@@ -86,12 +94,15 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
   private String description;
 
   @Schema(description = "Valid from", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private LocalDate validFrom;
 
   @Schema(description = "Valid to", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private LocalDate validTo;
 
   @Schema(description = "BusinessOrganisation SBOID", example = "ch:1:sboid:100001", accessMode = AccessMode.READ_ONLY)
+  @NotNull
   private String businessOrganisation;
 
   @Schema(description = "Comment", example = "Comment regarding the line", accessMode = AccessMode.READ_ONLY)

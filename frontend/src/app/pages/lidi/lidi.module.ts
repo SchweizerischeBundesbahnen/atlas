@@ -11,11 +11,13 @@ import { FormModule } from '../../core/module/form.module';
 import { MainlineSelectOptionPipe } from './sublines/detail/mainline-select-option.pipe';
 import { LidiWorkflowOverviewComponent } from './workflow/overview/lidi-workflow-overview.component';
 import { LineVersionSnapshotDetailComponent } from './workflow/detail/line-version-snapshot-detail.component';
+import { LineDetailFormComponent } from './lines/detail/line-detail-form/line-detail-form.component';
 
 @NgModule({
   declarations: [
     LineVersionSnapshotDetailComponent,
     LidiWorkflowOverviewComponent,
+    LineDetailFormComponent,
     LidiOverviewComponent,
     LinesComponent,
     LineDetailComponent,

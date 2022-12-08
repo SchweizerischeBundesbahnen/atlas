@@ -347,6 +347,8 @@
     },
     "LINE_WORKFLOW": {
       "DETAIL_WORKFLOW_INFORMATION": "Informations sur les auditions",
+      "DETAIL_LINE_SNAPSHOT": "Détail des lignes historiques",
+      "NAVIGATE_TO_VERSION": "Accéder à la vue détaillée de la ligne",
       "TAB_HEADER": "Lignes Auditions",
       "TABLE_HEADER": "Lignes Auditions",
       "TABLE": {
