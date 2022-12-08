@@ -155,7 +155,7 @@
       "stageName": "test",
       "argoCD": {
         "waitUntilHealthy": true,
-        "argoCdAppName": "applications.argoproj.io/app-name=atlas",
+        "argoCdAppName": "applications.argoproj.io/app-name=atlas-test",
         "argoCdAppSyncFlags": "-l",
         "autoSync": true
       },
