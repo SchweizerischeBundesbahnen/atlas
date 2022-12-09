@@ -260,3 +260,43 @@ CREATE TABLE operating_point_with_timetable
 
 CREATE SEQUENCE operating_point_with_timetable_seq START WITH 1000 INCREMENT BY 1;
 
+-----------------------------------------------------------------------------------------
+-- Freight Service Point BEDIENPUNKTE
+-----------------------------------------------------------------------------------------
+
+CREATE TABLE freight_service_point
+(
+    id                               BIGINT      NULL PRIMARY KEY,
+    service_point_version_id         BIGINT      NOT NULL,
+    sort_code_of_destination_station VARCHAR(5)  NULL,
+    creation_date                    TIMESTAMP   NOT NULL,
+    creator                          VARCHAR(50) NOT NULL,
+    edition_date                     TIMESTAMP   NOT NULL,
+    editor                           VARCHAR(50) NOT NULL,
+    CONSTRAINT fk_service_point_version_id
+        FOREIGN KEY (service_point_version_id)
+            REFERENCES service_point_version (id)
+);
+
+CREATE SEQUENCE freight_service_point_seq START WITH 1000 INCREMENT BY 1;
+
+-----------------------------------------------------------------------------------------
+-- Stop Place HALTESTELLE
+-----------------------------------------------------------------------------------------
+
+CREATE TABLE stop_place
+(
+    id                       BIGINT      NULL PRIMARY KEY,
+    service_point_version_id BIGINT      NOT NULL,
+    means_of_transport       VARCHAR(50) NULL,
+    stop_place_type_id       SMALLINT    NULL,
+    creation_date            TIMESTAMP   NOT NULL,
+    creator                  VARCHAR(50) NOT NULL,
+    edition_date             TIMESTAMP   NOT NULL,
+    editor                   VARCHAR(50) NOT NULL,
+    CONSTRAINT fk_service_point_version_id
+        FOREIGN KEY (service_point_version_id)
+            REFERENCES service_point_version (id)
+);
+
+CREATE SEQUENCE stop_place_seq START WITH 1000 INCREMENT BY 1;
