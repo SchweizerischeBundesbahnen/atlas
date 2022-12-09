@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UserModel } from '../../../../api/model/userModel';
+import { User } from '../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -16,7 +16,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
 export class UserAdministrationCreateComponent {
-  userLoaded?: UserModel;
+  userLoaded?: User;
   userHasAlreadyPermissions = false;
   selectedUserHasNoUserId = false;
   saveEnabled = true;
@@ -34,7 +34,7 @@ export class UserAdministrationCreateComponent {
     readonly userPermissionManager: UserPermissionManager
   ) {}
 
-  selectUser(user: UserModel | undefined): void {
+  selectUser(user: User | undefined): void {
     this.selectedUserHasNoUserId = false;
     if (!user?.sbbUserId) {
       this.userHasAlreadyPermissions = false;
