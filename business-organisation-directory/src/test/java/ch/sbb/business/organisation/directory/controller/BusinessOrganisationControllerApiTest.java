@@ -1,27 +1,5 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.abbreviationDe;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.abbreviationEn;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.abbreviationFr;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.abbreviationIt;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.businessTypes;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.contactEnterpriseEmail;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionDe;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionEn;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionFr;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.descriptionIt;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.organisationNumber;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.validFrom;
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.validTo;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
@@ -30,14 +8,21 @@ import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion
 import ch.sbb.business.organisation.directory.entity.BusinessType;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+
+import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.*;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class BusinessOrganisationControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
@@ -494,4 +479,10 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     deleteFileFromBucket(mvcResult, exportService.getDirectory());
   }
 
+  @Test
+  public void shouldReturnErrorMessageOnEmptyBody() throws Exception {
+    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+                    .content(mapper.writeValueAsString("{}")))
+            .andExpect(status().isBadRequest());
+  }
 }
