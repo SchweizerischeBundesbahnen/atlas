@@ -11,6 +11,7 @@ import { Component, Input } from '@angular/core';
 import { ApplicationRole, ApplicationType, Status, UserPermissionVersionModel } from '../../../api';
 import { MockUserDetailInfoComponent } from '../../../app.testing.mocks';
 import { AtlasButtonComponent } from '../button/atlas-button.component';
+import { NotificationService } from '../../notification/notification.service';
 
 @Component({
   selector: 'app-coverage',
@@ -64,6 +65,8 @@ describe('BaseDetailComponent', () => {
     },
   };
 
+  const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success', 'error']);
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
@@ -74,7 +77,10 @@ describe('BaseDetailComponent', () => {
         MockUserDetailInfoComponent,
       ],
       imports: [AppTestingModule],
-      providers: [{ provide: AuthService, useValue: authServiceMock }],
+      providers: [
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: NotificationService, useValue: notificationServiceSpy },
+      ],
     }).compileComponents();
   });
 

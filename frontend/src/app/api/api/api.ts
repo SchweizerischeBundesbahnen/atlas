@@ -20,16 +20,4 @@ export * from './userInformation.service';
 import { UserInformationService } from './userInformation.service';
 export * from './workflow.service';
 import { WorkflowService } from './workflow.service';
-export const APIS = [
-  BusinessOrganisationsService,
-  CompaniesService,
-  LinesService,
-  SublinesService,
-  TimetableFieldNumbersService,
-  TimetableYearChangeService,
-  TransportCompaniesService,
-  TransportCompanyRelationsService,
-  UserAdministrationService,
-  UserInformationService,
-  WorkflowService,
-];
+export const APIS = [BusinessOrganisationsService, CompaniesService, LinesService, SublinesService, TimetableFieldNumbersService, TimetableYearChangeService, TransportCompaniesService, TransportCompanyRelationsService, UserAdministrationService, UserInformationService, WorkflowService];
