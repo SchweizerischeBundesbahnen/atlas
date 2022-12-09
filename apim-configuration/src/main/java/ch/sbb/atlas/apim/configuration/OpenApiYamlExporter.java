@@ -6,7 +6,6 @@ import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 
 @UtilityClass
 public class OpenApiYamlExporter {
