@@ -35,6 +35,8 @@ import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.export.LineVersionExportService;
 import java.time.LocalDate;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -584,5 +586,32 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(lineVersionModel)))
         .andExpect(status().isPreconditionFailed());
+  }
+
+  @Test
+  void shouldSkipWorkflowOnLineVersion() throws Exception {
+    //given
+    LineVersionVersionModel lineVersionModel =
+            LineTestData.lineVersionModelBuilder()
+                    .validTo(LocalDate.of(2000, 12, 31))
+                    .validFrom(LocalDate.of(2000, 1, 1))
+                    .businessOrganisation("sbb")
+                    .alternativeName("alternative")
+                    .combinationName("combination")
+                    .longName("long name")
+                    .lineType(LineType.TEMPORARY)
+                    .paymentType(PaymentType.LOCAL)
+                    .swissLineNumber("b0.IC2")
+                    .build();
+    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+
+    //when
+    mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString() + "/skip-workflow")
+    ).andExpect(status().isOk());
+
+    //then
+    List<LineVersionVersionModel> lineVersions = lineController.getLineVersions(lineVersionSaved.getSlnid());
+    assertThat(lineVersions).hasSize(1);
+    assertThat(lineVersions.get(0).getStatus()).isEqualTo(Status.VALIDATED);
   }
 }
