@@ -6,7 +6,7 @@ CREATE TABLE uic_country
 (
     id                 SMALLINT     NOT NULL PRIMARY KEY,
     iso_3166_1_alpha_2 VARCHAR(10)  NOT NULL, -- z.B. 'DE', aber auch 'GYSEV/ROEE'?
-    uic_920_14         SMALLINT     NULL,
+    uic_920_14         SMALLINT     NOT NULL,
     name_en            VARCHAR(255) NULL,     -- z.B. 'Bosnien und Herzegowinas, kroatisch-moslemische Föderation'
     name_fr            VARCHAR(255) NULL,
     name_de            VARCHAR(255) NULL,
