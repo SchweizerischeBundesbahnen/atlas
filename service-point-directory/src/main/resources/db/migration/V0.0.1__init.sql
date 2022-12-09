@@ -281,6 +281,32 @@ CREATE TABLE freight_service_point
 CREATE SEQUENCE freight_service_point_seq START WITH 1000 INCREMENT BY 1;
 
 -----------------------------------------------------------------------------------------
+-- Stop Place Type HALTESTELLENTYPEN
+-----------------------------------------------------------------------------------------
+
+CREATE TABLE stop_place_type
+(
+    id                 SMALLINT    NULL PRIMARY KEY,
+    is_active          BOOLEAN     NULL DEFAULT TRUE,
+    is_visible         BOOLEAN     NULL DEFAULT TRUE,
+    designation_de     VARCHAR(30) NOT NULL,
+    designation_fr     VARCHAR(30) NULL,
+    designation_it     VARCHAR(30) NULL,
+    designation_en     VARCHAR(30) NULL,
+    abbreviation_de    VARCHAR(10) NULL,
+    abbreviation_fr    VARCHAR(10) NULL,
+    abbreviation_it    VARCHAR(10) NULL,
+    abbreviation_en    VARCHAR(10) NULL,
+    is_review_required BOOLEAN     NULL DEFAULT FALSE,
+    creation_date      TIMESTAMP   NOT NULL,
+    creator            VARCHAR(50) NOT NULL,
+    edition_date       TIMESTAMP   NOT NULL,
+    editor             VARCHAR(50) NOT NULL
+);
+
+CREATE SEQUENCE stop_place_seq START WITH 1000 INCREMENT BY 1;
+
+-----------------------------------------------------------------------------------------
 -- Stop Place HALTESTELLE
 -----------------------------------------------------------------------------------------
 
@@ -288,15 +314,18 @@ CREATE TABLE stop_place
 (
     id                       BIGINT      NULL PRIMARY KEY,
     service_point_version_id BIGINT      NOT NULL,
-    means_of_transport       VARCHAR(50) NULL,
     stop_place_type_id       SMALLINT    NULL,
+    means_of_transport       VARCHAR(50) NULL,
     creation_date            TIMESTAMP   NOT NULL,
     creator                  VARCHAR(50) NOT NULL,
     edition_date             TIMESTAMP   NOT NULL,
     editor                   VARCHAR(50) NOT NULL,
     CONSTRAINT fk_service_point_version_id
         FOREIGN KEY (service_point_version_id)
-            REFERENCES service_point_version (id)
+            REFERENCES service_point_version (id),
+    CONSTRAINT fk_stop_place_type_id
+        FOREIGN KEY (stop_place_type_id)
+            REFERENCES stop_place_type (id)
 );
 
 CREATE SEQUENCE stop_place_seq START WITH 1000 INCREMENT BY 1;
