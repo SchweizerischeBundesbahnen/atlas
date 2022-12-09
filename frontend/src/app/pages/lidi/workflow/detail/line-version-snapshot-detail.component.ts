@@ -27,7 +27,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
   lineVersionSnapshot!: LineVersionSnapshot;
   showWorkflowCheckForm = false;
   workflow!: Workflow;
-  form!: FormGroup;
+  lineVersionSnapshotForm!: FormGroup<LineVersionSnapshotDetailFormGroup>;
   workflowStartedFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
     comment: new FormControl(''),
     firstName: new FormControl(''),
@@ -55,35 +55,22 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.lineVersionSnapshot = this.readRecord();
-    this.form = this.getFormGroup(this.lineVersionSnapshot);
-    this.form.disable();
+    this.lineVersionSnapshotForm = this.populateLineVersionSnapshotFormGroup(
+      this.lineVersionSnapshot
+    );
+    this.lineVersionSnapshotForm.disable();
     this.workflowService
       .getWorkflow(this.lineVersionSnapshot.workflowId)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((workflow) => {
         this.workflow = workflow;
-        this.workflowStartedFormGroup.controls.firstName.setValue(this.workflow.client?.firstName);
-        this.workflowStartedFormGroup.controls.lastName.setValue(this.workflow.client?.lastName);
-        this.workflowStartedFormGroup.controls.mail.setValue(this.workflow.client?.mail);
-        this.workflowStartedFormGroup.controls.function.setValue(
-          this.workflow.client?.personFunction
-        );
-        this.workflowStartedFormGroup.controls.comment.setValue(this.workflow.workflowComment);
-        this.workflowStartedFormGroup.disable();
+        this.pupulateWorkflowStartedFormGroup();
         if (
           this.lineVersionSnapshot.workflowStatus === 'APPROVED' ||
           this.lineVersionSnapshot.workflowStatus === 'REJECTED'
         ) {
           this.showWorkflowCheckForm = true;
-          this.workflowCheckFormGroup.controls.firstName.setValue(
-            this.workflow.examinant?.firstName
-          );
-          this.workflowCheckFormGroup.controls.lastName.setValue(this.workflow.examinant?.lastName);
-          this.workflowCheckFormGroup.controls.function.setValue(
-            this.workflow.examinant?.personFunction
-          );
-          this.workflowCheckFormGroup.controls.comment.setValue(this.workflow.checkComment);
-          this.workflowCheckFormGroup.disable();
+          this.populeteWorkflowCheckFormGroup();
         }
       });
   }
@@ -104,7 +91,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
       .then();
   }
 
-  getFormGroup(version: LineVersionSnapshot): FormGroup {
+  populateLineVersionSnapshotFormGroup(version: LineVersionSnapshot): FormGroup {
     return new FormGroup<LineVersionSnapshotDetailFormGroup>({
       parentObjectId: new FormControl(version.parentObjectId),
       workflowId: new FormControl(version.workflowId),
@@ -133,5 +120,22 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  private populeteWorkflowCheckFormGroup() {
+    this.workflowCheckFormGroup.controls.firstName.setValue(this.workflow.examinant?.firstName);
+    this.workflowCheckFormGroup.controls.lastName.setValue(this.workflow.examinant?.lastName);
+    this.workflowCheckFormGroup.controls.function.setValue(this.workflow.examinant?.personFunction);
+    this.workflowCheckFormGroup.controls.comment.setValue(this.workflow.checkComment);
+    this.workflowCheckFormGroup.disable();
+  }
+
+  private pupulateWorkflowStartedFormGroup() {
+    this.workflowStartedFormGroup.controls.firstName.setValue(this.workflow.client?.firstName);
+    this.workflowStartedFormGroup.controls.lastName.setValue(this.workflow.client?.lastName);
+    this.workflowStartedFormGroup.controls.mail.setValue(this.workflow.client?.mail);
+    this.workflowStartedFormGroup.controls.function.setValue(this.workflow.client?.personFunction);
+    this.workflowStartedFormGroup.controls.comment.setValue(this.workflow.workflowComment);
+    this.workflowStartedFormGroup.disable();
   }
 }
