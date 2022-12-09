@@ -18,6 +18,9 @@ public interface DatesValidator {
   @JsonIgnore
   @AssertTrue(message = "validTo must not be before validFrom")
   default boolean isValidToEqualOrGreaterThenValidFrom() {
+    if (getValidTo() == null || getValidFrom() == null) {
+      return false;
+    }
     return !getValidTo().isBefore(getValidFrom());
   }
 
@@ -25,6 +28,9 @@ public interface DatesValidator {
   @JsonIgnore
   @AssertTrue(message = "ValidTo must be between 1.1.1700 and 31.12.9999")
   default boolean isValidToValid() {
+    if (getValidTo() == null || getValidFrom() == null) {
+      return false;
+    }
     return getValidTo().isAfter(minDate) && getValidTo().isBefore(maxDate);
   }
 
@@ -32,6 +38,9 @@ public interface DatesValidator {
   @JsonIgnore
   @AssertTrue(message = "ValidFrom must be between 1.1.1700 and 31.12.9999")
   default boolean isValidFromValid() {
+    if (getValidTo() == null || getValidFrom() == null) {
+      return false;
+    }
     return getValidFrom().isAfter(minDate) && getValidFrom().isBefore(maxDate);
   }
 }

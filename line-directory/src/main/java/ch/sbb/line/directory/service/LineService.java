@@ -56,7 +56,7 @@ public class LineService {
 
   @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
   public LineVersion create(LineVersion businessObject) {
-    return save(businessObject, Collections.emptyList());
+    return save(businessObject);
   }
 
   @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
@@ -105,8 +105,11 @@ public class LineService {
     return lineVersionRepository.getAllCoveredLineVersions();
   }
 
-  LineVersion save(LineVersion lineVersion, List<LineVersion> currentLineVersions) {
-    lineVersion.setStatus(lineStatusDecider.getStatusForLine(lineVersion, currentLineVersions));
+  LineVersion save(LineVersion lineVersion) {
+    return save(lineVersion, Optional.empty(), Collections.emptyList());
+  }
+  LineVersion save(LineVersion lineVersion, Optional<LineVersion> currentLineVersion, List<LineVersion> currentLineVersions) {
+    lineVersion.setStatus(lineStatusDecider.getStatusForLine(lineVersion, currentLineVersion, currentLineVersions));
     lineValidationService.validateLinePreconditionBusinessRule(lineVersion);
     lineVersionRepository.saveAndFlush(lineVersion);
     lineValidationService.validateLineAfterVersioningBusinessRule(lineVersion);
@@ -130,7 +133,7 @@ public class LineService {
         editedVersion, currentVersions);
 
     List<LineVersion> preSaveVersions = currentVersions.stream().map(this::copyLineVersion).toList();
-    versionableService.applyVersioning(LineVersion.class, versionedObjects, version -> save(version, preSaveVersions),
+    versionableService.applyVersioning(LineVersion.class, versionedObjects, version -> save(version, Optional.of(currentVersion), preSaveVersions),
         this::deleteById);
   }
 
