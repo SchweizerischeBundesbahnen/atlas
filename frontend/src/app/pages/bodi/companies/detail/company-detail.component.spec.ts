@@ -6,6 +6,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import { Component } from '@angular/core';
+import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 
 const company: Company = {
   uicCode: 1234,
@@ -58,6 +59,7 @@ function setupTestBed(data: { companyDetail: string | Company }) {
       CompanyDetailComponent,
       ErrorNotificationComponent,
       InfoIconComponent,
+      LinkIconComponent,
       MockDialogCloseComponent,
     ],
     imports: [AppTestingModule],

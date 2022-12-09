@@ -40,9 +40,7 @@
     'COMMON.STATUS_TYPES.' + this.lineVersionSnapshot.status | translate
   }}</span>
 </div>
-<form [formGroup]="form">
-  <line-deatil-form [form]="form" [newRecord]="false"></line-deatil-form>
-</form>
+<line-deatil-form [form]="lineVersionSnapshotForm" [newRecord]="false"></line-deatil-form>
 
 <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
   <atlas-button
