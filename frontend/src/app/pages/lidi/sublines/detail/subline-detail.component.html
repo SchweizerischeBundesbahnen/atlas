@@ -1,7 +1,7 @@
 <app-detail-wrapper
   [controller]="this"
-  headingNew="LIDI.SUBLINE.NEW"
   formDetailHeading="LIDI.SUBLINE.DETAIL_SUBLINE_INFORMATION"
+  headingNew="LIDI.SUBLINE.NEW"
 >
   <form [formGroup]="form">
     <h2 *ngIf="isNewRecord()" class="font-bold-2xl mb-4">
@@ -16,7 +16,7 @@
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
         >
         <mat-form-field>
-          <input matInput formControlName="number" data-cy="number" />
+          <input data-cy="number" formControlName="number" matInput />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
@@ -29,7 +29,7 @@
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}</mat-label
         >
         <mat-form-field>
-          <input matInput formControlName="description" data-cy="description" />
+          <input data-cy="description" formControlName="description" matInput />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
@@ -47,7 +47,7 @@
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}</mat-label
         >
         <mat-form-field>
-          <input matInput formControlName="longName" data-cy="longName" />
+          <input data-cy="longName" formControlName="longName" matInput />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
@@ -56,11 +56,11 @@
         <div class="mainline-container d-flex col-12">
           <div class="mainline-select d-flex flex-column">
             <form-search-select
-              [items$]="mainlines$"
+              (searchTrigger)="searchMainlines($event)"
+              [bindValueInp]="'slnid'"
               [controlName]="mainlineSlnidFormControlName"
               [formGroup]="form"
-              [bindValueInp]="'slnid'"
-              (searchTrigger)="searchMainlines($event)"
+              [items$]="mainlines$"
               data-cy="mainline"
             >
               <mat-label class="font-bold-lg required-indicator">{{
@@ -73,18 +73,8 @@
             </form-search-select>
           </div>
           <div class="mainline-link d-flex flex-column">
-            <a target="_blank" [attr.href]="mainlineUrl()">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="18"
-                viewBox="0 2 22 22"
-                width="18"
-                fill="#000000"
-              >
-                <path
-                  d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
-                />
-              </svg>
+            <a [attr.href]="mainlineUrl()" target="_blank">
+              <link-icon></link-icon>
             </a>
           </div>
         </div>
@@ -101,7 +91,7 @@
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
         >
         <mat-form-field>
-          <input matInput formControlName="swissSublineNumber" data-cy="swissSublineNumber" />
+          <input data-cy="swissSublineNumber" formControlName="swissSublineNumber" matInput />
           <mat-error fieldErrors></mat-error>
         </mat-form-field>
       </div>
@@ -115,10 +105,10 @@
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-6 pe-3">
         <bo-select
-          controlName="businessOrganisation"
           [formGroup]="form"
-          data-cy="businessOrganisation"
           [sboidsRestrictions]="getBoSboidRestriction()"
+          controlName="businessOrganisation"
+          data-cy="businessOrganisation"
         ></bo-select>
       </div>
 
@@ -128,8 +118,8 @@
         }}</mat-label>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
-            formControlName="sublineType"
             data-cy="type"
+            formControlName="sublineType"
             placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
           >
             <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
@@ -149,8 +139,8 @@
         </div>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
-            formControlName="paymentType"
             data-cy="paymentType"
+            formControlName="paymentType"
             placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
           >
             <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
