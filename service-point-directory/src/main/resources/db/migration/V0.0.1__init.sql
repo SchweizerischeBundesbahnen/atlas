@@ -14,13 +14,16 @@ CREATE TABLE uic_country
     creation_date      TIMESTAMP    NOT NULL,
     creator            VARCHAR(50)  NOT NULL,
     edition_date       TIMESTAMP    NOT NULL,
-    editor             VARCHAR(50)  NOT NULL
+    editor             VARCHAR(50)  NOT NULL,
+    version            BIGINT       NOT NULL DEFAULT 0
 );
 
 CREATE SEQUENCE uic_country_seq START WITH 1 INCREMENT BY 1;
 
 ALTER TABLE uic_country
     ADD CONSTRAINT uic_country_iso_3166_unique UNIQUE (iso_3166_1_alpha_2);
+ALTER TABLE uic_country
+    ADD CONSTRAINT uic_country_uic_920_unique UNIQUE (uic_920_14);
 
 -----------------------------------------------------------------------------------------
 -- Service Point Version - DIENSTSTELLEN
@@ -28,24 +31,25 @@ ALTER TABLE uic_country
 
 CREATE TABLE service_point_version
 (
-    id                   BIGINT      NOT NULL PRIMARY KEY,
-    number               INTEGER     NOT NULL,
-    check_digit          SMALLINT    NOT NULL,
-    number_short         INTEGER     NOT NULL,
-    uic_country_code     SMALLINT    NOT NULL,
-    designation_long     VARCHAR(50) NULL,
-    designation_official VARCHAR(30) NOT NULL,
-    abbreviation         VARCHAR(6)  NULL,
-    status_didok3        SMALLINT    NULL,
-    said                 VARCHAR(38) NOT NULL,
-    has_geolocation      BOOLEAN     NULL     DEFAULT FALSE,
-    valid_from           DATE        NOT NULL,
-    valid_to             DATE        NOT NULL,
-    creation_date        TIMESTAMP   NOT NULL,
-    creator              VARCHAR(50) NOT NULL,
-    edition_date         TIMESTAMP   NOT NULL,
-    editor               VARCHAR(50) NOT NULL,
-    version              BIGINT      NOT NULL DEFAULT 0,
+    id                    BIGINT      NOT NULL PRIMARY KEY,
+    number                INTEGER     NOT NULL,
+    check_digit           SMALLINT    NOT NULL,
+    number_short          INTEGER     NOT NULL,
+    uic_country_code      SMALLINT    NOT NULL,
+    designation_long      VARCHAR(50) NULL,
+    designation_official  VARCHAR(30) NOT NULL,
+    abbreviation          VARCHAR(6)  NULL,
+    status_didok3         SMALLINT    NULL,
+    business_organisation VARCHAR(50) NOT NULL,
+    has_geolocation       BOOLEAN     NULL     DEFAULT FALSE,
+    status                VARCHAR(50) NOT NULL,
+    valid_from            DATE        NOT NULL,
+    valid_to              DATE        NOT NULL,
+    creation_date         TIMESTAMP   NOT NULL,
+    creator               VARCHAR(50) NOT NULL,
+    edition_date          TIMESTAMP   NOT NULL,
+    editor                VARCHAR(50) NOT NULL,
+    version               BIGINT      NOT NULL DEFAULT 0,
     CONSTRAINT fk_service_point_uic_country_code
         FOREIGN KEY (uic_country_code)
             REFERENCES uic_country (uic_920_14)
@@ -63,7 +67,7 @@ CREATE INDEX spv_designation_idx ON service_point_version (designation_long);
 CREATE INDEX spv_designationlong_idx ON service_point_version (designation_official);
 CREATE INDEX spv_abbrevation_idx ON service_point_version (abbreviation);
 CREATE INDEX spv_status_didok3_idx ON service_point_version (status_didok3);
-CREATE INDEX spv_said_idx ON service_point_version (said);
+CREATE INDEX spv_said_idx ON service_point_version (business_organisation);
 CREATE INDEX spv_geolocation_idx ON service_point_version (has_geolocation);
 CREATE INDEX spv_validity_idx ON service_point_version (valid_from, valid_to);
 CREATE INDEX spv_creation_date_idx ON service_point_version (creation_date);
@@ -123,10 +127,7 @@ CREATE TABLE service_point_comment
     creation_date        TIMESTAMP     NOT NULL,
     creator              VARCHAR(50)   NOT NULL,
     edition_date         TIMESTAMP     NOT NULL,
-    editor               VARCHAR(50)   NOT NULL,
-    CONSTRAINT fk_service_point_number
-        FOREIGN KEY (service_point_number)
-            REFERENCES service_point_version (number)
+    editor               VARCHAR(50)   NOT NULL
 );
 
 CREATE SEQUENCE service_point_comment_seq START WITH 1000 INCREMENT BY 1;
@@ -172,7 +173,7 @@ CREATE TABLE service_point_category
     creator               VARCHAR(50) NOT NULL,
     edition_date          TIMESTAMP   NOT NULL,
     editor                VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_service_point_version_id
+    CONSTRAINT fk_service_point_category_service_point_version_id
         FOREIGN KEY (service_point_version)
             REFERENCES service_point_version (id),
     CONSTRAINT fk_category_id
@@ -222,10 +223,10 @@ CREATE TABLE operating_point
     creator                  VARCHAR(50) NOT NULL,
     edition_date             TIMESTAMP   NOT NULL,
     editor                   VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_service_point_version_id
+    CONSTRAINT fk_operating_point_service_point_version_id
         FOREIGN KEY (service_point_version_id)
             REFERENCES service_point_version (id),
-    CONSTRAINT fk_operating_point_type_id
+    CONSTRAINT fk_operating_point_operating_point_type_id
         FOREIGN KEY (operating_point_type_id)
             REFERENCES operating_point_type (id)
 );
@@ -245,10 +246,10 @@ CREATE TABLE operating_point_without_timetable
     creator                  VARCHAR(50) NOT NULL,
     edition_date             TIMESTAMP   NOT NULL,
     editor                   VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_service_point_version_id
+    CONSTRAINT fk_operating_point_without_timetable_service_point_version_id
         FOREIGN KEY (service_point_version_id)
             REFERENCES service_point_version (id),
-    CONSTRAINT fk_operating_point_type_id
+    CONSTRAINT fk_operating_point_without_timetable_operating_point_type_id
         FOREIGN KEY (operating_point_type_id)
             REFERENCES operating_point_type (id)
 );
@@ -271,15 +272,12 @@ CREATE TABLE operating_point_with_timetable
     creator                          VARCHAR(50) NOT NULL,
     edition_date                     TIMESTAMP   NOT NULL,
     editor                           VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_service_point_version_id
+    CONSTRAINT fk_operating_point_with_timetable_service_point_version_id
         FOREIGN KEY (service_point_version_id)
             REFERENCES service_point_version (id),
     CONSTRAINT fk_operating_point_type_id
         FOREIGN KEY (operating_point_type_id)
-            REFERENCES operating_point_type (id),
-    CONSTRAINT fk_service_point_number
-        FOREIGN KEY (operating_point_kilometer_master)
-            REFERENCES service_point_version (number)
+            REFERENCES operating_point_type (id)
 );
 
 CREATE SEQUENCE operating_point_with_timetable_seq START WITH 1000 INCREMENT BY 1;
@@ -297,7 +295,7 @@ CREATE TABLE freight_service_point
     creator                          VARCHAR(50) NOT NULL,
     edition_date                     TIMESTAMP   NOT NULL,
     editor                           VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_service_point_version_id
+    CONSTRAINT fk_freight_service_point_service_point_version_id
         FOREIGN KEY (service_point_version_id)
             REFERENCES service_point_version (id)
 );
@@ -328,7 +326,7 @@ CREATE TABLE stop_place_type
     editor             VARCHAR(50) NOT NULL
 );
 
-CREATE SEQUENCE stop_place_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE stop_place_type_seq START WITH 1 INCREMENT BY 1;
 
 -----------------------------------------------------------------------------------------
 -- Stop Place HALTESTELLE
@@ -344,7 +342,7 @@ CREATE TABLE stop_place
     creator                  VARCHAR(50) NOT NULL,
     edition_date             TIMESTAMP   NOT NULL,
     editor                   VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_service_point_version_id
+    CONSTRAINT fk_stop_place_service_point_version_id
         FOREIGN KEY (service_point_version_id)
             REFERENCES service_point_version (id),
     CONSTRAINT fk_stop_place_type_id
