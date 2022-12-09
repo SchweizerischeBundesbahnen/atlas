@@ -85,6 +85,13 @@ public interface LineApiV1 {
   List<LineVersionVersionModel> updateLineVersion(@PathVariable Long id,
       @RequestBody @Valid LineVersionVersionModel newVersion);
 
+  @PostMapping({"versions/{id}/skip-workflow"})
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200"),
+  })
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  void skipWorkflow(@PathVariable Long id);
+
   @GetMapping("line-coverage/{slnid}")
   CoverageModel getLineCoverage(@PathVariable String slnid);
 

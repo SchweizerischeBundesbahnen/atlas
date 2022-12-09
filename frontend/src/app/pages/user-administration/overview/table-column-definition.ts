@@ -1,7 +1,7 @@
 import { TableColumn } from '../../../core/components/table/table-column';
-import { UserModel } from '../../../api/model/userModel';
+import { User } from '../../../api/model/user';
 
-export const tableColumns: TableColumn<UserModel>[] = [
+export const tableColumns: TableColumn<User>[] = [
   {
     headerTitle: 'USER_ADMIN.LAST_NAME',
     value: 'lastName',

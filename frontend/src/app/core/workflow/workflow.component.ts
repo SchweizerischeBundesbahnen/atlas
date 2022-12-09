@@ -285,4 +285,14 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     this.eventReloadParent();
     this.resetToAddWorkflow();
   }
+
+  skipWorkflow() {
+    this.lineService
+      .skipWorkflow(this.lineRecord.id!)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.eventReloadParent();
+        this.notificationService.success('WORKFLOW.NOTIFICATION.SKIP.SUCCESS');
+      });
+  }
 }

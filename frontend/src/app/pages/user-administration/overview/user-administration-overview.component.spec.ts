@@ -6,7 +6,7 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserModel } from '../../../api/model/userModel';
+import { User } from '../../../api/model/user';
 import { MaterialModule } from '../../../core/module/material.module';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
@@ -108,7 +108,7 @@ describe('UserAdministrationOverviewComponent', () => {
 
     userServiceMock.getUsers = jasmine.createSpy().and.returnValue(
       of({
-        users: [{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }] as UserModel[],
+        users: [{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }] as User[],
         totalCount: 50,
       })
     );
