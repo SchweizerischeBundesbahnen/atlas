@@ -19,7 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class LineStatusDecider {
 
-  public Status getStatusForLine(LineVersion newLineVersion, List<LineVersion> currentLineVersions) {
+  public Status getStatusForLine(LineVersion newLineVersion, Optional<LineVersion> currentLineVersion, List<LineVersion> currentLineVersions) {
+    if (currentLineVersion.isPresent() && currentLineVersion.get().getStatus() == Status.IN_REVIEW) {
+      return Status.IN_REVIEW;
+    }
+
     // Only for ORDERLY Lines there may be a workflow
     if (newLineVersion.getLineType() != LineType.ORDERLY) {
       return Status.VALIDATED;
