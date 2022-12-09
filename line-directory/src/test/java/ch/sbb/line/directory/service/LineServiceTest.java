@@ -140,7 +140,7 @@ class LineServiceTest {
         Collections.emptyList());
     LineVersion lineVersion = LineTestData.lineVersion();
     // When
-    LineVersion result = lineService.save(lineVersion, Collections.emptyList());
+    LineVersion result = lineService.save(lineVersion, Optional.empty(), Collections.emptyList());
 
     // Then
     verify(lineValidationService).validateLinePreconditionBusinessRule(lineVersion);
@@ -236,7 +236,7 @@ class LineServiceTest {
 
     // When
     assertThatExceptionOfType(LineConflictException.class).isThrownBy(
-        () -> lineService.save(lineVersion, Collections.emptyList()));
+        () -> lineService.save(lineVersion, Optional.empty(), Collections.emptyList()));
 
     verify(lineVersionRepository, never()).save(lineVersion);
 
@@ -252,7 +252,7 @@ class LineServiceTest {
 
     // When
     assertThatExceptionOfType(TemporaryLineValidationException.class).isThrownBy(
-        () -> lineService.save(lineVersion, Collections.emptyList()));
+        () -> lineService.save(lineVersion, Optional.empty(), Collections.emptyList()));
 
     verify(lineVersionRepository, never()).save(lineVersion);
 
