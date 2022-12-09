@@ -5,7 +5,7 @@ import { filter, tap } from 'rxjs/operators';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserModel } from '../../../api/model/userModel';
+import { User } from '../../../api/model/user';
 import {
   DetailDialogEvents,
   RouteToDialogService,
@@ -21,8 +21,8 @@ import { SearchType, SearchTypes } from './search-type';
   styleUrls: ['./user-administration-overview.component.scss'],
 })
 export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent) tableComponent!: TableComponent<UserModel>;
-  userPageResult: { users: UserModel[]; totalCount: number } = { users: [], totalCount: 0 };
+  @ViewChild(TableComponent) tableComponent!: TableComponent<User>;
+  userPageResult: { users: User[]; totalCount: number } = { users: [], totalCount: 0 };
   tableIsLoading = false;
 
   selectedSearch: SearchType = 'USER';
@@ -72,7 +72,7 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
     this.dialogClosedEventSubscription.unsubscribe();
   }
 
-  openUser(user: UserModel) {
+  openUser(user: User) {
     this.router
       .navigate([user.sbbUserId], {
         relativeTo: this.route,
@@ -98,7 +98,7 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  checkIfUserExists(selectedUser: UserModel, pageIndex = 0): void {
+  checkIfUserExists(selectedUser: User, pageIndex = 0): void {
     if (!selectedUser) {
       this.loadUsers({ page: pageIndex, size: this.tableComponent.paginator.pageSize });
     } else if (!selectedUser.sbbUserId) {

@@ -18,7 +18,7 @@ import { UserPermissionManager } from '../../service/user-permission-manager';
 import { Observable, of } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { BusinessOrganisationsService } from '../../../../api';
-import { UserModel } from '../../../../api/model/userModel';
+import { User } from '../../../../api';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { MockUserDetailInfoComponent } from '../../../../app.testing.mocks';
 
@@ -155,7 +155,7 @@ describe('UserAdministrationEditComponent', () => {
     );
 
     userServiceSpy.updateUserPermission.and.returnValue(
-      new Observable<UserModel>((subscriber) => subscriber.error('error'))
+      new Observable<User>((subscriber) => subscriber.error('error'))
     );
     component.saveEdits();
     expect(component.saveEnabled).toBeTrue();
