@@ -453,7 +453,8 @@
       "START": "Avviare audizione",
       "ACCEPT": "Approva",
       "REJECT": "Rifiuto",
-      "CANCEL": "Annullare audizione"
+      "CANCEL": "Annullare audizione",
+      "SKIP": "Salatare l'audizione"
     },
     "START": {
       "COMMENT": "Motivazione",
@@ -479,11 +480,14 @@
     },
     "NOTIFICATION": {
       "START": {
-        "SUCCESS": "Ihr Antrag wurde erfolgreich übermittel"
+        "SUCCESS": "La richiesta è stata inoltrata con successo."
       },
       "CHECK": {
         "ACCEPTED": "La domanda è stata approvata con successo.",
         "REJECTED": "La domanda è stata respinta con successo."
+      },
+      "SKIP": {
+        "SUCCESS": "L'udienza è stata saltata con successo."
       }
     }
   }

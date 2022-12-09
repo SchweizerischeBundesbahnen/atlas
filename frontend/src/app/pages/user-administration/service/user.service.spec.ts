@@ -7,8 +7,8 @@ import {
   UserPermissionCreateModel,
 } from '../../../api';
 import { of } from 'rxjs';
-import { ContainerUserModel } from '../../../api/model/containerUserModel';
-import { UserModel } from '../../../api/model/userModel';
+import { ContainerUser } from '../../../api';
+import { User } from '../../../api';
 
 describe('UserService', () => {
   let service: UserService;
@@ -49,7 +49,7 @@ describe('UserService', () => {
 
   it('test getUsers', (done) => {
     userAdministrationServiceMock.getUsers = jasmine.createSpy().and.returnValue(
-      of<ContainerUserModel>({
+      of<ContainerUser>({
         totalCount: 5,
         objects: [{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }],
       })
@@ -146,7 +146,7 @@ describe('UserService', () => {
     userAdministrationServiceMock.createUserPermission = jasmine.createSpy().and.returnValue(
       of({
         sbbUserId: 'u123456',
-      } as UserModel)
+      } as User)
     );
     const createPermissionResult = service.createUserPermission({
       sbbUserId: 'u123456',
