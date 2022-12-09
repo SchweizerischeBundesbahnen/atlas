@@ -6,7 +6,7 @@ import { BusinessOrganisationsService } from '../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserService } from '../../service/user.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { UserModel } from '../../../../api/model/userModel';
+import { User } from '../../../../api';
 import { CreationEditionRecord } from '../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 
 @Component({
@@ -15,7 +15,7 @@ import { CreationEditionRecord } from '../../../../core/components/base-detail/u
   viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
 export class UserAdministrationEditComponent implements OnInit {
-  @Input() user?: UserModel;
+  @Input() user?: User;
   editMode = false;
   saveEnabled = true;
   userRecord?: CreationEditionRecord;
@@ -49,7 +49,7 @@ export class UserAdministrationEditComponent implements OnInit {
     this.userPermissionManager.emitBoFormResetEvent();
     this.userPermissionManager.clearSboidsIfNotWriter();
     this.userService.updateUserPermission(this.userPermissionManager.userPermission).subscribe({
-      next: (user: UserModel) => {
+      next: (user: User) => {
         this.user = user;
         this.editMode = false;
         this.userPermissionManager.setPermissions(
