@@ -38,6 +38,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 public class BusinessOrganisationControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
@@ -494,4 +495,10 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     deleteFileFromBucket(mvcResult, exportService.getDirectory());
   }
 
+  @Test
+  public void shouldReturnErrorMessageOnEmptyBody() throws Exception {
+    mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
+                    .content(mapper.writeValueAsString("{}")))
+            .andExpect(status().isBadRequest());
+  }
 }
