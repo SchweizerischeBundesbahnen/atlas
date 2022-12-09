@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LinkIconComponent } from './link-icon.component';
 
-describe('DateIconComponent', () => {
+describe('LinkIconComponent', () => {
   let component: LinkIconComponent;
   let fixture: ComponentFixture<LinkIconComponent>;
 

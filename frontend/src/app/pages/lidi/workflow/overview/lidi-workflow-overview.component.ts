@@ -54,14 +54,7 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const searchCriteria: string[] = [];
-    const number = this.route.snapshot.queryParams.number;
-    if (number) {
-      searchCriteria.push(number);
-    }
-    const description = this.route.snapshot.queryParams.description;
-    if (description) {
-      searchCriteria.push(description);
-    }
+    this.getSearchCriteriaFromQueryParams(searchCriteria);
     this.getOverview({
       page: 0,
       size: 10,
@@ -90,7 +83,7 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
       });
   }
 
-  editVersion($event: LineVersionSnapshot) {
+  navigateToDetails($event: LineVersionSnapshot) {
     this.router
       .navigate([$event.id], {
         relativeTo: this.route,
@@ -101,5 +94,16 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.lineVersionSnapshotsSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+  }
+
+  private getSearchCriteriaFromQueryParams(searchCriteria: string[]) {
+    const number = this.route.snapshot.queryParams.number;
+    if (number) {
+      searchCriteria.push(number);
+    }
+    const description = this.route.snapshot.queryParams.description;
+    if (description) {
+      searchCriteria.push(description);
+    }
   }
 }
