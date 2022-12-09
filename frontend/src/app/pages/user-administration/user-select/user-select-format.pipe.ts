@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { UserModel } from '../../../api/model/userModel';
+import { User } from '../../../api';
 
 @Pipe({
   name: 'userSelectFormat',
   pure: true,
 })
 export class UserSelectFormatPipe implements PipeTransform {
-  transform(user: UserModel): string {
+  transform(user: User): string {
     return `${user.displayName} ${user.mail ? '(' + user.mail + ')' : ''}`;
   }
 }
