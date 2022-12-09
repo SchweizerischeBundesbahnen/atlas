@@ -1,11 +1,19 @@
 <div class="mt-2 mb-5">
-  <div *ngIf="!isAddWorkflowButtonDisabled">
+  <div *ngIf="!isAddWorkflowButtonDisabled" class="d-flex">
     <atlas-button
       (buttonClicked)="showWorkflowForm()"
       [disabled]="isAddWorkflowButtonDisabled"
       buttonDataCy="workflow-add"
       buttonText="WORKFLOW.BUTTON.ADD"
       buttonType="defaultPrimary"
+      wrapperStyleClass="me-3"
+    ></atlas-button>
+    <atlas-button
+      (buttonClicked)="skipWorkflow()"
+      applicationType="LIDI"
+      buttonDataCy="workflow-skip"
+      buttonText="WORKFLOW.BUTTON.SKIP"
+      buttonType="revoke"
     ></atlas-button>
   </div>
   <div *ngIf="isReadMode">
