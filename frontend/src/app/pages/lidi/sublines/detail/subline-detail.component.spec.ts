@@ -16,6 +16,7 @@ import {
 import { MainlineSelectOptionPipe } from './mainline-select-option.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -185,6 +186,7 @@ function setupTestBed(
       MockAppDetailWrapperComponent,
       MockBoSelectComponent,
       InfoIconComponent,
+      LinkIconComponent,
       SearchSelectComponent,
       MainlineSelectOptionPipe,
     ],
