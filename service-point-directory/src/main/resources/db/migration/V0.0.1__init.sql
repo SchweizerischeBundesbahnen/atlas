@@ -1,4 +1,28 @@
 -----------------------------------------------------------------------------------------
+-- UIC Country - UIC_LAENDER
+----------------------------------------------------------------------------------------
+
+CREATE TABLE uic_country
+(
+    id                 SMALLINT     NOT NULL PRIMARY KEY,
+    iso_3166_1_alpha_2 VARCHAR(10)  NOT NULL, -- z.B. 'DE', aber auch 'GYSEV/ROEE'?
+    uic_920_14         SMALLINT     NULL,
+    name_en            VARCHAR(255) NULL,     -- z.B. 'Bosnien und Herzegowinas, kroatisch-moslemische Föderation'
+    name_fr            VARCHAR(255) NULL,
+    name_de            VARCHAR(255) NULL,
+    name_it            VARCHAR(255) NULL,
+    creation_date      TIMESTAMP    NOT NULL,
+    creator            VARCHAR(50)  NOT NULL,
+    edition_date       TIMESTAMP    NOT NULL,
+    editor             VARCHAR(50)  NOT NULL
+);
+
+CREATE SEQUENCE uic_country_seq START WITH 1 INCREMENT BY 1;
+
+ALTER TABLE uic_country
+    ADD CONSTRAINT uic_country_iso_3166_unique UNIQUE (iso_3166_1_alpha_2);
+
+-----------------------------------------------------------------------------------------
 -- Service Point Version - DIENSTSTELLEN
 -----------------------------------------------------------------------------------------
 
@@ -21,10 +45,11 @@ CREATE TABLE service_point_version
     creator              VARCHAR(50) NOT NULL,
     edition_date         TIMESTAMP   NOT NULL,
     editor               VARCHAR(50) NOT NULL,
-    version              BIGINT      NOT NULL DEFAULT 0
+    version              BIGINT      NOT NULL DEFAULT 0,
+    CONSTRAINT fk_service_point_uic_country_code
+        FOREIGN KEY (uic_country_code)
+            REFERENCES uic_country (uic_920_14)
 );
-
---ALTER TABLE service_point_version ADD CONSTRAINT service_point_version_unique UNIQUE (version, valid_from);
 
 CREATE SEQUENCE service_point_version_seq START WITH 1000 INCREMENT BY 1;
 ALTER TABLE service_point_version
@@ -47,7 +72,6 @@ CREATE INDEX spv_edition_date_idx ON service_point_version (edition_date);
 -----------------------------------------------------------------------------------------
 -- Service Point Version Geolocation - DIENSTSTELLEN_FC
 -----------------------------------------------------------------------------------------
-
 
 CREATE TABLE service_point_version_geolocation
 (
@@ -127,7 +151,7 @@ CREATE TABLE category
     editor         VARCHAR(50)  NOT NULL
 );
 
-CREATE SEQUENCE category_seq START WITH 1000 INCREMENT BY 1;
+CREATE SEQUENCE category_seq START WITH 1 INCREMENT BY 1;
 
 ALTER TABLE category
     ADD CONSTRAINT category_designation_de_unique UNIQUE (designation_de);
@@ -180,7 +204,7 @@ CREATE TABLE operating_point_type
     editor           VARCHAR(50)  NOT NULL
 );
 
-CREATE SEQUENCE operating_point_type_seq START WITH 1000 INCREMENT BY 1;
+CREATE SEQUENCE operating_point_type_seq START WITH 1 INCREMENT BY 1;
 
 ALTER TABLE operating_point_type
     ADD CONSTRAINT operating_point_type_designation_de_unique UNIQUE (designation_de);
@@ -304,7 +328,7 @@ CREATE TABLE stop_place_type
     editor             VARCHAR(50) NOT NULL
 );
 
-CREATE SEQUENCE stop_place_seq START WITH 1000 INCREMENT BY 1;
+CREATE SEQUENCE stop_place_seq START WITH 1 INCREMENT BY 1;
 
 -----------------------------------------------------------------------------------------
 -- Stop Place HALTESTELLE
