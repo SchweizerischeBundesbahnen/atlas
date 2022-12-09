@@ -21,6 +21,11 @@
       "artifactoryDockerRepo": "atlas.docker"
     },
     {
+      "dockerFile": "service-point-directory/docker/Dockerfile",
+      "imageName": "service-point-directory",
+      "artifactoryDockerRepo": "atlas.docker"
+    },
+    {
       "imageName": "mail",
       "dockerFile": "mail/docker/Dockerfile",
       "artifactoryDockerRepo": "atlas.docker"
