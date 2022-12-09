@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { UserService } from '../service/user.service';
-import { UserModel } from '../../../api/model/userModel';
+import { User } from '../../../api';
 
 @Component({
   selector: 'app-user-select',
@@ -12,8 +12,8 @@ export class UserSelectComponent {
   constructor(private readonly userService: UserService) {}
 
   @Input() form!: FormGroup;
-  @Output() selectionChange: EventEmitter<UserModel> = new EventEmitter<UserModel>();
-  userSearchResults$: Observable<UserModel[]> = of([]);
+  @Output() selectionChange: EventEmitter<User> = new EventEmitter<User>();
+  userSearchResults$: Observable<User[]> = of([]);
 
   searchUser(searchQuery: string): void {
     if (!searchQuery) {
