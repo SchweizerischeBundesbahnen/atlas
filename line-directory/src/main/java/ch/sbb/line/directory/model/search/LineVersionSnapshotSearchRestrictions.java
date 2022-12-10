@@ -2,13 +2,13 @@ package ch.sbb.line.directory.model.search;
 
 import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.searching.SpecificationBuilder;
+import ch.sbb.atlas.workflow.model.BaseVersionSnapshot_;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.entity.LineVersionSnapshot.Fields;
 import ch.sbb.line.directory.entity.LineVersionSnapshot_;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.metamodel.SingularAttribute;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -36,7 +36,7 @@ public class LineVersionSnapshotSearchRestrictions {
   public Specification<LineVersionSnapshot> getSpecification() {
     return specificationBuilder().searchCriteriaSpecification(searchCriterias)
         .and(specificationBuilder().validOnSpecification(validOn))
-        .and(specificationBuilder().enumSpecification(statusRestrictions, LineVersionSnapshot_.workflowStatus));
+        .and(getWorkflowStatusSpecification());
   }
 
   protected SpecificationBuilder<LineVersionSnapshot> specificationBuilder() {
@@ -47,8 +47,13 @@ public class LineVersionSnapshotSearchRestrictions {
         .build();
   }
 
-  protected SingularAttribute<LineVersionSnapshot, WorkflowStatus> getStatus() {
-    return LineVersionSnapshot_.workflowStatus;
+  private Specification<LineVersionSnapshot> getWorkflowStatusSpecification() {
+    return (root, query, criteriaBuilder) -> {
+      if (statusRestrictions.isEmpty()) {
+        return criteriaBuilder.and();
+      }
+      return root.get(BaseVersionSnapshot_.workflowStatus).in(statusRestrictions);
+    };
   }
 
 }
