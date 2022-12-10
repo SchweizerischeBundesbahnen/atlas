@@ -4,3 +4,5 @@ export interface BaseTableSearch {
 
   [key: string]: any;
 }
+
+export type SearchStatusType = 'DEFAULT_STATUS' | 'WORKFLOW_STATUS';

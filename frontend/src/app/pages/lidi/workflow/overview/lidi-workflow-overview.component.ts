@@ -22,10 +22,10 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<LineVersionSnapshot>;
 
   lineSnapshotsTableColumns: TableColumn<LineVersionSnapshot>[] = [
-    { headerTitle: 'LIDI.LINE_WORKFLOW.TABLE.NUMBER', value: 'number' },
-    { headerTitle: 'LIDI.LINE_WORKFLOW.TABLE.DESCRIPTION', value: 'description' },
+    { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.NUMBER', value: 'number' },
+    { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.DESCRIPTION', value: 'description' },
     {
-      headerTitle: 'LIDI.LINE_WORKFLOW.TABLE.STATUS',
+      headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.STATUS',
       value: 'workflowStatus',
       translate: { withPrefix: 'WORKFLOW.STATUS.' },
     },
