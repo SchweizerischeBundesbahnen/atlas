@@ -17,7 +17,7 @@ import { Status, WorkflowStatus } from '../../../api';
 import moment from 'moment/moment';
 import { ValidationService } from '../../validation/validation.service';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
-import { BaseTableSearch } from './base-table-search';
+import { BaseTableSearch, SearchStatusType } from './base-table-search';
 
 @Component({
   selector: 'app-table-search',
@@ -31,7 +31,7 @@ export class TableSearchComponent implements OnInit {
   @Input() displayValidOn = true;
   @Input() displayBusinessOrganisationSearch = true;
   @Input() searchTextColumnStyle = 'col-4';
-  @Input() searchStatusType = 'default';
+  @Input() searchStatusType: SearchStatusType = 'DEFAULT_STATUS';
 
   @Output() searchEvent: EventEmitter<BaseTableSearch> = new EventEmitter<BaseTableSearch>();
   @ViewChild('validOnInput') validOnInput!: ElementRef;
@@ -114,7 +114,7 @@ export class TableSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.searchStatusType !== 'default') {
+    if (this.searchStatusType === 'WORKFLOW_STATUS') {
       this.STATUS_OPTIONS = Object.values(WorkflowStatus);
       this.STATUS_TYPES_PREFIX_LABEL = 'WORKFLOW.STATUS.';
     }
