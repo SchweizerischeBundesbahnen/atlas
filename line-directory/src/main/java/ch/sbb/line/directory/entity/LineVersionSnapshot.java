@@ -2,7 +2,6 @@ package ch.sbb.line.directory.entity;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
@@ -50,10 +49,6 @@ public class LineVersionSnapshot extends BaseVersionSnapshot {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SNAPSHOT_SEQ)
   @SequenceGenerator(name = VERSION_SNAPSHOT_SEQ, sequenceName = VERSION_SNAPSHOT_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private WorkflowStatus workflowStatus;
 
   @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_50)
