@@ -17,7 +17,7 @@ export class LidiOverviewComponent {
     },
     {
       link: Pages.WORKFLOWS.path,
-      title: 'LIDI.LINE_WORKFLOW.TAB_HEADER',
+      title: 'LIDI.LINE_VERSION_SNAPSHOT.TAB_HEADER',
     },
   ];
 
