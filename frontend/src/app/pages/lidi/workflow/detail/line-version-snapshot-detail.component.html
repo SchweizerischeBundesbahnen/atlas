@@ -29,7 +29,7 @@
 </div>
 <div class="mb-2">
   <a
-    [attr.href]="urlNavigationToLineVersion"
+    (click)="this.navigateToLineVersion()"
     class="font-bold-base color-primary-400 mb-2"
     target="_blank"
     >{{ 'LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_VERSION' | translate }}
