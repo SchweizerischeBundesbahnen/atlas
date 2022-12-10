@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TableSearchComponent } from '../table-search/table-search.component';
 import { TableSearch } from '../table-search/table-search';
 import { TableSettings } from './table-settings';
+import { SearchStatusType } from '../table-search/base-table-search';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
@@ -36,7 +37,7 @@ export class TableComponent<DATATYPE> {
   @Input() displayValidOnSearch = true;
   @Input() displayBusinessOrganisationSearch = true;
   @Input() loadTableSearch = true;
-  @Input() searchStatusType = 'default';
+  @Input() searchStatusType: SearchStatusType = 'DEFAULT_STATUS';
 
   loading = true;
 
