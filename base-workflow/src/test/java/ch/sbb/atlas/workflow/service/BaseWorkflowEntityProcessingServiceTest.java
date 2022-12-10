@@ -33,7 +33,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
   private ObjectVersionRepository objectVersionRepository;
 
   @Mock
-  private ObjectWorkflowRepository objectWorkflowRepository;
+  private ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository;
 
   @Mock
   private ObjectVersionSnapshotRepository objectVersionSnapshotRepository;
