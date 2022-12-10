@@ -6,7 +6,7 @@ import {
   Workflow,
   WorkflowService,
 } from '../../../../api';
-import { Router } from '@angular/router';
+import { Router, UrlTree } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import moment from 'moment/moment';
@@ -27,6 +27,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
   lineVersionSnapshot!: LineVersionSnapshot;
   showWorkflowCheckForm = false;
   workflow!: Workflow;
+  urlNavigationToLineVersion!: UrlTree;
   lineVersionSnapshotForm!: FormGroup<LineVersionSnapshotDetailFormGroup>;
   workflowStartedFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
     comment: new FormControl(''),
@@ -55,6 +56,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.lineVersionSnapshot = this.readRecord();
+    this.urlNavigationToLineVersion = this.buildNavigateToLineVersion();
     this.lineVersionSnapshotForm = this.populateLineVersionSnapshotFormGroup(
       this.lineVersionSnapshot
     );
@@ -83,12 +85,13 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
     return this.dialogData.lineVersionSnapshot;
   }
 
-  navigateToLineVersion() {
-    this.router
-      .navigate([Pages.LIDI.path, Pages.LINES.path, this.lineVersionSnapshot.slnid], {
+  buildNavigateToLineVersion() {
+    return this.router.createUrlTree(
+      [Pages.LIDI.path, Pages.LINES.path, this.lineVersionSnapshot.slnid],
+      {
         queryParams: { id: this.lineVersionSnapshot.parentObjectId },
-      })
-      .then();
+      }
+    );
   }
 
   populateLineVersionSnapshotFormGroup(version: LineVersionSnapshot): FormGroup {
