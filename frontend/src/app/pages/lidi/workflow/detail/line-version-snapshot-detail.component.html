@@ -1,7 +1,7 @@
 <app-dialog-close (clicked)="backToOverview()"></app-dialog-close>
 
 <h2 class="font-bold-2xl">
-  {{ 'LIDI.LINE_WORKFLOW.DETAIL_WORKFLOW_INFORMATION' | translate }}
+  {{ 'LIDI.LINE_VERSION_SNAPSHOT.DETAIL_WORKFLOW_INFORMATION' | translate }}
 </h2>
 <div class="mb-2">
   <span class="font-bold-lg color-gray-900">{{ 'WORKFLOW.STATUS_DETAIL' | translate }} </span>
@@ -23,14 +23,16 @@
 ></app-workflow-form>
 
 <div class="mt-5 mb-3">
-  <span class="font-bold-2xl">{{ 'LIDI.LINE_WORKFLOW.DETAIL_LINE_SNAPSHOT' | translate }}</span>
+  <span class="font-bold-2xl">{{
+    'LIDI.LINE_VERSION_SNAPSHOT.DETAIL_LINE_SNAPSHOT' | translate
+  }}</span>
 </div>
 <div class="mb-2">
   <a
     (click)="this.navigateToLineVersion()"
     class="font-bold-base color-primary-400 mb-2"
     target="_blank"
-    >{{ 'LIDI.LINE_WORKFLOW.NAVIGATE_TO_VERSION' | translate }}
+    >{{ 'LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_VERSION' | translate }}
     <link-icon></link-icon>
   </a>
 </div>

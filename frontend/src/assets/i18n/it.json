@@ -345,7 +345,7 @@
         "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea parziale."
       }
     },
-    "LINE_WORKFLOW": {
+    "LINE_VERSION_SNAPSHOT": {
       "DETAIL_WORKFLOW_INFORMATION": "Informazioni sulle audizioni",
       "DETAIL_LINE_SNAPSHOT": "Dettagli storici della linea",
       "NAVIGATE_TO_VERSION": "Vai alla visualizzazione dei dettagli della linea",
