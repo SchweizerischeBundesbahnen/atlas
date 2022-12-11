@@ -41,7 +41,7 @@ public class LineVersionSnapshotSearchRestrictions {
 
   protected SpecificationBuilder<LineVersionSnapshot> specificationBuilder() {
     return SpecificationBuilder.<LineVersionSnapshot>builder()
-        .stringAttributes(List.of(Fields.number, Fields.description))
+        .stringAttributes(List.of(Fields.number, Fields.description, Fields.slnid))
         .validFromAttribute(LineVersionSnapshot_.validFrom)
         .validToAttribute(LineVersionSnapshot_.validTo)
         .build();
