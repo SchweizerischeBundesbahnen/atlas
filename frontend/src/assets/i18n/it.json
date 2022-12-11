@@ -346,6 +346,7 @@
       }
     },
     "LINE_VERSION_SNAPSHOT": {
+      "LINE_VERSION_NOT_EXISTS_WARNING_TOOLTIP": "La versione della linea non esiste più: è stata cancellata oppure unita ad altre versioni.",
       "DETAIL_WORKFLOW_INFORMATION": "Informazioni sulle audizioni",
       "DETAIL_LINE_SNAPSHOT": "Dettagli storici della linea",
       "NAVIGATE_TO_VERSION": "Vai alla visualizzazione dei dettagli della linea",
