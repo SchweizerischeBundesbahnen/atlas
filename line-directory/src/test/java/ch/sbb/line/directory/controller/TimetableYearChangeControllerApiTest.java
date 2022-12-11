@@ -17,8 +17,7 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
     String year = "2022";
     //when
     mvc.perform(get("/v1/timetable-year-change/" + year))
-       .andExpect(status().isOk())
-       .andExpect(jsonPath("$", is("2022-12-11")));
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -27,11 +26,12 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
     String year = "1699";
     //when
     mvc.perform(get("/v1/timetable-year-change/" + year))
-       .andExpect(status().isBadRequest())
-       .andExpect(jsonPath("$.status", is(400)))
-       .andExpect(jsonPath("$.error", is("Param argument not valid error")))
-       .andExpect(jsonPath("$.message",
-           is("Constraint for Path parameter was violated: [Path parameter 'year' value '1699' must be greater than or equal to 1700]")));
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
+        .andExpect(jsonPath("$.message",
+            is("Constraint for Path parameter was violated: [Path parameter 'year' value '1699' must be greater than or equal "
+                + "to 1700]")));
   }
 
   @Test
@@ -40,11 +40,12 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
     String year = "10000";
     //when
     mvc.perform(get("/v1/timetable-year-change/" + year))
-       .andExpect(status().isBadRequest())
-       .andExpect(jsonPath("$.status", is(400)))
-       .andExpect(jsonPath("$.error", is("Param argument not valid error")))
-       .andExpect(jsonPath("$.message",
-           is("Constraint for Path parameter was violated: [Path parameter 'year' value '10000' must be less than or equal to 9999]")));
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
+        .andExpect(jsonPath("$.message",
+            is("Constraint for Path parameter was violated: [Path parameter 'year' value '10000' must be less than or equal to "
+                + "9999]")));
   }
 
   @Test
@@ -53,11 +54,12 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
     String count = "0";
     //when
     mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
-       .andExpect(status().isBadRequest())
-       .andExpect(jsonPath("$.status", is(400)))
-       .andExpect(jsonPath("$.error", is("Param argument not valid error")))
-       .andExpect(jsonPath("$.message",
-           is("Constraint for Path parameter was violated: [Path parameter 'count' value '0' must be greater than or equal to 1]")));
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
+        .andExpect(jsonPath("$.message",
+            is("Constraint for Path parameter was violated: [Path parameter 'count' value '0' must be greater than or equal to "
+                + "1]")));
   }
 
   @Test
@@ -66,11 +68,12 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
     String count = "101";
     //when
     mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
-       .andExpect(status().isBadRequest())
-       .andExpect(jsonPath("$.status", is(400)))
-       .andExpect(jsonPath("$.error", is("Param argument not valid error")))
-       .andExpect(jsonPath("$.message",
-           is("Constraint for Path parameter was violated: [Path parameter 'count' value '101' must be less than or equal to 100]")));
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
+        .andExpect(jsonPath("$.message",
+            is("Constraint for Path parameter was violated: [Path parameter 'count' value '101' must be less than or equal to "
+                + "100]")));
   }
 
   @Test
@@ -79,8 +82,8 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
     String count = "10";
     //when
     mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
-       .andExpect(status().isOk())
-       .andExpect(jsonPath("$", hasSize(10)));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(10)));
   }
 
 }
