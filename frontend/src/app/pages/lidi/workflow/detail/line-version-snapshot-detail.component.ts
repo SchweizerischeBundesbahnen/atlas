@@ -1,6 +1,8 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {
+  LinesService,
   LineType,
+  LineVersion,
   LineVersionSnapshot,
   PaymentType,
   Workflow,
@@ -26,6 +28,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   lineVersionSnapshot!: LineVersionSnapshot;
   showWorkflowCheckForm = false;
+  versionAlreadyExists = true;
   workflow!: Workflow;
   lineVersionSnapshotForm!: FormGroup<LineVersionSnapshotDetailFormGroup>;
   workflowStartedFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
@@ -50,7 +53,8 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
     private dialogRef: MatDialogRef<LineVersionSnapshotDetailComponent>,
-    private workflowService: WorkflowService
+    private workflowService: WorkflowService,
+    private lineService: LinesService
   ) {}
 
   ngOnInit() {
@@ -73,6 +77,20 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
           this.populeteWorkflowCheckFormGroup();
         }
       });
+
+    this.lineService.getLineVersions(this.lineVersionSnapshot!.slnid!).subscribe({
+      next: (lineVersions) => {
+        const lineVersionsFiltered: LineVersion[] = lineVersions.filter(
+          (version) => version.id === this.lineVersionSnapshot.parentObjectId
+        );
+        if (lineVersionsFiltered.length === 0) {
+          this.versionAlreadyExists = false;
+        }
+      },
+      error: () => {
+        this.versionAlreadyExists = false;
+      },
+    });
   }
 
   backToOverview(): void {
@@ -83,15 +101,20 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
     return this.dialogData.lineVersionSnapshot;
   }
 
-  navigateToLineVersion() {
-    this.router
-      .navigate([Pages.LIDI.path, Pages.LINES.path, this.lineVersionSnapshot.slnid], {
-        queryParams: { id: this.lineVersionSnapshot.parentObjectId },
-      })
-      .then();
+  navigateToLine() {
+    if (this.lineVersionSnapshot.slnid) {
+      const urlCommands = [Pages.LIDI.path, Pages.LINES.path, this.lineVersionSnapshot.slnid];
+      if (this.versionAlreadyExists) {
+        this.navigateToVersionById(urlCommands);
+      } else {
+        this.novigateLineBySlnid(urlCommands);
+      }
+    }
   }
 
-  populateLineVersionSnapshotFormGroup(version: LineVersionSnapshot): FormGroup {
+  populateLineVersionSnapshotFormGroup(
+    version: LineVersionSnapshot
+  ): FormGroup<LineVersionSnapshotDetailFormGroup> {
     return new FormGroup<LineVersionSnapshotDetailFormGroup>({
       parentObjectId: new FormControl(version.parentObjectId),
       workflowId: new FormControl(version.workflowId),
@@ -120,6 +143,18 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  private novigateLineBySlnid(urlCommands: string[]) {
+    this.router.navigate(urlCommands).then();
+  }
+
+  private navigateToVersionById(urlCommands: string[]) {
+    this.router
+      .navigate(urlCommands, {
+        queryParams: { id: this.lineVersionSnapshot.parentObjectId },
+      })
+      .then();
   }
 
   private populeteWorkflowCheckFormGroup() {
