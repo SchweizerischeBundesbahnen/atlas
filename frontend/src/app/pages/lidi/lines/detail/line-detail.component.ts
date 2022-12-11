@@ -91,8 +91,7 @@ export class LineDetailComponent
     this.router
       .navigate([Pages.LIDI.path, Pages.WORKFLOWS.path], {
         queryParams: {
-          description: this.record.description,
-          number: this.record.number,
+          slnid: this.record.slnid,
         },
       })
       .then();
