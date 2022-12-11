@@ -97,13 +97,9 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   }
 
   private getSearchCriteriaFromQueryParams(searchCriteria: string[]) {
-    const number = this.route.snapshot.queryParams.number;
-    if (number) {
-      searchCriteria.push(number);
-    }
-    const description = this.route.snapshot.queryParams.description;
-    if (description) {
-      searchCriteria.push(description);
+    const slnid = this.route.snapshot.queryParams.slnid;
+    if (slnid) {
+      searchCriteria.push(slnid);
     }
   }
 }

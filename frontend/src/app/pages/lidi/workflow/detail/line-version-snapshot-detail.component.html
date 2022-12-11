@@ -27,15 +27,20 @@
     'LIDI.LINE_VERSION_SNAPSHOT.DETAIL_LINE_SNAPSHOT' | translate
   }}</span>
 </div>
+
 <div class="mb-2">
-  <a
-    (click)="this.navigateToLineVersion()"
-    class="font-bold-base color-primary-400 mb-2"
-    target="_blank"
+  <span
+    *ngIf="!versionAlreadyExists"
+    title="{{ 'LIDI.LINE_VERSION_SNAPSHOT.LINE_VERSION_NOT_EXISTS_WARNING_TOOLTIP' | translate }}"
+  >
+    <i class="bi bi-exclamation-diamond-fill color-primary-400 fs-5 me-1"></i>
+  </span>
+  <a (click)="this.navigateToLine()" class="font-bold-base color-primary-400 mb-2" target="_blank"
     >{{ 'LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_VERSION' | translate }}
     <link-icon></link-icon>
   </a>
 </div>
+
 <div class="mb-2">
   <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
   <span class="color-gray-900">{{
