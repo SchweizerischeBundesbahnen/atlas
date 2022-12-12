@@ -2,7 +2,7 @@ package ch.sbb.atlas.workflow.model;
 
 import ch.sbb.atlas.base.service.model.Status;
 
-public interface AtlasVersionSnapshoatble {
+public interface AtlasVersionSnapshotable {
 
   Status getStatus();
 
