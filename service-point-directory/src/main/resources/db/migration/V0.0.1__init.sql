@@ -4,7 +4,7 @@
 
 CREATE TABLE uic_country
 (
-    id                 SMALLINT     NOT NULL PRIMARY KEY,
+    id                 SMALLINT PRIMARY KEY,
     iso_3166_1_alpha_2 VARCHAR(10)  NOT NULL, -- z.B. 'DE', aber auch 'GYSEV/ROEE'?
     uic_920_14         SMALLINT     NOT NULL,
     name_en            VARCHAR(255) NULL,     -- z.B. 'Bosnien und Herzegowinas, kroatisch-moslemische Föderation'
@@ -31,7 +31,7 @@ ALTER TABLE uic_country
 
 CREATE TABLE service_point_version
 (
-    id                    BIGINT      NOT NULL PRIMARY KEY,
+    id                    BIGINT PRIMARY KEY,
     number                INTEGER     NOT NULL,
     check_digit           SMALLINT    NOT NULL,
     number_short          INTEGER     NOT NULL,
@@ -42,6 +42,7 @@ CREATE TABLE service_point_version
     status_didok3         SMALLINT    NULL,
     business_organisation VARCHAR(50) NOT NULL,
     has_geolocation       BOOLEAN     NULL     DEFAULT FALSE,
+    operating_point_type  VARCHAR(50),
     status                VARCHAR(50) NOT NULL,
     valid_from            DATE        NOT NULL,
     valid_to              DATE        NOT NULL,
@@ -79,7 +80,7 @@ CREATE INDEX spv_edition_date_idx ON service_point_version (edition_date);
 
 CREATE TABLE service_point_version_geolocation
 (
-    id                       BIGINT       NOT NULL PRIMARY KEY,
+    id                       BIGINT PRIMARY KEY,
     service_point_version_id BIGINT       NOT NULL,
     source_spatial_ref       INTEGER      NOT NULL,
     e_lv03                   NUMERIC      NULL,
@@ -122,7 +123,7 @@ CREATE INDEX spvgeo_countrycode_idx ON service_point_version_geolocation (iso_co
 
 CREATE TABLE service_point_comment
 (
-    id                   BIGINT        NOT NULL PRIMARY KEY,
+    id                   BIGINT PRIMARY KEY,
     service_point_number INTEGER       NOT NULL,
     comment              VARCHAR(2000) NOT NULL,
     creation_date        TIMESTAMP     NOT NULL,
@@ -133,152 +134,16 @@ CREATE TABLE service_point_comment
 
 CREATE SEQUENCE service_point_comment_seq START WITH 1000 INCREMENT BY 1;
 
------------------------------------------------------------------------------------------
--- Category Lookup Table - KATEGORIEN
------------------------------------------------------------------------------------------
-
-CREATE TABLE category
-(
-    id             BIGINT       NOT NULL PRIMARY KEY,
-    active         BOOLEAN      NULL     DEFAULT TRUE,
-    visible        BOOLEAN      NULL     DEFAULT TRUE,
-    designation_de VARCHAR(30)  NOT NULL,
-    designation_fr VARCHAR(30)  NULL,
-    designation_it VARCHAR(30)  NULL,
-    designation_en VARCHAR(30)  NULL,
-    description    VARCHAR(255) NOT NULL,
-    creation_date  TIMESTAMP    NOT NULL,
-    creator        VARCHAR(50)  NOT NULL,
-    edition_date   TIMESTAMP    NOT NULL,
-    editor         VARCHAR(50)  NOT NULL,
-    version        BIGINT       NOT NULL DEFAULT 0
-);
-
-CREATE SEQUENCE category_seq START WITH 1 INCREMENT BY 1;
-
-ALTER TABLE category
-    ADD CONSTRAINT category_designation_de_unique UNIQUE (designation_de);
-
-CREATE INDEX category_is_active_idx ON category (active);
-CREATE INDEX category_is_visible_idx ON category (visible);
 
 -----------------------------------------------------------------------------------------
 -- Service Point Category DS_KATEGORIEN
 -----------------------------------------------------------------------------------------
 
-CREATE TABLE service_point_category
+CREATE TABLE service_point_version_categories
 (
-    service_point_version_id BIGINT NOT NULL,
-    category_id              BIGINT NOT NULL,
-    PRIMARY KEY (service_point_version_id, category_id),
-    CONSTRAINT fk_service_point_category_service_point_version_id
-        FOREIGN KEY (service_point_version_id)
-            REFERENCES service_point_version (id),
-    CONSTRAINT fk_category_id
-        FOREIGN KEY (category_id)
-            REFERENCES category (id)
-);
-
-CREATE SEQUENCE service_point_category_seq START WITH 1000 INCREMENT BY 1;
-
------------------------------------------------------------------------------------------
--- Operation Point Type BETRIEBSPUNKT_ARTEN
------------------------------------------------------------------------------------------
-
-CREATE TABLE operating_point_type
-(
-    id               SMALLINT     NULL PRIMARY KEY,
-    allowed_features VARCHAR(512) NOT NULL,
-    designation_de   VARCHAR(50)  NOT NULL,
-    designation_fr   VARCHAR(50)  NOT NULL,
-    designation_it   VARCHAR(50)  NOT NULL,
-    designation_en   VARCHAR(50)  NOT NULL,
-    abbreviation_de  VARCHAR(10)  NULL,
-    abbreviation_fr  VARCHAR(10)  NULL,
-    abbreviation_it  VARCHAR(10)  NULL,
-    abbreviation_en  VARCHAR(10)  NULL,
-    creation_date    TIMESTAMP    NOT NULL,
-    creator          VARCHAR(50)  NOT NULL,
-    edition_date     TIMESTAMP    NOT NULL,
-    editor           VARCHAR(50)  NOT NULL
-);
-
-CREATE SEQUENCE operating_point_type_seq START WITH 1 INCREMENT BY 1;
-
-ALTER TABLE operating_point_type
-    ADD CONSTRAINT operating_point_type_designation_de_unique UNIQUE (designation_de);
-
------------------------------------------------------------------------------------------
--- Operation Point BETRIEBSPUNKTE
------------------------------------------------------------------------------------------
-
-CREATE TABLE operating_point
-(
-    id                       BIGINT      NULL PRIMARY KEY,
     service_point_version_id BIGINT      NOT NULL,
-    operating_point_type_id  SMALLINT    NULL,
-    creation_date            TIMESTAMP   NOT NULL,
-    creator                  VARCHAR(50) NOT NULL,
-    edition_date             TIMESTAMP   NOT NULL,
-    editor                   VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_operating_point_service_point_version_id
-        FOREIGN KEY (service_point_version_id)
-            REFERENCES service_point_version (id),
-    CONSTRAINT fk_operating_point_operating_point_type_id
-        FOREIGN KEY (operating_point_type_id)
-            REFERENCES operating_point_type (id)
+    categories               VARCHAR(50) NOT NULL
 );
-
-CREATE SEQUENCE operating_point_seq START WITH 1000 INCREMENT BY 1;
-
------------------------------------------------------------------------------------------
--- Operation Point without Timetable BETRIEBSPUNKTEOHNEFAHRPLAN
------------------------------------------------------------------------------------------
-
-CREATE TABLE operating_point_without_timetable
-(
-    id                       BIGINT      NULL PRIMARY KEY,
-    service_point_version_id BIGINT      NOT NULL,
-    operating_point_type_id  SMALLINT    NULL,
-    creation_date            TIMESTAMP   NOT NULL,
-    creator                  VARCHAR(50) NOT NULL,
-    edition_date             TIMESTAMP   NOT NULL,
-    editor                   VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_operating_point_without_timetable_service_point_version_id
-        FOREIGN KEY (service_point_version_id)
-            REFERENCES service_point_version (id),
-    CONSTRAINT fk_operating_point_without_timetable_operating_point_type_id
-        FOREIGN KEY (operating_point_type_id)
-            REFERENCES operating_point_type (id)
-);
-
-CREATE SEQUENCE operating_point_without_timetable_seq START WITH 1000 INCREMENT BY 1;
-
------------------------------------------------------------------------------------------
--- Operation Point with Timetable FAHRPLANBETRIEBSPUNKT
------------------------------------------------------------------------------------------
-
-CREATE TABLE operating_point_with_timetable
-(
-    id                               BIGINT      NULL PRIMARY KEY,
-    service_point_version_id         BIGINT      NOT NULL,
-    operating_point_type_id          SMALLINT    NULL,
-    is_operating_point_kilometer     BOOLEAN     NULL DEFAULT FALSE,
-    is_operating_point_route_network BOOLEAN     NULL DEFAULT FALSE,
-    operating_point_kilometer_master INTEGER     NULL,
-    creation_date                    TIMESTAMP   NOT NULL,
-    creator                          VARCHAR(50) NOT NULL,
-    edition_date                     TIMESTAMP   NOT NULL,
-    editor                           VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_operating_point_with_timetable_service_point_version_id
-        FOREIGN KEY (service_point_version_id)
-            REFERENCES service_point_version (id),
-    CONSTRAINT fk_operating_point_type_id
-        FOREIGN KEY (operating_point_type_id)
-            REFERENCES operating_point_type (id)
-);
-
-CREATE SEQUENCE operating_point_with_timetable_seq START WITH 1000 INCREMENT BY 1;
 
 -----------------------------------------------------------------------------------------
 -- Freight Service Point BEDIENPUNKTE
