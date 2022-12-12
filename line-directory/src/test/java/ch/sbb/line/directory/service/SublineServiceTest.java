@@ -16,7 +16,7 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
-import ch.sbb.line.directory.model.SublineSearchRestrictions;
+import ch.sbb.line.directory.model.search.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
@@ -137,13 +137,12 @@ class SublineServiceTest {
     // When
 
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
-                                                                () -> sublineService.save(sublineVersion))
-                                                            .withMessage(
-                                                                "400 BAD_REQUEST \"Main line with SLNID mainlineSlnid does not exist\"");
+            () -> sublineService.save(sublineVersion))
+        .withMessage(
+            "400 BAD_REQUEST \"Main line with SLNID mainlineSlnid does not exist\"");
 
     // Then
   }
-
 
   @Test
   void shouldDeleteSubline() {

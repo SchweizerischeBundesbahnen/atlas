@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   TemplateRef,
   ViewChild,
@@ -12,25 +13,27 @@ import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DATE_PATTERN, MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
-import { Status } from '../../../api';
+import { Status, WorkflowStatus } from '../../../api';
 import moment from 'moment/moment';
 import { ValidationService } from '../../validation/validation.service';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
+import { BaseTableSearch, SearchStatusType } from './base-table-search';
 
 @Component({
   selector: 'app-table-search',
   templateUrl: './table-search.component.html',
   styleUrls: ['./table-search.component.scss'],
 })
-export class TableSearchComponent {
+export class TableSearchComponent implements OnInit {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() additionalFieldTemplate!: TemplateRef<any>;
   @Input() displayStatus = true;
   @Input() displayValidOn = true;
   @Input() displayBusinessOrganisationSearch = true;
   @Input() searchTextColumnStyle = 'col-4';
+  @Input() searchStatusType: SearchStatusType = 'DEFAULT_STATUS';
 
-  @Output() searchEvent: EventEmitter<TableSearch> = new EventEmitter<TableSearch>();
+  @Output() searchEvent: EventEmitter<BaseTableSearch> = new EventEmitter<BaseTableSearch>();
   @ViewChild('validOnInput') validOnInput!: ElementRef;
 
   @ViewChild(BusinessOrganisationSelectComponent)
@@ -39,7 +42,8 @@ export class TableSearchComponent {
     businessOrganisation: new FormControl(),
   });
 
-  readonly STATUS_OPTIONS = Object.values(Status);
+  STATUS_OPTIONS: Array<Status | WorkflowStatus> = Object.values(Status);
+  STATUS_TYPES_PREFIX_LABEL = 'COMMON.STATUS_TYPES.';
   searchStrings: string[] = [];
   searchDate?: Date;
   activeStatuses: statusChoice = [];
@@ -97,14 +101,6 @@ export class TableSearchComponent {
     this.emitSearch();
   }
 
-  private emitSearch(): void {
-    this.activeSearch.searchCriteria = this.searchStrings;
-    this.activeSearch.validOn = this.searchDate;
-    this.activeSearch.statusChoices = this.activeStatuses;
-    this.activeSearch.boChoice = this.boSearchForm.get('businessOrganisation')?.value;
-    this.searchEvent.emit(this.activeSearch);
-  }
-
   businessOrganisationChanged($event: any) {
     this.boSearchForm.patchValue($event, { emitEvent: false });
     this.emitSearch();
@@ -115,6 +111,21 @@ export class TableSearchComponent {
       this.boSearchForm.patchValue({ businessOrganisation: sboid }, { emitEvent: false });
       this.businessOrganisationSelectComponent.searchBusinessOrganisation(sboid);
     }
+  }
+
+  ngOnInit(): void {
+    if (this.searchStatusType === 'WORKFLOW_STATUS') {
+      this.STATUS_OPTIONS = Object.values(WorkflowStatus);
+      this.STATUS_TYPES_PREFIX_LABEL = 'WORKFLOW.STATUS.';
+    }
+  }
+
+  private emitSearch(): void {
+    this.activeSearch.searchCriteria = this.searchStrings;
+    this.activeSearch.validOn = this.searchDate;
+    this.activeSearch.statusChoices = this.activeStatuses;
+    this.activeSearch.boChoice = this.boSearchForm.get('businessOrganisation')?.value;
+    this.searchEvent.emit(this.activeSearch);
   }
 }
 

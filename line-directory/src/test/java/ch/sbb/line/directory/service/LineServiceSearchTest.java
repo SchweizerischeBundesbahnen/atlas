@@ -8,7 +8,7 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.model.LineSearchRestrictions;
+import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -43,20 +43,20 @@ public class LineServiceSearchTest {
   @BeforeEach
   void init() {
     version1 = LineTestData.lineVersionBuilder().slnid("ch:slnid:1")
-                           .swissLineNumber("1")
-                           .validFrom(LocalDate.of(2020, 1, 1))
-                           .validTo(LocalDate.of(2021, 12, 31))
-                           .build();
+        .swissLineNumber("1")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
     version2 = LineTestData.lineVersionBuilder().slnid("ch:slnid:2")
-                           .swissLineNumber("2")
-                           .validFrom(LocalDate.of(2022, 1, 1))
-                           .validTo(LocalDate.of(2023, 12, 31))
-                           .build();
+        .swissLineNumber("2")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .build();
     version3 = LineTestData.lineVersionBuilder().slnid("ch:slnid:3")
-                           .swissLineNumber("3")
-                           .validFrom(LocalDate.of(2024, 1, 1))
-                           .validTo(LocalDate.of(2024, 12, 31))
-                           .build();
+        .swissLineNumber("3")
+        .validFrom(LocalDate.of(2024, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .build();
   }
 
   @AfterEach
@@ -73,9 +73,9 @@ public class LineServiceSearchTest {
     // When
     Page<Line> result = lineService.findAll(
         LineSearchRestrictions.builder()
-                              .pageable(Pageable.unpaged())
-                              .validOn(Optional.of(LocalDate.of(2020, 1, 1)))
-                              .build());
+            .pageable(Pageable.unpaged())
+            .validOn(Optional.of(LocalDate.of(2020, 1, 1)))
+            .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -129,10 +129,10 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version2);
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(PageRequest.of(0, 20,
-                                                                      Sort.by("swissLineNumber")
-                                                                          .ascending()))
-                                                                  .build());
+        .pageable(PageRequest.of(0, 20,
+            Sort.by("swissLineNumber")
+                .ascending()))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);
@@ -146,10 +146,10 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version2);
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(PageRequest.of(0, 20,
-                                                                      Sort.by("swissLineNumber")
-                                                                          .descending()))
-                                                                  .build());
+        .pageable(PageRequest.of(0, 20,
+            Sort.by("swissLineNumber")
+                .descending()))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);
@@ -162,9 +162,9 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version1);
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .searchCriterias(List.of("1"))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .searchCriterias(List.of("1"))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -177,17 +177,17 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version2);
     lineVersionRepository.saveAndFlush(version3);
     LineVersion versionWithUnderscore = LineTestData.lineVersionBuilder().slnid("ch:slnid:4")
-                                    .swissLineNumber("1_")
-                                    .validFrom(LocalDate.of(2020, 1, 1))
-                                    .validTo(LocalDate.of(2021, 12, 31))
-                                    .build();
+        .swissLineNumber("1_")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
     lineVersionRepository.saveAndFlush(versionWithUnderscore);
 
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .searchCriterias(List.of("_"))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .searchCriterias(List.of("_"))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -200,17 +200,17 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version2);
     lineVersionRepository.saveAndFlush(version3);
     LineVersion versionWithUnderscore = LineTestData.lineVersionBuilder().slnid("ch:slnid:4")
-                                    .swissLineNumber("1__")
-                                    .validFrom(LocalDate.of(2020, 1, 1))
-                                    .validTo(LocalDate.of(2021, 12, 31))
-                                    .build();
+        .swissLineNumber("1__")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
     lineVersionRepository.saveAndFlush(versionWithUnderscore);
 
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .searchCriterias(List.of("__"))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .searchCriterias(List.of("__"))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -223,17 +223,17 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version2);
     lineVersionRepository.saveAndFlush(version3);
     LineVersion versionWithUnderscore = LineTestData.lineVersionBuilder().slnid("ch:slnid:4")
-                                    .swissLineNumber("1%")
-                                    .validFrom(LocalDate.of(2020, 1, 1))
-                                    .validTo(LocalDate.of(2021, 12, 31))
-                                    .build();
+        .swissLineNumber("1%")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
     lineVersionRepository.saveAndFlush(versionWithUnderscore);
 
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .searchCriterias(List.of("%"))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .searchCriterias(List.of("%"))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -246,17 +246,17 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version2);
     lineVersionRepository.saveAndFlush(version3);
     LineVersion versionWithUnderscore = LineTestData.lineVersionBuilder().slnid("ch:slnid:4")
-                                    .swissLineNumber("1%%")
-                                    .validFrom(LocalDate.of(2020, 1, 1))
-                                    .validTo(LocalDate.of(2021, 12, 31))
-                                    .build();
+        .swissLineNumber("1%%")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
     lineVersionRepository.saveAndFlush(versionWithUnderscore);
 
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .searchCriterias(List.of("%%"))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .searchCriterias(List.of("%%"))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -271,11 +271,11 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version3);
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .searchCriterias(
-                                                                      List.of("1", "ch:SLNID:1",
-                                                                          "yb", "Fan"))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .searchCriterias(
+            List.of("1", "ch:SLNID:1",
+                "yb", "Fan"))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -287,9 +287,9 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version1);
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .searchCriterias(List.of("2"))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .searchCriterias(List.of("2"))
+        .build());
 
     // Then
     assertThat(result.getContent()).isEmpty();
@@ -305,11 +305,11 @@ public class LineServiceSearchTest {
     // When
     Page<Line> result = lineService.findAll(
         LineSearchRestrictions.builder()
-                              .pageable(Pageable.unpaged())
-                              .searchCriterias(
-                                  List.of("1", "ch:SLNID:1", "yb", "Fan"))
-                              .statusRestrictions(List.of(Status.VALIDATED))
-                              .build());
+            .pageable(Pageable.unpaged())
+            .searchCriterias(
+                List.of("1", "ch:SLNID:1", "yb", "Fan"))
+            .statusRestrictions(List.of(Status.VALIDATED))
+            .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -327,16 +327,15 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version3);
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .statusRestrictions(
-                                                                      List.of(Status.VALIDATED,
-                                                                          Status.DRAFT))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .statusRestrictions(
+            List.of(Status.VALIDATED,
+                Status.DRAFT))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);
   }
-
 
   @Test
   void shouldFindVersionWithType() {
@@ -347,13 +346,13 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version3);
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .searchCriterias(
-                                                                      List.of("1", "ch:SLNID:1",
-                                                                          "yb", "Fan"))
-                                                                  .typeRestrictions(
-                                                                      List.of(LineType.ORDERLY))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .searchCriterias(
+            List.of("1", "ch:SLNID:1",
+                "yb", "Fan"))
+        .typeRestrictions(
+            List.of(LineType.ORDERLY))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(1);
@@ -371,11 +370,11 @@ public class LineServiceSearchTest {
     lineVersionRepository.saveAndFlush(version3);
     // When
     Page<Line> result = lineService.findAll(LineSearchRestrictions.builder()
-                                                                  .pageable(Pageable.unpaged())
-                                                                  .typeRestrictions(
-                                                                      List.of(LineType.ORDERLY,
-                                                                          LineType.TEMPORARY))
-                                                                  .build());
+        .pageable(Pageable.unpaged())
+        .typeRestrictions(
+            List.of(LineType.ORDERLY,
+                LineType.TEMPORARY))
+        .build());
 
     // Then
     assertThat(result.getContent()).hasSize(2);

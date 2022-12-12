@@ -6,7 +6,7 @@ import ch.sbb.atlas.base.service.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
-import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
+import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import java.util.List;
@@ -36,7 +36,7 @@ public class TimetableFieldNumberService {
   public List<TimetableFieldNumberVersion> revokeTimetableFieldNumber(String ttfnId) {
     List<TimetableFieldNumberVersion> timetableFieldNumberVersions =
         versionRepository.getAllVersionsVersioned(
-        ttfnId);
+            ttfnId);
     timetableFieldNumberVersions.forEach(
         timetableFieldNumberVersion -> timetableFieldNumberVersion.setStatus(Status.REVOKED));
     return timetableFieldNumberVersions;
@@ -46,13 +46,16 @@ public class TimetableFieldNumberService {
     return versionRepository.findById(id);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TTFN)")
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TTFN)")
   public TimetableFieldNumberVersion create(TimetableFieldNumberVersion businessObject) {
     return save(businessObject);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TTFN)")
-  public void update(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion, List<TimetableFieldNumberVersion> currentVersions) {
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
+      + ".model.user.admin.ApplicationType).TTFN)")
+  public void update(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion,
+      List<TimetableFieldNumberVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);
   }
 
@@ -79,7 +82,7 @@ public class TimetableFieldNumberService {
       TimetableFieldNumberVersion editedVersion) {
     versionRepository.incrementVersion(currentVersion.getTtfnid());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-                                                             .equals(editedVersion.getVersion())) {
+        .equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(TimetableFieldNumberVersion.class.getSimpleName(),
           "version");
     }
