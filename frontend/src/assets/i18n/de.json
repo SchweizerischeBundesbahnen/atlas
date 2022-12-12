@@ -356,7 +356,8 @@
       "TABLE": {
         "NUMBER": "Liniennummer",
         "DESCRIPTION": "Linienbezeichnung",
-        "STATUS": "Anhörungsstatus"
+        "STATUS": "Anhörungsstatus",
+        "SLNID": "SLNID"
       }
     }
   },
