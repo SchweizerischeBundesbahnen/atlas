@@ -15,6 +15,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -90,4 +92,11 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @OneToOne(cascade = CascadeType.ALL, mappedBy = "servicePointVersion")
   private ServicePointGeolocation servicePointGeolocation;
 
+  @Builder.Default
+  @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinTable(
+          name = "service_point_category",
+          joinColumns = @JoinColumn(name = "service_point_version_id"),
+          inverseJoinColumns = @JoinColumn(name = "category_id"))
+  private Set<Category> categories = new HashSet<>();
 }
