@@ -3,10 +3,11 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.CountryTestData;
-import ch.sbb.atlas.servicepointdirectory.entity.Category;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.UicCountry;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,14 +25,12 @@ public class ServicePointVersionRepositoryTest {
 
     private final ServicePointVersionRepository servicePointVersionRepository;
     private final UicCountryRepository uicCountryRepository;
-    private final CategoryRepository categoryRepository;
     private UicCountry switzerland;
 
     @Autowired
-    public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository, UicCountryRepository uicCountryRepository, CategoryRepository categoryRepository) {
+    public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository, UicCountryRepository uicCountryRepository) {
         this.servicePointVersionRepository = servicePointVersionRepository;
         this.uicCountryRepository = uicCountryRepository;
-        this.categoryRepository = categoryRepository;
     }
 
     @BeforeEach
@@ -44,7 +42,6 @@ public class ServicePointVersionRepositoryTest {
     void tearDown() {
         servicePointVersionRepository.deleteAll();
         uicCountryRepository.deleteAll();
-        categoryRepository.deleteAll();
     }
 
     @Test
@@ -73,6 +70,7 @@ public class ServicePointVersionRepositoryTest {
         assertThat(savedVersion.getId()).isNotNull();
         assertThat(savedVersion.getServicePointGeolocation()).isNull();
         assertThat(savedVersion.getCategories()).isEmpty();
+        assertThat(savedVersion.isOperatingPoint()).isFalse();
     }
 
     @Test
@@ -128,8 +126,6 @@ public class ServicePointVersionRepositoryTest {
     @Test
     void shouldSaveServicePointVersionWithTwoCategories() {
         // given
-        Category categoryGeneral = categoryRepository.save(Category.builder().designationDe("General").description("description").build());
-        Category categorySpecific = categoryRepository.save(Category.builder().designationDe("Specific").description("description").build());
 
         ServicePointVersion servicePoint = ServicePointVersion.builder()
                 .number(1)
@@ -145,7 +141,7 @@ public class ServicePointVersionRepositoryTest {
                 .status(Status.VALIDATED)
                 .validFrom(LocalDate.of(2020,1,1))
                 .validTo(LocalDate.of(2020,12,31))
-                .categories(new HashSet<>(Set.of(categoryGeneral, categorySpecific)))
+                .categories(Set.of(Category.BORDER_POINT, Category.DISTRIBUTION_POINT))
                 .build();
 
         // when
@@ -155,11 +151,38 @@ public class ServicePointVersionRepositoryTest {
         assertThat(savedVersion.getId()).isNotNull();
         assertThat(savedVersion.getServicePointGeolocation()).isNull();
         assertThat(savedVersion.getCategories()).hasSize(2);
+    }
 
-        // category assertions
-        savedVersion.getCategories().remove(savedVersion.getCategories().iterator().next());
+    @Test
+    void shouldSaveServicePointVersionWithOperatingPointType() {
+        // given
+        ServicePointVersion servicePoint = ServicePointVersion.builder()
+                .number(1)
+                .checkDigit(1)
+                .numberShort(1)
+                .uicCountry(switzerland)
+                .designationLong("long designation")
+                .designationOfficial("official designation")
+                .abbreviation("BE")
+                .statusDidok3(1)
+                .businessOrganisation("somesboid")
+                .hasGeolocation(true)
+                .status(Status.VALIDATED)
+                .validFrom(LocalDate.of(2020,1,1))
+                .validTo(LocalDate.of(2020,12,31))
+                .operatingPointType(OperatingPointType.STOP_POINT)
+                .build();
 
-        assertThat(servicePointVersionRepository.findById(savedVersion.getId()).orElseThrow().getCategories()).hasSize(1);
-        assertThat(categoryRepository.count()).isEqualTo(2);
+        // when
+        ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
+
+        // then
+        assertThat(savedVersion.getId()).isNotNull();
+        assertThat(savedVersion.getServicePointGeolocation()).isNull();
+        assertThat(savedVersion.getCategories()).isEmpty();
+
+        assertThat(savedVersion.isOperatingPoint()).isTrue();
+        assertThat(savedVersion.getOperatingPointType().hasTimetable()).isTrue();
+        assertThat(savedVersion.getOperatingPointType().getDesignationDe()).isEqualTo("Haltestelle");
     }
 }
