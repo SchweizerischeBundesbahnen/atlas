@@ -139,9 +139,9 @@ CREATE SEQUENCE service_point_comment_seq START WITH 1000 INCREMENT BY 1;
 
 CREATE TABLE category
 (
-    id             SMALLINT     NOT NULL PRIMARY KEY,
-    is_active      BOOLEAN      NULL DEFAULT TRUE,
-    is_visible     BOOLEAN      NULL DEFAULT TRUE,
+    id             BIGINT       NOT NULL PRIMARY KEY,
+    active         BOOLEAN      NULL     DEFAULT TRUE,
+    visible        BOOLEAN      NULL     DEFAULT TRUE,
     designation_de VARCHAR(30)  NOT NULL,
     designation_fr VARCHAR(30)  NULL,
     designation_it VARCHAR(30)  NULL,
@@ -150,7 +150,8 @@ CREATE TABLE category
     creation_date  TIMESTAMP    NOT NULL,
     creator        VARCHAR(50)  NOT NULL,
     edition_date   TIMESTAMP    NOT NULL,
-    editor         VARCHAR(50)  NOT NULL
+    editor         VARCHAR(50)  NOT NULL,
+    version        BIGINT       NOT NULL DEFAULT 0
 );
 
 CREATE SEQUENCE category_seq START WITH 1 INCREMENT BY 1;
@@ -158,8 +159,8 @@ CREATE SEQUENCE category_seq START WITH 1 INCREMENT BY 1;
 ALTER TABLE category
     ADD CONSTRAINT category_designation_de_unique UNIQUE (designation_de);
 
-CREATE INDEX category_is_active_idx ON category (is_active);
-CREATE INDEX category_is_visible_idx ON category (is_visible);
+CREATE INDEX category_is_active_idx ON category (active);
+CREATE INDEX category_is_visible_idx ON category (visible);
 
 -----------------------------------------------------------------------------------------
 -- Service Point Category DS_KATEGORIEN
@@ -167,15 +168,11 @@ CREATE INDEX category_is_visible_idx ON category (is_visible);
 
 CREATE TABLE service_point_category
 (
-    id                    BIGINT      NOT NULL PRIMARY KEY,
-    service_point_version BIGINT      NOT NULL,
-    category_id           SMALLINT    NOT NULL,
-    creation_date         TIMESTAMP   NOT NULL,
-    creator               VARCHAR(50) NOT NULL,
-    edition_date          TIMESTAMP   NOT NULL,
-    editor                VARCHAR(50) NOT NULL,
+    service_point_version_id BIGINT NOT NULL,
+    category_id              BIGINT NOT NULL,
+    PRIMARY KEY (service_point_version_id, category_id),
     CONSTRAINT fk_service_point_category_service_point_version_id
-        FOREIGN KEY (service_point_version)
+        FOREIGN KEY (service_point_version_id)
             REFERENCES service_point_version (id),
     CONSTRAINT fk_category_id
         FOREIGN KEY (category_id)
