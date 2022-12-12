@@ -47,7 +47,8 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private Integer numberShort;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @NotNull
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumn(name = "uic_country_code", referencedColumnName = "uic_920_14")
   private UicCountry uicCountry;
 
@@ -85,5 +86,8 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String businessOrganisation;
+
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "servicePointVersion")
+  private ServicePointGeolocation servicePointGeolocation;
 
 }
