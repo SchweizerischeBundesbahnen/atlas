@@ -101,6 +101,7 @@ CREATE TABLE service_point_version_geolocation
     creator                  VARCHAR(50)  NOT NULL,
     edition_date             TIMESTAMP    NOT NULL,
     editor                   VARCHAR(50)  NOT NULL,
+    version                  BIGINT       NOT NULL DEFAULT 0,
     CONSTRAINT fk_service_point_version_id
         FOREIGN KEY (service_point_version_id)
             REFERENCES service_point_version (id)
