@@ -1,0 +1,17 @@
+@use 'src/styles/variables' as variables;
+
+svg path {
+  fill: variables.$primary-400;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+.warning-icon {
+  color: orange;
+}
