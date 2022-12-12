@@ -38,7 +38,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
         "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, inSboids={} validOn={} and "
             + "statusChoices={}",
         pageable, searchCriteria, inSboids, validOn, statusChoices);
-    Page<BusinessOrganisation> timetableFieldNumberPage = service.getBusinessOrganisations(
+    Page<BusinessOrganisation> businessOrganisationPage = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
             .pageable(pageable)
             .searchCriterias(searchCriteria)
@@ -46,13 +46,13 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
             .statusRestrictions(statusChoices)
             .validOn(validOn)
             .build());
-    List<BusinessOrganisationModel> versions = timetableFieldNumberPage.stream()
+    List<BusinessOrganisationModel> versions = businessOrganisationPage.stream()
         .map(
             BusinessOrganisationModel::toModel)
         .toList();
     return Container.<BusinessOrganisationModel>builder()
         .objects(versions)
-        .totalCount(timetableFieldNumberPage.getTotalElements())
+        .totalCount(businessOrganisationPage.getTotalElements())
         .build();
   }
 

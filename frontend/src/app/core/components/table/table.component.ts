@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TableSearchComponent } from '../table-search/table-search.component';
 import { TableSearch } from '../table-search/table-search';
 import { TableSettings } from './table-settings';
+import { SearchStatusType } from '../table-search/base-table-search';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
@@ -36,6 +37,7 @@ export class TableComponent<DATATYPE> {
   @Input() displayValidOnSearch = true;
   @Input() displayBusinessOrganisationSearch = true;
   @Input() loadTableSearch = true;
+  @Input() searchStatusType: SearchStatusType = 'DEFAULT_STATUS';
 
   loading = true;
 
@@ -89,13 +91,6 @@ export class TableComponent<DATATYPE> {
     }
   }
 
-  private getElementsSearched(tableSettings: TableSettings) {
-    if (this.tableSearchComponent) {
-      this.tableSearchComponent.activeSearch = tableSettings;
-    }
-    this.getTableElementsEvent.emit(tableSettings);
-  }
-
   showTitle(column: TableColumn<DATATYPE>, value: string | Date): string {
     const content = this.format(column, value);
     const hideTooltip = this.hideTooltip(content);
@@ -139,5 +134,12 @@ export class TableComponent<DATATYPE> {
     this.tableSearchComponent.dateControl.setValue(tableSettings.validOn);
 
     this.tableSearchComponent.activeSearch = tableSettings;
+  }
+
+  private getElementsSearched(tableSettings: TableSettings) {
+    if (this.tableSearchComponent) {
+      this.tableSearchComponent.activeSearch = tableSettings;
+    }
+    this.getTableElementsEvent.emit(tableSettings);
   }
 }

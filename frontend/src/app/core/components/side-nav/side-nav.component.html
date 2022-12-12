@@ -1,13 +1,13 @@
 <div
   *ngFor="let page of enabledPages; let pageIndex = index"
-  class="link-border"
   [attr.data-cy]="page.path ? 'sidemenu-' + page.path : 'sidemenu-start'"
+  class="link-border"
 >
   <a
-    mat-list-item
-    class="font-bold-base color-primary-400"
-    routerLink="{{ page.path }}"
     [ngClass]="activePageIndex === pageIndex ? 'route-active' : ''"
+    class="font-bold-base color-primary-400"
+    mat-list-item
+    routerLink="{{ page.path }}"
   >
     {{ page.titleMenu ?? '' | translate }}
     <em class="bi bi-arrow-right ms-auto"></em>

@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.model;
+package ch.sbb.line.directory.model.search;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
@@ -25,14 +25,14 @@ public class TimetableFieldNumberSearchRestrictions extends
   @Override
   protected SpecificationBuilder<TimetableFieldNumber> specificationBuilder() {
     return SpecificationBuilder.<TimetableFieldNumber>builder()
-                               .stringAttributes(
-                                   List.of(TimetableFieldNumber.Fields.swissTimetableFieldNumber,
-                                       TimetableFieldNumber.Fields.description,
-                                       TimetableFieldNumber.Fields.ttfnid,
-                                       TimetableFieldNumber.Fields.number))
-                               .validFromAttribute(TimetableFieldNumber_.validFrom)
-                               .validToAttribute(TimetableFieldNumber_.validTo)
-                               .build();
+        .stringAttributes(
+            List.of(TimetableFieldNumber.Fields.swissTimetableFieldNumber,
+                TimetableFieldNumber.Fields.description,
+                TimetableFieldNumber.Fields.ttfnid,
+                TimetableFieldNumber.Fields.number))
+        .validFromAttribute(TimetableFieldNumber_.validFrom)
+        .validToAttribute(TimetableFieldNumber_.validTo)
+        .build();
   }
 
 }

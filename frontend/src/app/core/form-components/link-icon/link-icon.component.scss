@@ -1,0 +1,5 @@
+@use 'src/styles/variables' as variables;
+
+svg.active path {
+  fill: variables.$primary-400;
+}
