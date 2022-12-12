@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UrlComponent } from './url.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
+import { LinkIconComponent } from '../link-icon/link-icon.component';
 import { InfoIconComponent } from '../info-icon/info-icon.component';
 
 describe('UrlComponent', () => {
@@ -11,7 +12,7 @@ describe('UrlComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UrlComponent, InfoIconComponent],
+      declarations: [UrlComponent, InfoIconComponent, LinkIconComponent],
       imports: [AppTestingModule],
     }).compileComponents();
   });

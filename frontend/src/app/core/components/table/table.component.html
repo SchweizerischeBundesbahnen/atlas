@@ -1,61 +1,62 @@
 <div class="overview-table">
   <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
   <app-table-search
+    (searchEvent)="searchData($event)"
     *ngIf="loadTableSearch"
     [additionalFieldTemplate]="tableSearchFieldTemplate"
-    (searchEvent)="searchData($event)"
+    [displayBusinessOrganisationSearch]="displayBusinessOrganisationSearch"
     [displayStatus]="displayStatusSearch"
     [displayValidOn]="displayValidOnSearch"
-    [displayBusinessOrganisationSearch]="displayBusinessOrganisationSearch"
+    [searchStatusType]="searchStatusType"
     [searchTextColumnStyle]="searchTextColumnStyle"
   >
   </app-table-search>
   <ng-content></ng-content>
   <table
-    mat-table
-    [dataSource]="tableData"
-    matSort
-    [matSortDisabled]="sortingDisabled"
     (matSortChange)="sortData($event)"
+    [dataSource]="tableData"
     [matSortActive]="sortingDisabled ? '' : tableColumns[0].value!"
+    [matSortDisabled]="sortingDisabled"
+    mat-table
+    matSort
     matSortDirection="asc"
   >
     <ng-container *ngFor="let column of tableColumns">
       <ng-container matColumnDef="{{ column.value }}">
         <th
-          scope="col"
-          mat-header-cell
           *matHeaderCellDef
-          mat-sort-header
           class="font-bold-base color-primary-400 translated-paragraph"
+          mat-header-cell
+          mat-sort-header
+          scope="col"
         >
           {{ column.headerTitle | translate }}
         </th>
         <td
-          mat-cell
           *matCellDef="let value"
-          class="table-cell"
           [title]="showTitle(column, value[column.value])"
+          class="table-cell"
+          mat-cell
         >
           {{ format(column, value[column.value]) }}
         </td>
       </ng-container>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="getColumnValues()"></tr>
-    <tr mat-row *matRowDef="let row; columns: getColumnValues()" (click)="edit(row)"></tr>
+    <tr *matHeaderRowDef="getColumnValues()" mat-header-row></tr>
+    <tr (click)="edit(row)" *matRowDef="let row; columns: getColumnValues()" mat-row></tr>
 
     <!-- Row shown when there is no matching data. -->
-    <tr class="mat-row" *matNoDataRow>
+    <tr *matNoDataRow class="mat-row">
       <td class="mat-cell" colspan="100">{{ 'COMMON.NODATAFOUND' | translate }}</td>
     </tr>
   </table>
 
   <mat-paginator
-    [length]="totalCount"
-    [pageSize]="10"
-    [pageSizeOptions]="pageSizeOptions"
     (page)="pageChanged($event)"
+    [length]="totalCount"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageSize]="10"
     class="font-regular-base"
   >
   </mat-paginator>

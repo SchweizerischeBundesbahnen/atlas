@@ -85,11 +85,11 @@
     </div>
     <div *ngIf="workflowEnabled">
       <app-workflow
-        [switchVersionEvent]="this.controller.switchVersionEvent.asObservable()"
         (workflowEvent)="this.receiveWorkflowEvent($event)"
         *ngIf="controller.isWorkflowable()"
         [descriptionForWorkflow]="this.controller.getDecriptionForWorkflow()"
         [lineRecord]="this.controller.record"
+        [switchVersionEvent]="this.controller.switchVersionEvent.asObservable()"
       ></app-workflow>
     </div>
   </div>

@@ -15,6 +15,10 @@ export class LidiOverviewComponent {
       link: Pages.SUBLINES.path,
       title: 'LIDI.SUBLINE.SUBLINES',
     },
+    {
+      link: Pages.WORKFLOWS.path,
+      title: 'LIDI.LINE_VERSION_SNAPSHOT.TAB_HEADER',
+    },
   ];
 
   constructor(private route: ActivatedRoute, private router: Router) {}

@@ -344,6 +344,21 @@
         "DELETE_SUCCESS": "Die Teillinie wurde erfolgreich gelöscht.",
         "DELETE_ERROR": "Beim Löschen der Teillinie ist ein Fehler aufgetreten."
       }
+    },
+    "LINE_VERSION_SNAPSHOT": {
+      "LINE_VERSION_NOT_EXISTS_WARNING_TOOLTIP": "Die Version der Linie existiert nicht mehr: sie wurde entweder gelöscht oder mit anderen Versionen zusammengelegt.",
+      "DETAIL_WORKFLOW_INFORMATION": "Informationen zur Anhörung",
+      "DETAIL_LINE_SNAPSHOT": "Historisierte Linien Detail",
+      "NAVIGATE_TO_VERSION": "Gehe zur Linie Detail Ansicht",
+      "NAVIGATE_TO_SNAPHOT": "Gehe zur Historisierte Linien Detail Ansicht",
+      "TAB_HEADER": "Linien Anhörungen",
+      "TABLE_HEADER": "Linien Anhörungen",
+      "TABLE": {
+        "NUMBER": "Liniennummer",
+        "DESCRIPTION": "Linienbezeichnung",
+        "STATUS": "Anhörungsstatus",
+        "SLNID": "SLNID"
+      }
     }
   },
   "BODI": {
@@ -470,6 +485,7 @@
       "FUNCTION": "Funktion",
       "MAIL": "E-Mail Adresse"
     },
+    "STATUS_DETAIL": "Anhörung Status",
     "STATUS": {
       "ADDED": "Erfasst",
       "STARTED": "Gestartet",
