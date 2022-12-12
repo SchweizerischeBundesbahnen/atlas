@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.CountryTestData;
+import ch.sbb.atlas.servicepointdirectory.entity.Category;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.UicCountry;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,12 +25,14 @@ public class ServicePointVersionRepositoryTest {
 
     private final ServicePointVersionRepository servicePointVersionRepository;
     private final UicCountryRepository uicCountryRepository;
+    private final CategoryRepository categoryRepository;
     private UicCountry switzerland;
 
     @Autowired
-    public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository, UicCountryRepository uicCountryRepository) {
+    public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository, UicCountryRepository uicCountryRepository, CategoryRepository categoryRepository) {
         this.servicePointVersionRepository = servicePointVersionRepository;
         this.uicCountryRepository = uicCountryRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @BeforeEach
@@ -39,6 +44,7 @@ public class ServicePointVersionRepositoryTest {
     void tearDown() {
         servicePointVersionRepository.deleteAll();
         uicCountryRepository.deleteAll();
+        categoryRepository.deleteAll();
     }
 
     @Test
@@ -66,6 +72,7 @@ public class ServicePointVersionRepositoryTest {
         // then
         assertThat(savedVersion.getId()).isNotNull();
         assertThat(savedVersion.getServicePointGeolocation()).isNull();
+        assertThat(savedVersion.getCategories()).isEmpty();
     }
 
     @Test
@@ -116,5 +123,43 @@ public class ServicePointVersionRepositoryTest {
         assertThat(savedVersion.getId()).isNotNull();
         assertThat(savedVersion.getServicePointGeolocation()).isNotNull();
         assertThat(savedVersion.getServicePointGeolocation().getSwissCantonName()).isEqualTo("Bern");
+    }
+
+    @Test
+    void shouldSaveServicePointVersionWithTwoCategories() {
+        // given
+        Category categoryGeneral = categoryRepository.save(Category.builder().designationDe("General").description("description").build());
+        Category categorySpecific = categoryRepository.save(Category.builder().designationDe("Specific").description("description").build());
+
+        ServicePointVersion servicePoint = ServicePointVersion.builder()
+                .number(1)
+                .checkDigit(1)
+                .numberShort(1)
+                .uicCountry(switzerland)
+                .designationLong("long designation")
+                .designationOfficial("official designation")
+                .abbreviation("BE")
+                .statusDidok3(1)
+                .businessOrganisation("somesboid")
+                .hasGeolocation(true)
+                .status(Status.VALIDATED)
+                .validFrom(LocalDate.of(2020,1,1))
+                .validTo(LocalDate.of(2020,12,31))
+                .categories(new HashSet<>(Set.of(categoryGeneral, categorySpecific)))
+                .build();
+
+        // when
+        ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
+
+        // then
+        assertThat(savedVersion.getId()).isNotNull();
+        assertThat(savedVersion.getServicePointGeolocation()).isNull();
+        assertThat(savedVersion.getCategories()).hasSize(2);
+
+        // category assertions
+        savedVersion.getCategories().remove(savedVersion.getCategories().iterator().next());
+
+        assertThat(servicePointVersionRepository.findById(savedVersion.getId()).orElseThrow().getCategories()).hasSize(1);
+        assertThat(categoryRepository.count()).isEqualTo(2);
     }
 }
