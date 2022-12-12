@@ -344,6 +344,21 @@
         "DELETE_SUCCESS": "Linea parziale cancellata con successo.",
         "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea parziale."
       }
+    },
+    "LINE_VERSION_SNAPSHOT": {
+      "LINE_VERSION_NOT_EXISTS_WARNING_TOOLTIP": "La versione della linea non esiste più: è stata cancellata oppure unita ad altre versioni.",
+      "DETAIL_WORKFLOW_INFORMATION": "Informazioni sulle audizioni",
+      "DETAIL_LINE_SNAPSHOT": "Dettagli storici della linea",
+      "NAVIGATE_TO_VERSION": "Vai alla visualizzazione dei dettagli della linea",
+      "NAVIGATE_TO_SNAPHOT": "Vai alla visualizzazione del dettaglio della linea storicizzata",
+      "TAB_HEADER": "Audizioni delle linee",
+      "TABLE_HEADER": "Audizioni delle linee",
+      "TABLE": {
+        "NUMBER": "Numero di linea",
+        "DESCRIPTION": "Denominazione linea",
+        "STATUS": "Stato dell'audizione",
+        "SLNID": "SLNID"
+      }
     }
   },
   "BODI": {
@@ -470,11 +485,12 @@
       "FUNCTION": "Funzione",
       "MAIL": "Indirizzo E-Mail"
     },
+    "STATUS_DETAIL": "Stato dell'audizione",
     "STATUS": {
       "ADDED": "Inizializzato",
       "STARTED": "Avviato",
       "REVISION": "In Revisione",
-      "HEARING": "In audizionr",
+      "HEARING": "In audizione",
       "APPROVED": "Approvato",
       "REJECTED": "Respinto"
     },

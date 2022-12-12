@@ -11,8 +11,8 @@ import { Subject } from 'rxjs';
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent implements OnDestroy {
-  private readonly ngUnsubscribe = new Subject<void>();
   activePageIndex = 0;
+  private readonly ngUnsubscribe = new Subject<void>();
 
   constructor(private readonly router: Router) {
     this.router.events

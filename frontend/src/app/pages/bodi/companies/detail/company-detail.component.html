@@ -15,7 +15,7 @@
         <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.UIC_CODE' | translate }} </mat-label>
       </div>
       <mat-form-field>
-        <input matInput value="{{ company.uicCode }}" data-cy="uicCode" disabled />
+        <input data-cy="uicCode" disabled matInput value="{{ company.uicCode }}" />
       </mat-form-field>
     </div>
 
@@ -24,7 +24,7 @@
         <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.COUNTRY_CODE' | translate }} </mat-label>
       </div>
       <mat-form-field>
-        <input matInput [value]="company.countryCodeIso" data-cy="countryCodeIso" disabled />
+        <input [value]="company.countryCodeIso" data-cy="countryCodeIso" disabled matInput />
       </mat-form-field>
     </div>
   </div>
@@ -35,7 +35,7 @@
         <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.SHORT_NAME' | translate }} </mat-label>
       </div>
       <mat-form-field>
-        <input matInput [value]="company.shortName" data-cy="shortName" disabled />
+        <input [value]="company.shortName" data-cy="shortName" disabled matInput />
       </mat-form-field>
     </div>
   </div>
@@ -46,7 +46,7 @@
         <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.NAME' | translate }} </mat-label>
       </div>
       <mat-form-field>
-        <input matInput [value]="company.name" data-cy="name" disabled />
+        <input [value]="company.name" data-cy="name" disabled matInput />
       </mat-form-field>
     </div>
   </div>
@@ -57,24 +57,14 @@
         <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.URL' | translate }} </mat-label>
       </div>
       <mat-form-field>
-        <input matInput [value]="company.url" data-cy="url" disabled />
+        <input [value]="company.url" data-cy="url" disabled matInput />
         <a
-          matSuffix
-          target="_blank"
           [attr.href]="prependHttp(company.url)"
           [ngClass]="{ isDisabled: !company.url }"
+          matSuffix
+          target="_blank"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="18"
-            viewBox="0 2 22 22"
-            width="18"
-            fill="#000000"
-          >
-            <path
-              d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
-            />
-          </svg>
+          <link-icon></link-icon>
         </a>
       </mat-form-field>
     </div>
@@ -82,10 +72,10 @@
 
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
     <atlas-button
-      buttonType="footerNonEdit"
       [mat-dialog-close]="true"
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
+      buttonType="footerNonEdit"
     >
     </atlas-button>
   </div>

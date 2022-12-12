@@ -9,6 +9,9 @@ import { SublineDetailResolver } from './sublines/detail/subline-detail.resolver
 import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
 import { LinesComponent } from './lines/lines.component';
 import { SublinesComponent } from './sublines/sublines.component';
+import { LidiWorkflowOverviewComponent } from './workflow/overview/lidi-workflow-overview.component';
+import { LineVersionSnapshotResolver } from './workflow/detail/line-version-snapshot.resolver';
+import { LineVersionSnapshotDetailComponent } from './workflow/detail/line-version-snapshot-detail.component';
 
 const routes: Routes = [
   {
@@ -38,6 +41,21 @@ const routes: Routes = [
         data: { component: SublineDetailComponent },
         resolve: {
           sublineDetail: SublineDetailResolver,
+        },
+        runGuardsAndResolvers: 'always',
+      },
+      {
+        path: Pages.WORKFLOWS.path,
+        component: LidiWorkflowOverviewComponent,
+      },
+      {
+        path: Pages.WORKFLOWS.path + '/:id',
+        component: RouteToDialogComponent,
+        data: {
+          component: LineVersionSnapshotDetailComponent,
+        },
+        resolve: {
+          lineVersionSnapshot: LineVersionSnapshotResolver,
         },
         runGuardsAndResolvers: 'always',
       },

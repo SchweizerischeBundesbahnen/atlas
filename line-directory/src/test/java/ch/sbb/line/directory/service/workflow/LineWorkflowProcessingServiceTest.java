@@ -10,8 +10,10 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.entity.LineVersionWorkflow;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
 import ch.sbb.line.directory.repository.LineVersionWorkflowRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +31,9 @@ public class LineWorkflowProcessingServiceTest {
   @Mock
   private LineVersionWorkflowRepository lineWorkflowRepository;
 
+  @Mock
+  private LineVersionSnapshotRepository lineVersionSnapshotRepository;
+
   @Captor
   private ArgumentCaptor<LineVersionWorkflow> lineVersionWorkflowArgumentCaptor;
 
@@ -37,7 +42,8 @@ public class LineWorkflowProcessingServiceTest {
   @BeforeEach
   public void init() {
     MockitoAnnotations.openMocks(this);
-    workflowProcessingService = new LineWorkflowProcessingService(lineVersionRepository, lineWorkflowRepository);
+    workflowProcessingService = new LineWorkflowProcessingService(lineVersionRepository, lineWorkflowRepository,
+        lineVersionSnapshotRepository);
   }
 
   @Test
@@ -56,6 +62,7 @@ public class LineWorkflowProcessingServiceTest {
 
     //then
     verify(lineVersionRepository).save(lineVersion);
+    verify(lineVersionSnapshotRepository).save(any(LineVersionSnapshot.class));
     verify(lineWorkflowRepository).save(any(LineVersionWorkflow.class));
   }
 
@@ -63,10 +70,10 @@ public class LineWorkflowProcessingServiceTest {
   public void shouldApproveLineWorkflow() {
     //given
     LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
-            .workflowId(1000L)
-            .businessObjectId(1000L)
-            .workflowStatus(APPROVED)
-            .build();
+        .workflowId(1000L)
+        .businessObjectId(1000L)
+        .workflowStatus(APPROVED)
+        .build();
     LineVersion lineVersion = LineVersion.builder().id(1000L).build();
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
 
@@ -76,8 +83,10 @@ public class LineWorkflowProcessingServiceTest {
     //then
     verify(lineVersionRepository).save(lineVersion);
     verify(lineWorkflowRepository).save(lineVersionWorkflowArgumentCaptor.capture());
+    verify(lineVersionSnapshotRepository).save(any(LineVersionSnapshot.class));
 
-    assertThat(lineVersionWorkflowArgumentCaptor.getValue().getWorkflowProcessingStatus()).isEqualTo(WorkflowProcessingStatus.EVALUATED);
+    assertThat(lineVersionWorkflowArgumentCaptor.getValue().getWorkflowProcessingStatus()).isEqualTo(
+        WorkflowProcessingStatus.EVALUATED);
   }
 
 }

@@ -344,6 +344,21 @@
         "DELETE_SUCCESS": "Le ligne partielle a été supprimée avec succès.",
         "DELETE_ERROR": "Une erreur est survenue lors de la suppression de la ligne partielle."
       }
+    },
+    "LINE_VERSION_SNAPSHOT": {
+      "LINE_VERSION_NOT_EXISTS_WARNING_TOOLTIP": "La version de la ligne n'existe plus : elle a été soit supprimée, soit fusionnée avec d'autres versions.",
+      "DETAIL_WORKFLOW_INFORMATION": "Informations sur les auditions",
+      "DETAIL_LINE_SNAPSHOT": "Détail des lignes historiques",
+      "NAVIGATE_TO_VERSION": "Accéder à la vue détaillée de la ligne",
+      "NAVIGATE_TO_SNAPHOT": "Aller à la vue détaillée de la ligne historique",
+      "TAB_HEADER": "Lignes Auditions",
+      "TABLE_HEADER": "Lignes Auditions",
+      "TABLE": {
+        "NUMBER": "Numéro de ligne",
+        "DESCRIPTION": "Désignation de la ligne",
+        "STATUS": "Statut d'audition",
+        "SLNID": "SLNID"
+      }
     }
   },
   "BODI": {
@@ -470,6 +485,7 @@
       "FUNCTION": "Fonction",
       "MAIL": "Adresse e-mail"
     },
+    "STATUS_DETAIL": "Statut d'audience",
     "STATUS": {
       "ADDED": "Saisit",
       "STARTED": "Lancé",

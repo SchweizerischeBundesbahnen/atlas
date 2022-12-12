@@ -10,13 +10,14 @@ import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.api.LineModel;
-import ch.sbb.line.directory.api.LineVersionVersionModel;
+import ch.sbb.line.directory.api.LineVersionModel;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
+import ch.sbb.line.directory.service.LineVersionSnapshotService;
 import ch.sbb.line.directory.service.export.LineVersionExportService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -43,12 +44,14 @@ public class LineControllerTest {
 
   @Mock
   private LineVersionExportService lineVersionExportService;
+  @Mock
+  private LineVersionSnapshotService lineVersionSnapshotService;
   private LineController lineController;
 
   @Captor
   private ArgumentCaptor<LineVersion> versionArgumentCaptor;
 
-  private static LineVersionVersionModel createModel() {
+  private static LineVersionModel createModel() {
     return LineTestData.lineVersionModelBuilder()
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
@@ -74,14 +77,14 @@ public class LineControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineController = new LineController(lineService, coverageService, lineVersionExportService);
+    lineController = new LineController(lineService, coverageService, lineVersionExportService, lineVersionSnapshotService);
     when(lineService.create(any())).then(i -> i.getArgument(0, LineVersion.class));
   }
 
   @Test
   public void shouldSaveNewVersion() {
     // Given
-    LineVersionVersionModel lineVersionModel = createModel();
+    LineVersionModel lineVersionModel = createModel();
 
     // When
     lineController.createLineVersion(lineVersionModel);
@@ -139,7 +142,7 @@ public class LineControllerTest {
     when(lineService.findLineVersions(any())).thenReturn(Collections.singletonList(lineVersion));
 
     // When
-    List<LineVersionVersionModel> line = lineController.getLineVersions("slnid");
+    List<LineVersionModel> line = lineController.getLineVersions("slnid");
 
     // Then
     assertThat(line).isNotNull();
@@ -166,7 +169,7 @@ public class LineControllerTest {
   void shouldUpdateVersionWithVersioning() {
     // Given
     LineVersion lineVersion = LineTestData.lineVersion();
-    LineVersionVersionModel lineVersionModel = createModel();
+    LineVersionModel lineVersionModel = createModel();
     lineVersionModel.setNumber("New name");
 
     when(lineService.findById(anyLong())).thenReturn(Optional.of(lineVersion));

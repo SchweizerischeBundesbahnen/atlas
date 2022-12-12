@@ -8,7 +8,7 @@ import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
-import ch.sbb.line.directory.model.SublineSearchRestrictions;
+import ch.sbb.line.directory.model.search.SublineSearchRestrictions;
 import ch.sbb.line.directory.repository.SublineRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.validation.SublineValidationService;
@@ -35,12 +35,14 @@ public class SublineService {
   private final SublineValidationService sublineValidationService;
   private final CoverageService coverageService;
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).LIDI)")
   public SublineVersion create(SublineVersion businessObject) {
     return save(businessObject);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
+      + ".model.user.admin.ApplicationType).LIDI)")
   public void update(SublineVersion currentVersion, SublineVersion editedVersion, List<SublineVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);
   }
@@ -81,8 +83,8 @@ public class SublineService {
 
   public void deleteById(Long id) {
     SublineVersion sublineVersion = sublineVersionRepository.findById(id)
-                                                            .orElseThrow(
-                                                                () -> new IdNotFoundException(id));
+        .orElseThrow(
+            () -> new IdNotFoundException(id));
     coverageService.deleteCoverageSubline(sublineVersion.getSlnid());
     sublineVersionRepository.deleteById(id);
   }
@@ -99,7 +101,7 @@ public class SublineService {
   public void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
     sublineVersionRepository.incrementVersion(currentVersion.getSlnid());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-                                                             .equals(editedVersion.getVersion())) {
+        .equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(SublineVersion.class.getSimpleName(), "version");
     }
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(

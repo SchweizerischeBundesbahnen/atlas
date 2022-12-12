@@ -9,7 +9,7 @@ import ch.sbb.line.directory.api.TimetableFieldNumberVersionVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.TtfnidNotFoundException;
-import ch.sbb.line.directory.model.TimetableFieldNumberSearchRestrictions;
+import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;
 import java.net.URL;

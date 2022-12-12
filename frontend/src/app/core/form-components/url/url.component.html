@@ -1,4 +1,4 @@
-<div class="d-flex flex-column col-12 pe-12" [formGroup]="formGroup">
+<div [formGroup]="formGroup" class="d-flex flex-column col-12 pe-12">
   <div class="info-icon-position">
     <mat-label class="font-bold-lg">{{ 'LIDI.ICON' | translate }} </mat-label>
     <form-info-icon infoTitle="{{ 'LIDI.ICON_INFO' | translate }}"></form-info-icon>
@@ -8,19 +8,9 @@
     {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
   </mat-label>
   <mat-form-field>
-    <input matInput formControlName="icon" data-cy="icon" />
-    <a matSuffix target="_blank" [attr.href]="formGroup.value.icon">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="18"
-        viewBox="0 2 22 22"
-        width="18"
-        fill="#000000"
-      >
-        <path
-          d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
-        />
-      </svg>
+    <input data-cy="icon" formControlName="icon" matInput />
+    <a [attr.href]="formGroup.value.icon" matSuffix target="_blank">
+      <link-icon></link-icon>
     </a>
     <mat-error fieldErrors></mat-error>
   </mat-form-field>
