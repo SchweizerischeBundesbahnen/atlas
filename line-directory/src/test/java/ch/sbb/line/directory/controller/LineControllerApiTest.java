@@ -1,13 +1,15 @@
 package ch.sbb.line.directory.controller;
 
-import static ch.sbb.line.directory.api.LineVersionVersionModel.Fields.alternativeName;
-import static ch.sbb.line.directory.api.LineVersionVersionModel.Fields.businessOrganisation;
-import static ch.sbb.line.directory.api.LineVersionVersionModel.Fields.combinationName;
-import static ch.sbb.line.directory.api.LineVersionVersionModel.Fields.lineType;
-import static ch.sbb.line.directory.api.LineVersionVersionModel.Fields.longName;
-import static ch.sbb.line.directory.api.LineVersionVersionModel.Fields.paymentType;
-import static ch.sbb.line.directory.api.LineVersionVersionModel.Fields.slnid;
-import static ch.sbb.line.directory.api.LineVersionVersionModel.Fields.swissLineNumber;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.alternativeName;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.businessOrganisation;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.combinationName;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.lineType;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.longName;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.paymentType;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.slnid;
+import static ch.sbb.line.directory.api.LineVersionModel.Fields.swissLineNumber;
+import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
+import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
 import static ch.sbb.line.directory.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -16,25 +18,31 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.api.LineVersionVersionModel;
-import ch.sbb.line.directory.api.LineVersionVersionModel.Fields;
+import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.line.directory.api.LineVersionModel.Fields;
+import ch.sbb.line.directory.api.LineVersionSnapshotModel;
 import ch.sbb.line.directory.api.SublineVersionVersionModel;
+import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.enumaration.CoverageType;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.export.LineVersionExportService;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -63,17 +71,21 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Autowired
   private LineVersionExportService lineVersionExportService;
 
+  @Autowired
+  private LineVersionSnapshotRepository lineVersionSnapshotService;
+
   @AfterEach
   public void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
     coverageRepository.deleteAll();
+    lineVersionSnapshotService.deleteAll();
   }
 
   @Test
   void shouldGetLineOverview() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
     lineController.createLineVersion(lineVersionModel);
 
     //when
@@ -89,8 +101,8 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldExportFullLineVersionsCsv() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
-    LineVersionVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
+    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .description("desc2")
@@ -107,8 +119,8 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldExportActualLineVersionsCsv() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
-    LineVersionVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
+    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
         .validFrom(LocalDate.now()
             .withMonth(1)
             .withDayOfMonth(1))
@@ -129,8 +141,8 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldExportFutureTimetableLineVersionsCsv() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
-    LineVersionVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
+    LineVersionModel lineVersionModel1 = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
         .validFrom(LocalDate.now()
             .withMonth(1)
             .withDayOfMonth(1))
@@ -151,7 +163,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldUpdateLineVersion() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -163,7 +175,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2")
             .build();
-    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     //when
     lineVersionModel.setBusinessOrganisation("PostAuto");
     mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString())
@@ -183,8 +195,8 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldRevokeLine() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
-    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    LineVersionModel lineVersionModel = LineTestData.lineVersionModelBuilder().build();
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     //when
     mvc.perform(post("/v1/lines/" + lineVersionSaved.getSlnid() + "/revoke")
         ).andExpect(status().isOk())
@@ -194,7 +206,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldTrimAllWhiteSpacesInLineVersion() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .businessOrganisation(" sbb")
             .alternativeName("alternative ")
@@ -202,7 +214,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .longName("  long name  ")
             .swissLineNumber("  b0.IC2       ")
             .build();
-    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     //when
     mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString())
             .contentType(contentType)
@@ -218,7 +230,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldCreateLineVersion() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -242,7 +254,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldGetSublineCoverage() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -254,7 +266,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC5")
             .build();
-    LineVersionVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
+    LineVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
 
     //when
     mvc.perform(get("/v1/lines/line-coverage/" + lineVersion.getSlnid())
@@ -271,7 +283,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldGetCoveredLines() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -283,7 +295,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC5")
             .build();
-    LineVersionVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
+    LineVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
 
     //when
     mvc.perform(get("/v1/lines/covered")
@@ -300,7 +312,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldGetCoveredLineVersions() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -312,7 +324,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC5")
             .build();
-    LineVersionVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
+    LineVersionModel lineVersion = lineController.createLineVersion(lineVersionModel);
 
     //when
     mvc.perform(get("/v1/lines/versions/covered")
@@ -333,7 +345,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldReturnConflictErrorResponse() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -345,7 +357,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .paymentType(PaymentType.LOCAL)
             .swissLineNumber("b0.IC2-libne")
             .build();
-    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
 
     //when
     lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 2));
@@ -375,7 +387,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -416,7 +428,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldReturnValidationNoChangesErrorResponse() throws Exception {
     //given
-    LineVersionVersionModel firstLineVersionModel =
+    LineVersionModel firstLineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -429,7 +441,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .swissLineNumber("b0.IC2-libne")
             .build();
     firstLineVersionModel = lineController.createLineVersion(firstLineVersionModel);
-    LineVersionVersionModel secondLineVersionModel =
+    LineVersionModel secondLineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2001, 12, 31))
             .validFrom(LocalDate.of(2001, 1, 1))
@@ -461,7 +473,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldReturnNotFoundErrorResponse() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -494,7 +506,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldReturnLineDeleteConflictErrorResponse() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -507,7 +519,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .swissLineNumber("b0.IC2-libne")
             .build();
 
-    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     SublineVersionVersionModel sublineVersionModel =
         SublineVersionVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
@@ -564,7 +576,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Test
   void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
+    LineVersionModel lineVersionModel =
         LineTestData.lineVersionModelBuilder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
@@ -589,28 +601,85 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   }
 
   @Test
+  void shouldGetLineVersionSnaphots() throws Exception {
+    //given
+    LineVersionSnapshot lineVersionSnapshot = LineVersionSnapshot.builder()
+        .status(Status.VALIDATED)
+        .lineType(LineType.ORDERLY)
+        .workflowStatus(WorkflowStatus.STARTED)
+        .paymentType(PaymentType.INTERNATIONAL)
+        .number("number")
+        .alternativeName("alternativeName")
+        .combinationName("combinationName")
+        .longName("longName")
+        .colorFontRgb(fromHex("#FFFFFF"))
+        .colorBackRgb(fromHex("#FFFFFF"))
+        .colorFontCmyk(fromCmykString("0,0,0,0"))
+        .colorBackCmyk(fromCmykString("0,0,0,0"))
+        .description("description")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .creationDate(LocalDateTime.now())
+        .editionDate(LocalDateTime.now())
+        .editor("Marek")
+        .creator("Hamsik")
+        .businessOrganisation("businessOrganisation")
+        .comment("comment")
+        .workflowId(123L)
+        .version(1)
+        .parentObjectId(123L)
+        .description("b0.IC2")
+        .swissLineNumber("swissLineNumber")
+        .slnid("b0.IC2")
+        .build();
+
+    lineVersionSnapshotService.save(lineVersionSnapshot);
+    //when
+    mvc.perform(get("/v1/lines/workflows")
+            .queryParam("page", "0")
+            .queryParam("size", "5")
+            .queryParam("sort", "swissLineNumber,asc")
+            .contentType(contentType)
+        ).andExpect(status().isOk())
+        .andDo(print())
+        .andExpect(jsonPath("$.totalCount").value(1))
+        .andExpect(jsonPath("$.objects", hasSize(1)))
+        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.alternativeName, is("alternativeName")))
+        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.combinationName, is("combinationName")))
+        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.longName, is("longName")))
+        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.lineType, is(LineType.ORDERLY.toString())))
+        .andExpect(
+            jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.paymentType, is(PaymentType.INTERNATIONAL.toString())))
+        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.description, is("b0.IC2")))
+        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.workflowId, is(123)))
+        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.parentObjectId, is(123)))
+        .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.etagVersion, is(1)));
+
+  }
+
+  @Test
   void shouldSkipWorkflowOnLineVersion() throws Exception {
     //given
-    LineVersionVersionModel lineVersionModel =
-            LineTestData.lineVersionModelBuilder()
-                    .validTo(LocalDate.of(2000, 12, 31))
-                    .validFrom(LocalDate.of(2000, 1, 1))
-                    .businessOrganisation("sbb")
-                    .alternativeName("alternative")
-                    .combinationName("combination")
-                    .longName("long name")
-                    .lineType(LineType.TEMPORARY)
-                    .paymentType(PaymentType.LOCAL)
-                    .swissLineNumber("b0.IC2")
-                    .build();
-    LineVersionVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+    LineVersionModel lineVersionModel =
+        LineTestData.lineVersionModelBuilder()
+            .validTo(LocalDate.of(2000, 12, 31))
+            .validFrom(LocalDate.of(2000, 1, 1))
+            .businessOrganisation("sbb")
+            .alternativeName("alternative")
+            .combinationName("combination")
+            .longName("long name")
+            .lineType(LineType.TEMPORARY)
+            .paymentType(PaymentType.LOCAL)
+            .swissLineNumber("b0.IC2")
+            .build();
+    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
 
     //when
     mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString() + "/skip-workflow")
     ).andExpect(status().isOk());
 
     //then
-    List<LineVersionVersionModel> lineVersions = lineController.getLineVersions(lineVersionSaved.getSlnid());
+    List<LineVersionModel> lineVersions = lineController.getLineVersions(lineVersionSaved.getSlnid());
     assertThat(lineVersions).hasSize(1);
     assertThat(lineVersions.get(0).getStatus()).isEqualTo(Status.VALIDATED);
   }

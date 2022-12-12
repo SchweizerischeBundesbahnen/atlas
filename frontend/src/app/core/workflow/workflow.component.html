@@ -34,9 +34,9 @@
         personLabel="WORKFLOW.START.KEY_DATA"
       ></app-workflow-form>
       <app-workflow-check-form
+        (workflowEvent)="workflowChecked()"
         *ngIf="lineRecord.status === 'IN_REVIEW'"
         [workflowId]="workflowId"
-        (workflowEvent)="workflowChecked()"
       ></app-workflow-check-form>
     </mat-expansion-panel>
   </div>

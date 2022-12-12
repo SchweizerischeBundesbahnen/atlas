@@ -11,7 +11,7 @@ import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
-import ch.sbb.line.directory.model.SublineSearchRestrictions;
+import ch.sbb.line.directory.model.search.SublineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
@@ -43,10 +43,8 @@ public class SublineController implements SublineApiV1 {
     log.info("Load Versions using pageable={}", pageable);
     Page<Subline> sublines = sublineService.findAll(SublineSearchRestrictions.builder()
         .pageable(pageable)
-        .searchCriterias(
-            searchCriteria)
-        .statusRestrictions(
-            statusRestrictions)
+        .searchCriterias(searchCriteria)
+        .statusRestrictions(statusRestrictions)
         .validOn(validOn)
         .typeRestrictions(
             typeRestrictions)

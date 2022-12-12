@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.model;
+package ch.sbb.line.directory.model.search;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
@@ -37,14 +37,14 @@ public class SublineSearchRestrictions extends
   @Override
   protected SpecificationBuilder<Subline> specificationBuilder() {
     return SpecificationBuilder.<Subline>builder()
-                               .stringAttributes(
-                                   List.of(Subline.Fields.swissSublineNumber,
-                                       Subline.Fields.description,
-                                       Subline.Fields.swissLineNumber,
-                                       Subline.Fields.slnid,
-                                       Subline.Fields.number))
-                               .validFromAttribute(Subline_.validFrom)
-                               .validToAttribute(Subline_.validTo)
-                               .build();
+        .stringAttributes(
+            List.of(Subline.Fields.swissSublineNumber,
+                Subline.Fields.description,
+                Subline.Fields.swissLineNumber,
+                Subline.Fields.slnid,
+                Subline.Fields.number))
+        .validFromAttribute(Subline_.validFrom)
+        .validToAttribute(Subline_.validTo)
+        .build();
   }
 }

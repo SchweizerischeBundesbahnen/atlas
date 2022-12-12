@@ -49,6 +49,7 @@ describe('LinesComponent', () => {
   });
 
   it('should create', () => {
+    expect(component).toBeTruthy();
     expect(linesService.getLines).toHaveBeenCalled();
 
     expect(component.lineVersions.length).toBe(1);
