@@ -33,7 +33,6 @@ public class MailService {
       log.info(format("Mail sent: %s ", mailNotification));
     } catch (MailException e) {
       log.error("Mail {} not sent. {}", mailNotification, e.getLocalizedMessage());
-      throw new MailSendException(e.getLocalizedMessage());
     }
   }
 
