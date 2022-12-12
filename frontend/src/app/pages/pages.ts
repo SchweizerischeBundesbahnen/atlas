@@ -49,6 +49,13 @@ export class Pages {
     description: '',
   };
 
+  public static WORKFLOWS: Page = {
+    title: 'PAGES.LIDI_WORKFLOW.TITLE',
+    path: 'workflows',
+    pathText: '',
+    description: '',
+  };
+
   public static BODI: Page = {
     title: 'PAGES.BODI.TITLE',
     titleMenu: 'PAGES.BODI.TITLE_MENU',

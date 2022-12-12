@@ -1,10 +1,8 @@
 import { Status } from '../../../api';
+import { BaseTableSearch } from './base-table-search';
 
-export interface TableSearch {
-  searchCriteria?: string[];
-  validOn?: Date;
+export interface TableSearch extends BaseTableSearch {
   statusChoices?: statusChoice;
-  [key: string]: any;
 }
 
 export type statusChoice = Status[];

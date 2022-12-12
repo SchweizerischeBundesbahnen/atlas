@@ -1,17 +1,17 @@
-import { Directive, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Record } from './record';
-import { DialogService } from '../dialog/dialog.service';
-import { EMPTY, Observable, of, Subject } from 'rxjs';
+import {Directive, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {Record} from './record';
+import {DialogService} from '../dialog/dialog.service';
+import {EMPTY, Observable, of, Subject} from 'rxjs';
 import moment from 'moment/moment';
-import { Page } from '../../model/page';
-import { NotificationService } from '../../notification/notification.service';
-import { DateService } from '../../date/date.service';
-import { ApplicationRole, ApplicationType, Status } from '../../../api';
-import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from '../../auth/auth.service';
-import { ValidationService } from '../../validation/validation.service';
-import { ActivatedRoute } from '@angular/router';
+import {Page} from '../../model/page';
+import {NotificationService} from '../../notification/notification.service';
+import {DateService} from '../../date/date.service';
+import {ApplicationRole, ApplicationType, Status} from '../../../api';
+import {MatDialogRef} from '@angular/material/dialog';
+import {AuthService} from '../../auth/auth.service';
+import {ValidationService} from '../../validation/validation.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record> implements OnInit {
@@ -29,7 +29,16 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     protected notificationService: NotificationService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute
-  ) {}
+  ) {
+  }
+
+  get versionNumberOfCurrentRecord(): number {
+    return this.record.versionNumber!;
+  }
+
+  get statusOfCurrentRecord(): Status {
+    return this.record.status!;
+  }
 
   ngOnInit(): void {
     this.init();
@@ -94,18 +103,6 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     this.selectedRecordChange.next(record);
   }
 
-  private isVersionSwitched() {
-    return this.switchedIndex !== undefined && this.switchedIndex >= 0;
-  }
-
-  get versionNumberOfCurrentRecord(): number {
-    return this.record.versionNumber!;
-  }
-
-  get statusOfCurrentRecord(): Status {
-    return this.record.status!;
-  }
-
   getId(): number {
     return this.record.id!;
   }
@@ -144,19 +141,6 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
       this.form.enable();
       this.disableUneditableFormFields();
     }
-  }
-
-  private showConfirmationDialog() {
-    this.confirmLeave().subscribe((confirmed) => {
-      if (confirmed) {
-        if (this.isNewRecord()) {
-          this.backToOverview();
-        } else {
-          this.form.disable();
-          this.ngOnInit();
-        }
-      }
-    });
   }
 
   save() {
@@ -237,36 +221,6 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     return records[0];
   }
 
-  private findRecordByTodayDate(records: Array<TYPE>, now: moment.Moment) {
-    return records.filter((record) => {
-      const currentValidFrom = moment(record.validFrom);
-      const currentValidTo = moment(record.validTo);
-      if (currentValidFrom.isSame(currentValidTo, 'day') && now.isSame(currentValidFrom, 'day')) {
-        return true;
-      }
-      return now.isBetween(currentValidFrom, currentValidTo);
-    });
-  }
-
-  private findRecordBetweenGap(records: Array<TYPE>, now: moment.Moment) {
-    const startRecordsDateRange = records[0].validFrom;
-    const endRecordsDateRange = records[records.length - 1].validTo;
-    if (now.isBetween(startRecordsDateRange, endRecordsDateRange)) {
-      for (let i = 1; i < records.length; i++) {
-        const currentValidTo = moment(records[i - 1].validTo);
-        const nextValidFrom = moment(records[i].validFrom);
-        if (now.isBetween(currentValidTo, nextValidFrom)) {
-          return records[i];
-        }
-      }
-    }
-    return null;
-  }
-
-  private sortRecords() {
-    this.records.sort((x, y) => +new Date(x.validFrom!) - +new Date(y.validFrom!));
-  }
-
   abstract getDetailHeading(record: TYPE): string;
 
   abstract getDetailSubheading(record: TYPE): string;
@@ -303,6 +257,17 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     this.dialogService.closeConfirmDialog();
   }
 
+  getBoSboidRestriction() {
+    if (this.isExistingRecord() || this.authService.isAdmin) {
+      return [];
+    }
+    const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
+    if (permission.role === ApplicationRole.Writer) {
+      return permission.sboids;
+    }
+    return [];
+  }
+
   protected handleError = () => {
     this.form.enable();
     return EMPTY;
@@ -310,6 +275,53 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
 
   protected getFormControlsToDisable(): string[] {
     return [];
+  }
+
+  private isVersionSwitched() {
+    return this.switchedIndex !== undefined && this.switchedIndex >= 0;
+  }
+
+  private showConfirmationDialog() {
+    this.confirmLeave().subscribe((confirmed) => {
+      if (confirmed) {
+        if (this.isNewRecord()) {
+          this.backToOverview();
+        } else {
+          this.form.disable();
+          this.ngOnInit();
+        }
+      }
+    });
+  }
+
+  private findRecordByTodayDate(records: Array<TYPE>, now: moment.Moment) {
+    return records.filter((record) => {
+      const currentValidFrom = moment(record.validFrom);
+      const currentValidTo = moment(record.validTo);
+      if (currentValidFrom.isSame(currentValidTo, 'day') && now.isSame(currentValidFrom, 'day')) {
+        return true;
+      }
+      return now.isBetween(currentValidFrom, currentValidTo);
+    });
+  }
+
+  private findRecordBetweenGap(records: Array<TYPE>, now: moment.Moment) {
+    const startRecordsDateRange = records[0].validFrom;
+    const endRecordsDateRange = records[records.length - 1].validTo;
+    if (now.isBetween(startRecordsDateRange, endRecordsDateRange)) {
+      for (let i = 1; i < records.length; i++) {
+        const currentValidTo = moment(records[i - 1].validTo);
+        const nextValidFrom = moment(records[i].validFrom);
+        if (now.isBetween(currentValidTo, nextValidFrom)) {
+          return records[i];
+        }
+      }
+    }
+    return null;
+  }
+
+  private sortRecords() {
+    this.records.sort((x, y) => +new Date(x.validFrom!) - +new Date(y.validFrom!));
   }
 
   private disableUneditableFormFields(): void {
@@ -342,16 +354,5 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
       });
     }
     return of(true);
-  }
-
-  getBoSboidRestriction() {
-    if (this.isExistingRecord() || this.authService.isAdmin) {
-      return [];
-    }
-    const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
-    if (permission.role === ApplicationRole.Writer) {
-      return permission.sboids;
-    }
-    return [];
   }
 }
