@@ -356,7 +356,8 @@
       "TABLE": {
         "NUMBER": "Numero di linea",
         "DESCRIPTION": "Denominazione linea",
-        "STATUS": "Stato dell'audizione"
+        "STATUS": "Stato dell'audizione",
+        "SLNID": "SLNID"
       }
     }
   },

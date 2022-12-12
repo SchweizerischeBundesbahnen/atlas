@@ -24,6 +24,7 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   lineSnapshotsTableColumns: TableColumn<LineVersionSnapshot>[] = [
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.DESCRIPTION', value: 'description' },
+    { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.SLNID', value: 'slnid' },
     {
       headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.STATUS',
       value: 'workflowStatus',
