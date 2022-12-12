@@ -7,7 +7,7 @@ import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
-import ch.sbb.atlas.workflow.model.AtlasVersionSnapshoatble;
+import ch.sbb.atlas.workflow.model.AtlasVersionSnapshotable;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Slf4j
 @RequiredArgsConstructor
 public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y extends BaseWorkflowEntity,
-    Z extends AtlasVersionSnapshoatble> {
+    Z extends AtlasVersionSnapshotable> {
 
   protected final JpaRepository<T, Long> objectVersionRepository;
   protected final ObjectWorkflowRepository<Y> objectWorkflowRepository;
