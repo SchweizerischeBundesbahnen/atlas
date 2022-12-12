@@ -59,38 +59,9 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.lineVersionSnapshot = this.readRecord();
-    this.lineVersionSnapshotForm = this.populateLineVersionSnapshotFormGroup(
-      this.lineVersionSnapshot
-    );
-    this.lineVersionSnapshotForm.disable();
-    this.workflowService
-      .getWorkflow(this.lineVersionSnapshot.workflowId)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((workflow) => {
-        this.workflow = workflow;
-        this.pupulateWorkflowStartedFormGroup();
-        if (
-          this.lineVersionSnapshot.workflowStatus === 'APPROVED' ||
-          this.lineVersionSnapshot.workflowStatus === 'REJECTED'
-        ) {
-          this.showWorkflowCheckForm = true;
-          this.populeteWorkflowCheckFormGroup();
-        }
-      });
-
-    this.lineService.getLineVersions(this.lineVersionSnapshot!.slnid!).subscribe({
-      next: (lineVersions) => {
-        const lineVersionsFiltered: LineVersion[] = lineVersions.filter(
-          (version) => version.id === this.lineVersionSnapshot.parentObjectId
-        );
-        if (lineVersionsFiltered.length === 0) {
-          this.versionAlreadyExists = false;
-        }
-      },
-      error: () => {
-        this.versionAlreadyExists = false;
-      },
-    });
+    this.initLineVersionSnapshotForm();
+    this.initWorkflowForms();
+    this.checkLineVersionSNapshottedAlreadyExists();
   }
 
   backToOverview(): void {
@@ -107,7 +78,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
       if (this.versionAlreadyExists) {
         this.navigateToVersionById(urlCommands);
       } else {
-        this.novigateLineBySlnid(urlCommands);
+        this.novigateToLineBySlnid(urlCommands);
       }
     }
   }
@@ -145,7 +116,50 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  private novigateLineBySlnid(urlCommands: string[]) {
+  private checkLineVersionSNapshottedAlreadyExists() {
+    this.lineService
+      .getLineVersions(this.lineVersionSnapshot!.slnid!)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: (lineVersions) => {
+          const lineVersionsFiltered: LineVersion[] = lineVersions.filter(
+            (version) => version.id === this.lineVersionSnapshot.parentObjectId
+          );
+          if (lineVersionsFiltered.length === 0) {
+            this.versionAlreadyExists = false;
+          }
+        },
+        error: () => {
+          this.versionAlreadyExists = false;
+        },
+      });
+  }
+
+  private initWorkflowForms() {
+    this.workflowService
+      .getWorkflow(this.lineVersionSnapshot.workflowId)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((workflow) => {
+        this.workflow = workflow;
+        this.pupulateWorkflowStartedFormGroup();
+        if (
+          this.lineVersionSnapshot.workflowStatus === 'APPROVED' ||
+          this.lineVersionSnapshot.workflowStatus === 'REJECTED'
+        ) {
+          this.showWorkflowCheckForm = true;
+          this.populeteWorkflowCheckFormGroup();
+        }
+      });
+  }
+
+  private initLineVersionSnapshotForm() {
+    this.lineVersionSnapshotForm = this.populateLineVersionSnapshotFormGroup(
+      this.lineVersionSnapshot
+    );
+    this.lineVersionSnapshotForm.disable();
+  }
+
+  private novigateToLineBySlnid(urlCommands: string[]) {
     this.router.navigate(urlCommands).then();
   }
 
