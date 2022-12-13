@@ -31,7 +31,6 @@ public class WorkflowStartModel {
   @Schema(description = "Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow", example = "b1.L1")
   @Pattern(regexp = AtlasCharacterSetsRegex.SID4PT)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-  @NotBlank
   private String swissId;
 
   @Schema(description = "Workflow Type", example = "LINE")
@@ -53,6 +52,7 @@ public class WorkflowStartModel {
 
   @Schema(description = "Client")
   @Valid
+  @NotNull
   private ClientPersonModel client;
 
   public static Workflow toEntity(WorkflowStartModel model) {
