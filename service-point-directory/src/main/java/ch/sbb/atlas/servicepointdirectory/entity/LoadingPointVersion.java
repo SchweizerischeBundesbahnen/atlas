@@ -28,9 +28,9 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "service_point_version")
+//@Entity(name = "service_point_version")
 @AtlasVersionable
-public class ServicePointVersion extends BaseVersion implements Versionable,
+public class LoadingPointVersion extends BaseVersion implements Versionable,
         BusinessOrganisationAssociated {
 
     private static final String VERSION_SEQ = "service_point_version_seq";
@@ -71,10 +71,6 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
     @Size(max = AtlasFieldLengths.LENGTH_6)
     @AtlasVersionableProperty
     private String abbreviation;
-
-    @Size(max = AtlasFieldLengths.LENGTH_10)
-    @AtlasVersionableProperty
-    private String sortCodeOfDestinationStation;
 
     @NotNull
     @AtlasVersionableProperty
