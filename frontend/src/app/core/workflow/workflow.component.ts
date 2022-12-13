@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {LineRecord} from './model/line-record';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { LineRecord } from './model/line-record';
 import {
   LinesService,
   LineVersionWorkflow,
@@ -9,19 +9,20 @@ import {
   WorkflowService,
   WorkflowStart,
 } from '../../api';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {WorkflowFormGroup} from './workflow-form-group';
-import {AtlasFieldLengthValidator} from '../validation/field-lengths/atlas-field-length-validator';
-import {AtlasCharsetsValidator} from '../validation/charsets/atlas-charsets-validator';
-import {NotificationService} from '../notification/notification.service';
-import {DialogService} from '../components/dialog/dialog.service';
-import {TranslateService} from '@ngx-translate/core';
-import {WorkflowEvent} from './model/workflow-event';
-import {Observable, Subject, Subscription} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {Record} from '../components/base-detail/record';
-import {ValidationService} from '../validation/validation.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { WorkflowFormGroup } from './workflow-form-group';
+import { AtlasFieldLengthValidator } from '../validation/field-lengths/atlas-field-length-validator';
+import { AtlasCharsetsValidator } from '../validation/charsets/atlas-charsets-validator';
+import { NotificationService } from '../notification/notification.service';
+import { DialogService } from '../components/dialog/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
+import { WorkflowEvent } from './model/workflow-event';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Record } from '../components/base-detail/record';
+import { ValidationService } from '../validation/validation.service';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
+import { WhitespaceValidator } from '../validation/whitespace/whitespace-validator';
 
 @Component({
   selector: 'app-workflow [lineRecord]',
@@ -44,27 +45,32 @@ export class WorkflowComponent implements OnInit, OnDestroy {
       Validators.required,
       AtlasFieldLengthValidator.comments,
       AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
     firstName: new FormControl('', [
       Validators.required,
       AtlasFieldLengthValidator.length_50,
       AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
     lastName: new FormControl('', [
       Validators.required,
       AtlasFieldLengthValidator.length_50,
       AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
     function: new FormControl('', [
       Validators.required,
       AtlasFieldLengthValidator.length_50,
       AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
     mail: new FormControl('', [
       Validators.required,
       AtlasFieldLengthValidator.length_255,
       AtlasCharsetsValidator.email,
       AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
   });
   private eventsSubscription!: Subscription;
@@ -77,8 +83,7 @@ export class WorkflowComponent implements OnInit, OnDestroy {
     private readonly dialogService: DialogService,
     private readonly translateService: TranslateService,
     private readonly lineService: LinesService
-  ) {
-  }
+  ) {}
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
