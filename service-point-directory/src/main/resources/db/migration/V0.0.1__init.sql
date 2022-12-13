@@ -31,26 +31,27 @@ ALTER TABLE uic_country
 
 CREATE TABLE service_point_version
 (
-    id                    BIGINT PRIMARY KEY,
-    number                INTEGER     NOT NULL,
-    check_digit           SMALLINT    NOT NULL,
-    number_short          INTEGER     NOT NULL,
-    uic_country_code      SMALLINT    NOT NULL,
-    designation_long      VARCHAR(50) NULL,
-    designation_official  VARCHAR(30) NOT NULL,
-    abbreviation          VARCHAR(6)  NULL,
-    status_didok3         SMALLINT    NULL,
-    business_organisation VARCHAR(50) NOT NULL,
-    has_geolocation       BOOLEAN     NULL     DEFAULT FALSE,
-    operating_point_type  VARCHAR(50),
-    status                VARCHAR(50) NOT NULL,
-    valid_from            DATE        NOT NULL,
-    valid_to              DATE        NOT NULL,
-    creation_date         TIMESTAMP   NOT NULL,
-    creator               VARCHAR(50) NOT NULL,
-    edition_date          TIMESTAMP   NOT NULL,
-    editor                VARCHAR(50) NOT NULL,
-    version               BIGINT      NOT NULL DEFAULT 0,
+    id                               BIGINT PRIMARY KEY,
+    number                           INTEGER     NOT NULL,
+    check_digit                      SMALLINT    NOT NULL,
+    number_short                     INTEGER     NOT NULL,
+    uic_country_code                 SMALLINT    NOT NULL,
+    designation_long                 VARCHAR(50) NULL,
+    designation_official             VARCHAR(30) NOT NULL,
+    abbreviation                     VARCHAR(6)  NULL,
+    status_didok3                    SMALLINT    NULL,
+    sort_code_of_destination_station VARCHAR(10) NULL,
+    business_organisation            VARCHAR(50) NOT NULL,
+    has_geolocation                  BOOLEAN     NULL     DEFAULT FALSE,
+    operating_point_type             VARCHAR(50),
+    status                           VARCHAR(50) NOT NULL,
+    valid_from                       DATE        NOT NULL,
+    valid_to                         DATE        NOT NULL,
+    creation_date                    TIMESTAMP   NOT NULL,
+    creator                          VARCHAR(50) NOT NULL,
+    edition_date                     TIMESTAMP   NOT NULL,
+    editor                           VARCHAR(50) NOT NULL,
+    version                          BIGINT      NOT NULL DEFAULT 0,
     CONSTRAINT fk_service_point_uic_country_code
         FOREIGN KEY (uic_country_code)
             REFERENCES uic_country (uic_920_14)
@@ -125,11 +126,12 @@ CREATE TABLE service_point_comment
 (
     id                   BIGINT PRIMARY KEY,
     service_point_number INTEGER       NOT NULL,
-    comment              VARCHAR(2000) NOT NULL,
+    comment              VARCHAR(1500) NOT NULL,
     creation_date        TIMESTAMP     NOT NULL,
     creator              VARCHAR(50)   NOT NULL,
     edition_date         TIMESTAMP     NOT NULL,
-    editor               VARCHAR(50)   NOT NULL
+    editor               VARCHAR(50)   NOT NULL,
+    version              BIGINT        NOT NULL DEFAULT 0
 );
 
 CREATE SEQUENCE service_point_comment_seq START WITH 1000 INCREMENT BY 1;
@@ -144,26 +146,6 @@ CREATE TABLE service_point_version_categories
     service_point_version_id BIGINT      NOT NULL,
     categories               VARCHAR(50) NOT NULL
 );
-
------------------------------------------------------------------------------------------
--- Freight Service Point BEDIENPUNKTE
------------------------------------------------------------------------------------------
-
-CREATE TABLE freight_service_point
-(
-    id                               BIGINT      NULL PRIMARY KEY,
-    service_point_version_id         BIGINT      NOT NULL,
-    sort_code_of_destination_station VARCHAR(5)  NULL,
-    creation_date                    TIMESTAMP   NOT NULL,
-    creator                          VARCHAR(50) NOT NULL,
-    edition_date                     TIMESTAMP   NOT NULL,
-    editor                           VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_freight_service_point_service_point_version_id
-        FOREIGN KEY (service_point_version_id)
-            REFERENCES service_point_version (id)
-);
-
-CREATE SEQUENCE freight_service_point_seq START WITH 1000 INCREMENT BY 1;
 
 -----------------------------------------------------------------------------------------
 -- Stop Place Type HALTESTELLENTYPEN

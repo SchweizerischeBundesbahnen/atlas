@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.CountryTestData;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.UicCountry;
@@ -25,12 +26,14 @@ public class ServicePointVersionRepositoryTest {
 
     private final ServicePointVersionRepository servicePointVersionRepository;
     private final UicCountryRepository uicCountryRepository;
+    private final ServicePointCommentRepository servicePointCommentRepository;
     private UicCountry switzerland;
 
     @Autowired
-    public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository, UicCountryRepository uicCountryRepository) {
+    public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository, UicCountryRepository uicCountryRepository, ServicePointCommentRepository servicePointCommentRepository) {
         this.servicePointVersionRepository = servicePointVersionRepository;
         this.uicCountryRepository = uicCountryRepository;
+        this.servicePointCommentRepository = servicePointCommentRepository;
     }
 
     @BeforeEach
@@ -42,6 +45,7 @@ public class ServicePointVersionRepositoryTest {
     void tearDown() {
         servicePointVersionRepository.deleteAll();
         uicCountryRepository.deleteAll();
+        servicePointCommentRepository.deleteAll();
     }
 
     @Test
@@ -184,5 +188,38 @@ public class ServicePointVersionRepositoryTest {
         assertThat(savedVersion.isOperatingPoint()).isTrue();
         assertThat(savedVersion.getOperatingPointType().hasTimetable()).isTrue();
         assertThat(savedVersion.getOperatingPointType().getDesignationDe()).isEqualTo("Haltestelle");
+    }
+
+    @Test
+    void shouldSaveServicePointVersionWithComment() {
+        // given
+        ServicePointVersion servicePoint = ServicePointVersion.builder()
+                .number(1)
+                .checkDigit(1)
+                .numberShort(1)
+                .uicCountry(switzerland)
+                .designationLong("long designation")
+                .designationOfficial("official designation")
+                .abbreviation("BE")
+                .statusDidok3(1)
+                .businessOrganisation("somesboid")
+                .hasGeolocation(true)
+                .status(Status.VALIDATED)
+                .validFrom(LocalDate.of(2020,1,1))
+                .validTo(LocalDate.of(2020,12,31))
+                .build();
+
+        // when
+        ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
+
+        ServicePointComment savedComment = servicePointCommentRepository.save(ServicePointComment.builder()
+                .servicePointNumber(savedVersion.getNumber())
+                .comment("Pupazzi di neve")
+                .build());
+
+
+        // then
+        assertThat(savedVersion.getId()).isNotNull();
+        assertThat(savedComment.getId()).isNotNull();
     }
 }
