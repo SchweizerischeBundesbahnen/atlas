@@ -6,14 +6,18 @@ import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
+import ch.sbb.atlas.servicepointdirectory.converter.MeansOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
+import ch.sbb.atlas.servicepointdirectory.enumeration.MeansOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
 import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -116,5 +120,29 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
             return new HashSet<>();
         }
         return categories;
+    }
+
+    public boolean isStopPlace() {
+        return !getMeansOfTransport().isEmpty();
+    }
+
+    @AtlasVersionableProperty
+    @ElementCollection(targetClass = MeansOfTransport.class, fetch = FetchType.EAGER)
+    @Convert(converter = MeansOfTransportConverter.class)
+    private Set<MeansOfTransport> meansOfTransport;
+
+    public Set<MeansOfTransport> getMeansOfTransport() {
+        if (meansOfTransport == null) {
+            return new HashSet<>();
+        }
+        return meansOfTransport;
+    }
+
+    @Enumerated(EnumType.STRING)
+    private StopPlaceType stopPlaceType;
+
+    @AssertTrue(message = "StopPlaceType only allowed for StopPlaces")
+    boolean isValidStopPlace() {
+        return isStopPlace() || stopPlaceType == null;
     }
 }

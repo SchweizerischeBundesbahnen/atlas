@@ -44,6 +44,7 @@ CREATE TABLE service_point_version
     business_organisation            VARCHAR(50) NOT NULL,
     has_geolocation                  BOOLEAN     NULL     DEFAULT FALSE,
     operating_point_type             VARCHAR(50),
+    stop_place_type                  VARCHAR(50),
     status                           VARCHAR(50) NOT NULL,
     valid_from                       DATE        NOT NULL,
     valid_to                         DATE        NOT NULL,
@@ -171,51 +172,11 @@ CREATE TABLE loading_point_version
 CREATE SEQUENCE loading_point_version_seq START WITH 1000 INCREMENT BY 1;
 
 -----------------------------------------------------------------------------------------
--- Stop Place Type HALTESTELLENTYPEN
+-- Service Point - MeansOfTransport - Verkehrsmittel
 -----------------------------------------------------------------------------------------
 
-CREATE TABLE stop_place_type
+CREATE TABLE service_point_version_means_of_transport
 (
-    id                 SMALLINT    NULL PRIMARY KEY,
-    is_active          BOOLEAN     NULL DEFAULT TRUE,
-    is_visible         BOOLEAN     NULL DEFAULT TRUE,
-    designation_de     VARCHAR(30) NOT NULL,
-    designation_fr     VARCHAR(30) NULL,
-    designation_it     VARCHAR(30) NULL,
-    designation_en     VARCHAR(30) NULL,
-    abbreviation_de    VARCHAR(10) NULL,
-    abbreviation_fr    VARCHAR(10) NULL,
-    abbreviation_it    VARCHAR(10) NULL,
-    abbreviation_en    VARCHAR(10) NULL,
-    is_review_required BOOLEAN     NULL DEFAULT FALSE,
-    creation_date      TIMESTAMP   NOT NULL,
-    creator            VARCHAR(50) NOT NULL,
-    edition_date       TIMESTAMP   NOT NULL,
-    editor             VARCHAR(50) NOT NULL
-);
-
-CREATE SEQUENCE stop_place_type_seq START WITH 1 INCREMENT BY 1;
-
------------------------------------------------------------------------------------------
--- Stop Place HALTESTELLE
------------------------------------------------------------------------------------------
-
-CREATE TABLE stop_place
-(
-    id                       BIGINT      NULL PRIMARY KEY,
     service_point_version_id BIGINT      NOT NULL,
-    stop_place_type_id       SMALLINT    NULL,
-    means_of_transport       VARCHAR(50) NULL,
-    creation_date            TIMESTAMP   NOT NULL,
-    creator                  VARCHAR(50) NOT NULL,
-    edition_date             TIMESTAMP   NOT NULL,
-    editor                   VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_stop_place_service_point_version_id
-        FOREIGN KEY (service_point_version_id)
-            REFERENCES service_point_version (id),
-    CONSTRAINT fk_stop_place_type_id
-        FOREIGN KEY (stop_place_type_id)
-            REFERENCES stop_place_type (id)
+    means_of_transport       VARCHAR(50) NOT NULL
 );
-
-CREATE SEQUENCE stop_place_seq START WITH 1000 INCREMENT BY 1;

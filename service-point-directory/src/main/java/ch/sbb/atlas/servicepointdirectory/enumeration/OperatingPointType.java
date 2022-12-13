@@ -1,9 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.enumeration;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
+@Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
 public enum OperatingPointType {
