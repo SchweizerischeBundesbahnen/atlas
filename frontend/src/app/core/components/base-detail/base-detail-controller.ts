@@ -1,17 +1,17 @@
-import {Directive, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {Record} from './record';
-import {DialogService} from '../dialog/dialog.service';
-import {EMPTY, Observable, of, Subject} from 'rxjs';
+import { Directive, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Record } from './record';
+import { DialogService } from '../dialog/dialog.service';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
 import moment from 'moment/moment';
-import {Page} from '../../model/page';
-import {NotificationService} from '../../notification/notification.service';
-import {DateService} from '../../date/date.service';
-import {ApplicationRole, ApplicationType, Status} from '../../../api';
-import {MatDialogRef} from '@angular/material/dialog';
-import {AuthService} from '../../auth/auth.service';
-import {ValidationService} from '../../validation/validation.service';
-import {ActivatedRoute} from '@angular/router';
+import { Page } from '../../model/page';
+import { NotificationService } from '../../notification/notification.service';
+import { DateService } from '../../date/date.service';
+import { ApplicationRole, ApplicationType, Status } from '../../../api';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from '../../auth/auth.service';
+import { ValidationService } from '../../validation/validation.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record> implements OnInit {
@@ -29,8 +29,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     protected notificationService: NotificationService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute
-  ) {
-  }
+  ) {}
 
   get versionNumberOfCurrentRecord(): number {
     return this.record.versionNumber!;
@@ -75,15 +74,15 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
 
   evaluateSelectedRecord(records: Array<TYPE>) {
     const preferredSelectionId = Number(this.activatedRoute.snapshot.queryParams.id);
-    if (preferredSelectionId) {
+    if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
+      return records[this.switchedIndex];
+    } else if (preferredSelectionId) {
       const preferredRecord = records.filter((record) => record.id === preferredSelectionId);
       if (preferredRecord.length == 1) {
         return preferredRecord[0];
       } else {
         return this.getActualRecord(records);
       }
-    } else if (this.isVersionSwitched() && this.switchedIndex !== undefined) {
-      return records[this.switchedIndex];
     } else {
       return this.getActualRecord(records);
     }
