@@ -148,6 +148,29 @@ CREATE TABLE service_point_version_categories
 );
 
 -----------------------------------------------------------------------------------------
+-- Loading Point LADESTELLEN
+-----------------------------------------------------------------------------------------
+
+CREATE TABLE loading_point_version
+(
+    id                   BIGINT PRIMARY KEY,
+    number               BIGINT      NOT NULL,
+    designation          VARCHAR(12) NOT NULL,
+    designation_long     VARCHAR(35),
+    connection_point     BOOLEAN     NOT NULL,
+    service_point_number BIGINT      NOT NULL,
+    valid_from           DATE        NOT NULL,
+    valid_to             DATE        NOT NULL,
+    creation_date        TIMESTAMP   NOT NULL,
+    creator              VARCHAR(50) NOT NULL,
+    edition_date         TIMESTAMP   NOT NULL,
+    editor               VARCHAR(50) NOT NULL,
+    version              BIGINT      NOT NULL DEFAULT 0
+);
+
+CREATE SEQUENCE loading_point_version_seq START WITH 1000 INCREMENT BY 1;
+
+-----------------------------------------------------------------------------------------
 -- Stop Place Type HALTESTELLENTYPEN
 -----------------------------------------------------------------------------------------
 
