@@ -11,6 +11,7 @@ import { NotificationService } from '../../notification/notification.service';
 import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
 import { WorkflowEvent } from '../model/workflow-event';
+import { WhitespaceValidator } from '../../validation/whitespace/whitespace-validator';
 
 @Component({
   selector: 'app-workflow-check-form',
@@ -24,21 +25,25 @@ export class WorkflowCheckFormComponent implements OnInit {
     comment: new FormControl('', [
       AtlasFieldLengthValidator.comments,
       AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
     firstName: new FormControl('', [
       Validators.required,
       AtlasFieldLengthValidator.length_50,
       AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
     lastName: new FormControl('', [
       Validators.required,
       AtlasFieldLengthValidator.length_50,
       AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
     function: new FormControl('', [
       Validators.required,
       AtlasFieldLengthValidator.length_50,
       AtlasCharsetsValidator.iso88591,
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
     ]),
   });
   private ngUnsubscribe = new Subject<void>();
