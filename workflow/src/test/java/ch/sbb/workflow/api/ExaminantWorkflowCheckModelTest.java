@@ -70,4 +70,24 @@ class ExaminantWorkflowCheckModelTest {
     assertThat(constraintViolations).isEmpty();
   }
 
+  @Test
+  void shouldNotAcceptBavCheckWithEmptyPersonFunction() {
+    // Given
+    ExaminantWorkflowCheckModel object = ExaminantWorkflowCheckModel.builder()
+            .accepted(false)
+            .checkComment("This is bs")
+            .examinant(PersonModel.builder()
+                    .firstName("Marek")
+                    .lastName("Hamsik")
+                    .personFunction("")
+                    .build())
+            .build();
+    //when
+    Set<ConstraintViolation<ExaminantWorkflowCheckModel>> constraintViolations = validator.validate(
+            object);
+
+    //then
+    assertThat(constraintViolations).hasSize(1);
+  }
+
 }
