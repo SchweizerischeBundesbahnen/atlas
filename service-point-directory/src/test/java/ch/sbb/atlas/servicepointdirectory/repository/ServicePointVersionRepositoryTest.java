@@ -8,7 +8,9 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.UicCountry;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
+import ch.sbb.atlas.servicepointdirectory.enumeration.MeansOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,6 +77,7 @@ public class ServicePointVersionRepositoryTest {
         assertThat(savedVersion.getServicePointGeolocation()).isNull();
         assertThat(savedVersion.getCategories()).isEmpty();
         assertThat(savedVersion.isOperatingPoint()).isFalse();
+        assertThat(savedVersion.isStopPlace()).isFalse();
     }
 
     @Test
@@ -221,5 +224,36 @@ public class ServicePointVersionRepositoryTest {
         // then
         assertThat(savedVersion.getId()).isNotNull();
         assertThat(savedComment.getId()).isNotNull();
+    }
+
+    @Test
+    void shouldSaveStopPlace() {
+        // given
+        ServicePointVersion servicePoint = ServicePointVersion.builder()
+                .number(1)
+                .checkDigit(1)
+                .numberShort(1)
+                .uicCountry(switzerland)
+                .designationLong("long designation")
+                .designationOfficial("official designation")
+                .abbreviation("BE")
+                .statusDidok3(1)
+                .businessOrganisation("somesboid")
+                .hasGeolocation(true)
+                .status(Status.VALIDATED)
+                .meansOfTransport(Set.of(MeansOfTransport.COACH))
+                .stopPlaceType(StopPlaceType.ORDERLY)
+                .validFrom(LocalDate.of(2020,1,1))
+                .validTo(LocalDate.of(2020,12,31))
+                .build();
+
+        // when
+        ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
+
+        // then
+        assertThat(savedVersion.getId()).isNotNull();
+        assertThat(savedVersion.getServicePointGeolocation()).isNull();
+        assertThat(savedVersion.getCategories()).isEmpty();
+        assertThat(savedVersion.isOperatingPoint()).isFalse();
     }
 }
