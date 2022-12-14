@@ -5,6 +5,7 @@ import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
@@ -21,36 +22,51 @@ import java.time.LocalDate;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "loading_point_version")
+@Entity(name = "traffic_point_element_version")
 @AtlasVersionable
-public class LoadingPointVersion extends BaseEntity implements Versionable {
+public class TrafficPointElementVersion extends BaseEntity implements Versionable {
 
-    private static final String VERSION_SEQ = "loading_point_version_seq";
+    private static final String VERSION_SEQ = "traffic_point_element_version_seq";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
     @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
     private Long id;
 
-    @NotNull
-    @AtlasVersionableProperty
-    private Integer number;
-
-    @NotNull
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
+    @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
     @AtlasVersionableProperty
     private String designation;
 
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_30)
+    @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
     @AtlasVersionableProperty
-    private String designationLong;
+    private String designationOperational;
 
     @AtlasVersionableProperty
-    private boolean connectionPoint;
+    private Integer length;
+
+    @AtlasVersionableProperty
+    private Integer boardingAreaHeight;
+
+    @AtlasVersionableProperty
+    private Integer compassDirection;
+
+    @AtlasVersionableProperty
+    private TrafficPointElementType trafficPointElementType;
 
     @NotNull
     @AtlasVersionableProperty
     private Integer servicePointNumber;
+
+    @NotNull
+    @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+    @AtlasVersionableProperty
+    private String sloid;
+
+    @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+    @AtlasVersionableProperty
+    private String parentSloid;
+
+    // is virtuell = hasGeolocation
 
     @NotNull
     @Column(columnDefinition = "DATE")
