@@ -156,7 +156,7 @@ export class AuthService {
   }
 
   login() {
-    sessionStorage.setItem(this.REQUESTED_ROUTE_STORAGE_KEY, location.pathname);
+    sessionStorage.setItem(this.REQUESTED_ROUTE_STORAGE_KEY, location.pathname + location.search);
     // App will be reloaded after initCodeFlow
     this.oauthService.initCodeFlow();
   }
