@@ -1,62 +1,32 @@
 -----------------------------------------------------------------------------------------
--- UIC Country - UIC_LAENDER
-----------------------------------------------------------------------------------------
-
-CREATE TABLE uic_country
-(
-    id                 SMALLINT PRIMARY KEY,
-    iso_3166_1_alpha_2 VARCHAR(10)  NOT NULL, -- z.B. 'DE', aber auch 'GYSEV/ROEE'?
-    uic_920_14         SMALLINT     NOT NULL,
-    name_en            VARCHAR(255) NULL,     -- z.B. 'Bosnien und Herzegowinas, kroatisch-moslemische Föderation'
-    name_fr            VARCHAR(255) NULL,
-    name_de            VARCHAR(255) NULL,
-    name_it            VARCHAR(255) NULL,
-    creation_date      TIMESTAMP    NOT NULL,
-    creator            VARCHAR(50)  NOT NULL,
-    edition_date       TIMESTAMP    NOT NULL,
-    editor             VARCHAR(50)  NOT NULL,
-    version            BIGINT       NOT NULL DEFAULT 0
-);
-
-CREATE SEQUENCE uic_country_seq START WITH 1 INCREMENT BY 1;
-
-ALTER TABLE uic_country
-    ADD CONSTRAINT uic_country_iso_3166_unique UNIQUE (iso_3166_1_alpha_2);
-ALTER TABLE uic_country
-    ADD CONSTRAINT uic_country_uic_920_unique UNIQUE (uic_920_14);
-
------------------------------------------------------------------------------------------
 -- Service Point Version - DIENSTSTELLEN
 -----------------------------------------------------------------------------------------
 
 CREATE TABLE service_point_version
 (
     id                               BIGINT PRIMARY KEY,
-    number                           INTEGER      NOT NULL,
+    number                           INTEGER     NOT NULL,
     sloid                            VARCHAR(500),
-    check_digit                      SMALLINT     NOT NULL,
-    number_short                     INTEGER      NOT NULL,
-    uic_country_code                 SMALLINT     NOT NULL,
-    designation_long                 VARCHAR(50)  NULL,
-    designation_official             VARCHAR(30)  NOT NULL,
-    abbreviation                     VARCHAR(6)   NULL,
-    status_didok3                    SMALLINT     NULL,
-    sort_code_of_destination_station VARCHAR(10)  NULL,
-    business_organisation            VARCHAR(50)  NOT NULL,
-    has_geolocation                  BOOLEAN      NULL     DEFAULT FALSE,
+    check_digit                      SMALLINT    NOT NULL,
+    number_short                     INTEGER     NOT NULL,
+    country                          VARCHAR(50) NOT NULL,
+    designation_long                 VARCHAR(50) NULL,
+    designation_official             VARCHAR(30) NOT NULL,
+    abbreviation                     VARCHAR(6)  NULL,
+    status_didok3                    SMALLINT    NULL,
+    sort_code_of_destination_station VARCHAR(10) NULL,
+    business_organisation            VARCHAR(50) NOT NULL,
+    has_geolocation                  BOOLEAN     NULL     DEFAULT FALSE,
     operating_point_type             VARCHAR(50),
     stop_place_type                  VARCHAR(50),
-    status                           VARCHAR(50)  NOT NULL,
-    valid_from                       DATE         NOT NULL,
-    valid_to                         DATE         NOT NULL,
-    creation_date                    TIMESTAMP    NOT NULL,
-    creator                          VARCHAR(50)  NOT NULL,
-    edition_date                     TIMESTAMP    NOT NULL,
-    editor                           VARCHAR(50)  NOT NULL,
-    version                          BIGINT       NOT NULL DEFAULT 0,
-    CONSTRAINT fk_service_point_uic_country_code
-        FOREIGN KEY (uic_country_code)
-            REFERENCES uic_country (uic_920_14)
+    status                           VARCHAR(50) NOT NULL,
+    valid_from                       DATE        NOT NULL,
+    valid_to                         DATE        NOT NULL,
+    creation_date                    TIMESTAMP   NOT NULL,
+    creator                          VARCHAR(50) NOT NULL,
+    edition_date                     TIMESTAMP   NOT NULL,
+    editor                           VARCHAR(50) NOT NULL,
+    version                          BIGINT      NOT NULL DEFAULT 0
 );
 
 CREATE SEQUENCE service_point_version_seq START WITH 1000 INCREMENT BY 1;
@@ -66,7 +36,6 @@ ALTER TABLE service_point_version
 -- search api field indexes
 CREATE INDEX spv_number_idx ON service_point_version (number);
 CREATE INDEX spv_numbershort_idx ON service_point_version (number_short);
-CREATE INDEX spv_countrycode_idx ON service_point_version (uic_country_code);
 CREATE INDEX spv_designation_idx ON service_point_version (designation_long);
 CREATE INDEX spv_designationlong_idx ON service_point_version (designation_official);
 CREATE INDEX spv_abbrevation_idx ON service_point_version (abbreviation);

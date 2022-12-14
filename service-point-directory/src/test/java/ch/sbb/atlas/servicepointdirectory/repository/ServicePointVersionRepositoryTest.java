@@ -2,17 +2,11 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.CountryTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.UicCountry;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.*;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,26 +21,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ServicePointVersionRepositoryTest {
 
     private final ServicePointVersionRepository servicePointVersionRepository;
-    private final UicCountryRepository uicCountryRepository;
     private final ServicePointCommentRepository servicePointCommentRepository;
-    private UicCountry switzerland;
 
     @Autowired
-    public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository, UicCountryRepository uicCountryRepository, ServicePointCommentRepository servicePointCommentRepository) {
+    public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository, ServicePointCommentRepository servicePointCommentRepository) {
         this.servicePointVersionRepository = servicePointVersionRepository;
-        this.uicCountryRepository = uicCountryRepository;
         this.servicePointCommentRepository = servicePointCommentRepository;
-    }
-
-    @BeforeEach
-    void setUp() {
-        switzerland = uicCountryRepository.save(CountryTestData.SWITZERLAND);
     }
 
     @AfterEach
     void tearDown() {
         servicePointVersionRepository.deleteAll();
-        uicCountryRepository.deleteAll();
         servicePointCommentRepository.deleteAll();
     }
 
@@ -57,7 +42,7 @@ public class ServicePointVersionRepositoryTest {
                 .number(1)
                 .checkDigit(1)
                 .numberShort(1)
-                .uicCountry(switzerland)
+                .country(Country.SWITZERLAND)
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
@@ -92,7 +77,7 @@ public class ServicePointVersionRepositoryTest {
                 .wgs84east(7.43913089)
                 .wgs84north(46.94883229)
                 .height(540.2)
-                .isoCountryCode(switzerland.getIsoCode())
+                .isoCountryCode(Country.SWITZERLAND.getIsoCode())
                 .swissCantonFsoNumber(5)
                 .swissCantonName("Bern")
                 .swissCantonNumber(5)
@@ -106,7 +91,7 @@ public class ServicePointVersionRepositoryTest {
                 .number(1)
                 .checkDigit(1)
                 .numberShort(1)
-                .uicCountry(switzerland)
+                .country(Country.SWITZERLAND)
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
@@ -138,7 +123,7 @@ public class ServicePointVersionRepositoryTest {
                 .number(1)
                 .checkDigit(1)
                 .numberShort(1)
-                .uicCountry(switzerland)
+                .country(Country.SWITZERLAND)
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
@@ -167,7 +152,7 @@ public class ServicePointVersionRepositoryTest {
                 .number(1)
                 .checkDigit(1)
                 .numberShort(1)
-                .uicCountry(switzerland)
+                .country(Country.SWITZERLAND)
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
@@ -200,7 +185,7 @@ public class ServicePointVersionRepositoryTest {
                 .number(1)
                 .checkDigit(1)
                 .numberShort(1)
-                .uicCountry(switzerland)
+                .country(Country.SWITZERLAND)
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
@@ -233,7 +218,7 @@ public class ServicePointVersionRepositoryTest {
                 .number(1)
                 .checkDigit(1)
                 .numberShort(1)
-                .uicCountry(switzerland)
+                .country(Country.SWITZERLAND)
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
