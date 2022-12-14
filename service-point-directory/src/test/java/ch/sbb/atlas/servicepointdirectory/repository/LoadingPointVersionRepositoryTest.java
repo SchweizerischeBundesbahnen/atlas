@@ -35,7 +35,7 @@ public class LoadingPointVersionRepositoryTest {
                 .designation("Ladestelle")
                 .designationLong("Grosse Ladestelle")
                 .connectionPoint(true)
-                .servicePointNumber(1L)
+                .servicePointNumber(1)
                 .validFrom(LocalDate.of(2022,1,1))
                 .validTo(LocalDate.of(2022,12,31))
                 .build();

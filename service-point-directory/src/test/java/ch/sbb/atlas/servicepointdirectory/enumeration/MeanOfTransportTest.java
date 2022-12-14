@@ -7,12 +7,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MeansOfTransportTest {
+class MeanOfTransportTest {
 
     @Test
     void rankShouldBeUnique() {
         Set<Integer> usedRanks = new HashSet<>();
-        for (MeansOfTransport mean : MeansOfTransport.values()) {
+        for (MeanOfTransport mean : MeanOfTransport.values()) {
             if (!usedRanks.add(mean.getRank())) {
                 fail();
             }

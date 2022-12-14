@@ -8,7 +8,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.UicCountry;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeansOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
 import org.junit.jupiter.api.AfterEach;
@@ -241,7 +241,7 @@ public class ServicePointVersionRepositoryTest {
                 .businessOrganisation("somesboid")
                 .hasGeolocation(true)
                 .status(Status.VALIDATED)
-                .meansOfTransport(Set.of(MeansOfTransport.COACH))
+                .meansOfTransport(Set.of(MeanOfTransport.COACH))
                 .stopPlaceType(StopPlaceType.ORDERLY)
                 .validFrom(LocalDate.of(2020,1,1))
                 .validTo(LocalDate.of(2020,12,31))

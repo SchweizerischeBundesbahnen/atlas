@@ -32,27 +32,28 @@ ALTER TABLE uic_country
 CREATE TABLE service_point_version
 (
     id                               BIGINT PRIMARY KEY,
-    number                           INTEGER     NOT NULL,
-    check_digit                      SMALLINT    NOT NULL,
-    number_short                     INTEGER     NOT NULL,
-    uic_country_code                 SMALLINT    NOT NULL,
-    designation_long                 VARCHAR(50) NULL,
-    designation_official             VARCHAR(30) NOT NULL,
-    abbreviation                     VARCHAR(6)  NULL,
-    status_didok3                    SMALLINT    NULL,
-    sort_code_of_destination_station VARCHAR(10) NULL,
-    business_organisation            VARCHAR(50) NOT NULL,
-    has_geolocation                  BOOLEAN     NULL     DEFAULT FALSE,
+    number                           INTEGER      NOT NULL,
+    sloid                            VARCHAR(500),
+    check_digit                      SMALLINT     NOT NULL,
+    number_short                     INTEGER      NOT NULL,
+    uic_country_code                 SMALLINT     NOT NULL,
+    designation_long                 VARCHAR(50)  NULL,
+    designation_official             VARCHAR(30)  NOT NULL,
+    abbreviation                     VARCHAR(6)   NULL,
+    status_didok3                    SMALLINT     NULL,
+    sort_code_of_destination_station VARCHAR(10)  NULL,
+    business_organisation            VARCHAR(50)  NOT NULL,
+    has_geolocation                  BOOLEAN      NULL     DEFAULT FALSE,
     operating_point_type             VARCHAR(50),
     stop_place_type                  VARCHAR(50),
-    status                           VARCHAR(50) NOT NULL,
-    valid_from                       DATE        NOT NULL,
-    valid_to                         DATE        NOT NULL,
-    creation_date                    TIMESTAMP   NOT NULL,
-    creator                          VARCHAR(50) NOT NULL,
-    edition_date                     TIMESTAMP   NOT NULL,
-    editor                           VARCHAR(50) NOT NULL,
-    version                          BIGINT      NOT NULL DEFAULT 0,
+    status                           VARCHAR(50)  NOT NULL,
+    valid_from                       DATE         NOT NULL,
+    valid_to                         DATE         NOT NULL,
+    creation_date                    TIMESTAMP    NOT NULL,
+    creator                          VARCHAR(50)  NOT NULL,
+    edition_date                     TIMESTAMP    NOT NULL,
+    editor                           VARCHAR(50)  NOT NULL,
+    version                          BIGINT       NOT NULL DEFAULT 0,
     CONSTRAINT fk_service_point_uic_country_code
         FOREIGN KEY (uic_country_code)
             REFERENCES uic_country (uic_920_14)
@@ -180,3 +181,30 @@ CREATE TABLE service_point_version_means_of_transport
     service_point_version_id BIGINT      NOT NULL,
     means_of_transport       VARCHAR(50) NOT NULL
 );
+
+-----------------------------------------------------------------------------------------
+-- Traffic Point Element - VERKEHRSMITTEL_ELEMENTE
+-----------------------------------------------------------------------------------------
+
+CREATE TABLE traffic_point_element_version
+(
+    id                         BIGINT PRIMARY KEY,
+    sloid                      VARCHAR(500) NOT NULL,
+    parent_sloid               VARCHAR(500),
+    designation                VARCHAR(50),
+    designation_operational    VARCHAR(50),
+    traffic_point_element_type VARCHAR(50),
+    length                     BIGINT,
+    boarding_area_height       BIGINT,
+    compass_direction          BIGINT,
+    service_point_number       BIGINT       NOT NULL,
+    valid_from                 DATE         NOT NULL,
+    valid_to                   DATE         NOT NULL,
+    creation_date              TIMESTAMP    NOT NULL,
+    creator                    VARCHAR(50)  NOT NULL,
+    edition_date               TIMESTAMP    NOT NULL,
+    editor                     VARCHAR(50)  NOT NULL,
+    version                    BIGINT       NOT NULL DEFAULT 0
+);
+
+CREATE SEQUENCE traffic_point_element_version_seq START WITH 1000 INCREMENT BY 1;
