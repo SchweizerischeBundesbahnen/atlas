@@ -66,7 +66,12 @@ public class TrafficPointElementVersion extends BaseEntity implements Versionabl
     @AtlasVersionableProperty
     private String parentSloid;
 
-    // is virtuell = hasGeolocation
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "trafficPointElementVersion")
+    private TrafficPointElementGeolocation trafficPointElementGeolocation;
+
+    public boolean isVirtuell() {
+        return trafficPointElementGeolocation == null;
+    }
 
     @NotNull
     @Column(columnDefinition = "DATE")
