@@ -18,7 +18,7 @@
       />
       <mat-datepicker-toggle matSuffix [for]="validFromPicker">
         <mat-icon matDatepickerToggleIcon>
-          <form-date-icon [enabled]="isEnabled"></form-date-icon>
+          <form-date-icon [enabled]="formGroup.controls.validFrom.enabled"></form-date-icon>
         </mat-icon>
       </mat-datepicker-toggle>
       <mat-datepicker #validFromPicker></mat-datepicker>
@@ -44,7 +44,7 @@
       />
       <mat-datepicker-toggle matSuffix [for]="validToPicker">
         <mat-icon matDatepickerToggleIcon>
-          <form-date-icon [enabled]="isEnabled"></form-date-icon>
+          <form-date-icon [enabled]="formGroup.controls.validTo.enabled"></form-date-icon>
         </mat-icon>
       </mat-datepicker-toggle>
       <mat-datepicker #validToPicker></mat-datepicker>
