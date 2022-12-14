@@ -37,11 +37,11 @@ public class LoadingPointVersion extends BaseEntity implements Versionable {
     private Integer number;
 
     @NotNull
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
+    @Size(min = 1, max = AtlasFieldLengths.LENGTH_12)
     @AtlasVersionableProperty
     private String designation;
 
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_30)
+    @Size(min = 1, max = AtlasFieldLengths.LENGTH_35)
     @AtlasVersionableProperty
     private String designationLong;
 
