@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
-public enum MeansOfTransport {
+public enum MeanOfTransport {
 
     TRAIN(0, "Z", "Zug", "Zug", "Train", "Train", "Treno"),
     COACH(1, "B", "Bus", "Bus", "Bus", "Coach", "Bus"),
