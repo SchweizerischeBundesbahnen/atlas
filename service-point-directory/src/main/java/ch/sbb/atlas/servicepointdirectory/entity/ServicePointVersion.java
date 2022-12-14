@@ -6,9 +6,9 @@ import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
-import ch.sbb.atlas.servicepointdirectory.converter.MeansOfTransportConverter;
+import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeansOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
 import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
@@ -47,6 +47,10 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
     @NotNull
     @AtlasVersionableProperty
     private Integer number;
+
+    @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+    @AtlasVersionableProperty
+    private String sloid;
 
     @NotNull
     @AtlasVersionableProperty
@@ -123,15 +127,15 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
     }
 
     public boolean isStopPlace() {
-        return !getMeansOfTransport().isEmpty();
+        return !getMeanOfTransport().isEmpty();
     }
 
     @AtlasVersionableProperty
-    @ElementCollection(targetClass = MeansOfTransport.class, fetch = FetchType.EAGER)
-    @Convert(converter = MeansOfTransportConverter.class)
-    private Set<MeansOfTransport> meansOfTransport;
+    @ElementCollection(targetClass = MeanOfTransport.class, fetch = FetchType.EAGER)
+    @Convert(converter = MeanOfTransportConverter.class)
+    private Set<MeanOfTransport> meansOfTransport;
 
-    public Set<MeansOfTransport> getMeansOfTransport() {
+    public Set<MeanOfTransport> getMeanOfTransport() {
         if (meansOfTransport == null) {
             return new HashSet<>();
         }
