@@ -7,10 +7,7 @@ import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.*;
 import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
@@ -61,9 +58,8 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
     private Integer numberShort;
 
     @NotNull
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "uic_country_code", referencedColumnName = "uic_920_14")
-    private UicCountry uicCountry;
+    @Enumerated(EnumType.STRING)
+    private Country country;
 
     @NotBlank
     @Size(max = AtlasFieldLengths.LENGTH_50)
