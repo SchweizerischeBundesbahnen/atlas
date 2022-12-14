@@ -13,7 +13,7 @@ CREATE TABLE service_point_version
     designation_long                 VARCHAR(50) NULL,
     designation_official             VARCHAR(30) NOT NULL,
     abbreviation                     VARCHAR(6)  NULL,
-    status_didok3                    SMALLINT    NULL,
+    status_didok3                    VARCHAR(50)    NULL,
     sort_code_of_destination_station VARCHAR(10) NULL,
     business_organisation            VARCHAR(50) NOT NULL,
     has_geolocation                  BOOLEAN     NULL     DEFAULT FALSE,
