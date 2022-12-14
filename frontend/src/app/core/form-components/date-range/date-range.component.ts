@@ -14,8 +14,4 @@ export class DateRangeComponent {
 
   readonly EXAMPLE_DATE_FROM = '21.01.2021';
   readonly EXAMPLE_DATE_TO = '31.12.9999';
-
-  get isEnabled(): boolean {
-    return this.formGroup.enabled;
-  }
 }
