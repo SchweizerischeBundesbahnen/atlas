@@ -4,13 +4,23 @@ import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
-import lombok.*;
-import lombok.experimental.FieldNameConstants;
-import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,10 +29,10 @@ import javax.validation.constraints.Size;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "service_point_version_geolocation")
-public class ServicePointGeolocation extends BaseEntity {
+@Entity(name = "traffic_point_element_version_geolocation")
+public class TrafficPointElementGeolocation extends BaseEntity {
 
-  private static final String VERSION_SEQ = "service_point_version_geolocation_seq";
+  private static final String VERSION_SEQ = "traffic_point_element_version_geolocation_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -30,8 +40,8 @@ public class ServicePointGeolocation extends BaseEntity {
   private Long id;
 
   @OneToOne
-  @JoinColumn(name = "service_point_version_id", referencedColumnName = "id")
-  private ServicePointVersion servicePointVersion;
+  @JoinColumn(name = "traffic_point_element_version_id", referencedColumnName = "id")
+  private TrafficPointElementVersion trafficPointElementVersion;
 
   @NotNull
   @AtlasVersionableProperty
