@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Set;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
@@ -46,7 +48,7 @@ public class ServicePointVersionRepositoryTest {
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
-                .statusDidok3(1)
+                .statusDidok3(ServicePointStatus.from(1))
                 .businessOrganisation("somesboid")
                 .hasGeolocation(true)
                 .status(Status.VALIDATED)
@@ -54,8 +56,8 @@ public class ServicePointVersionRepositoryTest {
                 .validTo(LocalDate.of(2020,12,31))
                 .build();
 
-        // when
-        ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
+    // when
+    ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
 
         // then
         assertThat(savedVersion.getId()).isNotNull();
@@ -95,7 +97,7 @@ public class ServicePointVersionRepositoryTest {
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
-                .statusDidok3(1)
+                .statusDidok3(ServicePointStatus.from(1))
                 .businessOrganisation("somesboid")
                 .hasGeolocation(true)
                 .status(Status.VALIDATED)
@@ -104,20 +106,20 @@ public class ServicePointVersionRepositoryTest {
                 .servicePointGeolocation(servicePointGeolocation)
                 .build();
 
-        servicePointGeolocation.setServicePointVersion(servicePoint);
+    servicePointGeolocation.setServicePointVersion(servicePoint);
 
-        // when
-        ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
+    // when
+    ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
 
-        // then
-        assertThat(savedVersion.getId()).isNotNull();
-        assertThat(savedVersion.getServicePointGeolocation()).isNotNull();
-        assertThat(savedVersion.getServicePointGeolocation().getSwissCantonName()).isEqualTo("Bern");
-    }
+    // then
+    assertThat(savedVersion.getId()).isNotNull();
+    assertThat(savedVersion.getServicePointGeolocation()).isNotNull();
+    assertThat(savedVersion.getServicePointGeolocation().getSwissCantonName()).isEqualTo("Bern");
+  }
 
-    @Test
-    void shouldSaveServicePointVersionWithTwoCategories() {
-        // given
+  @Test
+  void shouldSaveServicePointVersionWithTwoCategories() {
+    // given
 
         ServicePointVersion servicePoint = ServicePointVersion.builder()
                 .number(1)
@@ -127,7 +129,7 @@ public class ServicePointVersionRepositoryTest {
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
-                .statusDidok3(1)
+                .statusDidok3(ServicePointStatus.from(1))
                 .businessOrganisation("somesboid")
                 .hasGeolocation(true)
                 .status(Status.VALIDATED)
@@ -136,14 +138,14 @@ public class ServicePointVersionRepositoryTest {
                 .categories(Set.of(Category.BORDER_POINT, Category.DISTRIBUTION_POINT))
                 .build();
 
-        // when
-        ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
+    // when
+    ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
 
-        // then
-        assertThat(savedVersion.getId()).isNotNull();
-        assertThat(savedVersion.getServicePointGeolocation()).isNull();
-        assertThat(savedVersion.getCategories()).hasSize(2);
-    }
+    // then
+    assertThat(savedVersion.getId()).isNotNull();
+    assertThat(savedVersion.getServicePointGeolocation()).isNull();
+    assertThat(savedVersion.getCategories()).hasSize(2);
+  }
 
     @Test
     void shouldSaveServicePointVersionWithOperatingPointType() {
@@ -156,7 +158,7 @@ public class ServicePointVersionRepositoryTest {
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
-                .statusDidok3(1)
+                .statusDidok3(ServicePointStatus.from(1))
                 .businessOrganisation("somesboid")
                 .hasGeolocation(true)
                 .status(Status.VALIDATED)
@@ -165,18 +167,83 @@ public class ServicePointVersionRepositoryTest {
                 .operatingPointType(OperatingPointType.STOP_POINT)
                 .build();
 
-        // when
-        ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
+    // when
+    ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
 
-        // then
-        assertThat(savedVersion.getId()).isNotNull();
-        assertThat(savedVersion.getServicePointGeolocation()).isNull();
-        assertThat(savedVersion.getCategories()).isEmpty();
+    // then
+    assertThat(savedVersion.getId()).isNotNull();
+    assertThat(savedVersion.getServicePointGeolocation()).isNull();
+    assertThat(savedVersion.getCategories()).isEmpty();
 
-        assertThat(savedVersion.isOperatingPoint()).isTrue();
-        assertThat(savedVersion.getOperatingPointType().hasTimetable()).isTrue();
-        assertThat(savedVersion.getOperatingPointType().getDesignationDe()).isEqualTo("Haltestelle");
+    assertThat(savedVersion.isOperatingPoint()).isTrue();
+    assertThat(savedVersion.getOperatingPointType().hasTimetable()).isTrue();
+    assertThat(savedVersion.getOperatingPointType().getDesignationDe()).isEqualTo("Haltestelle");
+  }
+
+  // ----------------------------------
+  // Dienststellen All V3 Csv Import Tests
+  // ----------------------------------
+  @Test
+  void parseFirst10LinesFromDienststellenAllV3CsvAndSaveToDB() throws IOException {
+    InputStream csvStream = this.getClass().getResourceAsStream("/DienststellenV3.csv");
+    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+
+    assertThat(servicePointCsvModels).hasSize(10);
+
+    List<ServicePointVersion> servicePointVersions = new ArrayList<>();
+    for (ServicePointCsvModel csvModel : servicePointCsvModels) {
+      ServicePointVersion servicePoint = ServicePointVersion.builder()
+          .number(csvModel.getDIDOK_CODE())
+          .checkDigit(csvModel.getDIDOK_CODE() % 10)
+          .numberShort(csvModel.getNUMMER())
+          .uicCountry(switzerland)
+          .designationLong(csvModel.getBEZEICHNUNG_LANG())
+          .designationOfficial(csvModel.getBEZEICHNUNG_OFFIZIELL())
+          .abbreviation(csvModel.getABKUERZUNG())
+          .statusDidok3(ServicePointStatus.from(csvModel.getSTATUS()))
+          .businessOrganisation(csvModel.getGO_NUMMER().toString()) // TODO: map to sboid
+          .hasGeolocation(!csvModel.getIS_VIRTUELL())
+          .status(Status.VALIDATED)
+          .validFrom(LocalDate.parse(csvModel.getGUELTIG_VON()))
+          .validTo(LocalDate.parse(csvModel.getGUELTIG_BIS()))
+          .categories(
+              Arrays.stream(Objects.nonNull(csvModel.getDS_KATEGORIEN_IDS()) ? csvModel.getDS_KATEGORIEN_IDS().split("\\|") :
+                      new String[]{})
+                  .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
+                  .filter(Objects::nonNull).collect(Collectors.toSet())
+          )
+          .operatingPointType(OperatingPointType.from(csvModel.getBPVB_BETRIEBSPUNKT_ART_ID()))
+          //.servicePointGeolocation() // TODO: map to servicePointGeolocation entity and save before servicePoint
+          .creationDate(LocalDateTime.parse(csvModel.getERSTELLT_AM(),
+              new DateTimeFormatterBuilder()
+                  .parseCaseInsensitive()
+                  .append(ISO_LOCAL_DATE)
+                  .appendLiteral(' ')
+                  .append(ISO_LOCAL_TIME)
+                  .toFormatter()
+          ))
+          .creator(csvModel.getERSTELLT_VON())
+          .editionDate(LocalDateTime.parse(csvModel.getGEAENDERT_AM(),
+              new DateTimeFormatterBuilder()
+                  .parseCaseInsensitive()
+                  .append(ISO_LOCAL_DATE)
+                  .appendLiteral(' ')
+                  .append(ISO_LOCAL_TIME)
+                  .toFormatter()
+          ))
+          .editor(csvModel.getGEAENDERT_VON())
+          .build();
+      servicePointVersions.add(servicePoint);
     }
+
+    List<ServicePointVersion> servicePointVersionsSaved = servicePointVersionRepository.saveAll(servicePointVersions);
+
+    assertThat(servicePointVersionsSaved).hasSize(10);
+    for (ServicePointVersion savedVersion : servicePointVersionsSaved) {
+      assertThat(savedVersion.getId()).isNotNull();
+    }
+  }
+
 
     @Test
     void shouldSaveServicePointVersionWithComment() {
