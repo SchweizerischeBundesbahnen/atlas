@@ -8,6 +8,9 @@ import ch.sbb.atlas.base.service.versioning.model.Versionable;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.enumeration.*;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
@@ -32,117 +35,116 @@ import java.util.Set;
 @Entity(name = "service_point_version")
 @AtlasVersionable
 public class ServicePointVersion extends BaseVersion implements Versionable,
-        BusinessOrganisationAssociated {
+    BusinessOrganisationAssociated {
 
-    private static final String VERSION_SEQ = "service_point_version_seq";
+  private static final String VERSION_SEQ = "service_point_version_seq";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
-    @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
+  @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
+  private Long id;
 
-    @NotNull
-    @AtlasVersionableProperty
-    private Integer number;
+  @NotNull
+  @AtlasVersionableProperty
+  private Integer number;
 
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-    @AtlasVersionableProperty
-    private String sloid;
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @AtlasVersionableProperty
+  private String sloid;
 
-    @NotNull
-    @AtlasVersionableProperty
-    private Integer checkDigit;
+  @NotNull
+  @AtlasVersionableProperty
+  private Integer checkDigit;
 
-    @NotNull
-    @AtlasVersionableProperty
-    private Integer numberShort;
+  @NotNull
+  @AtlasVersionableProperty
+  private Integer numberShort;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private Country country;
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private Country country;
 
-    @NotBlank
-    @Size(max = AtlasFieldLengths.LENGTH_50)
-    @AtlasVersionableProperty
-    private String designationLong;
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @AtlasVersionableProperty
+  private String designationLong;
 
-    @NotBlank
-    @Size(max = AtlasFieldLengths.LENGTH_30)
-    @AtlasVersionableProperty
-    private String designationOfficial;
+  @NotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_30)
+  @AtlasVersionableProperty
+  private String designationOfficial;
 
-    @NotBlank
-    @Size(max = AtlasFieldLengths.LENGTH_6)
-    @AtlasVersionableProperty
-    private String abbreviation;
+  @Size(max = AtlasFieldLengths.LENGTH_6)
+  @AtlasVersionableProperty
+  private String abbreviation;
 
-    @Size(max = AtlasFieldLengths.LENGTH_10)
-    @AtlasVersionableProperty
-    private String sortCodeOfDestinationStation;
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @AtlasVersionableProperty
+  private String sortCodeOfDestinationStation;
 
-    @NotNull
-    @AtlasVersionableProperty
-    private Integer statusDidok3;
+  @NotNull
+  @AtlasVersionableProperty
+  @Enumerated(EnumType.STRING)
+  private ServicePointStatus statusDidok3;
 
-    @AtlasVersionableProperty
-    private boolean hasGeolocation;
+  @AtlasVersionableProperty
+  private boolean hasGeolocation;
 
-    @NotNull
-    @Column(columnDefinition = "DATE")
-    private LocalDate validFrom;
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validFrom;
 
-    @NotNull
-    @Column(columnDefinition = "DATE")
-    private LocalDate validTo;
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validTo;
 
-    @NotBlank
-    @Size(max = AtlasFieldLengths.LENGTH_50)
-    @AtlasVersionableProperty
-    private String businessOrganisation;
+  @NotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @AtlasVersionableProperty
+  private String businessOrganisation;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "servicePointVersion")
-    private ServicePointGeolocation servicePointGeolocation;
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "servicePointVersion")
+  private ServicePointGeolocation servicePointGeolocation;
 
-    @AtlasVersionableProperty
-    @ElementCollection(targetClass = Category.class, fetch = FetchType.EAGER)
-    @Convert(converter = CategoryConverter.class)
-    private Set<Category> categories;
+  @AtlasVersionableProperty
+  @ElementCollection(targetClass = Category.class, fetch = FetchType.EAGER)
+  @Convert(converter = CategoryConverter.class)
+  private Set<Category> categories;
 
-    @Enumerated(EnumType.STRING)
-    private OperatingPointType operatingPointType;
+  @Enumerated(EnumType.STRING)
+  private OperatingPointType operatingPointType;
 
-    public boolean isOperatingPoint() {
-        return operatingPointType != null;
+  public boolean isOperatingPoint() {
+    return operatingPointType != null;
+  }
+
+  public Set<Category> getCategories() {
+    if (categories == null) {
+      return new HashSet<>();
     }
+    return categories;
+  }
 
-    public Set<Category> getCategories() {
-        if (categories == null) {
-            return new HashSet<>();
-        }
-        return categories;
+  public boolean isStopPlace() {
+    return !getMeanOfTransport().isEmpty();
+  }
+
+  @AtlasVersionableProperty
+  @ElementCollection(targetClass = MeanOfTransport.class, fetch = FetchType.EAGER)
+  @Convert(converter = MeanOfTransportConverter.class)
+  private Set<MeanOfTransport> meansOfTransport;
+
+  public Set<MeanOfTransport> getMeanOfTransport() {
+    if (meansOfTransport == null) {
+      return new HashSet<>();
     }
+    return meansOfTransport;
+  }
 
-    public boolean isStopPlace() {
-        return !getMeanOfTransport().isEmpty();
-    }
+  @Enumerated(EnumType.STRING)
+  private StopPlaceType stopPlaceType;
 
-    @AtlasVersionableProperty
-    @ElementCollection(targetClass = MeanOfTransport.class, fetch = FetchType.EAGER)
-    @Convert(converter = MeanOfTransportConverter.class)
-    private Set<MeanOfTransport> meansOfTransport;
-
-    public Set<MeanOfTransport> getMeanOfTransport() {
-        if (meansOfTransport == null) {
-            return new HashSet<>();
-        }
-        return meansOfTransport;
-    }
-
-    @Enumerated(EnumType.STRING)
-    private StopPlaceType stopPlaceType;
-
-    @AssertTrue(message = "StopPlaceType only allowed for StopPlaces")
-    boolean isValidStopPlace() {
-        return isStopPlace() || stopPlaceType == null;
-    }
+  @AssertTrue(message = "StopPlaceType only allowed for StopPlaces")
+  boolean isValidStopPlace() {
+    return isStopPlace() || stopPlaceType == null;
+  }
 }
