@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.enumeration;
 
+import java.util.Arrays;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -10,13 +12,18 @@ public enum Country {
   AZERBAIJAN("AZ", 57, "Aserbaidschan", "Azerbaïdjan", " Azerbaigian", "Azerbaijan"),
   BELGIUM("BE", 88, "Belgien", "Belgique", " Belgio", "Belgium"),
   BELARUS("BY", 21, "Weißrussland", "Bélarus", " Bielorussia", "Belarus"),
-  SERB_BOSNIA_AND_HERZEGOVINA("BA", 44, "Bosnien und Herzegowinas, serbische Republik", "Bosnie-Herzégovine, République serbe de", " Bosnia ed Erzegovina", "Bosnia and Herzegovina, Serb Republic of "),
-  BOSNIA_AND_HERZEGOVINA("BA", 49, "Bosnien und Herzegowina", "Bosnie-Herzégovine", " Bosnia ed Erzegovina", "Bosnia and Herzegovina"),
-  CROAT_BOSNIA_AND_HERZEGOVINA("BA", 50, "Bosnien und Herzegowinas, kroatisch-moslemische Föderation", "Bosnie-Herzégovine, Fédération croato-musulmane de", " Bosnia ed Erzegovina", "Bosnia and Herzegovina, Muslim-Croat Federation of "),
+  SERB_BOSNIA_AND_HERZEGOVINA("BA", 44, "Bosnien und Herzegowinas, serbische Republik", "Bosnie-Herzégovine, République serbe de",
+      " Bosnia ed Erzegovina", "Bosnia and Herzegovina, Serb Republic of "),
+  BOSNIA_AND_HERZEGOVINA("BA", 49, "Bosnien und Herzegowina", "Bosnie-Herzégovine", " Bosnia ed Erzegovina",
+      "Bosnia and Herzegovina"),
+  CROAT_BOSNIA_AND_HERZEGOVINA("BA", 50, "Bosnien und Herzegowinas, kroatisch-moslemische Föderation",
+      "Bosnie-Herzégovine, Fédération croato-musulmane de", " Bosnia ed Erzegovina",
+      "Bosnia and Herzegovina, Muslim-Croat Federation of "),
   BULGARIA("BG", 52, "Bulgarien", "Bulgarie", " Bulgaria", "Bulgaria"),
   CANADA("CA", null, "Kanada", "Canada", " Canada", "Canada"),
   CHINA("CN", 33, "China", "Chine", " Cina", "China"),
-  NORTH_KOREA("KP", 30, "Koreas Demokratische Volksrepublik", "Corée, République populaire démocratique de", " Corea del Nord", "Korea, Democratic People's Republic of"),
+  NORTH_KOREA("KP", 30, "Koreas Demokratische Volksrepublik", "Corée, République populaire démocratique de", " Corea del Nord",
+      "Korea, Democratic People's Republic of"),
   SOUTH_KOREA("KR", 61, "Koreanische Republik", "Corée, République de", " Corea del Sud", "Korea, Republic of"),
   CROATIA("HR", 78, "Kroatien", "Croatie", " Croazia", "Croatia"),
   CUBA("CU", 40, "Kuba", "Cuba", " Cuba", "Cuba"),
@@ -40,7 +47,8 @@ public enum Country {
   LEBANON("LB", 98, "Libanon", "Liban", " Libano", "Lebanon"),
   LITHUANIA("LT", 24, "Litauen", "Lituanie", " Lituania", "Lithuania"),
   LUXEMBOURG("LU", 82, "Luxemburg", "Luxembourg", " Lussemburgo", "Luxembourg"),
-  MACEDONIA("MK", 65, "Mazedonien, Ehemalige jugoslawische Republik", "Macédoine, L'Ex-République Yougoslave de", " Macedonia del Nord", "Macedonia, The former Yugoslav Republic of"),
+  MACEDONIA("MK", 65, "Mazedonien, Ehemalige jugoslawische Republik", "Macédoine, L'Ex-République Yougoslave de",
+      " Macedonia del Nord", "Macedonia, The former Yugoslav Republic of"),
   MOROCCO("MA", 93, "Marokko", "Maroc", " Marocco", "Morocco"),
   MOLDOVA("MD", 23, "Moldawien, Republik", "Moldava, République de", " Moldavia", "Moldova, Republic of"),
   MONGOLIA("MN", 31, "Mongolei", "Mongolie", " Mongolia", "Mongolia"),
@@ -49,8 +57,11 @@ public enum Country {
   NETHERLANDS("NL", 84, "Niederlande", "Pays-Bas", " Paesi Bassi", "Netherlands"),
   POLAND("PL", 51, "Polen", "Pologne", " Polonia", "Poland"),
   PORTUGAL("PT", 94, "Portugal", "Portugal", " Portogallo", "Portugal"),
-  NORTHERN_IRELAND("GB", 70, "Vereinigtes Königreich von Großbritannien und von Nordirland", "Royaume-Uni de Grande-Bretagne et d''Irlande du Nord", " Regno Unito", "United Kingdom of Great Britain and Northern Ireland"),
-  CONGO("CD", null, "Kongo, Demokratische Republik", "République démocratique du Congo", " RD del Congo", "Congo, the Democratic Republic of the"),
+  NORTHERN_IRELAND("GB", 70, "Vereinigtes Königreich von Großbritannien und von Nordirland",
+      "Royaume-Uni de Grande-Bretagne et d''Irlande du Nord", " Regno Unito",
+      "United Kingdom of Great Britain and Northern Ireland"),
+  CONGO("CD", null, "Kongo, Demokratische Republik", "République démocratique du Congo", " RD del Congo",
+      "Congo, the Democratic Republic of the"),
   CZECH_REPUBLIC("CZ", 54, "Tschechische Republik", "Tchèque, République", " Rep. Ceca", "Czech Republic"),
   ROMANIA("RO", 53, "Rumänien", "Roumanie", " Romania", "Romania"),
   RUSSIA("RU", 20, "Russische Föderation", "Russie, Fédération de", " Russia", "Russian Federation"),
@@ -76,15 +87,14 @@ public enum Country {
   ITALY_COACH("IT", 13, " Italien (Bus)", "Italie (bus)", "Italia (bus)", "Italy (bus)"),
   FRANCE_COACH("FR", 14, " Frankreich (Bus)", "France (bus)", "Francia (bus)", "France (bus)"),
   AUSTRIA_HUNGARY("GYSEV/ROEE", 43, "Österreich-Ungarn", "Austria-Hungary", null, "Raab-Ödenburg-Eberfurter Eisenbahn AG"),
-  BOSNIA_AND_HERZEGOVINA_RAILWAY("ZBH", 89, "Bosnien-Herzegowina", "Bosnia-Herzegowina", null, "Eisenbahn Bosnien - Herzegowinas"),
+  BOSNIA_AND_HERZEGOVINA_RAILWAY("ZBH", 89, "Bosnien-Herzegowina", "Bosnia-Herzegowina", null,
+      "Eisenbahn Bosnien - Herzegowinas"),
   AFGHANISTAN("AF", 68, " Afghanistan", "Afghanistan", " Afghanistan", " Afghanistan"),
   ALBANIA("AL", 41, "Albanien", "Albanie", " Albania", "Albania"),
   ALGERIA("DZ", 92, "Algerien", "Algérie", " Algeria", "Algeria"),
   ARMENIA("AM", 58, "Armenien", "Arménie", " Armenia", "Armenia"),
   AUSTRALIA("AU", null, "Australien", "Australie", " Australia", "Australia"),
-  AUSTRIA("AT", 81, "Österreich", "Autriche", " Austria", "Austria"),
-
-  ;
+  AUSTRIA("AT", 81, "Österreich", "Autriche", " Austria", "Austria");
 
   private final String isoCode;
   private final Integer uicCode;
@@ -93,4 +103,7 @@ public enum Country {
   private final String nameIt;
   private final String nameEn;
 
+  public static Country from(Integer uicCode) {
+    return Arrays.stream(Country.values()).filter(el -> Objects.equals(el.uicCode, uicCode)).findFirst().orElse(null);
+  }
 }
