@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.servicepointdirectory.CountryTestData;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class ServicePointVersionTest {
                 .number(1)
                 .checkDigit(1)
                 .numberShort(1)
-                .uicCountry(CountryTestData.SWITZERLAND)
+                .country(Country.SWITZERLAND)
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
@@ -54,7 +54,7 @@ class ServicePointVersionTest {
                 .number(1)
                 .checkDigit(1)
                 .numberShort(1)
-                .uicCountry(CountryTestData.SWITZERLAND)
+                .country(Country.SWITZERLAND)
                 .designationLong("long designation")
                 .designationOfficial("official designation")
                 .abbreviation("BE")
