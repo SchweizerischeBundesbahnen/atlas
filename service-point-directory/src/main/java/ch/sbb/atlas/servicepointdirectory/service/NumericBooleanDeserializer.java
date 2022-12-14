@@ -15,7 +15,7 @@ public class NumericBooleanDeserializer extends JsonDeserializer<Boolean> {
     if ("0".equals(p.getText())) {
       return Boolean.FALSE;
     }
-    return null;
+    throw new IllegalArgumentException(p.getText());
   }
 
 }
