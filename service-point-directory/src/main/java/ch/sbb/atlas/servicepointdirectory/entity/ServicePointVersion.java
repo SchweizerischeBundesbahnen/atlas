@@ -102,7 +102,8 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String businessOrganisation;
 
-  @OneToOne(mappedBy = "servicePointVersion")
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
   private ServicePointGeolocation servicePointGeolocation;
 
   @AtlasVersionableProperty
