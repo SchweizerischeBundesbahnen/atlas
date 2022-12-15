@@ -2,7 +2,6 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseEntity;
-import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
@@ -29,8 +28,7 @@ public class ServicePointGeolocation extends BaseEntity {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "service_point_version_id", referencedColumnName = "id")
+  @OneToOne(mappedBy = "servicePointGeolocation")
   private ServicePointVersion servicePointVersion;
 
   @NotNull
