@@ -44,7 +44,6 @@ public class TrafficPointElementCsvModel {
   @JsonProperty("BPVE_TYPE")
   private Integer trafficPointElementType;
 
-
   @JsonProperty("E_LV95")
   private Double eLv95;
   @JsonProperty("N_LV95")
