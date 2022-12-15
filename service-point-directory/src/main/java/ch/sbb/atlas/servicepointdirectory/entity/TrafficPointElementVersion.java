@@ -42,13 +42,13 @@ public class TrafficPointElementVersion extends BaseEntity implements Versionabl
     private String designationOperational;
 
     @AtlasVersionableProperty
-    private Integer length;
+    private Double length;
 
     @AtlasVersionableProperty
-    private Integer boardingAreaHeight;
+    private Double boardingAreaHeight;
 
     @AtlasVersionableProperty
-    private Integer compassDirection;
+    private Double compassDirection;
 
     @AtlasVersionableProperty
     private TrafficPointElementType trafficPointElementType;
@@ -66,7 +66,8 @@ public class TrafficPointElementVersion extends BaseEntity implements Versionabl
     @AtlasVersionableProperty
     private String parentSloid;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "trafficPointElementVersion")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "geolocation_id", referencedColumnName = "id")
     private TrafficPointElementGeolocation trafficPointElementGeolocation;
 
     public boolean isVirtuell() {
