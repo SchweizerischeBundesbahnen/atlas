@@ -30,17 +30,20 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
-@Transactional
+//@Transactional
 public class ServicePointVersionRepositoryTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final ServicePointCommentRepository servicePointCommentRepository;
+  private final ServicePointGeolocationRepository servicePointGeolocationRepository;
 
   @Autowired
   public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository,
-      ServicePointCommentRepository servicePointCommentRepository) {
+      ServicePointCommentRepository servicePointCommentRepository,
+      ServicePointGeolocationRepository servicePointGeolocationRepository) {
     this.servicePointVersionRepository = servicePointVersionRepository;
     this.servicePointCommentRepository = servicePointCommentRepository;
+    this.servicePointGeolocationRepository = servicePointGeolocationRepository;
   }
 
   @AfterEach
@@ -202,33 +205,26 @@ public class ServicePointVersionRepositoryTest {
 
     assertThat(servicePointCsvModels).hasSize(10);
 
-    List<ServicePointVersion> servicePointVersions = new ArrayList<>();
+    List<ServicePointVersion> servicePointVersionsSaved = new ArrayList<>();
     for (ServicePointCsvModel csvModel : servicePointCsvModels) {
       // GeoLocation
-
-      // ServicePoint
-      ServicePointVersion servicePoint = ServicePointVersion.builder()
-          .number(csvModel.getDIDOK_CODE())
-          .checkDigit(csvModel.getDIDOK_CODE() % 10)
-          .numberShort(csvModel.getNUMMER())
-          .country(Country.from(csvModel.getLAENDERCODE()))
-          .designationLong(csvModel.getBEZEICHNUNG_LANG())
-          .designationOfficial(csvModel.getBEZEICHNUNG_OFFIZIELL())
-          .abbreviation(csvModel.getABKUERZUNG())
-          .statusDidok3(ServicePointStatus.from(csvModel.getSTATUS()))
-          .businessOrganisation(csvModel.getGO_NUMMER().toString()) // TODO: map to sboid GO_Export.csv
-          .hasGeolocation(!csvModel.getIS_VIRTUELL())
-          .status(Status.VALIDATED)
-          .validFrom(LocalDate.parse(csvModel.getGUELTIG_VON()))
-          .validTo(LocalDate.parse(csvModel.getGUELTIG_BIS()))
-          .categories(
-              Arrays.stream(Objects.nonNull(csvModel.getDS_KATEGORIEN_IDS()) ? csvModel.getDS_KATEGORIEN_IDS().split("\\|") :
-                      new String[]{})
-                  .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
-                  .filter(Objects::nonNull).collect(Collectors.toSet())
-          )
-          .operatingPointType(OperatingPointType.from(csvModel.getBPVB_BETRIEBSPUNKT_ART_ID()))
-          //.servicePointGeolocation() // TODO: map to servicePointGeolocation entity and save before servicePoint
+      ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation.builder()
+          .source_spatial_ref(1) // TODO: no attribute in Dienststellen_ALL
+          .lv03east(csvModel.getE_LV03())
+          .lv03north(csvModel.getN_LV03())
+          .lv95east(csvModel.getE_LV95())
+          .lv95north(csvModel.getN_LV95())
+          .wgs84east(csvModel.getE_WGS84())
+          .wgs84north(csvModel.getN_WGS84())
+          .height(csvModel.getHEIGHT())
+          .isoCountryCode(Country.from(csvModel.getLAENDERCODE()).getIsoCode()) // TODO: check with Marek
+          .swissCantonFsoNumber(5) // TODO: Marek
+          .swissCantonName("Bern") // TODO: Marek
+          .swissCantonNumber(5) // TODO: Marek
+          .swissDistrictName("Bern") // TODO: Marek
+          .swissDistrictNumber(5) // TODO: Marek
+          .swissMunicipalityName("Bern") // TODO: Marek
+          .swissLocalityName("Bern") // TODO: Marek
           .creationDate(LocalDateTime.parse(csvModel.getERSTELLT_AM(),
               new DateTimeFormatterBuilder()
                   .parseCaseInsensitive()
@@ -248,10 +244,54 @@ public class ServicePointVersionRepositoryTest {
           ))
           .editor(csvModel.getGEAENDERT_VON())
           .build();
-      servicePointVersions.add(servicePoint);
+      // ServicePoint
+      ServicePointVersion servicePoint = ServicePointVersion.builder()
+          .number(csvModel.getDIDOK_CODE())
+          .sloid(csvModel.getSLOID())
+          .checkDigit(csvModel.getDIDOK_CODE() % 10)
+          .numberShort(csvModel.getNUMMER())
+          .country(Country.from(csvModel.getLAENDERCODE()))
+          .designationLong(csvModel.getBEZEICHNUNG_LANG())
+          .designationOfficial(csvModel.getBEZEICHNUNG_OFFIZIELL())
+          .abbreviation(csvModel.getABKUERZUNG())
+          .statusDidok3(ServicePointStatus.from(csvModel.getSTATUS()))
+          .businessOrganisation(csvModel.getGO_NUMMER().toString()) // TODO: map to sboid GO_Export.csv
+          .hasGeolocation(!csvModel.getIS_VIRTUELL())
+          .status(Status.VALIDATED)
+          .validFrom(LocalDate.parse(csvModel.getGUELTIG_VON()))
+          .validTo(LocalDate.parse(csvModel.getGUELTIG_BIS()))
+          .categories(
+              Arrays.stream(Objects.nonNull(csvModel.getDS_KATEGORIEN_IDS()) ? csvModel.getDS_KATEGORIEN_IDS().split("\\|") :
+                      new String[]{})
+                  .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
+                  .filter(Objects::nonNull).collect(Collectors.toSet())
+          )
+          .operatingPointType(OperatingPointType.from(csvModel.getBPVB_BETRIEBSPUNKT_ART_ID()))
+          .servicePointGeolocation(servicePointGeolocation)
+          .creationDate(LocalDateTime.parse(csvModel.getERSTELLT_AM(),
+              new DateTimeFormatterBuilder()
+                  .parseCaseInsensitive()
+                  .append(ISO_LOCAL_DATE)
+                  .appendLiteral(' ')
+                  .append(ISO_LOCAL_TIME)
+                  .toFormatter()
+          ))
+          .creator(csvModel.getERSTELLT_VON())
+          .editionDate(LocalDateTime.parse(csvModel.getGEAENDERT_AM(),
+              new DateTimeFormatterBuilder()
+                  .parseCaseInsensitive()
+                  .append(ISO_LOCAL_DATE)
+                  .appendLiteral(' ')
+                  .append(ISO_LOCAL_TIME)
+                  .toFormatter()
+          ))
+          .editor(csvModel.getGEAENDERT_VON())
+          .build();
+      servicePointGeolocation.setServicePointVersion(servicePoint);
+      //servicePointVersionsSaved.add(servicePointVersionRepository.save(servicePoint));
+      //servicePointGeolocationRepository.save(servicePointGeolocation);
+      servicePointGeolocationRepository.save(servicePointGeolocation);
     }
-
-    List<ServicePointVersion> servicePointVersionsSaved = servicePointVersionRepository.saveAll(servicePointVersions);
 
     assertThat(servicePointVersionsSaved).hasSize(10);
     for (ServicePointVersion savedVersion : servicePointVersionsSaved) {
