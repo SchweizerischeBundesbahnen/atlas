@@ -34,7 +34,7 @@ class ServicePointVersionTest {
             .businessOrganisation("somesboid")
             .hasGeolocation(true)
             .status(Status.VALIDATED)
-            .meansOfTransport(Set.of(MeanOfTransport.COACH))
+            .meansOfTransport(Set.of(MeanOfTransport.BUS))
             .stopPlaceType(StopPlaceType.ORDERLY)
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2020, 12, 31))
