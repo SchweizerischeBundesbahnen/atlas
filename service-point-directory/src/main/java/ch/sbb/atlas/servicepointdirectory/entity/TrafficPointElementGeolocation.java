@@ -2,14 +2,12 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseEntity;
-import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
@@ -39,8 +37,7 @@ public class TrafficPointElementGeolocation extends BaseEntity {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @OneToOne
-  @JoinColumn(name = "traffic_point_element_version_id", referencedColumnName = "id")
+  @OneToOne(mappedBy = "trafficPointElementGeolocation")
   private TrafficPointElementVersion trafficPointElementVersion;
 
   @NotNull
