@@ -306,40 +306,40 @@ public class ServicePointCsvModel {
   private String BAV_BEMERKUNG;
 
   @JsonProperty("OST")
-  private Float OST;
+  private Double OST;
 
   @JsonProperty("NORD")
-  private Float NORD;
+  private Double NORD;
 
   @JsonProperty("HEIGHT")
-  private Float HEIGHT;
+  private Double HEIGHT;
 
   @JsonProperty("SLOID")
   private String SLOID;
 
   @JsonProperty("E_LV03")
-  private Float E_LV03;
+  private Double E_LV03;
 
   @JsonProperty("N_LV03")
-  private Float N_LV03;
+  private Double N_LV03;
 
   @JsonProperty("E_LV95")
-  private Float E_LV95;
+  private Double E_LV95;
 
   @JsonProperty("N_LV95")
-  private Float N_LV95;
+  private Double N_LV95;
 
   @JsonProperty("E_WGS84")
-  private Float E_WGS84;
+  private Double E_WGS84;
 
   @JsonProperty("N_WGS84")
-  private Float N_WGS84;
+  private Double N_WGS84;
 
   @JsonProperty("E_WGS84WEB")
-  private Float E_WGS84WEB;
+  private Double E_WGS84WEB;
 
   @JsonProperty("N_WGS84WEB")
-  private Float N_WGS84WEB;
+  private Double N_WGS84WEB;
 
   @JsonProperty("IS_GEOMETRY_EMPTY")
   @JsonDeserialize(using = NumericBooleanDeserializer.class)
