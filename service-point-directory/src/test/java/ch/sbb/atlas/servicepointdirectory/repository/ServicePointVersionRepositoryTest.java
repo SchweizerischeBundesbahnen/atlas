@@ -10,13 +10,8 @@ import ch.sbb.atlas.servicepointdirectory.service.ServicePointCsvModel;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointImportService;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
@@ -34,15 +27,15 @@ public class ServicePointVersionRepositoryTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final ServicePointCommentRepository servicePointCommentRepository;
-  private final ServicePointGeolocationRepository servicePointGeolocationRepository;
+  private final ServicePointImportService servicePointImportService;
 
   @Autowired
   public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository,
       ServicePointCommentRepository servicePointCommentRepository,
-      ServicePointGeolocationRepository servicePointGeolocationRepository) {
+      ServicePointImportService servicePointImportService) {
     this.servicePointVersionRepository = servicePointVersionRepository;
     this.servicePointCommentRepository = servicePointCommentRepository;
-    this.servicePointGeolocationRepository = servicePointGeolocationRepository;
+    this.servicePointImportService = servicePointImportService;
   }
 
   @AfterEach
@@ -204,98 +197,21 @@ public class ServicePointVersionRepositoryTest {
 
     assertThat(servicePointCsvModels).hasSize(10);
 
-    List<ServicePointVersion> servicePointVersionsSaved = new ArrayList<>();
-    for (ServicePointCsvModel csvModel : servicePointCsvModels) {
-      // GeoLocation
-      ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation.builder()
-          .source_spatial_ref(1) // TODO: no attribute in Dienststellen_ALL
-          .lv03east(csvModel.getE_LV03())
-          .lv03north(csvModel.getN_LV03())
-          .lv95east(csvModel.getE_LV95())
-          .lv95north(csvModel.getN_LV95())
-          .wgs84east(csvModel.getE_WGS84())
-          .wgs84north(csvModel.getN_WGS84())
-          .height(csvModel.getHEIGHT())
-          .isoCountryCode(Country.from(csvModel.getLAENDERCODE()).getIsoCode()) // TODO: check with Marek
-          .swissCantonFsoNumber(5) // TODO: Marek
-          .swissCantonName("Bern") // TODO: Marek
-          .swissCantonNumber(5) // TODO: Marek
-          .swissDistrictName("Bern") // TODO: Marek
-          .swissDistrictNumber(5) // TODO: Marek
-          .swissMunicipalityName("Bern") // TODO: Marek
-          .swissLocalityName("Bern") // TODO: Marek
-          .creationDate(LocalDateTime.parse(csvModel.getERSTELLT_AM(),
-              new DateTimeFormatterBuilder()
-                  .parseCaseInsensitive()
-                  .append(ISO_LOCAL_DATE)
-                  .appendLiteral(' ')
-                  .append(ISO_LOCAL_TIME)
-                  .toFormatter()
-          ))
-          .creator(csvModel.getERSTELLT_VON())
-          .editionDate(LocalDateTime.parse(csvModel.getGEAENDERT_AM(),
-              new DateTimeFormatterBuilder()
-                  .parseCaseInsensitive()
-                  .append(ISO_LOCAL_DATE)
-                  .appendLiteral(' ')
-                  .append(ISO_LOCAL_TIME)
-                  .toFormatter()
-          ))
-          .editor(csvModel.getGEAENDERT_VON())
-          .build();
-      // ServicePoint
-      ServicePointVersion servicePoint = ServicePointVersion.builder()
-          .number(csvModel.getDIDOK_CODE())
-          .sloid(csvModel.getSLOID())
-          .checkDigit(csvModel.getDIDOK_CODE() % 10)
-          .numberShort(csvModel.getNUMMER())
-          .country(Country.from(csvModel.getLAENDERCODE()))
-          .designationLong(csvModel.getBEZEICHNUNG_LANG())
-          .designationOfficial(csvModel.getBEZEICHNUNG_OFFIZIELL())
-          .abbreviation(csvModel.getABKUERZUNG())
-          .statusDidok3(ServicePointStatus.from(csvModel.getSTATUS()))
-          .businessOrganisation(csvModel.getGO_NUMMER().toString()) // TODO: map to sboid GO_Export.csv
-          .hasGeolocation(!csvModel.getIS_VIRTUELL())
-          .status(Status.VALIDATED)
-          .validFrom(LocalDate.parse(csvModel.getGUELTIG_VON()))
-          .validTo(LocalDate.parse(csvModel.getGUELTIG_BIS()))
-          .categories(
-              Arrays.stream(Objects.nonNull(csvModel.getDS_KATEGORIEN_IDS()) ? csvModel.getDS_KATEGORIEN_IDS().split("\\|") :
-                      new String[]{})
-                  .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
-                  .filter(Objects::nonNull).collect(Collectors.toSet())
-          )
-          .operatingPointType(OperatingPointType.from(csvModel.getBPVB_BETRIEBSPUNKT_ART_ID()))
-          .servicePointGeolocation(servicePointGeolocation)
-          .creationDate(LocalDateTime.parse(csvModel.getERSTELLT_AM(),
-              new DateTimeFormatterBuilder()
-                  .parseCaseInsensitive()
-                  .append(ISO_LOCAL_DATE)
-                  .appendLiteral(' ')
-                  .append(ISO_LOCAL_TIME)
-                  .toFormatter()
-          ))
-          .creator(csvModel.getERSTELLT_VON())
-          .editionDate(LocalDateTime.parse(csvModel.getGEAENDERT_AM(),
-              new DateTimeFormatterBuilder()
-                  .parseCaseInsensitive()
-                  .append(ISO_LOCAL_DATE)
-                  .appendLiteral(' ')
-                  .append(ISO_LOCAL_TIME)
-                  .toFormatter()
-          ))
-          .editor(csvModel.getGEAENDERT_VON())
-          .build();
-      servicePointGeolocation.setServicePointVersion(servicePoint);
-      //servicePointVersionsSaved.add(servicePointVersionRepository.save(servicePoint));
-      //servicePointGeolocationRepository.save(servicePointGeolocation);
-      servicePointGeolocationRepository.save(servicePointGeolocation);
-    }
+    servicePointImportService.importSPCsvModel(servicePointCsvModels);
 
-    assertThat(servicePointVersionsSaved).hasSize(10);
-    for (ServicePointVersion savedVersion : servicePointVersionsSaved) {
-      assertThat(savedVersion.getId()).isNotNull();
-    }
+    assertThat(servicePointVersionRepository.findAll()).hasSize(10);
+  }
+
+  @Test
+  void parseFirst10LinesFromDienststellenAllV3CsvAndSaveToDBFromGeolocationRepo() throws IOException {
+    InputStream csvStream = this.getClass().getResourceAsStream("/DienststellenV3.csv");
+    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+
+    assertThat(servicePointCsvModels).hasSize(10);
+
+    servicePointImportService.importSPCsvModel(servicePointCsvModels);
+
+    assertThat(servicePointVersionRepository.findAll()).hasSize(10);
   }
   // ----------------------------------
   // Dienststellen All V3 Csv Import Tests End
