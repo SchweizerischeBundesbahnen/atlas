@@ -152,40 +152,12 @@ CREATE TABLE service_point_version_means_of_transport
 );
 
 -----------------------------------------------------------------------------------------
--- Traffic Point Element - VERKEHRSPUNKT_ELEMENTE
------------------------------------------------------------------------------------------
-
-CREATE TABLE traffic_point_element_version
-(
-    id                         BIGINT PRIMARY KEY,
-    sloid                      VARCHAR(500) NOT NULL,
-    parent_sloid               VARCHAR(500),
-    designation                VARCHAR(50),
-    designation_operational    VARCHAR(50),
-    traffic_point_element_type VARCHAR(50),
-    length                     BIGINT,
-    boarding_area_height       BIGINT,
-    compass_direction          BIGINT,
-    service_point_number       BIGINT       NOT NULL,
-    valid_from                 DATE         NOT NULL,
-    valid_to                   DATE         NOT NULL,
-    creation_date              TIMESTAMP    NOT NULL,
-    creator                    VARCHAR(50)  NOT NULL,
-    edition_date               TIMESTAMP    NOT NULL,
-    editor                     VARCHAR(50)  NOT NULL,
-    version                    BIGINT       NOT NULL DEFAULT 0
-);
-
-CREATE SEQUENCE traffic_point_element_version_seq START WITH 1000 INCREMENT BY 1;
-
------------------------------------------------------------------------------------------
 -- Traffic Point Version Geolocation - VERKEHRSPUNKT_ELEMENTE_FC
 -----------------------------------------------------------------------------------------
 
 CREATE TABLE traffic_point_element_version_geolocation
 (
     id                               BIGINT PRIMARY KEY,
-    traffic_point_element_version_id BIGINT       NOT NULL,
     source_spatial_ref               INTEGER      NOT NULL,
     e_lv03                           NUMERIC      NULL,
     n_lv03                           NUMERIC      NULL,
@@ -206,10 +178,38 @@ CREATE TABLE traffic_point_element_version_geolocation
     creator                          VARCHAR(50)  NOT NULL,
     edition_date                     TIMESTAMP    NOT NULL,
     editor                           VARCHAR(50)  NOT NULL,
-    version                          BIGINT       NOT NULL DEFAULT 0,
-    CONSTRAINT fk_traffic_point_element_version_id
-        FOREIGN KEY (traffic_point_element_version_id)
-            REFERENCES traffic_point_element_version (id)
+    version                          BIGINT       NOT NULL DEFAULT 0
 );
 
 CREATE SEQUENCE traffic_point_element_version_geolocation_seq START WITH 1000 INCREMENT BY 1;
+
+-----------------------------------------------------------------------------------------
+-- Traffic Point Element - VERKEHRSPUNKT_ELEMENTE
+-----------------------------------------------------------------------------------------
+
+CREATE TABLE traffic_point_element_version
+(
+    id                         BIGINT PRIMARY KEY,
+    sloid                      VARCHAR(500) NOT NULL,
+    parent_sloid               VARCHAR(500),
+    designation                VARCHAR(50),
+    designation_operational    VARCHAR(50),
+    traffic_point_element_type VARCHAR(50),
+    length                     BIGINT,
+    boarding_area_height       BIGINT,
+    compass_direction          BIGINT,
+    service_point_number       BIGINT       NOT NULL,
+    valid_from                 DATE         NOT NULL,
+    valid_to                   DATE         NOT NULL,
+    geolocation_id             BIGINT,
+    creation_date              TIMESTAMP    NOT NULL,
+    creator                    VARCHAR(50)  NOT NULL,
+    edition_date               TIMESTAMP    NOT NULL,
+    editor                     VARCHAR(50)  NOT NULL,
+    version                    BIGINT       NOT NULL DEFAULT 0,
+    CONSTRAINT fk_traffic_point_element_version_geolocation_id
+        FOREIGN KEY (geolocation_id)
+            REFERENCES traffic_point_element_version_geolocation (id)
+);
+
+CREATE SEQUENCE traffic_point_element_version_seq START WITH 1000 INCREMENT BY 1;
