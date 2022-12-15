@@ -29,7 +29,7 @@ public class ServicePointGeolocation extends BaseEntity {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "service_point_version_id", referencedColumnName = "id")
   private ServicePointVersion servicePointVersion;
 
@@ -66,7 +66,7 @@ public class ServicePointGeolocation extends BaseEntity {
 
   @AtlasVersionableProperty
   @Size(max = 2)
-  private String isoCountryCode;
+  private String isoCountryCode; // TODO: Country enum // ServicePoint-Country = UserEvent, Geolocation-Country=SystemEvent
 
   @AtlasVersionableProperty
   private Integer swissCantonFsoNumber;
@@ -77,7 +77,6 @@ public class ServicePointGeolocation extends BaseEntity {
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String swissCantonName;
-
 
   @AtlasVersionableProperty
   private Integer swissDistrictNumber;
