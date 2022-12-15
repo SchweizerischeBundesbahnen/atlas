@@ -111,6 +111,16 @@ So you want to use AzureAD to login your users?
 
 Finding an application within the registry is best performed by using the GET /v1/applications and look for a name.
 
+### Test Service Worker:
+
+1. Build application `npm run build`
+2. Install http-server `npm install --global http-server`
+3. Run the Server via `http-server -p 8080 -c-1 dist/atlas-frontend`
+4. Open up Atlas and close the tab again
+5. Make some local changes
+6. Build and run the server again `npm run build && http-server -p 8080 -c-1 dist/atlas-frontend`
+7. You should get the Service Worker Popup now :)
+
 ## Monitoring and Logging
 
 - [Logging to Splunk](documentation/Logging.md)
