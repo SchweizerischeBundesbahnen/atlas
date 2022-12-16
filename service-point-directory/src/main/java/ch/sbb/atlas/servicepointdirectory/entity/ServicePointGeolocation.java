@@ -65,4 +65,8 @@ public class ServicePointGeolocation extends BaseEntity {
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String swissLocalityName;
+
+  public boolean isValid() {
+    return locationTypes.isValid();
+  }
 }
