@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
@@ -63,8 +64,8 @@ public class ServicePointGeolocation extends BaseEntity {
   private Double height;
 
   @AtlasVersionableProperty
-  @Size(max = 2)
-  private String isoCountryCode; // TODO: Country enum // ServicePoint-Country = UserEvent, Geolocation-Country=SystemEvent
+  @Enumerated(EnumType.STRING)
+  private Country country; // ServicePoint-Country = UserEvent, Geolocation-Country=SystemEvent
 
   @AtlasVersionableProperty
   private Integer swissCantonFsoNumber;
