@@ -6,6 +6,7 @@ import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -44,37 +45,8 @@ public class TrafficPointElementGeolocation extends BaseEntity {
   @OneToOne(mappedBy = "trafficPointElementGeolocation")
   private TrafficPointElementVersion trafficPointElementVersion;
 
-  @NotNull
-  @AtlasVersionableProperty
-  @Enumerated(EnumType.STRING)
-  private SpatialReference spatialReference;
-
-  @AtlasVersionableProperty
-  @Column(name = "e_lv03")
-  private Double lv03east;
-
-  @AtlasVersionableProperty
-  @Column(name = "n_lv03")
-  private Double lv03north;
-
-  @AtlasVersionableProperty
-  @Column(name = "e_lv95")
-  private Double lv95east;
-
-  @AtlasVersionableProperty
-  @Column(name = "n_lv95")
-  private Double lv95north;
-
-  @AtlasVersionableProperty
-  @Column(name = "e_wgs84")
-  private Double wgs84east;
-
-  @AtlasVersionableProperty
-  @Column(name = "n_wgs84")
-  private Double wgs84north;
-
-  @AtlasVersionableProperty
-  private Double height;
+  @Embedded
+  private LocationTypes locationTypes;
 
   @AtlasVersionableProperty
   @Enumerated(EnumType.STRING)

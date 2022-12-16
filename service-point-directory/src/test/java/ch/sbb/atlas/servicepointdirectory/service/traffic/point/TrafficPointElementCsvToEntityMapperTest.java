@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.traffic.point;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.servicepointdirectory.entity.LocationTypes;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
@@ -33,14 +34,18 @@ class TrafficPointElementCsvToEntityMapperTest {
 
     // when & then
     TrafficPointElementGeolocation trafficPointElementGeolocation = TrafficPointElementGeolocation.builder()
-        .spatialReference(SpatialReference.LV95)
-        .lv03east(505236.389)
-        .lv03north(116323.213)
-        .lv95east(2505236.389)
-        .lv95north(1116323.213)
-        .wgs84east(6.21113066932)
-        .wgs84north(46.19168377866)
-        .height(-9999.0)
+        .locationTypes(LocationTypes.builder()
+          .spatialReference(SpatialReference.LV95)
+          .lv03east(505236.389)
+          .lv03north(116323.213)
+          .lv95east(2505236.389)
+          .lv95north(1116323.213)
+          .wgs84east(6.21113066932)
+          .wgs84north(46.19168377866)
+          .wgs84webEast(691419.90336)
+          .wgs84webNorth(5811120.06939)
+          .height(-9999.0)
+          .build())
         .country(Country.FRANCE_BUS)
         .creationDate(LocalDateTime.of(2019,12,6,8,2,34))
         .creator("fs45117")

@@ -27,42 +27,15 @@ public class ServicePointGeolocation extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
-  @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
+  @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1,
+      initialValue = 1000)
   private Long id;
 
   @OneToOne(mappedBy = "servicePointGeolocation")
   private ServicePointVersion servicePointVersion;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private SpatialReference spatialReference;
-
-  @AtlasVersionableProperty
-  @Column(name = "e_lv03")
-  private Double lv03east;
-
-  @AtlasVersionableProperty
-  @Column(name = "n_lv03")
-  private Double lv03north;
-
-  @AtlasVersionableProperty
-  @Column(name = "e_lv95")
-  private Double lv95east;
-
-  @AtlasVersionableProperty
-  @Column(name = "n_lv95")
-  private Double lv95north;
-
-  @AtlasVersionableProperty
-  @Column(name = "e_wgs84")
-  private Double wgs84east;
-
-  @AtlasVersionableProperty
-  @Column(name = "n_wgs84")
-  private Double wgs84north;
-
-  @AtlasVersionableProperty
-  private Double height;
+  @Embedded
+  private LocationTypes locationTypes;
 
   @AtlasVersionableProperty
   @Enumerated(EnumType.STRING)

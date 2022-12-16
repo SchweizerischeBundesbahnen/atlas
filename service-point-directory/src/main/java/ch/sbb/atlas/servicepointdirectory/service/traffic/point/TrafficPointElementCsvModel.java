@@ -66,6 +66,11 @@ public class TrafficPointElementCsvModel {
   @JsonProperty("N_WGS84")
   private Double nWgs84;
 
+  @JsonProperty("E_WGS84WEB")
+  private Double eWgs84web;
+  @JsonProperty("N_WGS84WEB")
+  private Double nWgs84web;
+
   @JsonProperty("Z_LV95")
   private Double height;
 
