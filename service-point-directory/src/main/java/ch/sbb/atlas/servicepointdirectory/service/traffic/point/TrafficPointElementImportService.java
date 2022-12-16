@@ -2,10 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.service.traffic.point;
 
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,14 +28,8 @@ public class TrafficPointElementImportService {
 
   public static List<TrafficPointElementCsvModel> parseTrafficPointElementss(InputStream inputStream)
       throws IOException {
-    CsvMapper mapper = new CsvMapper().enable(Feature.EMPTY_STRING_AS_NULL);
-    CsvSchema csvSchema = CsvSchema.emptySchema()
-        .withHeader()
-        .withColumnSeparator(';')
-        .withEscapeChar('\\');
-
-    MappingIterator<TrafficPointElementCsvModel> mappingIterator = mapper.readerFor(
-        TrafficPointElementCsvModel.class).with(csvSchema).readValues(inputStream);
+    MappingIterator<TrafficPointElementCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        TrafficPointElementCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
     List<TrafficPointElementCsvModel> trafficPointElements = new ArrayList<>();
     while (mappingIterator.hasNext()) {
       trafficPointElements.add(mappingIterator.next());

@@ -2,8 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.service.traffic.point;
 
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
-import java.util.Optional;
 import java.util.function.Function;
 
 public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPointElementCsvModel, TrafficPointElementVersion> {
@@ -12,6 +12,7 @@ public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPoi
   public TrafficPointElementVersion apply(TrafficPointElementCsvModel trafficPointElementCsvModel) {
     TrafficPointElementGeolocation geolocation = TrafficPointElementGeolocation.builder()
         .spatialReference(trafficPointElementCsvModel.getSpatialReference())
+        .country(Country.from(trafficPointElementCsvModel.getCountry()))
         .lv03east(trafficPointElementCsvModel.getELv03())
         .lv03north(trafficPointElementCsvModel.getNLv03())
         .lv95east(trafficPointElementCsvModel.getELv95())

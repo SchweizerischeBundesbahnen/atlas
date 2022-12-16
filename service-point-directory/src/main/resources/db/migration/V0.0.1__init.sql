@@ -165,7 +165,7 @@ CREATE TABLE traffic_point_element_version_geolocation
     e_wgs84                 NUMERIC      NULL,
     n_wgs84                 NUMERIC      NULL,
     height                  NUMERIC      NULL,
-    iso_country_code        VARCHAR(2)   NULL,
+    country                 VARCHAR(50)  NULL,
     swiss_canton_fso_number SMALLINT     NULL,
     swiss_canton_name       VARCHAR(50)  NULL,
     swiss_canton_number     SMALLINT     NULL,

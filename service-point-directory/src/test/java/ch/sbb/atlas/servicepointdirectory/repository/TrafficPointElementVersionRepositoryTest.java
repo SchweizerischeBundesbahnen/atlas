@@ -82,7 +82,7 @@ public class TrafficPointElementVersionRepositoryTest {
         .wgs84east(7.43913089)
         .wgs84north(46.94883229)
         .height(540.2)
-        .isoCountryCode(Country.SWITZERLAND.getIsoCode())
+        .country(Country.SWITZERLAND)
         .swissCantonFsoNumber(5)
         .swissCantonName("Bern")
         .swissCantonNumber(5)
