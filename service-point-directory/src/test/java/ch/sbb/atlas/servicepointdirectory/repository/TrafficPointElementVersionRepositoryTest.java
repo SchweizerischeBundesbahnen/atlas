@@ -6,6 +6,7 @@ import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -73,7 +74,7 @@ public class TrafficPointElementVersionRepositoryTest {
   void shouldSaveTrafficPointElementVersionWithGeolocation() {
     // given
     TrafficPointElementGeolocation trafficPointElementGeolocation = TrafficPointElementGeolocation.builder()
-        .source_spatial_ref(1)
+        .spatialReference(SpatialReference.LV03)
         .lv03east(600037.945)
         .lv03north(199749.812)
         .lv95east(2600037.945)

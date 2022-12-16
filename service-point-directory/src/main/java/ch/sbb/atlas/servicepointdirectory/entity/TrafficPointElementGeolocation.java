@@ -3,8 +3,11 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +45,8 @@ public class TrafficPointElementGeolocation extends BaseEntity {
 
   @NotNull
   @AtlasVersionableProperty
-  private Integer source_spatial_ref;
+  @Enumerated(EnumType.STRING)
+  private SpatialReference spatialReference;
 
   @AtlasVersionableProperty
   @Column(name = "e_lv03")
