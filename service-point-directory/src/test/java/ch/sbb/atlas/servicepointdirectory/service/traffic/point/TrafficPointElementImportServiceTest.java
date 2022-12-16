@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TrafficPointElementImportServiceTest {
 
+  private static final String CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221216011554.csv";
+
   @Autowired
   private TrafficPointElementImportService trafficPointElementImportService;
 
@@ -23,7 +25,7 @@ public class TrafficPointElementImportServiceTest {
 
   @Test
   void shouldParseCsvSuccessfully() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221214011657.csv");
+    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElementss(csvStream);
 
     assertThat(trafficPointElementCsvModels).isNotEmpty();
@@ -31,12 +33,12 @@ public class TrafficPointElementImportServiceTest {
 
   @Test
   void shouldSaveParsedCsvToDb() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221214011657.csv");
+    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElementss(csvStream);
 
     trafficPointElementImportService.importTrafficPointElements(trafficPointElementCsvModels);
 
-    assertThat(trafficPointElementVersionRepository.count()).isEqualTo(58995);
+    assertThat(trafficPointElementVersionRepository.count()).isEqualTo(59055);
   }
 
 }
