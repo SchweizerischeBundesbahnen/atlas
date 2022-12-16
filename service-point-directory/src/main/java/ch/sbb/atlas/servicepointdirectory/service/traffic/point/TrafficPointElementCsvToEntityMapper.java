@@ -10,12 +10,8 @@ public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPoi
 
   @Override
   public TrafficPointElementVersion apply(TrafficPointElementCsvModel trafficPointElementCsvModel) {
-    //TODO: fallback entfernen, wenn in csv geliefert
-    String createdBy = Optional.ofNullable(trafficPointElementCsvModel.getCreatedBy()).orElse("fxatlsy");
-    String editedBy = Optional.ofNullable(trafficPointElementCsvModel.getEditedBy()).orElse("fxatlsy");
-
     TrafficPointElementGeolocation geolocation = TrafficPointElementGeolocation.builder()
-        .source_spatial_ref(1) //TODO: Marek liefert dies dann im CSV
+        .spatialReference(trafficPointElementCsvModel.getSpatialReference())
         .lv03east(trafficPointElementCsvModel.getELv03())
         .lv03north(trafficPointElementCsvModel.getNLv03())
         .lv95east(trafficPointElementCsvModel.getELv95())
@@ -23,9 +19,9 @@ public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPoi
         .wgs84east(trafficPointElementCsvModel.getEWgs84())
         .wgs84north(trafficPointElementCsvModel.getNWgs84())
         .height(trafficPointElementCsvModel.getHeight())
-        .creator(createdBy)
+        .creator(trafficPointElementCsvModel.getCreatedBy())
         .creationDate(trafficPointElementCsvModel.getCreatedAt())
-        .editor(editedBy)
+        .editor(trafficPointElementCsvModel.getEditedBy())
         .editionDate(trafficPointElementCsvModel.getEditedAt())
         .build();
 
@@ -41,9 +37,9 @@ public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPoi
         .parentSloid(trafficPointElementCsvModel.getParentSloid())
         .validFrom(trafficPointElementCsvModel.getValidFrom())
         .validTo(trafficPointElementCsvModel.getValidTo())
-        .creator(createdBy)
+        .creator(trafficPointElementCsvModel.getCreatedBy())
         .creationDate(trafficPointElementCsvModel.getCreatedAt())
-        .editor(editedBy)
+        .editor(trafficPointElementCsvModel.getEditedBy())
         .editionDate(trafficPointElementCsvModel.getEditedAt())
         .trafficPointElementGeolocation(geolocation)
         .build();
