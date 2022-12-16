@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.traffic.point;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateTimeDeserializer;
+import ch.sbb.atlas.servicepointdirectory.service.deserializer.NumericBooleanDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -47,6 +48,11 @@ public class TrafficPointElementCsvModel {
 
   @JsonProperty("BPVE_TYPE")
   private Integer trafficPointElementType;
+
+  @JsonProperty("IS_VIRTUELL")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean IS_VIRTUELL;
+
 
   @JsonProperty("SOURCE_SPATIAL_REF")
   private SpatialReference spatialReference;
