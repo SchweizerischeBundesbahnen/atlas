@@ -2,10 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.service.loading.point;
 
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointRepository;
+import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,14 +28,8 @@ public class LoadingPointImportService {
 
   static List<LoadingPointCsvModel> parseLoadingPoints(InputStream inputStream)
       throws IOException {
-    CsvMapper mapper = new CsvMapper().enable(Feature.EMPTY_STRING_AS_NULL);
-    CsvSchema csvSchema = CsvSchema.emptySchema()
-        .withHeader()
-        .withColumnSeparator(';')
-        .withEscapeChar('\\');
-
-    MappingIterator<LoadingPointCsvModel> mappingIterator = mapper.readerFor(
-        LoadingPointCsvModel.class).with(csvSchema).readValues(inputStream);
+    MappingIterator<LoadingPointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        LoadingPointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
     List<LoadingPointCsvModel> loadingPoints = new ArrayList<>();
     while (mappingIterator.hasNext()) {
       loadingPoints.add(mappingIterator.next());
