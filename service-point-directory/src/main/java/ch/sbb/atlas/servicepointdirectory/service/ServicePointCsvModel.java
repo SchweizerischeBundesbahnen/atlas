@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -108,10 +109,12 @@ public class ServicePointCsvModel {
   private String ID;
 
   @JsonProperty("ERSTELLT_AM")
-  private String ERSTELLT_AM; // TODO: date
+  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+  private LocalDateTime ERSTELLT_AM;
 
   @JsonProperty("GEAENDERT_AM")
-  private String GEAENDERT_AM; // TODO: date
+  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+  private LocalDateTime GEAENDERT_AM;
 
   @JsonProperty("BP_ART_BEZEICHNUNG_DE")
   private String BP_ART_BEZEICHNUNG_DE;
