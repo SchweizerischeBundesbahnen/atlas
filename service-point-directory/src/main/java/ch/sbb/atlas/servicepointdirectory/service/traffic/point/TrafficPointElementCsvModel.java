@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.traffic.point;
 
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.service.LocalDateDeserializer;
-import ch.sbb.atlas.servicepointdirectory.service.LocalDateTimeDeserializer;
+import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

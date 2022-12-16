@@ -4,34 +4,34 @@
 
 CREATE TABLE service_point_version_geolocation
 (
-    id                       BIGINT PRIMARY KEY,
-    source_spatial_ref       INTEGER      NOT NULL,
-    e_lv03                   NUMERIC      NULL,
-    n_lv03                   NUMERIC      NULL,
-    e_lv95                   NUMERIC      NULL,
-    n_lv95                   NUMERIC      NULL,
-    e_wgs84                  NUMERIC      NULL,
-    n_wgs84                  NUMERIC      NULL,
-    height                   NUMERIC      NULL,
-    country                  VARCHAR(50)  NULL,
-    swiss_canton_fso_number  SMALLINT     NULL,
-    swiss_canton_name        VARCHAR(50)  NULL,
-    swiss_canton_number      SMALLINT     NULL,
-    swiss_district_name      VARCHAR(255) NULL,
-    swiss_district_number    SMALLINT     NULL,
-    swiss_municipality_name  VARCHAR(255) NULL,
-    swiss_locality_name      VARCHAR(255) NULL,
-    creation_date            TIMESTAMP    NOT NULL,
-    creator                  VARCHAR(50)  NOT NULL,
-    edition_date             TIMESTAMP    NOT NULL,
-    editor                   VARCHAR(50)  NOT NULL,
-    version                  BIGINT       NOT NULL DEFAULT 0
+    id                      BIGINT PRIMARY KEY,
+    spatial_reference       VARCHAR(50)  NOT NULL,
+    e_lv03                  NUMERIC      NULL,
+    n_lv03                  NUMERIC      NULL,
+    e_lv95                  NUMERIC      NULL,
+    n_lv95                  NUMERIC      NULL,
+    e_wgs84                 NUMERIC      NULL,
+    n_wgs84                 NUMERIC      NULL,
+    height                  NUMERIC      NULL,
+    country                 VARCHAR(50)  NULL,
+    swiss_canton_fso_number SMALLINT     NULL,
+    swiss_canton_name       VARCHAR(50)  NULL,
+    swiss_canton_number     SMALLINT     NULL,
+    swiss_district_name     VARCHAR(255) NULL,
+    swiss_district_number   SMALLINT     NULL,
+    swiss_municipality_name VARCHAR(255) NULL,
+    swiss_locality_name     VARCHAR(255) NULL,
+    creation_date           TIMESTAMP    NOT NULL,
+    creator                 VARCHAR(50)  NOT NULL,
+    edition_date            TIMESTAMP    NOT NULL,
+    editor                  VARCHAR(50)  NOT NULL,
+    version                 BIGINT       NOT NULL DEFAULT 0
 );
 
 CREATE SEQUENCE service_point_version_geolocation_seq START WITH 1000 INCREMENT BY 1;
 
 -- search api field indexes
-CREATE INDEX spvgeo_spatialref_idx ON service_point_version_geolocation (source_spatial_ref);
+CREATE INDEX spvgeo_spatialref_idx ON service_point_version_geolocation (spatial_reference);
 CREATE INDEX spvgeo_coordlv03_idx ON service_point_version_geolocation (e_lv03, n_lv03);
 CREATE INDEX spvgeo_coordlv95_idx ON service_point_version_geolocation (e_lv95, n_lv95);
 CREATE INDEX spvgeo_coordwgs84_idx ON service_point_version_geolocation (e_wgs84, n_wgs84);
