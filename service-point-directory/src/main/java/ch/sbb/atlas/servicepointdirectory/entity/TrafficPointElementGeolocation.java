@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "trafficPointElementVersion")
 @SuperBuilder
 @FieldNameConstants
 @Entity(name = "traffic_point_element_version_geolocation")
@@ -76,8 +77,8 @@ public class TrafficPointElementGeolocation extends BaseEntity {
   private Double height;
 
   @AtlasVersionableProperty
-  @Size(max = 2)
-  private String isoCountryCode;
+  @Enumerated(EnumType.STRING)
+  private Country country;
 
   @AtlasVersionableProperty
   private Integer swissCantonFsoNumber;
