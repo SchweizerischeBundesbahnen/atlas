@@ -130,7 +130,7 @@ CREATE TABLE loading_point_version
     designation          VARCHAR(12) NOT NULL,
     designation_long     VARCHAR(35),
     connection_point     BOOLEAN     NOT NULL,
-    service_point_number BIGINT      NOT NULL,
+    service_point_number INTEGER      NOT NULL,
     valid_from           DATE        NOT NULL,
     valid_to             DATE        NOT NULL,
     creation_date        TIMESTAMP   NOT NULL,
@@ -198,9 +198,9 @@ CREATE TABLE traffic_point_element_version
     designation                VARCHAR(50),
     designation_operational    VARCHAR(50),
     traffic_point_element_type VARCHAR(50),
-    length                     BIGINT,
-    boarding_area_height       BIGINT,
-    compass_direction          BIGINT,
+    length                     NUMERIC(13,2),
+    boarding_area_height       NUMERIC(5,2), -- 0-100cm
+    compass_direction          NUMERIC(5,2), -- 0-360.00
     service_point_number       BIGINT       NOT NULL,
     valid_from                 DATE         NOT NULL,
     valid_to                   DATE         NOT NULL,

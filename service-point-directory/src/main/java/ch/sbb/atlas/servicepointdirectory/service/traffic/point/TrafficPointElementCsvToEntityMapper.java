@@ -15,6 +15,7 @@ public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPoi
   @Override
   public TrafficPointElementVersion apply(TrafficPointElementCsvModel trafficPointElementCsvModel) {
     TrafficPointElementGeolocation geolocation = null;
+    // TODO stam: since 17.12.2023 new flag in CSV - use // if (!trafficPointElementCsvModel.getIS_VIRTUELL()) {
     if (trafficPointElementCsvModel.getEWgs84() != null) {
       geolocation = TrafficPointElementGeolocation.builder()
         .country(Country.from(trafficPointElementCsvModel.getCountry()))
