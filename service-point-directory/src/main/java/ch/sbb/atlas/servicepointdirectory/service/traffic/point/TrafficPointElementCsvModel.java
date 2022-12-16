@@ -21,6 +21,9 @@ public class TrafficPointElementCsvModel {
   @JsonProperty("SLOID")
   private String sloid;
 
+  @JsonProperty("DS_LAENDERCODE")
+  private Integer country;
+
   @JsonProperty("DIDOK_CODE")
   private Integer servicePointNumber;
 
