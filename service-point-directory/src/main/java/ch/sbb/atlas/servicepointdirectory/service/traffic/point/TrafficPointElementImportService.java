@@ -26,7 +26,7 @@ public class TrafficPointElementImportService {
     trafficPointElementVersionRepository.saveAll(trafficPointElementVersions);
   }
 
-  public static List<TrafficPointElementCsvModel> parseTrafficPointElementss(InputStream inputStream)
+  public static List<TrafficPointElementCsvModel> parseTrafficPointElements(InputStream inputStream)
       throws IOException {
     MappingIterator<TrafficPointElementCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
         TrafficPointElementCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
