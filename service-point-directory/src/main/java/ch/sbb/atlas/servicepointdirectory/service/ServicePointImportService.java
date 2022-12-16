@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
 import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.servicepointdirectory.entity.LocationTypes;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
@@ -64,14 +65,19 @@ public class ServicePointImportService {
     ServicePointGeolocation servicePointGeolocation = null;
     if (!csvModel.getIS_VIRTUELL()) {
       servicePointGeolocation = ServicePointGeolocation.builder()
-          .spatialReference(csvModel.getSpatialReference())
-          .lv03east(csvModel.getE_LV03())
-          .lv03north(csvModel.getN_LV03())
-          .lv95east(csvModel.getE_LV95())
-          .lv95north(csvModel.getN_LV95())
-          .wgs84east(csvModel.getE_WGS84())
-          .wgs84north(csvModel.getN_WGS84())
-          .height(csvModel.getHEIGHT())
+          .locationTypes(LocationTypes
+              .builder()
+              .spatialReference(csvModel.getSpatialReference())
+              .lv03east(csvModel.getE_LV03())
+              .lv03north(csvModel.getN_LV03())
+              .lv95east(csvModel.getE_LV95())
+              .lv95north(csvModel.getN_LV95())
+              .wgs84east(csvModel.getE_WGS84())
+              .wgs84north(csvModel.getN_WGS84())
+              .wgs84webEast(csvModel.getE_WGS84WEB())
+              .wgs84webNorth(csvModel.getN_WGS84WEB())
+              .height(csvModel.getHEIGHT())
+              .build())
           .country(Country.from(csvModel.getLAENDERCODE()))
           .swissCantonFsoNumber(csvModel.getBFS_NUMMER())
           .swissCantonName(csvModel.getKANTONSNAME())
