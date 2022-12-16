@@ -1,6 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Arrays;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -23,12 +25,15 @@ public enum MeanOfTransport {
 
     ;
 
-    private final Integer rank;
-    private final String code;
-    private final String name;
-    private final String nameDe;
-    private final String nameFr;
-    private final String nameEn;
-    private final String nameIt;
+  private final Integer rank;
+  private final String code;
+  private final String name;
+  private final String nameDe;
+  private final String nameFr;
+  private final String nameEn;
+  private final String nameIt;
 
+  public static MeanOfTransport from(String code) {
+    return Arrays.stream(MeanOfTransport.values()).filter(el -> Objects.equals(el.code, code)).findFirst().orElse(UNKNOWN);
+  }
 }
