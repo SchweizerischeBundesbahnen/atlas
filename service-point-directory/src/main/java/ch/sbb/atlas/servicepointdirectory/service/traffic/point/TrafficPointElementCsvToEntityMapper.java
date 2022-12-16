@@ -5,13 +5,18 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
+import java.util.Objects;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPointElementCsvModel, TrafficPointElementVersion> {
 
   @Override
   public TrafficPointElementVersion apply(TrafficPointElementCsvModel trafficPointElementCsvModel) {
-    TrafficPointElementGeolocation geolocation = TrafficPointElementGeolocation.builder()
+    TrafficPointElementGeolocation geolocation = null;
+    if (trafficPointElementCsvModel.getEWgs84() != null) {
+      geolocation = TrafficPointElementGeolocation.builder()
         .country(Country.from(trafficPointElementCsvModel.getCountry()))
         .locationTypes(LocationTypes.builder()
           .spatialReference(trafficPointElementCsvModel.getSpatialReference())
@@ -30,6 +35,12 @@ public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPoi
         .editor(trafficPointElementCsvModel.getEditedBy())
         .editionDate(trafficPointElementCsvModel.getEditedAt())
         .build();
+
+      if (!geolocation.isValid()) {
+        log.warn("Invalid geolocation for traffic point %s, therefore won't be imported: %s".formatted(trafficPointElementCsvModel.getSloid(), geolocation));
+        geolocation = null;
+      }
+    }
 
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
         .designation(trafficPointElementCsvModel.getDesignation())
@@ -50,7 +61,9 @@ public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPoi
         .trafficPointElementGeolocation(geolocation)
         .build();
 
-    geolocation.setTrafficPointElementVersion(trafficPointElementVersion);
+    if (Objects.nonNull(geolocation)) {
+      geolocation.setTrafficPointElementVersion(trafficPointElementVersion);
+    }
 
     return trafficPointElementVersion;
   }

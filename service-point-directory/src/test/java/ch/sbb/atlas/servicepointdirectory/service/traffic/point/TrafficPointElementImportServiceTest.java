@@ -26,7 +26,7 @@ public class TrafficPointElementImportServiceTest {
   @Test
   void shouldParseCsvSuccessfully() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElementss(csvStream);
+    List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElements(csvStream);
 
     assertThat(trafficPointElementCsvModels).isNotEmpty();
   }
@@ -34,7 +34,7 @@ public class TrafficPointElementImportServiceTest {
   @Test
   void shouldSaveParsedCsvToDb() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElementss(csvStream);
+    List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElements(csvStream);
 
     trafficPointElementImportService.importTrafficPointElements(trafficPointElementCsvModels);
 
