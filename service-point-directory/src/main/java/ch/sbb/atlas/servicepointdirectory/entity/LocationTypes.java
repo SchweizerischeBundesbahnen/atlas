@@ -63,4 +63,8 @@ public class LocationTypes {
 
   @AtlasVersionableProperty
   private Double height;
+
+  public boolean isValid() {
+    return (wgs84east >= -180 && wgs84east <= 180 && wgs84north >= -90 && wgs84north <= 90);
+  }
 }
