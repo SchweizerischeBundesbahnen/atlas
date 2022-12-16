@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.traffic.point;
 
+import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.service.LocalDateDeserializer;
 import ch.sbb.atlas.servicepointdirectory.service.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,6 +44,9 @@ public class TrafficPointElementCsvModel {
 
   @JsonProperty("BPVE_TYPE")
   private Integer trafficPointElementType;
+
+  @JsonProperty("SOURCE_SPATIAL_REF")
+  private SpatialReference spatialReference;
 
   @JsonProperty("E_LV95")
   private Double eLv95;
