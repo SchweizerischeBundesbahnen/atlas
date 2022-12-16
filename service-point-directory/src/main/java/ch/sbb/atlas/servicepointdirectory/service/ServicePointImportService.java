@@ -91,6 +91,9 @@ public class ServicePointImportService {
           .editionDate(csvModel.getGEAENDERT_AM())
           .editor(csvModel.getGEAENDERT_VON())
           .build();
+      if (!servicePointGeolocation.isValid()) {
+        servicePointGeolocation = null;
+      }
     }
 
     ServicePointVersion servicePoint = ServicePointVersion.builder()
