@@ -1,5 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
+import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateTimeDeserializer;
+import ch.sbb.atlas.servicepointdirectory.service.deserializer.NumericBooleanDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -319,6 +322,9 @@ public class ServicePointCsvModel {
 
   @JsonProperty("SLOID")
   private String SLOID;
+
+  @JsonProperty("SOURCE_SPATIAL_REF")
+  private SpatialReference spatialReference;
 
   @JsonProperty("E_LV03")
   private Double E_LV03;

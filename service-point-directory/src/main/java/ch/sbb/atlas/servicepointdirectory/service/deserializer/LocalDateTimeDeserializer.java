@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service;
+package ch.sbb.atlas.servicepointdirectory.service.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -21,7 +21,7 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
       } catch (DateTimeParseException exception) {
         throw new IllegalArgumentException(
             jsonParser.getText() + " not valid for " + jsonParser.getCurrentName() + " lineNumber:" + jsonParser.currentLocation()
-                .getLineNr());
+                .getLineNr(), exception);
       }
     }
   }
