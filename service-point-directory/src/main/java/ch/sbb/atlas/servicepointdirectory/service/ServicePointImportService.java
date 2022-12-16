@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -65,7 +64,7 @@ public class ServicePointImportService {
     ServicePointGeolocation servicePointGeolocation = null;
     if (!csvModel.getIS_VIRTUELL()) {
       servicePointGeolocation = ServicePointGeolocation.builder()
-          .source_spatial_ref(1) // TODO: no attribute in Dienststellen_ALL
+          .spatialReference(csvModel.getSpatialReference())
           .lv03east(csvModel.getE_LV03())
           .lv03north(csvModel.getN_LV03())
           .lv95east(csvModel.getE_LV95())

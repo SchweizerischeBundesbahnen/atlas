@@ -1,39 +1,36 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.enumeration.*;
-import ch.sbb.atlas.servicepointdirectory.service.ServicePointCsvModel;
-import ch.sbb.atlas.servicepointdirectory.service.ServicePointImportService;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import java.time.LocalDate;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 public class ServicePointVersionRepositoryTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final ServicePointCommentRepository servicePointCommentRepository;
-  private final ServicePointImportService servicePointImportService;
 
   @Autowired
   public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository,
-      ServicePointCommentRepository servicePointCommentRepository,
-      ServicePointImportService servicePointImportService) {
+      ServicePointCommentRepository servicePointCommentRepository) {
     this.servicePointVersionRepository = servicePointVersionRepository;
     this.servicePointCommentRepository = servicePointCommentRepository;
-    this.servicePointImportService = servicePointImportService;
   }
 
   @AfterEach
@@ -76,7 +73,7 @@ public class ServicePointVersionRepositoryTest {
   void shouldSaveServicePointVersionWithGeolocation() {
     // given
     ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation.builder()
-        .source_spatial_ref(1)
+        .spatialReference(SpatialReference.LV95)
         .lv03east(600037.945)
         .lv03north(199749.812)
         .lv95east(2600037.945)
@@ -184,29 +181,6 @@ public class ServicePointVersionRepositoryTest {
     assertThat(savedVersion.getOperatingPointType().hasTimetable()).isTrue();
     assertThat(savedVersion.getOperatingPointType().getDesignationDe()).isEqualTo("Haltestelle");
   }
-
-  // ----------------------------------
-  // Dienststellen All V3 Csv Import Tests
-  // ----------------------------------
-  @Test
-  void parseFirst10LinesFromDienststellenAllV3CsvAndImport() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/DienststellenV3.csv");
-    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream, 10);
-
-    assertThat(servicePointCsvModels).hasSize(10);
-
-    servicePointImportService.importSPCsvModel(servicePointCsvModels);
-
-    List<ServicePointVersion> saved = servicePointVersionRepository.findAll();
-    assertThat(saved).hasSize(10);
-    for (ServicePointVersion item : saved) {
-      assertThat(item.getId()).isNotNull();
-      assertThat(item.getServicePointGeolocation().getId()).isNotNull();
-    }
-  }
-  // ----------------------------------
-  // Dienststellen All V3 Csv Import Tests End
-  // ----------------------------------
 
   @Test
   void shouldSaveServicePointVersionWithComment() {

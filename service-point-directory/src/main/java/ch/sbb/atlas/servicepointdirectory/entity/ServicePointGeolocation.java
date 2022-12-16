@@ -4,6 +4,7 @@ import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
@@ -33,8 +34,8 @@ public class ServicePointGeolocation extends BaseEntity {
   private ServicePointVersion servicePointVersion;
 
   @NotNull
-  @AtlasVersionableProperty
-  private Integer source_spatial_ref;
+  @Enumerated(EnumType.STRING)
+  private SpatialReference spatialReference;
 
   @AtlasVersionableProperty
   @Column(name = "e_lv03")
