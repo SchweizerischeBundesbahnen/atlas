@@ -92,6 +92,7 @@ public class ServicePointImportService {
           .editor(csvModel.getGEAENDERT_VON())
           .build();
       if (!servicePointGeolocation.isValid()) {
+        log.warn("Invalid geolocation for service point %s, therefore won't be imported: %s".formatted(csvModel.getSLOID(), servicePointGeolocation));
         servicePointGeolocation = null;
       }
     }
