@@ -11,7 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.service.ServicePointImportService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
-//@Transactional
 public class ServicePointVersionRepositoryTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
@@ -86,7 +84,7 @@ public class ServicePointVersionRepositoryTest {
         .wgs84east(7.43913089)
         .wgs84north(46.94883229)
         .height(540.2)
-        .isoCountryCode(Country.SWITZERLAND.getIsoCode())
+        .country(Country.SWITZERLAND)
         .swissCantonFsoNumber(5)
         .swissCantonName("Bern")
         .swissCantonNumber(5)
@@ -191,27 +189,20 @@ public class ServicePointVersionRepositoryTest {
   // Dienststellen All V3 Csv Import Tests
   // ----------------------------------
   @Test
-  void parseFirst10LinesFromDienststellenAllV3CsvAndSaveToDB() throws IOException {
+  void parseFirst10LinesFromDienststellenAllV3CsvAndImport() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/DienststellenV3.csv");
-    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream, 10);
 
     assertThat(servicePointCsvModels).hasSize(10);
 
     servicePointImportService.importSPCsvModel(servicePointCsvModels);
 
-    assertThat(servicePointVersionRepository.findAll()).hasSize(10);
-  }
-
-  @Test
-  void parseFirst10LinesFromDienststellenAllV3CsvAndSaveToDBFromGeolocationRepo() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/DienststellenV3.csv");
-    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
-
-    assertThat(servicePointCsvModels).hasSize(10);
-
-    servicePointImportService.importSPCsvModel(servicePointCsvModels);
-
-    assertThat(servicePointVersionRepository.findAll()).hasSize(10);
+    List<ServicePointVersion> saved = servicePointVersionRepository.findAll();
+    assertThat(saved).hasSize(10);
+    for (ServicePointVersion item : saved) {
+      assertThat(item.getId()).isNotNull();
+      assertThat(item.getServicePointGeolocation().getId()).isNotNull();
+    }
   }
   // ----------------------------------
   // Dienststellen All V3 Csv Import Tests End
