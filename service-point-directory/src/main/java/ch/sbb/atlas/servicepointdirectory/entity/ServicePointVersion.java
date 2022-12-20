@@ -77,10 +77,6 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String abbreviation;
 
-  @Size(max = AtlasFieldLengths.LENGTH_10)
-  @AtlasVersionableProperty
-  private String sortCodeOfDestinationStation;
-
   @NotNull
   @AtlasVersionableProperty
   @Enumerated(EnumType.STRING)
