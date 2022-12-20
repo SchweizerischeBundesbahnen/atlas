@@ -22,6 +22,6 @@ public enum ServicePointStatus {
   private final String designation;
 
   public static ServicePointStatus from(Integer id) {
-    return Arrays.stream(ServicePointStatus.values()).filter(el -> Objects.equals(el.id, id)).findFirst().orElse(UNKNOWN);
+    return Arrays.stream(ServicePointStatus.values()).filter(el -> Objects.equals(el.id, id)).findFirst().orElse(null);
   }
 }
