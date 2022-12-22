@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointRepository;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -30,6 +31,11 @@ public class LoadingPointImportServiceTest {
         csvStream);
 
     assertThat(loadingPointCsvModels).hasSize(3019);
+    LoadingPointCsvModel csvModel = loadingPointCsvModels.get(0);
+    assertThat(csvModel.getServicePointNumber()).isNotNull();
+    assertThat(csvModel.getDesignation()).isNotNull();
+    assertThat(csvModel.getCreatedAt()).isNotNull();
+    assertThat(csvModel.getCreatedBy()).isNotNull();
 
     // delete all
     loadingPointRepository.deleteAll();

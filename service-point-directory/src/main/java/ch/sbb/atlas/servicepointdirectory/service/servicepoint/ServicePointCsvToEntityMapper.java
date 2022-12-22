@@ -58,10 +58,10 @@ public class ServicePointCsvToEntityMapper implements
         .swissDistrictNumber(servicePointCsvModel.getBezirksNum())
         .swissMunicipalityName(servicePointCsvModel.getGemeindeName())
         .swissLocalityName(servicePointCsvModel.getOrtschaftsName())
-        .creationDate(servicePointCsvModel.getErstelltAm())
-        .creator(servicePointCsvModel.getErstelltVon())
-        .editionDate(servicePointCsvModel.getGeaendertAm())
-        .editor(servicePointCsvModel.getGeaendertVon())
+        .creationDate(servicePointCsvModel.getCreatedAt())
+        .creator(servicePointCsvModel.getCreatedBy())
+        .editionDate(servicePointCsvModel.getEditedAt())
+        .editor(servicePointCsvModel.getEditedBy())
         .build();
   }
 
@@ -103,10 +103,10 @@ public class ServicePointCsvToEntityMapper implements
         .stopPlaceType(StopPlaceType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(
             OperatingPointType.from(servicePointCsvModel.getBpvbBetriebspunktArtId()))
-        .creationDate(servicePointCsvModel.getErstelltAm())
-        .creator(servicePointCsvModel.getErstelltVon())
-        .editionDate(servicePointCsvModel.getGeaendertAm())
-        .editor(servicePointCsvModel.getGeaendertVon())
+        .creationDate(servicePointCsvModel.getCreatedAt())
+        .creator(servicePointCsvModel.getCreatedBy())
+        .editionDate(servicePointCsvModel.getEditedAt())
+        .editor(servicePointCsvModel.getEditedBy())
         .build();
   }
 
