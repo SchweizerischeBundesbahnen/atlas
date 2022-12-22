@@ -1,6 +1,5 @@
-package ch.sbb.atlas.servicepointdirectory.service.traffic.point;
+package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateTimeDeserializer;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.NumericBooleanDeserializer;
@@ -19,67 +18,23 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TrafficPointElementCsvModel {
+public class LoadingPointCsvModel {
 
-  @JsonProperty("SLOID")
-  private String sloid;
-
-  @JsonProperty("DS_LAENDERCODE")
-  private Integer country;
-
-  @JsonProperty("DIDOK_CODE")
-  private Integer servicePointNumber;
+  @JsonProperty("LADESTELLEN_NUMMER")
+  private Integer number;
 
   @JsonProperty("BEZEICHNUNG")
   private String designation;
 
-  @JsonProperty("BEZEICHNUNG_BETRIEBLICH")
-  private String designationOperational;
+  @JsonProperty("BEZEICHNUNG_LANG")
+  private String designationLong;
 
-  @JsonProperty("LAENGE")
-  private Double length;
-
-  @JsonProperty("KANTENHOEHE")
-  private Double boardingAreaHeight;
-
-  @JsonProperty("KOMPASSRICHTUNG")
-  private Double compassDirection;
-
-  @JsonProperty("BPVE_ID")
-  private String parentSloid;
-
-  @JsonProperty("BPVE_TYPE")
-  private Integer trafficPointElementType;
-
-  @JsonProperty("IS_VIRTUELL")
+  @JsonProperty("IS_ANSCHLUSSPUNKT")
   @JsonDeserialize(using = NumericBooleanDeserializer.class)
-  private Boolean isVirtuell;
+  private Boolean connectionPoint;
 
-  @JsonProperty("SOURCE_SPATIAL_REF")
-  private SpatialReference spatialReference;
-
-  @JsonProperty("E_LV95")
-  private Double eLv95;
-  @JsonProperty("N_LV95")
-  private Double nLv95;
-
-  @JsonProperty("E_LV03")
-  private Double eLv03;
-  @JsonProperty("N_LV03")
-  private Double nLv03;
-
-  @JsonProperty("E_WGS84")
-  private Double eWgs84;
-  @JsonProperty("N_WGS84")
-  private Double nWgs84;
-
-  @JsonProperty("E_WGS84WEB")
-  private Double eWgs84web;
-  @JsonProperty("N_WGS84WEB")
-  private Double nWgs84web;
-
-  @JsonProperty("Z_LV95")
-  private Double height;
+  @JsonProperty("DIDOK_CODE")
+  private Integer servicePointNumber;
 
   @JsonProperty("GUELTIG_VON")
   @JsonDeserialize(using = LocalDateDeserializer.class)

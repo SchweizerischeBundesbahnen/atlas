@@ -88,7 +88,7 @@ public class ServicePointCsvToEntityMapperTest {
         .abbreviation(null)
         .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100602")
-        .hasGeolocation(true)
+        
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2021, 4, 1))
         .validTo(LocalDate.of(2022, 7, 28))
@@ -152,7 +152,7 @@ public class ServicePointCsvToEntityMapperTest {
         .abbreviation(null)
         .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100602")
-        .hasGeolocation(true)
+        
         .servicePointGeolocation(expectedServicePointGeolocation)
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2021, 4, 1))
