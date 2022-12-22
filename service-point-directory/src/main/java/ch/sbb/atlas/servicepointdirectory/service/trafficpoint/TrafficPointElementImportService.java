@@ -23,6 +23,7 @@ public class TrafficPointElementImportService {
 
   public void importTrafficPointElements(List<TrafficPointElementCsvModel> csvModels) {
     List<TrafficPointElementVersion> trafficPointElementVersions = csvModels.stream().map(new TrafficPointElementCsvToEntityMapper()).toList();
+
     trafficPointElementVersionRepository.saveAll(trafficPointElementVersions);
   }
 

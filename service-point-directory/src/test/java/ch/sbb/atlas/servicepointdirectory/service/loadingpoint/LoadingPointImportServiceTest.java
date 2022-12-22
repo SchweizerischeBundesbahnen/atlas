@@ -37,9 +37,6 @@ public class LoadingPointImportServiceTest {
     assertThat(csvModel.getCreatedAt()).isNotNull();
     assertThat(csvModel.getCreatedBy()).isNotNull();
 
-    // delete all
-    loadingPointRepository.deleteAll();
-
     // import
     loadingPointImportService.importLoadingPoints(loadingPointCsvModels);
 
