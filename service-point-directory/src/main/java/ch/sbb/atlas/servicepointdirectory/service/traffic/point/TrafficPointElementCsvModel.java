@@ -51,8 +51,7 @@ public class TrafficPointElementCsvModel {
 
   @JsonProperty("IS_VIRTUELL")
   @JsonDeserialize(using = NumericBooleanDeserializer.class)
-  private Boolean IS_VIRTUELL;
-
+  private Boolean isVirtuell;
 
   @JsonProperty("SOURCE_SPATIAL_REF")
   private SpatialReference spatialReference;

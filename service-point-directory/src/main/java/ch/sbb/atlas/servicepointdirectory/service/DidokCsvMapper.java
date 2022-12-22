@@ -12,6 +12,7 @@ public class DidokCsvMapper {
   public static final CsvSchema CSV_SCHEMA = CsvSchema.emptySchema()
       .withHeader()
       .withColumnSeparator(';')
+      .withAllowComments(true)
       .withEscapeChar('\\');
 
 }
