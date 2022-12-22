@@ -5,16 +5,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
-@Transactional
+// @Transactional
 public class ServicePointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
@@ -24,6 +25,9 @@ public class ServicePointImportServiceTest {
 
   @Autowired
   private ServicePointVersionRepository servicePointVersionRepository;
+
+  @Autowired
+  private ServicePointGeolocationRepository servicePointGeolocationRepository;
 
   @Test
   void shouldParseServicePointCsvAndSaveInDbSuccessfully() throws IOException {
@@ -46,9 +50,19 @@ public class ServicePointImportServiceTest {
     assertThat(csvModel.getCreatedBy()).isNotNull();
 
     // import all
-    System.out.println("save all");
+    System.out.println("delete all items");
+    servicePointGeolocationRepository.deleteAllInBatch();
+    servicePointVersionRepository.deleteAllInBatch();
+
+    System.out.println("save all items %d".formatted(servicePointCsvModels.size()));
     start = System.currentTimeMillis();
-    servicePointImportService.importServicePoints(servicePointCsvModels);
+
+    List<List<ServicePointCsvModel>> subSets = Lists.partition(servicePointCsvModels, 5000);
+
+    for (List<ServicePointCsvModel> subSet : subSets) {
+      System.out.println("  ...save subSet of %d items".formatted(subSet.size()));
+      servicePointImportService.importServicePoints(subSet);
+    }
     end = System.currentTimeMillis();
     System.out.println("Elapsed Time in milli seconds: " + (end - start));
 
@@ -56,13 +70,13 @@ public class ServicePointImportServiceTest {
     assertThat(servicePointVersionRepository.count()).isEqualTo(servicePointCsvModels.size());
     System.out.println("get by number 85070003");
     final List<ServicePointVersion> savedServicePoints =
-        servicePointVersionRepository.findAllByNumber(85070003);
+        servicePointVersionRepository.findAllByNumber(
+        85070003);
     System.out.println("got records for 85070003");
     assertThat(savedServicePoints).hasSize(6);
     ServicePointVersion savedServicePointVersion = savedServicePoints.get(0);
     assertThat(savedServicePointVersion.getId()).isNotNull();
     assertThat(savedServicePointVersion.getCountry()).isEqualTo(SWITZERLAND);
     assertThat(savedServicePointVersion.getServicePointGeolocation().getId()).isNotNull();
-
   }
 }
