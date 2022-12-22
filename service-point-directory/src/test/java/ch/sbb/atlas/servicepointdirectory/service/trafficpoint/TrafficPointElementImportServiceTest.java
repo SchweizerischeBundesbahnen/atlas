@@ -3,16 +3,13 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
@@ -28,7 +25,7 @@ public class TrafficPointElementImportServiceTest {
   private TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
   @Test
-  void shouldParseCsvSuccessfully() throws IOException {
+  void shouldParseTrafficPointCsvAndSaveInDbSuccessfully() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<TrafficPointElementCsvModel> trafficPointElementCsvModels =
         TrafficPointElementImportService.parseTrafficPointElements(
