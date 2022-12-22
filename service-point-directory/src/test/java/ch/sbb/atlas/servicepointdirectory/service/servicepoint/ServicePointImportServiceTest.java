@@ -43,12 +43,14 @@ public class ServicePointImportServiceTest {
 
     // import all
     System.out.println("save all");
+    long start = System.currentTimeMillis();
     servicePointImportService.importServicePoints(servicePointCsvModels);
+    long end = System.currentTimeMillis();
+    System.out.println("Elapsed Time in milli seconds: " + (end - start));
 
     // get
-    System.out.println("get by number 7000");
-
     assertThat(servicePointVersionRepository.count()).isEqualTo(servicePointCsvModels.size());
+    System.out.println("get by number 7000");
     final List<ServicePointVersion> savedServicePoints =
         servicePointVersionRepository.findAllByNumber(7000);
     assertThat(savedServicePoints).hasSize(1);
