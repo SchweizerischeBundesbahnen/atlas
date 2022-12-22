@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "servicePointVersion")
 @SuperBuilder
 @FieldNameConstants
 @Entity(name = "service_point_version_geolocation")
