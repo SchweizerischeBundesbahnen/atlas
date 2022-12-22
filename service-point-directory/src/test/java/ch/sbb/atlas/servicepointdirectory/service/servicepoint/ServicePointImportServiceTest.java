@@ -8,12 +8,8 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 
 @IntegrationTest
 public class ServicePointImportServiceTest {
@@ -31,26 +27,30 @@ public class ServicePointImportServiceTest {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
 
     // parse csv all
+    System.out.println("parse all");
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(
         csvStream, Integer.MAX_VALUE);
 
     assertThat(servicePointCsvModels).hasSize(359616);
-    ServicePointCsvModel firstServicePointCsvModel = servicePointCsvModels.get(0);
-    assertThat(firstServicePointCsvModel.getNummer()).isNotNull();
-    assertThat(firstServicePointCsvModel.getLaendercode()).isNotNull();
-    assertThat(firstServicePointCsvModel.getDidokCode()).isNotNull();
-    assertThat(firstServicePointCsvModel.getErstelltAm()).isNotNull();
-    assertThat(firstServicePointCsvModel.getErstelltVon()).isNotNull();
+    ServicePointCsvModel csvModel = servicePointCsvModels.get(0);
+    assertThat(csvModel.getNummer()).isNotNull();
+    assertThat(csvModel.getLaendercode()).isNotNull();
+    assertThat(csvModel.getDidokCode()).isNotNull();
+    assertThat(csvModel.getCreatedAt()).isNotNull();
+    assertThat(csvModel.getCreatedBy()).isNotNull();
 
     // delete all
+    System.out.println("delete all");
     servicePointVersionRepository.deleteAll();
 
     // import all
+    System.out.println("save all");
     servicePointImportService.importServicePoints(servicePointCsvModels);
 
     // get
     assertThat(servicePointVersionRepository.count()).isEqualTo(servicePointCsvModels.size());
 
+    System.out.println("get by number 7000");
     final List<ServicePointVersion> savedServicePoints =
         servicePointVersionRepository.findAllByNumber(7000);
     assertThat(savedServicePoints).hasSize(1);
