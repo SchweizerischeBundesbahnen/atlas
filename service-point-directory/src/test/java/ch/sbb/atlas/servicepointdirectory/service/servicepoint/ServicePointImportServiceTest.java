@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import static ch.sbb.atlas.servicepointdirectory.enumeration.Country.SWITZERLAND;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
@@ -57,9 +58,10 @@ public class ServicePointImportServiceTest {
     final List<ServicePointVersion> savedServicePoints =
         servicePointVersionRepository.findAllByNumber(85070003);
     System.out.println("got records for 85070003");
-    assertThat(savedServicePoints).hasSize(1);
+    assertThat(savedServicePoints).hasSize(6);
     ServicePointVersion savedServicePointVersion = savedServicePoints.get(0);
     assertThat(savedServicePointVersion.getId()).isNotNull();
+    assertThat(savedServicePointVersion.getCountry()).isEqualTo(SWITZERLAND);
     assertThat(savedServicePointVersion.getServicePointGeolocation().getId()).isNotNull();
 
   }
