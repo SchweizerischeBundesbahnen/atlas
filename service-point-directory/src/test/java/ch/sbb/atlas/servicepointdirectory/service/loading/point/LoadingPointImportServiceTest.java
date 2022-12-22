@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoadingPointImportServiceTest {
 
+  private static final String CSV_FILE = "DIDOK3_LADESTELLEN_20221222011259.csv";
+
   @Autowired
   private LoadingPointImportService loadingPointImportService;
 
@@ -23,19 +25,21 @@ public class LoadingPointImportServiceTest {
 
   @Test
   void shouldParseCsvSuccessfully() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/DIDOK3_LADESTELLEN_20221214011257.csv");
-    List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
+    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
+    List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(
+        csvStream);
 
     assertThat(loadingPointCsvModels).isNotEmpty();
   }
 
   @Test
   void shouldSaveParsedCsvToDb() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/DIDOK3_LADESTELLEN_20221214011257.csv");
-    List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
+    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
+    List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(
+        csvStream);
 
     loadingPointImportService.importLoadingPoints(loadingPointCsvModels);
 
-    assertThat(loadingPointRepository.count()).isEqualTo(3018);
+    assertThat(loadingPointRepository.count()).isEqualTo(3019);
   }
 }
