@@ -28,6 +28,7 @@ public class TrafficPointElementImportServiceTest {
   @Test
   void shouldParseTrafficPointCsvAndSaveInDbSuccessfully() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
+    System.out.println("parse all");
     List<TrafficPointElementCsvModel> trafficPointElementCsvModels =
         TrafficPointElementImportService.parseTrafficPointElements(
             csvStream);
@@ -38,13 +39,12 @@ public class TrafficPointElementImportServiceTest {
     assertThat(csvModel.getCreatedAt()).isNotNull();
     assertThat(csvModel.getCreatedBy()).isNotNull();
 
-    // delete all
-    trafficPointElementVersionRepository.deleteAll();
-
     // import all
+    System.out.println("save all");
     trafficPointElementImportService.importTrafficPointElements(trafficPointElementCsvModels);
 
     // get
+    System.out.println("get by service point number 95364");
     assertThat(trafficPointElementVersionRepository.count()).isEqualTo(59088);
 
     final List<TrafficPointElementVersion> versions = trafficPointElementVersionRepository
