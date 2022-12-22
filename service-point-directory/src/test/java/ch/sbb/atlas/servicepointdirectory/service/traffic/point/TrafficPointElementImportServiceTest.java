@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TrafficPointElementImportServiceTest {
 
-  private static final String CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221216011554.csv";
+  private static final String CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221222011816.csv";
 
   @Autowired
   private TrafficPointElementImportService trafficPointElementImportService;
