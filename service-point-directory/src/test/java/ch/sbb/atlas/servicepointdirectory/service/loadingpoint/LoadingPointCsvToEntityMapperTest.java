@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service.loading.point;
+package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
