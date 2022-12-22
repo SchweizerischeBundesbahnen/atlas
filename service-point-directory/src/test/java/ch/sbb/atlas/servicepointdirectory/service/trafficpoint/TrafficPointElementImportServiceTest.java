@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvMo
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,18 +42,20 @@ public class TrafficPointElementImportServiceTest {
 
     // import all
     System.out.println("save all");
+    long start = System.currentTimeMillis();
     trafficPointElementImportService.importTrafficPointElements(trafficPointElementCsvModels);
+    long end = System.currentTimeMillis();
+    System.out.println("Elapsed Time in milli seconds: " + (end - start));
 
     // get
-    System.out.println("get by service point number 95364");
     assertThat(trafficPointElementVersionRepository.count()).isEqualTo(59088);
 
+    System.out.println("get by service point number 85953646");
     final List<TrafficPointElementVersion> versions = trafficPointElementVersionRepository
-        .findAllByServicePointNumber(95364);
-    assertThat(versions).hasSize(1);
+        .findAllByServicePointNumber(85953646);
+    assertThat(versions).hasSize(5);
     TrafficPointElementVersion version = versions.get(0);
     assertThat(version.getId()).isNotNull();
     assertThat(version.getTrafficPointElementGeolocation().getId()).isNotNull();
-
   }
 }
