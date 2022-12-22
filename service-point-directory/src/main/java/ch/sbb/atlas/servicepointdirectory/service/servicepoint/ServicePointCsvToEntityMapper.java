@@ -18,95 +18,107 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ServicePointCsvToEntityMapper implements Function<ServicePointCsvModel, ServicePointVersion> {
+public class ServicePointCsvToEntityMapper implements
+    Function<ServicePointCsvModel, ServicePointVersion> {
 
   @Override
   public ServicePointVersion apply(ServicePointCsvModel servicePointCsvModel) {
     ServicePointVersion servicePointVersion = mapSPFromServicePointCsvModel(servicePointCsvModel);
     if (servicePointVersion.isHasGeolocation()) {
-      ServicePointGeolocation servicePointGeolocation = mapSPGeolocationFromServicePointCsvModel(servicePointCsvModel);
+      ServicePointGeolocation servicePointGeolocation = mapSPGeolocationFromServicePointCsvModel(
+          servicePointCsvModel);
       if (servicePointGeolocation.isValid()) {
         servicePointVersion.setServicePointGeolocation(servicePointGeolocation);
         servicePointGeolocation.setServicePointVersion(servicePointVersion);
       } else {
-        log.warn(
-            "Invalid geolocation for service point %s, therefore won't be imported: %s".formatted(servicePointCsvModel.getSloid(),
-                servicePointGeolocation));
+        log.error(
+            "Invalid geolocation [%s] for service point csv [%s], therefore won't be imported.".formatted(
+                servicePointGeolocation, servicePointCsvModel));
+        servicePointVersion.setHasGeolocation(false); // reset hasGeolocation flag
       }
     }
     return servicePointVersion;
   }
 
-  ServicePointGeolocation mapSPGeolocationFromServicePointCsvModel(ServicePointCsvModel servicePointCsvModel) {
+  ServicePointGeolocation mapSPGeolocationFromServicePointCsvModel(
+      ServicePointCsvModel servicePointCsvModel) {
     return ServicePointGeolocation.builder()
-        .locationTypes(LocationTypes
-            .builder()
-            .spatialReference(servicePointCsvModel.getSpatialReference())
-            .lv03east(servicePointCsvModel.getELV03())
-            .lv03north(servicePointCsvModel.getNLV03())
-            .lv95east(servicePointCsvModel.getELV95())
-            .lv95north(servicePointCsvModel.getNLV95())
-            .wgs84east(servicePointCsvModel.getEWGS84())
-            .wgs84north(servicePointCsvModel.getNWGS84())
-            .wgs84webEast(servicePointCsvModel.getEWGS84WEB())
-            .wgs84webNorth(servicePointCsvModel.getNWGS84WEB())
-            .height(servicePointCsvModel.getHeight())
-            .build())
-        .country(Country.from(servicePointCsvModel.getLaendercode()))
-        .swissCantonFsoNumber(servicePointCsvModel.getBfsNummer())
-        .swissCantonName(servicePointCsvModel.getKantonsName())
-        .swissCantonNumber(servicePointCsvModel.getKantonsNum())
-        .swissDistrictName(servicePointCsvModel.getBezirksName())
-        .swissDistrictNumber(servicePointCsvModel.getBezirksNum())
-        .swissMunicipalityName(servicePointCsvModel.getGemeindeName())
-        .swissLocalityName(servicePointCsvModel.getOrtschaftsName())
-        .creationDate(servicePointCsvModel.getErstelltAm())
-        .creator(servicePointCsvModel.getErstelltVon())
-        .editionDate(servicePointCsvModel.getGeaendertAm())
-        .editor(servicePointCsvModel.getGeaendertVon())
-        .build();
+                                  .locationTypes(LocationTypes
+                                      .builder()
+                                      .spatialReference(servicePointCsvModel.getSpatialReference())
+                                      .lv03east(servicePointCsvModel.getELV03())
+                                      .lv03north(servicePointCsvModel.getNLV03())
+                                      .lv95east(servicePointCsvModel.getELV95())
+                                      .lv95north(servicePointCsvModel.getNLV95())
+                                      .wgs84east(servicePointCsvModel.getEWGS84())
+                                      .wgs84north(servicePointCsvModel.getNWGS84())
+                                      .wgs84webEast(servicePointCsvModel.getEWGS84WEB())
+                                      .wgs84webNorth(servicePointCsvModel.getNWGS84WEB())
+                                      .height(servicePointCsvModel.getHeight())
+                                      .build())
+                                  .country(Country.from(servicePointCsvModel.getLaendercode()))
+                                  .swissCantonFsoNumber(servicePointCsvModel.getBfsNummer())
+                                  .swissCantonName(servicePointCsvModel.getKantonsName())
+                                  .swissCantonNumber(servicePointCsvModel.getKantonsNum())
+                                  .swissDistrictName(servicePointCsvModel.getBezirksName())
+                                  .swissDistrictNumber(servicePointCsvModel.getBezirksNum())
+                                  .swissMunicipalityName(servicePointCsvModel.getGemeindeName())
+                                  .swissLocalityName(servicePointCsvModel.getOrtschaftsName())
+                                  .creationDate(servicePointCsvModel.getErstelltAm())
+                                  .creator(servicePointCsvModel.getErstelltVon())
+                                  .editionDate(servicePointCsvModel.getGeaendertAm())
+                                  .editor(servicePointCsvModel.getGeaendertVon())
+                                  .build();
   }
 
   ServicePointVersion mapSPFromServicePointCsvModel(ServicePointCsvModel servicePointCsvModel) {
     return ServicePointVersion.builder()
-        .number(servicePointCsvModel.getDidokCode())
-        .sloid(servicePointCsvModel.getSloid())
-        .checkDigit(servicePointCsvModel.getDidokCode() % 10)
-        .numberShort(servicePointCsvModel.getNummer())
-        .country(Country.from(servicePointCsvModel.getLaendercode()))
-        .designationLong(servicePointCsvModel.getBezeichnungLang())
-        .designationOfficial(servicePointCsvModel.getBezeichnungOffiziell())
-        .abbreviation(servicePointCsvModel.getAbkuerzung())
-        .statusDidok3(ServicePointStatus.from(servicePointCsvModel.getStatus()))
-        .businessOrganisation("ch:1:sboid:" + servicePointCsvModel.getSaid()) // TODO: check if this is correct
-        .hasGeolocation(!servicePointCsvModel.getIsVirtuell())
-        .status(Status.VALIDATED)
-        .validFrom(LocalDate.parse(servicePointCsvModel.getGueltigVon()))
-        .validTo(LocalDate.parse(servicePointCsvModel.getGueltigBis()))
-        .categories(
-            Arrays.stream(Objects.nonNull(servicePointCsvModel.getDsKategorienIds()) ? servicePointCsvModel.getDsKategorienIds()
-                    .split("\\|") :
-                    new String[]{})
-                .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet())
-        )
-        .meansOfTransport(
-            Arrays.stream(
-                    Objects.nonNull(servicePointCsvModel.getBpvhVerkehrsmittel()) ? servicePointCsvModel.getBpvhVerkehrsmittel()
-                        .split("~") :
-                        new String[]{})
-                .map(MeanOfTransport::from)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet())
-        )
-        .stopPlaceType(StopPlaceType.from(servicePointCsvModel.getHTypId()))
-        .operatingPointType(OperatingPointType.from(servicePointCsvModel.getBpvbBetriebspunktArtId()))
-        .creationDate(servicePointCsvModel.getErstelltAm())
-        .creator(servicePointCsvModel.getErstelltVon())
-        .editionDate(servicePointCsvModel.getGeaendertAm())
-        .editor(servicePointCsvModel.getGeaendertVon())
-        .build();
+                              .number(servicePointCsvModel.getDidokCode())
+                              .sloid(servicePointCsvModel.getSloid())
+                              .checkDigit(servicePointCsvModel.getDidokCode() % 10)
+                              .numberShort(servicePointCsvModel.getNummer())
+                              .country(Country.from(servicePointCsvModel.getLaendercode()))
+                              .designationLong(servicePointCsvModel.getBezeichnungLang())
+                              .designationOfficial(servicePointCsvModel.getBezeichnungOffiziell())
+                              .abbreviation(servicePointCsvModel.getAbkuerzung())
+                              .statusDidok3(
+                                  ServicePointStatus.from(servicePointCsvModel.getStatus()))
+                              .businessOrganisation("ch:1:sboid:"
+                                  + servicePointCsvModel.getSaid()) // TODO: check if this is
+                              // correct
+                              .hasGeolocation(!servicePointCsvModel.getIsVirtuell())
+                              .status(Status.VALIDATED)
+                              .validFrom(LocalDate.parse(servicePointCsvModel.getGueltigVon()))
+                              .validTo(LocalDate.parse(servicePointCsvModel.getGueltigBis()))
+                              .categories(
+                                  Arrays.stream(
+                                            Objects.nonNull(servicePointCsvModel.getDsKategorienIds())
+                                                ? servicePointCsvModel.getDsKategorienIds()
+                                                                      .split("\\|") :
+                                                new String[]{})
+                                        .map(categoryIdStr -> Category.from(
+                                            Integer.parseInt(categoryIdStr)))
+                                        .filter(Objects::nonNull)
+                                        .collect(Collectors.toSet())
+                              )
+                              .meansOfTransport(
+                                  Arrays.stream(
+                                            Objects.nonNull(servicePointCsvModel.getBpvhVerkehrsmittel())
+                                                ? servicePointCsvModel.getBpvhVerkehrsmittel()
+                                                                      .split("~") :
+                                                new String[]{})
+                                        .map(MeanOfTransport::from)
+                                        .filter(Objects::nonNull)
+                                        .collect(Collectors.toSet())
+                              )
+                              .stopPlaceType(StopPlaceType.from(servicePointCsvModel.getHTypId()))
+                              .operatingPointType(OperatingPointType.from(
+                                  servicePointCsvModel.getBpvbBetriebspunktArtId()))
+                              .creationDate(servicePointCsvModel.getErstelltAm())
+                              .creator(servicePointCsvModel.getErstelltVon())
+                              .editionDate(servicePointCsvModel.getGeaendertAm())
+                              .editor(servicePointCsvModel.getGeaendertVon())
+                              .build();
   }
 
 }
