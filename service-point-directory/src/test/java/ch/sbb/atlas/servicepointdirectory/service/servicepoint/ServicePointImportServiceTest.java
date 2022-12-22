@@ -8,6 +8,9 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +29,8 @@ public class ServicePointImportServiceTest {
   @Test
   void shouldParseCsvCorrectly() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
+
+    // parse csv all
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(
         csvStream, Integer.MAX_VALUE);
 
@@ -36,28 +41,22 @@ public class ServicePointImportServiceTest {
     assertThat(firstServicePointCsvModel.getDidokCode()).isNotNull();
     assertThat(firstServicePointCsvModel.getErstelltAm()).isNotNull();
     assertThat(firstServicePointCsvModel.getErstelltVon()).isNotNull();
-  }
 
-  @Test
-  void shouldParseCsvAndSaveToDB() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(
-        csvStream, 5000);
+    // delete all
+    servicePointVersionRepository.deleteAll();
 
+    // import all
     servicePointImportService.importServicePoints(servicePointCsvModels);
 
-    final List<ServicePointVersion> savedServicePoints =
-        servicePointVersionRepository.findAllByHasGeolocation(
-            true, Pageable.ofSize(1000));
-    assertThat(savedServicePoints).hasSize(1000);
-    for (ServicePointVersion savedServicePointVersion : savedServicePoints) {
-      assertThat(savedServicePointVersion.getId()).isNotNull();
-      assertThat(savedServicePointVersion.getServicePointGeolocation().getId()).isNotNull();
-    }
+    // get
+    assertThat(servicePointVersionRepository.count()).isEqualTo(servicePointCsvModels.size());
 
-    final List<ServicePointVersion> savedServicePointsNoGeolocation =
-        servicePointVersionRepository.findAllByHasGeolocation(
-            false, Pageable.ofSize(1000));
-    assertThat(savedServicePointsNoGeolocation).hasSize(0);
+    final List<ServicePointVersion> savedServicePoints =
+        servicePointVersionRepository.findAllByNumber(7000);
+    assertThat(savedServicePoints).hasSize(1);
+    ServicePointVersion savedServicePointVersion = savedServicePoints.get(0);
+    assertThat(savedServicePointVersion.getId()).isNotNull();
+    assertThat(savedServicePointVersion.getServicePointGeolocation().getId()).isNotNull();
+
   }
 }

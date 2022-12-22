@@ -21,7 +21,8 @@ public class TrafficPointElementVersionRepositoryTest {
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
   @Autowired
-  public TrafficPointElementVersionRepositoryTest(TrafficPointElementVersionRepository trafficPointElementVersionRepository) {
+  public TrafficPointElementVersionRepositoryTest(
+      TrafficPointElementVersionRepository trafficPointElementVersionRepository) {
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
   }
 
@@ -33,7 +34,8 @@ public class TrafficPointElementVersionRepositoryTest {
   @Test
   void shouldSaveTrafficPointElementVersionWithoutParent() {
     // given
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
+        .builder()
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeichnung")
         .servicePointNumber(1)
@@ -43,17 +45,19 @@ public class TrafficPointElementVersionRepositoryTest {
         .build();
 
     // when
-    TrafficPointElementVersion savedVersion = trafficPointElementVersionRepository.save(trafficPointElementVersion);
+    TrafficPointElementVersion savedVersion = trafficPointElementVersionRepository.save(
+        trafficPointElementVersion);
 
     // then
     assertThat(savedVersion.getId()).isNotNull();
-    assertThat(savedVersion.isVirtuell()).isTrue();
+    assertThat(savedVersion.hasGeolocation()).isFalse();
   }
 
   @Test
   void shouldSaveTrafficPointElementVersionWithParent() {
     // given
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
+        .builder()
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeichnung")
         .servicePointNumber(1)
@@ -64,7 +68,8 @@ public class TrafficPointElementVersionRepositoryTest {
         .build();
 
     // when
-    TrafficPointElementVersion savedVersion = trafficPointElementVersionRepository.save(trafficPointElementVersion);
+    TrafficPointElementVersion savedVersion = trafficPointElementVersionRepository.save(
+        trafficPointElementVersion);
 
     // then
     assertThat(savedVersion.getId()).isNotNull();
@@ -74,7 +79,8 @@ public class TrafficPointElementVersionRepositoryTest {
   @Test
   void shouldSaveTrafficPointElementVersionWithGeolocation() {
     // given
-    TrafficPointElementGeolocation trafficPointElementGeolocation = TrafficPointElementGeolocation.builder()
+    TrafficPointElementGeolocation trafficPointElementGeolocation = TrafficPointElementGeolocation
+        .builder()
         .locationTypes(LocationTypes
             .builder()
             .spatialReference(SpatialReference.LV95)
@@ -88,17 +94,18 @@ public class TrafficPointElementVersionRepositoryTest {
             .wgs84webNorth(5811120.06939)
             .height(2540.21)
             .build())
-       .country(Country.SWITZERLAND)
-       .swissCantonFsoNumber(5)
-       .swissCantonName("Bern")
-       .swissCantonNumber(5)
-       .swissDistrictName("Bern")
-       .swissDistrictNumber(5)
-       .swissMunicipalityName("Bern")
-       .swissLocalityName("Bern")
-       .build();
+        .country(Country.SWITZERLAND)
+        .swissCantonFsoNumber(5)
+        .swissCantonName("Bern")
+        .swissCantonNumber(5)
+        .swissDistrictName("Bern")
+        .swissDistrictNumber(5)
+        .swissMunicipalityName("Bern")
+        .swissLocalityName("Bern")
+        .build();
 
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
+        .builder()
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeichnung")
         .servicePointNumber(1)
@@ -111,11 +118,12 @@ public class TrafficPointElementVersionRepositoryTest {
     trafficPointElementGeolocation.setTrafficPointElementVersion(trafficPointElementVersion);
 
     // when
-    TrafficPointElementVersion savedVersion = trafficPointElementVersionRepository.save(trafficPointElementVersion);
+    TrafficPointElementVersion savedVersion = trafficPointElementVersionRepository.save(
+        trafficPointElementVersion);
 
     // then
     assertThat(savedVersion.getId()).isNotNull();
-    assertThat(savedVersion.isVirtuell()).isFalse();
+    assertThat(savedVersion.hasGeolocation()).isTrue();
     assertThat(savedVersion.getTrafficPointElementGeolocation().getId()).isNotNull();
   }
 }

@@ -26,60 +26,61 @@ import java.time.LocalDate;
 @AtlasVersionable
 public class TrafficPointElementVersion extends BaseEntity implements Versionable {
 
-    private static final String VERSION_SEQ = "traffic_point_element_version_seq";
+  private static final String VERSION_SEQ = "traffic_point_element_version_seq";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
-    @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
+  @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1,
+      initialValue = 1000)
+  private Long id;
 
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-    @AtlasVersionableProperty
-    private String designation;
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @AtlasVersionableProperty
+  private String designation;
 
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-    @AtlasVersionableProperty
-    private String designationOperational;
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @AtlasVersionableProperty
+  private String designationOperational;
 
-    @AtlasVersionableProperty
-    private Double length;
+  @AtlasVersionableProperty
+  private Double length;
 
-    @AtlasVersionableProperty
-    private Double boardingAreaHeight;
+  @AtlasVersionableProperty
+  private Double boardingAreaHeight;
 
-    @AtlasVersionableProperty
-    private Double compassDirection;
+  @AtlasVersionableProperty
+  private Double compassDirection;
 
-    @AtlasVersionableProperty
-    private TrafficPointElementType trafficPointElementType;
+  @AtlasVersionableProperty
+  private TrafficPointElementType trafficPointElementType;
 
-    @NotNull
-    @AtlasVersionableProperty
-    private Integer servicePointNumber;
+  @NotNull
+  @AtlasVersionableProperty
+  private Integer servicePointNumber;
 
-    @NotNull
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-    @AtlasVersionableProperty
-    private String sloid;
+  @NotNull
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @AtlasVersionableProperty
+  private String sloid;
 
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-    @AtlasVersionableProperty
-    private String parentSloid;
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @AtlasVersionableProperty
+  private String parentSloid;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "geolocation_id", referencedColumnName = "id")
-    private TrafficPointElementGeolocation trafficPointElementGeolocation;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "traffic_point_geolocation_id", referencedColumnName = "id")
+  private TrafficPointElementGeolocation trafficPointElementGeolocation;
 
-    public boolean isVirtuell() {
-        return trafficPointElementGeolocation == null;
-    }
+  public boolean hasGeolocation() {
+    return trafficPointElementGeolocation != null;
+  }
 
-    @NotNull
-    @Column(columnDefinition = "DATE")
-    private LocalDate validFrom;
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validFrom;
 
-    @NotNull
-    @Column(columnDefinition = "DATE")
-    private LocalDate validTo;
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validTo;
 
 }

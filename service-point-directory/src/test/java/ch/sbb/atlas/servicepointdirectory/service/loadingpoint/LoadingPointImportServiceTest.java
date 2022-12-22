@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service.loading.point;
+package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,17 +29,15 @@ public class LoadingPointImportServiceTest {
     List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(
         csvStream);
 
-    assertThat(loadingPointCsvModels).isNotEmpty();
-  }
+    assertThat(loadingPointCsvModels).hasSize(3019);
 
-  @Test
-  void shouldSaveParsedCsvToDb() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(
-        csvStream);
+    // delete all
+    loadingPointRepository.deleteAll();
 
+    // import
     loadingPointImportService.importLoadingPoints(loadingPointCsvModels);
 
+    // get all
     assertThat(loadingPointRepository.count()).isEqualTo(3019);
   }
 }

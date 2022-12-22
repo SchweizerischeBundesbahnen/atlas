@@ -82,8 +82,9 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @Enumerated(EnumType.STRING)
   private ServicePointStatus statusDidok3;
 
-  @AtlasVersionableProperty
-  private boolean hasGeolocation;
+  public boolean hasGeolocation() {
+    return servicePointGeolocation != null;
+  }
 
   @NotNull
   @Column(columnDefinition = "DATE")
