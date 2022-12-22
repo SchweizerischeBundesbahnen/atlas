@@ -24,7 +24,7 @@ public class LoadingPointImportServiceTest {
   private LoadingPointRepository loadingPointRepository;
 
   @Test
-  void shouldParseCsvSuccessfully() throws IOException {
+  void shouldParseLoadingPointCsvAndSaveInDbSuccessfully() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(
         csvStream);

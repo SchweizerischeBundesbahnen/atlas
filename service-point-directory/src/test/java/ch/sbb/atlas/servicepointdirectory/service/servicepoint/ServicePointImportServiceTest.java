@@ -27,7 +27,7 @@ public class ServicePointImportServiceTest {
   private ServicePointVersionRepository servicePointVersionRepository;
 
   @Test
-  void shouldParseCsvCorrectly() throws IOException {
+  void shouldParseServicePointCsvAndSaveInDbSuccessfully() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
 
     // parse csv all
