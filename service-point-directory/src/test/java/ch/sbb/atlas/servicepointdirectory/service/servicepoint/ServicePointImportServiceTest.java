@@ -10,8 +10,10 @@ import java.io.InputStream;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
+@Transactional
 public class ServicePointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
@@ -39,18 +41,14 @@ public class ServicePointImportServiceTest {
     assertThat(csvModel.getCreatedAt()).isNotNull();
     assertThat(csvModel.getCreatedBy()).isNotNull();
 
-    // delete all
-    System.out.println("delete all");
-    servicePointVersionRepository.deleteAll();
-
     // import all
     System.out.println("save all");
     servicePointImportService.importServicePoints(servicePointCsvModels);
 
     // get
-    assertThat(servicePointVersionRepository.count()).isEqualTo(servicePointCsvModels.size());
-
     System.out.println("get by number 7000");
+
+    assertThat(servicePointVersionRepository.count()).isEqualTo(servicePointCsvModels.size());
     final List<ServicePointVersion> savedServicePoints =
         servicePointVersionRepository.findAllByNumber(7000);
     assertThat(savedServicePoints).hasSize(1);
