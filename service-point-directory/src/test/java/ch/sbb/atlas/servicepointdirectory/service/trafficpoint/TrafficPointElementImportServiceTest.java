@@ -30,9 +30,12 @@ public class TrafficPointElementImportServiceTest {
   void shouldParseTrafficPointCsvAndSaveInDbSuccessfully() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     System.out.println("parse all");
+    long start = System.currentTimeMillis();
     List<TrafficPointElementCsvModel> trafficPointElementCsvModels =
         TrafficPointElementImportService.parseTrafficPointElements(
             csvStream);
+    long end = System.currentTimeMillis();
+    System.out.println("Elapsed Time in milli seconds: " + (end - start));
 
     assertThat(trafficPointElementCsvModels).hasSize(59088);
     TrafficPointElementCsvModel csvModel = trafficPointElementCsvModels.get(0);
@@ -42,9 +45,9 @@ public class TrafficPointElementImportServiceTest {
 
     // import all
     System.out.println("save all");
-    long start = System.currentTimeMillis();
+    start = System.currentTimeMillis();
     trafficPointElementImportService.importTrafficPointElements(trafficPointElementCsvModels);
-    long end = System.currentTimeMillis();
+    end = System.currentTimeMillis();
     System.out.println("Elapsed Time in milli seconds: " + (end - start));
 
     // get
@@ -54,6 +57,7 @@ public class TrafficPointElementImportServiceTest {
     final List<TrafficPointElementVersion> versions = trafficPointElementVersionRepository
         .findAllByServicePointNumber(85953646);
     assertThat(versions).hasSize(5);
+    System.out.println("got records for 85953646");
     TrafficPointElementVersion version = versions.get(0);
     assertThat(version.getId()).isNotNull();
     assertThat(version.getTrafficPointElementGeolocation().getId()).isNotNull();
