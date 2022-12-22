@@ -37,7 +37,9 @@ public class TrafficPointElementCsvToEntityMapper implements Function<TrafficPoi
         .build();
 
       if (!geolocation.isValid()) {
-        log.warn("Invalid geolocation for traffic point %s, therefore won't be imported: %s".formatted(trafficPointElementCsvModel.getSloid(), geolocation));
+        log.error(
+            "Invalid geolocation [%s] for traffic point csv [%s], therefore won't be imported.".formatted(
+                geolocation, trafficPointElementCsvModel));
         geolocation = null;
       }
     }

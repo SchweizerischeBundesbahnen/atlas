@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 
 @IntegrationTest
 public class ServicePointImportServiceTest {
@@ -41,12 +42,13 @@ public class ServicePointImportServiceTest {
   void shouldParseCsvAndSaveToDB() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(
-        csvStream, 50);
+        csvStream, 1000);
 
     servicePointImportService.importServicePoints(servicePointCsvModels);
 
-    List<ServicePointVersion> savedServicePoints = servicePointVersionRepository.findAll();
-    assertThat(savedServicePoints).hasSize(50);
+    List<ServicePointVersion> savedServicePoints = servicePointVersionRepository.findAll(
+        Pageable.ofSize(500)).getContent();
+    assertThat(savedServicePoints).hasSize(500);
     for (ServicePointVersion savedServicePointVersion : savedServicePoints) {
       assertThat(savedServicePointVersion.getId()).isNotNull();
       assertThat(savedServicePointVersion.getServicePointGeolocation().getId()).isNotNull();
