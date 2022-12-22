@@ -27,9 +27,9 @@ public class ServicePointImportServiceTest {
   void shouldParseCsvCorrectly() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(
-        csvStream, 50);
+        csvStream, Integer.MAX_VALUE);
 
-    assertThat(servicePointCsvModels).hasSize(50);
+    assertThat(servicePointCsvModels).hasSize(359616);
     ServicePointCsvModel firstServicePointCsvModel = servicePointCsvModels.get(0);
     assertThat(firstServicePointCsvModel.getNummer()).isNotNull();
     assertThat(firstServicePointCsvModel.getLaendercode()).isNotNull();
@@ -42,17 +42,22 @@ public class ServicePointImportServiceTest {
   void shouldParseCsvAndSaveToDB() throws IOException {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(
-        csvStream, 1000);
+        csvStream, 5000);
 
     servicePointImportService.importServicePoints(servicePointCsvModels);
 
-    List<ServicePointVersion> savedServicePoints = servicePointVersionRepository.findAll(
-        Pageable.ofSize(500)).getContent();
-    assertThat(savedServicePoints).hasSize(500);
+    final List<ServicePointVersion> savedServicePoints =
+        servicePointVersionRepository.findAllByHasGeolocation(
+            true, Pageable.ofSize(1000));
+    assertThat(savedServicePoints).hasSize(1000);
     for (ServicePointVersion savedServicePointVersion : savedServicePoints) {
       assertThat(savedServicePointVersion.getId()).isNotNull();
       assertThat(savedServicePointVersion.getServicePointGeolocation().getId()).isNotNull();
     }
-  }
 
+    final List<ServicePointVersion> savedServicePointsNoGeolocation =
+        servicePointVersionRepository.findAllByHasGeolocation(
+            false, Pageable.ofSize(1000));
+    assertThat(savedServicePointsNoGeolocation).hasSize(0);
+  }
 }
