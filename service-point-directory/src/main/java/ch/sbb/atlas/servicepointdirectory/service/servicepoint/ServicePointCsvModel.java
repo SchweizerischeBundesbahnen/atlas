@@ -76,11 +76,17 @@ public class ServicePointCsvModel {
 
   @JsonProperty("ERSTELLT_AM")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-  private LocalDateTime erstelltAm;
+  private LocalDateTime createdAt;
+
+  @JsonProperty("ERSTELLT_VON")
+  private String createdBy;
 
   @JsonProperty("GEAENDERT_AM")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-  private LocalDateTime geaendertAm;
+  private LocalDateTime editedAt;
+
+  @JsonProperty("GEAENDERT_VON")
+  private String editedBy;
 
   @JsonProperty("BPVB_BETRIEBSPUNKT_ART_ID")
   private Integer bpvbBetriebspunktArtId;
@@ -129,11 +135,5 @@ public class ServicePointCsvModel {
 
   @JsonProperty("HTYP_ID")
   private Integer hTypId;
-
-  @JsonProperty("ERSTELLT_VON")
-  private String erstelltVon;
-
-  @JsonProperty("GEAENDERT_VON")
-  private String geaendertVon;
 
 }

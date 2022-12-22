@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -32,6 +33,10 @@ public class TrafficPointElementImportServiceTest {
             csvStream);
 
     assertThat(trafficPointElementCsvModels).hasSize(59088);
+    TrafficPointElementCsvModel csvModel = trafficPointElementCsvModels.get(0);
+    assertThat(csvModel.getTrafficPointElementType()).isNotNull();
+    assertThat(csvModel.getCreatedAt()).isNotNull();
+    assertThat(csvModel.getCreatedBy()).isNotNull();
 
     // delete all
     trafficPointElementVersionRepository.deleteAll();
