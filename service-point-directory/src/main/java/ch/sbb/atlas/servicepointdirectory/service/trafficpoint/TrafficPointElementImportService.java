@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service.traffic.point;
+package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;

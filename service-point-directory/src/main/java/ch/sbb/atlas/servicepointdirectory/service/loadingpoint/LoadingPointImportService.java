@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service.loading.point;
+package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointRepository;

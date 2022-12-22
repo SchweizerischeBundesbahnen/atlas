@@ -1,10 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TrafficPointElementVersionRepository extends JpaRepository<TrafficPointElementVersion, Long> {
+public interface TrafficPointElementVersionRepository extends
+    PagingAndSortingRepository<TrafficPointElementVersion, Long> {
+
+  List<TrafficPointElementVersion> findAllByServicePointNumber(Integer servicePointNumber);
 
 }
