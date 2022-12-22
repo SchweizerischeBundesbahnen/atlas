@@ -30,8 +30,11 @@ public class ServicePointImportServiceTest {
 
     // parse csv all
     System.out.println("parse all");
+    long start = System.currentTimeMillis();
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(
         csvStream, Integer.MAX_VALUE);
+    long end = System.currentTimeMillis();
+    System.out.println("Elapsed Time in milli seconds: " + (end - start));
 
     assertThat(servicePointCsvModels).hasSize(359616);
     ServicePointCsvModel csvModel = servicePointCsvModels.get(0);
@@ -43,16 +46,17 @@ public class ServicePointImportServiceTest {
 
     // import all
     System.out.println("save all");
-    long start = System.currentTimeMillis();
+    start = System.currentTimeMillis();
     servicePointImportService.importServicePoints(servicePointCsvModels);
-    long end = System.currentTimeMillis();
+    end = System.currentTimeMillis();
     System.out.println("Elapsed Time in milli seconds: " + (end - start));
 
     // get
     assertThat(servicePointVersionRepository.count()).isEqualTo(servicePointCsvModels.size());
-    System.out.println("get by number 7000");
+    System.out.println("get by number 85070003");
     final List<ServicePointVersion> savedServicePoints =
-        servicePointVersionRepository.findAllByNumber(7000);
+        servicePointVersionRepository.findAllByNumber(85070003);
+    System.out.println("got records for 85070003");
     assertThat(savedServicePoints).hasSize(1);
     ServicePointVersion savedServicePointVersion = savedServicePoints.get(0);
     assertThat(savedServicePointVersion.getId()).isNotNull();
