@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @IntegrationTest
 public class ServicePointImportServiceTest {
 
+  private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
+
   @Autowired
   private ServicePointImportService servicePointImportService;
 
@@ -22,8 +24,9 @@ public class ServicePointImportServiceTest {
 
   @Test
   void shouldParseCsvCorrectly() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/DIDOK3_DIENSTSTELLEN_ALL_V_3_20221216020403.csv");
-    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream, 50);
+    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
+    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(
+        csvStream, 50);
 
     assertThat(servicePointCsvModels).hasSize(50);
     ServicePointCsvModel firstServicePointCsvModel = servicePointCsvModels.get(0);
@@ -36,8 +39,9 @@ public class ServicePointImportServiceTest {
 
   @Test
   void shouldParseCsvAndSaveToDB() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/DIDOK3_DIENSTSTELLEN_ALL_V_3_20221216020403.csv");
-    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream, 50);
+    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
+    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(
+        csvStream, 50);
 
     servicePointImportService.importServicePoints(servicePointCsvModels);
 
