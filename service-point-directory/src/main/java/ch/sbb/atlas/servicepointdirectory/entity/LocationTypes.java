@@ -65,6 +65,6 @@ public class LocationTypes {
   private Double height;
 
   public boolean isValid() {
-    return (wgs84east >= -180 && wgs84east <= 180 && wgs84north >= -90 && wgs84north <= 90);
+    return (wgs84east != null && wgs84east >= -180 && wgs84east <= 180 && wgs84north != null && wgs84north >= -90 && wgs84north <= 90);
   }
 }
