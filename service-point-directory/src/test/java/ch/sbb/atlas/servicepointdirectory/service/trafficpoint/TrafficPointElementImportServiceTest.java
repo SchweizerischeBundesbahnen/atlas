@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointGeolocationRepository;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvModel;
+import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -24,8 +27,17 @@ public class TrafficPointElementImportServiceTest {
   @Autowired
   private TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
+  @Autowired
+  private TrafficPointGeolocationRepository trafficPointGeolocationRepository;
+
   @Test
   void shouldParseTrafficPointCsvAndSaveInDbSuccessfully() throws IOException {
+    System.out.println("delete all items");
+    trafficPointElementVersionRepository.deleteAllInBatch();
+    trafficPointElementVersionRepository.flush();
+    trafficPointGeolocationRepository.deleteAllInBatch();
+    trafficPointGeolocationRepository.flush();
+
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     System.out.println("parse all");
     long start = System.currentTimeMillis();
@@ -44,7 +56,17 @@ public class TrafficPointElementImportServiceTest {
     // import all
     System.out.println("save all");
     start = System.currentTimeMillis();
-    trafficPointElementImportService.importTrafficPointElements(trafficPointElementCsvModels);
+
+    List<List<TrafficPointElementCsvModel>> subSets = Lists.partition(trafficPointElementCsvModels,
+        5000);
+
+    int i = 1;
+    for (List<TrafficPointElementCsvModel> subSet : subSets) {
+      System.out.println("  ...save subSet %d of %d items".formatted(i, subSet.size()));
+      trafficPointElementImportService.importTrafficPointElements(subSet);
+      i++;
+    }
+
     end = System.currentTimeMillis();
     System.out.println("Elapsed Time in milli seconds: " + (end - start));
 

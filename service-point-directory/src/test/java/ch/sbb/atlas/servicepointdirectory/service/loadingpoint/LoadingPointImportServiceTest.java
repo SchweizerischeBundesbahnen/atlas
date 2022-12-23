@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointGeolocationRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointRepository;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,8 +26,17 @@ public class LoadingPointImportServiceTest {
   @Autowired
   private LoadingPointRepository loadingPointRepository;
 
+  @Autowired
+  private LoadingPointGeolocationRepository loadingPointGeolocationRepository;
+
   @Test
   void shouldParseLoadingPointCsvAndSaveInDbSuccessfully() throws IOException {
+    System.out.println("delete all items");
+    loadingPointRepository.deleteAllInBatch();
+    loadingPointRepository.flush();
+    loadingPointGeolocationRepository.deleteAllInBatch();
+    loadingPointGeolocationRepository.flush();
+
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     System.out.println("parse all");
     List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(
