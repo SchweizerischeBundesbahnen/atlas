@@ -94,7 +94,6 @@ public class TrafficPointElementVersionRepositoryTest {
             .wgs84webNorth(5811120.06939)
             .height(2540.21)
             .build())
-        .country(Country.SWITZERLAND)
         .build();
 
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
