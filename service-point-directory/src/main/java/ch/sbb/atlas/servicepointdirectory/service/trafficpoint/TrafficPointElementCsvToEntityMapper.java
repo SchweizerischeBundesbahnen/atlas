@@ -36,7 +36,6 @@ public class TrafficPointElementCsvToEntityMapper implements
 
     TrafficPointElementGeolocation geolocation = TrafficPointElementGeolocation
         .builder()
-        .country(Country.from(trafficPointElementCsvModel.getCountry()))
         .locationTypes(LocationTypes
             .builder()
             .spatialReference(trafficPointElementCsvModel.getSpatialReference())

@@ -95,13 +95,6 @@ public class TrafficPointElementVersionRepositoryTest {
             .height(2540.21)
             .build())
         .country(Country.SWITZERLAND)
-        .swissCantonFsoNumber(5)
-        .swissCantonName("Bern")
-        .swissCantonNumber(5)
-        .swissDistrictName("Bern")
-        .swissDistrictNumber(5)
-        .swissMunicipalityName("Bern")
-        .swissLocalityName("Bern")
         .build();
 
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
