@@ -136,6 +136,6 @@ public class ServicePointCsvModel {
   @JsonProperty("HTYP_ID")
   private Integer hTypId;
 
-  @JsonProperty("BEMERKUNG")
+  @JsonProperty("BAV_BEMERKUNG")
   private String comment;
 }
