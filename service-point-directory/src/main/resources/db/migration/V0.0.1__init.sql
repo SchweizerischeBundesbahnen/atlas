@@ -237,3 +237,41 @@ CREATE TABLE service_point_number
 );
 
 CREATE SEQUENCE service_point_number_seq START WITH 1000 INCREMENT BY 1;
+
+/*
+Idea:
+   Merge both number tables and set used flag. Then export in CSV:
+   ---
+   SELECT didok_code, 1 AS used FROM verwendete_didok_codes_evw
+   UNION ALL
+   SELECT ((laendercode * 100000)+nummer) AS didok_code, 0 AS used FROM verfuegbare_ds_nummern_evw
+   ---
+Problem:
+    We have to calculate the check-digit, see SOE .NET Code:
+
+public static string ComputeCode(long lcValue, long nummerValue)
+{
+    var lc = lcValue.ToString("D2");
+    var nummer = nummerValue.ToString("D5");
+    var pruefZiffer = ComputePruefZiffer(nummer);
+    return lc + "" + nummer + "" + pruefZiffer;
+}
+private static object ComputePruefZiffer(string nummer)
+{
+    // nummer must have 5 characters
+    if (nummer.Length != 5)
+    {
+        return 0;
+    }
+    var stepOne = Quersumme(int.Parse(nummer[0] + "") * 2) +
+                  Quersumme(int.Parse(nummer[1] + "")) +
+                  Quersumme(int.Parse(nummer[2] + "") * 2) +
+                  Quersumme(int.Parse(nummer[3] + "")) +
+                  Quersumme(int.Parse(nummer[4] + "") * 2);
+    return (10 - (stepOne % 10)) % 10;
+}
+private static int Quersumme(int i)
+{
+    return i % 10 + (i > 0 ? Quersumme(i / 10) : 0);
+}
+*/
