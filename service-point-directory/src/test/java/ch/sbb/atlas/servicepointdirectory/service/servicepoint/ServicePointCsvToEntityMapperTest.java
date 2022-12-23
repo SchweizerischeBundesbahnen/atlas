@@ -170,6 +170,7 @@ public class ServicePointCsvToEntityMapperTest {
         .meansOfTransport(new HashSet<>(List.of(MeanOfTransport.BUS)))
         .stopPlaceType(StopPlaceType.ORDERLY)
         .operatingPointType(null)
+        .comment("Test comment.")
         .creationDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
