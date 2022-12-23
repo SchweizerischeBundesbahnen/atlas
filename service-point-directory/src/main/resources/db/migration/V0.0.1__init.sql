@@ -218,3 +218,22 @@ CREATE TABLE traffic_point_element_version
 );
 
 CREATE SEQUENCE traffic_point_element_version_seq START WITH 1000 INCREMENT BY 1;
+
+-----------------------------------------------------------------------------------------
+-- Service Point Number - VERWENDETE_DIDOK_CODES_EVW & VERFUEGBARE_DS_NUMMERN_EVW
+-----------------------------------------------------------------------------------------
+
+CREATE TABLE service_point_number
+(
+    id            BIGINT PRIMARY KEY,
+    number        INTEGER     NOT NULL,
+    country       VARCHAR(50) NULL,
+    used          BOOLEAN     NOT NULL DEFAULT FALSE,
+    creation_date TIMESTAMP   NOT NULL,
+    creator       VARCHAR(50) NOT NULL,
+    edition_date  TIMESTAMP   NOT NULL,
+    editor        VARCHAR(50) NOT NULL,
+    version       BIGINT      NOT NULL DEFAULT 0
+);
+
+CREATE SEQUENCE service_point_number_seq START WITH 1000 INCREMENT BY 1;
