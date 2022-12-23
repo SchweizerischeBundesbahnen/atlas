@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
+import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateTimeDeserializer;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.NumericBooleanDeserializer;
@@ -43,6 +44,32 @@ public class LoadingPointCsvModel {
   @JsonProperty("GUELTIG_BIS")
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
+
+  @JsonProperty("SOURCE_SPATIAL_REF")
+  private SpatialReference spatialReference;
+
+  @JsonProperty("E_LV95")
+  private Double eLv95;
+  @JsonProperty("N_LV95")
+  private Double nLv95;
+
+  @JsonProperty("E_LV03")
+  private Double eLv03;
+  @JsonProperty("N_LV03")
+  private Double nLv03;
+
+  @JsonProperty("E_WGS84")
+  private Double eWgs84;
+  @JsonProperty("N_WGS84")
+  private Double nWgs84;
+
+  @JsonProperty("E_WGS84WEB")
+  private Double eWgs84web;
+  @JsonProperty("N_WGS84WEB")
+  private Double nWgs84web;
+
+  @JsonProperty("Z_LV95")
+  private Double height;
 
   @JsonProperty("ERSTELLT_AM")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)

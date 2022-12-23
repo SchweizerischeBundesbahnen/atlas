@@ -117,24 +117,55 @@ CREATE TABLE service_point_version_categories
 );
 
 -----------------------------------------------------------------------------------------
+-- Loading Point Version Geolocation - LADESTELLEN_FC
+-----------------------------------------------------------------------------------------
+
+CREATE TABLE loading_point_version_geolocation
+(
+    id                      BIGINT PRIMARY KEY,
+    spatial_reference       VARCHAR(50)     NOT NULL,
+    e_lv03                  NUMERIC(12, 5)  NULL,
+    n_lv03                  NUMERIC(12, 5)  NULL,
+    e_lv95                  NUMERIC(13, 5)  NULL,
+    n_lv95                  NUMERIC(13, 5)  NULL,
+    e_wgs84                 NUMERIC(14, 11) NULL,
+    n_wgs84                 NUMERIC(13, 11) NULL,
+    e_wgs84web              NUMERIC(13, 5)  NULL,
+    n_wgs84web              NUMERIC(13, 5)  NULL,
+    height                  NUMERIC(6, 2)   NULL,
+    country                 VARCHAR(50)     NULL,
+    creation_date           TIMESTAMP       NOT NULL,
+    creator                 VARCHAR(50)     NOT NULL,
+    edition_date            TIMESTAMP       NOT NULL,
+    editor                  VARCHAR(50)     NOT NULL,
+    version                 BIGINT          NOT NULL DEFAULT 0
+);
+
+CREATE SEQUENCE loading_point_version_geolocation_seq START WITH 1000 INCREMENT BY 1;
+
+-----------------------------------------------------------------------------------------
 -- Loading Point LADESTELLEN
 -----------------------------------------------------------------------------------------
 
 CREATE TABLE loading_point_version
 (
-    id                   BIGINT PRIMARY KEY,
-    number               BIGINT      NOT NULL,
-    designation          VARCHAR(12) NOT NULL,
-    designation_long     VARCHAR(35),
-    connection_point     BOOLEAN     NOT NULL,
-    service_point_number INTEGER     NOT NULL,
-    valid_from           DATE        NOT NULL,
-    valid_to             DATE        NOT NULL,
-    creation_date        TIMESTAMP   NOT NULL,
-    creator              VARCHAR(50) NOT NULL,
-    edition_date         TIMESTAMP   NOT NULL,
-    editor               VARCHAR(50) NOT NULL,
-    version              BIGINT      NOT NULL DEFAULT 0
+    id                           BIGINT PRIMARY KEY,
+    number                       BIGINT      NOT NULL,
+    designation                  VARCHAR(12) NOT NULL,
+    designation_long             VARCHAR(35),
+    connection_point             BOOLEAN     NOT NULL,
+    service_point_number         INTEGER     NOT NULL,
+    valid_from                   DATE        NOT NULL,
+    valid_to                     DATE        NOT NULL,
+    loading_point_geolocation_id BIGINT      NULL,
+    creation_date                TIMESTAMP   NOT NULL,
+    creator                      VARCHAR(50) NOT NULL,
+    edition_date                 TIMESTAMP   NOT NULL,
+    editor                       VARCHAR(50) NOT NULL,
+    version                      BIGINT      NOT NULL DEFAULT 0,
+    CONSTRAINT fk_loading_point_version_geolocation_id
+        FOREIGN KEY (loading_point_geolocation_id)
+            REFERENCES loading_point_version_geolocation (id)
 );
 
 CREATE SEQUENCE loading_point_version_seq START WITH 1000 INCREMENT BY 1;
@@ -167,13 +198,6 @@ CREATE TABLE traffic_point_element_version_geolocation
     n_wgs84web              NUMERIC(13, 5)  NULL,
     height                  NUMERIC(6, 2)   NULL,
     country                 VARCHAR(50)     NULL,
-    swiss_canton_fso_number SMALLINT        NULL,
-    swiss_canton_name       VARCHAR(50)     NULL,
-    swiss_canton_number     SMALLINT        NULL,
-    swiss_district_name     VARCHAR(255)    NULL,
-    swiss_district_number   SMALLINT        NULL,
-    swiss_municipality_name VARCHAR(255)    NULL,
-    swiss_locality_name     VARCHAR(255)    NULL,
     creation_date           TIMESTAMP       NOT NULL,
     creator                 VARCHAR(50)     NOT NULL,
     edition_date            TIMESTAMP       NOT NULL,

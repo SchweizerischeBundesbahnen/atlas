@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import com.google.common.collect.Lists;
@@ -28,9 +29,17 @@ public class ServicePointImportServiceTest {
 
   @Autowired
   private ServicePointGeolocationRepository servicePointGeolocationRepository;
+  @Autowired
+  private ServicePointCommentRepository servicePointCommentRepository;
 
   @Test
   void shouldParseServicePointCsvAndSaveInDbSuccessfully() throws IOException {
+    System.out.println("delete all items");
+    servicePointVersionRepository.deleteAllInBatch();
+    servicePointVersionRepository.flush();
+    servicePointGeolocationRepository.deleteAllInBatch();
+    servicePointGeolocationRepository.flush();
+
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
 
     // parse csv all
@@ -48,11 +57,6 @@ public class ServicePointImportServiceTest {
     assertThat(csvModel.getDidokCode()).isNotNull();
     assertThat(csvModel.getCreatedAt()).isNotNull();
     assertThat(csvModel.getCreatedBy()).isNotNull();
-
-    // import all
-    System.out.println("delete all items");
-    servicePointGeolocationRepository.deleteAllInBatch();
-    servicePointVersionRepository.deleteAllInBatch();
 
     System.out.println("save all items %d".formatted(servicePointCsvModels.size()));
     start = System.currentTimeMillis();
