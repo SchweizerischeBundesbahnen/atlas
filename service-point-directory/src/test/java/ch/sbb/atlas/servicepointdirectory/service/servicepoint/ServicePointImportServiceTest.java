@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import com.google.common.collect.Lists;
@@ -30,8 +29,6 @@ public class ServicePointImportServiceTest {
 
   @Autowired
   private ServicePointGeolocationRepository servicePointGeolocationRepository;
-  @Autowired
-  private ServicePointCommentRepository servicePointCommentRepository;
 
   @Test
   void shouldParseServicePointCsvAndSaveInDbSuccessfully() throws IOException {
@@ -69,7 +66,7 @@ public class ServicePointImportServiceTest {
       System.out.println("  ...save subSet of %d items".formatted(subSet.size()));
       servicePointImportService.importServicePoints(subSet);
       i++;
-      if (i >= 10) {
+      if (i >= 20) {
         break;
       }
     }
