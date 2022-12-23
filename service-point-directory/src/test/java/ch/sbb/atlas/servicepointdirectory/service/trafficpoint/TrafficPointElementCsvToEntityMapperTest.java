@@ -46,7 +46,6 @@ class TrafficPointElementCsvToEntityMapperTest {
           .wgs84webNorth(5811120.06939)
           .height(-9999.0)
           .build())
-        .country(Country.FRANCE_BUS)
         .creationDate(LocalDateTime.of(2019,12,6,8,2,34))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(2019,12,6,8,2,34))
