@@ -20,10 +20,10 @@ public class ServicePointImportService {
   private final ServicePointVersionRepository servicePointVersionRepository;
 
   public void importServicePoints(List<ServicePointCsvModel> servicePointCsvModels) {
-    List<ServicePointVersion> servicePointVersions = servicePointCsvModels.stream()
-                                                                          .map(
-                                                                              new ServicePointCsvToEntityMapper())
-                                                                          .toList();
+    List<ServicePointVersion> servicePointVersions = servicePointCsvModels
+        .stream()
+        .map(new ServicePointCsvToEntityMapper())
+        .toList();
     servicePointVersionRepository.saveAll(servicePointVersions);
   }
 
@@ -31,11 +31,10 @@ public class ServicePointImportService {
       throws IOException {
     MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
         ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
-    int counter = 0;
     List<ServicePointCsvModel> servicePoints = new ArrayList<>();
+
     while (mappingIterator.hasNext()) {
       servicePoints.add(mappingIterator.next());
-      counter++;
     }
     log.info("Parsed {} servicePoints", servicePoints.size());
     return servicePoints;
