@@ -145,4 +145,8 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   boolean isValidStopPlace() {
     return isStopPlace() || stopPlaceType == null;
   }
+
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  @AtlasVersionableProperty
+  private String comment;
 }
