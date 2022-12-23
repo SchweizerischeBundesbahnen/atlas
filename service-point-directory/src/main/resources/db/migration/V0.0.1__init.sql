@@ -59,6 +59,7 @@ CREATE TABLE service_point_version
     operating_point_type         VARCHAR(50),
     stop_place_type              VARCHAR(50),
     status                       VARCHAR(50) NOT NULL,
+    comment                      VARCHAR(1500),
     valid_from                   DATE        NOT NULL,
     valid_to                     DATE        NOT NULL,
     creation_date                TIMESTAMP   NOT NULL,
@@ -87,24 +88,6 @@ CREATE INDEX spv_validity_idx ON service_point_version (valid_from, valid_to);
 CREATE INDEX spv_creation_date_idx ON service_point_version (creation_date);
 CREATE INDEX spv_edition_date_idx ON service_point_version (edition_date);
 
------------------------------------------------------------------------------------------
--- Service Point Comment - DS_BEMERKUNGEN
------------------------------------------------------------------------------------------
-
-CREATE TABLE service_point_comment
-(
-    id                   BIGINT PRIMARY KEY,
-    service_point_number INTEGER       NOT NULL,
-    comment              VARCHAR(1500) NOT NULL,
-    creation_date        TIMESTAMP     NOT NULL,
-    creator              VARCHAR(50)   NOT NULL,
-    edition_date         TIMESTAMP     NOT NULL,
-    editor               VARCHAR(50)   NOT NULL,
-    version              BIGINT        NOT NULL DEFAULT 0
-);
-
-CREATE SEQUENCE service_point_comment_seq START WITH 1000 INCREMENT BY 1;
-
 
 -----------------------------------------------------------------------------------------
 -- Service Point Category DS_KATEGORIEN
@@ -122,22 +105,22 @@ CREATE TABLE service_point_version_categories
 
 CREATE TABLE loading_point_version_geolocation
 (
-    id                      BIGINT PRIMARY KEY,
-    spatial_reference       VARCHAR(50)     NOT NULL,
-    e_lv03                  NUMERIC(12, 5)  NULL,
-    n_lv03                  NUMERIC(12, 5)  NULL,
-    e_lv95                  NUMERIC(13, 5)  NULL,
-    n_lv95                  NUMERIC(13, 5)  NULL,
-    e_wgs84                 NUMERIC(14, 11) NULL,
-    n_wgs84                 NUMERIC(13, 11) NULL,
-    e_wgs84web              NUMERIC(13, 5)  NULL,
-    n_wgs84web              NUMERIC(13, 5)  NULL,
-    height                  NUMERIC(6, 2)   NULL,
-    creation_date           TIMESTAMP       NOT NULL,
-    creator                 VARCHAR(50)     NOT NULL,
-    edition_date            TIMESTAMP       NOT NULL,
-    editor                  VARCHAR(50)     NOT NULL,
-    version                 BIGINT          NOT NULL DEFAULT 0
+    id                BIGINT PRIMARY KEY,
+    spatial_reference VARCHAR(50)     NOT NULL,
+    e_lv03            NUMERIC(12, 5)  NULL,
+    n_lv03            NUMERIC(12, 5)  NULL,
+    e_lv95            NUMERIC(13, 5)  NULL,
+    n_lv95            NUMERIC(13, 5)  NULL,
+    e_wgs84           NUMERIC(14, 11) NULL,
+    n_wgs84           NUMERIC(13, 11) NULL,
+    e_wgs84web        NUMERIC(13, 5)  NULL,
+    n_wgs84web        NUMERIC(13, 5)  NULL,
+    height            NUMERIC(6, 2)   NULL,
+    creation_date     TIMESTAMP       NOT NULL,
+    creator           VARCHAR(50)     NOT NULL,
+    edition_date      TIMESTAMP       NOT NULL,
+    editor            VARCHAR(50)     NOT NULL,
+    version           BIGINT          NOT NULL DEFAULT 0
 );
 
 CREATE SEQUENCE loading_point_version_geolocation_seq START WITH 1000 INCREMENT BY 1;
@@ -185,22 +168,22 @@ CREATE TABLE service_point_version_means_of_transport
 
 CREATE TABLE traffic_point_element_version_geolocation
 (
-    id                      BIGINT PRIMARY KEY,
-    spatial_reference       VARCHAR(50)     NOT NULL,
-    e_lv03                  NUMERIC(12, 5)  NULL,
-    n_lv03                  NUMERIC(12, 5)  NULL,
-    e_lv95                  NUMERIC(13, 5)  NULL,
-    n_lv95                  NUMERIC(13, 5)  NULL,
-    e_wgs84                 NUMERIC(14, 11) NULL,
-    n_wgs84                 NUMERIC(13, 11) NULL,
-    e_wgs84web              NUMERIC(13, 5)  NULL,
-    n_wgs84web              NUMERIC(13, 5)  NULL,
-    height                  NUMERIC(6, 2)   NULL,
-    creation_date           TIMESTAMP       NOT NULL,
-    creator                 VARCHAR(50)     NOT NULL,
-    edition_date            TIMESTAMP       NOT NULL,
-    editor                  VARCHAR(50)     NOT NULL,
-    version                 BIGINT          NOT NULL DEFAULT 0
+    id                BIGINT PRIMARY KEY,
+    spatial_reference VARCHAR(50)     NOT NULL,
+    e_lv03            NUMERIC(12, 5)  NULL,
+    n_lv03            NUMERIC(12, 5)  NULL,
+    e_lv95            NUMERIC(13, 5)  NULL,
+    n_lv95            NUMERIC(13, 5)  NULL,
+    e_wgs84           NUMERIC(14, 11) NULL,
+    n_wgs84           NUMERIC(13, 11) NULL,
+    e_wgs84web        NUMERIC(13, 5)  NULL,
+    n_wgs84web        NUMERIC(13, 5)  NULL,
+    height            NUMERIC(6, 2)   NULL,
+    creation_date     TIMESTAMP       NOT NULL,
+    creator           VARCHAR(50)     NOT NULL,
+    edition_date      TIMESTAMP       NOT NULL,
+    editor            VARCHAR(50)     NOT NULL,
+    version           BIGINT          NOT NULL DEFAULT 0
 );
 
 CREATE SEQUENCE traffic_point_element_version_geolocation_seq START WITH 1000 INCREMENT BY 1;
