@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-@Transactional
+@Transactional // takes more time
 public class ServicePointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
@@ -61,26 +61,24 @@ public class ServicePointImportServiceTest {
 
     List<List<ServicePointCsvModel>> subSets = Lists.partition(servicePointCsvModels, 5000);
 
-    int i = 0;
+    int i = 1;
     for (List<ServicePointCsvModel> subSet : subSets) {
-      System.out.println("  ...save subSet of %d items".formatted(subSet.size()));
+      System.out.println("  ...save subSet %d of %d items".formatted(i, subSet.size()));
       servicePointImportService.importServicePoints(subSet);
       i++;
-      if (i >= 20) {
-        break;
-      }
     }
     end = System.currentTimeMillis();
     System.out.println("Elapsed Time in milli seconds: " + (end - start));
 
     // get
-    //assertThat(servicePointVersionRepository.count()).isEqualTo(servicePointCsvModels.size());
+    System.out.println("count test");
+    assertThat(servicePointVersionRepository.count()).isEqualTo(servicePointCsvModels.size());
     System.out.println("get by number 85070003");
     final List<ServicePointVersion> savedServicePoints =
         servicePointVersionRepository.findAllByNumber(
             85070003);
     System.out.println("got records for 85070003");
-    // assertThat(savedServicePoints).hasSize(6);
+    assertThat(savedServicePoints).hasSize(6);
     ServicePointVersion savedServicePointVersion = savedServicePoints.get(0);
     assertThat(savedServicePointVersion.getId()).isNotNull();
     assertThat(savedServicePointVersion.getCountry()).isEqualTo(SWITZERLAND);
