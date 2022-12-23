@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.LocationTypes;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
@@ -25,25 +24,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ServicePointVersionRepositoryTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
-  private final ServicePointCommentRepository servicePointCommentRepository;
+
 
   @Autowired
-  public ServicePointVersionRepositoryTest(ServicePointVersionRepository servicePointVersionRepository,
-      ServicePointCommentRepository servicePointCommentRepository) {
+  public ServicePointVersionRepositoryTest(
+      ServicePointVersionRepository servicePointVersionRepository) {
     this.servicePointVersionRepository = servicePointVersionRepository;
-    this.servicePointCommentRepository = servicePointCommentRepository;
   }
 
   @AfterEach
   void tearDown() {
     servicePointVersionRepository.deleteAll();
-    servicePointCommentRepository.deleteAll();
   }
 
   @Test
   void shouldSaveServicePointVersionWithUicCountry() {
     // given
-    ServicePointVersion servicePoint = ServicePointVersion.builder()
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
         .number(1)
         .checkDigit(1)
         .numberShort(1)
@@ -54,6 +52,7 @@ public class ServicePointVersionRepositoryTest {
         .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
+        .comment("Test comment.")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
@@ -67,13 +66,15 @@ public class ServicePointVersionRepositoryTest {
     assertThat(savedVersion.getCategories()).isEmpty();
     assertThat(savedVersion.isOperatingPoint()).isFalse();
     assertThat(savedVersion.isStopPlace()).isFalse();
+    assertThat(savedVersion.getComment()).isEqualTo("Test comment.");
   }
 
   @Test
   void shouldSaveServicePointVersionWithGeolocation() {
     // given
-    ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation.builder()
-         .locationTypes(LocationTypes
+    ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .locationTypes(LocationTypes
             .builder()
             .spatialReference(SpatialReference.LV95)
             .lv03east(600037.945)
@@ -96,7 +97,8 @@ public class ServicePointVersionRepositoryTest {
         .swissLocalityName("Bern")
         .build();
 
-    ServicePointVersion servicePoint = ServicePointVersion.builder()
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
         .number(1)
         .checkDigit(1)
         .numberShort(1)
@@ -127,7 +129,8 @@ public class ServicePointVersionRepositoryTest {
   void shouldSaveServicePointVersionWithTwoCategories() {
     // given
 
-    ServicePointVersion servicePoint = ServicePointVersion.builder()
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
         .number(1)
         .checkDigit(1)
         .numberShort(1)
@@ -155,7 +158,8 @@ public class ServicePointVersionRepositoryTest {
   @Test
   void shouldSaveServicePointVersionWithOperatingPointType() {
     // given
-    ServicePointVersion servicePoint = ServicePointVersion.builder()
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
         .number(1)
         .checkDigit(1)
         .numberShort(1)
@@ -187,7 +191,8 @@ public class ServicePointVersionRepositoryTest {
   @Test
   void shouldSaveServicePointVersionWithComment() {
     // given
-    ServicePointVersion servicePoint = ServicePointVersion.builder()
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
         .number(1)
         .checkDigit(1)
         .numberShort(1)
@@ -205,20 +210,16 @@ public class ServicePointVersionRepositoryTest {
     // when
     ServicePointVersion savedVersion = servicePointVersionRepository.save(servicePoint);
 
-    ServicePointComment savedComment = servicePointCommentRepository.save(ServicePointComment.builder()
-        .servicePointNumber(savedVersion.getNumber())
-        .comment("Pupazzi di neve")
-        .build());
-
     // then
     assertThat(savedVersion.getId()).isNotNull();
-    assertThat(savedComment.getId()).isNotNull();
+
   }
 
   @Test
   void shouldSaveStopPlace() {
     // given
-    ServicePointVersion servicePoint = ServicePointVersion.builder()
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
         .number(1)
         .checkDigit(1)
         .numberShort(1)
