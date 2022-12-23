@@ -52,6 +52,14 @@ public class LoadingPointVersion extends BaseEntity implements Versionable {
     @AtlasVersionableProperty
     private Integer servicePointNumber;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "loading_point_geolocation_id", referencedColumnName = "id")
+    private LoadingPointGeolocation loadingPointGeolocation;
+
+    public boolean hasGeolocation() {
+        return loadingPointGeolocation != null;
+    }
+
     @NotNull
     @Column(columnDefinition = "DATE")
     private LocalDate validFrom;
