@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
@@ -54,7 +55,7 @@ class LoadingPointCsvToEntityMapperTest {
         .designation("Piazzale")
         .designationLong("Piazzaleee")
         .connectionPoint(false)
-        .servicePointNumber(83017186)
+        .servicePointNumber(ServicePointNumber.of(83017186))
         .validFrom(LocalDate.of(2018, 6, 28))
         .validTo(LocalDate.of(2099, 12, 31))
         .creator("fs45117")
