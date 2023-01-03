@@ -6,6 +6,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElement
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
@@ -51,7 +52,7 @@ class TrafficPointElementCsvToEntityMapperTest {
     TrafficPointElementVersion expected = TrafficPointElementVersion.builder()
         .designation("Bezeichnung")
         .designationOperational("gali00")
-        .servicePointNumber(14000158)
+        .servicePointNumber(ServicePointNumber.of(14000158))
         .trafficPointElementGeolocation(trafficPointElementGeolocation)
         .sloid("ch:1:sloid:1400015:0:310240")
         .compassDirection(277.0)

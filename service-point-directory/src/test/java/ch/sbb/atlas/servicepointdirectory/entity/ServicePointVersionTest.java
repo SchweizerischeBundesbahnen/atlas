@@ -5,6 +5,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
@@ -23,7 +24,7 @@ class ServicePointVersionTest {
     void shouldAcceptStopPlaceWithType() {
         // Given
         ServicePointVersion servicePoint = ServicePointVersion.builder()
-            .number(1)
+            .number(ServicePointNumber.of(85070003))
             .checkDigit(1)
             .numberShort(1)
             .country(Country.SWITZERLAND)
@@ -50,7 +51,7 @@ class ServicePointVersionTest {
     void shouldNotAcceptStopPlaceWithoutMeansOfTransport() {
         // Given
         ServicePointVersion servicePoint = ServicePointVersion.builder()
-            .number(1)
+            .number(ServicePointNumber.of(85070003))
             .checkDigit(1)
             .numberShort(1)
             .country(Country.SWITZERLAND)

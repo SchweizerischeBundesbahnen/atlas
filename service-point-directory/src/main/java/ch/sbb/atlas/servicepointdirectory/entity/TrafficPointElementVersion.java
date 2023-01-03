@@ -5,8 +5,11 @@ import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import javax.validation.Valid;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
@@ -57,7 +60,9 @@ public class TrafficPointElementVersion extends BaseEntity implements Versionabl
 
   @NotNull
   @AtlasVersionableProperty
-  private Integer servicePointNumber;
+  @Convert(converter = ServicePointNumberConverter.class)
+  @Valid
+  private ServicePointNumber servicePointNumber;
 
   @NotNull
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
