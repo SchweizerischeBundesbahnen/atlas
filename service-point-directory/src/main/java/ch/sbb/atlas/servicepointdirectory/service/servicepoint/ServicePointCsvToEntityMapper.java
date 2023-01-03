@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -66,7 +67,6 @@ public class ServicePointCsvToEntityMapper implements
         .builder()
         .number(ServicePointNumber.of(servicePointCsvModel.getDidokCode()))
         .sloid(servicePointCsvModel.getSloid())
-        .checkDigit(servicePointCsvModel.getDidokCode() % 10)
         .numberShort(servicePointCsvModel.getNummer())
         .country(Country.from(servicePointCsvModel.getLaendercode()))
         .designationLong(servicePointCsvModel.getBezeichnungLang())
@@ -96,7 +96,8 @@ public class ServicePointCsvToEntityMapper implements
         )
         .stopPlaceType(StopPlaceType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(
-            OperatingPointType.from(servicePointCsvModel.getBpvbBetriebspunktArtId()))
+            OperatingPointType.from(Optional.ofNullable(servicePointCsvModel.getBpvbBetriebspunktArtId())
+                .orElse(servicePointCsvModel.getBpofBetriebspunktArtId())))
         .creationDate(servicePointCsvModel.getCreatedAt())
         .creator(servicePointCsvModel.getCreatedBy())
         .editionDate(servicePointCsvModel.getEditedAt())
