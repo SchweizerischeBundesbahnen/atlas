@@ -3,8 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.servicepointdirectory.entity.LocationTypes;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
@@ -42,19 +41,16 @@ public class ServicePointCsvToEntityMapperTest {
 
     ServicePointGeolocation expected = ServicePointGeolocation
         .builder()
-        .locationTypes(LocationTypes
-            .builder()
-            .spatialReference(SpatialReference.LV95)
-            .lv03east(665683D)
-            .lv03north(247031D)
-            .lv95east(2665683D)
-            .lv95north(1247031D)
-            .wgs84east(8.30826199275)
-            .wgs84north(47.37084599021)
-            .wgs84webEast(924871.49441)
-            .wgs84webNorth(6002817.05162)
-            .height(389D)
-            .build())
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(665683D)
+        .lv03north(247031D)
+        .lv95east(2665683D)
+        .lv95north(1247031D)
+        .wgs84east(8.30826199275)
+        .wgs84north(47.37084599021)
+        .wgs84webEast(924871.49441)
+        .wgs84webNorth(6002817.05162)
+        .height(389D)
         .country(Country.SWITZERLAND)
         .swissCantonFsoNumber(4067)
         .swissCantonName("Aargau")
@@ -122,19 +118,16 @@ public class ServicePointCsvToEntityMapperTest {
 
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
-        .locationTypes(LocationTypes
-            .builder()
-            .spatialReference(SpatialReference.LV95)
-            .lv03east(665683D)
-            .lv03north(247031D)
-            .lv95east(2665683D)
-            .lv95north(1247031D)
-            .wgs84east(8.30826199275)
-            .wgs84north(47.37084599021)
-            .wgs84webEast(924871.49441)
-            .wgs84webNorth(6002817.05162)
-            .height(389D)
-            .build())
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(665683D)
+        .lv03north(247031D)
+        .lv95east(2665683D)
+        .lv95north(1247031D)
+        .wgs84east(8.30826199275)
+        .wgs84north(47.37084599021)
+        .wgs84webEast(924871.49441)
+        .wgs84webNorth(6002817.05162)
+        .height(389D)
         .country(Country.SWITZERLAND)
         .swissCantonFsoNumber(4067)
         .swissCantonName("Aargau")
