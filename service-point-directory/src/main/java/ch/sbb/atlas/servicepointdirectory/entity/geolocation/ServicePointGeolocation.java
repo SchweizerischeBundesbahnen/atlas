@@ -1,17 +1,25 @@
-package ch.sbb.atlas.servicepointdirectory.entity;
+package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
-import lombok.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +29,7 @@ import javax.validation.constraints.Size;
 @SuperBuilder
 @FieldNameConstants
 @Entity(name = "service_point_version_geolocation")
-public class ServicePointGeolocation extends BaseEntity {
+public class ServicePointGeolocation extends GeolocationBaseEntity {
 
   private static final String VERSION_SEQ = "service_point_version_geolocation_seq";
 
@@ -33,9 +41,6 @@ public class ServicePointGeolocation extends BaseEntity {
 
   @OneToOne(mappedBy = "servicePointGeolocation")
   private ServicePointVersion servicePointVersion;
-
-  @Embedded
-  private LocationTypes locationTypes;
 
   @AtlasVersionableProperty
   @Enumerated(EnumType.STRING)
@@ -66,7 +71,4 @@ public class ServicePointGeolocation extends BaseEntity {
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String swissLocalityName;
 
-  public boolean isValid() {
-    return locationTypes.isValid();
-  }
 }
