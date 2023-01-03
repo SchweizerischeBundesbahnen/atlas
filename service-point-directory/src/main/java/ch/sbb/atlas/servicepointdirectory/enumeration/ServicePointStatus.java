@@ -3,8 +3,10 @@ package ch.sbb.atlas.servicepointdirectory.enumeration;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.Objects;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @Schema(enumAsRef = true)
 @RequiredArgsConstructor
 public enum ServicePointStatus {

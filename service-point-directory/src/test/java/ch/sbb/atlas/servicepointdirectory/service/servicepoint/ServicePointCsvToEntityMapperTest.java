@@ -37,7 +37,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
 
     ServicePointGeolocation servicePointGeolocation =
-        servicePointCsvToEntityMapper.mapSPGeolocationFromServicePointCsvModel(
+        servicePointCsvToEntityMapper.mapGeolocation(
             servicePointCsvModel);
 
     ServicePointGeolocation expected = ServicePointGeolocation
@@ -79,7 +79,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
 
     ServicePointVersion servicePointVersion =
-        servicePointCsvToEntityMapper.mapSPFromServicePointCsvModel(
+        servicePointCsvToEntityMapper.mapServicePointVersion(
             servicePointCsvModel);
 
     ServicePointVersion expected = ServicePointVersion
