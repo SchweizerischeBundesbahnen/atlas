@@ -6,6 +6,7 @@ import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ public class LoadingPointVersionRepositoryTest {
         .designation("Ladestelle")
         .designationLong("Grosse Ladestelle")
         .connectionPoint(true)
-        .servicePointNumber(1)
+        .servicePointNumber(ServicePointNumber.of(85070003))
         .loadingPointGeolocation(loadingPointGeolocation)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))

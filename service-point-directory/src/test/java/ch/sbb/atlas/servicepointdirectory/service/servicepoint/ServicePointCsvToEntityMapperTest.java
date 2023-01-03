@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
@@ -80,7 +81,7 @@ public class ServicePointCsvToEntityMapperTest {
 
     ServicePointVersion expected = ServicePointVersion
         .builder()
-        .number(85027516)
+        .number(ServicePointNumber.of(85027516))
         .sloid("ch:1:sloid:2751")
         .checkDigit(6)
         .numberShort(2751)
@@ -144,7 +145,7 @@ public class ServicePointCsvToEntityMapperTest {
 
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
-        .number(85027516)
+        .number(ServicePointNumber.of(85027516))
         .sloid("ch:1:sloid:2751")
         .checkDigit(6)
         .numberShort(2751)
