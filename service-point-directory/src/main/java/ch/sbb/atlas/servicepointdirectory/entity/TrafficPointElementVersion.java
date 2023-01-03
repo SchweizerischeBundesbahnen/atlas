@@ -5,6 +5,7 @@ import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
