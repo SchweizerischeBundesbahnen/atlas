@@ -27,7 +27,6 @@ public class ServicePointVersionRepositoryTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
 
-
   @Autowired
   public ServicePointVersionRepositoryTest(
       ServicePointVersionRepository servicePointVersionRepository) {
