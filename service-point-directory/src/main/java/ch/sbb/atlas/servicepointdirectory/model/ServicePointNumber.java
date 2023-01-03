@@ -3,9 +3,13 @@ package ch.sbb.atlas.servicepointdirectory.model;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
+@ToString
+@EqualsAndHashCode
 @Getter
 @RequiredArgsConstructor
 public final class ServicePointNumber {
