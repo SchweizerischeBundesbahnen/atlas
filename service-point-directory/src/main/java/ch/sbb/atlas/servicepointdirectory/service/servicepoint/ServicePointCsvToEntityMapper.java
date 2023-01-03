@@ -1,8 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.servicepointdirectory.entity.LocationTypes;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
@@ -36,19 +35,16 @@ public class ServicePointCsvToEntityMapper implements
       ServicePointCsvModel servicePointCsvModel) {
     return ServicePointGeolocation
         .builder()
-        .locationTypes(LocationTypes
-            .builder()
-            .spatialReference(servicePointCsvModel.getSpatialReference())
-            .lv03east(servicePointCsvModel.getELV03())
-            .lv03north(servicePointCsvModel.getNLV03())
-            .lv95east(servicePointCsvModel.getELV95())
-            .lv95north(servicePointCsvModel.getNLV95())
-            .wgs84east(servicePointCsvModel.getEWGS84())
-            .wgs84north(servicePointCsvModel.getNWGS84())
-            .wgs84webEast(servicePointCsvModel.getEWGS84WEB())
-            .wgs84webNorth(servicePointCsvModel.getNWGS84WEB())
-            .height(servicePointCsvModel.getHeight())
-            .build())
+        .spatialReference(servicePointCsvModel.getSpatialReference())
+        .lv03east(servicePointCsvModel.getELV03())
+        .lv03north(servicePointCsvModel.getNLV03())
+        .lv95east(servicePointCsvModel.getELV95())
+        .lv95north(servicePointCsvModel.getNLV95())
+        .wgs84east(servicePointCsvModel.getEWGS84())
+        .wgs84north(servicePointCsvModel.getNWGS84())
+        .wgs84webEast(servicePointCsvModel.getEWGS84WEB())
+        .wgs84webNorth(servicePointCsvModel.getNWGS84WEB())
+        .height(servicePointCsvModel.getHeight())
         .country(Country.from(servicePointCsvModel.getLaendercode()))
         .swissCantonFsoNumber(servicePointCsvModel.getBfsNummer())
         .swissCantonName(servicePointCsvModel.getKantonsName())

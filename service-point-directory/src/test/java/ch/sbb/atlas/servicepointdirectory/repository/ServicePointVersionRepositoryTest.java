@@ -4,8 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.entity.LocationTypes;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
@@ -75,19 +74,16 @@ public class ServicePointVersionRepositoryTest {
     // given
     ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation
         .builder()
-        .locationTypes(LocationTypes
-            .builder()
-            .spatialReference(SpatialReference.LV95)
-            .lv03east(600037.945)
-            .lv03north(199749.812)
-            .lv95east(2600037.945)
-            .lv95north(1199749.812)
-            .wgs84east(7.439130891)
-            .wgs84north(46.948832291)
-            .wgs84webEast(691419.90336)
-            .wgs84webNorth(5811120.06939)
-            .height(2540.21)
-            .build())
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(600037.945)
+        .lv03north(199749.812)
+        .lv95east(2600037.945)
+        .lv95north(1199749.812)
+        .wgs84east(7.439130891)
+        .wgs84north(46.948832291)
+        .wgs84webEast(691419.90336)
+        .wgs84webNorth(5811120.06939)
+        .height(2540.21)
         .country(Country.SWITZERLAND)
         .swissCantonFsoNumber(5)
         .swissCantonName("Bern")
