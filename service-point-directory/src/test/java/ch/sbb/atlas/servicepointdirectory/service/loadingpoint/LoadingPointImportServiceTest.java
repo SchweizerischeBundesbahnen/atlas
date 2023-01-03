@@ -17,11 +17,15 @@ public class LoadingPointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_LADESTELLEN_20221222011259.csv";
 
-  @Autowired
-  private LoadingPointImportService loadingPointImportService;
+  private final LoadingPointImportService loadingPointImportService;
+  private final LoadingPointRepository loadingPointRepository;
 
   @Autowired
-  private LoadingPointRepository loadingPointRepository;
+  public LoadingPointImportServiceTest(LoadingPointImportService loadingPointImportService,
+      LoadingPointRepository loadingPointRepository) {
+    this.loadingPointImportService = loadingPointImportService;
+    this.loadingPointRepository = loadingPointRepository;
+  }
 
   @Test
   void shouldParseCsvSuccessfully() throws IOException {
