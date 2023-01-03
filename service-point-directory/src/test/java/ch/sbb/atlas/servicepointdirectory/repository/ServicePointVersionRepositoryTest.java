@@ -19,8 +19,10 @@ import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
+@Transactional
 public class ServicePointVersionRepositoryTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;

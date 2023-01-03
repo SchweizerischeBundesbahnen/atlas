@@ -53,6 +53,7 @@ public enum Category {
   private final String description;
 
   public static Category from(Integer id) {
-    return Arrays.stream(Category.values()).filter(el -> Objects.equals(el.id, id)).findFirst().orElse(null);
+    return Arrays.stream(Category.values()).filter(category -> Objects.equals(category.getId(), id)).findFirst()
+        .orElseThrow(() -> new IllegalArgumentException(String.valueOf(id)));
   }
 }
