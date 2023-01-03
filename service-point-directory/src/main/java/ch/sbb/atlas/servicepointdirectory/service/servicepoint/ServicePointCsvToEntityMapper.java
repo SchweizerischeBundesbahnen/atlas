@@ -74,9 +74,7 @@ public class ServicePointCsvToEntityMapper implements
         .abbreviation(servicePointCsvModel.getAbkuerzung())
         .statusDidok3(
             ServicePointStatus.from(servicePointCsvModel.getStatus()))
-        .businessOrganisation("ch:1:sboid:"
-            + servicePointCsvModel.getSaid()) // TODO: check if this is
-        // correct
+        .businessOrganisation("ch:1:sboid:" + servicePointCsvModel.getSaid())
         .status(Status.VALIDATED)
         .validFrom(LocalDate.parse(servicePointCsvModel.getGueltigVon()))
         .validTo(LocalDate.parse(servicePointCsvModel.getGueltigBis()))
