@@ -44,7 +44,6 @@ public class ServicePointVersionRepositoryTest {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .number(ServicePointNumber.of(85070003))
-        .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -98,7 +97,6 @@ public class ServicePointVersionRepositoryTest {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .number(ServicePointNumber.of(85070003))
-        .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -130,7 +128,6 @@ public class ServicePointVersionRepositoryTest {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .number(ServicePointNumber.of(85070003))
-        .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -159,7 +156,6 @@ public class ServicePointVersionRepositoryTest {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .number(ServicePointNumber.of(85070003))
-        .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -192,7 +188,6 @@ public class ServicePointVersionRepositoryTest {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .number(ServicePointNumber.of(85070003))
-        .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -219,7 +214,6 @@ public class ServicePointVersionRepositoryTest {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .number(ServicePointNumber.of(85070003))
-        .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
