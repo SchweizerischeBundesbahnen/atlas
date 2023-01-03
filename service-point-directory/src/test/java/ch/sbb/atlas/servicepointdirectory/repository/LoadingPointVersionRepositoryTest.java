@@ -1,20 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.LocationTypes;
-import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional

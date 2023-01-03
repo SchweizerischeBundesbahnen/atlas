@@ -6,7 +6,6 @@ import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.LocationTypes;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;

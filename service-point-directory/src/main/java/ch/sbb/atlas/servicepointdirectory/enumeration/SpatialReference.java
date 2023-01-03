@@ -1,8 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 @Schema(enumAsRef = true)
 public enum SpatialReference {
@@ -14,5 +16,5 @@ public enum SpatialReference {
 
   ;
 
-  private final Integer wkid;
+  private final Integer wellKnownId;
 }
