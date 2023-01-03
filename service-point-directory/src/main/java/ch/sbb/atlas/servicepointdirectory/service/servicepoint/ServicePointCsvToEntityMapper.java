@@ -21,9 +21,8 @@ public class ServicePointCsvToEntityMapper implements
 
   @Override
   public ServicePointVersion apply(ServicePointCsvModel servicePointCsvModel) {
-    ServicePointVersion servicePointVersion = mapSPFromServicePointCsvModel(servicePointCsvModel);
-    ServicePointGeolocation servicePointGeolocation = mapSPGeolocationFromServicePointCsvModel(
-        servicePointCsvModel);
+    ServicePointVersion servicePointVersion = mapServicePointVersion(servicePointCsvModel);
+    ServicePointGeolocation servicePointGeolocation = mapGeolocation(servicePointCsvModel);
 
     if (servicePointGeolocation.isValid()) {
       servicePointVersion.setServicePointGeolocation(servicePointGeolocation);
@@ -33,7 +32,7 @@ public class ServicePointCsvToEntityMapper implements
     return servicePointVersion;
   }
 
-  ServicePointGeolocation mapSPGeolocationFromServicePointCsvModel(
+  ServicePointGeolocation mapGeolocation(
       ServicePointCsvModel servicePointCsvModel) {
     return ServicePointGeolocation
         .builder()
@@ -65,7 +64,7 @@ public class ServicePointCsvToEntityMapper implements
         .build();
   }
 
-  ServicePointVersion mapSPFromServicePointCsvModel(ServicePointCsvModel servicePointCsvModel) {
+  ServicePointVersion mapServicePointVersion(ServicePointCsvModel servicePointCsvModel) {
     return ServicePointVersion
         .builder()
         .number(servicePointCsvModel.getDidokCode())
@@ -86,19 +85,19 @@ public class ServicePointCsvToEntityMapper implements
         .validTo(LocalDate.parse(servicePointCsvModel.getGueltigBis()))
         .categories(
             Arrays.stream(Objects.nonNull(servicePointCsvModel.getDsKategorienIds())
-                      ? servicePointCsvModel.getDsKategorienIds().split("\\|") :
-                      new String[]{})
-                  .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
-                  .filter(Objects::nonNull)
-                  .collect(Collectors.toSet())
+                    ? servicePointCsvModel.getDsKategorienIds().split("\\|") :
+                    new String[]{})
+                .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet())
         )
         .meansOfTransport(
             Arrays.stream(Objects.nonNull(servicePointCsvModel.getBpvhVerkehrsmittel())
-                      ? servicePointCsvModel.getBpvhVerkehrsmittel().split("~") :
-                      new String[]{})
-                  .map(MeanOfTransport::from)
-                  .filter(Objects::nonNull)
-                  .collect(Collectors.toSet())
+                    ? servicePointCsvModel.getBpvhVerkehrsmittel().split("~") :
+                    new String[]{})
+                .map(MeanOfTransport::from)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet())
         )
         .stopPlaceType(StopPlaceType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(
