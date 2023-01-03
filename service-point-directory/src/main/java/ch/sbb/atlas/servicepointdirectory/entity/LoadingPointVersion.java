@@ -5,7 +5,10 @@ import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import javax.validation.Valid;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
@@ -51,7 +54,9 @@ public class LoadingPointVersion extends BaseEntity implements Versionable {
 
     @NotNull
     @AtlasVersionableProperty
-    private Integer servicePointNumber;
+    @Convert(converter = ServicePointNumberConverter.class)
+    @Valid
+    private ServicePointNumber servicePointNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "loading_point_geolocation_id", referencedColumnName = "id")
