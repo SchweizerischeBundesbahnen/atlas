@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -42,7 +43,7 @@ public class ServicePointVersionRepositoryTest {
     // given
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(1)
+        .number(ServicePointNumber.of(85070003))
         .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
@@ -96,7 +97,7 @@ public class ServicePointVersionRepositoryTest {
 
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(1)
+        .number(ServicePointNumber.of(85070003))
         .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
@@ -128,7 +129,7 @@ public class ServicePointVersionRepositoryTest {
 
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(1)
+        .number(ServicePointNumber.of(85070003))
         .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
@@ -157,7 +158,7 @@ public class ServicePointVersionRepositoryTest {
     // given
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(1)
+        .number(ServicePointNumber.of(85070003))
         .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
@@ -190,7 +191,7 @@ public class ServicePointVersionRepositoryTest {
     // given
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(1)
+        .number(ServicePointNumber.of(85070003))
         .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)
@@ -217,7 +218,7 @@ public class ServicePointVersionRepositoryTest {
     // given
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(1)
+        .number(ServicePointNumber.of(85070003))
         .checkDigit(1)
         .numberShort(1)
         .country(Country.SWITZERLAND)

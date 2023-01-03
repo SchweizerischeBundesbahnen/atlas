@@ -105,6 +105,6 @@ public enum Country {
 
   public static Country from(Integer uicCode) {
     return Arrays.stream(Country.values()).filter(country -> Objects.equals(country.getUicCode(), uicCode)).findFirst()
-        .orElseThrow(() -> new IllegalArgumentException(String.valueOf(uicCode)));
+        .orElse(null);
   }
 }

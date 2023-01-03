@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +22,7 @@ public class TrafficPointElementCsvToEntityMapper implements
         .compassDirection(trafficPointElementCsvModel.getCompassDirection())
         .trafficPointElementType(TrafficPointElementType.fromValue(
             trafficPointElementCsvModel.getTrafficPointElementType()))
-        .servicePointNumber(trafficPointElementCsvModel.getServicePointNumber())
+        .servicePointNumber(ServicePointNumber.of(trafficPointElementCsvModel.getServicePointNumber()))
         .sloid(trafficPointElementCsvModel.getSloid())
         .parentSloid(trafficPointElementCsvModel.getParentSloid())
         .validFrom(trafficPointElementCsvModel.getValidFrom())
