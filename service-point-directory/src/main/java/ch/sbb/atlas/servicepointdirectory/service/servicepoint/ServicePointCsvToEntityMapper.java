@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Objects;
@@ -63,7 +64,7 @@ public class ServicePointCsvToEntityMapper implements
   ServicePointVersion mapServicePointVersion(ServicePointCsvModel servicePointCsvModel) {
     return ServicePointVersion
         .builder()
-        .number(servicePointCsvModel.getDidokCode())
+        .number(ServicePointNumber.of(servicePointCsvModel.getDidokCode()))
         .sloid(servicePointCsvModel.getSloid())
         .checkDigit(servicePointCsvModel.getDidokCode() % 10)
         .numberShort(servicePointCsvModel.getNummer())
