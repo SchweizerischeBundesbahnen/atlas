@@ -6,6 +6,7 @@ import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ public class TrafficPointElementVersionRepositoryTest {
         .builder()
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeichnung")
-        .servicePointNumber(1)
+        .servicePointNumber(ServicePointNumber.of(85070003))
         .sloid("ch:1:sloid:123")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
@@ -58,7 +59,7 @@ public class TrafficPointElementVersionRepositoryTest {
         .builder()
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeichnung")
-        .servicePointNumber(1)
+        .servicePointNumber(ServicePointNumber.of(85070003))
         .sloid("ch:1:sloid:123")
         .parentSloid("ch:1:sloid:1")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -95,7 +96,7 @@ public class TrafficPointElementVersionRepositoryTest {
         .builder()
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeichnung")
-        .servicePointNumber(1)
+        .servicePointNumber(ServicePointNumber.of(85070003))
         .trafficPointElementGeolocation(trafficPointElementGeolocation)
         .sloid("ch:1:sloid:123")
         .validFrom(LocalDate.of(2022, 1, 1))
