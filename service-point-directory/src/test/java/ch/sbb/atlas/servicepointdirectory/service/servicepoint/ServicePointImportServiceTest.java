@@ -18,11 +18,15 @@ public class ServicePointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
 
-  @Autowired
-  private ServicePointImportService servicePointImportService;
+  private final ServicePointImportService servicePointImportService;
+  private final ServicePointVersionRepository servicePointVersionRepository;
 
   @Autowired
-  private ServicePointVersionRepository servicePointVersionRepository;
+  public ServicePointImportServiceTest(ServicePointImportService servicePointImportService,
+      ServicePointVersionRepository servicePointVersionRepository) {
+    this.servicePointImportService = servicePointImportService;
+    this.servicePointVersionRepository = servicePointVersionRepository;
+  }
 
   @Test
   void shouldParseCsvCorrectly() throws IOException {
