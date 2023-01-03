@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class CountryTest {
 
     @Test
-    void isoCodeuicCodeCombinationShouldBeUnique() {
+    void isoCodeUicCodeCombinationShouldBeUnique() {
         Set<Pair<String, Integer>> usedValues = new HashSet<>();
         for (Country country : Country.values()) {
             if (!usedValues.add(Pair.of(country.getIsoCode(), country.getUicCode()))) {
