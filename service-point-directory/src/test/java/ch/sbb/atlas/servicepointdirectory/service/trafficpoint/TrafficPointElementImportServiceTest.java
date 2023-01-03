@@ -17,11 +17,15 @@ public class TrafficPointElementImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221222011816.csv";
 
-  @Autowired
-  private TrafficPointElementImportService trafficPointElementImportService;
+  private final TrafficPointElementImportService trafficPointElementImportService;
+  private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
   @Autowired
-  private TrafficPointElementVersionRepository trafficPointElementVersionRepository;
+  public TrafficPointElementImportServiceTest(TrafficPointElementImportService trafficPointElementImportService,
+      TrafficPointElementVersionRepository trafficPointElementVersionRepository) {
+    this.trafficPointElementImportService = trafficPointElementImportService;
+    this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
+  }
 
   @Test
   void shouldParseCsvSuccessfully() throws IOException {
