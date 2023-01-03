@@ -28,6 +28,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -60,10 +61,6 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
 
   @NotNull
   @AtlasVersionableProperty
-  private Integer checkDigit;
-
-  @NotNull
-  @AtlasVersionableProperty
   private Integer numberShort;
 
   @NotNull
@@ -92,6 +89,14 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
     return servicePointGeolocation != null;
   }
 
+  public boolean isFreightServicePoint() {
+    return StringUtils.isNotBlank(sortCodeOfDestinationStation);
+  }
+
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @AtlasVersionableProperty
+  private String sortCodeOfDestinationStation;
+
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validFrom;
@@ -119,6 +124,10 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
 
   public boolean isOperatingPoint() {
     return operatingPointType != null;
+  }
+
+  public boolean isTrafficPoint() {
+    return isStopPlace() || isFreightServicePoint();
   }
 
   public Set<Category> getCategories() {
