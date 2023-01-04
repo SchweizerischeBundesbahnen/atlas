@@ -144,4 +144,14 @@ public class ServicePointCsvModel {
 
   @JsonProperty("BAV_BEMERKUNG")
   private String comment;
+
+  @JsonProperty("RICHTPUNKT_CODE")
+  private String richtpunktCode;
+
+  @JsonProperty("IS_BPS")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean operatingPointRouteNetwork;
+
+  @JsonProperty("BPK_MASTER")
+  private Integer operatingPointKilometerMaster;
 }
