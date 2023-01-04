@@ -90,7 +90,12 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   }
 
   public boolean isFreightServicePoint() {
-    return StringUtils.isNotBlank(sortCodeOfDestinationStation);
+    return operatingPointType == OperatingPointType.FREIGHT_POINT;
+  }
+
+  @AssertTrue(message = "sortCodeOfDestinationStation only allowed for FreightServicePoints")
+  boolean isValidFreightServicePoint() {
+    return !isFreightServicePoint() || StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
   @Size(max = AtlasFieldLengths.LENGTH_10)
@@ -122,12 +127,24 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @Enumerated(EnumType.STRING)
   private OperatingPointType operatingPointType;
 
+  @AtlasVersionableProperty
+  private boolean operatingPointRouteNetwork;
+
+  @AtlasVersionableProperty
+  @Convert(converter = ServicePointNumberConverter.class)
+  @Valid
+  private ServicePointNumber operatingPointKilometerMaster;
+
+  public boolean isOperatingPointKilometer() {
+    return operatingPointKilometerMaster != null;
+  }
+
   public boolean isOperatingPoint() {
     return operatingPointType != null || isTrafficPoint();
   }
 
   public boolean isTrafficPoint() {
-    return isStopPlace() || isFreightServicePoint();
+    return isStopPlace() || isFreightServicePoint() || operatingPointType == OperatingPointType.TARIFF_POINT;
   }
 
   public boolean isBorderPoint() {
