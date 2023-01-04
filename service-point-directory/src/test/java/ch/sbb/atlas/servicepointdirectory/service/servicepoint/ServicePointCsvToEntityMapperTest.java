@@ -10,7 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 public class ServicePointCsvToEntityMapperTest {
@@ -99,8 +100,8 @@ public class ServicePointCsvToEntityMapperTest {
         .validTo(LocalDate.of(2022, 7, 28))
         .categories(new HashSet<>())
         .meansOfTransport(new HashSet<>(List.of(MeanOfTransport.BUS)))
-        .stopPlaceType(StopPlaceType.ORDERLY)
-        .operatingPointType(null)
+        .stopPointType(StopPointType.ORDERLY)
+        .operatingPointType(OperatingPointType.STOP_POINT)
         .comment("Test comment.")
         .creationDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
         .creator("fs45117")
@@ -164,8 +165,8 @@ public class ServicePointCsvToEntityMapperTest {
         .validTo(LocalDate.of(2022, 7, 28))
         .categories(new HashSet<>())
         .meansOfTransport(new HashSet<>(List.of(MeanOfTransport.BUS)))
-        .stopPlaceType(StopPlaceType.ORDERLY)
-        .operatingPointType(null)
+        .stopPointType(StopPointType.ORDERLY)
+        .operatingPointType(OperatingPointType.STOP_POINT)
         .comment("Test comment.")
         .creationDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
         .creator("fs45117")
@@ -237,6 +238,8 @@ public class ServicePointCsvToEntityMapperTest {
     assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
     // IS_VERKEHRSPUNKT
     assertThat(expectedServicePoint.isTrafficPoint()).isFalse();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isFalse();
     // IS_VIRTUELL
     assertThat(expectedServicePoint.hasGeolocation()).isFalse();
 
@@ -323,6 +326,186 @@ public class ServicePointCsvToEntityMapperTest {
     assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
     // IS_VERKEHRSPUNKT
     assertThat(expectedServicePoint.isTrafficPoint()).isFalse();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isFalse();
+    // IS_VIRTUELL
+    assertThat(expectedServicePoint.hasGeolocation()).isTrue();
+
+
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
+    assertThat(servicePointVersion
+        .getServicePointGeolocation())
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
+  }
+
+  @Test
+  void shouldImportVerkehrspunktHaltestelle() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        89008;85;CH;89008;85890087;2014-12-14;2021-03-31;3;Bern, Wyleregg;;;1;1;1;0;1;0;0;Bern;Bern;351;Bern-Mittelland;246;Bern;2;CH;{98aafbe4-0e11-4b43-bd9c-1ad9bf026a4e};100626;{3bf06be4-d4ea-46a9-83ca-51a556427611};2021-03-22 09:26:29;2022-02-23 17:10:10;;;;;;;;;;;0;0;;;;;;;0;;;;;;;;;;;;;;;;;;;;;;~B~;~Bus~;~Bus~;~Bus~;~Bus~;2005-08-04;2099-12-31;BE;827;SVB Auto;SVB Auto;SVB Auto;SVB Auto;Städtische Verkehrsbetriebe Bern;Städtische Verkehrsbetriebe Bern;Städtische Verkehrsbetriebe Bern;Städtische Verkehrsbetriebe Bern;;;;;;;829209.950436389;5935705.39516551;555;ch:1:sloid:89008;600783;201099;2600783;1201099;7.44891972221;46.96096808021;829209.95044;5935705.39517;0;;;;;;;;;;;;;;;;;;;;;SVB;BERNMOBIL;#0306;Städtische Verkehrsbetriebe Bern (SVB);CHE-108.954.932;fs45117;fs45117;LV95
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    // then
+    ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(600783D)
+        .lv03north(201099D)
+        .lv95east(2600783D)
+        .lv95north(1201099D)
+        .wgs84east(7.44891972221)
+        .wgs84north(46.96096808021)
+        .wgs84webEast(829209.95044)
+        .wgs84webNorth(5935705.39517)
+        .height(555D)
+        .country(Country.SWITZERLAND)
+        .swissCantonFsoNumber(351)
+        .swissCantonName("Bern")
+        .swissCantonNumber(2)
+        .swissDistrictName("Bern-Mittelland")
+        .swissDistrictNumber(246)
+        .swissMunicipalityName("Bern")
+        .swissLocalityName("Bern")
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();
+
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(expectedServicePointGeolocation)
+        .number(ServicePointNumber.of(85890087))
+        .sloid("ch:1:sloid:89008")
+        .numberShort(89008)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Bern, Wyleregg")
+        .abbreviation(null)
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100626")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2014, 12, 14))
+        .validTo(LocalDate.of(2021, 3, 31))
+        .categories(new HashSet<>())
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .operatingPointType(OperatingPointType.STOP_POINT)
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();
+
+    // IS_BETRIEBSPUNKT
+    assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
+    // IS_FAHRPLAN
+    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    // IS_HALTESTELLE
+    assertThat(expectedServicePoint.isStopPlace()).isTrue();
+    // IS_BEDIENPUNKT
+    assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
+    // IS_VERKEHRSPUNKT
+    assertThat(expectedServicePoint.isTrafficPoint()).isTrue();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isFalse();
+    // IS_VIRTUELL
+    assertThat(expectedServicePoint.hasGeolocation()).isTrue();
+
+
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
+    assertThat(servicePointVersion
+        .getServicePointGeolocation())
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
+  }
+
+  @Test
+  void shouldImportGrenzpunkt() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        19761;85;CH;19761;85197616;2017-11-02;2099-12-31;3;Flüh Grenze;;;1;1;0;0;0;1;0;;;;;;;;FR;{c0666dd9-3c54-4425-b868-62e2d42c90cd};100019;{2af6c20c-b5c0-47e7-a179-eddc938007df};2017-11-09 11:53:05;2019-05-20 15:03:58;;;;;;;;;;;0;0;;Landesgrenze;Frontière nationale;Confine;Landesgrenze;42;0;;;;;;;;;;;;;;;;;;;;;;;;;;;2017-11-02;2099-12-31;;37;BLT-blt;BLT-blt;BLT-blt;BLT-blt;Baselland Transport;Baselland Transport;Baselland Transport;Baselland Transport;;;;;;(Tram);834747.711855612;6022399.02902105;370;ch:1:sloid:19761;604525;259900;2604525;1259900;7.49866627944;47.48984514972;834747.71186;6022399.02902;0;;;;;;;;;;;;;;;;;;;;;BLT;;#0122;BLT Baselland Transport AG;CHE-105.824.463;GSU_DIDOK;fs45117;LV95
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    // then
+    ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(604525D)
+        .lv03north(259900D)
+        .lv95east(2604525D)
+        .lv95north(1259900D)
+        .wgs84east(7.49866627944)
+        .wgs84north(47.48984514972 )
+        .wgs84webEast(834747.71186)
+        .wgs84webNorth(6022399.02902)
+        .height(370D)
+        .country(Country.SWITZERLAND)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(expectedServicePointGeolocation)
+        .number(ServicePointNumber.of(85197616))
+        .sloid("ch:1:sloid:19761")
+        .numberShort(19761)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Flüh Grenze")
+        .abbreviation(null)
+        .meansOfTransport(Collections.emptySet())
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100019")
+        .comment("(Tram)")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2017, 11, 2))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .operatingPointType(OperatingPointType.COUNTRY_BORDER)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+
+    // IS_BETRIEBSPUNKT
+    assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
+    // IS_FAHRPLAN
+    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    // IS_HALTESTELLE
+    assertThat(expectedServicePoint.isStopPlace()).isFalse();
+    // IS_BEDIENPUNKT
+    assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
+    // IS_VERKEHRSPUNKT
+    assertThat(expectedServicePoint.isTrafficPoint()).isFalse();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isTrue();
     // IS_VIRTUELL
     assertThat(expectedServicePoint.hasGeolocation()).isTrue();
 
