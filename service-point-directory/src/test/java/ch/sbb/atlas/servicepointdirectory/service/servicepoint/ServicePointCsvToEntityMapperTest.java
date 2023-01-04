@@ -246,4 +246,94 @@ public class ServicePointCsvToEntityMapperTest {
         .ignoringFields("servicePointGeolocation")
         .isEqualTo(expectedServicePoint);
   }
+
+  @Test
+  void shouldImportTechnischerBetriebspunktSpurwechsel() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        925;85;CH;925;85009258;2018-01-31;2099-12-31;3;Bern Ost (Spw);;BNO;1;1;0;0;0;0;0;Bern;Bern;351;Bern-Mittelland;246;Bern;2;CH;{3fabbf5d-cac0-43c9-a872-585157e8e984};100001;{2cb68b8c-60f7-4748-b072-95a161876afe};2018-01-31 13:02:54;2022-02-24 21:48:25;;;;;;;;;;;0;0;;Spurwechsel;Diagonale d'échange;Cambio binario;Spurwechsel;8;0;;;;;;;;;;;;;;;;;;;;;;;;;;;2018-01-31;2099-12-31;BE;11;SBB;CFF;FFS;SBB;Schweizerische Bundesbahnen SBB;Chemins de fer fédéraux suisses CFF;Ferrovie federali svizzere FFS;Schweizerische Bundesbahnen SBB;;;;;;;828374.789530717;5934407.10779162;533;ch:1:sloid:925;600212;200214;2600212;1200214;7.44141734415;46.95300772754;828374.78953;5934407.10779;0;;;;;;;;;;;;;;;;;;;;;SBB;;#0001;Schweizerische Bundesbahnen SBB;CHE-102.909.703;u150522;fs45117;LV95
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    // then
+    ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(600212D)
+        .lv03north(200214D)
+        .lv95east(2600212D)
+        .lv95north(1200214D)
+        .wgs84east(7.44141734415)
+        .wgs84north(46.95300772754)
+        .wgs84webEast(828374.78953  )
+        .wgs84webNorth(5934407.10779)
+        .height(533D)
+        .country(Country.SWITZERLAND)
+        .swissCantonFsoNumber(351)
+        .swissCantonName("Bern")
+        .swissCantonNumber(2)
+        .swissDistrictName("Bern-Mittelland")
+        .swissDistrictNumber(246)
+        .swissMunicipalityName("Bern")
+        .swissLocalityName("Bern")
+        .creationDate(LocalDateTime.of(LocalDate.of(2018, 1, 31), LocalTime.of(13, 2, 54)))
+        .creator("u150522")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 24), LocalTime.of(21, 48, 25)))
+        .editor("fs45117")
+        .build();
+
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(expectedServicePointGeolocation)
+        .number(ServicePointNumber.of(85009258))
+        .sloid("ch:1:sloid:925")
+        .numberShort(925)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Bern Ost (Spw)")
+        .abbreviation("BNO")
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100001")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2018, 1, 31))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .meansOfTransport(Collections.emptySet())
+        .operatingPointType(OperatingPointType.LANGE_CHANGE)
+        .creationDate(LocalDateTime.of(LocalDate.of(2018, 1, 31), LocalTime.of(13, 2, 54)))
+        .creator("u150522")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 24), LocalTime.of(21, 48, 25)))
+        .editor("fs45117")
+        .build();
+
+    // IS_BETRIEBSPUNKT
+    assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
+    // IS_FAHRPLAN
+    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    // IS_HALTESTELLE
+    assertThat(expectedServicePoint.isStopPlace()).isFalse();
+    // IS_BEDIENPUNKT
+    assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
+    // IS_VERKEHRSPUNKT
+    assertThat(expectedServicePoint.isTrafficPoint()).isFalse();
+    // IS_VIRTUELL
+    assertThat(expectedServicePoint.hasGeolocation()).isTrue();
+
+
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
+    assertThat(servicePointVersion
+        .getServicePointGeolocation())
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
+  }
 }
