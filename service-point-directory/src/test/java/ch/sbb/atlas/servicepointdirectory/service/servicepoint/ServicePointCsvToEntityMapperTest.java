@@ -3,8 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
@@ -243,7 +243,6 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_VIRTUELL
     assertThat(expectedServicePoint.hasGeolocation()).isFalse();
 
-
     assertThat(servicePointVersion)
         .usingRecursiveComparison()
         .ignoringFields("servicePointGeolocation")
@@ -275,7 +274,7 @@ public class ServicePointCsvToEntityMapperTest {
         .lv95north(1200214D)
         .wgs84east(7.44141734415)
         .wgs84north(46.95300772754)
-        .wgs84webEast(828374.78953  )
+        .wgs84webEast(828374.78953)
         .wgs84webNorth(5934407.10779)
         .height(533D)
         .country(Country.SWITZERLAND)
@@ -330,7 +329,6 @@ public class ServicePointCsvToEntityMapperTest {
     assertThat(expectedServicePoint.isBorderPoint()).isFalse();
     // IS_VIRTUELL
     assertThat(expectedServicePoint.hasGeolocation()).isTrue();
-
 
     assertThat(servicePointVersion)
         .usingRecursiveComparison()
@@ -423,7 +421,6 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_VIRTUELL
     assertThat(expectedServicePoint.hasGeolocation()).isTrue();
 
-
     assertThat(servicePointVersion)
         .usingRecursiveComparison()
         .ignoringFields("servicePointGeolocation")
@@ -458,7 +455,7 @@ public class ServicePointCsvToEntityMapperTest {
         .lv95east(2604525D)
         .lv95north(1259900D)
         .wgs84east(7.49866627944)
-        .wgs84north(47.48984514972 )
+        .wgs84north(47.48984514972)
         .wgs84webEast(834747.71186)
         .wgs84webNorth(6022399.02902)
         .height(370D)
@@ -509,6 +506,193 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_VIRTUELL
     assertThat(expectedServicePoint.hasGeolocation()).isTrue();
 
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
+    assertThat(servicePointVersion
+        .getServicePointGeolocation())
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
+  }
+
+  @Test
+  void shouldImportTarifpunkt() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        94805;85;CH;94805;85948059;2020-12-13;2099-12-31;3;Dettighofen (D), Eichberg;;;1;1;0;0;1;0;0;;;;;;;;DE;{f1b7ca21-0ef8-4330-a93f-3006e6ebdeff};100311;{b2c7799d-b7ae-48f3-88dc-27cfb63103f6};2017-11-09 11:53:05;2020-08-13 14:20:18;;;;;;;;;;;0;0;;;;;;;0;;;;;;;;;;;;;;Tarifpunkt;Point tarifaire;Punto tariffale;Tarifpunkt;50;;;;;;;;;2011-09-02;2099-12-31;;354;SBG;SBG;SBG;SBG;Südbadenbus GmbH;Südbadenbus GmbH;Südbadenbus GmbH;Südbadenbus GmbH;;;;;;Fahrplan unter 11 03924-8 Dettighofen (D), Eichberg;942294.18528127;6045035.27356491;554;ch:1:sloid:94805;677131;275660;2677131;1275660;8.46477268775;47.62706979146;942294.18528;6045035.27356;0;;;;;;;;;;;;;;;;;;;;;SBG;;#0053;SBG SüdbadenBus GmbH;;GSU_DIDOK;u150522;LV95
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    // then
+    ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(677131D)
+        .lv03north(275660D)
+        .lv95east(2677131D)
+        .lv95north(1275660D)
+        .wgs84east(8.46477268775)
+        .wgs84north(47.62706979146)
+        .wgs84webEast(942294.18528)
+        .wgs84webNorth(6045035.27356)
+        .height(554D)
+        .country(Country.SWITZERLAND)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2020, 8, 13), LocalTime.of(14, 20, 18)))
+        .editor("u150522")
+        .build();
+
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(expectedServicePointGeolocation)
+        .number(ServicePointNumber.of(85948059))
+        .sloid("ch:1:sloid:94805")
+        .numberShort(94805)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Dettighofen (D), Eichberg")
+        .abbreviation(null)
+        .meansOfTransport(Collections.emptySet())
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100311")
+        .comment("Fahrplan unter 11 03924-8 Dettighofen (D), Eichberg")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2020, 12, 13))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .operatingPointType(OperatingPointType.TARIFF_POINT)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2020, 8, 13), LocalTime.of(14, 20, 18)))
+        .editor("u150522")
+        .build();
+
+    // IS_BETRIEBSPUNKT
+    assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
+    // IS_FAHRPLAN
+    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    // IS_HALTESTELLE
+    assertThat(expectedServicePoint.isStopPlace()).isFalse();
+    // IS_BEDIENPUNKT
+    assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
+    // IS_VERKEHRSPUNKT
+    assertThat(expectedServicePoint.isTrafficPoint()).isTrue();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isFalse();
+    // IS_VIRTUELL
+    assertThat(expectedServicePoint.hasGeolocation()).isTrue();
+    // IS_BPS
+    assertThat(expectedServicePoint.isOperatingPointRouteNetwork()).isFalse();
+    // IS_BPK
+    assertThat(expectedServicePoint.isOperatingPointKilometer()).isFalse();
+
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
+    assertThat(servicePointVersion
+        .getServicePointGeolocation())
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
+  }
+
+  @Test
+  void shouldImportBedienpunkt() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        3507;85;CH;3507;85035071;2018-02-18;2019-12-05;3;Zürich RB Limmattal;;RBL;1;1;0;1;1;0;0;Spreitenbach;Spreitenbach;4040;Baden;1902;Aargau;19;CH;{3fabbf5d-cac0-43c9-a872-585157e8e984};100001;{796d9a76-0c14-4724-bc5a-db5b4ba53405};2019-12-10 13:35:07;2019-12-10 13:35:07;;;;;;;;;;;1;1;85035071;;;;;;0;3507;Zürich RB Limmattal;Zuerich RB Limmattal;CH033;85;;ZUERICH RBL;ZUERICH RB LIMMATTAL;7;0;35071;0;35071;;;;;;;;;;;;;;1993-01-01;2099-12-31;AG;11;SBB;CFF;FFS;SBB;Schweizerische Bundesbahnen SBB;Chemins de fer fédéraux suisses CFF;Ferrovie federali svizzere FFS;Schweizerische Bundesbahnen SBB;;;;;;Güterverkehr;932556.770286969;6011367.51130927;395.1;ch:1:sloid:3507;670828.009;252871.497;2670828.009;1252871.497;8.37730000058;47.42284000105;932556.77029;6011367.51131;0;;;;;;;;;;;;;CH:3507;;;;;;85035071;;SBB;;#0001;Schweizerische Bundesbahnen SBB;CHE-102.909.703;fs45117;fs45117;LV95
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    // then
+    ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(670828.009)
+        .lv03north(252871.497)
+        .lv95east(2670828.009)
+        .lv95north(1252871.497)
+        .wgs84east(8.37730000058)
+        .wgs84north(47.42284000105)
+        .wgs84webEast(932556.77029)
+        .wgs84webNorth(6011367.51131)
+        .height(395.1)
+        .swissCantonFsoNumber(4040)
+        .swissCantonName("Aargau")
+        .swissCantonNumber(19)
+        .swissDistrictName("Baden")
+        .swissDistrictNumber(1902)
+        .swissMunicipalityName("Spreitenbach")
+        .swissLocalityName("Spreitenbach")
+        .country(Country.SWITZERLAND)
+        .creationDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 35, 7)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 35, 7)))
+        .editor("fs45117")
+        .build();
+
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(expectedServicePointGeolocation)
+        .number(ServicePointNumber.of(85035071))
+        .sloid("ch:1:sloid:3507")
+        .numberShort(3507)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Zürich RB Limmattal")
+        .abbreviation("RBL")
+        .meansOfTransport(Collections.emptySet())
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100001")
+        .comment("Güterverkehr")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2018, 2, 18))
+        .validTo(LocalDate.of(2019, 12, 5))
+        .categories(new HashSet<>())
+        .operatingPointType(OperatingPointType.FREIGHT_POINT)
+        .sortCodeOfDestinationStation("35071")
+        .operatingPointKilometerMaster(ServicePointNumber.of(85035071))
+        .operatingPointRouteNetwork(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 35, 7)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 35, 7)))
+        .editor("fs45117")
+        .build();
+
+    // IS_BETRIEBSPUNKT
+    assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
+    // IS_FAHRPLAN
+    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    // IS_HALTESTELLE
+    assertThat(expectedServicePoint.isStopPlace()).isFalse();
+    // IS_BEDIENPUNKT
+    assertThat(expectedServicePoint.isFreightServicePoint()).isTrue();
+    // IS_VERKEHRSPUNKT
+    assertThat(expectedServicePoint.isTrafficPoint()).isTrue();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isFalse();
+    // IS_VIRTUELL
+    assertThat(expectedServicePoint.hasGeolocation()).isTrue();
+    // IS_BPS
+    assertThat(expectedServicePoint.isOperatingPointRouteNetwork()).isTrue();
+    // IS_BPK
+    assertThat(expectedServicePoint.isOperatingPointKilometer()).isTrue();
 
     assertThat(servicePointVersion)
         .usingRecursiveComparison()
