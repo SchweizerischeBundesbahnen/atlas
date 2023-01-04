@@ -54,7 +54,7 @@ public enum OperatingPointType {
   INTERSECTION(11, false, "Ausweiche", "Évitement", "Incrocio", "Ausweiche", "technischerfahrplan", "Ausw", "évit", "incr", null),
   CONNECTING_POINT(9, false, "Anschlusspunkt", "Point de raccordement", "Punto di raccordo ", "Anschlusspunkt",
       "technischerfahrplan", "Apt", "prc", "prc", null),
-  LANGE_CHANGE(8, false, "Spurwechsel", "Diagonale d'échange", "Cambio binario ", "Spurwechsel", "technischerfahrplan", "Spw",
+  LANGE_CHANGE(8, true, "Spurwechsel", "Diagonale d'échange", "Cambio binario ", "Spurwechsel", "technischerfahrplan", "Spw",
       "diag", "c bin", null),
   BRANCH(7, false, "Abzweigung, Verzweigung, Spaltweiche", "Bifurcation", "Diramazione", "Abzweigung, Verzweigung, Spaltweiche ",
       "technischerfahrplan", "Vzw", "bif", "drm", null),
