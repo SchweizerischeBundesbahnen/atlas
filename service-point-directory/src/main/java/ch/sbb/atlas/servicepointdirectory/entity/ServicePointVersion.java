@@ -123,11 +123,15 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   private OperatingPointType operatingPointType;
 
   public boolean isOperatingPoint() {
-    return operatingPointType != null;
+    return operatingPointType != null || isTrafficPoint();
   }
 
   public boolean isTrafficPoint() {
     return isStopPlace() || isFreightServicePoint();
+  }
+
+  public boolean isBorderPoint() {
+    return operatingPointType == OperatingPointType.COUNTRY_BORDER;
   }
 
   public Set<Category> getCategories() {
@@ -138,7 +142,12 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   }
 
   public boolean isStopPlace() {
-    return !getMeanOfTransport().isEmpty();
+    return getOperatingPointType() == OperatingPointType.STOP_POINT;
+  }
+
+  @AssertTrue
+  boolean isValidStopPlace() {
+    return !isStopPlace() || !getMeanOfTransport().isEmpty();
   }
 
   @AtlasVersionableProperty
@@ -154,11 +163,11 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   }
 
   @Enumerated(EnumType.STRING)
-  private StopPlaceType stopPlaceType;
+  private StopPointType stopPointType;
 
   @AssertTrue(message = "StopPlaceType only allowed for StopPlaces")
-  boolean isValidStopPlace() {
-    return isStopPlace() || stopPlaceType == null;
+  boolean isValidStopPlaceWithType() {
+    return isStopPlace() || stopPointType == null;
   }
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)

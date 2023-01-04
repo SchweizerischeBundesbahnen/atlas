@@ -8,6 +8,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Former DIDOK Code:
+ *
+ * Format:
+ * ## ##### #
+ * 2 stelliger Ländercode
+ * 5 stellige Nummer/Dienststellen-ID
+ * eine Prüfziffer (Checkdigit)
+ *
+ * Die Prüfziffer errechnet sich aus der Dienststellen-ID und soll "Zahlendreher verhindern"
+ */
 @ToString
 @EqualsAndHashCode
 @Getter
