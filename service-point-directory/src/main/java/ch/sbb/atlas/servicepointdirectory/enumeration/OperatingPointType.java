@@ -66,7 +66,12 @@ public enum OperatingPointType {
       "Profilo errore/Salto chilometrico",
       "Fehlerprofil", "technischerfahrplan", "FP", "PC", "PE", null),
   EX_STOP_POINT(15, true, "Ehemalige Haltestelle mit Infrastruktur", "Ancien arrêt avec infrastructure",
-      "Precedente fermata con infrastruttura", "Haltestelle ausser Betrieb", "technischerfahrplan", "Hab", "aai", "pfi", null);
+      "Precedente fermata con infrastruttura", "Haltestelle ausser Betrieb", "technischerfahrplan", "Hab", "aai", "pfi", null),
+
+  FREIGHT_POINT(70, true, "Bedienpunkt", "point de chargement",
+      "punto di servizio", "Haltestelle ausser Betrieb", null, null,null,null, null);
+
+  ;
 
   private final Integer id;
   @Accessors(fluent = true)
