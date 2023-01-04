@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
@@ -693,6 +694,200 @@ public class ServicePointCsvToEntityMapperTest {
     assertThat(expectedServicePoint.isOperatingPointRouteNetwork()).isTrue();
     // IS_BPK
     assertThat(expectedServicePoint.isOperatingPointKilometer()).isTrue();
+
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
+    assertThat(servicePointVersion
+        .getServicePointGeolocation())
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
+  }
+
+  @Test
+  void shouldImportBedienpunktArthGoldau() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        15396;85;CH;15396;85153965;2019-07-16;2019-12-05;3;Arth-Goldau Nordwest;;GDNW;1;1;0;0;0;0;0;Goldau;Arth;1362;Schwyz;506;Schwyz;5;CH;{3fabbf5d-cac0-43c9-a872-585157e8e984};100001;{e1bc0adb-e7a0-42f2-99e9-424b95592564};2019-12-10 13:33:34;2019-12-10 13:33:34;;;;;;;;;;;0;1;85050047;Zugeordneter Betriebspunkt;Point d’exploitation associé;Punto d’esercizio associato;Zugeordneter Betriebspunkt;16;0;15396;Arth-Goldau Nordwest;Arth-Goldau Nordwest;CH063;85;;;;;;;;;;;;;;;;;;;;;;1993-01-01;2099-12-31;SZ;11;SBB;CFF;FFS;SBB;Schweizerische Bundesbahnen SBB;Chemins de fer fédéraux suisses CFF;Ferrovie federali svizzere FFS;Schweizerische Bundesbahnen SBB;;;;;;(Zug);951731.552195767;5950116.63331048;509.6;ch:1:sloid:15396;684412.363;211510.433;2684412.363;1211510.433;8.54954999716;47.0492499942;951731.5522;5950116.63331;0;;;;;;;;;;;;;CH:15396;;;;;;;;SBB;;#0001;Schweizerische Bundesbahnen SBB;CHE-102.909.703;fs45117;fs45117;LV95
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    // then
+    ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(684412.363)
+        .lv03north(211510.433)
+        .lv95east(2684412.363)
+        .lv95north(1211510.433)
+        .wgs84east(8.54954999716)
+        .wgs84north(47.0492499942)
+        .wgs84webEast(951731.5522)
+        .wgs84webNorth(5950116.63331)
+        .height(509.6)
+        .swissCantonFsoNumber(1362)
+        .swissCantonName("Schwyz")
+        .swissCantonNumber(5)
+        .swissDistrictName("Schwyz")
+        .swissDistrictNumber(506)
+        .swissMunicipalityName("Arth")
+        .swissLocalityName("Goldau")
+        .country(Country.SWITZERLAND)
+        .creationDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 33, 34)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 33, 34)))
+        .editor("fs45117")
+        .build();
+
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(expectedServicePointGeolocation)
+        .number(ServicePointNumber.of(85153965))
+        .sloid("ch:1:sloid:15396")
+        .numberShort(15396)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Arth-Goldau Nordwest")
+        .abbreviation("GDNW")
+        .meansOfTransport(Collections.emptySet())
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100001")
+        .comment("(Zug)")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2019, 7, 16))
+        .validTo(LocalDate.of(2019, 12, 5))
+        .categories(new HashSet<>())
+        .operatingPointType(OperatingPointType.ASSIGNED_OPERATING_POINT)
+        .operatingPointKilometerMaster(ServicePointNumber.of(85050047))
+        .operatingPointRouteNetwork(false)
+        .creationDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 33, 34)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 33, 34)))
+        .editor("fs45117")
+        .build();
+
+    // IS_BETRIEBSPUNKT
+    assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
+    // IS_FAHRPLAN
+    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    // IS_HALTESTELLE
+    assertThat(expectedServicePoint.isStopPlace()).isFalse();
+    // IS_BEDIENPUNKT
+    assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
+    // IS_VERKEHRSPUNKT
+    assertThat(expectedServicePoint.isTrafficPoint()).isFalse();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isFalse();
+    // IS_VIRTUELL
+    assertThat(expectedServicePoint.hasGeolocation()).isTrue();
+    // IS_BPS
+    assertThat(expectedServicePoint.isOperatingPointRouteNetwork()).isFalse();
+    // IS_BPK
+    assertThat(expectedServicePoint.isOperatingPointKilometer()).isTrue();
+
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
+    assertThat(servicePointVersion
+        .getServicePointGeolocation())
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
+  }
+
+  @Test
+  void shouldImportUnknownBetriebspunktWithCategories() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        17349;85;CH;17349;85173492;2006-08-31;2006-12-04;3;Zürich Langstr Dienstgebäude;;ZLDG;1;1;0;0;0;0;0;Zürich;Zürich;261;Zürich;112;Zürich;1;CH;{3fabbf5d-cac0-43c9-a872-585157e8e984};100001;{f44c58ed-5238-4c1a-a493-07c6e4f026a8};2017-11-10 14:45:12;2018-03-06 08:15:07;;;;;;;;;;;0;0;;Nicht spezifiziert;Non spécifié;Non spezificato;Nicht spezifiziert;37;0;;;;;;;;;;;;;;;;;;;;;;;;;;;2006-08-31;2099-12-31;ZH;11;SBB;CFF;FFS;SBB;Schweizerische Bundesbahnen SBB;Chemins de fer fédéraux suisses CFF;Ferrovie federali svizzere FFS;Schweizerische Bundesbahnen SBB;1|16;Unterhaltstelle|Migr. (alt Uhst Mobile Equipe);Point d'entretien|Migr. (alt Uhst Mobile Equipe);Punto di manutenzione|Migr. (alt Uhst Mobile Equipe);Unterhaltstelle|Migr. (alt Uhst Mobile Equipe);;949301.56711918;6004267.83043376;408;ch:1:sloid:17349;682244;248219;2682244;1248219;8.52772106982;47.37967156382;949301.56712;6004267.83043;0;;;;;;;;;;;;;;;;;;;;;SBB;;#0001;Schweizerische Bundesbahnen SBB;CHE-102.909.703;fs45117;fs45117;LV95
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    // then
+    ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(682244.0)
+        .lv03north(248219.0)
+        .lv95east(2682244.0)
+        .lv95north(1248219.0)
+        .wgs84east(8.52772106982)
+        .wgs84north(47.37967156382)
+        .wgs84webEast(949301.56712)
+        .wgs84webNorth(6004267.83043)
+        .height(408.0)
+        .swissCantonFsoNumber(261)
+        .swissCantonName("Zürich")
+        .swissCantonNumber(1)
+        .swissDistrictName("Zürich")
+        .swissDistrictNumber(112)
+        .swissMunicipalityName("Zürich")
+        .swissLocalityName("Zürich")
+        .country(Country.SWITZERLAND)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 10), LocalTime.of(14, 45, 12)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2018, 3, 6), LocalTime.of(8, 15, 7)))
+        .editor("fs45117")
+        .build();
+
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(expectedServicePointGeolocation)
+        .number(ServicePointNumber.of(85173492))
+        .sloid("ch:1:sloid:17349")
+        .numberShort(17349)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Zürich Langstr Dienstgebäude")
+        .abbreviation("ZLDG")
+        .meansOfTransport(Collections.emptySet())
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100001")
+        .comment(null)
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2006, 8, 31))
+        .validTo(LocalDate.of(2006, 12, 4))
+        .categories(Set.of(Category.MAINTENANCE_POINT, Category.MIGRATION_MOBILE_EQUIPE))
+        .operatingPointType(OperatingPointType.UNKNOWN)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 10), LocalTime.of(14, 45, 12)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2018, 3, 6), LocalTime.of(8, 15, 7)))
+        .editor("fs45117")
+        .build();
+
+    // IS_BETRIEBSPUNKT
+    assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
+    // IS_FAHRPLAN
+    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    // IS_HALTESTELLE
+    assertThat(expectedServicePoint.isStopPlace()).isFalse();
+    // IS_BEDIENPUNKT
+    assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
+    // IS_VERKEHRSPUNKT
+    assertThat(expectedServicePoint.isTrafficPoint()).isFalse();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isFalse();
+    // IS_VIRTUELL
+    assertThat(expectedServicePoint.hasGeolocation()).isTrue();
+    // IS_BPS
+    assertThat(expectedServicePoint.isOperatingPointRouteNetwork()).isFalse();
+    // IS_BPK
+    assertThat(expectedServicePoint.isOperatingPointKilometer()).isFalse();
 
     assertThat(servicePointVersion)
         .usingRecursiveComparison()
