@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
-public enum StopPlaceType {
+public enum StopPointType {
 
   ORDERLY(10, "Ordentliche Haltestelle", "Arrêt ordinaire", "Fermata ordinaria", null, "Ho", "Ao", "Fo", null),
   ON_REQUEST(20, "Bedarfshaltestelle", "Arrêt sur demande", "Fermata facoltativa", null, "Hb", "Ad", "Ff", null),
@@ -30,7 +30,7 @@ public enum StopPlaceType {
   private final String abbreviationIt;
   private final String abbreviationEn;
 
-  public static StopPlaceType from(Integer id) {
-    return Arrays.stream(StopPlaceType.values()).filter(el -> Objects.equals(el.id, id)).findFirst().orElse(null);
+  public static StopPointType from(Integer id) {
+    return Arrays.stream(StopPointType.values()).filter(el -> Objects.equals(el.id, id)).findFirst().orElse(null);
   }
 }
