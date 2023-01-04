@@ -73,4 +73,56 @@ class ServicePointVersionTest {
         assertThat(constraintViolations).hasSize(1);
     }
 
+    @Test
+    void shouldNotAcceptFreightServicePointWithoutSortCodeOfDestinationStation() {
+        // Given
+        ServicePointVersion servicePoint = ServicePointVersion.builder()
+            .number(ServicePointNumber.of(85070003))
+            .numberShort(7000)
+            .country(Country.SWITZERLAND)
+            .designationLong("long designation")
+            .designationOfficial("official designation")
+            .abbreviation("BE")
+            .statusDidok3(ServicePointStatus.from(1))
+            .businessOrganisation("somesboid")
+            .status(Status.VALIDATED)
+            .operatingPointType(OperatingPointType.FREIGHT_POINT)
+            .sortCodeOfDestinationStation(null)
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2020, 12, 31))
+            .version(1)
+            .build();
+        //when
+        Set<ConstraintViolation<ServicePointVersion>> constraintViolations = validator.validate(servicePoint);
+
+        //then
+        assertThat(constraintViolations).hasSize(1);
+    }
+
+    @Test
+    void shouldAcceptFreightServicePointWithSortCodeOfDestinationStation() {
+        // Given
+        ServicePointVersion servicePoint = ServicePointVersion.builder()
+            .number(ServicePointNumber.of(85070003))
+            .numberShort(7000)
+            .country(Country.SWITZERLAND)
+            .designationLong("long designation")
+            .designationOfficial("official designation")
+            .abbreviation("BE")
+            .statusDidok3(ServicePointStatus.from(1))
+            .businessOrganisation("somesboid")
+            .status(Status.VALIDATED)
+            .operatingPointType(OperatingPointType.FREIGHT_POINT)
+            .sortCodeOfDestinationStation("654")
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2020, 12, 31))
+            .version(1)
+            .build();
+        //when
+        Set<ConstraintViolation<ServicePointVersion>> constraintViolations = validator.validate(servicePoint);
+
+        //then
+        assertThat(constraintViolations).isEmpty();
+    }
+
 }

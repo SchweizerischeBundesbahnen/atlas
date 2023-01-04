@@ -59,6 +59,8 @@ CREATE TABLE service_point_version
     operating_point_type             VARCHAR(50),
     stop_point_type                  VARCHAR(50),
     status                           VARCHAR(50) NOT NULL,
+    operating_point_kilometer_master INTEGER,
+    operating_point_route_network    BOOLEAN     NOT NULL DEFAULT FALSE,
     comment                          VARCHAR(1500),
     valid_from                       DATE        NOT NULL,
     valid_to                         DATE        NOT NULL,

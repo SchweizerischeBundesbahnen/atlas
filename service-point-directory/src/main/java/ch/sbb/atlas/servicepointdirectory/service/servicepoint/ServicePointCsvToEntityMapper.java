@@ -13,10 +13,12 @@ import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class ServicePointCsvToEntityMapper implements
     Function<ServicePointCsvModel, ServicePointVersion> {
@@ -97,9 +99,13 @@ public class ServicePointCsvToEntityMapper implements
         .stopPointType(StopPointType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(
             meansOfTransport.isEmpty() ?
-            OperatingPointType.from(ObjectUtils.firstNonNull(servicePointCsvModel.getBpvbBetriebspunktArtId(),
-                servicePointCsvModel.getBpofBetriebspunktArtId(), servicePointCsvModel.getBptfBetriebspunktArtId())):
-            OperatingPointType.STOP_POINT)
+                StringUtils.isNotBlank(servicePointCsvModel.getRichtpunktCode()) ? OperatingPointType.FREIGHT_POINT :
+                    OperatingPointType.from(ObjectUtils.firstNonNull(servicePointCsvModel.getBpvbBetriebspunktArtId(),
+                        servicePointCsvModel.getBpofBetriebspunktArtId(), servicePointCsvModel.getBptfBetriebspunktArtId())) :
+                OperatingPointType.STOP_POINT)
+        .sortCodeOfDestinationStation(servicePointCsvModel.getRichtpunktCode())
+        .operatingPointRouteNetwork(Boolean.TRUE.equals(servicePointCsvModel.getOperatingPointRouteNetwork()))
+        .operatingPointKilometerMaster(Optional.ofNullable(servicePointCsvModel.getOperatingPointKilometerMaster()).map(ServicePointNumber::of).orElse(null))
         .creationDate(servicePointCsvModel.getCreatedAt())
         .creator(servicePointCsvModel.getCreatedBy())
         .editionDate(servicePointCsvModel.getEditedAt())
