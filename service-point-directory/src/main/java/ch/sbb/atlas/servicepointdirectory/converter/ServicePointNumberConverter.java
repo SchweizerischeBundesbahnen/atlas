@@ -9,7 +9,7 @@ public class ServicePointNumberConverter implements AttributeConverter<ServicePo
 
   @Override
   public Integer convertToDatabaseColumn(ServicePointNumber servicePointNumber) {
-    return servicePointNumber.getValue();
+    return servicePointNumber == null ? null : servicePointNumber.getValue();
   }
 
   @Override
