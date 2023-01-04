@@ -12,7 +12,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.util.Set;
@@ -167,6 +167,7 @@ public class ServicePointVersionRepositoryTest {
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .operatingPointType(OperatingPointType.STOP_POINT)
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .build();
 
     // when
@@ -222,8 +223,9 @@ public class ServicePointVersionRepositoryTest {
         .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
+        .operatingPointType(OperatingPointType.STOP_POINT)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
-        .stopPlaceType(StopPlaceType.ORDERLY)
+        .stopPointType(StopPointType.ORDERLY)
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
@@ -235,6 +237,6 @@ public class ServicePointVersionRepositoryTest {
     assertThat(savedVersion.getId()).isNotNull();
     assertThat(savedVersion.getServicePointGeolocation()).isNull();
     assertThat(savedVersion.getCategories()).isEmpty();
-    assertThat(savedVersion.isOperatingPoint()).isFalse();
+    assertThat(savedVersion.isOperatingPoint()).isTrue();
   }
 }

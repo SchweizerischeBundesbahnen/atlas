@@ -8,12 +8,12 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.ObjectUtils;
@@ -64,6 +64,12 @@ public class ServicePointCsvToEntityMapper implements
   }
 
   ServicePointVersion mapServicePointVersion(ServicePointCsvModel servicePointCsvModel) {
+    Set<MeanOfTransport> meansOfTransport = Arrays.stream(Objects.nonNull(servicePointCsvModel.getBpvhVerkehrsmittel())
+            ? servicePointCsvModel.getBpvhVerkehrsmittel().split("~") :
+            new String[]{})
+        .map(MeanOfTransport::from)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toSet());
     return ServicePointVersion
         .builder()
         .number(ServicePointNumber.of(servicePointCsvModel.getDidokCode()))
@@ -87,18 +93,13 @@ public class ServicePointCsvToEntityMapper implements
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet())
         )
-        .meansOfTransport(
-            Arrays.stream(Objects.nonNull(servicePointCsvModel.getBpvhVerkehrsmittel())
-                    ? servicePointCsvModel.getBpvhVerkehrsmittel().split("~") :
-                    new String[]{})
-                .map(MeanOfTransport::from)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet())
-        )
-        .stopPlaceType(StopPlaceType.from(servicePointCsvModel.getHTypId()))
+        .meansOfTransport(            meansOfTransport        )
+        .stopPointType(StopPointType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(
+            meansOfTransport.isEmpty() ?
             OperatingPointType.from(ObjectUtils.firstNonNull(servicePointCsvModel.getBpvbBetriebspunktArtId(),
-                servicePointCsvModel.getBpofBetriebspunktArtId(), servicePointCsvModel.getBptfBetriebspunktArtId())))
+                servicePointCsvModel.getBpofBetriebspunktArtId(), servicePointCsvModel.getBptfBetriebspunktArtId())):
+            OperatingPointType.STOP_POINT)
         .creationDate(servicePointCsvModel.getCreatedAt())
         .creator(servicePointCsvModel.getCreatedBy())
         .editionDate(servicePointCsvModel.getEditedAt())
