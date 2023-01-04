@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.ObjectUtils;
 
 public class ServicePointCsvToEntityMapper implements
     Function<ServicePointCsvModel, ServicePointVersion> {
@@ -96,8 +97,8 @@ public class ServicePointCsvToEntityMapper implements
         )
         .stopPlaceType(StopPlaceType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(
-            OperatingPointType.from(Optional.ofNullable(servicePointCsvModel.getBpvbBetriebspunktArtId())
-                .orElse(servicePointCsvModel.getBpofBetriebspunktArtId())))
+            OperatingPointType.from(ObjectUtils.firstNonNull(servicePointCsvModel.getBpvbBetriebspunktArtId(),
+                servicePointCsvModel.getBpofBetriebspunktArtId(), servicePointCsvModel.getBptfBetriebspunktArtId())))
         .creationDate(servicePointCsvModel.getCreatedAt())
         .creator(servicePointCsvModel.getCreatedBy())
         .editionDate(servicePointCsvModel.getEditedAt())
