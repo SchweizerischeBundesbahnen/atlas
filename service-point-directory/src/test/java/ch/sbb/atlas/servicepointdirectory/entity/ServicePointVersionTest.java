@@ -3,8 +3,9 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPlaceType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ class ServicePointVersionTest {
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
-    void shouldAcceptStopPlaceWithType() {
+    void shouldAcceptStopPointWithType() {
         // Given
         ServicePointVersion servicePoint = ServicePointVersion.builder()
             .number(ServicePointNumber.of(85070003))
@@ -33,8 +34,9 @@ class ServicePointVersionTest {
             .statusDidok3(ServicePointStatus.from(1))
             .businessOrganisation("somesboid")
             .status(Status.VALIDATED)
+            .operatingPointType(OperatingPointType.STOP_POINT)
             .meansOfTransport(Set.of(MeanOfTransport.BUS))
-            .stopPlaceType(StopPlaceType.ORDERLY)
+            .stopPointType(StopPointType.ORDERLY)
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2020, 12, 31))
             .version(1)
@@ -47,7 +49,7 @@ class ServicePointVersionTest {
     }
 
     @Test
-    void shouldNotAcceptStopPlaceWithoutMeansOfTransport() {
+    void shouldNotAcceptStopPointWithoutMeansOfTransport() {
         // Given
         ServicePointVersion servicePoint = ServicePointVersion.builder()
             .number(ServicePointNumber.of(85070003))
@@ -59,7 +61,7 @@ class ServicePointVersionTest {
             .statusDidok3(ServicePointStatus.from(1))
             .businessOrganisation("somesboid")
             .status(Status.VALIDATED)
-            .stopPlaceType(StopPlaceType.ORDERLY)
+            .stopPointType(StopPointType.ORDERLY)
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2020, 12, 31))
             .version(1)

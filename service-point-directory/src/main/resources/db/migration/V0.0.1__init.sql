@@ -57,7 +57,7 @@ CREATE TABLE service_point_version
     sort_code_of_destination_station VARCHAR(10) NULL,
     business_organisation            VARCHAR(50) NOT NULL,
     operating_point_type             VARCHAR(50),
-    stop_place_type                  VARCHAR(50),
+    stop_point_type                  VARCHAR(50),
     status                           VARCHAR(50) NOT NULL,
     comment                          VARCHAR(1500),
     valid_from                       DATE        NOT NULL,
