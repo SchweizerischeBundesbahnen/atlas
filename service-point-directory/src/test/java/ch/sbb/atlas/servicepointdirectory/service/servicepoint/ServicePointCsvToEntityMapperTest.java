@@ -33,6 +33,10 @@ public class ServicePointCsvToEntityMapperTest {
   private static final String csvLine = csvHeader + """
       2751;85;CH;2751;85027516;2021-04-01;2022-07-28;3;Fischbach-Göslikon, Zentrum;;;1;1;1;0;1;0;0;Fischbach-Göslikon;Fischbach-Göslikon;4067;Bremgarten;1903;Aargau;19;CH;{0cc8d629-ff44-43e2-81a2-bbed6e7f50d9};100602;{73f38d76-fe7d-4f0a-bd96-ff7ee475c43e};2022-07-29 09:44:43;2022-07-29 09:44:43;;;;;;;;;;;0;0;;;;;;;0;;;;;;;;;;;;;;;;;;;;;;~B~;~Bus~;~Bus~;~Bus~;~Bus~;1993-02-01;2099-12-31;AG;801;PAG;PAG;PAG;PAG;PostAuto AG;CarPostal SA;AutoPostale SA;PostBus Ltd;;;;;;Test comment.;924871.494410176;6002817.05162414;389;ch:1:sloid:2751;665683;247031;2665683;1247031;8.30826199275;47.37084599021;924871.49441;6002817.05162;0;10;Ordentliche Haltestelle;Arrêt ordinaire;Fermata ordinaria;;Ho;Ao;Fo;;1;1;1;;;;;;;;;PAG;;#0007;PostAuto AG;CHE-112.242.941;fs45117;fs45117;LV95
       """;
+
+  private static final String csvLineWgs84 = csvHeader + """
+      2751;85;CH;2751;85027516;2021-04-01;2022-07-28;3;Fischbach-Göslikon, Zentrum;;;1;1;1;0;1;0;0;Fischbach-Göslikon;Fischbach-Göslikon;4067;Bremgarten;1903;Aargau;19;CH;{0cc8d629-ff44-43e2-81a2-bbed6e7f50d9};100602;{73f38d76-fe7d-4f0a-bd96-ff7ee475c43e};2022-07-29 09:44:43;2022-07-29 09:44:43;;;;;;;;;;;0;0;;;;;;;0;;;;;;;;;;;;;;;;;;;;;;~B~;~Bus~;~Bus~;~Bus~;~Bus~;1993-02-01;2099-12-31;AG;801;PAG;PAG;PAG;PAG;PostAuto AG;CarPostal SA;AutoPostale SA;PostBus Ltd;;;;;;Test comment.;924871.494410176;6002817.05162414;389;ch:1:sloid:2751;665683;247031;2665683;1247031;8.30826199275;47.37084599021;924871.49441;6002817.05162;0;10;Ordentliche Haltestelle;Arrêt ordinaire;Fermata ordinaria;;Ho;Ao;Fo;;1;1;1;;;;;;;;;PAG;;#0007;PostAuto AG;CHE-112.242.941;fs45117;fs45117;WGS84
+      """;
   private final ServicePointCsvToEntityMapper servicePointCsvToEntityMapper =
       new ServicePointCsvToEntityMapper();
 
@@ -49,14 +53,41 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expected = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(665683D)
-        .lv03north(247031D)
-        .lv95east(2665683D)
-        .lv95north(1247031D)
-        .wgs84east(8.30826199275)
-        .wgs84north(47.37084599021)
-        .wgs84webEast(924871.49441)
-        .wgs84webNorth(6002817.05162)
+        .east(2665683D)
+        .north(1247031D)
+        .height(389D)
+        .country(Country.SWITZERLAND)
+        .swissCantonFsoNumber(4067)
+        .swissCantonName("Aargau")
+        .swissCantonNumber(19)
+        .swissDistrictName("Bremgarten")
+        .swissDistrictNumber(1903)
+        .swissMunicipalityName("Fischbach-Göslikon")
+        .swissLocalityName("Fischbach-Göslikon")
+        .creationDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
+        .editor("fs45117")
+        .build();
+
+    assertThat(servicePointGeolocation).usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void shouldMapServicePointGeolocationWgs84Correctly() throws IOException {
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLineWgs84);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    ServicePointGeolocation servicePointGeolocation =
+        servicePointCsvToEntityMapper.mapGeolocation(
+            servicePointCsvModel);
+
+    ServicePointGeolocation expected = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.WGS84)
+        .east(8.30826199275)
+        .north(47.37084599021)
         .height(389D)
         .country(Country.SWITZERLAND)
         .swissCantonFsoNumber(4067)
@@ -125,14 +156,8 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(665683D)
-        .lv03north(247031D)
-        .lv95east(2665683D)
-        .lv95north(1247031D)
-        .wgs84east(8.30826199275)
-        .wgs84north(47.37084599021)
-        .wgs84webEast(924871.49441)
-        .wgs84webNorth(6002817.05162)
+        .east(2665683D)
+        .north(1247031D)
         .height(389D)
         .country(Country.SWITZERLAND)
         .swissCantonFsoNumber(4067)
@@ -269,14 +294,8 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(600212D)
-        .lv03north(200214D)
-        .lv95east(2600212D)
-        .lv95north(1200214D)
-        .wgs84east(7.44141734415)
-        .wgs84north(46.95300772754)
-        .wgs84webEast(828374.78953)
-        .wgs84webNorth(5934407.10779)
+        .east(2600212D)
+        .north(1200214D)
         .height(533D)
         .country(Country.SWITZERLAND)
         .swissCantonFsoNumber(351)
@@ -360,14 +379,8 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(600783D)
-        .lv03north(201099D)
-        .lv95east(2600783D)
-        .lv95north(1201099D)
-        .wgs84east(7.44891972221)
-        .wgs84north(46.96096808021)
-        .wgs84webEast(829209.95044)
-        .wgs84webNorth(5935705.39517)
+        .east(2600783D)
+        .north(1201099D)
         .height(555D)
         .country(Country.SWITZERLAND)
         .swissCantonFsoNumber(351)
@@ -451,14 +464,8 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(604525D)
-        .lv03north(259900D)
-        .lv95east(2604525D)
-        .lv95north(1259900D)
-        .wgs84east(7.49866627944)
-        .wgs84north(47.48984514972)
-        .wgs84webEast(834747.71186)
-        .wgs84webNorth(6022399.02902)
+        .east(2604525D)
+        .north(1259900D)
         .height(370D)
         .country(Country.SWITZERLAND)
         .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
@@ -536,14 +543,8 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(677131D)
-        .lv03north(275660D)
-        .lv95east(2677131D)
-        .lv95north(1275660D)
-        .wgs84east(8.46477268775)
-        .wgs84north(47.62706979146)
-        .wgs84webEast(942294.18528)
-        .wgs84webNorth(6045035.27356)
+        .east(2677131D)
+        .north(1275660D)
         .height(554D)
         .country(Country.SWITZERLAND)
         .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
@@ -625,14 +626,8 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(670828.009)
-        .lv03north(252871.497)
-        .lv95east(2670828.009)
-        .lv95north(1252871.497)
-        .wgs84east(8.37730000058)
-        .wgs84north(47.42284000105)
-        .wgs84webEast(932556.77029)
-        .wgs84webNorth(6011367.51131)
+        .east(2670828.009)
+        .north(1252871.497)
         .height(395.1)
         .swissCantonFsoNumber(4040)
         .swissCantonName("Aargau")
@@ -724,14 +719,8 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(684412.363)
-        .lv03north(211510.433)
-        .lv95east(2684412.363)
-        .lv95north(1211510.433)
-        .wgs84east(8.54954999716)
-        .wgs84north(47.0492499942)
-        .wgs84webEast(951731.5522)
-        .wgs84webNorth(5950116.63331)
+        .east(2684412.363)
+        .north(1211510.433)
         .height(509.6)
         .swissCantonFsoNumber(1362)
         .swissCantonName("Schwyz")
@@ -822,14 +811,8 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(682244.0)
-        .lv03north(248219.0)
-        .lv95east(2682244.0)
-        .lv95north(1248219.0)
-        .wgs84east(8.52772106982)
-        .wgs84north(47.37967156382)
-        .wgs84webEast(949301.56712)
-        .wgs84webNorth(6004267.83043)
+        .east(2682244.0)
+        .north(1248219.0)
         .height(408.0)
         //TODO: Canton Enum
         .swissCantonFsoNumber(261)
@@ -919,14 +902,8 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(682395.0)
-        .lv03north(248235.0)
-        .lv95east(2682395.0)
-        .lv95north(1248235.0)
-        .wgs84east(8.52972333853)
-        .wgs84north(47.37979659197)
-        .wgs84webEast(949524.45865)
-        .wgs84webNorth(6004288.38474)
+        .east(2682395.0)
+        .north(1248235.0)
         .height(408.0)
         .swissCantonFsoNumber(261)
         .swissCantonName("Zürich")
