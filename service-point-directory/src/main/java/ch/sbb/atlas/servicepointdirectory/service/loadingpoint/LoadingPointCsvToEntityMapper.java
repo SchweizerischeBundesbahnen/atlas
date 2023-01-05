@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.service.util.GeolocationMapperUtil;
 import java.util.function.Function;
 
 public class LoadingPointCsvToEntityMapper implements
@@ -28,14 +29,20 @@ public class LoadingPointCsvToEntityMapper implements
     LoadingPointGeolocation geolocation = LoadingPointGeolocation
         .builder()
         .spatialReference(loadingPointCsvModel.getSpatialReference())
-        .lv03east(loadingPointCsvModel.getELv03())
-        .lv03north(loadingPointCsvModel.getNLv03())
-        .lv95east(loadingPointCsvModel.getELv95())
-        .lv95north(loadingPointCsvModel.getNLv95())
-        .wgs84east(loadingPointCsvModel.getEWgs84())
-        .wgs84north(loadingPointCsvModel.getNWgs84())
-        .wgs84webEast(loadingPointCsvModel.getEWgs84web())
-        .wgs84webNorth(loadingPointCsvModel.getNWgs84web())
+        .east(GeolocationMapperUtil.getOriginalEast(
+            loadingPointCsvModel.getSpatialReference(),
+            loadingPointCsvModel.getEWgs84(),
+            loadingPointCsvModel.getEWgs84web(),
+            loadingPointCsvModel.getELv95(),
+            loadingPointCsvModel.getELv03()
+        ))
+        .north(GeolocationMapperUtil.getOriginalNorth(
+            loadingPointCsvModel.getSpatialReference(),
+            loadingPointCsvModel.getNWgs84(),
+            loadingPointCsvModel.getNWgs84web(),
+            loadingPointCsvModel.getNLv95(),
+            loadingPointCsvModel.getNLv03()
+        ))
         .height(loadingPointCsvModel.getHeight())
         .creator(loadingPointCsvModel.getCreatedBy())
         .creationDate(loadingPointCsvModel.getCreatedAt())
