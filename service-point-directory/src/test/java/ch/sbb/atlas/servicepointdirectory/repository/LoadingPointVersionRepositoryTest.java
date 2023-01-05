@@ -32,6 +32,28 @@ public class LoadingPointVersionRepositoryTest {
   @Test
   void shouldSaveLoadingPoint() {
     // given
+    LoadingPointVersion loadingPointVersion = LoadingPointVersion
+        .builder()
+        .number(1)
+        .designation("Ladestelle")
+        .designationLong("Grosse Ladestelle")
+        .connectionPoint(true)
+        .servicePointNumber(ServicePointNumber.of(85070003))
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    // when
+    LoadingPointVersion savedVersion = loadingPointRepository.save(loadingPointVersion);
+
+    // then
+    assertThat(savedVersion.getId()).isNotNull();
+    assertThat(savedVersion.hasGeolocation()).isFalse();
+  }
+
+  @Test
+  void shouldSaveLoadingPointWithGeoLocation() {
+    // given
     LoadingPointGeolocation loadingPointGeolocation = LoadingPointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
