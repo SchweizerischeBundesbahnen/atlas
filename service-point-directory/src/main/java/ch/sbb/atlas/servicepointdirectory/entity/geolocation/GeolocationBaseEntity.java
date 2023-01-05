@@ -26,6 +26,9 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 public abstract class GeolocationBaseEntity extends BaseEntity {
 
+  private static final int WGS84_EAST_MAX = 180;
+  private static final int WGS84_NORTH_MAX = 90;
+
   @NotNull
   @Enumerated(EnumType.STRING)
   private SpatialReference spatialReference;
@@ -66,6 +69,7 @@ public abstract class GeolocationBaseEntity extends BaseEntity {
   private Double height;
 
   public boolean isValid() {
-    return (wgs84east != null && wgs84east >= -180 && wgs84east <= 180 && wgs84north != null && wgs84north >= -90 && wgs84north <= 90);
+    return (wgs84east != null && wgs84east >= -WGS84_EAST_MAX && wgs84east <= WGS84_EAST_MAX
+        && wgs84north != null && wgs84north >= -WGS84_NORTH_MAX && wgs84north <= WGS84_NORTH_MAX);
   }
 }

@@ -32,12 +32,6 @@ CREATE TABLE service_point_version_geolocation
 
 CREATE SEQUENCE service_point_version_geolocation_seq START WITH 1000 INCREMENT BY 1;
 
--- search api field indexes
-CREATE INDEX spvgeo_spatialref_idx ON service_point_version_geolocation (spatial_reference);
-CREATE INDEX spvgeo_coordlv03_idx ON service_point_version_geolocation (e_lv03, n_lv03);
-CREATE INDEX spvgeo_coordlv95_idx ON service_point_version_geolocation (e_lv95, n_lv95);
-CREATE INDEX spvgeo_coordwgs84_idx ON service_point_version_geolocation (e_wgs84, n_wgs84);
-
 -----------------------------------------------------------------------------------------
 -- Service Point Version - DIENSTSTELLEN
 -----------------------------------------------------------------------------------------
@@ -77,19 +71,6 @@ CREATE TABLE service_point_version
 CREATE SEQUENCE service_point_version_seq START WITH 1000 INCREMENT BY 1;
 ALTER TABLE service_point_version
     ADD CONSTRAINT spv_number_unique UNIQUE (number, valid_from);
-
--- search api field indexes
-CREATE INDEX spv_number_idx ON service_point_version (number);
-CREATE INDEX spv_numbershort_idx ON service_point_version (number_short);
-CREATE INDEX spv_designation_idx ON service_point_version (designation_long);
-CREATE INDEX spv_designationlong_idx ON service_point_version (designation_official);
-CREATE INDEX spv_abbrevation_idx ON service_point_version (abbreviation);
-CREATE INDEX spv_status_didok3_idx ON service_point_version (status_didok3);
-CREATE INDEX spv_said_idx ON service_point_version (business_organisation);
-CREATE INDEX spv_validity_idx ON service_point_version (valid_from, valid_to);
-CREATE INDEX spv_creation_date_idx ON service_point_version (creation_date);
-CREATE INDEX spv_edition_date_idx ON service_point_version (edition_date);
-
 
 -----------------------------------------------------------------------------------------
 -- Service Point Category DS_KATEGORIEN
