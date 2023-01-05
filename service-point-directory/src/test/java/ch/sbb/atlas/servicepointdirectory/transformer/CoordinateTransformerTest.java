@@ -14,7 +14,7 @@ class CoordinateTransformerTest {
       .north(49.0)
       .spatialReference(SpatialReference.WGS84)
       .build();
-  public static final int TOTAL_SERVICE_POINTS = 350000;
+  public static final int TOTAL_SERVICE_POINTS_WITH_GEOLOCATION = 100000;
   private CoordinateTransformer coordinateTransformer;
 
   @BeforeEach
@@ -54,7 +54,7 @@ class CoordinateTransformerTest {
     CoordinatePair testCoordinatesWgs84;
     long start = System.nanoTime();
 
-    for (int i = 0; i < TOTAL_SERVICE_POINTS; i++) {
+    for (int i = 0; i < TOTAL_SERVICE_POINTS_WITH_GEOLOCATION; i++) {
       final double moveBy = (i * 0.00001);
       testCoordinatesWgs84 = CoordinatePair
           .builder()
@@ -69,7 +69,7 @@ class CoordinateTransformerTest {
 
     final double elapsedMs = (System.nanoTime() - start) / 1000_000;
     System.out.println(elapsedMs);
-    assertThat(elapsedMs).isLessThan(1500);
+    assertThat(elapsedMs).isLessThan(1000);
   }
 
 }
