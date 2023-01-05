@@ -39,7 +39,7 @@ public class CoordinateTransformer {
       @NonNull SpatialReference targetSpatialReference) {
     final SpatialReference sourceSpatialReference = sourceCoordinate.getSpatialReference();
     if (sourceSpatialReference == null) {
-      throw new NullPointerException("sourceCoordinate.sourceSpatialReference");
+      throw new IllegalArgumentException("sourceCoordinate.sourceSpatialReference");
     }
     final ProjCoordinate result = new ProjCoordinate();
     findTransformer(
