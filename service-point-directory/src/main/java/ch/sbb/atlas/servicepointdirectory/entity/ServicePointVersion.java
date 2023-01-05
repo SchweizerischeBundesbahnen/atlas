@@ -9,25 +9,43 @@ import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.enumeration.*;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.Valid;
-import lombok.*;
-import lombok.experimental.FieldNameConstants;
-import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 @NoArgsConstructor
@@ -85,39 +103,14 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @Enumerated(EnumType.STRING)
   private ServicePointStatus statusDidok3;
 
-  public boolean hasGeolocation() {
-    return servicePointGeolocation != null;
-  }
-
-  public boolean isFreightServicePoint() {
-    return operatingPointType == OperatingPointType.FREIGHT_POINT;
-  }
-
-  @AssertTrue(message = "sortCodeOfDestinationStation only allowed for FreightServicePoints")
-  boolean isValidFreightServicePoint() {
-    return !isFreightServicePoint() || StringUtils.isNotBlank(sortCodeOfDestinationStation);
-  }
-
   @Size(max = AtlasFieldLengths.LENGTH_10)
   @AtlasVersionableProperty
   private String sortCodeOfDestinationStation;
-
-  @NotNull
-  @Column(columnDefinition = "DATE")
-  private LocalDate validFrom;
-
-  @NotNull
-  @Column(columnDefinition = "DATE")
-  private LocalDate validTo;
 
   @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty
   private String businessOrganisation;
-
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
-  private ServicePointGeolocation servicePointGeolocation;
 
   @AtlasVersionableProperty
   @ElementCollection(targetClass = Category.class, fetch = FetchType.EAGER)
@@ -135,42 +128,72 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @Valid
   private ServicePointNumber operatingPointKilometerMaster;
 
-  public boolean isOperatingPointKilometer() {
-    return operatingPointKilometerMaster != null;
+  @AtlasVersionableProperty
+  @ElementCollection(targetClass = MeanOfTransport.class, fetch = FetchType.EAGER)
+  @Convert(converter = MeanOfTransportConverter.class)
+  private Set<MeanOfTransport> meansOfTransport;
+
+  @Enumerated(EnumType.STRING)
+  private StopPointType stopPointType;
+
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  @AtlasVersionableProperty
+  private String comment;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
+  private ServicePointGeolocation servicePointGeolocation;
+
+  public boolean hasGeolocation() {
+    return servicePointGeolocation != null;
   }
+
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validFrom;
+
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validTo;
 
   public boolean isOperatingPoint() {
     return operatingPointType != null || isTrafficPoint();
   }
 
+  public boolean isStopPoint() {
+    return getOperatingPointType() == OperatingPointType.STOP_POINT;
+  }
+
+  public boolean isFreightServicePoint() {
+    return operatingPointType == OperatingPointType.FREIGHT_POINT;
+  }
+
   public boolean isTrafficPoint() {
-    return isStopPlace() || isFreightServicePoint() || operatingPointType == OperatingPointType.TARIFF_POINT;
+    return isStopPoint() || isFreightServicePoint() || operatingPointType == OperatingPointType.TARIFF_POINT;
   }
 
   public boolean isBorderPoint() {
     return operatingPointType == OperatingPointType.COUNTRY_BORDER;
   }
 
-  public Set<Category> getCategories() {
-    if (categories == null) {
-      return new HashSet<>();
-    }
-    return categories;
-  }
-
-  public boolean isStopPlace() {
-    return getOperatingPointType() == OperatingPointType.STOP_POINT;
+  public boolean isOperatingPointKilometer() {
+    return operatingPointKilometerMaster != null;
   }
 
   @AssertTrue
-  boolean isValidStopPlace() {
-    return !isStopPlace() || !getMeanOfTransport().isEmpty();
+  boolean isValidStopPoint() {
+    return !isStopPoint() || !getMeanOfTransport().isEmpty();
   }
 
-  @AtlasVersionableProperty
-  @ElementCollection(targetClass = MeanOfTransport.class, fetch = FetchType.EAGER)
-  @Convert(converter = MeanOfTransportConverter.class)
-  private Set<MeanOfTransport> meansOfTransport;
+  @AssertTrue(message = "sortCodeOfDestinationStation only allowed for FreightServicePoints")
+  boolean isValidFreightServicePoint() {
+    return !isFreightServicePoint() || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+  }
+
+  @AssertTrue(message = "StopPointType only allowed for StopPoint")
+  boolean isValidStopPointWithType() {
+    return isStopPoint() || stopPointType == null;
+  }
 
   public Set<MeanOfTransport> getMeanOfTransport() {
     if (meansOfTransport == null) {
@@ -179,15 +202,10 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
     return meansOfTransport;
   }
 
-  @Enumerated(EnumType.STRING)
-  private StopPointType stopPointType;
-
-  @AssertTrue(message = "StopPlaceType only allowed for StopPlaces")
-  boolean isValidStopPlaceWithType() {
-    return isStopPlace() || stopPointType == null;
+  public Set<Category> getCategories() {
+    if (categories == null) {
+      return new HashSet<>();
+    }
+    return categories;
   }
-
-  @Size(max = AtlasFieldLengths.LENGTH_1500)
-  @AtlasVersionableProperty
-  private String comment;
 }
