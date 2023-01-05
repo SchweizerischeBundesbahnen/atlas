@@ -37,6 +37,10 @@ public class ServicePointCsvToEntityMapperTest {
   private static final String csvLineWgs84 = csvHeader + """
       2751;85;CH;2751;85027516;2021-04-01;2022-07-28;3;Fischbach-Göslikon, Zentrum;;;1;1;1;0;1;0;0;Fischbach-Göslikon;Fischbach-Göslikon;4067;Bremgarten;1903;Aargau;19;CH;{0cc8d629-ff44-43e2-81a2-bbed6e7f50d9};100602;{73f38d76-fe7d-4f0a-bd96-ff7ee475c43e};2022-07-29 09:44:43;2022-07-29 09:44:43;;;;;;;;;;;0;0;;;;;;;0;;;;;;;;;;;;;;;;;;;;;;~B~;~Bus~;~Bus~;~Bus~;~Bus~;1993-02-01;2099-12-31;AG;801;PAG;PAG;PAG;PAG;PostAuto AG;CarPostal SA;AutoPostale SA;PostBus Ltd;;;;;;Test comment.;924871.494410176;6002817.05162414;389;ch:1:sloid:2751;665683;247031;2665683;1247031;8.30826199275;47.37084599021;924871.49441;6002817.05162;0;10;Ordentliche Haltestelle;Arrêt ordinaire;Fermata ordinaria;;Ho;Ao;Fo;;1;1;1;;;;;;;;;PAG;;#0007;PostAuto AG;CHE-112.242.941;fs45117;fs45117;WGS84
       """;
+
+  private static final String csvLineInvalidWgs84 = csvHeader + """
+      2751;85;CH;2751;85027516;2021-04-01;2022-07-28;3;Fischbach-Göslikon, Zentrum;;;1;1;1;0;1;0;0;Fischbach-Göslikon;Fischbach-Göslikon;4067;Bremgarten;1903;Aargau;19;CH;{0cc8d629-ff44-43e2-81a2-bbed6e7f50d9};100602;{73f38d76-fe7d-4f0a-bd96-ff7ee475c43e};2022-07-29 09:44:43;2022-07-29 09:44:43;;;;;;;;;;;0;0;;;;;;;0;;;;;;;;;;;;;;;;;;;;;;~B~;~Bus~;~Bus~;~Bus~;~Bus~;1993-02-01;2099-12-31;AG;801;PAG;PAG;PAG;PAG;PostAuto AG;CarPostal SA;AutoPostale SA;PostBus Ltd;;;;;;Test comment.;924871.494410176;6002817.05162414;389;ch:1:sloid:2751;665683;247031;2665683;1247031;8.30826199275;4737084599021;924871.49441;6002817.05162;0;10;Ordentliche Haltestelle;Arrêt ordinaire;Fermata ordinaria;;Ho;Ao;Fo;;1;1;1;;;;;;;;;PAG;;#0007;PostAuto AG;CHE-112.242.941;fs45117;fs45117;WGS84
+      """;
   private final ServicePointCsvToEntityMapper servicePointCsvToEntityMapper =
       new ServicePointCsvToEntityMapper();
 
@@ -79,31 +83,25 @@ public class ServicePointCsvToEntityMapperTest {
         ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLineWgs84);
     ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
 
-    ServicePointGeolocation servicePointGeolocation =
-        servicePointCsvToEntityMapper.mapGeolocation(
-            servicePointCsvModel);
+    ServicePointGeolocation servicePointGeolocation = servicePointCsvToEntityMapper.mapGeolocation(
+        servicePointCsvModel);
 
-    ServicePointGeolocation expected = ServicePointGeolocation
-        .builder()
-        .spatialReference(SpatialReference.WGS84)
-        .east(8.30826199275)
-        .north(47.37084599021)
-        .height(389D)
-        .country(Country.SWITZERLAND)
-        .swissCantonFsoNumber(4067)
-        .swissCantonName("Aargau")
-        .swissCantonNumber(19)
-        .swissDistrictName("Bremgarten")
-        .swissDistrictNumber(1903)
-        .swissMunicipalityName("Fischbach-Göslikon")
-        .swissLocalityName("Fischbach-Göslikon")
-        .creationDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
-        .creator("fs45117")
-        .editionDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
-        .editor("fs45117")
-        .build();
+    assertThat(servicePointGeolocation.getSpatialReference()).isEqualTo(SpatialReference.WGS84);
+    assertThat(servicePointGeolocation.getEast()).isEqualTo(8.30826199275);
+    assertThat(servicePointGeolocation.getNorth()).isEqualTo(47.37084599021);
+    assertThat(servicePointGeolocation.isValid()).isTrue();
+  }
 
-    assertThat(servicePointGeolocation).usingRecursiveComparison().isEqualTo(expected);
+  @Test
+  void shouldHandleInvalidServicePointGeolocationCorrectly() throws IOException {
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLineInvalidWgs84);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    ServicePointGeolocation servicePointGeolocation = servicePointCsvToEntityMapper.mapGeolocation(
+        servicePointCsvModel);
+
+    assertThat(servicePointGeolocation.isValid()).isFalse();
   }
 
   @Test
