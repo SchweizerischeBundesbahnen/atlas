@@ -58,6 +58,6 @@ class CoordinateTransformerTest {
       coordinateTransformer.transform(sourceSr, SpatialReference.LV03, testCoordinates);
     }
     final double elapsedMs = (System.nanoTime() - start) / 1000_000;
-    assertThat(elapsedMs).isLessThan(2000);
+    assertThat(elapsedMs).isLessThan(1500);
   }
 }
