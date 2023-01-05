@@ -69,7 +69,7 @@ public enum OperatingPointType {
       "Precedente fermata con infrastruttura", "Haltestelle ausser Betrieb", "technischerfahrplan", "Hab", "aai", "pfi", null),
 
   FREIGHT_POINT(70, true, "Bedienpunkt", "point de chargement",
-      "punto di servizio", "Haltestelle ausser Betrieb", null, null,null,null, null);
+      "punto di servizio", "point of service", null, null,null,null, null);
 
   ;
 
