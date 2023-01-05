@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.service.util.GeolocationMapperUtil;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Objects;
@@ -41,14 +42,20 @@ public class ServicePointCsvToEntityMapper implements
     return ServicePointGeolocation
         .builder()
         .spatialReference(servicePointCsvModel.getSpatialReference())
-        .lv03east(servicePointCsvModel.getELV03())
-        .lv03north(servicePointCsvModel.getNLV03())
-        .lv95east(servicePointCsvModel.getELV95())
-        .lv95north(servicePointCsvModel.getNLV95())
-        .wgs84east(servicePointCsvModel.getEWGS84())
-        .wgs84north(servicePointCsvModel.getNWGS84())
-        .wgs84webEast(servicePointCsvModel.getEWGS84WEB())
-        .wgs84webNorth(servicePointCsvModel.getNWGS84WEB())
+        .east(GeolocationMapperUtil.getOriginalEast(
+            servicePointCsvModel.getSpatialReference(),
+            servicePointCsvModel.getEWGS84(),
+            servicePointCsvModel.getEWGS84WEB(),
+            servicePointCsvModel.getELV95(),
+            servicePointCsvModel.getELV03()
+        ))
+        .north(GeolocationMapperUtil.getOriginalNorth(
+            servicePointCsvModel.getSpatialReference(),
+            servicePointCsvModel.getNWGS84(),
+            servicePointCsvModel.getNWGS84WEB(),
+            servicePointCsvModel.getNLV95(),
+            servicePointCsvModel.getNLV03()
+        ))
         .height(servicePointCsvModel.getHeight())
         .country(Country.from(servicePointCsvModel.getLaendercode()))
         .swissCantonFsoNumber(servicePointCsvModel.getBfsNummer())
@@ -87,9 +94,12 @@ public class ServicePointCsvToEntityMapper implements
         .stopPointType(StopPointType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(getOperatingPointType(servicePointCsvModel, meansOfTransport))
         .sortCodeOfDestinationStation(servicePointCsvModel.getRichtpunktCode())
-        .operatingPointRouteNetwork(Boolean.TRUE.equals(servicePointCsvModel.getOperatingPointRouteNetwork()))
+        .operatingPointRouteNetwork(
+            Boolean.TRUE.equals(servicePointCsvModel.getOperatingPointRouteNetwork()))
         .operatingPointKilometerMaster(
-            Optional.ofNullable(servicePointCsvModel.getOperatingPointKilometerMaster()).map(ServicePointNumber::of).orElse(null))
+            Optional.ofNullable(servicePointCsvModel.getOperatingPointKilometerMaster())
+                    .map(ServicePointNumber::of)
+                    .orElse(null))
         .creationDate(servicePointCsvModel.getCreatedAt())
         .creator(servicePointCsvModel.getCreatedBy())
         .editionDate(servicePointCsvModel.getEditedAt())
@@ -106,27 +116,30 @@ public class ServicePointCsvToEntityMapper implements
     if (StringUtils.isNotBlank(servicePointCsvModel.getRichtpunktCode())) {
       return OperatingPointType.FREIGHT_POINT;
     }
-    return OperatingPointType.from(ObjectUtils.firstNonNull(servicePointCsvModel.getBpBetriebspunktArtId(),
-        servicePointCsvModel.getBpvbBetriebspunktArtId(),
-        servicePointCsvModel.getBpofBetriebspunktArtId(), servicePointCsvModel.getBptfBetriebspunktArtId()));
+    return OperatingPointType.from(
+        ObjectUtils.firstNonNull(servicePointCsvModel.getBpBetriebspunktArtId(),
+            servicePointCsvModel.getBpvbBetriebspunktArtId(),
+            servicePointCsvModel.getBpofBetriebspunktArtId(),
+            servicePointCsvModel.getBptfBetriebspunktArtId()));
   }
 
   private static Set<Category> getCategories(ServicePointCsvModel servicePointCsvModel) {
     return Arrays.stream(Objects.nonNull(servicePointCsvModel.getDsKategorienIds())
-            ? servicePointCsvModel.getDsKategorienIds().split("\\|") :
-            new String[]{})
-        .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
-        .filter(Objects::nonNull)
-        .collect(Collectors.toSet());
+                     ? servicePointCsvModel.getDsKategorienIds().split("\\|") :
+                     new String[]{})
+                 .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
+                 .filter(Objects::nonNull)
+                 .collect(Collectors.toSet());
   }
 
-  private static Set<MeanOfTransport> getMeansOfTransport(ServicePointCsvModel servicePointCsvModel) {
+  private static Set<MeanOfTransport> getMeansOfTransport(
+      ServicePointCsvModel servicePointCsvModel) {
     return Arrays.stream(Objects.nonNull(servicePointCsvModel.getBpvhVerkehrsmittel())
-            ? servicePointCsvModel.getBpvhVerkehrsmittel().split("~") :
-            new String[]{})
-        .map(MeanOfTransport::from)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toSet());
+                     ? servicePointCsvModel.getBpvhVerkehrsmittel().split("~") :
+                     new String[]{})
+                 .map(MeanOfTransport::from)
+                 .filter(Objects::nonNull)
+                 .collect(Collectors.toSet());
   }
 
 }

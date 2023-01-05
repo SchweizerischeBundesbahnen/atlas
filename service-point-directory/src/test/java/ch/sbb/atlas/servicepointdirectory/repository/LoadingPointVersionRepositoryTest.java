@@ -57,14 +57,8 @@ public class LoadingPointVersionRepositoryTest {
     LoadingPointGeolocation loadingPointGeolocation = LoadingPointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .lv03east(600037.945)
-        .lv03north(199749.812)
-        .lv95east(2600037.945)
-        .lv95north(1199749.812)
-        .wgs84east(7.439130891)
-        .wgs84north(46.948832291)
-        .wgs84webEast(691419.90336)
-        .wgs84webNorth(5811120.06939)
+        .east(2600037.945)
+        .north(1199749.812)
         .height(2540.21)
         .build();
 
