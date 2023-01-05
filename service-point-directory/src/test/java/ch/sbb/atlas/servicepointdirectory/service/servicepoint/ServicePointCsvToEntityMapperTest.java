@@ -831,6 +831,7 @@ public class ServicePointCsvToEntityMapperTest {
         .wgs84webEast(949301.56712)
         .wgs84webNorth(6004267.83043)
         .height(408.0)
+        //TODO: Canton Enum
         .swissCantonFsoNumber(261)
         .swissCantonName("Zürich")
         .swissCantonNumber(1)
@@ -874,6 +875,102 @@ public class ServicePointCsvToEntityMapperTest {
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
     assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    // IS_HALTESTELLE
+    assertThat(expectedServicePoint.isStopPlace()).isFalse();
+    // IS_BEDIENPUNKT
+    assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
+    // IS_VERKEHRSPUNKT
+    assertThat(expectedServicePoint.isTrafficPoint()).isFalse();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isFalse();
+    // IS_VIRTUELL
+    assertThat(expectedServicePoint.hasGeolocation()).isTrue();
+    // IS_BPS
+    assertThat(expectedServicePoint.isOperatingPointRouteNetwork()).isFalse();
+    // IS_BPK
+    assertThat(expectedServicePoint.isOperatingPointKilometer()).isFalse();
+
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
+    assertThat(servicePointVersion
+        .getServicePointGeolocation())
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
+  }
+
+  @Test
+  void shouldImportInventarpunkt() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        19199;85;CH;19199;85191999;2014-11-12;2015-08-31;6;Zürich Dienstgebäude 8;;ZDGH;1;0;0;0;0;0;0;Zürich;Zürich;261;Zürich;112;Zürich;1;CH;{3fabbf5d-cac0-43c9-a872-585157e8e984};100001;{27e2ce72-e00f-40e6-a82b-3507e57cbe73};2017-11-09 11:53:05;2018-03-06 08:15:12;Inventarpunkt;Point d'inventaire;punto di inventario;Inventarpunkt;30;;;;;;;;;;;;;;0;;;;;;;;;;;;;;;;;;;;;;;;;;;2014-11-12;2015-08-31;ZH;11;SBB;CFF;FFS;SBB;Schweizerische Bundesbahnen SBB;Chemins de fer fédéraux suisses CFF;Ferrovie federali svizzere FFS;Schweizerische Bundesbahnen SBB;10;Hostname;Nom d'hôte;Hostname;Hostname;;949524.458652105;6004288.38474398;408;ch:1:sloid:19199;682395;248235;2682395;1248235;8.52972333853;47.37979659197;949524.45865;6004288.38474;0;;;;;;;;;;;;;;;;;;;;;SBB;;#0001;Schweizerische Bundesbahnen SBB;CHE-102.909.703;GSU_DIDOK;fs45117;LV95
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    // then
+    ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .lv03east(682395.0)
+        .lv03north(248235.0)
+        .lv95east(2682395.0)
+        .lv95north(1248235.0)
+        .wgs84east(8.52972333853)
+        .wgs84north(47.37979659197)
+        .wgs84webEast(949524.45865)
+        .wgs84webNorth(6004288.38474)
+        .height(408.0)
+        .swissCantonFsoNumber(261)
+        .swissCantonName("Zürich")
+        .swissCantonNumber(1)
+        .swissDistrictName("Zürich")
+        .swissDistrictNumber(112)
+        .swissMunicipalityName("Zürich")
+        .swissLocalityName("Zürich")
+        .country(Country.SWITZERLAND)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2018, 3, 6), LocalTime.of(8, 15, 12)))
+        .editor("fs45117")
+        .build();
+
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(expectedServicePointGeolocation)
+        .number(ServicePointNumber.of(85191999))
+        .sloid("ch:1:sloid:19199")
+        .numberShort(19199)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Zürich Dienstgebäude 8")
+        .abbreviation("ZDGH")
+        .meansOfTransport(Collections.emptySet())
+        .statusDidok3(ServicePointStatus.HISTORICAL)
+        .businessOrganisation("ch:1:sboid:100001")
+        .comment(null)
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2014, 11, 12))
+        .validTo(LocalDate.of(2015, 8, 31))
+        .categories(Set.of(Category.HOSTNAME))
+        .operatingPointType(OperatingPointType.INVENTORY_POINT)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2018, 3, 6), LocalTime.of(8, 15, 12)))
+        .editor("fs45117")
+        .build();
+
+    // IS_BETRIEBSPUNKT
+    assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
+    // IS_FAHRPLAN
+    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isFalse();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPlace()).isFalse();
     // IS_BEDIENPUNKT
