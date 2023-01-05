@@ -65,7 +65,7 @@ public class ServicePointVersionRepositoryTest {
     assertThat(savedVersion.getServicePointGeolocation()).isNull();
     assertThat(savedVersion.getCategories()).isEmpty();
     assertThat(savedVersion.isOperatingPoint()).isFalse();
-    assertThat(savedVersion.isStopPlace()).isFalse();
+    assertThat(savedVersion.isStopPoint()).isFalse();
     assertThat(savedVersion.getComment()).isEqualTo("Test comment.");
   }
 
