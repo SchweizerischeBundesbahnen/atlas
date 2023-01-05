@@ -25,8 +25,9 @@ public class CoordinateTransformer {
     });
   }
 
-  public CoordinatePair transform(SpatialReference sourceSpatialReference,
-      SpatialReference targetSpatialReference, CoordinatePair coordinatePair) {
+  public CoordinatePair transform(CoordinatePair coordinatePair,
+      SpatialReference sourceSpatialReference,
+      SpatialReference targetSpatialReference) {
 
     final CoordinateTransform cTransform = ctFactory.createTransform(
         referenceSystemMap.get(sourceSpatialReference),
@@ -37,12 +38,6 @@ public class CoordinateTransformer {
 
     return CoordinatePair.builder().north(result.y).east(result.x).build();
 
-  }
-
-  public CoordinatePair transform(SpatialReference sourceSpatialReference,
-      SpatialReference targetSpatialReference, double east, double north) {
-    return transform(sourceSpatialReference, targetSpatialReference,
-        CoordinatePair.builder().east(east).north(north).build());
   }
 }
 
