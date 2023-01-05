@@ -68,6 +68,7 @@ class CoordinateTransformerTest {
     }
 
     final double elapsedMs = (System.nanoTime() - start) / 1000_000;
+    System.out.println(elapsedMs);
     assertThat(elapsedMs).isLessThan(1500);
   }
 
