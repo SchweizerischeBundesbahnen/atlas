@@ -26,8 +26,17 @@ public class CoordinateTransformer {
   }
 
   public CoordinatePair transform(CoordinatePair coordinatePair,
-      SpatialReference sourceSpatialReference,
       SpatialReference targetSpatialReference) {
+    if (coordinatePair == null) {
+      throw new IllegalArgumentException("coordinatePair");
+    }
+    final SpatialReference sourceSpatialReference = coordinatePair.getSpatialReference();
+    if (sourceSpatialReference == null) {
+      throw new IllegalArgumentException("coordinatePair.sourceSpatialReference");
+    }
+    if (targetSpatialReference == null) {
+      throw new IllegalArgumentException("targetSpatialReference");
+    }
 
     final CoordinateTransform cTransform = ctFactory.createTransform(
         referenceSystemMap.get(sourceSpatialReference),
