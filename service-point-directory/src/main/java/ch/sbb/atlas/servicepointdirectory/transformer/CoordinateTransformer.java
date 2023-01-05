@@ -44,10 +44,10 @@ public class CoordinateTransformer {
     final ProjCoordinate result = new ProjCoordinate();
     findTransformer(
         referenceSystemMap.get(sourceSpatialReference),
-        referenceSystemMap.get(targetSpatialReference))
-        .transform(
-            new ProjCoordinate(sourceCoordinate.getEast(), sourceCoordinate.getNorth()),
-            result);
+        referenceSystemMap.get(targetSpatialReference)
+    ).transform(
+        new ProjCoordinate(sourceCoordinate.getEast(), sourceCoordinate.getNorth()),
+        result);
 
     return CoordinatePair.builder().north(result.y).east(result.x).build();
 
