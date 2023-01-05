@@ -97,6 +97,9 @@ public class ServicePointCsvModel {
   @JsonProperty("BPTF_BETRIEBSPUNKT_ART_ID")
   private Integer bptfBetriebspunktArtId;
 
+  @JsonProperty("BP_BETRIEBSPUNKT_ART_ID")
+  private Integer bpBetriebspunktArtId;
+
   @JsonProperty("BPVH_VERKEHRSMITTEL")
   private String bpvhVerkehrsmittel;
 
