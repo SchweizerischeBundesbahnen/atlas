@@ -12,13 +12,13 @@ import org.locationtech.proj4j.ProjCoordinate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SpatialReferenceTransformer {
+public class CoordinateTransformer {
 
   private final CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
   private final Map<SpatialReference, CoordinateReferenceSystem> referenceSystemMap =
       new HashMap<>();
 
-  public SpatialReferenceTransformer() {
+  public CoordinateTransformer() {
     final CRSFactory crsFactory = new CRSFactory();
     Stream.of(SpatialReference.values()).forEach(sr -> {
       referenceSystemMap.put(sr, crsFactory.createFromName("epsg:" + sr.getWellKnownId()));
