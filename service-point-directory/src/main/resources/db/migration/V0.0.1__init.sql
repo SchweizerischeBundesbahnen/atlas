@@ -6,8 +6,8 @@ CREATE TABLE service_point_version_geolocation
 (
     id                      BIGINT PRIMARY KEY,
     spatial_reference       VARCHAR(50)     NOT NULL,
-    east                    NUMERIC(14, 11) NULL,
-    north                   NUMERIC(14, 11) NULL,
+    east                    NUMERIC(19, 11) NULL,
+    north                   NUMERIC(19, 11) NULL,
     height                  NUMERIC(6, 2)   NULL,
     country                 VARCHAR(50)     NULL,
     swiss_canton_fso_number SMALLINT        NULL,
@@ -84,8 +84,8 @@ CREATE TABLE loading_point_version_geolocation
 (
     id                BIGINT PRIMARY KEY,
     spatial_reference VARCHAR(50)     NOT NULL,
-    east              NUMERIC(14, 11) NULL,
-    north             NUMERIC(14, 11) NULL,
+    east              NUMERIC(19, 11) NULL,
+    north             NUMERIC(19, 11) NULL,
     height            NUMERIC(6, 2)   NULL,
     creation_date     TIMESTAMP       NOT NULL,
     creator           VARCHAR(50)     NOT NULL,
@@ -141,8 +141,8 @@ CREATE TABLE traffic_point_element_version_geolocation
 (
     id                BIGINT PRIMARY KEY,
     spatial_reference VARCHAR(50)     NOT NULL,
-    east              NUMERIC(14, 11) NULL,
-    north             NUMERIC(14, 11) NULL,
+    east              NUMERIC(19, 11) NULL,
+    north             NUMERIC(19, 11) NULL,
     height            NUMERIC(6, 2)   NULL,
     creation_date     TIMESTAMP       NOT NULL,
     creator           VARCHAR(50)     NOT NULL,
