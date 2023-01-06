@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.util;
 
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import javax.validation.constraints.NotNull;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -33,15 +34,18 @@ public class GeolocationMapperUtil {
     return getCoordinateBySpatialReference(spatialReference, wgs84, wgs84Web, lv95, lv03);
   }
 
-  private static Double getCoordinateBySpatialReference(SpatialReference spatialReference,
-      Double wgs84, Double wgs84Web,
-      Double lv95, Double lv03) {
+  private static Double getCoordinateBySpatialReference(
+      @NotNull SpatialReference spatialReference,
+      Double wgs84,
+      Double wgs84Web,
+      Double lv95,
+      Double lv03) {
     return switch (spatialReference) {
       case WGS84WEB -> wgs84Web;
       case LV95 -> lv95;
       case LV03 -> lv03;
       case WGS84 -> wgs84;
-      default -> null;
+      default -> throw new IllegalArgumentException("spatialReference");
     };
   }
 }
