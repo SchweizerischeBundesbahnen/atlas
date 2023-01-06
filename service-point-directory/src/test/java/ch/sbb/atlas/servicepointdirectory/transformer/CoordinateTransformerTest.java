@@ -3,6 +3,9 @@ package ch.sbb.atlas.servicepointdirectory.transformer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +35,15 @@ class CoordinateTransformerTest {
   }
 
   @Test
+  void transformSame() {
+    CoordinatePair result = coordinateTransformer.transform(
+        TEST_COORDINATE_WGS84, SpatialReference.WGS84);
+
+    assertThat(result.getNorth()).isEqualTo(49D);
+    assertThat(result.getEast()).isEqualTo(7D);
+  }
+
+  @Test
   void transformWGS84ToLV95() {
     CoordinatePair result = coordinateTransformer.transform(
         TEST_COORDINATE_WGS84, SpatialReference.LV95);
@@ -50,11 +62,23 @@ class CoordinateTransformerTest {
   }
 
   @Test
-  void transformPerformance() {
-    CoordinatePair testCoordinatesWgs84;
-    long start = System.nanoTime();
+  void transformCanRunMultiThread() {
+    final int chunkSize = 4;
+    List<List<Integer>> servicePointsChunks = Lists.partition(IntStream
+            .rangeClosed(0, TOTAL_SERVICE_POINTS_WITH_GEOLOCATION)
+            .boxed()
+            .toList(),
+        TOTAL_SERVICE_POINTS_WITH_GEOLOCATION / chunkSize);
 
-    for (int i = 0; i < TOTAL_SERVICE_POINTS_WITH_GEOLOCATION; i++) {
+    final long totalMs = System.nanoTime();
+    servicePointsChunks.parallelStream().forEach(chunk -> doTransformCoordinates(chunk));
+    final double elapsedMs = (System.nanoTime() - totalMs) / 1000_000;
+    assertThat(elapsedMs).isLessThan(1000);
+  }
+
+  private void doTransformCoordinates(List<Integer> servicePointList) {
+    CoordinatePair testCoordinatesWgs84;
+    for (int i = 0; i < servicePointList.size(); i++) {
       final double moveBy = (i * 0.00001);
       testCoordinatesWgs84 = CoordinatePair
           .builder()
@@ -66,9 +90,5 @@ class CoordinateTransformerTest {
       coordinateTransformer.transform(testCoordinatesWgs84, SpatialReference.LV95);
       coordinateTransformer.transform(testCoordinatesWgs84, SpatialReference.LV03);
     }
-
-    final double elapsedMs = (System.nanoTime() - start) / 1000_000;
-    assertThat(elapsedMs).isLessThan(1000);
   }
-
 }
