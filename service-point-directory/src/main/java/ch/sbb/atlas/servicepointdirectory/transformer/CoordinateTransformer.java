@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.transformer;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 import lombok.NonNull;
 import org.locationtech.proj4j.CRSFactory;
@@ -18,7 +19,7 @@ public class CoordinateTransformer {
   private final CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
   private final Map<SpatialReference, CoordinateReferenceSystem> referenceSystemMap =
       new HashMap<>();
-  private final Map<String, CoordinateTransform> coordinateTransformers = new HashMap<>();
+  private final Map<String, CoordinateTransform> coordinateTransformers = new ConcurrentHashMap<>();
 
   public CoordinateTransformer() {
     final CRSFactory crsFactory = new CRSFactory();
@@ -41,16 +42,23 @@ public class CoordinateTransformer {
     if (sourceSpatialReference == null) {
       throw new IllegalArgumentException("sourceCoordinate.sourceSpatialReference");
     }
+
+    final ProjCoordinate source = new ProjCoordinate(
+        sourceCoordinate.getEast(),
+        sourceCoordinate.getNorth());
+
     final ProjCoordinate result = new ProjCoordinate();
+
     findTransformer(
         referenceSystemMap.get(sourceSpatialReference),
         referenceSystemMap.get(targetSpatialReference)
-    ).transform(
-        new ProjCoordinate(sourceCoordinate.getEast(), sourceCoordinate.getNorth()),
-        result);
+    ).transform(source, result);
 
-    return CoordinatePair.builder().north(result.y).east(result.x).build();
-
+    return CoordinatePair
+        .builder()
+        .north(result.y)
+        .east(result.x)
+        .build();
   }
 
   private CoordinateTransform findTransformer(
