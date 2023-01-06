@@ -26,6 +26,7 @@
     <!-- Spring Boot Overrides -->
     <!-- https://github.com/projectlombok/lombok/issues/3180 -->
     <lombok.version>1.18.22</lombok.version>
+    <proj4j.version>1.2.2</proj4j.version>
   </properties>
   <modules>
     <!-- Order is important here-->
@@ -77,6 +78,16 @@
         <artifactId>flyway-core</artifactId>
         <groupId>org.flywaydb</groupId>
         <version>9.4.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.locationtech.proj4j</groupId>
+        <artifactId>proj4j</artifactId>
+        <version>${proj4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.locationtech.proj4j</groupId>
+        <artifactId>proj4j-epsg</artifactId>
+        <version>${proj4j.version}</version>
       </dependency>
       <dependency>
         <artifactId>spring-restdocs-mockmvc</artifactId>
