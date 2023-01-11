@@ -131,7 +131,6 @@ public class ServicePointCsvToEntityMapperTest {
         .categories(new HashSet<>())
         .meansOfTransport(new HashSet<>(List.of(MeanOfTransport.BUS)))
         .stopPointType(StopPointType.ORDERLY)
-        .operatingPointType(OperatingPointType.STOP_POINT)
         .comment("Test comment.")
         .creationDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
         .creator("fs45117")
@@ -190,7 +189,6 @@ public class ServicePointCsvToEntityMapperTest {
         .categories(new HashSet<>())
         .meansOfTransport(new HashSet<>(List.of(MeanOfTransport.BUS)))
         .stopPointType(StopPointType.ORDERLY)
-        .operatingPointType(OperatingPointType.STOP_POINT)
         .comment("Test comment.")
         .creationDate(LocalDateTime.of(LocalDate.of(2022, 7, 29), LocalTime.of(9, 44, 43)))
         .creator("fs45117")
@@ -255,7 +253,7 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_BETRIEBSPUNKT
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
-    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isFalse();
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isFalse();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPoint()).isFalse();
     // IS_BEDIENPUNKT
@@ -336,7 +334,7 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_BETRIEBSPUNKT
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
-    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isTrue();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPoint()).isFalse();
     // IS_BEDIENPUNKT
@@ -411,7 +409,6 @@ public class ServicePointCsvToEntityMapperTest {
         .validTo(LocalDate.of(2021, 3, 31))
         .categories(new HashSet<>())
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
-        .operatingPointType(OperatingPointType.STOP_POINT)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
@@ -421,7 +418,7 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_BETRIEBSPUNKT
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
-    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isTrue();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPoint()).isTrue();
     // IS_BEDIENPUNKT
@@ -500,7 +497,7 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_BETRIEBSPUNKT
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
-    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isTrue();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPoint()).isFalse();
     // IS_BEDIENPUNKT
@@ -579,7 +576,7 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_BETRIEBSPUNKT
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
-    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isTrue();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPoint()).isFalse();
     // IS_BEDIENPUNKT
@@ -659,7 +656,6 @@ public class ServicePointCsvToEntityMapperTest {
         .validFrom(LocalDate.of(2018, 2, 18))
         .validTo(LocalDate.of(2019, 12, 5))
         .categories(new HashSet<>())
-        .operatingPointType(OperatingPointType.FREIGHT_POINT)
         .sortCodeOfDestinationStation("35071")
         .operatingPointKilometerMaster(ServicePointNumber.of(85035071))
         .operatingPointRouteNetwork(true)
@@ -672,7 +668,7 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_BETRIEBSPUNKT
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
-    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isTrue();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPoint()).isFalse();
     // IS_BEDIENPUNKT
@@ -764,7 +760,7 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_BETRIEBSPUNKT
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
-    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isTrue();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPoint()).isFalse();
     // IS_BEDIENPUNKT
@@ -855,7 +851,7 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_BETRIEBSPUNKT
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
-    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isTrue();
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isTrue();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPoint()).isFalse();
     // IS_BEDIENPUNKT
@@ -945,7 +941,7 @@ public class ServicePointCsvToEntityMapperTest {
     // IS_BETRIEBSPUNKT
     assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
     // IS_FAHRPLAN
-    assertThat(expectedServicePoint.getOperatingPointType().hasTimetable()).isFalse();
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isFalse();
     // IS_HALTESTELLE
     assertThat(expectedServicePoint.isStopPoint()).isFalse();
     // IS_BEDIENPUNKT
