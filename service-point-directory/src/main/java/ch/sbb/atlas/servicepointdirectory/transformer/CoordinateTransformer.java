@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
+import javax.validation.Valid;
 import lombok.NonNull;
 import org.locationtech.proj4j.CRSFactory;
 import org.locationtech.proj4j.CoordinateReferenceSystem;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CoordinateTransformer {
 
-  private final CoordinateTransformFactory ctFactory = new CoordinateTransformFactory();
+  private final CoordinateTransformFactory coordinateTransformFactory = new CoordinateTransformFactory();
   private final Map<SpatialReference, CoordinateReferenceSystem> referenceSystemMap =
       new HashMap<>();
   private final Map<String, CoordinateTransform> coordinateTransformers = new ConcurrentHashMap<>();
@@ -24,33 +25,24 @@ public class CoordinateTransformer {
   public CoordinateTransformer() {
     final CRSFactory crsFactory = new CRSFactory();
     Stream.of(SpatialReference.values())
-          .forEach(sr -> referenceSystemMap
-              .put(sr, crsFactory.createFromName("epsg:" + sr.getWellKnownId())));
+        .forEach(spatialReference -> referenceSystemMap
+            .put(spatialReference, crsFactory.createFromName("epsg:" + spatialReference.getWellKnownId())));
   }
 
   /**
    * Transform source coordinate into given target spatial reference.
    *
-   * @param sourceCoordinate       Source coordinate.
+   * @param sourceCoordinate Source coordinate.
    * @param targetSpatialReference Target spatial reference system.
    * @return New transformed coordinate.
    */
-  public CoordinatePair transform(
-      @NonNull CoordinatePair sourceCoordinate,
+  public CoordinatePair transform(@NonNull @Valid CoordinatePair sourceCoordinate,
       @NonNull SpatialReference targetSpatialReference) {
-    final SpatialReference sourceSpatialReference = sourceCoordinate.getSpatialReference();
-    if (sourceSpatialReference == null) {
-      throw new IllegalArgumentException("sourceCoordinate.sourceSpatialReference");
-    }
-
-    final ProjCoordinate source = new ProjCoordinate(
-        sourceCoordinate.getEast(),
-        sourceCoordinate.getNorth());
-
-    final ProjCoordinate result = new ProjCoordinate();
+    ProjCoordinate source = new ProjCoordinate(sourceCoordinate.getEast(), sourceCoordinate.getNorth());
+    ProjCoordinate result = new ProjCoordinate();
 
     findTransformer(
-        referenceSystemMap.get(sourceSpatialReference),
+        referenceSystemMap.get(sourceCoordinate.getSpatialReference()),
         referenceSystemMap.get(targetSpatialReference)
     ).transform(source, result);
 
@@ -58,15 +50,14 @@ public class CoordinateTransformer {
         .builder()
         .north(result.y)
         .east(result.x)
+        .spatialReference(targetSpatialReference)
         .build();
   }
 
-  private CoordinateTransform findTransformer(
-      CoordinateReferenceSystem source,
-      CoordinateReferenceSystem target) {
+  private CoordinateTransform findTransformer(CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
     final String mappingName = source.getName() + target.getName();
     return coordinateTransformers.computeIfAbsent(mappingName,
-        t -> ctFactory.createTransform(source, target));
+        t -> coordinateTransformFactory.createTransform(source, target));
   }
 }
 

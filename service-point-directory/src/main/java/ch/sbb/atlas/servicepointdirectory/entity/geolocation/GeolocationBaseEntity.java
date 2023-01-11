@@ -30,9 +30,11 @@ public abstract class GeolocationBaseEntity extends BaseEntity {
   private SpatialReference spatialReference;
 
   @AtlasVersionableProperty
+  @NotNull
   private Double east;
 
   @AtlasVersionableProperty
+  @NotNull
   private Double north;
 
   @AtlasVersionableProperty
