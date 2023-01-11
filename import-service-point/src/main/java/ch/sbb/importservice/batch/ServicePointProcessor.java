@@ -9,7 +9,6 @@ public class ServicePointProcessor implements ItemProcessor<ServicePoint, Servic
 
   @Override
   public ServicePoint process(ServicePoint servicePoint) {
-    log.info(servicePoint.toString());
     return servicePoint;
   }
 }

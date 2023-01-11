@@ -40,8 +40,7 @@ public class ImportController {
       String originalFileName = multipartFile.getOriginalFilename();
       File fileToImport = new File(DOCKER_FILE_DIRECTORY + originalFileName);
       multipartFile.transferTo(fileToImport);
-      File file = new File("C:\\devsbb\\projects\\atlas\\service-point-directory\\src\\test\\resources"
-          + "\\DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv");
+      File file = new File("C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\import.csv");
 
       JobParameters jobParameters = new JobParametersBuilder()
           .addString("fullPathFileName", file.getAbsolutePath())
