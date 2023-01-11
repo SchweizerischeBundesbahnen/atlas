@@ -52,7 +52,7 @@ public class CsvServiceTest {
     String exMessage =
         assertThrows(RuntimeException.class, () -> csvService.downloadImportFileFromToday("PREFIX_")).getLocalizedMessage();
     verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
-    assertThat(exMessage).isEqualTo("[IMPORT]: Found more than 1 file to download");
+    assertThat(exMessage).isEqualTo("[IMPORT]: Found more than 1 file to download on S3");
   }
 
   @Test
