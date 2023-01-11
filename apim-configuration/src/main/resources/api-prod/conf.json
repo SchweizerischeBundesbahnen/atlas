@@ -27,7 +27,7 @@
   ],
   "scope": "public",
   "provider": "public-miniwaf-maggie.app.sbb.ch",
-  "routing_over_wsg" : false,
+  "routing_over_wsg": false,
   "owner_email": "TechSupport-ATLAS@sbb.ch",
   "contact": {
     "name": "DiDok / ATLAS",
@@ -43,7 +43,8 @@
     "hannes.laner@sbb.ch",
     "antonio.romano@sbb.ch",
     "marek.stankala@sbb.ch",
-    "luca.ammann2@sbb.ch"
+    "luca.ammann2@sbb.ch",
+    "vital.scholl@sbb.ch"
   ],
   "auth_provider": [
     "azure_ad"
