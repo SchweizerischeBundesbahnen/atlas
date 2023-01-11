@@ -11,13 +11,13 @@ public class SePoDiClientService extends BaseClientService {
 
   private final SePoDiClient sePoDiClient;
 
-  public SePoDiClientService(SePoDiClient liDiClient) {
-    this.sePoDiClient = liDiClient;
-    this.clientName = "LiDi-Client";
+  public SePoDiClientService(SePoDiClient sePoDiClient) {
+    this.sePoDiClient = sePoDiClient;
+    this.clientName = "sePoDiClient";
   }
 
-  public Response exportFullLineVersions() {
-    return executeRequest(sePoDiClient.putLiDiLineExportFull(), "Full Line Versions CSV/ZIP");
+  public Response postServicePoints() {
+    return executeRequest(sePoDiClient.postServicePoints(), "Full Line Versions CSV/ZIP");
   }
 
 }

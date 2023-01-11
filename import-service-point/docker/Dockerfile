@@ -1,10 +1,10 @@
 FROM docker.bin.sbb.ch/cloud/sbb-base-rhel-java:17-LATEST
 
-MAINTAINER techsupport-atlas@sbb.ch
+LABEL mantainer="techsupport-atlas@sbb.ch"
 
 RUN mkdir /deploy
 
-COPY ./import/target/scheduling-*.jar deploy/app.jar
+COPY ./import/target/import-service-point-*.jar deploy/app.jar
 
 RUN chmod 777 /deploy/app.jar
 

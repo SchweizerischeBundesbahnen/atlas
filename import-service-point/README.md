@@ -1,23 +1,23 @@
-# Import Service
+# Import Service Point
 
 <!-- toc -->
 
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-  * [Localhost](#localhost)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
-  * [Project Infrastructure](#project-infrastructure)
+    * [Localhost](#localhost)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
+    * [Project Infrastructure](#project-infrastructure)
 - [Development](#development-1)
-  * [Spring Batch](#spring-batch)
-  * [Tech Stack](#tech-stack)
+    * [Spring Batch](#spring-batch)
+    * [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
 
-The main goal of the Atlas Import Service is to import Didok Service Point Directory Data from a CSV file uploaded on the
+The main goal of the Atlas Import Service Point is to import Didok Service Point Directory Data from a CSV file uploaded on the
 Amazon S3 Bucket to the Service Point Directory service.
 
 See [ADR-0015](https://confluence.sbb.ch/display/ATLAS/ADR-0015%3A++Service+Point+Directory+Import)

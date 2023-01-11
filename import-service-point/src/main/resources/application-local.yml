@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 8090
 management:
   endpoints:
     web:
@@ -11,7 +11,11 @@ management:
 
 spring:
   application:
-    name: import-service
+    name: import-service-point
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   sleuth:
     baggage:
       remote-fields: Correlation-Id
@@ -22,7 +26,13 @@ spring:
     password: pwd
     driver-class-name: org.postgresql.Driver
     application:
-      name: import-service
+      name: import-service-point
+  batch:
+    jdbc:
+      initialize-schema: NEVER
+      isolation-level-for-create: default
+    job:
+      enabled: false
   jpa:
     open-in-view: false
   security:
@@ -66,8 +76,13 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       retries: 1
 
+
 kafka:
   atlas:
+    user:
+      administration:
+        topic: atlas.user.administration
+        groupId: atlas.kafka.lidi.user.administration.groupId
     mail:
       topic: atlas.mail
       groupId: atlas.kafka.mail.groupId
@@ -82,4 +97,4 @@ atlas:
 
 mail:
   receiver:
-    scheduling: TechSupport-ATLAS@sbb.ch
+    import-service-point: TechSupport-ATLAS@sbb.ch
