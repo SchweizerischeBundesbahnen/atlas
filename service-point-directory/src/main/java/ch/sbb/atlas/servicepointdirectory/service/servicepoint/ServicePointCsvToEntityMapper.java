@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.util.Arrays;
 import java.util.Objects;
@@ -43,11 +44,10 @@ public class ServicePointCsvToEntityMapper implements
         .north(servicePointCsvModel.getOriginalNorth())
         .height(servicePointCsvModel.getHeight())
         .country(Country.from(servicePointCsvModel.getLaendercode()))
-        .swissCantonFsoNumber(servicePointCsvModel.getBfsNummer())
-        .swissCantonName(servicePointCsvModel.getKantonsName())
-        .swissCantonNumber(servicePointCsvModel.getKantonsNum())
+        .swissCanton(SwissCanton.fromCantonNumber(servicePointCsvModel.getKantonsNum()))
         .swissDistrictName(servicePointCsvModel.getBezirksName())
         .swissDistrictNumber(servicePointCsvModel.getBezirksNum())
+        .swissMunicipalityNumber(servicePointCsvModel.getBfsNummer())
         .swissMunicipalityName(servicePointCsvModel.getGemeindeName())
         .swissLocalityName(servicePointCsvModel.getOrtschaftsName())
         .creationDate(servicePointCsvModel.getCreatedAt())
