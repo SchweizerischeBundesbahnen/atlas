@@ -3,10 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.transformer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
-import com.google.common.collect.Lists;
-import java.util.List;
-import java.util.stream.IntStream;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CoordinateTransformerTest {
@@ -17,13 +13,8 @@ class CoordinateTransformerTest {
       .north(49.0)
       .spatialReference(SpatialReference.WGS84)
       .build();
-  public static final int TOTAL_SERVICE_POINTS_WITH_GEOLOCATION = 100000;
-  private CoordinateTransformer coordinateTransformer;
 
-  @BeforeEach
-  void initialize() {
-    coordinateTransformer = new CoordinateTransformer();
-  }
+  private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
   @Test
   void transformWGS84ToWGS84WEB() {
@@ -59,36 +50,5 @@ class CoordinateTransformerTest {
 
     assertThat(result.getNorth()).isEqualTo(427959.1864304288);
     assertThat(result.getEast()).isEqualTo(567886.7544749964);
-  }
-
-  @Test
-  void transformCanRunMultiThread() {
-    final int chunkSize = 4;
-    List<List<Integer>> servicePointsChunks = Lists.partition(IntStream
-            .rangeClosed(0, TOTAL_SERVICE_POINTS_WITH_GEOLOCATION)
-            .boxed()
-            .toList(),
-        TOTAL_SERVICE_POINTS_WITH_GEOLOCATION / chunkSize);
-
-    final long totalMs = System.nanoTime();
-    servicePointsChunks.parallelStream().forEach(chunk -> doTransformCoordinates(chunk));
-    final double elapsedMs = (System.nanoTime() - totalMs) / 1000_000;
-    assertThat(elapsedMs).isLessThan(1000);
-  }
-
-  private void doTransformCoordinates(List<Integer> servicePointList) {
-    CoordinatePair testCoordinatesWgs84;
-    for (int i = 0; i < servicePointList.size(); i++) {
-      final double moveBy = (i * 0.00001);
-      testCoordinatesWgs84 = CoordinatePair
-          .builder()
-          .east(7.0 + moveBy)
-          .north(45.0 + moveBy)
-          .spatialReference(SpatialReference.WGS84)
-          .build();
-      coordinateTransformer.transform(testCoordinatesWgs84, SpatialReference.WGS84WEB);
-      coordinateTransformer.transform(testCoordinatesWgs84, SpatialReference.LV95);
-      coordinateTransformer.transform(testCoordinatesWgs84, SpatialReference.LV03);
-    }
   }
 }

@@ -1,9 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.service.util.GeolocationMapperUtil;
 import java.util.function.Function;
 
 public class LoadingPointCsvToEntityMapper implements
@@ -11,7 +10,7 @@ public class LoadingPointCsvToEntityMapper implements
 
   @Override
   public LoadingPointVersion apply(LoadingPointCsvModel loadingPointCsvModel) {
-    final LoadingPointVersion loadingPointVersion = LoadingPointVersion
+    LoadingPointVersion loadingPointVersion = LoadingPointVersion
         .builder()
         .number(loadingPointCsvModel.getNumber())
         .designation(loadingPointCsvModel.getDesignation())
@@ -29,20 +28,8 @@ public class LoadingPointCsvToEntityMapper implements
     LoadingPointGeolocation geolocation = LoadingPointGeolocation
         .builder()
         .spatialReference(loadingPointCsvModel.getSpatialReference())
-        .east(GeolocationMapperUtil.getOriginalEast(
-            loadingPointCsvModel.getSpatialReference(),
-            loadingPointCsvModel.getEWgs84(),
-            loadingPointCsvModel.getEWgs84web(),
-            loadingPointCsvModel.getELv95(),
-            loadingPointCsvModel.getELv03()
-        ))
-        .north(GeolocationMapperUtil.getOriginalNorth(
-            loadingPointCsvModel.getSpatialReference(),
-            loadingPointCsvModel.getNWgs84(),
-            loadingPointCsvModel.getNWgs84web(),
-            loadingPointCsvModel.getNLv95(),
-            loadingPointCsvModel.getNLv03()
-        ))
+        .east(loadingPointCsvModel.getOriginalEast())
+        .north(loadingPointCsvModel.getOriginalNorth())
         .height(loadingPointCsvModel.getHeight())
         .creator(loadingPointCsvModel.getCreatedBy())
         .creationDate(loadingPointCsvModel.getCreatedAt())
