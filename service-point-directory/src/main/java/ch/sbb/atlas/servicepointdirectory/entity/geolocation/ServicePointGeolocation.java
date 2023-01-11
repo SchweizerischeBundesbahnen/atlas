@@ -4,6 +4,7 @@ import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -44,17 +45,11 @@ public class ServicePointGeolocation extends GeolocationBaseEntity {
 
   @AtlasVersionableProperty
   @Enumerated(EnumType.STRING)
-  private Country country; // ServicePoint-Country = UserEvent, Geolocation-Country=SystemEvent
+  private Country country;
 
   @AtlasVersionableProperty
-  private Integer swissCantonFsoNumber;
-
-  @AtlasVersionableProperty
-  private Integer swissCantonNumber;
-
-  @AtlasVersionableProperty
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  private String swissCantonName;
+  @Enumerated(EnumType.STRING)
+  private SwissCanton swissCanton;
 
   @AtlasVersionableProperty
   private Integer swissDistrictNumber;
@@ -62,6 +57,9 @@ public class ServicePointGeolocation extends GeolocationBaseEntity {
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String swissDistrictName;
+
+  @AtlasVersionableProperty
+  private Integer swissMunicipalityNumber;
 
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
