@@ -16,4 +16,5 @@ public class ImportServiceApplication {
     KafkaTruststorePreparation.setupTruststore();
     SpringApplication.run(ImportServiceApplication.class, args);
   }
+
 }
