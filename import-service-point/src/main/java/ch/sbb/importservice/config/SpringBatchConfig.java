@@ -5,6 +5,7 @@ import ch.sbb.importservice.batch.ServicePointProcessor;
 import ch.sbb.importservice.listener.StepSkipListener;
 import ch.sbb.importservice.model.ServicePoint;
 import java.io.File;
+import java.util.concurrent.ThreadPoolExecutor;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.SkipListener;
@@ -14,6 +15,8 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.step.skip.SkipPolicy;
+import org.springframework.batch.integration.async.AsyncItemProcessor;
+import org.springframework.batch.integration.async.AsyncItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -23,8 +26,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 @EnableBatchProcessing
@@ -43,7 +46,7 @@ public class SpringBatchConfig {
     FlatFileItemReader<ServicePoint> flatFileItemReader = new FlatFileItemReader<>();
     flatFileItemReader.setResource(new FileSystemResource(new File(pathToFIle)));
     flatFileItemReader.setName("CSV-Reader");
-    flatFileItemReader.setLinesToSkip(7);
+    flatFileItemReader.setLinesToSkip(1);
     flatFileItemReader.setLineMapper(lineMapper());
     return flatFileItemReader;
   }
@@ -71,7 +74,22 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Step parseCsvStep(FlatFileItemReader<ServicePoint> itemReader) {
+  public AsyncItemProcessor<ServicePoint, ServicePoint> asyncItemProcessor() {
+    AsyncItemProcessor<ServicePoint, ServicePoint> asyncItemProcessor = new AsyncItemProcessor<>();
+    asyncItemProcessor.setDelegate(processor());
+    return asyncItemProcessor;
+  }
+
+  @Bean
+  public AsyncItemWriter<ServicePoint> dataAsyncWriter() throws Exception {
+    AsyncItemWriter<ServicePoint> asyncItemWriter = new AsyncItemWriter<>();
+    asyncItemWriter.setDelegate(servicePointApiWriter);
+    asyncItemWriter.afterPropertiesSet();
+    return asyncItemWriter;
+  }
+
+  @Bean
+  public Step parseCsvStep(FlatFileItemReader<ServicePoint> itemReader) throws Exception {
     return stepBuilderFactory.get("parseCsvStep").<ServicePoint, ServicePoint>chunk(100)
         .reader(itemReader)
         .processor(processor())
@@ -79,12 +97,12 @@ public class SpringBatchConfig {
         .faultTolerant()
         .listener(skipListener())
         .skipPolicy(skipPolicy())
-        .taskExecutor(taskExecutor())
+        //        .taskExecutor(getAsyncExecutor())
         .build();
   }
 
   @Bean
-  public Job runJob(FlatFileItemReader<ServicePoint> itemReader) {
+  public Job runJob(FlatFileItemReader<ServicePoint> itemReader) throws Exception {
     return jobBuilderFactory.get("importServicePointCsv")
         .flow(parseCsvStep(itemReader))
         .end()
@@ -101,11 +119,15 @@ public class SpringBatchConfig {
     return new StepSkipListener();
   }
 
-  @Bean
-  public TaskExecutor taskExecutor() {
-    SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();
-    taskExecutor.setConcurrencyLimit(10);
-    return taskExecutor;
+  @Bean(name = "asyncExecutor")
+  public TaskExecutor getAsyncExecutor() {
+    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+    executor.setCorePoolSize(100);
+    executor.setMaxPoolSize(100);
+    executor.setQueueCapacity(100);
+    executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+    executor.setThreadNamePrefix("batch-import-");
+    return executor;
   }
 
 }
