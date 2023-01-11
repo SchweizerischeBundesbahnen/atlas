@@ -10,8 +10,6 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.service.util.GeolocationMapperUtil;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,20 +40,8 @@ public class ServicePointCsvToEntityMapper implements
     return ServicePointGeolocation
         .builder()
         .spatialReference(servicePointCsvModel.getSpatialReference())
-        .east(GeolocationMapperUtil.getOriginalEast(
-            servicePointCsvModel.getSpatialReference(),
-            servicePointCsvModel.getEWGS84(),
-            servicePointCsvModel.getEWGS84WEB(),
-            servicePointCsvModel.getELV95(),
-            servicePointCsvModel.getELV03()
-        ))
-        .north(GeolocationMapperUtil.getOriginalNorth(
-            servicePointCsvModel.getSpatialReference(),
-            servicePointCsvModel.getNWGS84(),
-            servicePointCsvModel.getNWGS84WEB(),
-            servicePointCsvModel.getNLV95(),
-            servicePointCsvModel.getNLV03()
-        ))
+        .east(servicePointCsvModel.getOriginalEast())
+        .north(servicePointCsvModel.getOriginalNorth())
         .height(servicePointCsvModel.getHeight())
         .country(Country.from(servicePointCsvModel.getLaendercode()))
         .swissCantonFsoNumber(servicePointCsvModel.getBfsNummer())
@@ -87,8 +73,8 @@ public class ServicePointCsvToEntityMapper implements
             ServicePointStatus.from(servicePointCsvModel.getStatus()))
         .businessOrganisation("ch:1:sboid:" + servicePointCsvModel.getSaid())
         .status(Status.VALIDATED)
-        .validFrom(LocalDate.parse(servicePointCsvModel.getGueltigVon()))
-        .validTo(LocalDate.parse(servicePointCsvModel.getGueltigBis()))
+        .validFrom(servicePointCsvModel.getValidFrom())
+        .validTo(servicePointCsvModel.getValidTo())
         .categories(getCategories(servicePointCsvModel))
         .meansOfTransport(meansOfTransport)
         .stopPointType(StopPointType.from(servicePointCsvModel.getHTypId()))
