@@ -160,12 +160,16 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
     return operatingPointType != null || isTrafficPoint();
   }
 
+  public boolean isOperatingPointWithTimetable() {
+    return operatingPointType == null || operatingPointType.hasTimetable();
+  }
+
   public boolean isStopPoint() {
-    return getOperatingPointType() == OperatingPointType.STOP_POINT;
+    return !getMeanOfTransport().isEmpty();
   }
 
   public boolean isFreightServicePoint() {
-    return operatingPointType == OperatingPointType.FREIGHT_POINT;
+    return StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
   public boolean isTrafficPoint() {
@@ -178,16 +182,6 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
 
   public boolean isOperatingPointKilometer() {
     return operatingPointKilometerMaster != null;
-  }
-
-  @AssertTrue
-  boolean isValidStopPoint() {
-    return !isStopPoint() || !getMeanOfTransport().isEmpty();
-  }
-
-  @AssertTrue(message = "sortCodeOfDestinationStation only allowed for FreightServicePoints")
-  boolean isValidFreightServicePoint() {
-    return !isFreightServicePoint() || StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
   @AssertTrue(message = "StopPointType only allowed for StopPoint")

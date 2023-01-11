@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 
 public class ServicePointCsvToEntityMapper implements
     Function<ServicePointCsvModel, ServicePointVersion> {
@@ -78,7 +77,7 @@ public class ServicePointCsvToEntityMapper implements
         .categories(getCategories(servicePointCsvModel))
         .meansOfTransport(meansOfTransport)
         .stopPointType(StopPointType.from(servicePointCsvModel.getHTypId()))
-        .operatingPointType(getOperatingPointType(servicePointCsvModel, meansOfTransport))
+        .operatingPointType(getOperatingPointType(servicePointCsvModel))
         .sortCodeOfDestinationStation(servicePointCsvModel.getRichtpunktCode())
         .operatingPointRouteNetwork(
             Boolean.TRUE.equals(servicePointCsvModel.getOperatingPointRouteNetwork()))
@@ -94,14 +93,7 @@ public class ServicePointCsvToEntityMapper implements
         .build();
   }
 
-  private static OperatingPointType getOperatingPointType(ServicePointCsvModel servicePointCsvModel,
-      Set<MeanOfTransport> meansOfTransport) {
-    if (!meansOfTransport.isEmpty()) {
-      return OperatingPointType.STOP_POINT;
-    }
-    if (StringUtils.isNotBlank(servicePointCsvModel.getRichtpunktCode())) {
-      return OperatingPointType.FREIGHT_POINT;
-    }
+  private static OperatingPointType getOperatingPointType(ServicePointCsvModel servicePointCsvModel) {
     return OperatingPointType.from(
         ObjectUtils.firstNonNull(servicePointCsvModel.getBpBetriebspunktArtId(),
             servicePointCsvModel.getBpvbBetriebspunktArtId(),
