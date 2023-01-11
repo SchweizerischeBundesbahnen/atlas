@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class ServicePoint {
 
-  private String number;
+  private Integer number;
 
-  private String laendercode;
+  private Integer laendercode;
 
 }
