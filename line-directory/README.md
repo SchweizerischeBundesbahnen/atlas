@@ -88,7 +88,7 @@ See [Tech Stack Documentation](../documentation/tech-stack-service.md)
 
 ### Test RESTful Web services
 
-We use InteliJ HTTP Client for
+We use IntelliJ HTTP Client for
 testing: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html.
 
 U need only to configure some secrets:
