@@ -42,7 +42,7 @@
     <module>line-directory</module>
     <module>business-organisation-directory</module>
     <module>service-point-directory</module>
-    <module>import-service</module>
+    <module>import-service-point</module>
     <module>user-administration</module>
     <module>workflow</module>
     <!-- Combine APIs-->
