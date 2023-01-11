@@ -4,24 +4,23 @@
 
 CREATE TABLE service_point_version_geolocation
 (
-    id                      BIGINT PRIMARY KEY,
-    spatial_reference       VARCHAR(50)     NOT NULL,
-    east                    NUMERIC(19, 11) NULL,
-    north                   NUMERIC(19, 11) NULL,
-    height                  NUMERIC(6, 2)   NULL,
-    country                 VARCHAR(50)     NULL,
-    swiss_canton_fso_number SMALLINT        NULL,
-    swiss_canton_name       VARCHAR(50)     NULL,
-    swiss_canton_number     SMALLINT        NULL,
-    swiss_district_name     VARCHAR(255)    NULL,
-    swiss_district_number   SMALLINT        NULL,
-    swiss_municipality_name VARCHAR(255)    NULL,
-    swiss_locality_name     VARCHAR(255)    NULL,
-    creation_date           TIMESTAMP       NOT NULL,
-    creator                 VARCHAR(50)     NOT NULL,
-    edition_date            TIMESTAMP       NOT NULL,
-    editor                  VARCHAR(50)     NOT NULL,
-    version                 BIGINT          NOT NULL DEFAULT 0
+    id                        BIGINT PRIMARY KEY,
+    spatial_reference         VARCHAR(50)     NOT NULL,
+    east                      NUMERIC(19, 11) NULL,
+    north                     NUMERIC(19, 11) NULL,
+    height                    NUMERIC(6, 2)   NULL,
+    country                   VARCHAR(50)     NULL,
+    swiss_canton              VARCHAR(50)     NULL,
+    swiss_district_name       VARCHAR(255)    NULL,
+    swiss_district_number     SMALLINT        NULL,
+    swiss_municipality_number SMALLINT        NULL,
+    swiss_municipality_name   VARCHAR(255)    NULL,
+    swiss_locality_name       VARCHAR(255)    NULL,
+    creation_date             TIMESTAMP       NOT NULL,
+    creator                   VARCHAR(50)     NOT NULL,
+    edition_date              TIMESTAMP       NOT NULL,
+    editor                    VARCHAR(50)     NOT NULL,
+    version                   BIGINT          NOT NULL DEFAULT 0
 );
 
 CREATE SEQUENCE service_point_version_geolocation_seq START WITH 1000 INCREMENT BY 1;
