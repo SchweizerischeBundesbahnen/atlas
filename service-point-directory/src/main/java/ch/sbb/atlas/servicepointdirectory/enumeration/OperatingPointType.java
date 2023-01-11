@@ -68,9 +68,6 @@ public enum OperatingPointType {
   EX_STOP_POINT(15, true, "Ehemalige Haltestelle mit Infrastruktur", "Ancien arrêt avec infrastructure",
       "Precedente fermata con infrastruttura", "Haltestelle ausser Betrieb", "technischerfahrplan", "Hab", "aai", "pfi", null),
 
-  FREIGHT_POINT(70, true, "Bedienpunkt", "point de chargement",
-      "punto di servizio", "point of service", null, null,null,null, null);
-
   ;
 
   private final Integer id;
