@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.util.Set;
@@ -79,11 +80,10 @@ public class ServicePointVersionRepositoryTest {
         .north(1199749.812)
         .height(2540.21)
         .country(Country.SWITZERLAND)
-        .swissCantonFsoNumber(5)
-        .swissCantonName("Bern")
-        .swissCantonNumber(5)
+        .swissCanton(SwissCanton.BERN)
         .swissDistrictName("Bern")
         .swissDistrictNumber(5)
+        .swissMunicipalityNumber(5)
         .swissMunicipalityName("Bern")
         .swissLocalityName("Bern")
         .build();
@@ -112,7 +112,7 @@ public class ServicePointVersionRepositoryTest {
     // then
     assertThat(savedVersion.getId()).isNotNull();
     assertThat(savedVersion.getServicePointGeolocation()).isNotNull();
-    assertThat(savedVersion.getServicePointGeolocation().getSwissCantonName()).isEqualTo("Bern");
+    assertThat(savedVersion.getServicePointGeolocation().getSwissCanton().getName()).isEqualTo("Bern");
   }
 
   @Test
