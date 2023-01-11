@@ -4,7 +4,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.service.util.GeolocationMapperUtil;
 import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,20 +37,8 @@ public class TrafficPointElementCsvToEntityMapper implements
     TrafficPointElementGeolocation geolocation = TrafficPointElementGeolocation
         .builder()
         .spatialReference(trafficPointElementCsvModel.getSpatialReference())
-        .east(GeolocationMapperUtil.getOriginalEast(
-            trafficPointElementCsvModel.getSpatialReference(),
-            trafficPointElementCsvModel.getEWgs84(),
-            trafficPointElementCsvModel.getEWgs84web(),
-            trafficPointElementCsvModel.getELv95(),
-            trafficPointElementCsvModel.getELv03()
-        ))
-        .north(GeolocationMapperUtil.getOriginalNorth(
-            trafficPointElementCsvModel.getSpatialReference(),
-            trafficPointElementCsvModel.getNWgs84(),
-            trafficPointElementCsvModel.getNWgs84web(),
-            trafficPointElementCsvModel.getNLv95(),
-            trafficPointElementCsvModel.getNLv03()
-        ))
+        .east(trafficPointElementCsvModel.getOriginalEast())
+        .north(trafficPointElementCsvModel.getOriginalNorth())
         .height(trafficPointElementCsvModel.getHeight())
         .creator(trafficPointElementCsvModel.getCreatedBy())
         .creationDate(trafficPointElementCsvModel.getCreatedAt())
