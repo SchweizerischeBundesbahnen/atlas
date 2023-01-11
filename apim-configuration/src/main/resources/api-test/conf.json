@@ -46,7 +46,8 @@
     "hannes.laner@sbb.ch",
     "marek.stankala@sbb.ch",
     "antonio.romano@sbb.ch",
-    "luca.ammann2@sbb.ch"
+    "luca.ammann2@sbb.ch",
+    "vital.scholl@sbb.ch"
   ],
   "auth_provider": [
     "azure_ad"
