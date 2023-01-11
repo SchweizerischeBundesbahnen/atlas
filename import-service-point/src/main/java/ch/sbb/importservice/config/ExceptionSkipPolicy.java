@@ -7,6 +7,6 @@ public class ExceptionSkipPolicy implements SkipPolicy {
 
   @Override
   public boolean shouldSkip(Throwable throwable, int i) throws SkipLimitExceededException {
-    return throwable instanceof NumberFormatException;
+    return true;
   }
 }
