@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(name = "sepodiClient", url = "${atlas.client.gateway.url}", configuration = OAuthFeignConfig.class)
 public interface SePoDiClient {
 
-  @PostMapping(value = "/service-Point-directory/v1/lines/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
-  Response putLiDiLineExportFull();
+  @PostMapping(value = "/service-Point-directory/v1/to/be/define", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response postServicePoints();
 
 }
