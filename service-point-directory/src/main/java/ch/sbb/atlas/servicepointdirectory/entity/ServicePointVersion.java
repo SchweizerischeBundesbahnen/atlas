@@ -57,7 +57,7 @@ import org.apache.commons.lang3.StringUtils;
 @FieldNameConstants
 @Entity(name = "service_point_version")
 @AtlasVersionable
-public class ServicePointVersion extends BaseVersion implements Versionable,
+public class ServicePointVersion extends BaseDidokImportEntity implements Versionable,
     BusinessOrganisationAssociated {
 
   private static final String VERSION_SEQ = "service_point_version_seq";
@@ -165,7 +165,7 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   }
 
   public boolean isStopPoint() {
-    return !getMeanOfTransport().isEmpty();
+    return !getMeansOfTransport().isEmpty();
   }
 
   public boolean isFreightServicePoint() {
@@ -189,7 +189,7 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
     return isStopPoint() || stopPointType == null;
   }
 
-  public Set<MeanOfTransport> getMeanOfTransport() {
+  public Set<MeanOfTransport> getMeansOfTransport() {
     if (meansOfTransport == null) {
       return new HashSet<>();
     }
