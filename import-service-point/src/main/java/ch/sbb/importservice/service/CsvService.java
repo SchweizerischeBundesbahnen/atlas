@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +25,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CsvService {
 
+  private static final String HASHTAG = "#";
   private static final String SERVICEPOINT_DIDOK_DIR_NAME = "servicepoint_didok";
   private static final String CSV_DELIMITER = ";";
 
@@ -35,12 +35,18 @@ public class CsvService {
   private LocalDate matchingDate = LocalDate.now();
 
   //@PostConstruct
-  void test() throws IOException {
+  public List<ServicePointCsvModel> getActualServicePotinCsvModelsFromS3() throws IOException {
     File importFile = downloadImportFileFromToday("DIDOK3_DIENSTSTELLEN_ALL_V_3_");
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(importFile, ServicePointCsvModel.class);
     log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
-    //"DIDOK3_LADESTELLEN_",
-    //"DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_"
+    return servicePointCsvModels;
+  }
+
+  //@PostConstruct
+  public List<ServicePointCsvModel> getActualServicePotinCsvModelsFromS3(File file) throws IOException {
+    List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, ServicePointCsvModel.class);
+    log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
+    return servicePointCsvModels;
   }
 
   // line by line comparison
@@ -97,7 +103,6 @@ public class CsvService {
   }
 
   private String skipUntilHeaderLine(BufferedReader bufferedReader) throws IOException {
-    final String HASHTAG = "#";
     String line;
     while ((line = bufferedReader.readLine()) != null) {
       if (!line.contains(HASHTAG)) {
@@ -125,9 +130,9 @@ public class CsvService {
       LocalDate lastEditionDate = LocalDateTime.parse(splittedLine[editedAtColumnIndex],
           DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss") // TODO: mby error handling
       ).toLocalDate();
-      if (lastEditionDate.isEqual(matchingDate)) {
-        mismatchedLines.add(line);
-      }
+      //      if (lastEditionDate.isEqual(matchingDate)) {
+      mismatchedLines.add(line);
+      //      }
     }
     return mismatchedLines;
   }
