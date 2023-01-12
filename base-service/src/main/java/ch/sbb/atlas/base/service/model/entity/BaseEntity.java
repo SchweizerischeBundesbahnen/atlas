@@ -3,6 +3,7 @@ package ch.sbb.atlas.base.service.model.entity;
 import ch.sbb.atlas.base.service.model.service.UserService;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -50,8 +51,8 @@ public abstract class BaseEntity {
   @PrePersist
   public void onPrePersist() {
     String sbbUid = UserService.getSbbUid();
-    setCreator(sbbUid);
-    setEditor(sbbUid);
+    setCreator(Optional.ofNullable(creator).orElse(sbbUid));
+    setEditor(Optional.ofNullable(editor).orElse(sbbUid));
   }
 
   @PreUpdate
