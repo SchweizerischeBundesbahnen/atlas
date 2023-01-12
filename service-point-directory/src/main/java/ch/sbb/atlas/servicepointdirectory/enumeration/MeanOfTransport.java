@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
-public enum MeanOfTransport {
+public enum MeanOfTransport implements CodeAndDesignations {
 
   TRAIN(0, "Z", "Zug", "Zug", "Train", "Train", "Treno"),
   BUS(1, "B", "Bus", "Bus", "Bus", "Coach", "Bus"),
@@ -26,12 +26,13 @@ public enum MeanOfTransport {
   private final Integer rank;
   private final String code;
   private final String name;
-  private final String nameDe;
-  private final String nameFr;
-  private final String nameEn;
-  private final String nameIt;
+  private final String designationDe;
+  private final String designationFr;
+  private final String designationEn;
+  private final String designationIt;
 
   public static MeanOfTransport from(String code) {
-    return Arrays.stream(MeanOfTransport.values()).filter(el -> Objects.equals(el.code, code)).findFirst().orElse(null);
+    return Arrays.stream(MeanOfTransport.values()).filter(meanOfTransport -> Objects.equals(meanOfTransport.getCode(), code))
+        .findFirst().orElse(null);
   }
 }
