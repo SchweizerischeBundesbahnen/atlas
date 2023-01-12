@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.transformer;
 
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,9 +13,7 @@ import org.locationtech.proj4j.CoordinateReferenceSystem;
 import org.locationtech.proj4j.CoordinateTransform;
 import org.locationtech.proj4j.CoordinateTransformFactory;
 import org.locationtech.proj4j.ProjCoordinate;
-import org.springframework.stereotype.Service;
 
-@Service
 public class CoordinateTransformer {
 
   private final CoordinateTransformFactory coordinateTransformFactory = new CoordinateTransformFactory();

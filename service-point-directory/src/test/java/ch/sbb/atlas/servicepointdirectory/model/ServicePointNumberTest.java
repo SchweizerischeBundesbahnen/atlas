@@ -20,7 +20,7 @@ class ServicePointNumberTest {
 
   @Test
   void shouldGetServicePointIdSuccessfully() {
-    assertThat(ServicePointNumber.of(85070003).getServicePointId()).isEqualTo(7000);
+    assertThat(ServicePointNumber.of(85070003).getNumberShort()).isEqualTo(7000);
   }
 
   @Test

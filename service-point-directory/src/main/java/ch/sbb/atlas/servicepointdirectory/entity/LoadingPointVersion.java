@@ -27,7 +27,7 @@ import java.time.LocalDate;
 @FieldNameConstants
 @Entity(name = "loading_point_version")
 @AtlasVersionable
-public class LoadingPointVersion extends BaseEntity implements Versionable {
+public class LoadingPointVersion extends BaseDidokImportEntity implements Versionable {
 
     private static final String VERSION_SEQ = "loading_point_version_seq";
 

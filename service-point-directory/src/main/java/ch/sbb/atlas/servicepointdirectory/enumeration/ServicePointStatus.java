@@ -9,21 +9,31 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @Schema(enumAsRef = true)
 @RequiredArgsConstructor
-public enum ServicePointStatus {
+public enum ServicePointStatus implements CodeAndDesignations {
 
-  TO_BE_REQUESTED(0, "To be requested"),
-  REQUESTED(1, "Requested"),
-  PLANNED(2, "Planned"),
-  IN_OPERATION(3, "In operation"),
-  TERMINATED(4, "Terminated"),
-  IN_POST_OPERATIONAL_PHASE(5, "In post-operational phase"),
-  HISTORICAL(6, "Historical"),
-  UNKNOWN(7, "unknown");
+  TO_BE_REQUESTED(0, "Zu beantragen", "A demander", "Da richiedere", "To be requested"),
+  REQUESTED(1, "Angefragt", "Demandé", "Richiesto", "Requested"),
+  PLANNED(2, "Geplant", "Prévu", "Pianificato", "Planned"),
+  IN_OPERATION(3, "In Betrieb", "En fonctionnement", "In funzione", "In operation"),
+  TERMINATED(4, "Terminiert", "Terminé", "Terminato", "Terminated"),
+  IN_POST_OPERATIONAL_PHASE(5, "Post operationale Phase", "En phase post-opératoire", "In fase post-operativa",
+      "In post-operational phase"),
+  HISTORICAL(6, "Historisch", "Historique", "Storico", "Historical"),
+  UNKNOWN(7, "Unbekannt", "Inconnu", "Sconosciuto", "unknown");
 
   private final Integer id;
-  private final String designation;
+  private final String designationDe;
+  private final String designationFr;
+  private final String designationIt;
+  private final String designationEn;
 
   public static ServicePointStatus from(Integer id) {
-    return Arrays.stream(ServicePointStatus.values()).filter(el -> Objects.equals(el.id, id)).findFirst().orElse(null);
+    return Arrays.stream(ServicePointStatus.values())
+        .filter(servicePointStatus -> Objects.equals(servicePointStatus.getId(), id)).findFirst().orElse(null);
+  }
+
+  @Override
+  public String getCode() {
+    return String.valueOf(id);
   }
 }
