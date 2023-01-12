@@ -1,10 +1,14 @@
-package ch.sbb.atlas.base.service.model.entity;
+package ch.sbb.atlas.servicepointdirectory.entity;
 
+import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.service.UserService;
+import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -15,8 +19,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @NoArgsConstructor
 @Getter
@@ -24,9 +26,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 @ToString
 @SuperBuilder
 @MappedSuperclass
-public abstract class BaseEntity {
+@Deprecated
+/**
+ * Switch back to ch.sbb.atlas.base.service.model.entity.BaseVersion once Didok dies
+ */
+public abstract class BaseDidokImportEntity implements DatesValidator {
 
-  @CreationTimestamp
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private Status status;
+
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
   @AtlasVersionableProperty(ignoreDiff = true)
   private LocalDateTime creationDate;
@@ -35,7 +44,6 @@ public abstract class BaseEntity {
   @AtlasVersionableProperty(ignoreDiff = true)
   private String creator;
 
-  @UpdateTimestamp
   @Column(columnDefinition = "TIMESTAMP")
   @AtlasVersionableProperty(ignoreDiff = true)
   private LocalDateTime editionDate;
@@ -51,13 +59,17 @@ public abstract class BaseEntity {
   @PrePersist
   public void onPrePersist() {
     String sbbUid = UserService.getSbbUid();
-    setCreator(sbbUid);
-    setEditor(sbbUid);
+    setCreator(Optional.ofNullable(creator).orElse(sbbUid));
+    setEditor(Optional.ofNullable(editor).orElse(sbbUid));
+
+    setCreationDate(Optional.ofNullable(creationDate).orElse(LocalDateTime.now()));
+    setEditionDate(Optional.ofNullable(editionDate).orElse(LocalDateTime.now()));
   }
 
   @PreUpdate
   public void onPreUpdate() {
     setEditor(UserService.getSbbUid());
+    setEditionDate(Optional.ofNullable(editionDate).orElse(LocalDateTime.now()));
   }
 
 }
