@@ -1,7 +1,7 @@
 package ch.sbb.importservice.batch;
 
+import ch.sbb.atlas.base.service.imports.ServicePointCsvModel;
 import ch.sbb.importservice.entitiy.ImportProcessItem;
-import ch.sbb.importservice.model.ServicePoint;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.SePoDiClientService;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class ServicePointApiWriter implements ItemWriter<ServicePoint> {
+public class ServicePointApiWriter implements ItemWriter<ServicePointCsvModel> {
 
   @Autowired
   private SePoDiClientService sePoDiClientService;
@@ -30,11 +30,11 @@ public class ServicePointApiWriter implements ItemWriter<ServicePoint> {
   }
 
   @Override
-  public void write(List<? extends ServicePoint> servicePoints) {
+  public void write(List<? extends ServicePointCsvModel> servicePoints) {
     Long stepExecutionId = stepExecution.getId();
-    for (ServicePoint servicePoint : servicePoints) {
+    for (ServicePointCsvModel servicePoint : servicePoints) {
       ImportProcessItem importProcessItem = ImportProcessItem.builder()
-          .servicePointNumber(servicePoint.getNumber())
+          .servicePointNumber(servicePoint.getDidokCode())
           .stepExecutionId(stepExecutionId)
           .build();
       importProcessedItemRepository.save(importProcessItem);

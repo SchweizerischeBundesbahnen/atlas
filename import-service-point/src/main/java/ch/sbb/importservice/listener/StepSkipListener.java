@@ -1,13 +1,13 @@
 package ch.sbb.importservice.listener;
 
-import ch.sbb.importservice.model.ServicePoint;
+import ch.sbb.atlas.base.service.imports.ServicePointCsvModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.SkipListener;
 
 @Slf4j
-public class StepSkipListener implements SkipListener<ServicePoint, Number> {
+public class StepSkipListener implements SkipListener<ServicePointCsvModel, Number> {
 
   @Override // item reader
   public void onSkipInRead(Throwable throwable) {
@@ -21,7 +21,7 @@ public class StepSkipListener implements SkipListener<ServicePoint, Number> {
 
   @SneakyThrows
   @Override // item processor
-  public void onSkipInProcess(ServicePoint servicePoint, Throwable throwable) {
+  public void onSkipInProcess(ServicePointCsvModel servicePoint, Throwable throwable) {
     log.info("Item {}  was skipped due to the exception  {}", new ObjectMapper().writeValueAsString(servicePoint),
         throwable.getMessage());
   }
