@@ -23,7 +23,7 @@ The main goal is to serve the following business objects:
 
 Each of these business objects has its own versioning.
 
-`TrafficPoints` and `LoadingPoints` always belong to a `ServicePoint`, referencing it via `servicePointNumber`.
+`TrafficPointElements` and `LoadingPoints` always belong to a `ServicePoint`, referencing it via `servicePointNumber`.
 
 These objects are stored and represented in our [Database Schema](src/docs/db-schema.md)
 Additional business documentation may be found on Confluence: https://confluence.sbb.ch/display/ATLAS/%5BDiDok%5D+Dienststellenverwaltung

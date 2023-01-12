@@ -14,7 +14,7 @@ public class ServicePointNumberConverter implements AttributeConverter<ServicePo
 
   @Override
   public ServicePointNumber convertToEntityAttribute(Integer servicePointNumber) {
-    return ServicePointNumber.of(servicePointNumber);
+    return servicePointNumber == null ? null : ServicePointNumber.of(servicePointNumber);
   }
 
 }
