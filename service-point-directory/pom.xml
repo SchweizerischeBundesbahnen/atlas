@@ -111,7 +111,7 @@
       <groupId>ch.sbb.atlas</groupId>
       <scope>test</scope>
       <type>test-jar</type>
-      <version>1.137.0</version>
+      <version>1.139.0</version>
     </dependency>
     <dependency>
       <artifactId>h2</artifactId>
