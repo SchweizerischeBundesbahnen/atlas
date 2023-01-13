@@ -6,6 +6,7 @@ import ch.sbb.atlas.servicepointdirectory.api.LoadingPointApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.LoadingPointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.LoadingPointNumberNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointService;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,13 +35,14 @@ public class LoadingPointController implements LoadingPointApiV1 {
   }
 
   @Override
-  // What identifies Ladestelle? Nummer ?
-  public List<LoadingPointVersionModel> getLoadingPoint(Integer loadingPointNumber) {
-    List<LoadingPointVersionModel> LoadingPointVersions = loadingPointService.findLoadingPointVersions(loadingPointNumber)
+  public List<LoadingPointVersionModel> getLoadingPoint(Integer servicePointNumber, Integer loadingPointNumber) {
+    ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
+    List<LoadingPointVersionModel> LoadingPointVersions = loadingPointService.findLoadingPoint(number,
+            loadingPointNumber)
         .stream()
         .map(LoadingPointVersionModel::fromEntity).toList();
     if (LoadingPointVersions.isEmpty()) {
-      throw new LoadingPointNumberNotFoundException(loadingPointNumber);
+      throw new LoadingPointNumberNotFoundException(number, loadingPointNumber);
     }
     return LoadingPointVersions;
   }
