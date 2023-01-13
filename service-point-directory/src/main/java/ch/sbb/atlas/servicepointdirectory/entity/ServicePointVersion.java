@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
@@ -76,6 +77,10 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @AtlasVersionableProperty
   private String sloid;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private Status status;
 
   @NotNull
   @AtlasVersionableProperty
