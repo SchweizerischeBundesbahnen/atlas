@@ -19,7 +19,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 public class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
 
@@ -74,7 +73,6 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   @Test
   void shouldGetTrafficPointElement() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements/" + trafficPointElementVersion.getSloid())).andExpect(status().isOk())
-        .andDo(MockMvcResultHandlers.print())
         .andExpect(jsonPath("$[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
         .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:1400015:0:310240")))
         .andExpect(jsonPath("$[0]." + Fields.designationOperational, is("gali00")))
