@@ -219,6 +219,12 @@ Service used to implement ATLAS Workflows. See [documentation](workflow/README.m
 User Administration provides the backend for creating and maintaining role and business organisation assignments for user.
 See [UserAdministration Documentation](user-administration/README.md) for more.
 
+### Service-Point-Directory
+
+Business service for `ServicePoints`, `TrafficPointElements` and `LoadingPoints`. All of these business objects use the atlas own
+versioning.
+See [Service-Point-Directory documentation](service-point-directory/README.md);
+
 ### Base Service lib
 
 Libraries used to perform:
