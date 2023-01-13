@@ -6,9 +6,9 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *
+ * <p>
  *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -21,6 +21,13 @@ package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 import ch.sbb.atlas.servicepointdirectory.geodata.model.Command;
 import ch.sbb.atlas.servicepointdirectory.geodata.model.protobuf.VectorTile;
 import ch.sbb.atlas.servicepointdirectory.geodata.model.protobuf.VectorTile.Tile.GeomType;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import org.locationtech.jts.algorithm.Area;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -39,16 +46,6 @@ import org.locationtech.jts.geom.prep.PreparedGeometry;
 import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public class VectorTileEncoder {
 
@@ -72,10 +69,6 @@ public class VectorTileEncoder {
 
   private final boolean autoincrementIds;
 
-  private final double simplificationDistanceTolerance;
-
-  private static final GeometryFactory gf = new GeometryFactory();
-
   private Envelope tileEnvelope;
 
   /**
@@ -86,23 +79,8 @@ public class VectorTileEncoder {
     this(4096, 0, false);
   }
 
-  /**
-   * Create a {@link VectorTileEncoder} with the given extent and a clip
-   * buffer of 8.
-   *
-   * @param extent an int to specify vector tile extent. 4096 is a good value.
-   */
-  public VectorTileEncoder(int extent) {
-    this(extent, 8, true);
-  }
-
   public VectorTileEncoder(int extent, int clipBuffer, boolean autoScale) {
     this(extent, clipBuffer, autoScale, false);
-  }
-
-  public VectorTileEncoder(int extent, int clipBuffer, boolean autoScale,
-      boolean autoincrementIds) {
-    this(extent, clipBuffer, autoScale, autoincrementIds, -1.0);
   }
 
   /**
@@ -115,36 +93,28 @@ public class VectorTileEncoder {
    * tile for geometries. 0 means that the clipping is done at the tile border. 8
    * is a good default.
    *
-   * @param extent                          a int with extent value. 4096 is a good value.
-   * @param clipBuffer                      a int with clip buffer size for geometries. 8 is a
-   *                                        good value.
-   * @param autoScale                       when true, the encoder expects coordinates in the 0.
-   *                                        .255 range and
-   *                                        will scale them automatically to the 0..extent-1
-   *                                        range before
-   *                                        encoding. when false, the encoder expects coordinates
-   *                                        in the
-   *                                        0..extent-1 range.
-   * @param autoincrementIds                when true the vector tile feature id is auto
-   *                                        incremented when using
-   *                                        {@link #addFeature(String, Map, Geometry)}
-   * @param simplificationDistanceTolerance a positive double representing the distance tolerance
-   *                                       to be used
-   *                                        for non-points before (optional) scaling and encoding
-   *                                        . A value
-   *                                        &lt;=0 will prevent simplifying geometry. 0.1 seems
-   *                                        to be a good
-   *                                        value when {@code autoScale} is turned on.
+   * @param extent           a int with extent value. 4096 is a good value.
+   * @param clipBuffer       a int with clip buffer size for geometries. 8 is a
+   *                         good value.
+   * @param autoScale        when true, the encoder expects coordinates in the 0.
+   *                         .255 range and
+   *                         will scale them automatically to the 0..extent-1
+   *                         range before
+   *                         encoding. when false, the encoder expects coordinates
+   *                         in the
+   *                         0..extent-1 range.
+   * @param autoincrementIds when true the vector tile feature id is auto
+   *                         incremented when using
+   *                         {@link #addFeature(String, Map, Geometry)}
    */
-  public VectorTileEncoder(int extent, int clipBuffer, boolean autoScale, boolean autoincrementIds,
-      double simplificationDistanceTolerance) {
+  public VectorTileEncoder(int extent, int clipBuffer, boolean autoScale,
+      boolean autoincrementIds) {
     this.extent = extent;
     this.autoScale = autoScale;
     this.minimumLength = autoScale ? (256.0 / extent) : 1.0;
     this.minimumArea = this.minimumLength * this.minimumLength;
     this.autoincrementIds = autoincrementIds;
     this.autoincrement = 1;
-    this.simplificationDistanceTolerance = simplificationDistanceTolerance;
 
     final int size = autoScale ? 256 : extent;
     clipGeometry = createTileEnvelope(clipBuffer, size);
@@ -154,10 +124,10 @@ public class VectorTileEncoder {
 
   private static Geometry createTileEnvelope(int buffer, int size) {
     Coordinate[] coords = new Coordinate[5];
-    coords[0] = new Coordinate(0 - buffer, size + buffer);
+    coords[0] = new Coordinate(-buffer, size + buffer);
     coords[1] = new Coordinate(size + buffer, size + buffer);
-    coords[2] = new Coordinate(size + buffer, 0 - buffer);
-    coords[3] = new Coordinate(0 - buffer, 0 - buffer);
+    coords[2] = new Coordinate(size + buffer, -buffer);
+    coords[3] = new Coordinate(-buffer, -buffer);
     coords[4] = coords[0];
     return new GeometryFactory().createPolygon(coords);
   }
@@ -237,25 +207,6 @@ public class VectorTileEncoder {
     // About to simplify and clip. Looks like simplification before clipping is
     // faster than clipping before simplification
 
-    // simplify non-points
-    if (simplificationDistanceTolerance > 0.0 && !(geometry instanceof Point)) {
-      if (geometry instanceof LineString || geometry instanceof MultiLineString) {
-        geometry = DouglasPeuckerSimplifier.simplify(geometry, simplificationDistanceTolerance);
-      } else if (geometry instanceof Polygon || geometry instanceof MultiPolygon) {
-        Geometry simplified = DouglasPeuckerSimplifier.simplify(geometry,
-            simplificationDistanceTolerance);
-        // extra check to prevent polygon converted to line
-        if (simplified instanceof Polygon || simplified instanceof MultiPolygon) {
-          geometry = simplified;
-        } else {
-          geometry = TopologyPreservingSimplifier.simplify(geometry,
-              simplificationDistanceTolerance);
-        }
-      } else {
-        geometry = TopologyPreservingSimplifier.simplify(geometry, simplificationDistanceTolerance);
-      }
-    }
-
     // clip geometry
     if (geometry instanceof Point) {
       if (!clipCovers(geometry)) {
@@ -302,8 +253,7 @@ public class VectorTileEncoder {
    * @return a boolean true when the current clip geometry covers the given geom.
    */
   protected boolean clipCovers(Geometry geom) {
-    if (geom instanceof Point) {
-      Point p = (Point) geom;
+    if (geom instanceof Point p) {
       return clipGeometry.getEnvelopeInternal().covers(p.getCoordinate());
     }
     return clipEnvelope.covers(geom.getEnvelopeInternal());
@@ -367,19 +317,19 @@ public class VectorTileEncoder {
         if (value instanceof String) {
           tileValue.setStringValue((String) value);
         } else if (value instanceof Integer) {
-          tileValue.setSintValue(((Integer) value).intValue());
+          tileValue.setSintValue((Integer) value);
         } else if (value instanceof Long) {
-          tileValue.setSintValue(((Long) value).longValue());
+          tileValue.setSintValue((Long) value);
         } else if (value instanceof Float) {
-          tileValue.setFloatValue(((Float) value).floatValue());
+          tileValue.setFloatValue((Float) value);
         } else if (value instanceof Double) {
-          tileValue.setDoubleValue(((Double) value).doubleValue());
+          tileValue.setDoubleValue((Double) value);
         } else if (value instanceof BigDecimal) {
           tileValue.setStringValue(value.toString());
         } else if (value instanceof Number) {
           tileValue.setDoubleValue(((Number) value).doubleValue());
         } else if (value instanceof Boolean) {
-          tileValue.setBoolValue(((Boolean) value).booleanValue());
+          tileValue.setBoolValue((Boolean) value);
         } else {
           tileValue.setStringValue(value.toString());
         }
@@ -409,25 +359,6 @@ public class VectorTileEncoder {
           continue;
         }
 
-        // Extra step to parse and check validity and try to repair. Probably expensive.
-        if (simplificationDistanceTolerance > 0.0 && geomType == GeomType.POLYGON) {
-          double scale = autoScale ? (extent / 256.0) : 1.0;
-          Geometry decodedGeometry = VectorTileDecoder.decodeGeometry(gf, geomType, commands,
-              scale);
-          if (!isValid(decodedGeometry)) {
-            // Invalid. Try more simplification and without preserving topology.
-            geometry = DouglasPeuckerSimplifier.simplify(geometry,
-                simplificationDistanceTolerance * 2.0);
-            if (geometry.isEmpty()) {
-              continue;
-            }
-            geomType = toGeomType(geometry);
-            x = 0;
-            y = 0;
-            commands = commands(geometry);
-          }
-        }
-
         featureBuilder.setType(geomType);
         featureBuilder.addAllGeometry(commands);
 
@@ -439,14 +370,6 @@ public class VectorTileEncoder {
     }
 
     return tile.build();
-  }
-
-  private static final boolean isValid(Geometry geometry) {
-    try {
-      return geometry.isValid();
-    } catch (RuntimeException e) {
-      return false;
-    }
   }
 
   static VectorTile.Tile.GeomType toGeomType(Geometry geometry) {
@@ -556,9 +479,6 @@ public class VectorTileEncoder {
    * varints, vertex parameters are // encoded as sint32 varints (zigzag).
    * Vertex parameters are // also encoded as deltas to the previous position.
    * The original // position is (0,0)
-   *
-   * @param cs
-   * @return
    */
   List<Integer> commands(Coordinate[] cs, boolean closePathAtEnd) {
     return commands(cs, closePathAtEnd, false);
@@ -651,7 +571,7 @@ public class VectorTileEncoder {
     this.tileEnvelope = tileEnvelope;
   }
 
-  public final class Layer {
+  public static final class Layer {
 
     final List<Feature> features = new ArrayList<>();
 
@@ -659,12 +579,7 @@ public class VectorTileEncoder {
     private final Map<Object, Integer> values = new LinkedHashMap<>();
 
     public Integer key(String key) {
-      Integer i = keys.get(key);
-      if (i == null) {
-        i = Integer.valueOf(keys.size());
-        keys.put(key, i);
-      }
-      return i;
+      return keys.computeIfAbsent(key, k -> keys.size());
     }
 
     public List<String> keys() {
@@ -672,20 +587,15 @@ public class VectorTileEncoder {
     }
 
     public Integer value(Object value) {
-      Integer i = values.get(value);
-      if (i == null) {
-        i = Integer.valueOf(values.size());
-        values.put(value, i);
-      }
-      return i;
+      return values.computeIfAbsent(value, k -> values.size());
     }
 
     public List<Object> values() {
-      return Collections.unmodifiableList(new ArrayList<>(values.keySet()));
+      return List.copyOf(values.keySet());
     }
   }
 
-  private final class Feature {
+  private static final class Feature {
 
     long id;
     Geometry geometry;
