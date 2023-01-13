@@ -19,7 +19,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
@@ -73,8 +72,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldGetLoadingPoint() throws Exception {
-    mvc.perform(get("/v1/loading-points/4201")).andExpect(status().isOk())
-        .andDo(MockMvcResultHandlers.print())
+    mvc.perform(get("/v1/loading-points/83017186/4201")).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(loadingPointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0]." + Fields.number, is(4201)))
         .andExpect(jsonPath("$[0]." + Fields.connectionPoint, is(false)))
