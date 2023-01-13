@@ -18,9 +18,8 @@
  ****************************************************************/
 package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 
-import ch.sbb.atlas.servicepointdirectory.geodata.model.Command;
-import ch.sbb.atlas.servicepointdirectory.geodata.model.protobuf.VectorTile;
-import ch.sbb.atlas.servicepointdirectory.geodata.model.protobuf.VectorTile.Tile.GeomType;
+import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile;
+import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile.GeomType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
