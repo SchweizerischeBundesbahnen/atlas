@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.service;
 
-import ch.sbb.atlas.servicepointdirectory.geodata.model.protobuf.VectorTile.Tile;
+import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.VectorTileEncoder;
 import java.util.List;
 import java.util.Map;
