@@ -37,7 +37,7 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public List<ServicePointVersionModel> getServicePoint(Integer servicePointNumber) {
     ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
-    List<ServicePointVersionModel> servicePointVersions = servicePointService.findServicePointVersions(
+    List<ServicePointVersionModel> servicePointVersions = servicePointService.findServicePoint(
             number).stream()
         .map(ServicePointVersionModel::fromEntity).toList();
     if (servicePointVersions.isEmpty()) {
