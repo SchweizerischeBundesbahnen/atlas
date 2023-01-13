@@ -91,14 +91,14 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetServicePointVersion() throws Exception {
+  void shouldGetServicePoint() throws Exception {
     mvc.perform(get("/v1/service-points/85890087")).andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + Fields.id).isNotEmpty())
+        .andExpect(jsonPath("$[0]." + Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
-        .andExpect(jsonPath("$[0]."+ Fields.designationOfficial, is("Bern, Wyleregg")))
+        .andExpect(jsonPath("$[0]." + Fields.designationOfficial, is("Bern, Wyleregg")))
         .andExpect(jsonPath("$[0].meansOfTransportInformation[0].code", is("B")))
         .andExpect(jsonPath("$[0].meansOfTransportInformation[0].designationDe", is("Bus")))
-        .andExpect(jsonPath("$[0]."+Fields.operatingPointRouteNetwork, is(false)))
+        .andExpect(jsonPath("$[0]." + Fields.operatingPointRouteNetwork, is(false)))
 
         // IS_BETRIEBSPUNKT
         .andExpect(jsonPath("$[0].operatingPoint", is(true)))
@@ -121,33 +121,15 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetServicePointVersions() throws Exception {
+    mvc.perform(get("/v1/service-points")).andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(servicePointVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
   void shouldGetServicePointVersionById() throws Exception {
-    mvc.perform(get("/v1/service-points/85890087")).andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + Fields.id).isNotEmpty())
-        .andExpect(jsonPath("$[0].number.number", is(8589008)))
-        .andExpect(jsonPath("$[0]."+ Fields.designationOfficial, is("Bern, Wyleregg")))
-        .andExpect(jsonPath("$[0].meansOfTransportInformation[0].code", is("B")))
-        .andExpect(jsonPath("$[0].meansOfTransportInformation[0].designationDe", is("Bus")))
-        .andExpect(jsonPath("$[0]."+Fields.operatingPointRouteNetwork, is(false)))
-
-        // IS_BETRIEBSPUNKT
-        .andExpect(jsonPath("$[0].operatingPoint", is(true)))
-        // IS_FAHRPLAN
-        .andExpect(jsonPath("$[0].operatingPointWithTimetable", is(true)))
-        // IS_HALTESTELLE
-        .andExpect(jsonPath("$[0].stopPoint", is(true)))
-        // IS_BEDIENPUNKT
-        .andExpect(jsonPath("$[0].freightServicePoint", is(false)))
-        // IS_VERKEHRSPUNKT
-        .andExpect(jsonPath("$[0].trafficPoint", is(true)))
-        // IS_GRENZPUNKT
-        .andExpect(jsonPath("$[0].borderPoint", is(false)))
-        // IS_VIRTUELL
-        .andExpect(jsonPath("$[0].hasGeolocation", is(true)))
-
-        .andExpect(jsonPath("$[0].operatingPointKilometer", is(false)))
-        .andExpect(jsonPath("$[0].creationDate", is("2021-03-22T09:26:29")))
-        .andExpect(jsonPath("$[0].creator", is("fs45117")));
+    mvc.perform(get("/v1/service-points/versions/" + servicePointVersion.getId())).andExpect(status().isOk());
   }
 
   @Test
