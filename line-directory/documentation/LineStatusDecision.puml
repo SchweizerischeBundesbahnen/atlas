@@ -25,6 +25,7 @@ partition "LineStatusDecider"{
                - longName
                - alternativeName
                - combinationName
+               - lineType if changed to ORDERLY
         endnote
         :Status = DRAFT;
         stop
