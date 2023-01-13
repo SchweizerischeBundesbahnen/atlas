@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface ServicePointVersionRepository extends
     JpaRepository<ServicePointVersion, Long> {
 
-  List<ServicePointVersion> findAllByNumber(ServicePointNumber number);
+  List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
 
 }
