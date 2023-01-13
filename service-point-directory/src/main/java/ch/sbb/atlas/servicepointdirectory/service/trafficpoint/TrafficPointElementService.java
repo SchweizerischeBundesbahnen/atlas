@@ -21,7 +21,7 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.findAll(pageable);
   }
 
-  public List<TrafficPointElementVersion> findTrafficPointElementVersions(String sloid) {
+  public List<TrafficPointElementVersion> findTrafficPointElement(String sloid) {
     return trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 

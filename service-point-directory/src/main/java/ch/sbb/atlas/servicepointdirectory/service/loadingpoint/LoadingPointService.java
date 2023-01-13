@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +22,9 @@ public class LoadingPointService {
     return loadingPointVersionRepository.findAll(pageable);
   }
 
-  public List<LoadingPointVersion> findLoadingPointVersions(Integer loadingPointNumber) {
-    return loadingPointVersionRepository.findAllByNumberOrderByValidFrom(loadingPointNumber);
+  public List<LoadingPointVersion> findLoadingPoint(ServicePointNumber servicePointNumber, Integer loadingPointNumber) {
+    return loadingPointVersionRepository.findAllByServicePointNumberAndNumberOrderByValidFrom(servicePointNumber,
+        loadingPointNumber);
   }
 
   public Optional<LoadingPointVersion> findById(Long id) {
