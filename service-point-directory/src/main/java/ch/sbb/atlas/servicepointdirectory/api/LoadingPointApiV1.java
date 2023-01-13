@@ -25,7 +25,7 @@ public interface LoadingPointApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<LoadingPointVersionModel> getLoadingPoints(
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.number, Fields.validFrom}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.servicePointNumber, Fields.number, Fields.validFrom}) Pageable pageable,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
   @GetMapping("{servicePointNumber}/{loadingPointNumber}")
