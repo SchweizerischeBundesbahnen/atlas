@@ -23,7 +23,7 @@ public class ServicePointService {
   }
 
   public List<ServicePointVersion> findServicePointVersions(ServicePointNumber servicePointNumber) {
-    return servicePointVersionRepository.findAllByNumber(servicePointNumber);
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
   }
 
   public Optional<ServicePointVersion> findById(Long id) {
