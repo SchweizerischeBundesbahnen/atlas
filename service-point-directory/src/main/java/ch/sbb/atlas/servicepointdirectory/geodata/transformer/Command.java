@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.geodata.model;
+package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 
 import lombok.experimental.UtilityClass;
 

@@ -4,7 +4,7 @@ import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionR
 
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.geodata.mapper.ServicePointGeoDataMapper;
-import ch.sbb.atlas.servicepointdirectory.geodata.model.protobuf.VectorTile.Tile;
+import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.BoundingBoxTransformer;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.GeometryTransformer;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -32,12 +32,18 @@ public class ServicePointGeoDataService {
   private final ServicePointVersionRepository dataRepository;
 
   public Tile getGeoData(Integer z, Integer x, Integer y) {
-    final Envelope bbox = geometryTransformer
+    final Envelope bboxWgs84Web = geometryTransformer
         .projectEnvelopeToWeb(boundingBoxTransformer.calculateBoundingBox(z, x, y));
 
     log.info("load service points");
     final List<ServicePointVersion> servicePoints = dataRepository.findAll(
-        coordinatesBetween(bbox.getMinX(), bbox.getMinY(), bbox.getMaxX(), bbox.getMaxY()));
+        // TODO: add all filter options that we need
+        coordinatesBetween(
+            bboxWgs84Web.getMinX(),
+            bboxWgs84Web.getMinY(),
+            bboxWgs84Web.getMaxX(),
+            bboxWgs84Web.getMaxY()
+        ));
 
     log.info("map service points");
     final List<Point> pointList = servicePointGeoDataMapper
@@ -47,7 +53,7 @@ public class ServicePointGeoDataService {
             .toList());
 
     log.info("building tile layer {}/{}/{}", z, x, y);
-    final Tile tile = vectorTileService.encodeTileLayer(LAYER_NAME, pointList, bbox);
+    final Tile tile = vectorTileService.encodeTileLayer(LAYER_NAME, pointList, bboxWgs84Web);
     log.info("...tile layer created {}/{}/{}", z, x, y);
 
     return tile;
