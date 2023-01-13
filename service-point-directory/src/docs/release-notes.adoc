@@ -1,13 +1,8 @@
 ==== Version {version}
 
-* Business Organisations*
-** Every abbreviation has to be unique at any point in time.
-* Transport Companies
-** are imported daily from the BAV
-** may be linked with Business Organisations
-** Relations with inactive or liquidated Transport Companies will be reported to the business department.
-* Company Codes (RICS)
-** are imported daily from CRD
+* ServicePoints*
+* TrafficPointElements*
+* LoadingPoints*
 
 **Versioning**
 

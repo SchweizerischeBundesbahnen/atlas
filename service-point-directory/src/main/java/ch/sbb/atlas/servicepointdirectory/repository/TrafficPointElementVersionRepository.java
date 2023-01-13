@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface TrafficPointElementVersionRepository extends
     JpaRepository<TrafficPointElementVersion, Long> {
 
-  List<TrafficPointElementVersion> findAllByServicePointNumber(Integer servicePointNumber);
-
+  List<TrafficPointElementVersion> findAllBySloidOrderByValidFrom(String sloid);
 }

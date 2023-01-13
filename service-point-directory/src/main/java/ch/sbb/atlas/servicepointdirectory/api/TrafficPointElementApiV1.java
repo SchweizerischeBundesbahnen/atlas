@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
 import ch.sbb.atlas.base.service.model.api.Container;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
@@ -17,20 +17,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "ServicePoints")
-@RequestMapping("v1/service-points")
-public interface ServicePointApiV1 {
+@Tag(name = "TrafficPointElements")
+@RequestMapping("v1/traffic-point-elements")
+public interface TrafficPointElementApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  Container<ServicePointVersionModel> getServicePoints(
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.number, Fields.validFrom}) Pageable pageable,
+  Container<TrafficPointElementVersionModel> getTrafficPointElements(
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid, Fields.validFrom}) Pageable pageable,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
-  @GetMapping("{servicePointNumber}")
-  List<ServicePointVersionModel> getServicePoint(@PathVariable Integer servicePointNumber);
+  @GetMapping("{sloid}")
+  List<TrafficPointElementVersionModel> getTrafficPointElement(@PathVariable String sloid);
 
   @GetMapping("versions/{id}")
-  ServicePointVersionModel getServicePointVersion(@PathVariable Long id);
+  TrafficPointElementVersionModel getTrafficPointElementVersion(@PathVariable Long id);
 
 }
