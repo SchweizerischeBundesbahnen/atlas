@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Former DIDOK Code:
  * <p>
- * Format: ## ##### #
- * 2 stelliger Ländercode
- * 5 stellige Nummer/Dienststellen-ID
- * eine Prüfziffer (Checkdigit)
+ * Format: ## ##### # 2 stelliger Ländercode 5 stellige Nummer/Dienststellen-ID eine Prüfziffer (Checkdigit)
  * <p>
  * Die Prüfziffer errechnet sich aus der Dienststellen-ID und soll "Zahlendreher verhindern"
  */
@@ -46,6 +42,9 @@ public final class ServicePointNumber {
   @JsonInclude
   @Schema(description = "UicCountryCode", example = "85")
   public Integer getUicCountryCode() {
+    if (getCountry() == null) {
+      return null;
+    }
     return getCountry().getUicCode();
   }
 
@@ -54,6 +53,9 @@ public final class ServicePointNumber {
   @Schema(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7",
       example = "8507000")
   public Integer getNumber() {
+    if (getCountry() == null || getCountry().getUicCode() == null) {
+      return null;
+    }
     return getCountry().getUicCode() * 100000 + getNumberShort();
   }
 

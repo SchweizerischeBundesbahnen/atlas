@@ -28,13 +28,9 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 @Deprecated
 /**
- * Switch back to ch.sbb.atlas.base.service.model.entity.BaseVersion once Didok dies
+ * Switch back to ch.sbb.atlas.base.service.model.entity.BaseEntity once Didok dies
  */
 public abstract class BaseDidokImportEntity implements DatesValidator {
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private Status status;
 
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
   @AtlasVersionableProperty(ignoreDiff = true)
