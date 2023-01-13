@@ -44,7 +44,7 @@ public class TrafficPointElementVersionModel extends BaseVersionModel implements
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   private String designation;
 
-  @Schema(description = "Designation used in (operational) timetable planning.")
+  @Schema(description = "Designation used in (operational) timetable planning.", example = "2")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   private String designationOperational;
 
@@ -72,7 +72,8 @@ public class TrafficPointElementVersionModel extends BaseVersionModel implements
   private String sloid;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. As key, the SLOID is used.")
+  @Schema(description = "Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. "
+      + "As key, the SLOID is used.", example = "ch:1:sloid:16161:1")
   private String parentSloid;
 
   private GeolocationModel trafficPointElementGeolocation;
