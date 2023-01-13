@@ -8,7 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 
   @Override
@@ -16,6 +18,7 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
     try {
       return LocalDateTime.parse(jsonParser.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     } catch (DateTimeParseException e) {
+      log.debug("LocalDateTime could not be parsed, trying with LocalDate");
       try {
         return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
       } catch (DateTimeParseException exception) {

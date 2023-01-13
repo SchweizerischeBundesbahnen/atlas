@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +17,10 @@ import org.springframework.stereotype.Service;
 public class ServicePointService {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
+
+  public Page<ServicePointVersion> findAll(Pageable pageable) {
+    return servicePointVersionRepository.findAll(pageable);
+  }
 
   public List<ServicePointVersion> findServicePointVersions(ServicePointNumber servicePointNumber) {
     return servicePointVersionRepository.findAllByNumber(servicePointNumber);
