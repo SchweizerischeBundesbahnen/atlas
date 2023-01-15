@@ -34,17 +34,18 @@ public class ServicePointGeoDataService {
   private final ServicePointVersionRepository dataRepository;
 
   public Tile getGeoData(Integer z, Integer x, Integer y) {
+    log.info("calculating geodata area");
     final Envelope areaWgs84 = boundingBoxTransformer.calculateBoundingBox(z, x, y);
 
-    log.info("projecting geodata aera");
+    log.info("projecting geodata area");
     final Map<SpatialReference, Envelope> projectedAreas = geometryTransformer.getProjectedAreas(
         areaWgs84);
-    final Envelope areaWgs84Web = projectedAreas.get(SpatialReference.WGS84WEB);
 
     log.info("finding service points");
     final List<ServicePointVersion> servicePoints = dataRepository
         .findAll(coordinatesBetween(SpatialReference.WGS84, areaWgs84)
-            .or(coordinatesBetween(SpatialReference.WGS84WEB, areaWgs84Web))
+            .or(coordinatesBetween(SpatialReference.WGS84WEB,
+                projectedAreas.get(SpatialReference.WGS84WEB)))
             .or(coordinatesBetween(SpatialReference.LV95,
                 projectedAreas.get(SpatialReference.LV95)))
             .or(coordinatesBetween(SpatialReference.LV03,
@@ -54,7 +55,9 @@ public class ServicePointGeoDataService {
     final List<Point> pointList = servicePointGeoDataMapper.mapToGeometryList(servicePoints);
 
     log.info("building tile layer {}/{}/{}", z, x, y);
-    final Tile tile = vectorTileService.encodeTileLayer(LAYER_NAME, pointList, areaWgs84Web);
+    final Tile tile = vectorTileService.encodeTileLayer(LAYER_NAME,
+        pointList,
+        projectedAreas.get(SpatialReference.WGS84WEB));
     log.info("...tile layer created {}/{}/{}", z, x, y);
 
     return tile;
