@@ -113,12 +113,12 @@ public class VectorTileEncoder {
    * @param geometry   a {@link Point} for the vector tile feature.
    */
   public void addFeature(String layerName, Map<String, ?> attributes, Point geometry) {
-    scaleGeometryToTileEnvelope(geometry);
-
     // no need to add empty geometry
     if (geometry.isEmpty()) {
       return;
     }
+
+    scaleGeometryToTileEnvelope(geometry);
 
     Layer layer = layers.get(layerName);
     if (layer == null) {
