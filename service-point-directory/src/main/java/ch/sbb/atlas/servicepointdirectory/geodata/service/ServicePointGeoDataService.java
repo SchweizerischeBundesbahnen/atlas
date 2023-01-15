@@ -3,12 +3,14 @@ package ch.sbb.atlas.servicepointdirectory.geodata.service;
 import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository.coordinatesBetween;
 
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.geodata.mapper.ServicePointGeoDataMapper;
 import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.BoundingBoxTransformer;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.GeometryTransformer;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Envelope;
@@ -32,28 +34,27 @@ public class ServicePointGeoDataService {
   private final ServicePointVersionRepository dataRepository;
 
   public Tile getGeoData(Integer z, Integer x, Integer y) {
-    final Envelope bboxWgs84Web = geometryTransformer
-        .projectEnvelopeToWeb(boundingBoxTransformer.calculateBoundingBox(z, x, y));
+    final Envelope areaWgs84 = boundingBoxTransformer.calculateBoundingBox(z, x, y);
 
-    log.info("load service points");
-    final List<ServicePointVersion> servicePoints = dataRepository.findAll(
-        // TODO: add all filter options that we need
-        coordinatesBetween(
-            bboxWgs84Web.getMinX(),
-            bboxWgs84Web.getMinY(),
-            bboxWgs84Web.getMaxX(),
-            bboxWgs84Web.getMaxY()
-        ));
+    log.info("projecting geodata aera");
+    final Map<SpatialReference, Envelope> projectedAreas = geometryTransformer.getProjectedAreas(
+        areaWgs84);
+    final Envelope areaWgs84Web = projectedAreas.get(SpatialReference.WGS84WEB);
 
-    log.info("map service points");
-    final List<Point> pointList = servicePointGeoDataMapper
-        .mapToGeometryList(servicePoints
-            .stream()
-            .filter(ServicePointVersion::hasGeolocation)
-            .toList());
+    log.info("finding service points");
+    final List<ServicePointVersion> servicePoints = dataRepository
+        .findAll(coordinatesBetween(SpatialReference.WGS84, areaWgs84)
+            .or(coordinatesBetween(SpatialReference.WGS84WEB, areaWgs84Web))
+            .or(coordinatesBetween(SpatialReference.LV95,
+                projectedAreas.get(SpatialReference.LV95)))
+            .or(coordinatesBetween(SpatialReference.LV03,
+                projectedAreas.get(SpatialReference.LV03))));
+
+    log.info("mapping service points");
+    final List<Point> pointList = servicePointGeoDataMapper.mapToGeometryList(servicePoints);
 
     log.info("building tile layer {}/{}/{}", z, x, y);
-    final Tile tile = vectorTileService.encodeTileLayer(LAYER_NAME, pointList, bboxWgs84Web);
+    final Tile tile = vectorTileService.encodeTileLayer(LAYER_NAME, pointList, areaWgs84Web);
     log.info("...tile layer created {}/{}/{}", z, x, y);
 
     return tile;
