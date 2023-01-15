@@ -5,15 +5,15 @@ import ch.sbb.atlas.servicepointdirectory.geodata.transformer.VectorTileEncoder;
 import java.util.List;
 import java.util.Map;
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VectorTileService {
 
-  public <T extends Geometry> Tile encodeTileLayer(
+  public Tile encodeTileLayer(
       String layerName,
-      List<T> geometries,
+      List<Point> geometries,
       Envelope tileEnvelopeWeb) {
     final VectorTileEncoder vectorTileEncoder = new VectorTileEncoder();
     vectorTileEncoder.setTileEnvelope(tileEnvelopeWeb);
