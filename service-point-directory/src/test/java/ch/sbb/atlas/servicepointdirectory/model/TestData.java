@@ -10,7 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
 import java.time.LocalDate;
 
 public class TestData {
-  public static ServicePointGeolocation testGeolocation() {
+  public static ServicePointGeolocation testGeolocationWgs84() {
     return ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.WGS84)
