@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.mapper;
 
-import static ch.sbb.atlas.servicepointdirectory.model.TestData.testGeolocation;
+import static ch.sbb.atlas.servicepointdirectory.model.TestData.testGeolocationWgs84;
 import static ch.sbb.atlas.servicepointdirectory.model.TestData.testServicePoint;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,7 +23,7 @@ class ServicePointGeoDataMapperTest {
   @Test
   void mapToGeometryItem() {
     final ServicePointVersion servicePointVersion = testServicePoint();
-    servicePointVersion.setServicePointGeolocation(testGeolocation());
+    servicePointVersion.setServicePointGeolocation(testGeolocationWgs84());
 
     final Point point = servicePointGeoDataMapper.mapToGeometry(servicePointVersion);
     assertThat(point.getX()).isEqualTo(0.1D);
@@ -35,7 +35,7 @@ class ServicePointGeoDataMapperTest {
   @Test
   void mapToGeometryList() {
     final ServicePointVersion servicePointVersion = testServicePoint();
-    servicePointVersion.setServicePointGeolocation(testGeolocation());
+    servicePointVersion.setServicePointGeolocation(testGeolocationWgs84());
 
     final List<Point> points = servicePointGeoDataMapper.mapToGeometryList(
         List.of(servicePointVersion));
