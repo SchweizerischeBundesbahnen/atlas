@@ -3,6 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.transformer.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.transformer.CoordinateTransformer;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
@@ -15,31 +17,46 @@ public class GeometryTransformer {
 
   private final CoordinateTransformer coordinateTransformer;
 
-  private static final int WGS_84_WKID = SpatialReference.WGS84.getWellKnownId();
-
-  public Coordinate transformToWeb(int sourceWKID, Coordinate wgsCoordinates) {
-    CoordinatePair transformed = coordinateTransformer.transform(
+  public Coordinate transform(
+      SpatialReference sourceSpatialReference,
+      Coordinate sourceCoordinate,
+      SpatialReference targetSpatialReference) {
+    final CoordinatePair transformed = coordinateTransformer.transform(
         CoordinatePair
             .builder()
-            .east(wgsCoordinates.getX())
-            .north(wgsCoordinates.getY())
-            .spatialReference(Stream.of(SpatialReference.values())
-                                    .filter(sr -> sr.getWellKnownId() == sourceWKID)
-                                    .findFirst()
-                                    .get())
-            .build(), SpatialReference.WGS84WEB);
+            .east(sourceCoordinate.getX())
+            .north(sourceCoordinate.getY())
+            .spatialReference(sourceSpatialReference)
+            .build(),
+        targetSpatialReference);
     return new Coordinate(transformed.getEast(), transformed.getNorth());
   }
 
-  public Envelope projectEnvelopeToWeb(Envelope tileEnvelope) {
-    final Coordinate tileEnvelopeMin = transformToWeb(WGS_84_WKID,
-        new Coordinate(tileEnvelope.getMinX(), tileEnvelope.getMinY()));
-    final Coordinate tileEnvelopeMax = transformToWeb(WGS_84_WKID,
-        new Coordinate(tileEnvelope.getMaxX(), tileEnvelope.getMaxY()));
+  public Envelope projectArea(
+      SpatialReference sourceSpatialReference,
+      Envelope sourceArea,
+      SpatialReference targetSpatialReference) {
+    final Coordinate bottomLeftCorner = transform(sourceSpatialReference,
+        new Coordinate(sourceArea.getMinX(), sourceArea.getMinY()),
+        targetSpatialReference);
+    final Coordinate topRightCorner = transform(sourceSpatialReference,
+        new Coordinate(sourceArea.getMaxX(), sourceArea.getMaxY()),
+        targetSpatialReference
+    );
     return new Envelope(
-        tileEnvelopeMin.getX(),
-        tileEnvelopeMax.getX(),
-        tileEnvelopeMin.getY(),
-        tileEnvelopeMax.getY());
+        bottomLeftCorner.getX(),
+        topRightCorner.getX(),
+        bottomLeftCorner.getY(),
+        topRightCorner.getY());
+  }
+
+  public Map<SpatialReference, Envelope> getProjectedAreas(Envelope areaWgs84) {
+    final Map<SpatialReference, Envelope> projectedAreas = new HashMap<>();
+    Stream.of(SpatialReference.values())
+          .filter(sr -> !sr.equals(SpatialReference.WGS84))
+          .forEach(sr ->
+              projectedAreas.put(sr, projectArea(SpatialReference.WGS84, areaWgs84, sr))
+          );
+    return projectedAreas;
   }
 }
