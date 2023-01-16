@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +18,8 @@ public class TrafficPointElementService {
 
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
-  public Page<TrafficPointElementVersion> findAll(Pageable pageable) {
-    return trafficPointElementVersionRepository.findAll(pageable);
+  public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
+    return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
   public List<TrafficPointElementVersion> findTrafficPointElement(String sloid) {
