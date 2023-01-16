@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointRepository;
+import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -18,13 +18,13 @@ public class LoadingPointImportServiceTest {
   private static final String CSV_FILE = "DIDOK3_LADESTELLEN_20221222011259.csv";
 
   private final LoadingPointImportService loadingPointImportService;
-  private final LoadingPointRepository loadingPointRepository;
+  private final LoadingPointVersionRepository loadingPointVersionRepository;
 
   @Autowired
   public LoadingPointImportServiceTest(LoadingPointImportService loadingPointImportService,
-      LoadingPointRepository loadingPointRepository) {
+      LoadingPointVersionRepository loadingPointVersionRepository) {
     this.loadingPointImportService = loadingPointImportService;
-    this.loadingPointRepository = loadingPointRepository;
+    this.loadingPointVersionRepository = loadingPointVersionRepository;
   }
 
   @Test
@@ -48,6 +48,6 @@ public class LoadingPointImportServiceTest {
 
     loadingPointImportService.importLoadingPoints(loadingPointCsvModels);
 
-    assertThat(loadingPointRepository.count()).isEqualTo(3019);
+    assertThat(loadingPointVersionRepository.count()).isEqualTo(3019);
   }
 }

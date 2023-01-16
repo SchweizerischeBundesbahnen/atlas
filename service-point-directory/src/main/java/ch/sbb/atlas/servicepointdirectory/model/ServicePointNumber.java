@@ -1,6 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.model;
 
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -12,10 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Former DIDOK Code:
  * <p>
- * Format: ## ##### #
- * 2 stelliger Ländercode
- * 5 stellige Nummer/Dienststellen-ID
- * eine Prüfziffer (Checkdigit)
+ * Format: ## ##### # 2 stelliger Ländercode 5 stellige Nummer/Dienststellen-ID eine Prüfziffer (Checkdigit)
  * <p>
  * Die Prüfziffer errechnet sich aus der Dienststellen-ID und soll "Zahlendreher verhindern"
  */
@@ -28,26 +28,59 @@ public final class ServicePointNumber {
 
   private static final int LENGTH = 8;
   private static final int TEN = 10;
+  private static final int SEVEN_DIGIT_SPLITTER = 100000;
 
+  @JsonIgnore
   private final int value;
 
+  @JsonIgnore
   @NotNull(message = "Given Country of ServicePointNumber could not be matched")
   public Country getCountry() {
     return Country.from(getNumericPart(0, 2));
   }
 
   @NotNull
-  public Integer getServicePointId() {
+  @JsonInclude
+  @Schema(description = "UicCountryCode", example = "85")
+  public Integer getUicCountryCode() {
+    if (getCountry() == null) {
+      return null;
+    }
+    return getCountry().getUicCode();
+  }
+
+  @NotNull
+  @JsonInclude
+  @Schema(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7",
+      example = "8507000")
+  public Integer getNumber() {
+    if (getCountry() == null || getCountry().getUicCode() == null) {
+      return null;
+    }
+    return getCountry().getUicCode() * SEVEN_DIGIT_SPLITTER + getNumberShort();
+  }
+
+  @NotNull
+  @Schema(description = "NumberShort - 5 chars identifying number. Range: 1-99.999", example = "7000")
+  public Integer getNumberShort() {
     return getNumericPart(2, LENGTH - 1);
   }
 
   @NotNull
+  @Schema(description = "Calculated value formed from the numberShort. Range: 0-9", example = "3")
   public Integer getCheckDigit() {
     return getNumericPart(LENGTH - 1, LENGTH);
   }
 
   public static ServicePointNumber of(int number) {
     return new ServicePointNumber(number);
+  }
+
+  public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
+    if (String.valueOf(number).length() == LENGTH - 1) {
+      return of(Country.from(number / SEVEN_DIGIT_SPLITTER), number % SEVEN_DIGIT_SPLITTER);
+    }
+    return of(number);
   }
 
   public static ServicePointNumber of(Country country, int servicePointId) {
@@ -60,7 +93,7 @@ public final class ServicePointNumber {
     return asString().length() == LENGTH;
   }
 
-  private String asString() {
+  public String asString() {
     return String.valueOf(value);
   }
 
