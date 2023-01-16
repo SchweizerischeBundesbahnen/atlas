@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 import ch.sbb.atlas.base.service.model.entity.BaseEntity;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
@@ -39,6 +40,14 @@ public abstract class GeolocationBaseEntity extends BaseEntity {
 
   @AtlasVersionableProperty
   private Double height;
+
+  public CoordinatePair asCoordinatePair() {
+    return CoordinatePair.builder()
+        .east(east)
+        .north(north)
+        .spatialReference(spatialReference)
+        .build();
+  }
 
   public boolean isValid() {
     return (east != null && north != null);

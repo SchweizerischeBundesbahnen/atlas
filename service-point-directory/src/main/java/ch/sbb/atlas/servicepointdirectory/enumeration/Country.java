@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.enumeration;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.Objects;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
+@Schema(enumAsRef = true, example = "SWITZERLAND")
 public enum Country {
 
   AZERBAIJAN("AZ", 57, "Aserbaidschan", "Azerbaïdjan", " Azerbaigian", "Azerbaijan"),
