@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import java.time.LocalDate;
 import java.util.List;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,6 +26,20 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
         .and(eastBetween(envelope.getMinX(), envelope.getMaxX())
             .and(northBetween(envelope.getMinY(), envelope.getMaxY()))
         );
+  }
+
+  static Specification<ServicePointVersion> validAtDate(LocalDate date) {
+    return validFromBeforeDate(date).and(validToAfterDate(date));
+  }
+
+  static Specification<ServicePointVersion> validFromBeforeDate(LocalDate date) {
+    return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(
+        root.get("validFrom"), date);
+  }
+
+  static Specification<ServicePointVersion> validToAfterDate(LocalDate date) {
+    return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(
+        root.get("validTo"), date);
   }
 
   static Specification<ServicePointVersion> spatialReferenceEquals(
