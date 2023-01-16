@@ -52,4 +52,10 @@ class ServicePointNumberTest {
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 90765).getCheckDigit()).isEqualTo(9);
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 91085).getCheckDigit()).isEqualTo(1);
   }
+
+  @Test
+  void shouldBuildServicePointNumberFromSevenDigitNumberSuccessfully() {
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(8507000);
+    assertThat(servicePointNumber).isEqualTo(ServicePointNumber.of(85070003));
+  }
 }
