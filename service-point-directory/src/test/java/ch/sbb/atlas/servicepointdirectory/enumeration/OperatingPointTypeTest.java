@@ -8,12 +8,12 @@ class OperatingPointTypeTest {
 
   @Test
   void shouldHaveTimetable() {
-    OperatingPointType.TYPES_WITHOUT_TIMETABLE.forEach(
+    OperatingPointTypes.TYPES_WITHOUT_TIMETABLE.forEach(
         operatingPointType -> assertThat(operatingPointType.hasTimetable()).isFalse());
   }
 
   @Test
   void shouldNotHaveTimetable() {
-    OperatingPointType.TYPES_WITH_TIMETABLE.forEach(operatingPointType -> assertThat(operatingPointType.hasTimetable()).isTrue());
+    OperatingPointTypes.TYPES_WITH_TIMETABLE.forEach(operatingPointType -> assertThat(operatingPointType.hasTimetable()).isTrue());
   }
 }
