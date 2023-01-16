@@ -9,7 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
 import java.util.List;

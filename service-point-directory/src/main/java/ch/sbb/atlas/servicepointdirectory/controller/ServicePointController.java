@@ -8,7 +8,7 @@ import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
