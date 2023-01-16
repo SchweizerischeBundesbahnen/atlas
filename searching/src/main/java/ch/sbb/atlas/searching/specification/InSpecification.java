@@ -14,21 +14,21 @@ public class InSpecification<T> implements Specification<T> {
   @Serial
   private static final long serialVersionUID = 1;
 
-  private final List<String> searchStrings;
+  private final List<?> searchRestrictions;
   private final String stringAttribute;
 
-  public InSpecification(List<String> searchStrings,
+  public InSpecification(List<?> searchRestrictions,
       String stringAttribute) {
-    this.searchStrings = Objects.requireNonNull(searchStrings);
+    this.searchRestrictions = Objects.requireNonNull(searchRestrictions);
     this.stringAttribute = stringAttribute;
   }
 
   @Override
   public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
       CriteriaBuilder criteriaBuilder) {
-    if (searchStrings.isEmpty()) {
+    if (searchRestrictions.isEmpty()) {
       return criteriaBuilder.and();
     }
-    return root.get(stringAttribute).in(searchStrings);
+    return root.get(stringAttribute).in(searchRestrictions);
   }
 }
