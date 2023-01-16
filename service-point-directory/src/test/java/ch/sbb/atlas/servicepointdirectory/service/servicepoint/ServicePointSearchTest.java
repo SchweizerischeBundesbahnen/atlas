@@ -1,0 +1,290 @@
+package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import java.time.LocalDate;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+@IntegrationTest
+public class ServicePointSearchTest {
+
+  private final ServicePointService servicePointService;
+  private final ServicePointVersionRepository servicePointVersionRepository;
+
+  private ServicePointVersion servicePointVersion;
+
+  @Autowired
+  public ServicePointSearchTest(ServicePointService servicePointService,
+      ServicePointVersionRepository servicePointVersionRepository) {
+    this.servicePointService = servicePointService;
+    this.servicePointVersionRepository = servicePointVersionRepository;
+  }
+
+  @BeforeEach
+  void createDefaultVersion() {
+    servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
+  }
+
+  @AfterEach
+  void cleanUpDb() {
+    servicePointVersionRepository.deleteAll();
+  }
+
+  @Test
+  void shouldFindBernWylereggBySloid() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .sloids(List.of(servicePointVersion.getSloid()))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
+  void shouldNotFindBernWylereggBySloid() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .sloids(List.of("supersloid"))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByNumber() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .numbers(List.of(8589008))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+    assertThat(servicePointVersions.getContent().get(0).getNumber().getNumber()).isEqualTo(8589008);
+  }
+
+  @Test
+  void shouldFindBernWylereggByNumberShort() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .numbersShort(List.of(89008))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+    assertThat(servicePointVersions.getContent().get(0).getNumberShort()).isEqualTo(89008);
+  }
+
+  @Test
+  void shouldFindBernWylereggByCountry() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .countries(List.of(Country.SWITZERLAND))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
+  void shouldFindBernWylereggByMeansOfTransport() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .meansOfTransport(List.of(MeanOfTransport.BUS))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
+  void shouldFindBernWylereggByStatus() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .statusRestrictions(List.of(Status.VALIDATED))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByStatus() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .statusRestrictions(List.of(Status.DRAFT))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByMeansOfTransport() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .meansOfTransport(List.of(MeanOfTransport.TRAIN))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByOperatingPointBoolean() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .operatingPoint(true)
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByOperatingPointBoolean() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .operatingPoint(false)
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByWithTimetableBoolean() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .withTimetable(true)
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+    assertThat(servicePointVersions.getContent().get(0).isOperatingPointWithTimetable()).isTrue();
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByWithTimetableBoolean() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .withTimetable(false)
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByWithValidOn() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .validOn(LocalDate.of(2021, 1, 1))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+    assertThat(servicePointVersions.getContent().get(0).isOperatingPointWithTimetable()).isTrue();
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByWithValidOn() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .validOn(LocalDate.of(2099, 1, 1))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByWithFromDate() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .fromDate(servicePointVersion.getValidFrom())
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByWithFromDate() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .fromDate(servicePointVersion.getValidFrom().minusDays(1))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByWithToDate() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .toDate(servicePointVersion.getValidTo())
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByWithToDate() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .toDate(servicePointVersion.getValidTo().plusDays(1))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByWithCreatedAfter() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .createdAfter(servicePointVersion.getCreationDate().plusSeconds(1))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByWithCreatedAfter() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .createdAfter(servicePointVersion.getCreationDate().minusSeconds(1))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByWithModifiedAfter() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .modifiedAfter(servicePointVersion.getEditionDate())
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByWithModifiedAfter() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .modifiedAfter(servicePointVersion.getEditionDate().minusSeconds(1))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+}

@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointRepository;
+import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
@@ -19,11 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LoadingPointImportService {
 
-  private final LoadingPointRepository loadingPointRepository;
+  private final LoadingPointVersionRepository loadingPointVersionRepository;
 
   public void importLoadingPoints(List<LoadingPointCsvModel> csvModels) {
     List<LoadingPointVersion> loadingPointVersions = csvModels.stream().map(new LoadingPointCsvToEntityMapper()).toList();
-    loadingPointRepository.saveAll(loadingPointVersions);
+    loadingPointVersionRepository.saveAll(loadingPointVersions);
   }
 
   static List<LoadingPointCsvModel> parseLoadingPoints(InputStream inputStream)

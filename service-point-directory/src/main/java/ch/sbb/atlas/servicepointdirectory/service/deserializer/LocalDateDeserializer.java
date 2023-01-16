@@ -16,7 +16,7 @@ public class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
     try {
       return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
     } catch (DateTimeParseException e) {
-      throw new IllegalArgumentException(jsonParser.getText());
+      throw new IllegalArgumentException(jsonParser.getText(), e);
     }
   }
 
