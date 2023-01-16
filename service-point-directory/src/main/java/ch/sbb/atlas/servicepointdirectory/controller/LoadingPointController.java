@@ -28,15 +28,15 @@ public class LoadingPointController implements LoadingPointApiV1 {
   @Override
   public Container<LoadingPointVersionModel> getLoadingPoints(Pageable pageable, List<String> searchCriteria,
       Optional<LocalDate> validOn) {
-    Page<LoadingPointVersion> LoadingPointVersions = loadingPointService.findAll(
+    Page<LoadingPointVersion> loadingPointVersions = loadingPointService.findAll(
         LoadingPointSearchRestrictions.builder()
             .pageable(pageable)
             .searchCriterias(searchCriteria)
             .validOn(validOn)
             .build());
     return Container.<LoadingPointVersionModel>builder()
-        .objects(LoadingPointVersions.stream().map(LoadingPointVersionModel::fromEntity).toList())
-        .totalCount(LoadingPointVersions.getTotalElements())
+        .objects(loadingPointVersions.stream().map(LoadingPointVersionModel::fromEntity).toList())
+        .totalCount(loadingPointVersions.getTotalElements())
         .build();
   }
 
