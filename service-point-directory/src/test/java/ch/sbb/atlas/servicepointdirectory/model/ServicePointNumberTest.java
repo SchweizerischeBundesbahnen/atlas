@@ -20,7 +20,7 @@ class ServicePointNumberTest {
 
   @Test
   void shouldGetServicePointIdSuccessfully() {
-    assertThat(ServicePointNumber.of(85070003).getServicePointId()).isEqualTo(7000);
+    assertThat(ServicePointNumber.of(85070003).getNumberShort()).isEqualTo(7000);
   }
 
   @Test
@@ -51,5 +51,11 @@ class ServicePointNumberTest {
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 94267).getCheckDigit()).isEqualTo(2);
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 90765).getCheckDigit()).isEqualTo(9);
     assertThat(ServicePointNumber.of(Country.SWITZERLAND, 91085).getCheckDigit()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldBuildServicePointNumberFromSevenDigitNumberSuccessfully() {
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(8507000);
+    assertThat(servicePointNumber).isEqualTo(ServicePointNumber.of(85070003));
   }
 }

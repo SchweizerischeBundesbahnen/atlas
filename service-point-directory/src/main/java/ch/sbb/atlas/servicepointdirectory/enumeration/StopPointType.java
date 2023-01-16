@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
-public enum StopPointType {
+public enum StopPointType implements CodeAndDesignations {
 
   ORDERLY(10, "Ordentliche Haltestelle", "Arrêt ordinaire", "Fermata ordinaria", null, "Ho", "Ao", "Fo", null),
   ON_REQUEST(20, "Bedarfshaltestelle", "Arrêt sur demande", "Fermata facoltativa", null, "Hb", "Ad", "Ff", null),
@@ -20,10 +20,10 @@ public enum StopPointType {
   UNKNOWN(0, "Nicht spezifiziert", "Non spécifié", "Non specificata", null, "Hns", "Ans", "Fns", null);
 
   private final Integer id;
-  private final String descriptionDe;
-  private final String descriptionFr;
-  private final String descriptionIt;
-  private final String descriptionEn;
+  private final String designationDe;
+  private final String designationFr;
+  private final String designationIt;
+  private final String designationEn;
 
   private final String abbreviationDe;
   private final String abbreviationFr;
@@ -31,6 +31,12 @@ public enum StopPointType {
   private final String abbreviationEn;
 
   public static StopPointType from(Integer id) {
-    return Arrays.stream(StopPointType.values()).filter(el -> Objects.equals(el.id, id)).findFirst().orElse(null);
+    return Arrays.stream(StopPointType.values()).filter(stopPointType -> Objects.equals(stopPointType.getId(), id)).findFirst()
+        .orElse(null);
+  }
+
+  @Override
+  public String getCode() {
+    return String.valueOf(id);
   }
 }

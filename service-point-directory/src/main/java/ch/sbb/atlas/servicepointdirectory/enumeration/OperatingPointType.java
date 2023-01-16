@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
-public enum OperatingPointType {
+public enum OperatingPointType implements CodeAndDesignations {
 
   // No Timetable
   INVENTORY_POINT(30, false, "Inventarpunkt", "Point d'inventaire", "punto di inventario", "Inventarpunkt", "betriebspunkt", null,
@@ -84,6 +84,12 @@ public enum OperatingPointType {
   private final String abbreviationEn;
 
   public static OperatingPointType from(Integer id) {
-    return Arrays.stream(OperatingPointType.values()).filter(el -> Objects.equals(el.id, id)).findFirst().orElse(null);
+    return Arrays.stream(OperatingPointType.values()).filter(operatingPointType -> Objects.equals(operatingPointType.getId(), id))
+        .findFirst().orElse(null);
+  }
+
+  @Override
+  public String getCode() {
+    return String.valueOf(id);
   }
 }

@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
@@ -57,7 +57,7 @@ import org.apache.commons.lang3.StringUtils;
 @FieldNameConstants
 @Entity(name = "service_point_version")
 @AtlasVersionable
-public class ServicePointVersion extends BaseVersion implements Versionable,
+public class ServicePointVersion extends BaseDidokImportEntity implements Versionable,
     BusinessOrganisationAssociated {
 
   private static final String VERSION_SEQ = "service_point_version_seq";
@@ -76,6 +76,10 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @AtlasVersionableProperty
   private String sloid;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private Status status;
 
   @NotNull
   @AtlasVersionableProperty
@@ -165,7 +169,7 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
   }
 
   public boolean isStopPoint() {
-    return !getMeanOfTransport().isEmpty();
+    return !getMeansOfTransport().isEmpty();
   }
 
   public boolean isFreightServicePoint() {
@@ -189,7 +193,7 @@ public class ServicePointVersion extends BaseVersion implements Versionable,
     return isStopPoint() || stopPointType == null;
   }
 
-  public Set<MeanOfTransport> getMeanOfTransport() {
+  public Set<MeanOfTransport> getMeansOfTransport() {
     if (meansOfTransport == null) {
       return new HashSet<>();
     }
