@@ -9,7 +9,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointSearchRestrictions;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointSearchRestrictions.ServicePointVersionSpecification;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class ServicePointController implements ServicePointApiV1 {
       ServicePointRequestParams servicePointRequestParams) {
     ServicePointSearchRestrictions searchRestrictions = ServicePointSearchRestrictions.builder()
         .pageable(pageable)
-        .specification(new ServicePointVersionSpecification(servicePointRequestParams))
+        .servicePointRequestParams(servicePointRequestParams)
         .build();
     Page<ServicePointVersion> servicePointVersions = servicePointService.findAll(searchRestrictions);
     return Container.<ServicePointVersionModel>builder()
