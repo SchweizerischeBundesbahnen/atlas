@@ -28,6 +28,7 @@ public final class ServicePointNumber {
 
   private static final int LENGTH = 8;
   private static final int TEN = 10;
+  private static final int SEVEN_DIGIT_SPLITTER = 100000;
 
   @JsonIgnore
   private final int value;
@@ -56,7 +57,7 @@ public final class ServicePointNumber {
     if (getCountry() == null || getCountry().getUicCode() == null) {
       return null;
     }
-    return getCountry().getUicCode() * 100000 + getNumberShort();
+    return getCountry().getUicCode() * SEVEN_DIGIT_SPLITTER + getNumberShort();
   }
 
   @NotNull
@@ -77,8 +78,7 @@ public final class ServicePointNumber {
 
   public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
     if (String.valueOf(number).length() == LENGTH - 1) {
-      int sevenDigitSplitter = 100000;
-      return of(Country.from(number / sevenDigitSplitter), number % sevenDigitSplitter);
+      return of(Country.from(number / SEVEN_DIGIT_SPLITTER), number % SEVEN_DIGIT_SPLITTER);
     }
     return of(number);
   }
