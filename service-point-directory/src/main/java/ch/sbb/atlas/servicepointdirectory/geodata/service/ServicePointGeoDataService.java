@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.service;
 
 import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository.coordinatesBetween;
+import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository.validAtDate;
 
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
@@ -9,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.BoundingBoxTransformer;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.GeometryTransformer;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,7 @@ public class ServicePointGeoDataService {
 
   private final ServicePointVersionRepository dataRepository;
 
-  public Tile getGeoData(Integer z, Integer x, Integer y) {
+  public Tile getGeoData(Integer z, Integer x, Integer y, LocalDate validAt) {
     log.info("calculating geodata area");
     final Envelope areaWgs84 = boundingBoxTransformer.calculateBoundingBox(z, x, y);
 
@@ -43,13 +45,14 @@ public class ServicePointGeoDataService {
 
     log.info("finding service points");
     final List<ServicePointVersion> servicePoints = dataRepository
-        .findAll(coordinatesBetween(SpatialReference.WGS84, areaWgs84)
-            .or(coordinatesBetween(SpatialReference.WGS84WEB,
-                projectedAreas.get(SpatialReference.WGS84WEB)))
-            .or(coordinatesBetween(SpatialReference.LV95,
-                projectedAreas.get(SpatialReference.LV95)))
-            .or(coordinatesBetween(SpatialReference.LV03,
-                projectedAreas.get(SpatialReference.LV03))));
+        .findAll(validAtDate(validAt).and(
+            coordinatesBetween(SpatialReference.WGS84, areaWgs84)
+                .or(coordinatesBetween(SpatialReference.WGS84WEB,
+                    projectedAreas.get(SpatialReference.WGS84WEB)))
+                .or(coordinatesBetween(SpatialReference.LV95,
+                    projectedAreas.get(SpatialReference.LV95)))
+                .or(coordinatesBetween(SpatialReference.LV03,
+                    projectedAreas.get(SpatialReference.LV03)))));
 
     log.info("mapping service points");
     final List<Point> pointList = servicePointGeoDataMapper.mapToGeometryList(servicePoints);
