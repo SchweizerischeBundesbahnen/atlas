@@ -35,8 +35,8 @@ public abstract class SearchRestrictions<T> {
 
   protected Specification<T> getBaseSpecification() {
     return specificationBuilder().searchCriteriaSpecification(searchCriterias)
-                                 .and(specificationBuilder().validOnSpecification(validOn))
-                                 .and(specificationBuilder().enumSpecification(statusRestrictions,
+                                 .and(specificationBuilder().validOnSpecification(getValidOn()))
+                                 .and(specificationBuilder().enumSpecification(getStatusRestrictions(),
                                      getStatus()));
   }
 
