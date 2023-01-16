@@ -11,38 +11,45 @@ import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.Singular;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ServicePointRequestParams {
 
   @Singular(ignoreNullCollections = true)
-  private List<String> sloids;
+  private List<String> sloids = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
-  private List<Integer> numbers;
+  private List<Integer> numbers = new ArrayList<>();
   @Singular(value = "numberShort", ignoreNullCollections = true)
-  private List<Integer> numbersShort;
+  private List<Integer> numbersShort = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
-  private List<String> abbreviations;
+  private List<String> abbreviations = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
-  private List<String> businessOrganisationSboids;
+  private List<String> businessOrganisationSboids = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
-  private List<Country> countries;
+  private List<Country> countries = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
-  private List<Category> categories;
+  private List<Category> categories = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
-  private List<OperatingPointType> operatingPointTypes;
+  private List<OperatingPointType> operatingPointTypes = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
-  private List<StopPointType> stopPointTypes;
+  private List<StopPointType> stopPointTypes = new ArrayList<>();
   @Singular(value = "meanOfTransport", ignoreNullCollections = true)
-  private List<MeanOfTransport> meansOfTransport;
+  private List<MeanOfTransport> meansOfTransport = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
-  private List<Status> statusRestrictions;
+  private List<Status> statusRestrictions = new ArrayList<>();
 
   private Boolean operatingPoint;
   private Boolean withTimetable;
