@@ -80,7 +80,7 @@
     <dependency>
       <artifactId>searching</artifactId>
       <groupId>ch.sbb.atlas</groupId>
-      <version>1.140.0</version>
+      <version>1.143.0</version>
     </dependency>
     <dependency>
       <groupId>ch.sbb.atlas</groupId>
