@@ -144,4 +144,40 @@ class LineStatusDeciderTest {
     // Then
     assertThat(result).isEqualTo(Status.IN_REVIEW);
   }
+
+  @Test
+  void shouldSwitchToDraftStatusWhenChangedFromTemporaryToOrderly() {
+    // Given
+    LineVersion currentLineVersion = LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY).build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().lineType(LineType.ORDERLY).build();
+    // When
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
+    // Then
+    assertThat(result).isEqualTo(Status.DRAFT);
+  }
+
+  @Test
+  void shouldSwitchToDraftStatusWhenChangedFromOperationalToOrderly() {
+    // Given
+    LineVersion currentLineVersion = LineTestData.lineVersionBuilder().lineType(LineType.OPERATIONAL).build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().lineType(LineType.ORDERLY).build();
+    // When
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
+    // Then
+    assertThat(result).isEqualTo(Status.DRAFT);
+  }
+
+  @Test
+  void shouldSwitchToValidatedStatusWhenChangedFromOrderlyToOperational() {
+    // Given
+    LineVersion currentLineVersion = LineTestData.lineVersionBuilder().lineType(LineType.ORDERLY).status(Status.DRAFT).build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().lineType(LineType.OPERATIONAL).build();
+    // When
+    Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion),
+        List.of(currentLineVersion));
+    // Then
+    assertThat(result).isEqualTo(Status.VALIDATED);
+  }
 }

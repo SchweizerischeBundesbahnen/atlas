@@ -81,6 +81,10 @@ public class LineStatusDecider {
           return true;
         }
       }
+      if (previousLineVersion.getLineType() != LineType.ORDERLY
+          && newLineVersion.getLineType() == LineType.ORDERLY) {
+        return true;
+      }
       return false;
     }
   }
