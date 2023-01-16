@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.model;
+package ch.sbb.atlas.servicepointdirectory.model.search;
 
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;

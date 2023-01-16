@@ -6,6 +6,7 @@ import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,9 +25,14 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private final TrafficPointElementService trafficPointElementService;
 
   @Override
-  // TODO: add filter parameter
-  public Container<TrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, Optional<LocalDate> validOn) {
-    Page<TrafficPointElementVersion> TrafficPointElementVersions = trafficPointElementService.findAll(pageable);
+  public Container<TrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, List<String> searchCriteria,
+      Optional<LocalDate> validOn) {
+    Page<TrafficPointElementVersion> TrafficPointElementVersions = trafficPointElementService.findAll(
+        TrafficPointElementSearchRestrictions.builder()
+            .pageable(pageable)
+            .searchCriterias(searchCriteria)
+            .validOn(validOn)
+            .build());
     return Container.<TrafficPointElementVersionModel>builder()
         .objects(TrafficPointElementVersions.stream().map(TrafficPointElementVersionModel::fromEntity).toList())
         .totalCount(TrafficPointElementVersions.getTotalElements())
@@ -37,9 +43,9 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   public List<TrafficPointElementVersionModel> getTrafficPointElement(String sloid) {
     List<TrafficPointElementVersionModel> TrafficPointElementVersions =
         trafficPointElementService.findTrafficPointElement(
-            sloid)
-        .stream()
-        .map(TrafficPointElementVersionModel::fromEntity).toList();
+                sloid)
+            .stream()
+            .map(TrafficPointElementVersionModel::fromEntity).toList();
     if (TrafficPointElementVersions.isEmpty()) {
       throw new SloidNotFoundException(sloid);
     }
