@@ -1,34 +1,80 @@
 package ch.sbb.atlas.servicepointdirectory.model;
 
+import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.searching.SearchRestrictions;
+import ch.sbb.atlas.searching.SpecificationBuilder;
+import ch.sbb.atlas.searching.specification.IsMemberSpecification;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import lombok.Builder;
-import lombok.Data;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import javax.persistence.metamodel.SingularAttribute;
+import lombok.Getter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-@Data
-@Builder
-public class ServicePointSearchRestrictions {
+@Getter
+@ToString
+@SuperBuilder
+public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePointVersion> {
 
   private final Pageable pageable;
+  private final ServicePointRequestParams servicePointRequestParams;
 
-  private ServicePointVersionSpecification specification;
+  @Override
+  protected SingularAttribute<ServicePointVersion, Status> getStatus() {
+    return ServicePointVersion_.status;
+  }
 
-  @Data
-  public static class ServicePointVersionSpecification implements Specification<ServicePointVersion> {
+  @Override
+  public Optional<LocalDate> getValidOn() {
+    return Optional.ofNullable(servicePointRequestParams.getValidOn());
+  }
 
-    private final ServicePointRequestParams servicePointRequestParams;
+  @Override
+  public List<Status> getStatusRestrictions() {
+    return servicePointRequestParams.getStatusRestrictions();
+  }
 
-    @Override
-    public Predicate toPredicate(Root<ServicePointVersion> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-      // TODO: implement all the shit
-      return null;
-    }
+  @Override
+  protected SpecificationBuilder<ServicePointVersion> specificationBuilder() {
+    return SpecificationBuilder.<ServicePointVersion>builder()
+        .stringAttributes(
+            List.of(Fields.number,
+                Fields.numberShort,
+                Fields.designationOfficial))
+        .validFromAttribute(ServicePointVersion_.validFrom)
+        .validToAttribute(ServicePointVersion_.validTo)
+        .build();
+  }
+
+  @Override
+  public Specification<ServicePointVersion> getSpecification() {
+    return getBaseSpecification()
+        .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getSloids(), ServicePointVersion_.sloid))
+        .and(specificationBuilder().inSpecification(servicePointRequestParams.getServicePointNumbers(), Fields.number))
+        .and(specificationBuilder().inSpecification(servicePointRequestParams.getNumbersShort(), Fields.numberShort))
+        .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getAbbreviations(),
+            ServicePointVersion_.abbreviation))
+        .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getBusinessOrganisationSboids(),
+            ServicePointVersion_.businessOrganisation))
+        .and(specificationBuilder().enumSpecification(servicePointRequestParams.getCountries(), ServicePointVersion_.country))
+        .and(new IsMemberSpecification<>(servicePointRequestParams.getCategories(), ServicePointVersion_.categories))
+        .and(specificationBuilder().enumSpecification(servicePointRequestParams.getOperatingPointTypes(),
+            ServicePointVersion_.operatingPointType))
+        .and(specificationBuilder().enumSpecification(servicePointRequestParams.getStopPointTypes(),
+            ServicePointVersion_.stopPointType))
+        .and(new IsMemberSpecification<>(servicePointRequestParams.getMeansOfTransport(), ServicePointVersion_.meansOfTransport))
+        .and(new OperatingPointSpecification(servicePointRequestParams.getOperatingPoint()))
+        .and(new WithTimetableSpecification(servicePointRequestParams.getWithTimetable()))
+        .and(new ValidOrEditionTimerangeSpecification(servicePointRequestParams.getFromDate(),
+            servicePointRequestParams.getToDate(), servicePointRequestParams.getCreatedAfter(),
+            servicePointRequestParams.getModifiedAfter()));
   }
 
 }

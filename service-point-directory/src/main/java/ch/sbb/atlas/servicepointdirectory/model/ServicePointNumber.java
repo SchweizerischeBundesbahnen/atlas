@@ -75,6 +75,14 @@ public final class ServicePointNumber {
     return new ServicePointNumber(number);
   }
 
+  public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
+    if (String.valueOf(number).length() == LENGTH - 1) {
+      int sevenDigitSplitter = 100000;
+      return of(Country.from(number / sevenDigitSplitter), number % sevenDigitSplitter);
+    }
+    return of(number);
+  }
+
   public static ServicePointNumber of(Country country, int servicePointId) {
     String formattedId = String.format("%05d", servicePointId);
     return ServicePointNumber.fromString(country.getUicCode() + formattedId + calculateCheckDigit(formattedId));
