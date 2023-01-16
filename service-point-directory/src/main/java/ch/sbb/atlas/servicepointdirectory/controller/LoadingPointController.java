@@ -7,6 +7,7 @@ import ch.sbb.atlas.servicepointdirectory.api.LoadingPointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.LoadingPointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointService;
 import java.time.LocalDate;
 import java.util.List;
@@ -25,9 +26,14 @@ public class LoadingPointController implements LoadingPointApiV1 {
   private final LoadingPointService loadingPointService;
 
   @Override
-  // TODO: add filter parameter
-  public Container<LoadingPointVersionModel> getLoadingPoints(Pageable pageable, Optional<LocalDate> validOn) {
-    Page<LoadingPointVersion> LoadingPointVersions = loadingPointService.findAll(pageable);
+  public Container<LoadingPointVersionModel> getLoadingPoints(Pageable pageable, List<String> searchCriteria,
+      Optional<LocalDate> validOn) {
+    Page<LoadingPointVersion> LoadingPointVersions = loadingPointService.findAll(
+        LoadingPointSearchRestrictions.builder()
+            .pageable(pageable)
+            .searchCriterias(searchCriteria)
+            .validOn(validOn)
+            .build());
     return Container.<LoadingPointVersionModel>builder()
         .objects(LoadingPointVersions.stream().map(LoadingPointVersionModel::fromEntity).toList())
         .totalCount(LoadingPointVersions.getTotalElements())

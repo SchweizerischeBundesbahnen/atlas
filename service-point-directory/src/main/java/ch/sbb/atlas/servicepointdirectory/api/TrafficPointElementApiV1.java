@@ -25,6 +25,7 @@ public interface TrafficPointElementApiV1 {
   @PageableAsQueryParam
   Container<TrafficPointElementVersionModel> getTrafficPointElements(
       @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid, Fields.validFrom}) Pageable pageable,
+      @Parameter @RequestParam(required = false) List<String> searchCriteria,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
   @GetMapping("{sloid}")
