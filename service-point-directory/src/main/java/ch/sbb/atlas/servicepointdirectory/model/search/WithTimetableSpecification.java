@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.model.search;
 
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTypes;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -27,7 +27,7 @@ public class WithTimetableSpecification implements Specification<ServicePointVer
   private Predicate getIsWithTimetablePredicate(Root<ServicePointVersion> root, CriteriaBuilder criteriaBuilder) {
     return criteriaBuilder.or(
         root.get(ServicePointVersion_.operatingPointType).isNull(),
-        root.get(ServicePointVersion_.operatingPointType).in(OperatingPointType.TYPES_WITH_TIMETABLE)
+        root.get(ServicePointVersion_.operatingPointType).in(OperatingPointTypes.TYPES_WITH_TIMETABLE)
     );
   }
 }
