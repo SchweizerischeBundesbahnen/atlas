@@ -35,10 +35,9 @@ class ImportMailNotificationServiceTest {
     expectedMailContent.put("error", "Internal Server Error");
     expectedMailContent.put("correlationId", "abc123");
 
-    Throwable throwable = new Throwable("Internal Server Error");
     doReturn("abc123").when(notificationService).getCurrentSpan();
     //when
-    MailNotification result = notificationService.buildMailNotification("export", throwable);
+    MailNotification result = notificationService.buildMailErrorNotification("export", "job execution failed");
 
     //then
     assertThat(result).isNotNull();
@@ -58,7 +57,7 @@ class ImportMailNotificationServiceTest {
 
     doReturn("abc123").when(notificationService).getCurrentSpan();
     //when
-    MailNotification result = notificationService.buildMailNotification("export", null);
+    MailNotification result = notificationService.buildMailErrorNotification("export", null);
 
     //then
     assertThat(result).isNotNull();
@@ -73,7 +72,7 @@ class ImportMailNotificationServiceTest {
     //given
     when(tracer.currentSpan()).thenReturn(null);
     //when
-    assertThrows(IllegalStateException.class, () -> notificationService.buildMailNotification("export", new Throwable("Error")));
+    assertThrows(IllegalStateException.class, () -> notificationService.buildMailErrorNotification("export", "Error"));
 
   }
 

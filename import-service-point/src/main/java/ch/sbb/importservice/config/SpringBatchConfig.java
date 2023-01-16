@@ -3,6 +3,7 @@ package ch.sbb.importservice.config;
 import ch.sbb.atlas.base.service.imports.ServicePointCsvModel;
 import ch.sbb.importservice.batch.ServicePointApiWriter;
 import ch.sbb.importservice.batch.ServicePointProcessor;
+import ch.sbb.importservice.listener.JobCompletitionListener;
 import ch.sbb.importservice.listener.StepSkipListener;
 import ch.sbb.importservice.service.CsvService;
 import java.io.File;
@@ -16,6 +17,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.skip.SkipPolicy;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +38,8 @@ public class SpringBatchConfig {
   private final ServicePointApiWriter servicePointApiWriter;
 
   private final CsvService csvService;
+
+  private final JobCompletitionListener jobCompletitionListener;
 
   @Bean
   public ServicePointProcessor processor() {
@@ -67,6 +71,8 @@ public class SpringBatchConfig {
   @Bean
   public Job runJob(ListItemReader<ServicePointCsvModel> listItemReader) {
     return jobBuilderFactory.get("importServicePointCsv")
+        .listener(jobCompletitionListener)
+        .incrementer(new RunIdIncrementer())
         .flow(parseCsvStep(listItemReader))
         .end()
         .build();
