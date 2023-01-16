@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.api;
 import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
