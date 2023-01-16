@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.model;
+package ch.sbb.atlas.servicepointdirectory.model.search;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
