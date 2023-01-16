@@ -51,8 +51,8 @@ public abstract class BaseEntity {
   @PrePersist
   public void onPrePersist() {
     String sbbUid = UserService.getSbbUid();
-    setCreator(Optional.ofNullable(creator).orElse(sbbUid));
-    setEditor(Optional.ofNullable(editor).orElse(sbbUid));
+    setCreator(sbbUid);
+    setEditor(sbbUid);
   }
 
   @PreUpdate

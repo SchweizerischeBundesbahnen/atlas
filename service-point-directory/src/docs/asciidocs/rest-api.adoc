@@ -1,0 +1,93 @@
+= ATLAS - SePoDi (Service Point Directory) API Guide
+:doctype: book
+:compat-mode:
+:page-layout!:
+:toc: left
+:toclevels: 1
+:sectanchors:
+:sectlinks:
+:linkattrs:
+:icons: font
+:table-caption!:
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:revnumber: {version}
+
+[[abstract]]
+= Overview
+
+=== Project information
+
+[width="60%" cols="18%,35%" ]
+|=================================
+|Application Name | {name}
+|Version | {version}
+|Build-Time| {buildTime}
+|=================================
+
+=== Developer Portal
+
+This API is available as a part of the ATLAS API on the SBB developer portal.
+
+- Production: https://developer.sbb.ch/apis/atlas/information
+- Lower Stages are available here: https://developer-int.sbb.ch/apis?all=&text=atlas&scopes=PUBLIC;INTERNAL
+
+=== Release Notes
+
+include::../release-notes.adoc[]
+
+= Service Points
+
+== Read ServicePointVersions - Successfully
+
+include::{snippets}/service-point-controller-api-test/should-get-service-point-versions/auto-section.adoc[]
+
+== Read ServicePoint by ServicePointNumber - Successfully
+
+include::{snippets}/service-point-controller-api-test/should-get-service-point/auto-section.adoc[]
+
+== Read ServicePointVersion by ID - Successfully
+
+include::{snippets}/service-point-controller-api-test/should-get-service-point-version-by-id/auto-section.adoc[]
+
+== Read ServicePoint by ServicePointNumber - NotFound
+
+include::{snippets}/service-point-controller-api-test/should-fail-on-invalid-service-point-number/auto-section.adoc[]
+
+
+= Traffic Point Elements
+
+== Read TrafficPointElements - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-versions/auto-section.adoc[]
+
+== Read TrafficPointElement by SLOID - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element/auto-section.adoc[]
+
+== Read TrafficPointElement by ID - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-version-by-id/auto-section.adoc[]
+
+== Read TrafficPointElement by SLOID - NotFound
+
+include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/auto-section.adoc[]
+
+
+= Loading Points
+
+== Read LoadingPoints - Successfully
+
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions/auto-section.adoc[]
+
+== Read LoadingPoint by number - Successfully
+
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point/auto-section.adoc[]
+
+== Read LoadingPoint by ID - Successfully
+
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-version-by-id/auto-section.adoc[]
+
+== Read LoadingPoint by number - NotFound
+
+include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loading-point-number/auto-section.adoc[]
