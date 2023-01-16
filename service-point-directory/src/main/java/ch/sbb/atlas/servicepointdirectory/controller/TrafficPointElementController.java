@@ -27,15 +27,15 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   @Override
   public Container<TrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, List<String> searchCriteria,
       Optional<LocalDate> validOn) {
-    Page<TrafficPointElementVersion> TrafficPointElementVersions = trafficPointElementService.findAll(
+    Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(
         TrafficPointElementSearchRestrictions.builder()
             .pageable(pageable)
             .searchCriterias(searchCriteria)
             .validOn(validOn)
             .build());
     return Container.<TrafficPointElementVersionModel>builder()
-        .objects(TrafficPointElementVersions.stream().map(TrafficPointElementVersionModel::fromEntity).toList())
-        .totalCount(TrafficPointElementVersions.getTotalElements())
+        .objects(trafficPointElementVersions.stream().map(TrafficPointElementVersionModel::fromEntity).toList())
+        .totalCount(trafficPointElementVersions.getTotalElements())
         .build();
   }
 
