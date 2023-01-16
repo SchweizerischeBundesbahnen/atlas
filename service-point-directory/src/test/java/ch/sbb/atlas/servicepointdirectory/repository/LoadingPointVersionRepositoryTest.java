@@ -17,16 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoadingPointVersionRepositoryTest {
 
-  private final LoadingPointRepository loadingPointRepository;
+  private final LoadingPointVersionRepository loadingPointVersionRepository;
 
   @Autowired
-  public LoadingPointVersionRepositoryTest(LoadingPointRepository loadingPointRepository) {
-    this.loadingPointRepository = loadingPointRepository;
+  public LoadingPointVersionRepositoryTest(LoadingPointVersionRepository loadingPointVersionRepository) {
+    this.loadingPointVersionRepository = loadingPointVersionRepository;
   }
 
   @AfterEach
   void tearDown() {
-    loadingPointRepository.deleteAll();
+    loadingPointVersionRepository.deleteAll();
   }
 
   @Test
@@ -44,7 +44,7 @@ public class LoadingPointVersionRepositoryTest {
         .build();
 
     // when
-    LoadingPointVersion savedVersion = loadingPointRepository.save(loadingPointVersion);
+    LoadingPointVersion savedVersion = loadingPointVersionRepository.save(loadingPointVersion);
 
     // then
     assertThat(savedVersion.getId()).isNotNull();
@@ -75,7 +75,7 @@ public class LoadingPointVersionRepositoryTest {
         .build();
 
     // when
-    LoadingPointVersion savedVersion = loadingPointRepository.save(loadingPointVersion);
+    LoadingPointVersion savedVersion = loadingPointVersionRepository.save(loadingPointVersion);
 
     // then
     assertThat(savedVersion.getId()).isNotNull();

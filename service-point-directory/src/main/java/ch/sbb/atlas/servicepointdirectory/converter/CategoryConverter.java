@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.converter;
 
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
