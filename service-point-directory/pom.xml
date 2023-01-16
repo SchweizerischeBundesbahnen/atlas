@@ -69,7 +69,16 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
+      <artifactId>hibernate-jpamodelgen</artifactId>
+      <groupId>org.hibernate</groupId>
+    </dependency>
+    <dependency>
       <artifactId>base-service</artifactId>
+      <groupId>ch.sbb.atlas</groupId>
+      <version>1.140.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>searching</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <version>1.140.0</version>
     </dependency>
