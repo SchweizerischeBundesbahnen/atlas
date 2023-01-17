@@ -112,7 +112,7 @@
     </div>
 </div>
 <div class='content-container'>
-    <div class='message mt-1'>
+    <div class='message mt-1' th:if="${!properties.get(0).get('importProcessItems').isEmpty()}">
         The Import Service Point Batch Job was successfully executed. See the imported Objects summary in the following table:
     </div>
     <div class='mt-1' th:if="${!properties.get(0).get('importProcessItems').isEmpty()}">
@@ -121,11 +121,15 @@
             <caption>Imported Service Point items</caption>
             <tr>
                 <th>Didok Number</th>
+                <th>Response Status</th>
+                <th>Response Message</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="item : ${properties.get(0).get('importProcessItems')}">
-                <td th:text='${item.importProcessItem}'></td>
+                <td th:text='${item.processedItem}'></td>
+                <td th:text='${item.processedItemStatus}'></td>
+                <td th:text='${item.processedItemMessage}'></td>
             </tr>
             </tbody>
         </table>
