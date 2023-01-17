@@ -50,7 +50,11 @@ public class MailNotificationService {
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("jobName", jobName);
     mailContentProperty.put("correlationId", getCurrentSpan());
-    mailContentProperty.put("importProcessItems", importProcessItem);
+    if (importProcessItem.size() < 1_000) {
+      mailContentProperty.put("importProcessItems", importProcessItem);
+    } else {
+      mailContentProperty.put("importProcessItems", new HashMap<>());
+    }
     mailProperties.add(mailContentProperty);
     return mailProperties;
   }
@@ -70,7 +74,8 @@ public class MailNotificationService {
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("jobName", jobName);
     mailContentProperty.put("exception", getException(stepExecution));
-    mailContentProperty.put("jobParameters", getParameters(stepExecution));
+    mailContentProperty.put("cause", getCause(stepExecution));
+    mailContentProperty.put("jobParameter", getParameters(stepExecution));
     mailContentProperty.put("correlationId", getCurrentSpan());
     mailProperties.add(mailContentProperty);
     return mailProperties;
@@ -80,15 +85,22 @@ public class MailNotificationService {
     StringBuilder errorBuilder = new StringBuilder();
     List<Throwable> failureExceptions = stepExecution.getFailureExceptions();
     failureExceptions.forEach(
-        throwable -> errorBuilder.append("Exception: ").append(throwable.getLocalizedMessage()).append("\n")
-            .append("Cause: ").append(throwable.getCause().getLocalizedMessage()).append("\n"));
+        throwable -> errorBuilder.append(throwable.getLocalizedMessage()));
+    return errorBuilder.toString();
+  }
+
+  String getCause(StepExecution stepExecution) {
+    StringBuilder errorBuilder = new StringBuilder();
+    List<Throwable> failureExceptions = stepExecution.getFailureExceptions();
+    failureExceptions.forEach(
+        throwable -> errorBuilder.append(throwable.getCause().getLocalizedMessage()));
     return errorBuilder.toString();
   }
 
   String getParameters(StepExecution stepExecution) {
     StringBuilder stringBuilder = new StringBuilder();
     JobParameters jobParameters = stepExecution.getJobParameters();
-    jobParameters.getParameters().keySet().forEach(s -> stringBuilder.append("JobParameter: ").append(s).append("\n"));
+    stringBuilder.append(jobParameters.getParameters());
     return stringBuilder.toString();
   }
 

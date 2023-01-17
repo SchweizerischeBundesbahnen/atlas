@@ -44,8 +44,11 @@ public class ImportController {
       //      File file = new File(
       //          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\import.csv");
 
+      //      File file = new File(
+      //          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
       File file = new File(
-          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
+          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources"
+              + "\\DIDOK3_DIENSTSTELLEN_ALL_V_3_WITH_NUMBER_FORMAT_EXCEPTION.csv");
 
       JobParameters jobParameters = new JobParametersBuilder()
           .addString("fullPathFileName", file.getAbsolutePath())
