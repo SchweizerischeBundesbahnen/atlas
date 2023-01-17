@@ -34,8 +34,22 @@ public class ImportController {
 
   private final Job job;
 
+  @PostMapping("service-point-batch")
+  public void startServicePointImportBatch() {
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addLong("startAt", System.currentTimeMillis()).toJobParameters();
+
+    try {
+      JobExecution execution = jobLauncher.run(job, jobParameters);
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+
+      e.printStackTrace();
+    }
+  }
+
   @PostMapping("service-point")
-  public void startServicePointImportBatch(@RequestParam("file") MultipartFile multipartFile) {
+  public void startServicePointImport(@RequestParam("file") MultipartFile multipartFile) {
     try {
       String originalFileName = multipartFile.getOriginalFilename();
       File fileToImport = new File(DOCKER_FILE_DIRECTORY + originalFileName);
@@ -47,8 +61,7 @@ public class ImportController {
       //      File file = new File(
       //          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
       File file = new File(
-          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources"
-              + "\\DIDOK3_DIENSTSTELLEN_ALL_V_3_WITH_NUMBER_FORMAT_EXCEPTION.csv");
+          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIDOK3_DIENSTSTELLEN_ALL_V_3_TEST.csv");
 
       JobParameters jobParameters = new JobParametersBuilder()
           .addString("fullPathFileName", file.getAbsolutePath())
