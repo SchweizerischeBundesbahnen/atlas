@@ -105,7 +105,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     LineVersionModel lineVersionModel2 = LineTestData.lineVersionModelBuilder()
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
-        .description("desc2")
+        .description("descriptiön2")
         .build();
     lineController.createLineVersion(lineVersionModel1);
     lineController.createLineVersion(lineVersionModel2);
