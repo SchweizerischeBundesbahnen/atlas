@@ -41,7 +41,8 @@ public class RecoveryJobsRunner implements ApplicationRunner {
           JobParameter fullPathFileName = parameters.get("fullPathFileName");
           JobParameters jobParameters = new JobParametersBuilder()
               .addParameter("fullPathFileName", fullPathFileName)
-              .addLong("startAt", System.currentTimeMillis()).toJobParameters();
+              .addLong("startAt", System.currentTimeMillis())
+              .toJobParameters();
           log.info("Run job with parameters {}", parameters);
           JobExecution execution = jobLauncher.run(job, jobParameters);
           log.info(execution.toString());
