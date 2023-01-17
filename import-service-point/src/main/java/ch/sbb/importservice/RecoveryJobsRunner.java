@@ -11,6 +11,7 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,8 @@ public class RecoveryJobsRunner implements ApplicationRunner {
 
   private final JobLauncher jobLauncher;
 
-  private final Job job;
+  @Qualifier("importServicePointCsvJob")
+  private final Job importServicePointCsvJob;
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
@@ -44,7 +46,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
               .addLong("startAt", System.currentTimeMillis())
               .toJobParameters();
           log.info("Run job with parameters {}", parameters);
-          JobExecution execution = jobLauncher.run(job, jobParameters);
+          JobExecution execution = jobLauncher.run(importServicePointCsvJob, jobParameters);
           log.info(execution.toString());
         } else {
           log.info("No jobs found to recover.");
