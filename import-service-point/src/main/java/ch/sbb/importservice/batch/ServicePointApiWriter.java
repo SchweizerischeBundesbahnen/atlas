@@ -4,6 +4,7 @@ import ch.sbb.atlas.base.service.imports.ServicePointCsvModel;
 import ch.sbb.importservice.entitiy.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.SePoDiClientService;
+import feign.Response;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepExecution;
@@ -33,12 +34,16 @@ public class ServicePointApiWriter implements ItemWriter<ServicePointCsvModel> {
   public void write(List<? extends ServicePointCsvModel> servicePoints) {
     Long stepExecutionId = stepExecution.getId();
     for (ServicePointCsvModel servicePoint : servicePoints) {
+      Response response = sePoDiClientService.getServicePoints(servicePoint.getDidokCode());
       ImportProcessItem importProcessItem = ImportProcessItem.builder()
           .servicePointNumber(servicePoint.getDidokCode())
           .stepExecutionId(stepExecutionId)
+          .responseStatus(response.status())
+          .responseMessage(response.reason())
           .build();
       importProcessedItemRepository.save(importProcessItem);
-      //      sePoDiClientService.postServicePoints();
+      int status = response.status();
+      log.info("Response status {}", status);
     }
   }
 }

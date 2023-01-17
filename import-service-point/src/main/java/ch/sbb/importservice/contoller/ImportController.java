@@ -55,13 +55,14 @@ public class ImportController {
       File fileToImport = new File(DOCKER_FILE_DIRECTORY + originalFileName);
       multipartFile.transferTo(fileToImport);
 
-      //      File file = new File(
-      //          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\import.csv");
+      File file = new File(
+          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
 
       //      File file = new File(
       //          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
-      File file = new File(
-          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIDOK3_DIENSTSTELLEN_ALL_V_3_TEST.csv");
+      //      File file = new File(
+      //          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIDOK3_DIENSTSTELLEN_ALL_V_3_TEST
+      //          .csv");
 
       JobParameters jobParameters = new JobParametersBuilder()
           .addString("fullPathFileName", file.getAbsolutePath())
