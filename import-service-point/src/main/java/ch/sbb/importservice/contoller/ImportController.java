@@ -16,6 +16,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +33,11 @@ public class ImportController {
 
   private final JobLauncher jobLauncher;
 
-  private final Job job;
+  @Qualifier("importServicePointCsvJob")
+  private final Job importServicePointCsvJob;
+
+  @Qualifier("importLoadingPointCsvJob")
+  private final Job importLoadingPointCsvJob;
 
   @PostMapping("service-point-batch")
   public void startServicePointImportBatch() {
@@ -40,12 +45,26 @@ public class ImportController {
         .addLong("startAt", System.currentTimeMillis()).toJobParameters();
 
     try {
-      JobExecution execution = jobLauncher.run(job, jobParameters);
+      JobExecution execution = jobLauncher.run(importServicePointCsvJob, jobParameters);
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
 
       e.printStackTrace();
     }
+  }
+
+  @PostMapping("service-point-asd")
+  public void startServicePointImport()
+      throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException,
+      JobRestartException {
+    File file = new File(
+        "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
+
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString("fullPathFileName", file.getAbsolutePath())
+        .addLong("startAt", System.currentTimeMillis()).toJobParameters();
+    JobExecution execution = jobLauncher.run(importLoadingPointCsvJob, jobParameters);
+
   }
 
   @PostMapping("service-point")
@@ -67,8 +86,7 @@ public class ImportController {
       JobParameters jobParameters = new JobParametersBuilder()
           .addString("fullPathFileName", file.getAbsolutePath())
           .addLong("startAt", System.currentTimeMillis()).toJobParameters();
-
-      JobExecution execution = jobLauncher.run(job, jobParameters);
+      JobExecution execution = jobLauncher.run(importServicePointCsvJob, jobParameters);
 
       if (execution.getExitStatus().getExitCode().equals(ExitStatus.COMPLETED)) {
         //delete the file from the TEMP_STORAGE
