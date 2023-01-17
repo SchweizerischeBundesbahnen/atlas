@@ -2,7 +2,9 @@ CREATE TABLE import_process_item
 (
     id                   BIGINT PRIMARY KEY,
     step_execution_id    BIGINT,
-    service_point_number INTEGER NOT NULL
+    service_point_number INTEGER NOT NULL,
+    response_status      INTEGER,
+    response_message     VARCHAR(250)
 );
 
 CREATE SEQUENCE import_process_item_seq START WITH 1000 INCREMENT BY 1;
