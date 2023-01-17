@@ -77,8 +77,18 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Job runJob(ListItemReader<ServicePointCsvModel> listItemReader) {
-    return jobBuilderFactory.get("importServicePointCsv")
+  public Job importServicePointCsvJob(ListItemReader<ServicePointCsvModel> listItemReader) {
+    return jobBuilderFactory.get("importServicePointCsvJob")
+        .listener(jobCompletitionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(parseCsvStep(listItemReader))
+        .end()
+        .build();
+  }
+
+  @Bean
+  public Job importLoadingPointCsvJob(ListItemReader<ServicePointCsvModel> listItemReader) {
+    return jobBuilderFactory.get("importLoadingPointCsvJob")
         .listener(jobCompletitionListener)
         .incrementer(new RunIdIncrementer())
         .flow(parseCsvStep(listItemReader))
