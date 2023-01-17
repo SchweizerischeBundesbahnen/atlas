@@ -52,8 +52,13 @@ public class SpringBatchConfig {
   @Bean
   public ListItemReader<ServicePointCsvModel> listItemReader(@Value("#{jobParameters[fullPathFileName]}") String pathToFIle)
       throws IOException {
-    File file = new File(pathToFIle);
-    List<ServicePointCsvModel> actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3(file);
+    List<ServicePointCsvModel> actualServicePotinCsvModelsFromS3;
+    if (pathToFIle != null) {
+      File file = new File(pathToFIle);
+      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3(file);
+    } else {
+      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3();
+    }
     return new ListItemReader<>(actualServicePotinCsvModelsFromS3);
   }
 
