@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.SkipListener;
 import org.springframework.batch.core.Step;
@@ -25,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.dao.DeadlockLoserDataAccessException;
 
 @Configuration
 @EnableBatchProcessing
@@ -62,8 +64,9 @@ public class SpringBatchConfig {
         .processor(processor())
         .writer(servicePointApiWriter)
         .faultTolerant()
-        .listener(skipListener())
-        .skipPolicy(skipPolicy())
+        .retryLimit(3)
+        .retry(ConnectTimeoutException.class)
+        .retry(DeadlockLoserDataAccessException.class)
         .taskExecutor(getAsyncExecutor())
         .build();
   }

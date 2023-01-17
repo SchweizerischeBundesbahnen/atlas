@@ -68,7 +68,6 @@
             display: inline-block;
             background-color: orange;
         }
-
     </style>
 </head>
 <body>
@@ -86,7 +85,7 @@
     </div>
 </div>
 <div class='content-container'>
-    <div class='message mt-1'>
+    <div class='message'>
         Dear Atlas-AOM
         <br/>
         <br/>
@@ -96,8 +95,14 @@
         <b>Error Detail Message:</b>
         <br/>
         <ul>
-            <li>
-                <span class="code" th:text="${properties.get(0).get('error')}"></span>
+            <li><b>Exception:</b>
+                <span class="code" th:text="${properties.get(0).get('exception')}"></span>
+            </li>
+            <li><b>Cause:</b>
+                <span class="code" th:text="${properties.get(0).get('cause')}"></span>
+            </li>
+            <li><b>Job Parameters:</b>
+                <span class="code" th:text="${properties.get(0).get('jobParameter')}"></span>
             </li>
         </ul>
         Please check the log with the following CorrelationId:
