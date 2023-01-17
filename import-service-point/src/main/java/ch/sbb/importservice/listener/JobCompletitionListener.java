@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JobCompletitionListener implements JobExecutionListener {
 
+  public static final String IMPORT_SERVICE_POINT_JOB = "import-service-point";
   private final MailNotificationService mailNotificationService;
   private final ImportProcessedItemRepository importProcessedItemRepository;
 
@@ -43,7 +44,8 @@ public class JobCompletitionListener implements JobExecutionListener {
   }
 
   private void sendUnseccessufflyNotification(StepExecution stepExecution) {
-    MailNotification mailNotification = mailNotificationService.buildMailErrorNotification("importDinstelle", stepExecution);
+    MailNotification mailNotification = mailNotificationService.buildMailErrorNotification(IMPORT_SERVICE_POINT_JOB,
+        stepExecution);
     mailProducerService.produceMailNotification(mailNotification);
 
   }
@@ -51,7 +53,7 @@ public class JobCompletitionListener implements JobExecutionListener {
   private void sendSuccessfullyNotification(StepExecution stepExecution) {
     List<ImportProcessItem> allImportProcessedItem =
         importProcessedItemRepository.findAllByStepExecutionId(stepExecution.getId());
-    MailNotification mailNotification = mailNotificationService.buildMailSuccessNotification("importDinstelle",
+    MailNotification mailNotification = mailNotificationService.buildMailSuccessNotification(IMPORT_SERVICE_POINT_JOB,
         allImportProcessedItem);
     mailProducerService.produceMailNotification(mailNotification);
   }
