@@ -17,7 +17,11 @@ public class SePoDiClientService extends BaseClientService {
   }
 
   public Response postServicePoints() {
-    return executeRequest(sePoDiClient.postServicePoints(), "Full Line Versions CSV/ZIP");
+    return executeRequest(sePoDiClient.postServicePoints(), "Update Service Point");
+  }
+
+  public Response getServicePoints(Integer servicePointNumber) {
+    return executeRequest(sePoDiClient.getServicePoints(servicePointNumber), "Get Service Point");
   }
 
 }
