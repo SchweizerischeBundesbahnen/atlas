@@ -35,7 +35,7 @@ public class ServicePointGeoDataService {
 
   private final ServicePointVersionRepository dataRepository;
 
-  public Tile getGeoData(Integer z, Integer x, Integer y, LocalDate validAt) {
+  public Tile getGeoData(Integer z, Integer x, Integer y, LocalDate validAtDate) {
     log.info("calculating geodata area");
     final Envelope areaWgs84 = boundingBoxTransformer.calculateBoundingBox(z, x, y);
 
@@ -45,7 +45,7 @@ public class ServicePointGeoDataService {
 
     log.info("finding service points");
     final List<ServicePointVersion> servicePoints = dataRepository
-        .findAll(validAtDate(validAt).and(
+        .findAll(validAtDate(validAtDate).and(
             coordinatesBetween(SpatialReference.WGS84, areaWgs84)
                 .or(coordinatesBetween(SpatialReference.WGS84WEB,
                     projectedAreas.get(SpatialReference.WGS84WEB)))
