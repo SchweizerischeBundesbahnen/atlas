@@ -48,7 +48,7 @@ public class ServicePointImportServiceTest {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
 
-    servicePointImportService.importServicePoints(servicePointCsvModels);
+    servicePointImportService.importServicePointCsvModels(servicePointCsvModels);
 
     List<ServicePointVersion> savedServicePoints = servicePointVersionRepository.findAll();
     assertThat(savedServicePoints).isNotEmpty();

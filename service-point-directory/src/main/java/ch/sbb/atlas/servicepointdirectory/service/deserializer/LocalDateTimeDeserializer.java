@@ -17,14 +17,20 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
   public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
     try {
       return LocalDateTime.parse(jsonParser.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    } catch (DateTimeParseException e) {
-      log.debug("LocalDateTime could not be parsed, trying with LocalDate");
+    } catch (DateTimeParseException ex1) {
+      log.debug("LocalDateTime could not be parsed, trying with ISO_LOCAL_DATE_TIME");
       try {
-        return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
-      } catch (DateTimeParseException exception) {
-        throw new IllegalArgumentException(
-            jsonParser.getText() + " not valid for " + jsonParser.getCurrentName() + " lineNumber:" + jsonParser.currentLocation()
-                .getLineNr(), exception);
+        return LocalDateTime.parse(jsonParser.getText(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+      } catch (DateTimeParseException ex2) {
+        log.debug("LocalDateTime could not be parsed, trying with LocalDate");
+        try {
+          return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
+        } catch (DateTimeParseException ex3) {
+          throw new IllegalArgumentException(
+              jsonParser.getText() + " not valid for " + jsonParser.getCurrentName() + " lineNumber: "
+                  + jsonParser.currentLocation()
+                  .getLineNr(), ex3);
+        }
       }
     }
   }
