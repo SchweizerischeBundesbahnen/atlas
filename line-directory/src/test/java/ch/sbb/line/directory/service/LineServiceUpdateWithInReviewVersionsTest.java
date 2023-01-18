@@ -128,7 +128,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    * Version:        1       2
    * <p>
    * Resultat:
-   *  - Nicht möglich, da IN_REVIEW Version validFrom verändert wird
+   *  - Nicht möglich, da IN_REVIEW Version validTo verändert wird
    */
   @Test
   public void updateScenario2() {
