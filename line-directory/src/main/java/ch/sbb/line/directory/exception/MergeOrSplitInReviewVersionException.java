@@ -29,7 +29,7 @@ public class MergeOrSplitInReviewVersionException extends AtlasException {
     return List.of(Detail.builder()
         .message(Status.IN_REVIEW.name() + " version may not be updated with versioning")
         .field(Line.Fields.lineType)
-        .displayInfo(builder().code("LIDI.LINE.UPDATE_IN_REVIEW").build())
+        .displayInfo(builder().code("LIDI.LINE.UPDATE_IN_REVIEW_MERGE_OR_SPLIT").build())
         .build());
   }
 
