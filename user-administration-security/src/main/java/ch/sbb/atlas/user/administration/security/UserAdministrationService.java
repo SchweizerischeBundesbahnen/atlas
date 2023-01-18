@@ -75,9 +75,9 @@ public class UserAdministrationService {
     return false;
   }
 
-  List<BusinessOrganisationAssociated> findUpdateAffectedCurrentVersions(
-      BusinessOrganisationAssociated editedBusinessObject,
-      List<BusinessOrganisationAssociated> currentBusinessObjects) {
+  public static <T extends BusinessOrganisationAssociated> List<T> findUpdateAffectedCurrentVersions(
+      T editedBusinessObject,
+      List<T> currentBusinessObjects) {
     LocalDate validFrom = editedBusinessObject.getValidFrom();
     LocalDate validTo = editedBusinessObject.getValidTo();
 
