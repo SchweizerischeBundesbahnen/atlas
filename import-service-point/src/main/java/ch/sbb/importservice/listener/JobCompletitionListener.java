@@ -35,36 +35,36 @@ public class JobCompletitionListener implements JobExecutionListener {
     StepExecution stepExecution = jobExecution.getStepExecutions().stream().findFirst().get();
     if (ExitStatus.COMPLETED.equals(jobExecution.getExitStatus())) {
       sendSuccessfullyNotification(stepExecution);
-      clearDB(jobExecution);
+      clearDB(stepExecution);
     }
     if (ExitStatus.FAILED.equals(jobExecution.getExitStatus())) {
-      sendUnseccessufflyNotification(stepExecution);
+      sendUnsuccessffulyNotification(stepExecution);
     }
 
   }
 
-  private void sendUnseccessufflyNotification(StepExecution stepExecution) {
-    MailNotification mailNotification = mailNotificationService.buildMailErrorNotification(IMPORT_SERVICE_POINT_JOB,
-        stepExecution);
+  private void sendUnsuccessffulyNotification(StepExecution stepExecution) {
+    String jobName = getJobName(stepExecution);
+    MailNotification mailNotification = mailNotificationService.buildMailErrorNotification(jobName, stepExecution);
     mailProducerService.produceMailNotification(mailNotification);
 
   }
 
   private void sendSuccessfullyNotification(StepExecution stepExecution) {
+    String jobName = getJobName(stepExecution);
     List<ImportProcessItem> allImportProcessedItem =
         importProcessedItemRepository.findAllByStepExecutionId(stepExecution.getId());
-    MailNotification mailNotification = mailNotificationService.buildMailSuccessNotification(IMPORT_SERVICE_POINT_JOB,
-        allImportProcessedItem);
+    MailNotification mailNotification = mailNotificationService.buildMailSuccessNotification(jobName, allImportProcessedItem);
     mailProducerService.produceMailNotification(mailNotification);
   }
 
-  private void clearDB(JobExecution jobExecution) {
-    StepExecution execution = jobExecution.getStepExecutions().stream()
-        .filter(stepExecution -> stepExecution.getStepName().equals("parseCsvStep")).findFirst()
-        .orElseThrow(() -> new IllegalStateException("No Step Found with name [parseCsvStep]. Please check the job "
-            + "configuration"));
-    log.info("Deleating item processed from execution: {} ", execution);
-    importProcessedItemRepository.deleteAllByStepExecutionId(execution.getId());
+  private void clearDB(StepExecution stepExecution) {
+    log.info("Deleating item processed from execution: {} ", stepExecution);
+    importProcessedItemRepository.deleteAllByStepExecutionId(stepExecution.getId());
+  }
+
+  private String getJobName(StepExecution stepExecution) {
+    return stepExecution.getJobExecution().getJobInstance().getJobName();
   }
 
 }

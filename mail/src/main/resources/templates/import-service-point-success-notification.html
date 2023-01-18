@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:th='http://www.thymeleaf.org'>
 <head>
-    <title>Import Service Point Successfully</title>
+    <title th:text="'Job ' + ${properties.get(0).get('jobName')} + ' successfully notification'"></title>
     <meta charset='UTF-8'>
     <style>
         body {
@@ -108,19 +108,19 @@
         </div>
     </div>
     <div class='header-right'>
-        <span class='header-title'>Import Service Point successfully executed</span>
+        <span class='header-title' th:text="'Job ' + ${properties.get(0).get('jobName')} + ' successfully notification'"></span>
     </div>
 </div>
 <div class='content-container'>
-    <div class='message mt-1' th:if="${!properties.get(0).get('importProcessItems').isEmpty()}">
-        The Import Service Point Batch Job was successfully executed. See the imported Objects summary in the following table:
+    <div class='message mt-1' th:if="${!properties.get(0).get('importProcessItems').isEmpty()}"
+         th:text="'The job ' + ${properties.get(0).get('jobName')} + ' was successfully executed. See the imported Objects summary in the following table:'">
     </div>
     <div class='mt-1' th:if="${!properties.get(0).get('importProcessItems').isEmpty()}">
         <table>
             <thead>
             <caption>Imported Service Point items</caption>
             <tr>
-                <th>Didok Number</th>
+                <th>Item Number</th>
                 <th>Response Status</th>
                 <th>Response Message</th>
             </tr>
