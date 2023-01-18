@@ -8,12 +8,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 import javax.validation.Valid;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.locationtech.proj4j.CRSFactory;
 import org.locationtech.proj4j.CoordinateReferenceSystem;
 import org.locationtech.proj4j.CoordinateTransform;
 import org.locationtech.proj4j.CoordinateTransformFactory;
 import org.locationtech.proj4j.ProjCoordinate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CoordinateTransformer {
 
   private final CoordinateTransformFactory coordinateTransformFactory = new CoordinateTransformFactory();
