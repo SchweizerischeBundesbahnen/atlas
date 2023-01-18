@@ -3,6 +3,7 @@ package ch.sbb.importservice.recovery;
 import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_LOADING_POINT_CSV_JOB;
 import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_SERVICE_POINT_CSV_JOB;
 
+import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
@@ -37,6 +39,8 @@ public class RecoveryJobsRunner implements ApplicationRunner {
 
   private final JobRepository jobRepository;
 
+  private final ImportProcessedItemRepository importProcessedItemRepository;
+
   @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB)
   private final Job importServicePointCsvJob;
   @Qualifier(IMPORT_LOADING_POINT_CSV_JOB)
@@ -53,6 +57,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   private void recoverJob(String jobName)
       throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException,
       JobParametersInvalidException {
+    log.info("Checking for job {}...", jobName);
     JobInstance jobInstance = jobExplorer.getLastJobInstance(jobName);
     if (jobInstance != null) {
       JobExecution lastJobExecution = jobExplorer.getLastJobExecution(jobInstance);
@@ -61,15 +66,23 @@ public class RecoveryJobsRunner implements ApplicationRunner {
           log.info("Found a Job status {}", lastJobExecution.getStatus());
           log.info("Recovering job {}", lastJobExecution);
           updateLastJobExecutionStatus(lastJobExecution);
+          clearImportedProcessedItem(lastJobExecution);
           JobParameters jobParameters = getJobParameters(lastJobExecution);
           JobExecution execution = jobLauncher.run(getJobToRecover(jobName), jobParameters);
           log.info(execution.toString());
         } else {
-          log.info("No jobs found to recover.");
+          log.info("No job {} found to recover.", jobName);
         }
       }
+    } else {
+      log.info("No jobs found to recover.");
     }
-    log.info("No jobs found to recover.");
+  }
+
+  private void clearImportedProcessedItem(JobExecution lastJobExecution) {
+    StepExecution stepExecution = lastJobExecution.getStepExecutions().stream().findFirst().get();
+    log.info("Clear processedItem from stepExecution: {}", stepExecution);
+    importProcessedItemRepository.deleteAllByStepExecutionId(stepExecution.getId());
   }
 
   private void updateLastJobExecutionStatus(JobExecution lastJobExecution) {
