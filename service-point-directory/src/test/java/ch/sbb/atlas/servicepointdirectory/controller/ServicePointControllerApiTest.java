@@ -2,20 +2,28 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointImportReqModel;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import java.io.InputStream;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
+
+  private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
 
   private final ServicePointVersionRepository repository;
   private ServicePointVersion servicePointVersion;
@@ -83,6 +91,22 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   void shouldFailOnInvalidServicePointNumber() throws Exception {
     mvc.perform(get("/v1/service-points/123"))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void test_ImportServicePoints_shouldWork() throws Exception {
+    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
+    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+    servicePointCsvModels = servicePointCsvModels.subList(0, 10);
+
+    ServicePointImportReqModel importReqModel = new ServicePointImportReqModel(servicePointCsvModels);
+
+    String s = mapper.writeValueAsString(importReqModel);
+
+    mvc.perform(post("/v1/service-points/import")
+            .content(s)
+            .contentType(contentType))
+        .andExpect(status().isOk());
   }
 
 }

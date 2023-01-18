@@ -79,6 +79,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @NotNull
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private Status status;
 
   @NotNull
@@ -87,6 +88,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @NotNull
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private Country country;
 
   @Size(max = AtlasFieldLengths.LENGTH_50)
