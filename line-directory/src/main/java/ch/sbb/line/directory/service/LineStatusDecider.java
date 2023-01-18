@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 public class LineStatusDecider {
 
   public Status getStatusForLine(LineVersion newLineVersion, Optional<LineVersion> currentLineVersion, List<LineVersion> currentLineVersions) {
-    if (currentLineVersion.isPresent() && currentLineVersion.get().getStatus() == Status.IN_REVIEW) {
+    if (newLineVersion.getId() != null
+        && currentLineVersion.isPresent()
+        && currentLineVersion.get().getStatus() == Status.IN_REVIEW) {
       return Status.IN_REVIEW;
     }
 
