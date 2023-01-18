@@ -1,5 +1,8 @@
 package ch.sbb.importservice.contoller;
 
+import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_LOADING_POINT_CSV_JOB;
+import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_SERVICE_POINT_CSV_JOB;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,10 +36,10 @@ public class ImportController {
 
   private final JobLauncher jobLauncher;
 
-  @Qualifier("importServicePointCsvJob")
+  @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB)
   private final Job importServicePointCsvJob;
 
-  @Qualifier("importLoadingPointCsvJob")
+  @Qualifier(IMPORT_LOADING_POINT_CSV_JOB)
   private final Job importLoadingPointCsvJob;
 
   @PostMapping("service-point-batch")
@@ -53,15 +56,14 @@ public class ImportController {
     }
   }
 
-  @PostMapping("service-point-asd")
-  public void startServicePointImport()
+  @PostMapping("loading-point")
+  public void startLoadingPointImport()
       throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException,
       JobRestartException {
     File file = new File(
         "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
 
     JobParameters jobParameters = new JobParametersBuilder()
-        .addString("fullPathFileName", file.getAbsolutePath())
         .addLong("startAt", System.currentTimeMillis()).toJobParameters();
     JobExecution execution = jobLauncher.run(importLoadingPointCsvJob, jobParameters);
 
