@@ -26,6 +26,7 @@ import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.validation.LineUpdateValidationService;
 import ch.sbb.line.directory.validation.LineValidationService;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -61,6 +62,9 @@ class LineServiceTest {
   private LineValidationService lineValidationService;
 
   @Mock
+  private LineUpdateValidationService lineUpdateValidationService;
+
+  @Mock
   private CoverageService coverageService;
 
   @Mock
@@ -75,7 +79,7 @@ class LineServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineService = new LineService(lineVersionRepository, sublineVersionRepository, lineRepository,
-        versionableService, lineValidationService, coverageService, lineStatusDecider);
+        versionableService, lineValidationService, lineUpdateValidationService, coverageService, lineStatusDecider);
   }
 
   @Test
