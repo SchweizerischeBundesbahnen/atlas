@@ -157,6 +157,8 @@ public class LineServiceVersioningTest {
     version3 = lineVersionRepository.save(version3);
     LineVersion editedVersion = new LineVersion();
     editedVersion.setSwissLineNumber("2");
+    editedVersion.setValidFrom(version2.getValidFrom());
+    editedVersion.setValidTo(version2.getValidTo());
 
     //when
     lineService.updateVersion(version2, editedVersion);
