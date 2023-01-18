@@ -1,6 +1,8 @@
 package ch.sbb.importservice.config;
 
-import ch.sbb.atlas.base.service.imports.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.importservice.batch.LoadingPointApiWriter;
 import ch.sbb.importservice.batch.ServicePointApiWriter;
 import ch.sbb.importservice.batch.ServicePointProcessor;
 import ch.sbb.importservice.listener.JobCompletitionListener;
@@ -33,11 +35,16 @@ import org.springframework.dao.DeadlockLoserDataAccessException;
 @AllArgsConstructor
 public class SpringBatchConfig {
 
+  public static final String IMPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
+  public static final String IMPORT_LOADING_POINT_CSV_JOB = "importLoadingPointCsvJob";
+
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
 
   private final ServicePointApiWriter servicePointApiWriter;
+
+  private final LoadingPointApiWriter loadingPointApiWriter;
 
   private final CsvService csvService;
 
@@ -50,7 +57,8 @@ public class SpringBatchConfig {
 
   @StepScope
   @Bean
-  public ListItemReader<ServicePointCsvModel> listItemReader(@Value("#{jobParameters[fullPathFileName]}") String pathToFIle)
+  public ListItemReader<ServicePointCsvModel> servicePointlistItemReader(
+      @Value("#{jobParameters[fullPathFileName]}") String pathToFIle)
       throws IOException {
     List<ServicePointCsvModel> actualServicePotinCsvModelsFromS3;
     if (pathToFIle != null) {
@@ -62,10 +70,19 @@ public class SpringBatchConfig {
     return new ListItemReader<>(actualServicePotinCsvModelsFromS3);
   }
 
+  @StepScope
   @Bean
-  public Step parseCsvStep(ListItemReader<ServicePointCsvModel> listItemReader) {
-    return stepBuilderFactory.get("parseCsvStep").<ServicePointCsvModel, ServicePointCsvModel>chunk(100)
-        .reader(listItemReader)
+  public ListItemReader<LoadingPointCsvModel> loadingPointlistItemReader(
+      @Value("#{jobParameters[fullPathFileName]}") String pathTofIle)
+      throws IOException {
+    List<LoadingPointCsvModel> actualLoadingPotinCsvModelsFromS3 = csvService.getActualLoadingPotinCsvModelsFromS3();
+    return new ListItemReader<>(actualLoadingPotinCsvModelsFromS3);
+  }
+
+  @Bean
+  public Step parseServicePointCsvStep(ListItemReader<ServicePointCsvModel> servicePointlistItemReader) {
+    return stepBuilderFactory.get("parseServicePointCsvStep").<ServicePointCsvModel, ServicePointCsvModel>chunk(100)
+        .reader(servicePointlistItemReader)
         .processor(processor())
         .writer(servicePointApiWriter)
         .faultTolerant()
@@ -77,21 +94,34 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Job importServicePointCsvJob(ListItemReader<ServicePointCsvModel> listItemReader) {
-    return jobBuilderFactory.get("importServicePointCsvJob")
+  public Step parseLoadingPointCsvStep(ListItemReader<LoadingPointCsvModel> loadingPointlistItemReader) {
+    return stepBuilderFactory.get("parseLoadingPointCsvStep").<LoadingPointCsvModel, LoadingPointCsvModel>chunk(100)
+        .reader(loadingPointlistItemReader)
+        .writer(loadingPointApiWriter)
+        .faultTolerant()
+        .retryLimit(3)
+        .retry(ConnectTimeoutException.class)
+        .retry(DeadlockLoserDataAccessException.class)
+        .taskExecutor(getAsyncExecutor())
+        .build();
+  }
+
+  @Bean
+  public Job importServicePointCsvJob(ListItemReader<ServicePointCsvModel> servicePointlistItemReader) {
+    return jobBuilderFactory.get(IMPORT_SERVICE_POINT_CSV_JOB)
         .listener(jobCompletitionListener)
         .incrementer(new RunIdIncrementer())
-        .flow(parseCsvStep(listItemReader))
+        .flow(parseServicePointCsvStep(servicePointlistItemReader))
         .end()
         .build();
   }
 
   @Bean
-  public Job importLoadingPointCsvJob(ListItemReader<ServicePointCsvModel> listItemReader) {
-    return jobBuilderFactory.get("importLoadingPointCsvJob")
+  public Job importLoadingPointCsvJob(ListItemReader<LoadingPointCsvModel> loadingPointlistItemReader) {
+    return jobBuilderFactory.get(IMPORT_LOADING_POINT_CSV_JOB)
         .listener(jobCompletitionListener)
         .incrementer(new RunIdIncrementer())
-        .flow(parseCsvStep(listItemReader))
+        .flow(parseLoadingPointCsvStep(loadingPointlistItemReader))
         .end()
         .build();
   }

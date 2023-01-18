@@ -1,11 +1,13 @@
-package ch.sbb.atlas.base.service.imports;
+package ch.sbb.atlas.base.service.imports.servicepoint.servicepoint;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.deserializer.NumericBooleanDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -13,8 +15,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ServicePointCsvModel {
+public class ServicePointCsvModel extends BaseDidokCsvModel {
 
   @JsonProperty("NUMMER")
   private Integer nummer;
@@ -24,12 +27,6 @@ public class ServicePointCsvModel {
 
   @JsonProperty("DIDOK_CODE")
   private Integer didokCode;
-
-  @JsonProperty("GUELTIG_VON")
-  private String gueltigVon;
-
-  @JsonProperty("GUELTIG_BIS")
-  private String gueltigBis;
 
   @JsonProperty("STATUS")
   private Integer status;
@@ -71,20 +68,6 @@ public class ServicePointCsvModel {
   @JsonProperty("IDENTIFIKATION")
   private String said;
 
-  @JsonProperty("ERSTELLT_AM")
-  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-  private LocalDateTime createdAt;
-
-  @JsonProperty("ERSTELLT_VON")
-  private String createdBy;
-
-  @JsonProperty("GEAENDERT_AM")
-  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-  private LocalDateTime editedAt;
-
-  @JsonProperty("GEAENDERT_VON")
-  private String editedBy;
-
   @JsonProperty("BPVB_BETRIEBSPUNKT_ART_ID")
   private Integer bpvbBetriebspunktArtId;
 
@@ -93,6 +76,9 @@ public class ServicePointCsvModel {
 
   @JsonProperty("BPTF_BETRIEBSPUNKT_ART_ID")
   private Integer bptfBetriebspunktArtId;
+
+  @JsonProperty("BP_BETRIEBSPUNKT_ART_ID")
+  private Integer bpBetriebspunktArtId;
 
   @JsonProperty("BPVH_VERKEHRSMITTEL")
   private String bpvhVerkehrsmittel;
@@ -103,38 +89,8 @@ public class ServicePointCsvModel {
   @JsonProperty("DS_KATEGORIEN_IDS")
   private String dsKategorienIds;
 
-  @JsonProperty("HEIGHT")
-  private Double height;
-
   @JsonProperty("SLOID")
   private String sloid;
-
-  @JsonProperty("SOURCE_SPATIAL_REF")
-  private SpatialReference spatialReference;
-
-  @JsonProperty("E_LV03")
-  private Double eLV03;
-
-  @JsonProperty("N_LV03")
-  private Double nLV03;
-
-  @JsonProperty("E_LV95")
-  private Double eLV95;
-
-  @JsonProperty("N_LV95")
-  private Double nLV95;
-
-  @JsonProperty("E_WGS84")
-  private Double eWGS84;
-
-  @JsonProperty("N_WGS84")
-  private Double nWGS84;
-
-  @JsonProperty("E_WGS84WEB")
-  private Double eWGS84WEB;
-
-  @JsonProperty("N_WGS84WEB")
-  private Double nWGS84WEB;
 
   @JsonProperty("HTYP_ID")
   private Integer hTypId;
