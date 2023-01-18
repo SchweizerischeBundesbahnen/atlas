@@ -1,4 +1,4 @@
-package ch.sbb.atlas.base.service.imports;
+package ch.sbb.atlas.base.service.imports.servicepoint.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

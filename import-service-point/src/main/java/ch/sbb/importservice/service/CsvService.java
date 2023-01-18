@@ -2,7 +2,8 @@ package ch.sbb.importservice.service;
 
 import ch.sbb.atlas.base.service.amazon.service.AmazonService;
 import ch.sbb.atlas.base.service.imports.DidokCsvMapper;
-import ch.sbb.atlas.base.service.imports.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,6 +39,13 @@ public class CsvService {
   public List<ServicePointCsvModel> getActualServicePotinCsvModelsFromS3() throws IOException {
     File importFile = downloadImportFileFromToday("DIDOK3_DIENSTSTELLEN_ALL_V_3_");
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(importFile, ServicePointCsvModel.class);
+    log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
+    return servicePointCsvModels;
+  }
+
+  public List<LoadingPointCsvModel> getActualLoadingPotinCsvModelsFromS3() throws IOException {
+    File importFile = downloadImportFileFromToday("DIDOK3_LADESTELLEN_");
+    List<LoadingPointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(importFile, LoadingPointCsvModel.class);
     log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
     return servicePointCsvModels;
   }
