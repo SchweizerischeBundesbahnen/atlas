@@ -285,6 +285,7 @@
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La linea temporanea con validità dal {{validFrom}} al {{validTo}} supera la validità massima di 12 mesi.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La versione dal {{validFrom}} al {{validTo}} è parte di versioni temporanee contigue. Insieme, esse superano la validità massima di 12 mesi.",
       "UPDATE_IN_REVIEW": "Nel corso dell'udienza non è possibile modificare il tipo o la validità della linea.",
+      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Questa modifica riguarda una versione in consultazione. Attendere il completamento della consultazione. Per qualsiasi domanda, contattare l'Unità Atlas.",
       "NUMBER": "Numero di linea",
       "NUMBER_INFO": "Liniennummer Tooltip to replace __IT__",
       "DESCRIPTION": "Denominazione linea",

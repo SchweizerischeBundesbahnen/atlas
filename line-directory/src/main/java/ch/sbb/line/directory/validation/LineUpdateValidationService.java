@@ -39,13 +39,16 @@ public class LineUpdateValidationService {
   }
 
   private void typeAndTimeperiodOfLineInReviewMayNotChange(LineVersion currentVersion, LineVersion editedVersion) {
-    if (!editedVersionNotTouchingCurrent(currentVersion, editedVersion)) {
-      if (!currentVersion.getValidFrom().isEqual(editedVersion.getValidFrom())
-          || !currentVersion.getValidTo().isEqual(editedVersion.getValidTo())
-          || currentVersion.getLineType() != editedVersion.getLineType()) {
-        throw new LineInReviewValidationException();
-      }
+    if (editedVersionTouchingCurrent(currentVersion, editedVersion)
+        && (!currentVersion.getValidFrom().isEqual(editedVersion.getValidFrom())
+        || !currentVersion.getValidTo().isEqual(editedVersion.getValidTo())
+        || currentVersion.getLineType() != editedVersion.getLineType())) {
+      throw new LineInReviewValidationException();
     }
+  }
+
+  private static boolean editedVersionTouchingCurrent(LineVersion currentVersion, LineVersion editedVersion) {
+    return !editedVersionNotTouchingCurrent(currentVersion, editedVersion);
   }
 
   private static boolean editedVersionNotTouchingCurrent(LineVersion currentVersion, LineVersion editedVersion) {

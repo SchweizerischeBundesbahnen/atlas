@@ -310,4 +310,43 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     assertDoesNotThrow(() -> lineService.updateVersion(version3, editedVersion));
   }
 
+  /**
+   * Szenario 9: Einfache Änderung an 1 - IN_REVIEW
+   * Vorher:      |-------------|
+   * Version:            1
+   * <p>
+   * Nachher:     |-------------|
+   * Version:            1         2
+   * <p>
+   * Resultat:
+   *  - Möglich, da Version 1 validFrom, validTo & lineType
+   */
+  @Test
+  public void updateScenario9() {
+    //given
+    version1.setStatus(Status.IN_REVIEW);
+    version1 = lineVersionRepository.save(version1);
+
+    LineVersion editedVersion = new LineVersion();
+    editedVersion.setDescription("Description <changed>");
+    editedVersion.setLineType(version1.getLineType());
+    editedVersion.setValidFrom(version1.getValidFrom());
+    editedVersion.setValidTo(version1.getValidTo());
+
+    //when
+    lineService.updateVersion(version1, editedVersion);
+    List<LineVersion> result = lineVersionRepository.findAllBySlnidOrderByValidFrom(
+        version1.getSlnid());
+
+    //then
+    assertThat(result).isNotNull().hasSize(1);
+
+    // Version 1
+    LineVersion firstTemporalVersion = result.get(0);
+    assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(version1.getValidFrom());
+    assertThat(firstTemporalVersion.getValidTo()).isEqualTo(version1.getValidTo());
+    assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.IN_REVIEW);
+    assertThat(firstTemporalVersion.getDescription()).isEqualTo("Description <changed>");
+  }
+
 }
