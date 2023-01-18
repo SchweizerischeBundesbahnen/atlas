@@ -1,4 +1,4 @@
-package ch.sbb.atlas.base.service.imports;
+package ch.sbb.atlas.base.service.imports.servicepoint.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

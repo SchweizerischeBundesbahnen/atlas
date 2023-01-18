@@ -1,6 +1,6 @@
 package ch.sbb.importservice.batch;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.importservice.entitiy.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.SePoDiClientService;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class ServicePointApiWriter implements ItemWriter<ServicePointCsvModel> {
+public class LoadingPointApiWriter implements ItemWriter<LoadingPointCsvModel> {
 
   @Autowired
   private SePoDiClientService sePoDiClientService;
@@ -31,14 +31,14 @@ public class ServicePointApiWriter implements ItemWriter<ServicePointCsvModel> {
   }
 
   @Override
-  public void write(List<? extends ServicePointCsvModel> servicePoints) {
+  public void write(List<? extends LoadingPointCsvModel> loadingPointCsvModels) {
     Long stepExecutionId = stepExecution.getId();
-    for (ServicePointCsvModel servicePoint : servicePoints) {
-      Response response = sePoDiClientService.getServicePoints(servicePoint.getDidokCode());
+    for (LoadingPointCsvModel loadingPointCsvModel : loadingPointCsvModels) {
+      Response response = sePoDiClientService.getServicePoints(loadingPointCsvModel.getNumber());
       ImportProcessItem importProcessItem = ImportProcessItem.builder()
-          .itemNumber(servicePoint.getDidokCode())
+          .itemNumber(loadingPointCsvModel.getNumber())
           .stepExecutionId(stepExecutionId)
-          .jobExecutionName(stepExecution.getJobExecution().getJobConfigurationName())
+          .jobExecutionName(stepExecution.getJobExecution().getJobInstance().getJobName())
           .responseStatus(response.status())
           .responseMessage(response.reason())
           .build();

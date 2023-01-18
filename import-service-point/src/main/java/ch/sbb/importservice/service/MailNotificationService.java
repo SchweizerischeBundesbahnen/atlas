@@ -62,7 +62,7 @@ public class MailNotificationService {
   private List<Map<String, Object>> getImportProcessItem(List<ImportProcessItem> importProcessItems) {
     List<Map<String, Object>> importProcessItem = importProcessItems.stream().map(item -> {
       Map<String, Object> object = new HashMap<>();
-      object.put("processedItem", item.getServicePointNumber());
+      object.put("processedItem", item.getItemNumber());
       object.put("processedItemStatus", item.getResponseStatus());
       object.put("processedItemMessage", item.getResponseMessage());
       return object;

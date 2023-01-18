@@ -1,6 +1,6 @@
 package ch.sbb.importservice.listener;
 
-import ch.sbb.atlas.base.service.imports.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
