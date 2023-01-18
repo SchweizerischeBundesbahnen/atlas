@@ -1,6 +1,6 @@
 package ch.sbb.importservice.batch;
 
-import ch.sbb.atlas.base.service.imports.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 

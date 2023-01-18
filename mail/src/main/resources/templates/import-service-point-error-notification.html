@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:th='http://www.thymeleaf.org'>
 <head>
-    <title>Import Service Point Error Notification</title>
+    <title th:text="'Job ' + ${properties.get(0).get('jobName')} + ' error notification'"></title>
     <meta charset='UTF-8'>
     <style>
         body {
@@ -81,7 +81,7 @@
         </div>
     </div>
     <div class='header-right'>
-        <span class='header-title'>Import Service Point Error Notification</span>
+        <span class='header-title' th:text="'Job ' + ${properties.get(0).get('jobName')} + ' unsuccessfully notification'"></span>
     </div>
 </div>
 <div class='content-container'>

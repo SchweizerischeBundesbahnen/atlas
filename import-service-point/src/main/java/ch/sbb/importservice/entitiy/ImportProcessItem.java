@@ -32,7 +32,9 @@ public class ImportProcessItem {
 
   private Long stepExecutionId;
 
-  private Integer servicePointNumber;
+  private String jobExecutionName;
+
+  private Integer itemNumber;
 
   private Integer responseStatus;
 
