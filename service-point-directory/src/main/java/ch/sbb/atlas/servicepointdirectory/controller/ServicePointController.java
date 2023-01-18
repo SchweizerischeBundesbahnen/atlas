@@ -3,12 +3,15 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointImportReqModel;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointImportResult;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServicePointController implements ServicePointApiV1 {
 
   private final ServicePointService servicePointService;
+  private final ServicePointImportService servicePointImportService;
 
   @Override
   public Container<ServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -54,6 +58,11 @@ public class ServicePointController implements ServicePointApiV1 {
   public ServicePointVersionModel getServicePointVersion(Long id) {
     return servicePointService.findById(id).map(ServicePointVersionModel::fromEntity)
         .orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  @Override
+  public List<ServicePointImportResult> importServicePoints(ServicePointImportReqModel servicePointImportReqModel) {
+    return servicePointImportService.importServicePoints(servicePointImportReqModel.getServicePointCsvModels());
   }
 
 }
