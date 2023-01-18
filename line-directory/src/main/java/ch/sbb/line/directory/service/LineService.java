@@ -13,6 +13,7 @@ import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.validation.LineUpdateValidationService;
 import ch.sbb.line.directory.validation.LineValidationService;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +35,7 @@ public class LineService {
   private final LineRepository lineRepository;
   private final VersionableService versionableService;
   private final LineValidationService lineValidationService;
+  private final LineUpdateValidationService lineUpdateValidationService;
   private final CoverageService coverageService;
   private final LineStatusDecider lineStatusDecider;
 
@@ -120,8 +122,9 @@ public class LineService {
 
   void updateVersion(LineVersion currentVersion, LineVersion editedVersion) {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
-    lineValidationService.validateLineForUpdate(currentVersion, editedVersion);
-    updateVersion(currentVersion, editedVersion, findLineVersions(currentVersion.getSlnid()));
+    List<LineVersion> currentVersions = findLineVersions(currentVersion.getSlnid());
+    lineUpdateValidationService.validateLineForUpdate(currentVersion, editedVersion, currentVersions);
+    updateVersion(currentVersion, editedVersion, currentVersions);
   }
 
   private void updateVersion(LineVersion currentVersion, LineVersion editedVersion,
@@ -133,6 +136,7 @@ public class LineService {
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, currentVersions);
+    lineUpdateValidationService.validateVersioningNotAffectingReview(currentVersions, versionedObjects);
 
     List<LineVersion> preSaveVersions = currentVersions.stream().map(this::copyLineVersion).toList();
     versionableService.applyVersioning(LineVersion.class, versionedObjects, version -> save(version, Optional.of(currentVersion), preSaveVersions),
