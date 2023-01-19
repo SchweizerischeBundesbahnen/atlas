@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvModel;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;

@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
@@ -21,6 +22,33 @@ import org.apache.commons.lang3.ObjectUtils;
 
 public class ServicePointCsvToEntityMapper implements
     Function<ServicePointCsvModel, ServicePointVersion> {
+
+  private static OperatingPointType getOperatingPointType(ServicePointCsvModel servicePointCsvModel) {
+    return OperatingPointType.from(
+        ObjectUtils.firstNonNull(servicePointCsvModel.getBpBetriebspunktArtId(),
+            servicePointCsvModel.getBpvbBetriebspunktArtId(),
+            servicePointCsvModel.getBpofBetriebspunktArtId(),
+            servicePointCsvModel.getBptfBetriebspunktArtId()));
+  }
+
+  private static Set<Category> getCategories(ServicePointCsvModel servicePointCsvModel) {
+    return Arrays.stream(Objects.nonNull(servicePointCsvModel.getDsKategorienIds())
+            ? servicePointCsvModel.getDsKategorienIds().split("\\|") :
+            new String[]{})
+        .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
+        .filter(Objects::nonNull)
+        .collect(Collectors.toSet());
+  }
+
+  private static Set<MeanOfTransport> getMeansOfTransport(
+      ServicePointCsvModel servicePointCsvModel) {
+    return Arrays.stream(Objects.nonNull(servicePointCsvModel.getBpvhVerkehrsmittel())
+            ? servicePointCsvModel.getBpvhVerkehrsmittel().split("~") :
+            new String[]{})
+        .map(MeanOfTransport::from)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toSet());
+  }
 
   @Override
   public ServicePointVersion apply(ServicePointCsvModel servicePointCsvModel) {
@@ -86,41 +114,14 @@ public class ServicePointCsvToEntityMapper implements
             Boolean.TRUE.equals(servicePointCsvModel.getOperatingPointRouteNetwork()))
         .operatingPointKilometerMaster(
             Optional.ofNullable(servicePointCsvModel.getOperatingPointKilometerMaster())
-                    .map(ServicePointNumber::of)
-                    .orElse(null))
+                .map(ServicePointNumber::of)
+                .orElse(null))
         .creationDate(servicePointCsvModel.getCreatedAt())
         .creator(servicePointCsvModel.getCreatedBy())
         .editionDate(servicePointCsvModel.getEditedAt())
         .editor(servicePointCsvModel.getEditedBy())
         .comment(servicePointCsvModel.getComment())
         .build();
-  }
-
-  private static OperatingPointType getOperatingPointType(ServicePointCsvModel servicePointCsvModel) {
-    return OperatingPointType.from(
-        ObjectUtils.firstNonNull(servicePointCsvModel.getBpBetriebspunktArtId(),
-            servicePointCsvModel.getBpvbBetriebspunktArtId(),
-            servicePointCsvModel.getBpofBetriebspunktArtId(),
-            servicePointCsvModel.getBptfBetriebspunktArtId()));
-  }
-
-  private static Set<Category> getCategories(ServicePointCsvModel servicePointCsvModel) {
-    return Arrays.stream(Objects.nonNull(servicePointCsvModel.getDsKategorienIds())
-                     ? servicePointCsvModel.getDsKategorienIds().split("\\|") :
-                     new String[]{})
-                 .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
-                 .filter(Objects::nonNull)
-                 .collect(Collectors.toSet());
-  }
-
-  private static Set<MeanOfTransport> getMeansOfTransport(
-      ServicePointCsvModel servicePointCsvModel) {
-    return Arrays.stream(Objects.nonNull(servicePointCsvModel.getBpvhVerkehrsmittel())
-                     ? servicePointCsvModel.getBpvhVerkehrsmittel().split("~") :
-                     new String[]{})
-                 .map(MeanOfTransport::from)
-                 .filter(Objects::nonNull)
-                 .collect(Collectors.toSet());
   }
 
 }
