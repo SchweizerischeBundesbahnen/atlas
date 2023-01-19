@@ -1,5 +1,12 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { LngLatBoundsLike, Map, StyleSpecification } from 'maplibre-gl';
+import {
+  LngLatBoundsLike,
+  Map,
+  ResourceTypeEnum,
+  SourceSpecification,
+  StyleSpecification,
+} from 'maplibre-gl';
+import { AuthService } from '../../../core/auth/auth.service';
 
 const MAP_STYLE: StyleSpecification = {
   version: 8,
@@ -33,6 +40,19 @@ const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
   [10.6677, 47.9163],
 ];
 
+const sourceName = 'geodata';
+const layerNameThatMustMatch = 'servicepoints';
+
+/* when source "id" not specified, layer and source share the same id */
+const TILES_SOURCE: any = {
+  type: 'vector',
+  minzoom: 5,
+  maxzoom: 20,
+  tiles: [
+    `http://localhost:8888/service-point-directory/v1/geodata/${layerNameThatMustMatch}/{z}/{x}/{y}.pbf`,
+  ],
+};
+
 @Component({
   selector: 'app-sepodi-overview',
   templateUrl: './sepodi-overview.component.html',
@@ -44,13 +64,31 @@ export class SepodiOverviewComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  ngAfterViewInit() {
-    const initialState = { lng: 8.0, lat: 46.5, zoom: 7 };
+  constructor(private authService: AuthService) {}
 
+  ngAfterViewInit() {
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style: MAP_STYLE,
       bounds: SWISS_BOUNDING_BOX,
+      transformRequest: (url: string, resourceType?: ResourceTypeEnum) => {
+        if (resourceType === 'Tile' && url.startsWith('http://localhost')) {
+          return {
+            url: url,
+            headers: { Authorization: 'Bearer ' + this.authService.accessToken },
+          };
+        }
+        return { url };
+      },
+    });
+
+    this.map.once('style.load', () => {
+      this.map?.addLayer({
+        id: sourceName,
+        'source-layer': layerNameThatMustMatch,
+        source: TILES_SOURCE,
+        type: 'circle',
+      });
     });
   }
 

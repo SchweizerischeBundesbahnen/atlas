@@ -25,11 +25,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-      path: Pages.SERVICE_POINTS.path,
-      loadChildren: () => import('./pages/sepodi/sepodi.module').then((m) => m.SepodiModule),
-      data: { headerTitle: Pages.BODI.headerTitle },
-      canActivate: [AuthGuard],
-    },
+    path: Pages.SERVICE_POINTS.path,
+    loadChildren: () => import('./pages/sepodi/sepodi.module').then((m) => m.SepodiModule),
+    data: { headerTitle: Pages.SERVICE_POINTS.headerTitle },
+    canActivate: [AuthGuard],
+  },
   {
     path: Pages.USER_ADMINISTRATION.path,
     loadChildren: () =>
