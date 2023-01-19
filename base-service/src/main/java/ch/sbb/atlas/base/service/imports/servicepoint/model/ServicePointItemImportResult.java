@@ -1,6 +1,5 @@
-package ch.sbb.atlas.servicepointdirectory.api;
+package ch.sbb.atlas.base.service.imports.servicepoint.model;
 
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -12,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Schema(name = "ServicePointImportResult")
-public class ServicePointImportResult {
+@Schema(name = "ServicePointItemImportResult")
+public class ServicePointItemImportResult {
 
-  private ServicePointNumber servicePointNumber;
+  private Integer itemNumber;
 
   private LocalDate validFrom;
 
