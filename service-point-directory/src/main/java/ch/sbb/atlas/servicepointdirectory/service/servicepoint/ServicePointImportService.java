@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
@@ -22,9 +22,9 @@ public class ServicePointImportService {
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final ServicePointService servicePointService;
 
-  private static ServicePointImportResult buildImportSuccessResult(ServicePointVersion servicePointVersion) {
-    return ServicePointImportResult.builder()
-        .servicePointNumber(servicePointVersion.getNumber())
+  private static ServicePointItemImportResult buildImportSuccessResult(ServicePointVersion servicePointVersion) {
+    return ServicePointItemImportResult.builder()
+        .itemNumber(servicePointVersion.getNumber().getNumber())
         .validFrom(servicePointVersion.getValidFrom())
         .validTo(servicePointVersion.getValidTo())
         .status("SUCCESS")
@@ -32,9 +32,10 @@ public class ServicePointImportService {
         .build();
   }
 
-  private static ServicePointImportResult buildImportFailedResult(ServicePointVersion servicePointVersion, Exception exception) {
-    return ServicePointImportResult.builder()
-        .servicePointNumber(servicePointVersion.getNumber())
+  private static ServicePointItemImportResult buildImportFailedResult(ServicePointVersion servicePointVersion,
+      Exception exception) {
+    return ServicePointItemImportResult.builder()
+        .itemNumber(servicePointVersion.getNumber().getNumber())
         .validFrom(servicePointVersion.getValidFrom())
         .validTo(servicePointVersion.getValidTo())
         .status("FAILED")
@@ -64,12 +65,12 @@ public class ServicePointImportService {
     servicePointVersionRepository.saveAll(servicePointVersions);
   }
 
-  public List<ServicePointImportResult> importServicePoints(List<ServicePointCsvModel> servicePointCsvModels) {
+  public List<ServicePointItemImportResult> importServicePoints(List<ServicePointCsvModel> servicePointCsvModels) {
     List<ServicePointVersion> servicePointVersions = servicePointCsvModels
         .stream()
         .map(new ServicePointCsvToEntityMapper())
         .toList();
-    List<ServicePointImportResult> results = new ArrayList<>();
+    List<ServicePointItemImportResult> results = new ArrayList<>();
     for (ServicePointVersion servicePointVersion : servicePointVersions) {
       // check if already existing
       boolean existing = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
