@@ -6,13 +6,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointImportReqModel;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import java.io.InputStream;
 import java.util.List;
