@@ -2,10 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;

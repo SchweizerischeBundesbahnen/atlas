@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -81,6 +81,20 @@ public class BaseDidokCsvModel {
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   private LocalDateTime editedAt;
 
+  private static Double getCoordinateBySpatialReference(
+      SpatialReference spatialReference,
+      Double wgs84,
+      Double wgs84Web,
+      Double lv95,
+      Double lv03) {
+    return switch (spatialReference) {
+      case WGS84WEB -> wgs84Web;
+      case LV95 -> lv95;
+      case LV03 -> lv03;
+      case WGS84 -> wgs84;
+    };
+  }
+
   public Double getHeight() {
     return ObjectUtils.firstNonNull(height, zLv95);
   }
@@ -97,19 +111,5 @@ public class BaseDidokCsvModel {
       return null;
     }
     return getCoordinateBySpatialReference(spatialReference, nWgs84, nWgs84web, nLv95, nLv03);
-  }
-
-  private static Double getCoordinateBySpatialReference(
-      SpatialReference spatialReference,
-      Double wgs84,
-      Double wgs84Web,
-      Double lv95,
-      Double lv03) {
-    return switch (spatialReference) {
-      case WGS84WEB -> wgs84Web;
-      case LV95 -> lv95;
-      case LV03 -> lv03;
-      case WGS84 -> wgs84;
-    };
   }
 }

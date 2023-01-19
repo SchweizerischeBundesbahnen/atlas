@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.cloud.sleuth.Tracer;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,6 +23,9 @@ class ImportMailNotificationServiceTest {
 
   @Mock
   private Tracer tracer;
+
+  @Mock
+  private StepExecution stepExecution;
 
   @InjectMocks
   @Spy
@@ -37,7 +41,7 @@ class ImportMailNotificationServiceTest {
 
     doReturn("abc123").when(notificationService).getCurrentSpan();
     //when
-    MailNotification result = notificationService.buildMailErrorNotification("export", "job execution failed");
+    MailNotification result = notificationService.buildMailErrorNotification("export", stepExecution);
 
     //then
     assertThat(result).isNotNull();
@@ -72,7 +76,7 @@ class ImportMailNotificationServiceTest {
     //given
     when(tracer.currentSpan()).thenReturn(null);
     //when
-    assertThrows(IllegalStateException.class, () -> notificationService.buildMailErrorNotification("export", "Error"));
+    assertThrows(IllegalStateException.class, () -> notificationService.buildMailErrorNotification("export", stepExecution));
 
   }
 

@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.importservice.client.SePoDiClient;
 import feign.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +21,8 @@ public class SePoDiClientService extends BaseClientService {
     return executeRequest(sePoDiClient.postServicePoints(), "Update Service Point");
   }
 
-  public Response getServicePoints(Integer servicePointNumber) {
-    return executeRequest(sePoDiClient.getServicePoints(servicePointNumber), "Get Service Point");
+  public Response getServicePoints(ServicePointImportReqModel servicePointImportReqModel) {
+    return executeRequest(sePoDiClient.postServicePointsImport(servicePointImportReqModel), "Get Service Point");
   }
 
 }

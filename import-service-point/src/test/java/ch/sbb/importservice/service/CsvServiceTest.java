@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.base.service.amazon.service.AmazonService;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;

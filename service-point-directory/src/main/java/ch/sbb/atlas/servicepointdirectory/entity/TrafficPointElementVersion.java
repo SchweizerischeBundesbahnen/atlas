@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
@@ -39,7 +40,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "traffic_point_element_version")
 @AtlasVersionable
-public class TrafficPointElementVersion extends BaseDidokImportEntity implements Versionable {
+public class TrafficPointElementVersion extends BaseDidokImportEntity implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "traffic_point_element_version_seq";
 
@@ -87,17 +88,15 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "traffic_point_geolocation_id", referencedColumnName = "id")
   private TrafficPointElementGeolocation trafficPointElementGeolocation;
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validFrom;
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validTo;
 
   public boolean hasGeolocation() {
     return trafficPointElementGeolocation != null;
   }
-
-  @NotNull
-  @Column(columnDefinition = "DATE")
-  private LocalDate validFrom;
-
-  @NotNull
-  @Column(columnDefinition = "DATE")
-  private LocalDate validTo;
 
 }
