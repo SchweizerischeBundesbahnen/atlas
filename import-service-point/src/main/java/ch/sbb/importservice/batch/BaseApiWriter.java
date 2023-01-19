@@ -3,7 +3,6 @@ package ch.sbb.importservice.batch;
 import ch.sbb.importservice.entitiy.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.SePoDiClientService;
-import feign.Response;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,13 @@ public abstract class BaseApiWriter {
     this.stepExecution = stepExecution;
   }
 
-  protected void saveItemProcessed(Long stepExecutionId, Integer number, Response response) {
+  protected void saveItemProcessed(Long stepExecutionId, Integer number, String status, String message) {
     ImportProcessItem importProcessItem = ImportProcessItem.builder()
         .itemNumber(number)
         .stepExecutionId(stepExecutionId)
         .jobExecutionName(stepExecution.getJobExecution().getJobInstance().getJobName())
-        .responseStatus(response.status())
-        .responseMessage(response.reason())
+        .responseStatus(status)
+        .responseMessage(message)
         .build();
     importProcessedItemRepository.save(importProcessItem);
   }

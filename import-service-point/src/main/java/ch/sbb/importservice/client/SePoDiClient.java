@@ -1,8 +1,10 @@
 package ch.sbb.importservice.client;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.importservice.config.OAuthFeignConfig;
 import feign.Response;
+import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,6 @@ public interface SePoDiClient {
   Response postServicePoints();
 
   @PostMapping(value = "/service-point-directory/v1/service-points/import")
-  Response postServicePointsImport(@RequestBody ServicePointImportReqModel servicePoints);
+  List<ServicePointItemImportResult> postServicePointsImport(@RequestBody ServicePointImportReqModel servicePoints);
 
 }
