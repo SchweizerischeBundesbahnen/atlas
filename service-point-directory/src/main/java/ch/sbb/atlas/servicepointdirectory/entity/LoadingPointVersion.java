@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
@@ -38,51 +39,49 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "loading_point_version")
 @AtlasVersionable
-public class LoadingPointVersion extends BaseDidokImportEntity implements Versionable {
+public class LoadingPointVersion extends BaseDidokImportEntity implements Versionable, DatesValidator {
 
-    private static final String VERSION_SEQ = "loading_point_version_seq";
+  private static final String VERSION_SEQ = "loading_point_version_seq";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
-    @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
+  @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
+  private Long id;
 
-    @NotNull
-    @AtlasVersionableProperty
-    private Integer number;
+  @NotNull
+  @AtlasVersionableProperty
+  private Integer number;
 
-    @NotNull
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_12)
-    @AtlasVersionableProperty
-    private String designation;
+  @NotNull
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_12)
+  @AtlasVersionableProperty
+  private String designation;
 
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_35)
-    @AtlasVersionableProperty
-    private String designationLong;
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_35)
+  @AtlasVersionableProperty
+  private String designationLong;
 
-    @AtlasVersionableProperty
-    private boolean connectionPoint;
+  @AtlasVersionableProperty
+  private boolean connectionPoint;
 
-    @NotNull
-    @AtlasVersionableProperty
-    @Convert(converter = ServicePointNumberConverter.class)
-    @Valid
-    private ServicePointNumber servicePointNumber;
+  @NotNull
+  @AtlasVersionableProperty
+  @Convert(converter = ServicePointNumberConverter.class)
+  @Valid
+  private ServicePointNumber servicePointNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "loading_point_geolocation_id", referencedColumnName = "id")
-    private LoadingPointGeolocation loadingPointGeolocation;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "loading_point_geolocation_id", referencedColumnName = "id")
+  private LoadingPointGeolocation loadingPointGeolocation;
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validFrom;
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validTo;
 
-    public boolean hasGeolocation() {
-        return loadingPointGeolocation != null;
-    }
-
-    @NotNull
-    @Column(columnDefinition = "DATE")
-    private LocalDate validFrom;
-
-    @NotNull
-    @Column(columnDefinition = "DATE")
-    private LocalDate validTo;
+  public boolean hasGeolocation() {
+    return loadingPointGeolocation != null;
+  }
 
 }
