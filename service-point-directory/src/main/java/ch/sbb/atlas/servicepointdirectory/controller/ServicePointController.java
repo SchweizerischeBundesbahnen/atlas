@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointImportReqModel;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointImportResult;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel;

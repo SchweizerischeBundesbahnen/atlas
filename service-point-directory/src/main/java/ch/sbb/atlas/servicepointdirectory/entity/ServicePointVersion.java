@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
@@ -58,7 +59,7 @@ import org.apache.commons.lang3.StringUtils;
 @Entity(name = "service_point_version")
 @AtlasVersionable
 public class ServicePointVersion extends BaseDidokImportEntity implements Versionable,
-    BusinessOrganisationAssociated {
+    BusinessOrganisationAssociated, DatesValidator {
 
   private static final String VERSION_SEQ = "service_point_version_seq";
 
@@ -158,11 +159,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
   private ServicePointGeolocation servicePointGeolocation;
-
-  public boolean hasGeolocation() {
-    return servicePointGeolocation != null;
-  }
-
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validFrom;
@@ -170,6 +166,10 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;
+
+  public boolean hasGeolocation() {
+    return servicePointGeolocation != null;
+  }
 
   @ToString.Include
   public boolean isStopPoint() {

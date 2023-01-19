@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -20,6 +21,40 @@ public class ServicePointImportService {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final ServicePointService servicePointService;
+
+  private static ServicePointImportResult buildImportSuccessResult(ServicePointVersion servicePointVersion) {
+    return ServicePointImportResult.builder()
+        .servicePointNumber(servicePointVersion.getNumber())
+        .validFrom(servicePointVersion.getValidFrom())
+        .validTo(servicePointVersion.getValidTo())
+        .status("SUCCESS")
+        .message("[SUCCESS]: This version was imported successfully")
+        .build();
+  }
+
+  private static ServicePointImportResult buildImportFailedResult(ServicePointVersion servicePointVersion, Exception exception) {
+    return ServicePointImportResult.builder()
+        .servicePointNumber(servicePointVersion.getNumber())
+        .validFrom(servicePointVersion.getValidFrom())
+        .validTo(servicePointVersion.getValidTo())
+        .status("FAILED")
+        .message(
+            "[FAILED]: This version could not be imported due to: " + exception.getMessage())
+        .build();
+  }
+
+  public static List<ServicePointCsvModel> parseServicePoints(InputStream inputStream)
+      throws IOException {
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
+    List<ServicePointCsvModel> servicePoints = new ArrayList<>();
+
+    while (mappingIterator.hasNext()) {
+      servicePoints.add(mappingIterator.next());
+    }
+    log.info("Parsed {} servicePoints", servicePoints.size());
+    return servicePoints;
+  }
 
   public void importServicePointCsvModels(List<ServicePointCsvModel> csvModels) {
     List<ServicePointVersion> servicePointVersions = csvModels
@@ -57,40 +92,6 @@ public class ServicePointImportService {
       }
     }
     return results;
-  }
-
-  private static ServicePointImportResult buildImportSuccessResult(ServicePointVersion servicePointVersion) {
-    return ServicePointImportResult.builder()
-        .servicePointNumber(servicePointVersion.getNumber())
-        .validFrom(servicePointVersion.getValidFrom())
-        .validTo(servicePointVersion.getValidTo())
-        .status("SUCCESS")
-        .message("[SUCCESS]: This version was imported successfully")
-        .build();
-  }
-
-  private static ServicePointImportResult buildImportFailedResult(ServicePointVersion servicePointVersion, Exception exception) {
-    return ServicePointImportResult.builder()
-        .servicePointNumber(servicePointVersion.getNumber())
-        .validFrom(servicePointVersion.getValidFrom())
-        .validTo(servicePointVersion.getValidTo())
-        .status("FAILED")
-        .message(
-            "[FAILED]: This version could not be imported due to: " + exception.getMessage())
-        .build();
-  }
-
-  public static List<ServicePointCsvModel> parseServicePoints(InputStream inputStream)
-      throws IOException {
-    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
-        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
-    List<ServicePointCsvModel> servicePoints = new ArrayList<>();
-
-    while (mappingIterator.hasNext()) {
-      servicePoints.add(mappingIterator.next());
-    }
-    log.info("Parsed {} servicePoints", servicePoints.size());
-    return servicePoints;
   }
 
 }
