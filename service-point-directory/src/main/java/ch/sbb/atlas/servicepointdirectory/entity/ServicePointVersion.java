@@ -206,7 +206,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
     return operatingPointType == OperatingPointType.TARIFF_POINT;
   }
 
-  @ToString.Include
   public boolean isTrafficPoint() {
     return isStopPoint() || isFreightServicePoint() || isFareStop();
   }
