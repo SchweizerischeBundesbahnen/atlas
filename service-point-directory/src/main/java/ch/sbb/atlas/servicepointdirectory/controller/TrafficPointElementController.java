@@ -41,15 +41,15 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   @Override
   public List<TrafficPointElementVersionModel> getTrafficPointElement(String sloid) {
-    List<TrafficPointElementVersionModel> TrafficPointElementVersions =
+    List<TrafficPointElementVersionModel> trafficPointElementVersions =
         trafficPointElementService.findTrafficPointElement(
                 sloid)
             .stream()
             .map(TrafficPointElementVersionModel::fromEntity).toList();
-    if (TrafficPointElementVersions.isEmpty()) {
+    if (trafficPointElementVersions.isEmpty()) {
       throw new SloidNotFoundException(sloid);
     }
-    return TrafficPointElementVersions;
+    return trafficPointElementVersions;
   }
 
   @Override
