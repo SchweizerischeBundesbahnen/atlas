@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Schema(enumAsRef = true)
+@Schema(enumAsRef = true, example = "BERN")
 @RequiredArgsConstructor
 @Getter
 public enum SwissCanton {
