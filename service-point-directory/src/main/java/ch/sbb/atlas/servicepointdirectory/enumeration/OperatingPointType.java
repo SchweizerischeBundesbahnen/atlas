@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
-@Schema(enumAsRef = true)
+@Schema(enumAsRef = true, example = "RAILNET_POINT")
 @Getter
 @RequiredArgsConstructor
 public enum OperatingPointType implements CodeAndDesignations {

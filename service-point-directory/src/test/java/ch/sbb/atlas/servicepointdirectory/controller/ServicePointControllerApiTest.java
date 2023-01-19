@@ -14,6 +14,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -38,6 +39,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePoint() throws Exception {
     mvc.perform(get("/v1/service-points/85890087")).andExpect(status().isOk())
+        .andDo(MockMvcResultHandlers.print())
         .andExpect(jsonPath("$[0]." + Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
         .andExpect(jsonPath("$[0]." + Fields.designationOfficial, is("Bern, Wyleregg")))
@@ -62,7 +64,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
         .andExpect(jsonPath("$[0].operatingPointKilometer", is(false)))
 
-        .andExpect(jsonPath("$[0].servicePointGeolocation.swissCantonInformation.number", is(2)))
+        .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$[0].creationDate", is("2021-03-22T09:26:29")))
         .andExpect(jsonPath("$[0].creator", is("fs45117")));
   }
