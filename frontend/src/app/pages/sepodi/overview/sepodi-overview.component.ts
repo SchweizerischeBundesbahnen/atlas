@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Map, StyleSpecification } from 'maplibre-gl';
+import { LngLatBoundsLike, Map, StyleSpecification } from 'maplibre-gl';
 
 const MAP_STYLE: StyleSpecification = {
   version: 8,
@@ -21,11 +21,17 @@ const MAP_STYLE: StyleSpecification = {
       type: 'raster',
       source: 'osm',
       paint: {
-        'raster-opacity': 0.5,
+        'raster-opacity': 0.85,
       },
     },
   ],
 };
+
+const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
+  // CH bounds;
+  [5.7349, 45.6755],
+  [10.6677, 47.9163],
+];
 
 @Component({
   selector: 'app-sepodi-overview',
@@ -44,8 +50,7 @@ export class SepodiOverviewComponent implements AfterViewInit, OnDestroy {
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style: MAP_STYLE,
-      center: [initialState.lng, initialState.lat],
-      zoom: initialState.zoom,
+      bounds: SWISS_BOUNDING_BOX,
     });
   }
 
