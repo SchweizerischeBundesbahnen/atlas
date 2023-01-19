@@ -8,7 +8,6 @@ import ch.sbb.workflow.entity.Workflow;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -37,9 +36,8 @@ public class WorkflowStartModel {
   @NotNull
   private WorkflowType workflowType;
 
-  @NotNull
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   private String description;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
