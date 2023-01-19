@@ -176,8 +176,12 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
     return StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
+  public boolean isFareStop() {
+    return operatingPointType == OperatingPointType.TARIFF_POINT;
+  }
+
   public boolean isTrafficPoint() {
-    return isStopPoint() || isFreightServicePoint() || operatingPointType == OperatingPointType.TARIFF_POINT;
+    return isStopPoint() || isFreightServicePoint() || isFareStop();
   }
 
   public boolean isBorderPoint() {
