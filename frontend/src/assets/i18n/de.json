@@ -153,6 +153,11 @@
       "TITLE_HEADER": "Benutzerverwaltung",
       "DESCRIPTION": "Hier finden Sie alle Informationen zu den berechtigten Benutzern und können diese verwalten."
     },
+    "SERVICE_POINTS": {
+          "TITLE": "Dienststellen verwalten",
+          "TITLE_HEADER": "Dienststellen",
+          "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen."
+        },
     "DETAILS": "Details"
   },
   "PAGINATOR": {
