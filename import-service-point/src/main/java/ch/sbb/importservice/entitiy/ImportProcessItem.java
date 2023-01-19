@@ -36,7 +36,7 @@ public class ImportProcessItem {
 
   private Integer itemNumber;
 
-  private Integer responseStatus;
+  private String responseStatus;
 
   private String responseMessage;
 }

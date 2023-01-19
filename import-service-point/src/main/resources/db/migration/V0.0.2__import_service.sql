@@ -4,7 +4,7 @@ CREATE TABLE import_process_item
     step_execution_id  BIGINT,
     job_execution_name VARCHAR(100),
     item_number        INTEGER NOT NULL,
-    response_status    INTEGER,
+    response_status    VARCHAR(50),
     response_message   VARCHAR(250)
 );
 
