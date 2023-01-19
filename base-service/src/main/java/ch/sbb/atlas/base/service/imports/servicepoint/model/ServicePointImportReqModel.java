@@ -1,6 +1,6 @@
-package ch.sbb.atlas.servicepointdirectory.api;
+package ch.sbb.atlas.base.service.imports.servicepoint.model;
 
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;

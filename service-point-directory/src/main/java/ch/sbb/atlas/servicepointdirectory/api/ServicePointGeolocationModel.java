@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import com.fasterxml.jackson.annotation.JsonIgnore;
