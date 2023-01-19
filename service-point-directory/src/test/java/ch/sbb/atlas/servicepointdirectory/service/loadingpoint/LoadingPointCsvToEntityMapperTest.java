@@ -1,10 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
-import static ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;

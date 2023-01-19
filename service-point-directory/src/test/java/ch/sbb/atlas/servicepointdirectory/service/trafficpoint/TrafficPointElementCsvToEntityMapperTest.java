@@ -2,9 +2,9 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
@@ -28,7 +28,7 @@ class TrafficPointElementCsvToEntityMapperTest {
     // given
     MappingIterator<TrafficPointElementCsvModel> mappingIterator =
         DidokCsvMapper.CSV_MAPPER.readerFor(TrafficPointElementCsvModel.class)
-                                 .with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+            .with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
     List<TrafficPointElementVersion> trafficPointElementVersions = mappingIterator
         .readAll().stream().map(new TrafficPointElementCsvToEntityMapper())
         .toList();

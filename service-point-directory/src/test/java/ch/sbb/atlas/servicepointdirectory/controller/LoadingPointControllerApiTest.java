@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

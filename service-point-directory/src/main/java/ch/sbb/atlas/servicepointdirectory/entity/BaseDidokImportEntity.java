@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.base.service.model.service.UserService;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -27,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 /**
  * Switch back to ch.sbb.atlas.base.service.model.entity.BaseEntity once Didok dies
  */
-public abstract class BaseDidokImportEntity implements DatesValidator {
+public abstract class BaseDidokImportEntity {
 
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
   @AtlasVersionableProperty(ignoreDiff = true)
