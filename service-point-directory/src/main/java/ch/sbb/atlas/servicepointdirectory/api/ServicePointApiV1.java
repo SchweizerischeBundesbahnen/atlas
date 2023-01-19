@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,6 +34,6 @@ public interface ServicePointApiV1 {
   ServicePointVersionModel getServicePointVersion(@PathVariable Long id);
 
   @PostMapping("import")
-  List<ServicePointImportResult> importServicePoints(@RequestBody @Valid ServicePointImportReqModel servicePoints);
+  List<ServicePointItemImportResult> importServicePoints(@RequestBody @Valid ServicePointImportReqModel servicePoints);
 
 }

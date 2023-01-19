@@ -1,8 +1,9 @@
 package ch.sbb.importservice.service;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.importservice.client.SePoDiClient;
-import feign.Response;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +18,11 @@ public class SePoDiClientService extends BaseClientService {
     this.clientName = "sePoDiClient";
   }
 
-  public Response postServicePoints() {
-    return executeRequest(sePoDiClient.postServicePoints(), "Update Service Point");
-  }
+  //  public List<ServicePointImportResult> postServicePoints() {
+  //    return executeRequest(sePoDiClient.postServicePoints(), "Update Service Point");
+  //  }
 
-  public Response getServicePoints(ServicePointImportReqModel servicePointImportReqModel) {
+  public List<ServicePointItemImportResult> getServicePoints(ServicePointImportReqModel servicePointImportReqModel) {
     return executeRequest(sePoDiClient.postServicePointsImport(servicePointImportReqModel), "Get Service Point");
   }
 
