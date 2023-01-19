@@ -95,7 +95,22 @@ export class Pages {
     description: '',
   };
 
-  public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI];
+  public static SERVICE_POINTS: Page = {
+    title: 'PAGES.SERVICE_POINTS.TITLE',
+    titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
+    headerTitle: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
+    path: 'service-point-directory',
+    pathText: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
+    description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
+  };
+
+  public static pages: Page[] = [
+    Pages.HOME,
+    Pages.TTFN,
+    Pages.LIDI,
+    Pages.BODI,
+    Pages.SERVICE_POINTS,
+  ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
   public static enabledPages: Page[] = Pages.pages;
 }
