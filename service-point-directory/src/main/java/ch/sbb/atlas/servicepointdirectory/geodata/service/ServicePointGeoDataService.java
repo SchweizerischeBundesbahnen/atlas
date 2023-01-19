@@ -54,7 +54,7 @@ public class ServicePointGeoDataService {
                 .or(coordinatesBetween(SpatialReference.LV03,
                     projectedAreas.get(SpatialReference.LV03)))));
 
-    log.info("mapping service points");
+    log.info("mapping {} service points", servicePoints.size());
     final List<Point> pointList = servicePointGeoDataMapper.mapToGeometryList(servicePoints);
 
     log.info("building tile layer {}/{}/{}", z, x, y);
