@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SepodiOverviewComponent } from './sepodi-overview.component';
+import { MapOptionsService } from '../map-options.service';
 
 describe('SepodiOverviewComponent', () => {
   let component: SepodiOverviewComponent;
@@ -9,6 +10,7 @@ describe('SepodiOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SepodiOverviewComponent],
+      providers: [{ provide: MapOptionsService, useValue: {} }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SepodiOverviewComponent);
