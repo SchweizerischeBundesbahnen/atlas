@@ -1,4 +1,5 @@
 import { LayerSpecification, LngLatBoundsLike, StyleSpecification } from 'maplibre-gl';
+import { environment } from '../../../environments/environment';
 
 export const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
   // CH bounds;
@@ -15,7 +16,7 @@ export const TILES_SOURCE_SPEC: any = {
   minzoom: 7,
   maxzoom: 20,
   tiles: [
-    `http://localhost:8888/service-point-directory/v1/geodata/${MAP_LAYER_NAME}/{z}/{x}/{y}.pbf`,
+    `${environment.atlasApiUrl}/service-point-directory/v1/geodata/${MAP_LAYER_NAME}/{z}/{x}/{y}.pbf`,
   ],
 };
 
