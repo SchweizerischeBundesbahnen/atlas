@@ -59,7 +59,7 @@ The JAVA vector tiles encoder service, was found
 on [GitHub](https://github.com/ElectronicChartCentre/java-vector-tile) and simplified to handle
 Point-Geometries-Only.
 
-#### Important! Provide all input coordinates for vector tiles in Wgs84WebMercator (SRID:3857) spatial reference.
+#### Important DEV-notice! Provide all input coordinates for vector tiles in Wgs84WebMercator (SRID:3857) spatial reference.
 
 ## Links
 
