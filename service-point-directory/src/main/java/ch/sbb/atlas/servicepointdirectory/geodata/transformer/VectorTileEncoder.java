@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
 public class VectorTileEncoder {
@@ -37,15 +36,13 @@ public class VectorTileEncoder {
 
   private final int extent;
 
-  protected final Envelope clipArea;
-
   private Envelope tileEnvelope;
 
   /**
    * Create a {@link VectorTileEncoder} with the default extent of 4096 and clip buffer 0.
    */
   public VectorTileEncoder() {
-    this(4096, 0);
+    this(4096);
   }
 
   /**
@@ -58,23 +55,10 @@ public class VectorTileEncoder {
    * tile for geometries. 0 means that the clipping is done at the tile border. 8
    * is a good default.
    *
-   * @param extent     an int with extent value. 4096 is a good value.
-   * @param clipBuffer an int with clip buffer size for geometries. 8 is a
-   *                   good value.
+   * @param extent an int with extent value. 4096 is a good value.
    */
-  public VectorTileEncoder(int extent, int clipBuffer) {
+  public VectorTileEncoder(int extent) {
     this.extent = extent;
-    clipArea = createTileEnvelope(clipBuffer, extent);
-  }
-
-  private static Envelope createTileEnvelope(int buffer, int size) {
-    Coordinate[] coords = new Coordinate[5];
-    coords[0] = new Coordinate(-buffer, size + buffer);
-    coords[1] = new Coordinate(size + buffer, size + buffer);
-    coords[2] = new Coordinate(size + buffer, -buffer);
-    coords[3] = new Coordinate(-buffer, -buffer);
-    coords[4] = coords[0];
-    return new GeometryFactory().createPolygon(coords).getEnvelopeInternal();
   }
 
   private double scaleValue(double unscaledNum, double maxAllowed, double min, double max) {
