@@ -54,8 +54,8 @@ public class ServicePointImportServiceTest {
     //then
     List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
     assertThat(result).isNotNull();
-    assertThat(servicePointItemImportResults.size()).isEqualTo(5);
-    assertThat(result.size()).isEqualTo(3);
+    assertThat(servicePointItemImportResults).hasSize(5);
+    assertThat(result).hasSize(3);
     for (ServicePointVersion servicePointVerion : result) {
       assertThat(servicePointVerion.getNumber()).isNotNull();
       assertThat(servicePointVerion.getNumber()).isEqualTo(servicePointNumber);
