@@ -9,7 +9,7 @@ export class MapOptionsService {
   constructor(private authService: AuthService) {}
 
   authoriseRequest(url: string, resourceType?: ResourceTypeEnum): RequestParameters {
-    if (resourceType === 'Tile' && url.startsWith('http://localhost')) {
+    if (resourceType === 'Tile' && url.includes(window.location.host)) {
       return {
         url: url,
         headers: { Authorization: 'Bearer ' + this.authService.accessToken },
