@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Map, Popup, ResourceTypeEnum } from 'maplibre-gl';
 import { MapOptionsService } from '../map-options.service';
 import {
@@ -6,8 +6,7 @@ import {
   MAP_STYLE_SPEC,
   SERVICE_POINTS_LAYER_SPEC,
   SWISS_BOUNDING_BOX,
-} from '../map-constants';
-import { GeoJsonProperties } from 'geojson';
+} from '../map-configuration';
 
 @Component({
   selector: 'app-sepodi-overview',
