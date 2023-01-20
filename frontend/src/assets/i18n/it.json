@@ -153,6 +153,11 @@
       "TITLE_HEADER": "Amministrazione degli utenti",
       "DESCRIPTION": "Qui troverete tutte le informazioni sugli utenti autorizzati e potrete gestirli."
     },
+    "SERVICE_POINTS": {
+      "TITLE": "__Dienststellen verwalten__",
+      "TITLE_HEADER": "__Dienststellen__",
+      "DESCRIPTION": "__Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen.__"
+    },
     "DETAILS": "Precisazioni"
   },
   "PAGINATOR": {
