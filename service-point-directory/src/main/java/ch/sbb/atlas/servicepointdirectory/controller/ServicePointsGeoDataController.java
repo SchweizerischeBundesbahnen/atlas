@@ -16,7 +16,7 @@ public class ServicePointsGeoDataController {
 
   private final ServicePointGeoDataService servicePointGeoDataService;
 
-  @GetMapping(value = "/v1/geodata/servicepoints/{z}/{x}/{y}.pbf", produces = {
+  @GetMapping(value = "/v1/geodata/service-points/{z}/{x}/{y}.pbf", produces = {
       "application/x-protobuf"})
   public VectorTile.Tile getServicePointsGeoData(@PathVariable("z") Integer z,
       @PathVariable("x") Integer x, @PathVariable("y") Integer y) {
