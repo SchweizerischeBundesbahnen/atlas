@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { Map, Popup, ResourceTypeEnum } from 'maplibre-gl';
+import { Map, MapMouseEvent, Popup, ResourceTypeEnum } from 'maplibre-gl';
 import { MapOptionsService } from '../map-options.service';
 import {
   MAP_SOURCE_NAME,
   MAP_STYLE_SPEC,
-  SERVICE_POINTS_LAYER_SPEC,
+  MAP_ZOOM_DETAILS,
   SWISS_BOUNDING_BOX,
 } from '../map-configuration';
 
@@ -22,6 +22,7 @@ export class SepodiOverviewComponent implements AfterViewInit, OnDestroy {
   constructor(private mapOptionsService: MapOptionsService) {}
 
   ngAfterViewInit() {
+    console.debug(MAP_STYLE_SPEC);
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style: MAP_STYLE_SPEC,
@@ -31,33 +32,42 @@ export class SepodiOverviewComponent implements AfterViewInit, OnDestroy {
     });
 
     this.map.once('style.load', () => {
-      this.map?.addLayer(SERVICE_POINTS_LAYER_SPEC);
-      this.map?.on('click', MAP_SOURCE_NAME, (e) => {
-        new Popup()
-          .setLngLat(e.lngLat)
-          .setHTML(
-            (e.features ?? [])
-              .map((feature: GeoJSON.Feature) =>
-                Object.entries(feature.properties ?? {})
-                  .map((entry) => {
-                    const [key, value] = entry;
-                    return `${key}:${value}<br/>`;
-                  })
-                  .join()
-              )
-              .join('<br/>')
-          )
-          .addTo(this.map!);
+      const mapInstance = this.map!;
+      mapInstance.on('click', MAP_SOURCE_NAME, (e) => this.onClick(e));
+      mapInstance.on('mouseenter', MAP_SOURCE_NAME, () => {
+        if (this.showDetails()) {
+          mapInstance.getCanvas().style.cursor = 'pointer';
+        }
+      });
+      mapInstance.on('mouseleave', MAP_SOURCE_NAME, () => {
+        mapInstance.getCanvas().style.cursor = '';
       });
     });
+  }
 
-    this.map.on('mouseenter', MAP_SOURCE_NAME, () => {
-      this.map!.getCanvas().style.cursor = 'pointer';
-    });
+  private showDetails(): boolean {
+    return this.map != undefined && this.map.getZoom() >= MAP_ZOOM_DETAILS;
+  }
 
-    this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
-      this.map!.getCanvas().style.cursor = '';
-    });
+  private onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
+    if (!this.showDetails()) {
+      return;
+    }
+    new Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(
+        (e.features ?? [])
+          .map((feature) =>
+            Object.entries(feature.properties ?? {})
+              .map((entry) => {
+                const [key, value] = entry;
+                return `${key}:${value}`;
+              })
+              .join('<br/>')
+          )
+          .join('<hr/>')
+      )
+      .addTo(this.map!);
   }
 
   ngOnDestroy() {
