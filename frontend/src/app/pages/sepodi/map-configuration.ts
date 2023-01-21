@@ -1,4 +1,4 @@
-import { LayerSpecification, LngLatBoundsLike, StyleSpecification } from 'maplibre-gl';
+import { LngLatBoundsLike, StyleSpecification } from 'maplibre-gl';
 import { environment } from '../../../environments/environment';
 
 export const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
@@ -7,42 +7,11 @@ export const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
   [10.6677, 47.9163],
 ];
 
+export const MAP_ZOOM_DETAILS = 10.5;
 export const MAP_SOURCE_NAME = 'geodata';
 export const MAP_LAYER_NAME = 'service-points';
 
-/* when source "id" not specified, layer and source share the same id */
-export const TILES_SOURCE_SPEC: any = {
-  type: 'vector',
-  minzoom: 7,
-  maxzoom: 20,
-  tiles: [
-    `${environment.atlasApiUrl}/service-point-directory/v1/geodata/${MAP_LAYER_NAME}/{z}/{x}/{y}.pbf`,
-  ],
-};
-
 const DEFAULT_OPACITY = 0.9;
-
-export const SERVICE_POINTS_LAYER_SPEC: LayerSpecification = {
-  id: MAP_SOURCE_NAME,
-  'source-layer': MAP_LAYER_NAME,
-  source: TILES_SOURCE_SPEC,
-  type: 'circle',
-  paint: {
-    'circle-radius': ['interpolate', ['linear'], ['zoom'], 5, 1.5, 20, 9],
-    'circle-color': [
-      'step',
-      ['zoom'],
-      'darkblue',
-      10.5,
-      'darkblue' /* => stam: here comes the logic to paint service point different by type */,
-    ],
-    'circle-opacity': DEFAULT_OPACITY,
-    'circle-stroke-color': 'rgb(255,255,255)',
-    'circle-stroke-opacity': DEFAULT_OPACITY,
-    'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 12, 0, 20, 1],
-  },
-};
-
 export const MAP_STYLE_SPEC: StyleSpecification = {
   version: 8,
   sources: {
@@ -56,6 +25,14 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       maxzoom: 19,
       bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
     },
+    geodata: {
+      type: 'vector',
+      minzoom: 7,
+      maxzoom: 20,
+      tiles: [
+        `${environment.atlasApiUrl}/service-point-directory/v1/geodata/${MAP_LAYER_NAME}/{z}/{x}/{y}.pbf`,
+      ],
+    },
   },
   layers: [
     {
@@ -64,6 +41,26 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       source: 'osm',
       paint: {
         'raster-opacity': 0.5,
+      },
+    },
+    {
+      id: MAP_SOURCE_NAME,
+      'source-layer': MAP_LAYER_NAME,
+      source: MAP_SOURCE_NAME,
+      type: 'circle',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 5, 1.5, 20, 9],
+        'circle-color': [
+          'step',
+          ['zoom'],
+          'darkblue',
+          MAP_ZOOM_DETAILS,
+          'darkblue' /* => stam: here comes the logic to paint service point different by type */,
+        ],
+        'circle-opacity': DEFAULT_OPACITY,
+        'circle-stroke-color': 'rgb(255,255,255)',
+        'circle-stroke-opacity': DEFAULT_OPACITY,
+        'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 12, 0, 20, 1],
       },
     },
   ],
