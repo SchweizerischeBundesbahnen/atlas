@@ -3,12 +3,14 @@ import { TestBed } from '@angular/core/testing';
 import { MapOptionsService } from './map-options.service';
 import { AuthService } from '../../core/auth/auth.service';
 
+const authService: Partial<AuthService> = {};
+
 describe('GeodataService', () => {
   let service: MapOptionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: AuthService, useValue: {} }],
+      providers: [{ provide: AuthService, useValue: authService }],
     });
     service = TestBed.inject(MapOptionsService);
   });
