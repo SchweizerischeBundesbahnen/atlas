@@ -1,21 +1,13 @@
-import { LngLatBoundsLike, StyleSpecification } from 'maplibre-gl';
+import { StyleSpecification } from 'maplibre-gl';
 import { environment } from '../../../environments/environment';
-
-export const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
-  // CH bounds;
-  [5.7349, 45.6755],
-  [10.6677, 47.9163],
-];
 
 export const MAP_ZOOM_DETAILS = 10.5;
 export const MAP_SOURCE_NAME = 'geodata';
 export const MAP_LAYER_NAME = 'service-points';
-
-const DEFAULT_OPACITY = 0.9;
 export const MAP_STYLE_SPEC: StyleSpecification = {
   version: 8,
   sources: {
-    osm: {
+    swisstopofarbe: {
       type: 'raster',
       tiles: [
         'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg',
@@ -36,9 +28,9 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
   },
   layers: [
     {
-      id: 'osm',
+      id: 'swisstopofarbe',
       type: 'raster',
-      source: 'osm',
+      source: 'swisstopofarbe',
       paint: {
         'raster-opacity': 0.5,
       },
@@ -55,11 +47,11 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
           ['zoom'],
           'darkblue',
           MAP_ZOOM_DETAILS,
-          'darkblue' /* => stam: here comes the logic to paint service point different by type */,
+          'darkblue' /* => STAM: write the expression, to color the service-point type-specific */,
         ],
-        'circle-opacity': DEFAULT_OPACITY,
+        'circle-opacity': 0.9,
         'circle-stroke-color': 'rgb(255,255,255)',
-        'circle-stroke-opacity': DEFAULT_OPACITY,
+        'circle-stroke-opacity': 0.9,
         'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 12, 0, 20, 1],
       },
     },

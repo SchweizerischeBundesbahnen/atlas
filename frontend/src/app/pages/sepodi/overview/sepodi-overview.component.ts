@@ -1,12 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Map, MapMouseEvent, Popup, ResourceTypeEnum } from 'maplibre-gl';
 import { MapOptionsService } from '../map-options.service';
-import {
-  MAP_SOURCE_NAME,
-  MAP_STYLE_SPEC,
-  MAP_ZOOM_DETAILS,
-  SWISS_BOUNDING_BOX,
-} from '../map-configuration';
+import { MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from '../map-style';
 
 @Component({
   selector: 'app-sepodi-overview',
@@ -26,7 +21,7 @@ export class SepodiOverviewComponent implements AfterViewInit, OnDestroy {
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style: MAP_STYLE_SPEC,
-      bounds: SWISS_BOUNDING_BOX,
+      bounds: this.mapOptionsService.getInitialBoundingBox(),
       transformRequest: (url: string, resourceType?: ResourceTypeEnum) =>
         this.mapOptionsService.authoriseRequest(url, resourceType),
     });
@@ -50,13 +45,14 @@ export class SepodiOverviewComponent implements AfterViewInit, OnDestroy {
   }
 
   private onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
-    if (!this.showDetails()) {
+    if (!this.showDetails() || !e.features) {
       return;
     }
     new Popup()
       .setLngLat(e.lngLat)
+      // to attach an angular component, use .setDOMContent()
       .setHTML(
-        (e.features ?? [])
+        e.features
           .map((feature) =>
             Object.entries(feature.properties ?? {})
               .map((entry) => {

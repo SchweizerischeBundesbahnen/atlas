@@ -4,14 +4,8 @@ import { CommonModule } from '@angular/common';
 import { SepodiRoutingModule } from './sepodi-routing.module';
 import { SepodiOverviewComponent } from './overview/sepodi-overview.component';
 
-
 @NgModule({
-  declarations: [
-    SepodiOverviewComponent
-  ],
-  imports: [
-    CommonModule,
-    SepodiRoutingModule
-  ]
+  declarations: [SepodiOverviewComponent],
+  imports: [CommonModule, SepodiRoutingModule],
 })
-export class SepodiModule { }
+export class SepodiModule {}
