@@ -17,7 +17,6 @@ export class SepodiOverviewComponent implements AfterViewInit, OnDestroy {
   constructor(private mapOptionsService: MapOptionsService) {}
 
   ngAfterViewInit() {
-    console.debug(MAP_STYLE_SPEC);
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style: MAP_STYLE_SPEC,
