@@ -10,7 +10,14 @@ describe('SepodiOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SepodiOverviewComponent],
-      providers: [{ provide: MapOptionsService, useValue: {} }],
+      providers: [
+        {
+          provide: MapOptionsService,
+          useValue: {
+            getInitialBoundingBox: () => Object(),
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SepodiOverviewComponent);
