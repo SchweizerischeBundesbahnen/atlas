@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SepodiOverviewComponent } from './sepodi-overview.component';
-import { MapOptionsService } from '../map-options.service';
+import { AuthService } from '../../../core/auth/auth.service';
+
+const authService: Partial<AuthService> = {};
 
 describe('SepodiOverviewComponent', () => {
   let component: SepodiOverviewComponent;
@@ -10,14 +12,7 @@ describe('SepodiOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SepodiOverviewComponent],
-      providers: [
-        {
-          provide: MapOptionsService,
-          useValue: {
-            getInitialBoundingBox: () => Object(),
-          },
-        },
-      ],
+      providers: [{ provide: AuthService, useValue: authService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SepodiOverviewComponent);
