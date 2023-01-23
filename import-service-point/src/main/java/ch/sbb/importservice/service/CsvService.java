@@ -1,7 +1,7 @@
 package ch.sbb.importservice.service;
 
-import static ch.sbb.importservice.model.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 
 import ch.sbb.atlas.base.service.amazon.service.AmazonService;
 import ch.sbb.atlas.base.service.imports.DidokCsvMapper;
@@ -50,16 +50,13 @@ public class CsvService {
   private String bucketName;
 
   public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3() throws IOException {
-    log.info("Starting Service Point import process");
-    List<ServicePointCsvModel> servicePointCsvModels = getServicePointCsvModelToUpdate();
-    return mapToServicePointCsvModelContainers(servicePointCsvModels);
-  }
-
-  private List<ServicePointCsvModel> getServicePointCsvModelToUpdate() throws IOException {
     log.info("Downloading file from Amazon S3 Bucket: {}", bucketName);
-    File importFile = downloadImportFile(DINSTELLE_FILE_PREFIX);
+    File file = downloadImportFile(DINSTELLE_FILE_PREFIX);
     LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
-    return getCsvModelsToUpdate(importFile, matchingDate, ServicePointCsvModel.class);
+    log.info("CSV File to import: {}", file.getName());
+    List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, matchingDate, ServicePointCsvModel.class);
+    return mapToServicePointCsvModelContainers(
+        servicePointCsvModels);
   }
 
   public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3(File file) throws IOException {
@@ -87,15 +84,22 @@ public class CsvService {
     return servicePointCsvModelContainers;
   }
 
+  public List<LoadingPointCsvModel> getActualLoadingPointCsvModelsFromS3(File file) throws IOException {
+    List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(file, MIN_LOCAL_DATE,
+        LoadingPointCsvModel.class);
+    log.info("Found {} Loading Points to send to ServicePointDirectory", loadingPointCsvModels.size());
+    return loadingPointCsvModels;
+  }
+
   public List<LoadingPointCsvModel> getActualLoadingPointCsvModelsFromS3() throws IOException {
     File importFile = downloadImportFile(LADESTELLEN_FILE_PREFIX);
     List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(importFile, MIN_LOCAL_DATE,
         LoadingPointCsvModel.class);
-    log.info("loadingPointCsvModels size: {}", loadingPointCsvModels.size());
+    log.info("Found {} Loading Points to send to ServicePointDirectory", loadingPointCsvModels.size());
     return loadingPointCsvModels;
   }
 
-  public File downloadImportFile(String csvImportFilePrefix) throws IOException {
+  private File downloadImportFile(String csvImportFilePrefix) throws IOException {
     String csvImportFilePrefixToday = attachTodayDate(csvImportFilePrefix);
     return downloadImportFileWithPrefix(csvImportFilePrefixToday);
   }
