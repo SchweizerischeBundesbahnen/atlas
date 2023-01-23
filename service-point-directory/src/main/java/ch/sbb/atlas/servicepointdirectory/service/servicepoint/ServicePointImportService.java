@@ -71,7 +71,7 @@ public class ServicePointImportService {
 
     List<ServicePointItemImportResult> results = new ArrayList<>();
     servicePointCsvModelContainers.forEach(servicePointCsvModelContainer -> {
-      log.info("Import Service Point with didokCode {} and versions size {}", servicePointCsvModelContainer.getDidokCode(),
+      log.info("Import Service Point with didokCode {} and {} versions", servicePointCsvModelContainer.getDidokCode(),
           servicePointCsvModelContainer.getServicePointCsvModelList().size());
       List<ServicePointVersion> servicePointVersions = servicePointCsvModelContainer.getServicePointCsvModelList()
           .stream()
