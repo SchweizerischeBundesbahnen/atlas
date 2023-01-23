@@ -1,5 +1,8 @@
 package ch.sbb.importservice.config;
 
+import static ch.sbb.importservice.model.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.model.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+
 import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.importservice.batch.LoadingPointApiWriter;
@@ -35,9 +38,6 @@ import org.springframework.dao.DeadlockLoserDataAccessException;
 @AllArgsConstructor
 public class SpringBatchConfig {
 
-  public static final String IMPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
-  public static final String IMPORT_LOADING_POINT_CSV_JOB = "importLoadingPointCsvJob";
-
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
@@ -58,14 +58,14 @@ public class SpringBatchConfig {
   @StepScope
   @Bean
   public ListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader(
-      @Value("#{jobParameters[fullPathFileName]}") String pathToFIle)
+      @Value("#{jobParameters[fullPathFileName]}") String pathToFile)
       throws IOException {
     List<ServicePointCsvModelContainer> actualServicePotinCsvModelsFromS3;
-    if (pathToFIle != null) {
-      File file = new File(pathToFIle);
+    if (pathToFile != null) {
+      File file = new File(pathToFile);
       actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3(file);
     } else {
-      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3(IMPORT_SERVICE_POINT_CSV_JOB);
+      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3();
     }
     return new ListItemReader<>(actualServicePotinCsvModelsFromS3);
   }
@@ -75,8 +75,7 @@ public class SpringBatchConfig {
   public ListItemReader<LoadingPointCsvModel> loadingPointlistItemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathTofIle)
       throws IOException {
-    List<LoadingPointCsvModel> actualLoadingPotinCsvModelsFromS3 = csvService.getActualLoadingPotinCsvModelsFromS3(
-        IMPORT_SERVICE_POINT_CSV_JOB);
+    List<LoadingPointCsvModel> actualLoadingPotinCsvModelsFromS3 = csvService.getActualLoadingPointCsvModelsFromS3();
     return new ListItemReader<>(actualLoadingPotinCsvModelsFromS3);
   }
 
@@ -110,7 +109,7 @@ public class SpringBatchConfig {
 
   @Bean
   public Job importServicePointCsvJob(ListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
-    return jobBuilderFactory.get(IMPORT_SERVICE_POINT_CSV_JOB)
+    return jobBuilderFactory.get(IMPORT_SERVICE_POINT_CSV_JOB_NAME)
         .listener(jobCompletitionListener)
         .incrementer(new RunIdIncrementer())
         .flow(parseServicePointCsvStep(servicePointlistItemReader))
@@ -120,7 +119,7 @@ public class SpringBatchConfig {
 
   @Bean
   public Job importLoadingPointCsvJob(ListItemReader<LoadingPointCsvModel> loadingPointlistItemReader) {
-    return jobBuilderFactory.get(IMPORT_LOADING_POINT_CSV_JOB)
+    return jobBuilderFactory.get(IMPORT_LOADING_POINT_CSV_JOB_NAME)
         .listener(jobCompletitionListener)
         .incrementer(new RunIdIncrementer())
         .flow(parseLoadingPointCsvStep(loadingPointlistItemReader))

@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.cloud.sleuth.Tracer;
 
@@ -35,18 +36,22 @@ class ImportMailNotificationServiceTest {
   public void shouldBuildMailNotification() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
-    expectedMailContent.put("jobName", "export");
-    expectedMailContent.put("error", "Internal Server Error");
+    expectedMailContent.put("jobName", "import");
+    expectedMailContent.put("cause", "");
     expectedMailContent.put("correlationId", "abc123");
+    expectedMailContent.put("exception", "");
+    expectedMailContent.put("jobParameter", "{}");
+    JobExecution jobExecution = new JobExecution(1L);
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
 
     doReturn("abc123").when(notificationService).getCurrentSpan();
     //when
-    MailNotification result = notificationService.buildMailErrorNotification("export", stepExecution);
+    MailNotification result = notificationService.buildMailErrorNotification("import", stepExecution);
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getMailType()).isEqualTo(MailType.SCHEDULING_ERROR_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo("Job [export] execution failed");
+    assertThat(result.getMailType()).isEqualTo(MailType.IMPORT_SERVICE_POINT_ERROR_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo("Job [import] execution failed");
     assertThat(result.getTemplateProperties()).isNotEmpty();
     assertThat(result.getTemplateProperties()).containsOnly(expectedMailContent);
   }
@@ -55,18 +60,22 @@ class ImportMailNotificationServiceTest {
   public void shouldBuildMailNotificationWhenThrowableIsNull() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
-    expectedMailContent.put("jobName", "export");
-    expectedMailContent.put("error", "No error details available");
+    expectedMailContent.put("jobName", "import");
+    expectedMailContent.put("cause", "");
     expectedMailContent.put("correlationId", "abc123");
+    expectedMailContent.put("exception", "");
+    expectedMailContent.put("jobParameter", "{}");
+    JobExecution jobExecution = new JobExecution(1L);
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
 
     doReturn("abc123").when(notificationService).getCurrentSpan();
     //when
-    MailNotification result = notificationService.buildMailErrorNotification("export", null);
+    MailNotification result = notificationService.buildMailErrorNotification("import", stepExecution);
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getMailType()).isEqualTo(MailType.SCHEDULING_ERROR_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo("Job [export] execution failed");
+    assertThat(result.getMailType()).isEqualTo(MailType.IMPORT_SERVICE_POINT_ERROR_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo("Job [import] execution failed");
     assertThat(result.getTemplateProperties()).isNotEmpty();
     assertThat(result.getTemplateProperties()).containsOnly(expectedMailContent);
   }
@@ -75,8 +84,10 @@ class ImportMailNotificationServiceTest {
   public void shouldThrowIllegalStateExceptionWhenCurrentSpanIsNull() {
     //given
     when(tracer.currentSpan()).thenReturn(null);
+    JobExecution jobExecution = new JobExecution(1L);
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     //when
-    assertThrows(IllegalStateException.class, () -> notificationService.buildMailErrorNotification("export", stepExecution));
+    assertThrows(IllegalStateException.class, () -> notificationService.buildMailErrorNotification("import", stepExecution));
 
   }
 
