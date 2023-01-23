@@ -1,7 +1,7 @@
 package ch.sbb.importservice.config;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
-import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.importservice.batch.LoadingPointApiWriter;
 import ch.sbb.importservice.batch.ServicePointApiWriter;
 import ch.sbb.importservice.batch.ServicePointProcessor;
@@ -57,10 +57,10 @@ public class SpringBatchConfig {
 
   @StepScope
   @Bean
-  public ListItemReader<ServicePointCsvModel> servicePointlistItemReader(
+  public ListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathToFIle)
       throws IOException {
-    List<ServicePointCsvModel> actualServicePotinCsvModelsFromS3;
+    List<ServicePointCsvModelContainer> actualServicePotinCsvModelsFromS3;
     if (pathToFIle != null) {
       File file = new File(pathToFIle);
       actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3(file);
@@ -81,8 +81,9 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Step parseServicePointCsvStep(ListItemReader<ServicePointCsvModel> servicePointlistItemReader) {
-    return stepBuilderFactory.get("parseServicePointCsvStep").<ServicePointCsvModel, ServicePointCsvModel>chunk(100)
+  public Step parseServicePointCsvStep(ListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
+    return stepBuilderFactory.get("parseServicePointCsvStep")
+        .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(100)
         .reader(servicePointlistItemReader)
         .processor(processor())
         .writer(servicePointApiWriter)
@@ -108,7 +109,7 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Job importServicePointCsvJob(ListItemReader<ServicePointCsvModel> servicePointlistItemReader) {
+  public Job importServicePointCsvJob(ListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
     return jobBuilderFactory.get(IMPORT_SERVICE_POINT_CSV_JOB)
         .listener(jobCompletitionListener)
         .incrementer(new RunIdIncrementer())
@@ -140,7 +141,7 @@ public class SpringBatchConfig {
   @Bean
   public TaskExecutor getAsyncExecutor() {
     SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();
-    taskExecutor.setConcurrencyLimit(10);
+    taskExecutor.setConcurrencyLimit(2);
     return taskExecutor;
   }
 
