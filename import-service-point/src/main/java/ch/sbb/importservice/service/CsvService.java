@@ -3,7 +3,6 @@ package ch.sbb.importservice.service;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 
-import ch.sbb.atlas.base.service.amazon.service.AmazonService;
 import ch.sbb.atlas.base.service.imports.DidokCsvMapper;
 import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
@@ -36,13 +35,12 @@ public class CsvService {
 
   private static final String CSV_DATE_TIME_FORMATTING = "yyyy-MM-dd HH:mm:ss";
   private static final String HASHTAG = "#";
-  private static final String SERVICEPOINT_DIDOK_DIR_NAME = "servicepoint_didok";
   private static final String CSV_DELIMITER = ";";
   private static final String EDITED_AT_COLUMN_NAME = "GEAENDERT_AM";
   private static final String DINSTELLE_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
   private static final String LADESTELLEN_FILE_PREFIX = "DIDOK3_LADESTELLEN_";
 
-  private final AmazonService amazonService;
+  private final FileHelperService fileHelperService;
 
   private final JobHelperService jobHelperService;
 
@@ -51,7 +49,7 @@ public class CsvService {
 
   public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3() throws IOException {
     log.info("Downloading file from Amazon S3 Bucket: {}", bucketName);
-    File file = downloadImportFile(DINSTELLE_FILE_PREFIX);
+    File file = fileHelperService.downloadImportFileFromS3(DINSTELLE_FILE_PREFIX);
     LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     log.info("CSV File to import: {}", file.getName());
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, matchingDate, ServicePointCsvModel.class);
@@ -92,16 +90,11 @@ public class CsvService {
   }
 
   public List<LoadingPointCsvModel> getActualLoadingPointCsvModelsFromS3() throws IOException {
-    File importFile = downloadImportFile(LADESTELLEN_FILE_PREFIX);
+    File importFile = fileHelperService.downloadImportFileFromS3(LADESTELLEN_FILE_PREFIX);
     List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(importFile, MIN_LOCAL_DATE,
         LoadingPointCsvModel.class);
     log.info("Found {} Loading Points to send to ServicePointDirectory", loadingPointCsvModels.size());
     return loadingPointCsvModels;
-  }
-
-  private File downloadImportFile(String csvImportFilePrefix) throws IOException {
-    String csvImportFilePrefixToday = attachTodayDate(csvImportFilePrefix);
-    return downloadImportFileWithPrefix(csvImportFilePrefixToday);
   }
 
   public <T> List<T> getCsvModelsToUpdate(File importFile, LocalDate matchingDate, Class<T> type) throws IOException {
@@ -167,40 +160,6 @@ public class CsvService {
       mappedObjects.add(mappingIterator.next());
     }
     return mappedObjects;
-  }
-
-  private File downloadImportFileWithPrefix(String csvImportFilePrefix) throws IOException {
-    log.info("Downloding CSV file..");
-    List<String> foundImportFileKeys = amazonService.getS3ObjectKeysFromPrefix(SERVICEPOINT_DIDOK_DIR_NAME, csvImportFilePrefix);
-    String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys, csvImportFilePrefix);
-    log.info("Found File with name: {}. Downloading...", fileKeyToDownload);
-    File download = amazonService.pullFile(fileKeyToDownload);
-    log.info("Downloaded file: " + download.getName() + ", size: " + download.length() + " bytes");
-    return download;
-  }
-
-  private String handleImportFileKeysResult(List<String> importFileKeys, String csvImportFilePrefix) {
-    if (importFileKeys.isEmpty()) {
-      //TODO: create custom Exception
-      throw new RuntimeException("[IMPORT]: File " + csvImportFilePrefix + " not found file on S3");
-    } else if (importFileKeys.size() > 1) {
-      throw new RuntimeException("[IMPORT]: Found more than 1 file " + csvImportFilePrefix + " to download on S3");
-    }
-    return importFileKeys.get(0);
-  }
-
-  private String attachTodayDate(String csvImportFilePrefix) {
-    LocalDate today = LocalDate.now();
-    return csvImportFilePrefix + replaceHyphensWithUnderscores(today.toString());
-  }
-
-  private String attachYesterdayDate(String csvImportFilePrefix) {
-    LocalDate yesterday = LocalDate.now().minusDays(1);
-    return csvImportFilePrefix + replaceHyphensWithUnderscores(yesterday.toString());
-  }
-
-  private String replaceHyphensWithUnderscores(String input) {
-    return input.replaceAll("-", "");
   }
 
 }
