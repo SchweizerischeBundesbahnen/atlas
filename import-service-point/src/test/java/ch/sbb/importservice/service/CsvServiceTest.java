@@ -1,6 +1,5 @@
 package ch.sbb.importservice.service;
 
-import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_SERVICE_POINT_CSV_JOB;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
@@ -43,7 +42,7 @@ public class CsvServiceTest {
 
     String exMessage =
         assertThrows(RuntimeException.class,
-            () -> csvService.downloadImportFile("PREFIX_", IMPORT_SERVICE_POINT_CSV_JOB)).getLocalizedMessage();
+            () -> csvService.downloadImportFile("PREFIX_")).getLocalizedMessage();
     verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
     assertThat(exMessage).isEqualTo("[IMPORT]: Not found file on S3");
   }
@@ -56,7 +55,7 @@ public class CsvServiceTest {
 
     String exMessage =
         assertThrows(RuntimeException.class,
-            () -> csvService.downloadImportFile("PREFIX_", IMPORT_SERVICE_POINT_CSV_JOB)).getLocalizedMessage();
+            () -> csvService.downloadImportFile("PREFIX_")).getLocalizedMessage();
     verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
     assertThat(exMessage).isEqualTo("[IMPORT]: Found more than 1 file to download on S3");
   }
@@ -67,7 +66,7 @@ public class CsvServiceTest {
     when(amazonService.getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today))).thenReturn(List.of("file"));
     when(amazonService.pullFile(eq("file"))).thenReturn(new File("file"));
 
-    File file = csvService.downloadImportFile("PREFIX_", IMPORT_SERVICE_POINT_CSV_JOB);
+    File file = csvService.downloadImportFile("PREFIX_");
     verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
     verify(amazonService).pullFile(eq("file"));
     assertThat(file.getName()).isEqualTo("file");
@@ -75,17 +74,17 @@ public class CsvServiceTest {
 
   @Test
   void test_getCsvModelsToUpdate_shouldReturnEmptyList() throws IOException {
-    csvService.setMatchingDate(LocalDate.of(2023, 1, 1));
+    LocalDate localDate = LocalDate.of(2023, 1, 1);
     File csv = new File(getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
-    List<ServicePointCsvModel> csvModelsToUpdate = csvService.getCsvModelsToUpdate(csv, ServicePointCsvModel.class);
+    List<ServicePointCsvModel> csvModelsToUpdate = csvService.getCsvModelsToUpdate(csv, localDate, ServicePointCsvModel.class);
     assertThat(csvModelsToUpdate).hasSize(0);
   }
 
   @Test
   void test_getCsvModelsToUpdate_shouldReturnOneMismatchedCsvModel() throws IOException {
-    csvService.setMatchingDate(LocalDate.of(2020, 6, 9));
+    LocalDate localDate = LocalDate.of(2020, 6, 9);
     File csv = new File(getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
-    List<ServicePointCsvModel> csvModelsToUpdate = csvService.getCsvModelsToUpdate(csv, ServicePointCsvModel.class);
+    List<ServicePointCsvModel> csvModelsToUpdate = csvService.getCsvModelsToUpdate(csv, localDate, ServicePointCsvModel.class);
     assertThat(csvModelsToUpdate).hasSize(1);
     ServicePointCsvModel csvModel = csvModelsToUpdate.get(0);
     assertThat(csvModel.getNummer()).isEqualTo(1542);
