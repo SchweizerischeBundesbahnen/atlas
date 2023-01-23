@@ -4,6 +4,7 @@ import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.helper.AtlasFrontendBaseUrl;
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -52,7 +53,7 @@ public class LineWorkflowService {
     }
 
     private String buildSubject(Workflow workflow) {
-        return "Antrag zu " + workflow.getSwissId() + " " + workflow.getDescription() + " " + buildTranslatedStatus(workflow);
+        return "Antrag zu " + workflow.getSwissId() + " " + getWorkflowDescription(workflow) + " " + buildTranslatedStatus(workflow);
     }
 
     private String buildTranslatedStatus(Workflow workflow) {
@@ -70,7 +71,7 @@ public class LineWorkflowService {
         mailContentProperty.put("title", "Antrag für eine neue/geänderte Linie " + buildTranslatedStatus(workflow));
         mailContentProperty.put("teaser", getTeaser(workflow));
         mailContentProperty.put("swissId", workflow.getSwissId());
-        mailContentProperty.put("description", workflow.getDescription());
+        mailContentProperty.put("description", getWorkflowDescription(workflow));
         mailContentProperty.put("checkComment", StringUtils.trimToNull(workflow.getCheckComment()));
         mailContentProperty.put("url", getUrl(workflow));
         mailProperties.add(mailContentProperty);
@@ -82,13 +83,20 @@ public class LineWorkflowService {
             case STARTED ->
                     "Es wurde eine neue Linie bzw. eine Änderung an einer bestehenden Linie erfasst welche eine Freigabe erfordert.";
             case APPROVED, REJECTED ->
-                    "Der von Ihnen gestellte Antrag für die " + workflow.getSwissId() + " " + workflow.getDescription() + " wurde überprüft und " + buildTranslatedStatus(workflow) + ".";
+                    "Der von Ihnen gestellte Antrag für die " + workflow.getSwissId() + " " + getWorkflowDescription(workflow) + " wurde überprüft und " + buildTranslatedStatus(workflow) + ".";
             default -> throw new IllegalArgumentException();
         };
     }
 
     private String getUrl(Workflow workflow) {
         return AtlasFrontendBaseUrl.getUrl(activeProfile) + LINE_URL + workflow.getSwissId() + "?id=" + workflow.getBusinessObjectId();
+    }
+
+    private String getWorkflowDescription(Workflow workflow){
+        if (StringUtils.isBlank(workflow.getDescription())) {
+            return "(Keine Linienbezeichnung)";
+        }
+        return workflow.getDescription();
     }
 
 }
