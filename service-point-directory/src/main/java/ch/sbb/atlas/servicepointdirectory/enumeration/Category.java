@@ -6,7 +6,7 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Schema(enumAsRef = true)
+@Schema(enumAsRef = true, example = "POINT_OF_SALE")
 @RequiredArgsConstructor
 @Getter
 public enum Category implements CodeAndDesignations {
