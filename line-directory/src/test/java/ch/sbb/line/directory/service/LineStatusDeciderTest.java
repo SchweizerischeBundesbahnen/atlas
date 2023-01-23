@@ -137,8 +137,8 @@ class LineStatusDeciderTest {
   void shouldSetStatusToInReviewIfItIsAlreadyInReview() {
     // Given
     LineVersion currentLineVersion =
-            LineTestData.lineVersionBuilder().validFrom(LocalDate.of(2020, 1, 1)).status(Status.IN_REVIEW).build();
-    LineVersion newLineVersion = LineTestData.lineVersionBuilder().description("Other description").build();
+            LineTestData.lineVersionBuilder().id(1L).status(Status.IN_REVIEW).build();
+    LineVersion newLineVersion = LineTestData.lineVersionBuilder().id(1L).description("Other description").build();
     // When
     Status result = lineStatusDecider.getStatusForLine(newLineVersion, Optional.of(currentLineVersion), List.of(currentLineVersion));
     // Then
