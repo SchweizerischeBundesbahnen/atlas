@@ -96,18 +96,18 @@
     </div>
     <div class='content-container'>
         <div>
-            [(${properties.get(0).get('teaser')})]
+            [[${properties.get(0).get('teaser')}]]
             <br/>
             <span th:if="${properties.get(0).get('checkComment')}">
                 Bitte beachten Sie dazu die nachfolgende Bemerkung der prüfenden Person:
                 <br/>
-                [(${properties.get(0).get('checkComment')})]
+                [[${properties.get(0).get('checkComment')}]]
             </span>
             <br/>
             <br/>
             Durch einen Klick auf <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
-            gelangen Sie direkt zur Linie <b>[(${properties.get(0).get('swissId')})]</b> -
-            <b>[(${properties.get(0).get('description')})].</b>
+            gelangen Sie direkt zur Linie <b>[[${properties.get(0).get('swissId')}]]</b> -
+            <b>[[${properties.get(0).get('description')}]].</b>
         </div>
     </div>
     <div class='footer'>
