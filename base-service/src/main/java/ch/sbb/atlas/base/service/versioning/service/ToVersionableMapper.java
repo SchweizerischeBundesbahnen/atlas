@@ -30,7 +30,8 @@ final class ToVersionableMapper {
   @SuppressWarnings("unchecked")
   private static <T extends Versionable> T toVersionable(VersionedObject versionedObject,
       Class<T> clazz)
-      throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+      throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException,
+      NoSuchFieldException {
     Entity entity = versionedObject.getEntity();
 
     T versionable = clazz.getConstructor().newInstance();
@@ -46,7 +47,9 @@ final class ToVersionableMapper {
       Field field = ReflectionHelper.getFieldAccessible(versionableClass, property.getKey());
 
       if (property.hasOneToOneRelation()) {
+
         throw new VersioningException("OneToOneRelation not implemented!");
+
       } else if (property.hasOneToManyRelation()) {
         Collection<Object> relations = (Collection<Object>) field.get(versionable);
         for (Entity entityRelation : property.getOneToMany()) {
