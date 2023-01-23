@@ -1,14 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel.Fields;
@@ -19,7 +21,11 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImpor
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -107,8 +113,19 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
     servicePointCsvModels = servicePointCsvModels.subList(0, 10);
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = new ArrayList<>();
+    Map<Integer, List<ServicePointCsvModel>> collect = servicePointCsvModels.stream()
+        .collect(Collectors.groupingBy(ServicePointCsvModel::getDidokCode));
+    collect.forEach((key, value) -> {
+      ServicePointCsvModelContainer servicePointCsvModelContainer = ServicePointCsvModelContainer.builder()
+          .didokCode(key)
+          .servicePointCsvModelList(value)
+          .build();
+      value.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
+      servicePointCsvModelContainers.add(servicePointCsvModelContainer);
+    });
 
-    ServicePointImportReqModel importReqModel = new ServicePointImportReqModel(servicePointCsvModels);
+    ServicePointImportReqModel importReqModel = new ServicePointImportReqModel(servicePointCsvModelContainers);
 
     String s = mapper.writeValueAsString(importReqModel);
 
@@ -122,12 +139,18 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   void test_ImportServicePoints_withVersionsOrdered() throws Exception {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+    int didokCode = 10000190;
     List<ServicePointCsvModel> servicePointCsvModelsOrdered =
-        servicePointCsvModels.stream().filter(item -> item.getDidokCode() == 10000190).sorted(
+        servicePointCsvModels.stream().filter(item -> item.getDidokCode() == didokCode).sorted(
             (o1, o2) -> o1.getValidFrom().isBefore(o2.getValidFrom()) ? 1 :
                 o1.getValidFrom().isEqual(o2.getValidFrom()) ? 0 : -1
         ).toList();
-    ServicePointImportReqModel importReqModel = new ServicePointImportReqModel(servicePointCsvModelsOrdered);
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = new ArrayList<>();
+    ServicePointCsvModelContainer servicePointCsvModelContainer = ServicePointCsvModelContainer.builder()
+        .didokCode(didokCode).servicePointCsvModelList(servicePointCsvModelsOrdered).build();
+    servicePointCsvModelContainers.add(servicePointCsvModelContainer);
+
+    ServicePointImportReqModel importReqModel = new ServicePointImportReqModel(servicePointCsvModelContainers);
 
     String s = mapper.writeValueAsString(importReqModel);
 
@@ -136,17 +159,23 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType))
         .andExpect(status().isOk());
 
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(10000190);
+    ServicePointNumber servicePointNumber = ServicePointNumber.of(didokCode);
     List<ServicePointVersion> savedServicePointsOrderedValidFrom = servicePointService.findServicePoint(servicePointNumber);
     repository.deleteAll();
 
     // second import
     List<ServicePointCsvModel> servicePointCsvModelsReverseOrdered =
-        servicePointCsvModels.stream().filter(item -> item.getDidokCode() == 10000190).sorted(
+        servicePointCsvModels.stream().filter(item -> item.getDidokCode() == didokCode).sorted(
             (o1, o2) -> o1.getValidFrom().isAfter(o2.getValidFrom()) ? 1 :
                 o1.getValidFrom().isEqual(o2.getValidFrom()) ? 0 : -1
         ).toList();
-    importReqModel = new ServicePointImportReqModel(servicePointCsvModelsReverseOrdered);
+
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainersReverseOrdered = new ArrayList<>();
+    ServicePointCsvModelContainer servicePointCsvModelContainerReverseOrdered = ServicePointCsvModelContainer.builder()
+        .didokCode(didokCode).servicePointCsvModelList(servicePointCsvModelsReverseOrdered).build();
+    servicePointCsvModelContainers.add(servicePointCsvModelContainerReverseOrdered);
+
+    importReqModel = new ServicePointImportReqModel(servicePointCsvModelContainersReverseOrdered);
     s = mapper.writeValueAsString(importReqModel);
 
     mvc.perform(post("/v1/service-points/import")
@@ -176,12 +205,19 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
 
+    int didokCode = 10000190;
     List<ServicePointCsvModel> servicePointCsvModelsOrdered =
-        servicePointCsvModels.stream().filter(item -> item.getDidokCode() == 10000190).sorted(
+        servicePointCsvModels.stream().filter(item -> item.getDidokCode() == didokCode).sorted(
             (o1, o2) -> o1.getValidFrom().isBefore(o2.getValidFrom()) ? 1 :
                 o1.getValidFrom().isEqual(o2.getValidFrom()) ? 0 : -1
         ).toList();
-    ServicePointImportReqModel importReqModel = new ServicePointImportReqModel(servicePointCsvModelsOrdered);
+
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = new ArrayList<>();
+    ServicePointCsvModelContainer servicePointCsvModelContainer = ServicePointCsvModelContainer.builder()
+        .didokCode(didokCode).servicePointCsvModelList(servicePointCsvModelsOrdered).build();
+    servicePointCsvModelContainers.add(servicePointCsvModelContainer);
+
+    ServicePointImportReqModel importReqModel = new ServicePointImportReqModel(servicePointCsvModelContainers);
 
     String s = mapper.writeValueAsString(importReqModel);
 
@@ -201,7 +237,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     servicePointCsvModelsOrdered.get(4).setBezeichnungOffiziell("Test2");
     servicePointCsvModelsOrdered.get(4).setValidTo(servicePointCsvModelsOrdered.get(4).getValidTo().minusDays(5));
 
-    importReqModel = new ServicePointImportReqModel(servicePointCsvModelsOrdered);
+    importReqModel = new ServicePointImportReqModel(servicePointCsvModelContainers);
 
     s = mapper.writeValueAsString(importReqModel);
 
@@ -210,17 +246,17 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType))
         .andExpect(status().isOk());
 
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(10000190);
+    ServicePointNumber servicePointNumber = ServicePointNumber.of(didokCode);
     List<ServicePointVersion> updatedWithOrderedList = servicePointService.findServicePoint(servicePointNumber);
     repository.deleteAll();
 
     // update with unordered list
     servicePointCsvModelsOrdered =
-        servicePointCsvModels.stream().filter(item -> item.getDidokCode() == 10000190).sorted(
+        servicePointCsvModels.stream().filter(item -> item.getDidokCode() == didokCode).sorted(
             (o1, o2) -> o1.getValidFrom().isBefore(o2.getValidFrom()) ? 1 :
                 o1.getValidFrom().isEqual(o2.getValidFrom()) ? 0 : -1
         ).toList();
-    importReqModel = new ServicePointImportReqModel(servicePointCsvModelsOrdered);
+    importReqModel = new ServicePointImportReqModel(servicePointCsvModelContainers);
 
     s = mapper.writeValueAsString(importReqModel);
 
@@ -246,7 +282,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
             o1.getValidFrom().isEqual(o2.getValidFrom()) ? 0 : -1
     ).toList();
 
-    importReqModel = new ServicePointImportReqModel(reversedUpdateList);
+    importReqModel = new ServicePointImportReqModel(servicePointCsvModelContainers);
 
     s = mapper.writeValueAsString(importReqModel);
 
