@@ -78,6 +78,9 @@ public class ServicePointCsvToEntityMapper implements
         .meansOfTransport(meansOfTransport)
         .stopPointType(StopPointType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(getOperatingPointType(servicePointCsvModel))
+        .freightServicePoint(servicePointCsvModel.getIsBedienpunkt())
+        .operatingPoint(servicePointCsvModel.getIsBetriebspunkt())
+        .operatingPointWithTimetable(servicePointCsvModel.getIsFahrplan())
         .sortCodeOfDestinationStation(servicePointCsvModel.getRichtpunktCode())
         .operatingPointRouteNetwork(
             Boolean.TRUE.equals(servicePointCsvModel.getOperatingPointRouteNetwork()))
