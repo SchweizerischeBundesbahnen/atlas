@@ -3,7 +3,6 @@ package ch.sbb.importservice.batch;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class ServicePointApiWriter extends BaseApiWriter implements ItemWriter<ServicePointCsvModel> {
 
   @Override
-  public void write(List<? extends ServicePointCsvModel> servicePoints) throws IOException {
+  public void write(List<? extends ServicePointCsvModel> servicePoints) {
     List<ServicePointCsvModel> servicePointCsvModels = new ArrayList<>(servicePoints);
     ServicePointImportReqModel servicePointImportReqModel = new ServicePointImportReqModel();
     servicePointImportReqModel.setServicePointCsvModels(servicePointCsvModels);

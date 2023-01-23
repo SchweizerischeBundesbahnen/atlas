@@ -118,3 +118,5 @@ frontend/.npmrc
 .idea/uiDesigner.xml
 .idea/vcs.xml
 .idea/sonarlint/
+.idea/sqldialects.xml
+
