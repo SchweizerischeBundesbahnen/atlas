@@ -42,6 +42,7 @@ public class LineServiceStatusDecisionTest {
     version1 = LineTestData.lineVersionBuilder().slnid(SLNID)
         .swissLineNumber("1")
         .number("1")
+        .status(Status.VALIDATED)
         .colorBackRgb(LineTestData.RBG_YELLOW)
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2021, 12, 31))
@@ -49,6 +50,7 @@ public class LineServiceStatusDecisionTest {
     version2 = LineTestData.lineVersionBuilder().slnid(SLNID)
         .swissLineNumber("2")
         .number("2")
+        .status(Status.VALIDATED)
         .colorBackRgb(LineTestData.RGB_BLACK)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2023, 12, 31))
@@ -56,6 +58,7 @@ public class LineServiceStatusDecisionTest {
     version3 = LineTestData.lineVersionBuilder().slnid(SLNID)
         .swissLineNumber("3")
         .number("3")
+        .status(Status.VALIDATED)
         .colorBackRgb(LineTestData.RBG_RED)
         .validFrom(LocalDate.of(2024, 1, 1))
         .validTo(LocalDate.of(2024, 12, 31))
@@ -437,6 +440,8 @@ public class LineServiceStatusDecisionTest {
 
     LineVersion editedVersion = new LineVersion();
     editedVersion.setNumber("4");
+    editedVersion.setValidFrom(version2.getValidFrom());
+    editedVersion.setValidTo(version2.getValidTo());
 
     //when
     lineService.updateVersion(version2, editedVersion);
