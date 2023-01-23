@@ -107,4 +107,28 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
 
   @JsonProperty("BPK_MASTER")
   private Integer operatingPointKilometerMaster;
+
+  @JsonProperty("IS_BETRIEBSPUNKT")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean isBetriebspunkt;
+
+  @JsonProperty("IS_FAHRPLAN")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean isFahrplan;
+
+  @JsonProperty("IS_HALTESTELLE")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean isHaltestelle;
+
+  @JsonProperty("IS_BEDIENPUNKT")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean isBedienpunkt;
+
+  @JsonProperty("IS_VERKEHRSPUNKT")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean isVerkehrspunkt;
+
+  @JsonProperty("IS_GRENZPUNKT")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean isGrenzpunkt;
 }
