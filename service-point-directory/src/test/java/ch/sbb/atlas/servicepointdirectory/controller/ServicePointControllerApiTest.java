@@ -62,7 +62,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
         .andExpect(jsonPath("$[0].operatingPointKilometer", is(false)))
 
-        .andExpect(jsonPath("$[0].servicePointGeolocation.swissCantonInformation.number", is(2)))
+        .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$[0].creationDate", is("2021-03-22T09:26:29")))
         .andExpect(jsonPath("$[0].creator", is("fs45117")));
   }

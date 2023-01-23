@@ -1,5 +1,6 @@
 package ch.sbb.atlas.searching;
 
+import ch.sbb.atlas.searching.specification.BooleanSpecification;
 import ch.sbb.atlas.searching.specification.EnumSpecification;
 import ch.sbb.atlas.searching.specification.InSpecification;
 import ch.sbb.atlas.searching.specification.SearchCriteriaSpecification;
@@ -43,5 +44,9 @@ public class SpecificationBuilder<T> {
 
   public Specification<T> inSpecification(List<?> searchRestrictions, String columnName) {
     return new InSpecification<>(searchRestrictions, columnName);
+  }
+
+  public Specification<T> booleanSpecification(SingularAttribute<T, Boolean> attribute, Boolean value) {
+    return new BooleanSpecification<>(attribute, value);
   }
 }
