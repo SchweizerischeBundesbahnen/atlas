@@ -45,29 +45,33 @@ public class MailNotificationService {
 
   private List<Map<String, Object>> buildSuccessMailContent(String jobName, List<ImportProcessItem> importProcessItems) {
 
-    List<Map<String, Object>> importProcessItem = getImportProcessItem(importProcessItems);
+    List<ImportProcessItem> successImportedItems = filterByStatus(importProcessItems, "SUCCESS");
+    List<ImportProcessItem> failedImportedItems = filterByStatus(importProcessItems, "FAILED");
+
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("jobName", jobName);
     mailContentProperty.put("correlationId", getCurrentSpan());
-    if (importProcessItem.size() < 1_000) {
-      mailContentProperty.put("importProcessItems", importProcessItem);
+    mailContentProperty.put("importProcessItemsSize", importProcessItems.size());
+    mailContentProperty.put("successImportedItemsSize", successImportedItems.size());
+    mailContentProperty.put("failedImportedItemsSize", failedImportedItems.size());
+    if (failedImportedItems.size() < 1_000) {
+      mailContentProperty.put("failedImportedItems", getImportProcessItem(failedImportedItems));
     } else {
-      mailContentProperty.put("importProcessItems", new HashMap<>());
+      mailContentProperty.put("failedImportedItems", new HashMap<>());
     }
     mailProperties.add(mailContentProperty);
     return mailProperties;
   }
 
   private List<Map<String, Object>> getImportProcessItem(List<ImportProcessItem> importProcessItems) {
-    List<Map<String, Object>> importProcessItem = importProcessItems.stream().map(item -> {
+    return importProcessItems.stream().map(item -> {
       Map<String, Object> object = new HashMap<>();
       object.put("processedItem", item.getItemNumber());
       object.put("processedItemStatus", item.getResponseStatus());
       object.put("processedItemMessage", item.getResponseMessage());
       return object;
     }).toList();
-    return importProcessItem;
   }
 
   private List<Map<String, Object>> buildErrorMailContent(String jobName, StepExecution stepExecution) {
@@ -75,6 +79,8 @@ public class MailNotificationService {
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("jobName", jobName);
+    mailContentProperty.put("stepName", stepExecution.getStepName());
+    mailContentProperty.put("stepId", stepExecution.getId());
     mailContentProperty.put("exception", getException(stepExecution));
     mailContentProperty.put("cause", getCause(stepExecution));
     mailContentProperty.put("jobParameter", getParameters(stepExecution));
@@ -112,6 +118,11 @@ public class MailNotificationService {
       return context.traceId();
     }
     throw new IllegalStateException("No Tracer found!");
+  }
+
+  private List<ImportProcessItem> filterByStatus(List<ImportProcessItem> allImportProcessedItem, String status) {
+    return allImportProcessedItem.stream()
+        .filter(importProcessItem -> importProcessItem.getResponseStatus().equals(status)).toList();
   }
 
 }

@@ -1,7 +1,7 @@
 package ch.sbb.importservice.recovery;
 
-import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_LOADING_POINT_CSV_JOB;
-import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_SERVICE_POINT_CSV_JOB;
+import static ch.sbb.importservice.model.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.model.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import java.util.Map;
@@ -41,16 +41,16 @@ public class RecoveryJobsRunner implements ApplicationRunner {
 
   private final ImportProcessedItemRepository importProcessedItemRepository;
 
-  @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB)
+  @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB_NAME)
   private final Job importServicePointCsvJob;
-  @Qualifier(IMPORT_LOADING_POINT_CSV_JOB)
+  @Qualifier(IMPORT_LOADING_POINT_CSV_JOB_NAME)
   private final Job importLoadingPointCsvJob;
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
     log.info("Checking jobs to recover...");
-    recoverJob(IMPORT_SERVICE_POINT_CSV_JOB);
-    recoverJob(IMPORT_LOADING_POINT_CSV_JOB);
+    recoverJob(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
+    recoverJob(IMPORT_LOADING_POINT_CSV_JOB_NAME);
 
   }
 
@@ -92,10 +92,10 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   }
 
   private Job getJobToRecover(String jobName) {
-    if (IMPORT_SERVICE_POINT_CSV_JOB.equals(jobName)) {
+    if (IMPORT_SERVICE_POINT_CSV_JOB_NAME.equals(jobName)) {
       return importServicePointCsvJob;
     }
-    if (IMPORT_LOADING_POINT_CSV_JOB.equals(jobName)) {
+    if (IMPORT_LOADING_POINT_CSV_JOB_NAME.equals(jobName)) {
       return importLoadingPointCsvJob;
     }
     throw new IllegalStateException("No job found with name: " + jobName);

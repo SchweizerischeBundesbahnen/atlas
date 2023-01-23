@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class JobCompletitionListener implements JobExecutionListener {
 
-  public static final String IMPORT_SERVICE_POINT_JOB = "import-service-point";
   private final MailNotificationService mailNotificationService;
   private final ImportProcessedItemRepository importProcessedItemRepository;
 
@@ -27,7 +26,7 @@ public class JobCompletitionListener implements JobExecutionListener {
 
   @Override
   public void beforeJob(JobExecution jobExecution) {
-
+    //nothing to do
   }
 
   @Override
@@ -35,7 +34,7 @@ public class JobCompletitionListener implements JobExecutionListener {
     StepExecution stepExecution = jobExecution.getStepExecutions().stream().findFirst().get();
     if (ExitStatus.COMPLETED.equals(jobExecution.getExitStatus())) {
       sendSuccessfullyNotification(stepExecution);
-      clearDB(stepExecution);
+      //      clearDB(stepExecution);
     }
     if (ExitStatus.FAILED.equals(jobExecution.getExitStatus())) {
       sendUnsuccessffulyNotification(stepExecution);
@@ -47,13 +46,13 @@ public class JobCompletitionListener implements JobExecutionListener {
     String jobName = getJobName(stepExecution);
     MailNotification mailNotification = mailNotificationService.buildMailErrorNotification(jobName, stepExecution);
     mailProducerService.produceMailNotification(mailNotification);
-
   }
 
   private void sendSuccessfullyNotification(StepExecution stepExecution) {
     String jobName = getJobName(stepExecution);
     List<ImportProcessItem> allImportProcessedItem =
         importProcessedItemRepository.findAllByStepExecutionId(stepExecution.getId());
+
     MailNotification mailNotification = mailNotificationService.buildMailSuccessNotification(jobName, allImportProcessedItem);
     mailProducerService.produceMailNotification(mailNotification);
   }
