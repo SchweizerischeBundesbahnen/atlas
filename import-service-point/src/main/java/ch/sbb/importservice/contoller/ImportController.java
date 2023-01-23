@@ -1,12 +1,15 @@
 package ch.sbb.importservice.contoller;
 
+import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
+
+import ch.sbb.atlas.base.service.amazon.service.FileService;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.OutputStream;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -36,6 +39,8 @@ public class ImportController {
 
   private final JobLauncher jobLauncher;
 
+  private final FileService fileService;
+
   @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB)
   private final Job importServicePointCsvJob;
 
@@ -44,61 +49,62 @@ public class ImportController {
 
   @PostMapping("service-point-batch")
   public void startServicePointImportBatch() {
+
     JobParameters jobParameters = new JobParametersBuilder()
-        .addLong("startAt", System.currentTimeMillis()).toJobParameters();
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
 
     try {
       JobExecution execution = jobLauncher.run(importServicePointCsvJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
-
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
   @PostMapping("loading-point")
-  public void startLoadingPointImport()
-      throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException,
-      JobRestartException {
-    File file = new File(
-        "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
-
+  public void startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) {
+    File file = getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
-        .addLong("startAt", System.currentTimeMillis()).toJobParameters();
-    JobExecution execution = jobLauncher.run(importLoadingPointCsvJob, jobParameters);
-
+        .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    try {
+      JobExecution execution = jobLauncher.run(importLoadingPointCsvJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+      throw new RuntimeException(e);
+    } finally {
+      file.delete();
+    }
   }
 
   @PostMapping("service-point")
   public void startServicePointImport(@RequestParam("file") MultipartFile multipartFile) {
+    File file = getFileFromMultipart(multipartFile);
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
-      String originalFileName = multipartFile.getOriginalFilename();
-      File fileToImport = new File(DOCKER_FILE_DIRECTORY + originalFileName);
-      multipartFile.transferTo(fileToImport);
-
-      File file = new File(
-          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
-
-      //      File file = new File(
-      //          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIENSTSTELLEN_V3_IMPORT.csv");
-      //      File file = new File(
-      //          "C:\\devsbb\\projects\\atlas\\import-service-point\\src\\test\\resources\\DIDOK3_DIENSTSTELLEN_ALL_V_3_TEST
-      //          .csv");
-
-      JobParameters jobParameters = new JobParametersBuilder()
-          .addString("fullPathFileName", file.getAbsolutePath())
-          .addLong("startAt", System.currentTimeMillis()).toJobParameters();
       JobExecution execution = jobLauncher.run(importServicePointCsvJob, jobParameters);
-
-      if (execution.getExitStatus().getExitCode().equals(ExitStatus.COMPLETED)) {
-        //delete the file from the TEMP_STORAGE
-        Files.deleteIfExists(Paths.get(DOCKER_FILE_DIRECTORY + originalFileName));
-      }
-
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
-             JobParametersInvalidException | IOException e) {
-
-      e.printStackTrace();
+             JobParametersInvalidException e) {
+      throw new RuntimeException(e);
+    } finally {
+      file.delete();
     }
+  }
+
+  File getFileFromMultipart(MultipartFile multipartFile) {
+    String dir = fileService.getDir();
+    String originalFileName = multipartFile.getOriginalFilename();
+    File fileToImport = new File(dir + File.separator + originalFileName);
+    try (OutputStream os = new FileOutputStream(fileToImport)) {
+      os.write(multipartFile.getBytes());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    return fileToImport;
   }
 }
