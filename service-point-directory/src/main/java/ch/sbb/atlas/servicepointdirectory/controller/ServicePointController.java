@@ -62,7 +62,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ServicePointItemImportResult> importServicePoints(ServicePointImportReqModel servicePointImportReqModel) {
-    return servicePointImportService.importServicePoints(servicePointImportReqModel.getServicePointCsvModels());
+    return servicePointImportService.importServicePoints(servicePointImportReqModel.getServicePointCsvModelContainers());
   }
 
 }
