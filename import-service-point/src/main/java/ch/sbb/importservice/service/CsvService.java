@@ -1,5 +1,8 @@
 package ch.sbb.importservice.service;
 
+import static ch.sbb.importservice.model.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
+
 import ch.sbb.atlas.base.service.amazon.service.AmazonService;
 import ch.sbb.atlas.base.service.imports.DidokCsvMapper;
 import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
@@ -22,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,18 +46,28 @@ public class CsvService {
 
   private final JobHelperService jobHelperService;
 
-  @Setter
-  private LocalDate matchingDate = LocalDate.now();
+  @Value("${amazon.bucketName}")
+  private String bucketName;
 
-  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3(String jobName) throws IOException {
-    File importFile = downloadImportFile(DINSTELLE_FILE_PREFIX, jobName);
-    List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(importFile, ServicePointCsvModel.class);
+  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3() throws IOException {
+    log.info("Starting Service Point import process");
+    List<ServicePointCsvModel> servicePointCsvModels = getServicePointCsvModelToUpdate();
+    return mapToServicePointCsvModelContainers(servicePointCsvModels);
+  }
 
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = mapToServicePointCsvModelContainers(
+  private List<ServicePointCsvModel> getServicePointCsvModelToUpdate() throws IOException {
+    log.info("Downloading file from Amazon S3 Bucket: {}", bucketName);
+    File importFile = downloadImportFile(DINSTELLE_FILE_PREFIX);
+    LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
+    return getCsvModelsToUpdate(importFile, matchingDate, ServicePointCsvModel.class);
+  }
+
+  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3(File file) throws IOException {
+    log.info("Starting Service Point import process");
+    log.info("CSV File to import: {}", file.getName());
+    List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, MIN_LOCAL_DATE, ServicePointCsvModel.class);
+    return mapToServicePointCsvModelContainers(
         servicePointCsvModels);
-
-    log.info("servicePointCsvModelContainers size: {}", servicePointCsvModelContainers.size());
-    return servicePointCsvModelContainers;
   }
 
   private List<ServicePointCsvModelContainer> mapToServicePointCsvModelContainers(
@@ -70,37 +83,29 @@ public class CsvService {
       value.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
       servicePointCsvModelContainers.add(servicePointCsvModelContainer);
     });
+    log.info("Found {} ServicePointCsvModelContainers to send to ServicePointDirectory", servicePointCsvModelContainers.size());
     return servicePointCsvModelContainers;
   }
 
-  public List<LoadingPointCsvModel> getActualLoadingPotinCsvModelsFromS3(String jobName) throws IOException {
-    File importFile = downloadImportFile(LADESTELLEN_FILE_PREFIX, jobName);
-    List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(importFile, LoadingPointCsvModel.class);
+  public List<LoadingPointCsvModel> getActualLoadingPointCsvModelsFromS3() throws IOException {
+    File importFile = downloadImportFile(LADESTELLEN_FILE_PREFIX);
+    List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(importFile, MIN_LOCAL_DATE,
+        LoadingPointCsvModel.class);
     log.info("loadingPointCsvModels size: {}", loadingPointCsvModels.size());
     return loadingPointCsvModels;
   }
 
-  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3(File file) throws IOException {
-    List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, ServicePointCsvModel.class);
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = mapToServicePointCsvModelContainers(
-        servicePointCsvModels);
-    log.info("servicePointCsvModelsContainer size: {}", servicePointCsvModelContainers.size());
-    return servicePointCsvModelContainers;
-  }
-
-  public File downloadImportFile(String csvImportFilePrefix, String jobName) throws IOException {
-    LocalDate dateForImportFileToDownload = jobHelperService.getDateForImportFileToDownload(jobName);
-    this.setMatchingDate(dateForImportFileToDownload);
+  public File downloadImportFile(String csvImportFilePrefix) throws IOException {
     String csvImportFilePrefixToday = attachTodayDate(csvImportFilePrefix);
     return downloadImportFileWithPrefix(csvImportFilePrefixToday);
   }
 
-  public <T> List<T> getCsvModelsToUpdate(File importFile, Class<T> type) throws IOException {
+  public <T> List<T> getCsvModelsToUpdate(File importFile, LocalDate matchingDate, Class<T> type) throws IOException {
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(importFile))) {
       String headerLine = skipUntilHeaderLine(bufferedReader);
       int editedAtColumnIndex = getColumnIndexOfEditedAt(headerLine);
-      List<String> mismatchedLines = getMismatchedLines(bufferedReader, editedAtColumnIndex);
-      log.info("Mismatched lines count: " + mismatchedLines.size());
+      List<String> mismatchedLines = getMismatchedLines(matchingDate, bufferedReader, editedAtColumnIndex);
+      log.info("Found {} lines to update", mismatchedLines.size());
       // parse mismatched lines
       if (mismatchedLines.isEmpty()) {
         return Collections.emptyList();
@@ -134,7 +139,8 @@ public class CsvService {
     return editedAtColumnIndex;
   }
 
-  private List<String> getMismatchedLines(BufferedReader bufferedReader, int editedAtColumnIndex) throws IOException {
+  private List<String> getMismatchedLines(LocalDate matchingDate, BufferedReader bufferedReader, int editedAtColumnIndex)
+      throws IOException {
     List<String> mismatchedLines = new ArrayList<>();
     String line;
     while ((line = bufferedReader.readLine()) != null) {
@@ -160,10 +166,12 @@ public class CsvService {
   }
 
   private File downloadImportFileWithPrefix(String csvImportFilePrefix) throws IOException {
+    log.info("Downloding CSV file..");
     List<String> foundImportFileKeys = amazonService.getS3ObjectKeysFromPrefix(SERVICEPOINT_DIDOK_DIR_NAME, csvImportFilePrefix);
     String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys, csvImportFilePrefix);
+    log.info("Found File with name: {}. Downloading...", fileKeyToDownload);
     File download = amazonService.pullFile(fileKeyToDownload);
-    log.info("Name: " + download.getName() + ", size: " + download.length() + " bytes");
+    log.info("Downloaded file: " + download.getName() + ", size: " + download.length() + " bytes");
     return download;
   }
 
