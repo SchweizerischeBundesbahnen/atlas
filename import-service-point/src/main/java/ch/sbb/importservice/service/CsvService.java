@@ -26,66 +26,44 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CsvService {
 
+  private static final String CSV_DATE_TIME_FORMATTING = "yyyy-MM-dd HH:mm:ss";
   private static final String HASHTAG = "#";
   private static final String SERVICEPOINT_DIDOK_DIR_NAME = "servicepoint_didok";
   private static final String CSV_DELIMITER = ";";
+  private static final String EDITED_AT_COLUMN_NAME = "GEAENDERT_AM";
+  private static final String DINSTELLE_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
+  private static final String LADESTELLEN_FILE_PREFIX = "DIDOK3_LADESTELLEN_";
 
   private final AmazonService amazonService;
+
+  private final JobHelperService jobHelperService;
 
   @Setter
   private LocalDate matchingDate = LocalDate.now();
 
-  //@PostConstruct
-  public List<ServicePointCsvModel> getActualServicePotinCsvModelsFromS3() throws IOException {
-    File importFile = downloadImportFileFromToday("DIDOK3_DIENSTSTELLEN_ALL_V_3_");
+  public List<ServicePointCsvModel> getActualServicePotinCsvModelsFromS3(String jobName) throws IOException {
+    File importFile = downloadImportFile(DINSTELLE_FILE_PREFIX, jobName);
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(importFile, ServicePointCsvModel.class);
     log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
     return servicePointCsvModels;
   }
 
-  public List<LoadingPointCsvModel> getActualLoadingPotinCsvModelsFromS3() throws IOException {
-    File importFile = downloadImportFileFromToday("DIDOK3_LADESTELLEN_");
+  public List<LoadingPointCsvModel> getActualLoadingPotinCsvModelsFromS3(String jobName) throws IOException {
+    File importFile = downloadImportFile(LADESTELLEN_FILE_PREFIX, jobName);
     List<LoadingPointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(importFile, LoadingPointCsvModel.class);
     log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
     return servicePointCsvModels;
   }
 
-  //@PostConstruct
   public List<ServicePointCsvModel> getActualServicePotinCsvModelsFromS3(File file) throws IOException {
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, ServicePointCsvModel.class);
     log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
     return servicePointCsvModels;
   }
 
-  // line by line comparison
-  /*public void loadCsvFilesForImport() throws IOException {
-    for (String csvImportFilePrefix : csvImportFilePrefixes) {
-      String csvImportFilePrefixToday = attachTodayDate(csvImportFilePrefix);
-      File importFileToday = downloadImportFileWithPrefix(csvImportFilePrefixToday);
-      String csvImportFilePrefixYesterday = attachYesterdayDate(csvImportFilePrefix);
-      File importFileYesterday = downloadImportFileWithPrefix(csvImportFilePrefixYesterday);
-      long mismatch = Files.mismatch(importFileToday.toPath(), importFileYesterday.toPath());
-      log.info("Mismatch: " + mismatch);
-      if (mismatch != -1) {
-        try (BufferedReader bufferedReaderFileToday = new BufferedReader(new FileReader(importFileToday));
-            BufferedReader bufferedReaderFileYesterday = new BufferedReader(new FileReader(importFileYesterday))) {
-          List<Integer> mismatchedLineNumbers = new ArrayList<>();
-          String lineFileToday, lineFileYesterday;
-          int lineNumber = 1;
-          while ((lineFileYesterday = bufferedReaderFileYesterday.readLine()) != null) {
-            lineFileToday = bufferedReaderFileToday.readLine();
-            if (lineFileToday == null || !lineFileToday.equals(lineFileYesterday)) {
-              mismatchedLineNumbers.add(lineNumber);
-            }
-            lineNumber++;
-          }
-          log.info("Line numbers: " + mismatchedLineNumbers);
-        }
-      }
-    }
-  }*/
-
-  public File downloadImportFileFromToday(String csvImportFilePrefix) throws IOException {
+  public File downloadImportFile(String csvImportFilePrefix, String jobName) throws IOException {
+    LocalDate dateForImportFileToDownload = jobHelperService.getDateForImportFileToDownload(jobName);
+    this.setMatchingDate(dateForImportFileToDownload);
     String csvImportFilePrefixToday = attachTodayDate(csvImportFilePrefix);
     return downloadImportFileWithPrefix(csvImportFilePrefixToday);
   }
@@ -121,7 +99,6 @@ public class CsvService {
   }
 
   private int getColumnIndexOfEditedAt(String headerLine) {
-    final String EDITED_AT_COLUMN_NAME = "GEAENDERT_AM";
     String[] attributes = headerLine.split(CSV_DELIMITER);
     int editedAtColumnIndex = Arrays.asList(attributes).indexOf(EDITED_AT_COLUMN_NAME);
     if (editedAtColumnIndex == -1) {
@@ -136,11 +113,13 @@ public class CsvService {
     while ((line = bufferedReader.readLine()) != null) {
       String[] splittedLine = line.split(CSV_DELIMITER);
       LocalDate lastEditionDate = LocalDateTime.parse(splittedLine[editedAtColumnIndex],
-          DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss") // TODO: mby error handling
+          DateTimeFormatter.ofPattern(CSV_DATE_TIME_FORMATTING) // TODO: mby error handling
       ).toLocalDate();
-      //      if (lastEditionDate.isEqual(matchingDate)) {
-      mismatchedLines.add(line);
-      //      }
+      boolean dateMatchedBetweenTodayAndMatchingDate = jobHelperService.isDateMatchedBetweenTodayAndMatchingDate(matchingDate,
+          lastEditionDate);
+      if (dateMatchedBetweenTodayAndMatchingDate) {
+        mismatchedLines.add(line);
+      }
     }
     return mismatchedLines;
   }
@@ -155,17 +134,18 @@ public class CsvService {
 
   private File downloadImportFileWithPrefix(String csvImportFilePrefix) throws IOException {
     List<String> foundImportFileKeys = amazonService.getS3ObjectKeysFromPrefix(SERVICEPOINT_DIDOK_DIR_NAME, csvImportFilePrefix);
-    String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys);
+    String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys, csvImportFilePrefix);
     File download = amazonService.pullFile(fileKeyToDownload);
     log.info("Name: " + download.getName() + ", size: " + download.length() + " bytes");
     return download;
   }
 
-  private String handleImportFileKeysResult(List<String> importFileKeys) {
+  private String handleImportFileKeysResult(List<String> importFileKeys, String csvImportFilePrefix) {
     if (importFileKeys.isEmpty()) {
-      throw new RuntimeException("[IMPORT]: Not found file on S3");
+      //TODO: create custom Exception
+      throw new RuntimeException("[IMPORT]: File " + csvImportFilePrefix + " not found file on S3");
     } else if (importFileKeys.size() > 1) {
-      throw new RuntimeException("[IMPORT]: Found more than 1 file to download on S3");
+      throw new RuntimeException("[IMPORT]: Found more than 1 file " + csvImportFilePrefix + " to download on S3");
     }
     return importFileKeys.get(0);
   }
