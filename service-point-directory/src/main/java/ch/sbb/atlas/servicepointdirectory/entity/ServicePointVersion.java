@@ -128,6 +128,15 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   private boolean operatingPointRouteNetwork;
 
   @AtlasVersionableProperty
+  private boolean freightServicePoint;
+
+  @AtlasVersionableProperty
+  private boolean operatingPoint;
+
+  @AtlasVersionableProperty
+  private boolean operatingPointWithTimetable;
+
+  @AtlasVersionableProperty
   @Convert(converter = ServicePointNumberConverter.class)
   @Valid
   private ServicePointNumber operatingPointKilometerMaster;
@@ -160,34 +169,27 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;
 
-  public boolean isOperatingPoint() {
-    return operatingPointType != null || isTrafficPoint();
-  }
-
-  public boolean isOperatingPointWithTimetable() {
-    return operatingPointType == null || operatingPointType.hasTimetable();
-  }
-
+  @ToString.Include
   public boolean isStopPoint() {
     return !getMeansOfTransport().isEmpty();
   }
 
-  public boolean isFreightServicePoint() {
-    return StringUtils.isNotBlank(sortCodeOfDestinationStation);
-  }
-
+  @ToString.Include
   public boolean isFareStop() {
     return operatingPointType == OperatingPointType.TARIFF_POINT;
   }
 
+  @ToString.Include
   public boolean isTrafficPoint() {
     return isStopPoint() || isFreightServicePoint() || isFareStop();
   }
 
+  @ToString.Include
   public boolean isBorderPoint() {
     return operatingPointType == OperatingPointType.COUNTRY_BORDER;
   }
 
+  @ToString.Include
   public boolean isOperatingPointKilometer() {
     return operatingPointKilometerMaster != null;
   }
@@ -195,6 +197,22 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @AssertTrue(message = "StopPointType only allowed for StopPoint")
   boolean isValidStopPointWithType() {
     return isStopPoint() || stopPointType == null;
+  }
+
+  @AssertTrue(message = "OperatingPointType has to match operatingPoint Attributes")
+  public boolean isValidOperatingPointType() {
+    return operatingPointType == null || (isOperatingPoint()
+        && isOperatingPointWithTimetable() == operatingPointType.hasTimetable());
+  }
+
+  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
+  public boolean isValidFreightServicePoint() {
+    return !(country==Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now())) || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+  }
+
+  @AssertTrue(message = "Country needs to be the same as in ServicePointNumber")
+  public boolean isValidCountry() {
+    return getCountry() == getNumber().getCountry();
   }
 
   public Set<MeanOfTransport> getMeansOfTransport() {
