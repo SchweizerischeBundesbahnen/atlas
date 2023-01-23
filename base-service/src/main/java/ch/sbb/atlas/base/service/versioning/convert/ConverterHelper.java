@@ -36,14 +36,14 @@ public final class ConverterHelper {
     List<Property> propertiesEqualsBetweenCurrentAndEdited = new ArrayList<>();
     for (Property editedProperty : editedProperties) {
       currentProperties.stream()
-                       .filter(p -> p.equals(editedProperty))
-                       .findFirst().ifPresent(propertiesEqualsBetweenCurrentAndEdited::add);
+          .filter(p -> p.equals(editedProperty))
+          .findFirst().ifPresent(propertiesEqualsBetweenCurrentAndEdited::add);
     }
 
     editedProperties.removeAll(propertiesEqualsBetweenCurrentAndEdited);
     List<Property> propertiesNotEmpty = editedProperties.stream()
-                                                        .filter(Property::isNotEmpty)
-                                                        .collect(Collectors.toList());
+        .filter(Property::isNotEmpty)
+        .collect(Collectors.toList());
 
     return buildEntity(currentVersion.getId(), propertiesNotEmpty);
   }
@@ -54,9 +54,9 @@ public final class ConverterHelper {
     for (Versionable currentVersion : currentVersions) {
       objectsToVersioning.add(
           ToVersioning.builder()
-                      .versionable(currentVersion)
-                      .entity(convertToEntity(versionableProperties, currentVersion))
-                      .build()
+              .versionable(currentVersion)
+              .entity(convertToEntity(versionableProperties, currentVersion))
+              .build()
       );
     }
     return objectsToVersioning;
@@ -76,7 +76,7 @@ public final class ConverterHelper {
     List<Property> properties = new ArrayList<>();
     for (VersionableProperty versionableProperty : versionableProperties) {
       if (NONE == versionableProperty.getRelationType()) {
-        Property property = exportProperty(version, versionableProperty);
+        Property property = extractProperty(version, versionableProperty);
         properties.add(property);
       }
       if (ONE_TO_MANY == versionableProperty.getRelationType()) {
@@ -85,13 +85,16 @@ public final class ConverterHelper {
         properties.add(extractOneToManyRelationProperty);
       }
       if (ONE_TO_ONE == versionableProperty.getRelationType()) {
-        throw new VersioningException("OneToOne Relation not implemented");
+        Property property = extractOneToOne(version, versionableProperty);
+        if (property != null) {
+          properties.add(property);
+        }
       }
     }
     return properties;
   }
 
-  private static <T extends Versionable> Property exportProperty(T version,
+  private static <T extends Versionable> Property extractProperty(T version,
       VersionableProperty property) {
     Class<? extends Versionable> versionClass = version.getClass();
     try {
@@ -99,6 +102,33 @@ public final class ConverterHelper {
           property.getFieldName());
       Object propertyValue = declaredField.get(version);
       return buildProperty(property.getFieldName(), propertyValue, property.isIgnoreDiff());
+    } catch (NoSuchFieldException | IllegalAccessException e) {
+      log.error("Error during parse field {}", e.getMessage());
+      throw new VersioningException("Error during parse field " + e.getMessage(), e);
+    }
+  }
+
+  private static <T extends Versionable> Property extractOneToOne(T version,
+      VersionableProperty property) {
+    Class<? extends Versionable> versionClass = version.getClass();
+    try {
+      PropertyBuilder propertyBuilder = Property.builder().key(property.getFieldName());
+      List<Property> relationProperties = new ArrayList<>();
+      Field oneToOneRelationField = ReflectionHelper.getFieldAccessible(versionClass,
+          property.getFieldName());
+      Object oneToOneObject = oneToOneRelationField.get(version);
+      if (oneToOneObject != null) {
+        EntityBuilder entityRelationBuilder = Entity.builder();
+        for (String relation : property.getRelationsFields()) {
+          Field relationDeclaredField = ReflectionHelper.getFieldAccessible(
+              oneToOneObject.getClass(), relation);
+          Object relationField = relationDeclaredField.get(oneToOneObject);
+          relationProperties.add(buildProperty(relation, relationField, property.isIgnoreDiff()));
+        }
+        Entity entityOneToOne = entityRelationBuilder.properties(relationProperties).build();
+        return propertyBuilder.oneToOne(entityOneToOne).build();
+      }
+      return null;
     } catch (NoSuchFieldException | IllegalAccessException e) {
       log.error("Error during parse field {}", e.getMessage());
       throw new VersioningException("Error during parse field " + e.getMessage(), e);
@@ -140,18 +170,18 @@ public final class ConverterHelper {
 
   private static Entity buildEntity(Long actualVersionId, List<Property> properties) {
     return Entity.builder()
-                 .id(actualVersionId)
-                 .properties(properties)
-                 .build();
+        .id(actualVersionId)
+        .properties(properties)
+        .build();
   }
 
   private static Property buildProperty(String fieldName, Object propertyValue,
       boolean ignoreDiff) {
     return Property.builder()
-                   .key(fieldName)
-                   .ignoreDiff(ignoreDiff)
-                   .value(propertyValue)
-                   .build();
+        .key(fieldName)
+        .ignoreDiff(ignoreDiff)
+        .value(propertyValue)
+        .build();
   }
 
 }
