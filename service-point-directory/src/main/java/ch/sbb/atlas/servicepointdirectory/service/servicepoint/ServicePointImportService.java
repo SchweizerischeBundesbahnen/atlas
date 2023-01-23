@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
@@ -65,33 +66,41 @@ public class ServicePointImportService {
     servicePointVersionRepository.saveAll(servicePointVersions);
   }
 
-  public List<ServicePointItemImportResult> importServicePoints(List<ServicePointCsvModel> servicePointCsvModels) {
-    List<ServicePointVersion> servicePointVersions = servicePointCsvModels
-        .stream()
-        .map(new ServicePointCsvToEntityMapper())
-        .toList();
+  public List<ServicePointItemImportResult> importServicePoints(
+      List<ServicePointCsvModelContainer> servicePointCsvModelContainers) {
+
     List<ServicePointItemImportResult> results = new ArrayList<>();
-    for (ServicePointVersion servicePointVersion : servicePointVersions) {
-      // check if already existing
-      boolean existing = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
-      if (existing) {
-        try {
-          servicePointService.updateServicePointVersion(servicePointVersion);
-          results.add(buildImportSuccessResult(servicePointVersion));
-        } catch (Exception e) {
-          log.error("service point update error", e);
-          results.add(buildImportFailedResult(servicePointVersion, e));
-        }
-      } else {
-        try {
-          ServicePointVersion saved = servicePointService.save(servicePointVersion);
-          results.add(buildImportSuccessResult(saved));
-        } catch (Exception e) {
-          log.error("service point save error", e);
-          results.add(buildImportFailedResult(servicePointVersion, e));
+    servicePointCsvModelContainers.forEach(servicePointCsvModelContainer -> {
+      log.info("Import Service Point with didokCode {} and versions size {}", servicePointCsvModelContainer.getDidokCode(),
+          servicePointCsvModelContainer.getServicePointCsvModelList().size());
+      List<ServicePointVersion> servicePointVersions = servicePointCsvModelContainer.getServicePointCsvModelList()
+          .stream()
+          .map(new ServicePointCsvToEntityMapper())
+          .toList();
+
+      for (ServicePointVersion servicePointVersion : servicePointVersions) {
+        // check if already existing
+        boolean existing = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
+        if (existing) {
+          try {
+            servicePointService.updateServicePointVersion(servicePointVersion);
+            results.add(buildImportSuccessResult(servicePointVersion));
+          } catch (Exception e) {
+            log.error("service point update error", e);
+            results.add(buildImportFailedResult(servicePointVersion, e));
+          }
+        } else {
+          try {
+            ServicePointVersion saved = servicePointService.save(servicePointVersion);
+            results.add(buildImportSuccessResult(saved));
+          } catch (Exception e) {
+            log.error("service point save error", e);
+            results.add(buildImportFailedResult(servicePointVersion, e));
+          }
         }
       }
-    }
+    });
+
     return results;
   }
 
