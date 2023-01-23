@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JobHelperService {
 
-  private static final LocalDate MIN_LOCAL_DATE = LocalDate.of(1700, 1, 1);
+  public static final LocalDate MIN_LOCAL_DATE = LocalDate.of(1700, 1, 1);
   private final JobExplorer jobExplorer;
 
   public boolean isDateMatchedBetweenTodayAndMatchingDate(LocalDate matchingDate, LocalDate lastEditionDate) {
