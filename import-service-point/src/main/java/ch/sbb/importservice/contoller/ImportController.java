@@ -5,11 +5,8 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
-import ch.sbb.atlas.base.service.amazon.service.FileService;
+import ch.sbb.importservice.service.FileHelperService;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -37,11 +34,9 @@ public class ImportController {
   private static final String IMPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
   private static final String IMPORT_LOADING_POINT_CSV_JOB = "importLoadingPointCsvJob";
 
-  private static final String DOCKER_FILE_DIRECTORY = "./tmp";
-
   private final JobLauncher jobLauncher;
 
-  private final FileService fileService;
+  private final FileHelperService fileHelperService;
 
   @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB)
   private final Job importServicePointCsvJob;
@@ -65,7 +60,7 @@ public class ImportController {
 
   @PostMapping("service-point")
   public void startServicePointImport(@RequestParam("file") MultipartFile multipartFile) {
-    File file = getFileFromMultipart(multipartFile);
+    File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
         .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
@@ -82,7 +77,7 @@ public class ImportController {
 
   @PostMapping("loading-point")
   public void startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) {
-    File file = getFileFromMultipart(multipartFile);
+    File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
         .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
@@ -97,16 +92,4 @@ public class ImportController {
     }
   }
 
-  File getFileFromMultipart(MultipartFile multipartFile) {
-    String dir = fileService.getDir();
-    String originalFileName = multipartFile.getOriginalFilename();
-    File fileToImport = new File(dir + File.separator + originalFileName);
-    try (OutputStream os = new FileOutputStream(fileToImport)) {
-      os.write(multipartFile.getBytes());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    return fileToImport;
-  }
-  
 }
