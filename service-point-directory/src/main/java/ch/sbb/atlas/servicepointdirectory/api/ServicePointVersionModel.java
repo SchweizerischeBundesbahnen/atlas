@@ -5,6 +5,7 @@ import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
@@ -67,6 +68,12 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @NotNull
   @Schema(accessMode = AccessMode.READ_ONLY)
   private CodeAndDesignation statusDidok3Information;
+
+  private boolean operatingPoint;
+
+  private boolean operatingPointWithTimetable;
+
+  private boolean freightServicePoint;
 
   @Size(max = AtlasFieldLengths.LENGTH_10)
   @Schema(description = "SortCodeOfDestinationStation - only for FreightServicePoint", example = "1234")
@@ -177,6 +184,17 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
     return isStopPoint() || stopPointType == null;
   }
 
+  @AssertTrue(message = "OperatingPointType has to match operatingPoint Attributes")
+  public boolean isValidOperatingPointType() {
+    return operatingPointType == null || (isOperatingPoint()
+        && isOperatingPointWithTimetable() == operatingPointType.hasTimetable());
+  }
+
+  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
+  public boolean isValidFreightServicePoint() {
+    return !(getNumber().getCountry()==Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now())) || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+  }
+
   public List<MeanOfTransport> getMeansOfTransport() {
     if (meansOfTransport == null) {
       return new ArrayList<>();
@@ -201,6 +219,9 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
         .abbreviation(servicePointVersion.getAbbreviation())
         .statusDidok3(servicePointVersion.getStatusDidok3())
         .statusDidok3Information(CodeAndDesignation.fromEnum(servicePointVersion.getStatusDidok3()))
+        .operatingPoint(servicePointVersion.isOperatingPoint())
+        .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
+        .freightServicePoint(servicePointVersion.isFreightServicePoint())
         .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
         .businessOrganisation(servicePointVersion.getBusinessOrganisation())
         .categories(new ArrayList<>(servicePointVersion.getCategories()))
