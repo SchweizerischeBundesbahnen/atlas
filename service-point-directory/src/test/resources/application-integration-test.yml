@@ -1,24 +1,24 @@
 spring:
   datasource:
-     driver-class-name: org.h2.Driver
-     url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
-     username: sa
-     password: sa
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
   h2:
     console:
       enabled: true
       path: /h2-console
-#  datasource:
-#    url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service-point-directory
-#    username: user
-#    password: pwd
-#    driver-class-name: org.postgresql.Driver
+  #  datasource:
+  #    url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service-point-directory
+  #    username: user
+  #    password: pwd
+  #    driver-class-name: org.postgresql.Driver
   jpa:
     open-in-view: false
     properties:
       hibernate:
-#    show-sql: true
-#        format_sql: true
+        #    show-sql: true
+        #        format_sql: true
         order_inserts: true
         jdbc:
           batch_size: 500
