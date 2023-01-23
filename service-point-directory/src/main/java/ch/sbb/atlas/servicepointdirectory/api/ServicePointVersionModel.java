@@ -46,23 +46,19 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   private ServicePointNumber number;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "SwissLocation ID", example = "ch:1:sloid:7000")
+  @Schema(description = "SwissLocation ID", example = "ch:1:sloid:18771")
   private String sloid;
 
-  @NotNull
-  @Schema(description = "Country")
-  private Country country;
-
-  @Schema(description = "Designation Long", example = "St.Lorenzen/Lesachtal, Wiesen")
+  @Schema(description = "Designation Long", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designationLong;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_30)
-  @Schema(description = "Official Designation", example = "Bern")
+  @Schema(description = "Official Designation", example = "Biel/Bienne Bözingenfeld/Champ")
   private String designationOfficial;
 
   @Size(max = AtlasFieldLengths.LENGTH_6)
-  @Schema(description = "AbbreviationDidok", example = "BN")
+  @Schema(description = "AbbreviationDidok", example = "BIBD")
   private String abbreviation;
 
   @NotNull
@@ -73,8 +69,14 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @Schema(accessMode = AccessMode.READ_ONLY)
   private CodeAndDesignation statusDidok3Information;
 
+  private boolean operatingPoint;
+
+  private boolean operatingPointWithTimetable;
+
+  private boolean freightServicePoint;
+
   @Size(max = AtlasFieldLengths.LENGTH_10)
-  @Schema(description = "SortCodeOfDestinationStation - only for FreightServicePoint", example = "70003")
+  @Schema(description = "SortCodeOfDestinationStation - only for FreightServicePoint", example = "1234")
   private String sortCodeOfDestinationStation;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
@@ -113,7 +115,7 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @Schema(description = "FotComment", example = "Good Service Point.")
-  private String comment;
+  private String fotComment;
 
   private ServicePointGeolocationModel servicePointGeolocation;
 
@@ -154,13 +156,19 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   }
 
   @JsonInclude
-  @Schema(description = "ServicePoint is TrafficPoint")
-  public boolean isTrafficPoint() {
-    return isStopPoint() || isFreightServicePoint() || operatingPointType == OperatingPointType.TARIFF_POINT;
+  @Schema(description = "ServicePoint is FareStop", example = "false")
+  public boolean isFareStop() {
+    return operatingPointType == OperatingPointType.TARIFF_POINT;
   }
 
   @JsonInclude
-  @Schema(description = "ServicePoint is BorderPoint")
+  @Schema(description = "ServicePoint is TrafficPoint")
+  public boolean isTrafficPoint() {
+    return isStopPoint() || isFreightServicePoint() || isFareStop();
+  }
+
+  @JsonInclude
+  @Schema(description = "ServicePoint is BorderPoint", example = "false")
   public boolean isBorderPoint() {
     return operatingPointType == OperatingPointType.COUNTRY_BORDER;
   }
@@ -174,6 +182,11 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @AssertTrue(message = "StopPointType only allowed for StopPoint")
   boolean isValidStopPointWithType() {
     return isStopPoint() || stopPointType == null;
+  }
+
+  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
+  public boolean isValidFreightServicePoint() {
+    return !(getNumber().getCountry()==Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now())) || StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
   public List<MeanOfTransport> getMeansOfTransport() {
@@ -195,12 +208,14 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
         .id(servicePointVersion.getId())
         .number(servicePointVersion.getNumber())
         .sloid(servicePointVersion.getSloid())
-        .country(servicePointVersion.getCountry())
         .designationLong(servicePointVersion.getDesignationLong())
         .designationOfficial(servicePointVersion.getDesignationOfficial())
         .abbreviation(servicePointVersion.getAbbreviation())
         .statusDidok3(servicePointVersion.getStatusDidok3())
         .statusDidok3Information(CodeAndDesignation.fromEnum(servicePointVersion.getStatusDidok3()))
+        .operatingPoint(servicePointVersion.isOperatingPoint())
+        .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
+        .freightServicePoint(servicePointVersion.isFreightServicePoint())
         .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
         .businessOrganisation(servicePointVersion.getBusinessOrganisation())
         .categories(new ArrayList<>(servicePointVersion.getCategories()))
@@ -214,7 +229,7 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
             servicePointVersion.getMeansOfTransport().stream().map(CodeAndDesignation::fromEnum).toList())
         .stopPointType(servicePointVersion.getStopPointType())
         .stopPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getStopPointType()))
-        .comment(servicePointVersion.getComment())
+        .fotComment(servicePointVersion.getComment())
         .servicePointGeolocation(ServicePointGeolocationModel.fromEntity(servicePointVersion.getServicePointGeolocation()))
         .validFrom(servicePointVersion.getValidFrom())
         .validTo(servicePointVersion.getValidTo())
