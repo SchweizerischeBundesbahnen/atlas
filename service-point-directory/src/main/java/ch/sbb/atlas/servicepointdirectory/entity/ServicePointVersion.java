@@ -125,6 +125,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   private Set<Category> categories;
 
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private OperatingPointType operatingPointType;
 
   @AtlasVersionableProperty
@@ -150,6 +151,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   private Set<MeanOfTransport> meansOfTransport;
 
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private StopPointType stopPointType;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
@@ -158,6 +160,8 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
+  //@AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE)
+  @AtlasVersionableProperty
   private ServicePointGeolocation servicePointGeolocation;
   @NotNull
   @Column(columnDefinition = "DATE")

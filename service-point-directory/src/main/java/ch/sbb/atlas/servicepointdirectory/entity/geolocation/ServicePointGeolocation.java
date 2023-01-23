@@ -43,30 +43,30 @@ public class ServicePointGeolocation extends GeolocationBaseEntity {
   @OneToOne(mappedBy = "servicePointGeolocation")
   private ServicePointVersion servicePointVersion;
 
-  @AtlasVersionableProperty
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private Country country;
 
-  @AtlasVersionableProperty
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private SwissCanton swissCanton;
 
   @AtlasVersionableProperty
   private Integer swissDistrictNumber;
 
-  @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
+  @AtlasVersionableProperty
   private String swissDistrictName;
 
   @AtlasVersionableProperty
   private Integer swissMunicipalityNumber;
 
-  @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
+  @AtlasVersionableProperty
   private String swissMunicipalityName;
 
-  @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_255)
+  @AtlasVersionableProperty
   private String swissLocalityName;
 
 }
