@@ -56,7 +56,6 @@ public class Workflow {
   @Enumerated(EnumType.STRING)
   private WorkflowType workflowType;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_500)
   private String description;
 
