@@ -2,8 +2,10 @@ package ch.sbb.importservice.service;
 
 import ch.sbb.atlas.base.service.amazon.service.AmazonService;
 import ch.sbb.atlas.base.service.imports.DidokCsvMapper;
+import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +17,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -41,24 +46,46 @@ public class CsvService {
   @Setter
   private LocalDate matchingDate = LocalDate.now();
 
-  public List<ServicePointCsvModel> getActualServicePotinCsvModelsFromS3(String jobName) throws IOException {
+  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3(String jobName) throws IOException {
     File importFile = downloadImportFile(DINSTELLE_FILE_PREFIX, jobName);
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(importFile, ServicePointCsvModel.class);
-    log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
-    return servicePointCsvModels;
+
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = mapToServicePointCsvModelContainers(
+        servicePointCsvModels);
+
+    log.info("servicePointCsvModelContainers size: {}", servicePointCsvModelContainers.size());
+    return servicePointCsvModelContainers;
+  }
+
+  private List<ServicePointCsvModelContainer> mapToServicePointCsvModelContainers(
+      List<ServicePointCsvModel> servicePointCsvModels) {
+    Map<Integer, List<ServicePointCsvModel>> servicePointGrouppedByDidokCode = servicePointCsvModels.stream()
+        .collect(Collectors.groupingBy(ServicePointCsvModel::getDidokCode));
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = new ArrayList<>();
+    servicePointGrouppedByDidokCode.forEach((key, value) -> {
+      ServicePointCsvModelContainer servicePointCsvModelContainer = ServicePointCsvModelContainer.builder()
+          .didokCode(key)
+          .servicePointCsvModelList(value)
+          .build();
+      value.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
+      servicePointCsvModelContainers.add(servicePointCsvModelContainer);
+    });
+    return servicePointCsvModelContainers;
   }
 
   public List<LoadingPointCsvModel> getActualLoadingPotinCsvModelsFromS3(String jobName) throws IOException {
     File importFile = downloadImportFile(LADESTELLEN_FILE_PREFIX, jobName);
-    List<LoadingPointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(importFile, LoadingPointCsvModel.class);
-    log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
-    return servicePointCsvModels;
+    List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(importFile, LoadingPointCsvModel.class);
+    log.info("loadingPointCsvModels size: {}", loadingPointCsvModels.size());
+    return loadingPointCsvModels;
   }
 
-  public List<ServicePointCsvModel> getActualServicePotinCsvModelsFromS3(File file) throws IOException {
+  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3(File file) throws IOException {
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, ServicePointCsvModel.class);
-    log.info("servicePointCsvModels size: {}", servicePointCsvModels.size());
-    return servicePointCsvModels;
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = mapToServicePointCsvModelContainers(
+        servicePointCsvModels);
+    log.info("servicePointCsvModelsContainer size: {}", servicePointCsvModelContainers.size());
+    return servicePointCsvModelContainers;
   }
 
   public File downloadImportFile(String csvImportFilePrefix, String jobName) throws IOException {
