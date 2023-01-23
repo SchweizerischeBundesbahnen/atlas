@@ -1,11 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissCanton;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictName;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictNumber;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissLocalityName;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityName;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityNumber;
+
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.base.service.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
@@ -160,8 +168,10 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
-  //@AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE)
-  @AtlasVersionableProperty
+  @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
+      ServicePointGeolocation.Fields.country, swissCanton,
+      swissDistrictNumber, swissDistrictName,
+      swissMunicipalityNumber, swissMunicipalityName, swissLocalityName})
   private ServicePointGeolocation servicePointGeolocation;
   @NotNull
   @Column(columnDefinition = "DATE")
