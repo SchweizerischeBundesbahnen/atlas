@@ -43,14 +43,14 @@ public class LoadingPointController implements LoadingPointApiV1 {
   @Override
   public List<LoadingPointVersionModel> getLoadingPoint(Integer servicePointNumber, Integer loadingPointNumber) {
     ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
-    List<LoadingPointVersionModel> LoadingPointVersions = loadingPointService.findLoadingPoint(number,
+    List<LoadingPointVersionModel> loadingPointVersions = loadingPointService.findLoadingPoint(number,
             loadingPointNumber)
         .stream()
         .map(LoadingPointVersionModel::fromEntity).toList();
-    if (LoadingPointVersions.isEmpty()) {
+    if (loadingPointVersions.isEmpty()) {
       throw new LoadingPointNumberNotFoundException(number, loadingPointNumber);
     }
-    return LoadingPointVersions;
+    return loadingPointVersions;
   }
 
   @Override
