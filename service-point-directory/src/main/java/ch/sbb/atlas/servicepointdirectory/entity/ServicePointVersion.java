@@ -199,12 +199,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
     return isStopPoint() || stopPointType == null;
   }
 
-  @AssertTrue(message = "OperatingPointType has to match operatingPoint Attributes")
-  public boolean isValidOperatingPointType() {
-    return operatingPointType == null || (isOperatingPoint()
-        && isOperatingPointWithTimetable() == operatingPointType.hasTimetable());
-  }
-
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
     return !(country==Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now())) || StringUtils.isNotBlank(sortCodeOfDestinationStation);
