@@ -184,12 +184,6 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
     return isStopPoint() || stopPointType == null;
   }
 
-  @AssertTrue(message = "OperatingPointType has to match operatingPoint Attributes")
-  public boolean isValidOperatingPointType() {
-    return operatingPointType == null || (isOperatingPoint()
-        && isOperatingPointWithTimetable() == operatingPointType.hasTimetable());
-  }
-
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
     return !(getNumber().getCountry()==Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now())) || StringUtils.isNotBlank(sortCodeOfDestinationStation);
