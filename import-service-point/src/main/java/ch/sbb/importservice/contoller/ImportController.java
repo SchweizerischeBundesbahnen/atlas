@@ -1,8 +1,5 @@
 package ch.sbb.importservice.contoller;
 
-import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_LOADING_POINT_CSV_JOB;
-import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_SERVICE_POINT_CSV_JOB;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,6 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Slf4j
 public class ImportController {
+
+  private static final String IMPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
+  private static final String IMPORT_LOADING_POINT_CSV_JOB = "importLoadingPointCsvJob";
 
   private static final String DOCKER_FILE_DIRECTORY = "./tmp";
 
