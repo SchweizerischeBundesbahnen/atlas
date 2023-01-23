@@ -151,6 +151,8 @@ public class ServicePointVersionRepositoryTest {
         .builder()
         .number(ServicePointNumber.of(85070003))
         .numberShort(1)
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
         .designationOfficial("official designation")
@@ -208,6 +210,8 @@ public class ServicePointVersionRepositoryTest {
     // given
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
         .number(ServicePointNumber.of(85070003))
         .numberShort(1)
         .country(Country.SWITZERLAND)
