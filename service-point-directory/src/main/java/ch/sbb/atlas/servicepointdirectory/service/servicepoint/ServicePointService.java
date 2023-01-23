@@ -48,19 +48,48 @@ public class ServicePointService {
   }
 
   public void updateServicePointVersion(ServicePointVersion edited) {
-    List<ServicePointVersion> currentVersions = findServicePoint(edited.getNumber());
-    ServicePointVersion current = getCurrentServicePointVersion(currentVersions);
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(current, edited, currentVersions);
+    List<ServicePointVersion> dbVersions = findServicePoint(edited.getNumber());
+    ServicePointVersion current = getCurrentServicePointVersion(dbVersions, edited);
+    List<VersionedObject> versionedObjects = versionableService.versioningObjects(current, edited, dbVersions);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects, this::save, this::deleteById);
   }
 
-  private ServicePointVersion getCurrentServicePointVersion(List<ServicePointVersion> servicePointVersions) {
-    List<ServicePointVersion> currentServicePoints = servicePointVersions.stream().filter(this::isServicePointVersionValidToday)
-        .toList();
-    if (currentServicePoints.size() != 1) {
-      throw new RuntimeException("Did not found currentServicePoint");
+  private ServicePointVersion getCurrentServicePointVersion(List<ServicePointVersion> dbVersions,
+      ServicePointVersion edited) {
+    // csvVersion = edited (param), dbVersions (sorted)
+    Optional<ServicePointVersion> currentVersionMatch = dbVersions.stream()
+        .filter(dbVersion -> {
+              // match validFrom
+              if (edited.getValidFrom().isEqual(dbVersion.getValidFrom())) {
+                return true;
+              }
+              // match validTo
+              if (edited.getValidTo().isEqual(dbVersion.getValidTo())) {
+                return true;
+              }
+              // match csvVersion between dbVersion
+              if (edited.getValidFrom().isAfter(dbVersion.getValidFrom()) && edited.getValidTo().isBefore(dbVersion.getValidTo())) {
+                return true;
+              }
+              // match 1 or more dbVersion/s between csvVersion
+              return dbVersion.getValidFrom().isAfter(edited.getValidFrom()) && dbVersion.getValidTo()
+                  .isBefore(edited.getValidTo());
+            }
+        )
+        .findFirst();
+
+    if (currentVersionMatch.isEmpty()) {
+      // match after version
+      if (edited.getValidFrom().isAfter(dbVersions.get(dbVersions.size() - 1).getValidTo())) {
+        return dbVersions.get(dbVersions.size() - 1);
+      }
+      // match before version
+      if (edited.getValidTo().isBefore(dbVersions.get(0).getValidFrom())) {
+        return dbVersions.get(0);
+      }
     }
-    return currentServicePoints.get(0);
+
+    return currentVersionMatch.orElseThrow(() -> new RuntimeException("Not found current version for update"));
   }
 
   private boolean isServicePointVersionValidToday(ServicePointVersion servicePointVersion) {
