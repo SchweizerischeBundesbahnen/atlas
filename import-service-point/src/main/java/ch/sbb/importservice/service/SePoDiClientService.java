@@ -16,7 +16,7 @@ public class SePoDiClientService {
   private final SePoDiClient sePoDiClient;
 
   public List<ServicePointItemImportResult> getServicePoints(ServicePointImportReqModel servicePointImportReqModel) {
-    int size = servicePointImportReqModel.getServicePointCsvModels().size();
+    int size = servicePointImportReqModel.getServicePointCsvModelContainers().size();
     log.info("Executing service point post with {} ServicePoints...", size);
     List<ServicePointItemImportResult> servicePointItemImportResults = sePoDiClient.postServicePointsImport(
         servicePointImportReqModel);
