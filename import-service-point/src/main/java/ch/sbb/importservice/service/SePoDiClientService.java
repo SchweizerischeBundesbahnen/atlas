@@ -4,26 +4,24 @@ import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportRe
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.importservice.client.SePoDiClient;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SePoDiClientService extends BaseClientService {
+@AllArgsConstructor
+public class SePoDiClientService {
 
   private final SePoDiClient sePoDiClient;
 
-  public SePoDiClientService(SePoDiClient sePoDiClient) {
-    this.sePoDiClient = sePoDiClient;
-    this.clientName = "sePoDiClient";
-  }
-
-  //  public List<ServicePointImportResult> postServicePoints() {
-  //    return executeRequest(sePoDiClient.postServicePoints(), "Update Service Point");
-  //  }
-
   public List<ServicePointItemImportResult> getServicePoints(ServicePointImportReqModel servicePointImportReqModel) {
-    return executeRequest(sePoDiClient.postServicePointsImport(servicePointImportReqModel), "Get Service Point");
+    int size = servicePointImportReqModel.getServicePointCsvModels().size();
+    log.info("Executing service point post with {} ServicePoints...", size);
+    List<ServicePointItemImportResult> servicePointItemImportResults = sePoDiClient.postServicePointsImport(
+        servicePointImportReqModel);
+    log.info("Executed {} ServicePoints calls.", servicePointItemImportResults.size());
+    return servicePointItemImportResults;
   }
 
 }
