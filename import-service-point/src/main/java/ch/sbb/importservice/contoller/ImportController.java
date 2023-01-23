@@ -1,5 +1,7 @@
 package ch.sbb.importservice.contoller;
 
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
@@ -49,33 +51,15 @@ public class ImportController {
 
   @PostMapping("service-point-batch")
   public void startServicePointImportBatch() {
-
     JobParameters jobParameters = new JobParametersBuilder()
+        .addString(EXECUTION_TYPE_PARAMETER, EXECUTION_BATCH_PARAMETER)
         .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
-
     try {
       JobExecution execution = jobLauncher.run(importServicePointCsvJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
       throw new RuntimeException(e);
-    }
-  }
-
-  @PostMapping("loading-point")
-  public void startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) {
-    File file = getFileFromMultipart(multipartFile);
-    JobParameters jobParameters = new JobParametersBuilder()
-        .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
-        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
-    try {
-      JobExecution execution = jobLauncher.run(importLoadingPointCsvJob, jobParameters);
-      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
-    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
-             JobParametersInvalidException e) {
-      throw new RuntimeException(e);
-    } finally {
-      file.delete();
     }
   }
 
@@ -96,6 +80,23 @@ public class ImportController {
     }
   }
 
+  @PostMapping("loading-point")
+  public void startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) {
+    File file = getFileFromMultipart(multipartFile);
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    try {
+      JobExecution execution = jobLauncher.run(importLoadingPointCsvJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+      throw new RuntimeException(e);
+    } finally {
+      file.delete();
+    }
+  }
+
   File getFileFromMultipart(MultipartFile multipartFile) {
     String dir = fileService.getDir();
     String originalFileName = multipartFile.getOriginalFilename();
@@ -107,4 +108,5 @@ public class ImportController {
     }
     return fileToImport;
   }
+  
 }
