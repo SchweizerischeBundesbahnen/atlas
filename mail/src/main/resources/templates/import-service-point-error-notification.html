@@ -95,14 +95,20 @@
         <b>Error Detail Message:</b>
         <br/>
         <ul>
+            <li><b>Step Name:</b>
+                <span th:text="${properties.get(0).get('stepName')}"></span>
+            </li>
+            <li><b>Step Id:</b>
+                <span th:text="${properties.get(0).get('stepId')}"></span>
+            </li>
             <li><b>Exception:</b>
-                <span class="code" th:text="${properties.get(0).get('exception')}"></span>
+                <span th:text="${properties.get(0).get('exception')}"></span>
             </li>
             <li><b>Cause:</b>
-                <span class="code" th:text="${properties.get(0).get('cause')}"></span>
+                <span th:text="${properties.get(0).get('cause')}"></span>
             </li>
             <li><b>Job Parameters:</b>
-                <span class="code" th:text="${properties.get(0).get('jobParameter')}"></span>
+                <span th:text="${properties.get(0).get('jobParameter')}"></span>
             </li>
         </ul>
         Please check the log with the following CorrelationId:
