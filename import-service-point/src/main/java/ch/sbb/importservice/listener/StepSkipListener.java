@@ -11,18 +11,18 @@ public class StepSkipListener implements SkipListener<ServicePointCsvModel, Numb
 
   @Override // item reader
   public void onSkipInRead(Throwable throwable) {
-    log.info("A failure on read {} ", throwable.getMessage());
+    log.warn("A failure on read {} ", throwable.getMessage());
   }
 
   @Override // item writter
   public void onSkipInWrite(Number item, Throwable throwable) {
-    log.info("A failure on write {} , {}", throwable.getMessage(), item);
+    log.warn("A failure on write {} , {}", throwable.getMessage(), item);
   }
 
   @SneakyThrows
   @Override // item processor
   public void onSkipInProcess(ServicePointCsvModel servicePoint, Throwable throwable) {
-    log.info("Item {}  was skipped due to the exception  {}", new ObjectMapper().writeValueAsString(servicePoint),
+    log.warn("Item {}  was skipped due to the exception  {}", new ObjectMapper().writeValueAsString(servicePoint),
         throwable.getMessage());
   }
 }
