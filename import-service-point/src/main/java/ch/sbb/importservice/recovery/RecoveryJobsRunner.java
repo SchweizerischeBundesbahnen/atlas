@@ -1,7 +1,9 @@
 package ch.sbb.importservice.recovery;
 
-import static ch.sbb.importservice.model.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.model.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import java.util.Map;
@@ -104,13 +106,13 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   private JobParameters getJobParameters(JobExecution lastJobExecution) {
     JobParameters lastJobExecutionJobParameters = lastJobExecution.getJobParameters();
     Map<String, JobParameter> parameters = lastJobExecutionJobParameters.getParameters();
-    JobParameter fullPathFileName = parameters.get("fullPathFileName");
+    JobParameter fullPathFileName = parameters.get(FULL_PATH_FILENAME_JOB_PARAMETER);
 
     JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
-        .addLong("startAt", System.currentTimeMillis());
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis());
 
     if (fullPathFileName != null) {
-      jobParametersBuilder.addParameter("fullPathFileName", fullPathFileName);
+      jobParametersBuilder.addParameter(FULL_PATH_FILENAME_JOB_PARAMETER, fullPathFileName);
     }
     JobParameters jobParameters = jobParametersBuilder.toJobParameters();
     log.info("Run job with parameters {}", parameters);
