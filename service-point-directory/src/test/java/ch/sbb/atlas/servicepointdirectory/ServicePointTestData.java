@@ -56,6 +56,8 @@ public class ServicePointTestData {
         .validTo(LocalDate.of(2021, 3, 31))
         .categories(new HashSet<>())
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))

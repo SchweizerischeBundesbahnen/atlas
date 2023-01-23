@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Schema(enumAsRef = true)
+@Schema(enumAsRef = true, example = "IN_OPERATION")
 @RequiredArgsConstructor
 public enum ServicePointStatus implements CodeAndDesignations {
 

@@ -52,7 +52,7 @@ public final class ServicePointNumber {
   @NotNull
   @JsonInclude
   @Schema(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7",
-      example = "8507000")
+      example = "8518771")
   public Integer getNumber() {
     if (getCountry() == null || getCountry().getUicCode() == null) {
       return null;
@@ -61,13 +61,13 @@ public final class ServicePointNumber {
   }
 
   @NotNull
-  @Schema(description = "NumberShort - 5 chars identifying number. Range: 1-99.999", example = "7000")
+  @Schema(description = "NumberShort - 5 chars identifying number. Range: 1-99.999", example = "18771")
   public Integer getNumberShort() {
     return getNumericPart(2, LENGTH - 1);
   }
 
   @NotNull
-  @Schema(description = "Calculated value formed from the numberShort. Range: 0-9", example = "3")
+  @Schema(description = "Calculated value formed from the numberShort. Range: 0-9", example = "6")
   public Integer getCheckDigit() {
     return getNumericPart(LENGTH - 1, LENGTH);
   }
