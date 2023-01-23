@@ -1,4 +1,4 @@
-package ch.sbb.importservice.config;
+package ch.sbb.importservice.listener;
 
 import org.springframework.batch.core.step.skip.SkipLimitExceededException;
 import org.springframework.batch.core.step.skip.SkipPolicy;
