@@ -65,7 +65,7 @@ public class SpringBatchConfig {
       File file = new File(pathToFIle);
       actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3(file);
     } else {
-      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3();
+      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3(IMPORT_SERVICE_POINT_CSV_JOB);
     }
     return new ListItemReader<>(actualServicePotinCsvModelsFromS3);
   }
@@ -75,7 +75,8 @@ public class SpringBatchConfig {
   public ListItemReader<LoadingPointCsvModel> loadingPointlistItemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathTofIle)
       throws IOException {
-    List<LoadingPointCsvModel> actualLoadingPotinCsvModelsFromS3 = csvService.getActualLoadingPotinCsvModelsFromS3();
+    List<LoadingPointCsvModel> actualLoadingPotinCsvModelsFromS3 = csvService.getActualLoadingPotinCsvModelsFromS3(
+        IMPORT_SERVICE_POINT_CSV_JOB);
     return new ListItemReader<>(actualLoadingPotinCsvModelsFromS3);
   }
 
@@ -139,7 +140,7 @@ public class SpringBatchConfig {
   @Bean
   public TaskExecutor getAsyncExecutor() {
     SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();
-    taskExecutor.setConcurrencyLimit(2);
+    taskExecutor.setConcurrencyLimit(10);
     return taskExecutor;
   }
 

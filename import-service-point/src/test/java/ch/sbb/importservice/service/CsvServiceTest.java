@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service;
 
+import static ch.sbb.importservice.config.SpringBatchConfig.IMPORT_SERVICE_POINT_CSV_JOB;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
@@ -25,10 +26,13 @@ public class CsvServiceTest {
   @Mock
   private AmazonService amazonService;
 
+  @Mock
+  private JobHelperService jobHelperService;
+
   @BeforeEach
   void setUp() {
     openMocks(this);
-    csvService = new CsvService(amazonService);
+    csvService = new CsvService(amazonService, jobHelperService);
   }
 
   @Test
@@ -38,7 +42,8 @@ public class CsvServiceTest {
         Collections.emptyList());
 
     String exMessage =
-        assertThrows(RuntimeException.class, () -> csvService.downloadImportFileFromToday("PREFIX_")).getLocalizedMessage();
+        assertThrows(RuntimeException.class,
+            () -> csvService.downloadImportFile("PREFIX_", IMPORT_SERVICE_POINT_CSV_JOB)).getLocalizedMessage();
     verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
     assertThat(exMessage).isEqualTo("[IMPORT]: Not found file on S3");
   }
@@ -50,7 +55,8 @@ public class CsvServiceTest {
         .thenReturn(List.of("file1", "file2"));
 
     String exMessage =
-        assertThrows(RuntimeException.class, () -> csvService.downloadImportFileFromToday("PREFIX_")).getLocalizedMessage();
+        assertThrows(RuntimeException.class,
+            () -> csvService.downloadImportFile("PREFIX_", IMPORT_SERVICE_POINT_CSV_JOB)).getLocalizedMessage();
     verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
     assertThat(exMessage).isEqualTo("[IMPORT]: Found more than 1 file to download on S3");
   }
@@ -61,7 +67,7 @@ public class CsvServiceTest {
     when(amazonService.getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today))).thenReturn(List.of("file"));
     when(amazonService.pullFile(eq("file"))).thenReturn(new File("file"));
 
-    File file = csvService.downloadImportFileFromToday("PREFIX_");
+    File file = csvService.downloadImportFile("PREFIX_", IMPORT_SERVICE_POINT_CSV_JOB);
     verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
     verify(amazonService).pullFile(eq("file"));
     assertThat(file.getName()).isEqualTo("file");
