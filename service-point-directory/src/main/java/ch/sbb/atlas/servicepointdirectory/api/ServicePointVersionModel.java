@@ -5,6 +5,7 @@ import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
@@ -186,6 +187,12 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
     return !(getNumber().getCountry()==Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now())) || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+  }
+
+  @AssertTrue(message = "OperatingPointType has to match operatingPoint Attributes")
+  public boolean isValidOperatingPointType() {
+    return operatingPointType == null || (isOperatingPoint()
+        && isOperatingPointWithTimetable() == operatingPointType.hasTimetable());
   }
 
   public List<MeanOfTransport> getMeansOfTransport() {
