@@ -121,4 +121,31 @@ class ServicePointVersionTest {
         //then
         assertThat(constraintViolations).isNotEmpty();
     }
+    @Test
+    void shouldNotAcceptWrongOperatingPointTypeWithAttributes() {
+        // Given
+        ServicePointVersion servicePoint = ServicePointVersion.builder()
+            .number(ServicePointNumber.of(85070003))
+            .numberShort(7000)
+            .country(Country.SWITZERLAND)
+            .operatingPoint(true)
+            .operatingPointWithTimetable(true)
+            .operatingPointType(OperatingPointType.ROUTE_SPEED_CHANGE)
+            .designationLong("long designation")
+            .designationOfficial("official designation")
+            .abbreviation("BE")
+            .statusDidok3(ServicePointStatus.from(1))
+            .businessOrganisation("somesboid")
+            .status(Status.VALIDATED)
+            .validFrom(LocalDate.now())
+            .validTo(LocalDate.now())
+            .version(1)
+            .build();
+        //when
+        Set<ConstraintViolation<ServicePointVersion>> constraintViolations = validator.validate(servicePoint);
+
+        //then
+        assertThat(constraintViolations).isNotEmpty();
+    }
+
 }

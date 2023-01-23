@@ -206,6 +206,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
     return operatingPointType == OperatingPointType.TARIFF_POINT;
   }
 
+  @ToString.Include
   public boolean isTrafficPoint() {
     return isStopPoint() || isFreightServicePoint() || isFareStop();
   }
@@ -223,6 +224,12 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @AssertTrue(message = "StopPointType only allowed for StopPoint")
   boolean isValidStopPointWithType() {
     return isStopPoint() || stopPointType == null;
+  }
+
+  @AssertTrue(message = "OperatingPointType has to match operatingPoint Attributes")
+  public boolean isValidOperatingPointType() {
+    return operatingPointType == null || (isOperatingPoint()
+        && isOperatingPointWithTimetable() == operatingPointType.hasTimetable());
   }
 
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
