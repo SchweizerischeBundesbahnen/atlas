@@ -1,6 +1,6 @@
 package ch.sbb.atlas.base.service.imports.servicepoint.model;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 @Schema(name = "ServicePointImportResult")
 public class ServicePointImportReqModel {
 
-  @Schema(name = "List of ServicePoints to import")
+  @Schema(name = "List of ServicePointsContainer to import")
   @NotNull
   @NotEmpty
-  private List<ServicePointCsvModel> servicePointCsvModels;
+  private List<ServicePointCsvModelContainer> servicePointCsvModelContainers;
 
 }
