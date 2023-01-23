@@ -8,7 +8,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-@Slf4j
 public class ServicePointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
