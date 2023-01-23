@@ -211,6 +211,7 @@ public class ServicePointVersionRepositoryTest {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .operatingPoint(true)
+        .operatingPointWithTimetable(true)
         .number(ServicePointNumber.of(85070003))
         .numberShort(1)
         .country(Country.SWITZERLAND)
