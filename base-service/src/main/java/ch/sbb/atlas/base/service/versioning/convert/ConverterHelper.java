@@ -26,7 +26,7 @@ public final class ConverterHelper {
     throw new IllegalStateException("Utility class");
   }
 
-  public static Entity convertToEditedEntity(
+  public static Entity convertToEditedEntity(boolean deletePropertyWhenNull,
       Versionable currentVersion, Versionable editedVersion,
       List<VersionableProperty> versionableProperties) {
 
@@ -41,11 +41,13 @@ public final class ConverterHelper {
     }
 
     editedProperties.removeAll(propertiesEqualsBetweenCurrentAndEdited);
-    List<Property> propertiesNotEmpty = editedProperties.stream()
-        .filter(Property::isNotEmpty)
-        .collect(Collectors.toList());
-
-    return buildEntity(currentVersion.getId(), propertiesNotEmpty);
+    if (!deletePropertyWhenNull) {
+      List<Property> propertiesNotEmpty = editedProperties.stream()
+          .filter(Property::isNotEmpty)
+          .collect(Collectors.toList());
+      return buildEntity(currentVersion.getId(), propertiesNotEmpty);
+    }
+    return buildEntity(currentVersion.getId(), editedProperties);
   }
 
   public static <T extends Versionable> List<ToVersioning> convertAllObjectsToVersioning(
