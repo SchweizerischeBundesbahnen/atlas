@@ -86,7 +86,7 @@ public class ConverterHelperTest extends BaseTest {
         .build();
 
     //when
-    Entity result = ConverterHelper.convertToEditedEntity(current, edited, VERSIONABLE);
+    Entity result = ConverterHelper.convertToEditedEntity(false, current, edited, VERSIONABLE);
 
     //then
     assertThat(result).isNotNull();
@@ -111,7 +111,7 @@ public class ConverterHelperTest extends BaseTest {
   public void shouldReturnConvertedEntityWithEmptyPropertiesWhenCurrentANdEditedPropertiesAreEquals() {
 
     //when
-    Entity result = ConverterHelper.convertToEditedEntity(versionableObject1, versionableObject1,
+    Entity result = ConverterHelper.convertToEditedEntity(false, versionableObject1, versionableObject1,
         VERSIONABLE
     );
 
