@@ -201,6 +201,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void test_ImportServicePoints_withVersionsUnordered() throws Exception {
+    // given
     InputStream csvStream = this.getClass().getResourceAsStream("/SERVICE_POINTS_VERSIONING.csv");
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
 
@@ -222,15 +223,18 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
     String jsonString = mapper.writeValueAsString(importRequestModel);
 
+    // when
     mvc.perform(post("/v1/service-points/import")
             .content(jsonString)
             .contentType(contentType))
         .andExpect(status().isOk());
 
+    // then
     List<ServicePointVersion> allByNumberOrderByValidFrom = repository.findAllByNumberOrderByValidFrom(
         ServicePointNumber.of(didokCode));
     assertThat(allByNumberOrderByValidFrom).hasSize(5);
 
+    // TODO
     // update with ordered list
     LocalDate newValidFrom = servicePointCsvModelsOrdered.get(0).getValidFrom().minusDays(5);
     servicePointCsvModelsOrdered.get(0).setValidFrom(newValidFrom);
