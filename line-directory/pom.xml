@@ -99,6 +99,11 @@
          <version>1.149.0</version>
       </dependency>
       <dependency>
+         <groupId>org.springframework.kafka</groupId>
+         <artifactId>spring-kafka-test</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <artifactId>spring-boot-starter-test</artifactId>
          <groupId>org.springframework.boot</groupId>
          <scope>test</scope>
