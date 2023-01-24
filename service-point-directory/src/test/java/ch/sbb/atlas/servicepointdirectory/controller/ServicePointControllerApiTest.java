@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
@@ -14,6 +15,7 @@ import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
@@ -199,29 +201,40 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void test_ImportServicePoints_withVersionsUnordered() throws Exception {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
+    InputStream csvStream = this.getClass().getResourceAsStream("/SERVICE_POINTS_VERSIONING.csv");
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
 
     int didokCode = 10000190;
-    List<ServicePointCsvModel> servicePointCsvModelsOrdered =
-        servicePointCsvModels.stream().filter(item -> item.getDidokCode() == didokCode).sorted(
-            Comparator.comparing(BaseDidokCsvModel::getValidFrom)).toList();
+    List<ServicePointCsvModel> servicePointCsvModelsOrdered = servicePointCsvModels.stream()
+        .filter(item -> item.getDidokCode() == didokCode)
+        .sorted(Comparator.comparing(BaseDidokCsvModel::getValidFrom))
+        .toList();
 
-    ServicePointImportReqModel importReqModel =
-        new ServicePointImportReqModel(List.of(
-            ServicePointCsvModelContainer.builder().servicePointCsvModelList(servicePointCsvModelsOrdered).didokCode(didokCode)
-                .build()));
+    ServicePointImportReqModel importRequestModel = new ServicePointImportReqModel(
+        List.of(
+            ServicePointCsvModelContainer
+                .builder()
+                .servicePointCsvModelList(servicePointCsvModelsOrdered)
+                .didokCode(didokCode)
+                .build()
+        )
+    );
 
-    String s = mapper.writeValueAsString(importReqModel);
+    String jsonString = mapper.writeValueAsString(importRequestModel);
 
     mvc.perform(post("/v1/service-points/import")
-            .content(s)
+            .content(jsonString)
             .contentType(contentType))
         .andExpect(status().isOk());
+
+    List<ServicePointVersion> allByNumberOrderByValidFrom = repository.findAllByNumberOrderByValidFrom(
+        ServicePointNumber.of(didokCode));
+    assertThat(allByNumberOrderByValidFrom).hasSize(5);
 
     // update with ordered list
     LocalDate newValidFrom = servicePointCsvModelsOrdered.get(0).getValidFrom().minusDays(5);
     servicePointCsvModelsOrdered.get(0).setValidFrom(newValidFrom);
+
     LocalDate newValidTo = servicePointCsvModelsOrdered.get(1).getValidTo().plusDays(5);
     servicePointCsvModelsOrdered.get(1).setValidTo(newValidTo);
 
