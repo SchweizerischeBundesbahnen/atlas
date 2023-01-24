@@ -17,13 +17,10 @@ import org.junit.jupiter.api.Test;
 public class VersionableServiceScenario8Test extends VersionableServiceBaseTest {
 
   /**
-   * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated
-   * NEU:      |______________________|
-   * IST:      |-------------------------------------------------------
-   * Version:                            1
-   *
-   * RESULTAT: |----------------------| Version wird per xx aufgehoben
-   * Version:         1
+   * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated NEU:      |______________________| IST:
+   * |------------------------------------------------------- Version:                            1
+   * <p>
+   * RESULTAT: |----------------------| Version wird per xx aufgehoben Version:         1
    */
   @Test
   public void scenario8a() {
@@ -31,9 +28,9 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .validTo(editedValidTo)
-                                                       .validFrom(versionableObject3.getValidFrom())
-                                                       .build();
+        .validTo(editedValidTo)
+        .validFrom(versionableObject3.getValidFrom())
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -77,13 +74,10 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
   }
 
   /**
-   * Szenario 8b: Letzte Version validTo und props updated
-   * NEU:      |______________________|
-   * IST:      |-------------------------------------------------------
-   * Version:                            1
-   *
-   * RESULTAT: |----------------------|--------------------------------|
-   * Version:         1                             2
+   * Szenario 8b: Letzte Version validTo und props updated NEU:      |______________________| IST:
+   * |------------------------------------------------------- Version:                            1
+   * <p>
+   * RESULTAT: |----------------------|--------------------------------| Version:         1                             2
    */
   @Test
   public void scenario8b() {
@@ -91,10 +85,10 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validTo(editedValidTo)
-                                                       .validFrom(versionableObject3.getValidFrom())
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validTo(editedValidTo)
+        .validFrom(versionableObject3.getValidFrom())
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -134,7 +128,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
     assertThat(thirdVersionedObjectEntity).isNotNull();
     assertThat(thirdVersionedObjectEntity.getProperties()).isNotEmpty();
-    assertThat(thirdVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(thirdVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyThirdVersionedObjectEntity = filterProperty(
         thirdVersionedObjectEntity.getProperties(), Fields.property);
     assertThat(propertyThirdVersionedObjectEntity).isNotNull();
@@ -151,7 +145,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     assertThat(fourthVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     Entity fourthVersionedObjectEntity = fourthVersionedObject.getEntity();
     assertThat(fourthVersionedObjectEntity).isNotNull();
-    assertThat(fourthVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(fourthVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyFourthVersionedObjectEntity = filterProperty(
         fourthVersionedObjectEntity.getProperties(), Fields.property);
     assertThat(propertyFourthVersionedObjectEntity).isNotNull();
@@ -164,13 +158,10 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
   }
 
   /**
-   * Szenario 8c: Letzte Version nur validTo
-   * NEU:      |__________________________|
-   * IST:      |----------------------|       |-------------------------|
-   * Version:             1                             2
-   *
-   * RESULTAT: |-------------------------|    |------------------------|
-   * Version:             1                             2
+   * Szenario 8c: Letzte Version nur validTo NEU:      |__________________________| IST:      |----------------------|
+   * |-------------------------| Version:             1                             2
+   * <p>
+   * RESULTAT: |-------------------------|    |------------------------| Version:             1                             2
    */
   @Test
   public void scenario8c() {
@@ -179,9 +170,9 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     versionableObject4.setValidFrom(LocalDate.of(2025, 6, 1));
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .validTo(editedValidTo)
-                                                       .validFrom(versionableObject3.getValidFrom())
-                                                       .build();
+        .validTo(editedValidTo)
+        .validFrom(versionableObject3.getValidFrom())
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -234,13 +225,10 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
   }
 
   /**
-   * Szenario 8d: Letzte Version validTo und props updated
-   * NEU:      |__________________________|
-   * IST:      |----------------------|       |-------------------------|
-   * Version:             1                             2
-   *
-   * RESULTAT: |--------------------------|    |------------------------|
-   * Version:             1                             2
+   * Szenario 8d: Letzte Version validTo und props updated NEU:      |__________________________| IST:
+   * |----------------------|       |-------------------------| Version:             1                             2
+   * <p>
+   * RESULTAT: |--------------------------|    |------------------------| Version:             1                             2
    */
   @Test
   public void scenario8d() {
@@ -249,10 +237,10 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     versionableObject4.setValidFrom(LocalDate.of(2025, 6, 1));
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validTo(editedValidTo)
-                                                       .validFrom(versionableObject3.getValidFrom())
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validTo(editedValidTo)
+        .validFrom(versionableObject3.getValidFrom())
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -313,13 +301,11 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
   }
 
   /**
-   * Szenario 8e: Letzte Version validTo und props updated
-   * NEU:      |________________________________________|
-   * IST:      |----------------------|       |-------------------------|
-   * Version:             1                                 2
-   *
-   * RESULTAT: |------------------------------|--------|----------------|
-   * Version:             1                        2            3
+   * Szenario 8e: Letzte Version validTo und props updated NEU:      |________________________________________| IST:
+   * |----------------------|       |-------------------------| Version:             1                                 2
+   * <p>
+   * RESULTAT: |------------------------------|--------|----------------| Version:             1                        2
+   * 3
    */
   @Test
   public void scenario8e() {
@@ -328,10 +314,10 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     versionableObject4.setValidFrom(LocalDate.of(2025, 6, 1));
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validTo(editedValidTo)
-                                                       .validFrom(versionableObject3.getValidFrom())
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validTo(editedValidTo)
+        .validFrom(versionableObject3.getValidFrom())
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -401,13 +387,12 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
   }
 
   /**
-   * Szenario 8f: Letzte Version validTo und props updated
-   * NEU:      |________________________________________________________________|
-   * IST:      |----------------------|       |---------|----------------|----------------|
-   * Version:             1                        2            3               4
-   *
-   * RESULTAT: |------------------------------|--------|----------------|------|----------|
-   * Version:             1                        2            3           4       5
+   * Szenario 8f: Letzte Version validTo und props updated NEU:
+   * |________________________________________________________________| IST:      |----------------------|
+   * |---------|----------------|----------------| Version:             1                        2            3               4
+   * <p>
+   * RESULTAT: |------------------------------|--------|----------------|------|----------| Version:             1
+   * 2            3           4       5
    */
   @Test
   public void scenario8f() {
@@ -416,10 +401,10 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     versionableObject1.setValidTo(LocalDate.of(2021, 6, 1));
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validTo(editedValidTo)
-                                                       .validFrom(versionableObject1.getValidFrom())
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validTo(editedValidTo)
+        .validFrom(versionableObject1.getValidFrom())
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -521,13 +506,12 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
   }
 
   /**
-   * Szenario 8g: Letzte Version validTo und props updated
-   * NEU:      |________________________________________________________________|
-   * IST:      |----------------------|       |----------------|         |----------------|
-   * Version:             1                           2                          3
-   *
-   * RESULTAT: |------------------------------|-------------------------|------|----------|
-   * Version:             1                           2                    3       4
+   * Szenario 8g: Letzte Version validTo und props updated NEU:
+   * |________________________________________________________________| IST:      |----------------------|
+   * |----------------|         |----------------| Version:             1                           2                          3
+   * <p>
+   * RESULTAT: |------------------------------|-------------------------|------|----------| Version:             1
+   * 2                    3       4
    */
   @Test
   public void scenario8g() {
@@ -537,10 +521,10 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     versionableObject2.setValidTo(LocalDate.of(2022, 6, 1));
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validTo(editedValidTo)
-                                                       .validFrom(versionableObject1.getValidFrom())
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validTo(editedValidTo)
+        .validFrom(versionableObject1.getValidFrom())
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
