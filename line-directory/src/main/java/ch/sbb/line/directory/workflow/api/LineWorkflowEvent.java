@@ -1,6 +1,6 @@
-package ch.sbb.atlas.kafka.model.workflow.event;
+package ch.sbb.line.directory.workflow.api;
 
-import ch.sbb.atlas.kafka.model.workflow.BaseWorkflowEvent;
+import ch.sbb.atlas.base.service.model.workflow.BaseWorkflowEvent;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serial;
 import java.io.Serializable;

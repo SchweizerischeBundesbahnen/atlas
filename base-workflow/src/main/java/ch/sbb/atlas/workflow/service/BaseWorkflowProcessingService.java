@@ -6,7 +6,8 @@ import ch.sbb.atlas.base.service.aspect.annotation.RunAsUser;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
+import ch.sbb.atlas.base.service.model.workflow.BaseWorkflowEvent;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.AtlasVersionSnapshotable;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
@@ -24,22 +25,28 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
   protected final JpaRepository<Z, Long> objectVersionSnapshotRepository;
 
   @RunAsUser(fakeUserType = KAFKA)
-  public void processWorkflow(LineWorkflowEvent lineWorkflowEvent, Z versionSnapshot) {
-    T objectVersion = getObjectVersion(lineWorkflowEvent);
-    evaluateWorkflowProcessingStatus(lineWorkflowEvent, objectVersion, versionSnapshot);
-    objectVersionRepository.save(objectVersion);
-    log.info("Object entity saved: {}", objectVersion);
-    Y objectVersionWorkflow = buildObjectVersionWorkflow(lineWorkflowEvent, objectVersion);
-    objectWorkflowRepository.save(objectVersionWorkflow);
-    log.info("Workflow entity saved: {}", objectVersionWorkflow);
-
+  public WorkflowStatus processWorkflow(BaseWorkflowEvent workflowEvent, Z versionSnapshot) {
+    T objectVersion = getObjectVersion(workflowEvent);
+    boolean userMayCreateWorkflow = checkIfUserMayCreateWorkflow(objectVersion, workflowEvent);
+    if (userMayCreateWorkflow) {
+      evaluateWorkflowProcessingStatus(workflowEvent, objectVersion, versionSnapshot);
+      objectVersionRepository.save(objectVersion);
+      log.info("Object entity saved: {}", objectVersion);
+      Y objectVersionWorkflow = buildObjectVersionWorkflow(workflowEvent, objectVersion);
+      objectWorkflowRepository.save(objectVersionWorkflow);
+      log.info("Workflow entity saved: {}", objectVersionWorkflow);
+      return WorkflowStatus.STARTED;
+    }
+    return WorkflowStatus.REVOKED;
   }
 
-  void evaluateWorkflowProcessingStatus(LineWorkflowEvent lineWorkflowEvent, T objectVersion, Z versionSnapshot) {
+  protected abstract boolean checkIfUserMayCreateWorkflow(T objectVersion, BaseWorkflowEvent triggeringEvent);
+
+  void evaluateWorkflowProcessingStatus(BaseWorkflowEvent lineWorkflowEvent, T objectVersion, Z versionSnapshot) {
     Status preUpdateStatus = objectVersion.getStatus();
 
     switch (lineWorkflowEvent.getWorkflowStatus()) {
-      case STARTED -> objectVersion.setStatus(Status.IN_REVIEW);
+      case ADDED -> objectVersion.setStatus(Status.IN_REVIEW);
       case APPROVED -> objectVersion.setStatus(Status.VALIDATED);
       case REJECTED -> objectVersion.setStatus(Status.DRAFT);
       default -> throw new IllegalStateException("Use case not yet implemented!!");
@@ -49,11 +56,11 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
     log.info("Changed Object status from {} to {}", preUpdateStatus, objectVersion.getStatus());
   }
 
-  T getObjectVersion(LineWorkflowEvent lineWorkflowEvent) {
+  T getObjectVersion(BaseWorkflowEvent lineWorkflowEvent) {
     return objectVersionRepository.findById(lineWorkflowEvent.getBusinessObjectId())
         .orElseThrow(() -> new IdNotFoundException(lineWorkflowEvent.getBusinessObjectId()));
   }
 
-  protected abstract Y buildObjectVersionWorkflow(LineWorkflowEvent lineWorkflowEvent, T object);
+  protected abstract Y buildObjectVersionWorkflow(BaseWorkflowEvent lineWorkflowEvent, T object);
 
 }

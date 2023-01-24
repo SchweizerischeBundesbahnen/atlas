@@ -2,8 +2,8 @@ package ch.sbb.workflow.api;
 
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;

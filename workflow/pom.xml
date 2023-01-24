@@ -71,8 +71,13 @@
          <version>1.149.0</version>
       </dependency>
       <dependency>
+         <artifactId>spring-cloud-starter-openfeign</artifactId>
+         <groupId>org.springframework.cloud</groupId>
+      </dependency>
+      <dependency>
          <groupId>ch.sbb.atlas</groupId>
-         <artifactId>user-administration-security</artifactId>
+         <artifactId>line-directory</artifactId>
+         <classifier>workflow-api</classifier>
          <version>1.149.0</version>
       </dependency>
       <dependency>
