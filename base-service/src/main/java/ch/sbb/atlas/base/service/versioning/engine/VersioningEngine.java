@@ -22,11 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class VersioningEngine {
 
-  public <T extends Versionable> List<VersionedObject> applyVersioning(
+  public <T extends Versionable> List<VersionedObject> applyVersioning(boolean deletePropertyWhenNull,
       Versionable currentVersion, Versionable editedVersion,
       List<T> currentVersions, List<VersionableProperty> versionableProperties) {
 
-    Entity editedEntity = ConverterHelper.convertToEditedEntity(currentVersion, editedVersion,
+    Entity editedEntity = ConverterHelper.convertToEditedEntity(deletePropertyWhenNull, currentVersion, editedVersion,
         versionableProperties);
 
     List<ToVersioning> objectsToVersioning = ConverterHelper.convertAllObjectsToVersioning(
