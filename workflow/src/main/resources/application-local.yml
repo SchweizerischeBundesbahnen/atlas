@@ -15,6 +15,9 @@ info:
     buildtime: @timestamp@
 
 spring:
+  flyway:
+    locations: classpath:db/workflow/migration
+
   application:
     name: workflow
   sleuth:
