@@ -5,7 +5,7 @@ import static ch.sbb.line.directory.converter.RgbColorConverter.toHex;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.enumaration.PaymentType;

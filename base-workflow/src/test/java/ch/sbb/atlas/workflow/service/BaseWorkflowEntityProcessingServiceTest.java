@@ -10,8 +10,9 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.base.service.model.workflow.BaseWorkflowEvent;
 import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
@@ -212,6 +213,11 @@ public class BaseWorkflowEntityProcessingServiceTest {
         ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository,
         JpaRepository<ObjectVersionSnapshot, Long> objectVersionSnapshotRepository) {
       super(objectVersionRepository, objectWorkflowRepository, objectVersionSnapshotRepository);
+    }
+
+    @Override
+    protected boolean checkIfUserMayCreateWorkflow(ObjectVersion objectVersion, BaseWorkflowEvent triggeringEvent) {
+      return true;
     }
 
     @Override
