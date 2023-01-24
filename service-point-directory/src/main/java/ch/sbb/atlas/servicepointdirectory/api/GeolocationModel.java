@@ -40,6 +40,9 @@ public class GeolocationModel {
   private Double height;
 
   public static GeolocationModel fromEntity(GeolocationBaseEntity geolocation) {
+    if (geolocation == null) {
+      return null;
+    }
     Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(geolocation);
     return GeolocationModel.builder()
         .spatialReference(geolocation.getSpatialReference())
