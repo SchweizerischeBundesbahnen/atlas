@@ -148,7 +148,7 @@ public class ConverterHelperTest extends BaseTest {
     assertThat(entityFirstItem.getId()).isEqualTo(1);
     List<Property> entityFirstItemProperties = entityFirstItem.getProperties();
     assertThat(entityFirstItemProperties).isNotEmpty();
-    assertThat(entityFirstItemProperties.size()).isEqualTo(2);
+    assertThat(entityFirstItemProperties.size()).isEqualTo(3);
 
     Property firstPropertyFirstItem = entityFirstItemProperties.get(0);
     assertThat(firstPropertyFirstItem).isNotNull();
@@ -176,6 +176,14 @@ public class ConverterHelperTest extends BaseTest {
     assertThat(entityOneToManyRelationProperties.get(0).getOneToOne()).isNull();
     assertThat(entityOneToManyRelationProperties.get(0).getOneToMany()).isNull();
 
+    Property thirdPropertyFirstItem = entityFirstItemProperties.get(2);
+    assertThat(thirdPropertyFirstItem).isNotNull();
+    assertThat(thirdPropertyFirstItem.getKey()).isEqualTo(Fields.oneToOneRelation);
+    assertThat(thirdPropertyFirstItem.getValue()).isNull();
+    assertThat(thirdPropertyFirstItem.getOneToMany()).isNull();
+    Entity oneToOneRelation = thirdPropertyFirstItem.getOneToOne();
+    assertThat(oneToOneRelation).isNull();
+
     ToVersioning secondItemToVersioning = result.get(1);
     assertThat(secondItemToVersioning).isNotNull();
     assertThat(secondItemToVersioning.getVersionable().getId()).isEqualTo(
@@ -189,7 +197,7 @@ public class ConverterHelperTest extends BaseTest {
     assertThat(entitySecondItem.getId()).isEqualTo(2);
     List<Property> entitySecondItemProperties = entitySecondItem.getProperties();
     assertThat(entitySecondItemProperties).isNotEmpty();
-    assertThat(entitySecondItemProperties.size()).isEqualTo(2);
+    assertThat(entitySecondItemProperties.size()).isEqualTo(3);
 
     Property firstPropertySecondItem = entitySecondItemProperties.get(0);
     assertThat(firstPropertySecondItem).isNotNull();
@@ -206,6 +214,15 @@ public class ConverterHelperTest extends BaseTest {
     assertThat(secondPropertySecondItem.getOneToOne()).isNull();
     List<Entity> oneToManyRelationSecondItem = secondPropertySecondItem.getOneToMany();
     assertThat(oneToManyRelationSecondItem).isEmpty();
+
+    Property thirdPropertySecondItem = entitySecondItemProperties.get(2);
+    assertThat(thirdPropertySecondItem).isNotNull();
+    assertThat(thirdPropertySecondItem.getKey()).isEqualTo(
+        Fields.oneToOneRelation);
+    assertThat(thirdPropertySecondItem.getValue()).isNull();
+    assertThat(thirdPropertySecondItem.getOneToMany()).isNull();
+    Entity oneToOneRelationSecondItem = thirdPropertySecondItem.getOneToOne();
+    assertThat(oneToOneRelationSecondItem).isNull();
   }
 
   @Test
