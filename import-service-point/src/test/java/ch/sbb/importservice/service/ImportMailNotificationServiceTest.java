@@ -41,9 +41,10 @@ class ImportMailNotificationServiceTest {
     expectedMailContent.put("correlationId", "abc123");
     expectedMailContent.put("exception", "");
     expectedMailContent.put("jobParameter", "{}");
+    expectedMailContent.put("stepId", null);
+    expectedMailContent.put("stepName", "myStep");
     JobExecution jobExecution = new JobExecution(1L);
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
-
     doReturn("abc123").when(notificationService).getCurrentSpan();
     //when
     MailNotification result = notificationService.buildMailErrorNotification("import", stepExecution);
@@ -65,9 +66,10 @@ class ImportMailNotificationServiceTest {
     expectedMailContent.put("correlationId", "abc123");
     expectedMailContent.put("exception", "");
     expectedMailContent.put("jobParameter", "{}");
+    expectedMailContent.put("stepId", null);
+    expectedMailContent.put("stepName", "myStep");
     JobExecution jobExecution = new JobExecution(1L);
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
-
     doReturn("abc123").when(notificationService).getCurrentSpan();
     //when
     MailNotification result = notificationService.buildMailErrorNotification("import", stepExecution);
