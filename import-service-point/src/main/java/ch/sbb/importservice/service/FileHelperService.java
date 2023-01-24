@@ -35,8 +35,12 @@ public class FileHelperService {
     return fileToImport;
   }
 
-  public File downloadImportFileFromS3(String csvImportFilePrefix) throws IOException {
-    return downloadImportFileWithPrefix(csvImportFilePrefix);
+  public File downloadImportFileFromS3(String csvImportFilePrefix) {
+    try {
+      return downloadImportFileWithPrefix(csvImportFilePrefix);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private String attachTodayDate(String csvImportFilePrefix) {
@@ -63,7 +67,7 @@ public class FileHelperService {
   private String handleImportFileKeysResult(List<String> importFileKeys, String csvImportFilePrefix) {
     if (importFileKeys.isEmpty()) {
       //TODO: create custom Exception
-      throw new RuntimeException("[IMPORT]: File " + csvImportFilePrefix + " not found file on S3");
+      throw new RuntimeException("[IMPORT]: File " + csvImportFilePrefix + " not found on S3");
     } else if (importFileKeys.size() > 1) {
       throw new RuntimeException("[IMPORT]: Found more than 1 file " + csvImportFilePrefix + " to download on S3");
     }

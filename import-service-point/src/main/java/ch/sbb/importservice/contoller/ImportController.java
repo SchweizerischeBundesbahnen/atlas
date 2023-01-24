@@ -3,8 +3,11 @@ package ch.sbb.importservice.contoller;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
+import ch.sbb.importservice.exception.JobExecutionException;
 import ch.sbb.importservice.service.FileHelperService;
 import java.io.File;
 import lombok.AllArgsConstructor;
@@ -54,7 +57,8 @@ public class ImportController {
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
+      throw new JobExecutionException(IMPORT_SERVICE_POINT_CSV_JOB_NAME, e.getMessage());
     }
   }
 
@@ -68,8 +72,9 @@ public class ImportController {
       JobExecution execution = jobLauncher.run(importServicePointCsvJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
-             JobParametersInvalidException e) {
-      throw new RuntimeException(e);
+             JobParametersInvalidException | IllegalArgumentException e) {
+      e.printStackTrace();
+      throw new JobExecutionException(IMPORT_SERVICE_POINT_CSV_JOB_NAME, e.getMessage());
     } finally {
       file.delete();
     }
@@ -86,7 +91,8 @@ public class ImportController {
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
+      throw new JobExecutionException(IMPORT_LOADING_POINT_CSV_JOB_NAME, e.getMessage());
     } finally {
       file.delete();
     }
