@@ -22,6 +22,8 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,6 +49,7 @@ public class ImportController {
   @Qualifier(IMPORT_LOADING_POINT_CSV_JOB)
   private final Job importLoadingPointCsvJob;
 
+  @Async
   @PostMapping("service-point-batch")
   public void startServicePointImportBatch() {
     JobParameters jobParameters = new JobParametersBuilder()
@@ -63,7 +66,7 @@ public class ImportController {
   }
 
   @PostMapping("service-point")
-  public void startServicePointImport(@RequestParam("file") MultipartFile multipartFile) {
+  public ResponseEntity<?> startServicePointImport(@RequestParam("file") MultipartFile multipartFile) {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
@@ -71,6 +74,7 @@ public class ImportController {
     try {
       JobExecution execution = jobLauncher.run(importServicePointCsvJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+      return ResponseEntity.ok().body(execution.toString());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException | IllegalArgumentException e) {
       e.printStackTrace();
@@ -81,7 +85,7 @@ public class ImportController {
   }
 
   @PostMapping("loading-point")
-  public void startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) {
+  public ResponseEntity<?> startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
@@ -89,6 +93,7 @@ public class ImportController {
     try {
       JobExecution execution = jobLauncher.run(importLoadingPointCsvJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+      return ResponseEntity.ok().body(execution);
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
       e.printStackTrace();
