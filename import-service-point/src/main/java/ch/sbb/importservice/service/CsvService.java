@@ -47,7 +47,7 @@ public class CsvService {
   @Value("${amazon.bucketName}")
   private String bucketName;
 
-  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3() throws IOException {
+  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3() {
     log.info("Downloading file from Amazon S3 Bucket: {}", bucketName);
     File file = fileHelperService.downloadImportFileFromS3(DINSTELLE_FILE_PREFIX);
     LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
@@ -57,7 +57,7 @@ public class CsvService {
         servicePointCsvModels);
   }
 
-  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3(File file) throws IOException {
+  public List<ServicePointCsvModelContainer> getActualServicePotinCsvModelsFromS3(File file) {
     log.info("Starting Service Point import process");
     log.info("CSV File to import: {}", file.getName());
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, MIN_LOCAL_DATE, ServicePointCsvModel.class);
@@ -82,14 +82,14 @@ public class CsvService {
     return servicePointCsvModelContainers;
   }
 
-  public List<LoadingPointCsvModel> getActualLoadingPointCsvModelsFromS3(File file) throws IOException {
+  public List<LoadingPointCsvModel> getActualLoadingPointCsvModelsFromS3(File file) {
     List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(file, MIN_LOCAL_DATE,
         LoadingPointCsvModel.class);
     log.info("Found {} Loading Points to send to ServicePointDirectory", loadingPointCsvModels.size());
     return loadingPointCsvModels;
   }
 
-  public List<LoadingPointCsvModel> getActualLoadingPointCsvModelsFromS3() throws IOException {
+  public List<LoadingPointCsvModel> getActualLoadingPointCsvModelsFromS3() {
     File importFile = fileHelperService.downloadImportFileFromS3(LADESTELLEN_FILE_PREFIX);
     List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(importFile, MIN_LOCAL_DATE,
         LoadingPointCsvModel.class);
@@ -97,7 +97,7 @@ public class CsvService {
     return loadingPointCsvModels;
   }
 
-  public <T> List<T> getCsvModelsToUpdate(File importFile, LocalDate matchingDate, Class<T> type) throws IOException {
+  public <T> List<T> getCsvModelsToUpdate(File importFile, LocalDate matchingDate, Class<T> type) {
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(importFile))) {
       String headerLine = skipUntilHeaderLine(bufferedReader);
       int editedAtColumnIndex = getColumnIndexOfEditedAt(headerLine);
@@ -114,6 +114,8 @@ public class CsvService {
           .with(DidokCsvMapper.CSV_SCHEMA)
           .readValues(String.join("\n", csvLinesToProcess));
       return mapObjects(mappingIterator);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
