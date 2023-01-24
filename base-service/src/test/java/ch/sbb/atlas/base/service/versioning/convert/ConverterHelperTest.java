@@ -220,7 +220,14 @@ public class ConverterHelperTest extends BaseTest {
 
     //then
     assertThat(result).isNotEmpty();
+    assertThat(result).hasSize(2);
+    result.sort(Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
 
+    ToVersioning secondItem = result.get(1);
+    assertThat(secondItem).isNotNull();
+    Entity oneToOne = secondItem.getEntity().getProperties().get(2).getOneToOne();
+    assertThat(oneToOne.getProperties()).hasSize(1);
+    assertThat(oneToOne.getProperties().get(0).getValue()).isEqualTo("value1");
   }
 
   @Test

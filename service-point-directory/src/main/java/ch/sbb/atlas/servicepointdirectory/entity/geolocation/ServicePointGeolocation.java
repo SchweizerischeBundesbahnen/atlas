@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
@@ -29,6 +30,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(exclude = "servicePointVersion")
 @SuperBuilder
 @FieldNameConstants
+@AtlasVersionable
 @Entity(name = "service_point_version_geolocation")
 public class ServicePointGeolocation extends GeolocationBaseEntity {
 
