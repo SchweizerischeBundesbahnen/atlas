@@ -2,14 +2,14 @@ package ch.sbb.workflow.service;
 
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
 import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
 import ch.sbb.workflow.api.PersonModel;
 import ch.sbb.workflow.entity.Workflow;
-import ch.sbb.workflow.service.lidi.LineWorkflowClient;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.service.lidi.LineWorkflowClient;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +28,11 @@ public class WorkflowService {
 
     workflow.setStatus(WorkflowStatus.ADDED);
     Workflow entity = repository.save(workflow);
-    WorkflowStatus desiredWorkflowStatusByLidi = lineWorkflowClient.startWorkflow(null);
+    WorkflowStatus desiredWorkflowStatusByLidi = processWorkflowOnLidi(workflow);
     entity.setStatus(desiredWorkflowStatusByLidi);
+    if (entity.getStatus() == WorkflowStatus.STARTED) {
+      notificationService.sendEventToMail(entity);
+    }
     return entity;
   }
 
@@ -48,16 +51,16 @@ public class WorkflowService {
     workflow.setStatus(
         examinantWorkflowCheckModel.isAccepted() ? WorkflowStatus.APPROVED : WorkflowStatus.REJECTED);
 
-    notificationService.sendEventToLidi(workflow);
+    processWorkflowOnLidi(workflow);
     notificationService.sendEventToMail(workflow);
     return workflow;
   }
 
-  public void processStartedEvent(Optional<Workflow> workflow) {
-    if (workflow.isPresent()) {
-      if (workflow.get().getStatus() == WorkflowStatus.STARTED) {
-        notificationService.sendEventToMail(workflow.get());
-      }
-    }
+  WorkflowStatus processWorkflowOnLidi(Workflow workflow) {
+    return lineWorkflowClient.processWorkflow(LineWorkflowEvent.builder()
+        .workflowId(workflow.getId())
+        .businessObjectId(workflow.getBusinessObjectId())
+        .workflowStatus(workflow.getStatus())
+        .build());
   }
 }
