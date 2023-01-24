@@ -18,7 +18,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -641,7 +640,6 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .queryParam("sort", "swissLineNumber,asc")
             .contentType(contentType)
         ).andExpect(status().isOk())
-        .andDo(print())
         .andExpect(jsonPath("$.totalCount").value(1))
         .andExpect(jsonPath("$.objects", hasSize(1)))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.alternativeName, is("alternativeName")))
