@@ -6,14 +6,19 @@ import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
 import ch.sbb.workflow.api.*;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.service.lidi.LineWorkflowClient;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,6 +32,14 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
 
   @Autowired
   private WorkflowRepository workflowRepository;
+
+  @MockBean
+  private LineWorkflowClient lineWorkflowClient;
+
+  @BeforeEach
+  void setUp() {
+    when(lineWorkflowClient.processWorkflow(any())).thenReturn(WorkflowStatus.STARTED);
+  }
 
   @AfterEach
   public void tearDown() {

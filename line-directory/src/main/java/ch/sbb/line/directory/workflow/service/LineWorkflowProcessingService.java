@@ -1,11 +1,11 @@
 package ch.sbb.line.directory.workflow.service;
 
-import ch.sbb.atlas.base.service.aspect.annotation.RunAsUser;
+import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.getProcessingStatus;
+
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.base.service.model.workflow.BaseWorkflowEvent;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.base.service.model.workflow.BaseWorkflowEvent;
-import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
 import ch.sbb.atlas.user.administration.security.UserAdministrationService;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
@@ -13,15 +13,12 @@ import ch.sbb.atlas.workflow.service.BaseWorkflowProcessingService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.entity.LineVersionWorkflow;
+import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
+import java.util.Optional;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.Optional;
-
-import static ch.sbb.atlas.base.service.aspect.FakeUserType.KAFKA;
-import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.getProcessingStatus;
 
 @Slf4j
 @Service
@@ -39,7 +36,6 @@ public class LineWorkflowProcessingService extends
     this.userAdministrationService = userAdministrationService;
   }
 
-  @RunAsUser(fakeUserType = KAFKA)
   public WorkflowStatus processLineWorkflow(LineWorkflowEvent lineWorkflowEvent) {
     log.info("Started Workflow processing: {}", lineWorkflowEvent);
     LineVersion lineVersion = objectVersionRepository.findById(lineWorkflowEvent.getBusinessObjectId())
