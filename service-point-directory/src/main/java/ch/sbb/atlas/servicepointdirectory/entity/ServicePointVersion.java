@@ -180,7 +180,12 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
       GeolocationBaseEntity.Fields.east,
       GeolocationBaseEntity.Fields.north,
       GeolocationBaseEntity.Fields.spatialReference,
-      GeolocationBaseEntity.Fields.height})
+      GeolocationBaseEntity.Fields.height,
+      BaseDidokImportEntity.Fields.creator,
+      BaseDidokImportEntity.Fields.editor,
+      BaseDidokImportEntity.Fields.creationDate,
+      BaseDidokImportEntity.Fields.editionDate
+  })
   private ServicePointGeolocation servicePointGeolocation;
 
   @NotNull

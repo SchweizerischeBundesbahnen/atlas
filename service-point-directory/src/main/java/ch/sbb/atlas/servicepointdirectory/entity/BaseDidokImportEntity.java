@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
@@ -22,6 +23,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @MappedSuperclass
+@FieldNameConstants
 @Deprecated
 /**
  * Switch back to ch.sbb.atlas.base.service.model.entity.BaseEntity once Didok dies
@@ -60,7 +62,8 @@ public abstract class BaseDidokImportEntity {
 
   @PreUpdate
   public void onPreUpdate() {
-    setEditor(UserService.getSbbUid());
+    String sbbUid = UserService.getSbbUid();
+    setEditor(Optional.ofNullable(editor).orElse(sbbUid));
     setEditionDate(Optional.ofNullable(editionDate).orElse(LocalDateTime.now()));
   }
 
