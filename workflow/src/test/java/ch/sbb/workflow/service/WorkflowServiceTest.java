@@ -2,6 +2,7 @@ package ch.sbb.workflow.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -12,6 +13,7 @@ import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
 import ch.sbb.workflow.api.PersonModel;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.service.lidi.LineWorkflowClient;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import java.util.List;
 import java.util.Optional;
@@ -29,11 +31,13 @@ public class WorkflowServiceTest {
 
   @Mock
   private WorkflowNotificationService notificationService;
+  @Mock
+  private LineWorkflowClient lineWorkflowClient;
 
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    service = new WorkflowService(repository, notificationService);
+    service = new WorkflowService(repository, notificationService, lineWorkflowClient);
   }
 
   @Test
@@ -46,6 +50,7 @@ public class WorkflowServiceTest {
         .swissId("ch:slnid:123")
         .build();
     when(repository.save(workflow)).thenReturn(workflow);
+    when(lineWorkflowClient.processWorkflow(any())).thenReturn(WorkflowStatus.STARTED);
 
     //when
     Workflow result = service.startWorkflow(workflow);
@@ -54,7 +59,7 @@ public class WorkflowServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getStatus()).isEqualTo(WorkflowStatus.STARTED);
     verify(notificationService).sendEventToMail(workflow);
-    verify(notificationService).sendEventToLidi(workflow);
+    verify(lineWorkflowClient).processWorkflow(any());
 
   }
 
@@ -113,58 +118,61 @@ public class WorkflowServiceTest {
   public void shouldApproveWorkflow() {
     //given
     Workflow workflow = Workflow.builder()
-            .id(1L)
-            .businessObjectId(123L)
-            .workflowType(WorkflowType.LINE)
-            .swissId("ch:slnid:123")
-            .build();
+        .id(1L)
+        .businessObjectId(123L)
+        .workflowType(WorkflowType.LINE)
+        .swissId("ch:slnid:123")
+        .build();
     when(repository.findById(1L)).thenReturn(Optional.of(workflow));
 
     //when
     Workflow result = service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
-            .accepted(true)
-            .checkComment("Great Job")
-            .examinant(PersonModel.builder()
-                    .firstName("Marek")
-                    .lastName("Hamsik")
-                    .personFunction("Centrocampista")
-                    .build())
-            .build());
+        .accepted(true)
+        .checkComment("Great Job")
+        .examinant(PersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .build())
+        .build());
 
     //then
     assertThat(result).isNotNull();
     assertThat(result.getCheckComment()).isEqualTo("Great Job");
     assertThat(result.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
-    verify(notificationService).sendEventToLidi(workflow);
+
+    verify(lineWorkflowClient).processWorkflow(any());
     verify(notificationService).sendEventToMail(workflow);
   }
+
   @Test
   public void shouldRejectWorkflow() {
     //given
     Workflow workflow = Workflow.builder()
-            .id(1L)
-            .businessObjectId(123L)
-            .workflowType(WorkflowType.LINE)
-            .swissId("ch:slnid:123")
-            .build();
+        .id(1L)
+        .businessObjectId(123L)
+        .workflowType(WorkflowType.LINE)
+        .swissId("ch:slnid:123")
+        .build();
     when(repository.findById(1L)).thenReturn(Optional.of(workflow));
 
     //when
     Workflow result = service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
-            .accepted(false)
-            .checkComment("Bad Job")
-            .examinant(PersonModel.builder()
-                    .firstName("Marek")
-                    .lastName("Hamsik")
-                    .personFunction("Centrocampista")
-                    .build())
-            .build());
+        .accepted(false)
+        .checkComment("Bad Job")
+        .examinant(PersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .build())
+        .build());
 
     //then
     assertThat(result).isNotNull();
     assertThat(result.getCheckComment()).isEqualTo("Bad Job");
     assertThat(result.getStatus()).isEqualTo(WorkflowStatus.REJECTED);
-    verify(notificationService).sendEventToLidi(workflow);
+
+    verify(lineWorkflowClient).processWorkflow(any());
     verify(notificationService).sendEventToMail(workflow);
 
   }
