@@ -1,13 +1,14 @@
-package ch.sbb.line.directory.service.workflow;
+package ch.sbb.line.directory.workflow.service;
 
-import static ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus.APPROVED;
-import static ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus.STARTED;
+import static ch.sbb.atlas.base.service.model.workflow.WorkflowStatus.APPROVED;
+import static ch.sbb.atlas.base.service.model.workflow.WorkflowStatus.STARTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
+import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
+import ch.sbb.atlas.user.administration.security.UserAdministrationService;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
@@ -34,6 +35,9 @@ public class LineWorkflowProcessingServiceTest {
   @Mock
   private LineVersionSnapshotRepository lineVersionSnapshotRepository;
 
+  @Mock
+  private UserAdministrationService userAdministrationService;
+
   @Captor
   private ArgumentCaptor<LineVersionWorkflow> lineVersionWorkflowArgumentCaptor;
 
@@ -43,7 +47,7 @@ public class LineWorkflowProcessingServiceTest {
   public void init() {
     MockitoAnnotations.openMocks(this);
     workflowProcessingService = new LineWorkflowProcessingService(lineVersionRepository, lineWorkflowRepository,
-        lineVersionSnapshotRepository);
+        lineVersionSnapshotRepository, userAdministrationService);
   }
 
   @Test

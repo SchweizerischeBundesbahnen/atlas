@@ -5,9 +5,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
+import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.service.lidi.LineWorkflowService;
 import org.junit.jupiter.api.BeforeEach;
