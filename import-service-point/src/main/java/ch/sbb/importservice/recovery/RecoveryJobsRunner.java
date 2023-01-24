@@ -1,5 +1,7 @@
 package ch.sbb.importservice.recovery;
 
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
@@ -63,22 +65,28 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     JobInstance jobInstance = jobExplorer.getLastJobInstance(jobName);
     if (jobInstance != null) {
       JobExecution lastJobExecution = jobExplorer.getLastJobExecution(jobInstance);
-      if (lastJobExecution != null) {
-        if (lastJobExecution.getStatus().isRunning()) {
-          log.info("Found a Job status {}", lastJobExecution.getStatus());
-          log.info("Recovering job {}", lastJobExecution);
+      if (lastJobExecution != null && lastJobExecution.getStatus().isRunning()) {
+        JobParameters jobParameters = getJobParameters(lastJobExecution);
+        if (hasJobParameterExecutionBatch(jobParameters)) {
+          log.info("Found a Job status {} to recover...", lastJobExecution.getStatus());
+          log.info("Recovering job {} ...", lastJobExecution);
           updateLastJobExecutionStatus(lastJobExecution);
           clearImportedProcessedItem(lastJobExecution);
-          JobParameters jobParameters = getJobParameters(lastJobExecution);
           JobExecution execution = jobLauncher.run(getJobToRecover(jobName), jobParameters);
           log.info(execution.toString());
         } else {
           log.info("No job {} found to recover.", jobName);
         }
+      } else {
+        log.info("No job {} found to recover.", jobName);
       }
-    } else {
-      log.info("No jobs found to recover.");
     }
+  }
+
+  private boolean hasJobParameterExecutionBatch(JobParameters jobParameters) {
+    Map<String, JobParameter> parameters = jobParameters.getParameters();
+    return parameters.containsKey(EXECUTION_TYPE_PARAMETER) && EXECUTION_BATCH_PARAMETER.equals(
+        parameters.get(EXECUTION_TYPE_PARAMETER).getValue());
   }
 
   private void clearImportedProcessedItem(JobExecution lastJobExecution) {
