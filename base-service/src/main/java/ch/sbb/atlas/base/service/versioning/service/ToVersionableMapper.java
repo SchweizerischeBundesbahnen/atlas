@@ -47,13 +47,12 @@ final class ToVersionableMapper {
       Field field = ReflectionHelper.getFieldAccessible(versionableClass, property.getKey());
 
       if (property.hasOneToOneRelation()) {
-        // servicePointGeolocation entity
         Entity oneToOneEntity = property.getOneToOne();
 
-        // get new instance of related type (servicePointGeolocation)
+        // get new instance of related type
         Object relationElement = versionableClass.getDeclaredField(property.getKey()).getType().getConstructor().newInstance();
 
-        // relationProperty = property from servicePointGeolocation
+        // relationProperty = property from related object
         for (Property relationProperty : oneToOneEntity.getProperties()) {
           Field relationField = ReflectionHelper.getFieldAccessible(relationElement.getClass(), relationProperty.getKey());
           relationField.set(relationElement, relationProperty.getValue());
