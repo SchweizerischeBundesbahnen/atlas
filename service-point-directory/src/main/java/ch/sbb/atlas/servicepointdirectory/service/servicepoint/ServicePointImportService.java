@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.base.service.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
@@ -86,8 +87,11 @@ public class ServicePointImportService {
             servicePointService.updateServicePointVersion(servicePointVersion);
             results.add(buildImportSuccessResult(servicePointVersion));
           } catch (Exception e) {
-            log.error("service point update error", e);
-            results.add(buildImportFailedResult(servicePointVersion, e));
+            if (e instanceof VersioningNoChangesException) {
+              log.info("Found version {} to import without modification: {}", servicePointVersion.getNumber(), e.getMessage());
+            } else {
+              results.add(buildImportFailedResult(servicePointVersion, e));
+            }
           }
         } else {
           try {
