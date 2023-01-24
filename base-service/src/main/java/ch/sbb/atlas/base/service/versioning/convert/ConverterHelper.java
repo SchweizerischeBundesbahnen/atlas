@@ -86,9 +86,7 @@ public final class ConverterHelper {
       }
       if (ONE_TO_ONE == versionableProperty.getRelationType()) {
         Property property = extractOneToOne(version, versionableProperty);
-        if (property != null) {
-          properties.add(property);
-        }
+        properties.add(property);
       }
     }
     return properties;
@@ -128,7 +126,7 @@ public final class ConverterHelper {
         Entity entityOneToOne = entityRelationBuilder.properties(relationProperties).build();
         return propertyBuilder.oneToOne(entityOneToOne).build();
       }
-      return null;
+      return propertyBuilder.build();
     } catch (NoSuchFieldException | IllegalAccessException e) {
       log.error("Error during parse field {}", e.getMessage());
       throw new VersioningException("Error during parse field " + e.getMessage(), e);
