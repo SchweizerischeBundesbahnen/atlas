@@ -63,6 +63,7 @@ public class ConverterHelperTest extends BaseTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2023, 12, 31))
         .property("Ciao2")
+        .oneToOneRelation(relation)
         .build();
   }
 
@@ -83,6 +84,7 @@ public class ConverterHelperTest extends BaseTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2023, 12, 31))
         .property("Ciao2")
+        .oneToOneRelation(relation)
         .build();
 
     //when
@@ -93,7 +95,7 @@ public class ConverterHelperTest extends BaseTest {
     assertThat(result.getId()).isEqualTo(1L);
     List<Property> properties = result.getProperties();
     assertThat(properties).isNotEmpty();
-    assertThat(properties.size()).isEqualTo(1);
+    assertThat(properties.size()).isEqualTo(2);
     Property propertyField = properties.stream()
         .filter(
             property -> VersionableObject.Fields.property.equals(
@@ -105,10 +107,24 @@ public class ConverterHelperTest extends BaseTest {
         VersionableObject.Fields.property);
     assertThat(propertyField.getValue()).isEqualTo("Ciao2");
 
+    Property oneToOnePropertyField = properties.stream()
+        .filter(
+            property -> Fields.oneToOneRelation.equals(property.getKey())
+        )
+        .findFirst()
+        .orElse(null);
+    assertThat(oneToOnePropertyField).isNotNull();
+    assertThat(oneToOnePropertyField.getKey()).isEqualTo(Fields.oneToOneRelation);
+    assertThat(oneToOnePropertyField.getOneToOne()).isNotNull();
+    Property relationValueProperty = oneToOnePropertyField.getOneToOne().getProperties().get(0);
+    assertThat(relationValueProperty.getOneToOne()).isNull();
+    assertThat(relationValueProperty.getOneToMany()).isNull();
+    assertThat(relationValueProperty.getKey()).isEqualTo("value");
+    assertThat(relationValueProperty.getValue()).isEqualTo("value1");
   }
 
   @Test
-  public void shouldReturnConvertedEntityWithEmptyPropertiesWhenCurrentANdEditedPropertiesAreEquals() {
+  public void shouldReturnConvertedEntityWithEmptyPropertiesWhenCurrentAndEditedPropertiesAreEquals() {
 
     //when
     Entity result = ConverterHelper.convertToEditedEntity(false, versionableObject1, versionableObject1,
@@ -222,13 +238,18 @@ public class ConverterHelperTest extends BaseTest {
     assertThat(thirdPropertySecondItem.getValue()).isNull();
     assertThat(thirdPropertySecondItem.getOneToMany()).isNull();
     Entity oneToOneRelationSecondItem = thirdPropertySecondItem.getOneToOne();
-    assertThat(oneToOneRelationSecondItem).isNull();
+    assertThat(oneToOneRelationSecondItem).isNotNull();
+    List<Property> oneToOneRelationSecondItemProperties = oneToOneRelationSecondItem.getProperties();
+    assertThat(oneToOneRelationSecondItemProperties).hasSize(1);
+    assertThat(oneToOneRelationSecondItemProperties.get(0).getOneToOne()).isNull();
+    assertThat(oneToOneRelationSecondItemProperties.get(0).getOneToMany()).isNull();
+    assertThat(oneToOneRelationSecondItemProperties.get(0).getKey()).isEqualTo("value");
+    assertThat(oneToOneRelationSecondItemProperties.get(0).getValue()).isEqualTo("value1");
   }
 
   @Test
   public void shouldConvertEntityOneToOneRelation() {
     //given
-    versionableObject2.setOneToOneRelation(relation);
 
     //when
     List<ToVersioning> result = ConverterHelper.convertAllObjectsToVersioning(
@@ -242,9 +263,13 @@ public class ConverterHelperTest extends BaseTest {
 
     ToVersioning secondItem = result.get(1);
     assertThat(secondItem).isNotNull();
+    // index 2 = oneToOne Property
     Entity oneToOne = secondItem.getEntity().getProperties().get(2).getOneToOne();
     assertThat(oneToOne.getProperties()).hasSize(1);
     assertThat(oneToOne.getProperties().get(0).getValue()).isEqualTo("value1");
+    assertThat(oneToOne.getProperties().get(0).getKey()).isEqualTo("value");
+    assertThat(oneToOne.getProperties().get(0).getOneToOne()).isNull();
+    assertThat(oneToOne.getProperties().get(0).getOneToMany()).isNull();
   }
 
   @Test
@@ -256,8 +281,8 @@ public class ConverterHelperTest extends BaseTest {
         .fieldName("not_defined")
         .relationType(RelationType.NONE)
         .build());
-    //when
 
+    //when
     assertThatThrownBy(() -> {
       ConverterHelper.convertAllObjectsToVersioning(
           List.of(versionableObject1, versionableObject2), versionable
@@ -265,7 +290,6 @@ public class ConverterHelperTest extends BaseTest {
       //then
     }).isInstanceOf(VersioningException.class)
         .hasMessageContaining("Error during parse field not_defined");
-
   }
 
   @Test
@@ -279,8 +303,8 @@ public class ConverterHelperTest extends BaseTest {
         .relationType(RelationType.ONE_TO_MANY)
         .relationsFields(List.of("not_defined"))
         .build());
-    //when
 
+    //when
     assertThatThrownBy(() -> {
       ConverterHelper.convertAllObjectsToVersioning(
           List.of(versionableObject1, versionableObject2), versionable
@@ -288,7 +312,6 @@ public class ConverterHelperTest extends BaseTest {
       //then
     }).isInstanceOf(VersioningException.class)
         .hasMessageContaining("Error during parse field not_defined");
-
   }
 
 }
