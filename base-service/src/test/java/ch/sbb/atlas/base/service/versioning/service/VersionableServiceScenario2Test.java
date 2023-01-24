@@ -17,13 +17,11 @@ import org.junit.jupiter.api.Test;
 public class VersionableServiceScenario2Test extends VersionableServiceBaseTest {
 
   /**
-   * Szenario 2: Update innerhalb existierender Version
-   * NEU:                       |___________|
-   * IST:      |-----------|----------------------|--------------------
-   * Version:        1                 2                  3
-   *
-   * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
-   * Version:        1       2         4       5          3
+   * Szenario 2: Update innerhalb existierender Version NEU:                       |___________| IST:
+   * |-----------|----------------------|-------------------- Version:        1                 2                  3
+   * <p>
+   * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT Version:        1       2
+   * 4       5          3
    */
   @Test
   public void scenario2() {
@@ -33,11 +31,11 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
 
     Relation relation = Relation.builder().id(1L).value("first Relation").build();
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .oneToManyRelation(List.of(relation))
-                                                       .validFrom(editedValidFrom)
-                                                       .validTo(editedValidTo)
-                                                       .build();
+        .property("Ciao-Ciao")
+        .oneToManyRelation(List.of(relation))
+        .validFrom(editedValidFrom)
+        .validTo(editedValidTo)
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -65,7 +63,7 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
     assertThat(secondVersionedObject.getValidTo()).isEqualTo(editedValidFrom.minusDays(1));
     Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
     assertThat(secondVersionedObjectEntity).isNotNull();
-    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertySecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertySecondVersionedObjectEntity).isNotNull();
@@ -82,7 +80,7 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
     assertThat(thirdVersionedObject.getValidTo()).isEqualTo(editedValidTo);
     Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
     assertThat(thirdVersionedObjectEntity).isNotNull();
-    assertThat(thirdVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(thirdVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyThirdVersionedObjectEntity = filterProperty(
         thirdVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyThirdVersionedObjectEntity).isNotNull();
@@ -107,7 +105,7 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
     assertThat(fourthVersionedObject.getValidTo()).isEqualTo(versionableObject2.getValidTo());
     Entity fourthVersionedObjectEntity = firstVersionedObject.getEntity();
     assertThat(fourthVersionedObjectEntity).isNotNull();
-    assertThat(fourthVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(fourthVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyFourthVersionedObjectEntity = filterProperty(
         fourthVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyFourthVersionedObjectEntity).isNotNull();
@@ -127,14 +125,12 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
   }
 
   /**
-   * Szenario 2b: Update innerhalb existierender Version:
-   * auf Version1 validFrom und validTo innerhalb von die Version2 mit mindestenz eine zusätzliche property Änderung
-   * NEU:                       |___________|
-   * IST:      |-----------|----------------------|--------------------
-   * Version:        1                 2                  3
-   *
-   * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
-   * Version:        1       2         4       5          3
+   * Szenario 2b: Update innerhalb existierender Version: auf Version1 validFrom und validTo innerhalb von die Version2 mit
+   * mindestenz eine zusätzliche property Änderung NEU:                       |___________| IST:
+   * |-----------|----------------------|-------------------- Version:        1                 2                  3
+   * <p>
+   * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT Version:        1       2
+   * 4       5          3
    */
   @Test
   public void scenario2b() {
@@ -144,11 +140,11 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
 
     Relation relation = Relation.builder().id(1L).value("first Relation").build();
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .oneToManyRelation(List.of(relation))
-                                                       .validFrom(editedValidFrom)
-                                                       .validTo(editedValidTo)
-                                                       .build();
+        .property("Ciao-Ciao")
+        .oneToManyRelation(List.of(relation))
+        .validFrom(editedValidFrom)
+        .validTo(editedValidTo)
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -176,7 +172,7 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
     assertThat(secondVersionedObject.getValidTo()).isEqualTo(editedValidFrom.minusDays(1));
     Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
     assertThat(secondVersionedObjectEntity).isNotNull();
-    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertySecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertySecondVersionedObjectEntity).isNotNull();
@@ -193,7 +189,7 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
     assertThat(thirdVersionedObject.getValidTo()).isEqualTo(editedValidTo);
     Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
     assertThat(thirdVersionedObjectEntity).isNotNull();
-    assertThat(thirdVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(thirdVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyThirdVersionedObjectEntity = filterProperty(
         thirdVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyThirdVersionedObjectEntity).isNotNull();
@@ -218,7 +214,7 @@ public class VersionableServiceScenario2Test extends VersionableServiceBaseTest 
     assertThat(fourthVersionedObject.getValidTo()).isEqualTo(versionableObject2.getValidTo());
     Entity fourthVersionedObjectEntity = firstVersionedObject.getEntity();
     assertThat(fourthVersionedObjectEntity).isNotNull();
-    assertThat(fourthVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(fourthVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyFourthVersionedObjectEntity = filterProperty(
         fourthVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyFourthVersionedObjectEntity).isNotNull();
