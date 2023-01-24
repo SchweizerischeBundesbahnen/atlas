@@ -1,8 +1,5 @@
 package ch.sbb.atlas.workflow.service;
 
-import static ch.sbb.atlas.base.service.aspect.FakeUserType.KAFKA;
-
-import ch.sbb.atlas.base.service.aspect.annotation.RunAsUser;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
@@ -24,7 +21,6 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
   protected final ObjectWorkflowRepository<Y> objectWorkflowRepository;
   protected final JpaRepository<Z, Long> objectVersionSnapshotRepository;
 
-  @RunAsUser(fakeUserType = KAFKA)
   public WorkflowStatus processWorkflow(BaseWorkflowEvent workflowEvent, Z versionSnapshot) {
     T objectVersion = getObjectVersion(workflowEvent);
     boolean userMayCreateWorkflow = checkIfUserMayCreateWorkflow(objectVersion, workflowEvent);
