@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.workflow.service;
 
+import static ch.sbb.atlas.base.service.model.workflow.WorkflowStatus.ADDED;
 import static ch.sbb.atlas.base.service.model.workflow.WorkflowStatus.APPROVED;
 import static ch.sbb.atlas.base.service.model.workflow.WorkflowStatus.STARTED;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,6 +49,7 @@ public class LineWorkflowProcessingServiceTest {
     MockitoAnnotations.openMocks(this);
     workflowProcessingService = new LineWorkflowProcessingService(lineVersionRepository, lineWorkflowRepository,
         lineVersionSnapshotRepository, userAdministrationService);
+    when(userAdministrationService.hasUserPermissionsToCreate(any(), any())).thenReturn(true);
   }
 
   @Test
@@ -56,7 +58,7 @@ public class LineWorkflowProcessingServiceTest {
     LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
-        .workflowStatus(STARTED)
+        .workflowStatus(ADDED)
         .build();
     LineVersion lineVersion = LineVersion.builder().id(1000L).build();
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
