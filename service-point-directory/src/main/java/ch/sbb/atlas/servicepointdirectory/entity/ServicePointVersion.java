@@ -17,6 +17,8 @@ import ch.sbb.atlas.base.service.versioning.model.VersionableProperty.RelationTy
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
@@ -169,10 +171,19 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
   @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
-      ServicePointGeolocation.Fields.country, swissCanton,
-      swissDistrictNumber, swissDistrictName,
-      swissMunicipalityNumber, swissMunicipalityName, swissLocalityName})
+      ServicePointGeolocation.Fields.country,
+      swissCanton,
+      swissDistrictNumber,
+      swissDistrictName,
+      swissMunicipalityNumber,
+      swissMunicipalityName,
+      swissLocalityName,
+      GeolocationBaseEntity.Fields.east,
+      GeolocationBaseEntity.Fields.north,
+      GeolocationBaseEntity.Fields.spatialReference,
+      GeolocationBaseEntity.Fields.height})
   private ServicePointGeolocation servicePointGeolocation;
+
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validFrom;
