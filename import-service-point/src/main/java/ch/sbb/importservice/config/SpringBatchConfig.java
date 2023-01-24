@@ -88,13 +88,12 @@ public class SpringBatchConfig {
     return stepBuilderFactory.get("parseServicePointCsvStep")
         .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(100)
         .reader(servicePointlistItemReader)
-        .processor(processor())
         .writer(servicePointApiWriter)
         .faultTolerant()
         .retryLimit(3)
         .retry(ConnectTimeoutException.class)
         .retry(DeadlockLoserDataAccessException.class)
-        .taskExecutor(getAsyncExecutor())
+        .taskExecutor(asyncTaskExecutor())
         .build();
   }
 
@@ -107,7 +106,7 @@ public class SpringBatchConfig {
         .retryLimit(3)
         .retry(ConnectTimeoutException.class)
         .retry(DeadlockLoserDataAccessException.class)
-        .taskExecutor(getAsyncExecutor())
+        .taskExecutor(asyncTaskExecutor())
         .build();
   }
 
@@ -142,7 +141,7 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public TaskExecutor getAsyncExecutor() {
+  public TaskExecutor asyncTaskExecutor() {
     SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();
     taskExecutor.setConcurrencyLimit(2);
     return taskExecutor;
