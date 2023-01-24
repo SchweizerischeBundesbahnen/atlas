@@ -13,7 +13,6 @@ import ch.sbb.importservice.listener.JobCompletitionListener;
 import ch.sbb.importservice.listener.StepSkipListener;
 import ch.sbb.importservice.service.CsvService;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.http.conn.ConnectTimeoutException;
@@ -59,8 +58,7 @@ public class SpringBatchConfig {
   @StepScope
   @Bean
   public ListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader(
-      @Value("#{jobParameters[fullPathFileName]}") String pathToFile)
-      throws IOException {
+      @Value("#{jobParameters[fullPathFileName]}") String pathToFile) {
     List<ServicePointCsvModelContainer> actualServicePotinCsvModelsFromS3;
     if (pathToFile != null) {
       File file = new File(pathToFile);
@@ -74,8 +72,7 @@ public class SpringBatchConfig {
   @StepScope
   @Bean
   public ListItemReader<LoadingPointCsvModel> loadingPointlistItemReader(
-      @Value("#{jobParameters[fullPathFileName]}") String pathToFile)
-      throws IOException {
+      @Value("#{jobParameters[fullPathFileName]}") String pathToFile) {
     List<LoadingPointCsvModel> actualLoadingPotinCsvModelsFromS3;
     if (pathToFile != null) {
       File file = new File(pathToFile);

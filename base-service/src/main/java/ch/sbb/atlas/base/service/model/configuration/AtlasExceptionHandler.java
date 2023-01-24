@@ -23,6 +23,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartException;
 
 @ControllerAdvice
 public class AtlasExceptionHandler {
@@ -60,6 +61,25 @@ public class AtlasExceptionHandler {
         .message(versioningException.getMessage())
         .status(HttpStatus.NOT_IMPLEMENTED.value())
         .error("Versioning scenario not implemented")
+        .details(details)
+        .build();
+    return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
+  }
+
+  @ExceptionHandler(value = MultipartException.class)
+  public ResponseEntity<ErrorResponse> multipartException(
+      MultipartException multipartException) {
+    SortedSet<Detail> details = new TreeSet<>();
+    details.add(
+        Detail.builder()
+            .message(multipartException.getMessage())
+            .displayInfo(DisplayInfo.builder().code("ERROR.MULTIPART").build())
+            .build());
+
+    ErrorResponse errorResponse = ErrorResponse.builder()
+        .message(multipartException.getMessage())
+        .status(HttpStatus.BAD_REQUEST.value())
+        .error("No multipartFile provided")
         .details(details)
         .build();
     return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
