@@ -1,8 +1,8 @@
 package ch.sbb.workflow.controller;
 
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowType;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
 import ch.sbb.workflow.api.*;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
