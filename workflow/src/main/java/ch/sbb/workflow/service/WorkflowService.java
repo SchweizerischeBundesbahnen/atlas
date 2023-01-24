@@ -28,7 +28,7 @@ public class WorkflowService {
 
     workflow.setStatus(WorkflowStatus.ADDED);
     Workflow entity = repository.save(workflow);
-    WorkflowStatus desiredWorkflowStatusByLidi = processWorkflowOnLidi(workflow);
+    WorkflowStatus desiredWorkflowStatusByLidi = processWorkflowOnLidi(entity);
     entity.setStatus(desiredWorkflowStatusByLidi);
     if (entity.getStatus() == WorkflowStatus.STARTED) {
       notificationService.sendEventToMail(entity);

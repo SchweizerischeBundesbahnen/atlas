@@ -12,7 +12,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
-@EmbeddedKafka(topics = {"atlas.mail", "atlas.workflow"})
+@EmbeddedKafka(topics = {"atlas.mail"})
 class LineWorkflowServiceTest {
 
     @Autowired
