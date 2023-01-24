@@ -1,8 +1,12 @@
-package ch.sbb.line.directory.service.workflow;
+package ch.sbb.line.directory.workflow.service;
 
 import ch.sbb.atlas.base.service.aspect.annotation.RunAsUser;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.base.service.model.workflow.BaseWorkflowEvent;
+import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
+import ch.sbb.atlas.user.administration.security.UserAdministrationService;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import ch.sbb.atlas.workflow.service.BaseWorkflowProcessingService;
@@ -25,27 +29,37 @@ import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.getProcessing
 public class LineWorkflowProcessingService extends
     BaseWorkflowProcessingService<LineVersion, LineVersionWorkflow, LineVersionSnapshot> {
 
+  private final UserAdministrationService userAdministrationService;
+
   public LineWorkflowProcessingService(JpaRepository<LineVersion, Long> objectRepository,
       ObjectWorkflowRepository<LineVersionWorkflow> objectWorkflowRepository,
-      JpaRepository<LineVersionSnapshot, Long> objectVerionSnapshotRepositroy) {
+      JpaRepository<LineVersionSnapshot, Long> objectVerionSnapshotRepositroy,
+      UserAdministrationService userAdministrationService) {
     super(objectRepository, objectWorkflowRepository, objectVerionSnapshotRepositroy);
+    this.userAdministrationService = userAdministrationService;
   }
 
   @RunAsUser(fakeUserType = KAFKA)
-  public void processLineWorkflow(LineWorkflowEvent lineWorkflowEvent) {
+  public WorkflowStatus processLineWorkflow(LineWorkflowEvent lineWorkflowEvent) {
     log.info("Started Workflow processing: {}", lineWorkflowEvent);
     LineVersion lineVersion = objectVersionRepository.findById(lineWorkflowEvent.getBusinessObjectId())
         .orElseThrow(() -> new IdNotFoundException(lineWorkflowEvent.getBusinessObjectId()));
     LineVersionSnapshot lineVersionSnapshot = buildLineVersionSnapshot(lineWorkflowEvent, lineVersion);
 
-    processWorkflow(lineWorkflowEvent, lineVersionSnapshot);
+    WorkflowStatus workflowStatus = processWorkflow(lineWorkflowEvent, lineVersionSnapshot);
     log.info("Ended Workflow processing: {}", lineWorkflowEvent);
+    return workflowStatus;
   }
 
   @Override
-  protected LineVersionWorkflow buildObjectVersionWorkflow(LineWorkflowEvent lineWorkflowEvent, LineVersion object) {
-    Optional<LineVersionWorkflow> existingLineRelation = objectWorkflowRepository.findByWorkflowId(lineWorkflowEvent.getWorkflowId());
-    WorkflowProcessingStatus workflowProcessingStatus = getProcessingStatus(lineWorkflowEvent.getWorkflowStatus());
+  protected boolean checkIfUserMayCreateWorkflow(LineVersion lineVersion, BaseWorkflowEvent triggeringEvent) {
+    return userAdministrationService.hasUserPermissionsToCreate(lineVersion, ApplicationType.LIDI);
+  }
+
+  @Override
+  protected LineVersionWorkflow buildObjectVersionWorkflow(BaseWorkflowEvent workflowEvent, LineVersion object) {
+    Optional<LineVersionWorkflow> existingLineRelation = objectWorkflowRepository.findByWorkflowId(workflowEvent.getWorkflowId());
+    WorkflowProcessingStatus workflowProcessingStatus = getProcessingStatus(workflowEvent.getWorkflowStatus());
 
     if (existingLineRelation.isPresent()) {
       existingLineRelation.get().setWorkflowProcessingStatus(workflowProcessingStatus);
@@ -53,7 +67,7 @@ public class LineWorkflowProcessingService extends
     }
 
     return LineVersionWorkflow.builder()
-        .workflowId(lineWorkflowEvent.getWorkflowId())
+        .workflowId(workflowEvent.getWorkflowId())
         .lineVersion(object)
         .workflowProcessingStatus(workflowProcessingStatus)
         .build();

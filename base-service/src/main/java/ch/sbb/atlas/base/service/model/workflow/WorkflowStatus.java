@@ -1,4 +1,4 @@
-package ch.sbb.atlas.kafka.model.workflow.model;
+package ch.sbb.atlas.base.service.model.workflow;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -12,5 +12,6 @@ public enum WorkflowStatus {
   REVISION,
   HEARING,
   APPROVED,
-  REJECTED
+  REJECTED,
+  REVOKED
 }
