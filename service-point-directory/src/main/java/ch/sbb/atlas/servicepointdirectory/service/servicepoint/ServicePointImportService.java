@@ -26,7 +26,7 @@ public class ServicePointImportService {
 
   private static ServicePointItemImportResult buildImportSuccessResult(ServicePointVersion servicePointVersion) {
     return ServicePointItemImportResult.builder()
-        .itemNumber(servicePointVersion.getNumber().getNumber())
+        .itemNumber(servicePointVersion.getNumber().getValue())
         .validFrom(servicePointVersion.getValidFrom())
         .validTo(servicePointVersion.getValidTo())
         .status("SUCCESS")
@@ -90,6 +90,7 @@ public class ServicePointImportService {
             if (e instanceof VersioningNoChangesException) {
               log.info("Found version {} to import without modification: {}", servicePointVersion.getNumber(), e.getMessage());
             } else {
+              log.error("Error {}", e);
               results.add(buildImportFailedResult(servicePointVersion, e));
             }
           }
