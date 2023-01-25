@@ -83,3 +83,7 @@ mail:
       from: no-reply-atlas@sbb.ch
     atlas:
       business: TechSupport-ATLAS@sbb.ch
+atlas:
+  client:
+    gateway:
+      url: "http://localhost:8888"
