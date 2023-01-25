@@ -88,6 +88,7 @@ public class ServicePointImportService {
             results.add(buildImportSuccessResult(servicePointVersion));
           } catch (Exception e) {
             if (e instanceof VersioningNoChangesException) {
+              results.add(buildImportSuccessResult(servicePointVersion));
               log.info("Found version {} to import without modification: {}", servicePointVersion.getNumber(), e.getMessage());
             } else {
               log.error("Error {}", e);
