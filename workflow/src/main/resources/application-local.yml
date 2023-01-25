@@ -16,7 +16,8 @@ info:
 
 spring:
   flyway:
-    locations: classpath:db/workflow/migration
+    # Local hack because Intellij includes line-directory in its whole
+    locations: classpath:db/migration/workflow
 
   application:
     name: workflow
