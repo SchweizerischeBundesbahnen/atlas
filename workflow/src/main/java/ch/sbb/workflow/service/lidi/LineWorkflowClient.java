@@ -1,6 +1,6 @@
 package ch.sbb.workflow.service.lidi;
 
-import ch.sbb.line.directory.workflow.api.LineWorkflowApi;
+import ch.sbb.atlas.api.line.workflow.LineWorkflowApi;
 import ch.sbb.workflow.config.TokenPassingFeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 

@@ -15,10 +15,6 @@ info:
     buildtime: @timestamp@
 
 spring:
-  flyway:
-    # Local hack because Intellij includes line-directory in its whole
-    locations: classpath:db/migration/workflow
-
   application:
     name: workflow
   sleuth:
