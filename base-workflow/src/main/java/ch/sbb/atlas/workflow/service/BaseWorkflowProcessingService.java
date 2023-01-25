@@ -31,7 +31,7 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
       Y objectVersionWorkflow = buildObjectVersionWorkflow(workflowEvent, objectVersion);
       objectWorkflowRepository.save(objectVersionWorkflow);
       log.info("Workflow entity saved: {}", objectVersionWorkflow);
-      return WorkflowStatus.STARTED;
+      return workflowEvent.getWorkflowStatus() == WorkflowStatus.ADDED ? WorkflowStatus.STARTED : workflowEvent.getWorkflowStatus();
     }
     return WorkflowStatus.REVOKED;
   }
