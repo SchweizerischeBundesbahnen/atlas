@@ -34,16 +34,12 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
 
   private final ServicePointVersionRepository repository;
-  private final ServicePointService servicePointService;
-  private final ServicePointImportService servicePointImportService;
+
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  public ServicePointControllerApiTest(ServicePointVersionRepository repository, ServicePointService servicePointService,
-      ServicePointImportService servicePointImportService) {
+  public ServicePointControllerApiTest(ServicePointVersionRepository repository) {
     this.repository = repository;
-    this.servicePointService = servicePointService;
-    this.servicePointImportService = servicePointImportService;
   }
 
   @BeforeEach
