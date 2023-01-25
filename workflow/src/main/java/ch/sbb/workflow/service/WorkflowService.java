@@ -1,8 +1,8 @@
 package ch.sbb.workflow.service;
 
+import ch.sbb.atlas.api.line.workflow.LineWorkflowEvent;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
-import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
 import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
 import ch.sbb.workflow.api.PersonModel;
 import ch.sbb.workflow.entity.Workflow;

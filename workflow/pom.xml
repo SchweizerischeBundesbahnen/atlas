@@ -81,15 +81,8 @@
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
-         <artifactId>line-directory</artifactId>
-         <classifier>workflow-api</classifier>
+         <artifactId>atlas-api</artifactId>
          <version>1.149.0</version>
-         <exclusions>
-            <exclusion>
-               <groupId>*</groupId>
-               <artifactId>*</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-test</artifactId>
