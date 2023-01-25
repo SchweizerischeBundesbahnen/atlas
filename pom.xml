@@ -36,6 +36,7 @@
     <module>base-workflow</module>
     <module>searching</module>
     <module>user-administration-security</module>
+    <module>atlas-api</module>
     <!--  Services-->
     <module>mail</module>
     <module>scheduling</module>
