@@ -32,8 +32,11 @@ export class AtlasButtonComponent {
     if (this.buttonType === AtlasButtonType.EDIT) {
       return this.mayEdit();
     }
-    if (this.buttonType === AtlasButtonType.REVOKE) {
-      return this.mayRevoke();
+    if (
+      this.buttonType === AtlasButtonType.REVOKE ||
+      this.buttonType === AtlasButtonType.SKIP_WORKFLOW
+    ) {
+      return this.isAtLeastSupervisor();
     }
     if (this.buttonType === AtlasButtonType.DELETE) {
       return this.mayDelete();
@@ -64,7 +67,7 @@ export class AtlasButtonComponent {
     return this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation);
   }
 
-  mayRevoke(): boolean {
+  isAtLeastSupervisor(): boolean {
     if (!this.applicationType) {
       throw new Error('Revoke button needs applicationtype');
     }
