@@ -2,13 +2,12 @@ package ch.sbb.line.directory.workflow.service;
 
 import static ch.sbb.atlas.base.service.model.workflow.WorkflowStatus.ADDED;
 import static ch.sbb.atlas.base.service.model.workflow.WorkflowStatus.APPROVED;
-import static ch.sbb.atlas.base.service.model.workflow.WorkflowStatus.STARTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
+import ch.sbb.atlas.api.line.workflow.LineWorkflowEvent;
 import ch.sbb.atlas.user.administration.security.UserAdministrationService;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.line.directory.entity.LineVersion;
