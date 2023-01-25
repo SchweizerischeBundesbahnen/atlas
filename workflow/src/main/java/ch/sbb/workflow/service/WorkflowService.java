@@ -6,6 +6,8 @@ import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
 import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
 import ch.sbb.workflow.api.PersonModel;
 import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
+import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.service.lidi.LineWorkflowClient;
 import ch.sbb.workflow.workflow.WorkflowRepository;
@@ -23,9 +25,10 @@ public class WorkflowService {
   private final WorkflowNotificationService notificationService;
   private final LineWorkflowClient lineWorkflowClient;
 
-
   public Workflow startWorkflow(Workflow workflow) {
-
+    if (hasWorkflowInProgress(workflow.getBusinessObjectId())) {
+      throw new BusinessObjectCurrentlyInReviewException();
+    }
     workflow.setStatus(WorkflowStatus.ADDED);
     Workflow entity = repository.save(workflow);
     WorkflowStatus desiredWorkflowStatusByLidi = processWorkflowOnLidi(entity);
@@ -46,6 +49,9 @@ public class WorkflowService {
 
   public Workflow examinantCheck(Long workflowId, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
     Workflow workflow = getWorkflow(workflowId);
+    if (workflow.getStatus() != WorkflowStatus.STARTED) {
+      throw new BusinessObjectCurrentlyNotInReviewException();
+    }
     workflow.setCheckComment(examinantWorkflowCheckModel.getCheckComment());
     workflow.setExaminant(PersonModel.toEntity(examinantWorkflowCheckModel.getExaminant()));
     workflow.setStatus(
@@ -62,5 +68,9 @@ public class WorkflowService {
         .businessObjectId(workflow.getBusinessObjectId())
         .workflowStatus(workflow.getStatus())
         .build());
+  }
+
+  private boolean hasWorkflowInProgress(Long businessObjectId) {
+    return !repository.findAllByBusinessObjectIdAndStatus(businessObjectId, WorkflowStatus.STARTED).isEmpty();
   }
 }

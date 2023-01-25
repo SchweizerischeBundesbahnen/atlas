@@ -506,6 +506,10 @@
       "SKIP": {
         "SUCCESS": "L'udienza è stata saltata con successo."
       }
+    },
+    "ERROR": {
+      "NOT_IN_REVIEW": "L'udienza per questa proprietà non è ancora iniziata.",
+      "ALREADY_IN_REVIEW": "Per questa proprietà è già stata avviata una consultazione."
     }
   }
 }
