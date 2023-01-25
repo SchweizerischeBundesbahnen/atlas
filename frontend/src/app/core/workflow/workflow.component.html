@@ -5,7 +5,9 @@
       [disabled]="isAddWorkflowButtonDisabled"
       buttonDataCy="workflow-add"
       buttonText="WORKFLOW.BUTTON.ADD"
-      buttonType="defaultPrimary"
+      buttonType="edit"
+      applicationType="LIDI"
+      businessOrganisation="{{ lineRecord.businessOrganisation }}"
       wrapperStyleClass="me-3"
     ></atlas-button>
     <atlas-button
@@ -13,7 +15,7 @@
       applicationType="LIDI"
       buttonDataCy="workflow-skip"
       buttonText="WORKFLOW.BUTTON.SKIP"
-      buttonType="revoke"
+      buttonType="skipworkflow"
     ></atlas-button>
   </div>
   <div *ngIf="isReadMode">
