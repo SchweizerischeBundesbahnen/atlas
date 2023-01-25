@@ -46,8 +46,11 @@ public final class ConverterHelper {
           .filter(Property::isNotEmpty)
           .collect(Collectors.toList());
       return buildEntity(currentVersion.getId(), propertiesNotEmpty);
+    } else {
+      // TODO: remove hardcoded version property key
+      List<Property> version = editedProperties.stream().filter(property -> !property.getKey().equals("version")).toList();
+      return buildEntity(currentVersion.getId(), version);
     }
-    return buildEntity(currentVersion.getId(), editedProperties);
   }
 
   public static <T extends Versionable> List<ToVersioning> convertAllObjectsToVersioning(
