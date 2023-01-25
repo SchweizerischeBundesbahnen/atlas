@@ -3,6 +3,7 @@ package ch.sbb.workflow.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -12,6 +13,8 @@ import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
 import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
 import ch.sbb.workflow.api.PersonModel;
 import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
+import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.service.lidi.LineWorkflowClient;
 import ch.sbb.workflow.workflow.WorkflowRepository;
@@ -19,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -60,7 +64,22 @@ public class WorkflowServiceTest {
     assertThat(result.getStatus()).isEqualTo(WorkflowStatus.STARTED);
     verify(notificationService).sendEventToMail(workflow);
     verify(lineWorkflowClient).processWorkflow(any());
+    verify(repository).findAllByBusinessObjectIdAndStatus(any(), eq(WorkflowStatus.STARTED));
+  }
 
+  @Test
+  public void shouldNotCreateDuplicateWorkflow() {
+    //given
+    Workflow workflow = Workflow.builder()
+        .id(123L)
+        .businessObjectId(123L)
+        .workflowType(WorkflowType.LINE)
+        .swissId("ch:slnid:123")
+        .build();
+    when(repository.findAllByBusinessObjectIdAndStatus(any(), eq(WorkflowStatus.STARTED))).thenReturn(List.of(workflow));
+
+    //when
+    assertThrows(BusinessObjectCurrentlyInReviewException.class, () -> service.startWorkflow(workflow));
   }
 
   @Test
@@ -122,6 +141,7 @@ public class WorkflowServiceTest {
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
+        .status(WorkflowStatus.STARTED)
         .build();
     when(repository.findById(1L)).thenReturn(Optional.of(workflow));
 
@@ -153,6 +173,7 @@ public class WorkflowServiceTest {
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
+        .status(WorkflowStatus.STARTED)
         .build();
     when(repository.findById(1L)).thenReturn(Optional.of(workflow));
 
@@ -175,5 +196,31 @@ public class WorkflowServiceTest {
     verify(lineWorkflowClient).processWorkflow(any());
     verify(notificationService).sendEventToMail(workflow);
 
+  }
+
+  @Test
+  public void shouldFailOnRejectWorkflowWhenNotStarted() {
+    //given
+    Workflow workflow = Workflow.builder()
+        .id(1L)
+        .businessObjectId(123L)
+        .workflowType(WorkflowType.LINE)
+        .swissId("ch:slnid:123")
+        .status(WorkflowStatus.APPROVED)
+        .build();
+    when(repository.findById(1L)).thenReturn(Optional.of(workflow));
+
+    //when
+    Executable executeRejection = () -> service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
+        .accepted(false)
+        .checkComment("Bad Job")
+        .examinant(PersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .build())
+        .build());
+
+    assertThrows(BusinessObjectCurrentlyNotInReviewException.class, executeRejection);
   }
 }
