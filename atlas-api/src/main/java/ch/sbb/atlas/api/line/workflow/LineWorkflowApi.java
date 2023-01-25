@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.workflow.api;
+package ch.sbb.atlas.api.line.workflow;
 
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import io.swagger.v3.oas.annotations.Hidden;

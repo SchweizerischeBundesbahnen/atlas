@@ -2,6 +2,7 @@ package ch.sbb.line.directory.workflow.service;
 
 import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.getProcessingStatus;
 
+import ch.sbb.atlas.api.line.workflow.LineWorkflowEvent;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.base.service.model.workflow.BaseWorkflowEvent;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
@@ -13,7 +14,6 @@ import ch.sbb.atlas.workflow.service.BaseWorkflowProcessingService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.entity.LineVersionWorkflow;
-import ch.sbb.line.directory.workflow.api.LineWorkflowEvent;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
