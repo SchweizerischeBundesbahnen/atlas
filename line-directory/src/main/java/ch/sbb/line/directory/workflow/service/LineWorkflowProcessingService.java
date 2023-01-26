@@ -2,12 +2,8 @@ package ch.sbb.line.directory.workflow.service;
 
 import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.getProcessingStatus;
 
-import ch.sbb.atlas.api.line.workflow.LineWorkflowEvent;
-import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.base.service.model.workflow.BaseWorkflowEvent;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.user.administration.security.UserAdministrationService;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import ch.sbb.atlas.workflow.service.BaseWorkflowProcessingService;
@@ -18,6 +14,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -26,34 +23,30 @@ import org.springframework.stereotype.Service;
 public class LineWorkflowProcessingService extends
     BaseWorkflowProcessingService<LineVersion, LineVersionWorkflow, LineVersionSnapshot> {
 
-  private final UserAdministrationService userAdministrationService;
 
   public LineWorkflowProcessingService(JpaRepository<LineVersion, Long> objectRepository,
       ObjectWorkflowRepository<LineVersionWorkflow> objectWorkflowRepository,
-      JpaRepository<LineVersionSnapshot, Long> objectVerionSnapshotRepositroy,
-      UserAdministrationService userAdministrationService) {
+      JpaRepository<LineVersionSnapshot, Long> objectVerionSnapshotRepositroy) {
     super(objectRepository, objectWorkflowRepository, objectVerionSnapshotRepositroy);
-    this.userAdministrationService = userAdministrationService;
   }
 
-  public WorkflowStatus processLineWorkflow(LineWorkflowEvent lineWorkflowEvent) {
+  public WorkflowStatus processLineWorkflow(WorkflowEvent lineWorkflowEvent) {
     log.info("Started Workflow processing: {}", lineWorkflowEvent);
-    LineVersion lineVersion = objectVersionRepository.findById(lineWorkflowEvent.getBusinessObjectId())
-        .orElseThrow(() -> new IdNotFoundException(lineWorkflowEvent.getBusinessObjectId()));
-    LineVersionSnapshot lineVersionSnapshot = buildLineVersionSnapshot(lineWorkflowEvent, lineVersion);
-
-    WorkflowStatus workflowStatus = processWorkflow(lineWorkflowEvent, lineVersionSnapshot);
+    LineVersion lineVersion = getObjectVersion(lineWorkflowEvent);
+    WorkflowStatus workflowStatus = processLineWorkflow(lineWorkflowEvent, lineVersion);
     log.info("Ended Workflow processing: {}", lineWorkflowEvent);
     return workflowStatus;
   }
 
-  @Override
-  protected boolean checkIfUserMayCreateWorkflow(LineVersion lineVersion, BaseWorkflowEvent triggeringEvent) {
-    return userAdministrationService.hasUserPermissionsToCreate(lineVersion, ApplicationType.LIDI);
+  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#lineVersion, T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).LIDI)")
+  public WorkflowStatus processLineWorkflow(WorkflowEvent lineWorkflowEvent, LineVersion lineVersion){
+    LineVersionSnapshot lineVersionSnapshot = buildLineVersionSnapshot(lineWorkflowEvent, lineVersion);
+    return processWorkflow(lineWorkflowEvent, lineVersion, lineVersionSnapshot);
   }
 
   @Override
-  protected LineVersionWorkflow buildObjectVersionWorkflow(BaseWorkflowEvent workflowEvent, LineVersion object) {
+  protected LineVersionWorkflow buildObjectVersionWorkflow(WorkflowEvent workflowEvent, LineVersion object) {
     Optional<LineVersionWorkflow> existingLineRelation = objectWorkflowRepository.findByWorkflowId(workflowEvent.getWorkflowId());
     WorkflowProcessingStatus workflowProcessingStatus = getProcessingStatus(workflowEvent.getWorkflowStatus());
 
@@ -69,11 +62,11 @@ public class LineWorkflowProcessingService extends
         .build();
   }
 
-  private LineVersionSnapshot buildLineVersionSnapshot(LineWorkflowEvent lineWorkflowEvent, LineVersion lineVersion) {
+  private LineVersionSnapshot buildLineVersionSnapshot(WorkflowEvent workflowEvent, LineVersion lineVersion) {
     return LineVersionSnapshot.builder()
         .parentObjectId(lineVersion.getId())
-        .workflowId(lineWorkflowEvent.getWorkflowId())
-        .workflowStatus(lineWorkflowEvent.getWorkflowStatus())
+        .workflowId(workflowEvent.getWorkflowId())
+        .workflowStatus(workflowEvent.getWorkflowStatus())
         .validFrom(lineVersion.getValidFrom())
         .validTo(lineVersion.getValidTo())
         .status(lineVersion.getStatus())
