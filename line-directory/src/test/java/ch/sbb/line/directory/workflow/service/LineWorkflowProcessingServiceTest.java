@@ -7,8 +7,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.api.line.workflow.LineWorkflowEvent;
-import ch.sbb.atlas.user.administration.security.UserAdministrationService;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
@@ -35,9 +34,6 @@ public class LineWorkflowProcessingServiceTest {
   @Mock
   private LineVersionSnapshotRepository lineVersionSnapshotRepository;
 
-  @Mock
-  private UserAdministrationService userAdministrationService;
-
   @Captor
   private ArgumentCaptor<LineVersionWorkflow> lineVersionWorkflowArgumentCaptor;
 
@@ -47,14 +43,13 @@ public class LineWorkflowProcessingServiceTest {
   public void init() {
     MockitoAnnotations.openMocks(this);
     workflowProcessingService = new LineWorkflowProcessingService(lineVersionRepository, lineWorkflowRepository,
-        lineVersionSnapshotRepository, userAdministrationService);
-    when(userAdministrationService.hasUserPermissionsToCreate(any(), any())).thenReturn(true);
+        lineVersionSnapshotRepository);
   }
 
   @Test
   public void shouldExecuteProcessLineWorkflow() {
     //given
-    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
+    WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(ADDED)
@@ -63,7 +58,7 @@ public class LineWorkflowProcessingServiceTest {
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
 
     //when
-    workflowProcessingService.processLineWorkflow(lineWorkflowEvent);
+    workflowProcessingService.processLineWorkflow(workflowEvent);
 
     //then
     verify(lineVersionRepository).save(lineVersion);
@@ -74,7 +69,7 @@ public class LineWorkflowProcessingServiceTest {
   @Test
   public void shouldApproveLineWorkflow() {
     //given
-    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
+    WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(APPROVED)
@@ -83,7 +78,7 @@ public class LineWorkflowProcessingServiceTest {
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
 
     //when
-    workflowProcessingService.processLineWorkflow(lineWorkflowEvent);
+    workflowProcessingService.processLineWorkflow(workflowEvent);
 
     //then
     verify(lineVersionRepository).save(lineVersion);
