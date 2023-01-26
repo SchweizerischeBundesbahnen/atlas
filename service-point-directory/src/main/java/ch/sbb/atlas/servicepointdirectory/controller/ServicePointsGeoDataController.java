@@ -2,7 +2,6 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile;
 import ch.sbb.atlas.servicepointdirectory.geodata.service.ServicePointGeoDataService;
-import io.swagger.v3.oas.annotations.Parameter;
 import java.time.LocalDate;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
