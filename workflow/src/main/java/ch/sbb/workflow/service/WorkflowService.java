@@ -1,8 +1,9 @@
 package ch.sbb.workflow.service;
 
-import ch.sbb.atlas.api.line.workflow.LineWorkflowEvent;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
 import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
 import ch.sbb.workflow.api.PersonModel;
 import ch.sbb.workflow.entity.Workflow;
@@ -63,10 +64,11 @@ public class WorkflowService {
   }
 
   WorkflowStatus processWorkflowOnLidi(Workflow workflow) {
-    return lineWorkflowClient.processWorkflow(LineWorkflowEvent.builder()
+    return lineWorkflowClient.processWorkflow(WorkflowEvent.builder()
         .workflowId(workflow.getId())
         .businessObjectId(workflow.getBusinessObjectId())
         .workflowStatus(workflow.getStatus())
+        .workflowType(WorkflowType.LINE)
         .build());
   }
 
