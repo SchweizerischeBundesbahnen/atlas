@@ -23,13 +23,6 @@ CREATE TABLE service_point_version_geolocation
     version                   BIGINT          NOT NULL DEFAULT 0
 );
 
-CREATE INDEX service_point_version_geolocation_spatial_reference_index
-    ON service_point_version_geolocation (spatial_reference);
-CREATE INDEX service_point_version_geolocation_east_north_index
-    ON service_point_version_geolocation (east, north);
-
-
-
 CREATE SEQUENCE service_point_version_geolocation_seq START WITH 1000 INCREMENT BY 1;
 
 -----------------------------------------------------------------------------------------
@@ -67,9 +60,6 @@ CREATE TABLE service_point_version
         FOREIGN KEY (service_point_geolocation_id)
             REFERENCES service_point_version_geolocation (id)
 );
-
-CREATE INDEX service_point_version_valid_from_to_index
-    ON service_point_version (valid_from, valid_to);
 
 CREATE SEQUENCE service_point_version_seq START WITH 1000 INCREMENT BY 1;
 ALTER TABLE service_point_version
