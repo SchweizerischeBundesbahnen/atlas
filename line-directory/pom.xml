@@ -16,7 +16,6 @@
    <description>LineDirectory</description>
    <properties>
       <maven.deploy.skip>true</maven.deploy.skip>
-      <workflow.api.package>ch/sbb/line/directory/workflow/api/**</workflow.api.package>
    </properties>
    <dependencies>
       <dependency>
@@ -173,52 +172,6 @@
                   </path>
                </annotationProcessorPaths>
             </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>workflow-api-jar</id>
-                  <phase>package</phase>
-                  <goals>
-                     <goal>jar</goal>
-                  </goals>
-                  <configuration>
-                     <classifier>workflow-api</classifier>
-                     <includes>
-                        <include>${workflow.api.package}</include>
-                     </includes>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>sources</id>
-                  <goals>
-                     <goal>jar</goal>
-                  </goals>
-                  <configuration>
-                     <classifier>sources</classifier>
-                  </configuration>
-               </execution>
-               <execution>
-                  <id>workflow-api-sources</id>
-                  <goals>
-                     <goal>jar</goal>
-                  </goals>
-                  <configuration>
-                     <classifier>workflow-api-sources</classifier>
-                     <includes>
-                        <include>${workflow.api.package}</include>
-                     </includes>
-                  </configuration>
-               </execution>
-            </executions>
          </plugin>
       </plugins>
    </build>
