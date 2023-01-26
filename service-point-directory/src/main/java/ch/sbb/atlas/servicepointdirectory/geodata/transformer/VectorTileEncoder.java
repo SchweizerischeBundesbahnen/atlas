@@ -228,7 +228,7 @@ public class VectorTileEncoder {
       Coordinate c = cs[i];
 
       if (i == 0) {
-        r.add(commandAndLength(Command.MoveTo, 1));
+        r.add(commandAndLength(Command.MOVE_TO, 1));
       }
 
       int _x = (int) Math.round(c.x);
@@ -251,7 +251,7 @@ public class VectorTileEncoder {
         // can length be too long?
         lineToIndex = r.size();
         lineToLength = cs.length - 1;
-        r.add(commandAndLength(Command.LineTo, lineToLength));
+        r.add(commandAndLength(Command.LINE_TO, lineToLength));
       }
 
     }
@@ -263,7 +263,7 @@ public class VectorTileEncoder {
         r.remove(lineToIndex);
       } else {
         // update LineTo with new length
-        r.set(lineToIndex, commandAndLength(Command.LineTo, lineToLength));
+        r.set(lineToIndex, commandAndLength(Command.LINE_TO, lineToLength));
       }
     }
 

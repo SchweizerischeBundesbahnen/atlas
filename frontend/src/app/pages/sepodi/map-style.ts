@@ -19,7 +19,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
     },
     geodata: {
       type: 'vector',
-      minzoom: 7,
+      minzoom: 5,
       maxzoom: 20,
       tiles: [
         `${environment.atlasApiUrl}/service-point-directory/v1/geodata/${MAP_LAYER_NAME}/{z}/{x}/{y}.pbf`,
