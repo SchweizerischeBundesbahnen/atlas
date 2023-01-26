@@ -54,14 +54,17 @@ public class ServicePointGeoDataService {
 
     log.info("finding service points");
     final List<ServicePointGeoData> servicePoints = dataRepository
-        .findAll(validAtDate(validAtDate)
-            .and(coordinatesBetween(SpatialReference.WGS84, geoDataAreaWgs84)
-                .or(coordinatesBetween(SpatialReference.WGS84WEB,
-                    geoDataAreas.get(SpatialReference.WGS84WEB)))
-                .or(coordinatesBetween(SpatialReference.LV95,
-                    geoDataAreas.get(SpatialReference.LV95)))
-                .or(coordinatesBetween(SpatialReference.LV03,
-                    geoDataAreas.get(SpatialReference.LV03)))));
+        .findAll(
+            validAtDate(validAtDate).and(
+                coordinatesBetween(SpatialReference.LV95,
+                    geoDataAreas.get(SpatialReference.LV95))
+                    .or(coordinatesBetween(SpatialReference.WGS84WEB,
+                        geoDataAreas.get(SpatialReference.WGS84WEB)))
+                    .or(coordinatesBetween(SpatialReference.WGS84, geoDataAreaWgs84))
+                    .or(coordinatesBetween(SpatialReference.LV03,
+                        geoDataAreas.get(SpatialReference.LV03)))
+            )
+        );
 
     log.info("mapping {} service points", servicePoints.size());
     final List<Point> pointList = servicePointGeoDataMapper.mapToGeometryList(servicePoints);

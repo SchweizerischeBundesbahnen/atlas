@@ -27,15 +27,15 @@ public final class Command {
   /**
    * MoveTo: 1. (2 parameters follow)
    */
-  public static final int MoveTo = 1;
+  public static final int MOVE_TO = 1;
 
   /**
    * LineTo: 2. (2 parameters follow)
    */
-  public static final int LineTo = 2;
+  public static final int LINE_TO = 2;
 
   /**
    * ClosePath: 7. (no parameters follow)
    */
-  public static final int ClosePath = 7;
+  public static final int CLOSE_PATH = 7;
 }
