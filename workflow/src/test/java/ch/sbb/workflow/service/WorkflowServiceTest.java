@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.base.service.model.exception.NotFoundException;
@@ -97,9 +98,7 @@ public class WorkflowServiceTest {
     Workflow result = service.getWorkflow(1L);
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(workflow);
-
+    assertThat(result).isNotNull().isEqualTo(workflow);
   }
 
   @Test
@@ -127,8 +126,7 @@ public class WorkflowServiceTest {
     List<Workflow> result = service.getWorkflows();
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).isNotNull().hasSize(1);
     assertThat(result).contains(workflow);
 
   }
@@ -222,5 +220,25 @@ public class WorkflowServiceTest {
         .build());
 
     assertThrows(BusinessObjectCurrentlyNotInReviewException.class, executeRejection);
+  }
+
+  @Test
+  public void shouldNotSendMailsOnRevokedWorkflow() {
+    //given
+    Workflow workflow = Workflow.builder()
+        .id(123L)
+        .businessObjectId(123L)
+        .workflowType(WorkflowType.LINE)
+        .swissId("ch:slnid:123")
+        .build();
+    when(repository.save(workflow)).thenReturn(workflow);
+    when(lineWorkflowClient.processWorkflow(any())).thenReturn(WorkflowStatus.REVOKED);
+
+    //when
+    Workflow result = service.startWorkflow(workflow);
+
+    //then
+    assertThat(result).isNotNull();
+    verifyNoInteractions(notificationService);
   }
 }
