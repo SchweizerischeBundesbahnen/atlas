@@ -10,13 +10,16 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
-public abstract class BaseWorkflowEvent {
+public class WorkflowEvent {
 
   @NotNull
   private Long workflowId;
 
   @NotNull
   private Long businessObjectId;
+
+  @NotNull
+  private WorkflowType workflowType;
 
   private WorkflowStatus workflowStatus;
 
