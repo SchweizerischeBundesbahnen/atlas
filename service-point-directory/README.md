@@ -51,15 +51,31 @@ and send in response back to a web client.
 Protobuf is open source and it performs better than
 json+gzip: https://auth0.com/blog/beating-json-performance-with-protobuf/
 
-There are several open source web client libraries, to read and display vector tiles as protobuf on
-a map.
-We will use the [MapLibre](https://maplibre.org/).
+There are several open source web client libraries, to read and display protobuf vector tiles on
+a map in Web:
 
-The JAVA vector tiles encoder service, was found
+- [Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js) - JavaScript/WebGL vector maps library.
+- [MapLibre GL](https://github.com/maplibre/maplibre-gl-js) - Is a community led fork derived from
+  Mapbox GL JS prior to their switch to a non-OSS license.
+- [OpenLayers](https://openlayers.org/en/latest/examples/mapbox-vector-layer.html) - JavaScript
+  vector & raster library.
+- [Vector Tiles Google Maps](https://github.com/techjb/Vector-Tiles-Google-Maps) - Render vector
+  tile layers on Google Maps.
+
+_(Find an extended list on https://github.com/mapbox/awesome-vector-tiles)._
+
+We are using [MapLibre](https://maplibre.org/), which is the best Open Source alternative of the
+Mapbox GL Client.
+
+The JAVA Backend vector tiles encoder service, was found
 on [GitHub](https://github.com/ElectronicChartCentre/java-vector-tile) and simplified to handle
 Point-Geometries-Only.
 
-#### Important DEV-notice! Provide all input coordinates for vector tiles in Wgs84WebMercator (SRID:3857) spatial reference.
+#### Important DEV-notice
+
+Always provide all input coordinates for vector tiles in Wgs84WebMercator spatial
+reference (https://epsg.io/3857), which is the coordinate system, used for rendering maps in Google
+Maps, OpenStreetMap, etc.
 
 ## Links
 
