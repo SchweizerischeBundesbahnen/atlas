@@ -38,6 +38,9 @@ import org.springframework.stereotype.Component;
  */
 public class BoundingBoxTransformer {
 
+  public static final double CIRCLE_360_DEGREES = 360.0;
+  public static final int CIRCLE_180_DEGREES = 180;
+
   /***
    * Convert tile xyz value to bbox of the form [w, s, e, n]
    *
@@ -60,7 +63,7 @@ public class BoundingBoxTransformer {
   }
 
   static double tile2lon(int x, double z) {
-    return x / Math.pow(2.0, z) * 360.0 - 180;
+    return x / Math.pow(2.0, z) * CIRCLE_360_DEGREES - CIRCLE_180_DEGREES;
   }
 
   static double tile2lat(int y, double z) {
