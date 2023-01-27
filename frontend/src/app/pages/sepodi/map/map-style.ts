@@ -1,5 +1,5 @@
 import { StyleSpecification } from 'maplibre-gl';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 export const MAP_ZOOM_DETAILS = 10.5;
 export const MAP_SOURCE_NAME = 'geodata';
