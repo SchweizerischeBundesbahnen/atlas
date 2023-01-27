@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class VectorTileService {
 
-  public Tile encodeTileLayer(
-      String layerName,
-      List<Point> geometries,
-      Envelope tileEnvelopeWeb) {
+  public Tile encodeTileLayer(String layerName, List<Point> geometries, Envelope tileEnvelopeWeb) {
     VectorTileEncoder vectorTileEncoder = new VectorTileEncoder();
     vectorTileEncoder.setTileEnvelope(tileEnvelopeWeb);
     geometries.forEach(
