@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.line;
+package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
