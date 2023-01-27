@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory.converter;
 
-import ch.sbb.business.organisation.directory.entity.BusinessType;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 

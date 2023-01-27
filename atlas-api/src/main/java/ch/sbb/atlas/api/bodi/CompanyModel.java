@@ -1,6 +1,5 @@
-package ch.sbb.business.organisation.directory.api;
+package ch.sbb.atlas.api.bodi;
 
-import ch.sbb.business.organisation.directory.entity.Company;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -41,16 +40,4 @@ public class CompanyModel {
   @Schema(description = "Country Code (ISO)")
   private String countryCodeIso;
 
-  public static CompanyModel fromEntity(Company entity) {
-    return CompanyModel.builder()
-                       .uicCode(entity.getUicCode())
-                       .name(entity.getName())
-                       .url(entity.getUrl())
-                       .startValidity(entity.getStartValidity())
-                       .endValidity(entity.getEndValidity())
-                       .shortName(entity.getShortName())
-                       .freeText(entity.getFreeText())
-                       .countryCodeIso(entity.getCountryCodeIso())
-                       .build();
-  }
 }

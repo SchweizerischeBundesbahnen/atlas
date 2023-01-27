@@ -1,13 +1,15 @@
 package ch.sbb.business.organisation.directory.controller;
 
 
-import ch.sbb.business.organisation.directory.api.TransportCompanyRelationApiV1;
-import ch.sbb.business.organisation.directory.api.TransportCompanyRelationModel;
-import ch.sbb.business.organisation.directory.api.TransportCompanyBoRelationModel;
+import ch.sbb.atlas.api.bodi.TransportCompanyBoRelationModel;
+import ch.sbb.atlas.api.bodi.TransportCompanyRelationApiV1;
+import ch.sbb.atlas.api.bodi.TransportCompanyRelationModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.exception.TransportCompanyNotFoundException;
+import ch.sbb.business.organisation.directory.mapper.TransportCompanyBoRelationMapper;
+import ch.sbb.business.organisation.directory.mapper.TransportCompanyRelationMapper;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
 import ch.sbb.business.organisation.directory.service.TransportCompanyRelationService;
 import ch.sbb.business.organisation.directory.service.TransportCompanyService;
@@ -29,7 +31,7 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
   @Override
   public TransportCompanyBoRelationModel createTransportCompanyRelation(
       TransportCompanyRelationModel model) {
-    TransportCompanyRelation relationEntity = TransportCompanyRelationModel.toEntity(model,
+    TransportCompanyRelation relationEntity = TransportCompanyRelationMapper.toEntity(model,
         transportCompanyService.findById(model.getTransportCompanyId())
                                .orElseThrow(() -> new TransportCompanyNotFoundException(
                                    model.getTransportCompanyId())));
@@ -40,7 +42,7 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
     BusinessOrganisation businessOrganisation = businessOrganisationService.findBusinessOrganisationBySboid(
         savedRelationEntity.getSboid());
 
-    return TransportCompanyBoRelationModel.toModel(
+    return TransportCompanyBoRelationMapper.toModel(
         businessOrganisation,
         savedRelationEntity);
   }
@@ -61,7 +63,7 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
                                  BusinessOrganisation businessOrganisation = businessOrganisationService.findBusinessOrganisationBySboid(
                                      transportCompanyRelation.getSboid());
 
-                                 return TransportCompanyBoRelationModel.toModel(
+                                 return TransportCompanyBoRelationMapper.toModel(
                                      businessOrganisation,
                                      transportCompanyRelation);
                                })
