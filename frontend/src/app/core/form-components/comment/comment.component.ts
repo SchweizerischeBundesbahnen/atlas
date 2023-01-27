@@ -9,5 +9,6 @@ export class CommentComponent {
   @Input() formGroup!: FormGroup;
   @Input() displayInfoIcon = true;
   @Input() displayLabel = true;
+  @Input() required = false;
   @Input() label = 'FORM.COMMENT';
 }
