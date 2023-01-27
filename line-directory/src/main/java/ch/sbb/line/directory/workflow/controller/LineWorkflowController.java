@@ -15,6 +15,6 @@ public class LineWorkflowController implements LineWorkflowApi {
 
   @Override
   public WorkflowStatus processWorkflow(WorkflowEvent workflowEvent) {
-    return lineWorkflowProcessingService.processLineWorkflow(workflowEvent);
+    return lineWorkflowProcessingService.processLineWorkflow(workflowEvent, lineWorkflowProcessingService.getObjectVersion(workflowEvent));
   }
 }
