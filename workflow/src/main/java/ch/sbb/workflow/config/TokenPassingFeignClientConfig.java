@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 
 @Configuration
 @RequiredArgsConstructor
-public class TokenPassingFeignConfig {
+public class TokenPassingFeignClientConfig {
 
   @Bean
   public RequestInterceptor requestInterceptor() {
