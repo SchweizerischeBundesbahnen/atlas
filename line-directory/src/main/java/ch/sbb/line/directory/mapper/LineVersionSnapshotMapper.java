@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.mapper;
 
-import ch.sbb.atlas.api.line.LineVersionSnapshotModel;
+import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;

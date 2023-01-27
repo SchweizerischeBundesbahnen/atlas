@@ -17,7 +17,7 @@ public interface LineRepository extends JpaRepository<Line, String>,
   @Query("SELECT l FROM line as l"
       + " JOIN coverage as c "
       + " ON l.slnid = c.slnid"
-      + " WHERE c.modelType = ch.sbb.atlas.api.line.enumaration.ModelType.LINE"
-      + " AND c.coverageType = ch.sbb.atlas.api.line.enumaration.CoverageType.COMPLETE")
+      + " WHERE c.modelType = ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE"
+      + " AND c.coverageType = ch.sbb.atlas.api.lidi.enumaration.CoverageType.COMPLETE")
   List<Line> getAllCoveredLines();
 }
