@@ -1,10 +1,10 @@
 package ch.sbb.line.directory.service;
 
 
-import static ch.sbb.line.directory.enumaration.CoverageType.COMPLETE;
-import static ch.sbb.line.directory.enumaration.ModelType.LINE;
-import static ch.sbb.line.directory.enumaration.ModelType.SUBLINE;
-import static ch.sbb.line.directory.enumaration.ValidationErrorType.LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
+import static ch.sbb.atlas.api.line.enumaration.CoverageType.COMPLETE;
+import static ch.sbb.atlas.api.line.enumaration.ModelType.LINE;
+import static ch.sbb.atlas.api.line.enumaration.ModelType.SUBLINE;
+import static ch.sbb.atlas.api.line.enumaration.ValidationErrorType.LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
