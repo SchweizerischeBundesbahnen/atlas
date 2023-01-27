@@ -1,8 +1,8 @@
-package ch.sbb.atlas.api.line;
+package ch.sbb.atlas.api.lidi;
 
-import ch.sbb.atlas.api.line.enumaration.CoverageType;
-import ch.sbb.atlas.api.line.enumaration.ModelType;
-import ch.sbb.atlas.api.line.enumaration.ValidationErrorType;
+import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
+import ch.sbb.atlas.api.lidi.enumaration.ModelType;
+import ch.sbb.atlas.api.lidi.enumaration.ValidationErrorType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;

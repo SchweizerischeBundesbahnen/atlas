@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.validation;
 
 
-import static ch.sbb.atlas.api.line.enumaration.SublineType.COMPENSATION;
-import static ch.sbb.atlas.api.line.enumaration.SublineType.TECHNICAL;
+import static ch.sbb.atlas.api.lidi.enumaration.SublineType.COMPENSATION;
+import static ch.sbb.atlas.api.lidi.enumaration.SublineType.TECHNICAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 

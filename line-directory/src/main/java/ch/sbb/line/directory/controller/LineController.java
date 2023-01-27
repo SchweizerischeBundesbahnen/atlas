@@ -2,12 +2,12 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toSet;
 
-import ch.sbb.atlas.api.line.CoverageModel;
-import ch.sbb.atlas.api.line.LineApiV1;
-import ch.sbb.atlas.api.line.LineModel;
-import ch.sbb.atlas.api.line.LineVersionModel;
-import ch.sbb.atlas.api.line.LineVersionSnapshotModel;
-import ch.sbb.atlas.api.line.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.CoverageModel;
+import ch.sbb.atlas.api.lidi.LineApiV1;
+import ch.sbb.atlas.api.lidi.LineModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
