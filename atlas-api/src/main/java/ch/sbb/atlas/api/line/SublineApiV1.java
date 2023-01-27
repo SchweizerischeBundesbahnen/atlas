@@ -1,10 +1,10 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.api.line;
 
+import ch.sbb.atlas.api.line.enumaration.SublineType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
-import ch.sbb.line.directory.enumaration.SublineType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -47,7 +47,7 @@ public interface SublineApiV1 {
 
   @PostMapping("{slnid}/revoke")
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
-  List<SublineVersionVersionModel> revokeSubline(@PathVariable String slnid);
+  List<SublineVersionModel> revokeSubline(@PathVariable String slnid);
 
   @DeleteMapping("{slnid}")
   void deleteSublines(@PathVariable String slnid);
@@ -59,11 +59,11 @@ public interface SublineApiV1 {
       @ApiResponse(responseCode = "409", description = "Swiss number is not unique in time", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  SublineVersionVersionModel createSublineVersion(
-      @RequestBody @Valid SublineVersionVersionModel newSublineVersion);
+  SublineVersionModel createSublineVersion(
+      @RequestBody @Valid SublineVersionModel newSublineVersion);
 
   @GetMapping("versions/{slnid}")
-  List<SublineVersionVersionModel> getSublineVersion(@PathVariable String slnid);
+  List<SublineVersionModel> getSublineVersion(@PathVariable String slnid);
 
   @PostMapping({"versions/{id}"})
   @ApiResponses(value = {
@@ -73,8 +73,8 @@ public interface SublineApiV1 {
       @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  List<SublineVersionVersionModel> updateSublineVersion(@PathVariable Long id,
-      @RequestBody @Valid SublineVersionVersionModel newVersion);
+  List<SublineVersionModel> updateSublineVersion(@PathVariable Long id,
+      @RequestBody @Valid SublineVersionModel newVersion);
 
   @GetMapping("subline-coverage/{slnid}")
   CoverageModel getSublineCoverage(@PathVariable String slnid);

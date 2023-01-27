@@ -1,16 +1,17 @@
 package ch.sbb.line.directory.controller;
 
+import ch.sbb.atlas.api.line.CoverageModel;
+import ch.sbb.atlas.api.line.SublineApiV1;
+import ch.sbb.atlas.api.line.SublineModel;
+import ch.sbb.atlas.api.line.SublineVersionModel;
+import ch.sbb.atlas.api.line.enumaration.SublineType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.api.CoverageModel;
-import ch.sbb.line.directory.api.SublineApiV1;
-import ch.sbb.line.directory.api.SublineModel;
-import ch.sbb.line.directory.api.SublineVersionVersionModel;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.enumaration.SublineType;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.mapper.CoverageMapper;
 import ch.sbb.line.directory.model.search.SublineSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
@@ -73,8 +74,8 @@ public class SublineController implements SublineApiV1 {
   }
 
   @Override
-  public List<SublineVersionVersionModel> getSublineVersion(String slnid) {
-    List<SublineVersionVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
+  public List<SublineVersionModel> getSublineVersion(String slnid) {
+    List<SublineVersionModel> sublineVersionModels = sublineService.findSubline(slnid)
         .stream()
         .map(this::toModel)
         .toList();
@@ -85,8 +86,8 @@ public class SublineController implements SublineApiV1 {
   }
 
   @Override
-  public List<SublineVersionVersionModel> revokeSubline(String slnid) {
-    List<SublineVersionVersionModel> sublineVersionModels = sublineService.revokeSubline(slnid).stream()
+  public List<SublineVersionModel> revokeSubline(String slnid) {
+    List<SublineVersionModel> sublineVersionModels = sublineService.revokeSubline(slnid).stream()
         .map(this::toModel)
         .toList();
     if (sublineVersionModels.isEmpty()) {
@@ -96,7 +97,7 @@ public class SublineController implements SublineApiV1 {
   }
 
   @Override
-  public SublineVersionVersionModel createSublineVersion(SublineVersionVersionModel newSublineVersion) {
+  public SublineVersionModel createSublineVersion(SublineVersionModel newSublineVersion) {
     SublineVersion sublineVersion = toEntity(newSublineVersion);
     sublineVersion.setStatus(Status.VALIDATED);
     SublineVersion createdVersion = sublineService.create(sublineVersion);
@@ -104,7 +105,7 @@ public class SublineController implements SublineApiV1 {
   }
 
   @Override
-  public List<SublineVersionVersionModel> updateSublineVersion(Long id, SublineVersionVersionModel newVersion) {
+  public List<SublineVersionModel> updateSublineVersion(Long id, SublineVersionModel newVersion) {
     SublineVersion versionToUpdate = sublineService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
     sublineService.update(versionToUpdate, toEntity(newVersion), sublineService.findSubline(
@@ -115,7 +116,7 @@ public class SublineController implements SublineApiV1 {
 
   @Override
   public CoverageModel getSublineCoverage(String slnid) {
-    return CoverageModel.toModel(
+    return CoverageMapper.toModel(
         coverageService.getSublineCoverageBySlnidAndSublineModelType(slnid));
   }
 
@@ -139,8 +140,8 @@ public class SublineController implements SublineApiV1 {
     sublineService.deleteAll(slnid);
   }
 
-  private SublineVersionVersionModel toModel(SublineVersion sublineVersion) {
-    return SublineVersionVersionModel.builder()
+  private SublineVersionModel toModel(SublineVersion sublineVersion) {
+    return SublineVersionModel.builder()
         .id(sublineVersion.getId())
         .swissSublineNumber(sublineVersion.getSwissSublineNumber())
         .mainlineSlnid(sublineVersion.getMainlineSlnid())
@@ -162,7 +163,7 @@ public class SublineController implements SublineApiV1 {
         .build();
   }
 
-  private SublineVersion toEntity(SublineVersionVersionModel sublineVersionModel) {
+  private SublineVersion toEntity(SublineVersionModel sublineVersionModel) {
     return SublineVersion.builder()
         .id(sublineVersionModel.getId())
         .swissSublineNumber(sublineVersionModel.getSwissSublineNumber())
