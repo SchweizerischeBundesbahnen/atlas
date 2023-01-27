@@ -1,9 +1,9 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.api.line;
 
+import ch.sbb.atlas.api.line.enumaration.LineType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
-import ch.sbb.line.directory.enumaration.LineType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;

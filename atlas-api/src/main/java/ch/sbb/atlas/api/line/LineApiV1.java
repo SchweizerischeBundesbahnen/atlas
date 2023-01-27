@@ -1,11 +1,11 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.api.line;
 
+import ch.sbb.atlas.api.line.enumaration.LineType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
-import ch.sbb.line.directory.enumaration.LineType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
