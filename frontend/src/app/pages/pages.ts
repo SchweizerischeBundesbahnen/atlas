@@ -1,4 +1,5 @@
 import { Page } from '../core/model/page';
+import { environment } from '../../environments/environment';
 
 export class Pages {
   public static HOME: Page = {
@@ -112,5 +113,13 @@ export class Pages {
     Pages.SERVICE_POINTS,
   ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
-  public static enabledPages: Page[] = Pages.pages;
+  public static viewablePages: Page[] = this.pages;
+
+  public static get enabledPages(): Page[] {
+    let enabledPages = this.viewablePages;
+    if (!environment.pageSepodiEnabled) {
+      enabledPages = enabledPages.filter((page) => page !== Pages.SERVICE_POINTS);
+    }
+    return enabledPages;
+  }
 }
