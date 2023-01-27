@@ -1,8 +1,8 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionVersionModelBuilder;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline.SublineBuilder;
 import ch.sbb.line.directory.entity.SublineVersion;
@@ -57,7 +57,7 @@ public class SublineTestData {
     return sublineBuilder().build();
   }
 
-  public static SublineVersionVersionModelBuilder sublineVersionModelBuilder() {
+  public static SublineVersionModelBuilder<?, ?> sublineVersionModelBuilder() {
     return SublineVersionModel.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))

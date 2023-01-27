@@ -1,10 +1,8 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.api.lidi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.line.directory.LineTestData;
 import ch.sbb.atlas.api.lidi.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
@@ -26,8 +24,8 @@ class LineVersionModelTest {
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-  private static LineVersionModelBuilder lineVersionModel() {
-    return LineTestData.lineVersionModelBuilder()
+  private static LineVersionModelBuilder<?, ?> lineVersionModel() {
+    return LineVersionModel.builder()
         .status(Status.VALIDATED)
         .lineType(LineType.ORDERLY)
         .slnid("slnid")
