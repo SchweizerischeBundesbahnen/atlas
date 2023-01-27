@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Map, MapMouseEvent, Popup, ResourceTypeEnum } from 'maplibre-gl';
-import { MapOptionsService } from '../map-options.service';
-import { MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from '../map-style';
+import { MapOptionsService } from '../map/map-options.service';
+import { MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from '../map/map-style';
 
 @Component({
   selector: 'app-sepodi-overview',
