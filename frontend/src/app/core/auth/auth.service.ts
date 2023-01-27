@@ -37,7 +37,7 @@ export class AuthService {
           this.loadPermissions();
         }
         if (this.hasRole(Role.AtlasAdmin)) {
-          Pages.enabledPages = [...Pages.pages, ...Pages.adminPages];
+          Pages.viewablePages = [...Pages.pages, ...Pages.adminPages];
         }
         this.router
           .navigateByUrl(sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY) ?? '')
@@ -163,7 +163,7 @@ export class AuthService {
 
   logout() {
     this.oauthService.logOut(true);
-    Pages.enabledPages = Pages.pages;
+    Pages.viewablePages = Pages.pages;
     return this.router.navigate([Pages.HOME.path]);
   }
 
