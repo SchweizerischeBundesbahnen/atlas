@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LngLatBoundsLike, RequestParameters, ResourceTypeEnum } from 'maplibre-gl';
-import { AuthService } from '../../core/auth/auth.service';
-import { environment } from '../../../environments/environment';
+import { AuthService } from '../../../core/auth/auth.service';
+import { environment } from '../../../../environments/environment';
 
 const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
   // CH bounds;
