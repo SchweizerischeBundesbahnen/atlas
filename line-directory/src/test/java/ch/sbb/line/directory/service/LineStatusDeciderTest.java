@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.atlas.api.line.enumaration.LineType;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
