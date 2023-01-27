@@ -42,8 +42,9 @@ class GeometryTransformerTest {
     final Map<SpatialReference, Envelope> envelopeMap = geometryTransformer
         .getProjectedAreas(SWISS_AREA_WGS_84);
 
-    assertThat(envelopeMap.size()).isEqualTo(3);
+    assertThat(envelopeMap.size()).isEqualTo(4);
     assertThat(envelopeMap.containsKey(SpatialReference.WGS84WEB)).isTrue();
+    assertThat(envelopeMap.containsKey(SpatialReference.WGS84)).isTrue();
     assertThat(envelopeMap.containsKey(SpatialReference.LV95)).isTrue();
     assertThat(envelopeMap.containsKey(SpatialReference.LV03)).isTrue();
   }
