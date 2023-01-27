@@ -2,10 +2,11 @@ package ch.sbb.line.directory.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.line.SublineVersionModel;
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.line.directory.api.SublineVersionVersionModel.SublineVersionVersionModelBuilder;
-import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.atlas.api.line.SublineVersionModel.SublineVersionVersionModelBuilder;
+import ch.sbb.atlas.api.line.enumaration.PaymentType;
+import ch.sbb.atlas.api.line.enumaration.SublineType;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,7 @@ class SublineVersionModelTest {
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   private static SublineVersionVersionModelBuilder sublineVersionModel() {
-    return SublineVersionVersionModel.builder()
+    return SublineVersionModel.builder()
         .status(Status.VALIDATED)
         .sublineType(SublineType.TECHNICAL)
         .paymentType(PaymentType.INTERNATIONAL)
@@ -43,9 +44,9 @@ class SublineVersionModelTest {
   @Test
   void shouldBuildValidSublineVersion() {
     // Given
-    SublineVersionVersionModel sublineVersion = sublineVersionModel().build();
+    SublineVersionModel sublineVersion = sublineVersionModel().build();
     // When
-    Set<ConstraintViolation<SublineVersionVersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
         sublineVersion);
 
     // Then
@@ -55,9 +56,9 @@ class SublineVersionModelTest {
   @Test
   void shouldHaveSwissSublineNumber() {
     // Given
-    SublineVersionVersionModel sublineVersion = sublineVersionModel().swissSublineNumber("").build();
+    SublineVersionModel sublineVersion = sublineVersionModel().swissSublineNumber("").build();
     // When
-    Set<ConstraintViolation<SublineVersionVersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
         sublineVersion);
 
     // Then
@@ -69,9 +70,9 @@ class SublineVersionModelTest {
   @Test
   void shouldHaveBusinessOrganisation() {
     // Given
-    SublineVersionVersionModel sublineVersion = sublineVersionModel().businessOrganisation(null).build();
+    SublineVersionModel sublineVersion = sublineVersionModel().businessOrganisation(null).build();
     // When
-    Set<ConstraintViolation<SublineVersionVersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
         sublineVersion);
 
     // Then
@@ -83,10 +84,10 @@ class SublineVersionModelTest {
   @Test
   void shouldHaveQuoVadisConformDescription() {
     // Given
-    SublineVersionVersionModel sublineVersion = sublineVersionModel().description(
+    SublineVersionModel sublineVersion = sublineVersionModel().description(
         THREE_HUNDRED_CHAR_STRING).build();
     // When
-    Set<ConstraintViolation<SublineVersionVersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
         sublineVersion);
 
     // Then
@@ -98,9 +99,9 @@ class SublineVersionModelTest {
   @Test
   void shouldHaveValidFromBeforeValidTo() {
     // Given
-    SublineVersionVersionModel sublineVersion = sublineVersionModel().validTo(VALID_FROM.minusDays(1)).build();
+    SublineVersionModel sublineVersion = sublineVersionModel().validTo(VALID_FROM.minusDays(1)).build();
     // When
-    Set<ConstraintViolation<SublineVersionVersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
         sublineVersion);
 
     // Then
@@ -112,11 +113,11 @@ class SublineVersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
     //given
-    SublineVersionVersionModel lineVersion = sublineVersionModel()
+    SublineVersionModel lineVersion = sublineVersionModel()
         .validFrom(LocalDate.of(1699, 12, 31))
         .build();
     //when
-    Set<ConstraintViolation<SublineVersionVersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
         lineVersion);
 
     //then
@@ -129,11 +130,11 @@ class SublineVersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidFromIsAfter9999_12_31() {
     //given
-    SublineVersionVersionModel lineVersion = sublineVersionModel()
+    SublineVersionModel lineVersion = sublineVersionModel()
         .validFrom(LocalDate.of(10000, 1, 1))
         .build();
     //when
-    Set<ConstraintViolation<SublineVersionVersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
         lineVersion);
 
     //then
@@ -150,11 +151,11 @@ class SublineVersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
     //given
-    SublineVersionVersionModel lineVersion = sublineVersionModel()
+    SublineVersionModel lineVersion = sublineVersionModel()
         .validTo(LocalDate.of(1699, 12, 31))
         .build();
     //when
-    Set<ConstraintViolation<SublineVersionVersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
         lineVersion);
 
     //then
@@ -171,11 +172,11 @@ class SublineVersionModelTest {
   @Test
   public void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
     //given
-    SublineVersionVersionModel lineVersion = sublineVersionModel()
+    SublineVersionModel lineVersion = sublineVersionModel()
         .validTo(LocalDate.of(10000, 1, 1))
         .build();
     //when
-    Set<ConstraintViolation<SublineVersionVersionModel>> constraintViolations = validator.validate(
+    Set<ConstraintViolation<SublineVersionModel>> constraintViolations = validator.validate(
         lineVersion);
 
     //then

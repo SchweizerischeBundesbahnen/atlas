@@ -31,8 +31,8 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
   @Query("SELECT lv FROM line_version as lv"
       + " JOIN coverage as c "
       + " ON lv.slnid = c.slnid"
-      + " WHERE c.modelType = ch.sbb.line.directory.enumaration.ModelType.LINE"
-      + " AND c.coverageType = ch.sbb.line.directory.enumaration.CoverageType.COMPLETE"
+      + " WHERE c.modelType = ch.sbb.atlas.api.line.enumaration.ModelType.LINE"
+      + " AND c.coverageType = ch.sbb.atlas.api.line.enumaration.CoverageType.COMPLETE"
       + " ORDER BY lv.slnid, lv.validFrom ASC")
   List<LineVersion> getAllCoveredLineVersions();
 

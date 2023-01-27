@@ -4,7 +4,7 @@ import static ch.sbb.line.directory.LineTestData.lineVersionModelBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
-import ch.sbb.line.directory.api.LineVersionModel;
+import ch.sbb.atlas.api.line.LineVersionModel;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

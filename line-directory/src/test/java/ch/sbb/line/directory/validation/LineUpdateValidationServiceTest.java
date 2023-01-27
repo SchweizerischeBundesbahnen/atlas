@@ -9,7 +9,7 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.security.UserAdministrationService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.atlas.api.line.enumaration.LineType;
 import ch.sbb.line.directory.exception.ForbiddenDueToInReviewException;
 import ch.sbb.line.directory.exception.LineInReviewValidationException;
 import java.time.LocalDate;

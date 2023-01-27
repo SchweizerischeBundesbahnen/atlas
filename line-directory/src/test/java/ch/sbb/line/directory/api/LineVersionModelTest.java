@@ -2,11 +2,12 @@ package ch.sbb.line.directory.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.line.LineVersionModel;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.api.LineVersionModel.LineVersionModelBuilder;
-import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.PaymentType;
+import ch.sbb.atlas.api.line.LineVersionModel.LineVersionModelBuilder;
+import ch.sbb.atlas.api.line.enumaration.LineType;
+import ch.sbb.atlas.api.line.enumaration.PaymentType;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
