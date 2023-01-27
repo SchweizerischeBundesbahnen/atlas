@@ -26,7 +26,7 @@ class ServicePointGeoDataMapperTest {
   void canMapLv96Geometry() {
     final Offset<Double> doubleOffset = Offset.offset(0.00001);
     final ServicePointGeoData geoData = testGeoDataLv95();
-    final Point pointWgs84Web = servicePointGeoDataMapper.mapGeoDataToGeometry(geoData);
+    final Point pointWgs84Web = servicePointGeoDataMapper.mapGeoDataToWgs84WebGeometry(geoData);
     // Values from CSV-Export
     assertThat(pointWgs84Web.getX()).isCloseTo(937373.39333, doubleOffset);
     assertThat(pointWgs84Web.getY()).isCloseTo(5998919.02171, doubleOffset);
@@ -38,7 +38,7 @@ class ServicePointGeoDataMapperTest {
   @Test
   void mapToGeometryItem() {
     final ServicePointGeoData geoData = testGeoDataWgs84Web();
-    final Point point = servicePointGeoDataMapper.mapGeoDataToGeometry(geoData);
+    final Point point = servicePointGeoDataMapper.mapGeoDataToWgs84WebGeometry(geoData);
     assertThat(point.getX()).isEqualTo(0.1D);
     assertThat(point.getY()).isEqualTo(0.1D);
     assertThat(point.getUserData()).isNotNull();
@@ -48,19 +48,19 @@ class ServicePointGeoDataMapperTest {
   @Test
   void mapToGeometryList() {
     final ServicePointGeoData geoData = testGeoDataWgs84Web();
-    final List<Point> points = servicePointGeoDataMapper.mapToGeometryList(List.of(geoData));
+    final List<Point> points = servicePointGeoDataMapper.mapToWgs84WebGeometry(List.of(geoData));
     assertThat(points).isNotEmpty();
   }
 
   @Test
   void mapToGeometryListIfNull() {
-    final List<Point> points = servicePointGeoDataMapper.mapToGeometryList(null);
+    final List<Point> points = servicePointGeoDataMapper.mapToWgs84WebGeometry(null);
     assertThat(points).isEmpty();
   }
 
   @Test
   void mapToGeometryListIfEmpty() {
-    final List<Point> points = servicePointGeoDataMapper.mapToGeometryList(List.of());
+    final List<Point> points = servicePointGeoDataMapper.mapToWgs84WebGeometry(List.of());
     assertThat(points).isEmpty();
   }
 }
