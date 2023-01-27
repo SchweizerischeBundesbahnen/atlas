@@ -1,10 +1,11 @@
-package ch.sbb.business.organisation.directory.api;
+package ch.sbb.atlas.api.bodi;
 
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
-import ch.sbb.business.organisation.directory.entity.BusinessType;
+import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
+import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
@@ -15,18 +16,23 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 @FieldNameConstants
-@Schema(name = "BusinessOrganisation")
-public class BusinessOrganisationModel {
+@Schema(name = "BusinessOrganisationVersion")
+public class BusinessOrganisationVersionModel extends BaseVersionModel implements DatesValidator {
+
+  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
+  private Long id;
 
   @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052", accessMode =
       AccessMode.READ_ONLY)
@@ -61,36 +67,37 @@ public class BusinessOrganisationModel {
 
   @Schema(description = "Abbreviation German", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String abbreviationDe;
 
   @Schema(description = "Abbreviation French", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String abbreviationFr;
 
   @Schema(description = "Abbreviation Italian", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String abbreviationIt;
 
   @Schema(description = "Abbreviation English", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull
   private String abbreviationEn;
 
   @Schema(description = "Organisation Number", example = "146")
   @Min(value = 0)
   @Max(value = 99999)
+  @NotNull
   private Integer organisationNumber;
 
   @Schema(description = "Enterprise E-Mail address", example = "hans.muster@enterprise.ch")
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   private String contactEnterpriseEmail;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
@@ -107,26 +114,9 @@ public class BusinessOrganisationModel {
   @NotNull
   private LocalDate validTo;
 
-  public static BusinessOrganisationModel toModel(BusinessOrganisation entity) {
-    return BusinessOrganisationModel
-        .builder()
-        .status(entity.getStatus())
-        .descriptionDe(entity.getDescriptionDe())
-        .descriptionFr(entity.getDescriptionFr())
-        .descriptionIt(entity.getDescriptionIt())
-        .descriptionEn(entity.getDescriptionEn())
-        .abbreviationDe(entity.getAbbreviationDe())
-        .abbreviationFr(entity.getAbbreviationFr())
-        .abbreviationIt(entity.getAbbreviationIt())
-        .abbreviationEn(entity.getAbbreviationEn())
-        .validFrom(entity.getValidFrom())
-        .validTo(entity.getValidTo())
-        .organisationNumber(entity.getOrganisationNumber())
-        .contactEnterpriseEmail(entity.getContactEnterpriseEmail())
-        .sboid(entity.getSboid())
-        .said(SboidToSaidConverter.toSaid(entity.getSboid()))
-        .businessTypes(entity.getBusinessTypes())
-        .build();
-  }
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5",
+      accessMode = AccessMode.READ_ONLY)
+  private Integer etagVersion;
+
 
 }

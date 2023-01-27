@@ -1,12 +1,13 @@
 package ch.sbb.business.organisation.directory.controller;
 
+import ch.sbb.atlas.api.bodi.TransportCompanyApiV1;
+import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.business.organisation.directory.api.TransportCompanyApiV1;
-import ch.sbb.business.organisation.directory.api.TransportCompanyModel;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
+import ch.sbb.business.organisation.directory.mapper.TransportCompanyMapper;
 import ch.sbb.business.organisation.directory.service.TransportCompanyService;
-import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
+import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
                                           .build());
     List<TransportCompanyModel> transportCompanyModels = transportCompanies.stream()
                                                                            .map(
-                                                                               TransportCompanyModel::fromEntity)
+                                                                               TransportCompanyMapper::fromEntity)
                                                                            .collect(
                                                                                Collectors.toList());
     return Container.<TransportCompanyModel>builder()
@@ -50,7 +51,7 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
   @Override
   public TransportCompanyModel getTransportCompany(Long id) {
     return transportCompanyService.findById(id)
-                                  .map(TransportCompanyModel::fromEntity)
+                                  .map(TransportCompanyMapper::fromEntity)
                                   .orElseThrow(() -> new IdNotFoundException(id));
   }
 

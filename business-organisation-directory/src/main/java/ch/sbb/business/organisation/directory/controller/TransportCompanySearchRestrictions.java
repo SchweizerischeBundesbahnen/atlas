@@ -4,7 +4,7 @@ import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompany.Fields;
 import ch.sbb.business.organisation.directory.entity.TransportCompany_;
-import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
+import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import java.util.List;
 import lombok.Getter;
 import lombok.Singular;

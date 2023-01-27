@@ -1,4 +1,4 @@
-package ch.sbb.business.organisation.directory.service;
+package ch.sbb.atlas.api.bodi.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

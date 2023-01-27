@@ -1,4 +1,4 @@
-package ch.sbb.business.organisation.directory.api;
+package ch.sbb.atlas.api.bodi;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
