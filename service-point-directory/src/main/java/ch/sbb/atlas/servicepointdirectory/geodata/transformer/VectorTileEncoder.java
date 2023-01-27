@@ -26,10 +26,12 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.processing.Generated;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Point;
 
+@Generated("https://github.com/ElectronicChartCentre/java-vector-tile")
 public class VectorTileEncoder {
 
   private final Map<String, Layer> layers = new LinkedHashMap<>();
