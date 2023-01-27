@@ -1,16 +1,16 @@
 package ch.sbb.line.directory.controller;
 
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.alternativeName;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.businessOrganisation;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.combinationName;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.lineType;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.longName;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.paymentType;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.slnid;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.swissLineNumber;
+import static ch.sbb.atlas.api.line.LineVersionModel.Fields.alternativeName;
+import static ch.sbb.atlas.api.line.LineVersionModel.Fields.businessOrganisation;
+import static ch.sbb.atlas.api.line.LineVersionModel.Fields.combinationName;
+import static ch.sbb.atlas.api.line.LineVersionModel.Fields.lineType;
+import static ch.sbb.atlas.api.line.LineVersionModel.Fields.longName;
+import static ch.sbb.atlas.api.line.LineVersionModel.Fields.paymentType;
+import static ch.sbb.atlas.api.line.LineVersionModel.Fields.slnid;
+import static ch.sbb.atlas.api.line.LineVersionModel.Fields.swissLineNumber;
 import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
 import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
-import static ch.sbb.line.directory.enumaration.ModelType.LINE;
+import static ch.sbb.atlas.api.line.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -26,15 +26,15 @@ import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.LineVersionModel.Fields;
-import ch.sbb.line.directory.api.LineVersionSnapshotModel;
-import ch.sbb.line.directory.api.SublineVersionVersionModel;
+import ch.sbb.atlas.api.line.LineVersionModel;
+import ch.sbb.atlas.api.line.LineVersionModel.Fields;
+import ch.sbb.atlas.api.line.LineVersionSnapshotModel;
+import ch.sbb.atlas.api.line.SublineVersionModel;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
-import ch.sbb.line.directory.enumaration.CoverageType;
-import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.atlas.api.line.enumaration.CoverageType;
+import ch.sbb.atlas.api.line.enumaration.LineType;
+import ch.sbb.atlas.api.line.enumaration.PaymentType;
+import ch.sbb.atlas.api.line.enumaration.SublineType;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
@@ -519,8 +519,8 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .build();
 
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionVersionModel sublineVersionModel =
-        SublineVersionVersionModel.builder()
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -529,7 +529,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    SublineVersionVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
         sublineVersionModel);
 
     //when

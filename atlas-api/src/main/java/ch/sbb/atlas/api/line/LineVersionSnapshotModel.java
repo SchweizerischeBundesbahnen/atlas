@@ -1,14 +1,10 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.api.line;
 
-import static ch.sbb.line.directory.converter.CmykColorConverter.toCmykString;
-import static ch.sbb.line.directory.converter.RgbColorConverter.toHex;
-
+import ch.sbb.atlas.api.line.enumaration.LineType;
+import ch.sbb.atlas.api.line.enumaration.PaymentType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
-import ch.sbb.line.directory.entity.LineVersionSnapshot;
-import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.PaymentType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
@@ -111,38 +107,6 @@ public class LineVersionSnapshotModel extends BaseVersionModel {
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5",
       accessMode = AccessMode.READ_ONLY)
   private Integer etagVersion;
-
-  public static LineVersionSnapshotModel toModel(LineVersionSnapshot lineVersionSnapshot) {
-    return LineVersionSnapshotModel.builder()
-        .id(lineVersionSnapshot.getId())
-        .workflowId(lineVersionSnapshot.getWorkflowId())
-        .workflowStatus(lineVersionSnapshot.getWorkflowStatus())
-        .parentObjectId(lineVersionSnapshot.getParentObjectId())
-        .slnid(lineVersionSnapshot.getSlnid())
-        .status(lineVersionSnapshot.getStatus())
-        .lineType(lineVersionSnapshot.getLineType())
-        .paymentType(lineVersionSnapshot.getPaymentType())
-        .number(lineVersionSnapshot.getNumber())
-        .alternativeName(lineVersionSnapshot.getAlternativeName())
-        .combinationName(lineVersionSnapshot.getCombinationName())
-        .longName(lineVersionSnapshot.getLongName())
-        .colorFontRgb(toHex(lineVersionSnapshot.getColorFontRgb()))
-        .colorBackRgb(toHex(lineVersionSnapshot.getColorBackRgb()))
-        .colorFontCmyk(toCmykString(lineVersionSnapshot.getColorFontCmyk()))
-        .colorBackCmyk(toCmykString(lineVersionSnapshot.getColorBackCmyk()))
-        .icon(lineVersionSnapshot.getIcon())
-        .description(lineVersionSnapshot.getDescription())
-        .validFrom(lineVersionSnapshot.getValidFrom())
-        .validTo(lineVersionSnapshot.getValidTo())
-        .businessOrganisation(lineVersionSnapshot.getBusinessOrganisation())
-        .comment(lineVersionSnapshot.getComment())
-        .creationDate(lineVersionSnapshot.getCreationDate())
-        .editionDate(lineVersionSnapshot.getEditionDate())
-        .creator(lineVersionSnapshot.getCreator())
-        .editor(lineVersionSnapshot.getEditor())
-        .etagVersion(lineVersionSnapshot.getVersion())
-        .build();
-  }
 
 }
 
