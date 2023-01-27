@@ -8,12 +8,15 @@ import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointC
 import ch.sbb.importservice.batch.LoadingPointApiWriter;
 import ch.sbb.importservice.batch.ServicePointApiWriter;
 import ch.sbb.importservice.batch.ServicePointProcessor;
+import ch.sbb.importservice.batch.ThreadSafeListItemReader;
 import ch.sbb.importservice.listener.ExceptionSkipPolicy;
 import ch.sbb.importservice.listener.JobCompletitionListener;
 import ch.sbb.importservice.listener.StepSkipListener;
 import ch.sbb.importservice.service.CsvService;
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 import lombok.AllArgsConstructor;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.springframework.batch.core.Job;
@@ -29,9 +32,9 @@ import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.dao.DeadlockLoserDataAccessException;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 @EnableBatchProcessing
@@ -57,7 +60,7 @@ public class SpringBatchConfig {
 
   @StepScope
   @Bean
-  public ListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader(
+  public ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile) {
     List<ServicePointCsvModelContainer> actualServicePotinCsvModelsFromS3;
     if (pathToFile != null) {
@@ -66,7 +69,7 @@ public class SpringBatchConfig {
     } else {
       actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3();
     }
-    return new ListItemReader<>(actualServicePotinCsvModelsFromS3);
+    return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualServicePotinCsvModelsFromS3));
   }
 
   @StepScope
@@ -84,7 +87,7 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Step parseServicePointCsvStep(ListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
+  public Step parseServicePointCsvStep(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
     return stepBuilderFactory.get("parseServicePointCsvStep")
         .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(100)
         .reader(servicePointlistItemReader)
@@ -111,7 +114,7 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Job importServicePointCsvJob(ListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
+  public Job importServicePointCsvJob(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
     return jobBuilderFactory.get(IMPORT_SERVICE_POINT_CSV_JOB_NAME)
         .listener(jobCompletitionListener)
         .incrementer(new RunIdIncrementer())
@@ -142,8 +145,12 @@ public class SpringBatchConfig {
 
   @Bean
   public TaskExecutor asyncTaskExecutor() {
-    SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();
-    taskExecutor.setConcurrencyLimit(2);
+    ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+    taskExecutor.setCorePoolSize(64);
+    taskExecutor.setMaxPoolSize(64);
+    taskExecutor.setQueueCapacity(64);
+    taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+    taskExecutor.setThreadNamePrefix("MultiThreaded-");
     return taskExecutor;
   }
 
