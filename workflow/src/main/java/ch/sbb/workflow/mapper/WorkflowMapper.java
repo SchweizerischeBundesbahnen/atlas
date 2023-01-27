@@ -1,7 +1,5 @@
 package ch.sbb.workflow.mapper;
 
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
-import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.atlas.api.workflow.WorkflowModel;
 import ch.sbb.atlas.api.workflow.WorkflowModel.WorkflowModelBuilder;
 import ch.sbb.workflow.entity.Workflow;

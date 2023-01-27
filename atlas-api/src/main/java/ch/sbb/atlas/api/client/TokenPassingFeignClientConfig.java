@@ -1,4 +1,4 @@
-package ch.sbb.workflow.config;
+package ch.sbb.atlas.api.client;
 
 import ch.sbb.atlas.base.service.model.service.UserService;
 import feign.RequestInterceptor;

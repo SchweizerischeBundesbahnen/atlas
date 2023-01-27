@@ -17,7 +17,7 @@ import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
-import ch.sbb.workflow.service.lidi.LineWorkflowClient;
+import ch.sbb.atlas.api.client.LineWorkflowClient;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import java.util.List;
 import java.util.Optional;

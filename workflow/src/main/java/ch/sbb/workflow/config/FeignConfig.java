@@ -1,9 +1,10 @@
 package ch.sbb.workflow.config;
 
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import ch.sbb.atlas.api.client.AtlasApiFeignClientsConfig;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
-@EnableFeignClients
+@Import(AtlasApiFeignClientsConfig.class)
 @Configuration
 public class FeignConfig {
 
