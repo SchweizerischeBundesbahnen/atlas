@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.line;
+package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;

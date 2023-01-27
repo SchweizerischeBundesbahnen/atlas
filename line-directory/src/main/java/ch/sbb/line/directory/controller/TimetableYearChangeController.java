@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.base.service.amazon.helper.FutureTimetableHelper;
-import ch.sbb.atlas.api.line.TimetableYearChangeApiV1;
+import ch.sbb.atlas.api.lidi.TimetableYearChangeApiV1;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

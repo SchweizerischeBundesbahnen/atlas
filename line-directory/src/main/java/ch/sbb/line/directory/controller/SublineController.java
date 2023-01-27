@@ -1,10 +1,10 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.api.line.CoverageModel;
-import ch.sbb.atlas.api.line.SublineApiV1;
-import ch.sbb.atlas.api.line.SublineModel;
-import ch.sbb.atlas.api.line.SublineVersionModel;
-import ch.sbb.atlas.api.line.enumaration.SublineType;
+import ch.sbb.atlas.api.lidi.CoverageModel;
+import ch.sbb.atlas.api.lidi.SublineApiV1;
+import ch.sbb.atlas.api.lidi.SublineModel;
+import ch.sbb.atlas.api.lidi.SublineVersionModel;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;

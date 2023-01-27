@@ -5,7 +5,7 @@ import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline_;
-import ch.sbb.atlas.api.line.enumaration.SublineType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
 import lombok.Getter;
