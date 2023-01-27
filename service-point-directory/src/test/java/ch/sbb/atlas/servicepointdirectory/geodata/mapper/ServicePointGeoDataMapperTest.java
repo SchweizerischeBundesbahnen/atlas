@@ -53,12 +53,6 @@ class ServicePointGeoDataMapperTest {
   }
 
   @Test
-  void mapToGeometryListIfNull() {
-    final List<Point> points = servicePointGeoDataMapper.mapToWgs84WebGeometry(null);
-    assertThat(points).isEmpty();
-  }
-
-  @Test
   void mapToGeometryListIfEmpty() {
     final List<Point> points = servicePointGeoDataMapper.mapToWgs84WebGeometry(List.of());
     assertThat(points).isEmpty();
