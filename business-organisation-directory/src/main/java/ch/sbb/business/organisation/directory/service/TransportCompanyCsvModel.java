@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.service;
 
+import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
