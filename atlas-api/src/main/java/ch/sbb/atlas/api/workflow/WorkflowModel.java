@@ -1,4 +1,4 @@
-package ch.sbb.workflow.api;
+package ch.sbb.atlas.api.workflow;
 
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
@@ -69,43 +69,5 @@ public class WorkflowModel {
 
   @Schema(description = "Last edition date", example = "01.01.2000", accessMode = AccessMode.READ_ONLY)
   private LocalDateTime editionDate;
-
-  public static WorkflowModel toModel(Workflow entity) {
-    WorkflowModelBuilder builder = WorkflowModel.builder()
-        .id(entity.getId())
-        .workflowType(entity.getWorkflowType())
-        .businessObjectId(entity.getBusinessObjectId())
-        .swissId(entity.getSwissId())
-        .description(entity.getDescription())
-        .workflowStatus(entity.getStatus())
-        .workflowComment(entity.getWorkflowComment())
-        .checkComment(entity.getCheckComment())
-        .creationDate(entity.getCreationDate())
-        .editionDate(entity.getEditionDate());
-    if (entity.getClient() != null) {
-      builder.client(ClientPersonModel.toModel(entity.getClient()));
-    }
-    if (entity.getExaminant() != null) {
-      builder.examinant(PersonModel.toModel(entity.getExaminant()));
-    }
-
-    return builder.build();
-  }
-
-  public static WorkflowModel toNewModel(Workflow entity) {
-    return WorkflowModel.builder()
-        .id(entity.getId())
-        .workflowType(entity.getWorkflowType())
-        .businessObjectId(entity.getBusinessObjectId())
-        .swissId(entity.getSwissId())
-        .description(entity.getDescription())
-        .workflowStatus(entity.getStatus())
-        .workflowComment(entity.getWorkflowComment())
-        .checkComment(entity.getCheckComment())
-        .client(ClientPersonModel.toModel(entity.getClient()))
-        .creationDate(entity.getCreationDate())
-        .editionDate(entity.getEditionDate())
-        .build();
-  }
 
 }
