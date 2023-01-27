@@ -2,6 +2,7 @@ package ch.sbb.business.organisation.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.controller.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;

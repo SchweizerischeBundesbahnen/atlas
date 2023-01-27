@@ -1,4 +1,4 @@
-package ch.sbb.business.organisation.directory.api;
+package ch.sbb.atlas.api.bodi;
 
 import lombok.experimental.UtilityClass;
 
