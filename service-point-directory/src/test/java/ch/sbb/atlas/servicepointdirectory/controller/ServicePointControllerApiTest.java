@@ -18,7 +18,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -201,12 +200,11 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     InputStream csvStream = this.getClass().getResourceAsStream("/SERVICE_POINTS_VERSIONING.csv");
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
 
-    int didokCode = 10000190;
     List<ServicePointCsvModel> servicePointCsvModelsOrdered = servicePointCsvModels.stream()
-        .filter(item -> item.getDidokCode() == didokCode)
         .sorted(Comparator.comparing(BaseDidokCsvModel::getValidFrom))
         .toList();
 
+    int didokCode = servicePointCsvModels.get(0).getDidokCode();
     ServicePointImportReqModel importRequestModel = new ServicePointImportReqModel(
         List.of(
             ServicePointCsvModelContainer
