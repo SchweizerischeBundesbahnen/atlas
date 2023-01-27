@@ -45,7 +45,7 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
     log.info("Changed Object status from {} to {}", preUpdateStatus, objectVersion.getStatus());
   }
 
-  protected T getObjectVersion(WorkflowEvent lineWorkflowEvent) {
+  public T getObjectVersion(WorkflowEvent lineWorkflowEvent) {
     return objectVersionRepository.findById(lineWorkflowEvent.getBusinessObjectId())
         .orElseThrow(() -> new IdNotFoundException(lineWorkflowEvent.getBusinessObjectId()));
   }

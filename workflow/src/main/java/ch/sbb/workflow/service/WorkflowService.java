@@ -64,12 +64,16 @@ public class WorkflowService {
   }
 
   WorkflowStatus processWorkflowOnLidi(Workflow workflow) {
-    return lineWorkflowClient.processWorkflow(WorkflowEvent.builder()
+    WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(workflow.getId())
         .businessObjectId(workflow.getBusinessObjectId())
         .workflowStatus(workflow.getStatus())
-        .workflowType(WorkflowType.LINE)
-        .build());
+        .workflowType(workflow.getWorkflowType())
+        .build();
+    if (workflowEvent.getWorkflowType() == WorkflowType.LINE) {
+      return lineWorkflowClient.processWorkflow(workflowEvent);
+    }
+    throw new UnsupportedOperationException();
   }
 
   private boolean hasWorkflowInProgress(Long businessObjectId) {

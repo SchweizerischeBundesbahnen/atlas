@@ -30,19 +30,14 @@ public class LineWorkflowProcessingService extends
     super(objectRepository, objectWorkflowRepository, objectVerionSnapshotRepositroy);
   }
 
-  public WorkflowStatus processLineWorkflow(WorkflowEvent lineWorkflowEvent) {
-    log.info("Started Workflow processing: {}", lineWorkflowEvent);
-    LineVersion lineVersion = getObjectVersion(lineWorkflowEvent);
-    WorkflowStatus workflowStatus = processLineWorkflow(lineWorkflowEvent, lineVersion);
-    log.info("Ended Workflow processing: {}", lineWorkflowEvent);
-    return workflowStatus;
-  }
-
   @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#lineVersion, T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).LIDI)")
-  public WorkflowStatus processLineWorkflow(WorkflowEvent lineWorkflowEvent, LineVersion lineVersion){
+  public WorkflowStatus processLineWorkflow(WorkflowEvent lineWorkflowEvent, LineVersion lineVersion) {
+    log.info("Started Workflow processing: {}", lineWorkflowEvent);
     LineVersionSnapshot lineVersionSnapshot = buildLineVersionSnapshot(lineWorkflowEvent, lineVersion);
-    return processWorkflow(lineWorkflowEvent, lineVersion, lineVersionSnapshot);
+    WorkflowStatus workflowStatus =  processWorkflow(lineWorkflowEvent, lineVersion, lineVersionSnapshot);
+    log.info("Ended Workflow processing: {}", lineWorkflowEvent);
+    return workflowStatus;
   }
 
   @Override
