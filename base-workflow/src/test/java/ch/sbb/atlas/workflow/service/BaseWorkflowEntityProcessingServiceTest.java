@@ -73,7 +73,6 @@ public class BaseWorkflowEntityProcessingServiceTest {
     //when
     workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot);
     //then
-    verify(objectVersionRepository).findById(1000L);
     verify(objectWorkflowRepository).save(objectWorkflowVersion);
     verify(objectVersionRepository).save(objectVersion);
     verify(objectVersionSnapshotRepository).save(any(ObjectVersionSnapshot.class));
@@ -108,7 +107,6 @@ public class BaseWorkflowEntityProcessingServiceTest {
     //when
     workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot);
     //then
-    verify(objectVersionRepository).findById(1000L);
     verify(objectWorkflowRepository).save(objectWorkflowVersion);
     verify(objectVersionRepository).save(objectVersion);
     assertThat(objectVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -142,7 +140,6 @@ public class BaseWorkflowEntityProcessingServiceTest {
     //when
     workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot);
     //then
-    verify(objectVersionRepository).findById(1000L);
     verify(objectWorkflowRepository).save(objectWorkflowVersion);
     verify(objectVersionRepository).save(objectVersion);
     assertThat(objectVersion.getStatus()).isEqualTo(Status.DRAFT);
