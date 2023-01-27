@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.line.workflow;
+package ch.sbb.atlas.api.lidi.workflow;
 
 import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;

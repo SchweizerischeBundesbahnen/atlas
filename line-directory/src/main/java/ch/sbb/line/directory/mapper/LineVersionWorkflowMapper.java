@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.mapper;
 
-import ch.sbb.atlas.api.line.LineVersionWorkflowModel;
+import ch.sbb.atlas.api.lidi.LineVersionWorkflowModel;
 import ch.sbb.line.directory.entity.LineVersionWorkflow;
 import lombok.experimental.UtilityClass;
 

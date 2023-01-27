@@ -10,7 +10,7 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.atlas.api.line.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;

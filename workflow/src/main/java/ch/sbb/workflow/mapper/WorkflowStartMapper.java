@@ -1,6 +1,5 @@
 package ch.sbb.workflow.mapper;
 
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.api.workflow.WorkflowStartModel;
 import ch.sbb.workflow.entity.Workflow;
 import lombok.experimental.UtilityClass;
