@@ -13,12 +13,14 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Schema(name = "TimetableFieldNumberVersion")
 public class TimetableFieldNumberVersionVersionModel extends BaseVersionModel implements DatesValidator {
