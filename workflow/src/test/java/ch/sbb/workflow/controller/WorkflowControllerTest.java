@@ -10,7 +10,7 @@ import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
-import ch.sbb.workflow.service.lidi.LineWorkflowClient;
+import ch.sbb.atlas.api.client.LineWorkflowClient;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
