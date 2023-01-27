@@ -58,7 +58,7 @@ public class LineWorkflowProcessingServiceTest {
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
 
     //when
-    workflowProcessingService.processLineWorkflow(workflowEvent);
+    workflowProcessingService.processLineWorkflow(workflowEvent, lineVersion);
 
     //then
     verify(lineVersionRepository).save(lineVersion);
@@ -78,7 +78,7 @@ public class LineWorkflowProcessingServiceTest {
     when(lineVersionRepository.findById(1000L)).thenReturn(Optional.of(lineVersion));
 
     //when
-    workflowProcessingService.processLineWorkflow(workflowEvent);
+    workflowProcessingService.processLineWorkflow(workflowEvent, lineVersion);
 
     //then
     verify(lineVersionRepository).save(lineVersion);
