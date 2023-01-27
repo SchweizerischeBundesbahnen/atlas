@@ -1,16 +1,16 @@
 package ch.sbb.workflow.service;
 
+import ch.sbb.atlas.api.client.LineWorkflowClient;
+import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
-import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
-import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
-import ch.sbb.workflow.service.lidi.LineWorkflowClient;
+import ch.sbb.workflow.mapper.PersonMapper;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +54,7 @@ public class WorkflowService {
       throw new BusinessObjectCurrentlyNotInReviewException();
     }
     workflow.setCheckComment(examinantWorkflowCheckModel.getCheckComment());
-    workflow.setExaminant(PersonModel.toEntity(examinantWorkflowCheckModel.getExaminant()));
+    workflow.setExaminant(PersonMapper.toEntity(examinantWorkflowCheckModel.getExaminant()));
     workflow.setStatus(
         examinantWorkflowCheckModel.isAccepted() ? WorkflowStatus.APPROVED : WorkflowStatus.REJECTED);
 
