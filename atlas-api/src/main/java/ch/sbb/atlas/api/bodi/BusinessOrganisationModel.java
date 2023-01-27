@@ -1,12 +1,9 @@
-package ch.sbb.business.organisation.directory.api;
+package ch.sbb.atlas.api.bodi;
 
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
-import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.entity.BusinessType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
@@ -17,21 +14,18 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@SuperBuilder
+@Builder
 @FieldNameConstants
-@Schema(name = "BusinessOrganisationVersion")
-public class BusinessOrganisationVersionModel extends BaseVersionModel implements DatesValidator {
-
-  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
-  private Long id;
+@Schema(name = "BusinessOrganisation")
+public class BusinessOrganisationModel {
 
   @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052", accessMode =
       AccessMode.READ_ONLY)
@@ -66,37 +60,36 @@ public class BusinessOrganisationVersionModel extends BaseVersionModel implement
 
   @Schema(description = "Abbreviation German", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationDe;
 
   @Schema(description = "Abbreviation French", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationFr;
 
   @Schema(description = "Abbreviation Italian", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationIt;
 
   @Schema(description = "Abbreviation English", example = "STI")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_10)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ALPHA_NUMERIC)
   @NotNull
   private String abbreviationEn;
 
   @Schema(description = "Organisation Number", example = "146")
   @Min(value = 0)
   @Max(value = 99999)
-  @NotNull
   private Integer organisationNumber;
 
   @Schema(description = "Enterprise E-Mail address", example = "hans.muster@enterprise.ch")
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
-  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   private String contactEnterpriseEmail;
 
   @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
@@ -112,59 +105,5 @@ public class BusinessOrganisationVersionModel extends BaseVersionModel implement
   @Schema(description = "Valid to")
   @NotNull
   private LocalDate validTo;
-
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5",
-      accessMode = AccessMode.READ_ONLY)
-  private Integer etagVersion;
-
-  public static BusinessOrganisationVersion toEntity(BusinessOrganisationVersionModel model) {
-    return BusinessOrganisationVersion.builder()
-        .id(model.getId())
-        .status(model.getStatus())
-        .descriptionDe(model.getDescriptionDe())
-        .descriptionFr(model.getDescriptionFr())
-        .descriptionIt(model.getDescriptionIt())
-        .descriptionEn(model.getDescriptionEn())
-        .abbreviationDe(model.getAbbreviationDe())
-        .abbreviationFr(model.getAbbreviationFr())
-        .abbreviationIt(model.getAbbreviationIt())
-        .abbreviationEn(model.getAbbreviationEn())
-        .validFrom(model.getValidFrom())
-        .validTo(model.getValidTo())
-        .organisationNumber(model.getOrganisationNumber())
-        .contactEnterpriseEmail(model.getContactEnterpriseEmail())
-        .sboid(model.getSboid())
-        .businessTypes(model.getBusinessTypes())
-        .version(model.getEtagVersion())
-        .build();
-  }
-
-  public static BusinessOrganisationVersionModel toModel(BusinessOrganisationVersion entity) {
-    return BusinessOrganisationVersionModel
-        .builder()
-        .id(entity.getId())
-        .status(entity.getStatus())
-        .descriptionDe(entity.getDescriptionDe())
-        .descriptionFr(entity.getDescriptionFr())
-        .descriptionIt(entity.getDescriptionIt())
-        .descriptionEn(entity.getDescriptionEn())
-        .abbreviationDe(entity.getAbbreviationDe())
-        .abbreviationFr(entity.getAbbreviationFr())
-        .abbreviationIt(entity.getAbbreviationIt())
-        .abbreviationEn(entity.getAbbreviationEn())
-        .validFrom(entity.getValidFrom())
-        .validTo(entity.getValidTo())
-        .organisationNumber(entity.getOrganisationNumber())
-        .contactEnterpriseEmail(entity.getContactEnterpriseEmail())
-        .sboid(entity.getSboid())
-        .etagVersion(entity.getVersion())
-        .said(SboidToSaidConverter.toSaid(entity.getSboid()))
-        .businessTypes(entity.getBusinessTypes())
-        .creator(entity.getCreator())
-        .creationDate(entity.getCreationDate())
-        .editor(entity.getEditor())
-        .editionDate(entity.getEditionDate())
-        .build();
-  }
 
 }
