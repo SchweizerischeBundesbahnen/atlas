@@ -1,14 +1,14 @@
 package ch.sbb.line.directory;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.api.line.SublineVersionModel;
-import ch.sbb.atlas.api.line.SublineVersionModel.SublineVersionVersionModelBuilder;
+import ch.sbb.atlas.api.lidi.SublineVersionModel;
+import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionVersionModelBuilder;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline.SublineBuilder;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
-import ch.sbb.atlas.api.line.enumaration.PaymentType;
-import ch.sbb.atlas.api.line.enumaration.SublineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import java.time.LocalDate;
 
 public class SublineTestData {

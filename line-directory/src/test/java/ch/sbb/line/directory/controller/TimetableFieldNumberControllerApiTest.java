@@ -11,8 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
-import ch.sbb.atlas.api.line.LineVersionModel.Fields;
-import ch.sbb.atlas.api.line.TimetableFieldNumberVersionVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;

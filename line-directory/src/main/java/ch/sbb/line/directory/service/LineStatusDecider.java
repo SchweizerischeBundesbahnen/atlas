@@ -2,7 +2,7 @@ package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.atlas.api.line.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
