@@ -1,4 +1,4 @@
-package ch.sbb.workflow.api;
+package ch.sbb.atlas.api.workflow;
 
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
