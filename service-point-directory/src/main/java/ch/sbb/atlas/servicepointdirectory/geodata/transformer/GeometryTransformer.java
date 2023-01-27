@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.transformer.CoordinateTransformer;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
@@ -51,12 +51,16 @@ public class GeometryTransformer {
   }
 
   public Map<SpatialReference, Envelope> getProjectedAreas(Envelope areaWgs84) {
-    final Map<SpatialReference, Envelope> projectedAreas = new HashMap<>();
+    Map<SpatialReference, Envelope> projectedAreas = new EnumMap<>(SpatialReference.class);
     Stream.of(SpatialReference.values())
-          .filter(sr -> !sr.equals(SpatialReference.WGS84))
-          .forEach(sr ->
-              projectedAreas.put(sr, projectArea(SpatialReference.WGS84, areaWgs84, sr))
-          );
+        .forEach(spatialReference -> {
+              if (spatialReference == SpatialReference.WGS84) {
+                projectedAreas.put(spatialReference, areaWgs84);
+              } else {
+                projectedAreas.put(spatialReference, projectArea(SpatialReference.WGS84, areaWgs84, spatialReference));
+              }
+            }
+        );
     return projectedAreas;
   }
 }
