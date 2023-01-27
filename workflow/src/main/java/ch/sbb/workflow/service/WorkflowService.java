@@ -4,8 +4,8 @@ import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundExc
 import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
-import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
-import ch.sbb.workflow.api.PersonModel;
+import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
+import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
