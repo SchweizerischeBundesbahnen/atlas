@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.mapper;
 
-import ch.sbb.atlas.api.line.CoverageModel;
+import ch.sbb.atlas.api.lidi.CoverageModel;
 import ch.sbb.line.directory.entity.Coverage;
 import lombok.experimental.UtilityClass;
 

@@ -1,17 +1,17 @@
 package ch.sbb.line.directory.service;
 
-import static ch.sbb.atlas.api.line.enumaration.CoverageType.COMPLETE;
-import static ch.sbb.atlas.api.line.enumaration.CoverageType.INCOMPLETE;
-import static ch.sbb.atlas.api.line.enumaration.ModelType.LINE;
-import static ch.sbb.atlas.api.line.enumaration.ModelType.SUBLINE;
-import static ch.sbb.atlas.api.line.enumaration.ValidationErrorType.LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
-import static ch.sbb.atlas.api.line.enumaration.ValidationErrorType.SUBLINE_RANGE_OUTSIDE;
+import static ch.sbb.atlas.api.lidi.enumaration.CoverageType.COMPLETE;
+import static ch.sbb.atlas.api.lidi.enumaration.CoverageType.INCOMPLETE;
+import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
+import static ch.sbb.atlas.api.lidi.enumaration.ModelType.SUBLINE;
+import static ch.sbb.atlas.api.lidi.enumaration.ValidationErrorType.LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE;
+import static ch.sbb.atlas.api.lidi.enumaration.ValidationErrorType.SUBLINE_RANGE_OUTSIDE;
 
 import ch.sbb.line.directory.entity.Coverage;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.atlas.api.line.enumaration.ModelType;
-import ch.sbb.atlas.api.line.enumaration.ValidationErrorType;
+import ch.sbb.atlas.api.lidi.enumaration.ModelType;
+import ch.sbb.atlas.api.lidi.enumaration.ValidationErrorType;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import java.time.LocalDate;

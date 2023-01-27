@@ -6,7 +6,7 @@ import static java.util.stream.Collectors.toList;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.atlas.api.line.enumaration.SublineType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.CoverageService;

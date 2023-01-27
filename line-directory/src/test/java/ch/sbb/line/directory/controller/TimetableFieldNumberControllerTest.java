@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException;
-import ch.sbb.atlas.api.line.TimetableFieldNumberModel;
-import ch.sbb.atlas.api.line.TimetableFieldNumberVersionVersionModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
