@@ -1,10 +1,9 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.api.lidi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.lidi.SublineVersionModel;
+import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionVersionModelBuilder;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import java.time.LocalDate;
@@ -26,7 +25,7 @@ class SublineVersionModelTest {
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-  private static SublineVersionVersionModelBuilder sublineVersionModel() {
+  private static SublineVersionModelBuilder<?, ?> sublineVersionModel() {
     return SublineVersionModel.builder()
         .status(Status.VALIDATED)
         .sublineType(SublineType.TECHNICAL)
