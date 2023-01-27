@@ -1,9 +1,13 @@
 package ch.sbb.workflow.controller;
 
+import ch.sbb.atlas.api.workflow.ClientPersonModel;
+import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
+import ch.sbb.atlas.api.workflow.PersonModel;
+import ch.sbb.atlas.api.workflow.WorkflowModel;
+import ch.sbb.atlas.api.workflow.WorkflowStartModel;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
-import ch.sbb.workflow.api.*;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.service.lidi.LineWorkflowClient;
