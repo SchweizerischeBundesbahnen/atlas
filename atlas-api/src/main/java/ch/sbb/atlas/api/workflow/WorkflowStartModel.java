@@ -1,10 +1,9 @@
-package ch.sbb.workflow.api;
+package ch.sbb.atlas.api.workflow;
 
 import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
-import ch.sbb.workflow.entity.Workflow;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import javax.validation.Valid;
@@ -52,16 +51,5 @@ public class WorkflowStartModel {
   @Valid
   @NotNull
   private ClientPersonModel client;
-
-  public static Workflow toEntity(WorkflowStartModel model) {
-    return Workflow.builder()
-        .workflowType(model.getWorkflowType())
-        .businessObjectId(model.getBusinessObjectId())
-        .swissId(model.getSwissId())
-        .description(model.getDescription())
-        .workflowComment(model.getWorkflowComment())
-        .client(ClientPersonModel.toEntity(model.getClient()))
-        .build();
-  }
 
 }
