@@ -1,8 +1,6 @@
-package ch.sbb.business.organisation.directory.api;
+package ch.sbb.atlas.api.bodi;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.business.organisation.directory.entity.TransportCompany;
-import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
@@ -37,21 +35,5 @@ public class TransportCompanyRelationModel {
   @Schema(description = "Valid To", example = "2022-01-01", required = true)
   @NotNull
   private LocalDate validTo;
-
-  public static TransportCompanyRelation toEntity(TransportCompanyRelationModel model, TransportCompany transportCompany) {
-    return TransportCompanyRelation.builder()
-                                   .sboid(model.getSboid())
-                                   .transportCompany(transportCompany)
-                                   .validFrom(model.getValidFrom())
-                                   .validTo(model.getValidTo()).build();
-  }
-
-  public static TransportCompanyRelationModel toModel(TransportCompanyRelation entity) {
-    return TransportCompanyRelationModel.builder()
-                                        .transportCompanyId(entity.getTransportCompany().getId())
-                                        .sboid(entity.getSboid())
-                                        .validFrom(entity.getValidFrom())
-                                        .validTo(entity.getValidTo()).build();
-  }
 
 }
