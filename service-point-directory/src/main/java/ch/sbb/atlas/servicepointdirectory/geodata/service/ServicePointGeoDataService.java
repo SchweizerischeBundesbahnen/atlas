@@ -38,7 +38,7 @@ public class ServicePointGeoDataService {
     log.debug("Calculating Geodata");
     Envelope tileAreaWgs84Exact = boundingBoxTransformer.calculateBoundingBox(z, x, y);
 
-    log.info("building tile layer {}/{}/{}", z, x, y);
+    log.info("Building Tile {}/{}/{}", z, x, y);
     Envelope tileAreaWgs84WebExact = geometryTransformer.projectArea(SpatialReference.WGS84,
         tileAreaWgs84Exact, SpatialReference.WGS84WEB);
 
