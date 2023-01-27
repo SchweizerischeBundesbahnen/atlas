@@ -16,9 +16,9 @@ import org.locationtech.jts.geom.Point;
 
 class VectorTileServiceTest {
 
-  private static int DEFAULT_VECTOR_TILE_EXTENT = 4096;
-  private static int VECTOR_TILE_MOVE_TO_COMMAND_ENCODED = 9;
-  private static String TEST_LAYER_NAME = "test-layer";
+  private static final int DEFAULT_VECTOR_TILE_EXTENT = 4096;
+  private static final int VECTOR_TILE_MOVE_TO_COMMAND_ENCODED = 9;
+  private static final String TEST_LAYER_NAME = "test-layer";
   private VectorTileService vectorTileService;
 
   private GeometryFactory geometryFactory;

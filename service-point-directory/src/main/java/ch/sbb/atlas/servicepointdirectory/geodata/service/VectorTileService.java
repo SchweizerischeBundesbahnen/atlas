@@ -15,7 +15,7 @@ public class VectorTileService {
       String layerName,
       List<Point> geometries,
       Envelope tileEnvelopeWeb) {
-    final VectorTileEncoder vectorTileEncoder = new VectorTileEncoder();
+    VectorTileEncoder vectorTileEncoder = new VectorTileEncoder();
     vectorTileEncoder.setTileEnvelope(tileEnvelopeWeb);
     geometries.forEach(
         geometry -> vectorTileEncoder.addFeature(
