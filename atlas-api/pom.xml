@@ -21,6 +21,10 @@
          <groupId>org.springframework.boot</groupId>
       </dependency>
       <dependency>
+         <artifactId>spring-cloud-starter-openfeign</artifactId>
+         <groupId>org.springframework.cloud</groupId>
+      </dependency>
+      <dependency>
          <artifactId>swagger-core</artifactId>
          <groupId>io.swagger.core.v3</groupId>
       </dependency>
@@ -32,12 +36,6 @@
          <artifactId>base-service</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>1.149.0</version>
-         <exclusions>
-            <exclusion>
-               <groupId>*</groupId>
-               <artifactId>*</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
       <dependency>
          <artifactId>lombok</artifactId>

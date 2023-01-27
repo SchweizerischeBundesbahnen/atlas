@@ -1,7 +1,6 @@
-package ch.sbb.workflow.service.lidi;
+package ch.sbb.atlas.api.client;
 
 import ch.sbb.atlas.api.line.workflow.LineWorkflowApi;
-import ch.sbb.workflow.config.TokenPassingFeignClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(name = "lineWorkflowClient", url = "${atlas.client.gateway.url}", path = "line-directory", configuration =
