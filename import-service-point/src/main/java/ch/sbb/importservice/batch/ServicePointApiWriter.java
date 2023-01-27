@@ -6,11 +6,13 @@ import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointC
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@StepScope
 public class ServicePointApiWriter extends BaseApiWriter implements ItemWriter<ServicePointCsvModelContainer> {
 
   @Override
