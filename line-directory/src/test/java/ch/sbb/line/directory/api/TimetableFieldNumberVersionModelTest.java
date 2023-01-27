@@ -2,10 +2,10 @@ package ch.sbb.line.directory.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.line.TimetableFieldNumberVersionVersionModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.line.TimetableFieldNumberVersionVersionModel.TimetableFieldNumberVersionVersionModelBuilder;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel.TimetableFieldNumberVersionVersionModelBuilder;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;

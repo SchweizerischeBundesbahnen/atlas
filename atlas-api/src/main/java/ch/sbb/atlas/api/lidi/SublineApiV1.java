@@ -1,6 +1,6 @@
-package ch.sbb.atlas.api.line;
+package ch.sbb.atlas.api.lidi;
 
-import ch.sbb.atlas.api.line.enumaration.SublineType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
 import ch.sbb.atlas.base.service.model.api.Container;
