@@ -1,7 +1,6 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.api.line;
 
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
-import ch.sbb.line.directory.entity.LineVersionWorkflow;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import lombok.AllArgsConstructor;
@@ -23,12 +22,5 @@ public class LineVersionWorkflowModel {
 
   @Schema(description = "WorkflowProcessingStatus")
   private WorkflowProcessingStatus workflowProcessingStatus;
-
-  public static LineVersionWorkflowModel toModel(LineVersionWorkflow lineVersionWorkflow) {
-    return LineVersionWorkflowModel.builder()
-        .workflowId(lineVersionWorkflow.getWorkflowId())
-        .workflowProcessingStatus(lineVersionWorkflow.getWorkflowProcessingStatus())
-        .build();
-  }
 
 }
