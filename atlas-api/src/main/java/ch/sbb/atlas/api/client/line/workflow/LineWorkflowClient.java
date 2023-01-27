@@ -1,5 +1,6 @@
-package ch.sbb.atlas.api.client;
+package ch.sbb.atlas.api.client.line.workflow;
 
+import ch.sbb.atlas.api.client.TokenPassingFeignClientConfig;
 import ch.sbb.atlas.api.line.workflow.LineWorkflowApi;
 import org.springframework.cloud.openfeign.FeignClient;
 
