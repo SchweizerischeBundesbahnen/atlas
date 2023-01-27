@@ -22,7 +22,7 @@ import org.hibernate.annotations.Subselect;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString()
+@ToString
 @SuperBuilder
 @FieldNameConstants
 @Immutable
