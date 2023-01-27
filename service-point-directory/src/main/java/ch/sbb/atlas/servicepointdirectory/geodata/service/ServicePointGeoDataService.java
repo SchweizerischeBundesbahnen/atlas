@@ -24,58 +24,66 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ServicePointGeoDataService {
 
-  private final static String LAYER_NAME = "service-points";
+  private static final String LAYER_NAME = "service-points";
+
   private final BoundingBoxTransformer boundingBoxTransformer;
-
   private final GeometryTransformer geometryTransformer;
-
   private final VectorTileService vectorTileService;
-
   private final ServicePointGeoDataMapper servicePointGeoDataMapper;
-
-  private final ServicePointGeolocationRepository dataRepository;
+  private final ServicePointGeolocationRepository geolocationRepository;
 
   private static final double TEN_PERCENT = 0.1;
 
   public Tile getGeoData(Integer z, Integer x, Integer y, LocalDate validAtDate) {
-    log.info("calculating geodata area");
-    final Envelope tileAreaWgs84Exact = boundingBoxTransformer.calculateBoundingBox(z, x, y);
-
-    // vector tiles: get data with 10-20% buffer
-    final double tenPercentOfArea =
-        Math.abs(tileAreaWgs84Exact.getMaxX() - tileAreaWgs84Exact.getMinX()) * TEN_PERCENT;
-
-    final Envelope geoDataAreaWgs84 = tileAreaWgs84Exact.copy();
-    geoDataAreaWgs84.expandBy(tenPercentOfArea);
-
-    log.info("projecting geodata area");
-    final Map<SpatialReference, Envelope> geoDataAreas = geometryTransformer.getProjectedAreas(
-        geoDataAreaWgs84);
-
-    log.info("finding service points");
-    final List<ServicePointGeoData> servicePoints = dataRepository
-        .findAll(
-            validAtDate(validAtDate).and(
-                coordinatesBetween(SpatialReference.LV95,
-                    geoDataAreas.get(SpatialReference.LV95))
-                    .or(coordinatesBetween(SpatialReference.WGS84WEB,
-                        geoDataAreas.get(SpatialReference.WGS84WEB)))
-                    .or(coordinatesBetween(SpatialReference.WGS84, geoDataAreaWgs84))
-                    .or(coordinatesBetween(SpatialReference.LV03,
-                        geoDataAreas.get(SpatialReference.LV03)))
-            )
-        );
-
-    log.info("mapping {} service points", servicePoints.size());
-    final List<Point> pointList = servicePointGeoDataMapper.mapToGeometryList(servicePoints);
+    log.debug("Calculating Geodata");
+    Envelope tileAreaWgs84Exact = boundingBoxTransformer.calculateBoundingBox(z, x, y);
 
     log.info("building tile layer {}/{}/{}", z, x, y);
-    final Envelope tileAreaWgs84WebExact = geometryTransformer.projectArea(SpatialReference.WGS84,
+    Envelope tileAreaWgs84WebExact = geometryTransformer.projectArea(SpatialReference.WGS84,
         tileAreaWgs84Exact, SpatialReference.WGS84WEB);
+
+    Envelope geoDataAreaWgs84 = tenPercentEnhancedArea(tileAreaWgs84Exact);
 
     return vectorTileService.encodeTileLayer(
         LAYER_NAME,
-        pointList,
+        buildServicePointsForMap(validAtDate, geoDataAreaWgs84),
         tileAreaWgs84WebExact);
   }
+
+  /**
+   * We have to load our Points a bit over the tile border, so it does not have any blank spaces on the map
+   */
+  private static Envelope tenPercentEnhancedArea(Envelope tileAreaWgs84Exact) {
+    double tenPercentOfArea =
+        Math.abs(tileAreaWgs84Exact.getMaxX() - tileAreaWgs84Exact.getMinX()) * TEN_PERCENT;
+
+    Envelope geoDataAreaWgs84 = tileAreaWgs84Exact.copy();
+    geoDataAreaWgs84.expandBy(tenPercentOfArea);
+    return geoDataAreaWgs84;
+  }
+
+  private List<Point> buildServicePointsForMap(LocalDate validAtDate, Envelope geoDataAreaWgs84){
+    log.debug("Projecting Geodata Areas");
+    Map<SpatialReference, Envelope> geoDataAreas = geometryTransformer.getProjectedAreas(
+        geoDataAreaWgs84);
+
+    log.debug("Finding service points");
+    List<ServicePointGeoData> servicePoints = getServicePointGeoData(validAtDate, geoDataAreas);
+
+    log.debug("mapping {} service points", servicePoints.size());
+    return servicePointGeoDataMapper.mapToWgs84WebGeometry(servicePoints);
+  }
+
+  private List<ServicePointGeoData> getServicePointGeoData(LocalDate validAtDate, Map<SpatialReference, Envelope> geoDataAreas) {
+    return geolocationRepository
+        .findAll(
+            validAtDate(validAtDate).and(
+                coordinatesBetween(SpatialReference.LV95, geoDataAreas.get(SpatialReference.LV95))
+                    .or(coordinatesBetween(SpatialReference.WGS84WEB, geoDataAreas.get(SpatialReference.WGS84WEB)))
+                    .or(coordinatesBetween(SpatialReference.WGS84, geoDataAreas.get(SpatialReference.WGS84)))
+                    .or(coordinatesBetween(SpatialReference.LV03, geoDataAreas.get(SpatialReference.LV03)))
+            )
+        );
+  }
+
 }
