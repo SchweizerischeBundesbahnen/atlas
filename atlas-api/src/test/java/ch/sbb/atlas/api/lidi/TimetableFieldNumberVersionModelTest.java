@@ -1,8 +1,7 @@
-package ch.sbb.line.directory.api;
+package ch.sbb.atlas.api.lidi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel.TimetableFieldNumberVersionVersionModelBuilder;
@@ -19,7 +18,7 @@ public class TimetableFieldNumberVersionModelTest {
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-  private static TimetableFieldNumberVersionVersionModelBuilder versionModel() {
+  private static TimetableFieldNumberVersionVersionModelBuilder<?, ?> versionModel() {
     return TimetableFieldNumberVersionVersionModel.builder()
         .status(Status.VALIDATED)
         .swissTimetableFieldNumber("a.90")
