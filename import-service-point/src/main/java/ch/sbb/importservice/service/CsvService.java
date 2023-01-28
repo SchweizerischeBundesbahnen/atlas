@@ -75,10 +75,16 @@ public class CsvService {
           .didokCode(key)
           .servicePointCsvModelList(value)
           .build();
+      servicePointCsvModelContainer.mergeVersionsWithIsNotVirtualAndHasNotGeolocation();
       value.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
       servicePointCsvModelContainers.add(servicePointCsvModelContainer);
     });
-    log.info("Found {} ServicePointCsvModelContainers to send to ServicePointDirectory", servicePointCsvModelContainers.size());
+    long prunedServicePointModels = servicePointCsvModelContainers.stream()
+        .collect(Collectors.summarizingInt(value -> value.getServicePointCsvModelList().size())).getSum();
+    log.info("Found {} ServicePointCsvModelContainers with {} ServicePointModels to send to ServicePointDirectory",
+        servicePointCsvModelContainers.size(), servicePointCsvModels.size());
+    log.info("Found and merged {} ServicePointCsvModels", servicePointCsvModels.size() - prunedServicePointModels);
+    log.info("Total ServicePointCsvModel to process {}", prunedServicePointModels);
     return servicePointCsvModelContainers;
   }
 
