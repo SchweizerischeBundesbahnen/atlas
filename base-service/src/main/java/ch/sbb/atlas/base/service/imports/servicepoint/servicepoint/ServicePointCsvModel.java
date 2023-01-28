@@ -40,6 +40,7 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("ABKUERZUNG")
   private String abkuerzung;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("IS_VIRTUELL")
   @JsonDeserialize(using = NumericBooleanDeserializer.class)
   private Boolean isVirtuell;
