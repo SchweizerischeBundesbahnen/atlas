@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.commons.lang3.ObjectUtils;
@@ -57,26 +58,31 @@ public class BaseDidokCsvModel {
 
   // Validity
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("GUELTIG_VON")
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validFrom;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("GUELTIG_BIS")
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
 
   // Create/Edit Info
-
+  @EqualsAndHashCode.Exclude
   @JsonProperty("ERSTELLT_AM")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   private LocalDateTime createdAt;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("ERSTELLT_VON")
   private String createdBy;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("GEAENDERT_VON")
   private String editedBy;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("GEAENDERT_AM")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   private LocalDateTime editedAt;
