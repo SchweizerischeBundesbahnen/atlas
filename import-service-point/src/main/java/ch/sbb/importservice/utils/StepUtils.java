@@ -1,6 +1,7 @@
 package ch.sbb.importservice.utils;
 
 import feign.FeignException;
+import feign.RetryableException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.experimental.UtilityClass;
@@ -26,6 +27,7 @@ public class StepUtils {
     Map<Class<? extends Throwable>, Boolean> exceptionsToRetry = new HashMap<>();
     exceptionsToRetry.put(FeignException.InternalServerError.class, true);
     exceptionsToRetry.put(ConnectTimeoutException.class, true);
+    exceptionsToRetry.put(RetryableException.class, true);
     log.info("Configuring Retry policy for step [{}] ", stepName);
     log.info("Set max attemps to retry: {}", maxAttempts);
     log.info("Set exceptions to retry: {}", exceptionsToRetry);
