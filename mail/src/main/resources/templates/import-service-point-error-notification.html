@@ -95,11 +95,11 @@
         <b>Error Detail Message:</b>
         <br/>
         <ul>
+            <li><b>Step Execution Information:</b>
+                <span th:text="${properties.get(0).get('stepExecutionInformation')}"></span>
+            </li>
             <li><b>Step Name:</b>
                 <span th:text="${properties.get(0).get('stepName')}"></span>
-            </li>
-            <li><b>Step Id:</b>
-                <span th:text="${properties.get(0).get('stepId')}"></span>
             </li>
             <li><b>Exception:</b>
                 <span th:text="${properties.get(0).get('exception')}"></span>

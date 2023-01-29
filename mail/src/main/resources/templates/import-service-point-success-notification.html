@@ -114,9 +114,15 @@
 <div class='content-container'>
     <div class="message mt-1" th:text="'The job ' + ${properties.get(0).get('jobName')} + ' was successfully executed.'"></div>
     <ul>
-        <li><b th:text="'Total Imported lines: ' + ${properties.get(0).get('importProcessItemsSize')} "></b></li>
-        <li><b th:text="'Total Success Imported lines: ' + ${properties.get(0).get('successImportedItemsSize')}  "></b></li>
-        <li><b th:text="'Total Failed Imported lines: ' + ${properties.get(0).get('failedImportedItemsSize')}"></b></li>
+        <li><b th:text="'Step Execution Information: ' + ${properties.get(0).get('stepExecutionInformation')} "></b></li>
+        <li><b th:text="'Total Imported Service Point CSV lines: ' + ${properties.get(0).get('importProcessItemsSize')} "></b>
+        </li>
+        <li>
+            <b th:text="'Total Success Imported Service Point CSV lines: ' + ${properties.get(0).get('successImportedItemsSize')}  "></b>
+        </li>
+        <li>
+            <b th:text="'Total Failed Imported Service Point CSV lines: ' + ${properties.get(0).get('failedImportedItemsSize')}"></b>
+        </li>
     </ul>
 
     <div class='message mt-1' th:if="${!properties.get(0).get('failedImportedItems').isEmpty()}"
