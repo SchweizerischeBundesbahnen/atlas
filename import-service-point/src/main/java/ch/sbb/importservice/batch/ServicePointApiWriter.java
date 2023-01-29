@@ -21,7 +21,7 @@ public class ServicePointApiWriter extends BaseApiWriter implements ItemWriter<S
     ServicePointImportReqModel servicePointImportReqModel = new ServicePointImportReqModel();
     servicePointImportReqModel.setServicePointCsvModelContainers(servicePointCsvModels);
     Long stepExecutionId = stepExecution.getId();
-    List<ServicePointItemImportResult> servicePointsResult = sePoDiClientService.getServicePoints(servicePointImportReqModel);
+    List<ServicePointItemImportResult> servicePointsResult = sePoDiClientService.postServicePoints(servicePointImportReqModel);
 
     for (ServicePointItemImportResult response : servicePointsResult) {
       saveItemProcessed(stepExecutionId, response.getItemNumber(), response.getStatus(), response.getMessage());

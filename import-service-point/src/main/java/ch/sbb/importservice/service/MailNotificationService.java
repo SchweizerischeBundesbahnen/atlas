@@ -3,6 +3,7 @@ package ch.sbb.importservice.service;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.importservice.entitiy.ImportProcessItem;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.metrics.BatchMetrics;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
@@ -34,16 +36,19 @@ public class MailNotificationService {
         .build();
   }
 
-  public MailNotification buildMailSuccessNotification(String jobName, List<ImportProcessItem> importProcessItems) {
+  public MailNotification buildMailSuccessNotification(String jobName, List<ImportProcessItem> importProcessItems,
+      StepExecution stepExecution) {
     return MailNotification.builder()
         .to(schedulingNotificationAddresses)
         .subject("Job [" + jobName + "] execution successfully")
         .mailType(MailType.IMPORT_SERVICE_POINT_SUCCESS_NOTIFICATION)
-        .templateProperties(buildSuccessMailContent(jobName, importProcessItems))
+        .templateProperties(buildSuccessMailContent(jobName, importProcessItems, stepExecution))
         .build();
   }
 
-  private List<Map<String, Object>> buildSuccessMailContent(String jobName, List<ImportProcessItem> importProcessItems) {
+  private List<Map<String, Object>> buildSuccessMailContent(String jobName, List<ImportProcessItem> importProcessItems,
+      StepExecution stepExecution) {
+    String stepExecutionInformation = getStepExecutionInformation(stepExecution);
 
     List<ImportProcessItem> successImportedItems = filterByStatus(importProcessItems, "SUCCESS");
     List<ImportProcessItem> failedImportedItems = filterByStatus(importProcessItems, "FAILED");
@@ -51,6 +56,7 @@ public class MailNotificationService {
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("jobName", jobName);
+    mailContentProperty.put("stepExecutionInformation", stepExecutionInformation);
     mailContentProperty.put("correlationId", getCurrentSpan());
     mailContentProperty.put("importProcessItemsSize", importProcessItems.size());
     mailContentProperty.put("successImportedItemsSize", successImportedItems.size());
@@ -75,12 +81,13 @@ public class MailNotificationService {
   }
 
   private List<Map<String, Object>> buildErrorMailContent(String jobName, StepExecution stepExecution) {
+    String stepExecutionInformation = getStepExecutionInformation(stepExecution);
 
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("jobName", jobName);
+    mailContentProperty.put("stepExecutionInformation", stepExecutionInformation);
     mailContentProperty.put("stepName", stepExecution.getStepName());
-    mailContentProperty.put("stepId", stepExecution.getId());
     mailContentProperty.put("exception", getException(stepExecution));
     mailContentProperty.put("cause", getCause(stepExecution));
     mailContentProperty.put("jobParameter", getParameters(stepExecution));
@@ -123,6 +130,12 @@ public class MailNotificationService {
   private List<ImportProcessItem> filterByStatus(List<ImportProcessItem> allImportProcessedItem, String status) {
     return allImportProcessedItem.stream()
         .filter(importProcessItem -> importProcessItem.getResponseStatus().equals(status)).toList();
+  }
+
+  private String getStepExecutionInformation(StepExecution stepExecution) {
+    Duration stepExecutionDuration = BatchMetrics.calculateDuration(stepExecution.getStartTime(), stepExecution.getEndTime());
+    return "Step [" + stepExecution.getStepName() + " with id " + stepExecution.getId() + "] executed in "
+        + BatchMetrics.formatDuration(stepExecutionDuration);
   }
 
 }

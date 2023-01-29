@@ -53,7 +53,8 @@ public class JobCompletitionListener implements JobExecutionListener {
     List<ImportProcessItem> allImportProcessedItem =
         importProcessedItemRepository.findAllByStepExecutionId(stepExecution.getId());
 
-    MailNotification mailNotification = mailNotificationService.buildMailSuccessNotification(jobName, allImportProcessedItem);
+    MailNotification mailNotification = mailNotificationService.buildMailSuccessNotification(jobName, allImportProcessedItem,
+        stepExecution);
     mailProducerService.produceMailNotification(mailNotification);
   }
 
