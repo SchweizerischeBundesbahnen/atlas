@@ -54,11 +54,11 @@ public class FileHelperService {
 
   private File downloadImportFileWithPrefix(String csvImportFilePrefix) throws IOException {
     String csvImportFilePrefixToday = attachTodayDate(csvImportFilePrefix);
-    log.info("Downloding CSV file..");
     List<String> foundImportFileKeys = amazonService.getS3ObjectKeysFromPrefix(SERVICEPOINT_DIDOK_DIR_NAME,
         csvImportFilePrefixToday);
     String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys, csvImportFilePrefixToday);
-    log.info("Found File with name: {}. Downloading...", fileKeyToDownload);
+    log.info("Found File with name: {}", fileKeyToDownload);
+    log.info("Downloading {} ...", fileKeyToDownload);
     File download = amazonService.pullFile(fileKeyToDownload);
     log.info("Downloaded file: " + download.getName() + ", size: " + download.length() + " bytes");
     return download;

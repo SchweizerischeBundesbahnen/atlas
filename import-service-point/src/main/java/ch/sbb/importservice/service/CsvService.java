@@ -79,12 +79,7 @@ public class CsvService {
       value.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
       servicePointCsvModelContainers.add(servicePointCsvModelContainer);
     });
-    long prunedServicePointModels = servicePointCsvModelContainers.stream()
-        .collect(Collectors.summarizingInt(value -> value.getServicePointCsvModelList().size())).getSum();
-    log.info("Found {} ServicePointCsvModelContainers with {} ServicePointModels to send to ServicePointDirectory",
-        servicePointCsvModelContainers.size(), servicePointCsvModels.size());
-    log.info("Found and merged {} ServicePointCsvModels", servicePointCsvModels.size() - prunedServicePointModels);
-    log.info("Total ServicePointCsvModel to process {}", prunedServicePointModels);
+    logInfo(servicePointCsvModels, servicePointCsvModelContainers);
     return servicePointCsvModelContainers;
   }
 
@@ -168,6 +163,20 @@ public class CsvService {
       mappedObjects.add(mappingIterator.next());
     }
     return mappedObjects;
+  }
+
+  private void logInfo(List<ServicePointCsvModel> servicePointCsvModels,
+      List<ServicePointCsvModelContainer> servicePointCsvModelContainers) {
+    long prunedServicePointModels = servicePointCsvModelContainers.stream()
+        .collect(Collectors.summarizingInt(value -> value.getServicePointCsvModelList().size())).getSum();
+    List<Integer> mergedDidokNumbers = servicePointCsvModelContainers.stream()
+        .filter(ServicePointCsvModelContainer::isHasMergedVersionNotVirtualWithoutGeolocation)
+        .map(ServicePointCsvModelContainer::getDidokCode).toList();
+    log.info("Found {} ServicePointCsvModelContainers with {} ServicePointModels to send to ServicePointDirectory",
+        servicePointCsvModelContainers.size(), servicePointCsvModels.size());
+    log.info("Found and merged {} ServicePointCsvModels", servicePointCsvModels.size() - prunedServicePointModels);
+    log.info("Total ServicePointCsvModel to process {}", prunedServicePointModels);
+    log.info("Merged ServicePointCsvModel DidokNumber Lists: {}", mergedDidokNumbers);
   }
 
 }
