@@ -45,12 +45,13 @@ public class FileServiceImpl implements FileService {
 
   @Override
   public String getDir() {
+    String pathnameExportDir = "." + File.separator + "export" + File.separator;
     if ("local".equals(activeProfile) || activeProfile == null) {
-      File dir = new File("." + File.separator + "asd");
+      File dir = new File(pathnameExportDir);
       if (!dir.exists()) {
-        dir.getParentFile().mkdirs();
+        dir.mkdirs();
       }
-      return "./export/";
+      return pathnameExportDir;
     }
     return DOCKER_FILE_DIRECTORY;
   }
