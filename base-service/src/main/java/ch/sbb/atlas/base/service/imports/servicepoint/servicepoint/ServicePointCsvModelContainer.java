@@ -24,6 +24,8 @@ public class ServicePointCsvModelContainer {
   private static final String MERGE_NO_VIRTUAL_NO_GEOLOCATION = "[MERGE-NO-VIRTUAL-NO-GEOLOCATION] - ";
   private Integer didokCode;
 
+  private boolean hasMergedVersionNotVirtualWithoutGeolocation;
+
   private List<ServicePointCsvModel> servicePointCsvModelList;
 
   public void mergeVersionsWithIsNotVirtualAndHasNotGeolocation() {
@@ -36,7 +38,8 @@ public class ServicePointCsvModelContainer {
         if (current.equals(next)
             && (isNotVirtualAndHasNotGeolocation(current) || isNotVirtualAndHasNotGeolocation(next))
             && DateHelper.areDatesSequential(current.getValidTo(), next.getValidFrom())) {
-          log.info(MERGE_NO_VIRTUAL_NO_GEOLOCATION + "Found 2 versions to merge with number {}", this.didokCode);
+          this.hasMergedVersionNotVirtualWithoutGeolocation = true;
+          log.info(MERGE_NO_VIRTUAL_NO_GEOLOCATION + "Found versions to merge with number {}", this.didokCode);
           log.info(MERGE_NO_VIRTUAL_NO_GEOLOCATION + "Version-1 [{}]-[{}]", current.getValidFrom(), current.getValidTo());
           log.info(MERGE_NO_VIRTUAL_NO_GEOLOCATION + "Version-2 [{}]-[{}]", next.getValidFrom(), next.getValidTo());
           next.setValidFrom(current.getValidFrom());
