@@ -1,5 +1,6 @@
 package ch.sbb.importservice.listener;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.importservice.entitiy.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
@@ -34,10 +35,11 @@ public class JobCompletitionListener implements JobExecutionListener {
     StepExecution stepExecution = jobExecution.getStepExecutions().stream().findFirst().get();
     if (ExitStatus.COMPLETED.equals(jobExecution.getExitStatus())) {
       sendSuccessfullyNotification(stepExecution);
-      //      clearDB(stepExecution);
+      clearDBFromSuccessImportedItem(stepExecution);
     }
     if (ExitStatus.FAILED.equals(jobExecution.getExitStatus())) {
       sendUnsuccessffulyNotification(stepExecution);
+      importProcessedItemRepository.deleteAllByStepExecutionId(stepExecution.getId());
     }
 
   }
@@ -58,9 +60,10 @@ public class JobCompletitionListener implements JobExecutionListener {
     mailProducerService.produceMailNotification(mailNotification);
   }
 
-  private void clearDB(StepExecution stepExecution) {
+  private void clearDBFromSuccessImportedItem(StepExecution stepExecution) {
     log.info("Deleating item processed from execution: {} ", stepExecution);
-    importProcessedItemRepository.deleteAllByStepExecutionId(stepExecution.getId());
+    importProcessedItemRepository.deleteAllByStepExecutionIdAndResponseStatus(stepExecution.getId(),
+        ItemImportResponseStatus.SUCCESS);
   }
 
   private String getJobName(StepExecution stepExecution) {
