@@ -14,16 +14,19 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 @UtilityClass
 public class StepUtils {
 
+  private static final int BACK_OFF_PERIOD = 10_000;
+  private static final int MAX_ATTEMPTS = 4;
+
   public static FixedBackOffPolicy getBackOffPolicy(String stepName) {
     FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
-    int backOffPeriod = 10_000;
+    int backOffPeriod = BACK_OFF_PERIOD;
     backOffPolicy.setBackOffPeriod(backOffPeriod);
     log.info("Set Back Off Period for step [{}] to [{}ms]", stepName, backOffPeriod);
     return backOffPolicy;
   }
 
   public static SimpleRetryPolicy getRetryPolicy(String stepName) {
-    int maxAttempts = 4;
+    int maxAttempts = MAX_ATTEMPTS;
     Map<Class<? extends Throwable>, Boolean> exceptionsToRetry = new HashMap<>();
     exceptionsToRetry.put(FeignException.InternalServerError.class, true);
     exceptionsToRetry.put(ConnectTimeoutException.class, true);
