@@ -12,13 +12,8 @@ public class LoadingPointApiWriter extends BaseApiWriter implements ItemWriter<L
 
   @Override
   public void write(List<? extends LoadingPointCsvModel> loadingPointCsvModels) {
-    Long stepExecutionId = stepExecution.getId();
-    for (LoadingPointCsvModel loadingPointCsvModel : loadingPointCsvModels) {
-      //      Response response = sePoDiClientService.getServicePoints(loadingPointCsvModel.getNumber());
-      //      saveItemProcessed(stepExecutionId, loadingPointCsvModel.getNumber(), response);
-      //      int status = response.status();
-      //      log.info("Response status {}", status);
-    }
+    log.info("Call for LoadingPointService not configured...");
+    log.info("Prepared {} loadingPointCsvModels to send to LoadingPointService", loadingPointCsvModels.size());
   }
 
 }

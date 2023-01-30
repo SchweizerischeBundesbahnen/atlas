@@ -2,6 +2,7 @@ package ch.sbb.importservice.service;
 
 import ch.sbb.atlas.base.service.amazon.service.AmazonService;
 import ch.sbb.atlas.base.service.amazon.service.FileService;
+import ch.sbb.importservice.exception.FileException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class FileHelperService {
     try (OutputStream os = new FileOutputStream(fileToImport)) {
       os.write(multipartFile.getBytes());
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new FileException(e);
     }
     return fileToImport;
   }
@@ -39,7 +40,7 @@ public class FileHelperService {
     try {
       return downloadImportFileWithPrefix(csvImportFilePrefix);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new FileException(e);
     }
   }
 
@@ -66,10 +67,9 @@ public class FileHelperService {
 
   private String handleImportFileKeysResult(List<String> importFileKeys, String csvImportFilePrefix) {
     if (importFileKeys.isEmpty()) {
-      //TODO: create custom Exception
-      throw new RuntimeException("[IMPORT]: File " + csvImportFilePrefix + " not found on S3");
+      throw new FileException("[IMPORT]: File " + csvImportFilePrefix + " not found on S3");
     } else if (importFileKeys.size() > 1) {
-      throw new RuntimeException("[IMPORT]: Found more than 1 file " + csvImportFilePrefix + " to download on S3");
+      throw new FileException("[IMPORT]: Found more than 1 file " + csvImportFilePrefix + " to download on S3");
     }
     return importFileKeys.get(0);
   }
