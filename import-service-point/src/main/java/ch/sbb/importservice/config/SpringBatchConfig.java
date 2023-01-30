@@ -5,13 +5,12 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_
 
 import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.importservice.batch.LoadingPointApiWriter;
-import ch.sbb.importservice.batch.ServicePointApiWriter;
-import ch.sbb.importservice.batch.ServicePointProcessor;
-import ch.sbb.importservice.batch.ThreadSafeListItemReader;
 import ch.sbb.importservice.listener.JobCompletitionListener;
+import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.CsvService;
 import ch.sbb.importservice.utils.StepUtils;
+import ch.sbb.importservice.writer.LoadingPointApiWriter;
+import ch.sbb.importservice.writer.ServicePointApiWriter;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
@@ -46,11 +45,6 @@ public class SpringBatchConfig {
   private final CsvService csvService;
 
   private final JobCompletitionListener jobCompletitionListener;
-
-  @Bean
-  public ServicePointProcessor processor() {
-    return new ServicePointProcessor();
-  }
 
   @StepScope
   @Bean
