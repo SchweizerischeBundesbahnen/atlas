@@ -11,9 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.user.administration.api.UserModel.Fields;
-import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
-import ch.sbb.atlas.user.administration.api.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.UserModel.Fields;
+import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
