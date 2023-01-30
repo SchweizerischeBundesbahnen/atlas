@@ -8,6 +8,7 @@ import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.importservice.exception.CsvException;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.BufferedReader;
 import java.io.File;
@@ -116,7 +117,7 @@ public class CsvService {
           .readValues(String.join("\n", csvLinesToProcess));
       return mapObjects(mappingIterator);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CsvException(e);
     }
   }
 
@@ -127,14 +128,14 @@ public class CsvService {
         return line;
       }
     }
-    throw new RuntimeException("Not found header line in csv");
+    throw new CsvException("Not found header line in csv");
   }
 
   private int getColumnIndexOfEditedAt(String headerLine) {
     String[] attributes = headerLine.split(CSV_DELIMITER);
     int editedAtColumnIndex = Arrays.asList(attributes).indexOf(EDITED_AT_COLUMN_NAME);
     if (editedAtColumnIndex == -1) {
-      throw new RuntimeException("Not found %s index".formatted(EDITED_AT_COLUMN_NAME));
+      throw new CsvException("Not found %s index".formatted(EDITED_AT_COLUMN_NAME));
     }
     return editedAtColumnIndex;
   }

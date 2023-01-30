@@ -77,7 +77,7 @@ info:
 
 logging:
   level:
-    root: INFO
+    root: ERROR
     com:
       azure:
         identity: WARN
