@@ -16,7 +16,7 @@ public class JobExecutionException extends AtlasException {
   private static final String ERROR = "Job execution failed";
 
   private final String jobName;
-  private final String errorMessage;
+  private final Exception exception;
 
   @Override
   public ErrorResponse getErrorResponse() {
@@ -30,7 +30,7 @@ public class JobExecutionException extends AtlasException {
 
   private List<Detail> getErrorDetails() {
     return List.of(Detail.builder()
-        .message(errorMessage)
+        .message(exception.getMessage())
         .displayInfo(DisplayInfo.builder()
             .code(CODE_PREFIX)
             .with("Job name", jobName)
