@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.importservice.entitiy.ImportProcessItem;
@@ -50,8 +51,8 @@ public class MailNotificationService {
       StepExecution stepExecution) {
     String stepExecutionInformation = getStepExecutionInformation(stepExecution);
 
-    List<ImportProcessItem> successImportedItems = filterByStatus(importProcessItems, "SUCCESS");
-    List<ImportProcessItem> failedImportedItems = filterByStatus(importProcessItems, "FAILED");
+    List<ImportProcessItem> successImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.SUCCESS);
+    List<ImportProcessItem> failedImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.FAILED);
 
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
@@ -127,9 +128,10 @@ public class MailNotificationService {
     throw new IllegalStateException("No Tracer found!");
   }
 
-  private List<ImportProcessItem> filterByStatus(List<ImportProcessItem> allImportProcessedItem, String status) {
+  private List<ImportProcessItem> filterByStatus(List<ImportProcessItem> allImportProcessedItem,
+      ItemImportResponseStatus status) {
     return allImportProcessedItem.stream()
-        .filter(importProcessItem -> importProcessItem.getResponseStatus().equals(status)).toList();
+        .filter(importProcessItem -> status.equals(importProcessItem.getResponseStatus())).toList();
   }
 
   private String getStepExecutionInformation(StepExecution stepExecution) {

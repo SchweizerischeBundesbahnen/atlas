@@ -19,6 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
@@ -29,6 +30,7 @@ import ch.sbb.importservice.service.CsvService;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;
 import java.io.File;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +93,7 @@ public class ImportServicePointIntegrationTest {
 
     // then
     assertThat(actualJobInstance.getJobName()).isEqualTo(IMPORT_LOADING_POINT_CSV_JOB_NAME);
-    assertThat(actualJobExitStatus.getExitCode()).isEqualTo("COMPLETED");
+    assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
   }
 
   @Test
@@ -116,7 +118,7 @@ public class ImportServicePointIntegrationTest {
 
     // then
     assertThat(actualJobInstance.getJobName()).isEqualTo(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
-    assertThat(actualJobExitStatus.getExitCode()).isEqualTo("COMPLETED");
+    assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
 
     verify(mailProducerService, times(1)).produceMailNotification(any());
     verify(csvService, times(1)).getActualServicePotinCsvModelsFromS3();
@@ -149,7 +151,10 @@ public class ImportServicePointIntegrationTest {
 
     // then
     assertThat(actualJobInstance.getJobName()).isEqualTo(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
-    assertThat(actualJobExitStatus.getExitCode()).isEqualTo("COMPLETED");
+    assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
+
+    //clear
+    Files.deleteIfExists(file.toPath());
   }
 
   private List<ServicePointItemImportResult> getServicePointItemImportResults(
@@ -162,7 +167,7 @@ public class ImportServicePointIntegrationTest {
 
       ServicePointItemImportResult servicePointItemImportResult = new ServicePointItemImportResult();
       servicePointItemImportResult.setItemNumber(container.getDidokCode());
-      servicePointItemImportResult.setStatus("COMPLETE");
+      servicePointItemImportResult.setStatus(ItemImportResponseStatus.SUCCESS);
       servicePointItemImportResults.add(servicePointItemImportResult);
     }
     return servicePointItemImportResults;

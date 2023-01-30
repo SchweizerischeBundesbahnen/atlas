@@ -1,6 +1,9 @@
 package ch.sbb.importservice.entitiy;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +39,8 @@ public class ImportProcessItem {
 
   private Integer itemNumber;
 
-  private String responseStatus;
+  @Enumerated(EnumType.STRING)
+  private ItemImportResponseStatus responseStatus;
 
   private String responseMessage;
 }
