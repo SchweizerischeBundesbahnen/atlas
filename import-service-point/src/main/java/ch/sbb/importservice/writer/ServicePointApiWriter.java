@@ -1,4 +1,4 @@
-package ch.sbb.importservice.batch;
+package ch.sbb.importservice.writer;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
