@@ -18,11 +18,11 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
     try {
       return LocalDateTime.parse(jsonParser.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     } catch (DateTimeParseException ex1) {
-      log.debug("LocalDateTime could not be parsed, trying with ISO_LOCAL_DATE_TIME");
+      log.warn("LocalDateTime could not be parsed, trying with ISO_LOCAL_DATE_TIME.", ex1);
       try {
         return LocalDateTime.parse(jsonParser.getText(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
       } catch (DateTimeParseException ex2) {
-        log.debug("LocalDateTime could not be parsed, trying with LocalDate");
+        log.warn("LocalDateTime could not be parsed, trying with LocalDate.\n", ex2);
         try {
           return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
         } catch (DateTimeParseException ex3) {
