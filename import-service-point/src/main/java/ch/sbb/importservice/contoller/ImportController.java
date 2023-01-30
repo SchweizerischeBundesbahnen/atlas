@@ -36,9 +36,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class ImportController {
 
-  private static final String IMPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
-  private static final String IMPORT_LOADING_POINT_CSV_JOB = "importLoadingPointCsvJob";
-
+  public static final String IMPORT_LOADING_POINT_CSV_JOB = "importLoadingPointCsvJob";
+  public static final String IMPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
   private final JobLauncher jobLauncher;
 
   private final FileHelperService fileHelperService;

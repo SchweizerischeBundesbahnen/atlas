@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Schema(name = "ServicePointImportResult")
+@Schema(name = "ServicePointImportReRequest")
 public class ServicePointImportReqModel {
 
   @Schema(name = "List of ServicePointsContainer to import")
