@@ -1,7 +1,8 @@
 package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.atlas.user.administration.api.UserModel;
-import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
+import ch.sbb.atlas.api.user.administration.UserModel;
+import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
+import ch.sbb.atlas.user.administration.mapper.UserMapper;
 import com.microsoft.graph.content.BatchRequestContent;
 import com.microsoft.graph.content.BatchResponseContent;
 import com.microsoft.graph.models.User;
@@ -85,7 +86,7 @@ public class GraphApiService {
                      .build());
       } else {
         final User user = deserializedBody.value.get(0);
-        result.add(UserModel.userToModel(user));
+        result.add(UserMapper.userToModel(user));
       }
     }
     return result;
@@ -125,7 +126,7 @@ public class GraphApiService {
   private List<UserModel> getUserModelsFromUserCollectionPages(
       UserCollectionPage... userCollectionPages) {
     return Arrays.stream(userCollectionPages)
-                 .flatMap(page -> page.getCurrentPage().stream().map(UserModel::userToModel))
+                 .flatMap(page -> page.getCurrentPage().stream().map(UserMapper::userToModel))
                  .toList();
   }
 
