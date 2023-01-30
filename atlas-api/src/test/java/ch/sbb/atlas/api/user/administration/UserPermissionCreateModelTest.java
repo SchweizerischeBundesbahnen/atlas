@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.api;
+package ch.sbb.atlas.api.user.administration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
