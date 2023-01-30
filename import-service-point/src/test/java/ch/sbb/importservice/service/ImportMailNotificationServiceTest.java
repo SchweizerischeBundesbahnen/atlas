@@ -25,9 +25,6 @@ class ImportMailNotificationServiceTest {
   @Mock
   private Tracer tracer;
 
-  @Mock
-  private StepExecution stepExecution;
-
   @InjectMocks
   @Spy
   private MailNotificationService notificationService;
