@@ -20,19 +20,19 @@ public class ServicePointItemImportResult {
 
   private LocalDate validTo;
 
-  private String status;
+  private ItemImportResponseStatus status;
 
   private String message;
 
   public static ServicePointItemImportResultBuilder successResultBuilder() {
     return ServicePointItemImportResult.builder()
-        .status("SUCCESS")
+        .status(ItemImportResponseStatus.SUCCESS)
         .message("[SUCCESS]: This version was imported successfully");
   }
 
   public static ServicePointItemImportResultBuilder failedResultBuilder(Exception exception) {
     return ServicePointItemImportResult.builder()
-        .status("FAILED")
+        .status(ItemImportResponseStatus.FAILED)
         .message("[FAILED]: This version could not be imported due to: " + exception.getMessage());
   }
 

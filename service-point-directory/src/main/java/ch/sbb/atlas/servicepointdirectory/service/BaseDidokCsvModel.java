@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.base.service.imports.servicepoint.deserializer.LocalDateTimeDeserializer;
 import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateDeserializer;
-import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
