@@ -34,6 +34,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @AllArgsConstructor
 public class SpringBatchConfig {
 
+  private static final int CHUNK_SIZE = 100;
+  private static final int THREAD_EXECUTION_SIZE = 64;
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
@@ -78,7 +80,7 @@ public class SpringBatchConfig {
   public Step parseServicePointCsvStep(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
     String stepName = "parseServicePointCsvStep";
     return stepBuilderFactory.get(stepName)
-        .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(100)
+        .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(CHUNK_SIZE)
         .reader(servicePointlistItemReader)
         .writer(servicePointApiWriter)
         .faultTolerant()
@@ -91,7 +93,7 @@ public class SpringBatchConfig {
   @Bean
   public Step parseLoadingPointCsvStep(ThreadSafeListItemReader<LoadingPointCsvModel> loadingPointlistItemReader) {
     String stepName = "parseLoadingPointCsvStep";
-    return stepBuilderFactory.get(stepName).<LoadingPointCsvModel, LoadingPointCsvModel>chunk(100)
+    return stepBuilderFactory.get(stepName).<LoadingPointCsvModel, LoadingPointCsvModel>chunk(CHUNK_SIZE)
         .reader(loadingPointlistItemReader)
         .writer(loadingPointApiWriter)
         .faultTolerant()
@@ -124,9 +126,9 @@ public class SpringBatchConfig {
   @Bean
   public TaskExecutor asyncTaskExecutor() {
     ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-    taskExecutor.setCorePoolSize(64);
-    taskExecutor.setMaxPoolSize(64);
-    taskExecutor.setQueueCapacity(64);
+    taskExecutor.setCorePoolSize(THREAD_EXECUTION_SIZE);
+    taskExecutor.setMaxPoolSize(THREAD_EXECUTION_SIZE);
+    taskExecutor.setQueueCapacity(THREAD_EXECUTION_SIZE);
     taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
     taskExecutor.setThreadNamePrefix("Thread-");
     return taskExecutor;
