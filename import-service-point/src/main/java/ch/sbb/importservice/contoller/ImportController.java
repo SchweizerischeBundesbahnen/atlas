@@ -59,7 +59,7 @@ public class ImportController {
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
-      throw new JobExecutionException(IMPORT_SERVICE_POINT_CSV_JOB_NAME, e.getMessage());
+      throw new JobExecutionException(IMPORT_SERVICE_POINT_CSV_JOB_NAME, e);
     }
   }
 
@@ -75,7 +75,7 @@ public class ImportController {
       return ResponseEntity.ok().body(execution.toString());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException | IllegalArgumentException e) {
-      throw new JobExecutionException(IMPORT_SERVICE_POINT_CSV_JOB_NAME, e.getMessage());
+      throw new JobExecutionException(IMPORT_SERVICE_POINT_CSV_JOB_NAME, e);
     } finally {
       file.delete();
     }
@@ -93,7 +93,7 @@ public class ImportController {
       return ResponseEntity.ok().body(execution);
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
-      throw new JobExecutionException(IMPORT_LOADING_POINT_CSV_JOB_NAME, e.getMessage());
+      throw new JobExecutionException(IMPORT_LOADING_POINT_CSV_JOB_NAME, e);
     } finally {
       file.delete();
     }
