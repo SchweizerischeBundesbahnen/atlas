@@ -11,56 +11,58 @@ import org.junit.jupiter.api.Test;
 
 public class FileServiceImplTest {
 
-    private FileServiceImpl fileService = new FileServiceImpl();
+  private static final String SEPARATOR = File.separator;
 
-    @Test
-    public void shouldCreateZipFile() throws IOException {
-        //given
-        File dir = new File("./export");
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        dir.deleteOnExit();
-        Path tempFile = Files.createFile(Paths.get("./export/tmp.csv"));
-        tempFile.toFile().deleteOnExit();
+  private FileServiceImpl fileService = new FileServiceImpl();
 
-        //when
-        File zipFile = fileService.zipFile(tempFile.toFile());
-        zipFile.deleteOnExit();
-
-        //then
-        assertThat(zipFile).isNotNull();
-        assertThat(zipFile.getName()).isEqualTo("tmp.csv.zip");
+  @Test
+  public void shouldCreateZipFile() throws IOException {
+    //given
+    File dir = new File("./export");
+    if (!dir.exists()) {
+      dir.mkdirs();
     }
+    dir.deleteOnExit();
+    Path tempFile = Files.createFile(Paths.get("./export/tmp.csv"));
+    tempFile.toFile().deleteOnExit();
 
-    @Test
-    public void shouldGetDirWhenActivatedProfileIsDefined() {
-        //given
-        fileService.setActiveProfile("dev");
-        //when
-        String result = fileService.getDir();
-        //then
-        assertThat(result).isEqualTo("/usr/local/atlas/tmp/");
-    }
+    //when
+    File zipFile = fileService.zipFile(tempFile.toFile());
+    zipFile.deleteOnExit();
 
-    @Test
-    public void shouldGetDirWhenActivatedProfileIsNull() {
-        //given
-        fileService.setActiveProfile(null);
-        //when
-        String result = fileService.getDir();
-        //then
-        assertThat(result).isEqualTo("./export/");
-    }
+    //then
+    assertThat(zipFile).isNotNull();
+    assertThat(zipFile.getName()).isEqualTo("tmp.csv.zip");
+  }
 
-    @Test
-    public void shouldGetDirWhenActivatedProfileIsLocal() {
-        //given
-        fileService.setActiveProfile("local");
-        //when
-        String result = fileService.getDir();
-        //then
-        assertThat(result).isEqualTo("./export/");
-    }
+  @Test
+  public void shouldGetDirWhenActivatedProfileIsDefined() {
+    //given
+    fileService.setActiveProfile("dev");
+    //when
+    String result = fileService.getDir();
+    //then
+    assertThat(result).isEqualTo("/usr/local/atlas/tmp/");
+  }
+
+  @Test
+  public void shouldGetDirWhenActivatedProfileIsNull() {
+    //given
+    fileService.setActiveProfile(null);
+    //when
+    String result = fileService.getDir();
+    //then
+    assertThat(result).isEqualTo("." + SEPARATOR + "export" + SEPARATOR);
+  }
+
+  @Test
+  public void shouldGetDirWhenActivatedProfileIsLocal() {
+    //given
+    fileService.setActiveProfile("local");
+    //when
+    String result = fileService.getDir();
+    //then
+    assertThat(result).isEqualTo("." + SEPARATOR + "export" + SEPARATOR);
+  }
 
 }
