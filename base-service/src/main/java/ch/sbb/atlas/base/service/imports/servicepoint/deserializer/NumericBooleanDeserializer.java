@@ -15,7 +15,7 @@ public class NumericBooleanDeserializer extends JsonDeserializer<Boolean> {
     try {
       return p.getBooleanValue();
     } catch (JsonParseException e) {
-      log.warn("Could not parse boolean, try to parse numeric values 0 and 1.\n", e);
+      log.debug("Could not parse boolean, try to parse numeric values 0 and 1.");
       if ("1".equals(p.getText())) {
         return Boolean.TRUE;
       }

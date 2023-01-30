@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ServicePointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
+  private static final String SEPARATOR = "/";
 
   private final ServicePointImportService servicePointImportService;
   private final ServicePointVersionRepository servicePointVersionRepository;
@@ -34,57 +35,60 @@ public class ServicePointImportServiceTest {
 
   @Test
   void shouldParseCsvCorrectly() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + CSV_FILE)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
 
-    assertThat(servicePointCsvModels).isNotEmpty();
-    ServicePointCsvModel firstServicePointCsvModel = servicePointCsvModels.get(0);
-    assertThat(firstServicePointCsvModel.getNummer()).isNotNull();
-    assertThat(firstServicePointCsvModel.getLaendercode()).isNotNull();
-    assertThat(firstServicePointCsvModel.getDidokCode()).isNotNull();
-    assertThat(firstServicePointCsvModel.getCreatedAt()).isNotNull();
-    assertThat(firstServicePointCsvModel.getCreatedBy()).isNotNull();
+      assertThat(servicePointCsvModels).isNotEmpty();
+      ServicePointCsvModel firstServicePointCsvModel = servicePointCsvModels.get(0);
+      assertThat(firstServicePointCsvModel.getNummer()).isNotNull();
+      assertThat(firstServicePointCsvModel.getLaendercode()).isNotNull();
+      assertThat(firstServicePointCsvModel.getDidokCode()).isNotNull();
+      assertThat(firstServicePointCsvModel.getCreatedAt()).isNotNull();
+      assertThat(firstServicePointCsvModel.getCreatedBy()).isNotNull();
+    }
   }
 
   @Test
   void shouldParseCsvAndSaveToDB() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
-
-    servicePointImportService.importServicePointCsvModels(servicePointCsvModels);
-
-    List<ServicePointVersion> savedServicePoints = servicePointVersionRepository.findAll();
-    assertThat(savedServicePoints).isNotEmpty();
-    for (ServicePointVersion savedServicePointVersion : savedServicePoints) {
-      assertThat(savedServicePointVersion.getId()).isNotNull();
-      if (savedServicePointVersion.hasGeolocation()) {
-        assertThat(savedServicePointVersion.getServicePointGeolocation().getId()).isNotNull();
+    //given
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + CSV_FILE)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      //when
+      servicePointImportService.importServicePointCsvModels(servicePointCsvModels);
+      //then
+      List<ServicePointVersion> savedServicePoints = servicePointVersionRepository.findAll();
+      assertThat(savedServicePoints).isNotEmpty();
+      for (ServicePointVersion savedServicePointVersion : savedServicePoints) {
+        assertThat(savedServicePointVersion.getId()).isNotNull();
+        if (savedServicePointVersion.hasGeolocation()) {
+          assertThat(savedServicePointVersion.getServicePointGeolocation().getId()).isNotNull();
+        }
       }
     }
   }
 
   @Test
   void shouldParseCsvAndAllTheBooleansShouldCorrespond() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
-    ServicePointCsvToEntityMapper servicePointCsvToEntityMapper = new ServicePointCsvToEntityMapper();
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + CSV_FILE)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      ServicePointCsvToEntityMapper servicePointCsvToEntityMapper = new ServicePointCsvToEntityMapper();
 
-    List<Pair<ServicePointCsvModel, ServicePointVersion>> mappingResult = servicePointCsvModels
-        .stream()
-        .map(i -> Pair.of(i, servicePointCsvToEntityMapper.apply(i)))
-        .toList();
+      List<Pair<ServicePointCsvModel, ServicePointVersion>> mappingResult = servicePointCsvModels
+          .stream()
+          .map(i -> Pair.of(i, servicePointCsvToEntityMapper.apply(i)))
+          .toList();
 
-    for (Pair<ServicePointCsvModel, ServicePointVersion> mappingPair : mappingResult) {
-      ServicePointCsvModel csvModel = mappingPair.getFirst();
-      ServicePointVersion atlasModel = mappingPair.getSecond();
+      for (Pair<ServicePointCsvModel, ServicePointVersion> mappingPair : mappingResult) {
+        ServicePointCsvModel csvModel = mappingPair.getFirst();
+        ServicePointVersion atlasModel = mappingPair.getSecond();
 
-      assertThat(csvModel.getIsBetriebspunkt()).isEqualTo(atlasModel.isOperatingPoint());
-      assertThat(csvModel.getIsFahrplan()).isEqualTo(atlasModel.isOperatingPointWithTimetable());
-      assertThat(csvModel.getIsHaltestelle()).isEqualTo(atlasModel.isStopPoint());
-      assertThat(csvModel.getIsBedienpunkt()).isEqualTo(atlasModel.isFreightServicePoint());
-      assertThat(csvModel.getIsVerkehrspunkt()).isEqualTo(atlasModel.isTrafficPoint());
-      assertThat(csvModel.getIsGrenzpunkt()).isEqualTo(atlasModel.isBorderPoint());
-
+        assertThat(csvModel.getIsBetriebspunkt()).isEqualTo(atlasModel.isOperatingPoint());
+        assertThat(csvModel.getIsFahrplan()).isEqualTo(atlasModel.isOperatingPointWithTimetable());
+        assertThat(csvModel.getIsHaltestelle()).isEqualTo(atlasModel.isStopPoint());
+        assertThat(csvModel.getIsBedienpunkt()).isEqualTo(atlasModel.isFreightServicePoint());
+        assertThat(csvModel.getIsVerkehrspunkt()).isEqualTo(atlasModel.isTrafficPoint());
+        assertThat(csvModel.getIsGrenzpunkt()).isEqualTo(atlasModel.isBorderPoint());
+      }
     }
   }
 }
