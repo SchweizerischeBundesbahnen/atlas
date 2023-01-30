@@ -33,25 +33,27 @@ public class LoadingPointImportServiceTest {
 
   @Test
   void shouldParseCsvSuccessfully() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
+    try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {
+      List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
 
-    assertThat(loadingPointCsvModels).isNotEmpty();
+      assertThat(loadingPointCsvModels).isNotEmpty();
 
-    LoadingPointCsvModel csvModel = loadingPointCsvModels.get(0);
-    assertThat(csvModel.getServicePointNumber()).isNotNull();
-    assertThat(csvModel.getDesignation()).isNotNull();
-    assertThat(csvModel.getCreatedAt()).isNotNull();
-    assertThat(csvModel.getCreatedBy()).isNotNull();
+      LoadingPointCsvModel csvModel = loadingPointCsvModels.get(0);
+      assertThat(csvModel.getServicePointNumber()).isNotNull();
+      assertThat(csvModel.getDesignation()).isNotNull();
+      assertThat(csvModel.getCreatedAt()).isNotNull();
+      assertThat(csvModel.getCreatedBy()).isNotNull();
+    }
   }
 
   @Test
   void shouldSaveParsedCsvToDb() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
+    try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {
+      List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
 
-    loadingPointImportService.importLoadingPoints(loadingPointCsvModels);
+      loadingPointImportService.importLoadingPoints(loadingPointCsvModels);
 
-    assertThat(loadingPointVersionRepository.count()).isEqualTo(3019);
+      assertThat(loadingPointVersionRepository.count()).isEqualTo(3019);
+    }
   }
 }
