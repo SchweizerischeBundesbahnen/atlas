@@ -1,44 +1,18 @@
-package ch.sbb.atlas.user.administration.api;
+package ch.sbb.atlas.user.administration.mapper;
 
+import ch.sbb.atlas.api.user.administration.UserModel;
+import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
-import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
 import com.microsoft.graph.models.User;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.Builder;
-import lombok.Data;
-import lombok.experimental.FieldNameConstants;
+import lombok.experimental.UtilityClass;
 
-@Builder
-@Data
-@FieldNameConstants
-@Schema(name = "User")
-public class UserModel {
-
-  @Schema(description = "SBB User Id", example = "u111111")
-  private String sbbUserId;
-
-  @Schema(description = "User lastname", example = "Mustermann")
-  private String lastName;
-
-  @Schema(description = "User firstname", example = "Max")
-  private String firstName;
-
-  @Schema(description = "User E-Mail address", example = "example@sbb.ch")
-  private String mail;
-
-  @Schema(description = "User display name (azure)", example = "Example User (IT-PTR-CEN2-YPT)")
-  private String displayName;
-
-  @Schema(description = "User account status", example = "ACTIVE")
-  private UserAccountStatus accountStatus;
-
-  @Schema(description = "User permissions")
-  private Set<UserPermissionVersionModel> permissions;
+@UtilityClass
+public class UserMapper {
 
   public static UserModel userToModel(User user) {
     return UserModel.builder()
@@ -53,8 +27,8 @@ public class UserModel {
         .build();
   }
 
-  public UserAdministrationModel toKafkaModel() {
-    Set<UserAdministrationPermissionModel> permissionModels = getPermissions().stream()
+  public static UserAdministrationModel toKafkaModel(UserModel userModel) {
+    Set<UserAdministrationPermissionModel> permissionModels = userModel.getPermissions().stream()
         .map(
             permission -> UserAdministrationPermissionModel.builder()
                 .application(
@@ -67,7 +41,7 @@ public class UserModel {
         .collect(
             Collectors.toSet());
     return UserAdministrationModel.builder()
-        .sbbUserId(getSbbUserId())
+        .sbbUserId(userModel.getSbbUserId())
         .permissions(permissionModels)
         .build();
   }
