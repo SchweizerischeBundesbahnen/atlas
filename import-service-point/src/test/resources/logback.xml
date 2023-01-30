@@ -10,4 +10,6 @@
   <logger name="org.springframework.boot.test" level="error" />
   <logger name="org.springframework.security" level="error" />
   <logger name="org.hibernate" level="error" />
+  <logger name="o.a.zookeeper.server.ZooKeeperServer" level="error" />
+  <logger name="org.apache.kafka.clients.NetworkClient" level="error" />
 </configuration>

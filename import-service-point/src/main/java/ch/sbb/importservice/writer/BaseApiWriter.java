@@ -1,4 +1,4 @@
-package ch.sbb.importservice.batch;
+package ch.sbb.importservice.writer;
 
 import ch.sbb.importservice.entitiy.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;

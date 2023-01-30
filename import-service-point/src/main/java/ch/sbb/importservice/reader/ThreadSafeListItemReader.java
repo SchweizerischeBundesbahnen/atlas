@@ -1,4 +1,4 @@
-package ch.sbb.importservice.batch;
+package ch.sbb.importservice.reader;
 
 import java.util.Collections;
 import java.util.List;
