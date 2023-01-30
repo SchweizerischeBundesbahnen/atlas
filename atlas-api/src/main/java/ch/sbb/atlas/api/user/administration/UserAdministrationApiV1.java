@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.api;
+package ch.sbb.atlas.api.user.administration;
 
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;

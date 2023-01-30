@@ -1,17 +1,20 @@
-package ch.sbb.atlas.user.administration.api;
+package ch.sbb.atlas.user.administration.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.user.administration.UserModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
-import ch.sbb.atlas.user.administration.enumeration.UserAccountStatus;
+import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
+import ch.sbb.atlas.user.administration.mapper.UserMapper;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class UserModelTest {
+class UserMapperTest {
 
   @Test
   void shouldMapToKafkaModelCorrectly() {
@@ -21,7 +24,7 @@ class UserModelTest {
         .permissions(Set.of(UserPermissionVersionModel.builder().role(ApplicationRole.SUPERVISOR)
             .application(ApplicationType.TTFN).build())).build();
     // When
-    UserAdministrationModel userAdministrationModel = userModel.toKafkaModel();
+    UserAdministrationModel userAdministrationModel = UserMapper.toKafkaModel(userModel);
     // Then
     UserAdministrationModel expected = UserAdministrationModel.builder().sbbUserId("e123456")
         .permissions(Set.of(UserAdministrationPermissionModel.builder().application(ApplicationType.TTFN)
@@ -37,7 +40,7 @@ class UserModelTest {
         .permissions(Set.of(UserPermissionVersionModel.builder().role(ApplicationRole.WRITER)
             .application(ApplicationType.TTFN).sboids(List.of("beste sboid")).build())).build();
     // When
-    UserAdministrationModel userAdministrationModel = userModel.toKafkaModel();
+    UserAdministrationModel userAdministrationModel = UserMapper.toKafkaModel(userModel);
     // Then
     UserAdministrationModel expected = UserAdministrationModel.builder().sbbUserId("e123456")
         .permissions(Set.of(UserAdministrationPermissionModel.builder().application(ApplicationType.TTFN)
