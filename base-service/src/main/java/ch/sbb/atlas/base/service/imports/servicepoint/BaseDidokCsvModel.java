@@ -13,11 +13,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.ObjectUtils;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BaseDidokCsvModel {
