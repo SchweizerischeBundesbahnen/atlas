@@ -24,17 +24,14 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("v1/import")
 @AllArgsConstructor
 @Slf4j
-public class ImportController {
+public class ImportServicePointBatchController implements ImportServicePointBatchControllerApiV1 {
 
   public static final String IMPORT_LOADING_POINT_CSV_JOB = "importLoadingPointCsvJob";
   public static final String IMPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
@@ -48,8 +45,8 @@ public class ImportController {
   @Qualifier(IMPORT_LOADING_POINT_CSV_JOB)
   private final Job importLoadingPointCsvJob;
 
+  @Override
   @Async
-  @PostMapping("service-point-batch")
   public void startServicePointImportBatch() {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(EXECUTION_TYPE_PARAMETER, EXECUTION_BATCH_PARAMETER)
@@ -63,7 +60,7 @@ public class ImportController {
     }
   }
 
-  @PostMapping("service-point")
+  @Override
   public ResponseEntity<?> startServicePointImport(@RequestParam("file") MultipartFile multipartFile) {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
@@ -81,7 +78,7 @@ public class ImportController {
     }
   }
 
-  @PostMapping("loading-point")
+  @Override
   public ResponseEntity<?> startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
