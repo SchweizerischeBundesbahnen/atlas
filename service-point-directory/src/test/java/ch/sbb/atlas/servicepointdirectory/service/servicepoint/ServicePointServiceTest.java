@@ -58,7 +58,7 @@ public class ServicePointServiceTest {
     servicePointService.isServicePointNumberExisting(servicePointNumber);
 
     // then
-    verify(servicePointVersionRepositoryMock).existsByServicePointNumber(eq(servicePointNumber));
+    verify(servicePointVersionRepositoryMock).existsByNumber(eq(servicePointNumber));
   }
 
   @Test
