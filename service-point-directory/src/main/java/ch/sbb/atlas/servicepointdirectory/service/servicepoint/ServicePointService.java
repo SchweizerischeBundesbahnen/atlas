@@ -31,7 +31,7 @@ public class ServicePointService {
   }
 
   public boolean isServicePointNumberExisting(ServicePointNumber servicePointNumber) {
-    return servicePointVersionRepository.existsByServicePointNumber(servicePointNumber);
+    return servicePointVersionRepository.existsByNumber(servicePointNumber);
   }
 
   public Optional<ServicePointVersion> findById(Long id) {

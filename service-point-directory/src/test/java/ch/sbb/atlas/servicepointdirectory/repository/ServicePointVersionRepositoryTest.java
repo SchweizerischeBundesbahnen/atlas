@@ -237,4 +237,68 @@ public class ServicePointVersionRepositoryTest {
     assertThat(savedVersion.getCategories()).isEmpty();
     assertThat(savedVersion.isOperatingPoint()).isTrue();
   }
+
+  @Test
+  void shouldServicePointExistsByServicePointNumber() {
+    // given
+    ServicePointNumber servicePointNumber = ServicePointNumber.of(85070003);
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .number(servicePointNumber)
+        .numberShort(1)
+        .country(Country.SWITZERLAND)
+        .designationLong("long designation")
+        .designationOfficial("official designation")
+        .abbreviation("BE")
+        .statusDidok3(ServicePointStatus.from(1))
+        .businessOrganisation("somesboid")
+        .status(Status.VALIDATED)
+        .operatingPointType(OperatingPointType.STOP_POINT)
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .stopPointType(StopPointType.ORDERLY)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    servicePointVersionRepository.save(servicePoint);
+
+    // when
+    boolean result = servicePointVersionRepository.existsByNumber(servicePointNumber);
+
+    // then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldServicePointNotExistsByServicePointNumber() {
+    // given
+    ServicePointNumber servicePointNumber = ServicePointNumber.of(85070003);
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .number(servicePointNumber)
+        .numberShort(1)
+        .country(Country.SWITZERLAND)
+        .designationLong("long designation")
+        .designationOfficial("official designation")
+        .abbreviation("BE")
+        .statusDidok3(ServicePointStatus.from(1))
+        .businessOrganisation("somesboid")
+        .status(Status.VALIDATED)
+        .operatingPointType(OperatingPointType.STOP_POINT)
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .stopPointType(StopPointType.ORDERLY)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    servicePointVersionRepository.save(servicePoint);
+
+    // when
+    boolean result = servicePointVersionRepository.existsByNumber(ServicePointNumber.of(85070001));
+
+    // then
+    assertThat(result).isFalse();
+  }
 }
