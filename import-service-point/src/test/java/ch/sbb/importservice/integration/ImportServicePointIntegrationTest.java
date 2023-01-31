@@ -19,19 +19,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.importservice.ServicePointTestData;
 import ch.sbb.importservice.client.SePoDiClient;
 import ch.sbb.importservice.service.CsvService;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;
 import java.io.File;
-import java.nio.file.Files;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -99,12 +96,12 @@ public class ImportServicePointIntegrationTest {
   @Test
   public void shouldExecuteImportServicePointJobDownloadingFileFromS3() throws Exception {
     // given
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = getServicePointCsvModelContainers();
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
 
-    List<ServicePointItemImportResult> servicePointItemImportResults = getServicePointItemImportResults(
+    List<ServicePointItemImportResult> servicePointItemImportResults = ServicePointTestData.getServicePointItemImportResults(
         servicePointCsvModelContainers);
 
-    when(csvService.getActualServicePotinCsvModelsFromS3()).thenReturn(servicePointCsvModelContainers);
+    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(servicePointCsvModelContainers);
     doNothing().when(mailProducerService).produceMailNotification(any());
     when(sePoDiClient.postServicePointsImport(any())).thenReturn(servicePointItemImportResults);
 
@@ -121,7 +118,7 @@ public class ImportServicePointIntegrationTest {
     assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
 
     verify(mailProducerService, times(1)).produceMailNotification(any());
-    verify(csvService, times(1)).getActualServicePotinCsvModelsFromS3();
+    verify(csvService, times(1)).getActualServicePointCsvModelsFromS3();
   }
 
   @Test
@@ -129,13 +126,13 @@ public class ImportServicePointIntegrationTest {
     // given
     File file = new File(this.getClass().getClassLoader().getResource("import.csv").getFile());
     when(fileHelperService.downloadImportFileFromS3(DINSTELLE_FILE_PREFIX)).thenReturn(file);
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = getServicePointCsvModelContainers();
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
 
-    List<ServicePointItemImportResult> servicePointItemImportResults = getServicePointItemImportResults(
+    List<ServicePointItemImportResult> servicePointItemImportResults = ServicePointTestData.getServicePointItemImportResults(
         servicePointCsvModelContainers);
-    when(csvService.getActualServicePotinCsvModelsFromS3(file)).thenReturn(servicePointCsvModelContainers);
-    doCallRealMethod().when(csvService).getActualServicePotinCsvModelsFromS3(file);
-    List<ServicePointCsvModel> defaultServicePointCsvModels = getDefaultServicePointCsvModels(123);
+    when(csvService.getActualServicePointCsvModels(file)).thenReturn(servicePointCsvModelContainers);
+    doCallRealMethod().when(csvService).getActualServicePointCsvModels(file);
+    List<ServicePointCsvModel> defaultServicePointCsvModels = ServicePointTestData.getDefaultServicePointCsvModels(123);
     when(csvService.getCsvModelsToUpdate(file, MIN_LOCAL_DATE, ServicePointCsvModel.class)).thenReturn(
         defaultServicePointCsvModels);
     doNothing().when(mailProducerService).produceMailNotification(any());
@@ -153,63 +150,6 @@ public class ImportServicePointIntegrationTest {
     assertThat(actualJobInstance.getJobName()).isEqualTo(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
 
-    //clear
-    Files.deleteIfExists(file.toPath());
-  }
-
-  private List<ServicePointItemImportResult> getServicePointItemImportResults(
-      List<ServicePointCsvModelContainer> servicePointCsvModelContainers) {
-    ServicePointImportReqModel servicePointImportReqModel = new ServicePointImportReqModel();
-    servicePointImportReqModel.setServicePointCsvModelContainers(servicePointCsvModelContainers);
-
-    List<ServicePointItemImportResult> servicePointItemImportResults = new ArrayList<>();
-    for (ServicePointCsvModelContainer container : servicePointCsvModelContainers) {
-
-      ServicePointItemImportResult servicePointItemImportResult = new ServicePointItemImportResult();
-      servicePointItemImportResult.setItemNumber(container.getDidokCode());
-      servicePointItemImportResult.setStatus(ItemImportResponseStatus.SUCCESS);
-      servicePointItemImportResults.add(servicePointItemImportResult);
-    }
-    return servicePointItemImportResults;
-  }
-
-  private List<ServicePointCsvModelContainer> getServicePointCsvModelContainers() {
-    ServicePointCsvModelContainer servicePointCsvModelContainer1 = getServicePointCsvModelContainer(123);
-    ServicePointCsvModelContainer servicePointCsvModelContainer2 = getServicePointCsvModelContainer(124);
-
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = new ArrayList<>();
-    servicePointCsvModelContainers.add(servicePointCsvModelContainer1);
-    servicePointCsvModelContainers.add(servicePointCsvModelContainer2);
-    return servicePointCsvModelContainers;
-  }
-
-  private ServicePointCsvModelContainer getServicePointCsvModelContainer(Integer didokNumber) {
-    List<ServicePointCsvModel> csvModelsToUpdate = getDefaultServicePointCsvModels(
-        didokNumber);
-    ServicePointCsvModelContainer servicePointCsvModelContainer = new ServicePointCsvModelContainer();
-    servicePointCsvModelContainer.setDidokCode(didokNumber);
-    servicePointCsvModelContainer.setServicePointCsvModelList(csvModelsToUpdate);
-    return servicePointCsvModelContainer;
-  }
-
-  private List<ServicePointCsvModel> getDefaultServicePointCsvModels(Integer didokNumber) {
-    ServicePointCsvModel servicePointCsvModel1 = getServicePointModel(didokNumber, LocalDate.now(), LocalDate.now());
-    ServicePointCsvModel servicePointCsvModel2 = getServicePointModel(didokNumber, LocalDate.now().plusMonths(1),
-        LocalDate.now().plusMonths(1));
-    List<ServicePointCsvModel> csvModelsToUpdate = new ArrayList<>();
-    csvModelsToUpdate.add(servicePointCsvModel1);
-    csvModelsToUpdate.add(servicePointCsvModel2);
-    return csvModelsToUpdate;
-  }
-
-  private ServicePointCsvModel getServicePointModel(Integer didokNumber, LocalDate validFrom, LocalDate validTo) {
-    ServicePointCsvModel servicePointCsvModel = new ServicePointCsvModel();
-    servicePointCsvModel.setIsVirtuell(true);
-    servicePointCsvModel.setValidFrom(validFrom);
-    servicePointCsvModel.setValidTo(validTo);
-    servicePointCsvModel.setNummer(didokNumber);
-    servicePointCsvModel.setDidokCode(didokNumber);
-    return servicePointCsvModel;
   }
 
 }
