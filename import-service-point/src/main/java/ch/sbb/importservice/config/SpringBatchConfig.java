@@ -55,9 +55,9 @@ public class SpringBatchConfig {
     List<ServicePointCsvModelContainer> actualServicePotinCsvModelsFromS3;
     if (pathToFile != null) {
       File file = new File(pathToFile);
-      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3(file);
+      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePointCsvModels(file);
     } else {
-      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePotinCsvModelsFromS3();
+      actualServicePotinCsvModelsFromS3 = csvService.getActualServicePointCsvModelsFromS3();
     }
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualServicePotinCsvModelsFromS3));
   }
@@ -69,7 +69,7 @@ public class SpringBatchConfig {
     List<LoadingPointCsvModel> actualLoadingPotinCsvModelsFromS3;
     if (pathToFile != null) {
       File file = new File(pathToFile);
-      actualLoadingPotinCsvModelsFromS3 = csvService.getActualLoadingPointCsvModelsFromS3(file);
+      actualLoadingPotinCsvModelsFromS3 = csvService.getActualLoadingPointCsvModels(file);
     } else {
       actualLoadingPotinCsvModelsFromS3 = csvService.getActualLoadingPointCsvModelsFromS3();
     }

@@ -1,0 +1,51 @@
+= ATLAS -Import Service API Guide
+:doctype: book
+:compat-mode:
+:page-layout!:
+:toc: left
+:toclevels: 1
+:sectanchors:
+:sectlinks:
+:linkattrs:
+:icons: font
+:table-caption!:
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:revnumber: {version}
+
+[[abstract]]
+= Overview
+
+=== Project information
+
+[width="60%" cols="18%,35%" ]
+|=================================
+|Application Name | {name}
+|Version | {version}
+|Build-Time| {buildTime}
+|=================================
+
+=== Developer Portal
+
+This API is available as a part of the ATLAS API on the SBB developer portal.
+
+- Production: https://developer.sbb.ch/apis/atlas/information
+- Lower Stages are available here: https://developer-int.sbb.ch/apis?all=&text=atlas&scopes=PUBLIC;INTERNAL
+
+=== Release Notes
+
+include::../release-notes.adoc[]
+
+= Import Service Point
+
+== Trigger import Service Point - Successfully
+
+include::{snippets}/import-controller-api-test/should-post-service-point-import-batch-successfully/auto-section.adoc[]
+
+== Trigger import Service Point by providing file (Massenimport)- Successfully
+
+include::{snippets}/import-controller-api-test/should-post-service-point-import-batch-with-file-parameter-successfully/auto-section.adoc[]
+
+== Trigger import Service Point by providing file (Massenimport)- Unsuccessfully
+
+include::{snippets}/import-controller-api-test/should-post-service-point-import-batch-with-file-parameter-when-file-is-not-provided/auto-section.adoc[]
