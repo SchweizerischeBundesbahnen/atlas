@@ -13,7 +13,6 @@ import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointC
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ServicePointTestData;
 import ch.sbb.importservice.client.SePoDiClient;
-import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.CsvService;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;
@@ -21,17 +20,13 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class ImportControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private SePoDiClient sePoDiClient;
-  @Autowired
-  private ImportProcessedItemRepository importProcessedItemRepository;
 
   @MockBean
   private CsvService csvService;
@@ -41,11 +36,6 @@ public class ImportControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private FileHelperService fileHelperService;
-
-  @AfterEach
-  public void tearDown() {
-    importProcessedItemRepository.deleteAll();
-  }
 
   @Test
   public void shouldPostServicePointImportBatchSuccessfully() throws Exception {
