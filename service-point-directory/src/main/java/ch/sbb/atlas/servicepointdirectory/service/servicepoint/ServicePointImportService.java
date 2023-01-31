@@ -38,15 +38,6 @@ public class ServicePointImportService {
     return servicePoints;
   }
 
-  // TODO: remove
-  public void importServicePointCsvModels(List<ServicePointCsvModel> csvModels) {
-    List<ServicePointVersion> servicePointVersions = csvModels
-        .stream()
-        .map(new ServicePointCsvToEntityMapper())
-        .toList();
-    servicePointVersionRepository.saveAll(servicePointVersions);
-  }
-
   public List<ServicePointItemImportResult> importServicePoints(
       List<ServicePointCsvModelContainer> servicePointCsvModelContainers
   ) {

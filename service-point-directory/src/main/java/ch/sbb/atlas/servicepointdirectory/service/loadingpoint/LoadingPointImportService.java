@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
@@ -21,11 +22,6 @@ public class LoadingPointImportService {
 
   private final LoadingPointVersionRepository loadingPointVersionRepository;
 
-  public void importLoadingPoints(List<LoadingPointCsvModel> csvModels) {
-    List<LoadingPointVersion> loadingPointVersions = csvModels.stream().map(new LoadingPointCsvToEntityMapper()).toList();
-    loadingPointVersionRepository.saveAll(loadingPointVersions);
-  }
-
   static List<LoadingPointCsvModel> parseLoadingPoints(InputStream inputStream)
       throws IOException {
     MappingIterator<LoadingPointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
@@ -36,6 +32,11 @@ public class LoadingPointImportService {
     }
     log.info("Parsed {} loadingPoints", loadingPoints.size());
     return loadingPoints;
+  }
+
+  public void importLoadingPoints(List<LoadingPointCsvModel> csvModels) {
+    List<LoadingPointVersion> loadingPointVersions = csvModels.stream().map(new LoadingPointCsvToEntityMapper()).toList();
+    loadingPointVersionRepository.saveAll(loadingPointVersions);
   }
 
 }

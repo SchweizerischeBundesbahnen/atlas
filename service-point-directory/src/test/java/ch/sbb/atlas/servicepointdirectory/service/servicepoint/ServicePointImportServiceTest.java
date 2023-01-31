@@ -49,25 +49,6 @@ public class ServicePointImportServiceTest {
   }
 
   @Test
-  void shouldParseCsvAndSaveToDB() throws IOException {
-    //given
-    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + CSV_FILE)) {
-      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
-      //when
-      servicePointImportService.importServicePointCsvModels(servicePointCsvModels);
-      //then
-      List<ServicePointVersion> savedServicePoints = servicePointVersionRepository.findAll();
-      assertThat(savedServicePoints).isNotEmpty();
-      for (ServicePointVersion savedServicePointVersion : savedServicePoints) {
-        assertThat(savedServicePointVersion.getId()).isNotNull();
-        if (savedServicePointVersion.hasGeolocation()) {
-          assertThat(savedServicePointVersion.getServicePointGeolocation().getId()).isNotNull();
-        }
-      }
-    }
-  }
-
-  @Test
   void shouldParseCsvAndAllTheBooleansShouldCorrespond() throws IOException {
     try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + CSV_FILE)) {
       List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
