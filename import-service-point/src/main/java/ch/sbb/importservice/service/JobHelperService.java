@@ -32,7 +32,7 @@ public class JobHelperService {
     if (today.isEqual(matchingDate)) {
       return lastEditionDate.isEqual(matchingDate);
     } else {
-      //check  is between matchingDate and today
+      //check lastEditionDate is between matchingDate and today
       return !lastEditionDate.isBefore(matchingDate) && !lastEditionDate.isAfter(today);
     }
   }

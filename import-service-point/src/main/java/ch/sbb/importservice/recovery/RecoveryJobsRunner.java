@@ -58,7 +58,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
 
   }
 
-  private void recoverJob(String jobName)
+  void recoverJob(String jobName)
       throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException,
       JobParametersInvalidException {
     log.info("Checking for job {}...", jobName);
@@ -81,6 +81,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
         log.info("No job {} found to recover.", jobName);
       }
     }
+    log.info("No job {} found to recover.", jobName);
   }
 
   private boolean hasJobParameterExecutionBatch(JobParameters jobParameters) {
@@ -122,8 +123,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     if (fullPathFileName != null) {
       jobParametersBuilder.addParameter(FULL_PATH_FILENAME_JOB_PARAMETER, fullPathFileName);
     }
+    jobParametersBuilder.addJobParameters(lastJobExecutionJobParameters);
     JobParameters jobParameters = jobParametersBuilder.toJobParameters();
-    log.info("Run job with parameters {}", parameters);
+    log.info("Run job with parameters {}", jobParameters);
     return jobParameters;
   }
 }
