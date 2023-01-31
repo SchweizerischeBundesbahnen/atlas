@@ -13,4 +13,4 @@ RUN mkdir -m 777 -p /usr/local/atlas/tmp
 
 ENV JAVA_APP_JAR="deploy/app.jar"
 
-EXPOSE 8089
+EXPOSE 8090
