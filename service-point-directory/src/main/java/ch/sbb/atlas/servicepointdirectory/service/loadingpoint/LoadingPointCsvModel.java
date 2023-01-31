@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.deserializer.NumericBooleanDeserializer;
-import ch.sbb.atlas.servicepointdirectory.service.BaseDidokCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
