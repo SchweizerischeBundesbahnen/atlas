@@ -118,18 +118,53 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   private String fotComment;
 
   private ServicePointGeolocationModel servicePointGeolocation;
+  @NotNull
+  private LocalDate validFrom;
+  @NotNull
+  private LocalDate validTo;
+
+  public static ServicePointVersionModel fromEntity(ServicePointVersion servicePointVersion) {
+    return ServicePointVersionModel.builder()
+        .id(servicePointVersion.getId())
+        .number(servicePointVersion.getNumber())
+        .sloid(servicePointVersion.getSloid())
+        .designationLong(servicePointVersion.getDesignationLong())
+        .designationOfficial(servicePointVersion.getDesignationOfficial())
+        .abbreviation(servicePointVersion.getAbbreviation())
+        .statusDidok3(servicePointVersion.getStatusDidok3())
+        .statusDidok3Information(CodeAndDesignation.fromEnum(servicePointVersion.getStatusDidok3()))
+        .operatingPoint(servicePointVersion.isOperatingPoint())
+        .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
+        .freightServicePoint(servicePointVersion.isFreightServicePoint())
+        .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
+        .businessOrganisation(servicePointVersion.getBusinessOrganisation())
+        .categories(new ArrayList<>(servicePointVersion.getCategories()))
+        .categoriesInformation(servicePointVersion.getCategories().stream().map(CodeAndDesignation::fromEnum).toList())
+        .operatingPointType(servicePointVersion.getOperatingPointType())
+        .operatingPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointType()))
+        .operatingPointRouteNetwork(servicePointVersion.isOperatingPointRouteNetwork())
+        .operatingPointKilometerMaster(servicePointVersion.getOperatingPointKilometerMaster())
+        .meansOfTransport(new ArrayList<>(servicePointVersion.getMeansOfTransport()))
+        .meansOfTransportInformation(
+            servicePointVersion.getMeansOfTransport().stream().map(CodeAndDesignation::fromEnum).toList())
+        .stopPointType(servicePointVersion.getStopPointType())
+        .stopPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getStopPointType()))
+        .fotComment(servicePointVersion.getComment())
+        .servicePointGeolocation(ServicePointGeolocationModel.fromEntity(servicePointVersion.getServicePointGeolocation()))
+        .validFrom(servicePointVersion.getValidFrom())
+        .validTo(servicePointVersion.getValidTo())
+        .creationDate(servicePointVersion.getCreationDate())
+        .creator(servicePointVersion.getCreator())
+        .editionDate(servicePointVersion.getEditionDate())
+        .editor(servicePointVersion.getEditor())
+        .build();
+  }
 
   @JsonInclude
   @Schema(description = "ServicePoint has a Geolocation")
   public boolean isHasGeolocation() {
     return servicePointGeolocation != null;
   }
-
-  @NotNull
-  private LocalDate validFrom;
-
-  @NotNull
-  private LocalDate validTo;
 
   @JsonInclude
   @Schema(description = "ServicePoint is OperatingPoint")
@@ -186,13 +221,8 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
 
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
-    return !(getNumber().getCountry()==Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now())) || StringUtils.isNotBlank(sortCodeOfDestinationStation);
-  }
-
-  @AssertTrue(message = "OperatingPointType has to match operatingPoint Attributes")
-  public boolean isValidOperatingPointType() {
-    return operatingPointType == null || (isOperatingPoint()
-        && isOperatingPointWithTimetable() == operatingPointType.hasTimetable());
+    return !(getNumber().getCountry() == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
+        || StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
   public List<MeanOfTransport> getMeansOfTransport() {
@@ -207,43 +237,6 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
       return new ArrayList<>();
     }
     return categories;
-  }
-
-  public static ServicePointVersionModel fromEntity(ServicePointVersion servicePointVersion) {
-    return ServicePointVersionModel.builder()
-        .id(servicePointVersion.getId())
-        .number(servicePointVersion.getNumber())
-        .sloid(servicePointVersion.getSloid())
-        .designationLong(servicePointVersion.getDesignationLong())
-        .designationOfficial(servicePointVersion.getDesignationOfficial())
-        .abbreviation(servicePointVersion.getAbbreviation())
-        .statusDidok3(servicePointVersion.getStatusDidok3())
-        .statusDidok3Information(CodeAndDesignation.fromEnum(servicePointVersion.getStatusDidok3()))
-        .operatingPoint(servicePointVersion.isOperatingPoint())
-        .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
-        .freightServicePoint(servicePointVersion.isFreightServicePoint())
-        .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
-        .businessOrganisation(servicePointVersion.getBusinessOrganisation())
-        .categories(new ArrayList<>(servicePointVersion.getCategories()))
-        .categoriesInformation(servicePointVersion.getCategories().stream().map(CodeAndDesignation::fromEnum).toList())
-        .operatingPointType(servicePointVersion.getOperatingPointType())
-        .operatingPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointType()))
-        .operatingPointRouteNetwork(servicePointVersion.isOperatingPointRouteNetwork())
-        .operatingPointKilometerMaster(servicePointVersion.getOperatingPointKilometerMaster())
-        .meansOfTransport(new ArrayList<>(servicePointVersion.getMeansOfTransport()))
-        .meansOfTransportInformation(
-            servicePointVersion.getMeansOfTransport().stream().map(CodeAndDesignation::fromEnum).toList())
-        .stopPointType(servicePointVersion.getStopPointType())
-        .stopPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getStopPointType()))
-        .fotComment(servicePointVersion.getComment())
-        .servicePointGeolocation(ServicePointGeolocationModel.fromEntity(servicePointVersion.getServicePointGeolocation()))
-        .validFrom(servicePointVersion.getValidFrom())
-        .validTo(servicePointVersion.getValidTo())
-        .creationDate(servicePointVersion.getCreationDate())
-        .creator(servicePointVersion.getCreator())
-        .editionDate(servicePointVersion.getEditionDate())
-        .editor(servicePointVersion.getEditor())
-        .build();
   }
 
 }
