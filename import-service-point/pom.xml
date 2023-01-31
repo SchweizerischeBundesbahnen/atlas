@@ -117,6 +117,16 @@
          <version>1.150.0</version>
       </dependency>
       <dependency>
+         <artifactId>spring-restdocs-mockmvc</artifactId>
+         <groupId>org.springframework.restdocs</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>spring-auto-restdocs-core</artifactId>
+         <groupId>capital.scalable</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <artifactId>mockito-inline</artifactId>
          <groupId>org.mockito</groupId>
          <scope>test</scope>
