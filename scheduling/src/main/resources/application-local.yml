@@ -92,6 +92,10 @@ scheduler:
           chron: "0 0 2 * * ?" #At 02:00:00am every day
         bav:
           chron: "0 0 1 * * ?" #At 01:00:00am every day
+
+  import-service-point:
+    service-point-trigger-batch:
+      chron: "0 0 4 * * ?" #At 04:00:00am every day
   lidi:
     export:
       line:
