@@ -5,7 +5,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
@@ -52,7 +51,6 @@ public class ImportServicePointBatchControllerApiV1Test extends BaseControllerAp
     //when & then
     mvc.perform(post("/v1/import/service-point-batch")
             .contentType(contentType))
-        .andDo(print())
         .andExpect(status().isOk());
   }
 
@@ -68,7 +66,6 @@ public class ImportServicePointBatchControllerApiV1Test extends BaseControllerAp
     //when & then
     mvc.perform(multipart("/v1/import/service-point").file("file", "example".getBytes(StandardCharsets.UTF_8))
             .contentType(contentType))
-        .andDo(print())
         .andExpect(status().isOk());
   }
 
@@ -82,7 +79,6 @@ public class ImportServicePointBatchControllerApiV1Test extends BaseControllerAp
     //when & then
     mvc.perform(multipart("/v1/import/service-point")
             .contentType(contentType))
-        .andDo(print())
         .andExpect(status().isBadRequest());
   }
 
