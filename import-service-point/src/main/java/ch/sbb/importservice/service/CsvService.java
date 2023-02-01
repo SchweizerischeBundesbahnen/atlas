@@ -35,12 +35,11 @@ import org.springframework.stereotype.Service;
 public class CsvService {
 
   public static final String DINSTELLE_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
+  public static final String LADESTELLEN_FILE_PREFIX = "DIDOK3_LADESTELLEN_";
   private static final String CSV_DATE_TIME_FORMATTING = "yyyy-MM-dd HH:mm:ss";
   private static final String HASHTAG = "#";
   private static final String CSV_DELIMITER = ";";
   private static final String EDITED_AT_COLUMN_NAME = "GEAENDERT_AM";
-  private static final String LADESTELLEN_FILE_PREFIX = "DIDOK3_LADESTELLEN_";
-
   private final FileHelperService fileHelperService;
 
   private final JobHelperService jobHelperService;
