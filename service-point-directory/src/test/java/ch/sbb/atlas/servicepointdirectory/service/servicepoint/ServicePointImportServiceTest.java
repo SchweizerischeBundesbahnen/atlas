@@ -2,12 +2,20 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -31,6 +39,27 @@ public class ServicePointImportServiceTest {
       ServicePointVersionRepository servicePointVersionRepository) {
     this.servicePointImportService = servicePointImportService;
     this.servicePointVersionRepository = servicePointVersionRepository;
+  }
+
+  @Test
+  public void shouldImportServicePoints() {
+    //given
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = getServicePointCsvModelContainers();
+    Integer didokCode = servicePointCsvModelContainers.get(0).getDidokCode();
+    ServicePointNumber servicePointNumber = ServicePointNumber.of(didokCode);
+    //when
+    List<ServicePointItemImportResult> servicePointItemImportResults = servicePointImportService.importServicePoints(
+        servicePointCsvModelContainers);
+
+    //then
+    List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    assertThat(result).isNotNull();
+    assertThat(servicePointItemImportResults.size()).isEqualTo(5);
+    assertThat(result.size()).isEqualTo(3);
+    for (ServicePointVersion servicePointVerion : result) {
+      assertThat(servicePointVerion.getNumber()).isNotNull();
+      assertThat(servicePointVerion.getNumber()).isEqualTo(servicePointNumber);
+    }
   }
 
   @Test
@@ -71,5 +100,94 @@ public class ServicePointImportServiceTest {
         assertThat(csvModel.getIsGrenzpunkt()).isEqualTo(atlasModel.isBorderPoint());
       }
     }
+  }
+
+  private List<ServicePointCsvModelContainer> getServicePointCsvModelContainers() {
+    ServicePointTestData.getBernWyleregg();
+    int didokCode = 80187710;
+    ServicePointCsvModel withGeolocation = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .spatialReference(SpatialReference.LV95)
+        .bezeichnungLang("Bern, Wyleregg")
+        .bezeichnungOffiziell("Bern, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode)
+        .laendercode(80)
+        .status(1)
+        .abkuerzung("a")
+        .didokCode(didokCode)
+        .build();
+    ServicePointCsvModel notVirtualWithoutGeolocation = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .abkuerzung("b")
+        .bezeichnungLang("Bern, Wyleregg")
+        .bezeichnungOffiziell("Bern, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode)
+        .laendercode(80)
+        .status(1)
+        .didokCode(didokCode)
+        .build();
+    ServicePointCsvModel virtualWithoutGeolocation = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2002, 12, 31))
+        .abkuerzung("c")
+        .bezeichnungLang("Bern, Wyleregg")
+        .bezeichnungOffiziell("Bern, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode)
+        .laendercode(80)
+        .status(1)
+        .didokCode(didokCode)
+        .build();
+    ServicePointCsvModel virtualWithoutGeolocation2 = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2002, 12, 31))
+        .abkuerzung("c")
+        .bezeichnungLang("Bern, Wankdorf")
+        .bezeichnungOffiziell("Bern, Wankdorf")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode)
+        .laendercode(80)
+        .status(1)
+        .didokCode(didokCode)
+        .build();
+    ServicePointCsvModel virtualWithoutGeolocation3 = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2002, 12, 31))
+        .abkuerzung("c")
+        .bezeichnungLang("Bern, Wankdorf")
+        .bezeichnungOffiziell("Bern, Wankdorf")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode)
+        .laendercode(80)
+        .status(1)
+        .didokCode(didokCode)
+        .build();
+    List<ServicePointCsvModel> modelList = new ArrayList<>();
+    modelList.add(withGeolocation);
+    modelList.add(notVirtualWithoutGeolocation);
+    modelList.add(virtualWithoutGeolocation);
+    modelList.add(virtualWithoutGeolocation2);
+    modelList.add(virtualWithoutGeolocation3);
+    modelList.sort(Comparator.comparing(ServicePointCsvModel::getValidFrom));
+    ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+    container.setServicePointCsvModelList(modelList);
+    container.setDidokCode(didokCode);
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = new ArrayList<>();
+    servicePointCsvModelContainers.add(container);
+    return servicePointCsvModelContainers;
   }
 }

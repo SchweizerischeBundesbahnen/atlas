@@ -40,12 +40,12 @@ include::../release-notes.adoc[]
 
 == Trigger import Service Point - Successfully
 
-include::{snippets}/import-controller-api-test/should-post-service-point-import-batch-successfully/auto-section.adoc[]
+include::{snippets}/import-service-point-batch-controller-api-v1-test/should-post-service-point-import-batch-successfully/auto-section.adoc[]
 
 == Trigger import Service Point by providing file (Massenimport)- Successfully
 
-include::{snippets}/import-controller-api-test/should-post-service-point-import-batch-with-file-parameter-successfully/auto-section.adoc[]
+include::{snippets}/import-service-point-batch-controller-api-v1-test/should-post-service-point-import-batch-with-file-parameter-successfully/auto-section.adoc[]
 
 == Trigger import Service Point by providing file (Massenimport)- Unsuccessfully
 
-include::{snippets}/import-controller-api-test/should-post-service-point-import-batch-with-file-parameter-when-file-is-not-provided/auto-section.adoc[]
+include::{snippets}/import-service-point-batch-controller-api-v1-test/should-post-service-point-import-batch-with-file-parameter-when-file-is-not-provided/auto-section.adoc[]
