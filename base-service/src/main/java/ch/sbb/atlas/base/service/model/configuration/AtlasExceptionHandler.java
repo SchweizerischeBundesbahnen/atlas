@@ -7,6 +7,9 @@ import ch.sbb.atlas.base.service.model.exception.AtlasException;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException;
 import ch.sbb.atlas.base.service.versioning.exception.VersioningException;
 import ch.sbb.atlas.base.service.versioning.exception.VersioningNoChangesException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
@@ -16,6 +19,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +30,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class AtlasExceptionHandler {
+
+  @Autowired
+  private ObjectMapper objectMapper;
 
   @ExceptionHandler(value = VersioningNoChangesException.class)
   public ResponseEntity<ErrorResponse> versioningNoChangesException(
@@ -160,4 +167,13 @@ public class AtlasExceptionHandler {
             .build());
   }
 
+  @ExceptionHandler(value = FeignException.class)
+  public ResponseEntity<ErrorResponse> handleFeignException(FeignException feignException) throws IOException {
+    if (feignException.responseBody().isPresent()) {
+      String responseBodyContent = new String(feignException.responseBody().get().array());
+      ErrorResponse response = objectMapper.readValue(responseBodyContent, ErrorResponse.class);
+      return ResponseEntity.status(feignException.status()).body(response);
+    }
+    throw new UnsupportedOperationException();
+  }
 }

@@ -19,9 +19,6 @@ public class TransportCompanyControllerApiTest extends BaseControllerApiTest {
   @Autowired
   private TransportCompanyRepository repository;
 
-  @Autowired
-  private TransportCompanyController controller;
-
   @BeforeEach
   void createDefaultVersion() {
     repository.save(TransportCompany.builder()

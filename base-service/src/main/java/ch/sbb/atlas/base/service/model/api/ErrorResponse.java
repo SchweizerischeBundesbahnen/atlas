@@ -25,6 +25,7 @@ import org.springframework.lang.NonNull;
 @Slf4j
 @Data
 @Builder
+@NoArgsConstructor
 @Schema(name = "ErrorResponse")
 public class ErrorResponse {
 

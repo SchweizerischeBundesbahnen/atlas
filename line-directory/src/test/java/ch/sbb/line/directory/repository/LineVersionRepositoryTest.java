@@ -6,7 +6,7 @@ import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.base.service.model.controller.WithMockJwtAuthentication;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.line.directory.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;

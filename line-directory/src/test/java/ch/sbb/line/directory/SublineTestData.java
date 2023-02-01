@@ -1,14 +1,14 @@
 package ch.sbb.line.directory;
 
+import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.line.directory.api.SublineVersionVersionModel;
-import ch.sbb.line.directory.api.SublineVersionVersionModel.SublineVersionVersionModelBuilder;
+import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline.SublineBuilder;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
-import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import java.time.LocalDate;
 
 public class SublineTestData {
@@ -57,8 +57,8 @@ public class SublineTestData {
     return sublineBuilder().build();
   }
 
-  public static SublineVersionVersionModelBuilder sublineVersionModelBuilder() {
-    return SublineVersionVersionModel.builder()
+  public static SublineVersionModelBuilder<?, ?> sublineVersionModelBuilder() {
+    return SublineVersionModel.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .businessOrganisation("sbb")
