@@ -43,9 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 
-@EmbeddedKafka(topics = {"atlas.mail", "atlas.workflow"})
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
 public class ImportServicePointIntegrationTest {
