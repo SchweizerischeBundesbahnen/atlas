@@ -3,13 +3,15 @@ package ch.sbb.atlas.user.administration.controller;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.service.UserService;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.user.administration.api.UserAdministrationApiV1;
-import ch.sbb.atlas.user.administration.api.UserDisplayNameModel;
-import ch.sbb.atlas.user.administration.api.UserModel;
-import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
-import ch.sbb.atlas.user.administration.api.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.UserAdministrationApiV1;
+import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
+import ch.sbb.atlas.api.user.administration.UserModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.LimitedPageSizeRequestException;
+import ch.sbb.atlas.user.administration.mapper.UserMapper;
+import ch.sbb.atlas.user.administration.mapper.UserPermissionMapper;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
 import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
@@ -75,7 +77,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   public UserModel createUserPermission(UserPermissionCreateModel userPermissionCreate) {
     userAdministrationService.save(userPermissionCreate);
     UserModel userModel = getUser(userPermissionCreate.getSbbUserId());
-    userPermissionDistributor.pushUserPermissionToKafka(userModel.toKafkaModel());
+    userPermissionDistributor.pushUserPermissionToKafka(UserMapper.toKafkaModel(userModel));
     return userModel;
   }
 
@@ -84,14 +86,14 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   }
 
   private Set<UserPermissionVersionModel> getUserPermissionModels(List<UserPermission> userPermissions) {
-    return userPermissions.stream().map(UserPermissionVersionModel::toModel).collect(Collectors.toSet());
+    return userPermissions.stream().map(UserPermissionMapper::toModel).collect(Collectors.toSet());
   }
 
   @Override
   public UserModel updateUserPermissions(UserPermissionCreateModel editedPermissions) {
     userAdministrationService.updateUser(editedPermissions);
     UserModel userModel = getUser(editedPermissions.getSbbUserId());
-    userPermissionDistributor.pushUserPermissionToKafka(userModel.toKafkaModel());
+    userPermissionDistributor.pushUserPermissionToKafka(UserMapper.toKafkaModel(userModel));
     return userModel;
   }
 

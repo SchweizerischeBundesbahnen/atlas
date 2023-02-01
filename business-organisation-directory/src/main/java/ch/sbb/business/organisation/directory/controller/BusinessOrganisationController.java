@@ -1,15 +1,16 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.toEntity;
 
+import ch.sbb.atlas.api.bodi.BusinessOrganisationApiV1;
+import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
+import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationApiV1;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationModel;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
+import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationMapper;
+import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationVersionMapper;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
 import java.net.URL;
@@ -48,7 +49,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
             .build());
     List<BusinessOrganisationModel> versions = businessOrganisationPage.stream()
         .map(
-            BusinessOrganisationModel::toModel)
+            BusinessOrganisationMapper::toModel)
         .toList();
     return Container.<BusinessOrganisationModel>builder()
         .objects(versions)
@@ -60,7 +61,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   public List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(String sboid) {
     List<BusinessOrganisationVersionModel> organisationVersionModels =
         service.findBusinessOrganisationVersions(sboid).stream()
-            .map(BusinessOrganisationVersionModel::toModel)
+            .map(BusinessOrganisationVersionMapper::toModel)
             .toList();
     if (organisationVersionModels.isEmpty()) {
       throw new SboidNotFoundException(sboid);
@@ -72,7 +73,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   public List<BusinessOrganisationVersionModel> revokeBusinessOrganisation(String sboid) {
     List<BusinessOrganisationVersionModel> businessOrganisationVersionModels =
         service.revokeBusinessOrganisation(sboid).stream()
-            .map(BusinessOrganisationVersionModel::toModel)
+            .map(BusinessOrganisationVersionMapper::toModel)
             .toList();
     if (businessOrganisationVersionModels.isEmpty()) {
       throw new SboidNotFoundException(sboid);
@@ -83,21 +84,21 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   @Override
   public BusinessOrganisationVersionModel createBusinessOrganisationVersion(
       BusinessOrganisationVersionModel newVersion) {
-    BusinessOrganisationVersion businessOrganisationVersion = toEntity(newVersion);
+    BusinessOrganisationVersion businessOrganisationVersion = BusinessOrganisationVersionMapper.toEntity(newVersion);
     businessOrganisationVersion.setStatus(Status.VALIDATED);
     BusinessOrganisationVersion organisationVersionSaved =
         service.save(businessOrganisationVersion);
-    return BusinessOrganisationVersionModel.toModel(organisationVersionSaved);
+    return BusinessOrganisationVersionMapper.toModel(organisationVersionSaved);
   }
 
   @Override
   public List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(Long id,
       BusinessOrganisationVersionModel newVersion) {
     BusinessOrganisationVersion versionToUpdate = service.findById(id);
-    service.updateBusinessOrganisationVersion(versionToUpdate, toEntity(newVersion));
+    service.updateBusinessOrganisationVersion(versionToUpdate, BusinessOrganisationVersionMapper.toEntity(newVersion));
     return service.findBusinessOrganisationVersions(versionToUpdate.getSboid())
         .stream()
-        .map(BusinessOrganisationVersionModel::toModel)
+        .map(BusinessOrganisationVersionMapper::toModel)
         .toList();
   }
 

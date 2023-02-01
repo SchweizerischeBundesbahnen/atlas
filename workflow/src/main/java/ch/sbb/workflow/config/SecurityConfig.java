@@ -5,9 +5,8 @@ import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
 import ch.sbb.atlas.base.service.model.configuration.AtlasAccessDeniedHandler;
 import ch.sbb.atlas.base.service.model.configuration.Role;
-import java.util.List;
-
 import ch.sbb.atlas.user.administration.security.UserAdministrationConfig;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;

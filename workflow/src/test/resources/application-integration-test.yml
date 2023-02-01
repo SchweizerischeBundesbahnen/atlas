@@ -48,9 +48,6 @@ kafka:
     mail:
       topic: atlas.mail
       groupId: atlas.kafka.mail.groupId
-    workflow:
-      topic: atlas.workflow
-      groupId: atlas.kafka.workflow.line.groupId
     user:
       administration:
         topic: atlas.user.administration
@@ -63,3 +60,7 @@ mail:
       mail-html-title: Antrag für eine neue/geänderte Linie überprüfen.
     atlas:
       business: TechSupport-ATLAS@sbb.ch
+atlas:
+  client:
+    gateway:
+      url: "http://localhost:8888"

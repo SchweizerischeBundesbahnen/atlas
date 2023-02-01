@@ -9,9 +9,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
-import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.kafka.model.workflow.event.LineWorkflowEvent;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
@@ -50,10 +48,10 @@ public class BaseWorkflowEntityProcessingServiceTest {
   @Test
   public void shouldProcessWorkflowSuccessfully() {
     //given
-    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
+    WorkflowEvent workflowEvent = BaseWorkflowEntityProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
-        .workflowStatus(WorkflowStatus.STARTED)
+        .workflowStatus(WorkflowStatus.ADDED)
         .build();
     ObjectVersion objectVersion = ObjectVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -62,8 +60,8 @@ public class BaseWorkflowEntityProcessingServiceTest {
     when(objectVersionRepository.findById(1000L)).thenReturn(Optional.of(objectVersion));
 
     ObjectWorkflowEntityVersion objectWorkflowVersion = ObjectWorkflowEntityVersion.builder()
-        .workflowId(lineWorkflowEvent.getWorkflowId())
-        .workflowProcessingStatus(WorkflowProcessingStatus.getProcessingStatus(lineWorkflowEvent.getWorkflowStatus()))
+        .workflowId(workflowEvent.getWorkflowId())
+        .workflowProcessingStatus(WorkflowProcessingStatus.getProcessingStatus(workflowEvent.getWorkflowStatus()))
         .objectVersion(objectVersion)
         .build();
 
@@ -73,9 +71,8 @@ public class BaseWorkflowEntityProcessingServiceTest {
         .build();
 
     //when
-    workflowProcessingService.processWorkflow(lineWorkflowEvent, objectVersionSnapshot);
+    workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot);
     //then
-    verify(objectVersionRepository).findById(1000L);
     verify(objectWorkflowRepository).save(objectWorkflowVersion);
     verify(objectVersionRepository).save(objectVersion);
     verify(objectVersionSnapshotRepository).save(any(ObjectVersionSnapshot.class));
@@ -85,7 +82,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
   @Test
   public void shouldUpdateObjectStatusToValidated() {
     //given
-    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
+    WorkflowEvent workflowEvent = BaseWorkflowEntityProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(WorkflowStatus.APPROVED)
@@ -97,8 +94,8 @@ public class BaseWorkflowEntityProcessingServiceTest {
     when(objectVersionRepository.findById(1000L)).thenReturn(Optional.of(objectVersion));
 
     ObjectWorkflowEntityVersion objectWorkflowVersion = ObjectWorkflowEntityVersion.builder()
-        .workflowId(lineWorkflowEvent.getWorkflowId())
-        .workflowProcessingStatus(WorkflowProcessingStatus.getProcessingStatus(lineWorkflowEvent.getWorkflowStatus()))
+        .workflowId(workflowEvent.getWorkflowId())
+        .workflowProcessingStatus(WorkflowProcessingStatus.getProcessingStatus(workflowEvent.getWorkflowStatus()))
         .objectVersion(objectVersion)
         .build();
 
@@ -108,9 +105,8 @@ public class BaseWorkflowEntityProcessingServiceTest {
         .build();
 
     //when
-    workflowProcessingService.processWorkflow(lineWorkflowEvent, objectVersionSnapshot);
+    workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot);
     //then
-    verify(objectVersionRepository).findById(1000L);
     verify(objectWorkflowRepository).save(objectWorkflowVersion);
     verify(objectVersionRepository).save(objectVersion);
     assertThat(objectVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -119,7 +115,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
   @Test
   public void shouldUpdateObjectStatusToDraft() {
     //given
-    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
+    WorkflowEvent workflowEvent = BaseWorkflowEntityProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(WorkflowStatus.REJECTED)
@@ -131,8 +127,8 @@ public class BaseWorkflowEntityProcessingServiceTest {
     when(objectVersionRepository.findById(1000L)).thenReturn(Optional.of(objectVersion));
 
     ObjectWorkflowEntityVersion objectWorkflowVersion = ObjectWorkflowEntityVersion.builder()
-        .workflowId(lineWorkflowEvent.getWorkflowId())
-        .workflowProcessingStatus(WorkflowProcessingStatus.getProcessingStatus(lineWorkflowEvent.getWorkflowStatus()))
+        .workflowId(workflowEvent.getWorkflowId())
+        .workflowProcessingStatus(WorkflowProcessingStatus.getProcessingStatus(workflowEvent.getWorkflowStatus()))
         .objectVersion(objectVersion)
         .build();
 
@@ -142,40 +138,17 @@ public class BaseWorkflowEntityProcessingServiceTest {
         .build();
 
     //when
-    workflowProcessingService.processWorkflow(lineWorkflowEvent, objectVersionSnapshot);
+    workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot);
     //then
-    verify(objectVersionRepository).findById(1000L);
     verify(objectWorkflowRepository).save(objectWorkflowVersion);
     verify(objectVersionRepository).save(objectVersion);
     assertThat(objectVersion.getStatus()).isEqualTo(Status.DRAFT);
   }
 
   @Test
-  public void shouldNotProcessWorkflowWhenObjectNotFound() {
-    //given
-    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
-        .workflowId(1000L)
-        .businessObjectId(1000L)
-        .workflowStatus(WorkflowStatus.STARTED)
-        .build();
-
-    ObjectVersionSnapshot objectVersionSnapshot = ObjectVersionSnapshot.builder()
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 2, 1))
-        .build();
-
-    when(objectVersionRepository.findById(1000L)).thenReturn(Optional.empty());
-
-    //when
-    assertThrows(IdNotFoundException.class,
-        () -> workflowProcessingService.processWorkflow(lineWorkflowEvent, objectVersionSnapshot));
-
-  }
-
-  @Test
   public void shouldNotProcessWorkflowWhenWorkflowStatusNotImplemenmted() {
     //given
-    LineWorkflowEvent lineWorkflowEvent = LineWorkflowEvent.builder()
+    WorkflowEvent workflowEvent = BaseWorkflowEntityProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(WorkflowStatus.HEARING)
@@ -193,7 +166,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
 
     //when
     assertThrows(IllegalStateException.class,
-        () -> workflowProcessingService.processWorkflow(lineWorkflowEvent, objectVersionSnapshot));
+        () -> workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot));
 
   }
 
@@ -215,10 +188,11 @@ public class BaseWorkflowEntityProcessingServiceTest {
     }
 
     @Override
-    protected ObjectWorkflowEntityVersion buildObjectVersionWorkflow(LineWorkflowEvent lineWorkflowEvent, ObjectVersion object) {
+    protected ObjectWorkflowEntityVersion buildObjectVersionWorkflow(
+        ch.sbb.atlas.base.service.model.workflow.WorkflowEvent workflowEvent, ObjectVersion object) {
       return ObjectWorkflowEntityVersion.builder()
           .objectVersion(object)
-          .workflowId(lineWorkflowEvent.getWorkflowId())
+          .workflowId(workflowEvent.getWorkflowId())
           .workflowProcessingStatus(IN_PROGRESS)
           .build();
     }
@@ -278,6 +252,11 @@ public class BaseWorkflowEntityProcessingServiceTest {
   public static class ObjectWorkflowEntityVersion extends BaseWorkflowEntity {
 
     private ObjectVersion objectVersion;
+  }
+  
+  @SuperBuilder
+  public static class WorkflowEvent extends ch.sbb.atlas.base.service.model.workflow.WorkflowEvent {
+    
   }
 
 }

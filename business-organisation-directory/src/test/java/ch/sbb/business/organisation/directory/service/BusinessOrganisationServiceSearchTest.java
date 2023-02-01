@@ -9,7 +9,7 @@ import ch.sbb.business.organisation.directory.controller.BusinessOrganisationSea
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion.BusinessOrganisationVersionBuilder;
-import ch.sbb.business.organisation.directory.entity.BusinessType;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.time.LocalDate;
 import java.util.Arrays;

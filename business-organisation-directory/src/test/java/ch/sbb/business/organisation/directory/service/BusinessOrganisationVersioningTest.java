@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.entity.BusinessType;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.time.LocalDate;
 import java.util.Arrays;

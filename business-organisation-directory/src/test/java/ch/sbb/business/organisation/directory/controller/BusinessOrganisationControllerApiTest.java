@@ -1,11 +1,11 @@
 package ch.sbb.business.organisation.directory.controller;
 
+import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.entity.BusinessType;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
 import org.junit.jupiter.api.AfterEach;
@@ -18,11 +18,11 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.Fields.*;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.*;
 
 public class BusinessOrganisationControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
