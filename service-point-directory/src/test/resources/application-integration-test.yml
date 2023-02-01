@@ -52,7 +52,7 @@ logging:
 info:
   app:
     name: service-point-directory
-    version: '@version@'
+    version: @version@
 
 kafka:
   atlas:
