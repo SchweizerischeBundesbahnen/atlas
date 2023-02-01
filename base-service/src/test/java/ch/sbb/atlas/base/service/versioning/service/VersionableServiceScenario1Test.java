@@ -17,10 +17,13 @@ import org.junit.jupiter.api.Test;
 public class VersionableServiceScenario1Test extends VersionableServiceBaseTest {
 
   /**
-   * Szenario 1a: Update einer bestehenden Version am Ende NEU:                             |________________________________ IST:
-   * |----------------------|-------------------------------- Version:        1                                2
-   * <p>
-   * RESULTAT: |----------------------|________________________________ Version:        1                                2
+   * Szenario 1a: Update einer bestehenden Version am Ende
+   * NEU:                             |________________________________
+   * IST:      |----------------------|--------------------------------
+   * Version:        1                                2
+   *
+   * RESULTAT: |----------------------|________________________________
+   * Version:        1                                2
    */
   @Test
   public void scenario1a() {
@@ -102,10 +105,13 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
   }
 
   /**
-   * Szenario 1a: Update einer bestehenden Version am Ende NEU:                             |________________________________ IST:
-   * |----------------------|-------------------------------- Version:        1                                2
-   * <p>
-   * RESULTAT: |----------------------|________________________________ Version:        1                                2
+   * Szenario 1a: Update einer bestehenden Version am Ende
+   * NEU:                             |________________________________
+   * IST:      |----------------------|--------------------------------
+   * Version:        1                                2
+   *
+   * RESULTAT: |----------------------|________________________________
+   * Version:        1                                2
    */
   @Test
   public void scenario1aEditedValidFromAndEditedValidToAreEqualsToCurrentValidFromAndCurrentValidTo() {
@@ -190,10 +196,13 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
   }
 
   /**
-   * Szenario 1b: Update einer bestehenden Version in der Mitte NEU:                  |______________________| IST:
-   * |-----------|----------------------|-------------------- Version:        1                 2                  3
-   * <p>
-   * RESULTAT: |-----------|______________________|-------------------- Version:        1                 2                  3
+   * Szenario 1b: Update einer bestehenden Version in der Mitte
+   * NEU:                  |______________________|
+   * IST:      |-----------|----------------------|--------------------
+   * Version:        1                 2                  3
+   *
+   * RESULTAT: |-----------|______________________|--------------------
+   * Version:        1                 2                  3
    */
   @Test
   public void scenario1b() {
@@ -254,11 +263,13 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
 
   /**
    * Szenario 1c: Update einer bestehenden Version am Anfang
-   * <p>
-   * NEU:       |___________| IST:       |-----------|----------------------|-------------------- Version:         1
-   * 2                   3
-   * <p>
-   * RESULTAT: |___________|----------------------|-------------------- Version:        1                 2                  3
+   *
+   * NEU:       |___________|
+   * IST:       |-----------|----------------------|--------------------
+   * Version:         1                 2                   3
+   *
+   * RESULTAT: |___________|----------------------|--------------------
+   * Version:        1                 2                  3
    */
   @Test
   public void scenario1c() {
