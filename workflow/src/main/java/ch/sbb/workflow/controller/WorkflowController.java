@@ -1,14 +1,17 @@
 package ch.sbb.workflow.controller;
 
-import ch.sbb.workflow.api.WorkflowApiV1;
-import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
-import ch.sbb.workflow.api.WorkflowModel;
-import ch.sbb.workflow.api.WorkflowStartModel;
+import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
+import ch.sbb.atlas.api.workflow.WorkflowApiV1;
+import ch.sbb.atlas.api.workflow.WorkflowModel;
+import ch.sbb.atlas.api.workflow.WorkflowStartModel;
 import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.mapper.WorkflowMapper;
+import ch.sbb.workflow.mapper.WorkflowStartMapper;
 import ch.sbb.workflow.service.WorkflowService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,24 +23,25 @@ public class WorkflowController implements WorkflowApiV1 {
 
   @Override
   public WorkflowModel getWorkflow(Long id) {
-    return WorkflowModel.toModel(service.getWorkflow(id));
+    return WorkflowMapper.toModel(service.getWorkflow(id));
   }
 
   @Override
   public List<WorkflowModel> getWorkflows() {
-    return service.getWorkflows().stream().map(WorkflowModel::toModel).toList();
+    return service.getWorkflows().stream().map(WorkflowMapper::toModel).toList();
   }
 
   @Override
   public WorkflowModel startWorkflow(WorkflowStartModel workflowStartModel) {
-    Workflow workflow = service.startWorkflow(WorkflowStartModel.toEntity(workflowStartModel));
-    return WorkflowModel.toNewModel(workflow);
+    Workflow workflow = service.startWorkflow(WorkflowStartMapper.toEntity(workflowStartModel));
+    return WorkflowMapper.toNewModel(workflow);
   }
 
   @Override
+  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
   public WorkflowModel examinantCheck(Long id, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
     Workflow workflow = service.examinantCheck(id, examinantWorkflowCheckModel);
-    return WorkflowModel.toModel(workflow);
+    return WorkflowMapper.toModel(workflow);
   }
 
 }

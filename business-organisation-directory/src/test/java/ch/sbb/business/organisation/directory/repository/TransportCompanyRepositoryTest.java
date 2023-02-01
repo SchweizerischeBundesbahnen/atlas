@@ -7,7 +7,7 @@ import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompany.TransportCompanyBuilder;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation.TransportCompanyRelationBuilder;
-import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
+import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
