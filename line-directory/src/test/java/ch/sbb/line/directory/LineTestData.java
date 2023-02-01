@@ -1,14 +1,14 @@
 package ch.sbb.line.directory;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.LineVersionModel.LineVersionModelBuilder;
+import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.Line.LineBuilder;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersion.LineVersionBuilder;
-import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory.entity;
 
-import ch.sbb.business.organisation.directory.service.TransportCompanyStatus;
+import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;

@@ -1,8 +1,8 @@
 package ch.sbb.atlas.user.administration.controller;
 
-import ch.sbb.atlas.user.administration.api.UserInformationApiV1;
+import ch.sbb.atlas.api.user.administration.UserInformationApiV1;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
-import ch.sbb.atlas.user.administration.api.UserModel;
+import ch.sbb.atlas.api.user.administration.UserModel;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
