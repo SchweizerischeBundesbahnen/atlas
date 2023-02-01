@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.line.directory.enumaration.CoverageType;
-import ch.sbb.line.directory.enumaration.ModelType;
-import ch.sbb.line.directory.enumaration.ValidationErrorType;
+import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
+import ch.sbb.atlas.api.lidi.enumaration.ModelType;
+import ch.sbb.atlas.api.lidi.enumaration.ValidationErrorType;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;

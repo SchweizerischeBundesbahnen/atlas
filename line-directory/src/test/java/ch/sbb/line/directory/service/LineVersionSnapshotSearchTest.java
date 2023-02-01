@@ -6,11 +6,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.entity.LineVersionSnapshot.LineVersionSnapshotBuilder;
-import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.line.directory.model.search.LineVersionSnapshotSearchRestrictions;
 import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
 import java.time.LocalDate;

@@ -10,18 +10,18 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-@EmbeddedKafka(topics = {"atlas.mail", "atlas.workflow"})
+@EmbeddedKafka(topics = {"atlas.mail"})
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
 public class UserAdministrationBeansTest {
 
-    @Autowired
-    private ApplicationContext applicationContext;
+  @Autowired
+  private ApplicationContext applicationContext;
 
-    @Test
-    void shouldFindUserAdminstrationBeans() {
-        assertThatNoException().isThrownBy(
-                () -> applicationContext.getBean(UserAdministrationLoader.class));
-    }
+  @Test
+  void shouldFindUserAdminstrationBeans() {
+    assertThatNoException().isThrownBy(
+        () -> applicationContext.getBean(UserAdministrationLoader.class));
+  }
 
 }

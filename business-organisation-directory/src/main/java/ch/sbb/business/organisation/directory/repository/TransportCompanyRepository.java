@@ -16,7 +16,7 @@ public interface TransportCompanyRepository extends JpaRepository<TransportCompa
       + "where "
       + "(r.validTo >= current_date and r.validFrom <= current_date) and "
       + "(tc.transportCompanyStatus in "
-      + "(ch.sbb.business.organisation.directory.service.TransportCompanyStatus.INACTIVE, "
-      + "ch.sbb.business.organisation.directory.service.TransportCompanyStatus.LIQUIDATED))")
+      + "(ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus.INACTIVE, "
+      + "ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus.LIQUIDATED))")
   List<TransportCompany> findTransportCompaniesWithInvalidRelations();
 }

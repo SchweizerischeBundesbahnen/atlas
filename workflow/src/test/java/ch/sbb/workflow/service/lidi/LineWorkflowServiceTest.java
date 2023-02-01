@@ -2,7 +2,7 @@ package ch.sbb.workflow.service.lidi;
 
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
-@EmbeddedKafka(topics = {"atlas.mail", "atlas.workflow"})
+@EmbeddedKafka(topics = {"atlas.mail"})
 class LineWorkflowServiceTest {
 
     @Autowired

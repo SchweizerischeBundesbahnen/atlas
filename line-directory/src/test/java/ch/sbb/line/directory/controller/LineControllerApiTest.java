@@ -1,16 +1,16 @@
 package ch.sbb.line.directory.controller;
 
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.alternativeName;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.businessOrganisation;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.combinationName;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.lineType;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.longName;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.paymentType;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.slnid;
-import static ch.sbb.line.directory.api.LineVersionModel.Fields.swissLineNumber;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.alternativeName;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.businessOrganisation;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.combinationName;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.lineType;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.longName;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.paymentType;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.slnid;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.swissLineNumber;
 import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
 import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
-import static ch.sbb.line.directory.enumaration.ModelType.LINE;
+import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -18,24 +18,23 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.LineVersionModel.Fields;
-import ch.sbb.line.directory.api.LineVersionSnapshotModel;
-import ch.sbb.line.directory.api.SublineVersionVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
+import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
+import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
-import ch.sbb.line.directory.enumaration.CoverageType;
-import ch.sbb.line.directory.enumaration.LineType;
-import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
@@ -520,8 +519,8 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .build();
 
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
-    SublineVersionVersionModel sublineVersionModel =
-        SublineVersionVersionModel.builder()
+    SublineVersionModel sublineVersionModel =
+        SublineVersionModel.builder()
             .validFrom(LocalDate.of(2000, 1, 1))
             .validTo(LocalDate.of(2000, 12, 31))
             .businessOrganisation("sbb")
@@ -530,7 +529,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    SublineVersionVersionModel sublineVersionSaved = sublineController.createSublineVersion(
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
         sublineVersionModel);
 
     //when
@@ -641,7 +640,6 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .queryParam("sort", "swissLineNumber,asc")
             .contentType(contentType)
         ).andExpect(status().isOk())
-        .andDo(print())
         .andExpect(jsonPath("$.totalCount").value(1))
         .andExpect(jsonPath("$.objects", hasSize(1)))
         .andExpect(jsonPath("$.objects.[0]." + LineVersionSnapshotModel.Fields.alternativeName, is("alternativeName")))

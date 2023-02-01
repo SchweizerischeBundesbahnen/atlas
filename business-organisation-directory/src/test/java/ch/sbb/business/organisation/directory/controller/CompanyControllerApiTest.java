@@ -19,9 +19,6 @@ public class CompanyControllerApiTest extends BaseControllerApiTest {
   @Autowired
   private CompanyRepository repository;
 
-  @Autowired
-  private CompanyController controller;
-
   @BeforeEach
   void createDefaultVersion() {
     repository.save(Company.builder()
