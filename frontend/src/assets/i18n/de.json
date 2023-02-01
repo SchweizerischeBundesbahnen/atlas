@@ -506,6 +506,10 @@
       "SKIP": {
         "SUCCESS": "Die Änhörung wurde erfolgreich übersprungen."
       }
+    },
+    "ERROR": {
+      "NOT_IN_REVIEW": "Die Anhörung für dieses Objekt ist zur Zeit nicht gestartet.",
+      "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet."
     }
   }
 }

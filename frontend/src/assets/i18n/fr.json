@@ -506,6 +506,10 @@
       "SKIP": {
         "SUCCESS": "L'audition a été ignorée avec succès."
       }
+    },
+    "ERROR": {
+      "NOT_IN_REVIEW": "L'audience pour cet objet n'est pas lancée pour le moment.",
+      "ALREADY_IN_REVIEW": "Une consultation a déjà été lancée pour cet objet."
     }
   }
 }
