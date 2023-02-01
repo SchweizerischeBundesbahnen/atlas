@@ -1,10 +1,11 @@
 package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
-import ch.sbb.atlas.user.administration.api.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
+import ch.sbb.atlas.user.administration.mapper.UserPermissionCreateMapper;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
 import java.util.List;
@@ -43,7 +44,7 @@ public class UserAdministrationService {
 
   public void save(UserPermissionCreateModel userPermissionCreate) {
     validatePermissionExistence(userPermissionCreate.getSbbUserId());
-    final List<UserPermission> toSave = userPermissionCreate.toEntityList();
+    final List<UserPermission> toSave = UserPermissionCreateMapper.toEntityList(userPermissionCreate);
     userPermissionRepository.saveAll(toSave);
   }
 

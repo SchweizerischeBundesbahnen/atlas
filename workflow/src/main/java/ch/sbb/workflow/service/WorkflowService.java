@@ -1,11 +1,16 @@
 package ch.sbb.workflow.service;
 
+import ch.sbb.atlas.api.client.line.workflow.LineWorkflowClient;
+import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.api.PersonModel;
-import ch.sbb.workflow.api.ExaminantWorkflowCheckModel;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
+import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.mapper.PersonMapper;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkflowService {
 
   private final WorkflowRepository repository;
-
   private final WorkflowNotificationService notificationService;
+  private final LineWorkflowClient lineWorkflowClient;
 
   public Workflow startWorkflow(Workflow workflow) {
-    workflow.setStatus(WorkflowStatus.STARTED);
+    if (hasWorkflowInProgress(workflow.getBusinessObjectId())) {
+      throw new BusinessObjectCurrentlyInReviewException();
+    }
+    workflow.setStatus(WorkflowStatus.ADDED);
     Workflow entity = repository.save(workflow);
-    notificationService.sendEventToLidi(entity);
-    notificationService.sendEventToMail(entity);
+    WorkflowStatus desiredWorkflowStatusByLidi = processWorkflowOnLidi(entity);
+    entity.setStatus(desiredWorkflowStatusByLidi);
+    if (entity.getStatus() == WorkflowStatus.STARTED) {
+      notificationService.sendEventToMail(entity);
+    }
     return entity;
   }
 
@@ -39,13 +50,33 @@ public class WorkflowService {
 
   public Workflow examinantCheck(Long workflowId, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
     Workflow workflow = getWorkflow(workflowId);
+    if (workflow.getStatus() != WorkflowStatus.STARTED) {
+      throw new BusinessObjectCurrentlyNotInReviewException();
+    }
     workflow.setCheckComment(examinantWorkflowCheckModel.getCheckComment());
-    workflow.setExaminant(PersonModel.toEntity(examinantWorkflowCheckModel.getExaminant()));
+    workflow.setExaminant(PersonMapper.toEntity(examinantWorkflowCheckModel.getExaminant()));
     workflow.setStatus(
         examinantWorkflowCheckModel.isAccepted() ? WorkflowStatus.APPROVED : WorkflowStatus.REJECTED);
 
-    notificationService.sendEventToLidi(workflow);
+    processWorkflowOnLidi(workflow);
     notificationService.sendEventToMail(workflow);
     return workflow;
+  }
+
+  WorkflowStatus processWorkflowOnLidi(Workflow workflow) {
+    WorkflowEvent workflowEvent = WorkflowEvent.builder()
+        .workflowId(workflow.getId())
+        .businessObjectId(workflow.getBusinessObjectId())
+        .workflowStatus(workflow.getStatus())
+        .workflowType(workflow.getWorkflowType())
+        .build();
+    if (workflowEvent.getWorkflowType() == WorkflowType.LINE) {
+      return lineWorkflowClient.processWorkflow(workflowEvent);
+    }
+    throw new UnsupportedOperationException();
+  }
+
+  private boolean hasWorkflowInProgress(Long businessObjectId) {
+    return !repository.findAllByBusinessObjectIdAndStatus(businessObjectId, WorkflowStatus.STARTED).isEmpty();
   }
 }

@@ -65,6 +65,11 @@
          <version>1.150.0</version>
       </dependency>
       <dependency>
+         <artifactId>atlas-api</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>1.149.0</version>
+      </dependency>
+      <dependency>
          <artifactId>base-service</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>1.150.0</version>
@@ -96,6 +101,11 @@
          <scope>test</scope>
          <type>test-jar</type>
          <version>1.150.0</version>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.kafka</groupId>
+         <artifactId>spring-kafka-test</artifactId>
+         <scope>test</scope>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-test</artifactId>

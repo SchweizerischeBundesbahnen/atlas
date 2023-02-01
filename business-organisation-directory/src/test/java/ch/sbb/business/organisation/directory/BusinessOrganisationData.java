@@ -1,10 +1,10 @@
 package ch.sbb.business.organisation.directory;
 
 import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationVersionModel.BusinessOrganisationVersionModelBuilder;
+import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
+import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.BusinessOrganisationVersionModelBuilder;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.entity.BusinessType;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;

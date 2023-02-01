@@ -2,6 +2,8 @@ package ch.sbb.workflow.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
+import ch.sbb.atlas.api.workflow.PersonModel;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

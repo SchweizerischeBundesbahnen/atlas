@@ -2,23 +2,25 @@ package ch.sbb.line.directory.controller;
 
 import static java.util.stream.Collectors.toSet;
 
+import ch.sbb.atlas.api.lidi.CoverageModel;
+import ch.sbb.atlas.api.lidi.LineApiV1;
+import ch.sbb.atlas.api.lidi.LineModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.kafka.model.workflow.model.WorkflowStatus;
-import ch.sbb.line.directory.api.CoverageModel;
-import ch.sbb.line.directory.api.LineApiV1;
-import ch.sbb.line.directory.api.LineModel;
-import ch.sbb.line.directory.api.LineVersionModel;
-import ch.sbb.line.directory.api.LineVersionSnapshotModel;
-import ch.sbb.line.directory.api.LineVersionWorkflowModel;
+import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
-import ch.sbb.line.directory.enumaration.LineType;
 import ch.sbb.line.directory.exception.SlnidNotFoundException;
+import ch.sbb.line.directory.mapper.CoverageMapper;
+import ch.sbb.line.directory.mapper.LineVersionSnapshotMapper;
+import ch.sbb.line.directory.mapper.LineVersionWorkflowMapper;
 import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.model.search.LineVersionSnapshotSearchRestrictions;
 import ch.sbb.line.directory.service.CoverageService;
@@ -133,7 +135,7 @@ public class LineController implements LineApiV1 {
 
   @Override
   public CoverageModel getLineCoverage(String slnid) {
-    return CoverageModel.toModel(coverageService.getSublineCoverageBySlnidAndLineModelType(slnid));
+    return CoverageMapper.toModel(coverageService.getSublineCoverageBySlnidAndLineModelType(slnid));
   }
 
   @Override
@@ -165,7 +167,7 @@ public class LineController implements LineApiV1 {
             .validOn(validOn)
             .build());
     List<LineVersionSnapshotModel> lineVersionSnapshotModels = lineVersionSnapshotPage.stream()
-        .map(LineVersionSnapshotModel::toModel).toList();
+        .map(LineVersionSnapshotMapper::toModel).toList();
     return Container.<LineVersionSnapshotModel>builder()
         .objects(lineVersionSnapshotModels)
         .totalCount(lineVersionSnapshotPage.getTotalElements())
@@ -174,7 +176,7 @@ public class LineController implements LineApiV1 {
 
   @Override
   public LineVersionSnapshotModel getLineVersionSnapshotById(Long id) {
-    return LineVersionSnapshotModel.toModel(lineVersionSnapshotService.getLineVersionSnapshotById(id));
+    return LineVersionSnapshotMapper.toModel(lineVersionSnapshotService.getLineVersionSnapshotById(id));
   }
 
   @Override
@@ -210,7 +212,7 @@ public class LineController implements LineApiV1 {
         .lineVersionWorkflows(
             lineVersion.getLineVersionWorkflows()
                 .stream()
-                .map(LineVersionWorkflowModel::toModel).collect(toSet()))
+                .map(LineVersionWorkflowMapper::toModel).collect(toSet()))
         .creator(lineVersion.getCreator())
         .creationDate(lineVersion.getCreationDate())
         .editor(lineVersion.getEditor())

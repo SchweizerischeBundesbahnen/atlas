@@ -1,6 +1,8 @@
 <div [formGroup]="formGroup" class="d-flex flex-column">
   <div class="info-icon-position">
-    <mat-label class="font-bold-lg">{{ label | translate }} </mat-label>
+    <mat-label class="font-bold-lg" [ngClass]="required ? 'required-indicator' : ''"
+      >{{ label | translate }}
+    </mat-label>
     <form-info-icon
       *ngIf="displayInfoIcon"
       infoTitle="{{ 'FORM.COMMENT_INFO' | translate }}"
