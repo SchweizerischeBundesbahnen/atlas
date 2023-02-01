@@ -10,9 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
-import ch.sbb.business.organisation.directory.api.BusinessOrganisationModel;
-import ch.sbb.business.organisation.directory.api.TransportCompanyRelationModel;
-import ch.sbb.business.organisation.directory.api.TransportCompanyBoRelationModel.Fields;
+import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
+import ch.sbb.atlas.api.bodi.TransportCompanyRelationModel;
+import ch.sbb.atlas.api.bodi.TransportCompanyBoRelationModel.Fields;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;

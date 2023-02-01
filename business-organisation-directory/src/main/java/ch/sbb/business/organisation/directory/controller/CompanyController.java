@@ -1,9 +1,10 @@
 package ch.sbb.business.organisation.directory.controller;
 
+import ch.sbb.atlas.api.bodi.CompanyApiV1;
+import ch.sbb.atlas.api.bodi.CompanyModel;
 import ch.sbb.atlas.base.service.model.api.Container;
-import ch.sbb.business.organisation.directory.api.CompanyApiV1;
-import ch.sbb.business.organisation.directory.api.CompanyModel;
 import ch.sbb.business.organisation.directory.entity.Company;
+import ch.sbb.business.organisation.directory.mapper.CompanyMapper;
 import ch.sbb.business.organisation.directory.service.CompanyService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ public class CompanyController implements CompanyApiV1 {
                                  .build());
     return Container.<CompanyModel>builder()
                     .objects(companies.stream()
-                                      .map(CompanyModel::fromEntity)
+                                      .map(CompanyMapper::fromEntity)
                                       .collect(Collectors.toList()))
                     .totalCount(companies.getTotalElements())
                     .build();
@@ -37,7 +38,7 @@ public class CompanyController implements CompanyApiV1 {
 
   @Override
   public CompanyModel getCompany(Long uic) {
-    return CompanyModel.fromEntity(companyService.getCompany(uic));
+    return CompanyMapper.fromEntity(companyService.getCompany(uic));
   }
 
   @Override

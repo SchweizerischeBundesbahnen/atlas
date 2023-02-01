@@ -9,12 +9,12 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.Container;
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.line.directory.api.SublineModel;
-import ch.sbb.line.directory.api.SublineVersionVersionModel;
+import ch.sbb.atlas.api.lidi.SublineModel;
+import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.line.directory.enumaration.PaymentType;
-import ch.sbb.line.directory.enumaration.SublineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
@@ -50,8 +50,8 @@ public class SublineControllerTest {
   @Captor
   private ArgumentCaptor<SublineVersion> versionArgumentCaptor;
 
-  private static SublineVersionVersionModel createModel() {
-    return SublineVersionVersionModel.builder()
+  private static SublineVersionModel createModel() {
+    return SublineVersionModel.builder()
         .swissSublineNumber("swissSublineNumber")
         .mainlineSlnid("mainlineSlnid")
         .status(Status.VALIDATED)
@@ -104,7 +104,7 @@ public class SublineControllerTest {
     when(sublineService.findSubline(any())).thenReturn(Collections.singletonList(sublineVersion));
 
     // When
-    List<SublineVersionVersionModel> subline = sublineController.getSublineVersion("slnid");
+    List<SublineVersionModel> subline = sublineController.getSublineVersion("slnid");
 
     // Then
     assertThat(subline).isNotNull();
@@ -118,7 +118,7 @@ public class SublineControllerTest {
   @Test
   public void shouldSaveNewVersion() {
     // Given
-    SublineVersionVersionModel sublineVersionModel = createModel();
+    SublineVersionModel sublineVersionModel = createModel();
 
     // When
     sublineController.createSublineVersion(sublineVersionModel);
@@ -145,7 +145,7 @@ public class SublineControllerTest {
   void shouldUpdateVersionWithVersioning() {
     // Given
     SublineVersion sublineVersion = SublineTestData.sublineVersion();
-    SublineVersionVersionModel sublineVersionModel = createModel();
+    SublineVersionModel sublineVersionModel = createModel();
     sublineVersionModel.setNumber("New name");
 
     when(sublineService.findById(anyLong())).thenReturn(Optional.of(sublineVersion));

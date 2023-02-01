@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 
-import ch.sbb.atlas.user.administration.api.UserPermissionCreateModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import org.junit.jupiter.api.BeforeEach;

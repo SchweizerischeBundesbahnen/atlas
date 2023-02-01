@@ -17,7 +17,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-@EmbeddedKafka(topics = {"atlas.mail", "atlas.workflow"})
+@EmbeddedKafka(topics = {"atlas.mail"})
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
 @Slf4j
