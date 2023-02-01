@@ -6,6 +6,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -54,10 +55,9 @@ public class ServicePointService {
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects, this::save, this::deleteById);
   }
 
-  private ServicePointVersion getCurrentServicePointVersion(
-      List<ServicePointVersion> dbVersions, // expectation: sorted by validFrom
-      ServicePointVersion edited
-  ) {
+  ServicePointVersion getCurrentServicePointVersion(List<ServicePointVersion> dbVersions, ServicePointVersion edited) {
+    dbVersions.sort(Comparator.comparing(ServicePointVersion::getValidFrom));
+
     Optional<ServicePointVersion> currentVersionMatch = dbVersions.stream()
         .filter(dbVersion -> {
               // match validFrom
