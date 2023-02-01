@@ -67,7 +67,7 @@
       <dependency>
          <artifactId>atlas-api</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.149.0</version>
+         <version>1.150.0</version>
       </dependency>
       <dependency>
          <artifactId>base-service</artifactId>
