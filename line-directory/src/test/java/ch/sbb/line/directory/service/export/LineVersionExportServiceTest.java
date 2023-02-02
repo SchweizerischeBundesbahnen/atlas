@@ -21,94 +21,94 @@ import org.mockito.MockitoAnnotations;
 
 class LineVersionExportServiceTest {
 
-    @Mock
-    private LineVersionRepository lineVersionRepository;
+  @Mock
+  private LineVersionRepository lineVersionRepository;
 
-    @Mock
-    private FileService fileService;
+  @Mock
+  private FileService fileService;
 
-    @Mock
-    private AmazonService amazonService;
+  @Mock
+  private AmazonService amazonService;
 
-    private LineVersionExportService lineVersionExportService;
+  private LineVersionExportService lineVersionExportService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        lineVersionExportService = new LineVersionExportService(fileService, amazonService,
-            lineVersionRepository);
-    }
+  @BeforeEach
+  public void setUp() {
+    MockitoAnnotations.openMocks(this);
+    lineVersionExportService = new LineVersionExportService(fileService, amazonService,
+        lineVersionRepository);
+  }
 
-    @Test
-    public void shouldGetFullVersionsCsv() {
-        //given
-        LineVersion lineVersion1 = LineTestData.lineVersionBuilder().build();
-        LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
-            .validFrom(LocalDate.of(2022, 1, 1))
-            .validTo(LocalDate.of(2022, 12, 31))
-            .description("desc2")
-            .build();
-        List<LineVersion> lineVersions = List.of(lineVersion1, lineVersion2);
-        when(lineVersionRepository.getFullLineVersions()).thenReturn(lineVersions);
-        //when
-        File result = lineVersionExportService.getFullVersionsCsv();
-        //then
-        assertThat(result).isNotNull();
-        assertThat(result.getName()).isNotNull();
-        assertThat(result.getName()).contains("full_");
-        result.delete();
-    }
+  @Test
+  public void shouldGetFullVersionsCsv() {
+    //given
+    LineVersion lineVersion1 = LineTestData.lineVersionBuilder().build();
+    LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .description("desc2")
+        .build();
+    List<LineVersion> lineVersions = List.of(lineVersion1, lineVersion2);
+    when(lineVersionRepository.getFullLineVersions()).thenReturn(lineVersions);
+    //when
+    File result = lineVersionExportService.getFullVersionsCsv();
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getName()).isNotNull();
+    assertThat(result.getName()).contains("full_");
+    result.delete();
+  }
 
-    @Test
-    public void shouldGetActualVersionsCsv() {
-        //given
-        LineVersion lineVersion1 = LineTestData.lineVersionBuilder().build();
-        LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
-            .validFrom(LocalDate.of(2022, 1, 1))
-            .validTo(LocalDate.of(2022, 12, 31))
-            .description("desc2")
-            .build();
-        List<LineVersion> lineVersions = List.of(lineVersion1, lineVersion2);
-        when(lineVersionRepository.getActualLineVersions(LocalDate.now())).thenReturn(lineVersions);
-        //when
-        File result = lineVersionExportService.getActualVersionsCsv();
-        //then
-        assertThat(result).isNotNull();
-        assertThat(result.getName()).isNotNull();
-        assertThat(result.getName()).contains("actual_date_");
-        result.delete();
-    }
+  @Test
+  public void shouldGetActualVersionsCsv() {
+    //given
+    LineVersion lineVersion1 = LineTestData.lineVersionBuilder().build();
+    LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .description("desc2")
+        .build();
+    List<LineVersion> lineVersions = List.of(lineVersion1, lineVersion2);
+    when(lineVersionRepository.getActualLineVersions(LocalDate.now())).thenReturn(lineVersions);
+    //when
+    File result = lineVersionExportService.getActualVersionsCsv();
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getName()).isNotNull();
+    assertThat(result.getName()).contains("actual_date_");
+    result.delete();
+  }
 
-    @Test
-    public void shouldGetFutureTimetableVersionsCsv() {
-        //given
-        LineVersion lineVersion1 = LineTestData.lineVersionBuilder().build();
-        LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
-            .validFrom(LocalDate.of(2022, 1, 1))
-            .validTo(LocalDate.of(2022, 12, 31))
-            .description("desc2")
-            .build();
-        List<LineVersion> lineVersions = List.of(lineVersion1, lineVersion2);
-        when(lineVersionRepository.getActualLineVersions(LocalDate.now())).thenReturn(lineVersions);
-        //when
-        File result = lineVersionExportService.getFutureTimetableVersionsCsv();
-        //then
-        assertThat(result).isNotNull();
-        assertThat(result.getName()).isNotNull();
-        assertThat(result.getName()).contains("future_timetable_");
-        result.delete();
-    }
+  @Test
+  public void shouldGetFutureTimetableVersionsCsv() {
+    //given
+    LineVersion lineVersion1 = LineTestData.lineVersionBuilder().build();
+    LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .description("desc2")
+        .build();
+    List<LineVersion> lineVersions = List.of(lineVersion1, lineVersion2);
+    when(lineVersionRepository.getActualLineVersions(LocalDate.now())).thenReturn(lineVersions);
+    //when
+    File result = lineVersionExportService.getFutureTimetableVersionsCsv();
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getName()).isNotNull();
+    assertThat(result.getName()).contains("future_timetable_");
+    result.delete();
+  }
 
-    @Test
-    void shouldThrowExportExceptionWhenDirDoesNotExists() {
-        //given
-        when(fileService.getDir()).thenReturn("./test/export");
-        when(lineVersionRepository.getActualLineVersions(LocalDate.now())).thenReturn(
-            Collections.emptyList());
-        //when
+  @Test
+  void shouldThrowExportExceptionWhenDirDoesNotExists() {
+    //given
+    when(fileService.getDir()).thenReturn("." + File.separator + "test" + File.separator + "export" + File.separator);
+    when(lineVersionRepository.getActualLineVersions(LocalDate.now())).thenReturn(
+        Collections.emptyList());
+    //when
 
-        assertThatExceptionOfType(ExportException.class).isThrownBy(
-            () -> lineVersionExportService.getFutureTimetableVersionsCsv());
-    }
+    assertThatExceptionOfType(ExportException.class).isThrownBy(
+        () -> lineVersionExportService.getFutureTimetableVersionsCsv());
+  }
 
 }

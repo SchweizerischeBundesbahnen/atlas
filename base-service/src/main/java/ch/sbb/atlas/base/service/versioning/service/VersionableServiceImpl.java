@@ -28,15 +28,27 @@ public class VersionableServiceImpl implements VersionableService {
   }
 
   @Override
+  public <T extends Versionable> List<VersionedObject> versioningObjectsWithDeleteByNullProperties(Versionable current,
+      Versionable editedVersion, List<T> currentVersions) {
+    return doVersioningObjects(true, current, editedVersion, currentVersions);
+  }
+
+  @Override
   public <T extends Versionable> List<VersionedObject> versioningObjects(Versionable current,
       Versionable editedVersion,
       List<T> currentVersions) {
 
+    return doVersioningObjects(false, current, editedVersion, currentVersions);
+  }
+
+  private <T extends Versionable> List<VersionedObject> doVersioningObjects(boolean deletePropertyWhenNull, Versionable current,
+      Versionable editedVersion,
+      List<T> currentVersions) {
     List<VersionableProperty> versionableProperties = atlasAnnotationProcessor.getVersionableProperties(
         current);
 
     logStarting(current, editedVersion, currentVersions);
-    List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(current,
+    List<VersionedObject> versionedObjects = versioningEngine.applyVersioning(deletePropertyWhenNull, current,
         editedVersion, currentVersions, versionableProperties
     );
 
@@ -62,37 +74,37 @@ public class VersionableServiceImpl implements VersionableService {
   public <T extends Versionable> void applyVersioning(Class<T> clazz,
       List<VersionedObject> versionedObjects, Consumer<T> save, LongConsumer deleteById) {
     versionedObjects.stream()
-                    .filter(versionedObject -> NOT_TOUCHED == versionedObject.getAction())
-                    .forEach(this::log);
+        .filter(versionedObject -> NOT_TOUCHED == versionedObject.getAction())
+        .forEach(this::log);
 
     versionedObjects.stream()
-                    .filter(versionedObject -> DELETE == versionedObject.getAction())
-                    .forEach(versionedObject -> {
-                      log(versionedObject);
-                      if (versionedObject.getEntity().getId() != null) {
-                        deleteById.accept(versionedObject.getEntity().getId());
-                      }
-                    });
+        .filter(versionedObject -> DELETE == versionedObject.getAction())
+        .forEach(versionedObject -> {
+          log(versionedObject);
+          if (versionedObject.getEntity().getId() != null) {
+            deleteById.accept(versionedObject.getEntity().getId());
+          }
+        });
 
     versionedObjects.stream()
-                    .filter(versionedObject -> UPDATE == versionedObject.getAction())
-                    .forEach(versionedObject -> {
-                      log(versionedObject);
-                      T version = ToVersionableMapper.convert(versionedObject,
-                          clazz);
-                      save.accept(version);
-                    });
+        .filter(versionedObject -> UPDATE == versionedObject.getAction())
+        .forEach(versionedObject -> {
+          log(versionedObject);
+          T version = ToVersionableMapper.convert(versionedObject,
+              clazz);
+          save.accept(version);
+        });
 
     versionedObjects.stream()
-                    .filter(versionedObject -> NEW == versionedObject.getAction())
-                    .forEach(versionedObject -> {
-                      log.info("A new Version was added. VersionedObject={}", versionedObject);
-                      T version = ToVersionableMapper.convert(versionedObject,
-                          clazz);
-                      //ensure version.getId() == null to avoid to update a Version
-                      version.setId(null);
-                      save.accept(version);
-                    });
+        .filter(versionedObject -> NEW == versionedObject.getAction())
+        .forEach(versionedObject -> {
+          log.info("A new Version was added. VersionedObject={}", versionedObject);
+          T version = ToVersionableMapper.convert(versionedObject,
+              clazz);
+          //ensure version.getId() == null to avoid to update a Version
+          version.setId(null);
+          save.accept(version);
+        });
   }
 
   private void log(VersionedObject versionedObject) {

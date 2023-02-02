@@ -7,27 +7,29 @@ This is the repository for business relevant services for ATLAS.
 - [Big Picture](#big-picture)
 - [Links](#links)
 - [ATLAS CI/CD](#atlas-cicd)
-  * [E2E Videos Results](#e2e-videos-results)
+    * [E2E Videos Results](#e2e-videos-results)
 - [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
-  * [Correlation-Id](#correlation-id)
+    * [Correlation-Id](#correlation-id)
 - [Development](#development)
-  * [Run locally](#run-locally)
-  * [Monorepo](#monorepo)
-  * [Running Python scripts](#running-python-scripts)
+    * [Run locally](#run-locally)
+    * [Monorepo](#monorepo)
+    * [Running Python scripts](#running-python-scripts)
 - [Structure](#structure)
-  * [APIM-configuration](#apim-configuration)
-  * [Charts](#charts)
-  * [Gateway](#gateway)
-  * [Kafka](#kafka)
-  * [Line-directory](#line-directory)
-  * [Business-organisation-directory](#business-organisation-directory)
-  * [Mail Service](#mail-service)
-  * [Workflow](#workflow)
-  * [User Administration](#user-administration)
-  * [Base Service lib](#base-service-lib)
-  * [Base Workflow lib](#base-workflow-lib)
-  * [Frontend](#frontend)
+    * [APIM-configuration](#apim-configuration)
+    * [Charts](#charts)
+    * [Gateway](#gateway)
+    * [Kafka](#kafka)
+    * [Line-directory](#line-directory)
+    * [Business-organisation-directory](#business-organisation-directory)
+    * [Mail Service](#mail-service)
+    * [Workflow](#workflow)
+    * [User Administration](#user-administration)
+    * [Service-Point-Directory](#service-point-directory)
+    * [Import Service-Point](#import-service-point)
+    * [Base Service lib](#base-service-lib)
+    * [Base Workflow lib](#base-workflow-lib)
+    * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
 
 <!-- tocstop -->
@@ -224,6 +226,11 @@ See [UserAdministration Documentation](user-administration/README.md) for more.
 Business service for `ServicePoints`, `TrafficPointElements` and `LoadingPoints`. All of these business objects use the atlas own
 versioning.
 See [Service-Point-Directory documentation](service-point-directory/README.md);
+
+### Import Service-Point
+
+Spring Batch Job to import CSV from Amazon or provided files to [Service-Point-Directory](#service-point-directory)
+See [Import-Service-Point documentation](import-service-point/README.md);
 
 ### Base Service lib
 
