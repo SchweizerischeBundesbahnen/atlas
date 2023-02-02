@@ -6,7 +6,6 @@ import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointC
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.base.service.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ServicePointImportService {
 
-  private final ServicePointVersionRepository servicePointVersionRepository;
   private final ServicePointService servicePointService;
 
   public static List<ServicePointCsvModel> parseServicePoints(InputStream inputStream)
