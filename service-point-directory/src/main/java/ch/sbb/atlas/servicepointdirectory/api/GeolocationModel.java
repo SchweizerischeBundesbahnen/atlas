@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.transformer.CoordinateTransformer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,6 +40,9 @@ public class GeolocationModel {
   private Double height;
 
   public static GeolocationModel fromEntity(GeolocationBaseEntity geolocation) {
+    if (geolocation == null) {
+      return null;
+    }
     Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(geolocation);
     return GeolocationModel.builder()
         .spatialReference(geolocation.getSpatialReference())

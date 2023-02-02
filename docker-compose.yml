@@ -97,6 +97,21 @@ services:
       - "-c"
       - "datestyle=iso, ymd"
 
+  import-service-point-db:
+    image: postgres:14.2
+    restart: always
+    ports:
+      - "5440:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: import-service
+    volumes:
+      - "/var/lib/postgresql/data"
+    command:
+      - "postgres"
+      - "-c"
+      - "datestyle=iso, ymd"
 
   zookeeper:
     image: wurstmeister/zookeeper

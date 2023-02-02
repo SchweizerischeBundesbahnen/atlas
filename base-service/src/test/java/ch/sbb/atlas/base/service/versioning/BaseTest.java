@@ -33,6 +33,9 @@ public abstract class BaseTest {
     @AtlasVersionableProperty(relationType = RelationType.ONE_TO_MANY, relationsFields = {
         Relation.Fields.value})
     private List<Relation> oneToManyRelation = new ArrayList<>();
+    @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
+        Relation.Fields.value})
+    private Relation oneToOneRelation;
 
     @Data
     @AllArgsConstructor
