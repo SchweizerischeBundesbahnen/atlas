@@ -139,7 +139,7 @@ class SublineServiceTest {
     assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(
             () -> sublineService.save(sublineVersion))
         .withMessage(
-            "400 BAD_REQUEST \"Main line with SLNID mainlineSlnid does not exist\"");
+            "400 BAD_REQUEST \"Main line with SLNID ch:1:slnid:1000546 does not exist\"");
 
     // Then
   }
