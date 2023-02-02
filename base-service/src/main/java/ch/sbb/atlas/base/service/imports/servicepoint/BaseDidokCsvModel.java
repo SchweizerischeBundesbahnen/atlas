@@ -1,22 +1,25 @@
-package ch.sbb.atlas.servicepointdirectory.service;
+package ch.sbb.atlas.base.service.imports.servicepoint;
 
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateDeserializer;
-import ch.sbb.atlas.servicepointdirectory.service.deserializer.LocalDateTimeDeserializer;
+import ch.sbb.atlas.base.service.imports.servicepoint.deserializer.LocalDateTimeDeserializer;
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.ObjectUtils;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BaseDidokCsvModel {
@@ -57,29 +60,48 @@ public class BaseDidokCsvModel {
 
   // Validity
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("GUELTIG_VON")
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validFrom;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("GUELTIG_BIS")
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
 
   // Create/Edit Info
-
+  @EqualsAndHashCode.Exclude
   @JsonProperty("ERSTELLT_AM")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   private LocalDateTime createdAt;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("ERSTELLT_VON")
   private String createdBy;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("GEAENDERT_VON")
   private String editedBy;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("GEAENDERT_AM")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   private LocalDateTime editedAt;
+
+  private static Double getCoordinateBySpatialReference(
+      SpatialReference spatialReference,
+      Double wgs84,
+      Double wgs84Web,
+      Double lv95,
+      Double lv03) {
+    return switch (spatialReference) {
+      case WGS84WEB -> wgs84Web;
+      case LV95 -> lv95;
+      case LV03 -> lv03;
+      case WGS84 -> wgs84;
+    };
+  }
 
   public Double getHeight() {
     return ObjectUtils.firstNonNull(height, zLv95);
@@ -97,19 +119,5 @@ public class BaseDidokCsvModel {
       return null;
     }
     return getCoordinateBySpatialReference(spatialReference, nWgs84, nWgs84web, nLv95, nLv03);
-  }
-
-  private static Double getCoordinateBySpatialReference(
-      SpatialReference spatialReference,
-      Double wgs84,
-      Double wgs84Web,
-      Double lv95,
-      Double lv03) {
-    return switch (spatialReference) {
-      case WGS84WEB -> wgs84Web;
-      case LV95 -> lv95;
-      case LV03 -> lv03;
-      case WGS84 -> wgs84;
-    };
   }
 }

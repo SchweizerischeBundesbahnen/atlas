@@ -1,7 +1,7 @@
-package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
+package ch.sbb.atlas.base.service.imports.servicepoint.servicepoint;
 
-import ch.sbb.atlas.servicepointdirectory.service.BaseDidokCsvModel;
-import ch.sbb.atlas.servicepointdirectory.service.deserializer.NumericBooleanDeserializer;
+import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.deserializer.NumericBooleanDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -10,11 +10,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServicePointCsvModel extends BaseDidokCsvModel {
@@ -40,6 +42,7 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("ABKUERZUNG")
   private String abkuerzung;
 
+  @EqualsAndHashCode.Exclude
   @JsonProperty("IS_VIRTUELL")
   @JsonDeserialize(using = NumericBooleanDeserializer.class)
   private Boolean isVirtuell;

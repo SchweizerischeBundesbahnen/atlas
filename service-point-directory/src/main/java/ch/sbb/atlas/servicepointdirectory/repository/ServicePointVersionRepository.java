@@ -13,4 +13,6 @@ public interface ServicePointVersionRepository extends
 
   List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
 
+  boolean existsByNumber(ServicePointNumber servicePointNumber);
+  
 }

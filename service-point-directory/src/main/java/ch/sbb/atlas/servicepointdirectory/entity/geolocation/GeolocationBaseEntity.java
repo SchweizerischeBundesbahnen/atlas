@@ -1,8 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
-import ch.sbb.atlas.base.service.model.entity.BaseEntity;
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,10 +25,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @MappedSuperclass
-public abstract class GeolocationBaseEntity extends BaseEntity {
+@AtlasVersionable
+public abstract class GeolocationBaseEntity extends BaseDidokImportEntity {
 
   @NotNull
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private SpatialReference spatialReference;
 
   @AtlasVersionableProperty
