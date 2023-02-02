@@ -75,7 +75,8 @@ public class CsvService {
           .didokCode(key)
           .servicePointCsvModelList(value)
           .build();
-      servicePointCsvModelContainer.mergeVersionsWithIsNotVirtualAndHasNotGeolocation();
+      servicePointCsvModelContainer.mergeVersionsIsNotVirtualAndHasNotGeolocation();
+      servicePointCsvModelContainer.mergeHasJustBezeichnungDiff();
       value.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
       servicePointCsvModelContainers.add(servicePointCsvModelContainer);
     });
@@ -169,14 +170,23 @@ public class CsvService {
       List<ServicePointCsvModelContainer> servicePointCsvModelContainers) {
     long prunedServicePointModels = servicePointCsvModelContainers.stream()
         .collect(Collectors.summarizingInt(value -> value.getServicePointCsvModelList().size())).getSum();
-    List<Integer> mergedDidokNumbers = servicePointCsvModelContainers.stream()
+    List<Integer> mergedIsNotVirtualAndWithoutGeolocationNumbers = servicePointCsvModelContainers.stream()
         .filter(ServicePointCsvModelContainer::isHasMergedVersionNotVirtualWithoutGeolocation)
         .map(ServicePointCsvModelContainer::getDidokCode).toList();
+    log.info("Merged IsNotVirtualAndWithoutGeolocationNumbers {}", mergedIsNotVirtualAndWithoutGeolocationNumbers.size());
+    List<Integer> mergedHasJustBezeichningDiff = servicePointCsvModelContainers.stream()
+        .filter(ServicePointCsvModelContainer::isHasJustBezeichnungDiffMerged)
+        .map(ServicePointCsvModelContainer::getDidokCode).toList();
+    log.info("Merged HasJustBezeichningDiff {}", mergedHasJustBezeichningDiff.size());
+
     log.info("Found {} ServicePointCsvModelContainers with {} ServicePointModels to send to ServicePointDirectory",
         servicePointCsvModelContainers.size(), servicePointCsvModels.size());
-    log.info("Found and merged {} ServicePointCsvModels", servicePointCsvModels.size() - prunedServicePointModels);
+    log.info("Found and merged {} ServicePointCsvModels ", servicePointCsvModels.size() - prunedServicePointModels);
     log.info("Total ServicePointCsvModel to process {}", prunedServicePointModels);
-    log.info("Merged ServicePointCsvModel DidokNumber Lists: {}", mergedDidokNumbers);
+
+    log.info("Merged ServicePointCsvModel IsNotVirtual without geolocation DidokNumber Lists: {}",
+        mergedIsNotVirtualAndWithoutGeolocationNumbers);
+    log.info("Merged ServicePointCsvModel hasJustBezeichnungDiff DidokNumber Lists: {}", mergedHasJustBezeichningDiff);
   }
 
 }
