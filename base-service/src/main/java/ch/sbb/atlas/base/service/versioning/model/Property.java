@@ -16,6 +16,8 @@ public class Property {
 
   private boolean ignoreDiff;
 
+  private boolean doNotOverride;
+
   private Entity oneToOne;
 
   private List<Entity> oneToMany;
