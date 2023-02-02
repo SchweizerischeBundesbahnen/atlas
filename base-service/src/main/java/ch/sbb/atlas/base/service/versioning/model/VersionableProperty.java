@@ -14,6 +14,8 @@ public class VersionableProperty {
 
   private boolean ignoreDiff;
 
+  private boolean doNotOverride;
+
   private RelationType relationType;
 
   private List<String> relationsFields;
