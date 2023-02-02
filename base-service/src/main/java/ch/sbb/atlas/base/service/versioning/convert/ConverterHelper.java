@@ -53,7 +53,6 @@ public final class ConverterHelper {
       List<Property> propertiesWithoutDoNotOverride = editedProperties.stream().filter(property -> !property.isDoNotOverride())
           .toList();
       List<Property> version = editedProperties.stream().filter(property -> !property.getKey().equals("version")).toList();
-      log.error("{} - {} - {}", editedProperties.size(), propertiesWithoutDoNotOverride.size(), version.size());
       if (propertiesWithoutDoNotOverride.size() != version.size()) {
         log.error("Mismacht: {} - {}", propertiesWithoutDoNotOverride.size(), version.size());
       }
