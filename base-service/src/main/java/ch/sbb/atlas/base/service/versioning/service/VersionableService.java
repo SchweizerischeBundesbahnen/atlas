@@ -12,6 +12,10 @@ public interface VersionableService {
       Versionable edited,
       List<T> currentVersions);
 
+  <T extends Versionable> List<VersionedObject> versioningObjectsWithDeleteByNullProperties(Versionable current,
+      Versionable edited,
+      List<T> currentVersions);
+
   <T extends Versionable> void applyVersioning(Class<T> clazz,
       List<VersionedObject> versionedObjects, Consumer<T> save, LongConsumer deleteById);
 }

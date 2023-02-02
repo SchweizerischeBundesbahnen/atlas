@@ -2,7 +2,7 @@
   "$schema": "https://clew-resources.sbb-cloud.net/tekton-schema.json",
   "productName": "atlas",
   "advancedBuildSettings": {
-    "buildWorkspaceSize": "5Gi"
+    "buildWorkspaceSize": "10Gi"
   },
   "mvn": {
     "parentPom": "pom.xml",
