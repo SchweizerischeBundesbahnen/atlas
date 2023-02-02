@@ -13,6 +13,9 @@ public enum MailTemplateConfig {
   ATLAS_STANDARD_TEMPLATE("atlas-basic-html-template", null, null, true, true, false),
   IMPORT_TU_TEMPLATE("import-tu", "Import Transportunternehmen", new String[]{"didok@sbb.ch"}, false, false, true),
   SCHEDULING_ERROR_NOTIFICATION_TEMPLATE("scheduling-error-notification", null, null, false, false, true),
+  IMPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE("import-service-point-error-notification", null, null, false, false, true),
+  IMPORT_SERVCICE_POINT_SUCCESS_NOTIFICATION_TEMPLATE("import-service-point-success-notification", null, null, false, false,
+      true),
   WORKFLOW_NOTIFICATION_TEMPLATE("workflow_notification", null, null, true, false, true);
 
   private final String template;
@@ -37,6 +40,12 @@ public enum MailTemplateConfig {
     }
     if (MailType.WORKFLOW_NOTIFICATION == mailType) {
       return WORKFLOW_NOTIFICATION_TEMPLATE;
+    }
+    if (MailType.IMPORT_SERVICE_POINT_ERROR_NOTIFICATION == mailType) {
+      return IMPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE;
+    }
+    if (MailType.IMPORT_SERVICE_POINT_SUCCESS_NOTIFICATION == mailType) {
+      return IMPORT_SERVCICE_POINT_SUCCESS_NOTIFICATION_TEMPLATE;
     }
     throw new IllegalArgumentException("No configuration provided for: " + mailType.name());
   }

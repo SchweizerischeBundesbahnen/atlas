@@ -1,13 +1,23 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissCanton;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictName;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictNumber;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissLocalityName;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityName;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityNumber;
+
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.base.service.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
@@ -58,7 +68,7 @@ import org.apache.commons.lang3.StringUtils;
 @Entity(name = "service_point_version")
 @AtlasVersionable
 public class ServicePointVersion extends BaseDidokImportEntity implements Versionable,
-    BusinessOrganisationAssociated {
+    BusinessOrganisationAssociated, DatesValidator {
 
   private static final String VERSION_SEQ = "service_point_version_seq";
 
@@ -79,6 +89,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @NotNull
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private Status status;
 
   @NotNull
@@ -87,6 +98,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @NotNull
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private Country country;
 
   @Size(max = AtlasFieldLengths.LENGTH_50)
@@ -122,6 +134,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   private Set<Category> categories;
 
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private OperatingPointType operatingPointType;
 
   @AtlasVersionableProperty
@@ -147,6 +160,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   private Set<MeanOfTransport> meansOfTransport;
 
   @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
   private StopPointType stopPointType;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
@@ -155,11 +169,24 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
+  @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
+      ServicePointGeolocation.Fields.country,
+      swissCanton,
+      swissDistrictNumber,
+      swissDistrictName,
+      swissMunicipalityNumber,
+      swissMunicipalityName,
+      swissLocalityName,
+      GeolocationBaseEntity.Fields.east,
+      GeolocationBaseEntity.Fields.north,
+      GeolocationBaseEntity.Fields.spatialReference,
+      GeolocationBaseEntity.Fields.height,
+      BaseDidokImportEntity.Fields.creator,
+      BaseDidokImportEntity.Fields.editor,
+      BaseDidokImportEntity.Fields.creationDate,
+      BaseDidokImportEntity.Fields.editionDate
+  })
   private ServicePointGeolocation servicePointGeolocation;
-
-  public boolean hasGeolocation() {
-    return servicePointGeolocation != null;
-  }
 
   @NotNull
   @Column(columnDefinition = "DATE")
@@ -168,6 +195,10 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;
+
+  public boolean hasGeolocation() {
+    return servicePointGeolocation != null;
+  }
 
   @ToString.Include
   public boolean isStopPoint() {
@@ -201,7 +232,8 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
-    return !(country==Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now())) || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+    return !(country == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
+        || StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
   @AssertTrue(message = "Country needs to be the same as in ServicePointNumber")

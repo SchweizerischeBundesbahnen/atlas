@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.model;
 
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
