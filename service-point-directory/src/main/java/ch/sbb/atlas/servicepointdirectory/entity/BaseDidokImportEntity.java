@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.base.service.model.service.UserService;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -15,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
@@ -23,11 +23,12 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @MappedSuperclass
+@FieldNameConstants
 @Deprecated
 /**
  * Switch back to ch.sbb.atlas.base.service.model.entity.BaseEntity once Didok dies
  */
-public abstract class BaseDidokImportEntity implements DatesValidator {
+public abstract class BaseDidokImportEntity {
 
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
   @AtlasVersionableProperty(ignoreDiff = true)
@@ -61,7 +62,8 @@ public abstract class BaseDidokImportEntity implements DatesValidator {
 
   @PreUpdate
   public void onPreUpdate() {
-    setEditor(UserService.getSbbUid());
+    String sbbUid = UserService.getSbbUid();
+    setEditor(Optional.ofNullable(editor).orElse(sbbUid));
     setEditionDate(Optional.ofNullable(editionDate).orElse(LocalDateTime.now()));
   }
 

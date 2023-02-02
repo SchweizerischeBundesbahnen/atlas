@@ -29,26 +29,28 @@ public class TrafficPointElementImportServiceTest {
 
   @Test
   void shouldParseCsvSuccessfully() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElements(
-        csvStream);
+    try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {
+      List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElements(
+          csvStream);
 
-    TrafficPointElementCsvModel csvModel = trafficPointElementCsvModels.get(0);
-    assertThat(csvModel.getTrafficPointElementType()).isNotNull();
-    assertThat(csvModel.getCreatedAt()).isNotNull();
-    assertThat(csvModel.getCreatedBy()).isNotNull();
+      TrafficPointElementCsvModel csvModel = trafficPointElementCsvModels.get(0);
+      assertThat(csvModel.getTrafficPointElementType()).isNotNull();
+      assertThat(csvModel.getCreatedAt()).isNotNull();
+      assertThat(csvModel.getCreatedBy()).isNotNull();
 
-    assertThat(trafficPointElementCsvModels).isNotEmpty();
+      assertThat(trafficPointElementCsvModels).isNotEmpty();
+    }
   }
 
   @Test
   void shouldSaveParsedCsvToDb() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElements(
-        csvStream);
+    try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {
+      List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElements(
+          csvStream);
 
-    trafficPointElementImportService.importTrafficPointElements(trafficPointElementCsvModels);
+      trafficPointElementImportService.importTrafficPointElements(trafficPointElementCsvModels);
 
-    assertThat(trafficPointElementVersionRepository.count()).isEqualTo(59088);
+      assertThat(trafficPointElementVersionRepository.count()).isEqualTo(59088);
+    }
   }
 }

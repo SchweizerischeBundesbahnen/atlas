@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,27 +30,18 @@ public class ServicePointGeolocationModel extends GeolocationModel {
 
   @JsonIgnore
   private Country country;
-
-  @JsonInclude
-  @Schema(description = "ISO 2 abbreviation of the country, based on coordinates", example = "CH", accessMode =
-      AccessMode.READ_ONLY)
-  public String getIsoCountryCode() {
-    return getCountry().getIsoCode();
-  }
-
   private SwissLocation swissLocation;
 
   public static ServicePointGeolocationModel fromEntity(ServicePointGeolocation servicePointGeolocation) {
+    if (servicePointGeolocation == null) {
+      return null;
+    }
     Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(servicePointGeolocation);
     return ServicePointGeolocationModel.builder()
         .country(servicePointGeolocation.getCountry())
         .swissLocation(SwissLocation.builder()
             .canton(servicePointGeolocation.getSwissCanton())
-            .cantonInformation(Canton.builder()
-                .abbreviation(servicePointGeolocation.getSwissCanton().getAbbreviation())
-                .fsoNumber(servicePointGeolocation.getSwissCanton().getNumber())
-                .name(servicePointGeolocation.getSwissCanton().getName())
-                .build())
+            .cantonInformation(getCanton(servicePointGeolocation))
             .district(DistrictModel.builder()
                 .fsoNumber(servicePointGeolocation.getSwissDistrictNumber())
                 .districtName(servicePointGeolocation.getSwissDistrictName())
@@ -66,6 +57,24 @@ public class ServicePointGeolocationModel extends GeolocationModel {
         .wgs84web(coordinates.get(SpatialReference.WGS84WEB))
         .height(servicePointGeolocation.getHeight())
         .build();
+  }
+
+  private static Canton getCanton(ServicePointGeolocation servicePointGeolocation) {
+    if (servicePointGeolocation.getSwissCanton() == null) {
+      return null;
+    }
+    return Canton.builder()
+        .abbreviation(servicePointGeolocation.getSwissCanton().getAbbreviation())
+        .fsoNumber(servicePointGeolocation.getSwissCanton().getNumber())
+        .name(servicePointGeolocation.getSwissCanton().getName())
+        .build();
+  }
+
+  @JsonInclude
+  @Schema(description = "ISO 2 abbreviation of the country, based on coordinates", example = "CH", accessMode =
+      AccessMode.READ_ONLY)
+  public String getIsoCountryCode() {
+    return getCountry().getIsoCode();
   }
 
   @AllArgsConstructor
