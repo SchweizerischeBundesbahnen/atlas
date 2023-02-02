@@ -34,7 +34,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @AllArgsConstructor
 public class SpringBatchConfig {
 
-  private static final int CHUNK_SIZE = 100;
+  private static final int CHUNK_SIZE = 50;
   private static final int THREAD_EXECUTION_SIZE = 64;
   private final JobBuilderFactory jobBuilderFactory;
 

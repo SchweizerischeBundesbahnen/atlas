@@ -36,6 +36,18 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("BEZEICHNUNG_OFFIZIELL")
   private String bezeichnungOffiziell;
 
+  @EqualsAndHashCode.Exclude
+  @JsonProperty("BEZEICHNUNG_17")
+  private String bezeichnung17;
+
+  @EqualsAndHashCode.Exclude
+  @JsonProperty("BEZEICHNUNG_35")
+  private String bezeichnung35;
+
+  @EqualsAndHashCode.Exclude
+  @JsonProperty("OEFFNUNGSBEDINGUNG")
+  private String oeffnungsBedingung;
+
   @JsonProperty("BEZEICHNUNG_LANG")
   private String bezeichnungLang;
 
