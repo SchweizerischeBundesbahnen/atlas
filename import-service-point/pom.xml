@@ -10,7 +10,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.154.0</version>
+      <version>1.155.0</version>
    </parent>
    <description>Atlas Import Service Point</description>
    <artifactId>import-service-point</artifactId>
