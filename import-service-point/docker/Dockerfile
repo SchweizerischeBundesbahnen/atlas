@@ -4,7 +4,7 @@ LABEL mantainer="techsupport-atlas@sbb.ch"
 
 RUN mkdir /deploy
 
-COPY ./import/target/import-service-point-*.jar deploy/app.jar
+COPY ./import-service-point/target/import-service-point-*.jar deploy/app.jar
 
 RUN chmod 777 /deploy/app.jar
 
