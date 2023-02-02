@@ -1,23 +1,36 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   private final ServicePointVersionRepository repository;
+
   private ServicePointVersion servicePointVersion;
 
   @Autowired
@@ -38,6 +51,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePoint() throws Exception {
     mvc.perform(get("/v1/service-points/85890087")).andExpect(status().isOk())
+        .andDo(MockMvcResultHandlers.print())
         .andExpect(jsonPath("$[0]." + Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
         .andExpect(jsonPath("$[0]." + Fields.designationOfficial, is("Bern, Wyleregg")))
@@ -83,6 +97,77 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   void shouldFailOnInvalidServicePointNumber() throws Exception {
     mvc.perform(get("/v1/service-points/123"))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void shouldImportServicePointsSuccessfully() throws Exception {
+    try (InputStream csvStream = this.getClass().getResourceAsStream("/SERVICE_POINTS_VERSIONING.csv")) {
+      // given
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      List<ServicePointCsvModel> servicePointCsvModelsOrderedByValidFrom = servicePointCsvModels.stream()
+          .sorted(Comparator.comparing(BaseDidokCsvModel::getValidFrom))
+          .toList();
+      int didokCode = servicePointCsvModels.get(0).getDidokCode();
+      ServicePointImportReqModel importRequestModel = new ServicePointImportReqModel(
+          List.of(
+              ServicePointCsvModelContainer
+                  .builder()
+                  .servicePointCsvModelList(servicePointCsvModelsOrderedByValidFrom)
+                  .didokCode(didokCode)
+                  .build()
+          )
+      );
+      String jsonString = mapper.writeValueAsString(importRequestModel);
+
+      // when
+      mvc.perform(post("/v1/service-points/import")
+              .content(jsonString)
+              .contentType(contentType))
+          // then
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(5)));
+    }
+  }
+
+  @Test
+  void shouldReturnBadRequestOnEmptyListRequest() throws Exception {
+    // given
+    ServicePointImportReqModel importRequestModel = new ServicePointImportReqModel(
+        Collections.emptyList()
+    );
+    String jsonString = mapper.writeValueAsString(importRequestModel);
+
+    // when
+    mvc.perform(post("/v1/service-points/import")
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+  }
+
+  @Test
+  void shouldReturnBadRequestOnNullListRequest() throws Exception {
+    // given
+    ServicePointImportReqModel importRequestModel = new ServicePointImportReqModel();
+    String jsonString = mapper.writeValueAsString(importRequestModel);
+
+    // when
+    mvc.perform(post("/v1/service-points/import")
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+  }
+
+  @Test
+  void shouldReturnBadRequestOnNullImportRequestModel() throws Exception {
+    // given & when
+    mvc.perform(post("/v1/service-points/import")
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest());
   }
 
 }

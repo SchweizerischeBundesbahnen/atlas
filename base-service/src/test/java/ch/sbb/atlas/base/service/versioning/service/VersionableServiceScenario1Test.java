@@ -70,23 +70,23 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
     assertThat(entityToChange.getProperties()).isNotEmpty();
     List<Property> propertiesResult = entityToChange.getProperties();
-    assertThat(propertiesResult.size()).isEqualTo(3);
+    assertThat(propertiesResult.size()).isEqualTo(4);
     Property property1Result = propertiesResult.stream()
-                                               .filter(
-                                                   property -> VersionableObject.Fields.property.equals(
-                                                       property.getKey()))
-                                               .findFirst()
-                                               .orElse(null);
+        .filter(
+            property -> VersionableObject.Fields.property.equals(
+                property.getKey()))
+        .findFirst()
+        .orElse(null);
     assertThat(property1Result).isNotNull();
     assertThat(property1Result.getKey()).isEqualTo(VersionableObject.Fields.property);
     assertThat(property1Result.getValue()).isEqualTo("Ciao-Ciao");
 
     Property property2Result = propertiesResult.stream()
-                                               .filter(
-                                                   property -> VersionableObject.Fields.oneToManyRelation.equals(
-                                                       property.getKey()))
-                                               .findFirst()
-                                               .orElse(null);
+        .filter(
+            property -> VersionableObject.Fields.oneToManyRelation.equals(
+                property.getKey()))
+        .findFirst()
+        .orElse(null);
     assertThat(property2Result).isNotNull();
     assertThat(property2Result.getKey()).isEqualTo(VersionableObject.Fields.oneToManyRelation);
     assertThat(property2Result.hasOneToManyRelation()).isTrue();
@@ -128,10 +128,10 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
         .build();
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validFrom(LocalDate.of(2022, 1, 1))
-                                                       .validTo(LocalDate.of(2023, 12, 31))
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .build();
     Relation editedRelation = Relation.builder().id(3L).value("value-3-changed").build();
     editedVersion.setOneToManyRelation(List.of(editedRelation));
 
@@ -161,23 +161,23 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
     assertThat(entityToChange.getProperties()).isNotEmpty();
     List<Property> propertiesResult = entityToChange.getProperties();
-    assertThat(propertiesResult.size()).isEqualTo(3);
+    assertThat(propertiesResult.size()).isEqualTo(4);
     Property property1Result = propertiesResult.stream()
-                                               .filter(
-                                                   property -> VersionableObject.Fields.property.equals(
-                                                       property.getKey()))
-                                               .findFirst()
-                                               .orElse(null);
+        .filter(
+            property -> VersionableObject.Fields.property.equals(
+                property.getKey()))
+        .findFirst()
+        .orElse(null);
     assertThat(property1Result).isNotNull();
     assertThat(property1Result.getKey()).isEqualTo(VersionableObject.Fields.property);
     assertThat(property1Result.getValue()).isEqualTo("Ciao-Ciao");
 
     Property property2Result = propertiesResult.stream()
-                                               .filter(
-                                                   property -> VersionableObject.Fields.oneToManyRelation.equals(
-                                                       property.getKey()))
-                                               .findFirst()
-                                               .orElse(null);
+        .filter(
+            property -> VersionableObject.Fields.oneToManyRelation.equals(
+                property.getKey()))
+        .findFirst()
+        .orElse(null);
     assertThat(property2Result).isNotNull();
     assertThat(property2Result.getKey()).isEqualTo(VersionableObject.Fields.oneToManyRelation);
     assertThat(property2Result.hasOneToManyRelation()).isTrue();
@@ -194,7 +194,6 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(entityRelationProperty.getKey()).isEqualTo(Relation.Fields.value);
     assertThat(entityRelationProperty.getValue()).isEqualTo("value-3-changed");
   }
-
 
   /**
    * Szenario 1b: Update einer bestehenden Version in der Mitte
@@ -235,24 +234,24 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     Entity entityToChange = versionedObject.getEntity();
     assertThat(entityToChange).isNotNull();
     assertThat(entityToChange.getId()).isEqualTo(versionableObject2.getId());
-    assertThat(entityToChange.getProperties().size()).isEqualTo(3);
+    assertThat(entityToChange.getProperties().size()).isEqualTo(4);
     Property propertyOneToManyRelation = entityToChange.getProperties()
-                                                       .stream()
-                                                       .filter(
-                                                           property -> VersionableObject.Fields.oneToManyRelation.equals(
-                                                               property.getKey()))
-                                                       .findFirst()
-                                                       .orElse(null);
+        .stream()
+        .filter(
+            property -> VersionableObject.Fields.oneToManyRelation.equals(
+                property.getKey()))
+        .findFirst()
+        .orElse(null);
     assertThat(propertyOneToManyRelation).isNotNull();
     assertThat(propertyOneToManyRelation.getValue()).isNull();
     assertThat(propertyOneToManyRelation.getOneToMany()).isEmpty();
     Property propertyProperty = entityToChange.getProperties()
-                                              .stream()
-                                              .filter(
-                                                  property -> VersionableObject.Fields.property.equals(
-                                                      property.getKey()))
-                                              .findFirst()
-                                              .orElse(null);
+        .stream()
+        .filter(
+            property -> VersionableObject.Fields.property.equals(
+                property.getKey()))
+        .findFirst()
+        .orElse(null);
     assertThat(propertyProperty.getValue()).isEqualTo("Ciao-Ciao");
     assertThat(propertyProperty.getOneToMany()).isNull();
     assertThat(propertyProperty.getOneToOne()).isNull();
@@ -261,7 +260,6 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     VersionedObject thirdVersionedObject = result.get(2);
     assertThat(thirdVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
   }
-
 
   /**
    * Szenario 1c: Update einer bestehenden Version am Anfang
@@ -298,24 +296,24 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(versionedObject.getValidFrom()).isEqualTo(versionableObject1.getValidFrom());
     assertThat(versionedObject.getValidTo()).isEqualTo(versionableObject1.getValidTo());
     Entity entityToChange = versionedObject.getEntity();
-    assertThat(entityToChange.getProperties().size()).isEqualTo(3);
+    assertThat(entityToChange.getProperties().size()).isEqualTo(4);
     Property propertyOneToManyRelation = entityToChange.getProperties()
-                                                       .stream()
-                                                       .filter(
-                                                           property -> VersionableObject.Fields.oneToManyRelation.equals(
-                                                               property.getKey()))
-                                                       .findFirst()
-                                                       .orElse(null);
+        .stream()
+        .filter(
+            property -> VersionableObject.Fields.oneToManyRelation.equals(
+                property.getKey()))
+        .findFirst()
+        .orElse(null);
     assertThat(propertyOneToManyRelation).isNotNull();
     assertThat(propertyOneToManyRelation.getValue()).isNull();
     assertThat(propertyOneToManyRelation.getOneToMany()).isEmpty();
     Property propertyProperty = entityToChange.getProperties()
-                                              .stream()
-                                              .filter(
-                                                  property -> VersionableObject.Fields.property.equals(
-                                                      property.getKey()))
-                                              .findFirst()
-                                              .orElse(null);
+        .stream()
+        .filter(
+            property -> VersionableObject.Fields.property.equals(
+                property.getKey()))
+        .findFirst()
+        .orElse(null);
     assertThat(propertyProperty.getValue()).isEqualTo("Ciao-Ciao");
     assertThat(propertyProperty.getOneToMany()).isNull();
     assertThat(propertyProperty.getOneToOne()).isNull();

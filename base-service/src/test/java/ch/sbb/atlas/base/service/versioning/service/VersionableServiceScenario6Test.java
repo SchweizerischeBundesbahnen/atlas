@@ -17,13 +17,12 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
 
   /**
    * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
-   *
-   * NEU:                             |________________________________
-   * IST:      |-------------------------------------------------------
-   * Version:                               1
-   *
-   * RESULTAT: |----------------------|________________________________     NEUE VERSION EINGEFÜGT
-   * Version:        1                               2
+   * <p>
+   * NEU:                             |________________________________ IST:
+   * |------------------------------------------------------- Version:                               1
+   * <p>
+   * RESULTAT: |----------------------|________________________________     NEUE VERSION EINGEFÜGT Version:        1
+   * 2
    */
   @Test
   public void scenario6() {
@@ -32,10 +31,10 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     LocalDate editedValidTo = LocalDate.of(2024, 12, 31);
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validFrom(editedValidFrom)
-                                                       .validTo(editedValidTo)
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validFrom(editedValidFrom)
+        .validTo(editedValidTo)
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -64,7 +63,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     assertThat(thirdVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2024, 5, 31));
     Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
     assertThat(thirdVersionedObjectEntity).isNotNull();
-    assertThat(thirdVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(thirdVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyThirdVersionedObjectEntity = filterProperty(
         thirdVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyThirdVersionedObjectEntity).isNotNull();
@@ -81,7 +80,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     assertThat(fourthVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     Entity fourthVersionedObjectEntity = fourthVersionedObject.getEntity();
     assertThat(fourthVersionedObjectEntity).isNotNull();
-    assertThat(fourthVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(fourthVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyFourthVersionedObjectEntity = filterProperty(
         fourthVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyFourthVersionedObjectEntity).isNotNull();
@@ -95,13 +94,12 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
 
   /**
    * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
-   *
-   * NEU:                             |________________________________
-   * IST:      |-------------------------------------------------------
-   * Version:                               1
-   *
-   * RESULTAT: |----------------------|________________________________     NEUE VERSION EINGEFÜGT
-   * Version:        1                               2
+   * <p>
+   * NEU:                             |________________________________ IST:
+   * |------------------------------------------------------- Version:                               1
+   * <p>
+   * RESULTAT: |----------------------|________________________________     NEUE VERSION EINGEFÜGT Version:        1
+   * 2
    */
   @Test
   public void scenario6WithOnlyOneVersion() {
@@ -110,10 +108,10 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     LocalDate editedValidTo = LocalDate.of(2021, 12, 31);
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validFrom(editedValidFrom)
-                                                       .validTo(editedValidTo)
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validFrom(editedValidFrom)
+        .validTo(editedValidTo)
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -134,7 +132,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     assertThat(firstVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
     Entity firstVersionedObjectEntity = firstVersionedObject.getEntity();
     assertThat(firstVersionedObjectEntity).isNotNull();
-    assertThat(firstVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(firstVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyFirstVersionedObjectEntity = filterProperty(
         firstVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyFirstVersionedObjectEntity).isNotNull();
@@ -151,7 +149,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     assertThat(secondVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
     assertThat(secondVersionedObjectEntity).isNotNull();
-    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertySecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertySecondVersionedObjectEntity).isNotNull();
@@ -165,13 +163,12 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
 
   /**
    * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
-   *
-   * NEU:                             |________________________________
-   * IST:      |-------------------------------------------------------
-   * Version:                               1
-   *
-   * RESULTAT: |----------------------|________________________________     NEUE VERSION EINGEFÜGT
-   * Version:        1                               2
+   * <p>
+   * NEU:                             |________________________________ IST:
+   * |------------------------------------------------------- Version:                               1
+   * <p>
+   * RESULTAT: |----------------------|________________________________     NEUE VERSION EINGEFÜGT Version:        1
+   * 2
    */
   @Test
   public void scenario6WhenEditedValidToIsBiggerThenCurrentValidTo() {
@@ -180,10 +177,10 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     LocalDate editedValidTo = LocalDate.of(2022, 12, 31);
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validFrom(editedValidFrom)
-                                                       .validTo(editedValidTo)
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validFrom(editedValidFrom)
+        .validTo(editedValidTo)
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -204,7 +201,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     assertThat(firstVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
     Entity firstVersionedObjectEntity = firstVersionedObject.getEntity();
     assertThat(firstVersionedObjectEntity).isNotNull();
-    assertThat(firstVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(firstVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyFirstVersionedObjectEntity = filterProperty(
         firstVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyFirstVersionedObjectEntity).isNotNull();
@@ -221,7 +218,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     assertThat(secondVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2022, 12, 31));
     Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
     assertThat(secondVersionedObjectEntity).isNotNull();
-    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertySecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertySecondVersionedObjectEntity).isNotNull();
@@ -235,13 +232,12 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
 
   /**
    * Szenario 6: Neue Version in der Zukunft, die letzte Version überschneidet
-   *
-   * NEU:                             |____________________________________
-   * IST:      |-------------------------------------------------------
-   * Version:                               1
-   *
-   * RESULTAT: |----------------------|____________________________________     NEUE VERSION EINGEFÜGT
-   * Version:        1                               2
+   * <p>
+   * NEU:                             |____________________________________ IST:
+   * |------------------------------------------------------- Version:                               1
+   * <p>
+   * RESULTAT: |----------------------|____________________________________     NEUE VERSION EINGEFÜGT Version:        1
+   * 2
    */
   @Test
   public void scenario6WhenOnlyValidFromIsEdited() {
@@ -249,10 +245,10 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
 
     VersionableObject editedVersion = VersionableObject.builder()
-                                                       .property("Ciao-Ciao")
-                                                       .validFrom(editedValidFrom)
-                                                       .validTo(versionableObject1.getValidTo())
-                                                       .build();
+        .property("Ciao-Ciao")
+        .validFrom(editedValidFrom)
+        .validTo(versionableObject1.getValidTo())
+        .build();
 
     //when
     List<VersionedObject> result = versionableService.versioningObjects(
@@ -273,7 +269,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     assertThat(firstVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
     Entity firstVersionedObjectEntity = firstVersionedObject.getEntity();
     assertThat(firstVersionedObjectEntity).isNotNull();
-    assertThat(firstVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(firstVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertyFirstVersionedObjectEntity = filterProperty(
         firstVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyFirstVersionedObjectEntity).isNotNull();
@@ -290,7 +286,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     assertThat(secondVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
     assertThat(secondVersionedObjectEntity).isNotNull();
-    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(3);
+    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(4);
     Property propertySecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertySecondVersionedObjectEntity).isNotNull();
@@ -301,6 +297,5 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
     assertThat(oneToManyRelationSecondVersionedObjectEntity.getOneToMany()).isEmpty();
 
   }
-
 
 }

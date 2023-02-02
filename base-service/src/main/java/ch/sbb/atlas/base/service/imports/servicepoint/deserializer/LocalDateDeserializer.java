@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service.deserializer;
+package ch.sbb.atlas.base.service.imports.servicepoint.deserializer;
 
 import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
 import com.fasterxml.jackson.core.JsonParser;

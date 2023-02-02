@@ -1,6 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory;
 
 import ch.sbb.atlas.base.service.model.configuration.AtlasExceptionHandler;
+import ch.sbb.atlas.base.service.versioning.service.VersionableService;
+import ch.sbb.atlas.base.service.versioning.service.VersionableServiceImpl;
 import ch.sbb.atlas.kafka.KafkaTruststorePreparation;
 import java.time.ZoneId;
 import java.util.TimeZone;
@@ -20,6 +22,11 @@ public class ServicePointDirectoryApplication {
   @Bean
   public AtlasExceptionHandler atlasExceptionHandler() {
     return new AtlasExceptionHandler();
+  }
+
+  @Bean
+  public VersionableService versionableService() {
+    return new VersionableServiceImpl();
   }
 
 }

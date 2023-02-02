@@ -2,16 +2,21 @@ package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.base.service.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
+@WithMockJwtAuthentication
+@ActiveProfiles("integration-test")
 @Transactional
 public class LoadingPointImportServiceTest {
 
@@ -29,25 +34,27 @@ public class LoadingPointImportServiceTest {
 
   @Test
   void shouldParseCsvSuccessfully() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
+    try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {
+      List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
 
-    assertThat(loadingPointCsvModels).isNotEmpty();
+      assertThat(loadingPointCsvModels).isNotEmpty();
 
-    LoadingPointCsvModel csvModel = loadingPointCsvModels.get(0);
-    assertThat(csvModel.getServicePointNumber()).isNotNull();
-    assertThat(csvModel.getDesignation()).isNotNull();
-    assertThat(csvModel.getCreatedAt()).isNotNull();
-    assertThat(csvModel.getCreatedBy()).isNotNull();
+      LoadingPointCsvModel csvModel = loadingPointCsvModels.get(0);
+      assertThat(csvModel.getServicePointNumber()).isNotNull();
+      assertThat(csvModel.getDesignation()).isNotNull();
+      assertThat(csvModel.getCreatedAt()).isNotNull();
+      assertThat(csvModel.getCreatedBy()).isNotNull();
+    }
   }
 
   @Test
   void shouldSaveParsedCsvToDb() throws IOException {
-    InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE);
-    List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
+    try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {
+      List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
 
-    loadingPointImportService.importLoadingPoints(loadingPointCsvModels);
+      loadingPointImportService.importLoadingPoints(loadingPointCsvModels);
 
-    assertThat(loadingPointVersionRepository.count()).isEqualTo(3019);
+      assertThat(loadingPointVersionRepository.count()).isEqualTo(3019);
+    }
   }
 }
