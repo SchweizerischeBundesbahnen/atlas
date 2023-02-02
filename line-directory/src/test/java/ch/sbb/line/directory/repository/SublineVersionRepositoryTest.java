@@ -48,6 +48,7 @@ public class SublineVersionRepositoryTest {
     assertThat(result).usingRecursiveComparison().ignoringActualNullFields().isEqualTo(
         defaultSublineVersion);
     assertThat(result.getSlnid()).startsWith("ch:1:slnid:");
+    assertThat(result.getSlnid()).startsWith(result.getMainlineSlnid());
 
     assertThat(result.getCreationDate()).isNotNull();
     assertThat(result.getEditionDate()).isNotNull();
