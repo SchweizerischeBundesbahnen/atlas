@@ -49,13 +49,8 @@ public final class ConverterHelper {
       return buildEntity(currentVersion.getId(), propertiesNotEmpty);
     } else {
       //import case
-      // TODO: remove hardcoded version property key
       List<Property> propertiesWithoutDoNotOverride = editedProperties.stream().filter(property -> !property.isDoNotOverride())
           .toList();
-      List<Property> version = editedProperties.stream().filter(property -> !property.getKey().equals("version")).toList();
-      if (propertiesWithoutDoNotOverride.size() != version.size()) {
-        log.error("Mismacht: {} - {}", propertiesWithoutDoNotOverride.size(), version.size());
-      }
       return buildEntity(currentVersion.getId(), propertiesWithoutDoNotOverride);
     }
   }
