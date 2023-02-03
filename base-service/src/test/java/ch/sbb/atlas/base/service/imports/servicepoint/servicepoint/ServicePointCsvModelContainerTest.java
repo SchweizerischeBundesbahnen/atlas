@@ -46,7 +46,7 @@ public class ServicePointCsvModelContainerTest {
     container.setDidokCode(123);
 
     //when
-    container.mergeVersionsWithIsNotVirtualAndHasNotGeolocation();
+    container.mergeVersionsIsNotVirtualAndHasNotGeolocation();
 
     //then
     assertThat(container.getServicePointCsvModelList().size()).isEqualTo(2);
@@ -96,7 +96,7 @@ public class ServicePointCsvModelContainerTest {
     container.setDidokCode(123);
 
     //when
-    container.mergeVersionsWithIsNotVirtualAndHasNotGeolocation();
+    container.mergeVersionsIsNotVirtualAndHasNotGeolocation();
 
     //then
     assertThat(container.getServicePointCsvModelList().size()).isEqualTo(3);
@@ -145,7 +145,7 @@ public class ServicePointCsvModelContainerTest {
     container.setDidokCode(123);
 
     //when
-    container.mergeVersionsWithIsNotVirtualAndHasNotGeolocation();
+    container.mergeVersionsIsNotVirtualAndHasNotGeolocation();
 
     //then
     assertThat(container.getServicePointCsvModelList().size()).isEqualTo(3);
@@ -154,6 +154,93 @@ public class ServicePointCsvModelContainerTest {
     assertThat(container.getServicePointCsvModelList().get(1)).isEqualTo(notVirtualWithoutGeolocation);
     assertThat(container.getServicePointCsvModelList().get(2)).isEqualTo(virtualWithoutGeolocation);
     assertThat(container.isHasMergedVersionNotVirtualWithoutGeolocation()).isFalse();
+    assertThat(container.getDidokCode()).isEqualTo(123);
+  }
+
+  @Test
+  public void shouldMergeHasJustBezeichnungDiff() {
+    //given
+    ServicePointCsvModel withBezeichnung17 = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .didokCode(123)
+        .isVirtuell(false)
+        .bezeichnung17("BEZ")
+        .build();
+    ServicePointCsvModel withoutBezeichnung = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .didokCode(123)
+        .isVirtuell(false)
+        .build();
+    ServicePointCsvModel withAbkuerzung = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2002, 12, 31))
+        .didokCode(123)
+        .isVirtuell(false)
+        .abkuerzung("ab")
+        .build();
+    List<ServicePointCsvModel> modelList = new ArrayList<>();
+    modelList.add(withBezeichnung17);
+    modelList.add(withoutBezeichnung);
+    modelList.add(withAbkuerzung);
+    ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+    container.setServicePointCsvModelList(modelList);
+    container.setDidokCode(123);
+
+    //when
+    container.mergeHasJustBezeichnungDiff();
+
+    //then
+    assertThat(container.getServicePointCsvModelList().size()).isEqualTo(2);
+    container.getServicePointCsvModelList().sort(Comparator.comparing(ServicePointCsvModel::getValidFrom));
+    assertThat(container.getServicePointCsvModelList().get(0).getValidFrom()).isEqualTo(withBezeichnung17.getValidFrom());
+    assertThat(container.getServicePointCsvModelList().get(0).getValidTo()).isEqualTo(withoutBezeichnung.getValidTo());
+    assertThat(container.getServicePointCsvModelList().get(1).getValidFrom()).isEqualTo(withAbkuerzung.getValidFrom());
+    assertThat(container.getServicePointCsvModelList().get(1).getValidTo()).isEqualTo(withAbkuerzung.getValidTo());
+    assertThat(container.isHasMergedVersionNotVirtualWithoutGeolocation()).isFalse();
+    assertThat(container.isHasJustBezeichnungDiffMerged()).isTrue();
+    assertThat(container.getDidokCode()).isEqualTo(123);
+
+  }
+
+  @Test
+  public void shouldNotMergeWhenBezeichnungAreDifferent() {
+    //given
+    ServicePointCsvModel withBezeichnung17 = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .didokCode(123)
+        .isVirtuell(false)
+        .bezeichnung17("BEZ")
+        .build();
+    ServicePointCsvModel withoutBezeichnung = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .didokCode(123)
+        .bezeichnung17("ZEB")
+        .isVirtuell(false)
+        .build();
+    ServicePointCsvModel withAbkuerzung = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2002, 1, 1))
+        .validTo(LocalDate.of(2002, 12, 31))
+        .didokCode(123)
+        .isVirtuell(false)
+        .abkuerzung("ab")
+        .build();
+    List<ServicePointCsvModel> modelList = new ArrayList<>();
+    modelList.add(withBezeichnung17);
+    modelList.add(withoutBezeichnung);
+    modelList.add(withAbkuerzung);
+    ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+    container.setServicePointCsvModelList(modelList);
+    container.setDidokCode(123);
+
+    //when
+    container.mergeHasJustBezeichnungDiff();
+
+    //then
+    assertThat(container.getServicePointCsvModelList().size()).isEqualTo(3);
     assertThat(container.getDidokCode()).isEqualTo(123);
   }
 

@@ -43,40 +43,47 @@ public class AtlasAnnotationProcessor {
       if (field.isAnnotationPresent(AtlasVersionableProperty.class)) {
         VersionableProperty versionableProperty =
             VersionableProperty.builder()
-                               .fieldName(getKey(field))
-                               .ignoreDiff(getIgnoredDiff(field))
-                               .relationsFields(Arrays.asList(getRelationFields(field)))
-                               .relationType(getRelationType(field))
-                               .build();
+                .fieldName(getKey(field))
+                .ignoreDiff(getIgnoredDiff(field))
+                .doNotOverride(getDoNotOverride(field))
+                .relationsFields(Arrays.asList(getRelationFields(field)))
+                .relationType(getRelationType(field))
+                .build();
         versionableProperties.add(versionableProperty);
       }
     }
     if (versionableProperties.isEmpty()) {
       throw new AtlasVersionableException(
-          "To versioning an Object you have to mark some properties with @AtlasVersionableProperty. Please check the documentation.");
+          "To versioning an Object you have to mark some properties with @AtlasVersionableProperty. Please check the "
+              + "documentation.");
     }
     return versionableProperties;
   }
 
   private String getKey(Field field) {
     String value = field.getAnnotation(AtlasVersionableProperty.class)
-                        .key();
+        .key();
     return value.isEmpty() ? field.getName() : value;
   }
 
   private boolean getIgnoredDiff(Field field) {
     return field.getAnnotation(AtlasVersionableProperty.class)
-                .ignoreDiff();
+        .ignoreDiff();
+  }
+
+  private boolean getDoNotOverride(Field field) {
+    return field.getAnnotation(AtlasVersionableProperty.class)
+        .doNotOverride();
   }
 
   private RelationType getRelationType(Field field) {
     return field.getAnnotation(AtlasVersionableProperty.class)
-                .relationType();
+        .relationType();
   }
 
   private String[] getRelationFields(Field field) {
     return field.getAnnotation(AtlasVersionableProperty.class)
-                .relationsFields();
+        .relationsFields();
   }
 
 }
