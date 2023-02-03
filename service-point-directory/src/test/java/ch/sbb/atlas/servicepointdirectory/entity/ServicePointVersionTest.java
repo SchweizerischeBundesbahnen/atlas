@@ -33,7 +33,6 @@ class ServicePointVersionTest {
         .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
-        .operatingPointType(OperatingPointType.STOP_POINT)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .stopPointType(StopPointType.ORDERLY)
         .validFrom(LocalDate.of(2020, 1, 1))

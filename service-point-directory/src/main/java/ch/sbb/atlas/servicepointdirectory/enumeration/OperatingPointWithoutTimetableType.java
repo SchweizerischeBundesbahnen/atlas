@@ -7,16 +7,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
-@Schema(enumAsRef = true, example = "RAILNET_POINT")
+@Schema(enumAsRef = true, example = "ROUTE_SPEED_CHANGE")
 @Getter
 @RequiredArgsConstructor
-public enum OperatingPointType implements CodeAndDesignations {
+public enum OperatingPointWithoutTimetableType implements CodeAndDesignations {
 
-  INVENTORY_POINT(30, false, "Inventarpunkt", "Point d'inventaire", "punto di inventario", "Inventarpunkt", "betriebspunkt", null,
-      null, null, null),
-  SYSTEM_OPERATING_POINT(40, false, "System Betriebspunkt", "Point d’exploitation système", "Punto d’esercizio sistema",
-      "System Betriebspunkt", "betriebspunkt", null, null, null, null),
-  RAILNET_POINT(31, false, "BP Netze", "Point de réseau", "Punto di rete", "BP Netze", "betriebspunkt", null, null, null, null),
+  ROUTE_SPEED_CHANGE(10, false, "Streckengeschwindigkeitswechsel", "Changement de vitesse de ligne",
+      "Variazioni di velocità di linea", "Streckengeschwindigkeitswechsel", "ohnefahrplan", null, null, null, null),
 
   ;
 
@@ -33,8 +30,8 @@ public enum OperatingPointType implements CodeAndDesignations {
   private final String abbreviationIt;
   private final String abbreviationEn;
 
-  public static OperatingPointType from(Integer id) {
-    return Arrays.stream(OperatingPointType.values()).filter(operatingPointType -> Objects.equals(operatingPointType.getId(), id))
+  public static OperatingPointWithoutTimetableType from(Integer id) {
+    return Arrays.stream(OperatingPointWithoutTimetableType.values()).filter(operatingPointType -> Objects.equals(operatingPointType.getId(), id))
         .findFirst().orElse(null);
   }
 
