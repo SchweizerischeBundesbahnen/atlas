@@ -47,7 +47,7 @@ public abstract class BaseDidokImportEntity {
 
   @Version
   @NotNull
-  @AtlasVersionableProperty(ignoreDiff = true)
+  @AtlasVersionableProperty(ignoreDiff = true, doNotOverride = true)
   private Integer version;
 
   @PrePersist

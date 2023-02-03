@@ -181,6 +181,68 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
+  public void shouldContainsNullPropertyWhenDeletePropertyWhenNullAndDoNotOverrideProperty() {
+    //given
+    List<VersionableProperty> versionableProperties = new ArrayList<>();
+
+    versionableProperties.add(VersionableProperty.builder()
+        .fieldName(VersionableObject.Fields.property)
+        .doNotOverride(true)
+        .relationType(RelationType.NONE)
+        .build());
+    versionableProperties.add(VersionableProperty.builder()
+        .fieldName(
+            VersionableObject.Fields.oneToManyRelation)
+        .relationType(RelationType.ONE_TO_MANY)
+        .relationsFields(List.of(Relation.Fields.value))
+        .build());
+    versionableProperties.add(VersionableProperty.builder()
+        .fieldName(
+            Fields.oneToOneRelation)
+        .relationType(RelationType.ONE_TO_ONE)
+        .relationsFields(List.of(Relation.Fields.value))
+        .build());
+
+    VersionableObject versionableObject1 = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .property("asd")
+        .oneToManyRelation(List.of(relation))
+        .oneToOneRelation(Relation.builder().id(1L).value("123").build())
+        .build();
+    VersionableObject versionableObject2 = VersionableObject
+        .builder()
+        .id(1L)
+        .property("doNotOvverrideMe")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
+
+    //when
+    Entity result = ConverterHelper.convertToEditedEntity(true, versionableObject1, versionableObject2,
+        versionableProperties
+    );
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getId()).isEqualTo(1L);
+    List<Property> properties = result.getProperties();
+    assertThat(properties).isNotEmpty();
+    assertThat(properties.size()).isEqualTo(2);
+
+    Property propProperty = filterPropertyByKey(properties, "property");
+    assertThat(propProperty).isNull();
+    Property propOneToOne = filterPropertyByKey(properties, "oneToOneRelation");
+    assertThat(propOneToOne).isNotNull();
+    assertThat(propOneToOne.getOneToOne()).isNull();
+    Property propOneToMany = filterPropertyByKey(properties, "oneToManyRelation");
+    assertThat(propOneToMany).isNotNull();
+    assertThat(propOneToMany.getOneToMany()).isEmpty();
+  }
+
+  @Test
   public void shouldNotContainsNullPropertyWhenNotDeletePropertyWhenNull() {
     //given
     VersionableObject versionableObject1 = VersionableObject
